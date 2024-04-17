@@ -1144,7 +1144,12 @@
     "addProducts": "Add Products",
     "editSalesChannel": "Edit sales channel",
     "productAlreadyAdded": "The product has already been added to the sales channel.",
-    "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone."
+    "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone.",
+    "toast": {
+      "create": "Sales channel created successfully",
+      "update": "Sales channel updated successfully",
+      "delete": "Sales channel deleted successfully"
+    }
   },
   "apiKeyManagement": {
     "domain": {

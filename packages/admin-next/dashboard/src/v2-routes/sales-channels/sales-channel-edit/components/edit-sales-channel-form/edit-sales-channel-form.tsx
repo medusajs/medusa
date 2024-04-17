@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Input, Switch, Textarea } from "@medusajs/ui"
+import { Button, Input, Switch, Textarea, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -48,7 +48,17 @@ export const EditSalesChannelForm = ({
       },
       {
         onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t("salesChannels.toast.update"),
+            dismissLabel: t("actions.close"),
+          })
           handleSuccess()
+        },
+        onError: (error) => {
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissLabel: t("actions.close"),
+          })
         },
       }
     )

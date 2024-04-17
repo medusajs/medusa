@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SalesChannelDTO } from "@medusajs/types"
-import { Button, Checkbox, Hint, Tooltip } from "@medusajs/ui"
+import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
   OnChangeFn,
@@ -67,7 +67,13 @@ export const AddProductsToSalesChannelForm = ({
   }
 
   const { searchParams, raw } = useProductTableQuery({ pageSize: PAGE_SIZE })
-  const { products, count, isLoading, isError, error } = useProducts(
+  const {
+    products,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useProducts(
     {
       expand: "variants,sales_channels",
       ...searchParams,
@@ -108,8 +114,17 @@ export const AddProductsToSalesChannelForm = ({
       },
       {
         onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t("salesChannels.toast.update"),
+            dismissLabel: t("actions.close"),
+          })
           handleSuccess()
         },
+        onError: (error) =>
+          toast.success(t("general.error"), {
+            description: error.message,
+            dismissLabel: t("actions.close"),
+          }),
       }
     )
   })
