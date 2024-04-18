@@ -1,5 +1,9 @@
 import { useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
+import {
+  GeneralSectionSkeleton,
+  JsonViewSectionSkeleton,
+} from "../../../components/common/skeleton"
 import { useShippingProfile } from "../../../hooks/api/shipping-profiles"
 import { ShippingProfileGeneralSection } from "./components/shipping-profile-general-section"
 
@@ -11,7 +15,12 @@ export const ShippingProfileDetail = () => {
   )
 
   if (isLoading || !shipping_profile) {
-    return <div>Loading...</div>
+    return (
+      <div className="flex flex-col gap-y-2">
+        <GeneralSectionSkeleton rowCount={1} />
+        <JsonViewSectionSkeleton />
+      </div>
+    )
   }
 
   if (isError) {

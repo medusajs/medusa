@@ -20,14 +20,9 @@ export const ShippingProfileListTable = () => {
   })
 
   const { shipping_profiles, count, isLoading, isError, error } =
-    useShippingProfiles(
-      {
-        ...searchParams,
-      },
-      {
-        placeholderData: keepPreviousData,
-      }
-    )
+    useShippingProfiles(searchParams, {
+      placeholderData: keepPreviousData,
+    })
 
   const columns = useShippingProfileTableColumns()
   const filters = useShippingProfileTableFilters()
