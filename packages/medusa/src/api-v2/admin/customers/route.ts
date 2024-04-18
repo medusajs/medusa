@@ -3,27 +3,29 @@ import {
   AdminCustomerListResponse,
   AdminCustomerResponse,
 } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
 import { AdminCreateCustomerType } from "./validators"
+import { refetchCustomer } from "./helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<AdminCustomerListResponse>
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const variables = {
-    filters: req.filterableFields,
-    ...req.remoteQueryConfig.pagination,
-  }
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const query = remoteQueryObjectFromString({
     entryPoint: "customers",
-    variables,
+    variables: {
+      filters: req.filterableFields,
+      ...req.remoteQueryConfig.pagination,
+    },
     fields: req.remoteQueryConfig.fields,
   })
 
@@ -59,5 +61,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ customer: result[0] as AdminCustomerResponse["customer"] })
+  const customer = await refetchCustomer(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ customer })
 }
