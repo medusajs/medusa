@@ -1,1 +1,1 @@
-export { CreateReservationForm as Component } from "./create-reservation-modal"
+export { CreateReservationModal as Component } from "./create-reservation-modal"

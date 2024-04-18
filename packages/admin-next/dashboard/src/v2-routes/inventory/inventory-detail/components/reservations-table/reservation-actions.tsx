@@ -2,7 +2,7 @@ import { PencilSquare, Trash } from "@medusajs/icons"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { InventoryNext } from "@medusajs/types"
-import { useDeleteReservationItem } from "../../../../../hooks/api/inventory"
+import { useDeleteReservationItem } from "../../../../../hooks/api/reservations"
 import { usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
@@ -38,7 +38,7 @@ export const ReservationActions = ({
             {
               icon: <PencilSquare />,
               label: t("actions.edit"),
-              to: `/reservation/${reservation.id}/edit`,
+              to: `/reservations/${reservation.id}/edit`,
             },
           ],
         },

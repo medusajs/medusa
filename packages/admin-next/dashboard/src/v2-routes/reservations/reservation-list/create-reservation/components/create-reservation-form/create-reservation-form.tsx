@@ -5,10 +5,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../../components/route-modal"
-import {
-  useCreateReservationItem,
-  useInventoryItems,
-} from "../../../../../../hooks/api/inventory"
+import { useInventoryItems } from "../../../../../../hooks/api/inventory"
 
 import { Combobox } from "../../../../../../components/common/combobox"
 import { Form } from "../../../../../../components/common/form"
@@ -19,6 +16,7 @@ import { useForm } from "react-hook-form"
 import { useStockLocations } from "../../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useCreateReservationItem } from "../../../../../../hooks/api/reservations"
 
 export const CreateReservationSchema = zod.object({
   inventory_item_id: zod.string().min(1),
@@ -96,7 +94,7 @@ export const CreateReservationForm = () => {
     }
   )
 
-  const { mutateAsync, isFetching } = useCreateReservationItem()
+  const { mutateAsync, isPending } = useCreateReservationItem()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
@@ -120,7 +118,7 @@ export const CreateReservationForm = () => {
               type="submit"
               variant="primary"
               size="small"
-              isLoading={isFetching}
+              isLoading={isPending}
             >
               {t("actions.create")}
             </Button>

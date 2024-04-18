@@ -18,10 +18,10 @@ export const InventoryItemReservationsSection = ({
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{t("reservations.domain")}</Heading>
         <Button size="small" variant="secondary" asChild>
-          <Link to="locations">{t("actions.create")}</Link>
+          <Link to="/reservations/create">{t("actions.create")}</Link>
         </Button>
       </div>
-      {/* <ReservationItemTable inventoryItem={inventoryItem} /> // TODO: Add in a follow up pr */}
+      <ReservationItemTable inventoryItem={inventoryItem} />
     </Container>
   )
 }
