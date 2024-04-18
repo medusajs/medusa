@@ -1019,6 +1019,7 @@
     "manageYourStoresDetails": "Manage your store's details",
     "editStore": "Edit store",
     "defaultCurrency": "Default currency",
+    "defaultRegion": "Default region",
     "swapLinkTemplate": "Swap link template",
     "paymentLinkTemplate": "Payment link template",
     "inviteLinkTemplate": "Invite link template",
@@ -1029,6 +1030,11 @@
     "currencyAlreadyAdded": "The currency has already been added to your store.",
     "edit": {
       "header": "Edit Store"
+    },
+    "toast": {
+      "update": "Store successfully updated",
+      "currenciesUpdated": "Currencies updated successfully",
+      "currenciesRemoved": "Removed currencies from the store successfully"
     }
   },
   "regions": {
