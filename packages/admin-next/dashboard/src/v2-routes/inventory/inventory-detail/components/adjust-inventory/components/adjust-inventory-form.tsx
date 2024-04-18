@@ -81,7 +81,7 @@ export const AdjustInventoryForm = ({
         dismissLabel: t("actions.close"),
       })
     } catch (e) {
-      toast.success(t("general.error"), {
+      toast.error(t("general.error"), {
         description: e.message,
         dismissLabel: t("actions.close"),
       })

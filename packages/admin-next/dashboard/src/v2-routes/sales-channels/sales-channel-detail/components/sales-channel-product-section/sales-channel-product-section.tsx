@@ -107,7 +107,7 @@ export const SalesChannelProductSection = ({
           setRowSelection({})
         },
         onError: (error) => {
-          toast.success(t("general.error"), {
+          toast.error(t("general.error"), {
             description: error.message,
             dismissLabel: t("actions.close"),
           })
@@ -231,8 +231,8 @@ const ProductListCellActions = ({
         dismissLabel: t("actions.close"),
       })
     } catch (e) {
-      toast.success(t("general.error"), {
-        description: error.message,
+      toast.error(t("general.error"), {
+        description: e.message,
         dismissLabel: t("actions.close"),
       })
     }

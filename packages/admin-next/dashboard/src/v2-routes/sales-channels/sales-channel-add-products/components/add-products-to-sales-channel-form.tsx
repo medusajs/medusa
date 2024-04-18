@@ -121,7 +121,7 @@ export const AddProductsToSalesChannelForm = ({
           handleSuccess()
         },
         onError: (error) =>
-          toast.success(t("general.error"), {
+          toast.error(t("general.error"), {
             description: error.message,
             dismissLabel: t("actions.close"),
           }),
