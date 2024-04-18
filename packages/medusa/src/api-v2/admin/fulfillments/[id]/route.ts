@@ -1,9 +1,5 @@
 import { cancelFulfillmentsWorkflow } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import {
-  AdminFulfillmentDeleteResponse,
-  IFulfillmentModuleService,
-} from "@medusajs/types"
+import { AdminFulfillmentDeleteResponse } from "@medusajs/types"
 
 import {
   AuthenticatedMedusaRequest,
@@ -15,12 +11,6 @@ export const DELETE = async (
   res: MedusaResponse<AdminFulfillmentDeleteResponse>
 ) => {
   const { id } = req.params
-  const fulfillmentModuleService = req.scope.resolve<IFulfillmentModuleService>(
-    ModuleRegistrationName.FULFILLMENT
-  )
-
-  await fulfillmentModuleService.retrieveFulfillment(id)
-
   const { errors } = await cancelFulfillmentsWorkflow(req.scope).run({
     input: { ids: [id] },
     throwOnError: false,
