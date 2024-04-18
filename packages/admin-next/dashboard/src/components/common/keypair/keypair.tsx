@@ -68,6 +68,7 @@ export const Keypair = ({ labels, onChange, value }: KeypairProps) => {
           {value.map((pair, index) => {
             return (
               <Field
+                key={pair.key}
                 labels={labels}
                 field={pair}
                 updateKey={onKeyChange(index)}
@@ -82,7 +83,7 @@ export const Keypair = ({ labels, onChange, value }: KeypairProps) => {
         variant="secondary"
         size="small"
         type="button"
-        className="w-full mt-4"
+        className="mt-4 w-full"
         onClick={addKeyPair}
       >
         <Plus />
@@ -103,18 +104,13 @@ type FieldProps = {
   onDelete: () => void
 }
 
-const Field: React.FC<FieldProps> = ({
-  field,
-  updateKey,
-  updateValue,
-  onDelete,
-}) => {
+const Field = ({ field, updateKey, updateValue, onDelete }: FieldProps) => {
   const [key, setKey] = useState(field.key)
   const [value, setValue] = useState(field.value)
 
   return (
     <Table.Row>
-      <Table.Cell className="!p-0 h-0">
+      <Table.Cell className="h-0 !p-0">
         <Input
           className="rounded-none bg-transparent"
           onBlur={() => updateKey(key)}
@@ -124,7 +120,7 @@ const Field: React.FC<FieldProps> = ({
           }}
         />
       </Table.Cell>
-      <Table.Cell className="!p-0 h-0">
+      <Table.Cell className="h-0 !p-0">
         <Input
           className="rounded-none bg-transparent"
           onBlur={() => updateValue(value)}
@@ -134,7 +130,7 @@ const Field: React.FC<FieldProps> = ({
           }}
         />
       </Table.Cell>
-      <Table.Cell className="!p-0 h-0 border-r">
+      <Table.Cell className="h-0 border-r !p-0">
         <Button
           variant="transparent"
           size="small"

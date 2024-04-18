@@ -1,21 +1,21 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../components/route-modal"
-import { useState } from "react"
-import { useTranslation } from "react-i18next"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useCreateProduct } from "../../../../hooks/api/products"
+import { VariantPricingForm } from "../../common/variant-pricing-form"
 import {
   CreateProductSchema,
   CreateProductSchemaType,
   defaults,
   normalize,
 } from "../schema"
-import { useCreateProduct } from "../../../../hooks/api/products"
 import { ProductAttributesForm } from "./product-attributes-form"
-import { VariantPricingForm } from "../../common/variant-pricing-form"
 
 enum Tab {
   PRODUCT = "product",
@@ -32,13 +32,17 @@ export const CreateProductPage = () => {
     resolver: zodResolver(CreateProductSchema),
   })
 
-  const { mutateAsync, isLoading } = useCreateProduct()
+  const { mutateAsync, isPending } = useCreateProduct()
 
   const handleSubmit = form.handleSubmit(
     async (values, e) => {
-      if (!(e?.nativeEvent instanceof SubmitEvent)) return
+      if (!(e?.nativeEvent instanceof SubmitEvent)) {
+        return
+      }
       const submitter = e?.nativeEvent?.submitter as HTMLButtonElement
-      if (!(submitter instanceof HTMLButtonElement)) return
+      if (!(submitter instanceof HTMLButtonElement)) {
+        return
+      }
       const isDraftSubmission = submitter.dataset.name === "save-draft-button"
 
       await mutateAsync(
@@ -102,14 +106,14 @@ export const CreateProductPage = () => {
                     size="small"
                     key="submit-button"
                     type="submit"
-                    isLoading={isLoading}
+                    isLoading={isPending}
                   >
                     {t("actions.saveAsDraft")}
                   </Button>
                   <PrimaryButton
                     tab={tab}
                     next={() => setTab(Tab.PRICE)}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                   />
                 </div>
               </div>

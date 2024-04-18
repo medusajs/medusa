@@ -1,4 +1,22 @@
 import {
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core"
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import { AdminSalesChannelResponse } from "@medusajs/types"
+import {
   Button,
   Checkbox,
   Heading,
@@ -8,30 +26,29 @@ import {
   Text,
   Textarea,
 } from "@medusajs/ui"
+import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { Fragment, useMemo, useState } from "react"
+import { UseFormReturn, useFieldArray, useWatch } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
 
-import { SalesChannel } from "@medusajs/medusa"
-import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
-import { Fragment, useMemo, useState } from "react"
+import { Combobox } from "../../../../components/common/combobox"
 import { CountrySelect } from "../../../../components/common/country-select"
+import { FileUpload } from "../../../../components/common/file-upload"
 import { Form } from "../../../../components/common/form"
 import { HandleInput } from "../../../../components/common/handle-input"
+import { Keypair } from "../../../../components/common/keypair"
+import { List } from "../../../../components/common/list"
 import { DataTable } from "../../../../components/table/data-table"
+import { useCategories } from "../../../../hooks/api/categories"
+import { useCollections } from "../../../../hooks/api/collections"
+import { useProductTypes } from "../../../../hooks/api/product-types"
+import { useSalesChannels } from "../../../../hooks/api/sales-channels"
+import { useTags } from "../../../../hooks/api/tags"
 import { useSalesChannelTableColumns } from "../../../../hooks/table/columns/use-sales-channel-table-columns"
 import { useSalesChannelTableFilters } from "../../../../hooks/table/filters/use-sales-channel-table-filters"
 import { useSalesChannelTableQuery } from "../../../../hooks/table/query/use-sales-channel-table-query"
 import { useDataTable } from "../../../../hooks/use-data-table"
-import { Combobox } from "../../../../components/common/combobox"
-import { FileUpload } from "../../../../components/common/file-upload"
-import { List } from "../../../../components/common/list"
-import { useProductTypes } from "../../../../hooks/api/product-types"
-import { useCollections } from "../../../../hooks/api/collections"
-import { useSalesChannels } from "../../../../hooks/api/sales-channels"
-import { useCategories } from "../../../../hooks/api/categories"
-import { useTags } from "../../../../hooks/api/tags"
-import { Keypair } from "../../../../components/common/keypair"
-import { UseFormReturn } from "react-hook-form"
 import { CreateProductSchemaType } from "../schema"
 
 type ProductAttributesProps = {
@@ -81,11 +98,16 @@ export const ProductAttributesForm = ({ form }: ProductAttributesProps) => {
   const { t } = useTranslation()
   const [open, onOpenChange] = useState(false)
   const { product_types, isLoading: isLoadingTypes } = useProductTypes()
-  const { product_tags, isLoading: isLoadingTags } = useTags()
+  const { tags, isLoading: isLoadingTags } = useTags()
   const { collections, isLoading: isLoadingCollections } = useCollections()
   const { sales_channels, isLoading: isLoadingSalesChannels } =
     useSalesChannels()
   const { product_categories, isLoading: isLoadingCategories } = useCategories()
+
+  const { fields, append, remove, update, move } = useFieldArray({
+    control: form.control,
+    name: "options",
+  })
 
   const options = form.watch("options")
   const optionPermutations = permutations(options ?? [])
@@ -336,7 +358,7 @@ export const ProductAttributesForm = ({ form }: ProductAttributesProps) => {
                           <Form.Control>
                             <Combobox
                               disabled={isLoadingTags}
-                              options={(product_tags ?? []).map((tag) => ({
+                              options={(tags ?? []).map((tag) => ({
                                 label: tag.value,
                                 value: tag.id,
                               }))}
@@ -433,12 +455,27 @@ export const ProductAttributesForm = ({ form }: ProductAttributesProps) => {
                                 )
                               }
                             />
+                            {/* <DndContext>
+                              <div className="bg-ui-bg-component shadow-elevation-card-rest grid grid-cols-[28px_1fr_28px] items-center gap-x-1.5 rounded-xl p-1.5">
+                                <div className="flex size-7 items-center justify-center">
+                                  <DotsSix className="text-ui-fg-muted" />
+                                </div>
+                                <div className="flex flex-col gap-y-1.5">
+                                  <Input className="!bg-ui-bg-field-component hover:!bg-ui-bg-field-component-hover" />
+                                  <Input className="!bg-ui-bg-field-component hover:!bg-ui-bg-field-component-hover" />
+                                </div>
+                                <div className="flex size-7 items-center justify-center">
+                                  <XMarkMini className="text-ui-fg-muted" />
+                                </div>
+                              </div>
+                            </DndContext> */}
                           </Form.Control>
                         </Form.Item>
                       )
                     }}
                   />
                 </div>
+                <PossibleVariants form={form} />
                 <div className="grid grid-cols-1 gap-x-4 gap-y-8">
                   <Form.Field
                     control={form.control}
@@ -690,6 +727,83 @@ export const ProductAttributesForm = ({ form }: ProductAttributesProps) => {
   )
 }
 
+const PossibleVariants = ({
+  form,
+}: {
+  form: UseFormReturn<CreateProductSchemaType>
+}) => {
+  const [items, setItems] = useState<number[]>([1, 2, 3])
+
+  const options = useWatch({
+    control: form.control,
+    name: "options",
+    defaultValue: [],
+  })
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  // useEffect(() => {
+  //   setItems(permutations(options))
+  // }, [options])
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+
+    console.log(active, over)
+
+    if (active.id !== over?.id) {
+      setItems((items) => {
+        const oldIndex = items.indexOf(active.id)
+        const newIndex = items.indexOf(over.id)
+
+        return arrayMove(items, oldIndex, newIndex)
+      })
+    }
+  }
+
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext items={items} strategy={verticalListSortingStrategy}>
+        {items.map((permutation) => {
+          return <Permutation key={permutation} id={permutation} />
+        })}
+      </SortableContext>
+    </DndContext>
+  )
+}
+
+const Permutation = ({ id }: { id: number }) => {
+  const { attributes, listeners, setNodeRef, transform } = useSortable({
+    id: id,
+    resizeObserverConfig: { box: "border-box" },
+  })
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+  }
+
+  return (
+    <button
+      type="button"
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+    >
+      {id}
+    </button>
+  )
+}
+
 const PAGE_SIZE = 20
 
 const AddSalesChannelsDrawer = ({ onCancel }: { onCancel: () => void }) => {
@@ -699,10 +813,11 @@ const AddSalesChannelsDrawer = ({ onCancel }: { onCancel: () => void }) => {
   const { searchParams, raw } = useSalesChannelTableQuery({
     pageSize: PAGE_SIZE,
   })
-  const { sales_channels, count, isLoading, isError, error } =
-    useAdminSalesChannels({
+  const { sales_channels, count, isLoading, isError, error } = useSalesChannels(
+    {
       ...searchParams,
-    })
+    }
+  )
 
   const filters = useSalesChannelTableFilters()
   const columns = useColumns()
@@ -759,7 +874,8 @@ const AddSalesChannelsDrawer = ({ onCancel }: { onCancel: () => void }) => {
   )
 }
 
-const columnHelper = createColumnHelper<SalesChannel>()
+const columnHelper =
+  createColumnHelper<AdminSalesChannelResponse["sales_channel"]>()
 
 const useColumns = () => {
   const base = useSalesChannelTableColumns()
