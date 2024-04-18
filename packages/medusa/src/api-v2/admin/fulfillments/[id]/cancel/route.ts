@@ -1,4 +1,4 @@
-import { cancelFulfillmentsWorkflow } from "@medusajs/core-flows"
+import { cancelFulfillmentWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -11,8 +11,8 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const { id } = req.params
-  const { errors } = await cancelFulfillmentsWorkflow(req.scope).run({
-    input: { ids: [id] },
+  const { errors } = await cancelFulfillmentWorkflow(req.scope).run({
+    input: { id },
     throwOnError: false,
   })
 
