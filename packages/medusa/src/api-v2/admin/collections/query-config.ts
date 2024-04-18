@@ -1,8 +1,3 @@
-export const allowedAdminCollectionRelations = ["products.profiles"]
-
-// TODO: See how these should look when expanded
-export const defaultAdminCollectionRelations = ["products.profiles"]
-
 export const defaultAdminCollectionFields = [
   "id",
   "title",
@@ -12,9 +7,7 @@ export const defaultAdminCollectionFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminCollectionFields,
-  defaultRelations: defaultAdminCollectionRelations,
-  allowedRelations: allowedAdminCollectionRelations,
+  defaults: defaultAdminCollectionFields,
   isList: false,
 }
 

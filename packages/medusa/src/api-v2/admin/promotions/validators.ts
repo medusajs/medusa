@@ -3,6 +3,7 @@ import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
   ApplicationMethodType,
+  CampaignBudgetType,
   PromotionRuleOperator,
   PromotionType,
 } from "@medusajs/utils"
@@ -11,6 +12,7 @@ import {
   ArrayNotEmpty,
   IsArray,
   IsBoolean,
+  IsDateString,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -26,7 +28,6 @@ import {
   extendedFindParamsMixin,
 } from "../../../types/common"
 import { XorConstraint } from "../../../types/validators/xor"
-import { AdminPostCampaignsReq } from "../campaigns/validators"
 
 export class AdminGetPromotionsPromotionParams extends FindParams {}
 export class AdminGetPromotionRules extends FindParams {}
@@ -90,6 +91,59 @@ export class AdminPostCreatePromotionRule {
   @IsArray()
   @Type(() => String)
   values: string[]
+}
+
+export class AdminPostCampaignsReq {
+  @IsNotEmpty()
+  @IsString()
+  name: string
+
+  @IsOptional()
+  @IsNotEmpty()
+  campaign_identifier?: string
+
+  @IsOptional()
+  @IsString()
+  description?: string
+
+  @IsOptional()
+  @IsString()
+  currency?: string
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CampaignBudget)
+  budget?: CampaignBudget
+
+  @IsOptional()
+  @IsDateString()
+  starts_at?: string
+
+  @IsOptional()
+  @IsDateString()
+  ends_at?: string
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => IdObject)
+  promotions?: IdObject[]
+}
+
+export class IdObject {
+  @IsString()
+  @IsNotEmpty()
+  id: string
+}
+
+export class CampaignBudget {
+  @IsOptional()
+  @IsEnum(CampaignBudgetType)
+  type?: CampaignBudgetType
+
+  @IsOptional()
+  @IsNumber()
+  limit?: number
 }
 
 export class AdminPostPromotionsReq {
