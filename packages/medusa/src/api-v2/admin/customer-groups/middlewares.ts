@@ -1,42 +1,39 @@
 import * as QueryConfig from "./query-config"
-
-import { transformBody, transformQuery } from "../../../api/middlewares"
-import {
-  AdminDeleteCustomerGroupsGroupCustomersBatchReq,
-  AdminGetCustomerGroupsGroupCustomersParams,
-  AdminGetCustomerGroupsGroupParams,
-  AdminGetCustomerGroupsParams,
-  AdminPostCustomerGroupsGroupCustomersBatchReq,
-  AdminPostCustomerGroupsGroupReq,
-  AdminPostCustomerGroupsReq,
-} from "./validators"
-
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
-import { listTransformQueryConfig as customersListTransformQueryConfig } from "../customers/query-config"
+import { validateAndTransformQuery } from "../../utils/validate-query"
+import {
+  AdminCreateCustomerGroup,
+  AdminGetCustomerGroupParams,
+  AdminGetCustomerGroupsParams,
+  AdminSetCustomersCustomerGroup,
+  AdminUpdateCustomerGroup,
+} from "./validators"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import { createBatchBody } from "../../utils/validators"
 
 export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
+  {
+    method: ["ALL"],
+    matcher: "/admin/customer-groups*",
+    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
+  },
   {
     method: ["GET"],
     matcher: "/admin/customer-groups",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetCustomerGroupsParams,
         QueryConfig.listTransformQueryConfig
       ),
     ],
   },
   {
-    method: ["ALL"],
-    matcher: "/admin/customer-groups*",
-    middlewares: [authenticate("admin", ["bearer", "session"])],
-  },
-  {
     method: ["GET"],
     matcher: "/admin/customer-groups/:id",
     middlewares: [
-      transformQuery(
-        AdminGetCustomerGroupsGroupParams,
+      validateAndTransformQuery(
+        AdminGetCustomerGroupParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -44,41 +41,37 @@ export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/customer-groups",
-    middlewares: [transformBody(AdminPostCustomerGroupsReq)],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/customer-groups/:id",
-    middlewares: [transformBody(AdminPostCustomerGroupsGroupReq)],
-  },
-  {
-    method: ["GET"],
-    matcher: "/admin/customer-groups/:id/customers",
     middlewares: [
-      transformQuery(
-        AdminGetCustomerGroupsGroupCustomersParams,
-        customersListTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/customer-groups/:id/customers/batch/add",
-    middlewares: [
-      transformBody(AdminPostCustomerGroupsGroupCustomersBatchReq),
-      transformQuery(
-        AdminGetCustomerGroupsGroupParams,
+      validateAndTransformBody(AdminCreateCustomerGroup),
+      validateAndTransformQuery(
+        AdminGetCustomerGroupParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
   },
   {
     method: ["POST"],
-    matcher: "/admin/customer-groups/:id/customers/batch/remove",
+    matcher: "/admin/customer-groups/:id",
     middlewares: [
-      transformBody(AdminDeleteCustomerGroupsGroupCustomersBatchReq),
-      transformQuery(
-        AdminGetCustomerGroupsGroupParams,
+      validateAndTransformBody(AdminUpdateCustomerGroup),
+      validateAndTransformQuery(
+        AdminGetCustomerGroupParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/customer-groups/:id/customers/batch",
+    middlewares: [
+      validateAndTransformBody(
+        createBatchBody(
+          AdminSetCustomersCustomerGroup,
+          AdminSetCustomersCustomerGroup
+        )
+      ),
+      validateAndTransformQuery(
+        AdminGetCustomerGroupParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
