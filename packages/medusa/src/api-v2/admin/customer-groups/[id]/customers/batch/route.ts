@@ -22,7 +22,7 @@ export const POST = async (
   const { id } = req.params
   const { create, delete: toDelete } = req.validatedBody
 
-  if (!!create && create?.length > 0) {
+  if (create?.length) {
     const createCustomers = createCustomerGroupCustomersWorkflow(req.scope)
     const { errors } = await createCustomers.run({
       input: {
@@ -39,7 +39,7 @@ export const POST = async (
     }
   }
 
-  if (!!toDelete && toDelete?.length > 0) {
+  if (toDelete?.length) {
     const deleteCustomers = deleteCustomerGroupCustomersWorkflow(req.scope)
     const { errors } = await deleteCustomers.run({
       input: {
