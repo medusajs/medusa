@@ -111,7 +111,7 @@ const RegionActions = ({ region }: { region: RegionDTO }) => {
       })
     } catch (e) {
       toast.error(t("general.error"), {
-        description: t("regions.toast.deleteError"),
+        description: e.message,
         dismissLabel: t("actions.close"),
       })
     }

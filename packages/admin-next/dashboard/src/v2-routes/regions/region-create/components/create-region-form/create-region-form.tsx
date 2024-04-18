@@ -98,9 +98,9 @@ export const CreateRegionForm = ({
           })
           handleSuccess(`../${region.id}`)
         },
-        onError: () => {
+        onError: (e) => {
           toast.error(t("general.error"), {
-            description: t("regions.toast.createError"),
+            description: e.message,
             dismissLabel: t("actions.close"),
           })
         },

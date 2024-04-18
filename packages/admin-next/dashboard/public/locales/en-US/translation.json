@@ -1051,13 +1051,9 @@
     "calculated": "Calculated",
     "toast": {
       "delete": "Region deleted successfully",
-      "deleteError": "Failed to delete the region",
       "edit": "Region edit saved",
-      "editError": "Failed to save region edit",
       "create": "Region created successfully",
-      "createError": "Failed to create the region",
-      "countries": "Region countries updated successfully",
-      "countriesError": "Failed to update the regions countries"
+      "countries": "Region countries updated successfully"
     },
     "shippingOption": {
       "createShippingOption": "Create Shipping Option",

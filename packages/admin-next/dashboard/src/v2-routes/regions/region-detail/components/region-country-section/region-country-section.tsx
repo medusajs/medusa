@@ -93,7 +93,7 @@ export const RegionCountrySection = ({ region }: RegionCountrySectionProps) => {
       })
     } catch (e) {
       toast.error(t("general.error"), {
-        description: t("regions.toast.countriesError"),
+        description: e.message,
         dismissLabel: t("actions.close"),
       })
     }
@@ -181,7 +181,7 @@ const CountryActions = ({
       })
     } catch (e) {
       toast.error(t("general.error"), {
-        description: t("regions.toast.countriesError"),
+        description: e.message,
         dismissLabel: t("actions.close"),
       })
     }

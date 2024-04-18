@@ -119,7 +119,7 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
       })
     } catch (e) {
       toast.error(t("general.error"), {
-        description: t("regions.toast.countriesError"),
+        description: e.message,
         dismissLabel: t("actions.close"),
       })
     }
