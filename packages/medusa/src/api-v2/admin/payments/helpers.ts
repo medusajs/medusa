@@ -4,20 +4,20 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
-export const refetchProductType = async (
-  productTypeId: string,
+export const refetchPayment = async (
+  paymentId: string,
   scope: MedusaContainer,
   fields: string[]
 ) => {
   const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product_type",
+    entryPoint: "payment",
     variables: {
-      filters: { id: productTypeId },
+      filters: { id: paymentId },
     },
     fields: fields,
   })
 
-  const productTypes = await remoteQuery(queryObject)
-  return productTypes[0]
+  const payments = await remoteQuery(queryObject)
+  return payments[0]
 }
