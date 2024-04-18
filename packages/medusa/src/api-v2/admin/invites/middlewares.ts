@@ -1,42 +1,25 @@
 import * as QueryConfig from "./query-config"
 
 import {
-  AdminCreateInviteRequest,
-  AdminGetInvitesInviteParams,
+  AdminCreateInvite,
+  AdminGetInviteAcceptParams,
+  AdminGetInviteParams,
   AdminGetInvitesParams,
-  AdminPostInvitesInviteAcceptParams,
-  AdminPostInvitesInviteAcceptReq,
+  AdminInviteAccept,
 } from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
 
 import { MiddlewareRoute } from "../../../types/middlewares"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformQuery } from "../../utils/validate-query"
+import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: "ALL",
-    matcher: "/admin/invites",
-    middlewares: [authenticate("admin", ["session", "bearer"])],
-  },
-  {
-    method: "POST",
-    matcher: "/admin/invites/accept",
-    middlewares: [
-      authenticate("admin", ["session", "bearer"], {
-        allowUnregistered: true,
-      }),
-    ],
-  },
-  {
-    method: ["GET", "DELETE"],
-    matcher: "/admin/invites/:id",
-    middlewares: [authenticate("admin", ["session", "bearer"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/invites",
     middlewares: [
-      transformQuery(
+      authenticate("admin", ["session", "bearer", "api-key"]),
+      validateAndTransformQuery(
         AdminGetInvitesParams,
         QueryConfig.listTransformQueryConfig
       ),
@@ -45,22 +28,52 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/invites",
-    middlewares: [transformBody(AdminCreateInviteRequest)],
+    middlewares: [
+      authenticate("admin", ["session", "bearer", "api-key"]),
+      validateAndTransformBody(AdminCreateInvite),
+      validateAndTransformQuery(
+        AdminGetInviteParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: "POST",
     matcher: "/admin/invites/accept",
     middlewares: [
-      transformBody(AdminPostInvitesInviteAcceptReq),
-      transformQuery(AdminPostInvitesInviteAcceptParams),
+      authenticate("admin", ["session", "bearer"], {
+        allowUnregistered: true,
+      }),
+      validateAndTransformBody(AdminInviteAccept),
+      validateAndTransformQuery(
+        AdminGetInviteAcceptParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/invites/:id",
     middlewares: [
-      transformQuery(
-        AdminGetInvitesInviteParams,
+      authenticate("admin", ["session", "bearer", "api-key"]),
+      validateAndTransformQuery(
+        AdminGetInviteParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/invites/:id",
+    middlewares: [authenticate("admin", ["session", "bearer", "api-key"])],
+  },
+  {
+    method: "POST",
+    matcher: "/admin/invites/:id/resend",
+    middlewares: [
+      authenticate("admin", ["session", "bearer", "api-key"]),
+      validateAndTransformQuery(
+        AdminGetInviteParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
