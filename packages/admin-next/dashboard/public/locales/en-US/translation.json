@@ -46,7 +46,9 @@
     "unsavedChangesTitle": "Are you sure you want to leave this page?",
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page.",
     "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved.",
-    "timeline": "Timeline"
+    "timeline": "Timeline",
+    "success": "Success",
+    "error": "Error"
   },
   "validation": {
     "mustBeInt": "The value must be a whole number.",
@@ -356,29 +358,56 @@
   },
   "customers": {
     "domain": "Customers",
-    "editCustomer": "Edit Customer",
-    "createCustomer": "Create Customer",
-    "createCustomerHint": "Create a new customer to manage their details.",
-    "passwordHint": "Create a password for the customer to use when logging in to the storefront. Make sure that you communicate the password to the customer.",
-    "changePassword": "Change password",
-    "changePasswordPromptTitle": "Change password",
-    "changePasswordPromptDescription": "You are about to change the password for {{email}}. Make sure that you have communicated the new password to the customer before proceeding.",
-    "guest": "Guest",
-    "registered": "Registered",
-    "firstSeen": "First seen",
-    "viewOrder": "View order",
-    "groups": "Groups"
+    "create": {
+      "header": "Create Customer",
+      "hint": "Create a new customer to manage their details.",
+      "successToast": "Customer {{email}} was successfully created."
+    },
+    "edit": {
+      "header": "Edit Customer",
+      "emailDisabledTooltip": "The email address cannot be changed for registered customers.",
+      "successToast": "Customer {{email}} was successfully updated."
+    },
+    "delete": {
+      "title": "Delete Customer",
+      "description": "You are about to delete the customer {{email}}. This action cannot be undone.",
+      "successToast": "Customer {{email}} was successfully deleted."
+    },
+    "fields": {
+      "guest": "Guest",
+      "registered": "Registered",
+      "groups": "Groups"
+    }
   },
   "customerGroups": {
     "domain": "Customer Groups",
-    "createGroup": "Create group",
-    "createCustomerGroup": "Create Customer Group",
-    "createCustomerGroupHint": "Create a new customer group to segment your customers.",
-    "customerAlreadyAdded": "The customer has already been added to the group.",
-    "editCustomerGroup": "Edit Customer Group",
-    "removeCustomersWarning_one": "You are about to remove {{count}} customer from the customer group. This action cannot be undone.",
-    "removeCustomersWarning_other": "You are about to remove {{count}} customers from the customer group. This action cannot be undone.",
-    "deleteCustomerGroupWarning": "You are about to delete the customer group {{name}}. This action cannot be undone."
+    "create": {
+      "header": "Create Customer Group",
+      "hint": "Create a new customer group to segment your customers.",
+      "successToast": "Customer group {{name}} was successfully created."
+    },
+    "edit": {
+      "header": "Edit Customer Group",
+      "successToast": "Customer group {{name}} was successfully updated."
+    },
+    "delete": {
+      "title": "Delete Customer Group",
+      "description": "You are about to delete the customer group {{name}}. This action cannot be undone.",
+      "successToast": "Customer group {{name}} was successfully deleted."
+    },
+    "customers": {
+      "alreadyAddedTooltip": "The customer has already been added to the group.",
+      "add": {
+        "successToast_one": "Customer was successfully added to the group.",
+        "successToast_other": "Customers were successfully added to the group."
+      },
+      "remove": {
+        "title_one": "Remove customer",
+        "title_other": "Remove customers",
+        "description_one": "You are about to remove {{count}} customer from the customer group. This action cannot be undone.",
+        "description_other": "You are about to remove {{count}} customers from the customer group. This action cannot be undone."
+      }
+    }
   },
   "orders": {
     "domain": "Orders",
@@ -578,7 +607,7 @@
     "addZone": "Add shipping zone",
     "enablePickup": "Enable pickup",
     "enableDelivery": "Enable delivery",
-    "noRecords" : {
+    "noRecords": {
       "action": "Add Location",
       "title": "No inventory locations",
       "message": "Please create an invnetory location first."
