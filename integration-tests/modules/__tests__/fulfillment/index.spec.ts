@@ -6,10 +6,13 @@ import { setupFullDataFulfillmentStructure } from "../fixtures"
 jest.setTimeout(100000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
+const adminHeaders = {
+  headers: { "x-medusa-access-token": "test_token" },
+}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ getContainer }) => {
+  testSuite: ({ getContainer, api }) => {
     let service: IFulfillmentModuleService
 
     beforeAll(() => {
@@ -63,6 +66,41 @@ medusaIntegrationTestRunner({
         let fulfillment = shippingOption.fulfillments[0]
         expect(fulfillment.labels).toHaveLength(1)
         expect(fulfillment.items).toHaveLength(1)
+      })
+    })
+
+    describe("DELETE /admin/fulfillments/:id", () => {
+      it("should throw an error when id is not found", async () => {
+        const error = await api
+          .delete(`/admin/fulfillments/does-not-exist`, adminHeaders)
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(404)
+        expect(error.response.data).toEqual({
+          type: "not_found",
+          message: "Fulfillment with id: does-not-exist was not found",
+        })
+      })
+
+      it("should cancel a fulfillment", async () => {
+        await setupFullDataFulfillmentStructure(service, {
+          providerId: `manual_test-provider`,
+        })
+
+        const [fulfillment] = await service.listFulfillments()
+
+        const response = await api.delete(
+          `/admin/fulfillments/${fulfillment.id}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+
+        const canceledFulfillment = await service.retrieveFulfillment(
+          fulfillment.id
+        )
+
+        expect(canceledFulfillment.canceled_at).toBeTruthy()
       })
     })
   },
