@@ -1,6 +1,7 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IFulfillmentModuleService } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { createAdminUser } from "../../../helpers/create-admin-user"
 import { setupFullDataFulfillmentStructure } from "../fixtures"
 
 jest.setTimeout(100000)
@@ -12,12 +13,17 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ getContainer, api }) => {
+  testSuite: ({ getContainer, api, dbConnection }) => {
     let service: IFulfillmentModuleService
+    let container
 
     beforeAll(() => {
-      const container = getContainer()
+      container = getContainer()
       service = container.resolve(ModuleRegistrationName.FULFILLMENT)
+    })
+
+    beforeEach(async () => {
+      await createAdminUser(dbConnection, adminHeaders, container)
     })
 
     /**
@@ -69,10 +75,10 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe("DELETE /admin/fulfillments/:id", () => {
+    describe("POST /admin/fulfillments/:id/cancel", () => {
       it("should throw an error when id is not found", async () => {
         const error = await api
-          .delete(`/admin/fulfillments/does-not-exist`, adminHeaders)
+          .post(`/admin/fulfillments/does-not-exist/cancel`, {}, adminHeaders)
           .catch((e) => e)
 
         expect(error.response.status).toEqual(404)
@@ -89,8 +95,9 @@ medusaIntegrationTestRunner({
 
         const [fulfillment] = await service.listFulfillments()
 
-        const response = await api.delete(
-          `/admin/fulfillments/${fulfillment.id}`,
+        const response = await api.post(
+          `/admin/fulfillments/${fulfillment.id}/cancel`,
+          {},
           adminHeaders
         )
 

@@ -30,11 +30,5 @@ export interface AdminFulfillmentResponse {
 /**
  * @experimental
  */
-export interface AdminFulfillmentDeleteResponse
-  extends DeleteResponse<"fulfillment"> {}
-
-/**
- * @experimental
- */
 export interface AdminFulfillmentSetsDeleteResponse
   extends DeleteResponse<"fulfillment_set"> {}
