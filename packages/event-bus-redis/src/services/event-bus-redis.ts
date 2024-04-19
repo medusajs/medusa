@@ -62,9 +62,15 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
   __hooks = {
     onApplicationShutdown: async () => {
-      await this.bullWorker_?.close() // graceful shutdown
+      this.logger_.info("Event bus: Closing queue")
       await this.queue_.close()
-      this.eventBusRedisConnection_.quit()
+      await this.eventBusRedisConnection_.quit()
+      this.logger_.info("Event bus: Queue closed")
+    },
+    onApplicationPrepareShutdown: async () => {
+      this.logger_.info("Event bus: Closing worker")
+      await this.bullWorker_?.close()
+      this.logger_.info("Event bus: Worker closed")
     },
   }
 

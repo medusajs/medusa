@@ -1,7 +1,6 @@
 import { promiseAll } from "@medusajs/utils"
 import { Express } from "express"
 import glob from "glob"
-import _ from "lodash"
 import { trackInstallation } from "medusa-telemetry"
 import { EOL } from "os"
 import path from "path"
@@ -55,7 +54,6 @@ export default async ({
         )
       }
       await registerSubscribers(pluginDetails, container, activityId)
-      await registerWorkflows(pluginDetails)
     })
   )
 
@@ -208,4 +206,17 @@ function createPluginId(name: string): string {
 
 function createFileContentHash(path, files): string {
   return path + files
+}
+
+export async function registerProjectWorkflows({
+  rootDirectory,
+  configModule,
+}) {
+  const resolved = getResolvedPlugins(rootDirectory, configModule) || []
+
+  await promiseAll(
+    resolved.map(async (pluginDetails) => {
+      await registerWorkflows(pluginDetails)
+    })
+  )
 }

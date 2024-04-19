@@ -4,8 +4,13 @@ import {
   TransactionHandlerType,
   TransactionStep,
 } from "@medusajs/orchestration"
-import { ContainerLike, Context, MedusaContainer } from "@medusajs/types"
-import { InjectSharedContext, isString, MedusaContext } from "@medusajs/utils"
+import {
+  ContainerLike,
+  Context,
+  Logger,
+  MedusaContainer,
+} from "@medusajs/types"
+import { InjectSharedContext, MedusaContext, isString } from "@medusajs/utils"
 import {
   FlowRunOptions,
   MedusaWorkflow,
@@ -15,7 +20,6 @@ import {
 import Redis from "ioredis"
 import { ulid } from "ulid"
 import type { RedisDistributedTransactionStorage } from "../utils"
-import { Logger } from "@medusajs/types"
 
 export type WorkflowOrchestratorRunOptions<T> = FlowRunOptions<T> & {
   transactionId?: string
@@ -117,16 +121,18 @@ export class WorkflowOrchestratorService {
   }
 
   async onApplicationShutdown() {
-    this.logger.info("Workflow orchestrator gradeful shutdown.")
-    // set flag to shuting down
+    await this.redisDistributedTransactionStorage_.onApplicationShutdown()
+  }
+
+  async onApplicationPrepareShutdown() {
+    // eslint-disable-next-line max-len
+    await this.redisDistributedTransactionStorage_.onApplicationPrepareShutdown()
     this.isShuttingDown = true
+
+    // Gracefully shut down
     while (this.activeStepsCount > 0) {
-      this.logger.info(`Active steps: ${this.activeStepsCount}`)
-      // sleep for 1 second
       await new Promise((resolve) => setTimeout(resolve, 1000))
     }
-    await this.redisDistributedTransactionStorage_.onApplicationShutdown()
-    this.logger.info("Workflow orchestrator finished!")
   }
 
   @InjectSharedContext()
@@ -574,7 +580,11 @@ export class WorkflowOrchestratorService {
       onCompensateStepSuccess: async ({ step, transaction }) => {
         const stepName = step.definition.action!
         const response = transaction.getContext().compensate[stepName]
-        customEventHandlers?.onStepSuccess?.({ step, transaction, response })
+        customEventHandlers?.onCompensateStepSuccess?.({
+          step,
+          transaction,
+          response,
+        })
 
         await notify({ eventType: "onCompensateStepSuccess", step, response })
       },

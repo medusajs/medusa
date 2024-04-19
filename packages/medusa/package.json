@@ -63,7 +63,7 @@
     "awilix": "^8.0.0",
     "body-parser": "^1.19.0",
     "boxen": "^5.0.1",
-    "bullmq": "^5.4.2",
+    "bullmq": "5.4.2",
     "chokidar": "^3.4.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",

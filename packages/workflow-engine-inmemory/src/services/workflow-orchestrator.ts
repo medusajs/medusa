@@ -487,7 +487,11 @@ export class WorkflowOrchestratorService {
       onCompensateStepSuccess: ({ step, transaction }) => {
         const stepName = step.definition.action!
         const response = transaction.getContext().compensate[stepName]
-        customEventHandlers?.onStepSuccess?.({ step, transaction, response })
+        customEventHandlers?.onCompensateStepSuccess?.({
+          step,
+          transaction,
+          response,
+        })
 
         notify({ eventType: "onCompensateStepSuccess", step, response })
       },

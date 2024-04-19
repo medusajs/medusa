@@ -64,8 +64,12 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     )
   }
 
-  async onApplicationShutdown() {
+  async onApplicationPrepareShutdown() {
+    // Close worker gracefully, i.e. wait for the current jobs to finish
     await this.worker.close()
+  }
+
+  async onApplicationShutdown() {
     await this.queue.close()
   }
 

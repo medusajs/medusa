@@ -6,8 +6,8 @@ import {
 import { ConfigModule, MODULE_RESOURCE_TYPE } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  isString,
   MedusaV2Flag,
+  isString,
   promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -25,7 +25,9 @@ import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
-import medusaProjectApisLoader from "./load-medusa-project-apis"
+import medusaProjectApisLoader, {
+  registerProjectWorkflows,
+} from "./load-medusa-project-apis"
 import Logger from "./logger"
 import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 import modelsLoader from "./models"
@@ -103,7 +105,12 @@ async function loadMedusaV2({
     [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
   })
 
-  const { onApplicationShutdown: medusaAppOnApplicationShutdown } = await loadMedusaApp({
+  await registerProjectWorkflows({ rootDirectory, configModule })
+
+  const {
+    onApplicationShutdown: medusaAppOnApplicationShutdown,
+    onApplicationPrepareShutdown: medusaAppOnApplicationPrepareShutdown,
+  } = await loadMedusaApp({
     configModule,
     container,
   })
@@ -139,6 +146,8 @@ async function loadMedusaV2({
     })
   }
 
+  Logger.info("Loading Medusa project APIs")
+
   await medusaProjectApisLoader({
     rootDirectory,
     container,
@@ -156,6 +165,7 @@ async function loadMedusaV2({
       container.dispose(),
       pgConnection?.context?.destroy(),
       expressShutdown(),
+      medusaAppOnApplicationShutdown(),
     ])
   }
 
@@ -165,6 +175,7 @@ async function loadMedusaV2({
     app: expressApp,
     pgConnection,
     shutdown,
+    prepareShutdown: medusaAppOnApplicationPrepareShutdown,
   }
 }
 
@@ -179,6 +190,7 @@ export default async ({
   app: Express
   pgConnection: unknown
   shutdown: () => Promise<void>
+  prepareShutdown: () => Promise<void>
 }> => {
   const configModule = loadConfig(rootDirectory)
   const featureFlagRouter = featureFlagsLoader(configModule, Logger)
@@ -213,7 +225,11 @@ export default async ({
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
-  const { shutdown: redisShutdown } = await redisLoader({ container, configModule, logger: Logger })
+  const { shutdown: redisShutdown } = await redisLoader({
+    container,
+    configModule,
+    logger: Logger,
+  })
 
   const modelsActivity = Logger.activity(`Initializing models${EOL}`)
   track("MODELS_INIT_STARTED")
@@ -273,7 +289,10 @@ export default async ({
   track("MODULES_INIT_STARTED")
 
   // Move before services init once all modules are migrated and do not rely on core resources anymore
-  const { onApplicationShutdown: medusaAppOnApplicationShutdown } = await loadMedusaApp({
+  const {
+    onApplicationShutdown: medusaAppOnApplicationShutdown,
+    onApplicationPrepareShutdown: medusaAppOnApplicationPrepareShutdown,
+  } = await loadMedusaApp({
     configModule,
     container,
   })
@@ -283,7 +302,10 @@ export default async ({
 
   const expActivity = Logger.activity(`Initializing express${EOL}`)
   track("EXPRESS_INIT_STARTED")
-  const { shutdown: expressShutdown } = await expressLoader({ app: expressApp, configModule })
+  const { shutdown: expressShutdown } = await expressLoader({
+    app: expressApp,
+    configModule,
+  })
   await passportLoader({ app: expressApp, configModule })
   const exAct = Logger.success(expActivity, "Express intialized") || {}
   track("EXPRESS_INIT_COMPLETED", { duration: exAct.duration })
@@ -359,5 +381,6 @@ export default async ({
     app: expressApp,
     pgConnection,
     shutdown,
+    prepareShutdown: async () => medusaAppOnApplicationPrepareShutdown(),
   }
 }
