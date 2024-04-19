@@ -1144,7 +1144,9 @@
     "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
     "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location.",
     "toast": {
-      "update": "Location updated sucessfully"
+      "create": "Location created sucessfully",
+      "update": "Location updated sucessfully",
+      "removeChannel": "Sales channel removed sucessfully"
     }
   },
   "reservations": {
