@@ -8,7 +8,12 @@ import { EditLocationForm } from "./components/edit-location-form"
 export const LocationEdit = () => {
   const { id } = useParams()
 
-  const { stock_locations, isLoading, isError, error } = useStockLocations({
+  const {
+    stock_locations,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useStockLocations({
     id,
     fields: "*address",
   })

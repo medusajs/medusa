@@ -19,11 +19,16 @@ export const LocationsListTable = () => {
    * Note: The endpoint is bugged and does not return count, causing the table to not render
    * any rows.
    */
-  const { stock_locations, count, isLoading, isError, error } =
-    useStockLocations({
-      ...searchParams,
-      fields: "*address",
-    })
+  const {
+    stock_locations,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useStockLocations({
+    ...searchParams,
+    fields: "*address",
+  })
 
   const columns = useLocationTableColumns()
 

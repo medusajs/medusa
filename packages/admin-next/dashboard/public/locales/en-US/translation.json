@@ -1142,7 +1142,10 @@
     "selectLocations": "Select locations that stock the item.",
     "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
     "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
-    "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location."
+    "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location.",
+    "toast": {
+      "update": "Location updated sucessfully"
+    }
   },
   "reservations": {
     "domain": "Reservations",
