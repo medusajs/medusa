@@ -358,7 +358,7 @@ medusaIntegrationTestRunner({
                   }),
                   is_tax_inclusive: false,
                   shipping_option_id: null,
-                  data: {},
+                  data: null,
                   tax_lines: [],
                   adjustments: [],
                   amount: 100,

@@ -1,20 +1,29 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IFulfillmentModuleService } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { createAdminUser } from "../../../helpers/create-admin-user"
 import { setupFullDataFulfillmentStructure } from "../fixtures"
 
 jest.setTimeout(100000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
+const adminHeaders = {
+  headers: { "x-medusa-access-token": "test_token" },
+}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ getContainer }) => {
+  testSuite: ({ getContainer, api, dbConnection }) => {
     let service: IFulfillmentModuleService
+    let container
 
     beforeAll(() => {
-      const container = getContainer()
+      container = getContainer()
       service = container.resolve(ModuleRegistrationName.FULFILLMENT)
+    })
+
+    beforeEach(async () => {
+      await createAdminUser(dbConnection, adminHeaders, container)
     })
 
     /**
@@ -63,6 +72,42 @@ medusaIntegrationTestRunner({
         let fulfillment = shippingOption.fulfillments[0]
         expect(fulfillment.labels).toHaveLength(1)
         expect(fulfillment.items).toHaveLength(1)
+      })
+    })
+
+    describe("POST /admin/fulfillments/:id/cancel", () => {
+      it("should throw an error when id is not found", async () => {
+        const error = await api
+          .post(`/admin/fulfillments/does-not-exist/cancel`, {}, adminHeaders)
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(404)
+        expect(error.response.data).toEqual({
+          type: "not_found",
+          message: "Fulfillment with id: does-not-exist was not found",
+        })
+      })
+
+      it("should cancel a fulfillment", async () => {
+        await setupFullDataFulfillmentStructure(service, {
+          providerId: `manual_test-provider`,
+        })
+
+        const [fulfillment] = await service.listFulfillments()
+
+        const response = await api.post(
+          `/admin/fulfillments/${fulfillment.id}/cancel`,
+          {},
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+
+        const canceledFulfillment = await service.retrieveFulfillment(
+          fulfillment.id
+        )
+
+        expect(canceledFulfillment.canceled_at).toBeTruthy()
       })
     })
   },

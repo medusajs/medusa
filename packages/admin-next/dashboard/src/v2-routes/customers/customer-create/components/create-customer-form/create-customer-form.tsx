@@ -1,33 +1,37 @@
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button, Heading, Input, Text, toast } from "@medusajs/ui"
+import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { Button, Heading, Input, Text } from "@medusajs/ui"
+
+import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { Form } from "../../../../../components/common/form"
-import { useForm } from "react-hook-form"
-import { useTranslation } from "react-i18next"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { useCreateCustomer } from "../../../../../hooks/api/customers"
 
 const CreateCustomerSchema = zod.object({
   email: zod.string().email(),
-  first_name: zod.string().min(1),
-  last_name: zod.string().min(1),
-  phone: zod.string().min(1).optional(),
+  first_name: zod.string().optional(),
+  last_name: zod.string().optional(),
+  company_name: zod.string().optional(),
+  phone: zod.string().optional(),
 })
 
 export const CreateCustomerForm = () => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const { mutateAsync, isLoading } = useCreateCustomer()
+  const { mutateAsync, isPending } = useCreateCustomer()
 
   const form = useForm<zod.infer<typeof CreateCustomerSchema>>({
     defaultValues: {
       email: "",
       first_name: "",
       last_name: "",
+      phone: "",
+      company_name: "",
     },
     resolver: zodResolver(CreateCustomerSchema),
   })
@@ -35,14 +39,27 @@ export const CreateCustomerForm = () => {
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       {
-        email: data.email,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        phone: data.phone,
+        email: data.email || undefined,
+        first_name: data.first_name || undefined,
+        last_name: data.last_name || undefined,
+        company_name: data.company_name || undefined,
+        phone: data.phone || undefined,
       },
       {
         onSuccess: ({ customer }) => {
+          toast.success(t("general.success"), {
+            description: t("customers.create.successToast", {
+              email: customer.email,
+            }),
+            dismissLabel: t("actions.close"),
+          })
           handleSuccess(`/customers/${customer.id}`)
+        },
+        onError: (error) => {
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissLabel: t("actions.close"),
+          })
         },
       }
     )
@@ -62,7 +79,7 @@ export const CreateCustomerForm = () => {
               size="small"
               variant="primary"
               type="submit"
-              isLoading={isLoading}
+              isLoading={isPending}
             >
               {t("actions.create")}
             </Button>
@@ -71,19 +88,19 @@ export const CreateCustomerForm = () => {
         <RouteFocusModal.Body className="flex flex-col items-center py-16">
           <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
-              <Heading>{t("customers.createCustomer")}</Heading>
+              <Heading>{t("customers.create.header")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">
-                {t("customers.createCustomerHint")}
+                {t("customers.create.hint")}
               </Text>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <Form.Field
                 control={form.control}
                 name="first_name"
                 render={({ field }) => {
                   return (
                     <Form.Item>
-                      <Form.Label>{t("fields.firstName")}</Form.Label>
+                      <Form.Label optional>{t("fields.firstName")}</Form.Label>
                       <Form.Control>
                         <Input autoComplete="off" {...field} />
                       </Form.Control>
@@ -98,7 +115,7 @@ export const CreateCustomerForm = () => {
                 render={({ field }) => {
                   return (
                     <Form.Item>
-                      <Form.Label>{t("fields.lastName")}</Form.Label>
+                      <Form.Label optional>{t("fields.lastName")}</Form.Label>
                       <Form.Control>
                         <Input autoComplete="off" {...field} />
                       </Form.Control>
@@ -114,6 +131,21 @@ export const CreateCustomerForm = () => {
                   return (
                     <Form.Item>
                       <Form.Label>{t("fields.email")}</Form.Label>
+                      <Form.Control>
+                        <Input autoComplete="off" {...field} />
+                      </Form.Control>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+              <Form.Field
+                control={form.control}
+                name="company_name"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label optional>{t("fields.company")}</Form.Label>
                       <Form.Control>
                         <Input autoComplete="off" {...field} />
                       </Form.Control>
