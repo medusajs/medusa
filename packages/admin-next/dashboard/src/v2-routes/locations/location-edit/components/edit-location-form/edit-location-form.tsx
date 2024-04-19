@@ -35,6 +35,8 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
+  console.log(location)
+
   const form = useForm<zod.infer<typeof EditLocationSchema>>({
     defaultValues: {
       name: location.name,
