@@ -334,14 +334,14 @@ medusaIntegrationTestRunner({
 
         it("should delete an inventory location level and create a new one", async () => {
           const result = await api.post(
-            `/admin/inventory-items/${inventoryItem.id}/location-levels/batch/combi`,
+            `/admin/inventory-items/${inventoryItem.id}/location-levels/op/batch`,
             {
-              creates: [
+              create: [
                 {
                   location_id: "location_2",
                 },
               ],
-              deletes: [locationId],
+              delete: [locationId],
             },
             adminHeaders
           )
@@ -386,6 +386,7 @@ medusaIntegrationTestRunner({
             id: expect.any(String),
             object: "inventory-level",
             deleted: true,
+            parent: expect.any(Object),
           })
         })
 

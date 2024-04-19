@@ -1,11 +1,12 @@
-import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
-  AdminGetOrdersOrderParams,
+  AdminCreateDraftOrder,
+  AdminGetOrderParams,
   AdminGetOrdersParams,
-  AdminPostDraftOrdersReq,
 } from "./validators"
 
 export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
@@ -18,7 +19,7 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/draft-orders",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetOrdersParams,
         QueryConfig.listTransformQueryConfig
       ),
@@ -28,8 +29,8 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/draft-orders/:id",
     middlewares: [
-      transformQuery(
-        AdminGetOrdersOrderParams,
+      validateAndTransformQuery(
+        AdminGetOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -38,9 +39,9 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/draft-orders",
     middlewares: [
-      transformBody(AdminPostDraftOrdersReq),
-      transformQuery(
-        AdminGetOrdersOrderParams,
+      validateAndTransformBody(AdminCreateDraftOrder),
+      validateAndTransformQuery(
+        AdminGetOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],

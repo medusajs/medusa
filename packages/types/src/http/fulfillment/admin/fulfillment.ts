@@ -1,7 +1,8 @@
+import { DeleteResponse } from "../../../common"
 import { AdminFulfillmentAddressResponse } from "./fulfillment-address"
-import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
 import { AdminFulfillmentItemResponse } from "./fulfillment-item"
 import { AdminFulfillmentLabelResponse } from "./fulfillment-label"
+import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
 
 /**
  * @experimental
@@ -25,3 +26,9 @@ export interface AdminFulfillmentResponse {
   updated_at: Date
   deleted_at: Date | null
 }
+
+/**
+ * @experimental
+ */
+export interface AdminFulfillmentSetsDeleteResponse
+  extends DeleteResponse<"fulfillment_set"> {}

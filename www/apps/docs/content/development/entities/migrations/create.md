@@ -109,11 +109,19 @@ export class AddAuthorsAndPosts1690876698954 implements MigrationInterface {
 }
 ```
 
-:::warning
+### Migration Name
 
-If you're copying the code snippet above, make sure to not copy the class name or the `name` attribute in it. Your migration should keep its timestamp.
+If the `name` attribute isn't available in the generated migration, an error may occur while running the migration. To avoid this, make sure to add it manually and set its value to the class's name:
 
-:::
+<!-- eslint-disable max-len -->
+
+```ts
+export class AddAuthorsAndPosts1690876698954 implements MigrationInterface {
+  name = "AddAuthorsAndPosts1690876698954"
+
+  // ...
+}
+```
 
 ---
 

@@ -1,174 +1,79 @@
-import { BigNumberInput } from "@medusajs/types"
-import { Type } from "class-transformer"
-import {
-  IsArray,
-  IsBoolean,
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateIf,
-  ValidateNested,
-} from "class-validator"
-import {
-  AddressPayload,
-  FindParams,
-  extendedFindParamsMixin,
-} from "../../../types/common"
-import { IsType } from "../../../utils/validators/is-type"
+import { createFindParams, createSelectParams } from "../../utils/validators"
+import { AddressPayload, BigNumberInput } from "../../utils/common-validators"
+import { z } from "zod"
 
-export class AdminGetOrdersOrderParams extends FindParams {}
-/**
- * Parameters used to filter and configure the pagination of the retrieved api keys.
- */
-export class AdminGetOrdersParams extends extendedFindParamsMixin({
+export type AdminGetOrderParamsType = z.infer<typeof AdminGetOrderParams>
+export const AdminGetOrderParams = createSelectParams()
+
+export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
+export const AdminGetOrdersParams = createFindParams({
   limit: 50,
   offset: 0,
-}) {
-  /**
-   * Search parameter for api keys.
-   */
-  @IsString({ each: true })
-  @IsOptional()
-  id?: string | string[]
-
-  /**
-   * Filter by title
-   */
-  @IsString({ each: true })
-  @IsOptional()
-  name?: string | string[]
-
-  // Additional filters from BaseFilterable
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AdminGetOrdersParams)
-  $and?: AdminGetOrdersParams[]
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AdminGetOrdersParams)
-  $or?: AdminGetOrdersParams[]
-}
+}).merge(
+  z.object({
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    name: z.union([z.string(), z.array(z.string())]).optional(),
+    $and: z.lazy(() => AdminGetOrdersParams.array()).optional(),
+    $or: z.lazy(() => AdminGetOrdersParams.array()).optional(),
+  })
+)
 
 enum Status {
   completed = "completed",
 }
 
-export class AdminPostDraftOrdersReq {
-  @IsEnum(Status)
-  @IsOptional()
-  status?: string
+const ShippingMethod = z.object({
+  shipping_method_id: z.string().optional(),
+  order_id: z.string().optional(),
+  name: z.string(),
+  option_id: z.string(),
+  data: z.record(z.string(), z.unknown()).optional(),
+  amount: BigNumberInput,
+})
 
-  @IsEmail()
-  @ValidateIf((o) => !o.customer_id)
-  email: string
+const Item = z
+  .object({
+    title: z.string().optional(),
+    sku: z.string().optional(),
+    barcode: z.string().optional(),
+    variant_id: z.string().optional(),
+    unit_price: BigNumberInput.optional(),
+    quantity: z.number(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
+  })
+  .refine((data) => {
+    if (!data.variant_id) {
+      return data.title && (data.sku || data.barcode)
+    }
 
-  @IsString()
-  @IsOptional()
-  sales_channel_id?: string
+    return true
+  })
 
-  @IsOptional()
-  @IsType([AddressPayload, String])
-  billing_address?: AddressPayload
+export type AdminCreateDraftOrderType = z.infer<typeof AdminCreateDraftOrder>
+export const AdminCreateDraftOrder = z
+  .object({
+    status: z.nativeEnum(Status).optional(),
+    sales_channel_id: z.string().optional(),
+    email: z.string().optional(),
+    customer_id: z.string().optional(),
+    billing_address: AddressPayload.optional(),
+    shipping_address: AddressPayload.optional(),
+    items: z.array(Item).optional(),
+    region_id: z.string(),
+    promo_codes: z.array(z.string()).optional(),
+    currency_code: z.string().optional(),
+    no_notification_order: z.boolean().optional(),
+    shipping_methods: z.array(ShippingMethod),
+    metadata: z.record(z.string(), z.unknown()).optional(),
+  })
+  .strict()
+  .refine(
+    (data) => {
+      if (!data.email && !data.customer_id) {
+        return false
+      }
 
-  @IsOptional()
-  @IsType([AddressPayload, String])
-  shipping_address?: AddressPayload
-
-  @IsArray()
-  @Type(() => Item)
-  @IsNotEmpty()
-  @ValidateNested({ each: true })
-  @IsOptional()
-  items?: Item[]
-
-  @IsString()
-  region_id: string
-
-  @IsArray()
-  @IsOptional()
-  promo_codes?: string[]
-
-  @IsString()
-  @IsOptional()
-  currency_code?: string
-
-  @IsString()
-  @IsOptional()
-  @ValidateIf((o) => !o.email)
-  customer_id?: string
-
-  @IsBoolean()
-  @IsOptional()
-  no_notification_order?: boolean
-
-  @IsArray()
-  @Type(() => ShippingMethod)
-  @IsNotEmpty()
-  @ValidateNested({ each: true })
-  shipping_methods: ShippingMethod[]
-
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown> = {}
-}
-
-class ShippingMethod {
-  @IsString()
-  @IsOptional()
-  shipping_method_id: string
-
-  @IsString()
-  @IsOptional()
-  order_id: string
-
-  @IsString()
-  name: string
-
-  @IsString()
-  option_id: string
-
-  @IsObject()
-  @IsOptional()
-  data?: Record<string, unknown> = {}
-
-  @IsNumber()
-  amount: BigNumberInput
-}
-
-class Item {
-  @IsString()
-  @ValidateIf((o) => !o.variant_id)
-  title: string
-
-  @IsString()
-  @IsOptional()
-  @ValidateIf((o) => !o.variant_id)
-  sku: string
-
-  @IsString()
-  @IsOptional()
-  @ValidateIf((o) => !o.variant_id)
-  barcode: string
-
-  @IsNumber()
-  @IsOptional()
-  unit_price: BigNumberInput
-
-  @IsString()
-  @IsOptional()
-  variant_id?: string
-
-  @IsNumber()
-  quantity: number
-
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown> = {}
-}
-
-export class AdminDeleteOrdersOrderReq {}
+      return true
+    },
+    { message: "Either email or customer_id must be provided" }
+  )

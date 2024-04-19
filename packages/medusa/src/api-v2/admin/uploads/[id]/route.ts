@@ -3,13 +3,14 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 import { deleteFilesWorkflow } from "@medusajs/core-flows"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const variables = { id: req.params.id }
 
   const queryObject = remoteQueryObjectFromString({

@@ -1,21 +1,21 @@
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { MedusaError } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import { refetchOrder } from "../helpers"
 import { defaultAdminOrderFields } from "../query-config"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const draftOrder = await refetchOrder(
+    req.params.id,
+    req.scope,
+    defaultAdminOrderFields
+  )
 
-  const variables = { id: req.params.id }
+  if (!draftOrder) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Draft order with id: ${req.params.id} was not found`
+    )
+  }
 
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order",
-    variables,
-    fields: defaultAdminOrderFields,
-  })
-
-  const [draft_order] = await remoteQuery(queryObject)
-  res.status(200).json({ draft_order })
+  res.status(200).json({ draft_order: draftOrder })
 }

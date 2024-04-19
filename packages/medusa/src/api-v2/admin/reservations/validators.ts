@@ -1,129 +1,53 @@
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import {
-  IsArray,
-  IsBoolean,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
+import { z } from "zod"
 
-import { IsType } from "../../../utils"
-import { OperatorMap } from "@medusajs/types"
-import { OperatorMapValidator } from "../../../types/validators/operator-map"
-import { Type } from "class-transformer"
+export type AdminGetReservationParamsType = z.infer<
+  typeof AdminGetReservationParams
+>
+export const AdminGetReservationParams = createSelectParams()
 
-// TODO: naming
-export class AdminGetReservationsReservationParams extends FindParams {}
-
-/**
- * Parameters used to filter and configure the pagination of the retrieved reservations.
- */
-export class AdminGetReservationsParams extends extendedFindParamsMixin({
+export type AdminGetReservationsParamsType = z.infer<
+  typeof AdminGetReservationsParams
+>
+export const AdminGetReservationsParams = createFindParams({
   limit: 20,
   offset: 0,
-}) {
-  /**
-   * Location IDs to filter reservations by.
-   */
-  @IsOptional()
-  @IsType([String, [String]])
-  location_id?: string | string[]
+}).merge(
+  z.object({
+    location_id: z.union([z.string(), z.array(z.string())]).optional(),
+    inventory_item_id: z.union([z.string(), z.array(z.string())]).optional(),
+    line_item_id: z.union([z.string(), z.array(z.string())]).optional(),
+    created_by: z.union([z.string(), z.array(z.string())]).optional(),
+    description: z.union([z.string(), createOperatorMap()]).optional(),
+    quantity: createOperatorMap(z.number(), parseFloat).optional(),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
+  })
+)
 
-  /**
-   * Inventory item IDs to filter reservations by.
-   */
-  @IsArray()
-  @IsString({ each: true })
-  @IsOptional()
-  inventory_item_id?: string[]
+export type AdminCreateReservationType = z.infer<typeof AdminCreateReservation>
+export const AdminCreateReservation = z
+  .object({
+    line_item_id: z.string().optional(),
+    location_id: z.string(),
+    inventory_item_id: z.string(),
+    quantity: z.number(),
+    description: z.string().optional(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
+  })
+  .strict()
 
-  /**
-   * Line item IDs to filter reservations by.
-   */
-  @IsArray()
-  @IsString({ each: true })
-  @IsOptional()
-  line_item_id?: string[]
-
-  /**
-   * "Create by" user IDs to filter reservations by.
-   */
-  @IsArray()
-  @IsString({ each: true })
-  @IsOptional()
-  created_by?: string[]
-
-  /**
-   * Numerical filters to apply on the reservations' `quantity` field.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  quantity?: OperatorMap<number>
-
-  /**
-   * Date filters to apply on the reservations' `created_at` field.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  created_at?: OperatorMap<Date>
-
-  /**
-   * Date filters to apply on the reservations' `updated_at` field.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  updated_at?: OperatorMap<Date>
-
-  /**
-   * String filters to apply on the reservations' `description` field.
-   */
-  @IsOptional()
-  @IsType([OperatorMapValidator, String])
-  description?: string | OperatorMap<string>
-}
-
-export class AdminPostReservationsReq {
-  @IsString()
-  @IsOptional()
-  line_item_id?: string
-
-  @IsString()
-  location_id: string
-
-  @IsString()
-  inventory_item_id: string
-
-  @IsNumber()
-  quantity: number
-
-  @IsString()
-  @IsOptional()
-  description?: string
-
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
-
-export class AdminPostReservationsReservationReq {
-  @IsNumber()
-  @IsOptional()
-  quantity?: number
-
-  @IsString()
-  @IsOptional()
-  location_id?: string
-
-  @IsString()
-  @IsOptional()
-  description?: string
-
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
+export type AdminUpdateReservationType = z.infer<typeof AdminUpdateReservation>
+export const AdminUpdateReservation = z
+  .object({
+    location_id: z.string().optional(),
+    quantity: z.number().optional(),
+    description: z.string().optional(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
+  })
+  .strict()

@@ -4,7 +4,8 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createProductsStep, createVariantPricingLinkStep } from "../steps"
+import { createProductsStep } from "../steps/create-products"
+import { createVariantPricingLinkStep } from "../steps/create-variant-pricing-link"
 import { createPriceSetsStep } from "../../pricing"
 import { associateProductsWithSalesChannelsStep } from "../../sales-channel"
 
