@@ -1,3 +1,8 @@
+export type LinkMethodRequest = {
+  add?: string[]
+  remove?: string[]
+}
+
 export type BatchMethodRequest<TCreate extends any, TUpdate extends any> = {
   create?: TCreate[]
   update?: TUpdate[]

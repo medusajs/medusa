@@ -2,14 +2,13 @@ import { batchProductsWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "../../../../types/routing"
 import {
   AdminBatchUpdateProductType,
   AdminCreateProductType,
-} from "../../validators"
+} from "../validators"
 import { BatchMethodRequest } from "@medusajs/types"
-import { refetchBatchProducts, remapProductResponse } from "../../helpers"
-import { CreateProductDTO, UpsertProductDTO } from "@medusajs/types"
+import { refetchBatchProducts, remapProductResponse } from "../helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
