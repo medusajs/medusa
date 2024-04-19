@@ -1,6 +1,7 @@
 export * from "./add-rules-to-fulfillment-shipping-option"
 export * from "./add-shipping-options-prices"
 export * from "./cancel-fulfillment"
+export * from "./create-fulfillment"
 export * from "./create-fulfillment-set"
 export * from "./create-service-zones"
 export * from "./create-shipping-profiles"

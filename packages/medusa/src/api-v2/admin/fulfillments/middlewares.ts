@@ -3,7 +3,11 @@ import { authenticate } from "../../../utils/authenticate-middleware"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
-import { AdminCancelFulfillment, AdminFulfillmentParams } from "./validators"
+import {
+  AdminCancelFulfillment,
+  AdminCreateFulfillment,
+  AdminFulfillmentParams,
+} from "./validators"
 
 export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -16,6 +20,17 @@ export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/fulfillments/:id/cancel",
     middlewares: [
       validateAndTransformBody(AdminCancelFulfillment),
+      validateAndTransformQuery(
+        AdminFulfillmentParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/fulfillments",
+    middlewares: [
+      validateAndTransformBody(AdminCreateFulfillment),
       validateAndTransformQuery(
         AdminFulfillmentParams,
         QueryConfig.retrieveTransformQueryConfig
