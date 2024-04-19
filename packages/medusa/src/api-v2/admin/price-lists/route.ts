@@ -14,7 +14,6 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const { limit, offset } = req.validatedQuery
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
@@ -29,10 +28,10 @@ export const GET = async (
   const { rows: priceLists, metadata } = await remoteQuery(queryObject)
 
   res.json({
-    count: metadata.count,
     price_lists: priceLists.map((priceList) => transformPriceList(priceList)),
-    offset,
-    limit,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
   })
 }
 
