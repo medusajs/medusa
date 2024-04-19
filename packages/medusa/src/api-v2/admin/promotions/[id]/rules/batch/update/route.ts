@@ -1,18 +1,14 @@
 import { updatePromotionRulesWorkflow } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPromotionModuleService } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
-import {
-  defaultAdminPromotionFields,
-  defaultAdminPromotionRelations,
-} from "../../../../query-config"
-import { AdminPostBatchUpdateRules } from "../../../../validators"
+import { AdminUpdateBatchRulesType } from "../../../../validators"
+import { refetchPromotion } from "../../../../helpers"
+import { MedusaError } from "@medusajs/utils"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostBatchUpdateRules>,
+  req: AuthenticatedMedusaRequest<AdminUpdateBatchRulesType>,
   res: MedusaResponse
 ) => {
   const id = req.params.id
@@ -27,14 +23,18 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const promotionModuleService: IPromotionModuleService = req.scope.resolve(
-    ModuleRegistrationName.PROMOTION
+  const promotion = await refetchPromotion(
+    id,
+    req.scope,
+    req.remoteQueryConfig.fields
   )
 
-  const promotion = await promotionModuleService.retrieve(id, {
-    select: defaultAdminPromotionFields,
-    relations: defaultAdminPromotionRelations,
-  })
+  if (!promotion) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Promotion with id: ${id} was not found`
+    )
+  }
 
   res.status(200).json({ promotion })
 }
