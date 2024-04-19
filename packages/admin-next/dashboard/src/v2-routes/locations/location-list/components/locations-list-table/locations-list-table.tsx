@@ -20,9 +20,9 @@ export const LocationsListTable = () => {
    * any rows.
    */
   const {
-    stock_locations,
+    stock_locations = [],
     count,
-    isPending: isLoading,
+    isLoading,
     isError,
     error,
   } = useStockLocations({
@@ -33,7 +33,7 @@ export const LocationsListTable = () => {
   const columns = useLocationTableColumns()
 
   const { table } = useDataTable({
-    data: stock_locations ?? [],
+    data: stock_locations,
     columns,
     count,
     enablePagination: true,
@@ -61,7 +61,8 @@ export const LocationsListTable = () => {
         count={count || 1}
         columns={columns}
         navigateTo={(row) => row.id}
-        isLoading={isLoading}
+        // TODO: revisit loader - on query change this will cause unmounting of the table, rendering loader briefly and again rendering table which will make search input unfocused
+        // isLoading={isLoading}
         queryObject={raw}
         pagination
         search
