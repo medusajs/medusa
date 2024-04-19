@@ -1,8 +1,8 @@
+import { DeleteResponse } from "../../../common"
 import { AdminFulfillmentAddressResponse } from "./fulfillment-address"
-import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
 import { AdminFulfillmentItemResponse } from "./fulfillment-item"
 import { AdminFulfillmentLabelResponse } from "./fulfillment-label"
-import { DeleteResponse } from "../../../common"
+import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
 
 /**
  * @experimental
