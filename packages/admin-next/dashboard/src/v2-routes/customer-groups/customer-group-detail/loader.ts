@@ -7,7 +7,10 @@ import { medusa, queryClient } from "../../../lib/medusa"
 
 const customerGroupDetailQuery = (id: string) => ({
   queryKey: adminProductKeys.detail(id),
-  queryFn: async () => medusa.admin.customerGroups.retrieve(id),
+  queryFn: async () =>
+    medusa.admin.customerGroups.retrieve(id, {
+      fields: "+customers.id",
+    }),
 })
 
 export const customerGroupLoader = async ({ params }: LoaderFunctionArgs) => {

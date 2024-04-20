@@ -1,9 +1,9 @@
-import { Outlet, json, useLoaderData, useParams } from "react-router-dom"
-import { CustomerGeneralSection } from "./components/customer-general-section"
+import { Outlet, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import { customerLoader } from "./loader"
 import { useCustomer } from "../../../hooks/api/customers"
+import { CustomerGeneralSection } from "./components/customer-general-section"
 import { CustomerGroupSection } from "./components/customer-group-section"
+import { customerLoader } from "./loader"
 
 export const CustomerDetail = () => {
   const { id } = useParams()
@@ -15,16 +15,12 @@ export const CustomerDetail = () => {
     initialData,
   })
 
-  if (isLoading) {
+  if (isLoading || !customer) {
     return <div>Loading...</div>
   }
 
-  if (isError || !customer) {
-    if (error) {
-      throw error
-    }
-
-    throw json("An unknown error occurred", 500)
+  if (isError) {
+    throw error
   }
 
   return (

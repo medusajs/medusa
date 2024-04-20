@@ -1,5 +1,4 @@
 import { createOrdersWorkflow } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ContainerRegistrationKeys,
   OrderStatus,
@@ -10,7 +9,9 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { AdminPostDraftOrdersReq } from "./validators"
+import { AdminCreateDraftOrderType } from "./validators"
+import { refetchOrder } from "./helpers"
+import { CreateOrderDTO } from "@medusajs/types"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
@@ -38,7 +39,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostDraftOrdersReq>,
+  req: AuthenticatedMedusaRequest<AdminCreateDraftOrderType>,
   res: MedusaResponse
 ) => {
   const input = req.validatedBody
@@ -47,18 +48,32 @@ export const POST = async (
     no_notification: !!input.no_notification_order,
     status: OrderStatus.DRAFT,
     is_draft_order: true,
-  }
+  } as CreateOrderDTO
+
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   if (!input.currency_code) {
-    const regionService = req.scope.resolve(ModuleRegistrationName.REGION)
-    const region = await regionService.retrieve(input.region_id)
-    input.currency_code = region.currency_code
+    const queryObject = remoteQueryObjectFromString({
+      entryPoint: "region",
+      variables: {
+        filters: { id: input.region_id },
+      },
+      fields: ["currency_code"],
+    })
+    const [region] = await remoteQuery(queryObject)
+    input.currency_code = region?.currency_code
   }
 
   if (!input.email) {
-    const customerService = req.scope.resolve(ModuleRegistrationName.CUSTOMER)
-    const customer = await customerService.retrieve(input.customer_id)
-    input.email = customer.email
+    const queryObject = remoteQueryObjectFromString({
+      entryPoint: "customer",
+      variables: {
+        filters: { id: input.customer_id },
+      },
+      fields: ["email"],
+    })
+    const [customer] = await remoteQuery(queryObject)
+    input.email = customer?.email
   }
 
   const { result, errors } = await createOrdersWorkflow(req.scope).run({
@@ -70,19 +85,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const draftOrder = await refetchOrder(
+    result.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order",
-    variables: {
-      filters: {
-        id: result.id,
-      },
-    },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const draftOrder = await remoteQuery(queryObject)
-
-  res.status(200).json({ draft_order: draftOrder[0] })
+  res.status(200).json({ draft_order: draftOrder })
 }

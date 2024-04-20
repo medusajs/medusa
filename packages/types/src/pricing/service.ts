@@ -1,3 +1,7 @@
+import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
+import { IModuleService } from "../modules-sdk"
+import { Context } from "../shared-context"
 import {
   AddPriceListPricesDTO,
   AddPricesDTO,
@@ -33,10 +37,6 @@ import {
   UpdateRuleTypeDTO,
   UpsertPriceSetDTO,
 } from "./common"
-import { FindConfig } from "../common"
-import { RestoreReturn, SoftDeleteReturn } from "../dal"
-import { IModuleService } from "../modules-sdk"
-import { Context } from "../shared-context"
 
 /**
  * The main service interface for the Pricing Module.
@@ -1734,7 +1734,7 @@ export interface IPricingModuleService extends IModuleService {
   addPriceListPrices(
     data: AddPriceListPricesDTO[],
     sharedContext?: Context
-  ): Promise<PriceListDTO[]>
+  ): Promise<PriceDTO[]>
 
   /**
    * This method updates existing price list's prices.
@@ -1742,7 +1742,7 @@ export interface IPricingModuleService extends IModuleService {
    * @param {UpdatePriceListPricesDTO[]} data - The attributes to update in a price list's prices. The price list's ID is specified
    * in the `price_list_id` field.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceListDTO[]>} The updated price list's prices.
+   * @returns {Promise<PriceDTO[]>} The updated price list's prices.
    *
    * @example
    * const priceLists =
@@ -1763,7 +1763,7 @@ export interface IPricingModuleService extends IModuleService {
   updatePriceListPrices(
     data: UpdatePriceListPricesDTO[],
     sharedContext?: Context
-  ): Promise<PriceListDTO[]>
+  ): Promise<PriceDTO[]>
 
   /**
    * This method is used to set the rules of a price list. Previous rules are removed.
@@ -1771,7 +1771,7 @@ export interface IPricingModuleService extends IModuleService {
    * @param {SetPriceListRulesDTO} data - The rules to set for a price list. The price list is identified by the
    * `price_list_id` property.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceListDTO>} The updated price list.
+   * @returns {Promise<PriceDTO>} The updated price list's prices.
    *
    * @example
    * const priceList =

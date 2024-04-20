@@ -2,38 +2,39 @@ import {
   deletePricingRuleTypesWorkflow,
   updatePricingRuleTypesWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPricingModuleService } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import { cleanResponseData } from "../../../../../utils/clean-response-data"
-import { defaultAdminPricingRuleTypeFields } from "../../query-config"
 import {
-  AdminDeletePricingRuleTypesRuleTypeReq,
-  AdminGetPricingRuleTypesRuleTypeParams,
-  AdminPostPricingRuleTypesRuleTypeReq,
+  AdminGetPricingRuleTypeParamsType,
+  AdminUpdatePricingRuleTypeType,
 } from "../../validators"
+import { refetchRuleType } from "../../helpers"
+import { MedusaError } from "@medusajs/utils"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetPricingRuleTypesRuleTypeParams>,
+  req: AuthenticatedMedusaRequest<AdminGetPricingRuleTypeParamsType>,
   res: MedusaResponse
 ) => {
-  const pricingModule: IPricingModuleService = req.scope.resolve(
-    ModuleRegistrationName.PRICING
+  const ruleType = await refetchRuleType(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
   )
 
-  const ruleType = await pricingModule.retrieveRuleType(req.params.id, {
-    select: req.retrieveConfig.select,
-    relations: req.retrieveConfig.relations,
-  })
+  if (!ruleType) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `RuleType with id: ${req.params.id} was not found`
+    )
+  }
 
   res.status(200).json({ rule_type: ruleType })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostPricingRuleTypesRuleTypeReq>,
+  req: AuthenticatedMedusaRequest<AdminUpdatePricingRuleTypeType>,
   res: MedusaResponse
 ) => {
   const workflow = updatePricingRuleTypesWorkflow(req.scope)
@@ -48,13 +49,19 @@ export const POST = async (
     throw errors[0].error
   }
 
+  const ruleType = await refetchRuleType(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
   res.status(200).json({
-    rule_type: cleanResponseData(result[0], defaultAdminPricingRuleTypeFields),
+    rule_type: ruleType,
   })
 }
 
 export const DELETE = async (
-  req: AuthenticatedMedusaRequest<AdminDeletePricingRuleTypesRuleTypeReq>,
+  req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const id = req.params.id
