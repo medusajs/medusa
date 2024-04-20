@@ -394,6 +394,10 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       id: { $ne: targetCategoryId },
     })
 
+    const allCategories = await manager.find(ProductCategory, {
+      parent_category_id: targetParentId,
+    })
+
     // The category record that will be placed at the requested rank
     // We've temporarily placed it at a temporary rank that is
     // beyond a reasonable value (tempReorderRank)
@@ -417,10 +421,10 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       rankCondition = { $gte: targetRank }
     } else if (originalRank > targetRank) {
       shouldIncrementRank = true
-      rankCondition = { $gte: targetRank, $lt: originalRank }
+      rankCondition = { $gte: targetRank, $lte: originalRank }
     } else {
       shouldIncrementRank = false
-      rankCondition = { $gte: originalRank, $lt: targetRank }
+      rankCondition = { $gte: originalRank, $lte: targetRank }
     }
 
     // Scope out the list of siblings that we need to shift up or down

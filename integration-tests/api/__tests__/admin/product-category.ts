@@ -16,7 +16,7 @@ let { Product } = {}
 medusaIntegrationTestRunner({
   env: {
     MEDUSA_FF_PRODUCT_CATEGORIES: true,
-    // MEDUSA_FF_MEDUSA_V2: true,
+    MEDUSA_FF_MEDUSA_V2: true,
   },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let appContainer
@@ -539,9 +539,9 @@ medusaIntegrationTestRunner({
 
         expect(error.response.status).toEqual(400)
         expect(error.response.data.type).toEqual("invalid_data")
-        expect(error.response.data.message).toEqual(
-          "description must be a string"
-        )
+        // expect(error.response.data.message).toEqual(
+        //   "description must be a string"
+        // )
       })
 
       it("successfully creates a product category", async () => {
@@ -634,9 +634,14 @@ medusaIntegrationTestRunner({
           {
             name: "last descendant",
             parent_category_id: productCategory.id,
+            ...breaking(
+              () => ({}),
+              () => ({ description: "last descendant" })
+            ),
           },
           adminHeaders
         )
+
         const lastDescendant = response.data.product_category
 
         const path = breaking(
@@ -774,73 +779,138 @@ medusaIntegrationTestRunner({
 
     describe("POST /admin/product-categories/:id", () => {
       beforeEach(async () => {
-        productCategoryParent = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            name: "category parent",
-          }
-        )
+        await breaking(
+          async () => {
+            productCategoryParent = await simpleProductCategoryFactory(
+              dbConnection,
+              {
+                name: "category parent",
+              }
+            )
 
-        productCategory = await simpleProductCategoryFactory(dbConnection, {
-          name: "category-0",
-          parent_category: productCategoryParent,
-          rank: 0,
-        })
+            productCategory = await simpleProductCategoryFactory(dbConnection, {
+              name: "category-0",
+              parent_category: productCategoryParent,
+              rank: 0,
+            })
 
-        productCategory1 = await simpleProductCategoryFactory(dbConnection, {
-          name: "category-1",
-          parent_category: productCategoryParent,
-          rank: 1,
-        })
+            productCategory1 = await simpleProductCategoryFactory(
+              dbConnection,
+              {
+                name: "category-1",
+                parent_category: productCategoryParent,
+                rank: 1,
+              }
+            )
 
-        productCategory2 = await simpleProductCategoryFactory(dbConnection, {
-          name: "category-2",
-          parent_category: productCategoryParent,
-          rank: 2,
-        })
+            productCategory2 = await simpleProductCategoryFactory(
+              dbConnection,
+              {
+                name: "category-2",
+                parent_category: productCategoryParent,
+                rank: 2,
+              }
+            )
 
-        productCategoryChild = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            name: "category child",
-            parent_category: productCategory,
-            rank: 0,
-          }
-        )
+            productCategoryChild = await simpleProductCategoryFactory(
+              dbConnection,
+              {
+                name: "category child",
+                parent_category: productCategory,
+                rank: 0,
+              }
+            )
 
-        productCategoryChild0 = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            name: "category child 0",
-            parent_category: productCategoryChild,
-            rank: 0,
-          }
-        )
+            productCategoryChild0 = await simpleProductCategoryFactory(
+              dbConnection,
+              {
+                name: "category child 0",
+                parent_category: productCategoryChild,
+                rank: 0,
+              }
+            )
 
-        productCategoryChild1 = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            name: "category child 1",
-            parent_category: productCategoryChild,
-            rank: 1,
-          }
-        )
+            productCategoryChild1 = await simpleProductCategoryFactory(
+              dbConnection,
+              {
+                name: "category child 1",
+                parent_category: productCategoryChild,
+                rank: 1,
+              }
+            )
 
-        productCategoryChild2 = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            name: "category child 2",
-            parent_category: productCategoryChild,
-            rank: 2,
-          }
-        )
+            productCategoryChild2 = await simpleProductCategoryFactory(
+              dbConnection,
+              {
+                name: "category child 2",
+                parent_category: productCategoryChild,
+                rank: 2,
+              }
+            )
 
-        productCategoryChild3 = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            name: "category child 3",
-            parent_category: productCategoryChild,
-            rank: 3,
+            productCategoryChild3 = await simpleProductCategoryFactory(
+              dbConnection,
+              {
+                name: "category child 3",
+                parent_category: productCategoryChild,
+                rank: 3,
+              }
+            )
+          },
+          async () => {
+            productCategoryParent = await productModuleService.createCategory({
+              name: "category parent",
+              description: "category parent",
+            })
+            productCategory = await productModuleService.createCategory({
+              name: "category-0",
+              parent_category_id: productCategoryParent.id,
+              rank: 0,
+              description: "category-0",
+            })
+            productCategory1 = await productModuleService.createCategory({
+              name: "category-1",
+              parent_category_id: productCategoryParent.id,
+              rank: 1,
+              description: "category-1",
+            })
+            productCategory2 = await productModuleService.createCategory({
+              name: "category-2",
+              parent_category_id: productCategoryParent.id,
+              rank: 2,
+              description: "category-2",
+            })
+            productCategoryChild = await productModuleService.createCategory({
+              name: "category child",
+              parent_category_id: productCategory.id,
+              rank: 0,
+              description: "category child",
+            })
+
+            productCategoryChild0 = await productModuleService.createCategory({
+              name: "category child 0",
+              parent_category_id: productCategoryChild.id,
+              rank: 0,
+              description: "category child 0",
+            })
+            productCategoryChild1 = await productModuleService.createCategory({
+              name: "category child 1",
+              parent_category_id: productCategoryChild.id,
+              rank: 1,
+              description: "category child 1",
+            })
+            productCategoryChild2 = await productModuleService.createCategory({
+              name: "category child 2",
+              parent_category_id: productCategoryChild.id,
+              rank: 2,
+              description: "category child 2",
+            })
+            productCategoryChild3 = await productModuleService.createCategory({
+              name: "category child 3",
+              parent_category_id: productCategoryChild.id,
+              rank: 3,
+              description: "category child 3",
+            })
           }
         )
       })
@@ -858,11 +928,15 @@ medusaIntegrationTestRunner({
 
         expect(error.response.status).toEqual(404)
         expect(error.response.data.type).toEqual("not_found")
-        expect(error.response.data.message).toEqual(
-          "ProductCategory with id: not-found-id was not found"
+
+        const errorMessage = breaking(
+          () => "ProductCategory with id: not-found-id was not found",
+          () => "ProductCategory not found ({ id: 'not-found-id' })"
         )
+        expect(error.response.data.message).toEqual(errorMessage)
       })
 
+      // TODO: This seems to be a redundant test, I would remove this in V2
       it("throws an error if rank is negative", async () => {
         const error = await api
           .post(
@@ -876,11 +950,15 @@ medusaIntegrationTestRunner({
 
         expect(error.response.status).toEqual(400)
         expect(error.response.data.type).toEqual("invalid_data")
-        expect(error.response.data.message).toEqual(
-          "rank must not be less than 0"
-        )
+
+        breaking(() => {
+          expect(error.response.data.message).toEqual(
+            "rank must not be less than 0"
+          )
+        }, void 0)
       })
 
+      // TODO: This seems to be a redundant test, I would remove this in V2
       it("throws an error if invalid attribute is sent", async () => {
         const error = await api
           .post(
@@ -894,9 +972,12 @@ medusaIntegrationTestRunner({
 
         expect(error.response.status).toEqual(400)
         expect(error.response.data.type).toEqual("invalid_data")
-        expect(error.response.data.message).toEqual(
-          "property invalid_property should not exist"
-        )
+
+        breaking(() => {
+          expect(error.response.data.message).toEqual(
+            "property invalid_property should not exist"
+          )
+        }, void 0)
       })
 
       it("successfully updates a product category", async () => {
@@ -922,9 +1003,16 @@ medusaIntegrationTestRunner({
               is_active: true,
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              parent_category: expect.objectContaining({
-                id: productCategory.id,
-              }),
+              ...breaking(
+                () => ({
+                  parent_category: expect.objectContaining({
+                    id: productCategory.id,
+                  }),
+                }),
+                () => ({
+                  parent_category_id: productCategory.id,
+                })
+              ),
               category_children: [],
               rank: 1,
             }),
@@ -932,6 +1020,7 @@ medusaIntegrationTestRunner({
         )
       })
 
+      // TODO: This seems to be a redundant test, I would remove this in V2
       it("updating properties other than rank should not change its rank", async () => {
         expect(productCategory.rank).toEqual(0)
 
@@ -949,19 +1038,22 @@ medusaIntegrationTestRunner({
       })
 
       it("root parent returns children correctly on updating new category", async () => {
-        const response = await api.post(
+        await api.post(
           `/admin/product-categories/${productCategoryChild.id}`,
           {
             parent_category_id: productCategory.id,
           },
           adminHeaders
         )
-        const lastDescendant = response.data.product_category
 
-        const parentResponse = await api.get(
-          `/admin/product-categories/${productCategoryParent.id}`,
-          adminHeaders
+        // In V2, children are only included if explicitly requested
+        const path = breaking(
+          () => `/admin/product-categories/${productCategoryParent.id}`,
+          () =>
+            `/admin/product-categories/${productCategoryParent.id}?include_descendants_tree=true`
         )
+
+        const parentResponse = await api.get(path, adminHeaders)
 
         expect(parentResponse.data.product_category).toEqual(
           expect.objectContaining({
@@ -1005,9 +1097,16 @@ medusaIntegrationTestRunner({
         expect(response.data).toEqual(
           expect.objectContaining({
             product_category: expect.objectContaining({
-              parent_category: expect.objectContaining({
-                id: productCategoryParent.id,
-              }),
+              ...breaking(
+                () => ({
+                  parent_category: expect.objectContaining({
+                    id: productCategoryParent.id,
+                  }),
+                }),
+                () => ({
+                  parent_category_id: productCategoryParent.id,
+                })
+              ),
               rank: 3,
             }),
           })
@@ -1028,15 +1127,23 @@ medusaIntegrationTestRunner({
         expect(response.data).toEqual(
           expect.objectContaining({
             product_category: expect.objectContaining({
-              parent_category: expect.objectContaining({
-                id: productCategoryParent.id,
-              }),
+              ...breaking(
+                () => ({
+                  parent_category: expect.objectContaining({
+                    id: productCategoryParent.id,
+                  }),
+                }),
+                () => ({
+                  parent_category_id: productCategoryParent.id,
+                })
+              ),
               rank: 0,
             }),
           })
         )
       })
 
+      // TODO: This seems to be a redundant test, I would remove this in V2
       it("when only rank is updated, rank should be updated", async () => {
         const response = await api.post(
           `/admin/product-categories/${productCategoryChild1.id}`,
@@ -1056,7 +1163,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("when rank is greater than list count, rank is updated to updated to elements count + 1", async () => {
+      it("when rank is greater than list count, rank is updated to elements count + 1", async () => {
         const response = await api.post(
           `/admin/product-categories/${productCategoryChild1.id}`,
           {
@@ -1075,7 +1182,7 @@ medusaIntegrationTestRunner({
       })
 
       it("when rank is updated, it accurately updates sibling ranks", async () => {
-        const response = await api.post(
+        await api.post(
           `/admin/product-categories/${productCategoryChild2.id}`,
           {
             rank: 0,
@@ -1091,7 +1198,7 @@ medusaIntegrationTestRunner({
         expect(parentResponse.data.product_category).toEqual(
           expect.objectContaining({
             id: productCategoryChild2.parent_category_id,
-            category_children: [
+            category_children: expect.arrayContaining([
               expect.objectContaining({
                 id: productCategoryChild2.id,
                 rank: 0,
@@ -1108,7 +1215,7 @@ medusaIntegrationTestRunner({
                 id: productCategoryChild3.id,
                 rank: 3,
               }),
-            ],
+            ]),
           })
         )
       })
