@@ -129,7 +129,6 @@ export class WorkflowOrchestratorService {
     await this.redisDistributedTransactionStorage_.onApplicationPrepareShutdown()
     this.isShuttingDown = true
 
-    // Gracefully shut down
     while (this.activeStepsCount > 0) {
       await new Promise((resolve) => setTimeout(resolve, 1000))
     }

@@ -37,14 +37,13 @@ export default async function ({ port, directory }) {
 
       // Handle graceful shutdown
       const gracefulShutDown = () => {
+        Logger.info("Gracefully shutting down server")
         server
           .shutdown()
           .then(() => {
-            Logger.info("Preparing for graceful shutdown of server.")
             return prepareShutdown()
           })
           .then(() => {
-            Logger.info("Gracefully shutting down server.")
             return shutdown().then(() => {
               process.exit(0)
             })

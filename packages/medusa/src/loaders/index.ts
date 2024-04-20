@@ -25,9 +25,8 @@ import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
-import medusaProjectApisLoader, {
-  registerProjectWorkflows,
-} from "./load-medusa-project-apis"
+import { registerProjectWorkflows } from "./helpers/register-workflows"
+import medusaProjectApisLoader from "./load-medusa-project-apis"
 import Logger from "./logger"
 import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 import modelsLoader from "./models"
@@ -105,6 +104,8 @@ async function loadMedusaV2({
     [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
   })
 
+  // Workflows are registered before the app to allow modules to run workflows as part of bootstrapping
+  //  e.g. the workflow engine will resume workflows that were running when the server was shut down
   await registerProjectWorkflows({ rootDirectory, configModule })
 
   const {
@@ -145,8 +146,6 @@ async function loadMedusaV2({
       featureFlagRouter,
     })
   }
-
-  Logger.info("Loading Medusa project APIs")
 
   await medusaProjectApisLoader({
     rootDirectory,

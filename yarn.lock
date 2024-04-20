@@ -8220,7 +8220,7 @@ __metadata:
     "@medusajs/types": ^1.11.15
     "@medusajs/utils": ^1.11.8
     awilix: ^8.0.0
-    bullmq: 5.4.2
+    bullmq: ^5.4.2
     cross-env: ^5.2.1
     ioredis: ^5.2.5
     jest: ^29.6.3
@@ -8529,7 +8529,7 @@ __metadata:
     awilix: ^8.0.0
     body-parser: ^1.19.0
     boxen: ^5.0.1
-    bullmq: 5.4.2
+    bullmq: ^5.4.2
     chokidar: ^3.4.2
     class-transformer: ^0.5.1
     class-validator: ^0.14.0
@@ -9221,7 +9221,7 @@ __metadata:
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
-    bullmq: 5.4.2
+    bullmq: ^5.4.2
     cross-env: ^5.2.1
     dotenv: ^16.4.5
     ioredis: ^5.3.2
@@ -22504,19 +22504,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bullmq@npm:5.4.2":
-  version: 5.4.2
-  resolution: "bullmq@npm:5.4.2"
+"bullmq@npm:^5.4.2":
+  version: 5.7.3
+  resolution: "bullmq@npm:5.7.3"
   dependencies:
     cron-parser: ^4.6.0
     ioredis: ^5.3.2
-    lodash: ^4.17.21
     msgpackr: ^1.10.1
     node-abort-controller: ^3.1.1
     semver: ^7.5.4
     tslib: ^2.0.0
     uuid: ^9.0.0
-  checksum: 01687a41bbacb646ab9cac181181c0cf18362f23b250c332125e0a701dacefb48ff20b030e095f24bd5e471f29d514bcc02779fd1f1c3cb830a3a5f1d0a39d75
+  checksum: eade5853736a9ad606fe6f7b0d000585d7122ca3f5e4b71965cef448b77f3b8748f90ea420b90cf8e2fd7db737197946cc57ffbdb7ea8e8e4945875cc54b74d5
   languageName: node
   linkType: hard
 

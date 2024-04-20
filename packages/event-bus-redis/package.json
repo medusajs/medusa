@@ -38,7 +38,7 @@
     "@medusajs/modules-sdk": "^1.12.10",
     "@medusajs/utils": "^1.11.8",
     "awilix": "^8.0.0",
-    "bullmq": "5.4.2",
+    "bullmq": "^5.4.2",
     "ioredis": "^5.2.5"
   }
 }
