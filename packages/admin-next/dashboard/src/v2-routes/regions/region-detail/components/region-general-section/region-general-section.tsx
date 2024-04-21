@@ -3,12 +3,12 @@ import { RegionDTO } from "@medusajs/types"
 import { Badge, Container, Heading, Text, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
-import { formatProvider } from "../../../../../lib/format-provider"
-import { currencies } from "../../../../../lib/currencies"
-import { useDeleteRegion } from "../../../../../hooks/api/regions.tsx"
-import { ListSummary } from "../../../../../components/common/list-summary"
 import { useNavigate } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
+import { ListSummary } from "../../../../../components/common/list-summary"
+import { useDeleteRegion } from "../../../../../hooks/api/regions.tsx"
+import { currencies } from "../../../../../lib/currencies"
+import { formatProvider } from "../../../../../lib/format-provider"
 
 type RegionGeneralSectionProps = {
   region: RegionDTO
@@ -23,7 +23,7 @@ export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
         <Heading>{region.name}</Heading>
         <RegionActions region={region} />
       </div>
-      <div className="grid grid-cols-2 items-center px-6 py-4">
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.currency")}
         </Text>
@@ -36,7 +36,7 @@ export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
           </Text>
         </div>
       </div>
-      <div className="grid grid-cols-2 items-center px-6 py-4">
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.paymentProviders")}
         </Text>
