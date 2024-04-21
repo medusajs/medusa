@@ -16,7 +16,7 @@ let { Product } = {}
 medusaIntegrationTestRunner({
   env: {
     MEDUSA_FF_PRODUCT_CATEGORIES: true,
-    MEDUSA_FF_MEDUSA_V2: true,
+    // MEDUSA_FF_MEDUSA_V2: true,
   },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let appContainer
