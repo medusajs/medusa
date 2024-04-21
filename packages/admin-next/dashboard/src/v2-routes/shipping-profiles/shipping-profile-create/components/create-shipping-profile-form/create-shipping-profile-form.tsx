@@ -1,14 +1,14 @@
-import { Button, Heading, Input, Text } from "@medusajs/ui"
-import { useForm } from "react-hook-form"
-import * as zod from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Button, Heading, Input, Text, toast } from "@medusajs/ui"
+import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import * as zod from "zod"
 
+import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { Form } from "../../../../../components/common/form"
 import { useCreateShippingProfile } from "../../../../../hooks/api/shipping-profiles"
 
 const CreateShippingOptionsSchema = zod.object({
@@ -31,11 +31,30 @@ export function CreateShippingProfileForm() {
   const { mutateAsync, isPending } = useCreateShippingProfile()
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync({
-      name: values.name,
-      type: values.type,
-    })
-    handleSuccess("/shipping-profiles")
+    await mutateAsync(
+      {
+        name: values.name,
+        type: values.type,
+      },
+      {
+        onSuccess: ({ shipping_profile }) => {
+          toast.success(t("general.success"), {
+            description: t("shippingProfile.create.successToast", {
+              name: shipping_profile.name,
+            }),
+            dismissLabel: t("actions.close"),
+          })
+
+          handleSuccess(`/settings/shipping-profiles/${shipping_profile.id}`)
+        },
+        onError: (error) => {
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissLabel: t("actions.close"),
+          })
+        },
+      }
+    )
   })
 
   return (
@@ -61,10 +80,10 @@ export function CreateShippingProfileForm() {
             <div className="mx-auto flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
                 <Heading className="capitalize">
-                  {t("shippingProfile.title")}
+                  {t("shippingProfile.create.header")}
                 </Heading>
                 <Text size="small" className="text-ui-fg-subtle">
-                  {t("shippingProfile.detailsHint")}
+                  {t("shippingProfile.create.hint")}
                 </Text>
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -89,7 +108,7 @@ export function CreateShippingProfileForm() {
                   render={({ field }) => {
                     return (
                       <Form.Item>
-                        <Form.Label tooltip={t("shippingProfile.typeHint")}>
+                        <Form.Label tooltip={t("shippingProfile.tooltip.type")}>
                           {t("fields.type")}
                         </Form.Label>
                         <Form.Control>

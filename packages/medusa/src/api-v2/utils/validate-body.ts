@@ -4,17 +4,12 @@ import { z, ZodError } from "zod"
 import { MedusaRequest, MedusaResponse } from "../../types/routing"
 
 export async function zodValidator<T>(
-  zodSchema: z.ZodObject<any, any>,
-  body: T,
-  config: { strict?: boolean } = { strict: true }
+  zodSchema: z.ZodObject<any, any> | z.ZodEffects<any, any>,
+  body: T
 ): Promise<z.ZodRawShape> {
   try {
-    let schema = zodSchema
-    if (config.strict) {
-      schema = schema.strict()
-    }
-
-    return await schema.parseAsync(body)
+    zodSchema
+    return await zodSchema.parseAsync(body)
   } catch (err) {
     if (err instanceof ZodError) {
       throw new MedusaError(
@@ -28,10 +23,7 @@ export async function zodValidator<T>(
 }
 
 export function validateAndTransformBody(
-  zodSchema: z.ZodObject<any, any>,
-  config?: {
-    strict?: boolean
-  }
+  zodSchema: z.ZodObject<any, any> | z.ZodEffects<any, any>
 ): (
   req: MedusaRequest,
   res: MedusaResponse,
@@ -39,7 +31,7 @@ export function validateAndTransformBody(
 ) => Promise<void> {
   return async (req: MedusaRequest, _: MedusaResponse, next: NextFunction) => {
     try {
-      req.validatedBody = await zodValidator(zodSchema, req.body, config)
+      req.validatedBody = await zodValidator(zodSchema, req.body)
       next()
     } catch (e) {
       next(e)

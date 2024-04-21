@@ -31,7 +31,7 @@ export const POST = async (
     )
   }
 
-  if (create && create.length) {
+  if (create?.length) {
     const workflowInput = {
       data: [
         {
@@ -51,7 +51,7 @@ export const POST = async (
     }
   }
 
-  if (toDelete && toDelete.length) {
+  if (toDelete?.length) {
     const workflowInput = {
       data: [
         {
