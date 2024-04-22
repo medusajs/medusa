@@ -8,7 +8,6 @@ import {
   AdminCreateFulfillment,
   AdminCreateShipment,
   AdminFulfillmentParams,
-  AdminUpdateFulfillment,
 } from "./validators"
 
 export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
@@ -44,17 +43,6 @@ export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/fulfillments/:id/shipment",
     middlewares: [
       validateAndTransformBody(AdminCreateShipment),
-      validateAndTransformQuery(
-        AdminFulfillmentParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/fulfillments/:id",
-    middlewares: [
-      validateAndTransformBody(AdminUpdateFulfillment),
       validateAndTransformQuery(
         AdminFulfillmentParams,
         QueryConfig.retrieveTransformQueryConfig

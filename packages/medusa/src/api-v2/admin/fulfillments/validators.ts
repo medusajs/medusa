@@ -33,16 +33,6 @@ export const AdminCreateFulfillment = z.object({
   metadata: z.record(z.unknown()).optional().nullable(),
 })
 
-export type AdminUpdateFulfillmentType = z.infer<typeof AdminUpdateFulfillment>
-export const AdminUpdateFulfillment = z.object({
-  packed_at: z.coerce.date().optional(),
-  shipped_at: z.coerce.date().optional(),
-  delivered_at: z.coerce.date().optional(),
-  location_id: z.string().optional(),
-  metadata: z.record(z.unknown()).optional().nullable(),
-  data: z.record(z.unknown()).optional().nullable(),
-})
-
 export type AdminCreateShipmentType = z.infer<typeof AdminCreateShipment>
 export const AdminCreateShipment = z.object({
   labels: z.array(AdminCreateFulfillmentLabel),
