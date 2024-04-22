@@ -15,7 +15,7 @@ import {
   defaults,
   normalize,
 } from "../schema"
-import { ProductAttributesForm } from "./product-attributes-form"
+import { ProductCreateDetailsForm } from "./product-create-details-form/product-create-details-form"
 
 enum Tab {
   PRODUCT = "product",
@@ -124,7 +124,7 @@ export const CreateProductPage = () => {
                 value={Tab.PRODUCT}
               >
                 <div className="flex h-full w-full">
-                  <ProductAttributesForm form={form} />
+                  <ProductCreateDetailsForm form={form} />
                 </div>
               </ProgressTabs.Content>
               <ProgressTabs.Content

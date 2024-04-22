@@ -20,10 +20,10 @@ export const List = <T extends any>({
   }
 
   return (
-    <div className="flex-row justify-center border divide-y rounded-lg">
+    <div className="flex-row justify-center divide-y rounded-lg border">
       {options.map((option) => {
         return (
-          <div className="flex p-4 gap-x-4">
+          <div className="flex gap-x-4 p-4" key={option.title}>
             {onChange && value !== undefined && (
               <Checkbox
                 disabled={disabled}

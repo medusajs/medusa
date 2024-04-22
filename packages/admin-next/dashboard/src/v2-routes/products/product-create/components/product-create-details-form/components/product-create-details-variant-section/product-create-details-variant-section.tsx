@@ -1,0 +1,336 @@
+import { PlusMini, XMarkMini } from "@medusajs/icons"
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Heading,
+  Hint,
+  IconButton,
+  Input,
+  Label,
+  clx,
+} from "@medusajs/ui"
+import {
+  FieldArrayWithId,
+  UseFormReturn,
+  useFieldArray,
+  useWatch,
+} from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import { Form } from "../../../../../../../components/common/form"
+import { SortableList } from "../../../../../../../components/common/sortable-list"
+import { ChipInput } from "../../../../../../../components/inputs/chip-input"
+import { CreateProductSchemaType } from "../../../../schema"
+
+type ProductCreateVariantsSectionProps = {
+  form: UseFormReturn<CreateProductSchemaType>
+}
+
+const getPermutations = (
+  data: { title: string; values: string[] }[]
+): { [key: string]: string }[] => {
+  if (data.length === 0) {
+    return []
+  }
+
+  if (data.length === 1) {
+    return data[0].values.map((value) => ({ [data[0].title]: value }))
+  }
+
+  const toProcess = data[0]
+  const rest = data.slice(1)
+
+  return toProcess.values.flatMap((value) => {
+    return getPermutations(rest).map((permutation) => {
+      return {
+        [toProcess.title]: value,
+        ...permutation,
+      }
+    })
+  })
+}
+
+const getVariantName = (options: Record<string, string>) => {
+  return Object.values(options).join(" / ")
+}
+
+export const ProductCreateVariantsSection = ({
+  form,
+}: ProductCreateVariantsSectionProps) => {
+  const { t } = useTranslation()
+
+  const options = useFieldArray({
+    control: form.control,
+    name: "options",
+  })
+
+  const variants = useFieldArray({
+    control: form.control,
+    name: "variants",
+  })
+
+  const watchedOptions = useWatch({
+    control: form.control,
+    name: "options",
+    defaultValue: [],
+  })
+
+  const watchedVariants = useWatch({
+    control: form.control,
+    name: "variants",
+    defaultValue: [],
+  })
+
+  const handleOptionValueUpdate = (index: number, value: string[]) => {
+    const newOptions = [...watchedOptions]
+    newOptions[index].values = value
+
+    const permutations = getPermutations(newOptions)
+    const oldVariants = [...watchedVariants]
+
+    const findMatchingPermutation = (options: Record<string, string>) => {
+      return permutations.find((permutation) =>
+        Object.keys(options).every((key) => options[key] === permutation[key])
+      )
+    }
+
+    const newVariants = oldVariants.reduce((variants, variant) => {
+      const match = findMatchingPermutation(variant.options)
+
+      if (match) {
+        variants.push({
+          ...variant,
+          title: getVariantName(match),
+          options: match,
+        })
+      }
+
+      return variants
+    }, [] as typeof oldVariants)
+
+    const usedPermutations = new Set(
+      newVariants.map((variant) => variant.options)
+    )
+    const unusedPermutations = permutations.filter(
+      (permutation) => !usedPermutations.has(permutation)
+    )
+
+    unusedPermutations.forEach((permutation) => {
+      newVariants.push({
+        title: getVariantName(permutation),
+        options: permutation,
+        should_create: false,
+        variant_rank: newVariants.length,
+      })
+    })
+
+    form.setValue("variants", newVariants)
+  }
+
+  const handleRemoveOption = (index: number) => {
+    options.remove(index)
+
+    const newOptions = [...watchedOptions]
+    newOptions.splice(index, 1)
+
+    const permutations = getPermutations(newOptions)
+    const oldVariants = [...watchedVariants]
+
+    const findMatchingPermutation = (options: Record<string, string>) => {
+      return permutations.find((permutation) =>
+        Object.keys(options).every((key) => options[key] === permutation[key])
+      )
+    }
+
+    const newVariants = oldVariants.reduce((variants, variant) => {
+      const match = findMatchingPermutation(variant.options)
+
+      if (match) {
+        variants.push({
+          ...variant,
+          title: getVariantName(match),
+          options: match,
+        })
+      }
+
+      return variants
+    }, [] as typeof oldVariants)
+
+    const usedPermutations = new Set(
+      newVariants.map((variant) => variant.options)
+    )
+    const unusedPermutations = permutations.filter(
+      (permutation) => !usedPermutations.has(permutation)
+    )
+
+    unusedPermutations.forEach((permutation) => {
+      newVariants.push({
+        title: getVariantName(permutation),
+        options: permutation,
+        should_create: false,
+        variant_rank: newVariants.length,
+      })
+    })
+
+    form.setValue("variants", newVariants)
+  }
+
+  const handleRankChange = (
+    items: FieldArrayWithId<CreateProductSchemaType, "variants">[]
+  ) => {
+    // Items in the SortableList are momorized, so we need to find the current
+    // value to preserve any changes that have been made to `should_create`.
+    const update = items.map((item, index) => {
+      const variant = watchedVariants.find((v) => v.title === item.title)
+
+      return {
+        id: item.id,
+        ...(variant || item),
+        variant_rank: index,
+      }
+    })
+
+    variants.replace(update)
+  }
+
+  return (
+    <div id="variants" className="flex flex-col gap-y-8">
+      <Heading level="h2">{t("products.variants")}</Heading>
+      <div className="flex flex-col gap-y-6">
+        <ul className="flex flex-col gap-y-4">
+          {options.fields.map((option, index) => {
+            return (
+              <li
+                key={option.id}
+                className="bg-ui-bg-component shadow-elevation-card-rest grid grid-cols-[1fr_28px] items-center gap-3 rounded-xl px-1.5 py-2"
+              >
+                <div className="flex flex-col space-y-2">
+                  <Form.Field
+                    control={form.control}
+                    name={`options.${index}.title` as const}
+                    render={({ field }) => {
+                      return (
+                        <Form.Item className="flex flex-col space-y-1.5">
+                          <div className="flex items-center pl-2">
+                            <Form.Label className="txt-compact-xsmall-plus text-ui-fg-muted">
+                              {t("fields.title")}
+                            </Form.Label>
+                          </div>
+                          <Form.Control>
+                            <Input
+                              {...field}
+                              className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover"
+                            />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name={`options.${index}.values` as const}
+                    render={({ field: { onChange, ...field } }) => {
+                      const handleValueChange = (value: string[]) => {
+                        handleOptionValueUpdate(index, value)
+                        onChange(value)
+                      }
+
+                      return (
+                        <Form.Item className="flex flex-col space-y-1.5">
+                          <div className="flex items-center pl-2">
+                            <Form.Label className="txt-compact-xsmall-plus text-ui-fg-muted">
+                              Values
+                            </Form.Label>
+                          </div>
+                          <Form.Control>
+                            <ChipInput
+                              {...field}
+                              onChange={handleValueChange}
+                            />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
+                <IconButton
+                  type="button"
+                  size="small"
+                  variant="transparent"
+                  className="text-ui-fg-muted"
+                  onClick={() => handleRemoveOption(index)}
+                >
+                  <XMarkMini />
+                </IconButton>
+              </li>
+            )
+          })}
+        </ul>
+        <Button
+          size="small"
+          variant="secondary"
+          type="button"
+          className="w-full"
+          onClick={() => {
+            options.append({
+              title: "",
+              values: [],
+            })
+          }}
+        >
+          <PlusMini />
+          <span>Add option</span>
+        </Button>
+      </div>
+      <div className="grid grid-cols-1 gap-x-4 gap-y-4">
+        <div className="flex flex-col gap-y-1">
+          <Label weight="plus">{t("products.fields.variants.label")}</Label>
+          <Hint>{t("products.fields.variants.hint")}</Hint>
+        </div>
+        {variants.fields.length > 0 ? (
+          <div className="overflow-hidden rounded-xl border">
+            <SortableList
+              items={variants.fields}
+              onChange={handleRankChange}
+              renderItem={(item, index, overlay) => {
+                return (
+                  <SortableList.Item
+                    id={item.id}
+                    isOverlay={overlay}
+                    className={clx({
+                      "border-b-0": index === variants.fields.length - 1,
+                    })}
+                  >
+                    <div className="flex w-full items-center gap-x-3">
+                      <Form.Field
+                        control={form.control}
+                        name={`variants.${index}.should_create` as const}
+                        render={({ field: { value, onChange, ...field } }) => {
+                          return (
+                            <Form.Item>
+                              <Form.Control>
+                                <Checkbox
+                                  {...field}
+                                  checked={value}
+                                  onCheckedChange={onChange}
+                                />
+                              </Form.Control>
+                            </Form.Item>
+                          )
+                        }}
+                      />
+                      <SortableList.DragHandle />
+                      <span>{item.title}</span>
+                    </div>
+                  </SortableList.Item>
+                )
+              }}
+            />
+          </div>
+        ) : (
+          <Alert>Add options to generate variants.</Alert>
+        )}
+      </div>
+    </div>
+  )
+}

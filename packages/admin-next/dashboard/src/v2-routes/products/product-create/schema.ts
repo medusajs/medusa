@@ -28,6 +28,7 @@ export const CreateProductSchema = zod.object({
   ),
   variants: zod.array(
     zod.object({
+      should_create: zod.boolean(),
       title: zod.string(),
       options: zod.record(zod.string(), zod.string()),
       variant_rank: zod.number(),
@@ -38,13 +39,34 @@ export const CreateProductSchema = zod.object({
   thumbnail: zod.string().optional(),
 })
 
-export const defaults = {
+export const defaults: Partial<zod.infer<typeof CreateProductSchema>> = {
   discountable: true,
   tags: [],
   sales_channels: [],
-  options: [],
+  options: [
+    {
+      title: "",
+      values: [],
+    },
+  ],
   variants: [],
   images: [],
+  thumbnail: "",
+  category_ids: [],
+  collection_id: "",
+  description: "",
+  handle: "",
+  height: "",
+  hs_code: "",
+  length: "",
+  material: "",
+  mid_code: "",
+  origin_country: "",
+  subtitle: "",
+  title: "",
+  type_id: "",
+  weight: "",
+  width: "",
 }
 
 export const normalize = (
