@@ -1,29 +1,18 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
-import {
-  Button,
-  Checkbox,
-  Container,
-  Heading,
-  StatusBadge,
-  usePrompt,
-} from "@medusajs/ui"
+import { PencilSquare, Plus, Trash } from "@medusajs/icons"
+import { AdminApiKeyResponse, AdminSalesChannelResponse } from "@medusajs/types"
+import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
-import {
-  adminPublishableApiKeysKeys,
-  useAdminCustomPost,
-  useAdminRemovePublishableKeySalesChannelsBatch,
-} from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Link, useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { DataTable } from "../../../../../components/table/data-table"
+import { useBatchRemoveSalesChannelsFromApiKey } from "../../../../../hooks/api/api-keys"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
+import { useSalesChannelTableColumns } from "../../../../../hooks/table/columns/use-sales-channel-table-columns"
+import { useSalesChannelTableFilters } from "../../../../../hooks/table/filters/use-sales-channel-table-filters"
 import { useSalesChannelTableQuery } from "../../../../../hooks/table/query/use-sales-channel-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { DataTable } from "../../../../../components/table/data-table"
-import { keepPreviousData } from "@tanstack/react-query"
-import { AdminApiKeyResponse, AdminSalesChannelResponse } from "@medusajs/types"
-import { useBatchRemoveSalesChannelsFromApiKey } from "../../../../../hooks/api/api-keys"
 
 type ApiKeySalesChannelSectionProps = {
   apiKey: AdminApiKeyResponse["api_key"]
@@ -49,8 +38,8 @@ export const ApiKeySalesChannelSection = ({
     }
   )
 
-  const columns = useColumns({ apiKey: apiKey.id })
-  // const filters = useProductTableFilters(["sales_channel_id"])
+  const columns = useColumns()
+  const filters = useSalesChannelTableFilters()
 
   const { table } = useDataTable({
     data: sales_channels ?? [],
@@ -64,6 +53,9 @@ export const ApiKeySalesChannelSection = ({
       state: rowSelection,
       updater: setRowSelection,
     },
+    meta: {
+      apiKey: apiKey.id,
+    },
   })
 
   const { mutateAsync } = useBatchRemoveSalesChannelsFromApiKey(apiKey.id)
@@ -73,7 +65,7 @@ export const ApiKeySalesChannelSection = ({
 
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.removeSalesChannelsWarning", {
+      description: t("apiKeyManagement.warnings.removeSalesChannels", {
         count: keys.length,
       }),
       confirmText: t("actions.continue"),
@@ -100,19 +92,28 @@ export const ApiKeySalesChannelSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("salesChannels.domain")}</Heading>
-        <Button variant="secondary" size="small" asChild>
-          <Link to="add-sales-channels">{t("general.add")}</Link>
-        </Button>
+        <ActionMenu
+          groups={[
+            {
+              actions: [
+                {
+                  icon: <Plus />,
+                  label: t("actions.add"),
+                  to: "sales-channels",
+                },
+              ],
+            },
+          ]}
+        />
       </div>
       <DataTable
         table={table}
         columns={columns}
+        filters={filters}
         count={count}
-        pageSize={PAGE_SIZE}
-        pagination
-        search
         isLoading={isLoading}
         queryObject={raw}
+        navigateTo={(row) => `/settings/sales-channels/${row.id}`}
         orderBy={["name", "created_at", "updated_at"]}
         commands={[
           {
@@ -121,6 +122,9 @@ export const ApiKeySalesChannelSection = ({
             shortcut: "r",
           },
         ]}
+        pageSize={PAGE_SIZE}
+        pagination
+        search
       />
     </Container>
   )
@@ -141,7 +145,7 @@ const SalesChannelActions = ({
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.removeSalesChannelWarning", {
+      description: t("apiKeyManagement.warnings.removeSalesChannel", {
         name: salesChannel.name,
       }),
       confirmText: t("actions.delete"),
@@ -186,8 +190,8 @@ const SalesChannelActions = ({
 const columnHelper =
   createColumnHelper<AdminSalesChannelResponse["sales_channel"]>()
 
-const useColumns = ({ apiKey }: { apiKey: string }) => {
-  const { t } = useTranslation()
+const useColumns = () => {
+  const base = useSalesChannelTableColumns()
 
   return useMemo(
     () => [
@@ -219,36 +223,20 @@ const useColumns = ({ apiKey }: { apiKey: string }) => {
           )
         },
       }),
-      columnHelper.accessor("name", {
-        header: t("fields.name"),
-        cell: ({ getValue }) => getValue(),
-      }),
-      columnHelper.accessor("description", {
-        header: t("fields.description"),
-        cell: ({ getValue }) => getValue(),
-      }),
-      columnHelper.accessor("is_disabled", {
-        header: t("fields.status"),
-        cell: ({ getValue }) => {
-          const value = getValue()
-          return (
-            <div>
-              <StatusBadge color={value ? "grey" : "green"}>
-                {value ? t("general.disabled") : t("general.enabled")}
-              </StatusBadge>
-            </div>
-          )
-        },
-      }),
+      ...base,
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
+          const { apiKey } = table.options.meta as {
+            apiKey: string
+          }
+
           return (
             <SalesChannelActions salesChannel={row.original} apiKey={apiKey} />
           )
         },
       }),
     ],
-    [t]
+    [base]
   )
 }

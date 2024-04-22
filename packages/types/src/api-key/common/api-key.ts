@@ -1,8 +1,6 @@
 import { BaseFilterable } from "../../dal"
 
 /**
- * @interface
- *
  * An API key's type.
  */
 export type ApiKeyType = "secret" | "publishable"

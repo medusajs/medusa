@@ -1,5 +1,16 @@
 import { z } from "zod"
 
+export const createBatchBody = (
+  createValidator: z.ZodType,
+  updateValidator: z.ZodType
+) => {
+  return z.object({
+    create: z.array(createValidator).optional(),
+    update: z.array(updateValidator).optional(),
+    delete: z.array(z.string()).optional(),
+  })
+}
+
 export const createSelectParams = () => {
   return z.object({
     fields: z.string().optional(),
@@ -50,21 +61,38 @@ export const createFindParams = ({
   )
 }
 
-export const createOperatorMap = (type?: z.ZodType) => {
+export const createOperatorMap = (
+  type?: z.ZodType,
+  valueParser?: (val: any) => any
+) => {
   if (!type) {
     type = z.string()
   }
+
+  let unionType: any = z.union([type, z.array(type)]).optional()
+  let arrayType: any = z.array(type).optional()
+  let simpleType: any = type.optional()
+
+  if (valueParser) {
+    unionType = z
+      .preprocess(valueParser, z.union([type, z.array(type)]))
+      .optional()
+    arrayType = z.preprocess(valueParser, z.array(type)).optional()
+    simpleType = z.preprocess(valueParser, type).optional()
+  }
+
   return z.object({
-    $eq: z.union([type, z.array(type)]).optional(),
-    $ne: z.union([type, z.array(type)]).optional(),
-    $in: z.array(type).optional(),
-    $nin: z.array(type).optional(),
-    $like: type.optional(),
-    $re: type.optional(),
-    $contains: type.optional(),
-    $gt: type.optional(),
-    $gte: type.optional(),
-    $lt: type.optional(),
-    $lte: type.optional(),
+    $eq: unionType,
+    $ne: unionType,
+    $in: arrayType,
+    $nin: arrayType,
+    $like: simpleType,
+    $ilike: simpleType,
+    $re: simpleType,
+    $contains: simpleType,
+    $gt: simpleType,
+    $gte: simpleType,
+    $lt: simpleType,
+    $lte: simpleType,
   })
 }

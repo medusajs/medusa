@@ -9,8 +9,6 @@ import { CampaignDTO } from "./campaign"
 import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
 
 /**
- * @interface
- *
  * The promotion's possible types.
  */
 export type PromotionTypeValues = "standard" | "buyget"

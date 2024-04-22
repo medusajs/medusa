@@ -2,7 +2,7 @@ import { createProductsWorkflow } from "@medusajs/core-flows"
 import { CreateProductDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  remoteQueryObjectFromString
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,

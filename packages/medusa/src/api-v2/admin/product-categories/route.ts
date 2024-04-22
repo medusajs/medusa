@@ -1,4 +1,8 @@
-import { AdminProductCategoryListResponse } from "@medusajs/types"
+import { createProductCategoryWorkflow } from "@medusajs/core-flows"
+import {
+  AdminProductCategoryListResponse,
+  AdminProductCategoryResponse,
+} from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -7,7 +11,11 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { AdminProductCategoriesParamsType } from "./validators"
+import {
+  AdminCreateProductCategoryType,
+  AdminProductCategoriesParamsType,
+} from "./validators"
+import { refetchCategory } from "./helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminProductCategoriesParamsType>,
@@ -32,4 +40,28 @@ export const GET = async (
     offset: metadata.skip,
     limit: metadata.take,
   })
+}
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminCreateProductCategoryType>,
+  res: MedusaResponse<AdminProductCategoryResponse>
+) => {
+  const { result, errors } = await createProductCategoryWorkflow(req.scope).run(
+    {
+      input: { product_category: req.validatedBody },
+      throwOnError: false,
+    }
+  )
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
+
+  const category = await refetchCategory(
+    result.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ product_category: category })
 }

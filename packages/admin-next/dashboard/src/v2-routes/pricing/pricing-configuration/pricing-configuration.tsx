@@ -20,7 +20,7 @@ export const PricingConfiguration = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("pricing.settings.editPriceListTitle")}</Heading>
+        <Heading>{t("pricing.configuration.editHeader")}</Heading>
       </RouteDrawer.Header>
       {ready && <PriceListConfigurationForm priceList={price_list} />}
     </RouteDrawer>

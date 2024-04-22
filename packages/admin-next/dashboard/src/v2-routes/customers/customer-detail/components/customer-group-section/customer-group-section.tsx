@@ -1,54 +1,129 @@
-// TODO: Should be added with Customer Groups UI
+import {
+  AdminCustomerGroupResponse,
+  AdminCustomerResponse,
+} from "@medusajs/types"
+import { Container, Heading } from "@medusajs/ui"
+import { createColumnHelper } from "@tanstack/react-table"
+import { t } from "i18next"
+import { useMemo } from "react"
 
-// import { Customer, CustomerGroup } from "@medusajs/medusa"
-// import { Container, Heading } from "@medusajs/ui"
-// import { createColumnHelper } from "@tanstack/react-table"
-// import { useAdminCustomerGroups } from "medusa-react"
-// import { useMemo } from "react"
-// import { useTranslation } from "react-i18next"
+import { PencilSquare } from "@medusajs/icons"
+import { keepPreviousData } from "@tanstack/react-query"
+import { useTranslation } from "react-i18next"
+import { ActionMenu } from "../../../../../components/common/action-menu"
+import { DataTable } from "../../../../../components/table/data-table"
+import { useCustomerGroups } from "../../../../../hooks/api/customer-groups"
+import { useCustomerGroupTableColumns } from "../../../../../hooks/table/columns/use-customer-group-table-columns"
+import { useCustomerGroupTableFilters } from "../../../../../hooks/table/filters/use-customer-group-table-filters"
+import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query"
+import { useDataTable } from "../../../../../hooks/use-data-table"
 
-// // TODO: Continue working on this when there is a natural way to get customer groups related to a customer.
-// type CustomerGroupSectionProps = {
-//   customer: Customer
-// }
+type CustomerGroupSectionProps = {
+  customer: AdminCustomerResponse["customer"]
+}
 
-// export const CustomerGroupSection = ({
-//   customer,
-// }: CustomerGroupSectionProps) => {
-//   const { customer_groups, isLoading, isError, error } = useAdminCustomerGroups(
-//     {
-//       id: customer.groups.map((g) => g.id).join(","),
-//     }
-//   )
+const PAGE_SIZE = 10
 
-//   if (isError) {
-//     throw error
-//   }
+export const CustomerGroupSection = ({
+  customer,
+}: CustomerGroupSectionProps) => {
+  const { raw, searchParams } = useCustomerGroupTableQuery({
+    pageSize: PAGE_SIZE,
+  })
+  const { customer_groups, count, isLoading, isError, error } =
+    useCustomerGroups(
+      {
+        ...searchParams,
+        fields: "+customers.id",
+        customers: { id: customer.id },
+      },
+      {
+        placeholderData: keepPreviousData,
+      }
+    )
 
-//   return (
-//     <Container className="p-0 divide-y">
-//       <div className="px-6 py-4">
-//         <Heading level="h2">Groups</Heading>
-//       </div>
-//     </Container>
-//   )
-// }
+  const filters = useCustomerGroupTableFilters()
+  const columns = useColumns()
 
-// const columnHelper = createColumnHelper<CustomerGroup>()
+  const { table } = useDataTable({
+    data: customer_groups ?? [],
+    columns,
+    count,
+    getRowId: (row) => row.id,
+    enablePagination: true,
+    enableRowSelection: true,
+    pageSize: PAGE_SIZE,
+  })
 
-// const useColumns = () => {
-//   const { t } = useTranslation()
+  if (isError) {
+    throw error
+  }
 
-//   return useMemo(
-//     () => [
-//       columnHelper.display({
-//         id: "select",
-//       }),
-//       columnHelper.accessor("name", {
-//         header: t("fields.name"),
-//         cell: ({ getValue }) => getValue(),
-//       }),
-//     ],
-//     [t]
-//   )
-// }
+  if (isError) {
+    throw error
+  }
+
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">{t("customerGroups.domain")}</Heading>
+      </div>
+      <DataTable
+        table={table}
+        columns={columns}
+        pageSize={PAGE_SIZE}
+        isLoading={isLoading}
+        count={count}
+        navigateTo={(row) => `/customer-groups/${row.id}`}
+        filters={filters}
+        search
+        pagination
+        orderBy={["name", "created_at", "updated_at"]}
+        queryObject={raw}
+      />
+    </Container>
+  )
+}
+
+// TODO: Add remove association when /customer-groups/:id/batch has been created.
+const CustomerGroupRowActions = ({
+  group,
+}: {
+  group: AdminCustomerGroupResponse["customer_group"]
+}) => {
+  const { t } = useTranslation()
+
+  return (
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              label: t("actions.edit"),
+              icon: <PencilSquare />,
+              to: `/customer-groups/${group.id}/edit`,
+            },
+          ],
+        },
+      ]}
+    />
+  )
+}
+
+const columnHelper =
+  createColumnHelper<AdminCustomerGroupResponse["customer_group"]>()
+
+const useColumns = () => {
+  const columns = useCustomerGroupTableColumns()
+
+  return useMemo(
+    () => [
+      ...columns,
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => <CustomerGroupRowActions group={row.original} />,
+      }),
+    ],
+    [columns]
+  )
+}

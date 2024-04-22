@@ -1,34 +1,66 @@
+import { AdminCustomerGroupResponse, BatchMethodRequest } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-
-import { AdminPostCustomerGroupsGroupCustomersBatchReq } from "../../../validators"
-import { createCustomerGroupCustomersWorkflow } from "@medusajs/core-flows"
+import { AdminSetCustomersCustomerGroupType } from "../../../validators"
+import {
+  createCustomerGroupCustomersWorkflow,
+  deleteCustomerGroupCustomersWorkflow,
+} from "@medusajs/core-flows"
+import { refetchCustomerGroup } from "../../../helpers"
 
 export const POST = async (
-  // eslint-disable-next-line max-len
-  req: AuthenticatedMedusaRequest<AdminPostCustomerGroupsGroupCustomersBatchReq>,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<
+    BatchMethodRequest<
+      AdminSetCustomersCustomerGroupType,
+      AdminSetCustomersCustomerGroupType
+    >
+  >,
+  res: MedusaResponse<AdminCustomerGroupResponse>
 ) => {
   const { id } = req.params
-  const { customer_ids } = req.validatedBody
+  const { create, delete: toDelete } = req.validatedBody
 
-  const createCustomers = createCustomerGroupCustomersWorkflow(req.scope)
+  if (create?.length) {
+    const createCustomers = createCustomerGroupCustomersWorkflow(req.scope)
+    const { errors } = await createCustomers.run({
+      input: {
+        groupCustomers: create.map((c) => ({
+          customer_id: c,
+          customer_group_id: id,
+        })),
+      },
+      throwOnError: false,
+    })
 
-  const { result, errors } = await createCustomers.run({
-    input: {
-      groupCustomers: customer_ids.map((c) => ({
-        customer_id: c.id,
-        customer_group_id: id,
-      })),
-    },
-    throwOnError: false,
-  })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
+    if (Array.isArray(errors) && errors[0]) {
+      throw errors[0].error
+    }
   }
 
-  res.status(200).json({ customer_group_customers: result })
+  if (toDelete?.length) {
+    const deleteCustomers = deleteCustomerGroupCustomersWorkflow(req.scope)
+    const { errors } = await deleteCustomers.run({
+      input: {
+        groupCustomers: toDelete.map((c) => ({
+          customer_id: c,
+          customer_group_id: id,
+        })),
+      },
+      throwOnError: false,
+    })
+
+    if (Array.isArray(errors) && errors[0]) {
+      throw errors[0].error
+    }
+  }
+
+  const customerGroup = await refetchCustomerGroup(
+    id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ customer_group: customerGroup })
 }

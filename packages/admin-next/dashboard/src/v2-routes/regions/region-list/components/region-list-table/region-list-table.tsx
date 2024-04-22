@@ -1,18 +1,18 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
+import { RegionDTO } from "@medusajs/types"
 import { Button, Container, Heading, usePrompt } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
-import { RegionDTO } from "@medusajs/types"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useDeleteRegion, useRegions } from "../../../../../hooks/api/regions"
 import { useRegionTableColumns } from "../../../../../hooks/table/columns/use-region-table-columns"
 import { useRegionTableFilters } from "../../../../../hooks/table/filters/use-region-table-filters"
 import { useRegionTableQuery } from "../../../../../hooks/table/query/use-region-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useDeleteRegion, useRegions } from "../../../../../hooks/api/regions"
 
 const PAGE_SIZE = 20
 
@@ -56,6 +56,7 @@ export const RegionListTable = () => {
           </Button>
         </Link>
       </div>
+
       <DataTable
         table={table}
         columns={columns}

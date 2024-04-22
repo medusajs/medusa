@@ -1,6 +1,4 @@
 /**
- * @interface
- *
  * A compute action informs you what adjustment must be made to a cart item or shipping method.
  */
 export type ComputeActions =
@@ -11,8 +9,6 @@ export type ComputeActions =
   | CampaignBudgetExceededAction
 
 /**
- * @interface
- *
  * These computed action types can affect a campaign's budget.
  */
 export type UsageComputedActions =

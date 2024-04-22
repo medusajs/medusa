@@ -53,6 +53,10 @@ const useSettingRoutes = (): NavItemProps[] => {
         label: t("salesChannels.domain"),
         to: "/settings/sales-channels",
       },
+      {
+        label: t("shippingProfile.domain"),
+        to: "/settings/shipping-profiles",
+      },
     ],
     [t]
   )
@@ -64,7 +68,7 @@ const useDeveloperRoutes = (): NavItemProps[] => {
   return useMemo(
     () => [
       {
-        label: t("apiKeyManagement.domainTitle"),
+        label: t("apiKeyManagement.domain.apiKeys"),
         to: "/settings/api-key-management",
       },
       {

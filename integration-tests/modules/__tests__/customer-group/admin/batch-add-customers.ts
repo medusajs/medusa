@@ -1,7 +1,7 @@
-import { ICustomerModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { ICustomerModuleService } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -50,7 +50,7 @@ medusaIntegrationTestRunner({
         const response = await api.post(
           `/admin/customer-groups/${group.id}/customers/batch`,
           {
-            customer_ids: customers.map((c) => ({ id: c.id })),
+            create: customers.map((c) => c.id),
           },
           adminHeaders
         )

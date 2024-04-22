@@ -1,6 +1,4 @@
 import type {
-  AdminCustomerGroupsRes,
-  AdminCustomersRes,
   AdminDiscountsRes,
   AdminDraftOrdersRes,
   AdminGiftCardsRes,

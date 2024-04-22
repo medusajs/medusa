@@ -1,6 +1,7 @@
 export * from "./api-key"
 export * from "./customer"
 export * from "./fulfillment"
+export * from "./inventory"
 export * from "./order"
 export * from "./pricing"
 export * from "./product-category"

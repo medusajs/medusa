@@ -1,5 +1,8 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IFulfillmentModuleService } from "@medusajs/types"
+import {
+  IFulfillmentModuleService,
+  IStockLocationServiceNext,
+} from "@medusajs/types"
 import {
   adminHeaders,
   createAdminUser,
@@ -15,7 +18,7 @@ medusaIntegrationTestRunner({
   },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let appContainer
-    let service: IFulfillmentModuleService
+    let service: IStockLocationServiceNext
 
     beforeEach(async () => {
       appContainer = getContainer()
@@ -23,6 +26,29 @@ medusaIntegrationTestRunner({
       await createAdminUser(dbConnection, adminHeaders, appContainer)
 
       service = appContainer.resolve(ModuleRegistrationName.STOCK_LOCATION)
+    })
+
+    describe("POST /admin/fulfillment-sets/:id", () => {
+      it("should delete a fulfillment set", async () => {
+        const fulfillmentService: IFulfillmentModuleService =
+          appContainer.resolve(ModuleRegistrationName.FULFILLMENT)
+
+        const set = await fulfillmentService.create({
+          name: "Test fulfillment set",
+          type: "pickup",
+        })
+
+        const deleteResponse = await api.delete(
+          `/admin/fulfillment-sets/${set.id}`,
+          adminHeaders
+        )
+
+        expect(deleteResponse.data).toEqual({
+          id: set.id,
+          object: "fulfillment_set",
+          deleted: true,
+        })
+      })
     })
 
     describe("POST /admin/fulfillment-sets/:id/service-zones", () => {
