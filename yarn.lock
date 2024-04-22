@@ -9272,7 +9272,7 @@ __metadata:
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
-    bullmq: ^5.1.3
+    bullmq: ^5.4.2
     cross-env: ^5.2.1
     dotenv: ^16.4.5
     ioredis: ^5.3.2
@@ -22554,36 +22554,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bullmq@npm:^5.1.3":
-  version: 5.1.3
-  resolution: "bullmq@npm:5.1.3"
-  dependencies:
-    cron-parser: ^4.6.0
-    glob: ^8.0.3
-    ioredis: ^5.3.2
-    lodash: ^4.17.21
-    msgpackr: ^1.10.1
-    node-abort-controller: ^3.1.1
-    semver: ^7.5.4
-    tslib: ^2.0.0
-    uuid: ^9.0.0
-  checksum: dc2177dfd736b2d008ccab1ba9f77f80cc730ce6197c9ffa0f37327e1cf34bd8b97d83ee9f9008253ef0c0854bbd04f8c925889a3370a0899e8f5c7a34fd3ab3
-  languageName: node
-  linkType: hard
-
 "bullmq@npm:^5.4.2":
-  version: 5.4.2
-  resolution: "bullmq@npm:5.4.2"
+  version: 5.7.3
+  resolution: "bullmq@npm:5.7.3"
   dependencies:
     cron-parser: ^4.6.0
     ioredis: ^5.3.2
-    lodash: ^4.17.21
     msgpackr: ^1.10.1
     node-abort-controller: ^3.1.1
     semver: ^7.5.4
     tslib: ^2.0.0
     uuid: ^9.0.0
-  checksum: 01687a41bbacb646ab9cac181181c0cf18362f23b250c332125e0a701dacefb48ff20b030e095f24bd5e471f29d514bcc02779fd1f1c3cb830a3a5f1d0a39d75
+  checksum: eade5853736a9ad606fe6f7b0d000585d7122ca3f5e4b71965cef448b77f3b8748f90ea420b90cf8e2fd7db737197946cc57ffbdb7ea8e8e4945875cc54b74d5
   languageName: node
   linkType: hard
 

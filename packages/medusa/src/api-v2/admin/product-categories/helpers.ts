@@ -7,13 +7,14 @@ import {
 export const refetchCategory = async (
   categoryId: string,
   scope: MedusaContainer,
-  fields: string[]
+  fields: string[],
+  filterableFields: Record<string, any> = {}
 ) => {
   const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product_category",
     variables: {
-      filters: { id: categoryId },
+      filters: { ...filterableFields, id: categoryId },
     },
     fields: fields,
   })
