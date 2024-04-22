@@ -81,7 +81,6 @@ export class WorkflowOrchestratorService {
   protected redisSubscriber: Redis
   private subscribers: Subscribers = new Map()
   private activeStepsCount: number = 0
-  private isShuttingDown: boolean = false
   private logger: Logger
 
   protected redisDistributedTransactionStorage_: RedisDistributedTransactionStorage
@@ -127,7 +126,6 @@ export class WorkflowOrchestratorService {
   async onApplicationPrepareShutdown() {
     // eslint-disable-next-line max-len
     await this.redisDistributedTransactionStorage_.onApplicationPrepareShutdown()
-    this.isShuttingDown = true
 
     while (this.activeStepsCount > 0) {
       await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -149,11 +147,6 @@ export class WorkflowOrchestratorService {
       events: eventHandlers,
       container,
     } = options ?? {}
-
-    if (this.isShuttingDown) {
-      // don't accpet any more events
-      return
-    }
 
     const workflowId = isString(workflowIdOrWorkflow)
       ? workflowIdOrWorkflow
@@ -574,6 +567,15 @@ export class WorkflowOrchestratorService {
         this.activeStepsCount--
 
         await notify({ eventType: "onStepFailure", step, errors })
+      },
+      onStepAwaiting: async ({ step, transaction }) => {
+        customEventHandlers?.onStepAwaiting?.({ step, transaction })
+
+        if (!step.definition.backgroundExecution) {
+          this.activeStepsCount--
+        }
+
+        await notify({ eventType: "onStepAwaiting", step })
       },
 
       onCompensateStepSuccess: async ({ step, transaction }) => {

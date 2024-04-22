@@ -54,7 +54,7 @@ export default async function ({ port, cpus, directory }) {
 
       const app = express()
 
-      const { dbConnection, shutdown } = await loaders({
+      const { dbConnection, shutdown, prepareShutdown } = await loaders({
         directory,
         expressApp: app,
       })
@@ -72,10 +72,12 @@ export default async function ({ port, cpus, directory }) {
       const gracefulShutDown = () => {
         server
           .shutdown()
-          .then(() => {
-            shutdown().then(() => {
-              process.exit(0)
-            })
+          .then(async () => {
+            return await prepareShutdown()
+          })
+          .then(async () => {
+            await shutdown()
+            process.exit(0)
           })
           .catch((e) => {
             process.exit(1)

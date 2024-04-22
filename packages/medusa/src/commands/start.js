@@ -40,13 +40,12 @@ export default async function ({ port, directory }) {
         Logger.info("Gracefully shutting down server")
         server
           .shutdown()
-          .then(() => {
-            return prepareShutdown()
+          .then(async () => {
+            return await prepareShutdown()
           })
-          .then(() => {
-            return shutdown().then(() => {
-              process.exit(0)
-            })
+          .then(async () => {
+            await shutdown()
+            process.exit(0)
           })
           .catch((e) => {
             Logger.error("Error received when shutting down the server.", e)
