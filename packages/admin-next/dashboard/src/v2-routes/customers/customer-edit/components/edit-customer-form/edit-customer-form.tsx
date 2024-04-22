@@ -39,6 +39,7 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
       last_name: customer.last_name || "",
       company_name: customer.company_name || "",
       phone: customer.phone || "",
+      // TODO: extract to helper
       metadata: customer.metadata
         ? Object.entries(customer.metadata).map(([key, value]) => ({
             key,
@@ -172,12 +173,7 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
                 )
               }}
             />
-            <Metadata
-              initialMetadata={form.getValues("metadata")}
-              onMetadataChange={(metadata) =>
-                form.setValue("metadata", metadata)
-              }
-            />
+            <Metadata form={form} />
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>

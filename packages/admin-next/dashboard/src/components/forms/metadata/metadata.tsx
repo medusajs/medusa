@@ -1,24 +1,35 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { Button, Input, Text } from "@medusajs/ui"
 import { Trash } from "@medusajs/icons"
+import { UseFormReturn } from "react-hook-form"
 
 export type MetadataField = {
   key: string
   value: string
+  state: "deleted"
 }
 
 type MetadataProps = {
-  initialMetadata?: MetadataField[]
-  onMetadataChange: (metadata: MetadataField[]) => void
+  form: UseFormReturn<MetadataField[]>
 }
 
 type FieldProps = {
-  field: MetadataField | undefined
+  field: MetadataField
   isLast: boolean
   onDelete: () => void
   updateKey: (key: string) => void
   updateValue: (value: string) => void
+}
+
+const isPrimitive = (value: any): boolean => {
+  return (
+    value === null ||
+    value === undefined ||
+    typeof value === "string" ||
+    typeof value === "number" ||
+    typeof value === "boolean"
+  )
 }
 
 function Field({
@@ -35,7 +46,7 @@ function Field({
    * but we need to keep it to preserve list ordering
    * so React could correctly render elements when adding/deleting
    */
-  if (!field) {
+  if (field.state === "deleted") {
     return null
   }
 
@@ -76,29 +87,23 @@ function Field({
   )
 }
 
-export function Metadata({
-  initialMetadata = [],
-  onMetadataChange,
-}: MetadataProps) {
+export function Metadata({ form }: MetadataProps) {
   const { t } = useTranslation()
 
-  /**
-   * Local data will keep undefined on deleted indexes -> this is need for React to properly render list elements since keys are index based
-   */
-  const [localData, setLocalData] =
-    useState<(MetadataField | undefined)[]>(initialMetadata)
+  const metadataWatch = form.watch("metadata") as MetadataField[]
 
   const addKeyPair = () => {
-    setLocalData([...localData, { key: ``, value: `` }])
+    form.setValue(
+      `metadata.${metadataWatch.length ? metadataWatch.length : 0}`,
+      { key: "", value: "" }
+    )
   }
 
   const onKeyChange = (index: number) => {
     return (key: string) => {
-      const newFields = localData
-      newFields[index] = { key: key, value: newFields[index].value }
-      setLocalData([...newFields])
+      form.setValue(`metadata.${index}.key`, key)
 
-      if (index === localData.length - 1) {
+      if (index === metadataWatch.length - 1) {
         addKeyPair()
       }
     }
@@ -106,14 +111,9 @@ export function Metadata({
 
   const onValueChange = (index: number) => {
     return (value: any) => {
-      const newFields = localData
-      newFields[index] = {
-        key: newFields[index].key,
-        value: value,
-      }
-      setLocalData([...newFields])
+      form.setValue(`metadata.${index}.value`, value)
 
-      if (index === localData.length - 1) {
+      if (index === metadataWatch.length - 1) {
         addKeyPair()
       }
     }
@@ -121,13 +121,13 @@ export function Metadata({
 
   const deleteKeyPair = (index: number) => {
     return () => {
-      localData[index] = undefined
-      setLocalData([...localData])
+      form.setValue(`metadata.${index}.state`, "deleted")
     }
   }
 
   useEffect(() => {
-    const last = localData[localData.length - 1]
+    const last = metadataWatch[metadataWatch.length - 1]
+
     if (last) {
       if (last.key === "" && last.value === "") {
         return
@@ -136,10 +136,6 @@ export function Metadata({
 
     addKeyPair()
   }, [])
-
-  useEffect(() => {
-    onMetadataChange(localData.slice(0, -1).filter(Boolean))
-  }, [localData])
 
   return (
     <div>
@@ -162,7 +158,7 @@ export function Metadata({
           </tr>
         </thead>
         <tbody>
-          {localData.map((field, index) => {
+          {metadataWatch.map((field, index) => {
             return (
               <Field
                 key={index}
@@ -170,7 +166,7 @@ export function Metadata({
                 updateKey={onKeyChange(index)}
                 updateValue={onValueChange(index)}
                 onDelete={deleteKeyPair(index)}
-                isLast={index === localData.length - 1}
+                isLast={index === metadataWatch.length - 1}
               />
             )
           })}
