@@ -1,6 +1,6 @@
-import { PencilSquare, Trash, XCircle } from "@medusajs/icons"
+import { PencilSquare, SquareTwoStack, Trash, XCircle } from "@medusajs/icons"
 import { AdminApiKeyResponse } from "@medusajs/types"
-import { usePrompt } from "@medusajs/ui"
+import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import {
@@ -53,6 +53,14 @@ export const ApiKeyRowActions = ({
     await revokeAsync(undefined)
   }
 
+  const handleCopyToken = () => {
+    navigator.clipboard.writeText(apiKey.token)
+    toast.success(t("general.success"), {
+      description: t("apiKeyManagement.actions.copySuccessToast"),
+      dismissLabel: t("general.close"),
+    })
+  }
+
   return (
     <ActionMenu
       groups={[
@@ -61,8 +69,17 @@ export const ApiKeyRowActions = ({
             {
               icon: <PencilSquare />,
               label: t("actions.edit"),
-              to: `/settings/api-key-management/${apiKey.id}`,
+              to: `${apiKey.id}/edit`,
             },
+            ...(apiKey.type !== "secret"
+              ? [
+                  {
+                    label: t("apiKeyManagement.actions.copy"),
+                    onClick: handleCopyToken,
+                    icon: <SquareTwoStack />,
+                  },
+                ]
+              : []),
           ],
         },
         {

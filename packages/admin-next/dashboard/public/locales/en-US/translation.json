@@ -1168,7 +1168,6 @@
   },
   "apiKeyManagement": {
     "domain": {
-      "apiKeys": "API Keys",
       "publishable": "Publishable API Keys",
       "secret": "Secret API Keys"
     },
@@ -1186,7 +1185,9 @@
       "createSecretHeader": "Create Secret API Key",
       "createSecretHint": "Create a new secret API key to access the Medusa API.",
       "secretKeyCreatedHeader": "Secret Key Created",
-      "secretKeyCreatedHint": "Your new secret key has been generated. Copy and securely store it now. This is the only time it will be displayed."
+      "secretKeyCreatedHint": "Your new secret key has been generated. Copy and securely store it now. This is the only time it will be displayed.",
+      "copySecretTokenSuccess": "Secret key was copied to clipboard.",
+      "copySecretTokenFailure": "Failed to copy secret key to clipboard."
     },
     "edit": {
       "header": "Edit API Key"
@@ -1204,7 +1205,9 @@
       "salesChannelsSecretKey": "Sales channels cannot be added to a secret API key."
     },
     "actions": {
-      "revoke": "Revoke"
+      "revoke": "Revoke API key",
+      "copy": "Copy API key",
+      "copySuccessToast": "API key was copied to clipboard."
     },
     "table": {
       "lastUsedAtHeader": "Last Used At",

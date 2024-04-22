@@ -142,6 +142,7 @@ export const ApiKeySalesChannelsForm = ({
             isLoading={isLoading}
             queryObject={raw}
             orderBy={["name", "created_at", "updated_at"]}
+            layout="fill"
           />
         </RouteFocusModal.Body>
       </form>

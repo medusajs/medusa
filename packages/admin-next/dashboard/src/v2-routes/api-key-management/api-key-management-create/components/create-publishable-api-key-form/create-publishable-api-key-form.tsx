@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Copy, Heading, Input, Prompt, Text } from "@medusajs/ui"
+import { Button, Heading, Input, Prompt, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { Eye, EyeSlash } from "@medusajs/icons"
 import { AdminApiKeyResponse } from "@medusajs/types"
 import { Fragment, useState } from "react"
 import { Form } from "../../../../../components/common/form"
@@ -22,12 +23,25 @@ type CreatePublishableApiKeyFormProps = {
   keyType: ApiKeyType
 }
 
+function getRedactedKey(key?: string) {
+  if (!key) {
+    return ""
+  }
+
+  // Replace all characters except the first four and last two with bullets
+  const firstThree = key.slice(0, 4)
+  const lastTwo = key.slice(-2)
+
+  return `${firstThree}${"•".repeat(key.length - 6)}${lastTwo}`
+}
+
 export const CreatePublishableApiKeyForm = ({
   keyType,
 }: CreatePublishableApiKeyFormProps) => {
   const [createdKey, setCreatedKey] = useState<
     AdminApiKeyResponse["api_key"] | null
   >(null)
+  const [showRedactedKey, setShowRedactedKey] = useState(true)
 
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -49,7 +63,7 @@ export const CreatePublishableApiKeyForm = ({
         onSuccess: ({ api_key }) => {
           switch (keyType) {
             case ApiKeyType.PUBLISHABLE:
-              handleSuccess(`/settings/api-key-management/${api_key.id}`)
+              handleSuccess(`/settings/publishable-api-keys/${api_key.id}`)
               break
             case ApiKeyType.SECRET:
               setCreatedKey(api_key)
@@ -60,12 +74,27 @@ export const CreatePublishableApiKeyForm = ({
     )
   })
 
+  const handleCopyToken = () => {
+    if (!createdKey) {
+      toast.error(t("general.error"), {
+        dismissLabel: t("general.close"),
+        description: t("apiKeyManagement.create.copySecretTokenFailure"),
+      })
+    }
+
+    navigator.clipboard.writeText(createdKey?.token ?? "")
+    toast.success(t("general.success"), {
+      description: t("apiKeyManagement.create.copySecretTokenSuccess"),
+      dismissLabel: t("general.close"),
+    })
+  }
+
   const handleGoToSecretKey = () => {
     if (!createdKey) {
       return
     }
 
-    handleSuccess(`/settings/api-key-management/${createdKey.id}`)
+    handleSuccess(`/settings/secret-api-keys/${createdKey.id}`)
   }
 
   return (
@@ -125,7 +154,7 @@ export const CreatePublishableApiKeyForm = ({
         </form>
       </RouteFocusModal.Form>
       <Prompt variant="confirmation" open={!!createdKey}>
-        <Prompt.Content className="w-fit max-w-[80%]">
+        <Prompt.Content className="w-fit max-w-[42.5%]">
           <Prompt.Header>
             <Prompt.Title>
               {t("apiKeyManagement.create.secretKeyCreatedHeader")}
@@ -134,18 +163,34 @@ export const CreatePublishableApiKeyForm = ({
               {t("apiKeyManagement.create.secretKeyCreatedHint")}
             </Prompt.Description>
           </Prompt.Header>
-          <div className="px-6 pt-6">
-            <div className="shadow-borders-base bg-ui-bg-component flex items-center gap-x-2 rounded-md px-4 py-2.5">
-              <Text family="mono" size="small">
-                {createdKey?.token}
-              </Text>
-              <Copy
-                className="text-ui-fg-subtle"
-                content={createdKey?.token!}
-              />
+          <div className="flex flex-col gap-y-3 px-6 py-4">
+            <div className="shadow-borders-base bg-ui-bg-component grid h-8 grid-cols-[1fr_32px] items-center overflow-hidden rounded-md">
+              <div className="flex items-center px-2">
+                <Text family="mono" size="small">
+                  {showRedactedKey
+                    ? getRedactedKey(createdKey?.token)
+                    : createdKey?.token}
+                </Text>
+              </div>
+              <button
+                className="transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed text-ui-fg-muted active:text-ui-fg-subtle flex size-8 appearance-none items-center justify-center border-l"
+                type="button"
+                onClick={() => setShowRedactedKey(!showRedactedKey)}
+              >
+                {showRedactedKey ? <EyeSlash /> : <Eye />}
+              </button>
             </div>
+            <Button
+              size="small"
+              variant="secondary"
+              type="button"
+              className="w-full"
+              onClick={handleCopyToken}
+            >
+              {t("apiKeyManagement.actions.copy")}
+            </Button>
           </div>
-          <Prompt.Footer>
+          <Prompt.Footer className="border-t py-4">
             <Prompt.Action onClick={handleGoToSecretKey}>
               {t("actions.continue")}
             </Prompt.Action>
