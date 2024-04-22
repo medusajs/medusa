@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminSalesChannelResponse } from "@medusajs/types"
-import { Button, Checkbox, Hint, Tooltip } from "@medusajs/ui"
+import { Button, Checkbox, Hint, Tooltip, toast } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
   OnChangeFn,
@@ -102,7 +102,20 @@ export const ApiKeySalesChannelsForm = ({
       },
       {
         onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t("apiKeyManagement.salesChannels.successToast", {
+              count: values.sales_channel_ids.length,
+            }),
+            dismissLabel: t("general.close"),
+          })
+
           handleSuccess()
+        },
+        onError: (err) => {
+          toast.error(t("general.error"), {
+            description: err.message,
+            dismissLabel: t("general.close"),
+          })
         },
       }
     )
@@ -192,7 +205,12 @@ const useColumns = () => {
 
           if (isPreSelected) {
             return (
-              <Tooltip content={t("store.currencyAlreadyAdded")} side="right">
+              <Tooltip
+                content={t(
+                  "apiKeyManagement.salesChannels.alreadyAddedTooltip"
+                )}
+                side="right"
+              >
                 {Component}
               </Tooltip>
             )

@@ -15,11 +15,11 @@ import {
 import { useCreateApiKey } from "../../../../../hooks/api/api-keys"
 import { ApiKeyType } from "../../../common/constants"
 
-const CreatePublishableApiKeySchema = zod.object({
+const ApiKeyCreateSchema = zod.object({
   title: zod.string().min(1),
 })
 
-type CreatePublishableApiKeyFormProps = {
+type ApiKeyCreateFormProps = {
   keyType: ApiKeyType
 }
 
@@ -35,9 +35,7 @@ function getRedactedKey(key?: string) {
   return `${firstThree}${"•".repeat(key.length - 6)}${lastTwo}`
 }
 
-export const CreatePublishableApiKeyForm = ({
-  keyType,
-}: CreatePublishableApiKeyFormProps) => {
+export const ApiKeyCreateForm = ({ keyType }: ApiKeyCreateFormProps) => {
   const [createdKey, setCreatedKey] = useState<
     AdminApiKeyResponse["api_key"] | null
   >(null)
@@ -46,11 +44,11 @@ export const CreatePublishableApiKeyForm = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const form = useForm<zod.infer<typeof CreatePublishableApiKeySchema>>({
+  const form = useForm<zod.infer<typeof ApiKeyCreateSchema>>({
     defaultValues: {
       title: "",
     },
-    resolver: zodResolver(CreatePublishableApiKeySchema),
+    resolver: zodResolver(ApiKeyCreateSchema),
   })
 
   const { mutateAsync, isPending } = useCreateApiKey()
@@ -61,6 +59,11 @@ export const CreatePublishableApiKeyForm = ({
       { title: values.title, type: keyType },
       {
         onSuccess: ({ api_key }) => {
+          toast.success(t("general.success"), {
+            description: t("apiKeyManagement.create.successToast"),
+            dismissLabel: t("general.close"),
+          })
+
           switch (keyType) {
             case ApiKeyType.PUBLISHABLE:
               handleSuccess(`/settings/publishable-api-keys/${api_key.id}`)
@@ -69,6 +72,12 @@ export const CreatePublishableApiKeyForm = ({
               setCreatedKey(api_key)
               break
           }
+        },
+        onError: (err) => {
+          toast.error(t("general.error"), {
+            description: err.message,
+            dismissLabel: t("general.close"),
+          })
         },
       }
     )

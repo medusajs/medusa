@@ -7,6 +7,7 @@ import {
   Heading,
   StatusBadge,
   Text,
+  toast,
   usePrompt,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -42,7 +43,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.warnings.delete", {
+      description: t("apiKeyManagement.delete.warning", {
         title: apiKey.title,
       }),
       confirmText: t("actions.delete"),
@@ -55,7 +56,19 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
 
     await deleteAsync(undefined, {
       onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("apiKeyManagement.delete.successToast", {
+            title: apiKey.title,
+          }),
+          dismissLabel: t("general.close"),
+        })
         navigate("..", { replace: true })
+      },
+      onError: (err) => {
+        toast.error(t("general.error"), {
+          description: err.message,
+          dismissLabel: t("general.close"),
+        })
       },
     })
   }
@@ -63,7 +76,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const handleRevoke = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.warnings.revoke", {
+      description: t("apiKeyManagement.revoke.warning", {
         title: apiKey.title,
       }),
       confirmText: t("apiKeyManagement.actions.revoke"),
@@ -74,7 +87,22 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
       return
     }
 
-    await revokeAsync()
+    await revokeAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("apiKeyManagement.revoke.successToast", {
+            title: apiKey.title,
+          }),
+          dismissLabel: t("general.close"),
+        })
+      },
+      onError: (err) => {
+        toast.error(t("general.error"), {
+          description: err.message,
+          dismissLabel: t("general.close"),
+        })
+      },
+    })
   }
 
   const dangerousActions = [
