@@ -394,10 +394,6 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       id: { $ne: targetCategoryId },
     })
 
-    const allCategories = await manager.find(ProductCategory, {
-      parent_category_id: targetParentId,
-    })
-
     // The category record that will be placed at the requested rank
     // We've temporarily placed it at a temporary rank that is
     // beyond a reasonable value (tempReorderRank)
