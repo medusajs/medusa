@@ -1,9 +1,10 @@
-import { Text } from "@medusajs/ui"
+import { Text, clx } from "@medusajs/ui"
+import { ReactNode } from "react"
 
 export type SectionRowProps = {
   title: string
-  value?: React.ReactNode | string | null
-  actions?: React.ReactNode
+  value?: ReactNode | string | null
+  actions?: ReactNode
 }
 
 export const SectionRow = ({ title, value, actions }: SectionRowProps) => {
@@ -11,9 +12,12 @@ export const SectionRow = ({ title, value, actions }: SectionRowProps) => {
 
   return (
     <div
-      className={`text-ui-fg-subtle grid ${
-        !!actions ? "grid-cols-[1fr_1fr_28px]" : "grid-cols-2"
-      } items-center px-6 py-4`}
+      className={clx(
+        `text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4`,
+        {
+          "grid-cols-[1fr_1fr_28px]": !!actions,
+        }
+      )}
     >
       <Text size="small" weight="plus" leading="compact">
         {title}
