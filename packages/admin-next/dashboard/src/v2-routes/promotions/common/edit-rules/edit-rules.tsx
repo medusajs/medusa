@@ -29,7 +29,7 @@ export const EditRules = () => {
   const ruleType = params.ruleType as RuleTypeValues
   const id = params.id as string
   const rules: PromotionRuleDTO[] = []
-  const { promotion, isLoading, isError, error } = usePromotion(id)
+  const { promotion, isPending: isLoading, isError, error } = usePromotion(id)
 
   if (promotion) {
     if (ruleType === RuleType.RULES) {
