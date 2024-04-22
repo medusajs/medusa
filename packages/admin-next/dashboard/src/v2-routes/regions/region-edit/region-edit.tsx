@@ -15,14 +15,14 @@ export const RegionEdit = () => {
 
   const {
     region,
-    isLoading: isRegionLoading,
+    isPending: isRegionLoading,
     isError: isRegionError,
     error: regionError,
   } = useRegion(id!, { fields: "*payment_providers" })
 
   const {
     store,
-    isLoading: isStoreLoading,
+    isPending: isStoreLoading,
     isError: isStoreError,
     error: storeError,
   } = useStore()

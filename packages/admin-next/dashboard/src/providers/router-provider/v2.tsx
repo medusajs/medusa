@@ -330,21 +330,6 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
-            path: "shipping-profiles",
-            lazy: () =>
-              import("../../v2-routes/shipping/shipping-profiles-list"),
-            handle: {
-              crumb: () => "Shipping Profiles",
-            },
-            children: [
-              {
-                path: "create",
-                lazy: () =>
-                  import("../../v2-routes/shipping/shipping-profile-create"),
-              },
-            ],
-          },
-          {
             path: "/customers",
             handle: {
               crumb: () => "Customers",
@@ -724,6 +709,38 @@ export const v2Routes: RouteObject[] = [
                     return data.workflow.name
                   },
                 },
+              },
+            ],
+          },
+          {
+            path: "shipping-profiles",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Shipping Profiles",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/shipping-profiles/shipping-profiles-list"
+                  ),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/shipping-profiles/shipping-profile-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/shipping-profiles/shipping-profile-detail"
+                  ),
               },
             ],
           },

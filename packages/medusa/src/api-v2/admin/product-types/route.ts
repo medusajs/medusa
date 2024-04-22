@@ -20,7 +20,7 @@ export const GET = async (
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product",
+    entryPoint: "product_type",
     variables: {
       filters: req.filterableFields,
       ...req.remoteQueryConfig.pagination,
