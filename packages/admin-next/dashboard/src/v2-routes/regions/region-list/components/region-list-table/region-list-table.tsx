@@ -1,10 +1,11 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { RegionDTO } from "@medusajs/types"
-import { Button, Container, Heading, usePrompt } from "@medusajs/ui"
+import { Button, Container, Heading, usePrompt, toast } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
+import { keepPreviousData } from "@tanstack/react-query"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
@@ -20,13 +21,19 @@ export const RegionListTable = () => {
   const { t } = useTranslation()
 
   const { searchParams, raw } = useRegionTableQuery({ pageSize: PAGE_SIZE })
-  const { regions, count, isLoading, isError, error } = useRegions(
+  const {
+    regions,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useRegions(
     {
       ...searchParams,
       fields: "*payment_providers",
     },
     {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
@@ -96,7 +103,18 @@ const RegionActions = ({ region }: { region: RegionDTO }) => {
       return
     }
 
-    await mutateAsync(undefined)
+    try {
+      await mutateAsync(undefined)
+      toast.success(t("general.success"), {
+        description: t("regions.toast.delete"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (

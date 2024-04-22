@@ -17,6 +17,9 @@
     "next": "Next",
     "prev": "Prev",
     "is": "is",
+    "timeline": "Timeline",
+    "success": "Success",
+    "error": "Error",
     "select": "Select",
     "selected": "Selected",
     "enabled": "Enabled",
@@ -1057,6 +1060,12 @@
     "priceType": "Price Type",
     "flatRate": "Flat Rate",
     "calculated": "Calculated",
+    "toast": {
+      "delete": "Region deleted successfully",
+      "edit": "Region edit saved",
+      "create": "Region created successfully",
+      "countries": "Region countries updated successfully"
+    },
     "shippingOption": {
       "createShippingOption": "Create Shipping Option",
       "createShippingOptionHint": "Create a new shipping option for the region.",
