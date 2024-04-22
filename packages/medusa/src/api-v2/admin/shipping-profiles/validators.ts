@@ -1,5 +1,9 @@
 import { z } from "zod"
-import { createFindParams, createSelectParams } from "../../utils/validators"
+import {
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
 export type AdminGetShippingProfileParamsType = z.infer<
   typeof AdminGetShippingProfileParams
@@ -14,8 +18,14 @@ export const AdminGetShippingProfilesParams = createFindParams({
   offset: 0,
 }).merge(
   z.object({
+    q: z.string().optional(),
     type: z.string().optional(),
     name: z.string().optional(),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
+    $and: z.lazy(() => AdminGetShippingProfilesParams.array()).optional(),
+    $or: z.lazy(() => AdminGetShippingProfilesParams.array()).optional(),
   })
 )
 
