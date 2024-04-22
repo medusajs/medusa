@@ -1,11 +1,8 @@
 import {
   AdminCreateInventoryLocationLevelType,
   AdminUpdateInventoryLocationLevelType,
-} from "../../../../validators"
-import {
-  MedusaRequest,
-  MedusaResponse,
-} from "../../../../../../../types/routing"
+} from "../../../validators"
+import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
 
 import { bulkCreateDeleteLevelsWorkflow } from "@medusajs/core-flows"
 import { BatchMethodRequest } from "@medusajs/types"

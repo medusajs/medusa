@@ -2844,7 +2844,7 @@ medusaIntegrationTestRunner({
               }
 
               const response = await api.post(
-                "/admin/products/op/batch",
+                "/admin/products/batch",
                 {
                   create: [createPayload],
                   update: [updatePayload],
@@ -2952,7 +2952,7 @@ medusaIntegrationTestRunner({
               }
 
               const response = await api.post(
-                `/admin/products/${createdProduct.id}/variants/op/batch`,
+                `/admin/products/${createdProduct.id}/variants/batch`,
                 {
                   create: [createPayload],
                   update: [updatePayload],
@@ -2979,6 +2979,40 @@ medusaIntegrationTestRunner({
                     title: "Test batch update variant",
                   }),
                 ])
+              )
+            }
+          )
+        })
+
+        it("successfully adds and removes products to a collection", async () => {
+          await breaking(
+            () => {},
+            async () => {
+              const response = await api.post(
+                `/admin/collections/${baseCollection.id}/products`,
+                {
+                  add: [publishedProduct.id],
+                  remove: [baseProduct.id],
+                },
+                adminHeaders
+              )
+
+              expect(response.status).toEqual(200)
+              expect(response.data.added).toHaveLength(1)
+              expect(response.data.removed).toHaveLength(1)
+
+              const collection = (
+                await api.get(
+                  `/admin/collections/${baseCollection.id}?fields=*products`,
+                  adminHeaders
+                )
+              ).data.collection
+
+              expect(collection.products).toHaveLength(1)
+              expect(collection.products[0]).toEqual(
+                expect.objectContaining({
+                  id: publishedProduct.id,
+                })
               )
             }
           )

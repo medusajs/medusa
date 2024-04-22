@@ -31,7 +31,7 @@ export const useCountries = ({
       throw json(`The key ${key} is not a valid order key`, 500)
     }
 
-    const sortKey: keyof Country = key === "code" ? "iso_2" : "name"
+    const sortKey: keyof RegionCountryDTO = key === "code" ? "iso_2" : "name"
 
     data.sort((a, b) => {
       if (a[sortKey] === null && b[sortKey] === null) {
