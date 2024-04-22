@@ -40,7 +40,7 @@ type SortableBaseItem = {
 interface SortableListProps<TItem extends SortableBaseItem> {
   items: TItem[]
   onChange: (items: TItem[]) => void
-  renderItem: (item: TItem, index: number, overlay: boolean) => ReactNode
+  renderItem: (item: TItem, index: number) => ReactNode
 }
 
 const List = <TItem extends SortableBaseItem>({
@@ -51,7 +51,9 @@ const List = <TItem extends SortableBaseItem>({
   const [active, setActive] = useState<Active | null>(null)
 
   const [activeItem, activeIndex] = useMemo(() => {
-    if (!active) {
+    console.log(active)
+
+    if (active === null) {
       return [null, null]
     }
 
@@ -93,21 +95,21 @@ const List = <TItem extends SortableBaseItem>({
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
+      <Overlay>
+        {activeItem && activeIndex !== null
+          ? renderItem(activeItem, activeIndex)
+          : null}
+      </Overlay>
       <SortableContext items={items}>
         <ul
           role="application"
           className="flex list-inside list-none list-image-none flex-col p-0"
         >
           {items.map((item, index) => (
-            <Fragment key={item.id}>{renderItem(item, index, false)}</Fragment>
+            <Fragment key={item.id}>{renderItem(item, index)}</Fragment>
           ))}
         </ul>
       </SortableContext>
-      <Overlay>
-        {activeItem && activeIndex
-          ? renderItem(activeItem, activeIndex, true)
-          : null}
-      </Overlay>
     </DndContext>
   )
 }
@@ -126,14 +128,18 @@ type SortableOverlayProps = PropsWithChildren
 
 const Overlay = ({ children }: SortableOverlayProps) => {
   return (
-    <DragOverlay dropAnimation={dropAnimationConfig}>{children}</DragOverlay>
+    <DragOverlay
+      className="shadow-elevation-card-hover overflow-hidden rounded-md [&>li]:border-b-0"
+      dropAnimation={dropAnimationConfig}
+    >
+      {children}
+    </DragOverlay>
   )
 }
 
 type SortableItemProps<TItem extends SortableBaseItem> = PropsWithChildren<{
   id: TItem["id"]
   className?: string
-  isOverlay?: boolean
 }>
 
 type SortableItemContextValue = {
@@ -160,7 +166,6 @@ const useSortableItemContext = () => {
 const Item = <TItem extends SortableBaseItem>({
   id,
   className,
-  isOverlay,
   children,
 }: SortableItemProps<TItem>) => {
   const {
@@ -194,10 +199,6 @@ const Item = <TItem extends SortableBaseItem>({
       <li
         className={clx(
           "bg-ui-bg-base txt-compact-small transition-fg flex flex-1 list-none items-center border-b px-6 py-1.5",
-          {
-            "bg-ui-bg-component": isDragging,
-            "shadow-elevation-card-hover border-b-0": isOverlay,
-          },
           className
         )}
         ref={setNodeRef}

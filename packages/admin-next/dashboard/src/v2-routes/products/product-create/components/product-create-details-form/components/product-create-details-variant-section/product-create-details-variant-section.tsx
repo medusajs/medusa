@@ -315,11 +315,10 @@ export const ProductCreateVariantsSection = ({
             <SortableList
               items={variants.fields}
               onChange={handleRankChange}
-              renderItem={(item, index, overlay) => {
+              renderItem={(item, index) => {
                 return (
                   <SortableList.Item
                     id={item.id}
-                    isOverlay={overlay}
                     className={clx({
                       "border-b-0": index === variants.fields.length - 1,
                     })}
