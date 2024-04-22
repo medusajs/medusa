@@ -8,7 +8,6 @@ export async function zodValidator<T>(
   body: T
 ): Promise<z.ZodRawShape> {
   try {
-    zodSchema
     return await zodSchema.parseAsync(body)
   } catch (err) {
     if (err instanceof ZodError) {

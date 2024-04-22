@@ -2,14 +2,16 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
+import { createBatchBody, createLinkBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
 import {
-  AdminBatchPriceListPrices,
   AdminCreatePriceList,
+  AdminCreatePriceListPrice,
   AdminGetPriceListParams,
   AdminGetPriceListPricesParams,
   AdminGetPriceListsParams,
   AdminUpdatePriceList,
+  AdminUpdatePriceListPrice,
 } from "./validators"
 
 export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
@@ -62,9 +64,22 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
+    matcher: "/admin/price-lists/:id/products",
+    middlewares: [
+      validateAndTransformBody(createLinkBody()),
+      validateAndTransformQuery(
+        AdminGetPriceListParams,
+        QueryConfig.listPriceListQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
     matcher: "/admin/price-lists/:id/prices/batch",
     middlewares: [
-      validateAndTransformBody(AdminBatchPriceListPrices),
+      validateAndTransformBody(
+        createBatchBody(AdminCreatePriceListPrice, AdminUpdatePriceListPrice)
+      ),
       validateAndTransformQuery(
         AdminGetPriceListPricesParams,
         QueryConfig.listPriceListPriceQueryConfig
