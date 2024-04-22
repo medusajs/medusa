@@ -50,14 +50,4 @@ export interface FilterableFulfillmentProviderProps
    * The IDs to filter the provider by.
    */
   id?: string | string[] | OperatorMap<string | string[]>
-
-  /**
-   * Filter the provider by their creation date.
-   */
-  created_at?: Date | OperatorMap<string | string[]>
-
-  /**
-   * Filter the provider by their update date.
-   */
-  updated_at?: Date | OperatorMap<string | string[]>
 }
