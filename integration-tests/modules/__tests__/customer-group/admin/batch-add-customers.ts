@@ -13,7 +13,7 @@ const adminHeaders = {
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
-    describe("POST /admin/customer-groups/:id/customers/batch", () => {
+    describe("POST /admin/customer-groups/:id/customers", () => {
       let appContainer
       let customerModuleService: ICustomerModuleService
 
@@ -48,9 +48,9 @@ medusaIntegrationTestRunner({
         ])
 
         const response = await api.post(
-          `/admin/customer-groups/${group.id}/customers/batch`,
+          `/admin/customer-groups/${group.id}/customers`,
           {
-            create: customers.map((c) => c.id),
+            add: customers.map((c) => c.id),
           },
           adminHeaders
         )

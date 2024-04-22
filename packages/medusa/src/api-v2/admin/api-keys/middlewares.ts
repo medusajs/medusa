@@ -4,7 +4,6 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
-  AdminApiKeySalesChannel,
   AdminCreateApiKey,
   AdminGetApiKeyParams,
   AdminGetApiKeysParams,
@@ -12,7 +11,7 @@ import {
   AdminUpdateApiKey,
 } from "./validators"
 import { validateAndTransformBody } from "../../utils/validate-body"
-import { createBatchBody } from "../../utils/validators"
+import { createLinkBody } from "../../utils/validators"
 
 export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -79,11 +78,9 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/api-keys/:id/sales-channels/batch",
+    matcher: "/admin/api-keys/:id/sales-channels",
     middlewares: [
-      validateAndTransformBody(
-        createBatchBody(AdminApiKeySalesChannel, AdminApiKeySalesChannel)
-      ),
+      validateAndTransformBody(createLinkBody()),
       validateAndTransformQuery(
         AdminGetApiKeyParams,
         QueryConfig.retrieveTransformQueryConfig
