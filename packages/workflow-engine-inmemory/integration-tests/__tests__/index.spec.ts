@@ -5,6 +5,7 @@ import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
+import { workflow2Step2Invoke, workflow2Step3Invoke } from "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
 
 const sharedPgConnection = knex<any, any>({
@@ -19,6 +20,8 @@ const sharedPgConnection = knex<any, any>({
 const afterEach_ = async () => {
   await TestDatabase.clearTables(sharedPgConnection)
 }
+
+jest.setTimeout(50000)
 
 describe("Workflow Orchestrator module", function () {
   describe("Testing basic workflow", function () {
@@ -124,6 +127,17 @@ describe("Workflow Orchestrator module", function () {
         stepResponse: { uhuuuu: "yeaah!" },
       })
 
+      expect(workflow2Step2Invoke).toBeCalledTimes(2)
+      expect(workflow2Step2Invoke.mock.calls[0][0]).toEqual({ hey: "oh" })
+      expect(workflow2Step2Invoke.mock.calls[1][0]).toEqual({
+        hey: "async hello",
+      })
+
+      expect(workflow2Step3Invoke).toBeCalledTimes(1)
+      expect(workflow2Step3Invoke.mock.calls[0][0]).toEqual({
+        uhuuuu: "yeaah!",
+      })
+
       executionsList = await query({
         workflow_executions: {
           fields: ["id"],
@@ -157,6 +171,34 @@ describe("Workflow Orchestrator module", function () {
       await setTimeout(200)
 
       expect(transaction.flow.state).toEqual("reverted")
+    })
+
+    it("should subsctibe to a async workflow and receive the response when it finishes", (done) => {
+      const transactionId = "trx_123"
+
+      const onFinish = jest.fn(() => {
+        done()
+      })
+
+      void workflowOrcModule.subscribe({
+        workflowId: "workflow_async_background",
+        transactionId,
+        subscriber: (event) => {
+          if (event.eventType === "onFinish") {
+            onFinish()
+          }
+        },
+      })
+
+      void workflowOrcModule.run("workflow_async_background", {
+        input: {
+          myInput: "123",
+        },
+        transactionId,
+        throwOnError: false,
+      })
+
+      expect(onFinish).toHaveBeenCalledTimes(0)
     })
   })
 })

@@ -4,6 +4,7 @@ import { IFulfillmentModuleService } from "@medusajs/types"
 
 export * from "./shipping-options"
 export * from "./fulfillment"
+export * from "./events"
 
 export async function createFullDataStructure(
   service: IFulfillmentModuleService,
@@ -37,7 +38,7 @@ export async function createFullDataStructure(
 
   const shippingOption = await service.createShippingOptions(
     generateCreateShippingOptionsData({
-      fulfillment_provider_id: providerId,
+      provider_id: providerId,
       service_zone_id: serviceZone.id,
       shipping_profile_id: shippingProfile.id,
     })

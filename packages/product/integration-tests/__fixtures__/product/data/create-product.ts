@@ -42,13 +42,15 @@ export const buildProductAndRelationsData = ({
   thumbnail,
   images,
   status,
-  type,
+  type_id,
   tags,
   options,
   variants,
   collection_id,
 }: Partial<ProductTypes.CreateProductDTO>) => {
-  const defaultOptionTitle = faker.commerce.productName()
+  const defaultOptionTitle = "test-option"
+  const defaultOptionValue = "test-value"
+
   return {
     title: title ?? faker.commerce.productName(),
     description: description ?? faker.commerce.productName(),
@@ -58,23 +60,22 @@ export const buildProductAndRelationsData = ({
     thumbnail: thumbnail as string,
     status: status ?? ProductTypes.ProductStatus.PUBLISHED,
     images: (images ?? []) as Image[],
-    type: type ? { value: type } : { value: faker.commerce.productName() },
+    type_id,
     tags: tags ?? [{ value: "tag-1" }],
     collection_id,
     options: options ?? [
       {
         title: defaultOptionTitle,
+        values: [defaultOptionValue],
       },
     ],
     variants: variants ?? [
       {
         title: faker.commerce.productName(),
         sku: faker.commerce.productName(),
-        options: [
-          {
-            value: defaultOptionTitle + faker.commerce.productName(),
-          },
-        ],
+        options: {
+          [defaultOptionTitle]: defaultOptionValue,
+        },
       },
     ],
     // TODO: add categories, must be created first

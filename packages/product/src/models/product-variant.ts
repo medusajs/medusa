@@ -1,8 +1,9 @@
-import { DAL } from "@medusajs/types"
 import {
+  createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
   optionalNumericSerializer,
+  Searchable,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -11,63 +12,92 @@ import {
   Entity,
   Filter,
   Index,
+  ManyToMany,
   ManyToOne,
-  OnInit,
   OneToMany,
-  OptionalProps,
+  OnInit,
   PrimaryKey,
   Property,
-  Unique,
 } from "@mikro-orm/core"
-import { Product } from "@models"
-import ProductOptionValue from "./product-option-value"
+import { Product, ProductOptionValue } from "@models"
 
-type OptionalFields =
-  | "allow_backorder"
-  | "manage_inventory"
-  | "product"
-  | "product_id"
-  | DAL.SoftDeletableEntityDateColumns
+const variantSkuIndexName = "IDX_product_variant_sku_unique"
+const variantSkuIndexStatement = createPsqlIndexStatementHelper({
+  name: variantSkuIndexName,
+  tableName: "product_variant",
+  columns: ["sku"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
 
+const variantBarcodeIndexName = "IDX_product_variant_barcode_unique"
+const variantBarcodeIndexStatement = createPsqlIndexStatementHelper({
+  name: variantBarcodeIndexName,
+  tableName: "product_variant",
+  columns: ["barcode"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
+
+const variantEanIndexName = "IDX_product_variant_ean_unique"
+const variantEanIndexStatement = createPsqlIndexStatementHelper({
+  name: variantEanIndexName,
+  tableName: "product_variant",
+  columns: ["ean"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
+
+const variantUpcIndexName = "IDX_product_variant_upc_unique"
+const variantUpcIndexStatement = createPsqlIndexStatementHelper({
+  name: variantUpcIndexName,
+  tableName: "product_variant",
+  columns: ["upc"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
+
+const variantProductIdIndexName = "IDX_product_variant_product_id"
+const variantProductIdIndexStatement = createPsqlIndexStatementHelper({
+  name: variantProductIdIndexName,
+  tableName: "product_variant",
+  columns: ["product_id"],
+  unique: false,
+  where: "deleted_at IS NULL",
+})
+
+variantProductIdIndexStatement.MikroORMIndex()
+variantSkuIndexStatement.MikroORMIndex()
+variantBarcodeIndexStatement.MikroORMIndex()
+variantEanIndexStatement.MikroORMIndex()
+variantUpcIndexStatement.MikroORMIndex()
 @Entity({ tableName: "product_variant" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductVariant {
-  [OptionalProps]?: OptionalFields
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   title: string
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
-  @Unique({
-    name: "IDX_product_variant_sku_unique",
-    properties: ["sku"],
-  })
   sku?: string | null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
-  @Unique({
-    name: "IDX_product_variant_barcode_unique",
-    properties: ["barcode"],
-  })
   barcode?: string | null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
-  @Unique({
-    name: "IDX_product_variant_ean_unique",
-    properties: ["ean"],
-  })
   ean?: string | null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
-  @Unique({
-    name: "IDX_product_variant_upc_unique",
-    properties: ["upc"],
-  })
   upc?: string | null
 
+  // TODO: replace with BigNumber
   // Note: Upon serialization, this turns to a string. This is on purpose, because you would loose
   // precision if you cast numeric to JS number, as JS number is a float.
   // Ref: https://github.com/mikro-orm/mikro-orm/issues/2295
@@ -111,6 +141,7 @@ class ProductVariant {
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
 
+  // TODO: replace with BigNumber, or in this case a normal int should work
   @Property({
     columnType: "numeric",
     nullable: true,
@@ -119,8 +150,28 @@ class ProductVariant {
   })
   variant_rank?: number | null
 
-  @Property({ columnType: "text", nullable: true })
-  product_id!: string
+  @ManyToOne(() => Product, {
+    columnType: "text",
+    nullable: true,
+    onDelete: "cascade",
+    fieldName: "product_id",
+    mapToPk: true,
+  })
+  product_id: string | null
+
+  @ManyToOne(() => Product, {
+    persist: false,
+    nullable: true,
+  })
+  product: Product | null
+
+  @ManyToMany(() => ProductOptionValue, "variants", {
+    owner: true,
+    pivotTable: "product_variant_option",
+    joinColumn: "variant_id",
+    inverseJoinColumn: "option_value_id",
+  })
+  options = new Collection<ProductOptionValue>(this)
 
   @Property({
     onCreate: () => new Date(),
@@ -141,26 +192,11 @@ class ProductVariant {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
 
-  @ManyToOne(() => Product, {
-    onDelete: "cascade",
-    index: "IDX_product_variant_product_id",
-    fieldName: "product_id",
-  })
-  product!: Product
-
-  @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
-    cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove" as any],
-  })
-  options = new Collection<ProductOptionValue>(this)
-
   @OnInit()
+  @BeforeCreate()
   onInit() {
     this.id = generateEntityId(this.id, "variant")
-  }
-
-  @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "variant")
+    this.product_id ??= this.product?.id ?? null
   }
 }
 

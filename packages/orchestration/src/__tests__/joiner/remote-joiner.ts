@@ -192,6 +192,151 @@ describe("RemoteJoiner", () => {
     )
   })
 
+  it("should filter the fields and attach the values correctly taking into account the * fields selection", () => {
+    const data = {
+      id: "prod_01H1PN579TJ707BRK938E2ME2N",
+      title: "7468915",
+      handle: "7468915",
+      subtitle: null,
+      description: null,
+      collection_id: null,
+      collection: null,
+      type_id: "ptyp_01GX66TMARS55DBNYE31DDT8ZV",
+      type: {
+        id: "ptyp_01GX66TMARS55DBNYE31DDT8ZV",
+        value: "test-type-1",
+      },
+      options: [
+        {
+          id: "opt_01H1PN57AQE8G3FK365EYNH917",
+          title: "4108194",
+          product_id: "prod_01H1PN579TJ707BRK938E2ME2N",
+          product: "prod_01H1PN579TJ707BRK938E2ME2N",
+          values: [
+            {
+              id: "optval_01H1PN57EAMXYFRGSJJJE9P0TJ",
+              value: "4108194",
+              option_id: "opt_01H1PN57AQE8G3FK365EYNH917",
+              option: "opt_01H1PN57AQE8G3FK365EYNH917",
+              variant_id: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
+              variant: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
+            },
+          ],
+        },
+      ],
+      variants: [
+        {
+          id: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
+          product_id: "prod_01H1PN579TJ707BRK938E2ME2N",
+          product: "prod_01H1PN579TJ707BRK938E2ME2N",
+          options: [
+            {
+              id: "optval_01H1PN57EAMXYFRGSJJJE9P0TJ",
+              value: "4108194",
+              option_id: "opt_01H1PN57AQE8G3FK365EYNH917",
+              option: "opt_01H1PN57AQE8G3FK365EYNH917",
+              variant_id: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
+              variant: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
+            },
+          ],
+        },
+      ],
+      tags: [],
+      images: [],
+    }
+
+    const fields = [
+      "id",
+      "title",
+      "subtitle",
+      "description",
+      "handle",
+      "images",
+      "tags",
+      "type",
+      "collection",
+      "options",
+      "variants_id",
+    ]
+
+    const expands = {
+      collection: {
+        fields: ["id", "title", "handle"],
+      },
+      images: {
+        fields: ["url"],
+      },
+      options: {
+        fields: ["title", "values"],
+        expands: {
+          values: {
+            fields: ["id", "value"],
+          },
+        },
+      },
+      tags: {
+        fields: ["value"],
+      },
+      type: {
+        fields: ["value"],
+      },
+      variants: {
+        fields: ["*"],
+        expands: {
+          options: {
+            fields: ["id", "value"],
+          },
+        },
+      },
+    }
+
+    const filteredFields = (RemoteJoiner as any).filterFields(
+      data,
+      fields,
+      expands
+    )
+
+    expect(filteredFields).toEqual(
+      expect.objectContaining({
+        id: "prod_01H1PN579TJ707BRK938E2ME2N",
+        title: "7468915",
+        subtitle: null,
+        description: null,
+        handle: "7468915",
+        images: [],
+        tags: [],
+        type: {
+          value: "test-type-1",
+        },
+        collection: null,
+        options: [
+          {
+            title: "4108194",
+            values: [
+              {
+                id: "optval_01H1PN57EAMXYFRGSJJJE9P0TJ",
+                value: "4108194",
+              },
+            ],
+          },
+        ],
+        variants: [
+          {
+            id: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
+            product_id: "prod_01H1PN579TJ707BRK938E2ME2N",
+            product: "prod_01H1PN579TJ707BRK938E2ME2N",
+            options: [
+              {
+                id: "optval_01H1PN57EAMXYFRGSJJJE9P0TJ",
+                value: "4108194",
+              },
+            ],
+          },
+        ],
+      })
+    )
+  })
+
   it("Simple query of a service, its id and no fields specified", async () => {
     const query = {
       service: "user",
@@ -424,19 +569,13 @@ describe("RemoteJoiner", () => {
           fields: ["name"],
         },
       ],
-      args: [
-        {
-          name: "id",
-          value: "3",
-        },
-      ],
     }
 
     await joiner.query(query)
 
     expect(serviceMock.orderService).toHaveBeenCalledTimes(1)
     expect(serviceMock.orderService).toHaveBeenCalledWith({
-      args: [],
+      args: undefined,
       fields: ["number", "date", "products", "user_id"],
       expands: {
         products: {
@@ -444,7 +583,7 @@ describe("RemoteJoiner", () => {
           fields: ["product_id"],
         },
       },
-      options: { id: ["3"] },
+      options: { id: undefined },
     })
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)

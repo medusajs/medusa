@@ -83,9 +83,14 @@ export interface RemoteJoinerQuery {
   directives?: { [field: string]: JoinerDirective[] }
 }
 
+export interface RemoteJoinerOptions {
+  throwIfKeyNotFound?: boolean
+  throwIfRelationNotFound?: boolean | string[]
+}
+
 export interface RemoteNestedExpands {
   [key: string]: {
-    fields: string[]
+    fields?: string[]
     args?: JoinerArgument[]
     expands?: RemoteNestedExpands
   }
@@ -96,7 +101,7 @@ export interface RemoteExpandProperty {
   parent: string
   parentConfig?: JoinerServiceConfig
   serviceConfig: JoinerServiceConfig
-  fields: string[]
+  fields?: string[]
   args?: JoinerArgument[]
   expands?: RemoteNestedExpands
 }

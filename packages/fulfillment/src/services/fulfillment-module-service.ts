@@ -2,8 +2,6 @@ import {
   Context,
   DAL,
   FilterableFulfillmentSetProps,
-  FilterableShippingOptionProps,
-  FilterQuery,
   FindConfig,
   FulfillmentDTO,
   FulfillmentTypes,
@@ -13,19 +11,22 @@ import {
   ModulesSdkTypes,
   ShippingOptionDTO,
   UpdateFulfillmentSetDTO,
+  UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import {
-  arrayDifference,
-  getSetDifference,
+  EmitEvents,
+  FulfillmentUtils,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  arrayDifference,
+  getSetDifference,
+  isString,
   promiseAll,
+  Modules
 } from "@medusajs/utils"
-
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import {
   Fulfillment,
   FulfillmentSet,
@@ -37,7 +38,9 @@ import {
   ShippingProfile,
 } from "@models"
 import { isContextValid, validateRules } from "@utils"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import FulfillmentProviderService from "./fulfillment-provider"
+import { UpdateShippingOptionsInput } from "../types/service"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -131,69 +134,17 @@ export default class FulfillmentModuleService<
     return joinerConfig
   }
 
-  protected static normalizeShippingOptionsListParams(
-    filters: FilterableShippingOptionProps = {},
-    config: FindConfig<ShippingOptionDTO> = {}
-  ) {
-    let { fulfillment_set_id, fulfillment_set_type, context, ...where } =
-      filters
-
-    const normalizedConfig = { ...config }
-    normalizedConfig.relations = [
-      "rules",
-      "type",
-      "shipping_profile",
-      "fulfillment_provider",
-      ...(normalizedConfig.relations ?? []),
-    ]
-    // The assumption is that there won't be an infinite amount of shipping options. So if a context filtering needs to be applied we can retrieve them all.
-    normalizedConfig.take =
-      normalizedConfig.take ?? (context ? null : undefined)
-
-    let normalizedFilters = { ...where } as FilterQuery
-
-    if (fulfillment_set_id || fulfillment_set_type) {
-      const fulfillmentSetConstraints = {}
-
-      if (fulfillment_set_id) {
-        fulfillmentSetConstraints["id"] = fulfillment_set_id
-      }
-
-      if (fulfillment_set_type) {
-        fulfillmentSetConstraints["type"] = fulfillment_set_type
-      }
-
-      normalizedFilters = {
-        ...normalizedFilters,
-        service_zone: {
-          fulfillment_set: fulfillmentSetConstraints,
-        },
-      }
-
-      normalizedConfig.relations.push("service_zone.fulfillment_set")
-    }
-
-    normalizedConfig.relations = Array.from(new Set(normalizedConfig.relations))
-
-    return {
-      filters: normalizedFilters,
-      config: normalizedConfig,
-      context,
-    }
-  }
-
   @InjectManager("baseRepository_")
-  // @ts-ignore
-  async listShippingOptions(
-    filters: FilterableShippingOptionProps = {},
+  async listShippingOptionsForContext(
+    filters: FulfillmentTypes.FilterableShippingOptionForContextProps,
     config: FindConfig<ShippingOptionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.ShippingOptionDTO[]> {
     const {
-      filters: normalizedFilters,
-      config: normalizedConfig,
       context,
-    } = FulfillmentModuleService.normalizeShippingOptionsListParams(
+      config: normalizedConfig,
+      filters: normalizedFilters,
+    } = FulfillmentModuleService.normalizeListShippingOptionsForContextParams(
       filters,
       config
     )
@@ -204,7 +155,6 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    // Apply rules context filtering
     if (context) {
       shippingOptions = shippingOptions.filter((shippingOption) => {
         if (!shippingOption.rules?.length) {
@@ -242,14 +192,6 @@ export default class FulfillmentModuleService<
       {
         populate: true,
       }
-    )
-  }
-
-  async retrieveFulfillmentOptions(
-    providerId: string
-  ): Promise<Record<string, any>[]> {
-    return await this.fulfillmentProviderService_.getFulfillmentOptions(
-      providerId
     )
   }
 
@@ -305,6 +247,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.FulfillmentSetDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async create(
     data:
       | FulfillmentTypes.CreateFulfillmentSetDTO
@@ -331,8 +274,27 @@ export default class FulfillmentModuleService<
   ): Promise<TEntity | TEntity[]> {
     const data_ = Array.isArray(data) ? data : [data]
 
+    if (!data_.length) {
+      return []
+    }
+
+    for (const fulfillmentSet of data_) {
+      if (fulfillmentSet.service_zones?.length) {
+        for (const serviceZone of fulfillmentSet.service_zones) {
+          if (serviceZone.geo_zones?.length) {
+            FulfillmentModuleService.validateGeoZones(serviceZone.geo_zones)
+          }
+        }
+      }
+    }
+
     const createdFulfillmentSets = await this.fulfillmentSetService_.create(
       data_,
+      sharedContext
+    )
+
+    this.aggregateFulfillmentSetCreatedEvents(
+      createdFulfillmentSets,
       sharedContext
     )
 
@@ -382,6 +344,14 @@ export default class FulfillmentModuleService<
 
     if (!data_.length) {
       return []
+    }
+
+    for (const serviceZone of data_) {
+      if (serviceZone.geo_zones?.length) {
+        if (serviceZone.geo_zones?.length) {
+          FulfillmentModuleService.validateGeoZones(serviceZone.geo_zones)
+        }
+      }
     }
 
     const createdServiceZones = await this.serviceZoneService_.create(
@@ -435,7 +405,7 @@ export default class FulfillmentModuleService<
       return []
     }
 
-    const rules = data_.flatMap((d) => d.rules)
+    const rules = data_.flatMap((d) => d.rules).filter(Boolean)
     if (rules.length) {
       validateRules(rules as Record<string, unknown>[])
     }
@@ -520,13 +490,17 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.CreateGeoZoneDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.GeoZoneDTO | FulfillmentTypes.GeoZoneDTO[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    FulfillmentModuleService.validateGeoZones(data_)
+
     const createdGeoZones = await this.geoZoneService_.create(
-      data,
+      data_,
       sharedContext
     )
 
     return await this.baseRepository_.serialize<FulfillmentTypes.GeoZoneDTO[]>(
-      createdGeoZones,
+      Array.isArray(data) ? createdGeoZones : createdGeoZones[0],
       {
         populate: true,
       }
@@ -777,6 +751,11 @@ export default class FulfillmentModuleService<
           fulfillmentSet.service_zones = fulfillmentSet.service_zones.map(
             (serviceZone) => {
               if (!("id" in serviceZone)) {
+                if (serviceZone.geo_zones?.length) {
+                  FulfillmentModuleService.validateGeoZones(
+                    serviceZone.geo_zones
+                  )
+                }
                 return serviceZone
               }
               return serviceZonesMap.get(serviceZone.id)!
@@ -814,31 +793,56 @@ export default class FulfillmentModuleService<
   }
 
   updateServiceZones(
-    data: FulfillmentTypes.UpdateServiceZoneDTO[],
-    sharedContext?: Context
-  ): Promise<FulfillmentTypes.ServiceZoneDTO[]>
-  updateServiceZones(
+    id: string,
     data: FulfillmentTypes.UpdateServiceZoneDTO,
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ServiceZoneDTO>
+  updateServiceZones(
+    selector: FulfillmentTypes.FilterableServiceZoneProps,
+    data: FulfillmentTypes.UpdateServiceZoneDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ServiceZoneDTO[]>
 
   @InjectManager("baseRepository_")
   async updateServiceZones(
-    data:
-      | FulfillmentTypes.UpdateServiceZoneDTO[]
-      | FulfillmentTypes.UpdateServiceZoneDTO,
+    idOrSelector: string | FulfillmentTypes.FilterableServiceZoneProps,
+    data: FulfillmentTypes.UpdateServiceZoneDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     FulfillmentTypes.ServiceZoneDTO[] | FulfillmentTypes.ServiceZoneDTO
   > {
+    const normalizedInput: UpdateServiceZoneDTO[] = []
+
+    if (isString(idOrSelector)) {
+      normalizedInput.push({ id: idOrSelector, ...data })
+    } else {
+      const serviceZones = await this.serviceZoneService_.list(
+        { ...idOrSelector },
+        {},
+        sharedContext
+      )
+
+      if (!serviceZones.length) {
+        return []
+      }
+
+      for (const serviceZone of serviceZones) {
+        normalizedInput.push({ id: serviceZone.id, ...data })
+      }
+    }
+
     const updatedServiceZones = await this.updateServiceZones_(
-      data,
+      normalizedInput,
       sharedContext
     )
 
+    const toReturn = isString(idOrSelector)
+      ? updatedServiceZones[0]
+      : updatedServiceZones
+
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
-    >(updatedServiceZones, {
+    >(toReturn, {
       populate: true,
     })
   }
@@ -896,7 +900,7 @@ export default class FulfillmentModuleService<
 
     data_.forEach((serviceZone) => {
       if (serviceZone.geo_zones) {
-        const existingServiceZone = serviceZoneMap.get(serviceZone.id)!
+        const existingServiceZone = serviceZoneMap.get(serviceZone.id!)!
         const existingGeoZones = existingServiceZone.geo_zones
         const updatedGeoZones = serviceZone.geo_zones
         const toDeleteGeoZoneIds = getSetDifference(
@@ -940,9 +944,12 @@ export default class FulfillmentModuleService<
 
         serviceZone.geo_zones = serviceZone.geo_zones.map((geoZone) => {
           if (!("id" in geoZone)) {
+            FulfillmentModuleService.validateGeoZones([geoZone])
             return geoZone
           }
-          return geoZonesMap.get(geoZone.id)!
+          const existing = geoZonesMap.get(geoZone.id)!
+
+          return { ...existing, ...geoZone }
         })
       }
     })
@@ -964,41 +971,132 @@ export default class FulfillmentModuleService<
     return Array.isArray(data) ? updatedServiceZones : updatedServiceZones[0]
   }
 
-  updateShippingOptions(
-    data: FulfillmentTypes.UpdateShippingOptionDTO[],
+  upsertServiceZones(
+    data: FulfillmentTypes.UpsertServiceZoneDTO,
     sharedContext?: Context
-  ): Promise<FulfillmentTypes.ShippingOptionDTO[]>
-  updateShippingOptions(
-    data: FulfillmentTypes.UpdateShippingOptionDTO,
+  ): Promise<FulfillmentTypes.ServiceZoneDTO>
+  upsertServiceZones(
+    data: FulfillmentTypes.UpsertServiceZoneDTO[],
     sharedContext?: Context
-  ): Promise<FulfillmentTypes.ShippingOptionDTO>
+  ): Promise<FulfillmentTypes.ServiceZoneDTO[]>
 
   @InjectManager("baseRepository_")
-  async updateShippingOptions(
+  async upsertServiceZones(
     data:
-      | FulfillmentTypes.UpdateShippingOptionDTO[]
-      | FulfillmentTypes.UpdateShippingOptionDTO,
-    @MedusaContext() sharedContext: Context = {}
+      | FulfillmentTypes.UpsertServiceZoneDTO
+      | FulfillmentTypes.UpsertServiceZoneDTO[],
+    sharedContext?: Context
   ): Promise<
-    FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
+    FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
   > {
-    const updatedShippingOptions = await this.updateShippingOptions_(
+    const upsertServiceZones = await this.upsertServiceZones_(
       data,
       sharedContext
     )
 
-    return await this.baseRepository_.serialize<
+    const allServiceZones = await this.baseRepository_.serialize<
+      FulfillmentTypes.ServiceZoneDTO[] | FulfillmentTypes.ServiceZoneDTO
+    >(upsertServiceZones)
+
+    return Array.isArray(data) ? allServiceZones : allServiceZones[0]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async upsertServiceZones_(
+    data:
+      | FulfillmentTypes.UpsertServiceZoneDTO[]
+      | FulfillmentTypes.UpsertServiceZoneDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TServiceZoneEntity[] | TServiceZoneEntity> {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter(
+      (serviceZone): serviceZone is FulfillmentTypes.UpdateServiceZoneDTO =>
+        !!serviceZone.id
+    )
+    const forCreate = input.filter(
+      (serviceZone): serviceZone is FulfillmentTypes.CreateServiceZoneDTO =>
+        !serviceZone.id
+    )
+
+    const created: TServiceZoneEntity[] = []
+    const updated: TServiceZoneEntity[] = []
+
+    if (forCreate.length) {
+      const createdServiceZones = await this.createServiceZones_(
+        forCreate,
+        sharedContext
+      )
+      const toPush = Array.isArray(createdServiceZones)
+        ? createdServiceZones
+        : [createdServiceZones]
+      created.push(...toPush)
+    }
+
+    if (forUpdate.length) {
+      const updatedServiceZones = await this.updateServiceZones_(
+        forUpdate,
+        sharedContext
+      )
+      const toPush = Array.isArray(updatedServiceZones)
+        ? updatedServiceZones
+        : [updatedServiceZones]
+      updated.push(...toPush)
+    }
+
+    return [...created, ...updated]
+  }
+
+  updateShippingOptions(
+    id: string,
+    data: FulfillmentTypes.UpdateShippingOptionDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionDTO>
+  updateShippingOptions(
+    selector: FulfillmentTypes.FilterableShippingOptionProps,
+    data: FulfillmentTypes.UpdateShippingOptionDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionDTO[]>
+
+  @InjectManager("baseRepository_")
+  async updateShippingOptions(
+    idOrSelector: string | FulfillmentTypes.FilterableShippingOptionProps,
+    data: FulfillmentTypes.UpdateShippingOptionDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
+  > {
+    const normalizedInput: UpdateShippingOptionsInput[] = []
+
+    if (isString(idOrSelector)) {
+      normalizedInput.push({ id: idOrSelector, ...data })
+    } else {
+      const shippingOptions = await this.shippingOptionService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+      shippingOptions.forEach((shippingOption) => {
+        normalizedInput.push({ id: shippingOption.id, ...data })
+      })
+    }
+
+    const updatedShippingOptions = await this.updateShippingOptions_(
+      normalizedInput,
+      sharedContext
+    )
+
+    const serialized = await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
     >(updatedShippingOptions, {
       populate: true,
     })
+
+    return isString(idOrSelector) ? serialized[0] : serialized
   }
 
   @InjectTransactionManager("baseRepository_")
   async updateShippingOptions_(
-    data:
-      | FulfillmentTypes.UpdateShippingOptionDTO[]
-      | FulfillmentTypes.UpdateShippingOptionDTO,
+    data: UpdateShippingOptionsInput[] | UpdateShippingOptionsInput,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TShippingOptionEntity | TShippingOptionEntity[]> {
     const dataArray = Array.isArray(data) ? data : [data]
@@ -1101,6 +1199,82 @@ export default class FulfillmentModuleService<
       : updatedShippingOptions[0]
   }
 
+  async upsertShippingOptions(
+    data: FulfillmentTypes.UpsertShippingOptionDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionDTO[]>
+  async upsertShippingOptions(
+    data: FulfillmentTypes.UpsertShippingOptionDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionDTO>
+
+  @InjectManager("baseRepository_")
+  async upsertShippingOptions(
+    data:
+      | FulfillmentTypes.UpsertShippingOptionDTO[]
+      | FulfillmentTypes.UpsertShippingOptionDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
+  > {
+    const upsertedShippingOptions = await this.upsertShippingOptions_(
+      data,
+      sharedContext
+    )
+
+    const allShippingOptions = await this.baseRepository_.serialize<
+      FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
+    >(upsertedShippingOptions)
+
+    return Array.isArray(data) ? allShippingOptions : allShippingOptions[0]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async upsertShippingOptions_(
+    data:
+      | FulfillmentTypes.UpsertShippingOptionDTO[]
+      | FulfillmentTypes.UpsertShippingOptionDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TShippingOptionEntity[] | TShippingOptionEntity> {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter(
+      (shippingOption): shippingOption is UpdateShippingOptionsInput =>
+        !!shippingOption.id
+    )
+    const forCreate = input.filter(
+      (
+        shippingOption
+      ): shippingOption is FulfillmentTypes.CreateShippingOptionDTO =>
+        !shippingOption.id
+    )
+
+    let created: TShippingOptionEntity[] = []
+    let updated: TShippingOptionEntity[] = []
+
+    if (forCreate.length) {
+      const createdShippingOptions = await this.createShippingOptions_(
+        forCreate,
+        sharedContext
+      )
+      const toPush = Array.isArray(createdShippingOptions)
+        ? createdShippingOptions
+        : [createdShippingOptions]
+      created.push(...toPush)
+    }
+    if (forUpdate.length) {
+      const updatedShippingOptions = await this.updateShippingOptions_(
+        forUpdate,
+        sharedContext
+      )
+      const toPush = Array.isArray(updatedShippingOptions)
+        ? updatedShippingOptions
+        : [updatedShippingOptions]
+      updated.push(...toPush)
+    }
+
+    return [...created, ...updated]
+  }
+
   updateShippingProfiles(
     data: FulfillmentTypes.UpdateShippingProfileDTO[],
     sharedContext?: Context
@@ -1138,6 +1312,14 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.UpdateGeoZoneDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.GeoZoneDTO | FulfillmentTypes.GeoZoneDTO[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    if (!data_.length) {
+      return []
+    }
+
+    FulfillmentModuleService.validateGeoZones(data_)
+
     const updatedGeoZones = await this.geoZoneService_.update(
       data,
       sharedContext
@@ -1271,6 +1453,41 @@ export default class FulfillmentModuleService<
     return Array.isArray(result) ? result[0] : result
   }
 
+  async retrieveFulfillmentOptions(
+    providerId: string
+  ): Promise<Record<string, any>[]> {
+    return await this.fulfillmentProviderService_.getFulfillmentOptions(
+      providerId
+    )
+  }
+
+  async validateFulfillmentOption(
+    providerId: string,
+    data: Record<string, unknown>
+  ): Promise<boolean> {
+    return await this.fulfillmentProviderService_.validateOption(
+      providerId,
+      data
+    )
+  }
+
+  @InjectManager("baseRepository_")
+  async validateShippingOption(
+    shippingOptionId: string,
+    context: Record<string, unknown> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const shippingOptions = await this.listShippingOptionsForContext(
+      { id: shippingOptionId, context },
+      {
+        relations: ["rules"],
+      },
+      sharedContext
+    )
+
+    return !!shippingOptions.length
+  }
+
   protected static canCancelFulfillmentOrThrow(fulfillment: Fulfillment) {
     if (fulfillment.shipped_at) {
       throw new MedusaError(
@@ -1291,7 +1508,7 @@ export default class FulfillmentModuleService<
 
   protected static validateMissingShippingOptions_(
     shippingOptions: ShippingOption[],
-    shippingOptionsData: FulfillmentTypes.UpdateShippingOptionDTO[]
+    shippingOptionsData: UpdateShippingOptionsInput[]
   ) {
     const missingShippingOptionIds = arrayDifference(
       shippingOptionsData.map((s) => s.id),
@@ -1334,6 +1551,271 @@ export default class FulfillmentModuleService<
           nonAlreadyExistingRules
         ).join(", ")} on shipping option ${shippingOptionUpdateData.id}`
       )
+    }
+  }
+
+  protected static validateGeoZones(
+    geoZones: (
+      | (Partial<FulfillmentTypes.CreateGeoZoneDTO> & { type: string })
+      | (Partial<FulfillmentTypes.UpdateGeoZoneDTO> & { type: string })
+    )[]
+  ) {
+    const requirePropForType = {
+      country: ["country_code"],
+      province: ["country_code", "province_code"],
+      city: ["country_code", "province_code", "city"],
+      zip: ["country_code", "province_code", "city", "postal_expression"],
+    }
+
+    for (const geoZone of geoZones) {
+      if (!requirePropForType[geoZone.type]) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Invalid geo zone type: ${geoZone.type}`
+        )
+      }
+
+      for (const prop of requirePropForType[geoZone.type]) {
+        if (!geoZone[prop]) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Missing required property ${prop} for geo zone type ${geoZone.type}`
+          )
+        }
+      }
+    }
+  }
+
+  protected static normalizeListShippingOptionsForContextParams(
+    filters: FulfillmentTypes.FilterableShippingOptionForContextProps,
+    config: FindConfig<ShippingOptionDTO> = {}
+  ) {
+    let {
+      fulfillment_set_id,
+      fulfillment_set_type,
+      address,
+      context,
+      ...where
+    } = filters
+
+    const normalizedConfig = { ...config }
+    normalizedConfig.relations = [
+      "rules",
+      "type",
+      "shipping_profile",
+      "provider",
+      ...(normalizedConfig.relations ?? []),
+    ]
+
+    normalizedConfig.take =
+      normalizedConfig.take ?? (context ? null : undefined)
+
+    let normalizedFilters = { ...where }
+
+    if (fulfillment_set_id || fulfillment_set_type) {
+      const fulfillmentSetConstraints = {}
+
+      if (fulfillment_set_id) {
+        fulfillmentSetConstraints["id"] = fulfillment_set_id
+      }
+
+      if (fulfillment_set_type) {
+        fulfillmentSetConstraints["type"] = fulfillment_set_type
+      }
+
+      normalizedFilters = {
+        ...normalizedFilters,
+        service_zone: {
+          ...(normalizedFilters.service_zone ?? {}),
+          fulfillment_set: {
+            ...(normalizedFilters.service_zone?.fulfillment_set ?? {}),
+            ...fulfillmentSetConstraints,
+          },
+        },
+      }
+
+      normalizedConfig.relations.push("service_zone.fulfillment_set")
+    }
+
+    if (address) {
+      const geoZoneConstraints =
+        FulfillmentModuleService.buildGeoZoneConstraintsFromAddress(address)
+
+      normalizedFilters = {
+        ...normalizedFilters,
+        service_zone: {
+          ...(normalizedFilters.service_zone ?? {}),
+          geo_zones: {
+            $or: geoZoneConstraints.map((geoZoneConstraint) => ({
+              // Apply eventually provided constraints on the geo zone along side the address constraints
+              ...(normalizedFilters.service_zone?.geo_zones ?? {}),
+              ...geoZoneConstraint,
+            })),
+          },
+        },
+      }
+
+      normalizedConfig.relations.push("service_zone.geo_zones")
+    }
+
+    normalizedConfig.relations = Array.from(new Set(normalizedConfig.relations))
+
+    return {
+      filters: normalizedFilters,
+      config: normalizedConfig,
+      context,
+    }
+  }
+
+  /**
+   * Build the constraints for the geo zones based on the address properties
+   * available and the hierarchy of required properties.
+   * We build a OR constraint from the narrowest to the broadest
+   * e.g. if we have a postal expression we build a constraint for the postal expression require props of type zip
+   * and a constraint for the city required props of type city
+   * and a constraint for the province code required props of type province
+   * and a constraint for the country code required props of type country
+   * example:
+   * {
+   *    $or: [
+   *      {
+   *        type: "zip",
+   *        country_code: "SE",
+   *        province_code: "AB",
+   *        city: "Stockholm",
+   *        postal_expression: "12345"
+   *      },
+   *      {
+   *        type: "city",
+   *        country_code: "SE",
+   *        province_code: "AB",
+   *        city: "Stockholm"
+   *      },
+   *      {
+   *        type: "province",
+   *        country_code: "SE",
+   *        province_code: "AB"
+   *      },
+   *      {
+   *        type: "country",
+   *        country_code: "SE"
+   *      }
+   *    ]
+   *  }
+   */
+  protected static buildGeoZoneConstraintsFromAddress(
+    address: FulfillmentTypes.FilterableShippingOptionForContextProps["address"]
+  ) {
+    /**
+     * Define the hierarchy of required properties for the geo zones.
+     */
+    const geoZoneRequirePropertyHierarchy = {
+      postal_expression: [
+        "country_code",
+        "province_code",
+        "city",
+        "postal_expression",
+      ],
+      city: ["country_code", "province_code", "city"],
+      province_code: ["country_code", "province_code"],
+      country_code: ["country_code"],
+    }
+
+    /**
+     * Validate that the address has the required properties for the geo zones
+     * constraints to build after. We are going from the narrowest to the broadest
+     */
+    Object.entries(geoZoneRequirePropertyHierarchy).forEach(
+      ([prop, requiredProps]) => {
+        if (address![prop]) {
+          for (const requiredProp of requiredProps) {
+            if (!address![requiredProp]) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `Missing required property ${requiredProp} for address when property ${prop} is set`
+              )
+            }
+          }
+        }
+      }
+    )
+
+    const geoZoneConstraints = Object.entries(geoZoneRequirePropertyHierarchy)
+      .map(([prop, requiredProps]) => {
+        if (address![prop]) {
+          return requiredProps.reduce((geoZoneConstraint, prop) => {
+            geoZoneConstraint.type =
+              prop === "postal_expression"
+                ? "zip"
+                : prop === "city"
+                ? "city"
+                : prop === "province_code"
+                ? "province"
+                : "country"
+            geoZoneConstraint[prop] = address![prop]
+            return geoZoneConstraint
+          }, {} as Record<string, string | undefined>)
+        }
+        return null
+      })
+      .filter((v): v is Record<string, any> => !!v)
+
+    return geoZoneConstraints
+  }
+
+  protected aggregateFulfillmentSetCreatedEvents(
+    createdFulfillmentSets: TEntity[],
+    sharedContext: Context
+  ): void {
+    const buildMessage = ({
+      eventName,
+      id,
+      object,
+    }: {
+      eventName: string
+      id: string
+      object: string
+    }) => {
+      return {
+        eventName,
+        metadata: {
+          object,
+          service: Modules.FULFILLMENT,
+          action: "created",
+          eventGroupId: sharedContext.eventGroupId,
+        },
+        data: { id },
+      }
+    }
+
+    for (const fulfillmentSet of createdFulfillmentSets) {
+      sharedContext.messageAggregator!.saveRawMessageData(
+        buildMessage({
+          eventName: FulfillmentUtils.FulfillmentEvents.created,
+          id: fulfillmentSet.id,
+          object: "fulfillment_set",
+        })
+      )
+
+      for (const serviceZone of fulfillmentSet.service_zones ?? []) {
+        sharedContext.messageAggregator!.saveRawMessageData(
+          buildMessage({
+            eventName: FulfillmentUtils.FulfillmentEvents.service_zone_created,
+            id: serviceZone.id,
+            object: "service_zone",
+          })
+        )
+
+        for (const geoZone of serviceZone.geo_zones ?? []) {
+          sharedContext.messageAggregator!.saveRawMessageData(
+            buildMessage({
+              eventName: FulfillmentUtils.FulfillmentEvents.geo_zone_created,
+              id: geoZone.id,
+              object: "geo_zone",
+            })
+          )
+        }
+      }
     }
   }
 }

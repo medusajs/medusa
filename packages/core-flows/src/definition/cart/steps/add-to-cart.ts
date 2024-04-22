@@ -1,6 +1,6 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreateLineItemForCartDTO, ICartModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-import { ModuleRegistrationName } from "../../../../../modules-sdk/dist"
 
 interface StepInput {
   items: CreateLineItemForCartDTO[]
@@ -16,7 +16,7 @@ export const addToCartStep = createStep(
 
     const items = await cartService.addLineItems(data.items)
 
-    return new StepResponse(items)
+    return new StepResponse(items, items)
   },
   async (createdLineItems, { container }) => {
     const cartService: ICartModuleService = container.resolve(

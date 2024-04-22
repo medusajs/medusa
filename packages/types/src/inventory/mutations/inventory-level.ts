@@ -10,7 +10,7 @@ export interface CreateInventoryLevelInput {
   /**
    * The stocked quantity of the associated inventory item in the associated location.
    */
-  stocked_quantity: number
+  stocked_quantity?: number
   /**
    * The reserved quantity of the associated inventory item in the associated location.
    */
@@ -30,7 +30,7 @@ export interface UpdateInventoryLevelInput {
   /**
    * id of the inventory level to update
    */
-  id: string
+  id?: string
   /**
    * The stocked quantity of the associated inventory item in the associated location.
    */

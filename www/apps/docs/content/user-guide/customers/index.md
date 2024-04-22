@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-description: 'Medusa admin allows merchants to manage customers and customer groups.'
+description: 'Medusa Admin allows merchants to manage customers and customer groups.'
 ---
 
 # Customers Overview

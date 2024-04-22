@@ -23,11 +23,6 @@ export interface CreateSalesChannelDTO {
  */
 export interface UpdateSalesChannelDTO {
   /**
-   * The ID of the sales channel.
-   */
-  id: string
-
-  /**
    * The name of the sales channel.
    */
   name?: string
@@ -41,4 +36,38 @@ export interface UpdateSalesChannelDTO {
    * Whether the sales channel is disabled.
    */
   is_disabled?: boolean
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
+}
+
+/**
+ * The attributes in the sales channel to be created or updated.
+ */
+export interface UpsertSalesChannelDTO {
+  /**
+   * The ID of the sales channel.
+   */
+  id?: string
+
+  /**
+   * The name of the sales channel. Required
+   * when creating a sales channel.
+   */
+  name?: string
+
+  /**
+   * The description of the sales channel.
+   */
+  description?: string | null
+
+  /**
+   * Whether the sales channel is disabled.
+   */
+  is_disabled?: boolean
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }

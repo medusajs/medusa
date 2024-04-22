@@ -1,12 +1,12 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "../links"
+import { LINKS } from "@medusajs/utils"
 
 export const SalesChannelLocation: ModuleJoinerConfig = {
   serviceName: LINKS.SalesChannelLocation,
   isLink: true,
   databaseConfig: {
-    tableName: "sales_channel_locations",
+    tableName: "sales_channel_stock_location",
     idPrefix: "scloc",
   },
   alias: [
@@ -17,7 +17,7 @@ export const SalesChannelLocation: ModuleJoinerConfig = {
       },
     },
   ],
-  primaryKeys: ["id", "sales_channel_id", "location_id"],
+  primaryKeys: ["id", "sales_channel_id", "stock_location_id"],
   relationships: [
     {
       serviceName: Modules.SALES_CHANNEL,
@@ -28,7 +28,7 @@ export const SalesChannelLocation: ModuleJoinerConfig = {
     {
       serviceName: Modules.STOCK_LOCATION,
       primaryKey: "id",
-      foreignKey: "location_id",
+      foreignKey: "stock_location_id",
       alias: "location",
     },
   ],
@@ -36,7 +36,7 @@ export const SalesChannelLocation: ModuleJoinerConfig = {
     {
       serviceName: Modules.SALES_CHANNEL,
       fieldAlias: {
-        locations: "locations_link.location",
+        stock_locations: "locations_link.location",
       },
       relationship: {
         serviceName: LINKS.SalesChannelLocation,
@@ -53,7 +53,7 @@ export const SalesChannelLocation: ModuleJoinerConfig = {
       },
       relationship: {
         serviceName: LINKS.SalesChannelLocation,
-        primaryKey: "location_id",
+        primaryKey: "stock_location_id",
         foreignKey: "id",
         alias: "sales_channels_link",
         isList: true,

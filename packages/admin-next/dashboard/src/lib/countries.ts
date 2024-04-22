@@ -1,7 +1,17 @@
 /** This file is auto-generated. Do not modify it manually. */
-import type { Country } from "@medusajs/medusa"
+import type { RegionCountryDTO } from "@medusajs/types"
 
-export const countries: Omit<Country, "region" | "region_id" | "id">[] = [
+export function getCountryByIso2(
+  iso2: string | null
+): Omit<RegionCountryDTO, "id"> | undefined {
+  if (!iso2) {
+    return
+  }
+
+  return countries.find((c) => c.iso_2 === iso2)
+}
+
+export const countries: Omit<RegionCountryDTO, "id">[] = [
   {
     iso_2: "af",
     iso_3: "afg",
@@ -888,8 +898,8 @@ export const countries: Omit<Country, "region" | "region_id" | "id">[] = [
     iso_2: "ly",
     iso_3: "lby",
     num_code: 434,
-    name: "LIBYAN ARAB JAMAHIRIYA",
-    display_name: "Libyan Arab Jamahiriya",
+    name: "LIBYA",
+    display_name: "Libya",
   },
   {
     iso_2: "li",

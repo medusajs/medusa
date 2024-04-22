@@ -1,31 +1,46 @@
+import { deleteUsersWorkflow, updateUsersWorkflow } from "@medusajs/core-flows"
+import { UpdateUserDTO } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { IUserModuleService, UpdateUserDTO } from "@medusajs/types"
-import { deleteUsersWorkflow, updateUsersWorkflow } from "@medusajs/core-flows"
 
-import { AdminUpdateUserRequest } from "../validators"
-import { ModuleRegistrationName } from "../../../../../../modules-sdk/dist"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { AdminUpdateUserType } from "../validators"
+import { refetchUser } from "../helpers"
 
 // Get user
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const { id } = req.params
 
-  const moduleService: IUserModuleService = req.scope.resolve(
-    ModuleRegistrationName.USER
-  )
-  const user = await moduleService.retrieve(id, req.retrieveConfig)
+  const query = remoteQueryObjectFromString({
+    entryPoint: "user",
+    variables: { id },
+    fields: req.remoteQueryConfig.fields,
+  })
+
+  const [user] = await remoteQuery(query)
+  if (!user) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `User with id: ${id} was not found`
+    )
+  }
 
   res.status(200).json({ user })
 }
 
 // update user
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminUpdateUserRequest>,
+  req: AuthenticatedMedusaRequest<AdminUpdateUserType>,
   res: MedusaResponse
 ) => {
   const workflow = updateUsersWorkflow(req.scope)
@@ -41,7 +56,11 @@ export const POST = async (
 
   const { result } = await workflow.run({ input })
 
-  const [user] = result
+  const user = await refetchUser(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
   res.status(200).json({ user })
 }

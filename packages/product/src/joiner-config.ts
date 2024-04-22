@@ -11,7 +11,6 @@ import {
   ProductVariant,
 } from "@models"
 import ProductImage from "./models/product-image"
-import moduleSchema from "./schema"
 
 export const LinkableKeys = {
   product_id: Product.name,
@@ -40,7 +39,6 @@ export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRODUCT,
   primaryKeys: ["id", "handle"],
   linkableKeys: LinkableKeys,
-  schema: moduleSchema,
   alias: [
     {
       name: ["product", "products"],

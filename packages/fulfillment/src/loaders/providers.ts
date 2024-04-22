@@ -1,10 +1,13 @@
 import { moduleProviderLoader } from "@medusajs/modules-sdk"
 import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
-import { asFunction, asValue, Lifetime } from "awilix"
-import { FulfillmentIdentifiersRegistrationName } from "@types"
-import { lowerCaseFirst, promiseAll } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  lowerCaseFirst,
+  promiseAll,
+} from "@medusajs/utils"
 import { FulfillmentProviderService } from "@services"
-import { ContainerRegistrationKeys } from "@medusajs/utils/src"
+import { FulfillmentIdentifiersRegistrationName } from "@types"
+import { Lifetime, asFunction, asValue } from "awilix"
 
 const registrationFn = async (klass, container, pluginOptions) => {
   Object.entries(pluginOptions.config || []).map(([name, config]) => {
@@ -105,6 +108,6 @@ async function syncDatabaseProviders({ container }) {
 
     await promiseAll(promises)
   } catch (error) {
-    logger.error(`Error syncing providers: ${error.message}`)
+    logger.error(`Error syncing the fulfillment providers: ${error.message}`)
   }
 }

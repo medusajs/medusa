@@ -1,0 +1,381 @@
+---
+description: 'Learn step-by-step.'
+addHowToData: true
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+import MimeErrorTroubleshooting from "../../troubleshooting/mime-error.md"
+
+# Deploy Your Medusa Backend to Railway
+
+In this document, you’ll learn how to deploy your Medusa backend to Railway.
+
+## What is Railway
+
+[Railway](https://railway.app/) is a hosting provider that you can use to deploy web applications and databases without having to worry about managing the full infrastructure.
+
+Railway provides a free trial (no credit card required) that allows you to deploy your Medusa backend along with PostgreSQL and Redis databases. This is useful mainly for development and demo purposes.
+
+<a 
+  href="https://railway.app/template/zC7eOq?referralCode=TW4Qi0" className="img-url no-zoom-img mb-2 inline-block">
+  <img src="https://railway.app/button.svg" alt="Deploy with Railway" className="no-zoom-img"/>
+</a>
+
+<Note type="check">
+
+- [Medusa backend installed locally](../../create-medusa-app.mdx)
+- Production modules installed on the Medusa backend, such as [Redis Event Module](../../development/events/modules/redis.md) and [Redis Cache Module](../../development/cache/modules/redis.md).
+- A [Railway](https://railway.app/) account. If you're deploying the admin plugin along with the backend, you'll need at least the Developer plan. The resources provided by the starter plan lead to memory errors.
+- [A GitHub repository for your Medusa backend](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository).
+
+</Note>
+
+## Configure the Admin
+
+You have two options to deploy the Medusa Admin: either with the backend or separately.
+
+### Deploying with the Backend
+
+To deploy the admin with the backend:
+
+1. Your chosen plan must offer at least 2GB of RAM.
+2. Enable the [autoRebuild option](../../admin/configuration.mdx#plugin-options) of the admin plugin:
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      autoRebuild: true,
+      // other options...
+    },
+  },
+]
+```
+
+Alternatively, you can use a GitHub action to build the admin as explained [here](../index.mdx#deploy-admin-through-github-action).
+
+### Deploying Separately
+
+If you choose to deploy the admin separately, disable the admin plugin's [serve option](../../admin/configuration.mdx#plugin-options):
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      // only enable `serve` in development
+      // you may need to add the NODE_ENV variable
+      // manually
+      serve: process.env.NODE_ENV === "development",
+      // other options...
+    },
+  },
+]
+```
+
+This ensures that the admin isn't built or served in production. You can also change `@medusajs/admin` dependency to be a dev dependency in `package.json`.
+
+Also, change the `build` command to remove the command that builds the admin:
+
+```json
+"scripts": {
+  // ...
+  "build": "cross-env npm run clean && npm run build:server",
+}
+```
+
+:::tip
+
+Refer to the [admin deployment guides on how to deploy the admin separately](../admin/index.mdx).
+
+:::
+
+---
+
+## Add Railway Configuration File
+
+To avoid errors during the installation process, it's recommended to use `yarn` for installing the dependencies. Alternatively, pass the `--legacy-peer-deps` option to the npm command.
+
+Add in the root of your Medusa project the file `railway.toml` with the content based on the package manager of your choice:
+
+<Tabs groupId="railway-config" isCodeTabs={true} codeTitle="railway.toml">
+  <TabItem label="yarn" value="yarn">
+
+  ```toml
+  [build]
+  builder = "NIXPACKS"
+
+  [build.nixpacksPlan.phases.setup]
+  nixPkgs = ["nodejs", "yarn"]
+
+  [build.nixpacksPlan.phases.install]
+  cmds=["yarn install"]
+  ```
+
+  </TabItem>
+  <TabItem label="npm" value="npm">
+
+  ```toml
+  [build]
+  builder = "NIXPACKS"
+
+  [build.nixpacksPlan.phases.setup]
+  nixPkgs = ["nodejs", "npm"]
+
+  [build.nixpacksPlan.phases.install]
+  cmds=["npm install --legacy-peer-deps"]
+  ```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Add Worker Mode Configuration
+
+:::note
+
+Learn more about the Worker Mode in [this guide](../../development/worker-mode/index.mdx).
+
+:::
+
+Set the `worker_mode` configuration in your `medusa-config.js`, if you haven't already:
+
+```ts
+const projectConfig = {
+  // ...,
+  database_url: "...",
+  worker_mode: process.env.MEDUSA_WORKER_MODE,
+}
+```
+
+This allows you to switch between modes for different deployed Medusa instances based on the `MEDUSA_WORKER_MODE` environment variable.
+
+---
+
+## Push Changes to GitHub Repo
+
+Before proceeding further, push all changes you've made to your GitHub repository so that it's included in the deployment process.
+
+---
+
+## Create Project + PostgreSQL Database
+
+On the Railway dashboard:
+
+1. Click on the ”New Project” button.
+2. Choose from the list the ”Provision PostgreSQL” option.
+
+A new database will be created and, after a few seconds, you'll be redirected to the project page where you'll see the newly-created database.
+
+---
+
+## Create the Redis Database
+
+In the same project view:
+
+1. Click on the New button.
+2. Choose the Database option.
+3. Choose Add Redis.
+
+A new Redis database will be added to the project view in a few seconds. Click on it to open the database sidebar.
+
+---
+
+## Module Services and Variables
+
+If you use modules that require setting up other services or environment variables, make sure to add them at this point. This guide doesn't cover configurations specific to a module.
+
+---
+
+## Deploy Medusa in Server Mode
+
+In this section, you'll create a Medusa backend instance running in `server` runtime mode.
+
+In the same project view:
+
+1. Click on the New button.
+2. Choose the ”GitHub Repo” option.
+3. If you still haven't given GitHub permissions to Railway, choose the ”Configure GitHub App” option to do that.
+4. Choose the repository from the GitHub Repo dropdown.
+
+### Configure Backend Environment Variables
+
+To configure the environment variables of your Medusa backend:
+
+1. Click on the GitHub repository’s card.
+2. Choose the Variables tab.
+3. Add the following environment variables:
+
+```bash
+PORT=9000
+JWT_SECRET=something
+COOKIE_SECRET=something
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+REDIS_URL=${{Redis.REDIS_URL}}
+MEDUSA_WORKER_MODE=server
+```
+
+Notice that the values of `DATABASE_URL` and `REDIS_URL` reference the values from the PostgreSQL and Redis databases you created.
+
+:::warning
+
+It’s highly recommended to use strong, randomly generated secrets for `JWT_SECRET` and `COOKIE_SECRET`.
+
+:::
+
+Make sure to add any other environment variables that are relevant for you here. For example, you can add environment variables related to Medusa Admin or your modules.
+
+### Change Backend's Start Command
+
+The start command is the command used to run the backend. You’ll change it to run any available migrations, then run the Medusa backend. This way if you create your own migrations or update the Medusa backend, it's guaranteed that these migrations run first before the backend starts.
+
+To change the start command of your Medusa backend:
+
+1. Click on the GitHub repository’s card.
+2. Click on the Settings tab and scroll down to the Deploy section.
+3. Click on the Start Command button.
+4. Paste the following in the shown input:
+
+```bash
+medusa migrations run && medusa start
+```
+
+---
+
+## Deploy Medusa in Worker Mode
+
+You'll now create another Medusa instance that'll be in `worker` runtime mode.
+
+In the same project view:
+
+1. Click on the New button.
+2. Choose the ”GitHub Repo” option.
+3. Choose the same repository from the GitHub Repo dropdown.
+
+### Configure Environment Variables for Worker Mode
+
+To configure the environment variables of the Medusa instance running in worker mode:
+
+1. Click on the card of the Medusa instance you just created..
+2. Choose the Variables tab.
+3. Add the following environment variables:
+
+```bash
+PORT=9000
+JWT_SECRET=something
+COOKIE_SECRET=something
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+REDIS_URL=${{Redis.REDIS_URL}}
+MEDUSA_WORKER_MODE=worker
+```
+
+Notice that the values of `DATABASE_URL` and `REDIS_URL` reference the values from the PostgreSQL and Redis databases you created.
+
+:::warning
+
+It’s highly recommended to use strong, randomly generated secrets for `JWT_SECRET` and `COOKIE_SECRET`.
+
+:::
+
+Make sure to add any other environment variables that are relevant for you here.
+
+### Change Worker's Start Command
+
+The start command is the command used to run the Medusa instance in worker mode. To set it:
+
+1. Click on the worker’s card.
+2. Click on the Settings tab and scroll down to the Deploy section.
+3. Click on the Start Command button.
+4. Paste the following in the shown input:
+
+```bash
+medusa start
+```
+
+---
+
+## Add Domain Name
+
+The last step is to add a domain name to your Medusa backend. To do that:
+
+1. Click on the Medusa server runtime's card.
+2. Click on the Settings tab and scroll down to the Environment section.
+3. Either click on the Custom Domain button to enter your own domain or the Generate Domain button to generate a random domain.
+
+---
+
+## Deploy Changes
+
+At the top center of your project's dashboard page, there's a Deploy button that deploys all the changes you've made so far.
+
+Click on the button to trigger the deployment. The deployment will take a few minutes before it's ready.
+
+---
+
+## Test the Backend
+
+Once the deployment is finished, you can access the Medusa backend on the custom domain/domain you've generated.
+
+For example, you can open the URL `<YOUR_APP_URL>/store/products` which returns the products available on your backend.
+
+<Note>
+
+Even if the deployment is successful, you might see a "Railway Not Found" error when accessing your URL. Give it a couple of minutes for the changes to actually take effect and try again.
+
+</Note>
+
+### Health Route
+
+Access `<YOUR_APP_URL>/health` to get health status of your deployed backend.
+
+### Testing the Admin
+
+If you deployed the [admin dashboard with the backend](#deploying-with-the-backend), you can test it by going to `<YOUR_APP_URL>/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
+
+---
+
+## Troubleshooting
+
+If you run into any issues or a problem with your deployed backend, you can check the logs in your Railway container instance by:
+
+1. Click on the GitHub repository’s card.
+2. Click on the Deployments tab.
+3. Click on the View Logs button.
+
+### Error: connect ENOENT
+
+This error may be thrown by a module that uses Redis. If you see it in your build or deploy logs, make sure that your Redis configurations are correct.
+
+### Mime Error
+
+<MimeErrorTroubleshooting />
+
+---
+
+## Run Commands on the Deployed Services
+
+[Railway’s CLI tool](https://docs.railway.app/develop/cli#local-shell) allows you to run commands locally, but using environment variables from your projects.
+
+For example, you can use it to run Medusa commands such as running migrations or creating a user, and it'll use the database environment variables from Railway to perform the action on the production database.
+
+### Create Admin User
+
+To create an admin user in your deployed backend, run the following command in the root of your Medusa project:
+
+```bash
+railway run npx medusa user --email admin@medusa-test.com --password supersecret
+```
+
+---
+
+## See Also
+
+- [Deploy the Medusa Admin](../admin/index.mdx)
+- [Deploy the Storefront](../storefront/index.mdx)

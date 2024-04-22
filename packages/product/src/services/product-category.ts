@@ -1,15 +1,15 @@
-import { ProductCategory } from "@models"
-import { ProductCategoryRepository } from "@repositories"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
+  FreeTextSearchFilterKey,
   InjectManager,
   InjectTransactionManager,
-  isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  isDefined,
 } from "@medusajs/utils"
-import { ProductCategoryServiceTypes } from "@types"
+import { ProductCategory } from "@models"
+import { ProductCategoryRepository } from "@repositories"
 
 type InjectedDependencies = {
   productCategoryRepository: DAL.TreeRepositoryService
@@ -72,8 +72,21 @@ export default class ProductCategoryService<
   ): Promise<TEntity[]> {
     const transformOptions = {
       includeDescendantsTree: filters?.include_descendants_tree || false,
+      includeAncestorsTree: filters?.include_ancestors_tree || false,
     }
     delete filters.include_descendants_tree
+    delete filters.include_ancestors_tree
+
+    // Apply free text search filter
+    if (filters?.q) {
+      config.filters ??= {}
+      config.filters[FreeTextSearchFilterKey] = {
+        value: filters.q,
+        fromEntity: ProductCategory.name,
+      }
+
+      delete filters.q
+    }
 
     const queryOptions = ModulesSdkUtils.buildQuery<ProductCategory>(
       filters,
@@ -96,8 +109,21 @@ export default class ProductCategoryService<
   ): Promise<[TEntity[], number]> {
     const transformOptions = {
       includeDescendantsTree: filters?.include_descendants_tree || false,
+      includeAncestorsTree: filters?.include_ancestors_tree || false,
     }
     delete filters.include_descendants_tree
+    delete filters.include_ancestors_tree
+
+    // Apply free text search filter
+    if (filters?.q) {
+      config.filters ??= {}
+      config.filters[FreeTextSearchFilterKey] = {
+        value: filters.q,
+        fromEntity: ProductCategory.name,
+      }
+
+      delete filters.q
+    }
 
     const queryOptions = ModulesSdkUtils.buildQuery<ProductCategory>(
       filters,
@@ -114,7 +140,7 @@ export default class ProductCategoryService<
 
   @InjectTransactionManager("productCategoryRepository_")
   async create(
-    data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
+    data: ProductTypes.CreateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     return (await (
@@ -125,7 +151,7 @@ export default class ProductCategoryService<
   @InjectTransactionManager("productCategoryRepository_")
   async update(
     id: string,
-    data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
+    data: ProductTypes.UpdateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     return (await (

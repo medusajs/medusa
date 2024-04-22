@@ -1,4 +1,4 @@
-import {Modules} from "@medusajs/modules-sdk"
+import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateFulfillmentSetDTO,
   CreateServiceZoneDTO,
@@ -6,134 +6,146 @@ import {
   ServiceZoneDTO,
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
-import {GeoZoneType} from "@medusajs/utils"
-import {moduleIntegrationTestRunner, SuiteOptions} from "medusa-test-utils"
+import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { MockEventBusService } from "medusa-test-utils/dist"
+import { buildExpectedEventMessageShape } from "../../__fixtures__"
 
 jest.setTimeout(100000)
 
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
   testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list fulfillment sets with a filter", async function () {
-            const createdSet1 = await service.create({
-              name: "test",
-              type: "test-type",
-            })
-            const createdSet2 = await service.create({
-              name: "test2",
-              type: "test-type",
-              service_zones: [
-                {
-                  name: "test",
-                  geo_zones: [
-                    {
-                      type: GeoZoneType.COUNTRY,
-                      country_code: "fr",
-                    },
-                  ],
-                },
-                {
-                  name: "test2",
-                  geo_zones: [
-                    {
-                      type: GeoZoneType.COUNTRY,
-                      country_code: "fr",
-                    },
-                  ],
-                },
-                {
-                  name: "_test",
-                  geo_zones: [
-                    {
-                      type: GeoZoneType.COUNTRY,
-                      country_code: "fr",
-                    },
-                  ],
-                },
-              ],
-            })
-
-            let listedSets = await service.list(
-              {
-                type: createdSet1.type,
-              },
-              {
-                relations: ["service_zones"],
-              }
-            )
-
-            const listedSets2 = await service.list(
-              {
-                type: createdSet1.type,
-              },
-              {
-                relations: ["service_zones"],
-              }
-            )
-
-            expect(listedSets).toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet1.id }),
-                expect.objectContaining({ id: createdSet2.id }),
-              ])
-            )
-
-            // Respecting order id by default
-            expect(listedSets[1].service_zones).toEqual([
-              expect.objectContaining({ name: "test" }),
-              expect.objectContaining({ name: "test2" }),
-              expect.objectContaining({ name: "_test" }),
-            ])
-
-            expect(listedSets2).toEqual(listedSets2)
-
-            listedSets = await service.list({
-              name: createdSet2.name,
-            })
-
-            expect(listedSets).toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet2.id }),
-              ])
-            )
-            expect(listedSets).not.toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet1.id }),
-              ])
-            )
-
-            listedSets = await service.list({
-              service_zones: { name: "test" },
-            })
-
-            expect(listedSets).toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet2.id }),
-              ])
-            )
-            expect(listedSets).not.toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet1.id }),
-              ])
-            )
-
-            listedSets = await service.list({
-              service_zones: { geo_zones: { country_code: "fr" } },
-            })
-
-            expect(listedSets).toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet2.id }),
-              ])
-            )
-            expect(listedSets).not.toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet1.id }),
-              ])
-            )
+          const createdSet1 = await service.create({
+            name: "test",
+            type: "test-type",
           })
+          const createdSet2 = await service.create({
+            name: "test2",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "test",
+                geo_zones: [
+                  {
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "fr",
+                  },
+                ],
+              },
+              {
+                name: "test2",
+                geo_zones: [
+                  {
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "fr",
+                  },
+                ],
+              },
+              {
+                name: "_test",
+                geo_zones: [
+                  {
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "fr",
+                  },
+                ],
+              },
+            ],
+          })
+
+          let listedSets = await service.list(
+            {
+              type: createdSet1.type,
+            },
+            {
+              relations: ["service_zones"],
+            }
+          )
+
+          const listedSets2 = await service.list(
+            {
+              type: createdSet1.type,
+            },
+            {
+              relations: ["service_zones"],
+            }
+          )
+
+          expect(listedSets).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet1.id }),
+              expect.objectContaining({ id: createdSet2.id }),
+            ])
+          )
+
+          // Respecting order id by default
+          expect(listedSets[1].service_zones).toEqual([
+            expect.objectContaining({ name: "test" }),
+            expect.objectContaining({ name: "test2" }),
+            expect.objectContaining({ name: "_test" }),
+          ])
+
+          expect(listedSets2).toEqual(listedSets2)
+
+          listedSets = await service.list({
+            name: createdSet2.name,
+          })
+
+          expect(listedSets).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet2.id }),
+            ])
+          )
+          expect(listedSets).not.toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet1.id }),
+            ])
+          )
+
+          listedSets = await service.list({
+            service_zones: { name: "test" },
+          })
+
+          expect(listedSets).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet2.id }),
+            ])
+          )
+          expect(listedSets).not.toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet1.id }),
+            ])
+          )
+
+          listedSets = await service.list({
+            service_zones: { geo_zones: { country_code: "fr" } },
+          })
+
+          expect(listedSets).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet2.id }),
+            ])
+          )
+          expect(listedSets).not.toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: createdSet1.id }),
+            ])
+          )
+        })
       })
 
       describe("mutations", () => {
@@ -153,6 +165,15 @@ moduleIntegrationTestRunner({
                 type: data.type,
               })
             )
+
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.created,
+                action: "created",
+                object: "fulfillment_set",
+                data: { id: fulfillmentSet.id },
+              }),
+            ])
           })
 
           it("should create a collection of fulfillment sets", async function () {
@@ -180,6 +201,18 @@ moduleIntegrationTestRunner({
                   type: data_.type,
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.created,
+                    action: "created",
+                    object: "fulfillment_set",
+                    data: { id: fulfillmentSets[i].id },
+                  }),
+                ])
+              )
+
               ++i
             }
           })
@@ -210,6 +243,21 @@ moduleIntegrationTestRunner({
                 ]),
               })
             )
+
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.created,
+                action: "created",
+                object: "fulfillment_set",
+                data: { id: fulfillmentSet.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.service_zone_created,
+                action: "created",
+                object: "service_zone",
+                data: { id: fulfillmentSet.service_zones[0].id },
+              }),
+            ])
           })
 
           it("should create a collection of fulfillment sets with new service zones", async function () {
@@ -262,6 +310,24 @@ moduleIntegrationTestRunner({
                   ]),
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.created,
+                    action: "created",
+                    object: "fulfillment_set",
+                    data: { id: fulfillmentSets[i].id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.service_zone_created,
+                    action: "created",
+                    object: "service_zone",
+                    data: { id: fulfillmentSets[i].service_zones[0].id },
+                  }),
+                ])
+              )
+
               ++i
             }
           })
@@ -305,6 +371,27 @@ moduleIntegrationTestRunner({
                 ]),
               })
             )
+
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.created,
+                action: "created",
+                object: "fulfillment_set",
+                data: { id: fulfillmentSet.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.service_zone_created,
+                action: "created",
+                object: "service_zone",
+                data: { id: fulfillmentSet.service_zones[0].id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.geo_zone_created,
+                action: "created",
+                object: "geo_zone",
+                data: { id: fulfillmentSet.service_zones[0].geo_zones[0].id },
+              }),
+            ])
           })
 
           it("should create a collection of fulfillment sets with new service zones and new geo zones", async function () {
@@ -349,6 +436,7 @@ moduleIntegrationTestRunner({
                       {
                         type: GeoZoneType.CITY,
                         country_code: "fr",
+                        province_code: "test",
                         city: "lyon",
                       },
                     ],
@@ -384,6 +472,32 @@ moduleIntegrationTestRunner({
                   ]),
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.created,
+                    action: "created",
+                    object: "fulfillment_set",
+                    data: { id: fulfillmentSets[i].id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.service_zone_created,
+                    action: "created",
+                    object: "service_zone",
+                    data: { id: fulfillmentSets[i].service_zones[0].id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.geo_zone_created,
+                    action: "created",
+                    object: "geo_zone",
+                    data: {
+                      id: fulfillmentSets[i].service_zones[0].geo_zones[0].id,
+                    },
+                  }),
+                ])
+              )
+
               ++i
             }
           })
@@ -398,7 +512,92 @@ moduleIntegrationTestRunner({
             const err = await service.create(data).catch((e) => e)
 
             expect(err).toBeDefined()
-            expect(err.constraint).toBe("IDX_fulfillment_set_name_unique")
+            expect(err.message).toContain("exists")
+          })
+
+          it("should fail on creating a new fulfillment set with new service zones and new geo zones that are not valid", async function () {
+            let data: CreateFulfillmentSetDTO = {
+              name: "test",
+              type: "test-type",
+              service_zones: [
+                {
+                  name: "test",
+                  geo_zones: [
+                    {
+                      type: GeoZoneType.PROVINCE,
+                      country_code: "fr",
+                    } as any,
+                  ],
+                },
+              ],
+            }
+
+            let err = await service.create(data).catch((e) => e)
+            expect(err.message).toBe(
+              "Missing required property province_code for geo zone type province"
+            )
+
+            data = {
+              name: "test",
+              type: "test-type",
+              service_zones: [
+                {
+                  name: "test",
+                  geo_zones: [
+                    {
+                      type: GeoZoneType.CITY,
+                      country_code: "fr",
+                      province_code: "test",
+                    } as any,
+                  ],
+                },
+              ],
+            }
+
+            err = await service.create(data).catch((e) => e)
+            expect(err.message).toBe(
+              "Missing required property city for geo zone type city"
+            )
+
+            data = {
+              name: "test",
+              type: "test-type",
+              service_zones: [
+                {
+                  name: "test",
+                  geo_zones: [
+                    {
+                      type: GeoZoneType.ZIP,
+                      postal_expression: "test",
+                    } as any,
+                  ],
+                },
+              ],
+            }
+
+            err = await service.create(data).catch((e) => e)
+            expect(err.message).toBe(
+              "Missing required property country_code for geo zone type zip"
+            )
+
+            data = {
+              name: "test",
+              type: "test-type",
+              service_zones: [
+                {
+                  name: "test",
+                  geo_zones: [
+                    {
+                      type: "unknown",
+                      postal_expression: "test",
+                    } as any,
+                  ],
+                },
+              ],
+            }
+
+            err = await service.create(data).catch((e) => e)
+            expect(err.message).toBe(`Invalid geo zone type: unknown`)
           })
         })
 
@@ -638,7 +837,7 @@ moduleIntegrationTestRunner({
             const err = await service.update(updateData).catch((e) => e)
 
             expect(err).toBeDefined()
-            expect(err.constraint).toBe("IDX_fulfillment_set_name_unique")
+            expect(err.message).toContain("exists")
           })
 
           it("should update a collection of fulfillment sets and replace old service zones by new ones", async function () {
