@@ -3,6 +3,7 @@ import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
 import {
   Fulfillment,
+  FulfillmentProvider,
   FulfillmentSet,
   GeoZone,
   ServiceZone,
@@ -57,6 +58,13 @@ export const joinerConfig: ModuleJoinerConfig = {
       args: {
         entity: Fulfillment.name,
         methodSuffix: "Fulfillments",
+      },
+    },
+    {
+      name: ["fulfillment_provider", "fulfillment_providers"],
+      args: {
+        entity: FulfillmentProvider.name,
+        methodSuffix: "FulfillmentProviders",
       },
     },
     {
