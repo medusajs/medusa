@@ -11,11 +11,11 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
+import { refetchCategory } from "./helpers"
 import {
   AdminCreateProductCategoryType,
   AdminProductCategoriesParamsType,
 } from "./validators"
-import { refetchCategory } from "./helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminProductCategoriesParamsType>,
@@ -60,7 +60,8 @@ export const POST = async (
   const category = await refetchCategory(
     result.id,
     req.scope,
-    req.remoteQueryConfig.fields
+    req.remoteQueryConfig.fields,
+    req.filterableFields
   )
 
   res.status(200).json({ product_category: category })
