@@ -9,7 +9,7 @@ export type MetadataField = {
 }
 
 type MetadataProps = {
-  initialMetadata: MetadataField[]
+  initialMetadata?: MetadataField[]
   onMetadataChange: (metadata: MetadataField[]) => void
 }
 
@@ -76,7 +76,10 @@ function Field({
   )
 }
 
-export function Metadata({ initialMetadata, onMetadataChange }: MetadataProps) {
+export function Metadata({
+  initialMetadata = [],
+  onMetadataChange,
+}: MetadataProps) {
   const { t } = useTranslation()
 
   /**

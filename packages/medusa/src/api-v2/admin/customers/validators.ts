@@ -48,6 +48,7 @@ export const AdminCreateCustomer = z.object({
   first_name: z.string().optional(),
   last_name: z.string().optional(),
   phone: z.string().optional(),
+  metadata: z.record(z.unknown()).optional(),
 })
 
 export const AdminUpdateCustomer = z.object({
@@ -56,6 +57,7 @@ export const AdminUpdateCustomer = z.object({
   first_name: z.string().nullable().optional(),
   last_name: z.string().nullable().optional(),
   phone: z.string().nullable().optional(),
+  metadata: z.record(z.unknown()).optional(),
 })
 
 export const AdminCreateCustomerAddress = z.object({
@@ -77,7 +79,7 @@ export const AdminCreateCustomerAddress = z.object({
 
 export const AdminUpdateCustomerAddress = AdminCreateCustomerAddress
 
-export const AdminCustomerAdressesParams = createFindParams({
+export const AdminCustomerAddressesParams = createFindParams({
   offset: 0,
   limit: 50,
 }).merge(
