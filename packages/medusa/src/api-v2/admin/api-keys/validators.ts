@@ -41,8 +41,3 @@ export type AdminRevokeApiKeyType = z.infer<typeof AdminRevokeApiKey>
 export const AdminRevokeApiKey = z.object({
   revoke_in: z.number().optional(),
 })
-
-export type AdminApiKeySalesChannelType = z.infer<
-  typeof AdminApiKeySalesChannel
->
-export const AdminApiKeySalesChannel = z.string()
