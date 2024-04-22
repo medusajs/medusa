@@ -1,3 +1,4 @@
+import { LinkMethodRequest } from "../../common"
 import {
   CreateProductCategoryDTO,
   UpdateProductCategoryDTO,
@@ -13,4 +14,9 @@ export interface UpdateProductCategoryWorkflowInput {
   // data: UpdateProductCategoryDTO
   id: string
   data: UpdateProductCategoryDTO
+}
+
+export interface BatchUpdateProductsOnCategoryWorkflowInput
+  extends LinkMethodRequest {
+  id: string
 }

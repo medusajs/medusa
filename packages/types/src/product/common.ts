@@ -325,6 +325,12 @@ export interface ProductCategoryDTO {
    */
   category_children: ProductCategoryDTO[]
   /**
+   * The associated products.
+   *
+   * @expandable
+   */
+  products: ProductDTO[]
+  /**
    * When the product category was created.
    */
   created_at: string | Date
@@ -702,9 +708,14 @@ export interface FilterableProductProps
    */
   type_id?: string | string[]
   /**
+   * @deprecated - Use `categories` instead
    * Filter a product by the IDs of their associated categories.
    */
   category_id?: string | string[] | OperatorMap<string>
+  /**
+   * Filter a product by the IDs of their associated categories.
+   */
+  categories?: { id: OperatorMap<string> } | { id: OperatorMap<string[]> }
   /**
    * Filters a product by the IDs of their associated collections.
    */

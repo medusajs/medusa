@@ -16,7 +16,7 @@ let { Product } = {}
 medusaIntegrationTestRunner({
   env: {
     MEDUSA_FF_PRODUCT_CATEGORIES: true,
-    // MEDUSA_FF_MEDUSA_V2: true,
+    MEDUSA_FF_MEDUSA_V2: true,
   },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let appContainer
@@ -1221,6 +1221,7 @@ medusaIntegrationTestRunner({
       })
     })
 
+    // TODO: Remove in V2, endpoint changed
     describe("POST /admin/product-categories/:id/products/batch", () => {
       beforeEach(async () => {
         productCategory = await simpleProductCategoryFactory(dbConnection, {
@@ -1335,6 +1336,7 @@ medusaIntegrationTestRunner({
       })
     })
 
+    // TODO: Remove in v2, endpoint changed
     describe("DELETE /admin/product-categories/:id/products/batch", () => {
       let testProduct1, testProduct2
 
@@ -1453,6 +1455,54 @@ medusaIntegrationTestRunner({
           message: "Requested fields [products] are not valid",
           type: "invalid_data",
         })
+      })
+    })
+
+    describe.only("POST /admin/product-categories/:id/products", () => {
+      beforeEach(async () => {
+        productCategory = await productModuleService.createCategory({
+          name: "category parent",
+          description: "category parent",
+          parent_category_id: null,
+        })
+      })
+
+      it("successfully updates a product category", async () => {
+        const product1Response = await api.post(
+          "/admin/products",
+          {
+            title: "product 1",
+            categories: [{ id: productCategory.id }],
+          },
+          adminHeaders
+        )
+
+        // const product2Response = await api.post(
+        //   "/admin/products",
+        //   {
+        //     title: "product 2",
+        //   },
+        //   adminHeaders
+        // )
+
+
+        // TODO: Should remove category
+        const categoryResponse = await api.post(
+          `/admin/product-categories/${productCategory.id}/products`,
+          {
+            remove: [product1Response.data.product.id],
+          },
+          adminHeaders
+        )
+
+        const productsInCategoryResponse = await api.get(
+          `/admin/products?category_id[]=${productCategory.id}`,
+          adminHeaders
+        )
+
+        console.log(productsInCategoryResponse.data)
+
+        expect(categoryResponse.status).toEqual(200)
       })
     })
   },

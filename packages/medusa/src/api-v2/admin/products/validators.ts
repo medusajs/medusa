@@ -194,6 +194,10 @@ export const AdminBatchUpdateProductVariant = AdminUpdateProductVariant.extend({
   id: z.string(),
 })
 
+export const AdminCreateProductProductCategory = z.object({
+  id: z.string(),
+})
+
 export type AdminCreateProductType = z.infer<typeof AdminCreateProduct>
 export const AdminCreateProduct = z
   .object({
@@ -208,6 +212,7 @@ export const AdminCreateProduct = z
     status: statusEnum.optional().default(ProductStatus.DRAFT),
     type_id: z.string().nullable().optional(),
     collection_id: z.string().nullable().optional(),
+    categories: z.array(AdminCreateProductProductCategory).optional(),
     tags: z.array(AdminUpdateProductTag).optional(),
     options: z.array(AdminCreateProductOption).optional(),
     variants: z.array(AdminCreateProductVariant).optional(),

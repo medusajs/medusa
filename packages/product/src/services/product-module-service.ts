@@ -1369,6 +1369,15 @@ export default class ProductModuleService<
       })
     }
 
+    if (productData.category_ids?.length) {
+      ;(productData as any).categories = productData.category_ids.map(
+        (cid) => ({
+          id: cid,
+        })
+      )
+      delete productData.category_ids
+    }
+
     return productData
   }
 
