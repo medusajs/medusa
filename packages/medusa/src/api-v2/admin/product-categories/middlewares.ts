@@ -7,6 +7,7 @@ import {
   AdminCreateProductCategory,
   AdminProductCategoriesParams,
   AdminProductCategoryParams,
+  AdminUpdateProductCategory,
 } from "./validators"
 
 export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
@@ -40,6 +41,17 @@ export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/product-categories",
     middlewares: [
       validateAndTransformBody(AdminCreateProductCategory),
+      validateAndTransformQuery(
+        AdminProductCategoryParams,
+        QueryConfig.retrieveProductCategoryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/product-categories/:id",
+    middlewares: [
+      validateAndTransformBody(AdminUpdateProductCategory),
       validateAndTransformQuery(
         AdminProductCategoryParams,
         QueryConfig.retrieveProductCategoryConfig

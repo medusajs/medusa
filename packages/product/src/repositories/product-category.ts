@@ -417,10 +417,10 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       rankCondition = { $gte: targetRank }
     } else if (originalRank > targetRank) {
       shouldIncrementRank = true
-      rankCondition = { $gte: targetRank, $lt: originalRank }
+      rankCondition = { $gte: targetRank, $lte: originalRank }
     } else {
       shouldIncrementRank = false
-      rankCondition = { $gte: originalRank, $lt: targetRank }
+      rankCondition = { $gte: originalRank, $lte: targetRank }
     }
 
     // Scope out the list of siblings that we need to shift up or down

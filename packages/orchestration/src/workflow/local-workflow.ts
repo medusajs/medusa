@@ -244,6 +244,13 @@ export class LocalWorkflow {
         )
       }
 
+      if (subscribe?.onStepAwaiting) {
+        transaction.on(
+          DistributedTransactionEvent.STEP_AWAITING,
+          eventWrapperMap.get("onStepAwaiting")
+        )
+      }
+
       if (subscribe?.onCompensateStepSuccess) {
         transaction.on(
           DistributedTransactionEvent.COMPENSATE_STEP_SUCCESS,
