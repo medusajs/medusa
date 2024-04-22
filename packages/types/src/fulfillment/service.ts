@@ -4,6 +4,7 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   FilterableFulfillmentProps,
+  FilterableFulfillmentProviderProps,
   FilterableFulfillmentSetProps,
   FilterableGeoZoneProps,
   FilterableServiceZoneProps,
@@ -13,6 +14,7 @@ import {
   FilterableShippingOptionTypeProps,
   FilterableShippingProfileProps,
   FulfillmentDTO,
+  FulfillmentProviderDTO,
   FulfillmentSetDTO,
   GeoZoneDTO,
   ServiceZoneDTO,
@@ -2498,4 +2500,29 @@ export interface IFulfillmentModuleService extends IModuleService {
     shippingOptionId: string,
     context: Record<string, unknown>
   ): Promise<boolean>
+
+  /**
+   * This method retrieves a paginated list of fulfillment providers based on optional filters and configuration.
+   *
+   * @param {FilterableFulfillmentProviderProps} filters - The filters to apply on the retrieved fulfillment providers.
+   * @param {FindConfig<FulfillmentProviderDTO>} config - The configurations determining how the fulfillment provider is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a fulfillment provider.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<FulfillmentProviderDTO[]>} The list of fulfillment providers.
+   *
+   * @example
+   * To retrieve a list of fulfillment providers using their IDs:
+   *
+   * ```ts
+   * const providers = await fulfillmentModuleService.listFulfillmentProviders({
+   *   id: ["sepro_123", "sepro_321"],
+   * })
+   * ```
+   *
+   */
+  listFulfillmentProviders(
+    filters?: FilterableFulfillmentProviderProps,
+    config?: FindConfig<FulfillmentProviderDTO>,
+    sharedContext?: Context
+  ): Promise<FulfillmentProviderDTO[]>
 }
