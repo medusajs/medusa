@@ -1,3 +1,4 @@
+import { BaseFilterable, OperatorMap } from "../../dal"
 import { ShippingOptionDTO } from "./shipping-option"
 
 /**
@@ -38,4 +39,25 @@ export interface FulfillmentProviderDTO {
    * The deletion date of the fulfillment provider.
    */
   deleted_at: Date | null
+}
+
+/**
+ * The filters to apply on the retrieved fulfillment providers.
+ */
+export interface FilterableFulfillmentProviderProps
+  extends BaseFilterable<FilterableFulfillmentProviderProps> {
+  /**
+   * The IDs to filter the provider by.
+   */
+  id?: string | string[] | OperatorMap<string | string[]>
+
+  /**
+   * Filter the provider by their creation date.
+   */
+  created_at?: Date | OperatorMap<string | string[]>
+
+  /**
+   * Filter the provider by their update date.
+   */
+  updated_at?: Date | OperatorMap<string | string[]>
 }
