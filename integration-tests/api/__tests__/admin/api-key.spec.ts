@@ -188,14 +188,19 @@ medusaIntegrationTestRunner({
         const { api_key } = apiKeyRes.data
 
         const keyWithChannelsRes = await api.post(
-          `/admin/api-keys/${api_key.id}/sales-channels/batch`,
+          `/admin/api-keys/${api_key.id}/sales-channels`,
           {
-            create: [sales_channel.id],
+            add: [sales_channel.id],
           },
           adminHeaders
         )
 
-        const { api_key: keyWithChannels } = keyWithChannelsRes.data
+        const keyWithChannels = (
+          await api.get(
+            `/admin/api-keys/${api_key.id}?fields=*sales_channels`,
+            adminHeaders
+          )
+        ).data.api_key
 
         expect(keyWithChannelsRes.status).toEqual(200)
         expect(keyWithChannels.title).toEqual("Test publishable KEY")
@@ -229,9 +234,9 @@ medusaIntegrationTestRunner({
 
         const errorRes = await api
           .post(
-            `/admin/api-keys/${apiKeyRes.data.api_key.id}/sales-channels/batch`,
+            `/admin/api-keys/${apiKeyRes.data.api_key.id}/sales-channels`,
             {
-              create: [sales_channel.id],
+              add: [sales_channel.id],
             },
             adminHeaders
           )
@@ -255,9 +260,9 @@ medusaIntegrationTestRunner({
 
         const errorRes = await api
           .post(
-            `/admin/api-keys/${apiKeyRes.data.api_key.id}/sales-channels/batch`,
+            `/admin/api-keys/${apiKeyRes.data.api_key.id}/sales-channels`,
             {
-              create: ["phony"],
+              add: ["phony"],
             },
             adminHeaders
           )
@@ -292,14 +297,19 @@ medusaIntegrationTestRunner({
         const { api_key } = apiKeyRes.data
 
         const keyWithChannelsRes = await api.post(
-          `/admin/api-keys/${api_key.id}/sales-channels/batch`,
+          `/admin/api-keys/${api_key.id}/sales-channels`,
           {
-            create: [sales_channel.id],
+            add: [sales_channel.id],
           },
           adminHeaders
         )
 
-        const { api_key: keyWithChannels } = keyWithChannelsRes.data
+        const keyWithChannels = (
+          await api.get(
+            `/admin/api-keys/${api_key.id}?fields=*sales_channels`,
+            adminHeaders
+          )
+        ).data.api_key
 
         expect(keyWithChannelsRes.status).toEqual(200)
         expect(keyWithChannels.title).toEqual("Test publishable KEY")
@@ -311,14 +321,19 @@ medusaIntegrationTestRunner({
         ])
 
         const keyWithoutChannelsRes = await api.post(
-          `/admin/api-keys/${api_key.id}/sales-channels/batch`,
+          `/admin/api-keys/${api_key.id}/sales-channels`,
           {
-            delete: [sales_channel.id],
+            remove: [sales_channel.id],
           },
           adminHeaders
         )
 
-        const { api_key: keyWithoutChannels } = keyWithoutChannelsRes.data
+        const keyWithoutChannels = (
+          await api.get(
+            `/admin/api-keys/${api_key.id}?fields=*sales_channels`,
+            adminHeaders
+          )
+        ).data.api_key
 
         expect(keyWithoutChannelsRes.status).toEqual(200)
         expect(keyWithoutChannels.title).toEqual("Test publishable KEY")
@@ -348,14 +363,19 @@ medusaIntegrationTestRunner({
         const { api_key } = apiKeyRes.data
 
         const keyWithChannelsRes = await api.post(
-          `/admin/api-keys/${api_key.id}/sales-channels/batch`,
+          `/admin/api-keys/${api_key.id}/sales-channels`,
           {
-            create: [sales_channel.id],
+            add: [sales_channel.id],
           },
           adminHeaders
         )
 
-        const { api_key: keyWithChannels } = keyWithChannelsRes.data
+        const keyWithChannels = (
+          await api.get(
+            `/admin/api-keys/${api_key.id}?fields=*sales_channels`,
+            adminHeaders
+          )
+        ).data.api_key
 
         expect(keyWithChannelsRes.status).toEqual(200)
         expect(keyWithChannels.title).toEqual("Test publishable KEY")

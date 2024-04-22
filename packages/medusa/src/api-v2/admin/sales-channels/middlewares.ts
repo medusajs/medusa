@@ -3,12 +3,12 @@ import { authenticate } from "../../../utils/authenticate-middleware"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
+import { createLinkBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
 import {
   AdminCreateSalesChannel,
   AdminGetSalesChannelParams,
   AdminGetSalesChannelsParams,
-  AdminSetSalesChannelProductsBatch,
   AdminUpdateSalesChannel,
 } from "./validators"
 
@@ -77,20 +77,9 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/sales-channels/:id/products/batch/add",
+    matcher: "/admin/sales-channels/:id/products",
     middlewares: [
-      validateAndTransformBody(AdminSetSalesChannelProductsBatch),
-      validateAndTransformQuery(
-        AdminGetSalesChannelParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/sales-channels/:id/products/batch/remove",
-    middlewares: [
-      validateAndTransformBody(AdminSetSalesChannelProductsBatch),
+      validateAndTransformBody(createLinkBody()),
       validateAndTransformQuery(
         AdminGetSalesChannelParams,
         QueryConfig.retrieveTransformQueryConfig

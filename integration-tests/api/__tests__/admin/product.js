@@ -2998,8 +2998,7 @@ medusaIntegrationTestRunner({
               )
 
               expect(response.status).toEqual(200)
-              expect(response.data.added).toHaveLength(1)
-              expect(response.data.removed).toHaveLength(1)
+              expect(response.data.collection).toBeTruthy()
 
               const collection = (
                 await api.get(

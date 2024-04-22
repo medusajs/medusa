@@ -1,33 +1,24 @@
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { batchProductVariantsStep } from "../steps/batch-product-variants"
-import { PricingTypes, ProductTypes } from "@medusajs/types"
-
-type BatchProductVariantsInput = {
-  create: (ProductTypes.CreateProductVariantDTO & {
-    prices?: PricingTypes.CreateMoneyAmountDTO[]
-  })[]
-  update: (ProductTypes.UpsertProductVariantDTO & {
-    prices?: PricingTypes.CreateMoneyAmountDTO[]
-  })[]
-  delete: string[]
-}
-
-type BatchProductVariantsOutput = {
-  created: ProductTypes.ProductVariantDTO[]
-  updated: ProductTypes.ProductVariantDTO[]
-  deleted: {
-    ids: string[]
-    object: string
-    deleted: boolean
-  }
-}
+import {
+  BatchWorkflowInput,
+  BatchWorkflowOutput,
+  ProductTypes,
+  UpdateProductVariantWorkflowInputDTO,
+  CreateProductVariantWorkflowInputDTO,
+} from "@medusajs/types"
 
 export const batchProductVariantsWorkflowId = "batch-product-variants"
 export const batchProductVariantsWorkflow = createWorkflow(
   batchProductVariantsWorkflowId,
   (
-    input: WorkflowData<BatchProductVariantsInput>
-  ): WorkflowData<BatchProductVariantsOutput> => {
+    input: WorkflowData<
+      BatchWorkflowInput<
+        CreateProductVariantWorkflowInputDTO,
+        UpdateProductVariantWorkflowInputDTO
+      >
+    >
+  ): WorkflowData<BatchWorkflowOutput<ProductTypes.ProductVariantDTO>> => {
     return batchProductVariantsStep(input)
   }
 )
