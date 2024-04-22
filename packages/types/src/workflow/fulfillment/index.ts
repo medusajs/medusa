@@ -1,4 +1,5 @@
 export * from "./create-fulfillment"
+export * from "./create-shipment"
 export * from "./create-shipping-options"
 export * from "./delete-shipping-options"
 export * from "./service-zones"
