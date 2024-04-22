@@ -1,17 +1,12 @@
 import { createServiceZonesWorkflow } from "@medusajs/core-flows"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { AdminCreateFulfillmentSetServiceZonesType } from "../../validators"
+import { refetchFulfillmentSet } from "../../helpers"
 
 export const POST = async (
   req: MedusaRequest<AdminCreateFulfillmentSetServiceZonesType>,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
   const workflowInput = {
     data: [
       {
@@ -31,15 +26,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const [fulfillment_set] = await remoteQuery(
-    remoteQueryObjectFromString({
-      entryPoint: "fulfillment_sets",
-      variables: {
-        id: req.params.id,
-      },
-      fields: req.remoteQueryConfig.fields,
-    })
+  const fulfillmentSet = await refetchFulfillmentSet(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
   )
 
-  res.status(200).json({ fulfillment_set })
+  res.status(200).json({ fulfillment_set: fulfillmentSet })
 }

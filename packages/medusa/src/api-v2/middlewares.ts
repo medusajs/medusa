@@ -7,14 +7,16 @@ import { adminCustomerGroupRoutesMiddlewares } from "./admin/customer-groups/mid
 import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
 import { adminDraftOrderRoutesMiddlewares } from "./admin/draft-orders/middlewares"
 import { adminFulfillmentSetsRoutesMiddlewares } from "./admin/fulfillment-sets/middlewares"
+import { adminFulfillmentsRoutesMiddlewares } from "./admin/fulfillments/middlewares"
 import { adminInventoryRoutesMiddlewares } from "./admin/inventory-items/middlewares"
 import { adminInviteRoutesMiddlewares } from "./admin/invites/middlewares"
+import { adminOrderRoutesMiddlewares } from "./admin/orders/middlewares"
 import { adminPaymentRoutesMiddlewares } from "./admin/payments/middlewares"
 import { adminPriceListsRoutesMiddlewares } from "./admin/price-lists/middlewares"
 import { adminPricingRoutesMiddlewares } from "./admin/pricing/middlewares"
 import { adminProductCategoryRoutesMiddlewares } from "./admin/product-categories/middlewares"
-import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminProductTypeRoutesMiddlewares } from "./admin/product-types/middlewares"
+import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
 import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
 import { adminReservationRoutesMiddlewares } from "./admin/reservations/middlewares"
@@ -70,9 +72,11 @@ export const config: MiddlewaresConfig = {
     ...adminProductTypeRoutesMiddlewares,
     ...adminUploadRoutesMiddlewares,
     ...adminFulfillmentSetsRoutesMiddlewares,
+    ...adminOrderRoutesMiddlewares,
     ...adminReservationRoutesMiddlewares,
     ...adminProductCategoryRoutesMiddlewares,
     ...adminReservationRoutesMiddlewares,
     ...adminShippingProfilesMiddlewares,
+    ...adminFulfillmentsRoutesMiddlewares,
   ],
 }

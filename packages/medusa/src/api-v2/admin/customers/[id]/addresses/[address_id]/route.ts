@@ -2,35 +2,38 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-import { CustomerAddressDTO, ICustomerModuleService } from "@medusajs/types"
 import {
   deleteCustomerAddressesWorkflow,
   updateCustomerAddressesWorkflow,
 } from "@medusajs/core-flows"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { AdminCreateCustomerAddressType } from "../../../validators"
+import { refetchCustomer } from "../../../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const customerModuleService = req.scope.resolve<ICustomerModuleService>(
-    ModuleRegistrationName.CUSTOMER
-  )
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "customer_address",
+    variables: {
+      filters: { id: req.params.address_id, customer_id: req.params.id },
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
 
-  const [address] = await customerModuleService.listAddresses(
-    { id: req.params.address_id, customer_id: req.params.id },
-    {
-      select: req.retrieveConfig.select,
-      relations: req.retrieveConfig.relations,
-    }
-  )
+  const [address] = await remoteQuery(queryObject)
 
   res.status(200).json({ address })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<Partial<CustomerAddressDTO>>,
+  req: AuthenticatedMedusaRequest<AdminCreateCustomerAddressType>,
   res: MedusaResponse
 ) => {
   const updateAddresses = updateCustomerAddressesWorkflow(req.scope)
@@ -46,7 +49,13 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ address: result[0] })
+  const customer = await refetchCustomer(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ customer })
 }
 
 export const DELETE = async (
@@ -65,9 +74,16 @@ export const DELETE = async (
     throw errors[0].error
   }
 
+  const customer = await refetchCustomer(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
   res.status(200).json({
     id,
-    object: "address",
+    object: "customer_address",
     deleted: true,
+    parent: customer,
   })
 }

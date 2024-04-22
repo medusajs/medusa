@@ -188,9 +188,9 @@ medusaIntegrationTestRunner({
         const { api_key } = apiKeyRes.data
 
         const keyWithChannelsRes = await api.post(
-          `/admin/api-keys/${api_key.id}/sales-channels/batch/add`,
+          `/admin/api-keys/${api_key.id}/sales-channels/batch`,
           {
-            sales_channel_ids: [sales_channel.id],
+            create: [sales_channel.id],
           },
           adminHeaders
         )
@@ -229,9 +229,9 @@ medusaIntegrationTestRunner({
 
         const errorRes = await api
           .post(
-            `/admin/api-keys/${apiKeyRes.data.api_key.id}/sales-channels/batch/add`,
+            `/admin/api-keys/${apiKeyRes.data.api_key.id}/sales-channels/batch`,
             {
-              sales_channel_ids: [sales_channel.id],
+              create: [sales_channel.id],
             },
             adminHeaders
           )
@@ -255,9 +255,9 @@ medusaIntegrationTestRunner({
 
         const errorRes = await api
           .post(
-            `/admin/api-keys/${apiKeyRes.data.api_key.id}/sales-channels/batch/add`,
+            `/admin/api-keys/${apiKeyRes.data.api_key.id}/sales-channels/batch`,
             {
-              sales_channel_ids: ["phony"],
+              create: ["phony"],
             },
             adminHeaders
           )
@@ -292,9 +292,9 @@ medusaIntegrationTestRunner({
         const { api_key } = apiKeyRes.data
 
         const keyWithChannelsRes = await api.post(
-          `/admin/api-keys/${api_key.id}/sales-channels/batch/add`,
+          `/admin/api-keys/${api_key.id}/sales-channels/batch`,
           {
-            sales_channel_ids: [sales_channel.id],
+            create: [sales_channel.id],
           },
           adminHeaders
         )
@@ -311,9 +311,9 @@ medusaIntegrationTestRunner({
         ])
 
         const keyWithoutChannelsRes = await api.post(
-          `/admin/api-keys/${api_key.id}/sales-channels/batch/remove`,
+          `/admin/api-keys/${api_key.id}/sales-channels/batch`,
           {
-            sales_channel_ids: [sales_channel.id],
+            delete: [sales_channel.id],
           },
           adminHeaders
         )
@@ -348,9 +348,9 @@ medusaIntegrationTestRunner({
         const { api_key } = apiKeyRes.data
 
         const keyWithChannelsRes = await api.post(
-          `/admin/api-keys/${api_key.id}/sales-channels/batch/add`,
+          `/admin/api-keys/${api_key.id}/sales-channels/batch`,
           {
-            sales_channel_ids: [sales_channel.id],
+            create: [sales_channel.id],
           },
           adminHeaders
         )
