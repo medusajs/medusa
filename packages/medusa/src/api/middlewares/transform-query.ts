@@ -34,6 +34,7 @@ export function transformQuery<
         req.query,
         config
       )
+
       req.validatedQuery = validated
       req.filterableFields = getFilterableFields(validated)
 

@@ -43,7 +43,7 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/payments/:id",
     middlewares: [
       unlessPath(
-        new RegExp("/admin/payments/payment-providers"),
+        /.*\/payments\/payment-providers/,
         validateAndTransformQuery(
           AdminGetPaymentParams,
           queryConfig.retrieveTransformQueryConfig

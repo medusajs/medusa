@@ -63,7 +63,9 @@ export class InitialSetup20240315083440 extends Migration {
     this.addSql('create unique index if not exists "IDX_category_handle_unique" on "product_category" (handle) where deleted_at is null;')
     this.addSql('create index if not exists "IDX_product_category_path" on "product_category" ("mpath") where deleted_at is null;');
     this.addSql('create index if not exists "IDX_product_category_deleted_at" on "product_collection" ("deleted_at");');
-    
+    // TODO: Batch updating composite unique index in MikroORM is faulty. Should be added back when issue has been resolved.
+    this.addSql(`drop index if exists "UniqProductCategoryParentIdRank";`)
+
     /* --- PIVOT TABLES --- */
     this.addSql('create table if not exists "product_tags" ("product_id" text not null, "product_tag_id" text not null, constraint "product_tags_pkey" primary key ("product_id", "product_tag_id"));');
     this.addSql('create table if not exists "product_images" ("product_id" text not null, "image_id" text not null, constraint "product_images_pkey" primary key ("product_id", "image_id"));');

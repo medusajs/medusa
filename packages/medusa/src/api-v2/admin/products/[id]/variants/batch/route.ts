@@ -2,13 +2,13 @@ import { batchProductVariantsWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../../types/routing"
+} from "../../../../../../types/routing"
 import {
   AdminBatchUpdateProductVariantType,
   AdminCreateProductType,
-} from "../../../../validators"
+} from "../../../validators"
 import { BatchMethodRequest } from "@medusajs/types"
-import { refetchBatchVariants, remapVariantResponse } from "../../../../helpers"
+import { refetchBatchVariants, remapVariantResponse } from "../../../helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
