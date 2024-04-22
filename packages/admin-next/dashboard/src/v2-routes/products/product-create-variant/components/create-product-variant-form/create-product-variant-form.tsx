@@ -1,22 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Product, ProductVariant } from "@medusajs/medusa"
+import { Product } from "@medusajs/medusa"
 import { Button, Heading, Input, Switch } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
 import { Fragment } from "react"
-import { Combobox } from "../../../../../components/common/combobox"
-import { CountrySelect } from "../../../../../components/common/country-select"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
+import { Combobox } from "../../../../../components/inputs/combobox"
+import { CountrySelect } from "../../../../../components/inputs/country-select"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useCreateProductVariant } from "../../../../../hooks/api/products"
 import { castNumber } from "../../../../../lib/cast-number"
 import { optionalInt } from "../../../../../lib/validation"
-import { useCreateProductVariant } from "../../../../../hooks/api/products"
 
 type CreateProductVariantFormProps = {
   product: Product

@@ -13,9 +13,9 @@ import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { Combobox } from "../../../../../components/common/combobox"
 import { Form } from "../../../../../components/common/form"
-import { PercentageInput } from "../../../../../components/common/percentage-input"
+import { Combobox } from "../../../../../components/inputs/combobox"
+import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
   RouteDrawer,
   useRouteModal,

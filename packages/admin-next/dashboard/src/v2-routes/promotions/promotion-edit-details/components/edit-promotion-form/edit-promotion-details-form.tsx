@@ -6,10 +6,10 @@ import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
-import { PercentageInput } from "../../../../../components/common/percentage-input"
+import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
-  RouteDrawer,
-  useRouteModal,
+    RouteDrawer,
+    useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/currencies"

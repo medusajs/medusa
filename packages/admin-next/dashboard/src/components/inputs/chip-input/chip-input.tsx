@@ -87,6 +87,7 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
         className={clx(
           "bg-ui-bg-base shadow-borders-base flex min-h-8 flex-wrap items-center gap-1 rounded-md px-2 py-1.5",
           "transition-fg focus-within:shadow-borders-interactive-with-active",
+          "hover:bg-ui-bg-base-hover",
           "has-[input:disabled]:bg-ui-bg-disabled has-[input:disabled]:text-ui-fg-disabled has-[input:disabled]:cursor-not-allowed",
           className
         )}

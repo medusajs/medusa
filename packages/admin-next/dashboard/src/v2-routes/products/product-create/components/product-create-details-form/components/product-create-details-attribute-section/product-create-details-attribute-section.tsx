@@ -1,13 +1,13 @@
 import { Heading, Input } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { CreateProductSchemaType } from "../../../../schema"
 
-import { CountrySelect } from "../../../../../../../components/common/country-select"
 import { Form } from "../../../../../../../components/common/form"
+import { CountrySelect } from "../../../../../../../components/inputs/country-select"
+import { ProductCreateSchemaType } from "../../../../types"
 
 type ProductCreateAttributeSectionProps = {
-  form: UseFormReturn<CreateProductSchemaType>
+  form: UseFormReturn<ProductCreateSchemaType>
 }
 
 export const ProductCreateAttributeSection = ({

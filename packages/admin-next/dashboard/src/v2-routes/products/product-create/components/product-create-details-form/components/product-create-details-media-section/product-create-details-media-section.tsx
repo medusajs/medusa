@@ -1,12 +1,13 @@
 import { Heading } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+
 import { FileUpload } from "../../../../../../../components/common/file-upload"
 import { Form } from "../../../../../../../components/common/form"
-import { CreateProductSchemaType } from "../../../../schema"
+import { ProductCreateSchemaType } from "../../../../types"
 
 type ProductCreateMediaSectionProps = {
-  form: UseFormReturn<CreateProductSchemaType>
+  form: UseFormReturn<ProductCreateSchemaType>
 }
 
 const SUPPORTED_FORMATS = [

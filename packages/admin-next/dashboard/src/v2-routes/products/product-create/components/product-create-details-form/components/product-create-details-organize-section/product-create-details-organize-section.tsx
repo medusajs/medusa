@@ -1,31 +1,41 @@
 import { Button, Heading, Select, Switch } from "@medusajs/ui"
-import { UseFormReturn } from "react-hook-form"
+import { UseFormReturn, useFieldArray } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 
-import { Combobox } from "../../../../../../../components/common/combobox"
+import { ChipGroup } from "../../../../../../../components/common/chip-group"
 import { Form } from "../../../../../../../components/common/form"
+import { Combobox } from "../../../../../../../components/inputs/combobox"
 import { useCategories } from "../../../../../../../hooks/api/categories"
 import { useCollections } from "../../../../../../../hooks/api/collections"
 import { useProductTypes } from "../../../../../../../hooks/api/product-types"
-import { useSalesChannels } from "../../../../../../../hooks/api/sales-channels"
 import { useTags } from "../../../../../../../hooks/api/tags"
-import { CreateProductSchemaType } from "../../../../schema"
+import { ProductCreateSchemaType } from "../../../../types"
+import { useProductCreateDetailsContext } from "../product-create-details-context"
 
 type ProductCreateOrganizationSectionProps = {
-  form: UseFormReturn<CreateProductSchemaType>
+  form: UseFormReturn<ProductCreateSchemaType>
 }
 
 export const ProductCreateOrganizationSection = ({
   form,
 }: ProductCreateOrganizationSectionProps) => {
   const { t } = useTranslation()
+  const { onOpenChange } = useProductCreateDetailsContext()
 
   const { product_types, isLoading: isLoadingTypes } = useProductTypes()
   const { tags, isLoading: isLoadingTags } = useTags()
   const { collections, isLoading: isLoadingCollections } = useCollections()
-  const { sales_channels, isLoading: isLoadingSalesChannels } =
-    useSalesChannels()
   const { product_categories, isLoading: isLoadingCategories } = useCategories()
+
+  const { fields, remove, replace } = useFieldArray({
+    control: form.control,
+    name: "sales_channels",
+    keyName: "key",
+  })
+
+  const handleClearAllSalesChannels = () => {
+    replace([])
+  }
 
   return (
     <div id="organize" className="flex flex-col gap-y-8">
@@ -169,38 +179,50 @@ export const ProductCreateOrganizationSection = ({
           }}
         />
       </div>
-
-      {/* TODO: Align to match designs */}
-      <div className="grid grid-cols-1 gap-x-4">
+      <div className="grid grid-cols-1 gap-y-4">
         <Form.Field
           control={form.control}
           name="sales_channels"
-          render={({ field }) => {
+          render={() => {
             return (
               <Form.Item>
-                <Form.Label optional>
-                  {t("products.fields.sales_channels.label")}
-                </Form.Label>
-                <Form.Hint>
-                  <Trans i18nKey={"products.fields.sales_channels.hint"} />
-                </Form.Hint>
-                <Form.Control>
-                  <Combobox
-                    disabled={isLoadingSalesChannels}
-                    options={(sales_channels ?? []).map((salesChannel) => ({
-                      label: salesChannel.name,
-                      value: salesChannel.id,
-                    }))}
-                    {...field}
-                  />
+                <div className="flex items-start justify-between gap-x-4">
+                  <div>
+                    <Form.Label optional>
+                      {t("products.fields.sales_channels.label")}
+                    </Form.Label>
+                    <Form.Hint>
+                      <Trans i18nKey={"products.fields.sales_channels.hint"} />
+                    </Form.Hint>
+                  </div>
+                  <Button
+                    size="small"
+                    variant="secondary"
+                    type="button"
+                    onClick={() => onOpenChange(true)}
+                  >
+                    {t("actions.add")}
+                  </Button>
+                </div>
+                <Form.Control className="mt-0">
+                  {fields.length > 0 && (
+                    <ChipGroup
+                      onClearAll={handleClearAllSalesChannels}
+                      onRemove={remove}
+                      className="py-4"
+                    >
+                      {fields.map((field, index) => (
+                        <ChipGroup.Chip key={field.key} index={index}>
+                          {field.name}
+                        </ChipGroup.Chip>
+                      ))}
+                    </ChipGroup>
+                  )}
                 </Form.Control>
               </Form.Item>
             )
           }}
         />
-        <Button size="small" variant="secondary" type="button">
-          Add
-        </Button>
       </div>
     </div>
   )

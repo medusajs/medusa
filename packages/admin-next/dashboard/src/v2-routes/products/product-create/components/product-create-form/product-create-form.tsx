@@ -1,35 +1,40 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
+import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../components/route-modal"
-import { useCreateProduct } from "../../../../hooks/api/products"
-import { VariantPricingForm } from "../../common/variant-pricing-form"
+} from "../../../../../components/route-modal"
+import { useCreateProduct } from "../../../../../hooks/api/products"
+import { VariantPricingForm } from "../../../common/variant-pricing-form"
 import {
-  CreateProductSchema,
-  CreateProductSchemaType,
-  defaults,
-  normalize,
-} from "../schema"
-import { ProductCreateDetailsForm } from "./product-create-details-form/product-create-details-form"
+  PRODUCT_CREATE_FORM_DEFAULTS,
+  ProductCreateSchema,
+} from "../../constants"
+import { ProductCreateSchemaType } from "../../types"
+import { normalizeProductFormValues } from "../../utils"
+import { ProductCreateDetailsForm } from "../product-create-details-form"
 
 enum Tab {
   PRODUCT = "product",
   PRICE = "price",
 }
+
 type TabState = Record<Tab, ProgressStatus>
 
-export const CreateProductPage = () => {
-  const { t } = useTranslation()
+const SAVE_DRAFT_BUTTON = "save-draft-button"
+
+export const ProductCreateForm = () => {
   const [tab, setTab] = useState<Tab>(Tab.PRODUCT)
+
+  const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const form = useForm<CreateProductSchemaType>({
-    defaultValues: defaults,
-    resolver: zodResolver(CreateProductSchema),
+
+  const form = useForm<ProductCreateSchemaType>({
+    defaultValues: PRODUCT_CREATE_FORM_DEFAULTS,
+    resolver: zodResolver(ProductCreateSchema),
   })
 
   const { mutateAsync, isPending } = useCreateProduct()
@@ -40,18 +45,25 @@ export const CreateProductPage = () => {
         return
       }
       const submitter = e?.nativeEvent?.submitter as HTMLButtonElement
+
       if (!(submitter instanceof HTMLButtonElement)) {
         return
       }
-      const isDraftSubmission = submitter.dataset.name === "save-draft-button"
+
+      const isDraftSubmission = submitter.dataset.name === SAVE_DRAFT_BUTTON
 
       await mutateAsync(
-        normalize({
+        normalizeProductFormValues({
           ...values,
           status: (isDraftSubmission ? "draft" : "published") as any,
         }),
         {
           onSuccess: ({ product }) => {
+            toast.success(t("general.success"), {
+              dismissLabel: t("actions.close"),
+              description: t("products.create.successToast"),
+            })
+
             handleSuccess(`../${product.id}`)
           },
         }
@@ -83,13 +95,13 @@ export const CreateProductPage = () => {
                       status={tabState.product}
                       value={Tab.PRODUCT}
                     >
-                      Products
+                      {t("products.create.tabs.details")}
                     </ProgressTabs.Trigger>
                     <ProgressTabs.Trigger
                       status={tabState.price}
                       value={Tab.PRICE}
                     >
-                      Prices
+                      {t("products.create.tabs.variants")}
                     </ProgressTabs.Trigger>
                   </ProgressTabs.List>
                 </div>
@@ -100,11 +112,8 @@ export const CreateProductPage = () => {
                     </Button>
                   </RouteFocusModal.Close>
                   <Button
-                    className="whitespace-nowrap"
-                    data-name="save-draft-button"
-                    variant="primary"
+                    data-name={SAVE_DRAFT_BUTTON}
                     size="small"
-                    key="submit-button"
                     type="submit"
                     isLoading={isPending}
                   >
@@ -120,12 +129,10 @@ export const CreateProductPage = () => {
             </RouteFocusModal.Header>
             <RouteFocusModal.Body className="size-full overflow-hidden">
               <ProgressTabs.Content
-                className="size-full overflow-y-auto"
+                className="size-full overflow-hidden"
                 value={Tab.PRODUCT}
               >
-                <div className="flex h-full w-full">
-                  <ProductCreateDetailsForm form={form} />
-                </div>
+                <ProductCreateDetailsForm form={form} />
               </ProgressTabs.Content>
               <ProgressTabs.Content
                 className="size-full overflow-y-auto"

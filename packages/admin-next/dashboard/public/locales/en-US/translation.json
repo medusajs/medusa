@@ -156,8 +156,27 @@
   },
   "products": {
     "domain": "Products",
-    "createProductTitle": "Create Product",
-    "createProductHint": "Create a new product to sell in your store.",
+    "create": {
+      "header": "Create Product",
+      "hint": "Create a new product to sell in your store.",
+      "tabs": {
+        "details": "Details",
+        "variants": "Variants"
+      },
+      "variants": {
+        "header": "Variants",
+        "productVariants": {
+          "label": "Product variants",
+          "hint": "Variants left unchecked won't be created. This ranking will affect how the variants are ranked in your frontend.",
+          "alert": "Add options to create variants."
+        },
+        "productOptions": {
+          "label": "Product options",
+          "hint": "Define the options for the product, e.g. color, size, etc."
+        }
+      },
+      "successToast": "Product {{title}} was successfully created."
+    },
     "deleteWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
     "variants": "Variants",
     "attributes": "Attributes",
@@ -1450,7 +1469,8 @@
     "unitPrice": "Unit price",
     "startDate": "Start date",
     "endDate": "End date",
-    "draft": "Draft"
+    "draft": "Draft",
+    "values": "Values"
   },
   "dateTime": {
     "years_one": "Year",

@@ -1,4 +1,4 @@
-import { PlusMini, XMarkMini } from "@medusajs/icons"
+import { XMarkMini } from "@medusajs/icons"
 import {
   Alert,
   Button,
@@ -17,13 +17,14 @@ import {
   useWatch,
 } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+
 import { Form } from "../../../../../../../components/common/form"
 import { SortableList } from "../../../../../../../components/common/sortable-list"
 import { ChipInput } from "../../../../../../../components/inputs/chip-input"
-import { CreateProductSchemaType } from "../../../../schema"
+import { ProductCreateSchemaType } from "../../../../types"
 
 type ProductCreateVariantsSectionProps = {
-  form: UseFormReturn<CreateProductSchemaType>
+  form: UseFormReturn<ProductCreateSchemaType>
 }
 
 const getPermutations = (
@@ -176,7 +177,7 @@ export const ProductCreateVariantsSection = ({
   }
 
   const handleRankChange = (
-    items: FieldArrayWithId<CreateProductSchemaType, "variants">[]
+    items: FieldArrayWithId<ProductCreateSchemaType, "variants">[]
   ) => {
     // Items in the SortableList are momorized, so we need to find the current
     // value to preserve any changes that have been made to `should_create`.
@@ -195,97 +196,119 @@ export const ProductCreateVariantsSection = ({
 
   return (
     <div id="variants" className="flex flex-col gap-y-8">
-      <Heading level="h2">{t("products.variants")}</Heading>
+      <Heading level="h2">{t("products.create.variants.header")}</Heading>
       <div className="flex flex-col gap-y-6">
-        <ul className="flex flex-col gap-y-4">
-          {options.fields.map((option, index) => {
+        <Form.Field
+          control={form.control}
+          name="options"
+          render={() => {
             return (
-              <li
-                key={option.id}
-                className="bg-ui-bg-component shadow-elevation-card-rest grid grid-cols-[1fr_28px] items-center gap-3 rounded-xl px-1.5 py-2"
-              >
-                <div className="flex flex-col space-y-2">
-                  <Form.Field
-                    control={form.control}
-                    name={`options.${index}.title` as const}
-                    render={({ field }) => {
+              <Form.Item>
+                <div className="flex flex-col gap-y-4">
+                  <div className="flex items-start justify-between gap-x-4">
+                    <div className="flex flex-col">
+                      <Form.Label>
+                        {t("products.create.variants.productOptions.label")}
+                      </Form.Label>
+                      <Form.Hint>
+                        {t("products.create.variants.productOptions.hint")}
+                      </Form.Hint>
+                    </div>
+                    <Button
+                      size="small"
+                      variant="secondary"
+                      type="button"
+                      onClick={() => {
+                        options.append({
+                          title: "",
+                          values: [],
+                        })
+                      }}
+                    >
+                      {t("actions.add")}
+                    </Button>
+                  </div>
+                  <ul className="flex flex-col gap-y-4">
+                    {options.fields.map((option, index) => {
                       return (
-                        <Form.Item className="flex flex-col space-y-1.5">
-                          <div className="flex items-center pl-2">
-                            <Form.Label className="txt-compact-xsmall-plus text-ui-fg-muted">
-                              {t("fields.title")}
-                            </Form.Label>
-                          </div>
-                          <Form.Control>
-                            <Input
-                              {...field}
-                              className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover"
+                        <li
+                          key={option.id}
+                          className="bg-ui-bg-component shadow-elevation-card-rest grid grid-cols-[1fr_28px] items-center gap-3 rounded-xl px-1.5 py-2"
+                        >
+                          <div className="flex flex-col space-y-2">
+                            <Form.Field
+                              control={form.control}
+                              name={`options.${index}.title` as const}
+                              render={({ field }) => {
+                                return (
+                                  <Form.Item className="flex flex-col space-y-1.5">
+                                    <div className="flex items-center pl-2">
+                                      <Form.Label className="txt-compact-xsmall-plus text-ui-fg-muted">
+                                        {t("fields.title")}
+                                      </Form.Label>
+                                    </div>
+                                    <Form.Control>
+                                      <Input
+                                        {...field}
+                                        className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover"
+                                      />
+                                    </Form.Control>
+                                  </Form.Item>
+                                )
+                              }}
                             />
-                          </Form.Control>
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                  <Form.Field
-                    control={form.control}
-                    name={`options.${index}.values` as const}
-                    render={({ field: { onChange, ...field } }) => {
-                      const handleValueChange = (value: string[]) => {
-                        handleOptionValueUpdate(index, value)
-                        onChange(value)
-                      }
+                            <Form.Field
+                              control={form.control}
+                              name={`options.${index}.values` as const}
+                              render={({ field: { onChange, ...field } }) => {
+                                const handleValueChange = (value: string[]) => {
+                                  handleOptionValueUpdate(index, value)
+                                  onChange(value)
+                                }
 
-                      return (
-                        <Form.Item className="flex flex-col space-y-1.5">
-                          <div className="flex items-center pl-2">
-                            <Form.Label className="txt-compact-xsmall-plus text-ui-fg-muted">
-                              Values
-                            </Form.Label>
-                          </div>
-                          <Form.Control>
-                            <ChipInput
-                              {...field}
-                              onChange={handleValueChange}
+                                return (
+                                  <Form.Item className="flex flex-col space-y-1.5">
+                                    <div className="flex items-center pl-2">
+                                      <Form.Label className="txt-compact-xsmall-plus text-ui-fg-muted">
+                                        {t("fields.values")}
+                                      </Form.Label>
+                                    </div>
+                                    <Form.Control>
+                                      <ChipInput
+                                        {...field}
+                                        onChange={handleValueChange}
+                                      />
+                                    </Form.Control>
+                                  </Form.Item>
+                                )
+                              }}
                             />
-                          </Form.Control>
-                        </Form.Item>
+                          </div>
+                          <IconButton
+                            type="button"
+                            size="small"
+                            variant="transparent"
+                            className="text-ui-fg-muted"
+                            onClick={() => handleRemoveOption(index)}
+                          >
+                            <XMarkMini />
+                          </IconButton>
+                        </li>
                       )
-                    }}
-                  />
+                    })}
+                  </ul>
                 </div>
-                <IconButton
-                  type="button"
-                  size="small"
-                  variant="transparent"
-                  className="text-ui-fg-muted"
-                  onClick={() => handleRemoveOption(index)}
-                >
-                  <XMarkMini />
-                </IconButton>
-              </li>
+              </Form.Item>
             )
-          })}
-        </ul>
-        <Button
-          size="small"
-          variant="secondary"
-          type="button"
-          className="w-full"
-          onClick={() => {
-            options.append({
-              title: "",
-              values: [],
-            })
           }}
-        >
-          <PlusMini />
-          <span>Add option</span>
-        </Button>
+        />
       </div>
       <div className="grid grid-cols-1 gap-x-4 gap-y-4">
         <div className="flex flex-col gap-y-1">
-          <Label weight="plus">{t("products.fields.variants.label")}</Label>
-          <Hint>{t("products.fields.variants.hint")}</Hint>
+          <Label weight="plus">
+            {t("products.create.variants.productVariants.label")}
+          </Label>
+          <Hint>{t("products.create.variants.productVariants.hint")}</Hint>
         </div>
         {variants.fields.length > 0 ? (
           <div className="overflow-hidden rounded-xl border">
@@ -328,7 +351,7 @@ export const ProductCreateVariantsSection = ({
             />
           </div>
         ) : (
-          <Alert>Add options to generate variants.</Alert>
+          <Alert>{t("products.create.variants.productVariants.alert")}</Alert>
         )}
       </div>
     </div>
