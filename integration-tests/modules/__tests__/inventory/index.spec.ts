@@ -334,7 +334,7 @@ medusaIntegrationTestRunner({
 
         it("should delete an inventory location level and create a new one", async () => {
           const result = await api.post(
-            `/admin/inventory-items/${inventoryItem.id}/location-levels/op/batch`,
+            `/admin/inventory-items/${inventoryItem.id}/location-levels/batch`,
             {
               create: [
                 {
