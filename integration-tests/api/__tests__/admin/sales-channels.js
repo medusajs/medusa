@@ -827,7 +827,7 @@ medusaIntegrationTestRunner({
     describe("POST /admin/sales-channels/:id/products/batch", () => {
       // BREAKING CHANGE: Endpoint has changed
       // from: /admin/sales-channels/:id/products/batch
-      // to: /admin/sales-channels/:id/products/batch/add
+      // to: /admin/sales-channels/:id/products
 
       let { salesChannel, product } = {}
 
@@ -860,12 +860,14 @@ medusaIntegrationTestRunner({
       })
 
       it("should add products to a sales channel", async () => {
-        const payload = {
-          product_ids: breaking(
-            () => [{ id: product.id }],
-            () => [product.id]
-          ),
-        }
+        const payload = breaking(
+          () => ({
+            product_ids: [{ id: product.id }],
+          }),
+          () => ({
+            add: [product.id],
+          })
+        )
 
         const response = await breaking(
           async () => {
@@ -877,7 +879,7 @@ medusaIntegrationTestRunner({
           },
           async () => {
             return await api.post(
-              `/admin/sales-channels/${salesChannel.id}/products/batch/add`,
+              `/admin/sales-channels/${salesChannel.id}/products`,
               payload,
               adminReqConfig
             )
