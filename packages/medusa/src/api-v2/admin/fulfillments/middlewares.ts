@@ -7,6 +7,7 @@ import {
   AdminCancelFulfillment,
   AdminCreateFulfillment,
   AdminFulfillmentParams,
+  AdminUpdateFulfillment,
 } from "./validators"
 
 export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
@@ -31,6 +32,17 @@ export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/fulfillments",
     middlewares: [
       validateAndTransformBody(AdminCreateFulfillment),
+      validateAndTransformQuery(
+        AdminFulfillmentParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/fulfillments/:id",
+    middlewares: [
+      validateAndTransformBody(AdminUpdateFulfillment),
       validateAndTransformQuery(
         AdminFulfillmentParams,
         QueryConfig.retrieveTransformQueryConfig

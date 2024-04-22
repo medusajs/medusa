@@ -189,5 +189,52 @@ medusaIntegrationTestRunner({
         )
       })
     })
+
+    describe("POST /admin/fulfillments/:id", () => {
+      it("should throw an error when id is not found", async () => {
+        const error = await api
+          .post(`/admin/fulfillments/does-not-exist`, {}, adminHeaders)
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(404)
+        expect(error.response.data).toEqual({
+          type: "not_found",
+          message: "Fulfillment with id: does-not-exist was not found",
+        })
+      })
+
+      it("should update a fulfillment successfully", async () => {
+        await setupFullDataFulfillmentStructure(service, { providerId })
+
+        const [fulfillment] = await service.listFulfillments()
+
+        const date = new Date()
+
+        const response = await api.post(
+          `/admin/fulfillments/${fulfillment.id}`,
+          {
+            location_id: "another-location",
+            shipped_at: date,
+            packed_at: date,
+            delivered_at: date,
+            metadata: { test: "test" },
+            data: { test: "test" },
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.fulfillment).toEqual(
+          expect.objectContaining({
+            id: fulfillment.id,
+            shipped_at: date.toISOString(),
+            packed_at: date.toISOString(),
+            delivered_at: date.toISOString(),
+            metadata: { test: "test" },
+            data: { test: "test" },
+          })
+        )
+      })
+    })
   },
 })

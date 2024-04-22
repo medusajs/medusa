@@ -21,7 +21,7 @@ export const AdminCreateFulfillment = z.object({
     province: z.string().optional(),
     postal_code: z.string().optional(),
     phone: z.string().optional(),
-    metadata: z.object({}).optional(),
+    metadata: z.record(z.unknown()).optional().nullable(),
   }),
   items: z.array(
     z.object({
@@ -41,4 +41,15 @@ export const AdminCreateFulfillment = z.object({
     })
   ),
   order: z.object({}),
+  metadata: z.record(z.unknown()).optional().nullable(),
+})
+
+export type AdminUpdateFulfillmentType = z.infer<typeof AdminUpdateFulfillment>
+export const AdminUpdateFulfillment = z.object({
+  packed_at: z.coerce.date().optional(),
+  shipped_at: z.coerce.date().optional(),
+  delivered_at: z.coerce.date().optional(),
+  location_id: z.string().optional(),
+  metadata: z.record(z.unknown()).optional().nullable(),
+  data: z.record(z.unknown()).optional().nullable(),
 })

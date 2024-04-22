@@ -1,6 +1,8 @@
 import {
   createFulfillmentWorkflow,
   createFulfillmentWorkflowId,
+  updateFulfillmentWorkflow,
+  updateFulfillmentWorkflowId,
 } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IFulfillmentModuleService } from "@medusajs/types"
@@ -84,6 +86,85 @@ medusaIntegrationTestRunner({
             const fulfillments = await service.listFulfillments()
 
             expect(fulfillments.filter((f) => !!f.canceled_at)).toHaveLength(1)
+          })
+        })
+      })
+
+      describe("updateFulfillmentWorkflow", () => {
+        describe("compensation", () => {
+          it("should rollback updated fulfillment if step following step throws error", async () => {
+            const workflow = updateFulfillmentWorkflow(appContainer)
+
+            workflow.appendAction("throw", updateFulfillmentWorkflowId, {
+              invoke: async function failStep() {
+                throw new Error(
+                  `Failed to do something after updating fulfillment`
+                )
+              },
+            })
+
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+            })
+
+            const serviceZone = await service.createServiceZones({
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+            })
+
+            const shippingOption = await service.createShippingOptions(
+              generateCreateShippingOptionsData({
+                provider_id: providerId,
+                service_zone_id: serviceZone.id,
+                shipping_profile_id: shippingProfile.id,
+              })
+            )
+
+            const data = generateCreateFulfillmentData({
+              provider_id: providerId,
+              shipping_option_id: shippingOption.id,
+            })
+
+            const fulfillment = await service.createFulfillment(data)
+
+            const date = new Date()
+            const { errors } = await workflow.run({
+              input: {
+                id: fulfillment.id,
+                shipped_at: date,
+                packed_at: date,
+                location_id: "new location",
+              },
+              throwOnError: false,
+            })
+
+            expect(errors).toEqual([
+              {
+                action: "throw",
+                handlerType: "invoke",
+                error: expect.objectContaining({
+                  message: `Failed to do something after updating fulfillment`,
+                }),
+              },
+            ])
+
+            const fulfillmentAfterRollback = await service.retrieveFulfillment(
+              fulfillment.id
+            )
+
+            expect(fulfillmentAfterRollback).toEqual(
+              expect.objectContaining({
+                location_id: data.location_id,
+                shipped_at: data.shipped_at,
+                packed_at: data.packed_at,
+              })
+            )
           })
         })
       })
