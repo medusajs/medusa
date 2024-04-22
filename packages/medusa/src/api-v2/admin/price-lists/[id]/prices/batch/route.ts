@@ -1,16 +1,24 @@
-import { batchPriceListPricesWorkflow } from "@medusajs/core-flows"
 import { promiseAll } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-import { fetchPriceListPriceIdsForProduct } from "../../../helpers"
 import { listPrices } from "../../../queries"
 import { adminPriceListPriceRemoteQueryFields } from "../../../query-config"
-import { AdminBatchPriceListPricesType } from "../../../validators"
+import { BatchMethodRequest } from "@medusajs/types"
+import {
+  AdminCreatePriceListPriceType,
+  AdminUpdatePriceListPriceType,
+} from "../../../validators"
+import { batchPriceListPricesWorkflow } from "@medusajs/core-flows"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminBatchPriceListPricesType>,
+  req: AuthenticatedMedusaRequest<
+    BatchMethodRequest<
+      AdminCreatePriceListPriceType,
+      AdminUpdatePriceListPriceType
+    >
+  >,
   res: MedusaResponse
 ) => {
   const id = req.params.id
@@ -18,16 +26,8 @@ export const POST = async (
     create = [],
     update = [],
     delete: deletePriceIds = [],
-    product_id: productIds = [],
   } = req.validatedBody
 
-  const productPriceIds = await fetchPriceListPriceIdsForProduct(
-    id,
-    productIds,
-    req.scope
-  )
-
-  const priceIdsToDelete = [...deletePriceIds, ...productPriceIds]
   const workflow = batchPriceListPricesWorkflow(req.scope)
   const { result, errors } = await workflow.run({
     input: {
@@ -35,7 +35,7 @@ export const POST = async (
         id,
         create,
         update,
-        delete: priceIdsToDelete,
+        delete: deletePriceIds,
       },
     },
     throwOnError: false,
@@ -62,7 +62,7 @@ export const POST = async (
     created,
     updated,
     deleted: {
-      ids: priceIdsToDelete,
+      ids: deletePriceIds,
       object: "price",
       deleted: true,
     },

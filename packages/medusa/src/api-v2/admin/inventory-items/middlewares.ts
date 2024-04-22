@@ -14,6 +14,7 @@ import {
 } from "./validators"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { createBatchBody } from "../../utils/validators"
+import { unlessPath } from "../../utils/unless-path"
 
 export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -85,29 +86,8 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    method: ["DELETE"],
-    matcher: "/admin/inventory-items/:id/location-levels/:location_id",
-    middlewares: [
-      validateAndTransformQuery(
-        AdminGetInventoryItemParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
     method: ["POST"],
-    matcher: "/admin/inventory-items/:id/location-levels/:location_id",
-    middlewares: [
-      validateAndTransformBody(AdminUpdateInventoryLocationLevel),
-      validateAndTransformQuery(
-        AdminGetInventoryItemParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/inventory-items/:id/location-levels/op/batch",
+    matcher: "/admin/inventory-items/:id/location-levels/batch",
     middlewares: [
       validateAndTransformBody(
         createBatchBody(
@@ -118,6 +98,36 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformQuery(
         AdminGetInventoryLocationLevelParams,
         QueryConfig.retrieveLocationLevelsTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/inventory-items/:id/location-levels/:location_id",
+    middlewares: [
+      unlessPath(
+        /.*\/location-levels\/batch/,
+        validateAndTransformQuery(
+          AdminGetInventoryItemParams,
+          QueryConfig.retrieveTransformQueryConfig
+        )
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/inventory-items/:id/location-levels/:location_id",
+    middlewares: [
+      unlessPath(
+        /.*\/location-levels\/batch/,
+        validateAndTransformBody(AdminUpdateInventoryLocationLevel)
+      ),
+      unlessPath(
+        /.*\/location-levels\/batch/,
+        validateAndTransformQuery(
+          AdminGetInventoryItemParams,
+          QueryConfig.retrieveTransformQueryConfig
+        )
       ),
     ],
   },
