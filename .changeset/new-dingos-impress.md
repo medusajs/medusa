@@ -4,4 +4,4 @@
 "@medusajs/types": patch
 ---
 
-feat(core-flows,medusa,types): add update api for fulfillments
+feat(core-flows,medusa,types): add create shipment api for fulfillments
