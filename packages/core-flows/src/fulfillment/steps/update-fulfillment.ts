@@ -35,6 +35,8 @@ export const updateFulfillmentStep = createStep(
     )
     const { id, ...data } = fulfillment
 
+    // TODO: this does not revert the relationships that are created in invoke step
+    // There should be a consistent way to handle across workflows
     await service.updateFulfillment(id, data)
   }
 )
