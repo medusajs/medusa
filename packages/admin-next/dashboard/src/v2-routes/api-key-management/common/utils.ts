@@ -3,7 +3,7 @@ import { TFunction } from "i18next"
 import { ApiKeyType } from "./constants"
 
 export function getApiKeyTypeFromPathname(pathname: string) {
-  const isSecretKey = pathname.startsWith("/settings/api-key-management/secret")
+  const isSecretKey = pathname.startsWith("/settings/secret-api-keys")
 
   switch (isSecretKey) {
     case true:
@@ -45,4 +45,18 @@ export function getApiKeyTypeProps(
     color: "blue",
     label: t("apiKeyManagement.type.secret"),
   }
+}
+
+/**
+ * Returns a prettified version of the token with redacted symbols replaced with a bullet point.
+ * @param token - The token to prettify.
+ * @returns The prettified token, with redacted symbols replaced with a bullet point.
+ *
+ * @example
+ * ```ts
+ * const token = "sk_a***yx"
+ * const prettifiedToken = replaceRedactedSymbol(token) // "sk_a•••yx"
+ */
+export const prettifyRedactedToken = (token: string) => {
+  return token.replace("***", `•••`)
 }

@@ -1168,7 +1168,6 @@
   },
   "apiKeyManagement": {
     "domain": {
-      "apiKeys": "API Keys",
       "publishable": "Publishable API Keys",
       "secret": "Secret API Keys"
     },
@@ -1186,25 +1185,40 @@
       "createSecretHeader": "Create Secret API Key",
       "createSecretHint": "Create a new secret API key to access the Medusa API.",
       "secretKeyCreatedHeader": "Secret Key Created",
-      "secretKeyCreatedHint": "Your new secret key has been generated. Copy and securely store it now. This is the only time it will be displayed."
+      "secretKeyCreatedHint": "Your new secret key has been generated. Copy and securely store it now. This is the only time it will be displayed.",
+      "copySecretTokenSuccess": "Secret key was copied to clipboard.",
+      "copySecretTokenFailure": "Failed to copy secret key to clipboard.",
+      "successToast": "API key was successfully created."
     },
     "edit": {
-      "header": "Edit API Key"
+      "header": "Edit API Key",
+      "successToast": "API key {{title}} was successfully updated."
     },
-    "tabs": {
-      "secret": "Secret",
-      "publishable": "Publishable"
+    "salesChannels": {
+      "successToast_one": "{{count}} sales channel was successfully added to the API key.",
+      "successToast_other": "{{count}} sales channels were successfully added to the API key.",
+      "alreadyAddedTooltip": "The sales channel has already been added to the API key."
     },
-    "warnings": {
-      "delete": "You are about to delete the API key {{title}}. This action cannot be undone.",
-      "revoke": "You are about to revoke the API key {{title}}. This action cannot be undone, and the key cannot be used in future requests.",
-      "removeSalesChannel": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
-      "removeSalesChannels_one": "You are about to remove {{count}} sales channel from the API key. This action cannot be undone.",
-      "removeSalesChannels_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
-      "salesChannelsSecretKey": "Sales channels cannot be added to a secret API key."
+    "delete": {
+      "warning": "You are about to delete the API key {{title}}. This action cannot be undone.",
+      "successToast": "API key {{title}} was successfully deleted."
+    },
+    "revoke": {
+      "warning": "You are about to revoke the API key {{title}}. This action cannot be undone.",
+      "successToast": "API key {{title}} was successfully revoked."
+    },
+    "removeSalesChannel": {
+      "warning": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
+      "warningBatch_one": "You are about to remove {{count}} sales channel from the API key. This action cannot be undone.",
+      "warningBatch_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
+      "successToast": "Sales channel was successfully removed from the API key.",
+      "successToastBatch_one": "{{count}} sales channel was successfully removed from the API key.",
+      "successToastBatch_other": "{{count}} sales channels were successfully removed from the API key."
     },
     "actions": {
-      "revoke": "Revoke"
+      "revoke": "Revoke API key",
+      "copy": "Copy API key",
+      "copySuccessToast": "API key was copied to clipboard."
     },
     "table": {
       "lastUsedAtHeader": "Last Used At",
