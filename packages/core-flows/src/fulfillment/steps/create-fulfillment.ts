@@ -14,8 +14,8 @@ export const createFulfillmentStep = createStep(
 
     return new StepResponse(fulfillment, fulfillment.id)
   },
-  async (ids, { container }) => {
-    if (!ids?.length) {
+  async (id, { container }) => {
+    if (!id) {
       return
     }
 
@@ -23,6 +23,6 @@ export const createFulfillmentStep = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    await service.delete(ids)
+    await service.cancelFulfillment(id)
   }
 )
