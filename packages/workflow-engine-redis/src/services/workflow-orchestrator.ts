@@ -553,9 +553,9 @@ export class WorkflowOrchestratorService {
           transaction
         )
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
-        this.activeStepsCount--
-
         await notify({ eventType: "onStepSuccess", step, response })
+
+        this.activeStepsCount--
       },
       onStepFailure: async ({ step, transaction }) => {
         const stepName = step.definition.action!
@@ -564,18 +564,18 @@ export class WorkflowOrchestratorService {
           .filter((err) => err.action === stepName)
 
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
-        this.activeStepsCount--
-
         await notify({ eventType: "onStepFailure", step, errors })
+
+        this.activeStepsCount--
       },
       onStepAwaiting: async ({ step, transaction }) => {
         customEventHandlers?.onStepAwaiting?.({ step, transaction })
 
+        await notify({ eventType: "onStepAwaiting", step })
+
         if (!step.definition.backgroundExecution) {
           this.activeStepsCount--
         }
-
-        await notify({ eventType: "onStepAwaiting", step })
       },
 
       onCompensateStepSuccess: async ({ step, transaction }) => {
