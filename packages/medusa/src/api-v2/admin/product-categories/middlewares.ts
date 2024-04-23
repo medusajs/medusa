@@ -2,6 +2,7 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
+import { createLinkBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
 import {
   AdminCreateProductCategory,
@@ -52,6 +53,17 @@ export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/product-categories/:id",
     middlewares: [
       validateAndTransformBody(AdminUpdateProductCategory),
+      validateAndTransformQuery(
+        AdminProductCategoryParams,
+        QueryConfig.retrieveProductCategoryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/product-categories/:id/products",
+    middlewares: [
+      validateAndTransformBody(createLinkBody()),
       validateAndTransformQuery(
         AdminProductCategoryParams,
         QueryConfig.retrieveProductCategoryConfig
