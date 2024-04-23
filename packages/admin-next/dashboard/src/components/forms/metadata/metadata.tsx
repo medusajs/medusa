@@ -1,14 +1,10 @@
 import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { Button, Input, Text } from "@medusajs/ui"
+import { Alert, Button, Input, Text } from "@medusajs/ui"
 import { Trash } from "@medusajs/icons"
 import { UseFormReturn } from "react-hook-form"
 
-export type MetadataField = {
-  key: string
-  value: string
-  state: "deleted"
-}
+import { MetadataField } from "../../../lib/metadata"
 
 type MetadataProps = {
   form: UseFormReturn<MetadataField[]>
@@ -20,16 +16,6 @@ type FieldProps = {
   onDelete: () => void
   updateKey: (key: string) => void
   updateValue: (value: string) => void
-}
-
-const isPrimitive = (value: any): boolean => {
-  return (
-    value === null ||
-    value === undefined ||
-    typeof value === "string" ||
-    typeof value === "number" ||
-    typeof value === "boolean"
-  )
 }
 
 function Field({
@@ -46,7 +32,7 @@ function Field({
    * but we need to keep it to preserve list ordering
    * so React could correctly render elements when adding/deleting
    */
-  if (field.state === "deleted") {
+  if (field.isDeleted || field.isIgnored) {
     return null
   }
 
@@ -91,6 +77,7 @@ export function Metadata({ form }: MetadataProps) {
   const { t } = useTranslation()
 
   const metadataWatch = form.watch("metadata") as MetadataField[]
+  const ignoredKeys = metadataWatch.filter((k) => k.isIgnored)
 
   const addKeyPair = () => {
     form.setValue(
@@ -121,7 +108,7 @@ export function Metadata({ form }: MetadataProps) {
 
   const deleteKeyPair = (index: number) => {
     return () => {
-      form.setValue(`metadata.${index}.state`, "deleted")
+      form.setValue(`metadata.${index}.isDeleted`, true)
     }
   }
 
@@ -172,6 +159,11 @@ export function Metadata({ form }: MetadataProps) {
           })}
         </tbody>
       </table>
+      {!!ignoredKeys.length && (
+        <Alert variant="warning" className="mt-2" dismissible>
+          {t("metadata.warnings.ignoredKeys", { keys: ignoredKeys.join(",") })}
+        </Alert>
+      )}
     </div>
   )
 }
