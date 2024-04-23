@@ -1,7 +1,23 @@
 import { z } from "zod"
+import { AddressPayload } from "../../utils/common-validators"
 import { createSelectParams } from "../../utils/validators"
 
 export const AdminFulfillmentParams = createSelectParams()
+
+const AdminCreateFulfillmentItem = z.object({
+  title: z.string(),
+  sku: z.string(),
+  quantity: z.number(),
+  barcode: z.string(),
+  line_item_id: z.string().optional(),
+  inventory_item_id: z.string().optional(),
+})
+
+const AdminCreateFulfillmentLabel = z.object({
+  tracking_number: z.string(),
+  tracking_url: z.string(),
+  label_url: z.string(),
+})
 
 export type AdminCancelFulfillmentType = z.infer<typeof AdminCancelFulfillment>
 export const AdminCancelFulfillment = z.object({})
@@ -10,35 +26,14 @@ export type AdminCreateFulfillmentType = z.infer<typeof AdminCreateFulfillment>
 export const AdminCreateFulfillment = z.object({
   location_id: z.string(),
   provider_id: z.string(),
-  delivery_address: z.object({
-    company: z.string().optional(),
-    first_name: z.string().optional(),
-    last_name: z.string().optional(),
-    address_1: z.string().optional(),
-    address_2: z.string().optional(),
-    city: z.string().optional(),
-    country_code: z.string().optional(),
-    province: z.string().optional(),
-    postal_code: z.string().optional(),
-    phone: z.string().optional(),
-    metadata: z.object({}).optional(),
-  }),
-  items: z.array(
-    z.object({
-      title: z.string(),
-      sku: z.string(),
-      quantity: z.number(),
-      barcode: z.string(),
-      line_item_id: z.string().optional(),
-      inventory_item_id: z.string().optional(),
-    })
-  ),
-  labels: z.array(
-    z.object({
-      tracking_number: z.string(),
-      tracking_url: z.string(),
-      label_url: z.string(),
-    })
-  ),
+  delivery_address: AddressPayload,
+  items: z.array(AdminCreateFulfillmentItem),
+  labels: z.array(AdminCreateFulfillmentLabel),
   order: z.object({}),
+  metadata: z.record(z.unknown()).optional().nullable(),
+})
+
+export type AdminCreateShipmentType = z.infer<typeof AdminCreateShipment>
+export const AdminCreateShipment = z.object({
+  labels: z.array(AdminCreateFulfillmentLabel),
 })

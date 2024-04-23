@@ -189,5 +189,99 @@ medusaIntegrationTestRunner({
         )
       })
     })
+
+    describe("POST /admin/fulfillments/:id/shipment", () => {
+      it("should throw an error when id is not found", async () => {
+        const error = await api
+          .post(
+            `/admin/fulfillments/does-not-exist/shipment`,
+            {
+              labels: [
+                {
+                  tracking_number: "test-tracking-number",
+                  tracking_url: "test-tracking-url",
+                  label_url: "test-label-url",
+                },
+              ],
+            },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(404)
+        expect(error.response.data).toEqual({
+          type: "not_found",
+          message: "Fulfillment with id: does-not-exist was not found",
+        })
+      })
+
+      it("should update a fulfillment to be shipped", async () => {
+        await setupFullDataFulfillmentStructure(service, { providerId })
+
+        const [fulfillment] = await service.listFulfillments()
+
+        const response = await api.post(
+          `/admin/fulfillments/${fulfillment.id}/shipment`,
+          {
+            labels: [
+              {
+                tracking_number: "test-tracking-number",
+                tracking_url: "test-tracking-url",
+                label_url: "test-label-url",
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.fulfillment).toEqual(
+          expect.objectContaining({
+            id: fulfillment.id,
+            shipped_at: expect.any(String),
+            labels: [
+              expect.objectContaining({
+                id: expect.any(String),
+                tracking_number: "test-tracking-number",
+                tracking_url: "test-tracking-url",
+                label_url: "test-label-url",
+              }),
+            ],
+          })
+        )
+      })
+
+      it("should throw error when already shipped", async () => {
+        await setupFullDataFulfillmentStructure(service, { providerId })
+
+        const [fulfillment] = await service.listFulfillments()
+
+        await service.updateFulfillment(fulfillment.id, {
+          shipped_at: new Date(),
+        })
+
+        const error = await api
+          .post(
+            `/admin/fulfillments/${fulfillment.id}/shipment`,
+            {
+              labels: [
+                {
+                  tracking_number: "test-tracking-number",
+                  tracking_url: "test-tracking-url",
+                  label_url: "test-label-url",
+                },
+              ],
+            },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data).toEqual({
+          type: "not_allowed",
+          message: "Shipment has already been created",
+        })
+      })
+    })
   },
 })
