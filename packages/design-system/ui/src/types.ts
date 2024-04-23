@@ -36,8 +36,20 @@ export type ToastVariant =
 export type ToastActionVariant = "default" | "destructive"
 
 export type ToastAction = {
+  /**
+   * The button's text.
+   */
   label: string
+  /**
+   * The button's alt text.
+   */
   altText: string
+  /**
+   * The function to execute when the button is clicked.
+   */
   onClick: () => void | Promise<void>
+  /**
+   * The button's variant.
+   */
   variant?: ToastActionVariant
 }
