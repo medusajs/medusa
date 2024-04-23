@@ -1485,7 +1485,6 @@ medusaIntegrationTestRunner({
         //   adminHeaders
         // )
 
-
         // TODO: Should remove category
         const categoryResponse = await api.post(
           `/admin/product-categories/${productCategory.id}/products`,
@@ -1503,6 +1502,7 @@ medusaIntegrationTestRunner({
         console.log(productsInCategoryResponse.data)
 
         expect(categoryResponse.status).toEqual(200)
+        expect(productsInCategoryResponse.data.products).toHaveLength(0)
       })
     })
   },

@@ -1369,7 +1369,7 @@ export default class ProductModuleService<
       })
     }
 
-    if (productData.category_ids?.length) {
+    if (productData.category_ids) {
       ;(productData as any).categories = productData.category_ids.map(
         (cid) => ({
           id: cid,

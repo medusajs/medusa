@@ -18,33 +18,38 @@ export const batchLinkProductsToCategoryStep = createStep(
       return new StepResponse(void 0, null)
     }
 
+    const toRemoveSet = new Set(data.remove?.map((id) => id))
     const dbProducts = await service.list(
-      {
-        $or: [
-          { categories: { id: { $in: [data.id] } } },
-          { id: data.add ?? [] },
-        ],
-      },
+      { id: [...(data.add ?? []), ...(data.remove ?? [])] },
       {
         take: null,
         select: ["id", "categories"],
       }
     )
 
-    const toRemoveSet = new Set(data.remove?.map((id) => id))
+    const productsWithUpdatedCategories = dbProducts.map((p) => {
+      if (toRemoveSet.has(p.id)) {
+        return {
+          id: p.id,
+          category_ids: (p.categories ?? [])
+            .filter((c) => c.id !== data.id)
+            .map((c) => c.id),
+        }
+      }
 
-    const products = dbProducts.filter((p) => !toRemoveSet.has(p.id))
+      return {
+        id: p.id,
+        category_ids: [...(p.categories ?? []).map((c) => c.id), data.id],
+      }
+    })
 
-    const input = products.map((p) => ({
-      id: p.id,
-      category_ids: [...(p.categories ?? []).map((c) => c.id), data.id],
-    }))
-
-    await service.upsert(input)
+    await service.upsert(productsWithUpdatedCategories)
 
     return new StepResponse(void 0, {
       id: data.id,
-      productIds: dbProducts.map((p) => p.id),
+      remove: data.remove,
+      add: data.add,
+      productIds: productsWithUpdatedCategories.map((p) => p.id),
     })
   },
   async (prevData, { container }) => {
@@ -64,11 +69,23 @@ export const batchLinkProductsToCategoryStep = createStep(
       }
     )
 
-    const input = dbProducts.map((p) => ({
-      p: p.id,
-      category_ids: (p.categories ?? []).filter((c) => c.id !== prevData.id),
-    }))
+    const toRemoveSet = new Set(prevData.remove?.map((id) => id))
+    const productsWithRevertedCategories = dbProducts.map((p) => {
+      if (toRemoveSet.has(p.id)) {
+        return {
+          id: p.id,
+          category_ids: [...(p.categories ?? []).map((c) => c.id), prevData.id],
+        }
+      }
 
-    await service.upsert(input)
+      return {
+        id: p.id,
+        category_ids: (p.categories ?? [])
+          .filter((c) => c.id !== prevData.id)
+          .map((c) => c.id),
+      }
+    })
+
+    await service.upsert(productsWithRevertedCategories)
   }
 )
