@@ -2,18 +2,21 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import {
   AdminCreateShippingOption,
+  AdminCreateShippingOptionRule,
   AdminGetShippingOptionParams,
+  AdminGetShippingOptionRuleParams,
   AdminGetShippingOptionsParams,
-  AdminShippingOptionRulesBatchAdd,
-  AdminShippingOptionRulesBatchRemove,
   AdminUpdateShippingOption,
+  AdminUpdateShippingOptionRule,
 } from "./validators"
 import {
   listTransformQueryConfig,
+  retrieveRuleTransformQueryConfig,
   retrieveTransformQueryConfig,
 } from "./query-config"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
+import { createBatchBody } from "../../utils/validators"
 
 export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -58,23 +61,17 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/shipping-options/:id/rules/batch/add",
+    matcher: "/admin/shipping-options/:id/rules/batch",
     middlewares: [
-      validateAndTransformBody(AdminShippingOptionRulesBatchAdd),
-      validateAndTransformQuery(
-        AdminGetShippingOptionParams,
-        retrieveTransformQueryConfig
+      validateAndTransformBody(
+        createBatchBody(
+          AdminCreateShippingOptionRule,
+          AdminUpdateShippingOptionRule
+        )
       ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/shipping-options/:id/rules/batch/remove",
-    middlewares: [
-      validateAndTransformBody(AdminShippingOptionRulesBatchRemove),
       validateAndTransformQuery(
-        AdminGetShippingOptionParams,
-        retrieveTransformQueryConfig
+        AdminGetShippingOptionRuleParams,
+        retrieveRuleTransformQueryConfig
       ),
     ],
   },

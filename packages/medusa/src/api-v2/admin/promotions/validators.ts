@@ -36,6 +36,11 @@ export const AdminGetPromotionsParams = createFindParams({
   })
 )
 
+export type AdminGetPromotionRuleParamsType = z.infer<
+  typeof AdminGetPromotionRuleParams
+>
+export const AdminGetPromotionRuleParams = createSelectParams()
+
 export type AdminGetPromotionRuleTypeParamsType = z.infer<
   typeof AdminGetPromotionRuleTypeParams
 >
@@ -185,24 +190,3 @@ export const AdminUpdatePromotion = z
     message:
       "Buyget promotions require at least one buy rule and quantities to be defined",
   })
-
-export type AdminCreateBatchRulesType = z.infer<typeof AdminCreateBatchRules>
-export const AdminCreateBatchRules = z
-  .object({
-    rules: z.array(AdminCreatePromotionRule).min(1),
-  })
-  .strict()
-
-export type AdminUpdateBatchRulesType = z.infer<typeof AdminUpdateBatchRules>
-export const AdminUpdateBatchRules = z
-  .object({
-    rules: z.array(AdminUpdatePromotionRule).min(1),
-  })
-  .strict()
-
-export type AdminRemoveBatchRulesType = z.infer<typeof AdminRemoveBatchRules>
-export const AdminRemoveBatchRules = z
-  .object({
-    rule_ids: z.array(z.string()).min(1),
-  })
-  .strict()

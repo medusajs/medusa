@@ -8,6 +8,7 @@ import {
   GeoZone,
   ServiceZone,
   ShippingOption,
+  ShippingOptionRule,
   ShippingProfile,
 } from "@models"
 
@@ -15,6 +16,7 @@ export const LinkableKeys: Record<string, string> = {
   fulfillment_id: Fulfillment.name,
   fulfillment_set_id: FulfillmentSet.name,
   shipping_option_id: ShippingOption.name,
+  shipping_option_rule_id: ShippingOptionRule.name,
 }
 
 const entityLinkableKeysMap: MapToConfig = {}
@@ -79,6 +81,13 @@ export const joinerConfig: ModuleJoinerConfig = {
       args: {
         entity: GeoZone.name,
         methodSuffix: "GeoZones",
+      },
+    },
+    {
+      name: ["shipping_option_rule", "shipping_option_rules"],
+      args: {
+        entity: ShippingOptionRule.name,
+        methodSuffix: "ShippingOptionRules",
       },
     },
   ],

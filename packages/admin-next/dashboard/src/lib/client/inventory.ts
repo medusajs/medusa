@@ -110,8 +110,11 @@ async function batchPostLocationLevels(
   payload: InventoryItemLocationBatch
 ) {
   return postRequest<AdminInventoryLevelResponse>(
-    `/admin/inventory-items/${inventoryItemId}/location-levels/batch/combi`,
-    payload
+    `/admin/inventory-items/${inventoryItemId}/location-levels/batch`,
+    {
+      create: payload.creates,
+      delete: payload.deletes,
+    }
   )
 }
 
