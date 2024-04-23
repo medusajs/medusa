@@ -2,45 +2,64 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { createProductsWorkflow } from "../workflows/create-products"
 import { updateProductsWorkflow } from "../workflows/update-products"
 import { deleteProductsWorkflow } from "../workflows/delete-products"
-import { PricingTypes, ProductTypes } from "@medusajs/types"
-
-type WorkflowInput = {
-  create: (Omit<ProductTypes.CreateProductDTO, "variants"> & {
-    sales_channels?: { id: string }[]
-    variants?: (ProductTypes.CreateProductVariantDTO & {
-      prices?: PricingTypes.CreateMoneyAmountDTO[]
-    })[]
-  })[]
-  update: (ProductTypes.UpsertProductDTO & {
-    sales_channels?: { id: string }[]
-  })[]
-  delete: string[]
-}
+import {
+  BatchWorkflowInput,
+  CreateProductWorkflowInputDTO,
+  UpdateProductWorkflowInputDTO,
+} from "@medusajs/types"
 
 export const batchProductsStepId = "batch-products"
 export const batchProductsStep = createStep(
   batchProductsStepId,
-  async (data: WorkflowInput, { container }) => {
-    const { transaction: createTransaction, result: created } =
-      await createProductsWorkflow(container).run({
-        input: { products: data.create },
-      })
-    const { transaction: updateTransaction, result: updated } =
-      await updateProductsWorkflow(container).run({
-        input: { products: data.update },
-      })
-    const { transaction: deleteTransaction } = await deleteProductsWorkflow(
-      container
-    ).run({
-      input: { ids: data.delete },
+  async (
+    data: BatchWorkflowInput<
+      CreateProductWorkflowInputDTO,
+      UpdateProductWorkflowInputDTO
+    >,
+    { container }
+  ) => {
+    const {
+      transaction: createTransaction,
+      result: created,
+      errors: createErrors,
+    } = await createProductsWorkflow(container).run({
+      input: { products: data.create ?? [] },
+      throwOnError: false,
     })
+
+    if (createErrors?.length) {
+      throw createErrors[0].error
+    }
+
+    const {
+      transaction: updateTransaction,
+      result: updated,
+      errors: updateErrors,
+    } = await updateProductsWorkflow(container).run({
+      input: { products: data.update ?? [] },
+      throwOnError: false,
+    })
+
+    if (updateErrors?.length) {
+      throw updateErrors[0].error
+    }
+
+    const { transaction: deleteTransaction, errors: deleteErrors } =
+      await deleteProductsWorkflow(container).run({
+        input: { ids: data.delete ?? [] },
+        throwOnError: false,
+      })
+
+    if (deleteErrors?.length) {
+      throw deleteErrors[0].error
+    }
 
     return new StepResponse(
       {
         created,
         updated,
         deleted: {
-          ids: data.delete,
+          ids: data.delete ?? [],
           object: "product",
           deleted: true,
         },

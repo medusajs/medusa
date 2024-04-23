@@ -173,6 +173,11 @@ export const v2Routes: RouteObject[] = [
                 lazy: () => import("../../v2-routes/promotions/promotion-list"),
               },
               {
+                path: "create",
+                lazy: () =>
+                  import("../../v2-routes/promotions/promotion-create"),
+              },
+              {
                 path: ":id",
                 lazy: () =>
                   import("../../v2-routes/promotions/promotion-detail"),
@@ -196,7 +201,8 @@ export const v2Routes: RouteObject[] = [
                   },
                   {
                     path: ":ruleType/edit",
-                    lazy: () => import("../../v2-routes/promotions/edit-rules"),
+                    lazy: () =>
+                      import("../../v2-routes/promotions/common/edit-rules"),
                   },
                 ],
               },
@@ -745,10 +751,10 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
-            path: "api-key-management",
+            path: "publishable-api-keys",
             element: <Outlet />,
             handle: {
-              crumb: () => "API Key Management",
+              crumb: () => "Publishable API Keys",
             },
             children: [
               {
@@ -757,22 +763,6 @@ export const v2Routes: RouteObject[] = [
                 children: [
                   {
                     path: "",
-                    lazy: () =>
-                      import(
-                        "../../v2-routes/api-key-management/api-key-management-list"
-                      ),
-                    children: [
-                      {
-                        path: "create",
-                        lazy: () =>
-                          import(
-                            "../../v2-routes/api-key-management/api-key-management-create"
-                          ),
-                      },
-                    ],
-                  },
-                  {
-                    path: "secret",
                     lazy: () =>
                       import(
                         "../../v2-routes/api-key-management/api-key-management-list"
@@ -813,6 +803,58 @@ export const v2Routes: RouteObject[] = [
                     lazy: () =>
                       import(
                         "../../v2-routes/api-key-management/api-key-management-sales-channels"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "secret-api-keys",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Secret API Keys",
+            },
+            children: [
+              {
+                path: "",
+                element: <Outlet />,
+                children: [
+                  {
+                    path: "",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-list"
+                      ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-detail"
+                  ),
+                handle: {
+                  crumb: (data: AdminApiKeyResponse) => {
+                    return data.api_key.title
+                  },
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-edit"
                       ),
                   },
                 ],

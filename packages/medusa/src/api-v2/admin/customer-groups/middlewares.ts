@@ -6,11 +6,10 @@ import {
   AdminCreateCustomerGroup,
   AdminGetCustomerGroupParams,
   AdminGetCustomerGroupsParams,
-  AdminSetCustomersCustomerGroup,
   AdminUpdateCustomerGroup,
 } from "./validators"
 import { validateAndTransformBody } from "../../utils/validate-body"
-import { createBatchBody } from "../../utils/validators"
+import { createLinkBody } from "../../utils/validators"
 
 export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -62,14 +61,9 @@ export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/customer-groups/:id/customers/batch",
+    matcher: "/admin/customer-groups/:id/customers",
     middlewares: [
-      validateAndTransformBody(
-        createBatchBody(
-          AdminSetCustomersCustomerGroup,
-          AdminSetCustomersCustomerGroup
-        )
-      ),
+      validateAndTransformBody(createLinkBody()),
       validateAndTransformQuery(
         AdminGetCustomerGroupParams,
         QueryConfig.retrieveTransformQueryConfig

@@ -9,6 +9,7 @@ import {
   AdminUpdateCollection,
 } from "./validators"
 import { validateAndTransformBody } from "../../utils/validate-body"
+import { createLinkBody } from "../../utils/validators"
 
 export const adminCollectionRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -64,5 +65,15 @@ export const adminCollectionRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/collections/:id",
     middlewares: [],
   },
-  // TODO: There were two batch methods, they need to be handled
+  {
+    method: ["POST"],
+    matcher: "/admin/collections/:id/products",
+    middlewares: [
+      validateAndTransformBody(createLinkBody()),
+      validateAndTransformQuery(
+        AdminGetCollectionParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
 ]

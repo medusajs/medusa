@@ -40,17 +40,6 @@ export type AdminUpdatePriceListPriceType = z.infer<
   typeof AdminUpdatePriceListPrice
 >
 
-export const AdminBatchPriceListPrices = z.object({
-  create: z.array(AdminCreatePriceListPrice).optional(),
-  update: z.array(AdminUpdatePriceListPrice).optional(),
-  delete: z.array(z.string()).optional(),
-  product_id: z.array(z.string()).optional(),
-})
-
-export type AdminBatchPriceListPricesType = z.infer<
-  typeof AdminBatchPriceListPrices
->
-
 export const AdminCreatePriceList = z.object({
   title: z.string(),
   description: z.string(),

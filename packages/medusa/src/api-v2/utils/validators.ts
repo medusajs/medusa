@@ -11,6 +11,13 @@ export const createBatchBody = (
   })
 }
 
+export const createLinkBody = () => {
+  return z.object({
+    add: z.array(z.string()).optional(),
+    remove: z.array(z.string()).optional(),
+  })
+}
+
 export const createSelectParams = () => {
   return z.object({
     fields: z.string().optional(),

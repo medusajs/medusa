@@ -1,9 +1,3 @@
-import { z } from "zod"
-import {
-  createFindParams,
-  createOperatorMap,
-  createSelectParams,
-} from "../../utils/validators"
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
@@ -12,6 +6,12 @@ import {
   PromotionRuleOperator,
   PromotionType,
 } from "@medusajs/utils"
+import { z } from "zod"
+import {
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
 export type AdminGetPromotionParamsType = z.infer<
   typeof AdminGetPromotionParams
@@ -35,6 +35,11 @@ export const AdminGetPromotionsParams = createFindParams({
     $or: z.lazy(() => AdminGetPromotionsParams.array()).optional(),
   })
 )
+
+export type AdminGetPromotionRuleParamsType = z.infer<
+  typeof AdminGetPromotionRuleParams
+>
+export const AdminGetPromotionRuleParams = createSelectParams()
 
 export type AdminGetPromotionRuleTypeParamsType = z.infer<
   typeof AdminGetPromotionRuleTypeParams
@@ -84,7 +89,7 @@ export type AdminCreateApplicationMethodType = z.infer<
 export const AdminCreateApplicationMethod = z
   .object({
     description: z.string().optional(),
-    value: z.string(),
+    value: z.number(),
     max_quantity: z.number().optional(),
     type: z.nativeEnum(ApplicationMethodType),
     target_type: z.nativeEnum(ApplicationMethodTargetType),
@@ -185,24 +190,3 @@ export const AdminUpdatePromotion = z
     message:
       "Buyget promotions require at least one buy rule and quantities to be defined",
   })
-
-export type AdminCreateBatchRulesType = z.infer<typeof AdminCreateBatchRules>
-export const AdminCreateBatchRules = z
-  .object({
-    rules: z.array(AdminCreatePromotionRule).min(1),
-  })
-  .strict()
-
-export type AdminUpdateBatchRulesType = z.infer<typeof AdminUpdateBatchRules>
-export const AdminUpdateBatchRules = z
-  .object({
-    rules: z.array(AdminUpdatePromotionRule).min(1),
-  })
-  .strict()
-
-export type AdminRemoveBatchRulesType = z.infer<typeof AdminRemoveBatchRules>
-export const AdminRemoveBatchRules = z
-  .object({
-    rule_ids: z.array(z.string()).min(1),
-  })
-  .strict()
