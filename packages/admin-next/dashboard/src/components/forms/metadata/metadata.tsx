@@ -88,7 +88,7 @@ export function Metadata({ form }: MetadataProps) {
 
   const onKeyChange = (index: number) => {
     return (key: string) => {
-      form.setValue(`metadata.${index}.key`, key)
+      form.setValue(`metadata.${index}.key`, key, { shouldDirty: true })
 
       if (index === metadataWatch.length - 1) {
         addKeyPair()
@@ -98,7 +98,7 @@ export function Metadata({ form }: MetadataProps) {
 
   const onValueChange = (index: number) => {
     return (value: any) => {
-      form.setValue(`metadata.${index}.value`, value)
+      form.setValue(`metadata.${index}.value`, value, { shouldDirty: true })
 
       if (index === metadataWatch.length - 1) {
         addKeyPair()
@@ -108,21 +108,9 @@ export function Metadata({ form }: MetadataProps) {
 
   const deleteKeyPair = (index: number) => {
     return () => {
-      form.setValue(`metadata.${index}.isDeleted`, true)
+      form.setValue(`metadata.${index}.isDeleted`, true, { shouldDirty: true })
     }
   }
-
-  useEffect(() => {
-    const last = metadataWatch[metadataWatch.length - 1]
-
-    if (last) {
-      if (last.key === "" && last.value === "") {
-        return
-      }
-    }
-
-    addKeyPair()
-  }, [])
 
   return (
     <div>

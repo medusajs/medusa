@@ -40,9 +40,20 @@ export const metadataToFormValues = (
         value: value as string,
         isInitial: true,
         isIgnored: !isPrimitive(value),
+        isDeleted: false,
       })
     })
   }
+
+  // DEFAULT field for adding a new metadata record
+  // it's added here so it's registered as a default value
+  data.push({
+    key: "",
+    value: "",
+    isInitial: false,
+    isIgnored: false,
+    isDeleted: false,
+  })
 
   return data
 }
