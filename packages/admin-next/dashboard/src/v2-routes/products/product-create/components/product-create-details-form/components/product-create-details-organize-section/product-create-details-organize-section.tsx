@@ -8,7 +8,6 @@ import { Combobox } from "../../../../../../../components/inputs/combobox"
 import { useCategories } from "../../../../../../../hooks/api/categories"
 import { useCollections } from "../../../../../../../hooks/api/collections"
 import { useProductTypes } from "../../../../../../../hooks/api/product-types"
-import { useTags } from "../../../../../../../hooks/api/tags"
 import { ProductCreateSchemaType } from "../../../../types"
 import { useProductCreateDetailsContext } from "../product-create-details-context"
 
@@ -23,7 +22,7 @@ export const ProductCreateOrganizationSection = ({
   const { onOpenChange } = useProductCreateDetailsContext()
 
   const { product_types, isLoading: isLoadingTypes } = useProductTypes()
-  const { tags, isLoading: isLoadingTags } = useTags()
+  // const { tags, isLoading: isLoadingTags } = useTags() // Tags are not implemented in V2 yet.
   const { collections, isLoading: isLoadingCollections } = useCollections()
   const { product_categories, isLoading: isLoadingCategories } = useCategories()
 
@@ -147,29 +146,6 @@ export const ProductCreateOrganizationSection = ({
                     options={(product_categories ?? []).map((category) => ({
                       label: category.name,
                       value: category.id,
-                    }))}
-                    {...field}
-                  />
-                </Form.Control>
-              </Form.Item>
-            )
-          }}
-        />
-        <Form.Field
-          control={form.control}
-          name="tags"
-          render={({ field }) => {
-            return (
-              <Form.Item>
-                <Form.Label optional>
-                  {t("products.fields.tags.label")}
-                </Form.Label>
-                <Form.Control>
-                  <Combobox
-                    disabled={isLoadingTags}
-                    options={(tags ?? []).map((tag) => ({
-                      label: tag.value,
-                      value: tag.id,
                     }))}
                     {...field}
                   />
