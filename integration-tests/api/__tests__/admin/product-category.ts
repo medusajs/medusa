@@ -1458,7 +1458,7 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe.only("POST /admin/product-categories/:id/products", () => {
+    describe("POST /admin/product-categories/:id/products", () => {
       beforeEach(async () => {
         productCategory = await productModuleService.createCategory({
           name: "category parent",
@@ -1477,19 +1477,19 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        // const product2Response = await api.post(
-        //   "/admin/products",
-        //   {
-        //     title: "product 2",
-        //   },
-        //   adminHeaders
-        // )
+        const product2Response = await api.post(
+          "/admin/products",
+          {
+            title: "product 2",
+          },
+          adminHeaders
+        )
 
-        // TODO: Should remove category
         const categoryResponse = await api.post(
           `/admin/product-categories/${productCategory.id}/products`,
           {
             remove: [product1Response.data.product.id],
+            add: [product2Response.data.product.id],
           },
           adminHeaders
         )
@@ -1500,7 +1500,11 @@ medusaIntegrationTestRunner({
         )
 
         expect(categoryResponse.status).toEqual(200)
-        expect(productsInCategoryResponse.data.products).toHaveLength(0)
+        expect(productsInCategoryResponse.data.products).toEqual([
+          expect.objectContaining({
+            id: product2Response.data.product.id,
+          }),
+        ])
       })
     })
   },
