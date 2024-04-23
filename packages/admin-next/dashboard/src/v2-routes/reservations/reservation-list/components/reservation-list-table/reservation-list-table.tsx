@@ -17,7 +17,7 @@ export const ReservationListTable = () => {
   const { searchParams } = useReservationTableQuery({
     pageSize: PAGE_SIZE,
   })
-  const { reservations, count, isLoading, isError, error } =
+  const { reservations, count, isPending, isError, error } =
     useReservationItems({
       ...searchParams,
     })
@@ -51,7 +51,7 @@ export const ReservationListTable = () => {
         columns={columns}
         pageSize={PAGE_SIZE}
         count={count}
-        isLoading={isLoading}
+        isLoading={isPending}
         filters={filters}
         pagination
         navigateTo={(row) => row.id}
