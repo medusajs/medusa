@@ -336,21 +336,6 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
-            path: "shipping-profiles",
-            lazy: () =>
-              import("../../v2-routes/shipping/shipping-profiles-list"),
-            handle: {
-              crumb: () => "Shipping Profiles",
-            },
-            children: [
-              {
-                path: "create",
-                lazy: () =>
-                  import("../../v2-routes/shipping/shipping-profile-create"),
-              },
-            ],
-          },
-          {
             path: "/customers",
             handle: {
               crumb: () => "Customers",
@@ -734,10 +719,42 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
-            path: "api-key-management",
+            path: "shipping-profiles",
             element: <Outlet />,
             handle: {
-              crumb: () => "API Key Management",
+              crumb: () => "Shipping Profiles",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/shipping-profiles/shipping-profiles-list"
+                  ),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/shipping-profiles/shipping-profile-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/shipping-profiles/shipping-profile-detail"
+                  ),
+              },
+            ],
+          },
+          {
+            path: "publishable-api-keys",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Publishable API Keys",
             },
             children: [
               {
@@ -746,22 +763,6 @@ export const v2Routes: RouteObject[] = [
                 children: [
                   {
                     path: "",
-                    lazy: () =>
-                      import(
-                        "../../v2-routes/api-key-management/api-key-management-list"
-                      ),
-                    children: [
-                      {
-                        path: "create",
-                        lazy: () =>
-                          import(
-                            "../../v2-routes/api-key-management/api-key-management-create"
-                          ),
-                      },
-                    ],
-                  },
-                  {
-                    path: "secret",
                     lazy: () =>
                       import(
                         "../../v2-routes/api-key-management/api-key-management-list"
@@ -802,6 +803,58 @@ export const v2Routes: RouteObject[] = [
                     lazy: () =>
                       import(
                         "../../v2-routes/api-key-management/api-key-management-sales-channels"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "secret-api-keys",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Secret API Keys",
+            },
+            children: [
+              {
+                path: "",
+                element: <Outlet />,
+                children: [
+                  {
+                    path: "",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-list"
+                      ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-detail"
+                  ),
+                handle: {
+                  crumb: (data: AdminApiKeyResponse) => {
+                    return data.api_key.title
+                  },
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-edit"
                       ),
                   },
                 ],

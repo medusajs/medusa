@@ -10,7 +10,7 @@ export const validateVariantPriceLinksStep = createStep(
   validateVariantPriceLinksStepId,
   async (
     data: {
-      prices: {
+      prices?: {
         variant_id: string
       }[]
     }[],

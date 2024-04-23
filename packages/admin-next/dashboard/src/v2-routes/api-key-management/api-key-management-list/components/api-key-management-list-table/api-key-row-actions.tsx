@@ -1,6 +1,6 @@
-import { PencilSquare, Trash, XCircle } from "@medusajs/icons"
+import { PencilSquare, SquareTwoStack, Trash, XCircle } from "@medusajs/icons"
 import { AdminApiKeyResponse } from "@medusajs/types"
-import { usePrompt } from "@medusajs/ui"
+import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import {
@@ -22,7 +22,7 @@ export const ApiKeyRowActions = ({
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.warnings.delete", {
+      description: t("apiKeyManagement.delete.warning", {
         title: apiKey.title,
       }),
       confirmText: t("actions.delete"),
@@ -33,13 +33,28 @@ export const ApiKeyRowActions = ({
       return
     }
 
-    await deleteAsync()
+    await deleteAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("apiKeyManagement.delete.successToast", {
+            title: apiKey.title,
+          }),
+          dismissLabel: t("general.close"),
+        })
+      },
+      onError: (err) => {
+        toast.error(t("general.error"), {
+          description: err.message,
+          dismissLabel: t("general.close"),
+        })
+      },
+    })
   }
 
   const handleRevoke = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.warnings.revoke", {
+      description: t("apiKeyManagement.revoke.warning", {
         title: apiKey.title,
       }),
       confirmText: t("apiKeyManagement.actions.revoke"),
@@ -50,7 +65,30 @@ export const ApiKeyRowActions = ({
       return
     }
 
-    await revokeAsync(undefined)
+    await revokeAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("apiKeyManagement.revoke.successToast", {
+            title: apiKey.title,
+          }),
+          dismissLabel: t("general.close"),
+        })
+      },
+      onError: (err) => {
+        toast.error(t("general.error"), {
+          description: err.message,
+          dismissLabel: t("general.close"),
+        })
+      },
+    })
+  }
+
+  const handleCopyToken = () => {
+    navigator.clipboard.writeText(apiKey.token)
+    toast.success(t("general.success"), {
+      description: t("apiKeyManagement.actions.copySuccessToast"),
+      dismissLabel: t("general.close"),
+    })
   }
 
   return (
@@ -61,8 +99,17 @@ export const ApiKeyRowActions = ({
             {
               icon: <PencilSquare />,
               label: t("actions.edit"),
-              to: `/settings/api-key-management/${apiKey.id}`,
+              to: `${apiKey.id}/edit`,
             },
+            ...(apiKey.type !== "secret"
+              ? [
+                  {
+                    label: t("apiKeyManagement.actions.copy"),
+                    onClick: handleCopyToken,
+                    icon: <SquareTwoStack />,
+                  },
+                ]
+              : []),
           ],
         },
         {

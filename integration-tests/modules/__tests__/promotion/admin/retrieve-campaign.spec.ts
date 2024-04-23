@@ -102,7 +102,7 @@ medusaIntegrationTestRunner({
         )
 
         const response = await api.get(
-          `/admin/campaigns/${createdCampaign.id}?fields=name&expand=`,
+          `/admin/campaigns/${createdCampaign.id}?fields=name`,
           adminHeaders
         )
 

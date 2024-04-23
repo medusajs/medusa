@@ -8,16 +8,10 @@ import { createProductsStep } from "../steps/create-products"
 import { createVariantPricingLinkStep } from "../steps/create-variant-pricing-link"
 import { createPriceSetsStep } from "../../pricing"
 import { associateProductsWithSalesChannelsStep } from "../../sales-channel"
+import { CreateProductWorkflowInputDTO } from "@medusajs/types/src"
 
-// TODO: We should have separate types here as input, not the module DTO. Eg. the HTTP request that we are handling
-// has different data than the DTO, so that needs to be represented differently.
 type WorkflowInput = {
-  products: (Omit<ProductTypes.CreateProductDTO, "variants"> & {
-    sales_channels?: { id: string }[]
-    variants?: (ProductTypes.CreateProductVariantDTO & {
-      prices?: PricingTypes.CreateMoneyAmountDTO[]
-    })[]
-  })[]
+  products: CreateProductWorkflowInputDTO[]
 }
 
 export const createProductsWorkflowId = "create-products"

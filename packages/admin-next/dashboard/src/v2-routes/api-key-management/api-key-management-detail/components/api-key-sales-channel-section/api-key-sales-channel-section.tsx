@@ -1,6 +1,6 @@
 import { PencilSquare, Plus, Trash } from "@medusajs/icons"
 import { AdminApiKeyResponse, AdminSalesChannelResponse } from "@medusajs/types"
-import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
@@ -65,7 +65,7 @@ export const ApiKeySalesChannelSection = ({
 
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.warnings.removeSalesChannels", {
+      description: t("apiKeyManagement.removeSalesChannel.warningBatch", {
         count: keys.length,
       }),
       confirmText: t("actions.continue"),
@@ -82,7 +82,22 @@ export const ApiKeySalesChannelSection = ({
       },
       {
         onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t(
+              "apiKeyManagement.removeSalesChannel.successToastBatch",
+              {
+                count: keys.length,
+              }
+            ),
+            dismissLabel: t("general.close"),
+          })
           setRowSelection({})
+        },
+        onError: (err) => {
+          toast.error(t("general.error"), {
+            description: err.message,
+            dismissLabel: t("general.close"),
+          })
         },
       }
     )
@@ -145,7 +160,7 @@ const SalesChannelActions = ({
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.warnings.removeSalesChannel", {
+      description: t("apiKeyManagement.removeSalesChannel.warning", {
         name: salesChannel.name,
       }),
       confirmText: t("actions.delete"),
@@ -156,9 +171,27 @@ const SalesChannelActions = ({
       return
     }
 
-    await mutateAsync({
-      sales_channel_ids: [salesChannel.id],
-    })
+    await mutateAsync(
+      {
+        sales_channel_ids: [salesChannel.id],
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t("apiKeyManagement.removeSalesChannel.successToast", {
+              count: 1,
+            }),
+            dismissLabel: t("general.close"),
+          })
+        },
+        onError: (err) => {
+          toast.error(t("general.error"), {
+            description: err.message,
+            dismissLabel: t("general.close"),
+          })
+        },
+      }
+    )
   }
 
   return (

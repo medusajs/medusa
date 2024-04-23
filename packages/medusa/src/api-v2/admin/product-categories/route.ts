@@ -11,6 +11,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
+import { refetchCategory } from "./helpers"
 import {
   AdminCreateProductCategoryType,
   AdminProductCategoriesParamsType,
@@ -56,17 +57,12 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const category = await refetchCategory(
+    result.id,
+    req.scope,
+    req.remoteQueryConfig.fields,
+    req.filterableFields
+  )
 
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product_category",
-    variables: {
-      filters: { id: result.id },
-    },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [product_category] = await remoteQuery(queryObject)
-
-  res.status(200).json({ product_category })
+  res.status(200).json({ product_category: category })
 }

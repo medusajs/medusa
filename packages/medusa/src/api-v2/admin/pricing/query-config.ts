@@ -1,5 +1,3 @@
-export const defaultAdminPricingRuleTypeRelations = []
-export const allowedAdminPricingRuleTypeRelations = []
 export const defaultAdminPricingRuleTypeFields = [
   "id",
   "name",
@@ -8,9 +6,7 @@ export const defaultAdminPricingRuleTypeFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminPricingRuleTypeFields,
-  defaultRelations: defaultAdminPricingRuleTypeRelations,
-  allowedRelations: allowedAdminPricingRuleTypeRelations,
+  defaults: defaultAdminPricingRuleTypeFields,
   isList: false,
 }
 

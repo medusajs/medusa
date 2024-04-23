@@ -6,7 +6,12 @@ import { useRegion } from "../../../hooks/api/regions"
 export const RegionAddCountries = () => {
   const { id } = useParams()
 
-  const { region, isLoading, isError, error } = useRegion(id!, {
+  const {
+    region,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useRegion(id!, {
     fields: "*payment_providers",
   })
 
