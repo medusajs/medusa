@@ -181,7 +181,7 @@ export class Migration20240219102530 extends Migration {
               )
           ) NOT NULL DEFAULT 'pending',
           "internal_note" text NULL,
-          "created_by" text NOT NULL,
+          "created_by" text NULL,
           "requested_by" text NULL,
           "requested_at" timestamptz NULL,
           "confirmed_by" text NULL,
