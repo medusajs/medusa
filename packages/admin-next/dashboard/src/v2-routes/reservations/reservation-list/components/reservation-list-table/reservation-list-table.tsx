@@ -54,7 +54,7 @@ export const ReservationListTable = () => {
         isLoading={isLoading}
         filters={filters}
         pagination
-        navigateTo={(row) => `${row.id}`}
+        navigateTo={(row) => row.id}
         search={false}
       />
     </Container>
