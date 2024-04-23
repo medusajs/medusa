@@ -18,19 +18,41 @@ export const batchProductsStep = createStep(
     >,
     { container }
   ) => {
-    const { transaction: createTransaction, result: created } =
-      await createProductsWorkflow(container).run({
-        input: { products: data.create ?? [] },
-      })
-    const { transaction: updateTransaction, result: updated } =
-      await updateProductsWorkflow(container).run({
-        input: { products: data.update ?? [] },
-      })
-    const { transaction: deleteTransaction } = await deleteProductsWorkflow(
-      container
-    ).run({
-      input: { ids: data.delete ?? [] },
+    const {
+      transaction: createTransaction,
+      result: created,
+      errors: createErrors,
+    } = await createProductsWorkflow(container).run({
+      input: { products: data.create ?? [] },
+      throwOnError: false,
     })
+
+    if (createErrors?.length) {
+      throw createErrors[0].error
+    }
+
+    const {
+      transaction: updateTransaction,
+      result: updated,
+      errors: updateErrors,
+    } = await updateProductsWorkflow(container).run({
+      input: { products: data.update ?? [] },
+      throwOnError: false,
+    })
+
+    if (updateErrors?.length) {
+      throw updateErrors[0].error
+    }
+
+    const { transaction: deleteTransaction, errors: deleteErrors } =
+      await deleteProductsWorkflow(container).run({
+        input: { ids: data.delete ?? [] },
+        throwOnError: false,
+      })
+
+    if (deleteErrors?.length) {
+      throw deleteErrors[0].error
+    }
 
     return new StepResponse(
       {

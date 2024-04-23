@@ -5,10 +5,9 @@ import {
 } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-export const addRulesToFulfillmentShippingOptionStepId =
-  "add-rules-to-fulfillment-shipping-option"
-export const addRulesToFulfillmentShippingOptionStep = createStep(
-  addRulesToFulfillmentShippingOptionStepId,
+export const createShippingOptionRulesStepId = "create-shipping-option-rules"
+export const createShippingOptionRulesStep = createStep(
+  createShippingOptionRulesStepId,
   async (
     input: AddFulfillmentShippingOptionRulesWorkflowDTO,
     { container }

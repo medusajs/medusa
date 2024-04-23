@@ -23,3 +23,21 @@ export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
 }
+
+export const defaultAdminShippingOptionRuleFields = [
+  "id",
+  "description",
+  "attribute",
+  "operator",
+  "values.value",
+]
+
+export const retrieveRuleTransformQueryConfig = {
+  defaults: defaultAdminShippingOptionRuleFields,
+  isList: false,
+}
+
+export const listRuleTransformQueryConfig = {
+  ...retrieveRuleTransformQueryConfig,
+  isList: true,
+}
