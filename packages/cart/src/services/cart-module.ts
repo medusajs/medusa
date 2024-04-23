@@ -1,7 +1,9 @@
 import {
+  CartDTO,
   CartTypes,
   Context,
   DAL,
+  FindConfig,
   ICartModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
@@ -13,6 +15,9 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  createRawPropertiesFromBigNumber,
+  decorateCartTotals,
+  deduplicate,
   isObject,
   isString,
 } from "@medusajs/utils"
@@ -124,6 +129,125 @@ export default class CartModuleService<
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  private shouldIncludeTotals(config: FindConfig<any>): boolean {
+    const totalFields = [
+      "total",
+      "subtotal",
+      "tax_total",
+      "discount_total",
+      "discount_tax_total",
+      "original_total",
+      "original_tax_total",
+      "item_total",
+      "item_subtotal",
+      "item_tax_total",
+      "original_item_total",
+      "original_item_subtotal",
+      "original_item_tax_total",
+      "shipping_total",
+      "shipping_subtotal",
+      "shipping_tax_total",
+      "original_shipping_tax_total",
+      "original_shipping_tax_subtotal",
+      "original_shipping_total",
+    ]
+
+    const includeTotals = (config?.select ?? []).some((field) =>
+      totalFields.includes(field as string)
+    )
+
+    if (includeTotals) {
+      this.addRelationsToCalculateTotals(config, totalFields)
+    }
+
+    return includeTotals
+  }
+
+  private addRelationsToCalculateTotals(config: FindConfig<any>, totalFields) {
+    config.relations ??= []
+    config.select ??= []
+
+    const requiredFieldsForTotals = [
+      "items",
+      "items.tax_lines",
+      "items.adjustments",
+      "shipping_methods",
+      "shipping_methods.tax_lines",
+      "shipping_methods.adjustments",
+    ]
+    config.relations = deduplicate([
+      ...config.relations,
+      ...requiredFieldsForTotals,
+    ])
+
+    config.select = config.select.filter((field) => {
+      return (
+        !requiredFieldsForTotals.some((val) =>
+          val.startsWith(field as string)
+        ) && !totalFields.includes(field)
+      )
+    })
+  }
+
+  async retrieve(
+    id: string,
+    config?: FindConfig<any> | undefined,
+    sharedContext?: Context | undefined
+  ): Promise<CartDTO> {
+    config ??= {}
+    const includeTotals = this.shouldIncludeTotals(config)
+
+    const cart = await super.retrieve(id, config, sharedContext)
+
+    if (includeTotals) {
+      createRawPropertiesFromBigNumber(decorateCartTotals(cart))
+    }
+
+    return cart
+  }
+
+  async list(
+    filters?: any,
+    config?: FindConfig<any> | undefined,
+    sharedContext?: Context | undefined
+  ): Promise<CartDTO[]> {
+    config ??= {}
+    const includeTotals = this.shouldIncludeTotals(config)
+
+    const carts = await super.list(filters, config, sharedContext)
+
+    if (includeTotals) {
+      carts.forEach((cart) => {
+        createRawPropertiesFromBigNumber(decorateCartTotals(cart))
+      })
+    }
+
+    return carts
+  }
+
+  async listAndCount(
+    filters?: any,
+    config?: FindConfig<any> | undefined,
+    sharedContext?: Context | undefined
+  ): Promise<[CartDTO[], number]> {
+    config ??= {}
+    const includeTotals = this.shouldIncludeTotals(config)
+
+    const [carts, count] = await super.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    if (includeTotals) {
+      carts.forEach((cart) => {
+        createRawPropertiesFromBigNumber(decorateCartTotals(cart))
+      })
+    }
+
+    return [carts, count]
   }
 
   async create(

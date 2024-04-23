@@ -337,9 +337,9 @@ medusaIntegrationTestRunner({
             scId = scResponse.data.sales_channel.id
 
             await api.post(
-              `/admin/stock-locations/${location}/sales-channels/batch/add`,
+              `/admin/stock-locations/${location}/sales-channels`,
               {
-                sales_channel_ids: [scId],
+                add: [scId],
               },
               adminHeaders
             )

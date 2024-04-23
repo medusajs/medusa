@@ -1,5 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ICartModuleService } from "@medusajs/types"
+import { BigNumber } from "@medusajs/utils"
 import { CheckConstraintViolationException } from "@mikro-orm/core"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
@@ -2339,6 +2340,410 @@ moduleIntegrationTestRunner({
 
           expect(taxLines?.length).toBe(0)
         })
+      })
+    })
+
+    it("should calculate totals of a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const [itemTwo] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 2,
+          unit_price: 200,
+          title: "test-2",
+        },
+      ])
+
+      await service.setLineItemAdjustments(createdCart.id, [
+        {
+          item_id: itemOne.id,
+          amount: 100,
+          code: "FREE",
+        },
+        {
+          item_id: itemTwo.id,
+          amount: 200,
+          code: "FREE-2",
+        },
+      ])
+
+      await service.addShippingMethods(createdCart.id, [
+        {
+          amount: 10,
+          name: "Test",
+        },
+      ])
+
+      const cart = await service.retrieve(createdCart.id, { select: ["total"] })
+      expect(cart.total).toBeInstanceOf(BigNumber)
+
+      const asJson = JSON.parse(JSON.stringify(cart))
+      expect(asJson).toEqual({
+        id: createdCart.id,
+        items: [
+          {
+            id: itemOne.id,
+            cart_id: createdCart.id,
+            title: "test",
+            subtitle: null,
+            thumbnail: null,
+            quantity: 1,
+            variant_id: null,
+            product_id: null,
+            product_title: null,
+            product_description: null,
+            product_subtitle: null,
+            product_type: null,
+            product_collection: null,
+            product_handle: null,
+            variant_sku: null,
+            variant_barcode: null,
+            variant_title: null,
+            variant_option_values: null,
+            requires_shipping: true,
+            is_discountable: true,
+            is_tax_inclusive: false,
+            raw_compare_at_unit_price: null,
+            raw_unit_price: {
+              value: "100",
+              precision: 20,
+            },
+            metadata: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+            tax_lines: [],
+            adjustments: [
+              {
+                id: expect.any(String),
+                description: null,
+                code: "FREE",
+                raw_amount: {
+                  value: "100",
+                  precision: 20,
+                },
+                provider_id: null,
+                metadata: null,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                item_id: expect.any(String),
+                promotion_id: null,
+                deleted_at: null,
+                amount: 100,
+                subtotal: 100,
+                total: 100,
+                raw_subtotal: {
+                  value: "100",
+                  precision: 20,
+                },
+                raw_total: {
+                  value: "100",
+                  precision: 20,
+                },
+              },
+            ],
+            compare_at_unit_price: null,
+            unit_price: 100,
+            subtotal: 100,
+            total: 0,
+            original_total: 100,
+            discount_total: 100,
+            discount_tax_total: 0,
+            tax_total: 0,
+            original_tax_total: 0,
+            raw_subtotal: {
+              value: "100",
+              precision: 20,
+            },
+            raw_total: {
+              value: "0",
+              precision: 20,
+            },
+            raw_original_total: {
+              value: "100",
+              precision: 20,
+            },
+            raw_discount_total: {
+              value: "100",
+              precision: 20,
+            },
+            raw_discount_tax_total: {
+              value: "0",
+              precision: 20,
+            },
+            raw_tax_total: {
+              value: "0",
+              precision: 20,
+            },
+            raw_original_tax_total: {
+              value: "0",
+              precision: 20,
+            },
+          },
+          {
+            id: itemTwo.id,
+            cart_id: createdCart.id,
+            title: "test-2",
+            subtitle: null,
+            thumbnail: null,
+            quantity: 2,
+            variant_id: null,
+            product_id: null,
+            product_title: null,
+            product_description: null,
+            product_subtitle: null,
+            product_type: null,
+            product_collection: null,
+            product_handle: null,
+            variant_sku: null,
+            variant_barcode: null,
+            variant_title: null,
+            variant_option_values: null,
+            requires_shipping: true,
+            is_discountable: true,
+            is_tax_inclusive: false,
+            raw_compare_at_unit_price: null,
+            raw_unit_price: {
+              value: "200",
+              precision: 20,
+            },
+            metadata: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+            tax_lines: [],
+            adjustments: [
+              {
+                id: expect.any(String),
+                description: null,
+                code: "FREE-2",
+                raw_amount: {
+                  value: "200",
+                  precision: 20,
+                },
+                provider_id: null,
+                metadata: null,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                item_id: expect.any(String),
+                promotion_id: null,
+                deleted_at: null,
+                amount: 200,
+                subtotal: 200,
+                total: 200,
+                raw_subtotal: {
+                  value: "200",
+                  precision: 20,
+                },
+                raw_total: {
+                  value: "200",
+                  precision: 20,
+                },
+              },
+            ],
+            compare_at_unit_price: null,
+            unit_price: 200,
+            subtotal: 400,
+            total: 200,
+            original_total: 400,
+            discount_total: 200,
+            discount_tax_total: 0,
+            tax_total: 0,
+            original_tax_total: 0,
+            raw_subtotal: {
+              value: "400",
+              precision: 20,
+            },
+            raw_total: {
+              value: "200",
+              precision: 20,
+            },
+            raw_original_total: {
+              value: "400",
+              precision: 20,
+            },
+            raw_discount_total: {
+              value: "200",
+              precision: 20,
+            },
+            raw_discount_tax_total: {
+              value: "0",
+              precision: 20,
+            },
+            raw_tax_total: {
+              value: "0",
+              precision: 20,
+            },
+            raw_original_tax_total: {
+              value: "0",
+              precision: 20,
+            },
+          },
+        ],
+        shipping_methods: [
+          {
+            id: expect.any(String),
+            cart_id: expect.any(String),
+            name: "Test",
+            description: null,
+            raw_amount: {
+              value: "10",
+              precision: 20,
+            },
+            is_tax_inclusive: false,
+            shipping_option_id: null,
+            data: null,
+            metadata: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+            tax_lines: [],
+            adjustments: [],
+            amount: 10,
+            subtotal: 10,
+            total: 10,
+            original_total: 10,
+            discount_total: 0,
+            discount_tax_total: 0,
+            tax_total: 0,
+            original_tax_total: 0,
+            raw_subtotal: {
+              value: "10",
+              precision: 20,
+            },
+            raw_total: {
+              value: "10",
+              precision: 20,
+            },
+            raw_original_total: {
+              value: "10",
+              precision: 20,
+            },
+            raw_discount_total: {
+              value: "0",
+              precision: 20,
+            },
+            raw_discount_tax_total: {
+              value: "0",
+              precision: 20,
+            },
+            raw_tax_total: {
+              value: "0",
+              precision: 20,
+            },
+            raw_original_tax_total: {
+              value: "0",
+              precision: 20,
+            },
+          },
+        ],
+        total: 210,
+        subtotal: 500,
+        tax_total: 0,
+        discount_total: 300,
+        discount_tax_total: 0,
+        original_total: 210,
+        original_tax_total: 0,
+        item_total: 200,
+        item_subtotal: 500,
+        item_tax_total: 0,
+        original_item_total: 500,
+        original_item_subtotal: 500,
+        original_item_tax_total: 0,
+        shipping_total: 10,
+        shipping_subtotal: 10,
+        shipping_tax_total: 0,
+        original_shipping_tax_total: 0,
+        original_shipping_tax_subtotal: 10,
+        original_shipping_total: 10,
+        raw_total: {
+          value: "210",
+          precision: 20,
+        },
+        raw_subtotal: {
+          value: "500",
+          precision: 20,
+        },
+        raw_tax_total: {
+          value: "0",
+          precision: 20,
+        },
+        raw_discount_total: {
+          value: "300",
+          precision: 20,
+        },
+        raw_discount_tax_total: {
+          value: "0",
+          precision: 20,
+        },
+        raw_original_total: {
+          value: "210",
+          precision: 20,
+        },
+        raw_original_tax_total: {
+          value: "0",
+          precision: 20,
+        },
+        raw_item_total: {
+          value: "200",
+          precision: 20,
+        },
+        raw_item_subtotal: {
+          value: "500",
+          precision: 20,
+        },
+        raw_item_tax_total: {
+          value: "0",
+          precision: 20,
+        },
+        raw_original_item_total: {
+          value: "500",
+          precision: 20,
+        },
+        raw_original_item_subtotal: {
+          value: "500",
+          precision: 20,
+        },
+        raw_original_item_tax_total: {
+          value: "0",
+          precision: 20,
+        },
+        raw_shipping_total: {
+          value: "10",
+          precision: 20,
+        },
+        raw_shipping_subtotal: {
+          value: "10",
+          precision: 20,
+        },
+        raw_shipping_tax_total: {
+          value: "0",
+          precision: 20,
+        },
+        raw_original_shipping_tax_total: {
+          value: "0",
+          precision: 20,
+        },
+        raw_original_shipping_tax_subtotal: {
+          value: "10",
+          precision: 20,
+        },
+        raw_original_shipping_total: {
+          value: "10",
+          precision: 20,
+        },
       })
     })
   },

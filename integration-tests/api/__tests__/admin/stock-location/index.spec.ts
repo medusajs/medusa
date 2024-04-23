@@ -308,8 +308,8 @@ medusaIntegrationTestRunner({
 
       it("should add sales channels to a location", async () => {
         const salesChannelResponse = await api.post(
-          `/admin/stock-locations/${location.id}/sales-channels/batch/add?fields=*sales_channels`,
-          { sales_channel_ids: [salesChannel.id] },
+          `/admin/stock-locations/${location.id}/sales-channels?fields=*sales_channels`,
+          { add: [salesChannel.id] },
           adminHeaders
         )
 
@@ -356,16 +356,16 @@ medusaIntegrationTestRunner({
         location = locationResponse.data.stock_location
 
         await api.post(
-          `/admin/stock-locations/${location.id}/sales-channels/batch/add?fields=*sales_channels`,
-          { sales_channel_ids: [salesChannel1.id, salesChannel2.id] },
+          `/admin/stock-locations/${location.id}/sales-channels?fields=*sales_channels`,
+          { add: [salesChannel1.id, salesChannel2.id] },
           adminHeaders
         )
       })
 
       it("should remove sales channels from a location", async () => {
         const salesChannelResponse = await api.post(
-          `/admin/stock-locations/${location.id}/sales-channels/batch/remove?fields=*sales_channels`,
-          { sales_channel_ids: [salesChannel1.id] },
+          `/admin/stock-locations/${location.id}/sales-channels?fields=*sales_channels`,
+          { remove: [salesChannel1.id] },
           adminHeaders
         )
 

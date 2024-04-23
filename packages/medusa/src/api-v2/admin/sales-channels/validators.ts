@@ -50,10 +50,3 @@ export const AdminUpdateSalesChannel = z.object({
   is_disabled: z.boolean().optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
 })
-
-export type AdminSetSalesChannelProductsBatchType = z.infer<
-  typeof AdminSetSalesChannelProductsBatch
->
-export const AdminSetSalesChannelProductsBatch = z.object({
-  product_ids: z.array(z.string()),
-})

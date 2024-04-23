@@ -179,14 +179,77 @@ export default class OrderModuleService<
     return joinerConfig
   }
 
+  private shouldIncludeTotals(config: FindConfig<any>): boolean {
+    const totalFields = [
+      "total",
+      "subtotal",
+      "tax_total",
+      "discount_total",
+      "discount_tax_total",
+      "original_total",
+      "original_tax_total",
+      "item_total",
+      "item_subtotal",
+      "item_tax_total",
+      "original_item_total",
+      "original_item_subtotal",
+      "original_item_tax_total",
+      "shipping_total",
+      "shipping_subtotal",
+      "shipping_tax_total",
+      "original_shipping_tax_total",
+      "original_shipping_tax_subtotal",
+      "original_shipping_total",
+    ]
+
+    const includeTotals = (config?.select ?? []).some((field) =>
+      totalFields.includes(field as string)
+    )
+
+    if (includeTotals) {
+      this.addRelationsToCalculateTotals(config, totalFields)
+    }
+
+    return includeTotals
+  }
+
+  private addRelationsToCalculateTotals(config: FindConfig<any>, totalFields) {
+    config.relations ??= []
+    config.select ??= []
+
+    const requiredFieldsForTotals = [
+      "items",
+      "items.tax_lines",
+      "items.adjustments",
+      "shipping_methods",
+      "shipping_methods.tax_lines",
+      "shipping_methods.adjustments",
+    ]
+    config.relations = deduplicate([
+      ...config.relations,
+      ...requiredFieldsForTotals,
+    ])
+
+    config.select = config.select.filter((field) => {
+      return (
+        !requiredFieldsForTotals.some((val) =>
+          val.startsWith(field as string)
+        ) && !totalFields.includes(field)
+      )
+    })
+  }
+
   async retrieve(
     id: string,
     config?: FindConfig<any> | undefined,
     sharedContext?: Context | undefined
   ): Promise<OrderTypes.OrderDTO> {
+    config ??= {}
+    const includeTotals = this.shouldIncludeTotals(config)
+
     const order = await super.retrieve(id, config, sharedContext)
 
-    return formatOrder(order) as OrderTypes.OrderDTO
+    return formatOrder(order, { includeTotals }) as OrderTypes.OrderDTO
   }
 
   async list(
@@ -194,9 +257,14 @@ export default class OrderModuleService<
     config?: FindConfig<any> | undefined,
     sharedContext?: Context | undefined
   ): Promise<OrderTypes.OrderDTO[]> {
+    config ??= {}
+    const includeTotals = this.shouldIncludeTotals(config)
+
     const orders = await super.list(filters, config, sharedContext)
 
-    return formatOrder(orders) as OrderTypes.OrderDTO[]
+    return formatOrder(orders, {
+      includeTotals,
+    }) as OrderTypes.OrderDTO[]
   }
 
   async listAndCount(
@@ -204,13 +272,19 @@ export default class OrderModuleService<
     config?: FindConfig<any> | undefined,
     sharedContext?: Context | undefined
   ): Promise<[OrderTypes.OrderDTO[], number]> {
+    config ??= {}
+    const includeTotals = this.shouldIncludeTotals(config)
+
     const [orders, count] = await super.listAndCount(
       filters,
       config,
       sharedContext
     )
 
-    return [formatOrder(orders) as OrderTypes.OrderDTO[], count]
+    return [
+      formatOrder(orders, { includeTotals }) as OrderTypes.OrderDTO[],
+      count,
+    ]
   }
 
   async create(
