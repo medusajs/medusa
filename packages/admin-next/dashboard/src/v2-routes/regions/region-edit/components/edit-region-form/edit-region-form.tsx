@@ -1,4 +1,4 @@
-import { Button, Input, Select, Text } from "@medusajs/ui"
+import { Button, Input, Select, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -42,7 +42,7 @@ export const EditRegionForm = ({
     },
   })
 
-  const { mutateAsync, isLoading } = useUpdateRegion(region.id)
+  const { mutateAsync, isPending: isLoading } = useUpdateRegion(region.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
@@ -53,7 +53,17 @@ export const EditRegionForm = ({
       },
       {
         onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t("regions.toast.edit"),
+            dismissLabel: t("actions.close"),
+          })
           handleSuccess()
+        },
+        onError: (e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissLabel: t("actions.close"),
+          })
         },
       }
     )

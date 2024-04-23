@@ -3,8 +3,8 @@ import {
   InternalModuleDeclaration,
 } from "../modules-sdk"
 
-import { LoggerOptions } from "typeorm"
 import { RedisOptions } from "ioredis"
+import { LoggerOptions } from "typeorm"
 
 /**
  * @interface
@@ -743,4 +743,12 @@ export type ConfigModule = {
    * :::
    */
   featureFlags: Record<string, boolean | string>
+}
+
+export type PluginDetails = {
+  resolve: string
+  name: string
+  id: string
+  options: Record<string, unknown>
+  version: string
 }

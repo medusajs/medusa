@@ -63,13 +63,13 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/shipping-options/:id/rules/batch/add", () => {
+      describe("POST /admin/shipping-options/:id/rules/batch", () => {
         it("should throw error when required params are missing", async () => {
           const { response } = await api
             .post(
-              `/admin/shipping-options/${shippingOption.id}/rules/batch/add`,
+              `/admin/shipping-options/${shippingOption.id}/rules/batch`,
               {
-                rules: [{ operator: RuleOperator.EQ, value: "new_value" }],
+                create: [{ operator: RuleOperator.EQ, value: "new_value" }],
               },
               adminHeaders
             )
@@ -86,9 +86,9 @@ medusaIntegrationTestRunner({
         it.only("should throw error when shipping option does not exist", async () => {
           const { response } = await api
             .post(
-              `/admin/shipping-options/does-not-exist/rules/batch/add`,
+              `/admin/shipping-options/does-not-exist/rules/batch`,
               {
-                rules: [
+                create: [
                   { attribute: "new_attr", operator: "eq", value: "new value" },
                 ],
               },
@@ -106,9 +106,9 @@ medusaIntegrationTestRunner({
 
         it("should add rules to a shipping option successfully", async () => {
           const response = await api.post(
-            `/admin/shipping-options/${shippingOption.id}/rules/batch/add`,
+            `/admin/shipping-options/${shippingOption.id}/rules/batch`,
             {
-              rules: [
+              create: [
                 { operator: "eq", attribute: "new_attr", value: "new value" },
               ],
             },
@@ -116,7 +116,14 @@ medusaIntegrationTestRunner({
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.shipping_option).toEqual(
+
+          const updatedShippingOption = (
+            await api.get(
+              `/admin/shipping-options/${shippingOption.id}`,
+              adminHeaders
+            )
+          ).data.shipping_option
+          expect(updatedShippingOption).toEqual(
             expect.objectContaining({
               id: shippingOption.id,
               rules: expect.arrayContaining([
@@ -140,11 +147,11 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/shipping-options/:id/rules/batch/remove", () => {
+      describe("POST /admin/shipping-options/:id/rules/batch", () => {
         it("should throw error when required params are missing", async () => {
           const { response } = await api
             .post(
-              `/admin/shipping-options/${shippingOption.id}/rules/batch/remove`,
+              `/admin/shipping-options/${shippingOption.id}/rules/batch`,
               {},
               adminHeaders
             )
@@ -161,8 +168,8 @@ medusaIntegrationTestRunner({
         it("should throw error when shipping option does not exist", async () => {
           const { response } = await api
             .post(
-              `/admin/shipping-options/does-not-exist/rules/batch/remove`,
-              { rule_ids: ["test"] },
+              `/admin/shipping-options/does-not-exist/rules/batch`,
+              { delete: ["test"] },
               adminHeaders
             )
             .catch((e) => e)
@@ -176,15 +183,22 @@ medusaIntegrationTestRunner({
 
         it("should add rules to a shipping option successfully", async () => {
           const response = await api.post(
-            `/admin/shipping-options/${shippingOption.id}/rules/batch/remove`,
+            `/admin/shipping-options/${shippingOption.id}/rules/batch`,
             {
-              rule_ids: [shippingOption.rules[0].id],
+              delete: [shippingOption.rules[0].id],
             },
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.shipping_option).toEqual(
+
+          const updatedShippingOption = (
+            await api.get(
+              `/admin/shipping-options/${shippingOption.id}`,
+              adminHeaders
+            )
+          ).data.shipping_option
+          expect(updatedShippingOption).toEqual(
             expect.objectContaining({
               id: shippingOption.id,
               rules: [],

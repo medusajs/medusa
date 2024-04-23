@@ -752,6 +752,9 @@ export class TransactionOrchestrator extends EventEmitter {
 
                   await setStepFailure(error)
                 })
+
+              const eventName = DistributedTransactionEvent.STEP_AWAITING
+              transaction.emit(eventName, { step, transaction })
             })
           )
         }

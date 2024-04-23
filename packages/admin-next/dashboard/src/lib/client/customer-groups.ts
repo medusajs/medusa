@@ -53,8 +53,10 @@ async function batchAddCustomers(
   payload: { customer_ids: { id: string }[] }
 ) {
   return postRequest<AdminCustomerGroupResponse>(
-    `/admin/customer-groups/${id}/customers/batch/add`,
-    payload
+    `/admin/customer-groups/${id}/customers`,
+    {
+      add: payload.customer_ids,
+    }
   )
 }
 
@@ -63,8 +65,10 @@ async function batchRemoveCustomers(
   payload: { customer_ids: { id: string }[] }
 ) {
   return postRequest<AdminCustomerGroupResponse>(
-    `/admin/customer-groups/${id}/customers/batch/remove`,
-    payload
+    `/admin/customer-groups/${id}/customers`,
+    {
+      remove: payload.customer_ids,
+    }
   )
 }
 

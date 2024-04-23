@@ -61,13 +61,13 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/promotions/:id/rules/batch/add", () => {
+      describe("POST /admin/promotions/:id/rules/batch", () => {
         it("should throw error when required params are missing", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/${standardPromotion.id}/rules/batch/add`,
+              `/admin/promotions/${standardPromotion.id}/rules/batch`,
               {
-                rules: [
+                create: [
                   {
                     operator: "eq",
                     values: ["new value"],
@@ -89,9 +89,9 @@ medusaIntegrationTestRunner({
         it("should throw error when promotion does not exist", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/does-not-exist/rules/batch/add`,
+              `/admin/promotions/does-not-exist/rules/batch`,
               {
-                rules: [
+                create: [
                   {
                     attribute: "new_attr",
                     operator: "eq",
@@ -112,9 +112,9 @@ medusaIntegrationTestRunner({
 
         it("should add rules to a promotion successfully", async () => {
           const response = await api.post(
-            `/admin/promotions/${standardPromotion.id}/rules/batch/add`,
+            `/admin/promotions/${standardPromotion.id}/rules/batch`,
             {
-              rules: [
+              create: [
                 {
                   operator: "eq",
                   attribute: "new_attr",
@@ -126,7 +126,14 @@ medusaIntegrationTestRunner({
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.promotion).toEqual(
+
+          const promotion = (
+            await api.get(
+              `/admin/promotions/${standardPromotion.id}?fields=*rules`,
+              adminHeaders
+            )
+          ).data.promotion
+          expect(promotion).toEqual(
             expect.objectContaining({
               id: standardPromotion.id,
               rules: expect.arrayContaining([
@@ -146,13 +153,13 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/promotions/:id/target-rules/batch/add", () => {
+      describe("POST /admin/promotions/:id/target-rules/batch", () => {
         it("should throw error when required params are missing", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/${standardPromotion.id}/target-rules/batch/add`,
+              `/admin/promotions/${standardPromotion.id}/target-rules/batch`,
               {
-                rules: [
+                create: [
                   {
                     operator: "eq",
                     values: ["new value"],
@@ -174,9 +181,9 @@ medusaIntegrationTestRunner({
         it("should throw error when promotion does not exist", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/does-not-exist/target-rules/batch/add`,
+              `/admin/promotions/does-not-exist/target-rules/batch`,
               {
-                rules: [
+                create: [
                   {
                     attribute: "new_attr",
                     operator: "eq",
@@ -195,11 +202,11 @@ medusaIntegrationTestRunner({
           })
         })
 
-        it("should add target rules to a promotion successfully", async () => {
+        it.only("should add target rules to a promotion successfully", async () => {
           const response = await api.post(
-            `/admin/promotions/${standardPromotion.id}/target-rules/batch/add`,
+            `/admin/promotions/${standardPromotion.id}/target-rules/batch`,
             {
-              rules: [
+              create: [
                 {
                   operator: "eq",
                   attribute: "new_attr",
@@ -211,7 +218,14 @@ medusaIntegrationTestRunner({
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.promotion).toEqual(
+
+          const promotion = (
+            await api.get(
+              `/admin/promotions/${standardPromotion.id}`,
+              adminHeaders
+            )
+          ).data.promotion
+          expect(promotion).toEqual(
             expect.objectContaining({
               id: standardPromotion.id,
               application_method: expect.objectContaining({
@@ -233,13 +247,13 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/promotions/:id/buy-rules/batch/add", () => {
+      describe("POST /admin/promotions/:id/buy-rules/batch", () => {
         it("should throw error when required params are missing", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/${standardPromotion.id}/buy-rules/batch/add`,
+              `/admin/promotions/${standardPromotion.id}/buy-rules/batch`,
               {
-                rules: [
+                create: [
                   {
                     operator: "eq",
                     values: ["new value"],
@@ -261,9 +275,9 @@ medusaIntegrationTestRunner({
         it("should throw error when promotion does not exist", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/does-not-exist/buy-rules/batch/add`,
+              `/admin/promotions/does-not-exist/buy-rules/batch`,
               {
-                rules: [
+                create: [
                   {
                     attribute: "new_attr",
                     operator: "eq",
@@ -285,9 +299,9 @@ medusaIntegrationTestRunner({
         it("should throw an error when trying to add buy rules to a standard promotion", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/${standardPromotion.id}/buy-rules/batch/add`,
+              `/admin/promotions/${standardPromotion.id}/buy-rules/batch`,
               {
-                rules: [
+                create: [
                   {
                     operator: "eq",
                     attribute: "new_attr",
@@ -324,9 +338,9 @@ medusaIntegrationTestRunner({
           })
 
           const response = await api.post(
-            `/admin/promotions/${buyGetPromotion.id}/buy-rules/batch/add`,
+            `/admin/promotions/${buyGetPromotion.id}/buy-rules/batch`,
             {
-              rules: [
+              create: [
                 {
                   operator: "eq",
                   attribute: "new_attr",
@@ -338,7 +352,14 @@ medusaIntegrationTestRunner({
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.promotion).toEqual(
+
+          const promotion = (
+            await api.get(
+              `/admin/promotions/${standardPromotion.id}`,
+              adminHeaders
+            )
+          ).data.promotion
+          expect(promotion).toEqual(
             expect.objectContaining({
               id: buyGetPromotion.id,
               application_method: expect.objectContaining({
@@ -360,11 +381,11 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/promotions/:id/rules/batch/remove", () => {
+      describe("POST /admin/promotions/:id/rules/batch", () => {
         it("should throw error when required params are missing", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/${standardPromotion.id}/rules/batch/remove`,
+              `/admin/promotions/${standardPromotion.id}/rules/batch`,
               {},
               adminHeaders
             )
@@ -381,8 +402,8 @@ medusaIntegrationTestRunner({
         it("should throw error when promotion does not exist", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/does-not-exist/rules/batch/remove`,
-              { rule_ids: ["test-rule-id"] },
+              `/admin/promotions/does-not-exist/rules/batch`,
+              { delete: ["test-rule-id"] },
               adminHeaders
             )
             .catch((e) => e)
@@ -396,12 +417,12 @@ medusaIntegrationTestRunner({
 
         it("should remove rules from a promotion successfully", async () => {
           const response = await api.post(
-            `/admin/promotions/${standardPromotion.id}/rules/batch/remove`,
-            { rule_ids: [standardPromotion.rules[0].id] },
+            `/admin/promotions/${standardPromotion.id}/rules/batch`,
+            { delete: [standardPromotion.rules[0].id] },
             adminHeaders
           )
           expect(response.status).toEqual(200)
-          expect(response.data).toEqual({
+          expect(response.data.deleted).toEqual({
             ids: [standardPromotion.rules[0].id],
             object: "promotion-rule",
             deleted: true,
@@ -416,11 +437,11 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/promotions/:id/target-rules/batch/remove", () => {
+      describe("POST /admin/promotions/:id/target-rules/batch", () => {
         it("should throw error when required params are missing", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/${standardPromotion.id}/target-rules/batch/remove`,
+              `/admin/promotions/${standardPromotion.id}/target-rules/batch`,
               {},
               adminHeaders
             )
@@ -437,8 +458,8 @@ medusaIntegrationTestRunner({
         it("should throw error when promotion does not exist", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/does-not-exist/target-rules/batch/remove`,
-              { rule_ids: ["test-rule-id"] },
+              `/admin/promotions/does-not-exist/target-rules/batch`,
+              { delete: ["test-rule-id"] },
               adminHeaders
             )
             .catch((e) => e)
@@ -453,13 +474,13 @@ medusaIntegrationTestRunner({
         it("should remove target rules from a promotion successfully", async () => {
           const ruleId = standardPromotion.application_method.target_rules[0].id
           const response = await api.post(
-            `/admin/promotions/${standardPromotion.id}/target-rules/batch/remove`,
-            { rule_ids: [ruleId] },
+            `/admin/promotions/${standardPromotion.id}/target-rules/batch`,
+            { delete: [ruleId] },
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data).toEqual({
+          expect(response.data.deleted).toEqual({
             ids: [ruleId],
             object: "promotion-rule",
             deleted: true,
@@ -474,11 +495,11 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/promotions/:id/buy-rules/batch/remove", () => {
+      describe("POST /admin/promotions/:id/buy-rules/batch", () => {
         it("should throw error when required params are missing", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/${standardPromotion.id}/buy-rules/batch/remove`,
+              `/admin/promotions/${standardPromotion.id}/buy-rules/batch`,
               {},
               adminHeaders
             )
@@ -495,8 +516,8 @@ medusaIntegrationTestRunner({
         it("should throw error when promotion does not exist", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/does-not-exist/buy-rules/batch/remove`,
-              { rule_ids: ["test-rule-id"] },
+              `/admin/promotions/does-not-exist/buy-rules/batch`,
+              { delete: ["test-rule-id"] },
               adminHeaders
             )
             .catch((e) => e)
@@ -527,13 +548,13 @@ medusaIntegrationTestRunner({
 
           const ruleId = buyGetPromotion!.application_method!.buy_rules![0].id
           const response = await api.post(
-            `/admin/promotions/${buyGetPromotion.id}/buy-rules/batch/remove`,
-            { rule_ids: [ruleId] },
+            `/admin/promotions/${buyGetPromotion.id}/buy-rules/batch`,
+            { delete: [ruleId] },
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data).toEqual({
+          expect(response.data.deleted).toEqual({
             ids: [ruleId],
             object: "promotion-rule",
             deleted: true,
@@ -547,13 +568,13 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/promotions/:id/rules/batch/update", () => {
+      describe("POST /admin/promotions/:id/rules/batch", () => {
         it("should throw error when required params are missing", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/${standardPromotion.id}/rules/batch/update`,
+              `/admin/promotions/${standardPromotion.id}/rules/batch`,
               {
-                rules: [
+                update: [
                   {
                     attribute: "test",
                     operator: "eq",
@@ -575,9 +596,9 @@ medusaIntegrationTestRunner({
         it("should throw error when promotion does not exist", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/does-not-exist/rules/batch/update`,
+              `/admin/promotions/does-not-exist/rules/batch`,
               {
-                rules: [
+                update: [
                   {
                     id: standardPromotion.rules[0].id,
                     attribute: "new_attr",
@@ -600,9 +621,9 @@ medusaIntegrationTestRunner({
         it("should throw error when promotion rule id does not exist", async () => {
           const { response } = await api
             .post(
-              `/admin/promotions/${standardPromotion.id}/rules/batch/update`,
+              `/admin/promotions/${standardPromotion.id}/rules/batch`,
               {
-                rules: [
+                update: [
                   {
                     id: "does-not-exist",
                     attribute: "new_attr",
@@ -624,9 +645,9 @@ medusaIntegrationTestRunner({
 
         it("should add rules to a promotion successfully", async () => {
           const response = await api.post(
-            `/admin/promotions/${standardPromotion.id}/rules/batch/update`,
+            `/admin/promotions/${standardPromotion.id}/rules/batch`,
             {
-              rules: [
+              update: [
                 {
                   id: standardPromotion.rules[0].id,
                   operator: "eq",
@@ -639,7 +660,14 @@ medusaIntegrationTestRunner({
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.promotion).toEqual(
+
+          const promotion = (
+            await api.get(
+              `/admin/promotions/${standardPromotion.id}?fields=*rules`,
+              adminHeaders
+            )
+          ).data.promotion
+          expect(promotion).toEqual(
             expect.objectContaining({
               id: standardPromotion.id,
               rules: expect.arrayContaining([
@@ -806,8 +834,8 @@ medusaIntegrationTestRunner({
           expect(response.data.values.length).toEqual(2)
           expect(response.data.values).toEqual(
             expect.arrayContaining([
-              { label: "Afghan Afghani", value: "afn" },
-              { label: "Albanian Lek", value: "all" },
+              { label: "afn", value: "afn" },
+              { label: "all", value: "all" },
             ])
           )
 

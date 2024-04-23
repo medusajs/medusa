@@ -60,13 +60,6 @@ export const AdminUpdateStockLocation = z.object({
   metadata: z.record(z.unknown()).optional(),
 })
 
-export type AdminStockLocationsSalesChannelType = z.infer<
-  typeof AdminStockLocationsSalesChannel
->
-export const AdminStockLocationsSalesChannel = z.object({
-  sales_channel_ids: z.array(z.string()),
-})
-
 export type AdminCreateStockLocationFulfillmentSetType = z.infer<
   typeof AdminCreateStockLocationFulfillmentSet
 >

@@ -1,12 +1,13 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../types/routing"
-import {
   deleteProductsWorkflow,
   updateProductsWorkflow,
 } from "@medusajs/core-flows"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 
+import { UpdateProductDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -17,7 +18,6 @@ import {
   remapProductResponse,
 } from "../helpers"
 import { AdminUpdateProductType } from "../validators"
-import { UpdateProductDTO } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

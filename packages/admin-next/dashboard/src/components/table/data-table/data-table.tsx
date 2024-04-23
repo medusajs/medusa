@@ -1,9 +1,9 @@
 import { clx } from "@medusajs/ui"
 import { memo } from "react"
 import { NoRecords } from "../../common/empty-table-content"
+import { TableSkeleton } from "../../common/skeleton"
 import { DataTableQuery, DataTableQueryProps } from "./data-table-query"
 import { DataTableRoot, DataTableRootProps } from "./data-table-root"
-import { DataTableSkeleton } from "./data-table-skeleton"
 
 interface DataTableProps<TData>
   extends Omit<DataTableRootProps<TData>, "noResults">,
@@ -35,12 +35,11 @@ export const DataTable = <TData,>({
 }: DataTableProps<TData>) => {
   if (isLoading) {
     return (
-      <DataTableSkeleton
+      <TableSkeleton
         layout={layout}
-        columns={columns}
         rowCount={pageSize}
-        searchable={search}
-        filterable={!!filters?.length}
+        search={search}
+        filters={!!filters?.length}
         orderBy={!!orderBy?.length}
         pagination={!!pagination}
       />
