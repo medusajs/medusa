@@ -3,13 +3,13 @@ import { authenticate } from "../../../utils/authenticate-middleware"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
+import { createLinkBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
 import {
   AdminCreateStockLocation,
   AdminCreateStockLocationFulfillmentSet,
   AdminGetStockLocationParams,
   AdminGetStockLocationsParams,
-  AdminStockLocationsSalesChannel,
   AdminUpdateStockLocation,
 } from "./validators"
 
@@ -79,9 +79,9 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/stock-locations/:id/sales-channels/batch*",
+    matcher: "/admin/stock-locations/:id/sales-channels",
     middlewares: [
-      validateAndTransformBody(AdminStockLocationsSalesChannel),
+      validateAndTransformBody(createLinkBody()),
       validateAndTransformQuery(
         AdminGetStockLocationParams,
         QueryConfig.retrieveTransformQueryConfig

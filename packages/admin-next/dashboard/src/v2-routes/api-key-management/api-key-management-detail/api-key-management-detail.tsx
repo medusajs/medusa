@@ -1,5 +1,11 @@
 import { Outlet, useLoaderData, useParams } from "react-router-dom"
+
 import { JsonViewSection } from "../../../components/common/json-view-section"
+import {
+  GeneralSectionSkeleton,
+  JsonViewSectionSkeleton,
+  TableSectionSkeleton,
+} from "../../../components/common/skeleton"
 import { useApiKey } from "../../../hooks/api/api-keys"
 import { ApiKeyType } from "../common/constants"
 import { ApiKeyGeneralSection } from "./components/api-key-general-section"
@@ -18,7 +24,13 @@ export const ApiKeyManagementDetail = () => {
   })
 
   if (isLoading || !api_key) {
-    return <div>Loading...</div>
+    return (
+      <div className="flex flex-col gap-y-2">
+        <GeneralSectionSkeleton rowCount={4} />
+        <TableSectionSkeleton />
+        <JsonViewSectionSkeleton />
+      </div>
+    )
   }
 
   const isPublishable = api_key?.type === ApiKeyType.PUBLISHABLE

@@ -1,13 +1,13 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
-import { BatchLinkProductsToCollectionDTO } from "@medusajs/types/src"
+import { LinkWorkflowInput } from "@medusajs/types/src"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const batchLinkProductsToCollectionStepId =
   "batch-link-products-to-collection"
 export const batchLinkProductsToCollectionStep = createStep(
   batchLinkProductsToCollectionStepId,
-  async (data: BatchLinkProductsToCollectionDTO, { container }) => {
+  async (data: LinkWorkflowInput, { container }) => {
     const service = container.resolve<IProductModuleService>(
       ModuleRegistrationName.PRODUCT
     )

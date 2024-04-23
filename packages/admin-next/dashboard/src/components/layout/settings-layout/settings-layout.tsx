@@ -68,8 +68,12 @@ const useDeveloperRoutes = (): NavItemProps[] => {
   return useMemo(
     () => [
       {
-        label: t("apiKeyManagement.domain.apiKeys"),
-        to: "/settings/api-key-management",
+        label: t("apiKeyManagement.domain.publishable"),
+        to: "/settings/publishable-api-keys",
+      },
+      {
+        label: t("apiKeyManagement.domain.secret"),
+        to: "/settings/secret-api-keys",
       },
       {
         label: t("workflowExecutions.domain"),
