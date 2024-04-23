@@ -39,22 +39,24 @@ export const GET = async (
   if (dasherizedRuleType === RuleType.RULES) {
     promotionRules.push(...(promotion?.rules || []))
   } else if (dasherizedRuleType === RuleType.TARGET_RULES) {
-    promotionRules.push(...(promotion.application_method?.target_rules || []))
+    promotionRules.push(...(promotion?.application_method?.target_rules || []))
   } else if (dasherizedRuleType === RuleType.BUY_RULES) {
-    promotionRules.push(...(promotion.application_method?.buy_rules || []))
+    promotionRules.push(...(promotion?.application_method?.buy_rules || []))
   }
 
   const transformedRules: AdminGetPromotionRulesRes = []
   const disguisedRules = ruleAttributes.filter((attr) => !!attr.disguised)
+  const requiredRules = ruleAttributes.filter((attr) => !!attr.required)
 
   for (const disguisedRule of disguisedRules) {
-    const value = promotion.application_method?.[disguisedRule.id]
-    const values = [{ label: value, value }]
+    const value = promotion?.application_method?.[disguisedRule.id]
+    const values = value ? [{ label: value, value }] : []
 
     transformedRules.push({
       id: undefined,
       attribute: disguisedRule.id,
       attribute_label: disguisedRule.label,
+      field_type: disguisedRule.field_type,
       operator: RuleOperator.EQ,
       operator_label: operatorsMap[RuleOperator.EQ].label,
       values,
@@ -102,11 +104,30 @@ export const GET = async (
     transformedRules.push({
       ...promotionRule,
       attribute_label: currentRuleAttribute.label,
+      field_type: currentRuleAttribute.field_type,
       operator_label:
         operatorsMap[promotionRule.operator]?.label || promotionRule.operator,
       disguised: false,
       required: currentRuleAttribute.required || false,
     })
+  }
+
+  if (requiredRules.length && !transformedRules.length) {
+    for (const requiredRule of requiredRules) {
+      transformedRules.push({
+        id: undefined,
+        attribute: requiredRule.value,
+        attribute_label: requiredRule.label,
+        operator: RuleOperator.EQ,
+        field_type: requiredRule.field_type,
+        operator_label: operatorsMap[RuleOperator.EQ].label,
+        values: [],
+        disguised: true,
+        required: true,
+      })
+
+      continue
+    }
   }
 
   res.json({

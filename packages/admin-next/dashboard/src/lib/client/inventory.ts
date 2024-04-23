@@ -1,6 +1,7 @@
 import {
   AdminInventoryItemListResponse,
   AdminInventoryItemResponse,
+  AdminInventoryLevelResponse,
 } from "@medusajs/types"
 import {
   CreateInventoryItemReq,
@@ -85,9 +86,12 @@ async function batchPostLocationLevels(
   inventoryItemId: string,
   payload: InventoryItemLocationBatch
 ) {
-  return postRequest<AdminInventoryItemResponse>(
-    `/admin/inventory-items/${inventoryItemId}/location-levels/batch/combi`,
-    payload
+  return postRequest<AdminInventoryLevelResponse>(
+    `/admin/inventory-items/${inventoryItemId}/location-levels/batch`,
+    {
+      create: payload.creates,
+      delete: payload.deletes,
+    }
   )
 }
 

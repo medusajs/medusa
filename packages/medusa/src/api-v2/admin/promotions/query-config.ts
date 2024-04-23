@@ -19,6 +19,14 @@ export const defaultAdminPromotionFields = [
   "rules.values.value",
 ]
 
+export const defaultAdminPromotionRuleFields = [
+  "id",
+  "description",
+  "attribute",
+  "operator",
+  "values.value",
+]
+
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminPromotionFields,
   isList: false,
@@ -26,6 +34,16 @@ export const retrieveTransformQueryConfig = {
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
+  isList: true,
+}
+
+export const retrieveRuleTransformQueryConfig = {
+  defaults: defaultAdminPromotionRuleFields,
+  isList: false,
+}
+
+export const listRuleTransformQueryConfig = {
+  ...retrieveRuleTransformQueryConfig,
   isList: true,
 }
 
