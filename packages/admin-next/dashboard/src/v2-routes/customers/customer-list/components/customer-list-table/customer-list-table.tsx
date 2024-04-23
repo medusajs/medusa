@@ -1,17 +1,19 @@
 import { PencilSquare } from "@medusajs/icons"
-import { Button, Container, Heading } from "@medusajs/ui"
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { AdminCustomerResponse } from "@medusajs/types"
+import { Button, Container, Heading } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
+import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useCustomers } from "../../../../../hooks/api/customers"
 import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-customer-table-columns"
 import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
 import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useCustomers } from "../../../../../hooks/api/customers"
 
 const PAGE_SIZE = 20
 
@@ -19,9 +21,14 @@ export const CustomerListTable = () => {
   const { t } = useTranslation()
 
   const { searchParams, raw } = useCustomerTableQuery({ pageSize: PAGE_SIZE })
-  const { customers, count, isLoading, isError, error } = useCustomers({
-    ...searchParams,
-  })
+  const { customers, count, isLoading, isError, error } = useCustomers(
+    {
+      ...searchParams,
+    },
+    {
+      placeholderData: keepPreviousData,
+    }
+  )
 
   const filters = useCustomerTableFilters()
   const columns = useColumns()
@@ -110,5 +117,5 @@ const useColumns = () => {
       }),
     ],
     [columns]
-  ) as ColumnDef<AdminCustomerResponse["customer"]>[]
+  )
 }

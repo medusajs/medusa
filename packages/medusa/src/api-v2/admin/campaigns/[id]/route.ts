@@ -1,6 +1,5 @@
 import {
   AuthenticatedMedusaRequest,
-  MedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
 import {
@@ -8,32 +7,32 @@ import {
   updateCampaignsWorkflow,
 } from "@medusajs/core-flows"
 
-import { AdminPostCampaignsReq } from "../validators"
-import { IPromotionModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { UpdateCampaignDTO } from "@medusajs/types"
+import { refetchCampaign } from "../helpers"
+import { AdminUpdateCampaignType } from "../validators"
+import { MedusaError } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const promotionModuleService: IPromotionModuleService = req.scope.resolve(
-    ModuleRegistrationName.PROMOTION
+  const campaign = await refetchCampaign(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
   )
 
-  const campaign = await promotionModuleService.retrieveCampaign(
-    req.params.id,
-    {
-      select: req.retrieveConfig.select,
-      relations: req.retrieveConfig.relations,
-    }
-  )
+  if (!campaign) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Campaign with id: ${req.params.id} was not found`
+    )
+  }
 
   res.status(200).json({ campaign })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostCampaignsReq>,
+  req: AuthenticatedMedusaRequest<AdminUpdateCampaignType>,
   res: MedusaResponse
 ) => {
   const updateCampaigns = updateCampaignsWorkflow(req.scope)
@@ -42,7 +41,7 @@ export const POST = async (
       id: req.params.id,
       ...req.validatedBody,
     },
-  ] as UpdateCampaignDTO[]
+  ]
 
   const { result, errors } = await updateCampaigns.run({
     input: { campaignsData },
@@ -53,7 +52,12 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ campaign: result[0] })
+  const campaign = await refetchCampaign(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ campaign })
 }
 
 export const DELETE = async (

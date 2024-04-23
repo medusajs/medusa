@@ -1,54 +1,46 @@
 import { TransactionHandlerType } from "@medusajs/utils"
-import { Transform } from "class-transformer"
-import { IsEnum, IsOptional, IsString } from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
-import { IsType } from "../../../utils"
+import { createFindParams, createSelectParams } from "../../utils/validators"
+import { z } from "zod"
 
-export class AdminGetWorkflowExecutionDetailsParams extends FindParams {}
+export type AdminGetWorkflowExecutionDetailsParamsType = z.infer<
+  typeof AdminGetWorkflowExecutionDetailsParams
+>
 
-export class AdminGetWorkflowExecutionsParams extends extendedFindParamsMixin({
-  limit: 100,
+export const AdminGetWorkflowExecutionDetailsParams = createSelectParams()
+
+export type AdminGetWorkflowExecutionsParamsType = z.infer<
+  typeof AdminGetWorkflowExecutionsParams
+>
+export const AdminGetWorkflowExecutionsParams = createFindParams({
   offset: 0,
-}) {
-  /**
-   * transaction id(s) to filter workflow executions by transaction_id.
-   */
-  @IsOptional()
-  @IsType([String, [String]])
-  transaction_id?: string | string[]
+  limit: 100,
+}).merge(
+  z.object({
+    transaction_id: z.union([z.string(), z.array(z.string())]).optional(),
+    workflow_id: z.union([z.string(), z.array(z.string())]).optional(),
+  })
+)
 
-  /**
-   * workflow id(s) to filter workflow executions by workflow_id
-   */
-  @IsOptional()
-  @IsType([String, [String]])
-  workflow_id?: string | string[]
-}
+export type AdminCreateWorkflowsRunType = z.infer<
+  typeof AdminCreateWorkflowsRun
+>
+export const AdminCreateWorkflowsRun = z.object({
+  input: z.any().optional(),
+  transaction_id: z.string().optional(),
+})
 
-export class AdminPostWorkflowsRunReq {
-  @IsOptional()
-  input?: unknown
-
-  @IsOptional()
-  @IsString()
-  transaction_id?: string
-}
-
-export class AdminPostWorkflowsAsyncResponseReq {
-  @IsString()
-  transaction_id: string
-
-  @IsString()
-  step_id: string
-
-  @IsOptional()
-  response?: unknown
-
-  @IsOptional()
-  compensate_input?: unknown
-
-  @IsOptional()
-  @Transform(({ value }) => (value + "").toLowerCase())
-  @IsEnum(TransactionHandlerType)
-  action?: TransactionHandlerType
-}
+export type AdminCreateWorkflowsAsyncResponseType = z.infer<
+  typeof AdminCreateWorkflowsAsyncResponse
+>
+export const AdminCreateWorkflowsAsyncResponse = z.object({
+  transaction_id: z.string(),
+  step_id: z.string(),
+  response: z.any().optional(),
+  compensate_input: z.any().optional(),
+  action: z
+    .preprocess(
+      (val: any) => (val + "").toLowerCase(),
+      z.nativeEnum(TransactionHandlerType).optional()
+    )
+    .optional(),
+})

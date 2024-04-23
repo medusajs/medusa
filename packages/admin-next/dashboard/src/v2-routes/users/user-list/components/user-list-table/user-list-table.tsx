@@ -14,7 +14,13 @@ export const UserListTable = () => {
   const { raw, searchParams } = useUserTableQuery({
     pageSize: PAGE_SIZE,
   })
-  const { users, count, isLoading, isError, error } = useUsers(searchParams, {
+  const {
+    users,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useUsers(searchParams, {
     placeholderData: keepPreviousData,
   })
 

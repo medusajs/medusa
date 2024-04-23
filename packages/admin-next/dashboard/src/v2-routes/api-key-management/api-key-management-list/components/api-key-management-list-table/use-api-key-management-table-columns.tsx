@@ -1,5 +1,5 @@
 import { AdminApiKeyResponse } from "@medusajs/types"
-import { Copy, Text, clx } from "@medusajs/ui"
+import { Badge, Copy, Text } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { MouseEvent, useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -7,7 +7,11 @@ import { useTranslation } from "react-i18next"
 import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
 import { TextCell } from "../../../../../components/table/table-cells/common/text-cell"
-import { getApiKeyStatusProps, getApiKeyTypeProps } from "../../../common/utils"
+import {
+  getApiKeyStatusProps,
+  getApiKeyTypeProps,
+  prettifyRedactedToken,
+} from "../../../common/utils"
 import { ApiKeyRowActions } from "./api-key-row-actions"
 
 const columnHelper = createColumnHelper<AdminApiKeyResponse["api_key"]>()
@@ -31,34 +35,24 @@ export const useApiKeyManagementTableColumns = () => {
           const token = getValue()
           const isSecret = row.original.type === "secret"
 
-          const clickHandler = !isSecret
-            ? (e: MouseEvent) => e.stopPropagation()
-            : undefined
+          if (isSecret) {
+            return <Badge size="2xsmall">{prettifyRedactedToken(token)}</Badge>
+          }
+
+          const clickHandler = (e: MouseEvent) => e.stopPropagation()
 
           return (
-            <div
-              className={clx(
-                "bg-ui-bg-subtle border-ui-border-base box-border flex w-fit max-w-[220px] items-center gap-x-0.5 overflow-hidden rounded-full border pl-2",
-                {
-                  "cursor-default pr-1": !isSecret,
-                },
-                {
-                  "pr-2": isSecret,
-                }
-              )}
-              onClick={clickHandler}
-            >
-              <Text size="xsmall" leading="compact" className="truncate">
-                {token}
-              </Text>
-              {!isSecret && (
-                <Copy
-                  content={row.original.token}
-                  variant="mini"
-                  className="text-ui-fg-subtle"
-                />
-              )}
-            </div>
+            <Badge size="2xsmall" className="max-w-40" onClick={clickHandler}>
+              <Copy
+                content={row.original.token}
+                className="text-ui-fg-subtle"
+                asChild
+              >
+                <Text size="xsmall" leading="compact" className="truncate">
+                  {prettifyRedactedToken(token)}
+                </Text>
+              </Copy>
+            </Badge>
           )
         },
       }),

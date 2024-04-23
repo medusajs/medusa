@@ -137,6 +137,7 @@ export enum DistributedTransactionEvent {
   STEP_BEGIN = "stepBegin",
   STEP_SUCCESS = "stepSuccess",
   STEP_FAILURE = "stepFailure",
+  STEP_AWAITING = "stepAwaiting",
   COMPENSATE_STEP_SUCCESS = "compensateStepSuccess",
   COMPENSATE_STEP_FAILURE = "compensateStepFailure",
 }
@@ -162,6 +163,11 @@ export type DistributedTransactionEvents = {
   }) => void
 
   onStepFailure?: (args: {
+    step: TransactionStep
+    transaction: DistributedTransaction
+  }) => void
+
+  onStepAwaiting?: (args: {
     step: TransactionStep
     transaction: DistributedTransaction
   }) => void

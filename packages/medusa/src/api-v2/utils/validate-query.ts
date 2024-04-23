@@ -34,11 +34,8 @@ const getFilterableFields = <T extends RequestQueryFields>(obj: T): T => {
 }
 
 export function validateAndTransformQuery<TEntity extends BaseEntity>(
-  zodSchema: z.ZodObject<any, any>,
-  queryConfig: QueryConfig<TEntity>,
-  config?: {
-    strict?: boolean
-  }
+  zodSchema: z.ZodObject<any, any> | z.ZodEffects<any, any>,
+  queryConfig: QueryConfig<TEntity>
 ): (
   req: MedusaRequest,
   res: MedusaResponse,
@@ -47,7 +44,8 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
   return async (req: MedusaRequest, _: MedusaResponse, next: NextFunction) => {
     try {
       const query = normalizeQuery(req)
-      const validated = await zodValidator(zodSchema, query, config)
+
+      const validated = await zodValidator(zodSchema, query)
       const cnf = queryConfig.isList
         ? prepareListQuery(validated, queryConfig)
         : prepareRetrieveQuery(validated, queryConfig)

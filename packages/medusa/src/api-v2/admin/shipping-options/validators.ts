@@ -5,8 +5,15 @@ import {
 import { z } from "zod"
 import { createFindParams, createSelectParams } from "../../utils/validators"
 
+export type AdminGetShippingOptionParamsType = z.infer<
+  typeof AdminGetShippingOptionParams
+>
 export const AdminGetShippingOptionParams = createSelectParams()
-export const AdminListShippingOptionParams = createFindParams({
+
+export type AdminGetShippingOptionsParamsType = z.infer<
+  typeof AdminGetShippingOptionsParams
+>
+export const AdminGetShippingOptionsParams = createFindParams({
   offset: 0,
   limit: 20,
 })
@@ -15,6 +22,9 @@ export const AdminListShippingOptionParams = createFindParams({
  * SHIPPING OPTIONS RULES
  */
 
+export type AdminCreateShippingOptionRuleType = z.infer<
+  typeof AdminCreateShippingOptionRule
+>
 export const AdminCreateShippingOptionRule = z
   .object({
     operator: z.nativeEnum(RuleOperator),
@@ -23,25 +33,23 @@ export const AdminCreateShippingOptionRule = z
   })
   .strict()
 
+export type AdminShippingOptionRulesBatchAddType = z.infer<
+  typeof AdminShippingOptionRulesBatchAdd
+>
 export const AdminShippingOptionRulesBatchAdd = z
   .object({
     rules: AdminCreateShippingOptionRule.array(),
   })
   .strict()
 
-export type AdminShippingOptionRulesBatchAddType = z.infer<
-  typeof AdminShippingOptionRulesBatchAdd
+export type AdminShippingOptionRulesBatchRemoveType = z.infer<
+  typeof AdminShippingOptionRulesBatchRemove
 >
-
 export const AdminShippingOptionRulesBatchRemove = z
   .object({
     rule_ids: z.array(z.string()),
   })
   .strict()
-
-export type AdminShippingOptionRulesBatchRemoveType = z.infer<
-  typeof AdminShippingOptionRulesBatchRemove
->
 
 /**
  * SHIPPING OPTIONS
@@ -70,6 +78,25 @@ export const AdminCreateShippingOptionPriceWithRegion = z
   })
   .strict()
 
+export const AdminUpdateShippingOptionPriceWithCurrency = z
+  .object({
+    id: z.string().optional(),
+    currency_code: z.string().optional(),
+    amount: z.number().optional(),
+  })
+  .strict()
+
+export const AdminUpdateShippingOptionPriceWithRegion = z
+  .object({
+    id: z.string().optional(),
+    region_id: z.string().optional(),
+    amount: z.number().optional(),
+  })
+  .strict()
+
+export type AdminCreateShippingOptionType = z.infer<
+  typeof AdminCreateShippingOption
+>
 export const AdminCreateShippingOption = z
   .object({
     name: z.string(),
@@ -86,10 +113,9 @@ export const AdminCreateShippingOption = z
   })
   .strict()
 
-export type AdminCreateShippingOptionType = z.infer<
-  typeof AdminCreateShippingOption
+export type AdminUpdateShippingOptionType = z.infer<
+  typeof AdminUpdateShippingOption
 >
-
 export const AdminUpdateShippingOption = z
   .object({
     id: z.string(),
@@ -98,9 +124,10 @@ export const AdminUpdateShippingOption = z
     price_type: z.nativeEnum(ShippingOptionPriceTypeEnum).optional(),
     provider_id: z.string().optional(),
     type: AdminCreateShippingOptionTypeObject.optional(),
+    prices: AdminUpdateShippingOptionPriceWithCurrency.or(
+      AdminUpdateShippingOptionPriceWithRegion
+    )
+      .array()
+      .optional(),
   })
   .strict()
-
-export type AdminUpdateShippingOptionType = z.infer<
-  typeof AdminUpdateShippingOption
->

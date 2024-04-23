@@ -8,7 +8,7 @@ import {
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { CreateRegionReq } from "../../types/api-payloads"
+import { CreateRegionReq, UpdateRegionReq } from "../../types/api-payloads"
 import {
   RegionDeleteRes,
   RegionListRes,
@@ -66,7 +66,7 @@ export const useCreateRegion = (
 
 export const useUpdateRegion = (
   id: string,
-  options?: UseMutationOptions<RegionRes, Error, CreateRegionReq>
+  options?: UseMutationOptions<RegionRes, Error, UpdateRegionReq>
 ) => {
   return useMutation({
     mutationFn: (payload) => client.regions.update(id, payload),

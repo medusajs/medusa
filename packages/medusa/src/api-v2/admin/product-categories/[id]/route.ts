@@ -1,30 +1,51 @@
+import { updateProductCategoryWorkflow } from "@medusajs/core-flows"
 import { AdminProductCategoryResponse } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { AdminProductCategoryParamsType } from "../validators"
+import { refetchCategory } from "../helpers"
+import {
+  AdminProductCategoryParamsType,
+  AdminUpdateProductCategoryType,
+} from "../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminProductCategoryParamsType>,
   res: MedusaResponse<AdminProductCategoryResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const category = await refetchCategory(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields,
+    req.filterableFields
+  )
 
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product_category",
-    variables: {
-      filters: req.filterableFields,
-      id: req.params.id,
-    },
-    fields: req.remoteQueryConfig.fields,
+  res.json({ product_category: category })
+}
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminUpdateProductCategoryType>,
+  res: MedusaResponse<AdminProductCategoryResponse>
+) => {
+  const { id } = req.params
+
+  // TODO: Should be converted to bulk update
+  const { errors } = await updateProductCategoryWorkflow(req.scope).run({
+    input: { id, data: req.validatedBody },
+    throwOnError: false,
   })
 
-  const [product_category] = await remoteQuery(queryObject)
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
 
-  res.json({ product_category })
+  const category = await refetchCategory(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields,
+    req.filterableFields
+  )
+
+  res.status(200).json({ product_category: category })
 }

@@ -30,6 +30,16 @@ export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/fulfillment-sets/:id/service-zones/:zone_id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminFulfillmentSetParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/fulfillment-sets/:id",
     middlewares: [],
   },
   {

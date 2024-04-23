@@ -11,7 +11,11 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { AdminCreateShippingProfileType } from "./validators"
+import {
+  AdminCreateShippingProfileType,
+  AdminGetShippingProfilesParamsType,
+} from "./validators"
+import { refetchShippingProfile } from "./helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateShippingProfileType>,
@@ -30,23 +34,17 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const shippingProfileId = result?.[0].id
-
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const query = remoteQueryObjectFromString({
-    entryPoint: "shipping_profiles",
-    variables: { id: shippingProfileId },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [shippingProfile] = await remoteQuery(query)
+  const shippingProfile = await refetchShippingProfile(
+    result?.[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
   res.status(200).json({ shipping_profile: shippingProfile })
 }
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetShippingProfilesParamsType>,
   res: MedusaResponse<AdminShippingProfilesResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

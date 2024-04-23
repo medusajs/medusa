@@ -7,7 +7,10 @@ import {
   updateProductVariantsWorkflow,
 } from "@medusajs/core-flows"
 
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   refetchProduct,
   remapKeysForVariant,
@@ -20,7 +23,7 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   // TODO: Should we allow fetching a variant without knowing the product ID? In such case we'll need to change the route to /admin/products/variants/:id
   const productId = req.params.id
@@ -64,7 +67,6 @@ export const POST = async (
     req.remoteQueryConfig.fields
   )
   res.status(200).json({ product: remapProductResponse(product) })
-  Response
 }
 
 export const DELETE = async (

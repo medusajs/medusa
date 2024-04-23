@@ -6,6 +6,7 @@ import {
   CreateApiKeyDTO,
   CreateCampaignDTO,
   CreateCustomerDTO,
+  CreateFulfillmentSetDTO,
   CreateInviteDTO,
   CreatePriceListDTO,
   CreateProductCollectionDTO,
@@ -13,7 +14,11 @@ import {
   CreatePromotionRuleDTO,
   CreateRegionDTO,
   CreateSalesChannelDTO,
+  CreateServiceZoneDTO,
+  CreateShippingOptionDTO,
+  CreateShippingProfileDTO,
   CreateStockLocationInput,
+  InventoryNext,
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
   UpdateCustomerDTO,
@@ -44,7 +49,7 @@ export type UpdateApiKeyReq = UpdateApiKeyDTO
 
 // Customers
 export type CreateCustomerReq = CreateCustomerDTO
-export type UpdateCustomerReq = UpdateCustomerDTO
+export type UpdateCustomerReq = Omit<UpdateCustomerDTO, "id">
 
 // Sales Channels
 export type CreateSalesChannelReq = CreateSalesChannelDTO
@@ -61,6 +66,14 @@ export type CreateInviteReq = CreateInviteDTO
 // Stock Locations
 export type CreateStockLocationReq = CreateStockLocationInput
 export type UpdateStockLocationReq = UpdateStockLocationInput
+export type CreateFulfillmentSetReq = CreateFulfillmentSetDTO
+export type CreateServiceZoneReq = CreateServiceZoneDTO
+
+// Shipping Options
+export type CreateShippingOptionReq = CreateShippingOptionDTO
+
+// Shipping Profile
+export type CreateShippingProfileReq = CreateShippingProfileDTO
 
 // Product Collections
 export type CreateProductCollectionReq = CreateProductCollectionDTO
@@ -88,3 +101,21 @@ export type BatchUpdatePromotionRulesReq = { rules: UpdatePromotionRuleDTO[] }
 // Campaign
 export type CreateCampaignReq = CreateCampaignDTO
 export type UpdateCampaignReq = UpdateCampaignDTO
+
+// Inventory Items
+export type CreateInventoryItemReq = InventoryNext.CreateInventoryItemInput
+export type UpdateInventoryItemReq = Omit<
+  InventoryNext.UpdateInventoryItemInput,
+  "id"
+>
+
+// Inventory Item Levels
+export type InventoryItemLocationBatch = {
+  creates: { location_id: string; stocked_quantity?: number }[]
+  deletes: string[]
+}
+
+export type UpdateInventoryLevelReq = {
+  reserved_quantity?: number
+  stocked_quantity?: number
+}
