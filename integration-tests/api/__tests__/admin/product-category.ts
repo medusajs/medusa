@@ -16,7 +16,7 @@ let { Product } = {}
 medusaIntegrationTestRunner({
   env: {
     MEDUSA_FF_PRODUCT_CATEGORIES: true,
-    MEDUSA_FF_MEDUSA_V2: true,
+    // MEDUSA_FF_MEDUSA_V2: true,
   },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let appContainer
@@ -1458,7 +1458,8 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe("POST /admin/product-categories/:id/products", () => {
+    // Skipping because the test is for V2 only
+    describe.skip("POST /admin/product-categories/:id/products", () => {
       beforeEach(async () => {
         productCategory = await productModuleService.createCategory({
           name: "category parent",

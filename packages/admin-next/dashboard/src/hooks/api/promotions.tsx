@@ -29,7 +29,7 @@ import {
 const PROMOTIONS_QUERY_KEY = "promotions" as const
 export const promotionsQueryKeys = {
   ...queryKeysFactory(PROMOTIONS_QUERY_KEY),
-  listRules: (id: string, ruleType: string) => [
+  listRules: (id: string | null, ruleType: string) => [
     PROMOTIONS_QUERY_KEY,
     id,
     ruleType,
@@ -60,7 +60,7 @@ export const usePromotion = (
 }
 
 export const usePromotionRules = (
-  id: string,
+  id: string | null,
   ruleType: string,
   options?: Omit<
     UseQueryOptions<
