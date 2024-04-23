@@ -3,16 +3,20 @@ import {
   CreateFileDTO,
   FileDTO,
   ModuleJoinerConfig,
+  FileTypes,
+  FilterableFileProps,
+  FindConfig,
 } from "@medusajs/types"
 
 import { joinerConfig } from "../joiner-config"
 import FileProviderService from "./file-provider-service"
+import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
   fileProviderService: FileProviderService
 }
 
-export default class FileModuleService {
+export default class FileModuleService implements FileTypes.IFileModuleService {
   protected readonly fileProviderService_: FileProviderService
   constructor({ fileProviderService }: InjectedDependencies) {
     this.fileProviderService_ = fileProviderService
@@ -51,7 +55,6 @@ export default class FileModuleService {
     return
   }
 
-  async retrieve(id: string): Promise<FileDTO>
   async retrieve(id: string): Promise<FileDTO> {
     const res = await this.fileProviderService_.getPresignedDownloadUrl({
       fileKey: id,
@@ -61,5 +64,66 @@ export default class FileModuleService {
       id,
       url: res,
     }
+  }
+
+  async list(
+    filters?: FilterableFileProps,
+    config?: FindConfig<FileDTO>,
+    sharedContext?: Context
+  ): Promise<FileDTO[]> {
+    const id = Array.isArray(filters?.id) ? filters?.id?.[0] : filters?.id
+    if (!id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Listing of files is only supported when filtering by ID."
+      )
+    }
+
+    const res = await this.fileProviderService_.getPresignedDownloadUrl({
+      fileKey: id,
+    })
+
+    if (!res) {
+      return []
+    }
+
+    return [
+      {
+        id,
+        url: res,
+      },
+    ]
+  }
+
+  async listAndCount(
+    filters?: FilterableFileProps,
+    config?: FindConfig<FileDTO>,
+    sharedContext?: Context
+  ): Promise<[FileDTO[], number]> {
+    const id = Array.isArray(filters?.id) ? filters?.id?.[0] : filters?.id
+    if (!id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Listing and counting of files is only supported when filtering by ID."
+      )
+    }
+
+    const res = await this.fileProviderService_.getPresignedDownloadUrl({
+      fileKey: id,
+    })
+
+    if (!res) {
+      return [[], 0]
+    }
+
+    return [
+      [
+        {
+          id,
+          url: res,
+        },
+      ],
+      1,
+    ]
   }
 }
