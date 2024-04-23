@@ -352,7 +352,10 @@
       "create": "Create reservation",
       "itemToReserve": "Item to reserve",
       "quantityPlaceholder": "How many do you want to reserve?",
-      "descriptionPlaceholde": "What type of reservation is this?"
+      "descriptionPlaceholder": "What type of reservation is this?",
+      "successToast": "Reservation was successfully created.",
+      "updateSuccessToast": "Reservation was successfully updated.",
+      "deleteSuccessToast": "Reservation was successfully deleted."
     }
   },
   "giftCards": {

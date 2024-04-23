@@ -1,5 +1,6 @@
 import { EditReservationForm } from "./components/edit-reservation-form"
 import { Heading } from "@medusajs/ui"
+import { InventoryNext } from "@medusajs/types"
 import { RouteDrawer } from "../../../../../components/route-modal"
 import { useInventoryItem } from "../../../../../hooks/api/inventory"
 import { useParams } from "react-router-dom"
@@ -11,7 +12,7 @@ export const ReservationEdit = () => {
   const { id } = useParams()
   const { t } = useTranslation()
 
-  const { reservation, isLoading, isError, error } = useReservationItem(id!)
+  const { reservation, isPending, isError, error } = useReservationItem(id!)
   const { inventory_item: inventoryItem } = useInventoryItem(
     reservation?.inventory_item_id!,
     {
@@ -21,14 +22,16 @@ export const ReservationEdit = () => {
 
   const { stock_locations } = useStockLocations(
     {
-      id: inventoryItem?.location_levels?.map((l) => l.location_id),
+      id: inventoryItem?.location_levels?.map(
+        (l: InventoryNext.InventoryLevelDTO) => l.location_id
+      ),
     },
     {
       enabled: !!inventoryItem?.location_levels,
     }
   )
 
-  const ready = !isLoading && reservation && inventoryItem && stock_locations
+  const ready = !isPending && reservation && inventoryItem && stock_locations
   if (isError) {
     throw error
   }

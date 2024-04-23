@@ -1,22 +1,22 @@
 import * as zod from "zod"
 
-import { Button, Heading, Input, Text, Textarea } from "@medusajs/ui"
+import { Button, Heading, Input, Text, Textarea, toast } from "@medusajs/ui"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../../components/route-modal"
-import { useInventoryItems } from "../../../../../../hooks/api/inventory"
 
 import { Combobox } from "../../../../../../components/common/combobox"
 import { Form } from "../../../../../../components/common/form"
 import { InventoryItemRes } from "../../../../../../types/api-responses"
 import { InventoryNext } from "@medusajs/types"
 import React from "react"
+import { useCreateReservationItem } from "../../../../../../hooks/api/reservations"
 import { useForm } from "react-hook-form"
+import { useInventoryItems } from "../../../../../../hooks/api/inventory"
 import { useStockLocations } from "../../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useCreateReservationItem } from "../../../../../../hooks/api/reservations"
 
 export const CreateReservationSchema = zod.object({
   inventory_item_id: zod.string().min(1),
@@ -71,12 +71,12 @@ export const CreateReservationForm = () => {
   )
 
   const inventoryItemId = form.watch("inventory_item_id")
-  const selectedInventroyItem = inventory_items?.find(
+  const selectedInventoryItem = inventory_items?.find(
     (it) => it.id === inventoryItemId
   ) as InventoryItemRes["inventory_item"] | undefined
 
   const locationId = form.watch("location_id")
-  const selectedLocationLevel = selectedInventroyItem?.location_levels?.find(
+  const selectedLocationLevel = selectedInventoryItem?.location_levels?.find(
     (it) => it.location_id === locationId
   )
 
@@ -85,12 +85,12 @@ export const CreateReservationForm = () => {
   const { stock_locations } = useStockLocations(
     {
       id:
-        selectedInventroyItem?.location_levels?.map(
+        selectedInventoryItem?.location_levels?.map(
           (level: InventoryNext.InventoryLevelDTO) => level.location_id
         ) ?? [],
     },
     {
-      enabled: !!selectedInventroyItem,
+      enabled: !!selectedInventoryItem,
     }
   )
 
@@ -99,6 +99,10 @@ export const CreateReservationForm = () => {
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
       onSuccess: ({ reservation }) => {
+        toast.success(t("general.success"), {
+          dismissLabel: t("actions.close"),
+          description: t("inventory.reservation.successToast"),
+        })
         handleSuccess(`/reservations/${reservation.id}`)
       },
     })
@@ -120,7 +124,7 @@ export const CreateReservationForm = () => {
               size="small"
               isLoading={isPending}
             >
-              {t("actions.create")}
+              {t("actions.reservation")}
             </Button>
           </div>
         </RouteFocusModal.Header>
@@ -170,6 +174,7 @@ export const CreateReservationForm = () => {
                       <Form.Label>{t("fields.location")}</Form.Label>
                       <Form.Control>
                         <Combobox
+                          disabled={!!selectedInventoryItem}
                           value={value}
                           onChange={(v) => {
                             onChange(v)
@@ -192,14 +197,14 @@ export const CreateReservationForm = () => {
               <AttributeGridRow
                 title={t("fields.title")}
                 value={
-                  selectedInventroyItem?.title ??
-                  selectedInventroyItem?.sku ??
+                  selectedInventoryItem?.title ??
+                  selectedInventoryItem?.sku ??
                   "-"
                 }
               />
               <AttributeGridRow
                 title={t("fields.sku")}
-                value={selectedInventroyItem?.sku ?? "-"}
+                value={selectedInventoryItem?.sku ?? "-"}
               />
               <AttributeGridRow
                 title={t("fields.inStock")}

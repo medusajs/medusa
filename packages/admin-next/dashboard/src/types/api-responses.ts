@@ -71,7 +71,7 @@ export type RegionRes = { region: RegionDTO }
 export type RegionListRes = { regions: RegionDTO[] } & ListRes
 export type RegionDeleteRes = DeleteRes
 
-// Regions
+// Reservations
 export type ReservationRes = { reservation: InventoryNext.ReservationItemDTO }
 export type ReservationListRes = {
   reservations: InventoryNext.ReservationItemDTO[]

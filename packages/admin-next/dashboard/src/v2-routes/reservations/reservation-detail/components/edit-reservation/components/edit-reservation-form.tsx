@@ -1,6 +1,6 @@
 import * as zod from "zod"
 
-import { Button, Input, Select, Text, Textarea } from "@medusajs/ui"
+import { Button, Input, Select, Text, Textarea, toast } from "@medusajs/ui"
 import { InventoryNext, StockLocationDTO } from "@medusajs/types"
 import {
   RouteDrawer,
@@ -73,6 +73,10 @@ export const EditReservationForm = ({
     mutateAsync(values as any, {
       onSuccess: () => {
         handleSuccess()
+        toast.success(t("general.success"), {
+          dismissLabel: t("actions.close"),
+          description: t("inventory.reservation.updateSuccessToast"),
+        })
       },
     })
   })

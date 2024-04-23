@@ -18,10 +18,10 @@ export const ReservationGeneralSection = ({
 }: ReservationGeneralSectionProps) => {
   const { t } = useTranslation()
 
-  const { inventory_item: inventoryItem, isLoading: isLoadingInventoryItem } =
+  const { inventory_item: inventoryItem, isPending: isLoadingInventoryItem } =
     useInventoryItem(reservation.inventory_item_id)
 
-  const { stock_location: location, isLoading: isLoadingLocation } =
+  const { stock_location: location, isPending: isLoadingLocation } =
     useStockLocation(reservation.location_id)
 
   if (
