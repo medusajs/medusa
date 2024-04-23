@@ -1,5 +1,3 @@
-export const defaultAdminUserRelations = []
-export const allowedAdminUserRelations = []
 export const defaultAdminUserFields = [
   "id",
   "first_name",
@@ -13,9 +11,7 @@ export const defaultAdminUserFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminUserFields,
-  defaultRelations: defaultAdminUserRelations,
-  allowedRelations: allowedAdminUserRelations,
+  defaults: defaultAdminUserFields,
   isList: false,
 }
 

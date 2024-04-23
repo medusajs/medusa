@@ -19,6 +19,8 @@ type StepFunctionReturnConfig<TOutput> = {
   ): WorkflowData<TOutput>
 }
 
+type KeysOfUnion<T> = T extends T ? keyof T : never
+
 /**
  * A step function to be used in a workflow.
  *
@@ -28,7 +30,7 @@ type StepFunctionReturnConfig<TOutput> = {
 export type StepFunction<
   TInput,
   TOutput = unknown
-> = (keyof TInput extends never
+> = (KeysOfUnion<TInput> extends []
   ? // Function that doesn't expect any input
     {
       (): WorkflowData<TOutput> & StepFunctionReturnConfig<TOutput>

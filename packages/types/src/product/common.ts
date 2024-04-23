@@ -287,23 +287,27 @@ export interface ProductCategoryDTO {
   /**
    * The description of the product category.
    */
-  description?: string
+  description: string
   /**
    * The handle of the product category. The handle can be used to create slug URL paths.
    */
-  handle?: string
+  handle: string
   /**
    * Whether the product category is active.
    */
-  is_active?: boolean
+  is_active: boolean
   /**
    * Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.
    */
-  is_internal?: boolean
+  is_internal: boolean
   /**
    * The ranking of the product category among sibling categories.
    */
-  rank?: number
+  rank: number
+  /**
+   * The ranking of the product category among sibling categories.
+   */
+  metadata?: Record<string, unknown> | null
   /**
    * The associated parent category.
    *
@@ -341,6 +345,10 @@ export interface CreateProductCategoryDTO {
    */
   name: string
   /**
+   * The product category's description.
+   */
+  description?: string
+  /**
    * The product category's handle.
    */
   handle?: string
@@ -358,11 +366,8 @@ export interface CreateProductCategoryDTO {
   rank?: number
   /**
    * The ID of the parent product category, if it has any.
-   *
-   * @privateRemarks
-   * Shouldn't this be optional?
    */
-  parent_category_id: string | null
+  parent_category_id?: string | null
   /**
    * Holds custom data in key-value pairs.
    */
@@ -379,6 +384,10 @@ export interface UpdateProductCategoryDTO {
    * The name of the product category.
    */
   name?: string
+  /**
+   * The product category's description.
+   */
+  description?: string
   /**
    * The handle of the product category.
    */
@@ -402,7 +411,7 @@ export interface UpdateProductCategoryDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 /**

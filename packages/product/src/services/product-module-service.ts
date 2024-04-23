@@ -31,6 +31,7 @@ import {
   ModulesSdkUtils,
   ProductStatus,
   promiseAll,
+  removeUndefined,
 } from "@medusajs/utils"
 import {
   ProductCategoryEventData,
@@ -771,6 +772,8 @@ export default class ProductModuleService<
       ProductModuleService.normalizeCreateProductCollectionInput
     )
 
+    // It's safe to use upsertWithReplace here since we only have product IDs and the only operation to do is update the product
+    // with the collection ID
     return await this.productCollectionService_.upsertWithReplace(
       normalizedInput,
       { relations: ["products"] },
@@ -906,20 +909,65 @@ export default class ProductModuleService<
   ): Promise<TProductCollection[]> {
     const normalizedInput = data.map(
       ProductModuleService.normalizeUpdateProductCollectionInput
-    )
+    ) as UpdateCollectionInput[]
 
-    return await this.productCollectionService_.upsertWithReplace(
-      normalizedInput,
-      { relations: ["products"] },
+    // TODO: Maybe we can update upsertWithReplace to not remove oneToMany entities, but just disassociate them? With that we can remove the code below.
+    // Another alternative is to not allow passing product_ids to a collection, and instead set the collection_id through the product update call.
+    const updatedCollections = await this.productCollectionService_.update(
+      normalizedInput.map((c) =>
+        removeUndefined({ ...c, products: undefined })
+      ),
       sharedContext
     )
+
+    const collectionWithProducts = await promiseAll(
+      updatedCollections.map(async (collection, i) => {
+        const input = normalizedInput.find((c) => c.id === collection.id)
+        const productsToUpdate = (input as any)?.products
+        if (!productsToUpdate) {
+          return { ...collection, products: [] }
+        }
+
+        await this.productService_.update(
+          {
+            selector: { collection_id: collection.id },
+            data: { collection_id: null },
+          },
+          sharedContext
+        )
+
+        if (productsToUpdate.length > 0) {
+          await this.productService_.update(
+            productsToUpdate.map((p) => ({
+              id: p.id,
+              collection_id: collection.id,
+            })),
+            sharedContext
+          )
+        }
+
+        return { ...collection, products: productsToUpdate }
+      })
+    )
+
+    return collectionWithProducts
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async createCategory(
     data: ProductTypes.CreateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductCategoryDTO> {
+    const result = await this.createCategory_(data, sharedContext)
+
+    return await this.baseRepository_.serialize(result)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createCategory_(
+    data: ProductTypes.CreateProductCategoryDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductCategory> {
     const productCategory = await this.productCategoryService_.create(
       data,
       sharedContext
@@ -930,9 +978,7 @@ export default class ProductModuleService<
       { id: productCategory.id }
     )
 
-    return await this.baseRepository_.serialize(productCategory, {
-      populate: true,
-    })
+    return productCategory
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1115,8 +1161,10 @@ export default class ProductModuleService<
     data: ProductTypes.CreateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
-    const normalizedInput = await Promise.all(
-      data.map((d) => this.normalizeCreateProductInput(d, sharedContext))
+    const normalizedInput = await promiseAll(
+      data.map(
+        async (d) => await this.normalizeCreateProductInput(d, sharedContext)
+      )
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1171,8 +1219,10 @@ export default class ProductModuleService<
     data: UpdateProductInput[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
-    const normalizedInput = await Promise.all(
-      data.map((d) => this.normalizeUpdateProductInput(d, sharedContext))
+    const normalizedInput = await promiseAll(
+      data.map(
+        async (d) => await this.normalizeUpdateProductInput(d, sharedContext)
+      )
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1258,7 +1308,8 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.CreateProductDTO> {
     const productData = (await this.normalizeUpdateProductInput(
-      product as UpdateProductInput
+      product as UpdateProductInput,
+      sharedContext
     )) as ProductTypes.CreateProductDTO
 
     if (!productData.handle && productData.title) {

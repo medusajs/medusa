@@ -18,6 +18,8 @@ import {
   PromotionDTO,
   RegionDTO,
   SalesChannelDTO,
+  ShippingOptionDTO,
+  ShippingProfileDTO,
   StockLocationAddressDTO,
   StockLocationDTO,
   StoreDTO,
@@ -128,8 +130,21 @@ export type StockLocationListRes = {
   stock_locations: ExtendedStockLocationDTO[]
 } & ListRes
 export type StockLocationDeleteRes = DeleteRes
+export type FulfillmentSetDeleteRes = DeleteRes
+export type ServiceZoneDeleteRes = DeleteRes
 
-// Worfklow Executions
+// Shipping options
+export type ShippingOptionRes = { shipping_option: ShippingOptionDTO }
+export type ShippingOptionDeleteRes = DeleteRes
+
+// Shipping profile
+export type ShippingProfileRes = { shipping_profile: ShippingProfileDTO }
+export type ShippingProfileListRes = {
+  shipping_profiles: ShippingProfileDTO[]
+} & ListRes
+export type ShippingProfileDeleteRes = DeleteRes
+
+// Workflow Executions
 export type WorkflowExecutionRes = { workflow_execution: WorkflowExecutionDTO }
 export type WorkflowExecutionListRes = {
   workflow_executions: WorkflowExecutionDTO[]
@@ -141,6 +156,10 @@ export type ProductCollectionListRes = {
   collections: ProductCollectionDTO[]
 } & ListRes
 export type ProductCollectionDeleteRes = DeleteRes
+
+// Taxes
+export type TaxRegionDeleteRes = DeleteRes
+export type TaxRateDeleteRes = DeleteRes
 
 // Inventory Items
 export type InventoryItemRes = {

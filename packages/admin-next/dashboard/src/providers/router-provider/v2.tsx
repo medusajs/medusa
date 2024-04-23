@@ -9,6 +9,8 @@ import {
   AdminApiKeyResponse,
   AdminCustomerGroupResponse,
   AdminProductCategoryResponse,
+  AdminTaxRateResponse,
+  AdminTaxRegionResponse,
   SalesChannelDTO,
   UserDTO,
 } from "@medusajs/types"
@@ -284,6 +286,44 @@ export const v2Routes: RouteObject[] = [
                     path: "products/edit",
                     lazy: () =>
                       import("../../v2-routes/pricing/pricing-products-prices"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "shipping",
+            lazy: () => import("../../v2-routes/shipping/locations-list"),
+            handle: {
+              crumb: () => "Shipping",
+            },
+            children: [
+              {
+                path: "location/:location_id",
+                children: [
+                  {
+                    path: "fulfillment-set/:fset_id",
+                    children: [
+                      {
+                        path: "service-zones/create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/shipping/service-zone-create"
+                          ),
+                      },
+                      {
+                        path: "service-zone/:zone_id",
+                        children: [
+                          {
+                            path: "shipping-options/create",
+                            lazy: () =>
+                              import(
+                                "../../v2-routes/shipping/shipping-options-create"
+                              ),
+                          },
+                        ],
+                      },
+                    ],
                   },
                 ],
               },
@@ -673,10 +713,42 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
-            path: "api-key-management",
+            path: "shipping-profiles",
             element: <Outlet />,
             handle: {
-              crumb: () => "API Key Management",
+              crumb: () => "Shipping Profiles",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/shipping-profiles/shipping-profiles-list"
+                  ),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/shipping-profiles/shipping-profile-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/shipping-profiles/shipping-profile-detail"
+                  ),
+              },
+            ],
+          },
+          {
+            path: "publishable-api-keys",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Publishable API Keys",
             },
             children: [
               {
@@ -685,22 +757,6 @@ export const v2Routes: RouteObject[] = [
                 children: [
                   {
                     path: "",
-                    lazy: () =>
-                      import(
-                        "../../v2-routes/api-key-management/api-key-management-list"
-                      ),
-                    children: [
-                      {
-                        path: "create",
-                        lazy: () =>
-                          import(
-                            "../../v2-routes/api-key-management/api-key-management-create"
-                          ),
-                      },
-                    ],
-                  },
-                  {
-                    path: "secret",
                     lazy: () =>
                       import(
                         "../../v2-routes/api-key-management/api-key-management-list"
@@ -748,6 +804,58 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
+            path: "secret-api-keys",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Secret API Keys",
+            },
+            children: [
+              {
+                path: "",
+                element: <Outlet />,
+                children: [
+                  {
+                    path: "",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-list"
+                      ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-detail"
+                  ),
+                handle: {
+                  crumb: (data: AdminApiKeyResponse) => {
+                    return data.api_key.title
+                  },
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-edit"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
             path: "taxes",
             element: <Outlet />,
             handle: {
@@ -757,7 +865,56 @@ export const v2Routes: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../v2-routes/taxes/tax-region-list"),
-                children: [],
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../v2-routes/taxes/tax-region-create"),
+                    children: [],
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/taxes/tax-region-detail"),
+                handle: {
+                  crumb: (data: AdminTaxRegionResponse) => {
+                    return data.tax_region.country_code
+                  },
+                },
+                children: [
+                  {
+                    path: "create-default",
+                    lazy: () =>
+                      import("../../v2-routes/taxes/tax-province-create"),
+                    children: [],
+                  },
+                  {
+                    path: "create-override",
+                    lazy: () => import("../../v2-routes/taxes/tax-rate-create"),
+                    children: [],
+                  },
+                  {
+                    path: "tax-rates",
+                    children: [
+                      {
+                        path: ":taxRateId",
+                        children: [
+                          {
+                            path: "edit",
+                            lazy: () =>
+                              import("../../v2-routes/taxes/tax-rate-edit"),
+                            handle: {
+                              crumb: (data: AdminTaxRateResponse) => {
+                                return data.tax_rate.code
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },

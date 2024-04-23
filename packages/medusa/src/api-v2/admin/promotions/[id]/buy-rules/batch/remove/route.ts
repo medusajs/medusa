@@ -4,10 +4,10 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
-import { AdminPostBatchRemoveRules } from "../../../../validators"
+import { AdminRemoveBatchRulesType } from "../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostBatchRemoveRules>,
+  req: AuthenticatedMedusaRequest<AdminRemoveBatchRulesType>,
   res: MedusaResponse
 ) => {
   const id = req.params.id

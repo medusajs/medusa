@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { Button, Checkbox } from "@medusajs/ui"
+import { Button, Checkbox, toast } from "@medusajs/ui"
 import { RegionCountryDTO, RegionDTO } from "@medusajs/types"
 import {
   RouteFocusModal,
@@ -21,7 +21,7 @@ import { countries as staticCountries } from "../../../../../lib/countries"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
-import { useUpdateRegion } from "../../../../../hooks/api/regions.tsx"
+import { useUpdateRegion } from "../../../../../hooks/api/regions"
 
 type AddCountriesFormProps = {
   region: RegionDTO
@@ -98,7 +98,7 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
     prefix: PREFIX,
   })
 
-  const { mutateAsync, isLoading } = useUpdateRegion(region.id)
+  const { mutateAsync, isPending: isLoading } = useUpdateRegion(region.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     const payload = [
@@ -106,16 +106,23 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
       ...values.countries,
     ]
 
-    await mutateAsync(
-      {
+    try {
+      await mutateAsync({
         countries: payload,
-      },
-      {
-        onSuccess: () => {
-          handleSuccess()
-        },
-      }
-    )
+      })
+
+      handleSuccess()
+
+      toast.success(t("general.success"), {
+        description: t("regions.toast.countries"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   })
 
   return (
@@ -132,7 +139,7 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
               </Button>
             </RouteFocusModal.Close>
             <Button size="small" isLoading={isLoading} type="submit">
-              {t("actions.save")}
+              {t("actions.add")}
             </Button>
           </div>
         </RouteFocusModal.Header>

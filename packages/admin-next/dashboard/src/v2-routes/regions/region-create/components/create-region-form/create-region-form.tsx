@@ -9,6 +9,7 @@ import {
   Switch,
   Text,
   clx,
+  toast,
 } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
@@ -91,7 +92,17 @@ export const CreateRegionForm = ({
       },
       {
         onSuccess: ({ region }) => {
+          toast.success(t("general.success"), {
+            description: t("regions.toast.create"),
+            dismissLabel: t("actions.close"),
+          })
           handleSuccess(`../${region.id}`)
+        },
+        onError: (e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissLabel: t("actions.close"),
+          })
         },
       }
     )

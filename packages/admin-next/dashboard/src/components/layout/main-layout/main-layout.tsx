@@ -2,6 +2,7 @@ import {
   Buildings,
   ChevronDownMini,
   CurrencyDollar,
+  Envelope,
   MinusMini,
   ReceiptPercent,
   ShoppingCart,
@@ -142,6 +143,11 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
       icon: <CurrencyDollar />,
       label: t("pricing.domain"),
       to: "/pricing",
+    },
+    {
+      icon: <Envelope />,
+      label: t("shipping.domain"),
+      to: "/shipping",
     },
   ]
 }

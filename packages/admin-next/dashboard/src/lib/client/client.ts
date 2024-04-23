@@ -15,12 +15,14 @@ import { products } from "./products"
 import { promotions } from "./promotions"
 import { regions } from "./regions"
 import { salesChannels } from "./sales-channels"
+import { shippingOptions } from "./shipping-options"
 import { stockLocations } from "./stock-locations"
 import { stores } from "./stores"
 import { tags } from "./tags"
 import { taxes } from "./taxes"
 import { users } from "./users"
 import { workflowExecutions } from "./workflow-executions"
+import { shippingProfiles } from "./shipping-profiles"
 
 export const client = {
   auth: auth,
@@ -35,6 +37,8 @@ export const client = {
   payments: payments,
   stores: stores,
   salesChannels: salesChannels,
+  shippingOptions: shippingOptions,
+  shippingProfiles: shippingProfiles,
   tags: tags,
   users: users,
   regions: regions,

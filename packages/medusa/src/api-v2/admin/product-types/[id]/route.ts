@@ -7,31 +7,27 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 
-import { UpdateProductTypeDTO } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { refetchProductType } from "../helpers"
+import {
+  AdminGetProductTypeParamsType,
+  AdminUpdateProductTypeType,
+} from "../validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetProductTypeParamsType>,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const productType = await refetchProductType(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
-  const variables = { id: req.params.id }
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product_type",
-    variables,
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [product_type] = await remoteQuery(queryObject)
-
-  res.status(200).json({ product_type })
+  res.status(200).json({ product_type: productType })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<UpdateProductTypeDTO>,
+  req: AuthenticatedMedusaRequest<AdminUpdateProductTypeType>,
   res: MedusaResponse
 ) => {
   const { result, errors } = await updateProductTypesWorkflow(req.scope).run({

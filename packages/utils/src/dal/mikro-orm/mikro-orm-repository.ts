@@ -639,16 +639,6 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
             Object.assign(normalizedDataItem, {
               ...joinColumnsConstraints,
             })
-            // Non-persist relation columns should be removed before we do the upsert.
-            Object.entries(relation.targetMeta?.properties ?? {})
-              .filter(
-                ([_, propDef]) =>
-                  propDef.persist === false &&
-                  propDef.reference === ReferenceType.MANY_TO_ONE
-              )
-              .forEach(([key]) => {
-                delete normalizedDataItem[key]
-              })
           })
 
           await this.upsertMany_(manager, relation.type, normalizedData)
@@ -717,7 +707,25 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         persist: false,
       })
 
-      return { id: (created as any).id, ...data }
+      const resp = {
+        // `create` will omit non-existent fields, but we want to pass the data the user provided through so the correct errors get thrown
+        ...data,
+        ...(created as any).__helper.__bignumberdata,
+        id: (created as any).id,
+      }
+
+      // Non-persist relation columns should be removed before we do the upsert.
+      Object.entries((created as any).__helper?.__meta.properties ?? {})
+        .filter(
+          ([_, propDef]: any) =>
+            propDef.persist === false &&
+            propDef.reference === ReferenceType.MANY_TO_ONE
+        )
+        .forEach(([key]) => {
+          delete resp[key]
+        })
+
+      return resp
     }
 
     protected async upsertMany_(
