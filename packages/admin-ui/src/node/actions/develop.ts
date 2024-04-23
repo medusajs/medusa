@@ -55,6 +55,7 @@ export async function develop({
 
   const devServerArgs: DevServerConfiguration = {
     port: options.develop.port,
+    host: options.develop.host,
     client: {
       logging: "none",
       overlay: {
