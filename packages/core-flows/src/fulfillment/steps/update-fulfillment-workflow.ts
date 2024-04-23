@@ -9,9 +9,18 @@ export const updateFulfillmentWorkflowStep = createStep(
     data: FulfillmentWorkflow.UpdateFulfillmentWorkflowInput,
     { container }
   ) => {
-    const { transaction, result: updated } = await updateFulfillmentWorkflow(
-      container
-    ).run({ input: data })
+    const {
+      transaction,
+      result: updated,
+      errors,
+    } = await updateFulfillmentWorkflow(container).run({
+      input: data,
+      throwOnError: false,
+    })
+
+    if (Array.isArray(errors) && errors[0]) {
+      throw errors[0].error
+    }
 
     return new StepResponse(updated, transaction)
   },
