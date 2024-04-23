@@ -1,11 +1,10 @@
-import { Container, Heading, Text } from "@medusajs/ui"
+import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { Outlet, useLoaderData } from "react-router-dom"
+import { Link, Outlet, useLoaderData } from "react-router-dom"
 
 import { shippingListLoader } from "./loader"
 import { useStockLocations } from "../../../hooks/api/stock-locations"
 import Location from "./components/location/location"
-import { NoRecords } from "../../../components/common/empty-table-content"
 
 export function LocationList() {
   const { t } = useTranslation()
@@ -24,27 +23,19 @@ export function LocationList() {
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-x-6 py-4">
-        <Container className="static top-3 col-span-3 mb-4 h-fit p-8 lg:sticky lg:col-span-1">
-          <Heading className="mb-2">{t("shipping.title")}</Heading>
-          <Text className="text-ui-fg-subtle txt-small">
-            {t("shipping.description")}
-          </Text>
+      <div className="py-4">
+        <Container className="mb-4 flex h-fit items-center justify-between p-8">
+          <div>
+            <Heading className="mb-2">{t("shipping.title")}</Heading>
+            <Text className="text-ui-fg-subtle txt-small">
+              {t("shipping.description")}
+            </Text>
+          </div>
+          <Button size="small" variant="secondary" asChild>
+            <Link to="create">{t("shipping.createLocation")}</Link>
+          </Button>
         </Container>
-        <div className="col-span-3 flex flex-col gap-4 lg:col-span-2">
-          {!isPending && !stockLocations.length && (
-            <Container>
-              <NoRecords
-                className="h-[180px]"
-                title={t("shipping.noRecords.title")}
-                message={t("shipping.noRecords.message")}
-                action={{
-                  to: "/inventory/locations",
-                  label: t("shipping.noRecords.action"),
-                }}
-              />
-            </Container>
-          )}
+        <div className="flex flex-col gap-4 lg:col-span-2">
           {stockLocations.map((location) => (
             <Location key={location.id} location={location} />
           ))}

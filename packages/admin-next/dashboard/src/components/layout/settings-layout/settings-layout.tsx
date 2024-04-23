@@ -1,4 +1,4 @@
-import { ArrowUturnLeft, MinusMini } from "@medusajs/icons"
+import { ArrowUturnLeft, Envelope, MinusMini } from "@medusajs/icons"
 import { IconButton, Text } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import { useEffect, useMemo, useState } from "react"
@@ -56,6 +56,10 @@ const useSettingRoutes = (): NavItemProps[] => {
       {
         label: t("shippingProfile.domain"),
         to: "/settings/shipping-profiles",
+      },
+      {
+        label: t("shipping.domain"),
+        to: "/settings/shipping",
       },
     ],
     [t]

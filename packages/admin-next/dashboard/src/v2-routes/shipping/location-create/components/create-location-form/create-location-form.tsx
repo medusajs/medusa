@@ -56,7 +56,7 @@ export const CreateLocationForm = () => {
       },
       {
         onSuccess: () => {
-          handleSuccess("/settings/locations")
+          handleSuccess("/settings/shipping")
         },
       }
     )

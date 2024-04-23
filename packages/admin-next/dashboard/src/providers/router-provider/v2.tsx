@@ -298,44 +298,6 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
-            path: "shipping",
-            lazy: () => import("../../v2-routes/shipping/locations-list"),
-            handle: {
-              crumb: () => "Shipping",
-            },
-            children: [
-              {
-                path: "location/:location_id",
-                children: [
-                  {
-                    path: "fulfillment-set/:fset_id",
-                    children: [
-                      {
-                        path: "service-zones/create",
-                        lazy: () =>
-                          import(
-                            "../../v2-routes/shipping/service-zone-create"
-                          ),
-                      },
-                      {
-                        path: "service-zone/:zone_id",
-                        children: [
-                          {
-                            path: "shipping-options/create",
-                            lazy: () =>
-                              import(
-                                "../../v2-routes/shipping/shipping-options-create"
-                              ),
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-          {
             path: "/customers",
             handle: {
               crumb: () => "Customers",
@@ -601,44 +563,6 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
-            path: "locations",
-            element: <Outlet />,
-            handle: {
-              crumb: () => "Locations",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () => import("../../v2-routes/locations/location-list"),
-                children: [
-                  {
-                    path: "create",
-                    lazy: () =>
-                      import("../../v2-routes/locations/location-create"),
-                  },
-                ],
-              },
-              {
-                path: ":id",
-                lazy: () => import("../../v2-routes/locations/location-detail"),
-                children: [
-                  {
-                    path: "edit",
-                    lazy: () =>
-                      import("../../v2-routes/locations/location-edit"),
-                  },
-                  {
-                    path: "add-sales-channels",
-                    lazy: () =>
-                      import(
-                        "../../v2-routes/locations/location-add-sales-channels"
-                      ),
-                  },
-                ],
-              },
-            ],
-          },
-          {
             path: "sales-channels",
             element: <Outlet />,
             handle: {
@@ -681,6 +605,61 @@ export const v2Routes: RouteObject[] = [
                       import(
                         "../../v2-routes/sales-channels/sales-channel-add-products"
                       ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "shipping",
+            lazy: () => import("../../v2-routes/shipping/locations-list"),
+            handle: {
+              crumb: () => "Location & Shipping",
+            },
+            children: [
+              {
+                path: "create",
+                lazy: () => import("../../v2-routes/shipping/location-create"),
+              },
+              {
+                path: ":location_id",
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../v2-routes/shipping/location-edit"),
+                  },
+                  {
+                    path: "fulfillment-set/:fset_id",
+                    children: [
+                      // TODO
+                      // {
+                      //   path: "add-sales-channels",
+                      //   lazy: () =>
+                      //     import(
+                      //       "../../v2-routes/locations/location-add-sales-channels"
+                      //       ),
+                      // },
+                      {
+                        path: "service-zones/create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/shipping/service-zone-create"
+                          ),
+                      },
+                      {
+                        path: "service-zone/:zone_id",
+                        children: [
+                          {
+                            path: "shipping-options/create",
+                            lazy: () =>
+                              import(
+                                "../../v2-routes/shipping/shipping-options-create"
+                              ),
+                          },
+                        ],
+                      },
+                    ],
                   },
                 ],
               },

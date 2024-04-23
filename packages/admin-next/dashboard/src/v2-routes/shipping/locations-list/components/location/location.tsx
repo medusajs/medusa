@@ -1,4 +1,4 @@
-import { Button, Container, Text } from "@medusajs/ui"
+import { Button, Container, StatusBadge, Text } from "@medusajs/ui"
 import {
   FulfillmentSetDTO,
   ServiceZoneDTO,
@@ -247,86 +247,71 @@ function FulfillmentSet(props: FulfillmentSetProps) {
   const { fulfillmentSet, locationName, locationId, type } = props
 
   const fulfillmentSetExists = !!fulfillmentSet
-  const hasServiceZones = !!fulfillmentSet?.service_zones?.length
 
-  const { mutateAsync: createFulfillmentSet, isPending: isLoading } =
-    useCreateFulfillmentSet(locationId)
+  // const { mutateAsync: createFulfillmentSet, isPending: isLoading } =
+  //   useCreateFulfillmentSet(locationId)
+  //
+  // const { mutateAsync: deleteFulfillmentSet } = useDeleteFulfillmentSet(
+  //   fulfillmentSet?.id
+  // )
 
-  const { mutateAsync: deleteFulfillmentSet } = useDeleteFulfillmentSet(
-    fulfillmentSet?.id
-  )
-
-  const handleCreate = async () => {
-    await createFulfillmentSet({
-      name: `${locationName} ${type}`,
-      type: type,
-    })
-  }
-
-  const handleDelete = async () => {
-    await deleteFulfillmentSet()
-  }
+  // const handleCreate = async () => {
+  //   await createFulfillmentSet({
+  //     name: `${locationName} ${type}`,
+  //     type: type,
+  //   })
+  // }
+  //
+  // const handleDelete = async () => {
+  //   await deleteFulfillmentSet()
+  // }
 
   return (
     <div className="flex flex-col px-6 py-5">
       <div className="flex items-center justify-between">
-        <Text size="small" weight="plus" className="text-ui-fg-subtle" as="div">
+        <Text
+          size="small"
+          weight="plus"
+          className="text-ui-fg-subtle flex-1"
+          as="div"
+        >
           {t(`shipping.fulfillmentSet.${type}.title`)}
         </Text>
-        {!fulfillmentSetExists ? (
-          <Button onClick={handleCreate} variant="secondary">
-            {t(`shipping.fulfillmentSet.${type}.enable`)}
-          </Button>
-        ) : (
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("shipping.fulfillmentSet.addZone"),
-                    icon: <Map />,
-                    to: `/shipping/location/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`,
-                  },
-                  {
-                    label: t("shipping.fulfillmentSet.delete"),
-                    icon: <Trash />,
-                    onClick: handleDelete,
-                  },
-                ],
-              },
-            ]}
-          />
-        )}
+        <div className="flex-1 text-left">
+          <StatusBadge color={fulfillmentSetExists ? "green" : "red"}>
+            {t(fulfillmentSetExists ? "status.enabled" : "status.disabled")}
+          </StatusBadge>
+        </div>
       </div>
 
-      {fulfillmentSetExists && !hasServiceZones && (
-        <div className="text-ui-fg-muted txt-medium flex h-[120px] flex-col items-center justify-center gap-y-4">
-          <div>{t("shipping.fulfillmentSet.placeholder")}</div>
-          <Button
-            variant="secondary"
-            onClick={() =>
-              navigate(
-                `/shipping/location/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`
-              )
-            }
-          >
-            {t("shipping.fulfillmentSet.addZone")}
-          </Button>
-        </div>
-      )}
+      {/*{fulfillmentSetExists && !hasServiceZones && (*/}
+      {/*  <div className="text-ui-fg-muted txt-medium flex h-[120px] flex-col items-center justify-center gap-y-4">*/}
+      {/*    <div>{t("shipping.fulfillmentSet.placeholder")}</div>*/}
+      {/*    <Button*/}
+      {/*      variant="secondary"*/}
+      {/*      onClick={() =>*/}
+      {/*        navigate(*/}
+      {/*          `/shipping/location/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`*/}
+      {/*        )*/}
+      {/*      }*/}
+      {/*    >*/}
+      {/*      {t("shipping.fulfillmentSet.addZone")}*/}
+      {/*    </Button>*/}
+      {/*  </div>*/}
+      {/*)}*/}
 
-      {hasServiceZones && (
-        <div className="mt-4 flex flex-col gap-6">
-          {fulfillmentSet?.service_zones.map((zone) => (
-            <ServiceZone
-              key={zone.id}
-              zone={zone}
-              locationId={locationId}
-              fulfillmentSetId={fulfillmentSet.id}
-            />
-          ))}
-        </div>
-      )}
+      {/*{hasServiceZones && (*/}
+      {/*  <div className="mt-4 flex flex-col gap-6">*/}
+      {/*    {fulfillmentSet?.service_zones.map((zone) => (*/}
+      {/*      <ServiceZone*/}
+      {/*        key={zone.id}*/}
+      {/*        zone={zone}*/}
+      {/*        locationId={locationId}*/}
+      {/*        fulfillmentSetId={fulfillmentSet.id}*/}
+      {/*      />*/}
+      {/*    ))}*/}
+      {/*  </div>*/}
+      {/*)}*/}
     </div>
   )
 }
@@ -365,7 +350,27 @@ function Location(props: LocationProps) {
           </div>
 
           {/*ACTION*/}
-          <div className="flex grow-0 gap-2">{/*// TODO*/}</div>
+          <div className="flex grow-0 gap-2 divide-x">
+            <ActionMenu
+              groups={[
+                {
+                  actions: [
+                    {
+                      label: t("actions.edit"),
+                      icon: <Map />,
+                      to: `/settings/shipping/${location.id}/edit`,
+                    },
+                    {
+                      label: t("shipping.fulfillmentSet.delete"),
+                      icon: <Trash />,
+                      // onClick: handleDelete,
+                    },
+                  ],
+                },
+              ]}
+            />
+            <Button variant="transparent">TODO link</Button>
+          </div>
         </div>
       </div>
 
