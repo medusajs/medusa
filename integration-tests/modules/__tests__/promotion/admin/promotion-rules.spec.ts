@@ -834,8 +834,8 @@ medusaIntegrationTestRunner({
           expect(response.data.values.length).toEqual(2)
           expect(response.data.values).toEqual(
             expect.arrayContaining([
-              { label: "Afghan Afghani", value: "afn" },
-              { label: "Albanian Lek", value: "all" },
+              { label: "afn", value: "afn" },
+              { label: "all", value: "all" },
             ])
           )
 

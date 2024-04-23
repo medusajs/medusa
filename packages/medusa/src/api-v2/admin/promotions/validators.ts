@@ -1,9 +1,3 @@
-import { z } from "zod"
-import {
-  createFindParams,
-  createOperatorMap,
-  createSelectParams,
-} from "../../utils/validators"
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
@@ -12,6 +6,12 @@ import {
   PromotionRuleOperator,
   PromotionType,
 } from "@medusajs/utils"
+import { z } from "zod"
+import {
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
 export type AdminGetPromotionParamsType = z.infer<
   typeof AdminGetPromotionParams
@@ -89,7 +89,7 @@ export type AdminCreateApplicationMethodType = z.infer<
 export const AdminCreateApplicationMethod = z
   .object({
     description: z.string().optional(),
-    value: z.string(),
+    value: z.number(),
     max_quantity: z.number().optional(),
     type: z.nativeEnum(ApplicationMethodType),
     target_type: z.nativeEnum(ApplicationMethodTargetType),
