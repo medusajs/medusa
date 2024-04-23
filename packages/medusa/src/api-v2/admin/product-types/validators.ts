@@ -1,113 +1,48 @@
-import { OperatorMap } from "@medusajs/types"
-import { Type } from "class-transformer"
+import { z } from "zod"
 import {
-  IsNotEmpty,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
-import { OperatorMapValidator } from "../../../types/validators/operator-map"
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
-export class AdminGetProductTypesProductTypeParams extends FindParams {}
+export type AdminGetProductTypeParamsType = z.infer<
+  typeof AdminGetProductTypeParams
+>
+export const AdminGetProductTypeParams = createSelectParams()
 
-/**
- * Parameters used to filter and configure the pagination of the retrieved product types.
- */
-export class AdminGetProductTypesParams extends extendedFindParamsMixin({
+export type AdminGetProductTypesParamsType = z.infer<
+  typeof AdminGetProductTypesParams
+>
+export const AdminGetProductTypesParams = createFindParams({
   limit: 10,
   offset: 0,
-}) {
-  /**
-   * Term to search product product types by their title and handle.
-   */
-  @IsString()
-  @IsOptional()
-  q?: string
+}).merge(
+  z.object({
+    q: z.string().optional(),
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    value: z.union([z.string(), z.array(z.string())]).optional(),
+    // TODO: To be added in next iteration
+    // discount_condition_id: z.string().optional(),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
+    $and: z.lazy(() => AdminGetProductTypesParams.array()).optional(),
+    $or: z.lazy(() => AdminGetProductTypesParams.array()).optional(),
+  })
+)
 
-  /**
-   * Id to filter product product types by.
-   */
-  @IsOptional()
-  @IsString()
-  id?: string | string[]
+export type AdminCreateProductTypeType = z.infer<typeof AdminCreateProductType>
+export const AdminCreateProductType = z
+  .object({
+    value: z.string(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
+  })
+  .strict()
 
-  /**
-   * Title to filter product product types by.
-   */
-  @IsOptional()
-  @IsString()
-  value?: string | string[] | OperatorMap<string>
-
-  /**
-   * Handle to filter product product types by.
-   */
-  @IsOptional()
-  @IsString()
-  handle?: string | string[]
-
-  /**
-   * Date filters to apply on the product product types' `created_at` date.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  created_at?: OperatorMap<string>
-
-  /**
-   * Date filters to apply on the product product types' `updated_at` date.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  updated_at?: OperatorMap<string>
-
-  /**
-   * Date filters to apply on the product product types' `deleted_at` date.
-   */
-  @ValidateNested()
-  @IsOptional()
-  @Type(() => OperatorMapValidator)
-  deleted_at?: OperatorMap<string>
-
-  // TODO: To be added in next iteration
-  // /**
-  //  * Filter product types by their associated discount condition's ID.
-  //  */
-  // @IsString()
-  // @IsOptional()
-  // discount_condition_id?: string
-
-  // Note: These are new in v2
-  // Additional filters from BaseFilterable
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AdminGetProductTypesParams)
-  $and?: AdminGetProductTypesParams[]
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AdminGetProductTypesParams)
-  $or?: AdminGetProductTypesParams[]
-}
-
-export class AdminPostProductTypesReq {
-  @IsString()
-  @IsNotEmpty()
-  value: string
-
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
-
-export class AdminPostProductTypesProductTypeReq {
-  @IsString()
-  @IsOptional()
-  value?: string
-
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
+export type AdminUpdateProductTypeType = z.infer<typeof AdminUpdateProductType>
+export const AdminUpdateProductType = z
+  .object({
+    value: z.string().optional(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
+  })
+  .strict()

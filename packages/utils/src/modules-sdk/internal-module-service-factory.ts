@@ -13,6 +13,7 @@ import {
   doNotForceTransaction,
   isDefined,
   isObject,
+  isPresent,
   isString,
   lowerCaseFirst,
   MedusaError,
@@ -85,7 +86,7 @@ export function internalModuleServiceFactory<
      * @param config
      */
     static applyDefaultOrdering(config: FindConfig<any>) {
-      if (config.order) {
+      if (isPresent(config.order)) {
         return
       }
 

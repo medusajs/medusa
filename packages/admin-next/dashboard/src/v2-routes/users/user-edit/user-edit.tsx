@@ -8,7 +8,7 @@ import { EditUserForm } from "./components/edit-user-form"
 export const UserEdit = () => {
   const { t } = useTranslation()
   const { id } = useParams()
-  const { user, isLoading, isError, error } = useUser(id!)
+  const { user, isPending: isLoading, isError, error } = useUser(id!)
 
   if (isError) {
     throw error

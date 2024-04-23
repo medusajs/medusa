@@ -51,6 +51,15 @@ export function MikroOrmBigNumberProperty(
           this[rawColumnName] = raw
         }
 
+        // This is custom code to keep track of which fields are bignumber, as well as their data
+        if (!this.__helper.__bignumberdata) {
+          this.__helper.__bignumberdata = {}
+        }
+
+        this.__helper.__bignumberdata[columnName] =
+          this.__helper.__data[columnName]
+        this.__helper.__bignumberdata[rawColumnName] =
+          this.__helper.__data[rawColumnName]
         this.__helper.__touched = !this.__helper.hydrator.isRunning()
       },
       enumerable: true,

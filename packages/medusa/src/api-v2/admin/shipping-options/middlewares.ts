@@ -2,86 +2,77 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import {
   AdminCreateShippingOption,
+  AdminCreateShippingOptionRule,
   AdminGetShippingOptionParams,
-  AdminListShippingOptionParams,
-  AdminShippingOptionRulesBatchAdd,
-  AdminShippingOptionRulesBatchRemove,
+  AdminGetShippingOptionRuleParams,
+  AdminGetShippingOptionsParams,
   AdminUpdateShippingOption,
+  AdminUpdateShippingOptionRule,
 } from "./validators"
 import {
   listTransformQueryConfig,
+  retrieveRuleTransformQueryConfig,
   retrieveTransformQueryConfig,
 } from "./query-config"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
+import { createBatchBody } from "../../utils/validators"
 
 export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/shipping-options*",
     middlewares: [authenticate("admin", ["bearer", "session"])],
   },
-
   {
     method: ["GET"],
     matcher: "/admin/shipping-options",
     middlewares: [
       validateAndTransformQuery(
-        AdminListShippingOptionParams,
+        AdminGetShippingOptionsParams,
         listTransformQueryConfig
       ),
     ],
   },
-
   {
     method: ["POST"],
     matcher: "/admin/shipping-options",
     middlewares: [
+      validateAndTransformBody(AdminCreateShippingOption),
       validateAndTransformQuery(
         AdminGetShippingOptionParams,
         retrieveTransformQueryConfig
       ),
-      validateAndTransformBody(AdminCreateShippingOption),
     ],
   },
-
   {
     method: ["POST"],
     matcher: "/admin/shipping-options/:id",
     middlewares: [
+      validateAndTransformBody(AdminUpdateShippingOption),
       validateAndTransformQuery(
         AdminGetShippingOptionParams,
         retrieveTransformQueryConfig
       ),
-      validateAndTransformBody(AdminUpdateShippingOption),
     ],
   },
-
   {
     method: ["DELETE"],
     matcher: "/admin/shipping-options/:id",
   },
-
   {
     method: ["POST"],
-    matcher: "/admin/shipping-options/:id/rules/batch/add",
+    matcher: "/admin/shipping-options/:id/rules/batch",
     middlewares: [
-      validateAndTransformQuery(
-        AdminGetShippingOptionParams,
-        retrieveTransformQueryConfig
+      validateAndTransformBody(
+        createBatchBody(
+          AdminCreateShippingOptionRule,
+          AdminUpdateShippingOptionRule
+        )
       ),
-      validateAndTransformBody(AdminShippingOptionRulesBatchAdd),
-    ],
-  },
-
-  {
-    method: ["POST"],
-    matcher: "/admin/shipping-options/:id/rules/batch/remove",
-    middlewares: [
       validateAndTransformQuery(
-        AdminGetShippingOptionParams,
-        retrieveTransformQueryConfig
+        AdminGetShippingOptionRuleParams,
+        retrieveRuleTransformQueryConfig
       ),
-      validateAndTransformBody(AdminShippingOptionRulesBatchRemove),
     ],
   },
 ]

@@ -1,18 +1,17 @@
 import * as QueryConfig from "./query-config"
 
-import { transformBody, transformQuery } from "../../../api/middlewares"
-import {
-  AdminGetApiKeysApiKeyParams,
-  AdminGetApiKeysParams,
-  AdminPostApiKeysApiKeyReq,
-  AdminPostApiKeysApiKeySalesChannelsBatchAddReq,
-  AdminPostApiKeysApiKeySalesChannelsBatchRemoveReq,
-  AdminPostApiKeysReq,
-  AdminRevokeApiKeysApiKeyReq,
-} from "./validators"
-
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformQuery } from "../../utils/validate-query"
+import {
+  AdminCreateApiKey,
+  AdminGetApiKeyParams,
+  AdminGetApiKeysParams,
+  AdminRevokeApiKey,
+  AdminUpdateApiKey,
+} from "./validators"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import { createLinkBody } from "../../utils/validators"
 
 export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -23,7 +22,7 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/api-keys",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetApiKeysParams,
         QueryConfig.listTransformQueryConfig
       ),
@@ -33,8 +32,8 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/api-keys/:id",
     middlewares: [
-      transformQuery(
-        AdminGetApiKeysApiKeyParams,
+      validateAndTransformQuery(
+        AdminGetApiKeyParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -43,22 +42,22 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/api-keys",
     middlewares: [
-      transformQuery(
-        AdminGetApiKeysApiKeyParams,
+      validateAndTransformBody(AdminCreateApiKey),
+      validateAndTransformQuery(
+        AdminGetApiKeyParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-      transformBody(AdminPostApiKeysReq),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/api-keys/:id",
     middlewares: [
-      transformQuery(
-        AdminGetApiKeysApiKeyParams,
+      validateAndTransformBody(AdminUpdateApiKey),
+      validateAndTransformQuery(
+        AdminGetApiKeyParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-      transformBody(AdminPostApiKeysApiKeyReq),
     ],
   },
   {
@@ -70,33 +69,22 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/api-keys/:id/revoke",
     middlewares: [
-      transformQuery(
-        AdminGetApiKeysApiKeyParams,
+      validateAndTransformBody(AdminRevokeApiKey),
+      validateAndTransformQuery(
+        AdminGetApiKeyParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-      transformBody(AdminRevokeApiKeysApiKeyReq),
     ],
   },
   {
     method: ["POST"],
-    matcher: "/admin/api-keys/:id/sales-channels/batch/add",
+    matcher: "/admin/api-keys/:id/sales-channels",
     middlewares: [
-      transformQuery(
-        AdminGetApiKeysApiKeyParams,
+      validateAndTransformBody(createLinkBody()),
+      validateAndTransformQuery(
+        AdminGetApiKeyParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-      transformBody(AdminPostApiKeysApiKeySalesChannelsBatchAddReq),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/api-keys/:id/sales-channels/batch/remove",
-    middlewares: [
-      transformQuery(
-        AdminGetApiKeysApiKeyParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-      transformBody(AdminPostApiKeysApiKeySalesChannelsBatchRemoveReq),
     ],
   },
 ]

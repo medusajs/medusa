@@ -3,37 +3,28 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 import {
-  CustomerGroupUpdatableFields,
-  ICustomerModuleService,
-} from "@medusajs/types"
-import {
   deleteCustomerGroupsWorkflow,
   updateCustomerGroupsWorkflow,
 } from "@medusajs/core-flows"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { refetchCustomerGroup } from "../helpers"
+import { AdminUpdateCustomerGroupType } from "../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const customerModuleService = req.scope.resolve<ICustomerModuleService>(
-    ModuleRegistrationName.CUSTOMER
-  )
-
-  const group = await customerModuleService.retrieveCustomerGroup(
+  const customerGroup = await refetchCustomerGroup(
     req.params.id,
-    {
-      select: req.retrieveConfig.select,
-      relations: req.retrieveConfig.relations,
-    }
+    req.scope,
+    req.remoteQueryConfig.fields
   )
 
-  res.status(200).json({ customer_group: group })
+  res.status(200).json({ customer_group: customerGroup })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CustomerGroupUpdatableFields>,
+  req: AuthenticatedMedusaRequest<AdminUpdateCustomerGroupType>,
   res: MedusaResponse
 ) => {
   const updateGroups = updateCustomerGroupsWorkflow(req.scope)
@@ -49,7 +40,12 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ customer_group: result[0] })
+  const customerGroup = await refetchCustomerGroup(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ customer_group: customerGroup })
 }
 
 export const DELETE = async (

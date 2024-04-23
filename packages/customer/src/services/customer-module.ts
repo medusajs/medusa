@@ -12,10 +12,8 @@ import {
 import {
   InjectManager,
   InjectTransactionManager,
-  isDuplicateError,
   isString,
   MedusaContext,
-  MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
@@ -26,10 +24,6 @@ import {
   CustomerGroupCustomer,
 } from "@models"
 import { EntityManager } from "@mikro-orm/core"
-import {
-  UNIQUE_CUSTOMER_BILLING_ADDRESS,
-  UNIQUE_CUSTOMER_SHIPPING_ADDRESS,
-} from "../models/address"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -39,7 +33,11 @@ type InjectedDependencies = {
   customerGroupCustomerService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateMethodForModels = [Address, CustomerGroup, CustomerGroupCustomer]
+const generateMethodForModels = [
+  { model: Address, singular: "Address", plural: "Addresses" },
+  CustomerGroup,
+  CustomerGroupCustomer,
+]
 
 export default class CustomerModuleService<
     TAddress extends Address = Address,
@@ -47,7 +45,6 @@ export default class CustomerModuleService<
     TCustomerGroup extends CustomerGroup = CustomerGroup,
     TCustomerGroupCustomer extends CustomerGroupCustomer = CustomerGroupCustomer
   >
-  // TODO seb I let you manage that when you are moving forward
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
     CustomerDTO,

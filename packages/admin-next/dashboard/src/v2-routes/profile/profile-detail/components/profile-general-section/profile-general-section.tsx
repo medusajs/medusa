@@ -10,6 +10,9 @@ type ProfileGeneralSectionProps = {
 
 export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {
   const { i18n, t } = useTranslation()
+
+  const name = [user.first_name, user.last_name].filter(Boolean).join(" ")
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -30,7 +33,7 @@ export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {
           {t("fields.name")}
         </Text>
         <Text size="small" leading="compact">
-          {user.first_name} {user.last_name}
+          {name || "-"}
         </Text>
       </div>
       <div className="grid grid-cols-2 items-center px-6 py-4">
@@ -43,7 +46,7 @@ export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {
       </div>
       <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          {t("profile.language")}
+          {t("profile.fields.languageLabel")}
         </Text>
         <Text size="small" leading="compact">
           {languages.find((lang) => lang.code === i18n.language)
@@ -52,7 +55,7 @@ export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {
       </div>
       <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          {t("profile.usageInsights")}
+          {t("profile.fields.usageInsightsLabel")}
         </Text>
         <StatusBadge color="red" className="w-fit">
           {t("general.disabled")}

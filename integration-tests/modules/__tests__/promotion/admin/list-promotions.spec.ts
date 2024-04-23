@@ -50,7 +50,6 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             code: "TEST",
-            campaign: null,
             is_automatic: false,
             type: "standard",
             created_at: expect.any(String),

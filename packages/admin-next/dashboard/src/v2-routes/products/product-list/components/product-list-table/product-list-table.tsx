@@ -1,6 +1,7 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import type { Product } from "@medusajs/medusa"
-import { Button, Container, Heading, usePrompt } from "@medusajs/ui"
+import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -8,15 +9,15 @@ import { Link, Outlet, useLoaderData } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import {
+  useDeleteProduct,
+  useProducts,
+} from "../../../../../hooks/api/products"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { productsLoader } from "../../loader"
-import {
-  useDeleteProduct,
-  useProducts,
-} from "../../../../../hooks/api/products"
 
 const PAGE_SIZE = 20
 
@@ -34,7 +35,7 @@ export const ProductListTable = () => {
     },
     {
       initialData,
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
@@ -99,7 +100,22 @@ const ProductActions = ({ product }: { product: Product }) => {
       return
     }
 
-    await mutateAsync()
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("products.toasts.delete.success.header"), {
+          description: t("products.toasts.delete.success.description", {
+            title: product.title,
+          }),
+          dismissLabel: t("actions.close"),
+        })
+      },
+      onError: (e) => {
+        toast.error(t("products.toasts.delete.error.header"), {
+          description: e.message,
+          dismissLabel: t("actions.close"),
+        })
+      },
+    })
   }
 
   return (

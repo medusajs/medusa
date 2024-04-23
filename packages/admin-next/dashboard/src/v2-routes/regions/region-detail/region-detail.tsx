@@ -1,9 +1,10 @@
 import { Outlet, useLoaderData, useParams } from "react-router-dom"
 
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { useRegion } from "../../../hooks/api/regions"
 import { RegionCountrySection } from "./components/region-country-section"
 import { RegionGeneralSection } from "./components/region-general-section"
 import { regionLoader } from "./loader"
-import { useRegion } from "../../../hooks/api/regions"
 
 export const RegionDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -11,9 +12,14 @@ export const RegionDetail = () => {
   >
 
   const { id } = useParams()
-  const { region, isLoading, isError, error } = useRegion(
+  const {
+    region,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useRegion(
     id!,
-    { fields: "*payment_providers" },
+    { fields: "*payment_providers,*countries" },
     {
       initialData,
     }
@@ -32,6 +38,7 @@ export const RegionDetail = () => {
     <div className="flex flex-col gap-y-2">
       <RegionGeneralSection region={region} />
       <RegionCountrySection region={region} />
+      <JsonViewSection data={region} />
       <Outlet />
     </div>
   )
