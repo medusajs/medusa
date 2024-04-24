@@ -46,8 +46,10 @@ async function addPromotionRules(
   payload: BatchAddPromotionRulesReq
 ) {
   return postRequest<PromotionRes>(
-    `/admin/promotions/${id}/${ruleType}/batch/add`,
-    payload
+    `/admin/promotions/${id}/${ruleType}/batch`,
+    {
+      create: payload.rules,
+    }
   )
 }
 
@@ -57,8 +59,10 @@ async function updatePromotionRules(
   payload: BatchUpdatePromotionRulesReq
 ) {
   return postRequest<PromotionRes>(
-    `/admin/promotions/${id}/${ruleType}/batch/update`,
-    payload
+    `/admin/promotions/${id}/${ruleType}/batch`,
+    {
+      update: payload.rules,
+    }
   )
 }
 
@@ -68,8 +72,10 @@ async function removePromotionRules(
   payload: BatchRemovePromotionRulesReq
 ) {
   return postRequest<PromotionRes>(
-    `/admin/promotions/${id}/${ruleType}/batch/remove`,
-    payload
+    `/admin/promotions/${id}/${ruleType}/batch`,
+    {
+      delete: payload.rule_ids,
+    }
   )
 }
 

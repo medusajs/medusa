@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Input } from "@medusajs/ui"
+import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -35,8 +35,20 @@ export const EditApiKeyForm = ({ apiKey }: EditApiKeyFormProps) => {
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
-      onSuccess: () => {
+      onSuccess: ({ api_key }) => {
+        toast.success(t("general.success"), {
+          description: t("apiKeyManagement.edit.successToast", {
+            title: api_key.title,
+          }),
+          dismissLabel: t("general.close"),
+        })
         handleSuccess()
+      },
+      onError: (err) => {
+        toast.error(t("general.error"), {
+          description: err.message,
+          dismissLabel: t("general.close"),
+        })
       },
     })
   })

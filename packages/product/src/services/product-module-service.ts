@@ -31,6 +31,7 @@ import {
   ModulesSdkUtils,
   ProductStatus,
   promiseAll,
+  removeUndefined,
 } from "@medusajs/utils"
 import {
   ProductCategoryEventData,
@@ -126,12 +127,15 @@ export default class ProductModuleService<
 
   // eslint-disable-next-line max-len
   protected readonly productCategoryService_: ProductCategoryService<TProductCategory>
+  // eslint-disable-next-line max-len
   protected readonly productTagService_: ModulesSdkTypes.InternalModuleService<TProductTag>
   // eslint-disable-next-line max-len
   protected readonly productCollectionService_: ModulesSdkTypes.InternalModuleService<TProductCollection>
   // eslint-disable-next-line max-len
   protected readonly productImageService_: ModulesSdkTypes.InternalModuleService<TProductImage>
+  // eslint-disable-next-line max-len
   protected readonly productTypeService_: ModulesSdkTypes.InternalModuleService<TProductType>
+  // eslint-disable-next-line max-len
   protected readonly productOptionService_: ModulesSdkTypes.InternalModuleService<TProductOption>
   // eslint-disable-next-line max-len
   protected readonly productOptionValueService_: ModulesSdkTypes.InternalModuleService<TProductOptionValue>
@@ -771,6 +775,8 @@ export default class ProductModuleService<
       ProductModuleService.normalizeCreateProductCollectionInput
     )
 
+    // It's safe to use upsertWithReplace here since we only have product IDs and the only operation to do is update the product
+    // with the collection ID
     return await this.productCollectionService_.upsertWithReplace(
       normalizedInput,
       { relations: ["products"] },
@@ -906,13 +912,48 @@ export default class ProductModuleService<
   ): Promise<TProductCollection[]> {
     const normalizedInput = data.map(
       ProductModuleService.normalizeUpdateProductCollectionInput
-    )
+    ) as UpdateCollectionInput[]
 
-    return await this.productCollectionService_.upsertWithReplace(
-      normalizedInput,
-      { relations: ["products"] },
+    // TODO: Maybe we can update upsertWithReplace to not remove oneToMany entities, but just disassociate them? With that we can remove the code below.
+    // Another alternative is to not allow passing product_ids to a collection, and instead set the collection_id through the product update call.
+    const updatedCollections = await this.productCollectionService_.update(
+      normalizedInput.map((c) =>
+        removeUndefined({ ...c, products: undefined })
+      ),
       sharedContext
     )
+
+    const collectionWithProducts = await promiseAll(
+      updatedCollections.map(async (collection, i) => {
+        const input = normalizedInput.find((c) => c.id === collection.id)
+        const productsToUpdate = (input as any)?.products
+        if (!productsToUpdate) {
+          return { ...collection, products: [] }
+        }
+
+        await this.productService_.update(
+          {
+            selector: { collection_id: collection.id },
+            data: { collection_id: null },
+          },
+          sharedContext
+        )
+
+        if (productsToUpdate.length > 0) {
+          await this.productService_.update(
+            productsToUpdate.map((p) => ({
+              id: p.id,
+              collection_id: collection.id,
+            })),
+            sharedContext
+          )
+        }
+
+        return { ...collection, products: productsToUpdate }
+      })
+    )
+
+    return collectionWithProducts
   }
 
   @InjectManager("baseRepository_")
@@ -1329,6 +1370,15 @@ export default class ProductModuleService<
           }),
         }
       })
+    }
+
+    if (productData.category_ids) {
+      ;(productData as any).categories = productData.category_ids.map(
+        (cid) => ({
+          id: cid,
+        })
+      )
+      delete productData.category_ids
     }
 
     return productData

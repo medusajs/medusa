@@ -9,8 +9,13 @@ export const defaultAdminFulfillmentsFields = [
   "provider_id",
   "shipping_option_id",
   "metadata",
+  "order",
   "created_at",
   "updated_at",
+  "deleted_at",
+  "*delivery_address",
+  "*items",
+  "*labels",
 ]
 
 export const retrieveTransformQueryConfig = {

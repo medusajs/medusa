@@ -5,7 +5,7 @@ import { usePaymentProviders } from "../../../hooks/api/payments"
 import { useStore } from "../../../hooks/api/store"
 
 export const RegionCreate = () => {
-  const { store, isLoading, isError, error } = useStore()
+  const { store, isPending: isLoading, isError, error } = useStore()
 
   const storeCurrencies = (store?.supported_currency_codes ?? []).map(
     (code) => currencies[code.toUpperCase()]

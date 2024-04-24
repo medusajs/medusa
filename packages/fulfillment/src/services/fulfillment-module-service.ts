@@ -20,15 +20,16 @@ import {
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
+  Modules,
   ModulesSdkUtils,
   arrayDifference,
   getSetDifference,
   isString,
   promiseAll,
-  Modules
 } from "@medusajs/utils"
 import {
   Fulfillment,
+  FulfillmentProvider,
   FulfillmentSet,
   GeoZone,
   ServiceZone,
@@ -39,8 +40,8 @@ import {
 } from "@models"
 import { isContextValid, validateRules } from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import FulfillmentProviderService from "./fulfillment-provider"
 import { UpdateShippingOptionsInput } from "../types/service"
+import FulfillmentProviderService from "./fulfillment-provider"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -49,6 +50,7 @@ const generateMethodForModels = [
   ShippingProfile,
   ShippingOptionRule,
   ShippingOptionType,
+  FulfillmentProvider,
   // Not adding Fulfillment to not auto generate the methods under the hood and only provide the methods we want to expose8
 ]
 
@@ -86,6 +88,7 @@ export default class FulfillmentModuleService<
       ShippingProfile: { dto: FulfillmentTypes.ShippingProfileDTO }
       ShippingOptionRule: { dto: FulfillmentTypes.ShippingOptionRuleDTO }
       ShippingOptionType: { dto: FulfillmentTypes.ShippingOptionTypeDTO }
+      FulfillmentProvider: { dto: FulfillmentTypes.FulfillmentProviderDTO }
     }
   >(FulfillmentSet, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IFulfillmentModuleService

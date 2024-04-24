@@ -1,8 +1,16 @@
 import { OrderTypes } from "@medusajs/types"
-import { decorateCartTotals, deduplicate, isDefined } from "@medusajs/utils"
+import {
+  createRawPropertiesFromBigNumber,
+  decorateCartTotals,
+  deduplicate,
+  isDefined,
+} from "@medusajs/utils"
 
 export function formatOrder(
-  order
+  order,
+  options: {
+    includeTotals?: boolean
+  }
 ): OrderTypes.OrderDTO | OrderTypes.OrderDTO[] {
   const isArray = Array.isArray(order)
   const orders = [...(isArray ? order : [order])]
@@ -23,7 +31,9 @@ export function formatOrder(
 
     order.summary = order.summary?.[0]?.totals
 
-    return decorateCartTotals(order)
+    return options?.includeTotals
+      ? createRawPropertiesFromBigNumber(decorateCartTotals(order))
+      : order
   })
 
   return isArray ? orders : orders[0]

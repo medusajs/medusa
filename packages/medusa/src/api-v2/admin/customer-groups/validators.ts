@@ -66,8 +66,3 @@ export type AdminUpdateCustomerGroupType = z.infer<
 export const AdminUpdateCustomerGroup = z.object({
   name: z.string(),
 })
-
-export type AdminSetCustomersCustomerGroupType = z.infer<
-  typeof AdminSetCustomersCustomerGroup
->
-export const AdminSetCustomersCustomerGroup = z.string()

@@ -62,9 +62,12 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
   __hooks = {
     onApplicationShutdown: async () => {
-      await this.bullWorker_?.close(true)
       await this.queue_.close()
+      // eslint-disable-next-line max-len
       this.eventBusRedisConnection_.disconnect()
+    },
+    onApplicationPrepareShutdown: async () => {
+      await this.bullWorker_?.close()
     },
   }
 

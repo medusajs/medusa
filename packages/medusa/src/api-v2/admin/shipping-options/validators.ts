@@ -21,6 +21,10 @@ export const AdminGetShippingOptionsParams = createFindParams({
 /**
  * SHIPPING OPTIONS RULES
  */
+export type AdminGetShippingOptionRuleParamsType = z.infer<
+  typeof AdminGetShippingOptionRuleParams
+>
+export const AdminGetShippingOptionRuleParams = createSelectParams()
 
 export type AdminCreateShippingOptionRuleType = z.infer<
   typeof AdminCreateShippingOptionRule
@@ -33,21 +37,15 @@ export const AdminCreateShippingOptionRule = z
   })
   .strict()
 
-export type AdminShippingOptionRulesBatchAddType = z.infer<
-  typeof AdminShippingOptionRulesBatchAdd
+export type AdminUpdateShippingOptionRuleType = z.infer<
+  typeof AdminUpdateShippingOptionRule
 >
-export const AdminShippingOptionRulesBatchAdd = z
+export const AdminUpdateShippingOptionRule = z
   .object({
-    rules: AdminCreateShippingOptionRule.array(),
-  })
-  .strict()
-
-export type AdminShippingOptionRulesBatchRemoveType = z.infer<
-  typeof AdminShippingOptionRulesBatchRemove
->
-export const AdminShippingOptionRulesBatchRemove = z
-  .object({
-    rule_ids: z.array(z.string()),
+    id: z.string(),
+    operator: z.nativeEnum(RuleOperator),
+    attribute: z.string(),
+    value: z.string().or(z.array(z.string())),
   })
   .strict()
 

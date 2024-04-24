@@ -618,23 +618,21 @@ medusaIntegrationTestRunner({
             { relations: ["prices"] }
           )
 
-          const data = { product_id: [product.id] }
+          const data = { remove: [product.id] }
           const response = await api.post(
-            `admin/price-lists/${priceList.id}/prices/batch`,
+            `admin/price-lists/${priceList.id}/products`,
             data,
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data).toEqual({
-            created: [],
-            updated: [],
-            deleted: {
-              ids: ["price-to-delete-1", "price-to-delete-2"],
-              object: "price",
-              deleted: true,
-            },
-          })
+          expect(response.data.price_list).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              title: "test price list",
+              description: "test",
+            })
+          )
         })
       })
     })
