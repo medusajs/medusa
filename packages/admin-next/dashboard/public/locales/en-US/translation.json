@@ -70,6 +70,7 @@
     "revoke": "Revoke",
     "cancel": "Cancel",
     "complete": "Complete",
+    "viewDetails": "View details",
     "back": "Back",
     "close": "Close",
     "continue": "Continue",
@@ -603,6 +604,9 @@
     "title": "Location & Shipping",
     "domain": "Location & Shipping",
     "description": "Choose where you ship and how much you charge for shipping at checkout. Define shipping options specific for your locations.",
+    "createLocation": "Create location",
+    "createLocationDetailsHint": "Specify the details of the location.",
+    "deleteLocation": "Delete location",
     "from": "Shipping from",
     "add": "Add shipping",
     "connectProvider": "Connect provider",
@@ -628,11 +632,11 @@
       },
       "addZone": "Add service zone",
       "pickup": {
-        "title": "Pickup in",
+        "title": "Pick up",
         "enable": "Enable pickup"
       },
       "delivery": {
-        "title": "Shipping to",
+        "title": "Shipping",
         "enable": "Enable delivery"
       }
     },
@@ -1163,10 +1167,8 @@
   },
   "locations": {
     "domain": "Locations",
-    "createLocation": "Create location",
     "editLocation": "Edit location",
     "addSalesChannels": "Add sales channels",
-    "detailsHint": "Specify the details of the location.",
     "noLocationsFound": "No locations found",
     "selectLocations": "Select locations that stock the item.",
     "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
@@ -1343,6 +1345,7 @@
     "scheduled": "Scheduled",
     "expired": "Expired",
     "active": "Active",
+    "enabled": "Enabled",
     "disabled": "Disabled"
   },
   "fields": {

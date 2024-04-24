@@ -85,10 +85,10 @@ export const CreateLocationForm = () => {
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
                 <Heading className="capitalize">
-                  {t("locations.createLocation")}
+                  {t("shipping.createLocation")}
                 </Heading>
                 <Text size="small" className="text-ui-fg-subtle">
-                  {t("locations.detailsHint")}
+                  {t("shipping.createLocationDetailsHint")}
                 </Text>
               </div>
               <div className="grid grid-cols-2 gap-4">

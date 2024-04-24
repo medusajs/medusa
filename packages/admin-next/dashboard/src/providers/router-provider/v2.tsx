@@ -612,17 +612,22 @@ export const v2Routes: RouteObject[] = [
           },
           {
             path: "shipping",
-            lazy: () => import("../../v2-routes/shipping/locations-list"),
+            element: <Outlet />,
             handle: {
               crumb: () => "Location & Shipping",
             },
             children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/shipping/location-list"),
+              },
               {
                 path: "create",
                 lazy: () => import("../../v2-routes/shipping/location-create"),
               },
               {
                 path: ":location_id",
+                lazy: () => import("../../v2-routes/shipping/location-details"),
                 children: [
                   {
                     path: "edit",
@@ -637,7 +642,7 @@ export const v2Routes: RouteObject[] = [
                       //   path: "add-sales-channels",
                       //   lazy: () =>
                       //     import(
-                      //       "../../v2-routes/locations/location-add-sales-channels"
+                      //       "../../v2-routes/location/location-add-sales-channels"
                       //       ),
                       // },
                       {

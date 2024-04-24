@@ -279,7 +279,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
         </Text>
         <div className="flex-1 text-left">
           <StatusBadge color={fulfillmentSetExists ? "green" : "red"}>
-            {t(fulfillmentSetExists ? "status.enabled" : "status.disabled")}
+            {t(fulfillmentSetExists ? "statuses.enabled" : "statuses.disabled")}
           </StatusBadge>
         </div>
       </div>
@@ -323,6 +323,7 @@ type LocationProps = {
 function Location(props: LocationProps) {
   const { location } = props
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   return (
     <Container className="flex flex-col divide-y p-0">
@@ -350,18 +351,18 @@ function Location(props: LocationProps) {
           </div>
 
           {/*ACTION*/}
-          <div className="flex grow-0 gap-2 divide-x">
+          <div className="flex grow-0 items-center gap-2 divide-x">
             <ActionMenu
               groups={[
                 {
                   actions: [
                     {
                       label: t("actions.edit"),
-                      icon: <Map />,
+                      icon: <PencilSquare />,
                       to: `/settings/shipping/${location.id}/edit`,
                     },
                     {
-                      label: t("shipping.fulfillmentSet.delete"),
+                      label: t("shipping.deleteLocation"),
                       icon: <Trash />,
                       // onClick: handleDelete,
                     },
@@ -369,7 +370,13 @@ function Location(props: LocationProps) {
                 },
               ]}
             />
-            <Button variant="transparent">TODO link</Button>
+            <Button
+              className="text-ui-fg-interactive hover:bg-transparent"
+              onClick={() => navigate(`/settings/shipping/${location.id}`)}
+              variant="transparent"
+            >
+              {t("actions.viewDetails")}
+            </Button>
           </div>
         </div>
       </div>
