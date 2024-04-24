@@ -33,6 +33,8 @@ export default class FileModuleService implements FileTypes.IFileModuleService {
     data: CreateFileDTO[] | CreateFileDTO
   ): Promise<FileDTO[] | FileDTO> {
     const input = Array.isArray(data) ? data : [data]
+    // TODO: Validate file mime type, have config for allowed types
+
     const files = await Promise.all(
       input.map((file) => this.fileProviderService_.upload(file))
     )
