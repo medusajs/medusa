@@ -105,7 +105,6 @@ export interface UpsertOrderLineItemAdjustmentDTO {
 /** TAX LINES START */
 
 export interface CreateOrderTaxLineDTO {
-  item_id: string
   description?: string
   tax_rate_id?: string
   code: string
