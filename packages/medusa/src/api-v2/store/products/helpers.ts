@@ -67,7 +67,8 @@ export async function wrapProductsWithPrices(
 }
 
 // For category filters, we only allow showcasing public and active categories
-// TODO: This should ideally be done in the middleware, write a generic
+// TODO: This should ideally be done in the middleware, write a generic filter to conditionally
+// map these values or normalize the filters to the ones expected by remote query
 export function wrapWithCategoryFilters(filters: StoreGetProductsParamsType) {
   const categoriesFilter = isPresent(filters.category_id)
     ? {
