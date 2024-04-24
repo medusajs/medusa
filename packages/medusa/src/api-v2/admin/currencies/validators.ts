@@ -11,6 +11,7 @@ export const AdminGetCurrenciesParams = createFindParams({
   limit: 50,
 }).merge(
   z.object({
+    q: z.string().optional(),
     code: z.union([z.string(), z.array(z.string())]).optional(),
     $and: z.lazy(() => AdminGetCurrenciesParams.array()).optional(),
     $or: z.lazy(() => AdminGetCurrenciesParams.array()).optional(),

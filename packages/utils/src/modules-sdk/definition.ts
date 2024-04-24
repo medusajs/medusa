@@ -21,4 +21,5 @@ export enum Modules {
   API_KEY = "apiKey",
   STORE = "store",
   CURRENCY = "currency",
+  FILE = "file",
 }

@@ -1,7 +1,10 @@
 import { moduleProviderLoader } from "@medusajs/modules-sdk"
 import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
 import { FileProviderService } from "@services"
-import { FileProviderIdentifierRegistrationName } from "@types"
+import {
+  FileProviderIdentifierRegistrationName,
+  FileProviderRegistrationPrefix,
+} from "@types"
 import { Lifetime, asFunction, asValue } from "awilix"
 
 const registrationFn = async (klass, container, pluginOptions) => {
@@ -9,9 +12,12 @@ const registrationFn = async (klass, container, pluginOptions) => {
     const key = FileProviderService.getRegistrationIdentifier(klass, name)
 
     container.register({
-      ["file_" + key]: asFunction((cradle) => new klass(cradle, config), {
-        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-      }),
+      [FileProviderRegistrationPrefix + key]: asFunction(
+        (cradle) => new klass(cradle, config),
+        {
+          lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
+        }
+      ),
     })
 
     container.registerAdd(FileProviderIdentifierRegistrationName, asValue(key))
@@ -25,16 +31,11 @@ export default async ({
   (
     | ModulesSdkTypes.ModuleServiceInitializeOptions
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-  ) & { provider: ModuleProvider }
+  ) & { providers: ModuleProvider[] }
 >): Promise<void> => {
-  container.registerAdd(
-    FileProviderIdentifierRegistrationName,
-    asValue(undefined)
-  )
-
   await moduleProviderLoader({
     container,
-    providers: options?.provider ? [options?.provider] : [],
+    providers: options?.providers || [],
     registerServiceFn: registrationFn,
   })
 }

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Input, Select, Switch } from "@medusajs/ui"
+import { Button, Input, Select, Switch, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -39,8 +39,8 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
     resolver: zodResolver(EditProfileSchema),
   })
 
-  const changeLanguage = (code: string) => {
-    i18n.changeLanguage(code)
+  const changeLanguage = async (code: string) => {
+    await i18n.changeLanguage(code)
   }
 
   const sortedLanguages = languages.sort((a, b) =>
@@ -50,21 +50,26 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
   const { mutateAsync, isPending } = useUpdateUser(user.id!)
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync(
-      {
+    try {
+      await mutateAsync({
         first_name: values.first_name,
         last_name: values.last_name,
-      },
-      {
-        onError: () => {
-          return
-        },
-      }
-    )
+      })
 
-    changeLanguage(values.language)
+      await changeLanguage(values.language)
 
-    handleSuccess()
+      handleSuccess()
+
+      toast.success(t("general.success"), {
+        description: t("profile.toast.edit"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   })
 
   return (

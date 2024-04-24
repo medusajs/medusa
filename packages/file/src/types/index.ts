@@ -6,6 +6,8 @@ import {
 export const FileProviderIdentifierRegistrationName =
   "file_providers_identifier"
 
+export const FileProviderRegistrationPrefix = "fs_"
+
 export type FileModuleOptions = Partial<ModuleServiceInitializeOptions> & {
   /**
    * Providers to be registered

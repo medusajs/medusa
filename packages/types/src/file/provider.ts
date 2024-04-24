@@ -63,9 +63,9 @@ export type ProviderUploadFileDTO = {
   mimeType: string
 
   /**
-   * The file content
+   * The file content as a binary-encoded string
    */
-  content: Blob
+  content: string
 }
 
 /**

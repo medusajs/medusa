@@ -9,7 +9,12 @@ import { storeLoader } from "./loader"
 export const StoreDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof storeLoader>>
 
-  const { store, isLoading, isError, error } = useStore({
+  const {
+    store,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useStore({
     initialData,
   })
 
