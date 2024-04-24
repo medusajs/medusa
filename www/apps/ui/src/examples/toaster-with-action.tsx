@@ -1,17 +1,13 @@
-import { Button, Toaster, useToast } from "@medusajs/ui"
+import { Button, Toaster, toast } from "@medusajs/ui"
 
 export default function ToasterWithAction() {
-  const { toast } = useToast()
-
   return (
     <>
       <Toaster />
       <Button
         onClick={() =>
-          toast({
-            title: "Created Product",
+          toast.success("Created Product", {
             description: "The product has been created.",
-            variant: "success",
             action: {
               altText: "Undo product creation",
               onClick: () => {},
