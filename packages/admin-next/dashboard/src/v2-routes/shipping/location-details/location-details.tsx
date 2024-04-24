@@ -2,8 +2,8 @@ import { Outlet, useLoaderData, useParams } from "react-router-dom"
 
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { LocationGeneralSection } from "./components/location-general-section"
-import { locationLoader } from "./loader"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
+import { locationLoader } from "./loader"
 
 export const LocationDetails = () => {
   const initialData = useLoaderData() as Awaited<
@@ -18,7 +18,10 @@ export const LocationDetails = () => {
     error,
   } = useStockLocation(
     id!,
-    { fields: "*payment_providers,*countries" },
+    {
+      fields:
+        "name,*address,*fulfillment_sets,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options,*fulfillment_sets.service_zones.shipping_options.shipping_profile",
+    },
     {
       initialData,
     }

@@ -1,9 +1,39 @@
-import { RegionDTO, StockLocationDTO } from "@medusajs/types"
-import { Container, Heading, toast, usePrompt } from "@medusajs/ui"
-import { useTranslation } from "react-i18next"
-
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
+import {
+  FulfillmentSetDTO,
+  ServiceZoneDTO,
+  ShippingOptionDTO,
+  StockLocationDTO,
+} from "@medusajs/types"
+import {
+  ChevronDown,
+  CurrencyDollar,
+  Map,
+  PencilSquare,
+  Plus,
+  Trash,
+} from "@medusajs/icons"
+import {
+  Button,
+  Container,
+  Heading,
+  StatusBadge,
+  Text,
+  toast,
+  usePrompt,
+} from "@medusajs/ui"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  useCreateFulfillmentSet,
+  useDeleteFulfillmentSet,
+  useDeleteServiceZone,
+  useDeleteStockLocation,
+} from "../../../../../hooks/api/stock-locations"
+import { useDeleteShippingOption } from "../../../../../hooks/api/shipping-options"
+import { formatProvider } from "../../../../../lib/format-provider"
+import { useState } from "react"
 
 type LocationGeneralSectionProps = {
   location: StockLocationDTO
@@ -15,74 +45,401 @@ export const LocationGeneralSection = ({
   const { t } = useTranslation()
 
   return (
-    <Container className="divide-y p-0">
-      <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{location.name}</Heading>
-        {/*<Actions region={region} />*/}
+    <>
+      <Container className="p-0">
+        <div className="flex items-center justify-between px-6 py-4">
+          <Heading>{location.name}</Heading>
+          <Actions location={location} />
+        </div>
+      </Container>
+
+      <FulfillmentSet
+        locationId={location.id}
+        locationName={location.name}
+        type={FulfillmentSetType.Pickup}
+        fulfillmentSet={location.fulfillment_sets.find(
+          (f) => f.type === FulfillmentSetType.Pickup
+        )}
+      />
+
+      <FulfillmentSet
+        locationId={location.id}
+        locationName={location.name}
+        type={FulfillmentSetType.Delivery}
+        fulfillmentSet={location.fulfillment_sets.find(
+          (f) => f.type === FulfillmentSetType.Delivery
+        )}
+      />
+    </>
+  )
+}
+
+type ShippingOptionProps = {
+  option: ShippingOptionDTO
+}
+
+function ShippingOption({ option }: ShippingOptionProps) {
+  const { t } = useTranslation()
+
+  const { mutateAsync: deleteOption } = useDeleteShippingOption(option.id)
+
+  const handleDelete = async () => {
+    await deleteOption()
+  }
+
+  return (
+    <div className="shadow-elevation-card-rest flex items-center justify-between rounded-md px-4 py-3">
+      <div className="flex-1">
+        <span className="txt-small font-medium">
+          {option.name} - {option.shipping_profile.name} (
+          {formatProvider(option.provider_id)})
+        </span>
+      </div>
+      <ActionMenu
+        groups={[
+          {
+            actions: [
+              {
+                label: t("shipping.serviceZone.editOption"),
+                icon: <PencilSquare />,
+                disabled: true,
+              },
+              {
+                label: t("shipping.serviceZone.editPrices"),
+                icon: <CurrencyDollar />,
+                disabled: true,
+              },
+              {
+                label: t("actions.delete"),
+                icon: <Trash />,
+                onClick: handleDelete,
+              },
+            ],
+          },
+        ]}
+      />
+    </div>
+  )
+}
+
+type ServiceZoneOptionsProps = {
+  zone: ServiceZoneDTO
+  locationId: string
+  fulfillmentSetId: string
+}
+
+function ServiceZoneOptions({
+  zone,
+  locationId,
+  fulfillmentSetId,
+}: ServiceZoneOptionsProps) {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  const shippingOptions = zone.shipping_options
+
+  return (
+    <>
+      <div className="flex flex-col py-4">
+        <Text
+          size="small"
+          weight="plus"
+          className="text-ui-fg-subtle mb-4"
+          as="div"
+        >
+          {t("shipping.serviceZone.shippingOptions")}
+        </Text>
+        {!shippingOptions.length && (
+          <div className="text-ui-fg-muted txt-medium flex h-[120px] flex-col items-center justify-center gap-y-4">
+            <div>{t("shipping.serviceZone.shippingOptionsPlaceholder")}</div>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                navigate(
+                  `/shipping/location/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`
+                )
+              }
+            >
+              {t("shipping.serviceZone.addShippingOptions")}
+            </Button>
+          </div>
+        )}
+
+        {!!shippingOptions.length && (
+          <div className="flex flex-col gap-3">
+            {shippingOptions.map((o) => (
+              <ShippingOption key={o.id} option={o} />
+            ))}
+          </div>
+        )}
+      </div>
+      {/*TODO implement return options*/}
+      {/*<div className="py-4">*/}
+      {/*  <Text*/}
+      {/*    size="small"*/}
+      {/*    weight="plus"*/}
+      {/*    className="text-ui-fg-subtle mb-4"*/}
+      {/*    as="div"*/}
+      {/*  >*/}
+      {/*    {t("shipping.serviceZone.returnOptions")}*/}
+      {/*  </Text>*/}
+      {/*</div>*/}
+    </>
+  )
+}
+
+type ServiceZoneProps = {
+  zone: ServiceZoneDTO
+  locationId: string
+  fulfillmentSetId: string
+}
+
+function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
+  const { t } = useTranslation()
+  const [open, setOpen] = useState(false)
+
+  const { mutateAsync: deleteZone } = useDeleteServiceZone(
+    fulfillmentSetId,
+    zone.id
+  )
+
+  const handleDelete = async () => {
+    await deleteZone()
+  }
+
+  return (
+    <>
+      <div className="flex flex-row items-center justify-between gap-x-4">
+        {/*ICON*/}
+        <div className="grow-0 rounded-lg border">
+          <div className="bg-ui-bg-field m-1 rounded-md p-2">
+            <Map className="text-ui-fg-subtle" />
+          </div>
+        </div>
+
+        {/*INFO*/}
+        <div className="grow-1 flex flex-1 flex-col">
+          <Text weight="plus">{zone.name}</Text>
+          <Text className="text-ui-fg-subtle txt-small">
+            {zone.shipping_options.length}{" "}
+            {t("shipping.serviceZone.optionsLength", {
+              count: zone.shipping_options.length,
+            })}
+          </Text>
+        </div>
+
+        {/*ACTION*/}
+        <div className="itemx-center -m-2 flex grow-0 gap-2">
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("shipping.serviceZone.addShippingOptions"),
+                    icon: <Plus />,
+                    to: `/shipping/location/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`,
+                  },
+                  {
+                    label: t("actions.delete"),
+                    icon: <Trash />,
+                    onClick: handleDelete,
+                  },
+                ],
+              },
+            ]}
+          />
+          <Button
+            onClick={() => setOpen((s) => !s)}
+            className="flex items-center justify-center"
+            variant="transparent"
+          >
+            <ChevronDown
+              style={{
+                transform: `rotate(${!open ? 0 : 180}deg)`,
+                transition: ".2s transform ease-in-out",
+              }}
+            />
+          </Button>
+        </div>
+      </div>
+      {open && (
+        <div>
+          <ServiceZoneOptions
+            fulfillmentSetId={fulfillmentSetId}
+            locationId={locationId}
+            zone={zone}
+          />
+        </div>
+      )}
+    </>
+  )
+}
+
+enum FulfillmentSetType {
+  Delivery = "delivery",
+  Pickup = "pickup",
+}
+
+type FulfillmentSetProps = {
+  fulfillmentSet?: FulfillmentSetDTO
+  locationName: string
+  locationId: string
+  type: FulfillmentSetType
+}
+
+function FulfillmentSet(props: FulfillmentSetProps) {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const { fulfillmentSet, locationName, locationId, type } = props
+
+  const fulfillmentSetExists = !!fulfillmentSet
+
+  const hasServiceZones = !!fulfillmentSet?.service_zones.length
+
+  const { mutateAsync: createFulfillmentSet, isPending: isLoading } =
+    useCreateFulfillmentSet(locationId)
+
+  const { mutateAsync: deleteFulfillmentSet } = useDeleteFulfillmentSet(
+    fulfillmentSet?.id
+  )
+
+  const handleCreate = async () => {
+    await createFulfillmentSet({
+      name: `${locationName} ${type}`,
+      type: type,
+    })
+  }
+
+  const handleDelete = async () => {
+    await deleteFulfillmentSet()
+  }
+
+  return (
+    <Container className="px-6 py-4">
+      <div className="flex flex-col divide-y">
+        <div className="flex items-center justify-between">
+          <Text size="large" weight="plus" className="flex-1" as="div">
+            {t(`shipping.fulfillmentSet.${type}.offers`)}
+          </Text>
+          <div className="flex items-center gap-4">
+            <StatusBadge color={fulfillmentSetExists ? "green" : "red"}>
+              {t(
+                fulfillmentSetExists ? "statuses.enabled" : "statuses.disabled"
+              )}
+            </StatusBadge>
+
+            <ActionMenu
+              groups={[
+                {
+                  actions: [
+                    {
+                      icon: <PencilSquare />,
+                      label: fulfillmentSetExists
+                        ? t("actions.disable")
+                        : t("actions.enable"),
+                      onClick: fulfillmentSetExists
+                        ? handleDelete
+                        : handleCreate,
+                    },
+                  ],
+                },
+              ]}
+            />
+          </div>
+        </div>
+
+        {fulfillmentSetExists && !hasServiceZones && (
+          <div className="text-ui-fg-muted txt-medium flex h-[120px] flex-col items-center justify-center gap-y-4">
+            <div>{t("shipping.fulfillmentSet.placeholder")}</div>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                navigate(
+                  `/settings/shipping/location/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`
+                )
+              }
+            >
+              {t("shipping.fulfillmentSet.addZone")}
+            </Button>
+          </div>
+        )}
+
+        {/*{hasServiceZones && (*/}
+        {/*  <div className="mt-4 flex flex-col gap-6">*/}
+        {/*    {fulfillmentSet?.service_zones.map((zone) => (*/}
+        {/*      <ServiceZone*/}
+        {/*        key={zone.id}*/}
+        {/*        zone={zone}*/}
+        {/*        locationId={locationId}*/}
+        {/*        fulfillmentSetId={fulfillmentSet.id}*/}
+        {/*      />*/}
+        {/*    ))}*/}
+        {/*  </div>*/}
+        {/*)}*/}
       </div>
     </Container>
   )
 }
 
-// const Actions = ({ region }: { region: RegionDTO }) => {
-//   const navigate = useNavigate()
-//   const { t } = useTranslation()
-//   const { mutateAsync } = useDeleteRegion(region.id)
-//   const prompt = usePrompt()
-//
-//   const handleDelete = async () => {
-//     const res = await prompt({
-//       title: t("general.areYouSure"),
-//       description: t("regions.deleteRegionWarning", {
-//         name: region.name,
-//       }),
-//       verificationText: region.name,
-//       verificationInstruction: t("general.typeToConfirm"),
-//       confirmText: t("actions.delete"),
-//       cancelText: t("actions.cancel"),
-//     })
-//
-//     if (!res) {
-//       return
-//     }
-//
-//     try {
-//       await mutateAsync(undefined)
-//       toast.success(t("general.success"), {
-//         description: t("regions.toast.delete"),
-//         dismissLabel: t("actions.close"),
-//       })
-//     } catch (e) {
-//       toast.error(t("general.error"), {
-//         description: e.message,
-//         dismissLabel: t("actions.close"),
-//       })
-//     }
-//     navigate("/settings/regions", { replace: true })
-//   }
-//
-//   return (
-//     <ActionMenu
-//       groups={[
-//         {
-//           actions: [
-//             {
-//               icon: <PencilSquare />,
-//               label: t("actions.edit"),
-//               to: `/settings/regions/${region.id}/edit`,
-//             },
-//           ],
-//         },
-//         {
-//           actions: [
-//             {
-//               icon: <Trash />,
-//               label: t("actions.delete"),
-//               onClick: handleDelete,
-//             },
-//           ],
-//         },
-//       ]}
-//     />
-//   )
-// }
+const Actions = ({ location }: { location: StockLocationDTO }) => {
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+  const { mutateAsync } = useDeleteStockLocation(location.id)
+  const prompt = usePrompt()
+
+  const handleDelete = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("shipping.deleteLocationWarning", {
+        name: location.name,
+      }),
+      verificationText: location.name,
+      verificationInstruction: t("general.typeToConfirm"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    try {
+      await mutateAsync(undefined)
+      toast.success(t("general.success"), {
+        description: t("shipping.toast.delete"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
+    navigate("/settings/shipping", { replace: true })
+  }
+
+  return (
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("actions.edit"),
+              to: `edit`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: t("actions.delete"),
+              onClick: handleDelete,
+            },
+          ],
+        },
+      ]}
+    />
+  )
+}

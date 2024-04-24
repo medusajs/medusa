@@ -12,7 +12,7 @@ const shippingListQuery = () => ({
       // fields: "*fulfillment_sets,*fulfillment_sets.service_zones",
       // TODO: change this when RQ is fixed to work with the upper fields definition
       fields:
-        "name,address.city,address.country_code,fulfillment_sets.type,fulfillment_sets.name,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options,*fulfillment_sets.service_zones.shipping_options.shipping_profile",
+        "name,*address,*fulfillment_sets,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options,*fulfillment_sets.service_zones.shipping_options.shipping_profile",
     }),
 })
 

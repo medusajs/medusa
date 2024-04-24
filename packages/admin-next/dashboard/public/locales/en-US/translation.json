@@ -69,6 +69,8 @@
     "remove": "Remove",
     "revoke": "Revoke",
     "cancel": "Cancel",
+    "enable": "Enable",
+    "disable": "Disable",
     "complete": "Complete",
     "viewDetails": "View details",
     "back": "Back",
@@ -633,11 +635,13 @@
       "addZone": "Add service zone",
       "pickup": {
         "title": "Pick up",
-        "enable": "Enable pickup"
+        "enable": "Enable pickup",
+        "offers": "Offers piskup in"
       },
       "delivery": {
         "title": "Shipping",
-        "enable": "Enable delivery"
+        "enable": "Enable delivery",
+        "offers": "Offers shippping to"
       }
     },
     "serviceZone": {

@@ -5,6 +5,7 @@ import {
   AdminPostStockLocationsReq,
   AdminStockLocationsListRes,
   AdminStockLocationsDeleteRes,
+  AdminGetStockLocationsLocationParams,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -13,13 +14,13 @@ import qs from "qs"
 /**
  * This class is used to send requests to [Admin Stock Location API Routes](https://docs.medusajs.com/api/admin#stock-locations). To use these API Routes, make sure to install the
  * [@medusajs/stock-location](https://docs.medusajs.com/modules/multiwarehouse/install-modules#stock-location-module) module in your Medusa backend.
- * 
+ *
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}. The methods
  * are available in the JS Client under the `medusa.admin.stockLocations` property.
- * 
+ *
  * A stock location, provided by the [Stock Location module](https://docs.medusajs.com/modules/multiwarehouse/stock-location-module), indicates a physical address that stock-kept items, such as physical products, can be stored in.
  * An admin can create and manage available stock locations.
- * 
+ *
  * Related Guide: [How to manage stock locations](https://docs.medusajs.com/modules/multiwarehouse/admin/manage-stock-locations).
  */
 class AdminStockLocationsResource extends BaseResource {
@@ -28,7 +29,7 @@ class AdminStockLocationsResource extends BaseResource {
    * @param {AdminPostStockLocationsReq} payload - The stock location to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminStockLocationsRes>} Resolves to the stock location's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -53,7 +54,7 @@ class AdminStockLocationsResource extends BaseResource {
    * @param {string} itemId - The stock location's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminStockLocationsRes>} Resolves to the stock location's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -65,9 +66,16 @@ class AdminStockLocationsResource extends BaseResource {
    */
   retrieve(
     itemId: string,
+    query: AdminGetStockLocationsLocationParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminStockLocationsRes> {
-    const path = `/admin/stock-locations/${itemId}`
+    let path = `/admin/stock-locations/${itemId}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `${path}?${queryString}`
+    }
+
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
@@ -77,7 +85,7 @@ class AdminStockLocationsResource extends BaseResource {
    * @param {AdminPostStockLocationsLocationReq} payload - The attributes to be updated in the stock location.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminStockLocationsRes>} Resolves to the stock location's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -103,7 +111,7 @@ class AdminStockLocationsResource extends BaseResource {
    * @param {string} id - The stock location's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminStockLocationsDeleteRes>} Resolves to the deletion operation's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -127,10 +135,10 @@ class AdminStockLocationsResource extends BaseResource {
    * @param {AdminGetStockLocationsParams} query - Filters and pagination configurations to apply on the retrieved stock locations.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminStockLocationsListRes>} Resolves to the list of stock locations with pagination fields.
-   * 
+   *
    * @example
    * To list stock locations:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -140,9 +148,9 @@ class AdminStockLocationsResource extends BaseResource {
    *   console.log(stock_locations.length);
    * })
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the stock locations:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -154,9 +162,9 @@ class AdminStockLocationsResource extends BaseResource {
    *   console.log(stock_locations.length);
    * })
    * ```
-   * 
+   *
    * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
