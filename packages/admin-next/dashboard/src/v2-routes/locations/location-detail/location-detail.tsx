@@ -7,7 +7,12 @@ import { LocationSalesChannelSection } from "./components/location-sales-channel
 
 export const LocationDetail = () => {
   const { id } = useParams()
-  const { stock_location, isLoading, isError, error } = useStockLocation(id!, {
+  const {
+    stock_location,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useStockLocation(id!, {
     fields: "*address,*sales_channels",
   })
 

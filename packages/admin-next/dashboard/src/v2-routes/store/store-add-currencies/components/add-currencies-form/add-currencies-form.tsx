@@ -1,5 +1,5 @@
 import { Currency } from "@medusajs/medusa"
-import { Button, Checkbox, Hint, Tooltip } from "@medusajs/ui"
+import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
 import {
   OnChangeFn,
   RowSelectionState,
@@ -68,12 +68,15 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
     prefix: PREFIX,
   })
 
-  const { currencies, count, isLoading, isError, error } = useCurrencies(
-    searchParams,
-    {
-      placeholderData: keepPreviousData,
-    }
-  )
+  const {
+    currencies,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useCurrencies(searchParams, {
+    placeholderData: keepPreviousData,
+  })
 
   const preSelectedRows = store.supported_currency_codes.map((c) => c)
 
@@ -101,16 +104,21 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
       new Set([...data.currencies, ...preSelectedRows])
     ) as string[]
 
-    await mutateAsync(
-      {
+    try {
+      await mutateAsync({
         supported_currency_codes: currencies,
-      },
-      {
-        onSuccess: () => {
-          handleSuccess()
-        },
-      }
-    )
+      })
+      toast.success(t("general.success"), {
+        description: t("store.toast.currenciesUpdated"),
+        dismissLabel: t("actions.close"),
+      })
+      handleSuccess()
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   })
 
   if (isError) {

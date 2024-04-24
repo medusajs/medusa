@@ -12,7 +12,7 @@ export const SalesChannelDetail = () => {
   >
 
   const { id } = useParams()
-  const { sales_channel, isLoading } = useSalesChannel(id!, {
+  const { sales_channel, isPending: isLoading } = useSalesChannel(id!, {
     initialData,
   })
 

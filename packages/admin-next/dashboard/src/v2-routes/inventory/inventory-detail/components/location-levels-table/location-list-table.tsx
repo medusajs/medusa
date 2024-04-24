@@ -15,11 +15,16 @@ export const ItemLocationListTable = ({
     pageSize: PAGE_SIZE,
   })
 
-  const { inventory_levels, count, isLoading, isError, error } =
-    useInventoryItemLevels(inventory_item_id, {
-      ...searchParams,
-      fields: "*stock_locations",
-    })
+  const {
+    inventory_levels,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useInventoryItemLevels(inventory_item_id, {
+    ...searchParams,
+    fields: "*stock_locations",
+  })
 
   const columns = useLocationListTableColumns()
 
