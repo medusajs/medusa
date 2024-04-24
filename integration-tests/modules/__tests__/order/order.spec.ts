@@ -226,7 +226,7 @@ medusaIntegrationTestRunner({
                   promotion_id: expect.any(String),
                   code: "VIP_25 ETH",
                   raw_amount: {
-                    value: "5.0000000000000000000e-18",
+                    value: "5e-18",
                     precision: 20,
                   },
                   provider_id: expect.any(String),
@@ -237,11 +237,11 @@ medusaIntegrationTestRunner({
                   subtotal: 5e-18,
                   total: 5e-18,
                   raw_subtotal: {
-                    value: "5.0000000000000000000e-18",
+                    value: "5e-18",
                     precision: 20,
                   },
                   raw_total: {
-                    value: "5.0000000000000000000e-18",
+                    value: "5e-18",
                     precision: 20,
                   },
                 },
@@ -289,6 +289,7 @@ medusaIntegrationTestRunner({
                 metadata: null,
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
+                deleted_at: null,
                 quantity: 1,
                 fulfilled_quantity: 0,
                 shipped_quantity: 0,
@@ -317,7 +318,7 @@ medusaIntegrationTestRunner({
                 precision: 20,
               },
               raw_discount_total: {
-                value: "5.0000000000000000000e-18",
+                value: "5e-18",
                 precision: 20,
               },
               raw_discount_tax_total: {
@@ -372,7 +373,6 @@ medusaIntegrationTestRunner({
             expect.objectContaining({
               id: expect.any(String),
               order_id: expect.any(String),
-              version: 1,
               name: "Test shipping method",
               description: null,
               raw_amount: {
