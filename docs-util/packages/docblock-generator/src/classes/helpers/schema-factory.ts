@@ -32,13 +32,13 @@ class SchemaFactory {
       return
     }
 
-    let schema = this.schemas[name]
+    let schema = Object.assign({}, this.schemas[name])
 
     if (additionalData) {
       schema = Object.assign(schema, additionalData)
     }
 
-    return Object.assign({}, schema)
+    return schema
   }
 }
 
