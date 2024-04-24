@@ -1389,8 +1389,6 @@ export interface IOrderModuleService extends IModuleService {
 
   revertLastVersion(orderId: string, sharedContext?: Context): Promise<void>
 
-  restoreNextVersion(orderId: string, sharedContext?: Context): Promise<void>
-
   // Bundled flows
   registerFulfillment(
     data: RegisterOrderFulfillmentDTO,

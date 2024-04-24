@@ -12,7 +12,7 @@ import { ChangeActionType } from "../../src/utils"
 jest.setTimeout(100000)
 
 moduleIntegrationTestRunner({
-  debug: 0,
+  debug: false,
   moduleName: Modules.ORDER,
   testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
     describe("Order Module Service - Order Edits", () => {
@@ -434,6 +434,9 @@ moduleIntegrationTestRunner({
           })
         )
 
+        expect(serializedModifiedOrder.shipping_methods).toHaveLength(1)
+        expect(serializedModifiedOrder.shipping_methods[0].amount).toEqual(10)
+
         expect(serializedModifiedOrder.items).toEqual([
           expect.objectContaining({
             quantity: 2,
@@ -477,7 +480,13 @@ moduleIntegrationTestRunner({
         // Revert Last Changes
         await service.revertLastVersion(createdOrder.id)
         const revertedOrder = await service.retrieve(createdOrder.id, {
-          select: ["id", "version", "items.detail", "summary"],
+          select: [
+            "id",
+            "version",
+            "items.detail",
+            "summary",
+            "shipping_methods",
+          ],
           relations: ["items"],
         })
 
@@ -489,6 +498,9 @@ moduleIntegrationTestRunner({
             version: 1,
           })
         )
+
+        expect(serializedRevertedOrder.shipping_methods).toHaveLength(1)
+        expect(serializedRevertedOrder.shipping_methods[0].amount).toEqual(10)
 
         expect(serializedRevertedOrder.items).toEqual([
           expect.objectContaining({
@@ -526,70 +538,6 @@ moduleIntegrationTestRunner({
               return_requested_quantity: 0,
               return_received_quantity: 0,
               return_dismissed_quantity: 0,
-              written_off_quantity: 0,
-            }),
-          }),
-        ])
-
-        // Restore Last Changes
-        await service.restoreNextVersion(createdOrder.id)
-        const restoredOrder = await service.retrieve(createdOrder.id, {
-          select: [
-            "id",
-            "version",
-            "items.detail",
-            "summary",
-            "shipping_methods",
-            "transactions",
-          ],
-          relations: ["items", "shipping_methods"],
-        })
-
-        const serializedRestoredOrder = JSON.parse(
-          JSON.stringify(restoredOrder)
-        )
-
-        expect(serializedRestoredOrder).toEqual(
-          expect.objectContaining({
-            version: 2,
-          })
-        )
-
-        expect(serializedRestoredOrder.items).toEqual([
-          expect.objectContaining({
-            quantity: 2,
-            detail: expect.objectContaining({
-              version: 2,
-              quantity: 2,
-            }),
-          }),
-          expect.objectContaining({
-            title: "Item 2",
-            unit_price: 5,
-            quantity: 5,
-            detail: expect.objectContaining({
-              version: 2,
-              quantity: 5,
-              fulfilled_quantity: 0,
-              shipped_quantity: 0,
-              return_requested_quantity: 0,
-              return_received_quantity: 0,
-              return_dismissed_quantity: 0,
-              written_off_quantity: 0,
-            }),
-          }),
-          expect.objectContaining({
-            title: "Item 3",
-            unit_price: 30,
-            quantity: 1,
-            detail: expect.objectContaining({
-              version: 2,
-              quantity: 1,
-              fulfilled_quantity: 1,
-              shipped_quantity: 1,
-              return_requested_quantity: 0,
-              return_received_quantity: 0,
-              return_dismissed_quantity: 1,
               written_off_quantity: 0,
             }),
           }),

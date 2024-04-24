@@ -105,6 +105,7 @@ export interface UpsertOrderLineItemAdjustmentDTO {
 /** TAX LINES START */
 
 export interface CreateOrderTaxLineDTO {
+  item_id: string
   description?: string
   tax_rate_id?: string
   code: string
@@ -201,6 +202,7 @@ export interface UpdateOrderLineItemDTO
 export interface CreateOrderShippingMethodDTO {
   name: string
   order_id: string
+  version?: number
   amount: BigNumberInput
   shipping_option_id?: string
   data?: Record<string, unknown>
@@ -387,7 +389,6 @@ export interface CreateOrderReturnDTO {
   order_id: string
   description?: string
   reference?: string
-  reference_id?: string
   internal_note?: string
   created_by?: string
   shipping_method: Omit<CreateOrderShippingMethodDTO, "order_id"> | string

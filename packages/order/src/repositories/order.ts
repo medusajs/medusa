@@ -57,6 +57,9 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
     config.options.populateWhere.summary ??= {}
     config.options.populateWhere.summary.version = version
 
+    config.options.populateWhere.shipping_methods ??= {}
+    config.options.populateWhere.shipping_methods.version = version
+
     if (!config.options.orderBy) {
       config.options.orderBy = { id: "ASC" }
     }

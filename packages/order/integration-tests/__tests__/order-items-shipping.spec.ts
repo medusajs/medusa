@@ -790,7 +790,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const methods = await service.createShippingMethods([
+          const [eurMethod, usdMethod] = await service.createShippingMethods([
             {
               order_id: eurOrder.id,
               amount: 100,
@@ -811,44 +811,11 @@ moduleIntegrationTestRunner({
           eurOrder = orders.find((c) => c.currency_code === "eur")!
           usdOrder = orders.find((c) => c.currency_code === "usd")!
 
-          const eurMethods = methods.filter((m) => m.order_id === eurOrder.id)
-          const usdMethods = methods.filter((m) => m.order_id === usdOrder.id)
-
-          expect(eurOrder.shipping_methods![0].id).toBe(eurMethods[0].id)
-          expect(usdOrder.shipping_methods![0].id).toBe(usdMethods[0].id)
+          expect(eurOrder.shipping_methods![0].id).toBe(eurMethod.id)
+          expect(usdOrder.shipping_methods![0].id).toBe(usdMethod.id)
 
           expect(eurOrder.shipping_methods?.length).toBe(1)
           expect(usdOrder.shipping_methods?.length).toBe(1)
-        })
-      })
-
-      describe("deleteShippingMethods", () => {
-        it("should delete a line item succesfully", async () => {
-          const [createdOrder] = await service.create([
-            {
-              currency_code: "eur",
-            },
-          ])
-
-          const [method] = await service.createShippingMethods(
-            createdOrder.id,
-            [
-              {
-                amount: 100,
-                name: "test",
-              },
-            ]
-          )
-
-          expect(method.id).not.toBe(null)
-
-          await service.deleteShippingMethods(method.id)
-
-          const order = await service.retrieve(createdOrder.id, {
-            relations: ["shipping_methods"],
-          })
-
-          expect(order.shipping_methods?.length).toBe(0)
         })
       })
 
@@ -1457,6 +1424,7 @@ moduleIntegrationTestRunner({
           })
 
           const serialized = JSON.parse(JSON.stringify(order))
+
           expect(serialized.shipping_methods).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
@@ -1750,39 +1718,43 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const orderOneMethods = await service.listShippingMethods(
+          const orderOneMethods = await service.listOrderShippingMethods(
             { order_id: orderOne.id },
-            { relations: ["adjustments", "order"] }
+            { relations: ["shipping_method.adjustments"] }
           )
 
-          const orderTwoMethods = await service.listShippingMethods(
+          const orderTwoMethods = await service.listOrderShippingMethods(
             { order_id: orderTwo.id },
-            { relations: ["adjustments", "order"] }
+            { relations: ["shipping_method.adjustments"] }
           )
 
           expect(orderOneMethods).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                adjustments: expect.arrayContaining([
-                  expect.objectContaining({
-                    shipping_method_id: shippingMethodOne.id,
-                    amount: 100,
-                    code: "FREE",
-                  }),
-                ]),
+                shipping_method: expect.objectContaining({
+                  adjustments: expect.arrayContaining([
+                    expect.objectContaining({
+                      shipping_method_id: shippingMethodOne.id,
+                      amount: 100,
+                      code: "FREE",
+                    }),
+                  ]),
+                }),
               }),
             ])
           )
           expect(orderTwoMethods).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                adjustments: expect.arrayContaining([
-                  expect.objectContaining({
-                    shipping_method_id: shippingMethodTwo.id,
-                    amount: 150,
-                    code: "CODE-2",
-                  }),
-                ]),
+                shipping_method: expect.objectContaining({
+                  adjustments: expect.arrayContaining([
+                    expect.objectContaining({
+                      shipping_method_id: shippingMethodTwo.id,
+                      amount: 150,
+                      code: "CODE-2",
+                    }),
+                  ]),
+                }),
               }),
             ])
           )
@@ -1828,7 +1800,7 @@ moduleIntegrationTestRunner({
       })
 
       describe("deleteShippingMethodAdjustments", () => {
-        it("should delete a shipping method succesfully", async () => {
+        it("should delete a shipping method adjustment succesfully", async () => {
           const [createdOrder] = await service.create([
             {
               currency_code: "eur",
