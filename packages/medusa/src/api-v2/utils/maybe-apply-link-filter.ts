@@ -32,7 +32,7 @@ export function maybeApplyLinkFilter({
     const queryObject = remoteQueryObjectFromString({
       entryPoint,
       fields: [resourceId],
-      variables: { [filterableField]: idsToFilterBy },
+      variables: { [filterableField]: idsToFilterBy, take: null },
     })
 
     const resources = await remoteQuery(queryObject)
