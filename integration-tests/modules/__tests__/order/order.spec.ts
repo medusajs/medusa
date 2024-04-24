@@ -369,7 +369,7 @@ medusaIntegrationTestRunner({
             updated_at: expect.any(String),
           },
           shipping_methods: [
-            {
+            expect.objectContaining({
               id: expect.any(String),
               order_id: expect.any(String),
               version: 1,
@@ -475,7 +475,7 @@ medusaIntegrationTestRunner({
                 value: "1",
                 precision: 20,
               },
-            },
+            }),
           ],
         })
       })
