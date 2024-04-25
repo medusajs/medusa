@@ -157,6 +157,9 @@
       "required": "New owner is required."
     }
   },
+  "sales_channels": {
+    "availableIn": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels"
+  },
   "products": {
     "domain": "Products",
     "createProductTitle": "Create Product",
@@ -187,7 +190,6 @@
       "noMediaLabel": "The product has no associated media."
     },
     "discountableHint": "When unchecked discounts will not be applied to this product.",
-    "availableInSalesChannels": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels",
     "noSalesChannels": "Not available in any sales channels",
     "variantCount_one": "{{count}} variant",
     "variantCount_other": "{{count}} variants",
