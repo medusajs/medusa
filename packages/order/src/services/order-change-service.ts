@@ -74,6 +74,10 @@ export default class OrderChangeService<
       }
     }
 
+    if (!orderChange) {
+      return []
+    }
+
     const relations = deduplicate([...(config.relations ?? []), "actions"])
     config.relations = relations
 
