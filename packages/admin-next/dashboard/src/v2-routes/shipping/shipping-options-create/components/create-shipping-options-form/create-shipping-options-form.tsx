@@ -117,7 +117,7 @@ export function CreateShippingOptionsForm({
       },
     })
 
-    handleSuccess("/shipping")
+    handleSuccess()
   })
 
   const [status, setStatus] = React.useState<StepStatus>({

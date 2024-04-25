@@ -20,9 +20,8 @@ export const useCreateShippingOptions = (
     mutationFn: (payload) => client.shippingOptions.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.lists(),
+        queryKey: stockLocationsQueryKeys.all,
       })
-
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -37,7 +36,7 @@ export const useDeleteShippingOption = (
     mutationFn: () => client.shippingOptions.delete(optionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.lists(),
+        queryKey: stockLocationsQueryKeys.all,
       })
 
       options?.onSuccess?.(data, variables, context)

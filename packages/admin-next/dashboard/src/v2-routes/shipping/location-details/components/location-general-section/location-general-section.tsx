@@ -7,7 +7,6 @@ import {
   StockLocationDTO,
 } from "@medusajs/types"
 import {
-  ChevronDown,
   ChevronDownMini,
   CurrencyDollar,
   Map,
@@ -92,7 +91,7 @@ function ShippingOption({ option }: ShippingOptionProps) {
   }
 
   return (
-    <div className="shadow-elevation-card-rest flex items-center justify-between rounded-md px-4 py-3">
+    <div className="flex items-center justify-between px-4 py-3">
       <div className="flex-1">
         <span className="txt-small font-medium">
           {option.name} - {option.shipping_profile.name} (
@@ -144,50 +143,59 @@ function ServiceZoneOptions({
 
   return (
     <>
-      <div className="flex flex-col py-4">
-        <Text
-          size="small"
-          weight="plus"
-          className="text-ui-fg-subtle mb-4"
-          as="div"
-        >
-          {t("shipping.serviceZone.shippingOptions")}
-        </Text>
-        {!shippingOptions.length && (
-          <div className="text-ui-fg-muted txt-medium flex h-[120px] flex-col items-center justify-center gap-y-4">
-            <div>{t("shipping.serviceZone.shippingOptionsPlaceholder")}</div>
-            <Button
-              variant="secondary"
-              onClick={() =>
-                navigate(
-                  `/shipping/location/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`
-                )
-              }
-            >
-              {t("shipping.serviceZone.addShippingOptions")}
-            </Button>
-          </div>
-        )}
+      <div className="mt-4 flex flex-col border-t border-dashed px-6 py-4">
+        <div className="item-center flex justify-between">
+          <span className="text-ui-fg-subtle txt-small self-center font-medium">
+            {t("shipping.serviceZone.shippingOptions")}
+          </span>
+          <Button
+            className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent"
+            variant="transparent"
+            onClick={() =>
+              navigate(
+                `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`
+              )
+            }
+          >
+            {t("shipping.serviceZone.addOption")}
+          </Button>
+        </div>
 
         {!!shippingOptions.length && (
-          <div className="flex flex-col gap-3">
+          <div className="shadow-elevation-card-rest bg-ui-bg-subtle mt-4 grid divide-y rounded-md">
             {shippingOptions.map((o) => (
               <ShippingOption key={o.id} option={o} />
             ))}
           </div>
         )}
       </div>
+
       {/*TODO implement return options*/}
-      {/*<div className="py-4">*/}
-      {/*  <Text*/}
-      {/*    size="small"*/}
-      {/*    weight="plus"*/}
-      {/*    className="text-ui-fg-subtle mb-4"*/}
-      {/*    as="div"*/}
-      {/*  >*/}
-      {/*    {t("shipping.serviceZone.returnOptions")}*/}
-      {/*  </Text>*/}
-      {/*</div>*/}
+
+      <div className="-mb-4 flex flex-col border-t border-dashed px-6 py-4">
+        <div className="item-center flex justify-between">
+          <span className="text-ui-fg-subtle txt-small self-center font-medium">
+            {t("shipping.serviceZone.returnOptions")}
+          </span>
+          {!shippingOptions.length && (
+            <Button
+              className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent"
+              variant="transparent"
+              onClick={() => alert("TODO")}
+            >
+              {t("shipping.serviceZone.addOption")}
+            </Button>
+          )}
+        </div>
+
+        {/*{!!shippingOptions.length && (*/}
+        {/*  <div className="flex flex-col gap-3">*/}
+        {/*    {shippingOptions.map((o) => (*/}
+        {/*      <ShippingOption key={o.id} option={o} />*/}
+        {/*    ))}*/}
+        {/*  </div>*/}
+        {/*)}*/}
+      </div>
     </>
   )
 }
@@ -219,8 +227,8 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   }, zone.geo_zones)
 
   return (
-    <div className=" px-6 py-4">
-      <div className="flex flex-row items-center justify-between gap-x-4">
+    <div className="py-4">
+      <div className="flex flex-row items-center justify-between gap-x-4 px-6">
         {/*ICON*/}
         <div className="grow-0 rounded-lg border">
           <div className="bg-ui-bg-field m-1 rounded-md p-2">
@@ -270,7 +278,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
               {
                 actions: [
                   {
-                    label: t("shipping.serviceZone.addShippingOptions"),
+                    label: t("shipping.serviceZone.addOption"),
                     icon: <Plus />,
                     to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`,
                   },

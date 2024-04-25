@@ -656,7 +656,7 @@
       "optionsLength_one": "shipping option",
       "optionsLength_other": "shipping options",
       "shippingOptionsPlaceholder": "Not covered by any shipping options.",
-      "addShippingOptions": "Add shipping options",
+      "addOption": "Add option",
       "shippingOptions": "Shipping options",
       "returnOptions": "Return options",
       "areas": {
