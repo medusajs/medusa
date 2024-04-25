@@ -1,4 +1,4 @@
-import { BaseFilterable } from "../../dal"
+import { BaseFilterable, OperatorMap } from "../../dal"
 import {
   CreateMoneyAmountDTO,
   MoneyAmountDTO,
@@ -241,17 +241,21 @@ export interface UpdatePriceListDTO {
 export interface FilterablePriceListProps
   extends BaseFilterable<FilterablePriceListProps> {
   /**
+   * Find price lists by title or description through this search term.
+   */
+  q?: string
+  /**
    * The IDs to filter price lists by
    */
-  id?: string[]
+  id?: string | string[]
   /**
    * The start dates to filter price lists by.
    */
-  starts_at?: string[]
+  starts_at?: OperatorMap<string>
   /**
    * The end dates to filter price lists by.
    */
-  ends_at?: string[]
+  ends_at?: OperatorMap<string>
   /**
    * The statuses to filter price lists by.
    */

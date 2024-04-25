@@ -1948,6 +1948,46 @@ medusaIntegrationTestRunner({
             ])
           )
         })
+
+        it("should allow searching of variants", async () => {
+          await breaking(
+            () => {},
+            async () => {
+              const newProduct = (
+                await api.post(
+                  "/admin/products",
+                  getProductFixture({
+                    variants: [
+                      { title: "First variant", prices: [] },
+                      { title: "Second variant", prices: [] },
+                    ],
+                  }),
+                  adminHeaders
+                )
+              ).data.product
+
+              const res = await api
+                .get(
+                  `/admin/products/${newProduct.id}/variants?q=first`,
+                  adminHeaders
+                )
+                .catch((err) => {
+                  console.log(err)
+                })
+
+              expect(res.status).toEqual(200)
+              expect(res.data.variants).toHaveLength(1)
+              expect(res.data.variants).toEqual(
+                expect.arrayContaining([
+                  expect.objectContaining({
+                    title: "First variant",
+                    product_id: newProduct.id,
+                  }),
+                ])
+              )
+            }
+          )
+        })
       })
 
       describe("updates a variant's default prices (ignores prices associated with a Price List)", () => {

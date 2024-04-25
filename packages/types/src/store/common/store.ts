@@ -61,6 +61,10 @@ export interface StoreDTO {
 export interface FilterableStoreProps
   extends BaseFilterable<FilterableStoreProps> {
   /**
+   * Find stores by name through this search term.
+   */
+  q?: string
+  /**
    * The IDs to filter the stores by.
    */
   id?: string | string[]

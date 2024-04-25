@@ -143,7 +143,6 @@ medusaIntegrationTestRunner({
         )
       })
 
-      // TODO: Free text search not supported in 2.0 yet
       it("should list users that match the free text search", async () => {
         const response = await api.get("/admin/users?q=member", adminHeaders)
 
@@ -159,7 +158,10 @@ medusaIntegrationTestRunner({
               last_name: "user",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              role: "member",
+              ...breaking(
+                () => ({ role: "member" }),
+                () => ({})
+              ),
             }),
           ])
         )
