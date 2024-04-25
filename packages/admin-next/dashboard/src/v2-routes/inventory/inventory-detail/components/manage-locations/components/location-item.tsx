@@ -15,7 +15,7 @@ export const LocationItem = ({
 }: LocationItemProps) => {
   return (
     <div
-      className={clx("flex w-full rounded-lg border px-2 py-2 gap-x-2", {
+      className={clx("flex w-full gap-x-2 rounded-lg border px-2 py-2", {
         "border-ui-border-interactive ": selected,
       })}
       onClick={() => onSelect(!selected)}

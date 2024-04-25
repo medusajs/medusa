@@ -5,19 +5,26 @@ import { InventoryItemGeneralSection } from "./components/inventory-item-general
 import { InventoryItemLocationLevelsSection } from "./components/inventory-item-location-levels"
 import { InventoryItemReservationsSection } from "./components/inventory-item-reservations"
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import { inventoryItemLoader } from "./loader"
 import { useInventoryItem } from "../../../hooks/api/inventory"
+import { inventoryItemLoader } from "./loader"
 
-export const InventoryDeatil = () => {
+export const InventoryDetail = () => {
   const { id } = useParams()
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof inventoryItemLoader>
   >
 
-  const { inventory_item, isLoading, isError, error } = useInventoryItem(
+  const {
+    inventory_item,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useInventoryItem(
     id!,
-    {},
+    {
+      fields: "*variants",
+    },
     {
       initialData,
     }

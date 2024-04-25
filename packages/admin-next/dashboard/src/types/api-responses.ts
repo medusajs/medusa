@@ -174,6 +174,7 @@ export type InventoryItemRes = {
     stocked_quantity: number
     reserved_quantity: number
     location_levels?: InventoryNext.InventoryLevelDTO[]
+    variant?: ProductVariantDTO | ProductVariantDTO[]
   }
 }
 

@@ -13,7 +13,7 @@ export const AdjustInventoryDrawer = () => {
 
   const {
     inventory_item: inventoryItem,
-    isLoading,
+    isPending: isLoading,
     isError,
     error,
   } = useInventoryItem(id!)

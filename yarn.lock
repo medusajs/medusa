@@ -8231,6 +8231,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/file-local-next@workspace:packages/file-local":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/file-local-next@workspace:packages/file-local"
+  dependencies:
+    "@medusajs/utils": ^1.11.7
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    rimraf: ^5.0.1
+    typescript: ^4.9.5
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/file-local@workspace:packages/medusa-file-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/file-local@workspace:packages/medusa-file-local"
@@ -32100,6 +32112,7 @@ __metadata:
     "@swc/jest": ^0.2.36
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
+    form-data: ^4.0.0
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-fulfillment-webshipper: "workspace:*"

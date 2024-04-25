@@ -3,7 +3,7 @@ import { useMe } from "../../../hooks/api/users"
 import { ProfileGeneralSection } from "./components/profile-general-section"
 
 export const ProfileDetail = () => {
-  const { user, isLoading, isError, error } = useMe()
+  const { user, isPending: isLoading, isError, error } = useMe()
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -14,7 +14,7 @@ export const ProfileDetail = () => {
       throw error
     }
 
-    throw json("An unknown error has occured", 500)
+    throw json("An unknown error has occurred", 500)
   }
 
   return (

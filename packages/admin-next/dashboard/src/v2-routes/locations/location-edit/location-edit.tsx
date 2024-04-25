@@ -2,14 +2,18 @@ import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/route-modal"
-import { useStockLocations } from "../../../hooks/api/stock-locations"
+import { useStockLocation } from "../../../hooks/api/stock-locations"
 import { EditLocationForm } from "./components/edit-location-form"
 
 export const LocationEdit = () => {
   const { id } = useParams()
 
-  const { stock_locations, isLoading, isError, error } = useStockLocations({
-    id,
+  const {
+    stock_location,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useStockLocation(id, {
     fields: "*address",
   })
 
@@ -18,8 +22,6 @@ export const LocationEdit = () => {
   if (isError) {
     throw error
   }
-
-  const stock_location = stock_locations?.[0]
 
   return (
     <RouteDrawer>

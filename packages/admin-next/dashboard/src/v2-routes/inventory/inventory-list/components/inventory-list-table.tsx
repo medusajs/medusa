@@ -1,7 +1,7 @@
 import { Container, Heading } from "@medusajs/ui"
+import { InventoryNext } from "@medusajs/types"
 
 import { DataTable } from "../../../../components/table/data-table"
-import { InventoryNext } from "@medusajs/types"
 import { useDataTable } from "../../../../hooks/use-data-table"
 import { useInventoryItems } from "../../../../hooks/api/inventory"
 import { useInventoryTableColumns } from "./use-inventory-table-columns"
@@ -17,10 +17,16 @@ export const InventoryListTable = () => {
   const { searchParams, raw } = useInventoryTableQuery({
     pageSize: PAGE_SIZE,
   })
-  const { inventory_items, count, isLoading, isError, error } =
-    useInventoryItems({
-      ...searchParams,
-    })
+
+  const {
+    inventory_items,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useInventoryItems({
+    ...searchParams,
+  })
 
   const filters = useInventoryTableFilters()
   const columns = useInventoryTableColumns()

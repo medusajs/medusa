@@ -127,12 +127,15 @@ export default class ProductModuleService<
 
   // eslint-disable-next-line max-len
   protected readonly productCategoryService_: ProductCategoryService<TProductCategory>
+  // eslint-disable-next-line max-len
   protected readonly productTagService_: ModulesSdkTypes.InternalModuleService<TProductTag>
   // eslint-disable-next-line max-len
   protected readonly productCollectionService_: ModulesSdkTypes.InternalModuleService<TProductCollection>
   // eslint-disable-next-line max-len
   protected readonly productImageService_: ModulesSdkTypes.InternalModuleService<TProductImage>
+  // eslint-disable-next-line max-len
   protected readonly productTypeService_: ModulesSdkTypes.InternalModuleService<TProductType>
+  // eslint-disable-next-line max-len
   protected readonly productOptionService_: ModulesSdkTypes.InternalModuleService<TProductOption>
   // eslint-disable-next-line max-len
   protected readonly productOptionValueService_: ModulesSdkTypes.InternalModuleService<TProductOptionValue>
@@ -1367,6 +1370,15 @@ export default class ProductModuleService<
           }),
         }
       })
+    }
+
+    if (productData.category_ids) {
+      ;(productData as any).categories = productData.category_ids.map(
+        (cid) => ({
+          id: cid,
+        })
+      )
+      delete productData.category_ids
     }
 
     return productData

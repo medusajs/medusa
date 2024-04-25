@@ -1,3 +1,4 @@
+import { LinkWorkflowInput } from "../../common"
 import {
   CreateProductCategoryDTO,
   UpdateProductCategoryDTO,
@@ -14,3 +15,6 @@ export interface UpdateProductCategoryWorkflowInput {
   id: string
   data: UpdateProductCategoryDTO
 }
+
+export interface BatchUpdateProductsOnCategoryWorkflowInput
+  extends LinkWorkflowInput {}
