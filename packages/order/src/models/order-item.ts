@@ -22,16 +22,25 @@ type OptionalLineItemProps = DAL.EntityDateColumns
 const OrderIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_item",
   columns: ["order_id"],
+  where: "deleted_at IS NOT NULL",
 })
 
 const OrderVersionIndex = createPsqlIndexStatementHelper({
   tableName: "order_item",
   columns: ["version"],
+  where: "deleted_at IS NOT NULL",
 })
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_item",
   columns: ["item_id"],
+  where: "deleted_at IS NOT NULL",
+})
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
 })
 
 @Entity({ tableName: "order_item" })
@@ -133,11 +142,16 @@ export default class OrderItem {
   })
   updated_at: Date
 
+  @Property({ columnType: "timestamptz", nullable: true })
+  @DeletedAtIndex.MikroORMIndex()
+  deleted_at: Date | null = null
+
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "orditem")
     this.order_id ??= this.order?.id
     this.item_id ??= this.item?.id
+    this.version ??= this.order?.version
   }
 
   @OnInit()
@@ -145,5 +159,6 @@ export default class OrderItem {
     this.id = generateEntityId(this.id, "orditem")
     this.order_id ??= this.order?.id
     this.item_id ??= this.item?.id
+    this.version ??= this.order?.version
   }
 }
