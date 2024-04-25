@@ -45,7 +45,7 @@ export const addShippingMethodToWorkflow = createWorkflow(
 
     validateCartShippingOptionsStep({
       option_ids: optionIds,
-      context: cart,
+      cart,
     })
 
     const priceSets = getShippingOptionPriceSetsStep({

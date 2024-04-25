@@ -1408,7 +1408,8 @@ medusaIntegrationTestRunner({
           cart = await cartModuleService.create({
             currency_code: "usd",
             shipping_address: {
-              country_code: "de",
+              country_code: "us",
+              province: "ny",
             },
           })
 
@@ -1451,8 +1452,8 @@ medusaIntegrationTestRunner({
             rules: [
               {
                 operator: RuleOperator.EQ,
-                attribute: "shipping_address.country_code",
-                value: "de",
+                attribute: "shipping_address.province",
+                value: "ny",
               },
             ],
           })
@@ -1505,7 +1506,7 @@ medusaIntegrationTestRunner({
               {
                 operator: RuleOperator.EQ,
                 attribute: "shipping_address.city",
-                value: "fr",
+                value: "sf",
               },
             ],
           })
