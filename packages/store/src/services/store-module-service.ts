@@ -86,6 +86,7 @@ export default class StoreModuleService<TEntity extends Store = Store>
     let normalizedInput = StoreModuleService.normalizeInput(data)
     StoreModuleService.validateCreateRequest(normalizedInput)
 
+    console.log(data)
     return await this.storeService_.create(normalizedInput, sharedContext)
   }
 
