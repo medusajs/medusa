@@ -1,6 +1,6 @@
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
-export const useInventoryTableQuery = ({
+export const useReservationsTableQuery = ({
   pageSize = 20,
   prefix,
 }: {

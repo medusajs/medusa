@@ -190,6 +190,25 @@ medusaIntegrationTestRunner({
           })
         })
 
+        it("should update a reservation item description", async () => {
+          await breaking(null, async () => {
+            const reservationResponse = await api.post(
+              `/admin/reservations/${reservationId}`,
+              {
+                description: "test description 1",
+              },
+              adminHeaders
+            )
+
+            expect(reservationResponse.status).toEqual(200)
+            expect(reservationResponse.data.reservation).toEqual(
+              expect.objectContaining({
+                description: "test description 1",
+              })
+            )
+          })
+        })
+
         it("should update a reservation item", async () => {
           await breaking(null, async () => {
             const reservationResponse = await api.post(
