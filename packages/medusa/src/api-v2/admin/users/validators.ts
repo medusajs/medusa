@@ -13,6 +13,7 @@ export const AdminGetUsersParams = createFindParams({
   limit: 50,
 }).merge(
   z.object({
+    q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),

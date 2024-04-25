@@ -53,6 +53,10 @@ export interface UserDTO {
 export interface FilterableUserProps
   extends BaseFilterable<FilterableUserProps> {
   /**
+   * Find users by name or email through this search term
+   */
+  q?: string
+  /**
    * The IDs to filter users by.
    */
   id?: string | string[]
