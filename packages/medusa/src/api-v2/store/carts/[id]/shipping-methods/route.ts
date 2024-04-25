@@ -12,7 +12,7 @@ export const POST = async (
 
   const { errors } = await workflow.run({
     input: {
-      options: [payload],
+      options: [{ id: payload.option_id, data: payload.data }],
       cart_id: req.params.id,
     },
     throwOnError: false,

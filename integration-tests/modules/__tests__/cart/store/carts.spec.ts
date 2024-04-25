@@ -1168,7 +1168,7 @@ medusaIntegrationTestRunner({
 
           let response = await api.post(
             `/store/carts/${cart.id}/shipping-methods`,
-            { id: shippingOption.id }
+            { option_id: shippingOption.id }
           )
 
           expect(response.status).toEqual(200)

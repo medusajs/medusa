@@ -78,7 +78,7 @@ export type StoreAddCartShippingMethodsType = z.infer<
 >
 export const StoreAddCartShippingMethods = z
   .object({
-    id: z.string(),
+    option_id: z.string(),
     data: z.record(z.unknown()).optional(),
   })
   .strict()
