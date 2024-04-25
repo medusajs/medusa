@@ -162,6 +162,71 @@ medusaIntegrationTestRunner({
             },
           ])
         })
+
+        it("should support searching of price lists", async () => {
+          const priceSet = await createVariantPriceSet({
+            container: appContainer,
+            variantId: variant.id,
+            prices: [],
+          })
+
+          await pricingModule.createPriceLists([
+            {
+              title: "first price list",
+              description: "test price",
+              ends_at: new Date(),
+              starts_at: new Date(),
+              status: PriceListStatus.ACTIVE,
+              type: PriceListType.OVERRIDE,
+              prices: [
+                {
+                  amount: 5000,
+                  currency_code: "usd",
+                  price_set_id: priceSet.id,
+                  rules: {
+                    region_id: region.id,
+                  },
+                },
+              ],
+              rules: {
+                customer_group_id: [customerGroup.id],
+              },
+            },
+            {
+              title: "second price list",
+              description: "second test",
+              ends_at: new Date(),
+              starts_at: new Date(),
+              status: PriceListStatus.ACTIVE,
+              type: PriceListType.OVERRIDE,
+              prices: [
+                {
+                  amount: 5000,
+                  currency_code: "usd",
+                  price_set_id: priceSet.id,
+                  rules: {
+                    region_id: region.id,
+                  },
+                },
+              ],
+              rules: {
+                customer_group_id: [customerGroup.id],
+              },
+            },
+          ])
+
+          let response = await api.get(
+            `/admin/price-lists?q=second`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.price_lists).toEqual([
+            expect.objectContaining({
+              title: "second price list",
+            }),
+          ])
+        })
       })
 
       describe("GET /admin/price-lists/:id", () => {
