@@ -1,14 +1,15 @@
 import { Response } from "@medusajs/medusa-js"
 import { AdminStockLocationResponse } from "@medusajs/types"
-import { adminStockLocationsKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { medusa, queryClient } from "../../../lib/medusa"
+import { queryClient } from "../../../lib/medusa"
+import { stockLocationsQueryKeys } from "../../../hooks/api/stock-locations"
+import { client } from "../../../lib/client"
 
 const locationQuery = (id: string) => ({
-  queryKey: adminStockLocationsKeys.detail(id),
+  queryKey: stockLocationsQueryKeys.detail(id),
   queryFn: async () =>
-    medusa.admin.stockLocations.retrieve(id, {
+    client.stockLocations.retrieve(id, {
       fields:
         "name,address.city,address.country_code,fulfillment_sets.type,fulfillment_sets.name,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options,*fulfillment_sets.service_zones.shipping_options.shipping_profile",
     }),

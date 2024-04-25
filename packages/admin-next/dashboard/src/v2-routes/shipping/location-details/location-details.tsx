@@ -10,14 +10,14 @@ export const LocationDetails = () => {
     ReturnType<typeof locationLoader>
   >
 
-  const { id } = useParams()
+  const { location_id } = useParams()
   const {
     stock_location: location,
     isPending: isLoading,
     isError,
     error,
   } = useStockLocation(
-    id!,
+    location_id!,
     {
       fields:
         "name,*address,*fulfillment_sets,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options,*fulfillment_sets.service_zones.shipping_options.shipping_profile",

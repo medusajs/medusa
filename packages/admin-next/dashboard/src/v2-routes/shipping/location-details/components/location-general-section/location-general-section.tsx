@@ -34,6 +34,7 @@ import {
 import { useDeleteShippingOption } from "../../../../../hooks/api/shipping-options"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { useState } from "react"
+import { NoRecords } from "../../../../../components/common/empty-table-content"
 
 type LocationGeneralSectionProps = {
   location: StockLocationDTO
@@ -300,13 +301,14 @@ function FulfillmentSet(props: FulfillmentSetProps) {
     useCreateFulfillmentSet(locationId)
 
   const { mutateAsync: deleteFulfillmentSet } = useDeleteFulfillmentSet(
-    fulfillmentSet?.id
+    fulfillmentSet?.id,
+    locationId
   )
 
   const handleCreate = async () => {
     await createFulfillmentSet({
       name: `${locationName} ${type}`,
-      type: type,
+      type: type === FulfillmentSetType.Pickup ? "pick up" : type,
     })
   }
 
@@ -315,9 +317,9 @@ function FulfillmentSet(props: FulfillmentSetProps) {
   }
 
   return (
-    <Container className="px-6 py-4">
+    <Container className="p-0">
       <div className="flex flex-col divide-y">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between px-6 py-4">
           <Text size="large" weight="plus" className="flex-1" as="div">
             {t(`shipping.fulfillmentSet.${type}.offers`)}
           </Text>
@@ -349,13 +351,17 @@ function FulfillmentSet(props: FulfillmentSetProps) {
         </div>
 
         {fulfillmentSetExists && !hasServiceZones && (
-          <div className="text-ui-fg-muted txt-medium flex h-[120px] flex-col items-center justify-center gap-y-4">
-            <div>{t("shipping.fulfillmentSet.placeholder")}</div>
+          <div className="text-ui-fg-muted txt-medium flex flex-col items-center justify-center gap-y-4 py-8">
+            <NoRecords
+              message={t("shipping.fulfillmentSet.placeholder")}
+              className="h-fit"
+            />
+
             <Button
               variant="secondary"
               onClick={() =>
                 navigate(
-                  `/settings/shipping/location/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`
+                  `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`
                 )
               }
             >

@@ -165,6 +165,7 @@ export const useCreateServiceZone = (
 
 export const useDeleteFulfillmentSet = (
   setId: string,
+  locationId: string,
   options?: UseMutationOptions<FulfillmentSetDeleteRes, Error, void>
 ) => {
   return useMutation({
@@ -172,6 +173,9 @@ export const useDeleteFulfillmentSet = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.detail(locationId),
       })
 
       options?.onSuccess?.(data, variables, context)

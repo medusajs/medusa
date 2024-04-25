@@ -7,10 +7,19 @@ import {
 } from "@tanstack/react-table"
 import * as zod from "zod"
 
-import { Alert, Button, Checkbox, Heading, Input, Text } from "@medusajs/ui"
+import {
+  Alert,
+  Badge,
+  Button,
+  Checkbox,
+  Heading,
+  IconButton,
+  Input,
+  Text,
+} from "@medusajs/ui"
 import { FulfillmentSetDTO, RegionCountryDTO, RegionDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
-import { Map } from "@medusajs/icons"
+import { Map, XMark, XMarkMini } from "@medusajs/icons"
 
 import {
   RouteFocusModal,
@@ -26,7 +35,6 @@ import { countries as staticCountries } from "../../../../../lib/countries"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useCountryTableColumns } from "../../../../regions/common/hooks/use-country-table-columns"
 import { DataTable } from "../../../../../components/table/data-table"
-import { ListSummary } from "../../../../../components/common/list-summary"
 
 const PREFIX = "ac"
 const PAGE_SIZE = 50
@@ -87,7 +95,7 @@ export function CreateServiceZoneForm({
       })),
     })
 
-    handleSuccess("/shipping")
+    handleSuccess()
   })
 
   const handleOpenChange = (open: boolean) => {
@@ -129,12 +137,28 @@ export function CreateServiceZoneForm({
     prefix: PREFIX,
   })
 
+  const countriesWatch = form.watch("countries")
+
   const onCountriesSave = () => {
     form.setValue("countries", Object.keys(rowSelection))
     setOpen(false)
   }
 
-  const countriesWatch = form.watch("countries")
+  const removeCountry = (iso2: string) => {
+    const state = { ...rowSelection }
+    delete state[iso2]
+    setRowSelection(state)
+
+    form.setValue(
+      "countries",
+      countriesWatch.filter((c) => c !== iso2)
+    )
+  }
+
+  const clearAll = () => {
+    setRowSelection({})
+    form.setValue("countries", [])
+  }
 
   const selectedCountries = useMemo(() => {
     return staticCountries.filter((c) => c.iso_2 in rowSelection)
@@ -184,15 +208,6 @@ export function CreateServiceZoneForm({
                   })}
                 </Heading>
 
-                <div>
-                  <Text weight="plus">
-                    {t("shipping.serviceZone.create.subtitle")}
-                  </Text>
-                  <Text className="text-ui-fg-subtle mb-8 mt-2">
-                    {t("shipping.serviceZone.create.description")}
-                  </Text>
-                </div>
-
                 <div className="flex max-w-[340px] flex-col gap-y-6">
                   <Form.Field
                     control={form.control}
@@ -204,7 +219,7 @@ export function CreateServiceZoneForm({
                             {t("shipping.serviceZone.create.zoneName")}
                           </Form.Label>
                           <Form.Control>
-                            <Input {...field} />
+                            <Input placeholder={t("fields.name")} {...field} />
                           </Form.Control>
                           <Form.ErrorMessage />
                         </Form.Item>
@@ -214,8 +229,17 @@ export function CreateServiceZoneForm({
                 </div>
               </div>
 
+              <Alert>
+                <Text weight="plus">
+                  {t("shipping.serviceZone.create.subtitle")}
+                </Text>
+                <Text className="text-ui-fg-subtle mt-2">
+                  {t("shipping.serviceZone.create.description")}
+                </Text>
+              </Alert>
+
               {/*AREAS*/}
-              <div className="container flex items-center justify-between py-8">
+              <div className="container flex items-center justify-between py-8 pr-1">
                 <div>
                   <Text weight="plus">
                     {t("shipping.serviceZone.areas.title")}
@@ -234,15 +258,30 @@ export function CreateServiceZoneForm({
               </div>
               {!!selectedCountries.length && (
                 <div className="flex items-center gap-4">
-                  <div className="grow-0 rounded-lg border">
-                    <div className="bg-ui-bg-field m-1 rounded-md p-2">
-                      <Map className="text-ui-fg-subtle" />
-                    </div>
-                  </div>
-                  <ListSummary
-                    inline
-                    list={selectedCountries.map((c) => c.display_name)}
-                  />
+                  {selectedCountries.map((c) => (
+                    <Badge
+                      key={c.iso_2}
+                      className="text-ui-fg-subtle txt-small flex items-center gap-1 divide-x pr-0"
+                    >
+                      {c.display_name}
+                      <IconButton
+                        type="button"
+                        onClick={() => removeCountry(c.iso_2)}
+                        className="text-ui-fg-subtle p-0 px-1 pt-[1px]"
+                        variant="transparent"
+                      >
+                        <XMarkMini />
+                      </IconButton>
+                    </Badge>
+                  ))}
+                  <Button
+                    type="button"
+                    onClick={clearAll}
+                    variant="transparent"
+                    className="txt-small text-ui-fg-muted font-medium"
+                  >
+                    {t("actions.clearAll")}
+                  </Button>
                 </div>
               )}
               {showAreasError && (
