@@ -6,6 +6,7 @@ import {
   CreatePricesDTO,
   CreatePriceSetDTO,
   DAL,
+  FindConfig,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
@@ -152,6 +153,104 @@ export default class PricingModuleService<
     return joinerConfig
   }
 
+  private setupCalculatedPriceConfig_(
+    filters,
+    config
+  ): PricingContext["context"] | undefined {
+    const fieldIdx = config.relations?.indexOf("calculated_price")
+    const shouldCalculatePrice = fieldIdx > -1
+    if (!shouldCalculatePrice) {
+      return
+    }
+
+    let pricingContext = filters.context ?? {}
+
+    // cleanup virtual field "calculated_price"
+    config.relations?.splice(fieldIdx, 1)
+    if (filters) {
+      delete filters.context
+    }
+
+    return pricingContext
+  }
+
+  @InjectManager("baseRepository_")
+  async retrieve(
+    priceSetId: string,
+    config: FindConfig<PricingTypes.PriceSetDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PriceSetDTO> {
+    const pricingContext = this.setupCalculatedPriceConfig_(undefined, config)
+
+    const priceSet = await super.retrieve(priceSetId, config, sharedContext)
+
+    if (pricingContext) {
+      const calculatedPrices = await this.calculatePrices(
+        { id: [priceSet.id] },
+        { context: pricingContext },
+        sharedContext
+      )
+
+      priceSet.calculated_price = calculatedPrices[0]
+    }
+
+    return priceSet
+  }
+
+  @InjectManager("baseRepository_")
+  async list(
+    filters: PricingTypes.FilterablePriceSetProps = {},
+    config: FindConfig<PricingTypes.PriceSetDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PriceSetDTO[]> {
+    const pricingContext = this.setupCalculatedPriceConfig_(filters, config)
+
+    const priceSets = await super.list(filters, config, sharedContext)
+
+    if (pricingContext && priceSets.length) {
+      const calculatedPrices = await this.calculatePrices(
+        { id: priceSets.map((p) => p.id) },
+        { context: pricingContext },
+        sharedContext
+      )
+
+      for (let idx = 0; idx < priceSets.length; idx++) {
+        priceSets[idx].calculated_price = calculatedPrices[idx]
+      }
+    }
+
+    return priceSets
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCount(
+    filters: PricingTypes.FilterablePriceSetProps = {},
+    config: FindConfig<PricingTypes.PriceSetDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[PriceSetDTO[], number]> {
+    const pricingContext = this.setupCalculatedPriceConfig_(filters, config)
+
+    const [priceSets, count] = await super.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    if (pricingContext && priceSets.length) {
+      const calculatedPrices = await this.calculatePrices(
+        { id: priceSets.map((p) => p.id) },
+        { context: pricingContext },
+        sharedContext
+      )
+
+      for (let idx = 0; idx < priceSets.length; idx++) {
+        priceSets[idx].calculated_price = calculatedPrices[idx]
+      }
+    }
+
+    return [priceSets, count]
+  }
+
   @InjectManager("baseRepository_")
   async calculatePrices(
     pricingFilters: PricingFilters,
@@ -171,7 +270,9 @@ export default class PricingModuleService<
         (priceSetId: string): PricingTypes.CalculatedPriceSet => {
           // This is where we select prices, for now we just do a first match based on the database results
           // which is prioritized by rules_count first for exact match and then deafult_priority of the rule_type
-          // inject custom price selection here
+
+          // TODO: inject custom price selection here
+
           const prices = pricesSetPricesMap.get(priceSetId) || []
           const priceListPrice = prices.find((p) => p.price_list_id)
 
@@ -749,7 +850,7 @@ export default class PricingModuleService<
 
           return {
             ...rest,
-            title: "test", // TODO: accept title
+            title: "", // TODO: accept title
             rules_count: numberOfRules,
             price_rules: Array.from(rulesDataMap.values()),
           }

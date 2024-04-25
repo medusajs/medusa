@@ -58,6 +58,12 @@ export interface PriceSetDTO {
    * The prices that belong to this price set.
    */
   prices?: MoneyAmountDTO[]
+
+  /**
+   * The calculated price based on the context.
+   */
+  calculated_price?: CalculatedPriceSet
+
   /**
    * The rule types applied on this price set.
    */
@@ -321,7 +327,8 @@ export interface UpdatePriceSetDTO {
  * Filters to apply on price sets.
  */
 export interface FilterablePriceSetProps
-  extends BaseFilterable<FilterablePriceSetProps> {
+  extends BaseFilterable<FilterablePriceSetProps>,
+    PricingContext {
   /**
    * IDs to filter price sets by.
    */
