@@ -82,6 +82,7 @@ export const AdminCustomerAdressesParams = createFindParams({
   limit: 50,
 }).merge(
   z.object({
+    q: z.string().optional(),
     address_name: z.union([z.string(), z.array(z.string())]).optional(),
     is_default_shipping: z.boolean().optional(),
     is_default_billing: z.boolean().optional(),
