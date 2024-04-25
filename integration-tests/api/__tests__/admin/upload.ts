@@ -42,7 +42,7 @@ medusaIntegrationTestRunner({
       await createAdminUser(dbConnection, adminHeaders, appContainer)
     })
 
-    describe("POST /admin/uploads with", () => {
+    describe("POST /admin/uploads", () => {
       beforeEach(async () => {})
 
       it("uploads a single file successfully", async () => {
