@@ -635,16 +635,15 @@ export const v2Routes: RouteObject[] = [
                       import("../../v2-routes/shipping/location-edit"),
                   },
                   {
+                    path: "sales-channels/edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/shipping/location-add-sales-channels"
+                      ),
+                  },
+                  {
                     path: "fulfillment-set/:fset_id",
                     children: [
-                      // TODO
-                      // {
-                      //   path: "add-sales-channels",
-                      //   lazy: () =>
-                      //     import(
-                      //       "../../v2-routes/location/location-add-sales-channels"
-                      //       ),
-                      // },
                       {
                         path: "service-zones/create",
                         lazy: () =>

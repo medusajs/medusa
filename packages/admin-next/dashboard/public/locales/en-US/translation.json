@@ -682,6 +682,11 @@
         "calculatedDescription": "Shipping option's price is calculated by the fulfillment provider.",
         "profile": "Shipping profile"
       }
+    },
+    "salesChannels": {
+      "title": "Connected Sales Channels",
+      "placeholder": "No connected channels yet.",
+      "connectChannels": "Connect Channels"
     }
   },
   "shippingProfile": {

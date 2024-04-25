@@ -3,6 +3,7 @@ import { Outlet, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { LocationGeneralSection } from "./components/location-general-section"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
+import LocationsSalesChannelsSection from "./components/location-sales-channels-section/locations-sales-channels-section"
 import { locationLoader } from "./loader"
 
 export const LocationDetails = () => {
@@ -41,12 +42,12 @@ export const LocationDetails = () => {
       <div className="flex w-full flex-col gap-y-2">
         <LocationGeneralSection location={location} />
         <div className="flex w-full flex-col gap-y-2 xl:hidden">
-          // SC SECTION
+          <LocationsSalesChannelsSection location={location} />
         </div>
         <JsonViewSection data={location} />
       </div>
       <div className="hidden w-full max-w-[400px] flex-col gap-y-2 xl:flex">
-        SC SECTION
+        <LocationsSalesChannelsSection location={location} />
       </div>
       <Outlet />
     </div>

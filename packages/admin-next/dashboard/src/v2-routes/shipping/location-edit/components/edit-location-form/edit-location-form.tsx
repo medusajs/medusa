@@ -75,7 +75,7 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
         className="flex flex-1 flex-col overflow-hidden"
       >
         <RouteDrawer.Body className="flex flex-col gap-y-8 overflow-y-auto">
-          <div>
+          <div className="grid grid-cols-1 gap-4">
             <Form.Field
               control={form.control}
               name="name"
@@ -91,8 +91,6 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
                 )
               }}
             />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
             <Form.Field
               control={form.control}
               name="address.address_1"
