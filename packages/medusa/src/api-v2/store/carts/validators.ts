@@ -72,3 +72,13 @@ export const StoreUpdateCartLineItem = z.object({
   quantity: z.number(),
   metadata: z.record(z.unknown()).optional(),
 })
+
+export type StoreAddCartShippingMethodsType = z.infer<
+  typeof StoreAddCartShippingMethods
+>
+export const StoreAddCartShippingMethods = z
+  .object({
+    id: z.string(),
+    data: z.record(z.unknown()).optional(),
+  })
+  .strict()

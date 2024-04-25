@@ -20,5 +20,5 @@ export * from "./retrieve-cart-with-links"
 export * from "./set-tax-lines-for-items"
 export * from "./update-cart-promotions"
 export * from "./update-carts"
+export * from "./validate-cart-shipping-options"
 export * from "./validate-variants-existence"
-

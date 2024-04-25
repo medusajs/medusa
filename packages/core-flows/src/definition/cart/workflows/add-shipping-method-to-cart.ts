@@ -4,14 +4,16 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
-import { addShippingMethodToCartStep } from "../steps"
+import {
+  addShippingMethodToCartStep,
+  validateCartShippingOptionsStep,
+} from "../steps"
 import { getShippingOptionPriceSetsStep } from "../steps/get-shipping-option-price-sets"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
 
 interface AddShippingMethodToCartWorkflowInput {
   cart_id: string
-  currency_code: string
   options: {
     id: string
     data?: Record<string, unknown>
@@ -24,22 +26,38 @@ export const addShippingMethodToWorkflow = createWorkflow(
   (
     input: WorkflowData<AddShippingMethodToCartWorkflowInput>
   ): WorkflowData<void> => {
+    const cart = useRemoteQueryStep({
+      entry_point: "cart",
+      fields: [
+        "region_id",
+        "currency_code",
+        "items.*",
+        "shipping_address.*",
+        "shipping_methods.*",
+      ],
+      variables: { id: input.cart_id },
+      list: false,
+    })
+
     const optionIds = transform({ input }, (data) => {
       return (data.input.options ?? []).map((i) => i.id)
     })
 
+    validateCartShippingOptionsStep({
+      option_ids: optionIds,
+      context: cart,
+    })
+
     const priceSets = getShippingOptionPriceSetsStep({
       optionIds: optionIds,
-      context: { currency_code: input.currency_code },
+      context: { currency_code: cart.currency_code },
     })
 
     const shippingOptions = useRemoteQueryStep({
       entry_point: "shipping_option",
       fields: ["id", "name"],
-      variables: {
-        id: optionIds,
-      },
-    })
+      variables: { id: optionIds },
+    }).config({ name: "shipping-options" })
 
     const shippingMethodInput = transform(
       { priceSets, input, shippingOptions },

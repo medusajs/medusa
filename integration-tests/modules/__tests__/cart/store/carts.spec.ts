@@ -7,6 +7,7 @@ import {
 import {
   ICartModuleService,
   ICustomerModuleService,
+  IFulfillmentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IPromotionModuleService,
@@ -14,7 +15,11 @@ import {
   ISalesChannelModuleService,
   ITaxModuleService,
 } from "@medusajs/types"
-import { PromotionRuleOperator, PromotionType } from "@medusajs/utils"
+import {
+  PromotionRuleOperator,
+  PromotionType,
+  RuleOperator,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
@@ -38,6 +43,7 @@ medusaIntegrationTestRunner({
       let remoteLink: RemoteLink
       let promotionModule: IPromotionModuleService
       let taxModule: ITaxModuleService
+      let fulfillmentModule: IFulfillmentModuleService
 
       let defaultRegion
 
@@ -52,6 +58,9 @@ medusaIntegrationTestRunner({
         remoteLink = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
         promotionModule = appContainer.resolve(ModuleRegistrationName.PROMOTION)
         taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
+        fulfillmentModule = appContainer.resolve(
+          ModuleRegistrationName.FULFILLMENT
+        )
       })
 
       beforeEach(async () => {
@@ -1098,6 +1107,85 @@ medusaIntegrationTestRunner({
             type: "invalid_data",
             message: "country code is required to calculate taxes",
           })
+        })
+      })
+
+      describe("POST /store/carts/:id/shipping-methods", () => {
+        it("should add a shipping methods to a cart", async () => {
+          const cart = await cartModule.create({
+            currency_code: "usd",
+            shipping_address: { country_code: "us" },
+            items: [],
+          })
+
+          const shippingProfile =
+            await fulfillmentModule.createShippingProfiles({
+              name: "Test",
+              type: "default",
+            })
+
+          const fulfillmentSet = await fulfillmentModule.create({
+            name: "Test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "Test",
+                geo_zones: [{ type: "country", country_code: "us" }],
+              },
+            ],
+          })
+
+          const priceSet = await pricingModule.create({
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+
+          const shippingOption = await fulfillmentModule.createShippingOptions({
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            rules: [
+              {
+                operator: RuleOperator.EQ,
+                attribute: "shipping_address.country_code",
+                value: "us",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.FULFILLMENT]: { shipping_option_id: shippingOption.id },
+              [Modules.PRICING]: { price_set_id: priceSet.id },
+            },
+          ])
+
+          let response = await api.post(
+            `/store/carts/${cart.id}/shipping-methods`,
+            { id: shippingOption.id }
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              shipping_methods: [
+                {
+                  shipping_option_id: shippingOption.id,
+                  amount: 3000,
+                  id: expect.any(String),
+                  tax_lines: [],
+                  adjustments: [],
+                },
+              ],
+            })
+          )
         })
       })
     })

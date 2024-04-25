@@ -26,7 +26,7 @@ import {
   ISalesChannelModuleService,
   IStockLocationServiceNext,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, RuleOperator } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
@@ -1397,34 +1397,46 @@ medusaIntegrationTestRunner({
           })
         })
       })
+
       describe("AddShippingMethodToCartWorkflow", () => {
-        it("should add shipping method to cart", async () => {
-          let cart = await cartModuleService.create({
+        let cart
+        let shippingProfile
+        let fulfillmentSet
+        let priceSet
+
+        beforeEach(async () => {
+          cart = await cartModuleService.create({
             currency_code: "usd",
+            shipping_address: {
+              country_code: "de",
+            },
           })
 
-          const shippingProfile =
-            await fulfillmentModule.createShippingProfiles({
-              name: "Test",
-              type: "default",
-            })
+          shippingProfile = await fulfillmentModule.createShippingProfiles({
+            name: "Test",
+            type: "default",
+          })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          // TODO: Setting up the geozones here as US, but testing with european countries
+          // in the tests doesn't throw an validations in the module. The context needs to have
+          // some required attributes to test against service zones
+          fulfillmentSet = await fulfillmentModule.create({
             name: "Test",
             type: "test-type",
             service_zones: [
               {
                 name: "Test",
-                geo_zones: [
-                  {
-                    type: "country",
-                    country_code: "us",
-                  },
-                ],
+                geo_zones: [{ type: "country", country_code: "us" }],
               },
             ],
           })
 
+          priceSet = await pricingModule.create({
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+        })
+
+        it("should add shipping method to cart", async () => {
           const shippingOption = await fulfillmentModule.createShippingOptions({
             name: "Test shipping option",
             service_zone_id: fulfillmentSet.service_zones[0].id,
@@ -1436,41 +1448,26 @@ medusaIntegrationTestRunner({
               description: "Test description",
               code: "test-code",
             },
-          })
-
-          const priceSet = await pricingModule.create({
-            prices: [
+            rules: [
               {
-                amount: 3000,
-                currency_code: "usd",
+                operator: RuleOperator.EQ,
+                attribute: "shipping_address.country_code",
+                value: "de",
               },
             ],
           })
 
           await remoteLink.create([
             {
-              [Modules.FULFILLMENT]: {
-                shipping_option_id: shippingOption.id,
-              },
-              [Modules.PRICING]: {
-                price_set_id: priceSet.id,
-              },
+              [Modules.FULFILLMENT]: { shipping_option_id: shippingOption.id },
+              [Modules.PRICING]: { price_set_id: priceSet.id },
             },
           ])
 
-          cart = await cartModuleService.retrieve(cart.id, {
-            select: ["id", "region_id", "currency_code"],
-          })
-
           await addShippingMethodToWorkflow(appContainer).run({
             input: {
-              options: [
-                {
-                  id: shippingOption.id,
-                },
-              ],
+              options: [{ id: shippingOption.id }],
               cart_id: cart.id,
-              currency_code: cart.currency_code,
             },
           })
 
@@ -1490,6 +1487,78 @@ medusaIntegrationTestRunner({
               ]),
             })
           )
+        })
+
+        it("should throw error when shipping option is not valid", async () => {
+          const shippingOption = await fulfillmentModule.createShippingOptions({
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            rules: [
+              {
+                operator: RuleOperator.EQ,
+                attribute: "shipping_address.city",
+                value: "fr",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.FULFILLMENT]: { shipping_option_id: shippingOption.id },
+              [Modules.PRICING]: { price_set_id: priceSet.id },
+            },
+          ])
+
+          const { errors } = await addShippingMethodToWorkflow(
+            appContainer
+          ).run({
+            input: {
+              options: [{ id: shippingOption.id }],
+              cart_id: cart.id,
+            },
+            throwOnError: false,
+          })
+
+          // Rules are setup only for Germany, this should throw an error
+          expect(errors).toEqual([
+            expect.objectContaining({
+              error: expect.objectContaining({
+                message:
+                  "Shipping Options (Test shipping option) are invalid for cart. Add a valid shipping option or remove existing invalid shipping options before continuing.",
+                type: "invalid_data",
+              }),
+            }),
+          ])
+        })
+
+        it("should throw error when shipping option is not present in the db", async () => {
+          const { errors } = await addShippingMethodToWorkflow(
+            appContainer
+          ).run({
+            input: {
+              options: [{ id: "does-not-exist" }],
+              cart_id: cart.id,
+            },
+            throwOnError: false,
+          })
+
+          // Rules are setup only for Berlin, this should throw an error
+          expect(errors).toEqual([
+            expect.objectContaining({
+              error: expect.objectContaining({
+                message: "Shipping Options (does-not-exist) not found",
+                type: "invalid_data",
+              }),
+            }),
+          ])
         })
       })
 
