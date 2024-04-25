@@ -257,7 +257,7 @@ export function CreateServiceZoneForm({
                 </Button>
               </div>
               {!!selectedCountries.length && (
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap items-center gap-4">
                   {selectedCountries.map((c) => (
                     <Badge
                       key={c.iso_2}

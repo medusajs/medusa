@@ -8,6 +8,7 @@ import {
 } from "@medusajs/types"
 import {
   ChevronDown,
+  ChevronDownMini,
   CurrencyDollar,
   Map,
   PencilSquare,
@@ -25,6 +26,7 @@ import {
 } from "@medusajs/ui"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { countries as staticCountries } from "../../../../../lib/countries"
 import {
   useCreateFulfillmentSet,
   useDeleteFulfillmentSet,
@@ -33,8 +35,9 @@ import {
 } from "../../../../../hooks/api/stock-locations"
 import { useDeleteShippingOption } from "../../../../../hooks/api/shipping-options"
 import { formatProvider } from "../../../../../lib/format-provider"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
+import { ListSummary } from "../../../../../components/common/list-summary"
 
 type LocationGeneralSectionProps = {
   location: StockLocationDTO
@@ -208,8 +211,15 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
     await deleteZone()
   }
 
+  const countries = useMemo(() => {
+    return zone.geo_zones
+      .filter((g) => g.type === "country")
+      .map((g) => g.country_code)
+      .map((code) => staticCountries.find((c) => c.iso_2 === code))
+  }, zone.geo_zones)
+
   return (
-    <>
+    <div className=" px-6 py-4">
       <div className="flex flex-row items-center justify-between gap-x-4">
         {/*ICON*/}
         <div className="grow-0 rounded-lg border">
@@ -221,16 +231,40 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
         {/*INFO*/}
         <div className="grow-1 flex flex-1 flex-col">
           <Text weight="plus">{zone.name}</Text>
-          <Text className="text-ui-fg-subtle txt-small">
-            {zone.shipping_options.length}{" "}
-            {t("shipping.serviceZone.optionsLength", {
-              count: zone.shipping_options.length,
-            })}
-          </Text>
+          <div className="flex items-center gap-2">
+            <ListSummary
+              list={countries.map((c) => c.display_name)}
+              inline
+              n={1}
+            />
+            <span>·</span>
+            <Text className="text-ui-fg-subtle txt-small">
+              {zone.shipping_options.length}{" "}
+              {t("shipping.serviceZone.optionsLength", {
+                count: zone.shipping_options.length,
+              })}
+            </Text>
+          </div>
         </div>
 
         {/*ACTION*/}
-        <div className="itemx-center -m-2 flex grow-0 gap-2">
+        <div className="itemx-center flex grow-0 gap-1">
+          <Button
+            onClick={() => setOpen((s) => !s)}
+            className="flex items-center justify-center"
+            variant="transparent"
+            style={{
+              transform: `translateY(${!open ? -4 : -2}px)`,
+              transition: ".1s transform ease-in-out",
+            }}
+          >
+            <ChevronDownMini
+              style={{
+                transform: `rotate(${!open ? 0 : 180}deg)`,
+                transition: ".2s transform ease-in-out",
+              }}
+            />
+          </Button>
           <ActionMenu
             groups={[
               {
@@ -238,7 +272,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
                   {
                     label: t("shipping.serviceZone.addShippingOptions"),
                     icon: <Plus />,
-                    to: `/shipping/location/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`,
+                    to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`,
                   },
                   {
                     label: t("actions.delete"),
@@ -249,18 +283,6 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
               },
             ]}
           />
-          <Button
-            onClick={() => setOpen((s) => !s)}
-            className="flex items-center justify-center"
-            variant="transparent"
-          >
-            <ChevronDown
-              style={{
-                transform: `rotate(${!open ? 0 : 180}deg)`,
-                transition: ".2s transform ease-in-out",
-              }}
-            />
-          </Button>
         </div>
       </div>
       {open && (
@@ -272,7 +294,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
           />
         </div>
       )}
-    </>
+    </div>
   )
 }
 
@@ -335,6 +357,15 @@ function FulfillmentSet(props: FulfillmentSetProps) {
                 {
                   actions: [
                     {
+                      icon: <Plus />,
+                      label: t("shipping.fulfillmentSet.addZone"),
+                      onClick: () =>
+                        navigate(
+                          `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`
+                        ),
+                      disabled: !fulfillmentSetExists,
+                    },
+                    {
                       icon: <PencilSquare />,
                       label: fulfillmentSetExists
                         ? t("actions.disable")
@@ -370,18 +401,18 @@ function FulfillmentSet(props: FulfillmentSetProps) {
           </div>
         )}
 
-        {/*{hasServiceZones && (*/}
-        {/*  <div className="mt-4 flex flex-col gap-6">*/}
-        {/*    {fulfillmentSet?.service_zones.map((zone) => (*/}
-        {/*      <ServiceZone*/}
-        {/*        key={zone.id}*/}
-        {/*        zone={zone}*/}
-        {/*        locationId={locationId}*/}
-        {/*        fulfillmentSetId={fulfillmentSet.id}*/}
-        {/*      />*/}
-        {/*    ))}*/}
-        {/*  </div>*/}
-        {/*)}*/}
+        {hasServiceZones && (
+          <div className="flex flex-col divide-y">
+            {fulfillmentSet?.service_zones.map((zone) => (
+              <ServiceZone
+                zone={zone}
+                key={zone.id}
+                locationId={locationId}
+                fulfillmentSetId={fulfillmentSet.id}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </Container>
   )
