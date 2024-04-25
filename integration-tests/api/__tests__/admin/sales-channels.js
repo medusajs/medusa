@@ -157,40 +157,30 @@ medusaIntegrationTestRunner({
       })
 
       it("should list the sales channel using filters", async () => {
-        const response = await breaking(
-          async () => {
-            return await api.get(`/admin/sales-channels?q=2`, adminReqConfig)
-          },
-          () => undefined
+        const response = await api.get(
+          `/admin/sales-channels?q=2`,
+          adminReqConfig
         )
 
-        breaking(
-          () => {
-            expect(response.status).toEqual(200)
-            expect(response.data.sales_channels).toBeTruthy()
-            expect(response.data.sales_channels.length).toBe(1)
-            expect(response.data).toEqual({
-              count: 1,
-              limit: 20,
-              offset: 0,
-              sales_channels: expect.arrayContaining([
-                expect.objectContaining({
-                  id: expect.any(String),
-                  name: salesChannel2.name,
-                  description: salesChannel2.description,
-                  is_disabled: false,
-                  deleted_at: null,
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                }),
-              ]),
-            })
-          },
-          () => {
-            // TODO: Free text search is not supported in the new sales channel API (yet)
-            expect(response).toBeUndefined()
-          }
-        )
+        expect(response.status).toEqual(200)
+        expect(response.data.sales_channels).toBeTruthy()
+        expect(response.data.sales_channels.length).toBe(1)
+        expect(response.data).toEqual({
+          count: 1,
+          limit: 20,
+          offset: 0,
+          sales_channels: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              name: salesChannel2.name,
+              description: salesChannel2.description,
+              is_disabled: false,
+              deleted_at: null,
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            }),
+          ]),
+        })
       })
 
       it("should list the sales channel using properties filters", async () => {
