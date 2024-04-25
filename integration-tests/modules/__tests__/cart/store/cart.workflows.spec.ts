@@ -1418,9 +1418,6 @@ medusaIntegrationTestRunner({
             type: "default",
           })
 
-          // TODO: Setting up the geozones here as US, but testing with european countries
-          // in the tests doesn't throw an validations in the module. The context needs to have
-          // some required attributes to test against service zones
           fulfillmentSet = await fulfillmentModule.create({
             name: "Test",
             type: "test-type",
