@@ -167,34 +167,9 @@ export default class PricingModuleService<
 
     // cleanup virtual field "calculated_price"
     config.relations?.splice(fieldIdx, 1)
-    if (filters) {
-      delete filters.context
-    }
+    delete filters.context
 
     return pricingContext
-  }
-
-  @InjectManager("baseRepository_")
-  async retrieve(
-    priceSetId: string,
-    config: FindConfig<PricingTypes.PriceSetDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PriceSetDTO> {
-    const pricingContext = this.setupCalculatedPriceConfig_(undefined, config)
-
-    const priceSet = await super.retrieve(priceSetId, config, sharedContext)
-
-    if (pricingContext) {
-      const calculatedPrices = await this.calculatePrices(
-        { id: [priceSet.id] },
-        { context: pricingContext },
-        sharedContext
-      )
-
-      priceSet.calculated_price = calculatedPrices[0]
-    }
-
-    return priceSet
   }
 
   @InjectManager("baseRepository_")
