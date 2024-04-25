@@ -219,6 +219,37 @@ medusaIntegrationTestRunner({
           ]),
         })
       })
+
+      it("should support searching of sales channels", async () => {
+        await breaking(
+          () => {},
+          async () => {
+            await api.post(
+              "/admin/sales-channels",
+              { name: "first channel", description: "to fetch" },
+              adminReqConfig
+            )
+
+            await api.post(
+              "/admin/sales-channels",
+              { name: "second channel", description: "not in response" },
+              adminReqConfig
+            )
+
+            const response = await api.get(
+              `/admin/sales-channels?q=fetch`,
+              adminReqConfig
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.sales_channels).toEqual([
+              expect.objectContaining({
+                name: "first channel",
+              }),
+            ])
+          }
+        )
+      })
     })
 
     describe("POST /admin/sales-channels/:id", () => {
