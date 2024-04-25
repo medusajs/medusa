@@ -85,6 +85,43 @@ medusaIntegrationTestRunner({
         expect(listedApiKeys.data.api_keys).toHaveLength(0)
       })
 
+      it("should allow searching for api keys", async () => {
+        await api.post(
+          `/admin/api-keys`,
+          {
+            title: "Test Secret Key",
+            type: ApiKeyType.SECRET,
+          },
+          adminHeaders
+        )
+        await api.post(
+          `/admin/api-keys`,
+          {
+            title: "Test Publishable Key",
+            type: ApiKeyType.PUBLISHABLE,
+          },
+          adminHeaders
+        )
+
+        const listedSecretKeys = await api.get(
+          `/admin/api-keys?q=Secret`,
+          adminHeaders
+        )
+        const listedPublishableKeys = await api.get(
+          `/admin/api-keys?q=Publish`,
+          adminHeaders
+        )
+
+        expect(listedSecretKeys.data.api_keys).toHaveLength(1)
+        expect(listedSecretKeys.data.api_keys[0].title).toEqual(
+          "Test Secret Key"
+        )
+        expect(listedPublishableKeys.data.api_keys).toHaveLength(1)
+        expect(listedPublishableKeys.data.api_keys[0].title).toEqual(
+          "Test Publishable Key"
+        )
+      })
+
       it("can use a secret api key for authentication", async () => {
         const created = await api.post(
           `/admin/api-keys`,
