@@ -147,7 +147,7 @@ export const addToCartWorkflow = createWorkflow(
       fields: cartFields,
       variables: { id: input.cart.id },
       list: false,
-    })
+    }).config({ name: "refetch–cart" })
 
     refreshCartShippingMethodsStep({ cart })
     updateTaxLinesStep({ cart_or_cart_id: cart, items })
