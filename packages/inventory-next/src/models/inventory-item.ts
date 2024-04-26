@@ -70,9 +70,11 @@ export class InventoryItem {
   @Property({ columnType: "text", nullable: true })
   origin_country: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   hs_code: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   mid_code: string | null = null
 

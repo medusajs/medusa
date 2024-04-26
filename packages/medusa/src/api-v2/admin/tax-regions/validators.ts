@@ -18,8 +18,8 @@ export const AdminGetTaxRegionsParams = createFindParams({
   offset: 0,
 }).merge(
   z.object({
-    id: z.union([z.string(), z.array(z.string())]).optional(),
     q: z.string().optional(),
+    id: z.union([z.string(), z.array(z.string())]).optional(),
     country_code: z
       .union([z.string(), z.array(z.string()), createOperatorMap()])
       .optional(),

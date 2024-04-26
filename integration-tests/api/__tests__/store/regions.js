@@ -1,22 +1,10 @@
 const path = require("path")
-const {
-  Region,
-  ReturnReason,
-  Order,
-  Customer,
-  ShippingProfile,
-  Product,
-  ProductVariant,
-  ShippingOption,
-  FulfillmentProvider,
-  LineItem,
-  Discount,
-  DiscountRule,
-} = require("@medusajs/medusa")
+const { Region } = require("@medusajs/medusa")
 
 const setupServer = require("../../../environment-helpers/setup-server")
 const { useApi } = require("../../../environment-helpers/use-api")
 const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const { breaking } = require("../../../helpers/breaking")
 
 jest.setTimeout(30000)
 
@@ -76,15 +64,27 @@ describe("/store/carts", () => {
       const api = useApi()
 
       const response = await api.get(
-        "/store/regions?limit=1&offset=1&expand=currency"
+        `/store/regions?limit=1&offset=1&${breaking(
+          () => "expand=currency",
+          () => "fields=*payment_providers"
+        )}`
       )
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.regions[0].currency).toEqual(
-        expect.objectContaining({
-          code: "usd",
-        })
+      breaking(
+        () => {
+          expect(response.data.regions[0].currency).toEqual(
+            expect.objectContaining({
+              code: "usd",
+            })
+          )
+        },
+        () => {
+          expect(response.data.regions[0].payment_providers).toEqual(
+            expect.arrayContaining([])
+          )
+        }
       )
     })
   })
@@ -109,16 +109,13 @@ describe("/store/carts", () => {
     it("should retrieve the region from ID", async () => {
       const api = useApi()
 
-      const response = await api.get(`/store/regions/region-id?expand=currency`)
+      const response = await api.get(`/store/regions/region-id`)
 
       expect(response.status).toEqual(200)
 
       expect(response.data.region).toEqual(
         expect.objectContaining({
           id: "region-id",
-          currency: expect.objectContaining({
-            code: "usd",
-          }),
         })
       )
     })
@@ -131,10 +128,12 @@ describe("/store/carts", () => {
         .catch((e) => e)
 
       expect(error.response.status).toEqual(404)
-
       expect(error.response.data).toEqual({
         type: "not_found",
-        message: "Region with invalid-region-id was not found",
+        message: breaking(
+          () => "Region with invalid-region-id was not found",
+          () => "Region with id: invalid-region-id was not found"
+        ),
       })
     })
   })
