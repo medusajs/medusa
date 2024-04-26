@@ -34,6 +34,7 @@ import { adminWorkflowsExecutionsMiddlewares } from "./admin/workflows-execution
 import { authRoutesMiddlewares } from "./auth/middlewares"
 import { hooksRoutesMiddlewares } from "./hooks/middlewares"
 import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
+import { storeCollectionRoutesMiddlewares } from "./store/collections/middlewares"
 import { storeCurrencyRoutesMiddlewares } from "./store/currencies/middlewares"
 import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
 import { storeProductRoutesMiddlewares } from "./store/products/middlewares"
@@ -48,6 +49,7 @@ export const config: MiddlewaresConfig = {
     ...storeCartRoutesMiddlewares,
     ...storeCustomerRoutesMiddlewares,
     ...storeCartRoutesMiddlewares,
+    ...storeCollectionRoutesMiddlewares,
     ...authRoutesMiddlewares,
     ...adminWorkflowsExecutionsMiddlewares,
     ...storeRegionRoutesMiddlewares,
