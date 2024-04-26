@@ -8,7 +8,6 @@ import {
   addShippingMethodToCartStep,
   validateCartShippingOptionsStep,
 } from "../steps"
-import { getShippingOptionPriceSetsStep } from "../steps/get-shipping-option-price-sets"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
 
@@ -48,30 +47,30 @@ export const addShippingMethodToWorkflow = createWorkflow(
       cart,
     })
 
-    const priceSets = getShippingOptionPriceSetsStep({
-      optionIds: optionIds,
-      context: { currency_code: cart.currency_code },
-    })
-
     const shippingOptions = useRemoteQueryStep({
       entry_point: "shipping_option",
-      fields: ["id", "name"],
-      variables: { id: optionIds },
-    }).config({ name: "shipping-options" })
+      fields: ["id", "name", "calculated_price.calculated_amount"],
+      variables: {
+        id: optionIds,
+        calculated_price: {
+          context: {
+            currency_code: cart.currency_code,
+          },
+        },
+      },
+    })
 
     const shippingMethodInput = transform(
-      { priceSets, input, shippingOptions },
+      { input, shippingOptions },
       (data) => {
         const options = (data.input.options ?? []).map((option) => {
           const shippingOption = data.shippingOptions.find(
             (so) => so.id === option.id
           )!
 
-          const price = data.priceSets[option.id].calculated_amount
-
           return {
             shipping_option_id: shippingOption.id,
-            amount: price,
+            amount: shippingOption.calculated_price.calculated_amount,
             data: option.data ?? {},
             name: shippingOption.name,
             cart_id: data.input.cart_id,

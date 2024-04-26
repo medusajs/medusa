@@ -1,3 +1,5 @@
+import { isObject } from "./is-object"
+
 /**
  * Convert a string fields array to a remote query object
  * @param config - The configuration object
@@ -109,9 +111,7 @@ export function remoteQueryObjectFromString(
     },
   }
 
-  if (variables) {
-    remoteJoinerConfig[entryKey]["__args"] = variables
-  }
+  const usedVariables = new Set()
 
   for (const field of fields) {
     if (!field.includes(".")) {
@@ -122,14 +122,34 @@ export function remoteQueryObjectFromString(
     const fieldSegments = field.split(".")
     const fieldProperty = fieldSegments.pop()
 
+    let combinedPath = ""
+
     const deepConfigRef = fieldSegments.reduce((acc, curr) => {
-      acc[curr] ??= {}
+      combinedPath = combinedPath ? combinedPath + "." + curr : curr
+
+      if (isObject(variables) && combinedPath in variables) {
+        acc[curr] ??= {}
+        acc[curr]["__args"] = variables[combinedPath]
+        usedVariables.add(combinedPath)
+      } else {
+        acc[curr] ??= {}
+      }
+
       return acc[curr]
     }, remoteJoinerConfig[entryKey])
 
     deepConfigRef["fields"] ??= []
     deepConfigRef["fields"].push(fieldProperty)
   }
+
+  const topLevelArgs = {}
+  for (const key of Object.keys(variables ?? {})) {
+    if (!usedVariables.has(key)) {
+      topLevelArgs[key] = variables[key]
+    }
+  }
+
+  remoteJoinerConfig[entryKey]["__args"] = topLevelArgs ?? {}
 
   return remoteJoinerConfig
 }

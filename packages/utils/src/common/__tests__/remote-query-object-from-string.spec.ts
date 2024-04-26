@@ -33,13 +33,23 @@ describe("remoteQueryObjectFromString", function () {
   it("should return a remote query object", function () {
     const output = remoteQueryObjectFromString({
       entryPoint: "product",
-      variables: {},
+      variables: {
+        q: "name",
+        options: {
+          name: "option_name",
+        },
+        "options.values": {
+          value: 123,
+        },
+      },
       fields,
     })
 
     expect(output).toEqual({
       product: {
-        __args: {},
+        __args: {
+          q: "name",
+        },
         fields: [
           "id",
           "created_at",
@@ -54,6 +64,9 @@ describe("remoteQueryObjectFromString", function () {
         },
 
         options: {
+          __args: {
+            name: "option_name",
+          },
           fields: [
             "id",
             "created_at",
@@ -64,6 +77,9 @@ describe("remoteQueryObjectFromString", function () {
             "metadata",
           ],
           values: {
+            __args: {
+              value: 123,
+            },
             fields: [
               "id",
               "created_at",
