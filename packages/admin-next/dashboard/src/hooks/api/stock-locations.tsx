@@ -13,6 +13,7 @@ import {
   CreateFulfillmentSetReq,
   CreateServiceZoneReq,
   CreateStockLocationReq,
+  UpdateServiceZoneReq,
   UpdateStockLocationReq,
   UpdateStockLocationSalesChannelsReq,
 } from "../../types/api-payloads"
@@ -172,6 +173,32 @@ export const useCreateServiceZone = (
   return useMutation({
     mutationFn: (payload) =>
       client.stockLocations.createServiceZone(fulfillmentSetId, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.detail(locationId),
+      })
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.lists(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useUpdateServiceZone = (
+  fulfillmentSetId: string,
+  serviceZoneId: string,
+  locationId: string,
+  options?: UseMutationOptions<StockLocationRes, Error, UpdateServiceZoneReq>
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      client.stockLocations.updateServiceZone(
+        fulfillmentSetId,
+        serviceZoneId,
+        payload
+      ),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.detail(locationId),

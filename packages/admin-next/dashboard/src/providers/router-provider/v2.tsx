@@ -655,6 +655,13 @@ export const v2Routes: RouteObject[] = [
                         path: "service-zone/:zone_id",
                         children: [
                           {
+                            path: "edit",
+                            lazy: () =>
+                              import(
+                                "../../v2-routes/shipping/service-zone-edit"
+                              ),
+                          },
+                          {
                             path: "shipping-options/create",
                             lazy: () =>
                               import(

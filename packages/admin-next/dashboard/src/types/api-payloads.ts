@@ -28,6 +28,7 @@ import {
   UpdatePromotionRuleDTO,
   UpdateRegionDTO,
   UpdateSalesChannelDTO,
+  UpdateServiceZoneDTO,
   UpdateStockLocationInput,
   UpdateStoreDTO,
   UpdateUserDTO,
@@ -72,6 +73,7 @@ export type UpdateStockLocationSalesChannelsReq = {
 }
 export type CreateFulfillmentSetReq = CreateFulfillmentSetDTO
 export type CreateServiceZoneReq = CreateServiceZoneDTO
+export type UpdateServiceZoneReq = UpdateServiceZoneDTO
 
 // Shipping Options
 export type CreateShippingOptionReq = CreateShippingOptionDTO

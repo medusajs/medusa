@@ -653,6 +653,9 @@
         "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone. ",
         "zoneName": "Zone name"
       },
+      "edit":{
+        "title": "Edit Service Zone"
+      },
       "editPrices": "Edit prices",
       "editOption": "Edit option",
       "optionsLength_one": "shipping option",

@@ -283,6 +283,11 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
                     to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`,
                   },
                   {
+                    label: t("actions.edit"),
+                    icon: <PencilSquare />,
+                    to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit`,
+                  },
+                  {
                     label: t("actions.delete"),
                     icon: <Trash />,
                     onClick: handleDelete,
