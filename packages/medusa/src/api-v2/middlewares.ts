@@ -38,6 +38,7 @@ import { storeCollectionRoutesMiddlewares } from "./store/collections/middleware
 import { storeCurrencyRoutesMiddlewares } from "./store/currencies/middlewares"
 import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
 import { storeProductRoutesMiddlewares } from "./store/products/middlewares"
+import { storeProductCategoryRoutesMiddlewares } from "./store/product-categories/middlewares"
 import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
 
 export const config: MiddlewaresConfig = {
@@ -50,6 +51,7 @@ export const config: MiddlewaresConfig = {
     ...storeCustomerRoutesMiddlewares,
     ...storeCartRoutesMiddlewares,
     ...storeCollectionRoutesMiddlewares,
+    ...storeProductCategoryRoutesMiddlewares,
     ...authRoutesMiddlewares,
     ...adminWorkflowsExecutionsMiddlewares,
     ...storeRegionRoutesMiddlewares,
