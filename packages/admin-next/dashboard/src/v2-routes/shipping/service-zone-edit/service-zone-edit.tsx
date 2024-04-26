@@ -13,7 +13,8 @@ export const ServiceZoneEdit = () => {
   const { stock_location, isPending, isError, error } = useStockLocation(
     location_id!,
     {
-      fields: "*fulfillment_sets,*fulfillment_sets.service_zones",
+      fields:
+        "name,address.city,address.country_code,fulfillment_sets.type,fulfillment_sets.name,*fulfillment_sets.service_zones.geo_zones,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options,*fulfillment_sets.service_zones.shipping_options.shipping_profile",
     }
   )
 

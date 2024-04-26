@@ -24,6 +24,7 @@ import {
   StockLocationListRes,
   StockLocationRes,
 } from "../../types/api-responses"
+import { salesChannelsQueryKeys } from "./sales-channels.tsx"
 
 const STOCK_LOCATIONS_QUERY_KEY = "stock_locations" as const
 export const stockLocationsQueryKeys = queryKeysFactory(
@@ -118,6 +119,10 @@ export const useUpdateStockLocationSalesChannels = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.detail(id),
+      })
+      // TODO: REMOVE WHEN WE LIST SCs WITH LOCATION WE FETCH
+      queryClient.invalidateQueries({
+        queryKey: salesChannelsQueryKeys.lists(),
       })
       options?.onSuccess?.(data, variables, context)
     },

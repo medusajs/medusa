@@ -13,7 +13,8 @@ export const LocationAddSalesChannels = () => {
     isError,
     error,
   } = useStockLocation(location_id!, {
-    fields: "*sales_channels",
+    fields:
+      "name,*sales_channels,address.city,address.country_code,fulfillment_sets.type,fulfillment_sets.name,*fulfillment_sets.service_zones.geo_zones,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options,*fulfillment_sets.service_zones.shipping_options.shipping_profile",
   })
 
   const { sales_channels, isPending: isChannelsLoading } = useSalesChannels({
