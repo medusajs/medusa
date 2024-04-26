@@ -16,7 +16,7 @@ export const refreshCartShippingMethodsStep = createStep(
     const { shipping_methods: shippingMethods = [] } = cart
 
     if (!shippingMethods?.length) {
-      return new StepResponse(void 0)
+      return new StepResponse(void 0, [])
     }
 
     const fulfillmentModule = container.resolve<IFulfillmentModuleService>(
@@ -27,25 +27,9 @@ export const refreshCartShippingMethodsStep = createStep(
       ModuleRegistrationName.CART
     )
 
-    const shippingMethodsToDelete: string[] = []
     const shippingOptionIds: string[] = shippingMethods.map(
       (sm) => sm.shipping_option_id!
     )
-
-    const shippingOptions = await fulfillmentModule.listShippingOptions(
-      { id: shippingOptionIds },
-      { select: ["id", "name"], take: null }
-    )
-
-    const diff = arrayDifference<string>(
-      shippingOptionIds,
-      shippingOptions.map((o) => o.id)
-    )
-
-    // If any shipping methods are found without shipping_option_id, delete them
-    if (diff.length) {
-      shippingMethodsToDelete.push(...diff)
-    }
 
     const validShippingOptions =
       await fulfillmentModule.listShippingOptionsForContext(
@@ -62,18 +46,17 @@ export const refreshCartShippingMethodsStep = createStep(
         { relations: ["rules"] }
       )
 
-    const invalidOptionIds = arrayDifference(
+    const validShippingOptionIds = validShippingOptions.map((o) => o.id)
+    const invalidShippingOptionIds = arrayDifference(
       shippingOptionIds,
-      validShippingOptions.map((o) => o.id)
+      validShippingOptionIds
     )
 
-    if (invalidOptionIds.length) {
-      shippingMethodsToDelete.push(...invalidOptionIds)
-    }
+    const shippingMethodsToDelete = shippingMethods
+      .filter((sm) => invalidShippingOptionIds.includes(sm.shipping_option_id!))
+      .map((sm) => sm.id)
 
-    if (shippingMethodsToDelete.length) {
-      await cartModule.softDeleteShippingMethods(shippingMethodsToDelete)
-    }
+    await cartModule.softDeleteShippingMethods(shippingMethodsToDelete)
 
     return new StepResponse(void 0, shippingMethodsToDelete)
   },

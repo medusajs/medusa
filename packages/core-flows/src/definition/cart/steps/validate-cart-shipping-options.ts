@@ -24,23 +24,6 @@ export const validateCartShippingOptionsStep = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    const shippingOptions = await fulfillmentModule.listShippingOptions(
-      { id: optionIds },
-      { select: ["id", "name"], take: null }
-    )
-
-    const diff = arrayDifference(
-      optionIds,
-      shippingOptions.map((o) => o.id)
-    )
-
-    if (diff.length) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Shipping Options (${diff.join(", ")}) not found`
-      )
-    }
-
     const validShippingOptions =
       await fulfillmentModule.listShippingOptionsForContext(
         {
@@ -56,20 +39,13 @@ export const validateCartShippingOptionsStep = createStep(
         { relations: ["rules"] }
       )
 
-    const invalidOptionIds = arrayDifference(
-      optionIds,
-      validShippingOptions.map((o) => o.id)
-    )
+    const validShippingOptionIds = validShippingOptions.map((o) => o.id)
+    const invalidOptionIds = arrayDifference(optionIds, validShippingOptionIds)
 
     if (invalidOptionIds.length) {
-      const invalidOptionNames = shippingOptions
-        .filter((o) => invalidOptionIds.includes(o.id))
-        .map((o) => o.name)
-        .join(",")
-
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Shipping Options (${invalidOptionNames}) are invalid for cart.`
+        `Shipping Options are invalid for cart.`
       )
     }
 

@@ -1529,8 +1529,7 @@ medusaIntegrationTestRunner({
           expect(errors).toEqual([
             expect.objectContaining({
               error: expect.objectContaining({
-                message:
-                  "Shipping Options (Test shipping option) are invalid for cart.",
+                message: `Shipping Options are invalid for cart.`,
                 type: "invalid_data",
               }),
             }),
@@ -1552,7 +1551,7 @@ medusaIntegrationTestRunner({
           expect(errors).toEqual([
             expect.objectContaining({
               error: expect.objectContaining({
-                message: "Shipping Options (does-not-exist) not found",
+                message: "Shipping Options are invalid for cart.",
                 type: "invalid_data",
               }),
             }),

@@ -10,6 +10,7 @@ import {
 } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
+import { cartFieldsForRefreshSteps } from "../utils/fields"
 
 interface AddShippingMethodToCartWorkflowInput {
   cart_id: string
@@ -27,13 +28,7 @@ export const addShippingMethodToWorkflow = createWorkflow(
   ): WorkflowData<void> => {
     const cart = useRemoteQueryStep({
       entry_point: "cart",
-      fields: [
-        "region_id",
-        "currency_code",
-        "items.*",
-        "shipping_address.*",
-        "shipping_methods.*",
-      ],
+      fields: cartFieldsForRefreshSteps,
       variables: { id: input.cart_id },
       list: false,
     })
@@ -53,12 +48,10 @@ export const addShippingMethodToWorkflow = createWorkflow(
       variables: {
         id: optionIds,
         calculated_price: {
-          context: {
-            currency_code: cart.currency_code,
-          },
+          context: { currency_code: cart.currency_code },
         },
       },
-    })
+    }).config({ name: "fetch-shipping-option" })
 
     const shippingMethodInput = transform(
       { input, shippingOptions },
