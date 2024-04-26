@@ -1530,7 +1530,7 @@ medusaIntegrationTestRunner({
             expect.objectContaining({
               error: expect.objectContaining({
                 message:
-                  "Shipping Options (Test shipping option) are invalid for cart. Add a valid shipping option or remove existing invalid shipping options before continuing.",
+                  "Shipping Options (Test shipping option) are invalid for cart.",
                 type: "invalid_data",
               }),
             }),

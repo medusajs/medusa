@@ -69,7 +69,7 @@ export const validateCartShippingOptionsStep = createStep(
 
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Shipping Options (${invalidOptionNames}) are invalid for cart. Add a valid shipping option or remove existing invalid shipping options before continuing.`
+        `Shipping Options (${invalidOptionNames}) are invalid for cart.`
       )
     }
 
