@@ -19,22 +19,10 @@ import {
 } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
+import { cartFieldsForRefreshSteps } from "../utils/fields"
 import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
-
-const cartFields = [
-  "region_id",
-  "currency_code",
-  "region.*",
-  "items.*",
-  "items.tax_lines.*",
-  "shipping_address.*",
-  "shipping_methods.*",
-  "shipping_methods.tax_lines*",
-  "customer.*",
-  "customer.groups.*",
-]
 
 // TODO: The AddToCartWorkflow are missing the following steps:
 // - Refresh/delete shipping methods (fulfillment module)
@@ -144,12 +132,14 @@ export const addToCartWorkflow = createWorkflow(
 
     const cart = useRemoteQueryStep({
       entry_point: "cart",
-      fields: cartFields,
+      fields: cartFieldsForRefreshSteps,
       variables: { id: input.cart.id },
       list: false,
     }).config({ name: "refetch–cart" })
 
     refreshCartShippingMethodsStep({ cart })
+    // TODO: since refreshCartShippingMethodsStep potentially removes cart shipping methods, we need the updated cart here
+    // for the following 2 steps as they act upon final cart shape
     updateTaxLinesStep({ cart_or_cart_id: cart, items })
     refreshCartPromotionsStep({ id: input.cart.id })
     refreshPaymentCollectionForCartStep({ cart_id: input.cart.id })
