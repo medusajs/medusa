@@ -165,7 +165,7 @@ class SendGridService extends NotificationService {
         case "order.placed":
           return map.order_placed_template
         case "order.shipment_created":
-          return map.order_shipped_template
+          return map.order_shipment_created_template
         case "order.canceled":
           return map.order_canceled_template
         case "user.password_reset":
