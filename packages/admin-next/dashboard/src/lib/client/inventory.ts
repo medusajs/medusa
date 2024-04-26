@@ -1,7 +1,6 @@
 import {
   AdminInventoryItemListResponse,
   AdminInventoryItemResponse,
-  AdminInventoryLevelListResponse,
   AdminInventoryLevelResponse,
 } from "@medusajs/types"
 import {
@@ -12,9 +11,7 @@ import {
 } from "../../types/api-payloads"
 import {
   InventoryItemLevelDeleteRes,
-  ReservationItemDeleteRes,
-  ReservationItemListRes,
-  ReservationItemRes,
+  InventoryItemLocationLevelsRes,
 } from "../../types/api-responses"
 import { deleteRequest, getRequest, postRequest } from "./common"
 
@@ -59,7 +56,7 @@ async function listInventoryItemLevels(
   id: string,
   query?: Record<string, any>
 ) {
-  return getRequest<AdminInventoryLevelListResponse>(
+  return getRequest<InventoryItemLocationLevelsRes>(
     `/admin/inventory-items/${id}/location-levels`,
     query
   )
@@ -79,28 +76,8 @@ async function updateInventoryLevel(
   locationId: string,
   payload: UpdateInventoryLevelReq
 ) {
-  return postRequest<AdminInventoryLevelResponse>(
+  return postRequest<AdminInventoryItemResponse>(
     `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`,
-    payload
-  )
-}
-
-async function listReservationItems(query?: Record<string, any>) {
-  return getRequest<ReservationItemListRes>(`/admin/reservations`, query)
-}
-
-async function deleteReservationItem(reservationId: string) {
-  return deleteRequest<ReservationItemDeleteRes>(
-    `/admin/reservations/${reservationId}`
-  )
-}
-
-async function updateReservationItem(
-  reservationId: string,
-  payload: UpdateInventoryItemReq
-) {
-  return postRequest<ReservationItemRes>(
-    `/admin/reservatinos/${reservationId}`,
     payload
   )
 }
@@ -127,8 +104,5 @@ export const inventoryItems = {
   listLocationLevels: listInventoryItemLevels,
   updateInventoryLevel,
   deleteInventoryItemLevel,
-  listReservationItems,
-  deleteReservationItem,
-  updateReservationItem,
   batchPostLocationLevels,
 }

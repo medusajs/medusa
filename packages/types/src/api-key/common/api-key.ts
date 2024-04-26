@@ -68,6 +68,10 @@ export interface ApiKeyDTO {
 export interface FilterableApiKeyProps
   extends BaseFilterable<FilterableApiKeyProps> {
   /**
+   * Search through the api key names and redacted keys using this search term.
+   */
+  q?: string
+  /**
    * The IDs to filter the API keys by.
    */
   id?: string | string[]

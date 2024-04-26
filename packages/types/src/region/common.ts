@@ -91,6 +91,10 @@ export interface RegionCountryDTO {
 export interface FilterableRegionProps
   extends BaseFilterable<FilterableRegionProps> {
   /**
+   * Find regions by name through this search term
+   */
+  q?: string
+  /**
    * The IDs to filter the regions by.
    */
   id?: string[] | string | OperatorMap<string | string[]>

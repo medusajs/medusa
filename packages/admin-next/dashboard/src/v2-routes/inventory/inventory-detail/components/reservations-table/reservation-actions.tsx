@@ -1,9 +1,9 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
+import { toast, usePrompt } from "@medusajs/ui"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { InventoryNext } from "@medusajs/types"
-import { useDeleteReservationItem } from "../../../../../hooks/api/inventory"
-import { usePrompt } from "@medusajs/ui"
+import { useDeleteReservationItem } from "../../../../../hooks/api/reservations"
 import { useTranslation } from "react-i18next"
 
 export const ReservationActions = ({
@@ -27,7 +27,14 @@ export const ReservationActions = ({
       return
     }
 
-    await mutateAsync()
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          dismissLabel: t("actions.close"),
+          description: t("inventory.reservation.deleteSuccessToast"),
+        })
+      },
+    })
   }
 
   return (
@@ -38,7 +45,7 @@ export const ReservationActions = ({
             {
               icon: <PencilSquare />,
               label: t("actions.edit"),
-              to: `/reservation/${reservation.id}/edit`,
+              to: `/reservations/${reservation.id}/edit`,
             },
           ],
         },

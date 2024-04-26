@@ -12,6 +12,7 @@ export const AdminGetCampaignsParams = createFindParams({
   limit: 50,
 }).merge(
   z.object({
+    q: z.string().optional(),
     campaign_identifier: z.string().optional(),
     currency: z.string().optional(),
     $and: z.lazy(() => AdminGetCampaignsParams.array()).optional(),

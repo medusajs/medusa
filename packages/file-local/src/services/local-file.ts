@@ -1,4 +1,4 @@
-import { FileTypes } from "@medusajs/types"
+import { FileTypes, LocalFileServiceOptions } from "@medusajs/types"
 import { AbstractFileProviderService, MedusaError } from "@medusajs/utils"
 import fs from "fs/promises"
 import path from "path"
@@ -8,7 +8,7 @@ export class LocalFileService extends AbstractFileProviderService {
   protected uploadDir_: string
   protected backendUrl_: string
 
-  constructor(_, options) {
+  constructor(_, options: LocalFileServiceOptions) {
     super()
     this.uploadDir_ = options?.upload_dir || "uploads"
     this.backendUrl_ = options?.backend_url || "http://localhost:9000"

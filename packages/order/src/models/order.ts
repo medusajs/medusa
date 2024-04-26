@@ -19,8 +19,8 @@ import {
 } from "@mikro-orm/core"
 import Address from "./address"
 import OrderItem from "./order-item"
+import OrderShippingMethod from "./order-shipping-method"
 import OrderSummary from "./order-summary"
-import ShippingMethod from "./shipping-method"
 import Transaction from "./transaction"
 
 type OptionalOrderProps =
@@ -166,10 +166,14 @@ export default class Order {
   })
   items = new Collection<OrderItem>(this)
 
-  @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.order, {
-    cascade: [Cascade.PERSIST],
-  })
-  shipping_methods = new Collection<ShippingMethod>(this)
+  @OneToMany(
+    () => OrderShippingMethod,
+    (shippingMethod) => shippingMethod.order,
+    {
+      cascade: [Cascade.PERSIST],
+    }
+  )
+  shipping_methods = new Collection<OrderShippingMethod>(this)
 
   @OneToMany(() => Transaction, (transaction) => transaction.order, {
     cascade: [Cascade.PERSIST],
