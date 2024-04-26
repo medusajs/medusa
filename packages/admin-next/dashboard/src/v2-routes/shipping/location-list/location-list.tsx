@@ -5,6 +5,7 @@ import { Link, Outlet, useLoaderData } from "react-router-dom"
 import { shippingListLoader } from "./loader"
 import { useStockLocations } from "../../../hooks/api/stock-locations"
 import Location from "./components/location/location"
+import { locationListFields } from "./const"
 
 export function LocationList() {
   const { t } = useTranslation()
@@ -15,8 +16,7 @@ export function LocationList() {
 
   let { stock_locations: stockLocations = [], isPending } = useStockLocations(
     {
-      fields:
-        "name,address.city,address.country_code,fulfillment_sets.type,fulfillment_sets.name,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options,*fulfillment_sets.service_zones.shipping_options.shipping_profile",
+      fields: locationListFields,
     },
     { initialData }
   )
