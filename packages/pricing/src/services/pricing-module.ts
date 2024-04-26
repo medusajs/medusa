@@ -163,7 +163,7 @@ export default class PricingModuleService<
       return
     }
 
-    let pricingContext = filters.context ?? {}
+    const pricingContext = filters.context ?? {}
 
     // cleanup virtual field "calculated_price"
     config.relations?.splice(fieldIdx, 1)
