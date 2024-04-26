@@ -662,11 +662,28 @@ export const v2Routes: RouteObject[] = [
                               ),
                           },
                           {
-                            path: "shipping-options/create",
-                            lazy: () =>
-                              import(
-                                "../../v2-routes/shipping/shipping-options-create"
-                              ),
+                            path: "shipping-option",
+                            children: [
+                              {
+                                path: "create",
+                                lazy: () =>
+                                  import(
+                                    "../../v2-routes/shipping/shipping-options-create"
+                                  ),
+                              },
+                              {
+                                path: ":so_id",
+                                children: [
+                                  {
+                                    path: "edit",
+                                    lazy: () =>
+                                      import(
+                                        "../../v2-routes/shipping/shipping-option-edit"
+                                      ),
+                                  },
+                                ],
+                              },
+                            ],
                           },
                         ],
                       },

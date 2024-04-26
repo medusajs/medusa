@@ -19,6 +19,7 @@ import {
   CreateShippingProfileDTO,
   CreateStockLocationInput,
   InventoryNext,
+  ShippingOptionDTO,
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
   UpdateCustomerDTO,

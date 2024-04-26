@@ -638,7 +638,7 @@
       "pickup": {
         "title": "Pick up",
         "enable": "Enable pickup",
-        "offers": "Offers piskup in"
+        "offers": "Offers pick up in"
       },
       "delivery": {
         "title": "Shipping",
@@ -686,6 +686,10 @@
         "calculated": "Calculated",
         "calculatedDescription": "Shipping option's price is calculated by the fulfillment provider.",
         "profile": "Shipping profile"
+      },
+      "edit": {
+        "title": "Edit Shipping Option",
+        "provider": "Fulfillment provider"
       }
     },
     "salesChannels": {

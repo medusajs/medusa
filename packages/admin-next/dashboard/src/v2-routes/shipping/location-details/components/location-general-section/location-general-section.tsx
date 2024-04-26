@@ -79,9 +79,15 @@ export const LocationGeneralSection = ({
 
 type ShippingOptionProps = {
   option: ShippingOptionDTO
+  fulfillmentSetId: string
+  locationId: string
 }
 
-function ShippingOption({ option }: ShippingOptionProps) {
+function ShippingOption({
+  option,
+  fulfillmentSetId,
+  locationId,
+}: ShippingOptionProps) {
   const { t } = useTranslation()
 
   const { mutateAsync: deleteOption } = useDeleteShippingOption(option.id)
@@ -103,9 +109,9 @@ function ShippingOption({ option }: ShippingOptionProps) {
           {
             actions: [
               {
-                label: t("shipping.serviceZone.editOption"),
                 icon: <PencilSquare />,
-                disabled: true,
+                label: t("shipping.serviceZone.editOption"),
+                to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${option.service_zone_id}/shipping-option/${option.id}/edit`,
               },
               {
                 label: t("shipping.serviceZone.editPrices"),
@@ -153,7 +159,7 @@ function ServiceZoneOptions({
             variant="transparent"
             onClick={() =>
               navigate(
-                `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`
+                `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create`
               )
             }
           >
@@ -164,7 +170,12 @@ function ServiceZoneOptions({
         {!!shippingOptions.length && (
           <div className="shadow-elevation-card-rest bg-ui-bg-subtle mt-4 grid divide-y rounded-md">
             {shippingOptions.map((o) => (
-              <ShippingOption key={o.id} option={o} />
+              <ShippingOption
+                key={o.id}
+                option={o}
+                locationId={locationId}
+                fulfillmentSetId={fulfillmentSetId}
+              />
             ))}
           </div>
         )}

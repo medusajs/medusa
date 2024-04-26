@@ -19,8 +19,6 @@ type EditServiceZoneFormProps = {
 
 const EditServiceZoneSchema = zod.object({
   name: zod.string().min(1),
-  currency_code: zod.string(),
-  payment_providers: zod.array(zod.string()),
 })
 
 export const EditServiceZoneForm = ({

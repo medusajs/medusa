@@ -1,4 +1,10 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query"
+import {
+  QueryKey,
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  UseQueryOptions,
+} from "@tanstack/react-query"
 
 import {
   ShippingOptionDeleteRes,
@@ -8,6 +14,22 @@ import { CreateShippingOptionReq } from "../../types/api-payloads"
 import { stockLocationsQueryKeys } from "./stock-locations"
 import { queryClient } from "../../lib/medusa"
 import { client } from "../../lib/client"
+
+export const useShippingOptions = (
+  query?: Record<string, any>,
+  options?: Omit<
+    UseQueryOptions<any, Error, any, QueryKey>,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => client.shippingOptions.list(query),
+    queryKey: stockLocationsQueryKeys.all,
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
 
 export const useCreateShippingOptions = (
   options?: UseMutationOptions<

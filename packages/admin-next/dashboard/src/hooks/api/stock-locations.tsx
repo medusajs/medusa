@@ -24,7 +24,7 @@ import {
   StockLocationListRes,
   StockLocationRes,
 } from "../../types/api-responses"
-import { salesChannelsQueryKeys } from "./sales-channels.tsx"
+import { salesChannelsQueryKeys } from "./sales-channels"
 
 const STOCK_LOCATIONS_QUERY_KEY = "stock_locations" as const
 export const stockLocationsQueryKeys = queryKeysFactory(
