@@ -183,14 +183,22 @@ export default class PricingModuleService<
     const priceSets = await super.list(filters, config, sharedContext)
 
     if (pricingContext && priceSets.length) {
+      const priceSetIds: string[] = []
+      const priceSetMap = new Map()
+      for (const priceSet of priceSets) {
+        priceSetIds.push(priceSet.id)
+        priceSetMap.set(priceSet.id, priceSet)
+      }
+
       const calculatedPrices = await this.calculatePrices(
         { id: priceSets.map((p) => p.id) },
         { context: pricingContext },
         sharedContext
       )
 
-      for (let idx = 0; idx < priceSets.length; idx++) {
-        priceSets[idx].calculated_price = calculatedPrices[idx]
+      for (const calculatedPrice of calculatedPrices) {
+        const priceSet = priceSetMap.get(calculatedPrice.id)
+        priceSet.calculated_price = calculatedPrice
       }
     }
 
@@ -212,14 +220,22 @@ export default class PricingModuleService<
     )
 
     if (pricingContext && priceSets.length) {
+      const priceSetIds: string[] = []
+      const priceSetMap = new Map()
+      for (const priceSet of priceSets) {
+        priceSetIds.push(priceSet.id)
+        priceSetMap.set(priceSet.id, priceSet)
+      }
+
       const calculatedPrices = await this.calculatePrices(
         { id: priceSets.map((p) => p.id) },
         { context: pricingContext },
         sharedContext
       )
 
-      for (let idx = 0; idx < priceSets.length; idx++) {
-        priceSets[idx].calculated_price = calculatedPrices[idx]
+      for (const calculatedPrice of calculatedPrices) {
+        const priceSet = priceSetMap.get(calculatedPrice.id)
+        priceSet.calculated_price = calculatedPrice
       }
     }
 
