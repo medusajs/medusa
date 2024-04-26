@@ -66,7 +66,7 @@ class AdminStockLocationsResource extends BaseResource {
    */
   retrieve(
     itemId: string,
-    query: AdminGetStockLocationsLocationParams,
+    query?: AdminGetStockLocationsLocationParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminStockLocationsRes> {
     let path = `/admin/stock-locations/${itemId}`
