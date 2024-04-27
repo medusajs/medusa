@@ -167,9 +167,8 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ShippingOptionDTO[]> {
     const optionsContext = this.setupShippingOptionsConfig_(filters, config)
 
-    if (optionsContext && filters.fulfillment_set_id) {
+    if (optionsContext) {
       optionsContext.context = {
-        fulfillment_set_id: filters.fulfillment_set_id,
         ...optionsContext.context,
       }
 
@@ -182,7 +181,7 @@ export default class FulfillmentModuleService<
       )
     }
 
-    return [] // await super.listShippingOptions(filters, config, sharedContext)
+    return await super.listShippingOptions(filters, config, sharedContext)
   }
 
   @InjectManager("baseRepository_")

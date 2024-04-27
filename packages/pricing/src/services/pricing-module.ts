@@ -746,9 +746,9 @@ export default class PricingModuleService<
   ) {
     const input = Array.isArray(data) ? data : [data]
 
-    const ruleAttributes = data
-      .map((d) => d.rules?.map((r) => r.rule_attribute) ?? [])
-      .flat()
+    const ruleAttributes = deduplicate(
+      data.map((d) => d.rules?.map((r) => r.rule_attribute) ?? []).flat()
+    )
 
     const ruleTypes = await this.ruleTypeService_.list(
       { rule_attribute: ruleAttributes },
