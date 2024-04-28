@@ -4,10 +4,23 @@ import {
   ShippingOptionListRes,
   ShippingOptionRes,
 } from "../../types/api-responses"
-import { CreateShippingOptionReq } from "../../types/api-payloads"
+import {
+  CreateShippingOptionReq,
+  UpdateShippingOptionReq,
+} from "../../types/api-payloads"
 
 async function createShippingOptions(payload: CreateShippingOptionReq) {
   return postRequest<ShippingOptionRes>(`/admin/shipping-options`, payload)
+}
+
+async function updateShippingOptions(
+  id: string,
+  payload: UpdateShippingOptionReq
+) {
+  return postRequest<ShippingOptionRes>(
+    `/admin/shipping-options/${id}`,
+    payload
+  )
 }
 
 async function listShippingOptions(query?: Record<string, any>) {
@@ -22,6 +35,7 @@ async function deleteShippingOption(optionId: string) {
 
 export const shippingOptions = {
   create: createShippingOptions,
+  update: updateShippingOptions,
   delete: deleteShippingOption,
   list: listShippingOptions,
 }

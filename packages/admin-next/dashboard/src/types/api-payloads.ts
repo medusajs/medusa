@@ -30,6 +30,7 @@ import {
   UpdateRegionDTO,
   UpdateSalesChannelDTO,
   UpdateServiceZoneDTO,
+  UpdateShippingOptionDTO,
   UpdateStockLocationInput,
   UpdateStoreDTO,
   UpdateUserDTO,
@@ -78,6 +79,7 @@ export type UpdateServiceZoneReq = UpdateServiceZoneDTO
 
 // Shipping Options
 export type CreateShippingOptionReq = CreateShippingOptionDTO
+export type UpdateShippingOptionReq = UpdateShippingOptionDTO
 
 // Shipping Profile
 export type CreateShippingProfileReq = CreateShippingProfileDTO

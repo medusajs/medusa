@@ -10,6 +10,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useShippingProfiles } from "../../../../../hooks/api/shipping-profiles"
+import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options"
 
 enum ShippingAllocation {
   FlatRate = "flat",
@@ -42,18 +43,25 @@ export const EditShippingOptionForm = ({
     defaultValues: {
       name: shippingOption.name,
       price_type: shippingOption.price_type as ShippingAllocation,
-      enable_in_store: shippingOption.enable_in_store || true, // TODO
+      enable_in_store: shippingOption.enable_in_store || true, // TODO: how should we handle this flag
       shipping_profile_id: shippingOption.shipping_profile_id,
       provider_id: shippingOption.provider_id,
     },
   })
 
-  const { mutateAsync, isPending: isLoading } = {}
+  const { mutateAsync, isPending: isLoading } = useUpdateShippingOptions(
+    shippingOption.id
+  )
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
       {
+        // TODO: why is passing ID mandatory with the schema definition
+        id: shippingOption.id,
         name: values.name,
+        price_type: values.price_type,
+        shipping_profile_id: values.shipping_profile_id,
+        provider_id: values.provider_id || "test-provider", // TODO
       },
       {
         onSuccess: () => {

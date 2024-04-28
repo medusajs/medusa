@@ -10,7 +10,10 @@ import {
   ShippingOptionDeleteRes,
   ShippingOptionRes,
 } from "../../types/api-responses"
-import { CreateShippingOptionReq } from "../../types/api-payloads"
+import {
+  CreateShippingOptionReq,
+  UpdateShippingOptionReq,
+} from "../../types/api-payloads"
 import { stockLocationsQueryKeys } from "./stock-locations"
 import { queryClient } from "../../lib/medusa"
 import { client } from "../../lib/client"
@@ -40,6 +43,26 @@ export const useCreateShippingOptions = (
 ) => {
   return useMutation({
     mutationFn: (payload) => client.shippingOptions.create(payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.all,
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useUpdateShippingOptions = (
+  id: string,
+  options?: UseMutationOptions<
+    ShippingOptionRes,
+    Error,
+    UpdateShippingOptionReq
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => client.shippingOptions.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.all,

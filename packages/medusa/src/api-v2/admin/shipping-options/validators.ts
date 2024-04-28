@@ -121,6 +121,7 @@ export const AdminUpdateShippingOption = z
     data: z.record(z.unknown()).optional(),
     price_type: z.nativeEnum(ShippingOptionPriceTypeEnum).optional(),
     provider_id: z.string().optional(),
+    shipping_profile_id: z.string().optional(),
     type: AdminCreateShippingOptionTypeObject.optional(),
     prices: AdminUpdateShippingOptionPriceWithCurrency.or(
       AdminUpdateShippingOptionPriceWithRegion
