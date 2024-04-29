@@ -1,6 +1,6 @@
 import { ProductStatus } from "@medusajs/utils"
 import { z } from "zod"
-import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
+import { GetProductsParams } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -12,50 +12,6 @@ const statusEnum = z.nativeEnum(ProductStatus)
 export const AdminGetProductParams = createSelectParams()
 export const AdminGetProductVariantParams = createSelectParams()
 export const AdminGetProductOptionParams = createSelectParams()
-
-export type AdminGetProductsParamsType = z.infer<typeof AdminGetProductsParams>
-export const AdminGetProductsParams = createFindParams({
-  offset: 0,
-  limit: 50,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    status: statusEnum.array().optional(),
-    title: z.string().optional(),
-    handle: z.string().optional(),
-    is_giftcard: z.preprocess(
-      (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
-      z.boolean().optional()
-    ),
-    category_id: z.string().array().optional(),
-    price_list_id: z.string().array().optional(),
-    sales_channel_id: z.string().array().optional(),
-    collection_id: z.string().array().optional(),
-    tags: z.string().array().optional(),
-    type_id: z.string().array().optional(),
-    // TODO: Replace this with AdminGetProductVariantsParams when its available
-    variants: z.record(z.unknown()).optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
-    $or: z.lazy(() => AdminGetProductsParams.array()).optional(),
-  })
-)
-// TODO: These were part of the products find query, add them once supported
-// @IsString()
-// @IsOptional()
-// discount_condition_id?: string
-
-// @IsArray()
-// @IsOptional()
-// category_id?: string[]
-
-// @IsBoolean()
-// @IsOptional()
-// @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
-// include_category_children?: boolean
 
 export type AdminGetProductVariantsParamsType = z.infer<
   typeof AdminGetProductVariantsParams
@@ -75,6 +31,21 @@ export const AdminGetProductVariantsParams = createFindParams({
     $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
     $or: z.lazy(() => AdminGetProductsParams.array()).optional(),
   })
+)
+
+export type AdminGetProductsParamsType = z.infer<typeof AdminGetProductsParams>
+export const AdminGetProductsParams = createFindParams({
+  offset: 0,
+  limit: 50,
+}).merge(
+  z
+    .object({
+      variants: AdminGetProductVariantsParams.optional(),
+      price_list_id: z.string().array().optional(),
+      $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
+      $or: z.lazy(() => AdminGetProductsParams.array()).optional(),
+    })
+    .merge(GetProductsParams)
 )
 
 export type AdminGetProductOptionsParamsType = z.infer<
