@@ -43,6 +43,7 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
       serviceName: Modules.PRODUCT,
       fieldAlias: {
         price_set: "price_set_link.price_set",
+        prices: "price_set_link.price_set.prices",
         calculated_price: {
           path: "price_set_link.price_set.calculated_price",
           forwardArgumentsOnPath: ["price_set_link.price_set"],
