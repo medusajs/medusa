@@ -1,62 +1,108 @@
 import * as QueryConfig from "./query-config"
 
 import {
-  StoreGetCustomersMeAddressesParams,
-  StoreGetCustomersMeParams,
-  StorePostCustomersMeAddressesAddressReq,
-  StorePostCustomersMeAddressesReq,
-  StorePostCustomersReq,
+  StoreCreateCustomer,
+  StoreCreateCustomerAddress,
+  StoreGetCustomerParams,
+  StoreGetCustomerAddressesParams,
+  StoreUpdateCustomer,
+  StoreUpdateCustomerAddress,
+  StoreGetCustomerAddressParams,
 } from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import { validateAndTransformQuery } from "../../utils/validate-query"
 
 export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
+  {
+    method: ["POST"],
+    matcher: "/store/customers",
+    middlewares: [
+      authenticate("store", ["session", "bearer"], { allowUnregistered: true }),
+      validateAndTransformBody(StoreCreateCustomer),
+      validateAndTransformQuery(
+        StoreGetCustomerParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
   {
     method: "ALL",
     matcher: "/store/customers/me*",
     middlewares: [authenticate("store", ["session", "bearer"])],
   },
   {
-    method: "POST",
-    matcher: "/store/customers",
-    middlewares: [
-      authenticate("store", ["session", "bearer"], { allowUnregistered: true }),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/store/customers",
-    middlewares: [transformBody(StorePostCustomersReq)],
-  },
-  {
     method: ["GET"],
     matcher: "/store/customers/me",
     middlewares: [
-      transformQuery(
-        StoreGetCustomersMeParams,
+      validateAndTransformQuery(
+        StoreGetCustomerParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
   },
   {
     method: ["POST"],
-    matcher: "/store/customers/me/addresses",
-    middlewares: [transformBody(StorePostCustomersMeAddressesReq)],
-  },
-  {
-    method: ["POST"],
-    matcher: "/store/customers/me/addresses/:address_id",
-    middlewares: [transformBody(StorePostCustomersMeAddressesAddressReq)],
+    matcher: "/store/customers/me",
+    middlewares: [
+      validateAndTransformBody(StoreUpdateCustomer),
+      validateAndTransformQuery(
+        StoreGetCustomerParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["GET"],
     matcher: "/store/customers/me/addresses",
     middlewares: [
-      transformQuery(
-        StoreGetCustomersMeAddressesParams,
+      validateAndTransformQuery(
+        StoreGetCustomerAddressesParams,
         QueryConfig.listAddressesTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/store/customers/me/addresses",
+    middlewares: [
+      validateAndTransformBody(StoreCreateCustomerAddress),
+      validateAndTransformQuery(
+        StoreGetCustomerParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/store/customers/me/addresses/:address_id",
+    middlewares: [
+      validateAndTransformQuery(
+        StoreGetCustomerAddressParams,
+        QueryConfig.retrieveAddressTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/store/customers/me/addresses/:address_id",
+    middlewares: [
+      validateAndTransformBody(StoreUpdateCustomerAddress),
+      validateAndTransformQuery(
+        StoreGetCustomerParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/store/customers/me/addresses/:address_id",
+    middlewares: [
+      validateAndTransformQuery(
+        StoreGetCustomerAddressParams,
+        QueryConfig.retrieveAddressTransformQueryConfig
       ),
     ],
   },
