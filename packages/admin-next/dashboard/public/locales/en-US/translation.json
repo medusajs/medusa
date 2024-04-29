@@ -640,6 +640,11 @@
     "addZone": "Add shipping zone",
     "enablePickup": "Enable pickup",
     "enableDelivery": "Enable delivery",
+    "deleteLocation": {
+      "label": "Delete Location",
+      "confirm": "Are you sure you want to delete {{name}} location",
+      "success": "{{name}} location successfully deleted"
+    },
     "noRecords": {
       "action": "Add Location",
       "title": "No inventory locations",

@@ -1,4 +1,11 @@
-import { Button, Container, StatusBadge, Text } from "@medusajs/ui"
+import {
+  Button,
+  Container,
+  StatusBadge,
+  Text,
+  toast,
+  usePrompt,
+} from "@medusajs/ui"
 import { FulfillmentSetDTO, StockLocationDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { Buildings, PencilSquare, Trash } from "@medusajs/icons"
@@ -6,6 +13,7 @@ import { useNavigate } from "react-router-dom"
 
 import { countries } from "../../../../../lib/countries"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useDeleteStockLocation } from "../../../../../hooks/api/stock-locations.tsx"
 
 enum FulfillmentSetType {
   Delivery = "delivery",
@@ -52,6 +60,40 @@ function Location(props: LocationProps) {
   const { location } = props
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const prompt = usePrompt()
+
+  const { mutateAsync: deleteLocation } = useDeleteStockLocation(location.id)
+
+  const handleDelete = async () => {
+    const result = await prompt({
+      title: t("general.areYouSure"),
+      description: t("shipping.deleteLocation.confirm", {
+        name: location.name,
+      }),
+      confirmText: t("actions.remove"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!result) {
+      return
+    }
+
+    try {
+      await deleteLocation()
+
+      toast.success(t("general.success"), {
+        description: t("shipping.deleteLocation.success", {
+          name: location.name,
+        }),
+        dismissLabel: t("general.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
+  }
 
   return (
     <Container className="flex flex-col divide-y p-0">
@@ -90,9 +132,9 @@ function Location(props: LocationProps) {
                       to: `/settings/shipping/${location.id}/edit`,
                     },
                     {
-                      label: t("shipping.deleteLocation"),
+                      label: t("shipping.deleteLocation.label"),
                       icon: <Trash />,
-                      // onClick: handleDelete, // TODO
+                      onClick: handleDelete,
                     },
                   ],
                 },
