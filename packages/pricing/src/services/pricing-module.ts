@@ -160,12 +160,12 @@ export default class PricingModuleService<
     const fieldIdx = config.relations?.indexOf("calculated_price")
     const shouldCalculatePrice = fieldIdx > -1
 
+    const pricingContext = filters.context ?? {}
+
     delete filters.context
     if (!shouldCalculatePrice) {
       return
     }
-
-    const pricingContext = filters.context ?? {}
 
     // cleanup virtual field "calculated_price"
     config.relations?.splice(fieldIdx, 1)
