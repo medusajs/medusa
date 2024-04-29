@@ -67,7 +67,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-center">
           <h1 className="inter-xlarge-semibold text-grey-90 mb-large text-[20px]">
-            {t("login-card-log-in-to-medusa", "Log in to Medusa")}
+            {t("login-card-log-in-to-medusa", "Log in")}
           </h1>
           <div>
             <SigninInput
