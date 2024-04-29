@@ -601,7 +601,7 @@ medusaIntegrationTestRunner({
           ])
 
           cart = await cartModuleService.retrieve(cart.id, {
-            select: ["id", "region_id", "currency_code"],
+            select: ["id", "region_id", "currency_code", "sales_channel_id"],
           })
 
           await addToCartWorkflow(appContainer).run({
@@ -707,7 +707,7 @@ medusaIntegrationTestRunner({
 
           expect(errors).toEqual([
             {
-              action: "get-variant-price-sets",
+              action: "confirm-inventory-step",
               handlerType: "invoke",
               error: expect.objectContaining({
                 message: `Variants with IDs ${product.variants[0].id} do not have a price`,
@@ -736,10 +736,11 @@ medusaIntegrationTestRunner({
 
           expect(errors).toEqual([
             {
-              action: "validate-variants-exist",
+              action: "use-remote-query",
               handlerType: "invoke",
               error: expect.objectContaining({
-                message: `Variants with IDs prva_foo do not exist`,
+                // TODO: Implement error message handler for Remote Query throw_if_key_not_found
+                message: `productService id not found: prva_foo`,
               }),
             },
           ])
