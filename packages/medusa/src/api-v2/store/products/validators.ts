@@ -39,7 +39,6 @@ export const StoreGetProductsParams = createFindParams({
     .object({
       region_id: z.string().optional(),
       currency_code: z.string().optional(),
-      customer_id: z.string().optional(),
       variants: StoreGetProductVariantsParams.optional(),
       $and: z.lazy(() => StoreGetProductsParams.array()).optional(),
       $or: z.lazy(() => StoreGetProductsParams.array()).optional(),

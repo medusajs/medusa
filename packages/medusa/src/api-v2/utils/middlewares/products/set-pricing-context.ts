@@ -1,11 +1,11 @@
 import { MedusaPricingContext } from "@medusajs/types"
 import { isPresent, MedusaError } from "@medusajs/utils"
 import { NextFunction } from "express"
-import { MedusaRequest } from "../../../../types/routing"
+import { AuthenticatedMedusaRequest } from "../../../../types/routing"
 import { refetchEntities, refetchEntity } from "../../refetch-entity"
 
 export function setPricingContext() {
-  return async (req: MedusaRequest, _, next: NextFunction) => {
+  return async (req: AuthenticatedMedusaRequest, _, next: NextFunction) => {
     // If the endpoint doesn't request prices, we can exit early
     if (
       !req.remoteQueryConfig.fields.some((field) =>
@@ -14,13 +14,13 @@ export function setPricingContext() {
     ) {
       delete req.filterableFields.region_id
       delete req.filterableFields.currency_code
-      delete req.filterableFields.customer_id
 
       return next()
     }
 
     const query = req.filterableFields || {}
     const pricingContext: MedusaPricingContext = {}
+    const customerId = req.user.customer_id
 
     if (query.region_id) {
       const region = await refetchEntity("region", query.region_id, req.scope, [
@@ -57,10 +57,10 @@ export function setPricingContext() {
     }
 
     // Find all the customer groups the customer is a part of and set
-    if (query.customer_id) {
+    if (customerId) {
       const customerGroups = await refetchEntities(
         "customer_group",
-        { customer_id: query.customer_id },
+        { customer_id: customerId },
         req.scope,
         ["id"]
       )

@@ -1,4 +1,4 @@
-import { ProductStatus } from "@medusajs/utils"
+import { ApiKeyType, ProductStatus } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
@@ -61,6 +61,11 @@ medusaIntegrationTestRunner({
 
       describe("GET /store/products", () => {
         beforeEach(async () => {
+          const {
+            data: { stores },
+          } = await api.get("/admin/stores", adminHeaders)
+          const store = stores[0]
+
           ;[product, [variant]] = await createProducts({
             title: "test product 1",
             status: ProductStatus.PUBLISHED,
@@ -86,6 +91,12 @@ medusaIntegrationTestRunner({
             status: ProductStatus.DRAFT,
             variants: [{ title: "test variant 4", prices: [] }],
           })
+
+          await api.post(
+            `/admin/sales-channels/${store.default_sales_channel_id}/products`,
+            { add: [product.id, product2.id, product3.id, product4.id] },
+            adminHeaders
+          )
         })
 
         it("should list all published products", async () => {
@@ -135,6 +146,95 @@ medusaIntegrationTestRunner({
               id: product.id,
             }),
           ])
+        })
+
+        describe("with publishable keys", () => {
+          let salesChannel1
+          let salesChannel2
+          let publishableKey1
+
+          beforeEach(async () => {
+            salesChannel1 = await createSalesChannel(
+              { name: "sales channel test" },
+              [product.id]
+            )
+
+            salesChannel2 = await createSalesChannel(
+              { name: "sales channel test 2" },
+              [product2.id]
+            )
+
+            const api1Res = await api.post(
+              `/admin/api-keys`,
+              { title: "Test publishable KEY", type: ApiKeyType.PUBLISHABLE },
+              adminHeaders
+            )
+
+            publishableKey1 = api1Res.data.api_key
+
+            await api.post(
+              `/admin/api-keys/${publishableKey1.id}/sales-channels`,
+              { add: [salesChannel1.id] },
+              adminHeaders
+            )
+          })
+
+          it("should list all products for a sales channel", async () => {
+            let response = await api.get(
+              `/store/products?sales_channel_id[]=${salesChannel1.id}`,
+              { headers: { "x-publishable-api-key": publishableKey1.token } }
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.count).toEqual(1)
+            expect(response.data.products).toEqual([
+              expect.objectContaining({
+                id: product.id,
+              }),
+            ])
+          })
+
+          it("should throw error when publishable key is invalid", async () => {
+            let error = await api
+              .get(`/store/products?sales_channel_id[]=does-not-exist`, {
+                headers: { "x-publishable-api-key": "does-not-exist" },
+              })
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(400)
+            expect(error.response.data).toEqual({
+              message: `Publishable API key not found`,
+              type: "invalid_data",
+            })
+          })
+
+          it("should throw error when sales channel does not exist", async () => {
+            let error = await api
+              .get(`/store/products?sales_channel_id[]=does-not-exist`, {
+                headers: { "x-publishable-api-key": publishableKey1.token },
+              })
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(400)
+            expect(error.response.data).toEqual({
+              message: `Invalid sales channel filters provided - does-not-exist`,
+              type: "invalid_data",
+            })
+          })
+
+          it("should throw error when sales channel not in publishable key", async () => {
+            let error = await api
+              .get(`/store/products?sales_channel_id[]=${salesChannel2.id}`, {
+                headers: { "x-publishable-api-key": publishableKey1.token },
+              })
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(400)
+            expect(error.response.data).toEqual({
+              message: `Invalid sales channel filters provided - ${salesChannel2.id}`,
+              type: "invalid_data",
+            })
+          })
         })
 
         it("should throw error when calculating prices without context", async () => {

@@ -1,7 +1,12 @@
 import { ProductStatus } from "@medusajs/utils"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { authenticate } from "../../../utils/authenticate-middleware"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
-import { applyDefaultFilters, setPricingContext } from "../../utils/middlewares"
+import {
+  applyDefaultFilters,
+  filterByValidSalesChannels,
+  setPricingContext,
+} from "../../utils/middlewares"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
@@ -11,6 +16,15 @@ import {
 
 export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
+    method: "ALL",
+    matcher: "/store/products*",
+    middlewares: [
+      authenticate("store", ["session", "bearer"], {
+        allowUnauthenticated: true,
+      }),
+    ],
+  },
+  {
     method: ["GET"],
     matcher: "/store/products",
     middlewares: [
@@ -18,7 +32,7 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
         StoreGetProductsParams,
         QueryConfig.listProductQueryConfig
       ),
-      // TODO: Do we still do default sales channels? Apply middleware
+      filterByValidSalesChannels(),
       maybeApplyLinkFilter({
         entryPoint: "product_sales_channel",
         resourceId: "product_id",
@@ -38,7 +52,7 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
         StoreGetProductsParams,
         QueryConfig.retrieveProductQueryConfig
       ),
-      // TODO: Do we still do default sales channels? Apply middleware
+      filterByValidSalesChannels(),
       maybeApplyLinkFilter({
         entryPoint: "product_sales_channel",
         resourceId: "product_id",
