@@ -22,10 +22,11 @@ export const POST = async (
 
   const workflow = updateShippingOptionsWorkflow(req.scope)
 
-  const workflowInput = {
-    id: req.params.id,
-    ...shippingOptionPayload,
-  } as FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput
+  const workflowInput: FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput =
+    {
+      id: req.params.id,
+      ...shippingOptionPayload,
+    }
 
   const { result, errors } = await workflow.run({
     input: [workflowInput],
