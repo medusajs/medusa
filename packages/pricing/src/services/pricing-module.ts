@@ -159,6 +159,8 @@ export default class PricingModuleService<
   ): PricingContext["context"] | undefined {
     const fieldIdx = config.relations?.indexOf("calculated_price")
     const shouldCalculatePrice = fieldIdx > -1
+
+    delete filters.context
     if (!shouldCalculatePrice) {
       return
     }
@@ -167,7 +169,6 @@ export default class PricingModuleService<
 
     // cleanup virtual field "calculated_price"
     config.relations?.splice(fieldIdx, 1)
-    delete filters.context
 
     return pricingContext
   }

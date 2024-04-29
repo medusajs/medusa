@@ -145,6 +145,8 @@ export default class FulfillmentModuleService<
     | undefined {
     const fieldIdx = config.relations?.indexOf("shipping_options_context")
     const shouldCalculatePrice = fieldIdx > -1
+
+    delete filters.context
     if (!shouldCalculatePrice) {
       return
     }
@@ -153,7 +155,6 @@ export default class FulfillmentModuleService<
 
     // cleanup virtual field "shipping_options_context"
     config.relations?.splice(fieldIdx, 1)
-    delete filters.context
 
     return shippingOptionsContext
   }
