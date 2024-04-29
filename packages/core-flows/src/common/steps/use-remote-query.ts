@@ -7,18 +7,20 @@ interface StepInput {
   variables?: Record<string, any>
   throw_if_key_not_found?: boolean
   throw_if_relation_not_found?: boolean | string[]
+  list?: boolean
 }
 
 export const useRemoteQueryStepId = "use-remote-query"
 export const useRemoteQueryStep = createStep(
   useRemoteQueryStepId,
   async (data: StepInput, { container }) => {
+    const { list = true, fields, variables, entry_point: entryPoint } = data
     const query = container.resolve("remoteQuery")
 
     const queryObject = remoteQueryObjectFromString({
-      entryPoint: data.entry_point,
-      fields: data.fields,
-      variables: data.variables,
+      entryPoint,
+      fields,
+      variables,
     })
 
     const config = {
@@ -28,7 +30,8 @@ export const useRemoteQueryStep = createStep(
         : undefined,
     }
 
-    const result = await query(queryObject, undefined, config)
+    const entities = await query(queryObject, undefined, config)
+    const result = list ? entities : entities[0]
 
     return new StepResponse(result)
   }
