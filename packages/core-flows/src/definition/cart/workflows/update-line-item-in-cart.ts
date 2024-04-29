@@ -21,7 +21,7 @@ export const updateLineItemInCartWorkflow = createWorkflow(
   updateLineItemInCartWorkflowId,
   (input: WorkflowData<UpdateLineItemInCartWorkflowInputDTO>) => {
     const variantIds = transform({ input }, (data) => {
-      return [data.input.item.id]
+      return [data.input.item.variant_id]
     })
 
     // TODO: This is on par with the context used in v1.*, but we can be more flexible.
@@ -138,6 +138,7 @@ export const updateLineItemInCartWorkflow = createWorkflow(
     const lineItemUpdate = transform({ input, variants }, (data) => {
       const variant = data.variants[0]
       const item = data.input.item
+
       return {
         data: {
           ...data.input.update,
