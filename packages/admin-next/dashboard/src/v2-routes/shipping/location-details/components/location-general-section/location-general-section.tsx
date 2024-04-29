@@ -37,6 +37,7 @@ import { formatProvider } from "../../../../../lib/format-provider"
 import { useMemo, useState } from "react"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { ListSummary } from "../../../../../components/common/list-summary"
+import { isReturnOption } from "../../../../../lib/shipping-options"
 
 type LocationGeneralSectionProps = {
   location: StockLocationDTO
@@ -81,10 +82,12 @@ type ShippingOptionProps = {
   option: ShippingOptionDTO
   fulfillmentSetId: string
   locationId: string
+  isReturn?: boolean
 }
 
 function ShippingOption({
   option,
+  isReturn,
   fulfillmentSetId,
   locationId,
 }: ShippingOptionProps) {
@@ -145,7 +148,11 @@ function ServiceZoneOptions({
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const shippingOptions = zone.shipping_options
+  const shippingOptions = zone.shipping_options.filter(
+    (o) => !isReturnOption(o)
+  )
+
+  const returnOptions = zone.shipping_options.filter((o) => isReturnOption(o))
 
   return (
     <>
@@ -181,31 +188,37 @@ function ServiceZoneOptions({
         )}
       </div>
 
-      {/*TODO implement return options*/}
-
       <div className="-mb-4 flex flex-col border-t border-dashed px-6 py-4">
         <div className="item-center flex justify-between">
           <span className="text-ui-fg-subtle txt-small self-center font-medium">
             {t("shipping.serviceZone.returnOptions")}
           </span>
-          {!shippingOptions.length && (
-            <Button
-              className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent"
-              variant="transparent"
-              onClick={() => alert("TODO")}
-            >
-              {t("shipping.serviceZone.addOption")}
-            </Button>
-          )}
+          <Button
+            className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent"
+            variant="transparent"
+            onClick={() =>
+              navigate(
+                `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create?is_return`
+              )
+            }
+          >
+            {t("shipping.serviceZone.addOption")}
+          </Button>
         </div>
 
-        {/*{!!shippingOptions.length && (*/}
-        {/*  <div className="flex flex-col gap-3">*/}
-        {/*    {shippingOptions.map((o) => (*/}
-        {/*      <ShippingOption key={o.id} option={o} />*/}
-        {/*    ))}*/}
-        {/*  </div>*/}
-        {/*)}*/}
+        {!!returnOptions.length && (
+          <div className="shadow-elevation-card-rest bg-ui-bg-subtle mt-4 grid divide-y rounded-md">
+            {returnOptions.map((o) => (
+              <ShippingOption
+                key={o.id}
+                isReturn
+                option={o}
+                locationId={locationId}
+                fulfillmentSetId={fulfillmentSetId}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </>
   )
@@ -237,6 +250,18 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
       .map((code) => staticCountries.find((c) => c.iso_2 === code))
   }, zone.geo_zones)
 
+  const [shippingOptionsCount, returnOptionsCount] = useMemo(() => {
+    const optionsCount = zone.shipping_options.filter(
+      (o) => !isReturnOption(o)
+    ).length
+
+    const returnOptionsCount = zone.shipping_options.filter((o) =>
+      isReturnOption(o)
+    ).length
+
+    return [optionsCount, returnOptionsCount]
+  }, [zone.shipping_options])
+
   return (
     <div className="py-4">
       <div className="flex flex-row items-center justify-between gap-x-4 px-6">
@@ -258,9 +283,16 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
             />
             <span>·</span>
             <Text className="text-ui-fg-subtle txt-small">
-              {zone.shipping_options.length}{" "}
+              {shippingOptionsCount}{" "}
               {t("shipping.serviceZone.optionsLength", {
-                count: zone.shipping_options.length,
+                count: shippingOptionsCount,
+              })}
+            </Text>
+            <span>·</span>
+            <Text className="text-ui-fg-subtle txt-small">
+              {returnOptionsCount}{" "}
+              {t("shipping.serviceZone.returnOptionsLength", {
+                count: returnOptionsCount,
               })}
             </Text>
           </div>
@@ -288,11 +320,11 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
             groups={[
               {
                 actions: [
-                  {
-                    label: t("shipping.serviceZone.addOption"),
-                    icon: <Plus />,
-                    to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create`,
-                  },
+                  // {
+                  //   label: t("shipping.serviceZone.addOption"),
+                  //   icon: <Plus />,
+                  //   to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create`,
+                  // },
                   {
                     label: t("actions.edit"),
                     icon: <PencilSquare />,

@@ -20,6 +20,7 @@ enum ShippingAllocation {
 }
 
 type EditShippingOptionFormProps = {
+  isReturn?: boolean
   shippingOption: ShippingOptionDTO
 }
 
@@ -33,6 +34,7 @@ const EditShippingOptionSchema = zod.object({
 
 export const EditShippingOptionForm = ({
   shippingOption,
+  isReturn,
 }: EditShippingOptionFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()

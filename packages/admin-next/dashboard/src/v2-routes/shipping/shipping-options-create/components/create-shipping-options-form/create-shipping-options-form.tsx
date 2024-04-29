@@ -57,10 +57,12 @@ const CreateServiceZoneSchema = zod.object({
 
 type CreateServiceZoneFormProps = {
   zone: ServiceZoneDTO
+  isReturn?: boolean
 }
 
 export function CreateShippingOptionsForm({
   zone,
+  isReturn,
 }: CreateServiceZoneFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -134,6 +136,15 @@ export function CreateShippingOptionsForm({
       shipping_profile_id: data.shipping_profile_id,
       provider_id: data.provider_id,
       prices: [...currencyPrices, ...regionPrices],
+      rules: isReturn
+        ? [
+            {
+              value: "true",
+              attribute: "is_return",
+              operator: "eq",
+            },
+          ]
+        : undefined,
       type: {
         // TODO: FETCH TYPES
         label: "Type label",
@@ -271,19 +282,26 @@ export function CreateShippingOptionsForm({
             <ProgressTabs.Content value={Tab.DETAILS} className="h-full w-full">
               <div className="container mx-auto w-[720px] px-1 py-8">
                 <Heading className="mb-12 mt-8 text-2xl">
-                  {t("shipping.shippingOptions.create.title", {
-                    zone: zone.name,
-                  })}
+                  {t(
+                    `shipping.${
+                      isReturn ? "returnOptions" : "shippingOptions"
+                    }.create.title`,
+                    {
+                      zone: zone.name,
+                    }
+                  )}
                 </Heading>
 
-                <div>
-                  <Text weight="plus">
-                    {t("shipping.shippingOptions.create.subtitle")}
-                  </Text>
-                  <Text className="text-ui-fg-subtle mb-8 mt-2">
-                    {t("shipping.shippingOptions.create.description")}
-                  </Text>
-                </div>
+                {!isReturn && (
+                  <div>
+                    <Text weight="plus">
+                      {t("shipping.shippingOptions.create.subtitle")}
+                    </Text>
+                    <Text className="text-ui-fg-subtle mb-8 mt-2">
+                      {t("shipping.shippingOptions.create.description")}
+                    </Text>
+                  </div>
+                )}
 
                 <Form.Field
                   control={form.control}

@@ -683,6 +683,8 @@
       "editOption": "Edit option",
       "optionsLength_one": "shipping option",
       "optionsLength_other": "shipping options",
+      "returnOptionsLength_one": "return option",
+      "returnOptionsLength_other": "return options",
       "shippingOptionsPlaceholder": "Not covered by any shipping options.",
       "addOption": "Add option",
       "shippingOptions": "Shipping options",
@@ -696,7 +698,7 @@
     },
     "shippingOptions": {
       "create": {
-        "title": "Create shipping options for {{zone}}",
+        "title": "Create a shipping option for {{zone}}",
         "subtitle": "General information",
         "description": "To start selling, all you need is a name and a price",
         "details": "Details",
@@ -713,6 +715,11 @@
       "edit": {
         "title": "Edit Shipping Option",
         "provider": "Fulfillment provider"
+      }
+    },
+    "returnOptions" : {
+      "create": {
+        "title": "Create a return option for {{zone}}"
       }
     },
     "salesChannels": {
