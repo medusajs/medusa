@@ -1,9 +1,3 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import {
-  IPricingModuleService,
-  IProductModuleService,
-  ISalesChannelModuleService,
-} from "@medusajs/types"
 import { ProductStatus } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
@@ -27,9 +21,6 @@ medusaIntegrationTestRunner({
       let variant2
       let variant3
       let variant4
-      let pricingModule: IPricingModuleService
-      let productModule: IProductModuleService
-      let salesChannelModule: ISalesChannelModuleService
 
       const createProducts = async (data) => {
         const response = await api.post(
@@ -61,11 +52,6 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-        productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
-        salesChannelModule = appContainer.resolve(
-          ModuleRegistrationName.SALES_CHANNEL
-        )
       })
 
       beforeEach(async () => {
