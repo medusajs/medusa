@@ -2,10 +2,10 @@ name: Medusa Pipeline
 on:
   push:
     branches:
-    - develop
+      - develop
   pull_request:
     branches:
-    - develop
+      - develop
 
 jobs:
   setup:
@@ -320,6 +320,9 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           extension: pipeline
+
+      - name: Build
+        run: yarn build
 
       - name: Run Modules integration tests
         run: yarn test:integration:modules
