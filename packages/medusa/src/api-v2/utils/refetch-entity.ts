@@ -24,7 +24,7 @@ export const refetchEntities = async (
   }
 
   let variables = { filters, ...context }
-  console.log("variables --", variables)
+
   const queryObject = remoteQueryObjectFromString({
     entryPoint,
     variables,
@@ -40,7 +40,7 @@ export const refetchEntity = async (
   scope: MedusaContainer,
   fields: string[]
 ) => {
-  const entities = await refetchEntities(entryPoint, idOrFilter, scope, fields)
-  console.log("entities ---", entities)
-  return entities[0]
+  const [entity] = await refetchEntities(entryPoint, idOrFilter, scope, fields)
+
+  return entity
 }
