@@ -109,6 +109,13 @@ export type UpdateInventoryItemReq = Omit<
   "id"
 >
 
+// Reservations
+export type UpdateReservationReq = Omit<
+  InventoryNext.UpdateReservationItemInput,
+  "id"
+>
+export type CreateReservationReq = InventoryNext.CreateReservationItemInput
+
 // Inventory Item Levels
 export type InventoryItemLocationBatch = {
   creates: { location_id: string; stocked_quantity?: number }[]

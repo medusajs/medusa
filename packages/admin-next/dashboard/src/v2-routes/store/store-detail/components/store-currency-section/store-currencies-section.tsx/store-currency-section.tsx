@@ -5,6 +5,7 @@ import {
   CommandBar,
   Container,
   Heading,
+  toast,
   usePrompt,
 } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -31,7 +32,13 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
 
   const { searchParams, raw } = useCurrenciesTableQuery({ pageSize: PAGE_SIZE })
 
-  const { currencies, count, isLoading, isError, error } = useCurrencies(
+  const {
+    currencies,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useCurrencies(
     {
       code: store.supported_currency_codes,
       ...searchParams,
@@ -56,8 +63,9 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
     enableRowSelection: true,
     pageSize: PAGE_SIZE,
     meta: {
-      currencyCodes: store.supported_currency_codes,
       storeId: store.id,
+      currencyCodes: store.supported_currency_codes,
+      defaultCurrencyCode: store.default_currency_code,
     },
   })
 
@@ -81,18 +89,24 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
       return
     }
 
-    await mutateAsync(
-      {
+    try {
+      await mutateAsync({
         supported_currency_codes: store.supported_currency_codes.filter(
           (c) => !ids.includes(c)
         ),
-      },
-      {
-        onSuccess: () => {
-          setRowSelection({})
-        },
-      }
-    )
+      })
+      setRowSelection({})
+
+      toast.success(t("general.success"), {
+        description: t("store.toast.currenciesRemoved"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   if (isError) {
@@ -151,10 +165,12 @@ const CurrencyActions = ({
   storeId,
   currency,
   currencyCodes,
+  defaultCurrencyCode,
 }: {
   storeId: string
   currency: CurrencyDTO
   currencyCodes: string[]
+  defaultCurrencyCode: string
 }) => {
   const { mutateAsync } = useUpdateStore(storeId)
 
@@ -177,11 +193,23 @@ const CurrencyActions = ({
       return
     }
 
-    await mutateAsync({
-      supported_currency_codes: currencyCodes.filter(
-        (c) => c !== currency.code
-      ),
-    })
+    try {
+      await mutateAsync({
+        supported_currency_codes: currencyCodes.filter(
+          (c) => c !== currency.code
+        ),
+      })
+
+      toast.success(t("general.success"), {
+        description: t("store.toast.currenciesRemoved"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (
@@ -193,6 +221,7 @@ const CurrencyActions = ({
               icon: <Trash />,
               label: t("actions.remove"),
               onClick: handleRemove,
+              disabled: currency.code === defaultCurrencyCode,
             },
           ],
         },
@@ -240,9 +269,11 @@ const useColumns = () => {
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
-          const { currencyCodes, storeId } = table.options.meta as {
+          const { currencyCodes, storeId, defaultCurrencyCode } = table.options
+            .meta as {
             currencyCodes: string[]
             storeId: string
+            defaultCurrencyCode: string
           }
 
           return (
@@ -250,6 +281,7 @@ const useColumns = () => {
               storeId={storeId}
               currency={row.original}
               currencyCodes={currencyCodes}
+              defaultCurrencyCode={defaultCurrencyCode}
             />
           )
         },

@@ -1,5 +1,12 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { Container, Heading, StatusBadge, Text, usePrompt } from "@medusajs/ui"
+import {
+  Container,
+  Heading,
+  StatusBadge,
+  Text,
+  toast,
+  usePrompt,
+} from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { SalesChannelDTO } from "@medusajs/types"
@@ -36,11 +43,21 @@ export const SalesChannelGeneralSection = ({
       return
     }
 
-    await mutateAsync(undefined, {
-      onSuccess: () => {
-        navigate("/settings/sales-channels", { replace: true })
-      },
-    })
+    try {
+      await mutateAsync()
+
+      navigate("/settings/sales-channels", { replace: true })
+
+      toast.success(t("general.success"), {
+        description: t("salesChannels.toast.delete"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (

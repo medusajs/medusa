@@ -299,7 +299,12 @@
         "manageInventoryLabel": "Manage inventory",
         "manageInventoryHint": "When enabled the inventory level will be regulated when orders and returns are created.",
         "allowBackordersLabel": "Allow backorders",
-        "allowBackordersHint": "When enabled the variant can be sold even if the inventory level is below zero."
+        "allowBackordersHint": "When enabled the variant can be sold even if the inventory level is below zero.",
+        "toast": {
+          "levelsBatch": "Inventory levels updated.",
+          "update": "Inventory item updated successfully",
+          "updateLevel": "Inventory level updated successfully"
+        }
       }
     },
     "options": {
@@ -359,7 +364,25 @@
     "locationLevels": "Location levels",
     "associatedVariants": "Associated variants",
     "manageLocations": "Manage locations",
-    "deleteWarning": "You are about to delete an inventory item. This action cannot be undone."
+    "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
+    "reservation": { 
+      "header": "Reservation of {{itemName}}",
+      "editItemDetails": "Edit item details",
+      "orderID": "Order ID",
+      "description": "Description", 
+      "location": "Location",
+      "inStockAtLocation": "In stock at this location",
+      "availableAtLocation": "Available at this location",
+      "reservedAtLocation": "Reserved at this location",
+      "reservedAmount": "Reserve amount",
+      "create": "Create reservation",
+      "itemToReserve": "Item to reserve",
+      "quantityPlaceholder": "How many do you want to reserve?",
+      "descriptionPlaceholder": "What type of reservation is this?",
+      "successToast": "Reservation was successfully created.",
+      "updateSuccessToast": "Reservation was successfully updated.",
+      "deleteSuccessToast": "Reservation was successfully deleted."
+    }
   },
   "giftCards": {
     "domain": "Gift Cards",
@@ -845,6 +868,8 @@
       "value": "Value",
       "campaign": "Campaign",
       "allocation": "Allocation",
+      "addCondition": "Add condition",
+      "clearAll": "Clear all",
       "conditions": {
         "rules": {
           "title": "Who can use this code?",
@@ -860,6 +885,10 @@
         }
       }
     },
+    "errors": {
+      "requiredField": "Required field"
+    },
+    "create": {},
     "edit": {
       "title": "Edit Promotion Details",
       "rules": {
@@ -876,6 +905,9 @@
       "title": "Add Promotion To Campaign"
     },
     "form": {
+      "required": "Required",
+      "and": "AND",
+      "selectAttribute": "Select Attribute",
       "campaign": {
         "existing": {
           "title": "Existing Campaign",
@@ -896,17 +928,31 @@
         },
         "automatic": {
           "title": "Automatic",
-          "description": "Customers will automatically see this during checkout"
+          "description": "Customers will see this at checkout"
+        }
+      },
+      "max_quantity": {
+        "title": "Maximum Quantity",
+        "description": "Maximum quantity of items this promotion applies to"
+      },
+      "type": {
+        "standard": {
+          "title": "Standard",
+          "description": "A standard promotion"
+        },
+        "buyget": {
+          "title": "Buy Get",
+          "description": "Buy X get Y promotion"
         }
       },
       "allocation": {
         "each": {
           "title": "Each",
-          "description": "Applies value on each product"
+          "description": "Applies value on each item"
         },
         "across": {
           "title": "Across",
-          "description": "Applies value proportionally across products"
+          "description": "Applies value across items"
         }
       },
       "code": {
@@ -1016,6 +1062,9 @@
       "languageHint": "The language you want to use in the admin dashboard. This will not change the language of your store.",
       "languagePlaceholder": "Select language",
       "usageInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>."
+    },
+    "toast": {
+      "edit": "Profiles changes saved"
     }
   },
   "users": {
@@ -1049,6 +1098,7 @@
     "manageYourStoresDetails": "Manage your store's details",
     "editStore": "Edit store",
     "defaultCurrency": "Default currency",
+    "defaultRegion": "Default region",
     "swapLinkTemplate": "Swap link template",
     "paymentLinkTemplate": "Payment link template",
     "inviteLinkTemplate": "Invite link template",
@@ -1059,6 +1109,11 @@
     "currencyAlreadyAdded": "The currency has already been added to your store.",
     "edit": {
       "header": "Edit Store"
+    },
+    "toast": {
+      "update": "Store successfully updated",
+      "currenciesUpdated": "Currencies updated successfully",
+      "currenciesRemoved": "Removed currencies from the store successfully"
     }
   },
   "regions": {
@@ -1169,7 +1224,12 @@
     "selectLocations": "Select locations that stock the item.",
     "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
     "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
-    "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location."
+    "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location.",
+    "toast": {
+      "create": "Location created sucessfully",
+      "update": "Location updated sucessfully",
+      "removeChannel": "Sales channel removed sucessfully"
+    }
   },
   "reservations": {
     "domain": "Reservations",
@@ -1185,11 +1245,15 @@
     "addProducts": "Add Products",
     "editSalesChannel": "Edit sales channel",
     "productAlreadyAdded": "The product has already been added to the sales channel.",
-    "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone."
+    "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone.",
+    "toast": {
+      "create": "Sales channel created successfully",
+      "update": "Sales channel updated successfully",
+      "delete": "Sales channel deleted successfully"
+    }
   },
   "apiKeyManagement": {
     "domain": {
-      "apiKeys": "API Keys",
       "publishable": "Publishable API Keys",
       "secret": "Secret API Keys"
     },
@@ -1207,25 +1271,40 @@
       "createSecretHeader": "Create Secret API Key",
       "createSecretHint": "Create a new secret API key to access the Medusa API.",
       "secretKeyCreatedHeader": "Secret Key Created",
-      "secretKeyCreatedHint": "Your new secret key has been generated. Copy and securely store it now. This is the only time it will be displayed."
+      "secretKeyCreatedHint": "Your new secret key has been generated. Copy and securely store it now. This is the only time it will be displayed.",
+      "copySecretTokenSuccess": "Secret key was copied to clipboard.",
+      "copySecretTokenFailure": "Failed to copy secret key to clipboard.",
+      "successToast": "API key was successfully created."
     },
     "edit": {
-      "header": "Edit API Key"
+      "header": "Edit API Key",
+      "successToast": "API key {{title}} was successfully updated."
     },
-    "tabs": {
-      "secret": "Secret",
-      "publishable": "Publishable"
+    "salesChannels": {
+      "successToast_one": "{{count}} sales channel was successfully added to the API key.",
+      "successToast_other": "{{count}} sales channels were successfully added to the API key.",
+      "alreadyAddedTooltip": "The sales channel has already been added to the API key."
     },
-    "warnings": {
-      "delete": "You are about to delete the API key {{title}}. This action cannot be undone.",
-      "revoke": "You are about to revoke the API key {{title}}. This action cannot be undone, and the key cannot be used in future requests.",
-      "removeSalesChannel": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
-      "removeSalesChannels_one": "You are about to remove {{count}} sales channel from the API key. This action cannot be undone.",
-      "removeSalesChannels_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
-      "salesChannelsSecretKey": "Sales channels cannot be added to a secret API key."
+    "delete": {
+      "warning": "You are about to delete the API key {{title}}. This action cannot be undone.",
+      "successToast": "API key {{title}} was successfully deleted."
+    },
+    "revoke": {
+      "warning": "You are about to revoke the API key {{title}}. This action cannot be undone.",
+      "successToast": "API key {{title}} was successfully revoked."
+    },
+    "removeSalesChannel": {
+      "warning": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
+      "warningBatch_one": "You are about to remove {{count}} sales channel from the API key. This action cannot be undone.",
+      "warningBatch_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
+      "successToast": "Sales channel was successfully removed from the API key.",
+      "successToastBatch_one": "{{count}} sales channel was successfully removed from the API key.",
+      "successToastBatch_other": "{{count}} sales channels were successfully removed from the API key."
     },
     "actions": {
-      "revoke": "Revoke"
+      "revoke": "Revoke API key",
+      "copy": "Copy API key",
+      "copySuccessToast": "API key was copied to clipboard."
     },
     "table": {
       "lastUsedAtHeader": "Last Used At",
@@ -1263,7 +1342,10 @@
     "successAction": "Sign in to start using Medusa",
     "invalidTokenTitle": "Your invite token is invalid",
     "invalidTokenHint": "Try requesting a new invite link.",
-    "passwordMismatch": "Passwords do not match"
+    "passwordMismatch": "Passwords do not match",
+    "toast": {
+      "accepted": "Invite successfully accepted"
+    }
   },
   "resetPassword": {
     "title": "Reset password",

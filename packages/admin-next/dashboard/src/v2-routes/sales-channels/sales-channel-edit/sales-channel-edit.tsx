@@ -10,7 +10,12 @@ export const SalesChannelEdit = () => {
   const { id } = useParams()
   const { t } = useTranslation()
 
-  const { sales_channel, isLoading, isError, error } = useSalesChannel(id!)
+  const {
+    sales_channel,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useSalesChannel(id!)
 
   if (isError) {
     throw error

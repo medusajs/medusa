@@ -1,15 +1,18 @@
-import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
-import { StorePostCartsCartLineItemsItemReq } from "./[id]/line-items/[line_id]/validators"
-import { StorePostCartsCartLineItemsReq } from "./[id]/line-items/validators"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
-  StoreDeleteCartsCartPromotionsReq,
-  StoreGetCartsCartParams,
-  StorePostCartReq,
-  StorePostCartsCartPromotionsReq,
-  StorePostCartsCartReq,
+  StoreAddCartLineItem,
+  StoreAddCartPromotions,
+  StoreAddCartShippingMethods,
+  StoreCalculateCartTaxes,
+  StoreCreateCart,
+  StoreGetCartsCart,
+  StoreRemoveCartPromotions,
+  StoreUpdateCart,
+  StoreUpdateCartLineItem,
 } from "./validators"
 
 export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
@@ -26,8 +29,8 @@ export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/store/carts/:id",
     middlewares: [
-      transformQuery(
-        StoreGetCartsCartParams,
+      validateAndTransformQuery(
+        StoreGetCartsCart,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -35,34 +38,110 @@ export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/store/carts",
-    middlewares: [transformBody(StorePostCartReq)],
+    middlewares: [
+      validateAndTransformBody(StoreCreateCart),
+      validateAndTransformQuery(
+        StoreGetCartsCart,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/store/carts/:id",
-    middlewares: [transformBody(StorePostCartsCartReq)],
+    middlewares: [
+      validateAndTransformBody(StoreUpdateCart),
+      validateAndTransformQuery(
+        StoreGetCartsCart,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/store/carts/:id/line-items",
-    middlewares: [transformBody(StorePostCartsCartLineItemsReq)],
+    middlewares: [
+      validateAndTransformBody(StoreAddCartLineItem),
+      validateAndTransformQuery(
+        StoreGetCartsCart,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/store/carts/:id/line-items/:line_id",
-    middlewares: [transformBody(StorePostCartsCartLineItemsItemReq)],
+    middlewares: [
+      validateAndTransformBody(StoreUpdateCartLineItem),
+      validateAndTransformQuery(
+        StoreGetCartsCart,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/store/carts/:id/line-items/:line_id",
+    middlewares: [
+      validateAndTransformQuery(
+        StoreGetCartsCart,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
+    method: ["POST"],
     matcher: "/store/carts/:id/promotions",
-    middlewares: [transformBody(StorePostCartsCartPromotionsReq)],
+    middlewares: [
+      validateAndTransformBody(StoreAddCartPromotions),
+      validateAndTransformQuery(
+        StoreGetCartsCart,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/store/carts/:id/taxes",
+    middlewares: [
+      validateAndTransformBody(StoreCalculateCartTaxes),
+      validateAndTransformQuery(
+        StoreGetCartsCart,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/store/carts/:id/payment-collections",
+    middlewares: [
+      validateAndTransformBody(StoreUpdateCart),
+      validateAndTransformQuery(
+        StoreGetCartsCart,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/store/carts/:id/shipping-methods",
+    middlewares: [
+      validateAndTransformBody(StoreAddCartShippingMethods),
+      validateAndTransformQuery(
+        StoreGetCartsCart,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/store/carts/:id/promotions",
-    middlewares: [transformBody(StoreDeleteCartsCartPromotionsReq)],
+    middlewares: [
+      validateAndTransformBody(StoreRemoveCartPromotions),
+      validateAndTransformQuery(
+        StoreGetCartsCart,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
 ]

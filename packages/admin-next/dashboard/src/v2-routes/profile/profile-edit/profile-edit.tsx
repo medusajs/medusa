@@ -5,7 +5,7 @@ import { useMe } from "../../../hooks/api/users"
 import { EditProfileForm } from "./components/edit-profile-form/edit-profile-form"
 
 export const ProfileEdit = () => {
-  const { user, isLoading, isError, error } = useMe()
+  const { user, isPending: isLoading, isError, error } = useMe()
 
   const { t } = useTranslation()
 

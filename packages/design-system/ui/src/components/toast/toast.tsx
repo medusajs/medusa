@@ -14,13 +14,49 @@ interface ToastComponentProps {
   dismissLabel?: string
 }
 
+/**
+ * This component is based on the [Sonner](https://sonner.emilkowal.ski/toast) toast library.
+ */
 export const Toast = ({
+  /**
+   * Optional ID of the toast.
+   */
   id,
+  /**
+   * @ignore
+   * 
+   * @privateRemarks
+   * As the Toast component is created using
+   * the `toast` utility functions, the variant is inferred
+   * from the utility function.
+   */
   variant = "info",
+  /**
+   * @ignore
+   * 
+   * @privateRemarks
+   * The `toast` utility functions accept this as a parameter.
+   */
   title,
+  /**
+   * The toast's text.
+   */
   description,
+  /**
+   * The toast's action buttons.
+   */
   action,
+  /**
+   * @ignore
+   * 
+   * @privateRemarks
+   * The `toast` utility functions don't allow
+   * passing this prop.
+   */
   onDismiss,
+  /**
+   * The label of the dismiss button, if available.
+   */
   dismissLabel = "Close",
 }: ToastComponentProps) => {
   const hasActionables = !!action || onDismiss

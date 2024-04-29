@@ -10,6 +10,7 @@ export const AdminGetStoresParams = createFindParams({
   offset: 0,
 }).merge(
   z.object({
+    q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
     name: z.union([z.string(), z.array(z.string())]).optional(),
     $and: z.lazy(() => AdminGetStoresParams.array()).optional(),

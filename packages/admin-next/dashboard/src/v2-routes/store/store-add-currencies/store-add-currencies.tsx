@@ -3,7 +3,7 @@ import { useStore } from "../../../hooks/api/store"
 import { AddCurrenciesForm } from "./components/add-currencies-form/add-currencies-form"
 
 export const StoreAddCurrencies = () => {
-  const { store, isLoading, isError, error } = useStore()
+  const { store, isPending: isLoading, isError, error } = useStore()
 
   if (isError) {
     throw error

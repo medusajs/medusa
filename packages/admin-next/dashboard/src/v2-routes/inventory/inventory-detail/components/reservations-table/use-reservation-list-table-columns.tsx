@@ -9,14 +9,14 @@ import { useTranslation } from "react-i18next"
 /**
  * Adds missing properties to the InventoryItemDTO type.
  */
-interface ExtendedInventoryItem extends InventoryNext.ReservationItemDTO {
+interface ExtendedReservationItem extends InventoryNext.ReservationItemDTO {
   line_item: { order_id: string }
   location: StockLocationDTO
 }
 
-const columnHelper = createColumnHelper<ExtendedInventoryItem>()
+const columnHelper = createColumnHelper<ExtendedReservationItem>()
 
-export const useInventoryTableColumns = ({ sku }: { sku: string }) => {
+export const useReservationTableColumn = ({ sku }: { sku: string }) => {
   const { t } = useTranslation()
 
   return useMemo(
@@ -32,17 +32,17 @@ export const useInventoryTableColumns = ({ sku }: { sku: string }) => {
         },
       }),
       columnHelper.accessor("line_item.order_id", {
-        header: t("inventory.reserved"),
+        header: t("inventory.reservation.orderID"),
         cell: ({ getValue }) => {
-          const quantity = getValue()
+          const orderId = getValue()
 
-          if (Number.isNaN(quantity)) {
+          if (!orderId) {
             return <PlaceholderCell />
           }
 
           return (
             <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{quantity}</span>
+              <span className="truncate">{orderId}</span>
             </div>
           )
         },
@@ -64,7 +64,7 @@ export const useInventoryTableColumns = ({ sku }: { sku: string }) => {
         },
       }),
       columnHelper.accessor("location.name", {
-        header: t("inventory.location"),
+        header: t("inventory.reservation.location"),
         cell: ({ getValue }) => {
           const location = getValue()
 
@@ -99,7 +99,7 @@ export const useInventoryTableColumns = ({ sku }: { sku: string }) => {
       }),
       columnHelper.display({
         id: "actions",
-        cell: ({ row }) => <ReservationActions item={row.original} />,
+        cell: ({ row }) => <ReservationActions reservation={row.original} />,
       }),
     ],
     [t]

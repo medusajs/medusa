@@ -136,6 +136,82 @@ export const GeneralSectionSkeleton = ({
   )
 }
 
+type TableSkeletonProps = {
+  rowCount?: number
+  search?: boolean
+  filters?: boolean
+  orderBy?: boolean
+  pagination?: boolean
+  layout?: "fit" | "fill"
+}
+
+export const TableSkeleton = ({
+  rowCount = 10,
+  search = true,
+  filters = true,
+  orderBy = true,
+  pagination = true,
+  layout = "fit",
+}: TableSkeletonProps) => {
+  // Row count + header row
+  const totalRowCount = rowCount + 1
+
+  const rows = Array.from({ length: totalRowCount }, (_, i) => i)
+  const hasToolbar = search || filters || orderBy
+
+  return (
+    <div
+      aria-hidden
+      className={clx({
+        "flex h-full flex-col overflow-hidden": layout === "fill",
+      })}
+    >
+      {hasToolbar && (
+        <div className="flex items-center justify-between px-6 py-4">
+          {filters && <Skeleton className="h-7 w-full max-w-[135px]" />}
+          {(search || orderBy) && (
+            <div className="flex items-center gap-x-2">
+              {search && <Skeleton className="h-7 w-[160px]" />}
+              {orderBy && <Skeleton className="h-7 w-7" />}
+            </div>
+          )}
+        </div>
+      )}
+      <div className="flex flex-col divide-y border-y">
+        {rows.map((row) => (
+          <Skeleton key={row} className="h-10 w-full rounded-none" />
+        ))}
+      </div>
+      {pagination && (
+        <div
+          className={clx("flex items-center justify-between p-4", {
+            "border-t": layout === "fill",
+          })}
+        >
+          <Skeleton className="h-7 w-[138px]" />
+          <div className="flex items-center gap-x-2">
+            <Skeleton className="h-7 w-24" />
+            <Skeleton className="h-7 w-11" />
+            <Skeleton className="h-7 w-11" />
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export const TableSectionSkeleton = (props: TableSkeletonProps) => {
+  return (
+    <Container className="divide-y p-0" aria-hidden>
+      <div className="flex items-center justify-between px-6 py-4" aria-hidden>
+        <HeadingSkeleton level="h2" characters={16} />
+        <IconButtonSkeleton />
+      </div>
+      <TableSkeleton {...props} />
+    </Container>
+  )
+}
+
 export const JsonViewSectionSkeleton = () => {
   return (
     <Container className="divide-y p-0" aria-hidden>

@@ -130,6 +130,20 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("should support search on campaigns", async () => {
+        const response = await api.get(
+          `/admin/campaigns?q=ign%202`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.campaigns).toEqual([
+          expect.objectContaining({
+            name: "campaign 2",
+          }),
+        ])
+      })
+
       it("should get all campaigns and its count filtered", async () => {
         const response = await api.get(
           `/admin/campaigns?fields=name,created_at,budget.id`,

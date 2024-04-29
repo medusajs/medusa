@@ -1,6 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PromotionDTO } from "@medusajs/types"
-import { Button, CurrencyInput, Input, RadioGroup, Text } from "@medusajs/ui"
+import {
+  Button,
+  clx,
+  CurrencyInput,
+  Input,
+  RadioGroup,
+  Text,
+} from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -53,7 +60,6 @@ export const EditPromotionDetailsForm = ({
   const { mutateAsync, isPending } = useUpdatePromotion(promotion.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    console.log("data ------ ", data)
     await mutateAsync(
       {
         is_automatic: data.is_automatic === "true",
@@ -92,6 +98,10 @@ export const EditPromotionDetailsForm = ({
                         onValueChange={field.onChange}
                       >
                         <RadioGroup.ChoiceBox
+                          className={clx("basis-1/2", {
+                            "border-2 border-ui-border-interactive":
+                              "false" === field.value,
+                          })}
                           value={"false"}
                           label={t("promotions.form.method.code.title")}
                           description={t(
@@ -99,6 +109,10 @@ export const EditPromotionDetailsForm = ({
                           )}
                         />
                         <RadioGroup.ChoiceBox
+                          className={clx("basis-1/2", {
+                            "border-2 border-ui-border-interactive":
+                              "true" === field.value,
+                          })}
                           value={"true"}
                           label={t("promotions.form.method.automatic.title")}
                           description={t(
@@ -157,6 +171,10 @@ export const EditPromotionDetailsForm = ({
                         onValueChange={field.onChange}
                       >
                         <RadioGroup.ChoiceBox
+                          className={clx("basis-1/2", {
+                            "border-2 border-ui-border-interactive":
+                              "fixed" === field.value,
+                          })}
                           value={"fixed"}
                           label={t("promotions.form.value_type.fixed.title")}
                           description={t(
@@ -165,6 +183,10 @@ export const EditPromotionDetailsForm = ({
                         />
 
                         <RadioGroup.ChoiceBox
+                          className={clx("basis-1/2", {
+                            "border-2 border-ui-border-interactive":
+                              "percentage" === field.value,
+                          })}
                           value={"percentage"}
                           label={t(
                             "promotions.form.value_type.percentage.title"
@@ -237,6 +259,10 @@ export const EditPromotionDetailsForm = ({
                         onValueChange={field.onChange}
                       >
                         <RadioGroup.ChoiceBox
+                          className={clx("basis-1/2", {
+                            "border-2 border-ui-border-interactive":
+                              "each" === field.value,
+                          })}
                           value={"each"}
                           label={t("promotions.form.allocation.each.title")}
                           description={t(
@@ -245,6 +271,10 @@ export const EditPromotionDetailsForm = ({
                         />
 
                         <RadioGroup.ChoiceBox
+                          className={clx("basis-1/2", {
+                            "border-2 border-ui-border-interactive":
+                              "across" === field.value,
+                          })}
                           value={"across"}
                           label={t("promotions.form.allocation.across.title")}
                           description={t(

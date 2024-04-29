@@ -1,12 +1,13 @@
 import { PencilSquare, Trash, XCircle } from "@medusajs/icons"
 import { ApiKeyDTO } from "@medusajs/types"
 import {
+  Badge,
   Container,
   Copy,
   Heading,
   StatusBadge,
   Text,
-  clx,
+  toast,
   usePrompt,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -20,7 +21,11 @@ import {
 } from "../../../../../hooks/api/api-keys"
 import { useUser } from "../../../../../hooks/api/users"
 import { useDate } from "../../../../../hooks/use-date"
-import { getApiKeyStatusProps, getApiKeyTypeProps } from "../../../common/utils"
+import {
+  getApiKeyStatusProps,
+  getApiKeyTypeProps,
+  prettifyRedactedToken,
+} from "../../../common/utils"
 
 type ApiKeyGeneralSectionProps = {
   apiKey: ApiKeyDTO
@@ -38,7 +43,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.warnings.delete", {
+      description: t("apiKeyManagement.delete.warning", {
         title: apiKey.title,
       }),
       confirmText: t("actions.delete"),
@@ -51,7 +56,19 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
 
     await deleteAsync(undefined, {
       onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("apiKeyManagement.delete.successToast", {
+            title: apiKey.title,
+          }),
+          dismissLabel: t("general.close"),
+        })
         navigate("..", { replace: true })
+      },
+      onError: (err) => {
+        toast.error(t("general.error"), {
+          description: err.message,
+          dismissLabel: t("general.close"),
+        })
       },
     })
   }
@@ -59,7 +76,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const handleRevoke = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.warnings.revoke", {
+      description: t("apiKeyManagement.revoke.warning", {
         title: apiKey.title,
       }),
       confirmText: t("apiKeyManagement.actions.revoke"),
@@ -70,7 +87,22 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
       return
     }
 
-    await revokeAsync()
+    await revokeAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("apiKeyManagement.revoke.successToast", {
+            title: apiKey.title,
+          }),
+          dismissLabel: t("general.close"),
+        })
+      },
+      onError: (err) => {
+        toast.error(t("general.error"), {
+          description: err.message,
+          dismissLabel: t("general.close"),
+        })
+      },
+    })
   }
 
   const dangerousActions = [
@@ -109,7 +141,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
                   {
                     label: t("actions.edit"),
                     icon: <PencilSquare />,
-                    to: `/settings/api-key-management/${apiKey.id}/edit`,
+                    to: "edit",
                   },
                 ],
               },
@@ -124,26 +156,19 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
         <Text size="small" leading="compact" weight="plus">
           {t("fields.key")}
         </Text>
-        <div
-          className={clx(
-            "bg-ui-bg-subtle border-ui-border-base box-border flex w-fit cursor-default items-center gap-x-0.5 overflow-hidden rounded-full border pl-2 pr-1",
-            {
-              "pr-2": apiKey.type === "secret",
-              "cursor-pointer": apiKey.type !== "secret",
-            }
-          )}
-        >
-          <Text size="xsmall" leading="compact" className="truncate">
-            {apiKey.redacted}
-          </Text>
-          {apiKey.type !== "secret" && (
-            <Copy
-              content={apiKey.token}
-              variant="mini"
-              className="text-ui-fg-subtle"
-            />
-          )}
-        </div>
+        {apiKey.type === "secret" ? (
+          <Badge size="2xsmall" className="w-fit">
+            {prettifyRedactedToken(apiKey.redacted)}
+          </Badge>
+        ) : (
+          <Copy asChild content={apiKey.token}>
+            <Badge size="2xsmall" className="w-fit max-w-40 cursor-pointer">
+              <Text size="xsmall" leading="compact" className="truncate">
+                {prettifyRedactedToken(apiKey.redacted)}
+              </Text>
+            </Badge>
+          </Copy>
+        )}
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">

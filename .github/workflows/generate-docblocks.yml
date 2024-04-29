@@ -62,7 +62,6 @@ jobs:
           title: "chore(docs): Generated TSDocs"
           body: "This PR holds all generated TSDocs for the upcoming release."
           branch: "chore/generate-tsdocs"
-          team-reviewers: "@medusajs/docs"
           add-paths: packages/**
   generate-oas:
     name: Generated OAS PR
@@ -114,5 +113,4 @@ jobs:
           title: "chore(docs): Generated OAS"
           body: "This PR holds all generated OAS for the upcoming release."
           branch: "chore/generate-oas"
-          team-reviewers: "@medusajs/docs"
           add-paths: docs-util/oas-output/**

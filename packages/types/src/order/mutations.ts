@@ -52,7 +52,9 @@ export interface UpdateOrderDTO {
   region_id?: string
   customer_id?: string
   sales_channel_id?: string
-  status?: string
+  items?: CreateOrderLineItemDTO[]
+  shipping_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
+  billing_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
   email?: string
   no_notification?: boolean
   metadata?: Record<string, unknown>
@@ -199,6 +201,7 @@ export interface UpdateOrderLineItemDTO
 export interface CreateOrderShippingMethodDTO {
   name: string
   order_id: string
+  version?: number
   amount: BigNumberInput
   shipping_option_id?: string
   data?: Record<string, unknown>
@@ -289,10 +292,12 @@ export interface ConfirmOrderChangeDTO {
 
 export interface CreateOrderChangeActionDTO {
   order_change_id?: string
+  version?: number
   reference?: string
   reference_id?: string
   action: string
   internal_note?: string
+  amount?: BigNumberInput
   details?: Record<string, unknown>
 }
 
@@ -344,3 +349,55 @@ export interface UpdateOrderItemWithSelectorDTO {
 }
 
 /** ORDER DETAIL END */
+
+/** ORDER bundled action flows  */
+
+export interface RegisterOrderFulfillmentDTO {
+  order_id: string
+  description?: string
+  internal_note?: string
+  reference?: string
+  reference_id?: string
+  created_by?: string
+  items: {
+    id: string
+    quantity: BigNumberInput
+    internal_note?: string
+    metadata?: Record<string, unknown>
+  }[]
+  metadata?: Record<string, unknown>
+}
+
+export interface RegisterOrderShipmentDTO {
+  order_id: string
+  description?: string
+  internal_note?: string
+  reference?: string
+  created_by?: string
+  shipping_method: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
+  items: {
+    id: string
+    quantity: BigNumberInput
+    internal_note?: string
+    metadata?: Record<string, unknown>
+  }[]
+  metadata?: Record<string, unknown>
+}
+
+export interface CreateOrderReturnDTO {
+  order_id: string
+  description?: string
+  reference?: string
+  internal_note?: string
+  created_by?: string
+  shipping_method: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
+  items: {
+    id: string
+    quantity: BigNumberInput
+    internal_note?: string
+    metadata?: Record<string, unknown>
+  }[]
+  metadata?: Record<string, unknown>
+}
+
+/** ORDER bundled action flows */

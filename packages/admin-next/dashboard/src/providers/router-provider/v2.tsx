@@ -1,10 +1,3 @@
-import { AdminCustomersRes } from "@medusajs/client-types"
-import {
-  AdminCollectionsRes,
-  AdminProductsRes,
-  AdminPromotionRes,
-  AdminRegionsRes,
-} from "@medusajs/medusa"
 import {
   AdminApiKeyResponse,
   AdminCustomerGroupResponse,
@@ -14,13 +7,20 @@ import {
   SalesChannelDTO,
   UserDTO,
 } from "@medusajs/types"
+import {
+  AdminCollectionsRes,
+  AdminProductsRes,
+  AdminPromotionRes,
+  AdminRegionsRes,
+} from "@medusajs/medusa"
+import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
 import { Outlet, RouteObject } from "react-router-dom"
 
-import { ProtectedRoute } from "../../components/authentication/protected-route"
+import { AdminCustomersRes } from "@medusajs/client-types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout/main-layout"
+import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { SettingsLayout } from "../../components/layout/settings-layout"
-import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
 
 /**
  * Experimental V2 routes.
@@ -173,6 +173,11 @@ export const v2Routes: RouteObject[] = [
                 lazy: () => import("../../v2-routes/promotions/promotion-list"),
               },
               {
+                path: "create",
+                lazy: () =>
+                  import("../../v2-routes/promotions/promotion-create"),
+              },
+              {
                 path: ":id",
                 lazy: () =>
                   import("../../v2-routes/promotions/promotion-detail"),
@@ -196,7 +201,8 @@ export const v2Routes: RouteObject[] = [
                   },
                   {
                     path: ":ruleType/edit",
-                    lazy: () => import("../../v2-routes/promotions/edit-rules"),
+                    lazy: () =>
+                      import("../../v2-routes/promotions/common/edit-rules"),
                   },
                 ],
               },
@@ -377,7 +383,7 @@ export const v2Routes: RouteObject[] = [
                     path: "create",
                     lazy: () =>
                       import(
-                        "../../v2-routes/customer-groups/customer-group-create"
+                        "../../v2-routes/reservations/reservation-list/create-reservation"
                       ),
                   },
                 ],
@@ -412,6 +418,51 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
+            path: "/reservations",
+            handle: {
+              crumb: () => "Reservations",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/reservations/reservation-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/reservations/reservation-list/create-reservation"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/reservations/reservation-detail"),
+                handle: {
+                  crumb: ({ reservation }: any) => {
+                    return (
+                      reservation?.inventory_item?.title ??
+                      reservation?.inventory_item?.sku ??
+                      reservation?.id
+                    )
+                  },
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/reservations/reservation-detail/components/edit-reservation"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
             path: "/inventory",
             handle: {
               crumb: () => "Inventory",
@@ -431,7 +482,6 @@ export const v2Routes: RouteObject[] = [
                 },
                 children: [
                   {
-                    // TODO: edit item
                     path: "edit",
                     lazy: () =>
                       import(
@@ -439,7 +489,6 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    // TODO: edit item attributes
                     path: "attributes",
                     lazy: () =>
                       import(
@@ -447,7 +496,6 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    // TODO: manage locations
                     path: "locations",
                     lazy: () =>
                       import(
@@ -455,7 +503,6 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    // TODO: adjust item level
                     path: "locations/:location_id",
                     lazy: () =>
                       import(
@@ -745,10 +792,10 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
-            path: "api-key-management",
+            path: "publishable-api-keys",
             element: <Outlet />,
             handle: {
-              crumb: () => "API Key Management",
+              crumb: () => "Publishable API Keys",
             },
             children: [
               {
@@ -757,22 +804,6 @@ export const v2Routes: RouteObject[] = [
                 children: [
                   {
                     path: "",
-                    lazy: () =>
-                      import(
-                        "../../v2-routes/api-key-management/api-key-management-list"
-                      ),
-                    children: [
-                      {
-                        path: "create",
-                        lazy: () =>
-                          import(
-                            "../../v2-routes/api-key-management/api-key-management-create"
-                          ),
-                      },
-                    ],
-                  },
-                  {
-                    path: "secret",
                     lazy: () =>
                       import(
                         "../../v2-routes/api-key-management/api-key-management-list"
@@ -813,6 +844,58 @@ export const v2Routes: RouteObject[] = [
                     lazy: () =>
                       import(
                         "../../v2-routes/api-key-management/api-key-management-sales-channels"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "secret-api-keys",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Secret API Keys",
+            },
+            children: [
+              {
+                path: "",
+                element: <Outlet />,
+                children: [
+                  {
+                    path: "",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-list"
+                      ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../v2-routes/api-key-management/api-key-management-create"
+                          ),
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../v2-routes/api-key-management/api-key-management-detail"
+                  ),
+                handle: {
+                  crumb: (data: AdminApiKeyResponse) => {
+                    return data.api_key.title
+                  },
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/api-key-management/api-key-management-edit"
                       ),
                   },
                 ],
