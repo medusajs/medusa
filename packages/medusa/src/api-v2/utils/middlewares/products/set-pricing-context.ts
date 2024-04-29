@@ -20,7 +20,7 @@ export function setPricingContext() {
 
     const query = req.filterableFields || {}
     const pricingContext: MedusaPricingContext = {}
-    const customerId = req.user.customer_id
+    const customerId = req.user?.customer_id
 
     if (query.region_id) {
       const region = await refetchEntity("region", query.region_id, req.scope, [
