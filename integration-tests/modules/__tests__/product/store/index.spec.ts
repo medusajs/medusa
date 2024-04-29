@@ -1,44 +1,18 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
-  CreateProductDTO,
   IPricingModuleService,
   IProductModuleService,
   ISalesChannelModuleService,
-  ProductDTO,
-  ProductVariantDTO,
 } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  Modules,
-  ProductStatus,
-} from "@medusajs/utils"
+import { ProductStatus } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
-import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
 
 jest.setTimeout(50000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
-
-async function createProductsWithVariants(
-  productModule: IProductModuleService,
-  productsData: CreateProductDTO
-): Promise<[ProductDTO, ProductVariantDTO[]]> {
-  const { variants: variantsData, ...productData } = productsData
-
-  const [product] = await productModule.create([productData])
-  const variantsDataWithProductId = variantsData?.map((variantData) => {
-    return { ...variantData, product_id: product.id }
-  })
-
-  const variants = variantsDataWithProductId
-    ? await productModule.createVariants(variantsDataWithProductId)
-    : []
-
-  return [product, variants]
-}
 
 medusaIntegrationTestRunner({
   env,
@@ -57,6 +31,34 @@ medusaIntegrationTestRunner({
       let productModule: IProductModuleService
       let salesChannelModule: ISalesChannelModuleService
 
+      const createProducts = async (data) => {
+        const response = await api.post(
+          "/admin/products?fields=*variants",
+          data,
+          adminHeaders
+        )
+
+        return [response.data.product, response.data.product.variants || []]
+      }
+
+      const createSalesChannel = async (data, productIds) => {
+        const response = await api.post(
+          "/admin/sales-channels",
+          data,
+          adminHeaders
+        )
+
+        const salesChannel = response.data.sales_channel
+
+        await api.post(
+          `/admin/sales-channels/${salesChannel.id}/products`,
+          { add: productIds },
+          adminHeaders
+        )
+
+        return salesChannel
+      }
+
       beforeAll(async () => {
         appContainer = getContainer()
         pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
@@ -73,38 +75,31 @@ medusaIntegrationTestRunner({
 
       describe("GET /store/products", () => {
         beforeEach(async () => {
-          ;[product, [variant]] = await createProductsWithVariants(
-            productModule,
-            {
-              title: "test product 1",
-              status: ProductStatus.PUBLISHED,
-              variants: [{ title: "test variant 1" }],
-            }
-          )
-          ;[product2, [variant2]] = await createProductsWithVariants(
-            productModule,
-            {
-              title: "test product 2 uniquely",
-              status: ProductStatus.PUBLISHED,
-              variants: [{ title: "test variant 2" }],
-            }
-          )
-          ;[product3, [variant3]] = await createProductsWithVariants(
-            productModule,
-            {
-              title: "product not in price list",
-              status: ProductStatus.PUBLISHED,
-              variants: [{ title: "test variant 3" }],
-            }
-          )
-          ;[product4, [variant4]] = await createProductsWithVariants(
-            productModule,
-            {
-              title: "draft product",
-              status: ProductStatus.DRAFT,
-              variants: [{ title: "test variant 4" }],
-            }
-          )
+          ;[product, [variant]] = await createProducts({
+            title: "test product 1",
+            status: ProductStatus.PUBLISHED,
+            variants: [
+              {
+                title: "test variant 1",
+                prices: [{ amount: 3000, currency_code: "usd" }],
+              },
+            ],
+          })
+          ;[product2, [variant2]] = await createProducts({
+            title: "test product 2 uniquely",
+            status: ProductStatus.PUBLISHED,
+            variants: [{ title: "test variant 2", prices: [] }],
+          })
+          ;[product3, [variant3]] = await createProducts({
+            title: "product not in price list",
+            status: ProductStatus.PUBLISHED,
+            variants: [{ title: "test variant 3", prices: [] }],
+          })
+          ;[product4, [variant4]] = await createProducts({
+            title: "draft product",
+            status: ProductStatus.DRAFT,
+            variants: [{ title: "test variant 4", prices: [] }],
+          })
         })
 
         it("should list all published products", async () => {
@@ -138,20 +133,10 @@ medusaIntegrationTestRunner({
         })
 
         it("should list all products for a sales channel", async () => {
-          const salesChannel = await salesChannelModule.create({
-            name: "sales channel test",
-          })
-
-          const remoteLink = appContainer.resolve(
-            ContainerRegistrationKeys.REMOTE_LINK
+          const salesChannel = await createSalesChannel(
+            { name: "sales channel test" },
+            [product.id]
           )
-
-          await remoteLink.create([
-            {
-              [Modules.PRODUCT]: { product_id: product.id },
-              [Modules.SALES_CHANNEL]: { sales_channel_id: salesChannel.id },
-            },
-          ])
 
           let response = await api.get(
             `/store/products?sales_channel_id[]=${salesChannel.id}`
@@ -168,7 +153,7 @@ medusaIntegrationTestRunner({
 
         it("should throw error when calculating prices without context", async () => {
           let error = await api
-            .get(`/store/products?fields=*variants.prices`)
+            .get(`/store/products?fields=*variants.calculated_price`)
             .catch((e) => e)
 
           expect(error.response.status).toEqual(400)
@@ -180,15 +165,8 @@ medusaIntegrationTestRunner({
         })
 
         it("should list products with prices when context is present", async () => {
-          await createVariantPriceSet({
-            container: appContainer,
-            variantId: variant.id,
-            prices: [{ amount: 3000, currency_code: "usd" }],
-            rules: [],
-          })
-
           let response = await api.get(
-            `/store/products?fields=*variants.prices&currency_code=usd`
+            `/store/products?fields=*variants.calculated_price&currency_code=usd`
           )
 
           expect(response.status).toEqual(200)
@@ -199,7 +177,7 @@ medusaIntegrationTestRunner({
                 id: product.id,
                 variants: [
                   expect.objectContaining({
-                    price: {
+                    calculated_price: {
                       id: expect.any(String),
                       is_calculated_price_price_list: false,
                       calculated_amount: 3000,
@@ -224,17 +202,6 @@ medusaIntegrationTestRunner({
                   }),
                 ],
               }),
-              expect.objectContaining({
-                id: product2.id,
-                variants: [
-                  expect.objectContaining({
-                    price: null,
-                  }),
-                ],
-              }),
-              expect.objectContaining({
-                id: product3.id,
-              }),
             ])
           )
         })
@@ -242,14 +209,16 @@ medusaIntegrationTestRunner({
 
       describe("GET /store/products/:id", () => {
         beforeEach(async () => {
-          ;[product, [variant]] = await createProductsWithVariants(
-            productModule,
-            {
-              title: "test product 1",
-              status: ProductStatus.PUBLISHED,
-              variants: [{ title: "test variant 1" }],
-            }
-          )
+          ;[product, [variant]] = await createProducts({
+            title: "test product 1",
+            status: ProductStatus.PUBLISHED,
+            variants: [
+              {
+                title: "test variant 1",
+                prices: [{ amount: 3000, currency_code: "usd" }],
+              },
+            ],
+          })
         })
 
         it("should retrieve product successfully", async () => {
@@ -270,7 +239,9 @@ medusaIntegrationTestRunner({
 
         it("should throw error when calculating prices without context", async () => {
           let error = await api
-            .get(`/store/products/${product.id}?fields=*variants.prices`)
+            .get(
+              `/store/products/${product.id}?fields=*variants.calculated_price`
+            )
             .catch((e) => e)
 
           expect(error.response.status).toEqual(400)
@@ -282,15 +253,8 @@ medusaIntegrationTestRunner({
         })
 
         it("should get product with prices when context is present", async () => {
-          await createVariantPriceSet({
-            container: appContainer,
-            variantId: variant.id,
-            prices: [{ amount: 3000, currency_code: "usd" }],
-            rules: [],
-          })
-
           let response = await api.get(
-            `/store/products/${product.id}?fields=*variants.prices&currency_code=usd`
+            `/store/products/${product.id}?fields=*variants.calculated_price&currency_code=usd`
           )
 
           expect(response.status).toEqual(200)
@@ -299,7 +263,7 @@ medusaIntegrationTestRunner({
               id: product.id,
               variants: [
                 expect.objectContaining({
-                  price: {
+                  calculated_price: {
                     id: expect.any(String),
                     is_calculated_price_price_list: false,
                     calculated_amount: 3000,

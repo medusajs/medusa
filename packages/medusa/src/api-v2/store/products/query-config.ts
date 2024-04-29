@@ -27,7 +27,6 @@ export const defaultStoreProductFields = [
   "*images",
   "*variants",
   "*variants.options",
-  "*sales_channels",
 ]
 
 export const retrieveProductQueryConfig = {

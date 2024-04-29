@@ -13,9 +13,24 @@ export const refetchEntities = async (
 ) => {
   const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const filters = isString(idOrFilter) ? { id: idOrFilter } : idOrFilter
+  let context: object = {}
+
+  if ("context" in filters) {
+    if (filters.context) {
+      context = filters.context!
+    }
+
+    delete filters.context
+  }
+
+  let variables = {
+    filters,
+    ...context,
+  }
+
   const queryObject = remoteQueryObjectFromString({
     entryPoint,
-    variables: { filters },
+    variables,
     fields,
   })
 

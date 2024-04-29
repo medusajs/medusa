@@ -9,9 +9,13 @@ export function setPricingContext() {
     // If the endpoint doesn't request prices, we can exit early
     if (
       !req.remoteQueryConfig.fields.some((field) =>
-        field.startsWith("variants.prices")
+        field.startsWith("variants.calculated_price")
       )
     ) {
+      delete req.filterableFields.region_id
+      delete req.filterableFields.currency_code
+      delete req.filterableFields.customer_id
+
       return next()
     }
 
@@ -79,9 +83,6 @@ export function setPricingContext() {
     }
 
     req.pricingContext = pricingContext
-    req.remoteQueryConfig.fields = req.remoteQueryConfig.fields.filter(
-      (field) => !field.startsWith("variants.prices")
-    )
 
     return next()
   }

@@ -1,21 +1,25 @@
+import { isPresent } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
-import { refetchProduct, wrapProductsWithPrices } from "../helpers"
+import { refetchProduct } from "../helpers"
 import { StoreGetProductsParamsType } from "../validators"
 
 export const GET = async (
   req: MedusaRequest<StoreGetProductsParamsType>,
   res: MedusaResponse
 ) => {
-  let product = await refetchProduct(
-    req.params.id,
+  const context = isPresent(req.pricingContext)
+    ? {
+        "variants.calculated_price": { context: req.pricingContext },
+      }
+    : undefined
+
+  const product = await refetchProduct(
+    {
+      id: req.params.id,
+      context,
+    },
     req.scope,
     req.remoteQueryConfig.fields
-  )
-
-  ;[product] = await wrapProductsWithPrices(
-    [product],
-    req.scope,
-    req.pricingContext!
   )
 
   res.json({ product })
