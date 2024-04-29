@@ -61,7 +61,9 @@ export const ProductCreateForm = () => {
           onSuccess: ({ product }) => {
             toast.success(t("general.success"), {
               dismissLabel: t("actions.close"),
-              description: t("products.create.successToast"),
+              description: t("products.create.successToast", {
+                title: product.title,
+              }),
             })
 
             handleSuccess(`../${product.id}`)

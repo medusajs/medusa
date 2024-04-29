@@ -7,8 +7,23 @@ export const normalizeProductFormValues = (
   const reqData = {
     ...values,
     is_giftcard: false,
-    tags: values.tags?.map((tag) => ({ value: tag })),
-    sales_channels: values.sales_channels?.map((sc) => ({ id: sc.id })),
+    tags: values?.tags?.length
+      ? values.tags?.map((tag) => ({ value: tag }))
+      : undefined,
+    sales_channels: values?.sales_channels?.length
+      ? values.sales_channels?.map((sc) => ({ id: sc.id }))
+      : undefined,
+    images: values.images?.length ? values.images : undefined,
+    collection_id: values.collection_id || undefined,
+    type_id: values.type_id || undefined,
+    handle: values.handle || undefined,
+    origin_country: values.origin_country || undefined,
+    material: values.material || undefined,
+    mid_code: values.mid_code || undefined,
+    hs_code: values.hs_code || undefined,
+    thumbnail: values.thumbnail || undefined,
+    subtitle: values.subtitle || undefined,
+    description: values.description || undefined,
     width: values.width ? parseFloat(values.width) : undefined,
     length: values.length ? parseFloat(values.length) : undefined,
     height: values.height ? parseFloat(values.height) : undefined,
@@ -25,7 +40,8 @@ export const normalizeVariants = (
   })[]
 ) => {
   return variants.map((variant) => ({
-    ...variant,
+    title: Object.values(variant.options || {}).join(" / "),
+    options: variant.options,
     prices: Object.entries(variant.prices || {}).map(([key, value]: any) => ({
       currency_code: key,
       amount: value ? parseFloat(value) : 0,

@@ -1,4 +1,4 @@
-import { Button, Heading, Select, Switch } from "@medusajs/ui"
+import { Button, Heading, Switch } from "@medusajs/ui"
 import { UseFormReturn, useFieldArray } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 
@@ -6,8 +6,9 @@ import { ChipGroup } from "../../../../../../../components/common/chip-group"
 import { Form } from "../../../../../../../components/common/form"
 import { Combobox } from "../../../../../../../components/inputs/combobox"
 import { useCategories } from "../../../../../../../hooks/api/categories"
-import { useCollections } from "../../../../../../../hooks/api/collections"
-import { useProductTypes } from "../../../../../../../hooks/api/product-types"
+import { useComboboxData } from "../../../../../../../hooks/use-combobox-data"
+import { client } from "../../../../../../../lib/client"
+import { CategoryCombobox } from "../../../../../common/components/category-combobox"
 import { ProductCreateSchemaType } from "../../../../types"
 import { useProductCreateDetailsContext } from "../product-create-details-context"
 
@@ -21,10 +22,28 @@ export const ProductCreateOrganizationSection = ({
   const { t } = useTranslation()
   const { onOpenChange } = useProductCreateDetailsContext()
 
-  const { product_types, isLoading: isLoadingTypes } = useProductTypes()
   // const { tags, isLoading: isLoadingTags } = useTags() // Tags are not implemented in V2 yet.
-  const { collections, isLoading: isLoadingCollections } = useCollections()
   const { product_categories, isLoading: isLoadingCategories } = useCategories()
+
+  const collections = useComboboxData({
+    queryKey: ["product_collections"],
+    queryFn: client.collections.list,
+    getOptions: (data) =>
+      data.collections.map((collection) => ({
+        label: collection.title,
+        value: collection.id,
+      })),
+  })
+
+  const types = useComboboxData({
+    queryKey: ["product_types"],
+    queryFn: client.productTypes.list,
+    getOptions: (data) =>
+      data.product_types.map((type) => ({
+        label: type.value,
+        value: type.id,
+      })),
+  })
 
   const { fields, remove, replace } = useFieldArray({
     control: form.control,
@@ -70,29 +89,19 @@ export const ProductCreateOrganizationSection = ({
         <Form.Field
           control={form.control}
           name="type_id"
-          render={({ field: { onChange, ref, ...field } }) => {
+          render={({ field }) => {
             return (
               <Form.Item>
                 <Form.Label optional>
                   {t("products.fields.type.label")}
                 </Form.Label>
                 <Form.Control>
-                  <Select
-                    disabled={isLoadingTypes}
+                  <Combobox
                     {...field}
-                    onValueChange={onChange}
-                  >
-                    <Select.Trigger ref={ref}>
-                      <Select.Value />
-                    </Select.Trigger>
-                    <Select.Content>
-                      {(product_types ?? []).map((type) => (
-                        <Select.Item key={type.id} value={type.id}>
-                          {type.value}
-                        </Select.Item>
-                      ))}
-                    </Select.Content>
-                  </Select>
+                    options={types.options}
+                    searchValue={types.searchValue}
+                    onSearchValueChange={types.onSearchValueChange}
+                  />
                 </Form.Control>
               </Form.Item>
             )
@@ -101,29 +110,19 @@ export const ProductCreateOrganizationSection = ({
         <Form.Field
           control={form.control}
           name="collection_id"
-          render={({ field: { onChange, ref, ...field } }) => {
+          render={({ field }) => {
             return (
               <Form.Item>
                 <Form.Label optional>
                   {t("products.fields.collection.label")}
                 </Form.Label>
                 <Form.Control>
-                  <Select
-                    disabled={isLoadingCollections}
+                  <Combobox
                     {...field}
-                    onValueChange={onChange}
-                  >
-                    <Select.Trigger ref={ref}>
-                      <Select.Value />
-                    </Select.Trigger>
-                    <Select.Content>
-                      {(collections ?? []).map((collection) => (
-                        <Select.Item key={collection.id} value={collection.id}>
-                          {collection.title}
-                        </Select.Item>
-                      ))}
-                    </Select.Content>
-                  </Select>
+                    options={collections.options}
+                    searchValue={collections.searchValue}
+                    onSearchValueChange={collections.onSearchValueChange}
+                  />
                 </Form.Control>
               </Form.Item>
             )
@@ -133,7 +132,7 @@ export const ProductCreateOrganizationSection = ({
       <div className="grid grid-cols-2 gap-x-4">
         <Form.Field
           control={form.control}
-          name="category_ids"
+          name="category_id"
           render={({ field }) => {
             return (
               <Form.Item>
@@ -141,14 +140,7 @@ export const ProductCreateOrganizationSection = ({
                   {t("products.fields.categories.label")}
                 </Form.Label>
                 <Form.Control>
-                  <Combobox
-                    disabled={isLoadingCategories}
-                    options={(product_categories ?? []).map((category) => ({
-                      label: category.name,
-                      value: category.id,
-                    }))}
-                    {...field}
-                  />
+                  <CategoryCombobox {...field} />
                 </Form.Control>
               </Form.Item>
             )

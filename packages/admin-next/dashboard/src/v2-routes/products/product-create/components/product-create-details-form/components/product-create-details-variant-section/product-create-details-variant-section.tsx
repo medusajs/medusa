@@ -276,6 +276,7 @@ export const ProductCreateVariantsSection = ({
                                     <Form.Control>
                                       <ChipInput
                                         {...field}
+                                        variant="contrast"
                                         onChange={handleValueChange}
                                       />
                                     </Form.Control>

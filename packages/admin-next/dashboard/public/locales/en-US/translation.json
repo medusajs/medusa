@@ -305,10 +305,12 @@
     "options": {
       "header": "Options",
       "edit": {
-        "header": "Edit Option"
+        "header": "Edit Option",
+        "successToast": "Option {{title}} was successfully updated."
       },
       "create": {
-        "header": "Create Option"
+        "header": "Create Option",
+        "successToast": "Option {{title}} was successfully created."
       }
     },
     "toasts": {
