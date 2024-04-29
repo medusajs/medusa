@@ -1145,7 +1145,7 @@ export interface FilterableShippingMethodProps
   /**
    * Filter the shipping methods by the ID of their associated shipping option.
    */
-  shipping_option_id?: string | string[]
+  shipping_option_id?: string | string[] | OperatorMap<string>
 }
 
 /**
