@@ -94,6 +94,11 @@ export interface TaxProviderDTO {
 export interface FilterableTaxRateProps
   extends BaseFilterable<FilterableTaxRateProps> {
   /**
+   * Find tax rates based on name and code properties through this search term.
+   */
+  q?: string
+
+  /**
    * The IDs to filter the tax rates by.
    */
   id?: string | string[]
@@ -190,6 +195,11 @@ export interface TaxRegionDTO {
  */
 export interface FilterableTaxRegionProps
   extends BaseFilterable<FilterableTaxRegionProps> {
+  /**
+   * Find tax regions based on currency and province codes through this search term.
+   */
+  q?: string
+
   /**
    * The IDs to filter the tax regions by.
    */

@@ -7,11 +7,12 @@ export const useLocationTableQuery = ({
   pageSize?: number
   prefix?: string
 }) => {
-  const raw = useQueryParams(["offset"], prefix)
+  const raw = useQueryParams(["q", "offset"], prefix)
 
   const searchParams = {
     limit: pageSize,
     offset: raw.offset,
+    q: raw.q,
   }
 
   return {

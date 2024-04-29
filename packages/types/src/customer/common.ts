@@ -103,6 +103,11 @@ export interface CustomerAddressDTO {
 export interface FilterableCustomerAddressProps
   extends BaseFilterable<FilterableCustomerAddressProps> {
   /**
+   * Searches for addreses by properties such as name and street using this search term.
+   */
+  q?: string
+
+  /**
    * The IDs to filter the customer address by.
    */
   id?: string | string[]
@@ -204,6 +209,11 @@ export interface FilterableCustomerAddressProps
 export interface FilterableCustomerGroupProps
   extends BaseFilterable<FilterableCustomerGroupProps> {
   /**
+   * Searches for customer groups by name using this search term.
+   */
+  q?: string
+
+  /**
    * The IDs to filter the customer group by.
    */
   id?: string | string[]
@@ -285,6 +295,11 @@ export interface FilterableCustomerGroupCustomerProps
  */
 export interface FilterableCustomerProps
   extends BaseFilterable<FilterableCustomerProps> {
+  /**
+   * Searches for customers by properties such as name and email using this search term.
+   */
+  q?: string
+
   /**
    * The IDs to filter the customer by.
    */

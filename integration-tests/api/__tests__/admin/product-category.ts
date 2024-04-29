@@ -1221,6 +1221,7 @@ medusaIntegrationTestRunner({
       })
     })
 
+    // TODO: Remove in V2, endpoint changed
     describe("POST /admin/product-categories/:id/products/batch", () => {
       beforeEach(async () => {
         productCategory = await simpleProductCategoryFactory(dbConnection, {
@@ -1335,6 +1336,7 @@ medusaIntegrationTestRunner({
       })
     })
 
+    // TODO: Remove in v2, endpoint changed
     describe("DELETE /admin/product-categories/:id/products/batch", () => {
       let testProduct1, testProduct2
 
@@ -1453,6 +1455,57 @@ medusaIntegrationTestRunner({
           message: "Requested fields [products] are not valid",
           type: "invalid_data",
         })
+      })
+    })
+
+    // Skipping because the test is for V2 only
+    describe.skip("POST /admin/product-categories/:id/products", () => {
+      beforeEach(async () => {
+        productCategory = await productModuleService.createCategory({
+          name: "category parent",
+          description: "category parent",
+          parent_category_id: null,
+        })
+      })
+
+      it("successfully updates a product category", async () => {
+        const product1Response = await api.post(
+          "/admin/products",
+          {
+            title: "product 1",
+            categories: [{ id: productCategory.id }],
+          },
+          adminHeaders
+        )
+
+        const product2Response = await api.post(
+          "/admin/products",
+          {
+            title: "product 2",
+          },
+          adminHeaders
+        )
+
+        const categoryResponse = await api.post(
+          `/admin/product-categories/${productCategory.id}/products`,
+          {
+            remove: [product1Response.data.product.id],
+            add: [product2Response.data.product.id],
+          },
+          adminHeaders
+        )
+
+        const productsInCategoryResponse = await api.get(
+          `/admin/products?category_id[]=${productCategory.id}`,
+          adminHeaders
+        )
+
+        expect(categoryResponse.status).toEqual(200)
+        expect(productsInCategoryResponse.data.products).toEqual([
+          expect.objectContaining({
+            id: product2Response.data.product.id,
+          }),
+        ])
       })
     })
   },

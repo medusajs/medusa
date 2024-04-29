@@ -3,7 +3,6 @@ import { Button, Container, Heading } from "@medusajs/ui"
 import { InventoryItemRes } from "../../../../types/api-responses"
 import { ItemLocationListTable } from "./location-levels-table/location-list-table"
 import { Link } from "react-router-dom"
-import { ReservationItemTable } from "./reservations-table/reservation-list-table"
 import { useTranslation } from "react-i18next"
 
 type InventoryItemLocationLevelsSectionProps = {

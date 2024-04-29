@@ -11,7 +11,7 @@ export const InventoryItemAttributesEdit = () => {
 
   const {
     inventory_item: inventoryItem,
-    isLoading,
+    isPending: isLoading,
     isError,
     error,
   } = useInventoryItem(id!)

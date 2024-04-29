@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { UserRoles } from "@medusajs/medusa"
-import { Alert, Button, Heading, Input, Text } from "@medusajs/ui"
+import { Alert, Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { AnimatePresence, motion } from "framer-motion"
 import { Trans, useTranslation } from "react-i18next"
 import { Link, useSearchParams } from "react-router-dom"
@@ -49,7 +49,7 @@ export const Invite = () => {
   const isValidInvite = invite && validateDecodedInvite(invite)
 
   return (
-    <div className="min-h-dvh w-dvw bg-ui-bg-base relative flex items-center justify-center p-4">
+    <div className="bg-ui-bg-base relative flex min-h-dvh w-dvw items-center justify-center p-4">
       <div className="flex w-full max-w-[300px] flex-col items-center">
         <LogoBox
           className="mb-4"
@@ -204,10 +204,10 @@ const CreateView = ({
     },
   })
 
-  const { mutateAsync: createAuthUser, isLoading: isCreatingAuthUser } =
+  const { mutateAsync: createAuthUser, isPending: isCreatingAuthUser } =
     useV2CreateAuthUser()
 
-  const { mutateAsync: acceptInvite, isLoading: isAcceptingInvite } =
+  const { mutateAsync: acceptInvite, isPending: isAcceptingInvite } =
     useV2AcceptInvite(token)
 
   const handleSubmit = form.handleSubmit(async (data) => {
@@ -228,6 +228,10 @@ const CreateView = ({
         token: authToken,
       })
       onSuccess()
+      toast.success(t("general.success"), {
+        description: t("invite.toast.accepted"),
+        dismissLabel: t("actions.close"),
+      })
     } catch (error) {
       if (isAxiosError(error) && error.response?.status === 400) {
         form.setError("root", {

@@ -869,9 +869,11 @@ export class RemoteJoiner {
       location: [...currentPath],
       property,
       path: fullPath,
-      isList: fieldAliasIsList || !!serviceConfig.relationships?.find(
-        (relationship) => relationship.alias === parentFieldAlias
-      )?.isList,
+      isList:
+        fieldAliasIsList ||
+        !!serviceConfig.relationships?.find(
+          (relationship) => relationship.alias === parentFieldAlias
+        )?.isList,
     })
 
     const extMapping = expands as unknown[]

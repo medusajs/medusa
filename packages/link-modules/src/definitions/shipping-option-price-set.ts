@@ -44,6 +44,10 @@ export const ShippingOptionPriceSet: ModuleJoinerConfig = {
           path: "price_set_link.price_set.prices",
           isList: true,
         },
+        calculated_price: {
+          path: "price_set_link.price_set.calculated_price",
+          forwardArgumentsOnPath: ["price_set_link.price_set"],
+        },
       },
       relationship: {
         serviceName: LINKS.ShippingOptionPriceSet,

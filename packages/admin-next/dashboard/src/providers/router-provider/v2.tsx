@@ -1,10 +1,3 @@
-import { AdminCustomersRes } from "@medusajs/client-types"
-import {
-  AdminCollectionsRes,
-  AdminProductsRes,
-  AdminPromotionRes,
-  AdminRegionsRes,
-} from "@medusajs/medusa"
 import {
   AdminApiKeyResponse,
   AdminCustomerGroupResponse,
@@ -14,13 +7,20 @@ import {
   SalesChannelDTO,
   UserDTO,
 } from "@medusajs/types"
+import {
+  AdminCollectionsRes,
+  AdminProductsRes,
+  AdminPromotionRes,
+  AdminRegionsRes,
+} from "@medusajs/medusa"
+import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
 import { Outlet, RouteObject } from "react-router-dom"
 
-import { ProtectedRoute } from "../../components/authentication/protected-route"
+import { AdminCustomersRes } from "@medusajs/client-types"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout/main-layout"
+import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { SettingsLayout } from "../../components/layout/settings-layout"
-import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
 
 /**
  * Experimental V2 routes.
@@ -345,7 +345,7 @@ export const v2Routes: RouteObject[] = [
                     path: "create",
                     lazy: () =>
                       import(
-                        "../../v2-routes/customer-groups/customer-group-create"
+                        "../../v2-routes/reservations/reservation-list/create-reservation"
                       ),
                   },
                 ],
@@ -380,6 +380,51 @@ export const v2Routes: RouteObject[] = [
             ],
           },
           {
+            path: "/reservations",
+            handle: {
+              crumb: () => "Reservations",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../v2-routes/reservations/reservation-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/reservations/reservation-list/create-reservation"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../v2-routes/reservations/reservation-detail"),
+                handle: {
+                  crumb: ({ reservation }: any) => {
+                    return (
+                      reservation?.inventory_item?.title ??
+                      reservation?.inventory_item?.sku ??
+                      reservation?.id
+                    )
+                  },
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/reservations/reservation-detail/components/edit-reservation"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
             path: "/inventory",
             handle: {
               crumb: () => "Inventory",
@@ -399,7 +444,6 @@ export const v2Routes: RouteObject[] = [
                 },
                 children: [
                   {
-                    // TODO: edit item
                     path: "edit",
                     lazy: () =>
                       import(
@@ -407,7 +451,6 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    // TODO: edit item attributes
                     path: "attributes",
                     lazy: () =>
                       import(
@@ -415,7 +458,6 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    // TODO: manage locations
                     path: "locations",
                     lazy: () =>
                       import(
@@ -423,7 +465,6 @@ export const v2Routes: RouteObject[] = [
                       ),
                   },
                   {
-                    // TODO: adjust item level
                     path: "locations/:location_id",
                     lazy: () =>
                       import(

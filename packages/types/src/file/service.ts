@@ -1,5 +1,5 @@
 import { IModuleService } from "../modules-sdk"
-import { FileDTO } from "./common"
+import { FileDTO, FilterableFileProps } from "./common"
 import { FindConfig } from "../common"
 import { Context } from "../shared-context"
 import { CreateFileDTO } from "./mutations"
@@ -82,4 +82,38 @@ export interface IFileModuleService extends IModuleService {
     config?: FindConfig<FileDTO>,
     sharedContext?: Context
   ): Promise<FileDTO>
+
+  /**
+   * This method is used to retrieve a file by ID, similarly to `retrieve`. Enumeration of files is not supported, but the list method is in order to support remote queries
+   *
+   * @param {FilterableFileProps} filters - The filters to apply on the retrieved files.
+   * @param {FindConfig<FileDTO>} config -
+   * The configurations determining how the files are retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a file.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<FileDTO[]>} The list of files. In this particular case, it will either be at most one file.
+   *
+   */
+  list(
+    filters?: FilterableFileProps,
+    config?: FindConfig<FileDTO>,
+    sharedContext?: Context
+  ): Promise<FileDTO[]>
+
+  /**
+   * This method is used to retrieve a file by ID, similarly to `retrieve`. Enumeration of files is not supported, but the listAndCount method is in order to support remote queries
+   *
+   * @param {FilterableFileProps} filters - The filters to apply on the retrieved files.
+   * @param {FindConfig<FileDTO>} config -
+   * The configurations determining how the files are retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a file.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[FileDTO[], number]>} The list of files and their count. In this particular case, it will either be at most one file.
+   *
+   */
+  listAndCount(
+    filters?: FilterableFileProps,
+    config?: FindConfig<FileDTO>,
+    sharedContext?: Context
+  ): Promise<[FileDTO[], number]>
 }

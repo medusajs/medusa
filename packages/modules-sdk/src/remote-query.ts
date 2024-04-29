@@ -191,7 +191,9 @@ export class RemoteQuery {
 
     for (const arg of expand.args || []) {
       if (arg.name === "filters" && arg.value) {
-        filters = { ...arg.value }
+        filters = { ...filters, ...arg.value }
+      } else if (arg.name === "context" && arg.value) {
+        filters["context"] = arg.value
       } else if (availableOptions.includes(arg.name)) {
         const argName = availableOptionsAlias.has(arg.name)
           ? availableOptionsAlias.get(arg.name)!
