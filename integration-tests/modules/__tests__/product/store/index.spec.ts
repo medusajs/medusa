@@ -1,3 +1,4 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ApiKeyType, ProductStatus } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
@@ -61,11 +62,6 @@ medusaIntegrationTestRunner({
 
       describe("GET /store/products", () => {
         beforeEach(async () => {
-          const {
-            data: { stores },
-          } = await api.get("/admin/stores", adminHeaders)
-          const store = stores[0]
-
           ;[product, [variant]] = await createProducts({
             title: "test product 1",
             status: ProductStatus.PUBLISHED,
@@ -92,11 +88,23 @@ medusaIntegrationTestRunner({
             variants: [{ title: "test variant 4", prices: [] }],
           })
 
-          await api.post(
-            `/admin/sales-channels/${store.default_sales_channel_id}/products`,
-            { add: [product.id, product2.id, product3.id, product4.id] },
-            adminHeaders
+          const defaultSalesChannel = await createSalesChannel(
+            { name: "default sales channel" },
+            [product.id, product2.id, product3.id, product4.id]
           )
+
+          const service = appContainer.resolve(ModuleRegistrationName.STORE)
+          const [store] = await service.list()
+
+          if (store) {
+            await service.delete(store.id)
+          }
+
+          await service.create({
+            supported_currency_codes: ["usd", "dkk"],
+            default_currency_code: "usd",
+            default_sales_channel_id: defaultSalesChannel.id,
+          })
         })
 
         it("should list all published products", async () => {
@@ -304,6 +312,24 @@ medusaIntegrationTestRunner({
                 prices: [{ amount: 3000, currency_code: "usd" }],
               },
             ],
+          })
+
+          const defaultSalesChannel = await createSalesChannel(
+            { name: "default sales channel" },
+            [product.id]
+          )
+
+          const service = appContainer.resolve(ModuleRegistrationName.STORE)
+          const [store] = await service.list()
+
+          if (store) {
+            await service.delete(store.id)
+          }
+
+          await service.create({
+            supported_currency_codes: ["usd", "dkk"],
+            default_currency_code: "usd",
+            default_sales_channel_id: defaultSalesChannel.id,
           })
         })
 
