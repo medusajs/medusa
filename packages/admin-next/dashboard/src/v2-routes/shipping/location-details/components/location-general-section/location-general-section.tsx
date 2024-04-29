@@ -291,7 +291,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
                   {
                     label: t("shipping.serviceZone.addOption"),
                     icon: <Plus />,
-                    to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-options/create`,
+                    to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create`,
                   },
                   {
                     label: t("actions.edit"),

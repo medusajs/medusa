@@ -11,6 +11,8 @@ import {
 } from "../../../../../components/route-modal"
 import { useShippingProfiles } from "../../../../../hooks/api/shipping-profiles"
 import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options"
+import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
+import { formatProvider } from "../../../../../lib/format-provider"
 
 enum ShippingAllocation {
   FlatRate = "flat",
@@ -39,11 +41,15 @@ export const EditShippingOptionForm = ({
     limit: 999,
   })
 
+  const { fulfillment_providers = [] } = useFulfillmentProviders({
+    is_enabled: true,
+  })
+
   const form = useForm<zod.infer<typeof EditShippingOptionSchema>>({
     defaultValues: {
       name: shippingOption.name,
       price_type: shippingOption.price_type as ShippingAllocation,
-      enable_in_store: shippingOption.enable_in_store || true, // TODO: how should we handle this flag
+      enable_in_store: shippingOption.enable_in_store || true, // TODO: how should we handle this flag, is it a rule?
       shipping_profile_id: shippingOption.shipping_profile_id,
       provider_id: shippingOption.provider_id,
     },
@@ -187,12 +193,12 @@ export const EditShippingOptionForm = ({
                                 <Select.Value />
                               </Select.Trigger>
                               <Select.Content>
-                                {[].map((provider) => (
+                                {fulfillment_providers.map((provider) => (
                                   <Select.Item
                                     key={provider.id}
                                     value={provider.id}
                                   >
-                                    {provider.id}
+                                    {formatProvider(provider.id)}
                                   </Select.Item>
                                 ))}
                               </Select.Content>

@@ -27,6 +27,8 @@ import { CreateShippingOptionsPricesForm } from "./create-shipping-options-price
 import { useCreateShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { useShippingProfiles } from "../../../../../hooks/api/shipping-profiles"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
+import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
+import { formatProvider } from "../../../../../lib/format-provider"
 
 enum Tab {
   DETAILS = "details",
@@ -47,6 +49,7 @@ const CreateServiceZoneSchema = zod.object({
   price_type: zod.nativeEnum(ShippingAllocation),
   enable_in_store: zod.boolean().optional(),
   shipping_profile_id: zod.string(),
+  provider_id: zod.string().min(1),
   region_prices: zod.record(zod.string(), zod.string().optional()),
   currency_prices: zod.record(zod.string(), zod.string().optional()),
 })
@@ -62,12 +65,17 @@ export function CreateShippingOptionsForm({
   const { handleSuccess } = useRouteModal()
   const [tab, setTab] = React.useState<Tab>(Tab.DETAILS)
 
+  const { fulfillment_providers = [] } = useFulfillmentProviders({
+    is_enabled: true,
+  })
+
   const form = useForm<zod.infer<typeof CreateServiceZoneSchema>>({
     defaultValues: {
       name: "",
       price_type: ShippingAllocation.FlatRate,
       enable_in_store: true,
       shipping_profile_id: "",
+      provider_id: "",
       region_prices: {},
       currency_prices: {},
     },
@@ -107,7 +115,7 @@ export function CreateShippingOptionsForm({
       price_type: data.price_type,
       service_zone_id: zone.id,
       shipping_profile_id: data.shipping_profile_id,
-      provider_id: "manual_test-provider", // TODO: FETCH PROVIDERS
+      provider_id: data.provider_id,
       prices: [...currencyPrices],
       type: {
         // TODO: FETCH TYPES
@@ -299,24 +307,26 @@ export function CreateShippingOptionsForm({
                   }}
                 />
 
-                <div className="mt-4 flex flex-col divide-y">
-                  <div className="mt-4 grid grid-cols-2 gap-4">
-                    <Form.Field
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>{t("fields.name")}</Form.Label>
-                            <Form.Control>
-                              <Input {...field} />
-                            </Form.Control>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
-                    />
+                <div className="mt-8 max-w-[50%] pr-2 ">
+                  <Form.Field
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label>{t("fields.name")}</Form.Label>
+                          <Form.Control>
+                            <Input {...field} />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
 
+                <div className="flex flex-col divide-y">
+                  <div className="mt-4 grid grid-cols-2 gap-4">
                     <Form.Field
                       control={form.control}
                       name="shipping_profile_id"
@@ -338,6 +348,37 @@ export function CreateShippingOptionsForm({
                                       value={profile.id}
                                     >
                                       {profile.name}
+                                    </Select.Item>
+                                  ))}
+                                </Select.Content>
+                              </Select>
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+
+                    <Form.Field
+                      control={form.control}
+                      name="provider_id"
+                      render={({ field: { onChange, ...field } }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label>
+                              {t("shipping.shippingOptions.edit.provider")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Select {...field} onValueChange={onChange}>
+                                <Select.Trigger ref={field.ref}>
+                                  <Select.Value />
+                                </Select.Trigger>
+                                <Select.Content>
+                                  {fulfillment_providers.map((provider) => (
+                                    <Select.Item
+                                      key={provider.id}
+                                      value={provider.id}
+                                    >
+                                      {formatProvider(provider.id)}
                                     </Select.Item>
                                   ))}
                                 </Select.Content>

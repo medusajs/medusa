@@ -6,14 +6,14 @@ import { useStockLocation } from "../../../hooks/api/stock-locations"
 import { EditLocationForm } from "./components/edit-location-form"
 
 export const LocationEdit = () => {
-  const { id } = useParams()
+  const { location_id } = useParams()
 
   const {
     stock_location,
     isPending: isLoading,
     isError,
     error,
-  } = useStockLocation(id, {
+  } = useStockLocation(location_id, {
     fields: "*address",
   })
 
