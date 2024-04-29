@@ -6,7 +6,7 @@ type WorkflowInput = {
   files: {
     filename: string
     mimeType: string
-    content: Blob
+    content: string
   }[]
 }
 

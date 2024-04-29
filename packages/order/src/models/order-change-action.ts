@@ -136,14 +136,16 @@ export default class OrderChangeAction {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordchact")
-    this.order_id ??= this.order?.id ?? null
+    this.order_id ??= this.order?.id ?? this.order_change?.order_id ?? null
     this.order_change_id ??= this.order_change?.id ?? null
+    this.version ??= this.order_change?.version ?? null
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordchact")
-    this.order_id ??= this.order?.id ?? null
+    this.order_id ??= this.order?.id ?? this.order_change?.order_id ?? null
     this.order_change_id ??= this.order_change?.id ?? null
+    this.version ??= this.order_change?.version ?? null
   }
 }

@@ -144,6 +144,11 @@ export interface FilterablePromotionProps
   /**
    * The IDs to filter the promotions by.
    */
+  q?: string
+
+  /**
+   * The IDs to filter the promotions by.
+   */
   id?: string | string[]
 
   /**

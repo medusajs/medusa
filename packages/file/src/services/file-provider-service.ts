@@ -1,22 +1,29 @@
 import { Constructor, DAL, FileTypes } from "@medusajs/types"
 import { MedusaError } from "medusa-core-utils"
+import { FileProviderRegistrationPrefix } from "@types"
 
 type InjectedDependencies = {
-  [key: `file_${string}`]: FileTypes.IFileProvider
+  [
+    key: `${typeof FileProviderRegistrationPrefix}${string}`
+  ]: FileTypes.IFileProvider
 }
 
 export default class FileProviderService {
   protected readonly fileProvider_: FileTypes.IFileProvider
 
   constructor(container: InjectedDependencies) {
-    if (Object.keys(container).length !== 1) {
+    const fileProviderKeys = Object.keys(container).filter((k) =>
+      k.startsWith(FileProviderRegistrationPrefix)
+    )
+
+    if (fileProviderKeys.length !== 1) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `File module should only be initialized with one provider`
+        `File module should be initialized with exactly one provider`
       )
     }
 
-    this.fileProvider_ = Object.values(container)[0]
+    this.fileProvider_ = container[fileProviderKeys[0]]
   }
 
   static getRegistrationIdentifier(

@@ -443,6 +443,10 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
 
     // There can only be 2 secret keys at most, and one has to be with a revoked_at date set, so only 1 can be newly created.
     const secretKeysToCreate = data.filter((k) => k.type === ApiKeyType.SECRET)
+    if (!secretKeysToCreate.length) {
+      return
+    }
+
     if (secretKeysToCreate.length > 1) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,

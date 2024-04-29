@@ -1,6 +1,6 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { SalesChannelDTO } from "@medusajs/types"
-import { Button, Container, Heading, usePrompt } from "@medusajs/ui"
+import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useAdminRemoveLocationFromSalesChannel } from "medusa-react"
 import { useMemo } from "react"
@@ -82,10 +82,22 @@ const SalesChannelActions = ({
       return
     }
 
-    await mutateAsync({
-      location_id: locationId,
-      sales_channel_id: salesChannel.id,
-    })
+    try {
+      await mutateAsync({
+        location_id: locationId,
+        sales_channel_id: salesChannel.id,
+      })
+
+      toast.success(t("general.success"), {
+        description: t("locations.toast.removeChannel"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (

@@ -24,9 +24,7 @@ export type VirtualOrder = {
     price: BigNumberInput
   }[]
 
-  summary: {
-    total: BigNumberInput
-  }
+  total: BigNumberInput
 
   metadata?: Record<string, unknown>
 }

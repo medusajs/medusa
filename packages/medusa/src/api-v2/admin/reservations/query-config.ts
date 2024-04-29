@@ -1,3 +1,5 @@
+import { defaultAdminInventoryItemFields } from "../inventory-items/query-config"
+
 export const defaultAdminReservationFields = [
   "id",
   "location_id",
@@ -8,6 +10,7 @@ export const defaultAdminReservationFields = [
   "metadata",
   "created_at",
   "updated_at",
+  ...defaultAdminInventoryItemFields.map((f) => `inventory_item.${f}`),
 ]
 
 export const retrieveTransformQueryConfig = {

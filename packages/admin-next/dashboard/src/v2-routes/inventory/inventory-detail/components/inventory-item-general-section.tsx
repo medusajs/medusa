@@ -1,5 +1,5 @@
-import { Container, Heading, Text } from "@medusajs/ui"
-import { InventoryNext, ProductVariantDTO } from "@medusajs/types"
+import { Container, Heading } from "@medusajs/ui"
+import { ProductVariantDTO } from "@medusajs/types"
 
 import { ActionMenu } from "../../../../components/common/action-menu"
 import { InventoryItemRes } from "../../../../types/api-responses"
@@ -52,7 +52,7 @@ export const InventoryItemGeneralSection = ({
         title={t("fields.inStock")}
         value={getQuantityFormat(
           inventoryItem.stocked_quantity,
-          inventoryItem.location_levels.length
+          inventoryItem.location_levels?.length
         )}
       />
 
@@ -60,14 +60,14 @@ export const InventoryItemGeneralSection = ({
         title={t("inventory.reserved")}
         value={getQuantityFormat(
           inventoryItem.reserved_quantity,
-          inventoryItem.location_levels.length
+          inventoryItem.location_levels?.length
         )}
       />
       <SectionRow
         title={t("inventory.available")}
         value={getQuantityFormat(
           inventoryItem.stocked_quantity - inventoryItem.reserved_quantity,
-          inventoryItem.location_levels.length
+          inventoryItem.location_levels?.length
         )}
       />
     </Container>

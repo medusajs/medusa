@@ -1,6 +1,6 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { SalesChannelDTO } from "@medusajs/types"
-import { Button, Container, Heading, usePrompt } from "@medusajs/ui"
+import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -24,12 +24,15 @@ export const SalesChannelListTable = () => {
   const { raw, searchParams } = useSalesChannelTableQuery({
     pageSize: PAGE_SIZE,
   })
-  const { sales_channels, count, isLoading, isError, error } = useSalesChannels(
-    searchParams,
-    {
-      placeholderData: keepPreviousData,
-    }
-  )
+  const {
+    sales_channels,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useSalesChannels(searchParams, {
+    placeholderData: keepPreviousData,
+  })
 
   const columns = useColumns()
 
@@ -97,7 +100,18 @@ const SalesChannelActions = ({
       return
     }
 
-    await mutateAsync()
+    try {
+      await mutateAsync()
+      toast.success(t("general.success"), {
+        description: t("salesChannels.toast.delete"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (

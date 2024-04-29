@@ -52,6 +52,10 @@ export interface CampaignDTO {
 export interface FilterableCampaignProps
   extends BaseFilterable<FilterableCampaignProps> {
   /**
+   * Find campaigns by their name or description through this search term.
+   */
+  q?: string
+  /**
    * The IDs to filter the campaigns by.
    */
   id?: string[]
