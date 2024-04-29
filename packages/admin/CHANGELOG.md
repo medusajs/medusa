@@ -1,5 +1,15 @@
 # @medusajs/admin
 
+## 7.1.13
+
+### Patch Changes
+
+- [#6883](https://github.com/medusajs/medusa/pull/6883) [`eadc5e8a`](https://github.com/medusajs/medusa/commit/eadc5e8a794ec07f7b523808aa0fec2ac394c984) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat: Admin V2 API keys
+
+- Updated dependencies [[`40686ba9`](https://github.com/medusajs/medusa/commit/40686ba98077c1c509744c0bd44fea4d4786abaa), [`0bf0bf81`](https://github.com/medusajs/medusa/commit/0bf0bf819b04e0c96aabf1e959d4a592970e64ec), [`c3efac5a`](https://github.com/medusajs/medusa/commit/c3efac5a0d6cfa38e1af8d248138fa83934a8ceb)]:
+  - @medusajs/admin-ui@2.1.14
+  - medusa-core-utils@1.2.2
+
 ## 7.1.12
 
 ### Patch Changes

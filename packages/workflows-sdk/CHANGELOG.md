@@ -1,5 +1,22 @@
 # @medusajs/workflows-sdk
 
+## 0.1.6
+
+### Patch Changes
+
+- [#6869](https://github.com/medusajs/medusa/pull/6869) [`e6037269`](https://github.com/medusajs/medusa/commit/e60372698565315145037eb40fbe86c43f91cc16) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Fix Workflow Engine subscribers response and error
+
+- [#6886](https://github.com/medusajs/medusa/pull/6886) [`a164c0d5`](https://github.com/medusajs/medusa/commit/a164c0d5126a40e2bc669f9fc2883be502a15036) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Async steps marked as success if return StepResponse
+
+- [#6860](https://github.com/medusajs/medusa/pull/6860) [`45c49e89`](https://github.com/medusajs/medusa/commit/45c49e89f28123ef622fc1c07253bae94fd74875) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Add workflow idempotencyKey to shared context
+
+- [#6951](https://github.com/medusajs/medusa/pull/6951) [`71aeda73`](https://github.com/medusajs/medusa/commit/71aeda7347a1dc7039be05071ce90a6dca5f9154) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(workflows-sdk): Handle result from a trasnformer after a step fail
+
+- Updated dependencies [[`e6037269`](https://github.com/medusajs/medusa/commit/e60372698565315145037eb40fbe86c43f91cc16), [`d333db08`](https://github.com/medusajs/medusa/commit/d333db08429611c0571a0b173adf37103b8a8aa6), [`20e8df91`](https://github.com/medusajs/medusa/commit/20e8df914ec5fdf8d562d4fa84f72c58c7056195), [`a164c0d5`](https://github.com/medusajs/medusa/commit/a164c0d5126a40e2bc669f9fc2883be502a15036), [`e0b02a10`](https://github.com/medusajs/medusa/commit/e0b02a1012981c29830d7779f59ebe805bbfd137), [`e944a627`](https://github.com/medusajs/medusa/commit/e944a627f074fb39a56f4bc7b3d6d315736ebf7c), [`cc557c87`](https://github.com/medusajs/medusa/commit/cc557c8752fd0554f5a1b58522d9a88dc43a8509), [`dd35a4db`](https://github.com/medusajs/medusa/commit/dd35a4dbff10c86ea3c5f7f817c18b6e60d599e3), [`1bcb13f8`](https://github.com/medusajs/medusa/commit/1bcb13f892bc61db21b3fc6bdbce85f747aeec4c), [`82a176e3`](https://github.com/medusajs/medusa/commit/82a176e30e47a7d11caaf31c3023bd8db588b465), [`5d9aea05`](https://github.com/medusajs/medusa/commit/5d9aea053ce6e04f242f86fb9053c13dec515d5b), [`232322d0`](https://github.com/medusajs/medusa/commit/232322d03515f81e56867ff8c765b8409399ee68), [`528ef4ca`](https://github.com/medusajs/medusa/commit/528ef4ca90bb2cf6173dccc9fd6a9f9932ff9b76), [`65794f4b`](https://github.com/medusajs/medusa/commit/65794f4bb56e4fd3f0ccb7656a948f856f05324e), [`4b57c5d2`](https://github.com/medusajs/medusa/commit/4b57c5d286f9dc6e2098c67e9fecb0d93175b5a1), [`667c8609`](https://github.com/medusajs/medusa/commit/667c8609ccf3850f5df8cf784723a95bd0d6d2a6), [`a6562d2a`](https://github.com/medusajs/medusa/commit/a6562d2a41453cbe7aa43be352c4924e3e4c79d5), [`8fd14889`](https://github.com/medusajs/medusa/commit/8fd148893850eb66c5eae00c4ca9391a80ea2eb9), [`1c6ba446`](https://github.com/medusajs/medusa/commit/1c6ba4468eab1440931c88929affd5b4c593f377)]:
+  - @medusajs/orchestration@0.5.7
+  - @medusajs/utils@1.12.0
+  - @medusajs/modules-sdk@1.12.11
+
 ## 0.1.5
 
 ### Patch Changes

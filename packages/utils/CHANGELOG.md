@@ -1,5 +1,30 @@
 # @medusajs/utils
 
+## 1.12.0
+
+### Minor Changes
+
+- [#6922](https://github.com/medusajs/medusa/pull/6922) [`20e8df91`](https://github.com/medusajs/medusa/commit/20e8df914ec5fdf8d562d4fa84f72c58c7056195) Thanks [@sradevski](https://github.com/sradevski)! - Return normalized DB errors from the mikro ORM repository
+
+- [#6813](https://github.com/medusajs/medusa/pull/6813) [`a6562d2a`](https://github.com/medusajs/medusa/commit/a6562d2a41453cbe7aa43be352c4924e3e4c79d5) Thanks [@sradevski](https://github.com/sradevski)! - Added an upsertWithReplace method to the mikro orm repository
+
+### Patch Changes
+
+- [#6836](https://github.com/medusajs/medusa/pull/6836) [`e0b02a10`](https://github.com/medusajs/medusa/commit/e0b02a1012981c29830d7779f59ebe805bbfd137) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils): custom serialization that allows for non self ref
+
+- [#6864](https://github.com/medusajs/medusa/pull/6864) [`e944a627`](https://github.com/medusajs/medusa/commit/e944a627f074fb39a56f4bc7b3d6d315736ebf7c) Thanks [@adrien2p](https://github.com/adrien2p)! - feat: region payment providers management workflows/api
+
+- [`cc557c87`](https://github.com/medusajs/medusa/commit/cc557c8752fd0554f5a1b58522d9a88dc43a8509) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Order endpoints and Cart totals
+
+- [#6842](https://github.com/medusajs/medusa/pull/6842) [`5d9aea05`](https://github.com/medusajs/medusa/commit/5d9aea053ce6e04f242f86fb9053c13dec515d5b) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(utils): Mikro orm prop filtering should check existence
+
+- [#6973](https://github.com/medusajs/medusa/pull/6973) [`232322d0`](https://github.com/medusajs/medusa/commit/232322d03515f81e56867ff8c765b8409399ee68) Thanks [@adrien2p](https://github.com/adrien2p)! - Chores: Do not disable foreign keys by default
+
+- [#7153](https://github.com/medusajs/medusa/pull/7153) [`4b57c5d2`](https://github.com/medusajs/medusa/commit/4b57c5d286f9dc6e2098c67e9fecb0d93175b5a1) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Remote query supporting context
+
+- Updated dependencies [[`0c0b425d`](https://github.com/medusajs/medusa/commit/0c0b425de7b154b80b712ab17b16215cf62d1e83), [`8d356217`](https://github.com/medusajs/medusa/commit/8d356217bd31c97a196e861ee243822a4d924df7), [`27f4f0d7`](https://github.com/medusajs/medusa/commit/27f4f0d7243367c2dfc6012bf1f6b7400a77ec7b), [`e944a627`](https://github.com/medusajs/medusa/commit/e944a627f074fb39a56f4bc7b3d6d315736ebf7c), [`1a48fe02`](https://github.com/medusajs/medusa/commit/1a48fe0282a8bc1f8548a4736255e457d173da09), [`86f499de`](https://github.com/medusajs/medusa/commit/86f499de2f31356ab36ad5e93f27345443b3e5f6), [`09a22205`](https://github.com/medusajs/medusa/commit/09a22205693da62fbf8fd450535d5024cb9c01d1), [`78f603e4`](https://github.com/medusajs/medusa/commit/78f603e4f18c9d16f4b58a2189c959026453d8b2), [`cc557c87`](https://github.com/medusajs/medusa/commit/cc557c8752fd0554f5a1b58522d9a88dc43a8509), [`58c68f67`](https://github.com/medusajs/medusa/commit/58c68f67156e993255fbc25d91db15ae23bc95c0), [`82a176e3`](https://github.com/medusajs/medusa/commit/82a176e30e47a7d11caaf31c3023bd8db588b465), [`62b9dcc6`](https://github.com/medusajs/medusa/commit/62b9dcc6c1ce46aadb7944215006c12da3c9f619), [`bc06ad2d`](https://github.com/medusajs/medusa/commit/bc06ad2db48c999023ab823fefc1375196976e9b), [`18f3aace`](https://github.com/medusajs/medusa/commit/18f3aacee6752854d377faa806f4cc67bc71456b), [`38c971f1`](https://github.com/medusajs/medusa/commit/38c971f111af69f176e7e9892eb59f5bae831fa7), [`45c49e89`](https://github.com/medusajs/medusa/commit/45c49e89f28123ef622fc1c07253bae94fd74875), [`528ef4ca`](https://github.com/medusajs/medusa/commit/528ef4ca90bb2cf6173dccc9fd6a9f9932ff9b76), [`65794f4b`](https://github.com/medusajs/medusa/commit/65794f4bb56e4fd3f0ccb7656a948f856f05324e), [`93ef94ca`](https://github.com/medusajs/medusa/commit/93ef94cad3ddc5b6973b4e48e422b0aa0e6ddbbe), [`4cf71af0`](https://github.com/medusajs/medusa/commit/4cf71af07d1807c83df3889c1774f82cbd1b9a6f), [`4b57c5d2`](https://github.com/medusajs/medusa/commit/4b57c5d286f9dc6e2098c67e9fecb0d93175b5a1), [`c78915c7`](https://github.com/medusajs/medusa/commit/c78915c7c5e91a99c1b1bae932656c8d86b17daf), [`18f3aace`](https://github.com/medusajs/medusa/commit/18f3aacee6752854d377faa806f4cc67bc71456b), [`f175cac4`](https://github.com/medusajs/medusa/commit/f175cac4af63b71066a8398ecf9beaa6f28b20cc), [`0a9b9b07`](https://github.com/medusajs/medusa/commit/0a9b9b073dd2d3f4aa5e5cb1c16e2221a7200e0d), [`a6562d2a`](https://github.com/medusajs/medusa/commit/a6562d2a41453cbe7aa43be352c4924e3e4c79d5), [`00e6b21b`](https://github.com/medusajs/medusa/commit/00e6b21bb50dbc886bc37ad052a1c40ce865294e), [`8fd14889`](https://github.com/medusajs/medusa/commit/8fd148893850eb66c5eae00c4ca9391a80ea2eb9), [`1c6ba446`](https://github.com/medusajs/medusa/commit/1c6ba4468eab1440931c88929affd5b4c593f377)]:
+  - @medusajs/types@1.12.0
+
 ## 1.11.8
 
 ### Patch Changes
