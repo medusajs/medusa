@@ -36,6 +36,7 @@ import { hooksRoutesMiddlewares } from "./hooks/middlewares"
 import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
 import { storeCurrencyRoutesMiddlewares } from "./store/currencies/middlewares"
 import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
+import { storeProductRoutesMiddlewares } from "./store/products/middlewares"
 import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
 
 export const config: MiddlewaresConfig = {
@@ -80,5 +81,6 @@ export const config: MiddlewaresConfig = {
     ...adminShippingProfilesMiddlewares,
     ...adminFulfillmentsRoutesMiddlewares,
     ...adminFulfillmentProvidersRoutesMiddlewares,
+    ...storeProductRoutesMiddlewares,
   ],
 }
