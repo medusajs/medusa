@@ -1,9 +1,13 @@
 import type { NextFunction, Request, Response } from "express"
 import type { Customer, User } from "../models"
 
-import { MedusaContainer, RequestQueryFields } from "@medusajs/types"
-import { FindConfig } from "./common"
+import {
+  MedusaContainer,
+  MedusaPricingContext,
+  RequestQueryFields,
+} from "@medusajs/types"
 import * as core from "express-serve-static-core"
+import { FindConfig } from "./common"
 
 export interface MedusaRequest<Body = unknown>
   extends Request<core.ParamsDictionary, any, Body> {
@@ -50,6 +54,10 @@ export interface MedusaRequest<Body = unknown>
   session?: any
   rawBody?: any
   requestId?: string
+  /**
+   * An object that carries the context that is used to calculate prices for variants
+   */
+  pricingContext?: MedusaPricingContext
 }
 
 export interface AuthenticatedMedusaRequest<Body = never>

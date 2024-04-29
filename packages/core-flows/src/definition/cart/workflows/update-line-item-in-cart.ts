@@ -5,14 +5,16 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { MedusaError } from "medusa-core-utils"
+import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
+import { updateLineItemsStep } from "../../line-item/steps"
 import {
   confirmInventoryStep,
   getVariantPriceSetsStep,
   getVariantsStep,
-} from ".."
-import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
-import { updateLineItemsStep } from "../../line-item/steps"
+  refreshCartShippingMethodsStep,
+} from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
+import { cartFieldsForRefreshSteps } from "../utils/fields"
 import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
 
@@ -106,10 +108,16 @@ export const updateLineItemInCartWorkflow = createWorkflow(
       selector: lineItemUpdate.selector,
     })
 
+    const cart = useRemoteQueryStep({
+      entry_point: "cart",
+      fields: cartFieldsForRefreshSteps,
+      variables: { id: input.cart.id },
+      list: false,
+    }).config({ name: "refetch–cart" })
+
+    refreshCartShippingMethodsStep({ cart })
     refreshCartPromotionsStep({ id: input.cart.id })
-    refreshPaymentCollectionForCartStep({
-      cart_id: input.cart.id,
-    })
+    refreshPaymentCollectionForCartStep({ cart_id: input.cart.id })
 
     const updatedItem = transform({ result }, (data) => data.result?.[0])
 

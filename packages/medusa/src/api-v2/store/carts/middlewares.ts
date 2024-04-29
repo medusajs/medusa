@@ -6,6 +6,7 @@ import * as QueryConfig from "./query-config"
 import {
   StoreAddCartLineItem,
   StoreAddCartPromotions,
+  StoreAddCartShippingMethods,
   StoreCalculateCartTaxes,
   StoreCreateCart,
   StoreGetCartsCart,
@@ -115,6 +116,17 @@ export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/store/carts/:id/payment-collections",
     middlewares: [
       validateAndTransformBody(StoreUpdateCart),
+      validateAndTransformQuery(
+        StoreGetCartsCart,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/store/carts/:id/shipping-methods",
+    middlewares: [
+      validateAndTransformBody(StoreAddCartShippingMethods),
       validateAndTransformQuery(
         StoreGetCartsCart,
         QueryConfig.retrieveTransformQueryConfig
