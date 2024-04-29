@@ -29,6 +29,7 @@ import { useShippingProfiles } from "../../../../../hooks/api/shipping-profiles"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
 import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
 import { formatProvider } from "../../../../../lib/format-provider"
+import { useRegions } from "../../../../../hooks/api/regions"
 
 enum Tab {
   DETAILS = "details",
@@ -69,6 +70,11 @@ export function CreateShippingOptionsForm({
     is_enabled: true,
   })
 
+  const { regions = [] } = useRegions({
+    limit: 999,
+    fields: "id,currency_code",
+  })
+
   const form = useForm<zod.infer<typeof CreateServiceZoneSchema>>({
     defaultValues: {
       name: "",
@@ -105,10 +111,21 @@ export function CreateShippingOptionsForm({
       })
       .filter((o) => !!o.amount)
 
-    /**
-     * TODO: region prices
-     */
-    // Object.entries(data.region_prices).map(([region_id, value]) => {})
+    const regionsMap = new Map(regions.map((r) => [r.id, r.currency_code]))
+
+    const regionPrices = Object.entries(data.region_prices)
+      .map(([region_id, value]) => {
+        const code = regionsMap.get(region_id)
+
+        const amount =
+          value === "" ? undefined : getDbAmount(Number(value), code)
+
+        return {
+          region_id,
+          amount: amount,
+        }
+      })
+      .filter((o) => !!o.amount)
 
     await createShippingOption({
       name: data.name,
@@ -116,7 +133,7 @@ export function CreateShippingOptionsForm({
       service_zone_id: zone.id,
       shipping_profile_id: data.shipping_profile_id,
       provider_id: data.provider_id,
-      prices: [...currencyPrices],
+      prices: [...currencyPrices, ...regionPrices],
       type: {
         // TODO: FETCH TYPES
         label: "Type label",
@@ -149,7 +166,9 @@ export function CreateShippingOptionsForm({
   }, [tab])
 
   const canMoveToPricing =
-    form.watch("name").length && form.watch("shipping_profile_id")
+    form.watch("name").length &&
+    form.watch("shipping_profile_id") &&
+    form.watch("provider_id")
 
   useEffect(() => {
     if (form.formState.isDirty) {
