@@ -73,3 +73,4 @@ Join our [Discord server](https://discord.com/invite/medusajs) to meet other com
 ## License
 
 Licensed under the [MIT License](https://github.com/medusajs/medusa/blob/develop/LICENSE).
+
