@@ -168,10 +168,6 @@ export default class FulfillmentModuleService<
     const optionsContext = this.setupShippingOptionsConfig_(filters, config)
 
     if (optionsContext) {
-      optionsContext.context = {
-        ...optionsContext.context,
-      }
-
       filters.context = optionsContext
 
       return await this.listShippingOptionsForContext(
