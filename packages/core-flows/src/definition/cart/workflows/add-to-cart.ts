@@ -48,6 +48,7 @@ export const addToCartWorkflow = createWorkflow(
         "title",
         "sku",
         "barcode",
+        "manage_inventory",
         "product.id",
         "product.title",
         "product.description",
@@ -78,6 +79,11 @@ export const addToCartWorkflow = createWorkflow(
     })
 
     const confirmInventoryInput = transform({ input, variants }, (data) => {
+      const managedVariants = data.variants.filter((v) => v.manage_inventory)
+      if (!managedVariants.length) {
+        return { items: [] }
+      }
+
       const productVariantInventoryItems: any[] = []
 
       const stockLocations = data.variants
@@ -106,7 +112,7 @@ export const addToCartWorkflow = createWorkflow(
         if (!salesChannels.length) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Sales channel ${data.input.cart.sales_channel_id} is not associated with any stock locations.`
+            `Sales channel ${salesChannelId} is not associated with any stock locations.`
           )
         }
       }
