@@ -24,7 +24,7 @@ function LocationsSalesChannelsSection({ location }: Props) {
   const noChannels = !isPending && !sales_channels?.length
 
   return (
-    <div className="shadow-elevation-card-rest rounded-md bg-white p-4">
+    <div className="shadow-elevation-card-rest bg-ui-bg-base rounded-md p-4">
       <div className="mb-4 flex items-center justify-between">
         <Heading level="h2">{t("shipping.salesChannels.title")}</Heading>
         <ActionMenu
