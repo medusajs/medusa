@@ -1,4 +1,4 @@
-import { ProductStatus } from "@medusajs/utils"
+import { isPresent, ProductStatus } from "@medusajs/utils"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
@@ -38,8 +38,18 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
         resourceId: "product_id",
         filterableField: "sales_channel_id",
       }),
-      applyDefaultFilters<StoreGetProductsParamsType>({
+      applyDefaultFilters({
         status: ProductStatus.PUBLISHED,
+        categories: (filters: StoreGetProductsParamsType, fields: string[]) => {
+          const categoryIds = filters.category_id
+          delete filters.category_id
+
+          if (!isPresent(categoryIds)) {
+            return
+          }
+
+          return { id: categoryIds, is_internal: false, is_active: true }
+        },
       }),
       setPricingContext(),
     ],
@@ -58,8 +68,15 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
         resourceId: "product_id",
         filterableField: "sales_channel_id",
       }),
-      applyDefaultFilters<StoreGetProductsParamsType>({
+      applyDefaultFilters({
         status: ProductStatus.PUBLISHED,
+        categories: (_filters, fields: string[]) => {
+          if (!fields.some((field) => field.startsWith("categories"))) {
+            return
+          }
+
+          return { is_internal: false, is_active: true }
+        },
       }),
       setPricingContext(),
     ],
