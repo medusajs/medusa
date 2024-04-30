@@ -1,6 +1,7 @@
 import {
   AdminShippingOptionDeleteResponse,
   AdminShippingOptionRetrieveResponse,
+  FulfillmentWorkflow,
 } from "@medusajs/types"
 import { AdminUpdateShippingOptionType } from "../validators"
 import {
@@ -21,8 +22,14 @@ export const POST = async (
 
   const workflow = updateShippingOptionsWorkflow(req.scope)
 
+  const workflowInput: FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput =
+    {
+      id: req.params.id,
+      ...shippingOptionPayload,
+    }
+
   const { result, errors } = await workflow.run({
-    input: [shippingOptionPayload],
+    input: [workflowInput],
     throwOnError: false,
   })
 
