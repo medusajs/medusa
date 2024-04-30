@@ -144,8 +144,8 @@ export function validateRule(rule: Record<string, unknown>): boolean {
   return true
 }
 
-export function normalizeRulesValue<T extends Partial<Rule>>(rules: T[]): T[] {
-  return rules.map((rule) => {
+export function normalizeRulesValue<T extends Partial<Rule>>(rules: T[]): void {
+  rules.forEach((rule) => {
     /**
      * If a string is provided, then we don't want jsonb to convert to the primitive value based on the RFC
      */
@@ -155,6 +155,11 @@ export function normalizeRulesValue<T extends Partial<Rule>>(rules: T[]): T[] {
 
     return rule
   })
+}
+
+export function validateAndNormalizeRules<T extends Partial<Rule>>(rules: T[]) {
+  rules.forEach(validateRule)
+  normalizeRulesValue(rules)
 }
 
 /**

@@ -38,9 +38,9 @@ import {
   ShippingOptionType,
   ShippingProfile,
 } from "@models"
-import { isContextValid, normalizeRulesValue, validateRules } from "@utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { UpdateShippingOptionsInput } from "../types/service"
+import {isContextValid, validateAndNormalizeRules} from "@utils"
+import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
+import {UpdateShippingOptionsInput} from "../types/service"
 import FulfillmentProviderService from "./fulfillment-provider"
 
 const generateMethodForModels = [
@@ -343,7 +343,7 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.CreateServiceZoneDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TServiceZoneEntity | TServiceZoneEntity[]> {
-    let data_ = Array.isArray(data) ? data : [data]
+    const data_ = Array.isArray(data) ? data : [data]
 
     if (!data_.length) {
       return []
@@ -402,18 +402,15 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.CreateShippingOptionDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TShippingOptionEntity | TShippingOptionEntity[]> {
-    let data_ = Array.isArray(data) ? data : [data]
+    const data_ = Array.isArray(data) ? data : [data]
 
     if (!data_.length) {
       return []
     }
 
-    let rules = data_.flatMap((d) => d.rules).filter(Boolean)
+    const rules = data_.flatMap((d) => d.rules).filter(Boolean)
     if (rules.length) {
-      rules = normalizeRulesValue(
-        rules as Required<FulfillmentTypes.CreateShippingOptionDTO>["rules"]
-      )
-      validateRules(rules as Record<string, unknown>[])
+      validateAndNormalizeRules(rules as Record<string, unknown>[])
     }
 
     const createdShippingOptions = await this.shippingOptionService_.create(
@@ -552,16 +549,13 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.CreateShippingOptionRuleDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TShippingOptionRuleEntity | TShippingOptionRuleEntity[]> {
-    let data_ = Array.isArray(data) ? data : [data]
+    const data_ = Array.isArray(data) ? data : [data]
 
     if (!data_.length) {
       return []
     }
 
-    data_ = normalizeRulesValue(
-      data_
-    )
-    validateRules(data_ as unknown as Record<string, unknown>[])
+    validateAndNormalizeRules(data_ as unknown as Record<string, unknown>[])
 
     const createdShippingOptionRules =
       await this.shippingOptionRuleService_.create(data_, sharedContext)
@@ -1172,7 +1166,7 @@ export default class FulfillmentModuleService<
         ruleIdsToDelete.push(...toDeleteRuleIds)
       }
 
-      let newRules = updatedRules
+      const newRules = updatedRules
         .map((rule) => {
           if (!("id" in rule)) {
             return rule
@@ -1181,10 +1175,7 @@ export default class FulfillmentModuleService<
         })
         .filter(Boolean)
 
-      newRules = normalizeRulesValue(
-        newRules as Required<FulfillmentTypes.CreateShippingOptionDTO>["rules"]
-      )
-      validateRules(newRules as Record<string, unknown>[])
+      validateAndNormalizeRules(newRules as Record<string, unknown>[])
 
       shippingOption.rules = shippingOption.rules.map((rule) => {
         if (!("id" in rule)) {
@@ -1385,14 +1376,13 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.UpdateShippingOptionRuleDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TShippingOptionRuleEntity | TShippingOptionRuleEntity[]> {
-    let data_ = Array.isArray(data) ? data : [data]
+    const data_ = Array.isArray(data) ? data : [data]
 
     if (!data_.length) {
       return []
     }
 
-    data_ = normalizeRulesValue(data_)
-    validateRules(data_ as unknown as Record<string, unknown>[])
+    validateAndNormalizeRules(data_ as unknown as Record<string, unknown>[])
 
     const updatedShippingOptionRules =
       await this.shippingOptionRuleService_.update(data_, sharedContext)

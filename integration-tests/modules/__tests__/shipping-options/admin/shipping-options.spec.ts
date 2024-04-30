@@ -259,7 +259,7 @@ medusaIntegrationTestRunner({
               {
                 operator: RuleOperator.EQ,
                 attribute: "new_attr",
-                value: '"true"',
+                value: "true",
               },
             ],
           }
