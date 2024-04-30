@@ -118,11 +118,7 @@ export const useUpdateStockLocationSalesChannels = (
       client.stockLocations.updateSalesChannels(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.detail(id),
-      })
-      // TODO: REMOVE WHEN WE LIST SCs WITH LOCATION WE FETCH
-      queryClient.invalidateQueries({
-        queryKey: salesChannelsQueryKeys.lists(),
+        queryKey: stockLocationsQueryKeys.details(),
       })
       options?.onSuccess?.(data, variables, context)
     },

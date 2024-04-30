@@ -15,13 +15,7 @@ function LocationsSalesChannelsSection({ location }: Props) {
   const { t } = useTranslation()
   const { count } = useSalesChannels()
 
-  // TODO: we should be able to get this relation with the location
-  const { sales_channels = [], isPending } = useSalesChannels({
-    location_id: location.id,
-    limit: 9999,
-  })
-
-  const noChannels = !isPending && !sales_channels?.length
+  const noChannels = !location.sales_channels?.length
 
   return (
     <div className="shadow-elevation-card-rest bg-ui-bg-base rounded-md p-4">
@@ -55,41 +49,29 @@ function LocationsSalesChannelsSection({ location }: Props) {
           <ListSummary
             n={3}
             inline
-            list={sales_channels.map((sc) => sc.name)}
+            list={location.sales_channels.map((sc) => sc.name)}
           />
         )}
       </div>
       <Text className="text-ui-fg-subtle mt-4" size="small" leading="compact">
-        {!isPending && (
-          <Trans
-            i18nKey="sales_channels.availableIn"
-            values={{
-              x: sales_channels.length,
-              y: count,
-            }}
-            components={[
-              <span
-                key="x"
-                className="text-ui-fg-base txt-compact-medium-plus"
-              />,
-              <span
-                key="y"
-                className="text-ui-fg-base txt-compact-medium-plus"
-              />,
-            ]}
-          />
-        )}
+        <Trans
+          i18nKey="sales_channels.availableIn"
+          values={{
+            x: location.sales_channels.length,
+            y: count,
+          }}
+          components={[
+            <span
+              key="x"
+              className="text-ui-fg-base txt-compact-medium-plus"
+            />,
+            <span
+              key="y"
+              className="text-ui-fg-base txt-compact-medium-plus"
+            />,
+          ]}
+        />
       </Text>
-      {/*{noChannels && (*/}
-      {/*  <NoRecords*/}
-      {/*    className="h-fit py-8"*/}
-      {/*    message={t("shipping.salesChannels.placeholder")}*/}
-      {/*    action={{*/}
-      {/*      label: t("shipping.salesChannels.connectChannels"),*/}
-      {/*      to: `/settings/shipping/${location.id}/sales-channels/edit`,*/}
-      {/*    }}*/}
-      {/*  />*/}
-      {/*)}*/}
     </div>
   )
 }
