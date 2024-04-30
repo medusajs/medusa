@@ -183,8 +183,13 @@ medusaIntegrationTestRunner({
             [product.id]
           )
 
+          const category2 = await createCategory(
+            { name: "test2", is_internal: true, is_active: true },
+            [product4.id]
+          )
+
           const response = await api.get(
-            `/store/products?category_id[]=${category.id}`
+            `/store/products?category_id[]=${category.id}&category_id[]=${category2.id}`
           )
 
           expect(response.status).toEqual(200)
