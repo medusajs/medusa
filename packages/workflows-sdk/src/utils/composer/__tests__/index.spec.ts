@@ -29,7 +29,7 @@ describe("Workflow composer", () => {
       )
 
       const workflow = createWorkflow(getNewWorkflowId(), function () {
-        const subWorkflowRes = subWorkflow.asStep("hi from outside")
+        const subWorkflowRes = subWorkflow.run({ input: "hi from outside" })
         return step3(subWorkflowRes.result)
       })
 
@@ -80,7 +80,7 @@ describe("Workflow composer", () => {
 
       const workflow = createWorkflow(getNewWorkflowId(), function () {
         step3()
-        const subWorkflowRes = subWorkflow.asStep("hi from outside")
+        const subWorkflowRes = subWorkflow.run({ input: "hi from outside" })
         step4WithError()
         return subWorkflowRes
       })
