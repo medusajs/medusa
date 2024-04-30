@@ -1,3 +1,4 @@
+import { XMarkMini } from "@medusajs/icons"
 import { Badge, clx } from "@medusajs/ui"
 import {
   KeyboardEvent,
@@ -14,6 +15,7 @@ type ChipInputProps = {
   name?: string
   disabled?: boolean
   allowDuplicates?: boolean
+  showRemove?: boolean
   variant?: "base" | "contrast"
   className?: string
 }
@@ -26,6 +28,7 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
       onBlur,
       disabled,
       name,
+      showRemove = true,
       variant = "base",
       allowDuplicates = false,
       className,
@@ -99,8 +102,24 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
       >
         {chips.map((v) => {
           return (
-            <Badge key={`${v}-${crypto.randomUUID()}`} size="2xsmall">
+            <Badge
+              key={`${v}-${crypto.randomUUID()}`}
+              size="2xsmall"
+              className={clx({
+                "pr-0": showRemove,
+              })}
+            >
               {v}
+              {showRemove && (
+                <button
+                  tabIndex={-1}
+                  type="button"
+                  onClick={() => handleRemoveChip(v)}
+                  className="text-ui-fg-subtle outline-none"
+                >
+                  <XMarkMini />
+                </button>
+              )}
             </Badge>
           )
         })}

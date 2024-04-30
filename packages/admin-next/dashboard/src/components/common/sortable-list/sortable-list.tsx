@@ -51,8 +51,6 @@ const List = <TItem extends SortableBaseItem>({
   const [active, setActive] = useState<Active | null>(null)
 
   const [activeItem, activeIndex] = useMemo(() => {
-    console.log(active)
-
     if (active === null) {
       return [null, null]
     }

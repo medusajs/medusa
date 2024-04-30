@@ -41,14 +41,13 @@
     "typeToConfirm": "Please type {val} to confirm:",
     "noResultsTitle": "No results",
     "noResultsMessage": "Try changing the filters or search query",
+    "noSearchResults": "No search results",
+    "noSearchResultsFor": "No search results for <0>'{{query}}'</0>",
     "noRecordsTitle": "No records",
     "noRecordsMessage": "There are no records to show",
     "unsavedChangesTitle": "Are you sure you want to leave this page?",
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page.",
-    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved.",
-    "timeline": "Timeline",
-    "success": "Success",
-    "error": "Error"
+    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved."
   },
   "validation": {
     "mustBeInt": "The value must be a whole number.",
@@ -365,11 +364,11 @@
     "associatedVariants": "Associated variants",
     "manageLocations": "Manage locations",
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
-    "reservation": { 
+    "reservation": {
       "header": "Reservation of {{itemName}}",
       "editItemDetails": "Edit item details",
       "orderID": "Order ID",
-      "description": "Description", 
+      "description": "Description",
       "location": "Location",
       "inStockAtLocation": "In stock at this location",
       "availableAtLocation": "Available at this location",

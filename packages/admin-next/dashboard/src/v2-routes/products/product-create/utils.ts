@@ -1,4 +1,4 @@
-import { CreateProductDTO, CreateProductVariantDTO } from "@medusajs/types"
+import { CreateProductDTO } from "@medusajs/types"
 import { ProductCreateSchemaType } from "./types"
 
 export const normalizeProductFormValues = (
@@ -15,6 +15,7 @@ export const normalizeProductFormValues = (
       : undefined,
     images: values.images?.length ? values.images : undefined,
     collection_id: values.collection_id || undefined,
+    categories: values.categories.map((id) => ({ id })),
     type_id: values.type_id || undefined,
     handle: values.handle || undefined,
     origin_country: values.origin_country || undefined,
@@ -35,16 +36,16 @@ export const normalizeProductFormValues = (
 }
 
 export const normalizeVariants = (
-  variants: (Partial<CreateProductVariantDTO> & {
-    prices?: Record<string, string>
-  })[]
+  variants: ProductCreateSchemaType["variants"]
 ) => {
-  return variants.map((variant) => ({
-    title: Object.values(variant.options || {}).join(" / "),
-    options: variant.options,
-    prices: Object.entries(variant.prices || {}).map(([key, value]: any) => ({
-      currency_code: key,
-      amount: value ? parseFloat(value) : 0,
-    })),
-  }))
+  return variants
+    .filter((variant) => variant.should_create)
+    .map((variant) => ({
+      title: Object.values(variant.options || {}).join(" / "),
+      options: variant.options,
+      prices: Object.entries(variant.prices || {}).map(([key, value]: any) => ({
+        currency_code: key,
+        amount: value ? parseFloat(value) : 0,
+      })),
+    }))
 }

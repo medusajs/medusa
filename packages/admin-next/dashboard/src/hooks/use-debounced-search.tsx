@@ -24,6 +24,6 @@ export const useDebouncedSearch = () => {
   return {
     searchValue,
     onSearchValueChange,
-    query: debouncedQuery,
+    query: debouncedQuery || undefined,
   }
 }

@@ -5,7 +5,6 @@ import { Trans, useTranslation } from "react-i18next"
 import { ChipGroup } from "../../../../../../../components/common/chip-group"
 import { Form } from "../../../../../../../components/common/form"
 import { Combobox } from "../../../../../../../components/inputs/combobox"
-import { useCategories } from "../../../../../../../hooks/api/categories"
 import { useComboboxData } from "../../../../../../../hooks/use-combobox-data"
 import { client } from "../../../../../../../lib/client"
 import { CategoryCombobox } from "../../../../../common/components/category-combobox"
@@ -21,9 +20,6 @@ export const ProductCreateOrganizationSection = ({
 }: ProductCreateOrganizationSectionProps) => {
   const { t } = useTranslation()
   const { onOpenChange } = useProductCreateDetailsContext()
-
-  // const { tags, isLoading: isLoadingTags } = useTags() // Tags are not implemented in V2 yet.
-  const { product_categories, isLoading: isLoadingCategories } = useCategories()
 
   const collections = useComboboxData({
     queryKey: ["product_collections"],
@@ -132,7 +128,7 @@ export const ProductCreateOrganizationSection = ({
       <div className="grid grid-cols-2 gap-x-4">
         <Form.Field
           control={form.control}
-          name="category_id"
+          name="categories"
           render={({ field }) => {
             return (
               <Form.Item>

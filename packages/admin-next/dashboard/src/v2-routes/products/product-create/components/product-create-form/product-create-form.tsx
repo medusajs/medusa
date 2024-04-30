@@ -118,6 +118,7 @@ export const ProductCreateForm = () => {
                     size="small"
                     type="submit"
                     isLoading={isPending}
+                    className="whitespace-nowrap"
                   >
                     {t("actions.saveAsDraft")}
                   </Button>

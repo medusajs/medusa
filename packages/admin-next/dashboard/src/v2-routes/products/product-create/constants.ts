@@ -8,7 +8,7 @@ export const ProductCreateSchema = z.object({
   discountable: z.boolean(),
   type_id: z.string().optional(),
   collection_id: z.string().optional(),
-  category_id: z.array(z.string()),
+  categories: z.array(z.string()),
   tags: z.array(z.string()).optional(),
   sales_channels: z
     .array(
@@ -60,7 +60,7 @@ export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
   variants: [],
   images: [],
   thumbnail: "",
-  category_id: [],
+  categories: [],
   collection_id: "",
   description: "",
   handle: "",

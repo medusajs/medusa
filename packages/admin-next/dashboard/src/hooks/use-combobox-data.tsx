@@ -76,19 +76,10 @@ export const useComboboxData = <
    */
   const disabled = !rest.isPending && !options.length && !searchValue
 
-  console.log(
-    "options",
-    options,
-    "defaultOptions",
-    defaultOptions,
-    "initialData",
-    initialData
-  )
-
   // // make sure that the default value is included in the option, if its not in options already
-  // if (defaultValue && !options.find((o) => o.value === defaultValue)) {
-  //   options.unshift(defaultOptions[0])
-  // }
+  if (defaultValue && !options.find((o) => o.value === defaultValue)) {
+    options.unshift(defaultOptions[0])
+  }
 
   return {
     options,
