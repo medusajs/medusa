@@ -10,12 +10,28 @@ export function setPricingContext() {
     if (
       !req.remoteQueryConfig.fields.some((field) =>
         field.startsWith("variants.calculated_price")
-      )
+      ) &&
+      !req.filterableFields.region_id &&
+      !req.filterableFields.currency_code
     ) {
-      delete req.filterableFields.region_id
-      delete req.filterableFields.currency_code
-
       return next()
+    }
+
+    // If pricing parameters are passed, but pricing fields are not passed, throw an error
+    if (
+      !req.remoteQueryConfig.fields.some((field) =>
+        field.startsWith("variants.calculated_price")
+      ) &&
+      (req.filterableFields.region_id || req.filterableFields.currency_code)
+    ) {
+      try {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Missing required pricing fields to calculate prices`
+        )
+      } catch (e) {
+        return next(e)
+      }
     }
 
     const query = req.filterableFields || {}
@@ -70,8 +86,8 @@ export function setPricingContext() {
       delete req.filterableFields.customer_id
     }
 
-    // If a region or currency_code is not present in the context, we will not be able to calculate prices
-    if (!isPresent(pricingContext)) {
+    // If a currency_code is not present in the context, we will not be able to calculate prices
+    if (!isPresent(pricingContext.currency_code)) {
       try {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
