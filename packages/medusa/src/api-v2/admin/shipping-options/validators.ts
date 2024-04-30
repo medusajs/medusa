@@ -126,5 +126,6 @@ export const AdminUpdateShippingOption = z
     )
       .array()
       .optional(),
+    rules: AdminUpdateShippingOptionRule.or(AdminCreateShippingOptionRule).array().optional(),
   })
   .strict()
