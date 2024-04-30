@@ -101,9 +101,11 @@ export class WorkflowManager {
         : true
 
       if (!areStepsEqual) {
-        throw new Error(
-          `Workflow with id "${workflowId}" and step definition already exists.`
-        )
+        if (process.env.MEDUSA_FF_MEDUSA_V2 == "true") {
+          throw new Error(
+            `Workflow with id "${workflowId}" and step definition already exists.`
+          )
+        }
       }
     }
 
