@@ -9,6 +9,10 @@ const providerDescriptors: { [providerKey: string]: Option } = {
     label: "Stripe Ideal",
     value: "stripe-ideal",
   },
+  "stripe-express": {
+    label: "Stripe Express",
+    value: "stripe-express",
+  },
   "stripe-giropay": {
     label: "Stripe Giropay",
     value: "stripe-giropay",
