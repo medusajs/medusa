@@ -93,7 +93,7 @@ export const useUpdateStockLocation = (
     mutationFn: (payload) => client.stockLocations.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.detail(id),
+        queryKey: stockLocationsQueryKeys.details(),
       })
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
