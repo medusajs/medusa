@@ -41,10 +41,6 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
       applyDefaultFilters({
         status: ProductStatus.PUBLISHED,
         categories: (filters: StoreGetProductsParamsType, fields: string[]) => {
-          if (!fields.some((field) => field.startsWith("categories"))) {
-            return
-          }
-
           const categoryIds = filters.category_id
           delete filters.category_id
 
