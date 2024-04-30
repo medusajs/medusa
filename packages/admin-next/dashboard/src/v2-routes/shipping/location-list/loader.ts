@@ -1,13 +1,13 @@
 import { LoaderFunctionArgs } from "react-router-dom"
-import { adminStockLocationsKeys } from "medusa-react"
 
 import { client } from "../../../lib/client"
 import { queryClient } from "../../../lib/medusa"
 import { StockLocationListRes } from "../../../types/api-responses"
 import { locationListFields } from "./const"
+import { stockLocationsQueryKeys } from "../../../hooks/api/stock-locations"
 
 const shippingListQuery = () => ({
-  queryKey: adminStockLocationsKeys.lists(),
+  queryKey: stockLocationsQueryKeys.lists(),
   queryFn: async () =>
     client.stockLocations.list({
       // TODO: change this when RQ is fixed

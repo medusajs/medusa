@@ -659,8 +659,12 @@
     "fulfillmentSet": {
       "placeholder": "Not covered by any shipping zones.",
       "delete": "Delete shipping",
+      "disableWarning": "Are you sure that you wnat to disable \"{{name}}\"? This will delete all assocciated service zones and shipping options.",
       "create": {
         "title": "Add service zone for {{fulfillmentSet}}"
+      },
+      "toast": {
+        "disable": "\"{{name}}\" disabled"
       },
       "addZone": "Add service zone",
       "pickup": {
@@ -683,6 +687,10 @@
       },
       "edit":{
         "title": "Edit Service Zone"
+      },
+      "deleteWarning": "Are you sure you want to delete \"{{name}}\". This will also delete all assocciated shipping options.",
+      "toast": {
+        "delete": "Zone \"{{name}}\" deleted successfully."
       },
       "editPrices": "Edit prices",
       "editOption": "Edit option",
@@ -716,6 +724,10 @@
         "calculated": "Calculated",
         "calculatedDescription": "Shipping option's price is calculated by the fulfillment provider.",
         "profile": "Shipping profile"
+      },
+      "deleteWarning": "Are you sure you want to delete \"{{name}}\"?",
+      "toast": {
+        "delete": "Shipping option \"{{name}}\" deleted successfully."
       },
       "inStore": "Store",
       "edit": {

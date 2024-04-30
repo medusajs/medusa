@@ -50,8 +50,6 @@ type LocationGeneralSectionProps = {
 export const LocationGeneralSection = ({
   location,
 }: LocationGeneralSectionProps) => {
-  const { t } = useTranslation()
-
   return (
     <>
       <Container className="p-0">
@@ -95,6 +93,7 @@ function ShippingOption({
   fulfillmentSetId,
   locationId,
 }: ShippingOptionProps) {
+  const prompt = usePrompt()
   const { t } = useTranslation()
 
   const isInStore = isOptionEnabledInStore(option)
@@ -102,7 +101,34 @@ function ShippingOption({
   const { mutateAsync: deleteOption } = useDeleteShippingOption(option.id)
 
   const handleDelete = async () => {
-    await deleteOption()
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("shipping.shippingOptions.deleteWarning", {
+        name: option.name,
+      }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    try {
+      await deleteOption()
+
+      toast.success(t("general.success"), {
+        description: t("shipping.shippingOptions.toast.delete", {
+          name: option.name,
+        }),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (
@@ -243,15 +269,44 @@ type ServiceZoneProps = {
 
 function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   const { t } = useTranslation()
+  const prompt = usePrompt()
   const [open, setOpen] = useState(false)
 
   const { mutateAsync: deleteZone } = useDeleteServiceZone(
     fulfillmentSetId,
-    zone.id
+    zone.id,
+    locationId
   )
 
   const handleDelete = async () => {
-    await deleteZone()
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("shipping.serviceZone.deleteWarning", {
+        name: zone.name,
+      }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    try {
+      await deleteZone()
+
+      toast.success(t("general.success"), {
+        description: t("shipping.serviceZone.toast.delete", {
+          name: zone.name,
+        }),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   const countries = useMemo(() => {
@@ -379,7 +434,9 @@ type FulfillmentSetProps = {
 
 function FulfillmentSet(props: FulfillmentSetProps) {
   const { t } = useTranslation()
+  const prompt = usePrompt()
   const navigate = useNavigate()
+
   const { fulfillmentSet, locationName, locationId, type } = props
 
   const fulfillmentSetExists = !!fulfillmentSet
@@ -402,7 +459,34 @@ function FulfillmentSet(props: FulfillmentSetProps) {
   }
 
   const handleDelete = async () => {
-    await deleteFulfillmentSet()
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("shipping.fulfillmentSet.disableWarning", {
+        name: fulfillmentSet?.name,
+      }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    try {
+      await deleteFulfillmentSet()
+
+      toast.success(t("general.success"), {
+        description: t("shipping.fulfillmentSet.toast.disable", {
+          name: fulfillmentSet?.name,
+        }),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (
