@@ -717,6 +717,7 @@
         "calculatedDescription": "Shipping option's price is calculated by the fulfillment provider.",
         "profile": "Shipping profile"
       },
+      "inStore": "Store",
       "edit": {
         "title": "Edit Shipping Option",
         "provider": "Fulfillment provider"

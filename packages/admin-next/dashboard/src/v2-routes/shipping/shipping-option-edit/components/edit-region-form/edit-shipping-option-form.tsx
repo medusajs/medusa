@@ -12,6 +12,7 @@ import {
 import { useShippingProfiles } from "../../../../../hooks/api/shipping-profiles"
 import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
+import { isOptionEnabledInStore } from "../../../../../lib/shipping-options"
 import { formatProvider } from "../../../../../lib/format-provider"
 
 enum ShippingAllocation {
@@ -27,7 +28,7 @@ type EditShippingOptionFormProps = {
 const EditShippingOptionSchema = zod.object({
   name: zod.string().min(1),
   price_type: zod.nativeEnum(ShippingAllocation),
-  enable_in_store: zod.boolean().optional(),
+  enabled_in_store: zod.boolean().optional(),
   shipping_profile_id: zod.string(),
   provider_id: zod.string(),
 })
@@ -51,7 +52,7 @@ export const EditShippingOptionForm = ({
     defaultValues: {
       name: shippingOption.name,
       price_type: shippingOption.price_type as ShippingAllocation,
-      enable_in_store: shippingOption.enable_in_store || true, // TODO: how should we handle this flag, is it a rule?
+      enabled_in_store: isOptionEnabledInStore(shippingOption),
       shipping_profile_id: shippingOption.shipping_profile_id,
       provider_id: shippingOption.provider_id,
     },
@@ -62,6 +63,22 @@ export const EditShippingOptionForm = ({
   )
 
   const handleSubmit = form.handleSubmit(async (values) => {
+    const rules = shippingOption.rules.map((r) => ({ ...r }))
+
+    // TODO: API currently doesn't support update so uncomment this when the endpoint is fixed
+    // const storeRule = rules.find((r) => r.attribute === "enabled_in_store")
+    // if (!storeRule) {
+    //   rules.push({
+    //     value: values.enabled_in_store ? "true" : "false",
+    //     attribute: "enabled_in_store",
+    //     operator: "eq",
+    //   })
+    // } else {
+    //   storeRule.value = values.enabled_in_store
+    // }
+
+    // TODO: POST to /rules for update
+
     await mutateAsync(
       {
         // TODO: why is passing ID mandatory with the schema definition
@@ -69,7 +86,7 @@ export const EditShippingOptionForm = ({
         name: values.name,
         price_type: values.price_type,
         shipping_profile_id: values.shipping_profile_id,
-        provider_id: values.provider_id || "test-provider", // TODO
+        provider_id: values.provider_id,
       },
       {
         onSuccess: () => {
@@ -215,7 +232,7 @@ export const EditShippingOptionForm = ({
                 <div className="pt-6">
                   <Form.Field
                     control={form.control}
-                    name="enable_in_store"
+                    name="enabled_in_store"
                     render={({ field: { value, onChange, ...field } }) => (
                       <Form.Item>
                         <div className="flex items-center justify-between">

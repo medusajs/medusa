@@ -15,6 +15,7 @@ import {
   Trash,
 } from "@medusajs/icons"
 import {
+  Badge,
   Button,
   Container,
   Heading,
@@ -37,7 +38,10 @@ import { formatProvider } from "../../../../../lib/format-provider"
 import { useMemo, useState } from "react"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { ListSummary } from "../../../../../components/common/list-summary"
-import { isReturnOption } from "../../../../../lib/shipping-options"
+import {
+  isOptionEnabledInStore,
+  isReturnOption,
+} from "../../../../../lib/shipping-options"
 
 type LocationGeneralSectionProps = {
   location: StockLocationDTO
@@ -93,6 +97,8 @@ function ShippingOption({
 }: ShippingOptionProps) {
   const { t } = useTranslation()
 
+  const isInStore = isOptionEnabledInStore(option)
+
   const { mutateAsync: deleteOption } = useDeleteShippingOption(option.id)
 
   const handleDelete = async () => {
@@ -107,6 +113,11 @@ function ShippingOption({
           {formatProvider(option.provider_id)})
         </span>
       </div>
+      {isInStore && (
+        <Badge className="mr-4" color="purple">
+          {t("shipping.shippingOptions.inStore")}
+        </Badge>
+      )}
       <ActionMenu
         groups={[
           {

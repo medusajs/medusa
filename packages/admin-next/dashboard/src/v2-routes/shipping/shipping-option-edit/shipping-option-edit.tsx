@@ -17,7 +17,7 @@ export const ShippingOptionEdit = () => {
     id: so_id,
   })
 
-  const shippingOption = shipping_options?.[0]
+  const shippingOption = shipping_options?.find((so) => so.id === so_id)
 
   if (isError) {
     throw error

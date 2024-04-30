@@ -48,7 +48,7 @@ type StepStatus = {
 const CreateServiceZoneSchema = zod.object({
   name: zod.string().min(1),
   price_type: zod.nativeEnum(ShippingAllocation),
-  enable_in_store: zod.boolean().optional(),
+  enabled_in_store: zod.boolean().optional(),
   shipping_profile_id: zod.string(),
   provider_id: zod.string().min(1),
   region_prices: zod.record(zod.string(), zod.string().optional()),
@@ -81,7 +81,7 @@ export function CreateShippingOptionsForm({
     defaultValues: {
       name: "",
       price_type: ShippingAllocation.FlatRate,
-      enable_in_store: true,
+      enabled_in_store: true,
       shipping_profile_id: "",
       provider_id: "",
       region_prices: {},
@@ -136,15 +136,18 @@ export function CreateShippingOptionsForm({
       shipping_profile_id: data.shipping_profile_id,
       provider_id: data.provider_id,
       prices: [...currencyPrices, ...regionPrices],
-      rules: isReturn
-        ? [
-            {
-              value: "true",
-              attribute: "is_return",
-              operator: "eq",
-            },
-          ]
-        : undefined,
+      rules: [
+        {
+          value: isReturn ? '"true"' : '"false"', // we want JSONB saved as string
+          attribute: "is_return",
+          operator: "eq",
+        },
+        {
+          value: data.enabled_in_store ? '"true"' : '"false"', // we want JSONB saved as string
+          attribute: "enabled_in_store",
+          operator: "eq",
+        },
+      ],
       type: {
         // TODO: FETCH TYPES
         label: "Type label",
@@ -429,7 +432,7 @@ export function CreateShippingOptionsForm({
                   <div className="mt-8 pt-8">
                     <Form.Field
                       control={form.control}
-                      name="enable_in_store"
+                      name="enabled_in_store"
                       render={({ field: { value, onChange, ...field } }) => (
                         <Form.Item>
                           <div className="flex items-center justify-between">
