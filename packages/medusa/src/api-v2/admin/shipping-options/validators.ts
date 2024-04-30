@@ -126,5 +126,10 @@ export const AdminUpdateShippingOption = z
     )
       .array()
       .optional(),
+    rules: z
+      .object({ id: z.string().optional() })
+      .merge(AdminCreateShippingOptionRule)
+      .array()
+      .optional(),
   })
   .strict()

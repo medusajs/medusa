@@ -254,6 +254,14 @@ medusaIntegrationTestRunner({
                 amount: 10000,
               },
             ],
+            rules: [
+              shippingOptionRule,
+              {
+                operator: RuleOperator.EQ,
+                attribute: "new_attr",
+                value: '"true"',
+              },
+            ],
           }
 
           const updateResponse = await api.post(
@@ -264,6 +272,7 @@ medusaIntegrationTestRunner({
 
           expect(updateResponse.status).toEqual(200)
           expect(updateResponse.data.shipping_option.prices).toHaveLength(2)
+          expect(updateResponse.data.shipping_option.rules).toHaveLength(2)
           expect(updateResponse.data.shipping_option).toEqual(
             expect.objectContaining({
               id: expect.any(String),
@@ -300,6 +309,12 @@ medusaIntegrationTestRunner({
                   operator: "eq",
                   attribute: "old_attr",
                   value: "old value",
+                }),
+                expect.objectContaining({
+                  id: expect.any(String),
+                  operator: "eq",
+                  attribute: "new_attr",
+                  value: "true",
                 }),
               ]),
             })
