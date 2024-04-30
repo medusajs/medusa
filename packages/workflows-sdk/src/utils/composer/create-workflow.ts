@@ -10,9 +10,12 @@ import { ExportedWorkflow, exportWorkflow } from "../../helper"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
+  StepFunction,
   WorkflowData,
   WorkflowDataProperties,
 } from "./type"
+import { createStep } from "./create-step"
+import { StepResponse } from "./helpers"
 
 global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
 
@@ -77,7 +80,7 @@ export type ReturnWorkflow<
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
 } & THooks & {
     getName: () => string
-  } & {
+    asStep: (input: TData) => ReturnType<StepFunction<TData, TResult>>
     config: (config: TransactionModelOptions) => void
   }
 
@@ -255,6 +258,35 @@ export function createWorkflow<
   }
 
   mainFlow.getName = () => name
+
+  mainFlow.asStep = (
+    input: TData
+  ): ReturnType<StepFunction<TData, TResult>> => {
+    // TODO: Async sub workflow is not supported yet
+    // Info: Once the export workflow can fire the execution through the engine if loaded, the async workflow can be executed,
+    // the step would inherit the async configuration and subscribe to the onFinish event of the sub worklow and mark itself as success or failure
+    return createStep(
+      `${name}-as-step`,
+      async (stepInput: TData, stepContext) => {
+        const { container, ...sharedContext } = stepContext
+
+        const transaction = await workflow.run({
+          input: stepInput as any,
+          container,
+          context: sharedContext,
+        })
+
+        return new StepResponse(transaction.result, transaction)
+      },
+      async (transaction, { container }) => {
+        if (!transaction) {
+          return
+        }
+
+        await workflow(container).cancel(transaction)
+      }
+    )(input) as ReturnType<StepFunction<TData, TResult>>
+  }
 
   return mainFlow as ReturnWorkflow<TData, TResult, THooks>
 }
