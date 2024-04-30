@@ -7,17 +7,19 @@ export const GET = async (
   req: MedusaRequest<StoreGetProductsParamsType>,
   res: MedusaResponse
 ) => {
-  const context = isPresent(req.pricingContext)
-    ? {
-        "variants.calculated_price": { context: req.pricingContext },
-      }
-    : undefined
+  const filters: object = {
+    id: req.params.id,
+    ...req.filterableFields,
+  }
+
+  if (isPresent(req.pricingContext)) {
+    filters["context"] = {
+      "variants.calculated_price": { context: req.pricingContext },
+    }
+  }
 
   const product = await refetchProduct(
-    {
-      id: req.params.id,
-      context,
-    },
+    filters,
     req.scope,
     req.remoteQueryConfig.fields
   )
