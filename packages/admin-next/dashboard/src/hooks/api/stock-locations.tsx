@@ -176,7 +176,7 @@ export const useCreateServiceZone = (
       client.stockLocations.createServiceZone(fulfillmentSetId, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.detail(locationId),
+        queryKey: stockLocationsQueryKeys.details(),
       })
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
@@ -202,7 +202,7 @@ export const useUpdateServiceZone = (
       ),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.detail(locationId),
+        queryKey: stockLocationsQueryKeys.details(),
       })
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
@@ -236,7 +236,6 @@ export const useDeleteFulfillmentSet = (
 export const useDeleteServiceZone = (
   setId: string,
   zoneId: string,
-  locationId: string,
   options?: UseMutationOptions<ServiceZoneDeleteRes, Error, void>
 ) => {
   return useMutation({
@@ -246,7 +245,7 @@ export const useDeleteServiceZone = (
         queryKey: stockLocationsQueryKeys.lists(),
       })
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.detail(locationId),
+        queryKey: stockLocationsQueryKeys.details(),
       })
 
       options?.onSuccess?.(data, variables, context)

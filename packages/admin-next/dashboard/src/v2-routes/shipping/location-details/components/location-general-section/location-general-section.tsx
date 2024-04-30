@@ -274,8 +274,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
 
   const { mutateAsync: deleteZone } = useDeleteServiceZone(
     fulfillmentSetId,
-    zone.id,
-    locationId
+    zone.id
   )
 
   const handleDelete = async () => {
