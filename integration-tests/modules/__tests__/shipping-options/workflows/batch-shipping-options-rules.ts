@@ -74,7 +74,7 @@ async function createShippingOptionFixture({
         {
           attribute: "is_store",
           operator: RuleOperator.EQ,
-          value: '"true"',
+          value: "true",
         },
       ],
     }
@@ -184,7 +184,7 @@ medusaIntegrationTestRunner({
           update: [
             {
               ...ruleToUpdate,
-              value: '"false"',
+              value: "false",
             },
           ],
           delete: [ruleToDelete.id],
@@ -203,10 +203,7 @@ medusaIntegrationTestRunner({
           variables: {
             id: shippingOption.id,
           },
-          fields: [
-            "id",
-            "rules.*",
-          ],
+          fields: ["id", "rules.*"],
         })
 
         const [updatedShippingOption] = await remoteQuery(remoteQueryObject)
@@ -233,7 +230,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it.only("should revert the shipping options rules batch actions", async () => {
+      it("should revert the shipping options rules batch actions", async () => {
         const shippingOption = await createShippingOptionFixture({
           container,
           serviceZone,
@@ -264,7 +261,7 @@ medusaIntegrationTestRunner({
           update: [
             {
               ...ruleToUpdate,
-              value: '"false"',
+              value: "false",
             },
           ],
           delete: [ruleToDelete.id],
@@ -294,7 +291,7 @@ medusaIntegrationTestRunner({
           `Failed to update shipping option rules`
         )
 
-        /*const remoteQuery = container.resolve(
+        const remoteQuery = container.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
 
@@ -309,7 +306,20 @@ medusaIntegrationTestRunner({
         const [updatedShippingOption] = await remoteQuery(remoteQueryObject)
 
         expect(updatedShippingOption.rules).toHaveLength(2)
-        expect(updatedShippingOption.rules).toEqual(shippingOption.rules)*/
+        expect(updatedShippingOption.rules).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              attribute: "is_store",
+              operator: "eq",
+              value: "true",
+            }),
+            expect.objectContaining({
+              attribute: "total",
+              operator: "eq",
+              value: 100,
+            }),
+          ])
+        )
       })
     })
   },
