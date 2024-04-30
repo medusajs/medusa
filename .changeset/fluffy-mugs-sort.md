@@ -1,6 +1,6 @@
 ---
-"@medusajs/pricing": minor
-"@medusajs/types": minor
+"@medusajs/pricing": patch
+"@medusajs/types": patch
 "@medusajs/core-flows": patch
 ---
 

@@ -1,7 +1,7 @@
 ---
-"@medusajs/product": minor
-"@medusajs/medusa": minor
-"@medusajs/types": minor
+"@medusajs/product": patch
+"@medusajs/medusa": patch
+"@medusajs/types": patch
 "@medusajs/core-flows": patch
 ---
 
