@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom"
 import { RouteFocusModal } from "../../../components/route-modal"
 import { LocationEditSalesChannelsForm } from "./components/edit-sales-channels-form"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
-import { useSalesChannels } from "../../../hooks/api/sales-channels.tsx"
+import { useSalesChannels } from "../../../hooks/api/sales-channels"
 
 export const LocationAddSalesChannels = () => {
   const { location_id } = useParams()
   const {
-    stock_location,
+    stock_location = {},
     isPending: isLocationLoading,
     isError,
     error,

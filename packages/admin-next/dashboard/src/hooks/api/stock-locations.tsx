@@ -162,7 +162,7 @@ export const useCreateFulfillmentSet = (
         queryKey: stockLocationsQueryKeys.lists(),
       })
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.detail(locationId),
+        queryKey: stockLocationsQueryKeys.details(),
       })
       options?.onSuccess?.(data, variables, context)
     },
@@ -219,7 +219,6 @@ export const useUpdateServiceZone = (
 
 export const useDeleteFulfillmentSet = (
   setId: string,
-  locationId: string,
   options?: UseMutationOptions<FulfillmentSetDeleteRes, Error, void>
 ) => {
   return useMutation({
@@ -229,7 +228,7 @@ export const useDeleteFulfillmentSet = (
         queryKey: stockLocationsQueryKeys.lists(),
       })
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.detail(locationId),
+        queryKey: stockLocationsQueryKeys.details(),
       })
 
       options?.onSuccess?.(data, variables, context)

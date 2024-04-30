@@ -447,15 +447,21 @@ function FulfillmentSet(props: FulfillmentSetProps) {
     useCreateFulfillmentSet(locationId)
 
   const { mutateAsync: deleteFulfillmentSet } = useDeleteFulfillmentSet(
-    fulfillmentSet?.id,
-    locationId
+    fulfillmentSet?.id
   )
 
   const handleCreate = async () => {
-    await createFulfillmentSet({
-      name: `${locationName} ${type}`,
-      type: type === FulfillmentSetType.Pickup ? "pick up" : type,
-    })
+    try {
+      await createFulfillmentSet({
+        name: `${locationName} ${type}`,
+        type: type === FulfillmentSetType.Pickup ? "pick up" : type,
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   const handleDelete = async () => {
