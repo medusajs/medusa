@@ -5,47 +5,7 @@
  * description: Retrieve a list of pricing. The pricing can be filtered by fields
  *   such as `id`. The pricing can also be sorted or paginated.
  * x-authenticated: true
- * parameters:
- *   - name: expand
- *     in: query
- *     description: Comma-separated relations that should be expanded in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: expand
- *       description: Comma-separated relations that should be expanded in the returned data.
- *   - name: fields
- *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ * parameters: []
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -54,7 +14,35 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminGetPricingRuleTypesParams"
+ *         description: SUMMARY
+ *         properties:
+ *           rule_attribute:
+ *             type: array
+ *             description: The pricing's rule attribute.
+ *             items:
+ *               type: string
+ *               title: rule_attribute
+ *               description: The rule attribute's details.
+ *           expand:
+ *             type: string
+ *             title: expand
+ *             description: The pricing's expand.
+ *           fields:
+ *             type: string
+ *             title: fields
+ *             description: The pricing's fields.
+ *           offset:
+ *             type: number
+ *             title: offset
+ *             description: The pricing's offset.
+ *           limit:
+ *             type: number
+ *             title: limit
+ *             description: The pricing's limit.
+ *           order:
+ *             type: string
+ *             title: order
+ *             description: The pricing's order.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
