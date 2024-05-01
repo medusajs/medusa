@@ -15,7 +15,7 @@
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
     "@medusajs/icons": "^1.2.0",
-    "@medusajs/ui": "^2.4.1",
+    "@medusajs/ui": "^3.0.0",
     "@medusajs/ui-preset": "latest",
     "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-scroll-area": "^1.0.4",
