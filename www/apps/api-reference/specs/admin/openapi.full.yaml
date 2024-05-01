@@ -30323,7 +30323,7 @@ components:
                 description: The ID of the price.
                 type: string
               region_id:
-                description: The ID of the Region for which the price is used. This is only required if `currecny_code` is not provided.
+                description: The ID of the Region for which the price is used. This is only required if `currency_code` is not provided.
                 type: string
               currency_code:
                 description: The 3 character ISO currency code for which the price will be used. This is only required if `region_id` is not provided.
@@ -30389,7 +30389,7 @@ components:
                 description: The ID of the price.
                 type: string
               region_id:
-                description: The ID of the Region for which the price is used. This is only required if `currecny_code` is not provided.
+                description: The ID of the Region for which the price is used. This is only required if `currency_code` is not provided.
                 type: string
               currency_code:
                 description: The 3 character ISO currency code for which the price will be used. This is only required if `region_id` is not provided.
@@ -30469,7 +30469,7 @@ components:
               - variant_id
             properties:
               region_id:
-                description: The ID of the Region for which the price is used. This is only required if `currecny_code` is not provided.
+                description: The ID of the Region for which the price is used. This is only required if `currency_code` is not provided.
                 type: string
               currency_code:
                 description: The 3 character ISO currency code for which the price will be used. This is only required if `region_id` is not provided.
@@ -36074,7 +36074,7 @@ components:
           nullable: true
           $ref: '#/components/schemas/Currency'
         amount:
-          description: The amount in the smallest currecny unit (e.g. cents 100 cents to charge $1) that the Product Variant will cost.
+          description: The amount in the smallest currency unit (e.g. cents 100 cents to charge $1) that the Product Variant will cost.
           type: integer
           example: 100
         min_quantity:

@@ -189,7 +189,7 @@ class CustomerGroup {
  *           description: The ID of the price.
  *           type: string
  *         region_id:
- *           description: The ID of the Region for which the price is used. This is only required if `currecny_code` is not provided.
+ *           description: The ID of the Region for which the price is used. This is only required if `currency_code` is not provided.
  *           type: string
  *         currency_code:
  *           description: The 3 character ISO currency code for which the price will be used. This is only required if `region_id` is not provided.

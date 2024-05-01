@@ -16,7 +16,7 @@ export interface AdminPostPriceListPricesPricesReq {
      */
     id?: string
     /**
-     * The ID of the Region for which the price is used. This is only required if `currecny_code` is not provided.
+     * The ID of the Region for which the price is used. This is only required if `currency_code` is not provided.
      */
     region_id?: string
     /**

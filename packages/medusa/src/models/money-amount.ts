@@ -147,7 +147,7 @@ export class MoneyAmount extends SoftDeletableEntity {
  *     nullable: true
  *     $ref: "#/components/schemas/Currency"
  *   amount:
- *     description: The amount in the smallest currecny unit (e.g. cents 100 cents to charge $1) that the Product Variant will cost.
+ *     description: The amount in the smallest currency unit (e.g. cents 100 cents to charge $1) that the Product Variant will cost.
  *     type: integer
  *     example: 100
  *   min_quantity:

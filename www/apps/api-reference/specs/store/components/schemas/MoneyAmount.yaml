@@ -38,7 +38,7 @@ properties:
     $ref: ./Currency.yaml
   amount:
     description: >-
-      The amount in the smallest currecny unit (e.g. cents 100 cents to charge
+      The amount in the smallest currency unit (e.g. cents 100 cents to charge
       $1) that the Product Variant will cost.
     type: integer
     example: 100
