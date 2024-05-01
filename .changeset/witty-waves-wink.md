@@ -3,6 +3,7 @@
 "@medusajs/fulfillment": patch
 "@medusajs/core-flows": patch
 "@medusajs/pricing": patch
+"@medusajs/utils": patch
 "@medusajs/types": patch
 ---
 
