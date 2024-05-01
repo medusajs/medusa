@@ -350,7 +350,9 @@ This is an advanced feature and requires knowledge of configuring webpack. If co
 For example:
 
 ```js title="src/admin/webpack.config.js"
-const withCustomWebpackConfig = require("@medusajs/admin").withCustomWebpackConfig
+const withCustomWebpackConfig = require(
+    "@medusajs/admin"
+  ).withCustomWebpackConfig
 
 module.exports = withCustomWebpackConfig((config, webpack) => {
   config.plugins.push(
