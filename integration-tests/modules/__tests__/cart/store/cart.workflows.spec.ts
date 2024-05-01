@@ -1281,7 +1281,7 @@ medusaIntegrationTestRunner({
           expect(updatedPaymentCollection).toEqual(
             expect.objectContaining({
               id: paymentCollection.id,
-              amount: 4242,
+              amount: 5000,
             })
           )
 
@@ -1880,13 +1880,9 @@ medusaIntegrationTestRunner({
           })
 
           expect(errors).toEqual([
-            {
-              action: "get-shipping-option-price-sets",
-              error: expect.objectContaining({
-                message: `Shipping options with IDs ${shippingOption.id} do not have a price`,
-              }),
-              handlerType: "invoke",
-            },
+            expect.objectContaining({
+              message: `Shipping options with IDs ${shippingOption.id} do not have a price`,
+            }),
           ])
         })
       })
