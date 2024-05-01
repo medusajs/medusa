@@ -573,9 +573,7 @@ export class WorkflowOrchestratorService {
 
         await notify({ eventType: "onStepAwaiting", step })
 
-        if (!step.definition.backgroundExecution) {
-          this.activeStepsCount--
-        }
+        this.activeStepsCount--
       },
 
       onCompensateStepSuccess: async ({ step, transaction }) => {

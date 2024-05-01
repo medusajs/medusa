@@ -1,5 +1,6 @@
 import {
   ContainerRegistrationKeys,
+  MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
@@ -16,5 +17,12 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   })
 
   const [currency] = await remoteQuery(queryObject)
+  if (!currency) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Currency with code: ${req.params.code} was not found`
+    )
+  }
+
   res.status(200).json({ currency })
 }

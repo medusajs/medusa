@@ -34,8 +34,11 @@ import { adminWorkflowsExecutionsMiddlewares } from "./admin/workflows-execution
 import { authRoutesMiddlewares } from "./auth/middlewares"
 import { hooksRoutesMiddlewares } from "./hooks/middlewares"
 import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
+import { storeCollectionRoutesMiddlewares } from "./store/collections/middlewares"
 import { storeCurrencyRoutesMiddlewares } from "./store/currencies/middlewares"
 import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
+import { storeProductRoutesMiddlewares } from "./store/products/middlewares"
+import { storeProductCategoryRoutesMiddlewares } from "./store/product-categories/middlewares"
 import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
 
 export const config: MiddlewaresConfig = {
@@ -47,6 +50,8 @@ export const config: MiddlewaresConfig = {
     ...storeCartRoutesMiddlewares,
     ...storeCustomerRoutesMiddlewares,
     ...storeCartRoutesMiddlewares,
+    ...storeCollectionRoutesMiddlewares,
+    ...storeProductCategoryRoutesMiddlewares,
     ...authRoutesMiddlewares,
     ...adminWorkflowsExecutionsMiddlewares,
     ...storeRegionRoutesMiddlewares,
@@ -80,5 +85,6 @@ export const config: MiddlewaresConfig = {
     ...adminShippingProfilesMiddlewares,
     ...adminFulfillmentsRoutesMiddlewares,
     ...adminFulfillmentProvidersRoutesMiddlewares,
+    ...storeProductRoutesMiddlewares,
   ],
 }

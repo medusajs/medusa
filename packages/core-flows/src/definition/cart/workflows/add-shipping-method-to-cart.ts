@@ -4,13 +4,16 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
-import { addShippingMethodToCartStep } from "../steps"
+import {
+  addShippingMethodToCartStep,
+  validateCartShippingOptionsStep,
+} from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
+import { cartFieldsForRefreshSteps } from "../utils/fields"
 
 interface AddShippingMethodToCartWorkflowInput {
   cart_id: string
-  currency_code: string
   options: {
     id: string
     data?: Record<string, unknown>
@@ -23,8 +26,20 @@ export const addShippingMethodToWorkflow = createWorkflow(
   (
     input: WorkflowData<AddShippingMethodToCartWorkflowInput>
   ): WorkflowData<void> => {
+    const cart = useRemoteQueryStep({
+      entry_point: "cart",
+      fields: cartFieldsForRefreshSteps,
+      variables: { id: input.cart_id },
+      list: false,
+    })
+
     const optionIds = transform({ input }, (data) => {
       return (data.input.options ?? []).map((i) => i.id)
+    })
+
+    validateCartShippingOptionsStep({
+      option_ids: optionIds,
+      cart,
     })
 
     const shippingOptions = useRemoteQueryStep({
@@ -33,12 +48,10 @@ export const addShippingMethodToWorkflow = createWorkflow(
       variables: {
         id: optionIds,
         calculated_price: {
-          context: {
-            currency_code: input.currency_code,
-          },
+          context: { currency_code: cart.currency_code },
         },
       },
-    })
+    }).config({ name: "fetch-shipping-option" })
 
     const shippingMethodInput = transform(
       { input, shippingOptions },

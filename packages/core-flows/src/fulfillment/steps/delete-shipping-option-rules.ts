@@ -4,7 +4,7 @@ import {
   RemoveFulfillmentShippingOptionRulesWorkflowDTO,
   RuleOperatorType,
 } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const deleteShippingOptionRulesStepId = "delete-shipping-option-rules"
 export const deleteShippingOptionRulesStep = createStep(
@@ -13,6 +13,10 @@ export const deleteShippingOptionRulesStep = createStep(
     input: RemoveFulfillmentShippingOptionRulesWorkflowDTO,
     { container }
   ) => {
+    if (!input.ids?.length) {
+      return
+    }
+
     const { ids } = input
 
     const fulfillmentModule = container.resolve<IFulfillmentModuleService>(
@@ -39,6 +43,7 @@ export const deleteShippingOptionRulesStep = createStep(
 
     await fulfillmentModule.createShippingOptionRules(
       shippingOptionRules.map((rule) => ({
+        id: rule.id,
         attribute: rule.attribute,
         operator: rule.operator as RuleOperatorType,
         value: rule.value as unknown as string | string[],
