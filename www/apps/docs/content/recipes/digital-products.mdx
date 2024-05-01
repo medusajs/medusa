@@ -1006,7 +1006,7 @@ Finally, you can send a notification, such as an email, to the customer using th
       for (const item of order.items) {
     const productMedias = await productMediaService
       .retrieveMediasByVariant(item.variant)
-    const downloadUrl = await Promise.all(
+    const downloadUrls = await Promise.all(
       productMedias.map(async (productMedia) => {
        
     // get the download URL from the file service
@@ -1017,7 +1017,7 @@ Finally, you can send a notification, such as an email, to the customer using th
       })
     )
 
-    urls.push(...downloadUrl)
+    urls.push(...downloadUrls)
     }
 
     sendgridService.sendEmail({
