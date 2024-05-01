@@ -247,6 +247,18 @@ medusaIntegrationTestRunner({
             ])
           })
 
+          it("should list products by id", async () => {
+            let response = await api.get(`/store/products?id[]=${product.id}`)
+
+            expect(response.status).toEqual(200)
+            expect(response.data.count).toEqual(1)
+            expect(response.data.products).toEqual([
+              expect.objectContaining({
+                id: product.id,
+              }),
+            ])
+          })
+
           it("should throw error when publishable key is invalid", async () => {
             let error = await api
               .get(`/store/products?sales_channel_id[]=does-not-exist`, {
