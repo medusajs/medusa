@@ -3,8 +3,6 @@ export const defaults = [
   "name",
   "description",
   "handle",
-  "is_active",
-  "is_internal",
   "rank",
   "parent_category_id",
   "created_at",
