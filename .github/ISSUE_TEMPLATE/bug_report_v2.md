@@ -1,8 +1,8 @@
 ---
-name: Bug report for v1.x
-about: Create a report to help us improve Medusa
+name: Bug report for v2.0
+about: Create a report to help us improve our upcoming major upgrade 2.0
 title: ''
-labels: 'status: needs triaging, type: bug, version: 1.x'
+labels: 'status: needs triaging, version: 2.0'
 
 ---
 
