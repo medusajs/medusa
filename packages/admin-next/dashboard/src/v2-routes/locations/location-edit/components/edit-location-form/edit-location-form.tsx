@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Input } from "@medusajs/ui"
+import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -55,17 +55,23 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
   const { mutateAsync, isPending } = useUpdateStockLocation(location.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    mutateAsync(
-      {
+    try {
+      await mutateAsync({
         name: values.name,
         address: values.address,
-      },
-      {
-        onSuccess: () => {
-          handleSuccess()
-        },
-      }
-    )
+      })
+      handleSuccess()
+
+      toast.success(t("general.success"), {
+        description: t("locations.toast.update"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   })
 
   return (

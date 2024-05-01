@@ -14,6 +14,7 @@ export const AdminGetRegionsParams = createFindParams({
   offset: 0,
 }).merge(
   z.object({
+    q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
     code: z.union([z.string(), z.array(z.string())]).optional(),
     name: z.union([z.string(), z.array(z.string())]).optional(),

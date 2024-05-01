@@ -82,7 +82,7 @@ export default class OrderChange {
   @Property({ columnType: "text", nullable: true })
   internal_note: string | null = null
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", nullable: true })
   created_by: string // customer, user, third party, etc.
 
   @Property({ columnType: "text", nullable: true })

@@ -34,10 +34,13 @@ import {
   CreateOrderLineItemDTO,
   CreateOrderLineItemForOrderDTO,
   CreateOrderLineItemTaxLineDTO,
+  CreateOrderReturnDTO,
   CreateOrderShippingMethodAdjustmentDTO,
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodTaxLineDTO,
   DeclineOrderChangeDTO,
+  RegisterOrderFulfillmentDTO,
+  RegisterOrderShipmentDTO,
   UpdateOrderAddressDTO,
   UpdateOrderDTO,
   UpdateOrderItemDTO,
@@ -1130,12 +1133,15 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  confirmOrderChange(orderId: string, sharedContext?: Context): Promise<void>
+  confirmOrderChange(
+    orderChangeId: string,
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method Represents the completion of an asynchronous operation
    *
-   * @param {string[]} orderId - The order's ID.
+   * @param {string[]} orderChangeId - The order change's ID.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when {summary}
    *
@@ -1145,7 +1151,10 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  confirmOrderChange(orderId: string[], sharedContext?: Context): Promise<void>
+  confirmOrderChange(
+    orderChangeId: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method Represents the completion of an asynchronous operation
@@ -1192,7 +1201,7 @@ export interface IOrderModuleService extends IModuleService {
   /**
    * This method Represents the completion of an asynchronous operation
    *
-   * @param {string} orderId - The order's ID.
+   * @param {string} orderChangeId - The order change's ID.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when {summary}
    *
@@ -1202,12 +1211,15 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  declineOrderChange(orderId: string, sharedContext?: Context): Promise<void>
+  declineOrderChange(
+    orderChangeId: string,
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method Represents the completion of an asynchronous operation
    *
-   * @param {string[]} orderId - The order's ID.
+   * @param {string[]} orderChangeId - The order change's ID.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when {summary}
    *
@@ -1217,7 +1229,10 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  declineOrderChange(orderId: string[], sharedContext?: Context): Promise<void>
+  declineOrderChange(
+    orderChangeId: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method Represents the completion of an asynchronous operation
@@ -1371,4 +1386,22 @@ export interface IOrderModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  revertLastVersion(orderId: string, sharedContext?: Context): Promise<void>
+
+  // Bundled flows
+  registerFulfillment(
+    data: RegisterOrderFulfillmentDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  registerShipment(
+    data: RegisterOrderShipmentDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  createReturn(
+    returnData: CreateOrderReturnDTO,
+    sharedContext?: Context
+  ): Promise<void>
 }

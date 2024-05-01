@@ -889,6 +889,10 @@ export interface FilterableProductVariantProps
 export interface FilterableProductCategoryProps
   extends BaseFilterable<FilterableProductCategoryProps> {
   /**
+   * Filter product categories based on searchable fields
+   */
+  q?: string
+  /**
    * The IDs to filter product categories by.
    */
   id?: string | string[]
@@ -920,10 +924,6 @@ export interface FilterableProductCategoryProps
    * Whether to include parents of retrieved product categories.
    */
   include_ancestors_tree?: boolean
-  /**
-   * Filter product categories based on searchable fields
-   */
-  q?: string
 }
 
 /**

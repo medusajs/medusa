@@ -14,6 +14,7 @@ export const AdminGetApiKeysParams = createFindParams({
   limit: 50,
 }).merge(
   z.object({
+    q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
     title: z.union([z.string(), z.array(z.string())]).optional(),
     token: z.union([z.string(), z.array(z.string())]).optional(),

@@ -204,66 +204,6 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /admin/shipping-options/:id", () => {
-        it("should throw error when required params are missing", async () => {
-          const shippingOptionPayload = {
-            name: "Test shipping option",
-            service_zone_id: fulfillmentSet.service_zones[0].id,
-            shipping_profile_id: shippingProfile.id,
-            provider_id: "manual_test-provider",
-            price_type: "flat",
-            type: {
-              label: "Test type",
-              description: "Test description",
-              code: "test-code",
-            },
-            prices: [
-              {
-                currency_code: "usd",
-                amount: 1000,
-              },
-              {
-                region_id: region.id,
-                amount: 1000,
-              },
-            ],
-            rules: [shippingOptionRule],
-          }
-
-          const response = await api.post(
-            `/admin/shipping-options`,
-            shippingOptionPayload,
-            adminHeaders
-          )
-
-          const shippingOptionId = response.data.shipping_option.id
-
-          const updateShippingOptionPayload = {}
-
-          let err = await api
-            .post(
-              `/admin/shipping-options/${shippingOptionId}`,
-              updateShippingOptionPayload,
-              adminHeaders
-            )
-            .catch((e) => e.response)
-
-          const errorsFields = [
-            {
-              code: "invalid_type",
-              expected: "string",
-              received: "undefined",
-              path: ["id"],
-              message: "Required",
-            },
-          ]
-
-          expect(err.status).toEqual(400)
-          expect(err.data).toEqual({
-            type: "invalid_data",
-            message: `Invalid request body: ${JSON.stringify(errorsFields)}`,
-          })
-        })
-
         it("should update a shipping option successfully", async () => {
           const shippingOptionPayload = {
             name: "Test shipping option",
@@ -301,7 +241,6 @@ medusaIntegrationTestRunner({
             (p) => p.currency_code === "eur"
           )
           const updateShippingOptionPayload = {
-            id: shippingOptionId,
             name: "Updated shipping option",
             provider_id: "manual_test-provider",
             price_type: "flat",
@@ -315,6 +254,14 @@ medusaIntegrationTestRunner({
                 amount: 10000,
               },
             ],
+            rules: [
+              shippingOptionRule,
+              {
+                operator: RuleOperator.EQ,
+                attribute: "new_attr",
+                value: "true",
+              },
+            ],
           }
 
           const updateResponse = await api.post(
@@ -325,6 +272,7 @@ medusaIntegrationTestRunner({
 
           expect(updateResponse.status).toEqual(200)
           expect(updateResponse.data.shipping_option.prices).toHaveLength(2)
+          expect(updateResponse.data.shipping_option.rules).toHaveLength(2)
           expect(updateResponse.data.shipping_option).toEqual(
             expect.objectContaining({
               id: expect.any(String),
@@ -361,6 +309,12 @@ medusaIntegrationTestRunner({
                   operator: "eq",
                   attribute: "old_attr",
                   value: "old value",
+                }),
+                expect.objectContaining({
+                  id: expect.any(String),
+                  operator: "eq",
+                  attribute: "new_attr",
+                  value: "true",
                 }),
               ]),
             })

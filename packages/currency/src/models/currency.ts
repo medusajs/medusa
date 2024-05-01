@@ -1,9 +1,14 @@
 import { BigNumberRawValue } from "@medusajs/types"
-import { BigNumber, MikroOrmBigNumberProperty } from "@medusajs/utils"
+import {
+  BigNumber,
+  MikroOrmBigNumberProperty,
+  Searchable,
+} from "@medusajs/utils"
 import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
 
 @Entity({ tableName: "currency" })
 class Currency {
+  @Searchable()
   @PrimaryKey({ columnType: "text" })
   code!: string
 
@@ -13,6 +18,7 @@ class Currency {
   @Property({ columnType: "text" })
   symbol_native: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   name: string
 

@@ -420,6 +420,11 @@ export interface PaymentDTO {
 export interface FilterablePaymentProps
   extends BaseFilterable<FilterablePaymentProps> {
   /**
+   * Find payments based on cart, order, or customer IDs through this search term.
+   */
+  q?: string
+
+  /**
    * The IDs to filter the payments by.
    */
   id?: string | string[]

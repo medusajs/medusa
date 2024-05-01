@@ -92,6 +92,53 @@ medusaIntegrationTestRunner({
           ])
         )
       })
+
+      it("should support searching through the addresses", async () => {
+        const [customer] = await customerModuleService.create([
+          {
+            first_name: "Test",
+            last_name: "Test",
+            email: "test@me.com",
+            addresses: [
+              {
+                first_name: "John",
+                last_name: "Doe",
+                address_1: "Huntingdon 123",
+              },
+              {
+                first_name: "Jane",
+                last_name: "Doe",
+                address_1: "Horseshoe 555",
+              },
+              {
+                first_name: "Jack",
+                last_name: "Doe",
+                address_1: "Hawkins 12",
+              },
+            ],
+          },
+        ])
+
+        const response = await api.get(
+          `/admin/customers/${customer.id}/addresses?q=12`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.addresses).toHaveLength(2)
+        expect(response.data.addresses).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              address_1: "Huntingdon 123",
+            }),
+            expect.objectContaining({
+              id: expect.any(String),
+              address_1: "Hawkins 12",
+            }),
+          ])
+        )
+      })
     })
   },
 })

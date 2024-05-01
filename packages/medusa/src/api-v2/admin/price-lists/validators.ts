@@ -1,17 +1,29 @@
 import { PriceListStatus, PriceListType } from "@medusajs/types"
 import { z } from "zod"
-import { createFindParams, createSelectParams } from "../../utils/validators"
+import {
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
 export const AdminGetPriceListPricesParams = createSelectParams()
 export const AdminGetPriceListsParams = createFindParams({
   offset: 0,
   limit: 50,
-})
+}).merge(
+  z.object({
+    q: z.string().optional(),
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    starts_at: createOperatorMap().optional(),
+    ends_at: createOperatorMap().optional(),
+    status: z.array(z.nativeEnum(PriceListStatus)).optional(),
+    rules_count: z.array(z.number()).optional(),
+    $and: z.lazy(() => AdminGetPriceListsParams.array()).optional(),
+    $or: z.lazy(() => AdminGetPriceListsParams.array()).optional(),
+  })
+)
 
-export const AdminGetPriceListParams = createFindParams({
-  offset: 0,
-  limit: 50,
-})
+export const AdminGetPriceListParams = createSelectParams()
 
 export const AdminCreatePriceListPrice = z.object({
   currency_code: z.string(),

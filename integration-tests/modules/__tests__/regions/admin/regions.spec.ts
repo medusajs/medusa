@@ -343,6 +343,31 @@ medusaIntegrationTestRunner({
         ])
       })
 
+      it("should support searching of regions", async () => {
+        await service.create([
+          {
+            name: "APAC",
+            currency_code: "usd",
+            countries: ["jp"],
+          },
+          {
+            name: "Europe",
+            currency_code: "eur",
+            countries: ["de"],
+          },
+        ])
+
+        const response = await api.get(`/admin/regions?q=eu`, adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.regions).toEqual([
+          expect.objectContaining({
+            name: "Europe",
+            currency_code: "eur",
+          }),
+        ])
+      })
+
       it("should get a region", async () => {
         const [region] = await service.create([
           {

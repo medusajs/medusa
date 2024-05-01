@@ -19,16 +19,21 @@ export const LocationsListTable = () => {
    * Note: The endpoint is bugged and does not return count, causing the table to not render
    * any rows.
    */
-  const { stock_locations, count, isLoading, isError, error } =
-    useStockLocations({
-      ...searchParams,
-      fields: "*address",
-    })
+  const {
+    stock_locations = [],
+    count,
+    isLoading,
+    isError,
+    error,
+  } = useStockLocations({
+    ...searchParams,
+    fields: "*address",
+  })
 
   const columns = useLocationTableColumns()
 
   const { table } = useDataTable({
-    data: stock_locations ?? [],
+    data: stock_locations,
     columns,
     count,
     enablePagination: true,
@@ -56,7 +61,8 @@ export const LocationsListTable = () => {
         count={count || 1}
         columns={columns}
         navigateTo={(row) => row.id}
-        isLoading={isLoading}
+        // TODO: revisit loader - on query change this will cause unmounting of the table, rendering loader briefly and again rendering table which will make search input unfocused
+        // isLoading={isLoading}
         queryObject={raw}
         pagination
         search

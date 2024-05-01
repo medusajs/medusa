@@ -64,6 +64,33 @@ medusaIntegrationTestRunner({
         })
       })
 
+      it("can search through tax rates", async () => {
+        const region = await service.createTaxRegions({
+          country_code: "us",
+        })
+
+        await service.create({
+          tax_region_id: region.id,
+          code: "low",
+          rate: 2.5,
+          name: "low rate",
+        })
+
+        await service.create({
+          tax_region_id: region.id,
+          code: "high",
+          rate: 5,
+          name: "high rate",
+        })
+
+        const response = await api.get(`/admin/tax-rates?q=high`, adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.tax_rates).toEqual(
+          expect.arrayContaining([expect.objectContaining({ code: "high" })])
+        )
+      })
+
       it("can create a tax region with rates and rules", async () => {
         const regionRes = await api.post(
           `/admin/tax-regions`,
@@ -400,6 +427,31 @@ medusaIntegrationTestRunner({
             parent: null,
           },
         })
+      })
+
+      it("can search through tax regions", async () => {
+        await service.createTaxRegions([
+          {
+            country_code: "us",
+            province_code: "texas",
+          },
+          {
+            country_code: "us",
+            province_code: "florida",
+          },
+        ])
+
+        const response = await api.get(`/admin/tax-regions?q=ida`, adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.tax_regions).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              country_code: "us",
+              province_code: "florida",
+            }),
+          ])
+        )
       })
 
       it("can create a tax region and delete it", async () => {

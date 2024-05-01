@@ -743,7 +743,7 @@ export interface ICartModuleService extends IModuleService {
    */
   listShippingMethods(
     filters: FilterableShippingMethodProps,
-    config: FindConfig<CartShippingMethodDTO>,
+    config?: FindConfig<CartShippingMethodDTO>,
     sharedContext?: Context
   ): Promise<CartShippingMethodDTO[]>
 

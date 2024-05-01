@@ -29,6 +29,19 @@ export function formatOrder(
       }
     })
 
+    order.shipping_methods = order.shipping_methods?.map((shippingMethod) => {
+      const sm = { ...shippingMethod.shipping_method }
+
+      delete shippingMethod.shipping_method
+      return {
+        ...sm,
+        order_id: shippingMethod.order_id,
+        detail: {
+          ...shippingMethod,
+        },
+      }
+    })
+
     order.summary = order.summary?.[0]?.totals
 
     return options?.includeTotals
@@ -58,6 +71,16 @@ export function mapRepositoryToOrderModel(config) {
         if (rel == "summary" && type === "fields") {
           obj.populate.push("summary")
           return "summary.totals"
+        } else if (
+          rel.includes("shipping_methods") &&
+          !rel.includes("shipping_methods.shipping_method")
+        ) {
+          obj.populate.push("shipping_methods.shipping_method")
+
+          return rel.replace(
+            "shipping_methods",
+            "shipping_methods.shipping_method"
+          )
         } else if (rel.includes("items.detail")) {
           return rel.replace("items.detail", "items")
         } else if (rel == "items") {

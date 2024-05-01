@@ -1,6 +1,6 @@
 import * as zod from "zod"
 
-import { Button, Input, Text } from "@medusajs/ui"
+import { Button, Input, Text, toast } from "@medusajs/ui"
 import { InventoryLevelDTO, StockLocationDTO } from "@medusajs/types"
 import {
   RouteDrawer,
@@ -61,7 +61,7 @@ export const AdjustInventoryForm = ({
 
   const stockedQuantityUpdate = form.watch("stocked_quantity")
 
-  const { mutateAsync } = useUpdateInventoryItemLevel(
+  const { mutateAsync, isPending: isLoading } = useUpdateInventoryItemLevel(
     item.id,
     level.location_id
   )
@@ -71,9 +71,21 @@ export const AdjustInventoryForm = ({
       return handleSuccess()
     }
 
-    await mutateAsync({
-      stocked_quantity: value.stocked_quantity,
-    })
+    try {
+      await mutateAsync({
+        stocked_quantity: value.stocked_quantity,
+      })
+
+      toast.success(t("general.success"), {
+        description: t("inventory.toast.updateLevel"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
 
     return handleSuccess()
   })
@@ -97,11 +109,11 @@ export const AdjustInventoryForm = ({
             />
             <AttributeGridRow
               title={t("inventory.reserved")}
-              value={item.reserved_quantity}
+              value={level.reserved_quantity}
             />
             <AttributeGridRow
               title={t("inventory.available")}
-              value={stockedQuantityUpdate - item.reserved_quantity}
+              value={stockedQuantityUpdate - level.reserved_quantity}
             />
           </div>
           <Form.Field
@@ -141,7 +153,7 @@ export const AdjustInventoryForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button type="submit" size="small" isLoading={false}>
+            <Button type="submit" size="small" isLoading={isLoading}>
               {t("actions.save")}
             </Button>
           </div>

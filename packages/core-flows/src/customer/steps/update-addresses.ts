@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
-  CustomerAddressDTO,
+  UpdateCustomerAddressDTO,
   FilterableCustomerAddressProps,
   ICustomerModuleService,
 } from "@medusajs/types"
@@ -12,7 +12,7 @@ import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 type UpdateCustomerAddresseStepInput = {
   selector: FilterableCustomerAddressProps
-  update: Partial<CustomerAddressDTO>
+  update: UpdateCustomerAddressDTO
 }
 
 export const updateCustomerAddresseStepId = "update-customer-addresses"

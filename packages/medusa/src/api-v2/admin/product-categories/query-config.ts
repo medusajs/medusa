@@ -10,7 +10,7 @@ export const defaults = [
   "created_at",
   "updated_at",
   "metadata",
-
+  "*parent_category",
   "*category_children",
 ]
 

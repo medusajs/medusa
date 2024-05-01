@@ -6,7 +6,7 @@ import { EditStoreForm } from "./components/edit-store-form/edit-store-form"
 
 export const StoreEdit = () => {
   const { t } = useTranslation()
-  const { store, isLoading, isError, error } = useStore()
+  const { store, isPending: isLoading, isError, error } = useStore()
 
   if (isError) {
     throw error
