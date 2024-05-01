@@ -1,5 +1,71 @@
 # @medusajs/types
 
+## 1.11.16
+
+### Patch Changes
+
+- [#6827](https://github.com/medusajs/medusa/pull/6827) [`0c0b425de7`](https://github.com/medusajs/medusa/commit/0c0b425de7b154b80b712ab17b16215cf62d1e83) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa-react,medusa,types,dashboard): added empty state for promotions list page
+
+- [#7077](https://github.com/medusajs/medusa/pull/7077) [`8d356217bd`](https://github.com/medusajs/medusa/commit/8d356217bd31c97a196e861ee243822a4d924df7) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,core-flows,types): add batch updates to price list prices
+
+- [#6914](https://github.com/medusajs/medusa/pull/6914) [`27f4f0d724`](https://github.com/medusajs/medusa/commit/27f4f0d7243367c2dfc6012bf1f6b7400a77ec7b) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(fulfillment): Wrong type usage
+
+- [#6864](https://github.com/medusajs/medusa/pull/6864) [`e944a627f0`](https://github.com/medusajs/medusa/commit/e944a627f074fb39a56f4bc7b3d6d315736ebf7c) Thanks [@adrien2p](https://github.com/adrien2p)! - feat: region payment providers management workflows/api
+
+- [#6880](https://github.com/medusajs/medusa/pull/6880) [`1a48fe0282`](https://github.com/medusajs/medusa/commit/1a48fe0282a8bc1f8548a4736255e457d173da09) Thanks [@sradevski](https://github.com/sradevski)! - Add v2 product type endpoints and adjust the product module
+
+- [#6872](https://github.com/medusajs/medusa/pull/6872) [`86f499de2f`](https://github.com/medusajs/medusa/commit/86f499de2f31356ab36ad5e93f27345443b3e5f6) Thanks [@sradevski](https://github.com/sradevski)! - Aligned pricing module price set API with convention
+
+- [#6944](https://github.com/medusajs/medusa/pull/6944) [`09a2220569`](https://github.com/medusajs/medusa/commit/09a22205693da62fbf8fd450535d5024cb9c01d1) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Add parents to product categories
+
+- [#7006](https://github.com/medusajs/medusa/pull/7006) [`78f603e4f1`](https://github.com/medusajs/medusa/commit/78f603e4f18c9d16f4b58a2189c959026453d8b2) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(types): remove duplicate CreateCustomerGroupDTO interface
+
+- [`cc557c8752`](https://github.com/medusajs/medusa/commit/cc557c8752fd0554f5a1b58522d9a88dc43a8509) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Order endpoints and Cart totals
+
+- [#6943](https://github.com/medusajs/medusa/pull/6943) [`58c68f6715`](https://github.com/medusajs/medusa/commit/58c68f67156e993255fbc25d91db15ae23bc95c0) Thanks [@fPolic](https://github.com/fPolic)! - feat(medusa, types): list payment providers endpoint
+
+- [#6901](https://github.com/medusajs/medusa/pull/6901) [`82a176e30e`](https://github.com/medusajs/medusa/commit/82a176e30e47a7d11caaf31c3023bd8db588b465) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa-test-utils): Handle errors gracefully + Do not set Distributed storage on partial loading
+
+- [#7144](https://github.com/medusajs/medusa/pull/7144) [`11517f0faf`](https://github.com/medusajs/medusa/commit/11517f0fafdf00af256240448b58d149d8b6f600) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types): added store apis for products
+
+- [#7095](https://github.com/medusajs/medusa/pull/7095) [`62b9dcc6c1`](https://github.com/medusajs/medusa/commit/62b9dcc6c1ce46aadb7944215006c12da3c9f619) Thanks [@riqwan](https://github.com/riqwan)! - feat(core-flows,medusa,types): cancel fulfillments API
+
+- [#7175](https://github.com/medusajs/medusa/pull/7175) [`e26cda4b6a`](https://github.com/medusajs/medusa/commit/e26cda4b6afb7fb25f0b0a7a7ce20b7f914d35db) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, core-flows, types): Allow to update the rules from a shipping options
+
+- [#6977](https://github.com/medusajs/medusa/pull/6977) [`bc06ad2db4`](https://github.com/medusajs/medusa/commit/bc06ad2db48c999023ab823fefc1375196976e9b) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat/shipping options api 3
+
+- [#7101](https://github.com/medusajs/medusa/pull/7101) [`18f3aacee6`](https://github.com/medusajs/medusa/commit/18f3aacee6752854d377faa806f4cc67bc71456b) Thanks [@riqwan](https://github.com/riqwan)! - feat(core-flows,medusa,types): add create shipment api for fulfillments
+
+- [#7124](https://github.com/medusajs/medusa/pull/7124) [`38c971f111`](https://github.com/medusajs/medusa/commit/38c971f111af69f176e7e9892eb59f5bae831fa7) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types): add fulfillment provider list api
+
+- [#6860](https://github.com/medusajs/medusa/pull/6860) [`45c49e89f2`](https://github.com/medusajs/medusa/commit/45c49e89f28123ef622fc1c07253bae94fd74875) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Add workflow idempotencyKey to shared context
+
+- [#6982](https://github.com/medusajs/medusa/pull/6982) [`528ef4ca90`](https://github.com/medusajs/medusa/commit/528ef4ca90bb2cf6173dccc9fd6a9f9932ff9b76) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(modules-sdk): Select all should send undefined instead of an empty array
+
+- [#6962](https://github.com/medusajs/medusa/pull/6962) [`65794f4bb5`](https://github.com/medusajs/medusa/commit/65794f4bb56e4fd3f0ccb7656a948f856f05324e) Thanks [@adrien2p](https://github.com/adrien2p)! - feat: Create shipping options API
+
+- [#7029](https://github.com/medusajs/medusa/pull/7029) [`93ef94cad3`](https://github.com/medusajs/medusa/commit/93ef94cad3ddc5b6973b4e48e422b0aa0e6ddbbe) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types): create promotion flows
+
+- [#6800](https://github.com/medusajs/medusa/pull/6800) [`4cf71af07d`](https://github.com/medusajs/medusa/commit/4cf71af07d1807c83df3889c1774f82cbd1b9a6f) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(core-flows, medusa): add update stock location endpoint to api-v2
+
+- [#7153](https://github.com/medusajs/medusa/pull/7153) [`4b57c5d286`](https://github.com/medusajs/medusa/commit/4b57c5d286f9dc6e2098c67e9fecb0d93175b5a1) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Remote query supporting context
+
+- [#7028](https://github.com/medusajs/medusa/pull/7028) [`c78915c7c5`](https://github.com/medusajs/medusa/commit/c78915c7c5e91a99c1b1bae932656c8d86b17daf) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(): Add support for shipping options prices update
+
+- [#7101](https://github.com/medusajs/medusa/pull/7101) [`18f3aacee6`](https://github.com/medusajs/medusa/commit/18f3aacee6752854d377faa806f4cc67bc71456b) Thanks [@riqwan](https://github.com/riqwan)! - feat(core-flows,medusa,types): fulfillment API: create
+
+- [#7018](https://github.com/medusajs/medusa/pull/7018) [`f175cac4af`](https://github.com/medusajs/medusa/commit/f175cac4af63b71066a8398ecf9beaa6f28b20cc) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(core-flows, medusa, types): add reservation item endpoints
+
+- [#6995](https://github.com/medusajs/medusa/pull/6995) [`0a9b9b073d`](https://github.com/medusajs/medusa/commit/0a9b9b073dd2d3f4aa5e5cb1c16e2221a7200e0d) Thanks [@fPolic](https://github.com/fPolic)! - feat(medusa, core-flows,types): delete fulfillment set, delete shipping profile
+
+- [#6813](https://github.com/medusajs/medusa/pull/6813) [`a6562d2a41`](https://github.com/medusajs/medusa/commit/a6562d2a41453cbe7aa43be352c4924e3e4c79d5) Thanks [@sradevski](https://github.com/sradevski)! - Added an upsertWithReplace method to the mikro orm repository
+
+- [#7026](https://github.com/medusajs/medusa/pull/7026) [`00e6b21bb5`](https://github.com/medusajs/medusa/commit/00e6b21bb50dbc886bc37ad052a1c40ce865294e) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types): added tax flows end to end
+
+- [#6865](https://github.com/medusajs/medusa/pull/6865) [`8fd1488938`](https://github.com/medusajs/medusa/commit/8fd148893850eb66c5eae00c4ca9391a80ea2eb9) Thanks [@adrien2p](https://github.com/adrien2p)! - chore: medusa shutdown
+
+- [#6849](https://github.com/medusajs/medusa/pull/6849) [`1c6ba4468e`](https://github.com/medusajs/medusa/commit/1c6ba4468eab1440931c88929affd5b4c593f377) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Remote Joiner options to check if keys exist on entrypoints or relations
+
 ## 1.11.15
 
 ### Patch Changes

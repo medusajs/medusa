@@ -1003,30 +1003,21 @@ Finally, you can send a notification, such as an email, to the customer using th
 
     // find product medias in the order
     const urls = []
-    for (const item of order.items) {
-      const productMedias = await productMediaService
-        .retrieveMediasByVariant(item.variant)
-      if (!productMedias.length) {
-        return
-      }
+      for (const item of order.items) {
+    const productMedias = await productMediaService
+      .retrieveMediasByVariant(item.variant)
+    const downloadUrls = await Promise.all(
+      productMedias.map(async (productMedia) => {
+       
+    // get the download URL from the file service
+        return await fileService.getPresignedDownloadUrl({
+          fileKey: productMedia.file_key,
+          isPrivate: true,
+        })
+      })
+    )
 
-      await Promise.all([
-        productMedias.forEach(
-          async (productMedia) => {
-          // get the download URL from the file service
-          const downloadUrl = await 
-            fileService.getPresignedDownloadUrl({
-              fileKey: productMedia.file_key,
-              isPrivate: true,
-            })
-
-          urls.push(downloadUrl)
-        }),
-      ])
-    }
-    
-    if (!urls.length) {
-      return
+    urls.push(...downloadUrls)
     }
 
     sendgridService.sendEmail({
