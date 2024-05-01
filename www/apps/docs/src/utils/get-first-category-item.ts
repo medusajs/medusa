@@ -14,7 +14,7 @@ export function getCategoryItems({ categoryLabel, categoryCustomId }: Options) {
     useDocsSidebar().items,
     (item) =>
       item.label === categoryLabel ||
-      item.customProps.category_id === categoryCustomId
+      (categoryCustomId && item.customProps.category_id === categoryCustomId)
   )?.items
 }
 

@@ -262,11 +262,6 @@ export const docsConfig: DocsConfig = {
             isPathHref: true,
           },
           {
-            title: "useToast",
-            path: "/hooks/use-toast",
-            isPathHref: true,
-          },
-          {
             title: "useToggleState",
             path: "/hooks/use-toggle-state",
             isPathHref: true,

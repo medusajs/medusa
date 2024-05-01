@@ -1,0 +1,115 @@
+---
+description: "Actions Required for v.3.0.0"
+sidebar_custom_props:
+  iconName: "component-solid"
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# v3.0.0
+
+Version 3.0.0 of Medusa UI introduces a breaking change for the toast components. This is due to a change in the underlying toast library from Radix UI to [Sonner](https://sonner.emilkowal.ski/).
+
+## How to Update
+
+Run the following command in your project:
+
+```bash npm2yarn
+npm install @medusajs/ui@3.0.0
+```
+
+---
+
+## Breaking Changes
+
+### useToast Hook
+
+Previously, you created a toast using the `useToast` hook, which provides a utility function. In this version, the `useToast` hook is removed and, instead, a new `toast` utility is exported. The `toast` utility has functions that create toasts for different variants, such as `warning` and `error`.
+
+For example, here's before and after update code to see the difference:
+
+<Tabs groupId="ui" isCodeTabs={true}>
+  <TabItem label="Before" value="before">
+
+  ```tsx
+  import { Button, Toaster, useToast } from "@medusajs/ui"
+
+  export default function ToasterDemo() {
+    const { toast } = useToast()
+
+    return (
+      <>
+        <Toaster />
+        <Button
+          onClick={() =>
+            toast({
+              title: "Info",
+              description: "Hello there",
+            })
+          }
+        >
+          Show
+        </Button>
+      </>
+    )
+  }
+  ```
+
+  </TabItem>
+  <TabItem label="After" value="after">
+
+  ```tsx
+  import { Button, Toaster, toast } from "@medusajs/ui"
+
+  export default function ToasterDemo() {
+    return (
+      <>
+        <Toaster />
+        <Button
+          onClick={() =>
+            toast.info("Info", {
+              description: "Hello there",
+            })
+          }
+        >
+          Show
+        </Button>
+      </>
+    )
+  }
+  ```
+
+  </TabItem>
+</Tabs>
+
+Learn more about the `toast` utility in the [UI documentation](https://docs.medusajs.com/ui/components/toast).
+
+### Toaster Default Position
+
+The default position has changed from `top-right` to `bottom-right`. You can change the position of the created toasts by passing the `position` prop to the `Toaster` component.
+
+For example:
+
+```tsx
+import { Button, Toaster, toast } from "@medusajs/ui"
+
+export default function ToasterDemo() {
+  return (
+    <>
+      <Toaster position="top-right" />
+      <Button
+        onClick={() =>
+          toast.info("Info", {
+            description: "Hello there",
+          })
+        }
+      >
+        Show
+      </Button>
+    </>
+  )
+}
+```
+
+Learn more about the `Toaster`'s props in the [UI documentation](https://docs.medusajs.com/ui/components/toast).
