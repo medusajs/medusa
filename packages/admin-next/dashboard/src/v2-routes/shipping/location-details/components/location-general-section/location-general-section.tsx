@@ -452,8 +452,10 @@ function FulfillmentSet(props: FulfillmentSetProps) {
   const handleCreate = async () => {
     try {
       await createFulfillmentSet({
-        name: `${locationName} ${type}`,
-        type: type === FulfillmentSetType.Pickup ? "pick up" : type,
+        name: `${locationName} ${
+          type === FulfillmentSetType.Pickup ? "pick up" : type
+        }`,
+        type,
       })
     } catch (e) {
       toast.error(t("general.error"), {
