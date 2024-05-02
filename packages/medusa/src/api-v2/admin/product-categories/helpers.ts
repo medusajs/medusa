@@ -10,6 +10,15 @@ export const refetchCategory = async (
   fields: string[],
   filterableFields: Record<string, any> = {}
 ) => {
+  if (filterableFields["include_ancestors_tree"]) {
+    fields.indexOf("parent_category") === -1 && fields.push("parent_category")
+  }
+
+  if (filterableFields["include_descendants_tree"]) {
+    fields.indexOf("category_children") === -1 &&
+      fields.push("category_children")
+  }
+
   const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product_category",

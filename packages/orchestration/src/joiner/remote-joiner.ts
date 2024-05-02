@@ -45,6 +45,7 @@ export class RemoteJoiner {
 
     let filteredData: Record<string, unknown> = {}
 
+    console.log("Fiedls: ", fields)
     if (fields.includes("*")) {
       // select all fields
       filteredData = data
@@ -369,6 +370,9 @@ export class RemoteJoiner {
       uniqueIds,
       relationship
     )
+
+    console.log("Response in fetchData: ", response)
+
     const isObj = isDefined(response.path)
     let resData = isObj ? response.data[response.path!] : response.data
 

@@ -86,6 +86,8 @@ export function remoteQueryFetchData(container: MedusaContainer) {
 
     const result = await service[methodName](filters, options)
 
+    console.log("Result: ", result)
+
     if (hasPagination_) {
       const [data, count] = result
       return {

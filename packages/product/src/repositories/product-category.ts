@@ -40,6 +40,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     const { includeDescendantsTree, includeAncestorsTree } = transformOptions
     findOptions_.options ??= {}
     const fields = (findOptions_.options.fields ??= [])
+    const populate = (findOptions_.options.populate ??= [])
 
     // Ref: Building descendants
     // mpath and parent_category_id needs to be added to the query for the tree building to be done accurately
@@ -47,6 +48,16 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       fields.indexOf("mpath") === -1 && fields.push("mpath")
       fields.indexOf("parent_category_id") === -1 &&
         fields.push("parent_category_id")
+    }
+
+    if (includeAncestorsTree) {
+      populate.indexOf("parent_category") === -1 &&
+        populate.push("parent_category")
+    }
+
+    if (includeDescendantsTree) {
+      populate.indexOf("category_children") === -1 &&
+        populate.push("category_children")
     }
 
     Object.assign(findOptions_.options, {
@@ -63,7 +74,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       return productCategories
     }
 
-    return this.buildProductCategoriesWithTree(
+    return await this.buildProductCategoriesWithTree(
       {
         descendants: includeDescendantsTree,
         ancestors: includeAncestorsTree,
@@ -140,8 +151,6 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       }
     })
 
-    console.log("Descendants: ", include.descendants)
-
     const populateChildren = (category, level = 0) => {
       const categories = allCategories.filter(
         (child) => child.parent_category_id === category.id
@@ -172,8 +181,6 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       return populateChildren(fullCategory)
     })
 
-    console.log(JSON.stringify(populatedProductCategories))
-
     return populatedProductCategories
   }
 
@@ -188,6 +195,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     const { includeDescendantsTree, includeAncestorsTree } = transformOptions
     findOptions_.options ??= {}
     const fields = (findOptions_.options.fields ??= [])
+    const populate = (findOptions_.options.populate ??= [])
 
     // Ref: Building descendants
     // mpath and parent_category_id needs to be added to the query for the tree building to be done accurately
@@ -195,6 +203,16 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       fields.indexOf("mpath") === -1 && fields.push("mpath")
       fields.indexOf("parent_category_id") === -1 &&
         fields.push("parent_category_id")
+    }
+
+    if (includeAncestorsTree) {
+      populate.indexOf("parent_category") === -1 &&
+        populate.push("parent_category")
+    }
+
+    if (includeDescendantsTree) {
+      populate.indexOf("category_children") === -1 &&
+        populate.push("category_children")
     }
 
     Object.assign(findOptions_.options, {
