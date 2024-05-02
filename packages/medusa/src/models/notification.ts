@@ -1,9 +1,3 @@
-import { Entity } from "typeorm"
-import { BaseEntity } from "../interfaces"
-
-@Entity()
-export class Notification extends BaseEntity {}
-
 // TODO: we need to discuss this
 /*
 import {

@@ -1,9 +1,3 @@
-import { SoftDeletableEntity } from "../interfaces"
-import { Entity } from "typeorm"
-
-@Entity()
-export class BatchJob extends SoftDeletableEntity {}
-
 // TODO: we need to discuss this
 // import {
 //   AfterLoad,
