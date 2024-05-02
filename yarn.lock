@@ -8107,7 +8107,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin@^7.1.12, @medusajs/admin@workspace:packages/admin":
+"@medusajs/admin@workspace:packages/admin":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin@workspace:packages/admin"
   dependencies:
@@ -9970,22 +9970,6 @@ __metadata:
   version: 1.0.3
   resolution: "@open-draft/until@npm:1.0.3"
   checksum: f88bcd774b55359d14a4fa80f7bfe7d9d6d26a5995e94e823e43b211656daae3663e983f0a996937da286d22f6f5da2087b661845302f236ba27f8529dcd14fb
-  languageName: node
-  linkType: hard
-
-"@paypal/checkout-server-sdk@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "@paypal/checkout-server-sdk@npm:1.0.3"
-  dependencies:
-    "@paypal/paypalhttp": ^1.0.1
-  checksum: b77273ee8ee7a6c9354b09cf12f36ecfe4a65009f2be508e2206f0ac83319f49300fc0a03d71ca8cb1a10065732c142615f6427b48dc392bffcefa57e7883c35
-  languageName: node
-  linkType: hard
-
-"@paypal/paypalhttp@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@paypal/paypalhttp@npm:1.0.1"
-  checksum: 1ce08dc24c5eb69d2e0fd5d8a847b61cac494343c24325194c288cb5a5c3c815164e28253f804693acb7dccc56cdca5ad11be398784e359d439d0deeb059a04a
   languageName: node
   linkType: hard
 
@@ -20973,17 +20957,6 @@ __metadata:
     follow-redirects: ^1.14.9
     form-data: ^4.0.0
   checksum: 76d673d2a90629944b44d6f345f01e58e9174690f635115d5ffd4aca495d99bcd8f95c590d5ccb473513f5ebc1d1a6e8934580d0c57cdd0498c3a101313ef771
-  languageName: node
-  linkType: hard
-
-"axios@npm:^1.3.4":
-  version: 1.4.0
-  resolution: "axios@npm:1.4.0"
-  dependencies:
-    follow-redirects: ^1.15.0
-    form-data: ^4.0.0
-    proxy-from-env: ^1.1.0
-  checksum: a925a07590b0ec1d4daf28cd27890f930daab980371558deb3b883af174b881da09e5ba2cb8393a648fda5859e39934982d0b8b092fe89fc84cb6c80a70a1910
   languageName: node
   linkType: hard
 
@@ -36004,115 +35977,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-payment-klarna@workspace:packages/medusa-payment-klarna":
-  version: 0.0.0-use.local
-  resolution: "medusa-payment-klarna@workspace:packages/medusa-payment-klarna"
-  dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/node": ^7.7.4
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-classes": ^7.9.5
-    "@babel/plugin-transform-instanceof": ^7.8.3
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
-    "@babel/register": ^7.7.4
-    "@babel/runtime": ^7.9.6
-    axios: ^0.21.4
-    axios-mock-adapter: ^1.19.0
-    body-parser: ^1.19.0
-    client-sessions: ^0.8.0
-    cross-env: ^5.2.1
-    express: ^4.17.1
-    jest: ^25.5.4
-    lodash: ^4.17.21
-    medusa-core-utils: ^1.2.0
-    medusa-interfaces: ^1.3.7
-    medusa-test-utils: ^1.1.40
-  peerDependencies:
-    medusa-interfaces: ^1.3.7
-  languageName: unknown
-  linkType: soft
-
-"medusa-payment-manual@workspace:packages/medusa-payment-manual":
-  version: 0.0.0-use.local
-  resolution: "medusa-payment-manual@workspace:packages/medusa-payment-manual"
-  dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/node": ^7.7.4
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-proposal-optional-chaining": ^7.12.7
-    "@babel/plugin-transform-classes": ^7.9.5
-    "@babel/plugin-transform-instanceof": ^7.8.3
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
-    "@babel/register": ^7.7.4
-    "@babel/runtime": ^7.9.6
-    cross-env: ^5.2.1
-    jest: ^25.5.4
-    medusa-interfaces: ^1.3.7
-    medusa-test-utils: ^1.1.40
-  peerDependencies:
-    medusa-interfaces: ^1.3.7
-  languageName: unknown
-  linkType: soft
-
-"medusa-payment-paypal@workspace:packages/medusa-payment-paypal":
-  version: 0.0.0-use.local
-  resolution: "medusa-payment-paypal@workspace:packages/medusa-payment-paypal"
-  dependencies:
-    "@medusajs/medusa": ^1.20.4
-    "@medusajs/types": ^1.11.15
-    "@paypal/checkout-server-sdk": ^1.0.3
-    "@swc/core": ^1.4.8
-    "@swc/jest": ^0.2.36
-    "@types/stripe": ^8.0.417
-    axios: ^1.3.4
-    body-parser: ^1.19.0
-    cross-env: ^5.2.1
-    express: ^4.17.1
-    jest: ^25.5.4
-    medusa-core-utils: ^1.2.0
-    rimraf: ^5.0.1
-    typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/medusa": ^1.12.0
-  languageName: unknown
-  linkType: soft
-
-"medusa-payment-stripe@workspace:packages/medusa-payment-stripe":
-  version: 0.0.0-use.local
-  resolution: "medusa-payment-stripe@workspace:packages/medusa-payment-stripe"
-  dependencies:
-    "@medusajs/admin": ^7.1.12
-    "@medusajs/medusa": ^1.20.4
-    "@medusajs/utils": ^1.11.8
-    "@swc/core": ^1.4.8
-    "@swc/jest": ^0.2.36
-    "@tanstack/react-table": ^8.7.9
-    "@types/stripe": ^8.0.417
-    awilix: ^8.0.1
-    body-parser: ^1.19.0
-    cross-env: ^5.2.1
-    express: ^4.17.1
-    jest: ^25.5.4
-    medusa-react: ^9.0.16
-    rimraf: ^5.0.1
-    stripe: ^11.10.0
-    typescript: ^4.9.5
-  peerDependencies:
-    "@medusajs/medusa": ^1.12.0
-    "@tanstack/react-table": ^8.7.9
-    medusa-react: ^9.0.0
-  peerDependenciesMeta:
-    "@tanstack/react-table":
-      optional: true
-    medusa-react:
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "medusa-plugin-algolia@workspace:packages/medusa-plugin-algolia":
   version: 0.0.0-use.local
   resolution: "medusa-plugin-algolia@workspace:packages/medusa-plugin-algolia"
@@ -36362,7 +36226,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@^9.0.16, medusa-react@^9.0.17, medusa-react@workspace:^, medusa-react@workspace:packages/medusa-react":
+"medusa-react@^9.0.17, medusa-react@workspace:^, medusa-react@workspace:packages/medusa-react":
   version: 0.0.0-use.local
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
@@ -45331,16 +45195,6 @@ __metadata:
     "@types/node": ">=8.1.0"
     qs: ^6.11.0
   checksum: 9859e455b6968a8a96bd14fd9d98da1fd2d50b4b6776acf080c4c94a9c2aad6724946626111330fa65f7bdc7c61ddc6b33ff32f12c1a639afe65c698fb54d069
-  languageName: node
-  linkType: hard
-
-"stripe@npm:^11.10.0":
-  version: 11.18.0
-  resolution: "stripe@npm:11.18.0"
-  dependencies:
-    "@types/node": ">=8.1.0"
-    qs: ^6.11.0
-  checksum: aa5e269cc892970bc6aeb087ba39bc0537cae7e90ab959a680f646ea495ae528c35ea53385b19801b7ea3af0f0fb1ab8df0651636cb9a21b3bd796b4bd5cc00e
   languageName: node
   linkType: hard
 

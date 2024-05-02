@@ -100,8 +100,6 @@ module.exports = {
 
           "./packages/fulfillment-manual/tsconfig.spec.json",
 
-          "./packages/medusa-payment-stripe/tsconfig.spec.json",
-          "./packages/medusa-payment-paypal/tsconfig.spec.json",
           "./packages/medusa-plugin-meilisearch/tsconfig.spec.json",
           "./packages/medusa-plugin-algolia/tsconfig.spec.json",
 
