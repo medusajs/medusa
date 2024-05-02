@@ -55,7 +55,7 @@ export const CreateLocationForm = () => {
         address: values.address,
       })
 
-      handleSuccess("/settings/locations")
+      handleSuccess("/settings/shipping")
 
       toast.success(t("general.success"), {
         description: t("locations.toast.create"),

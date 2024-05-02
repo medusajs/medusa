@@ -141,7 +141,7 @@ function Location(props: LocationProps) {
               ]}
             />
             <Button
-              className="text-ui-fg-interactive hover:bg-transparent"
+              className="text-ui-fg-interactive rounded-none hover:bg-transparent"
               onClick={() => navigate(`/settings/shipping/${location.id}`)}
               variant="transparent"
             >
