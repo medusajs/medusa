@@ -1543,6 +1543,49 @@ medusaIntegrationTestRunner({
           expect(response.data.order).toEqual(
             expect.objectContaining({
               id: expect.any(String),
+              total: 106,
+              subtotal: 100,
+              tax_total: 6,
+              discount_total: 0,
+              discount_tax_total: 0,
+              original_total: 106,
+              original_tax_total: 6,
+              item_total: 106,
+              item_subtotal: 100,
+              item_tax_total: 6,
+              original_item_total: 106,
+              original_item_subtotal: 100,
+              original_item_tax_total: 6,
+              shipping_total: 0,
+              shipping_subtotal: 0,
+              shipping_tax_total: 0,
+              original_shipping_tax_total: 0,
+              original_shipping_tax_subtotal: 0,
+              original_shipping_total: 0,
+              items: [
+                expect.objectContaining({
+                  product_id: product.id,
+                  unit_price: 100,
+                  quantity: 1,
+                  tax_total: 6,
+                  subtotal: 100,
+                  total: 106,
+                  original_total: 106,
+                  discount_total: 0,
+                  tax_lines: [
+                    expect.objectContaining({
+                      rate: 6,
+                    }),
+                  ],
+                  adjustments: [],
+                  shipping_address: expect.objectContaining({
+                    city: "ny",
+                    country_code: "us",
+                    province: "ny",
+                    postal_code: "94016",
+                  }),
+                }),
+              ],
             })
           )
         })

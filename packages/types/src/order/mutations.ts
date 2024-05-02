@@ -248,7 +248,7 @@ export interface CreateOrderChangeDTO {
   requested_by?: string
   requested_at?: Date
   created_by?: string
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
   actions?: CreateOrderChangeActionDTO[]
 }
 
@@ -265,25 +265,25 @@ export interface UpdateOrderChangeDTO {
   declined_reason?: string
   declined_at?: Date
   canceled_by?: string
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface CancelOrderChangeDTO {
   id: string
   canceled_by?: string
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface DeclineOrderChangeDTO {
   id: string
   declined_by?: string
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface ConfirmOrderChangeDTO {
   id: string
   confirmed_by?: string
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 /** ORDER CHANGE END */
@@ -314,7 +314,7 @@ export interface CreateOrderTransactionDTO {
   currency_code: string
   reference?: string
   reference_id?: string
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface UpdateOrderTransactionDTO {
@@ -323,7 +323,7 @@ export interface UpdateOrderTransactionDTO {
   currency_code?: string
   reference?: string
   reference_id?: string
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 /** ORDER TRANSACTION END */
@@ -340,7 +340,7 @@ export interface UpdateOrderItemDTO {
   return_received_quantity?: BigNumberInput
   return_dismissed_quantity?: BigNumberInput
   written_off_quantity?: BigNumberInput
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface UpdateOrderItemWithSelectorDTO {
@@ -363,9 +363,9 @@ export interface RegisterOrderFulfillmentDTO {
     id: string
     quantity: BigNumberInput
     internal_note?: string
-    metadata?: Record<string, unknown>
+    metadata?: Record<string, unknown> | null
   }[]
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface RegisterOrderShipmentDTO {
@@ -379,9 +379,9 @@ export interface RegisterOrderShipmentDTO {
     id: string
     quantity: BigNumberInput
     internal_note?: string
-    metadata?: Record<string, unknown>
+    metadata?: Record<string, unknown> | null
   }[]
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface CreateOrderReturnDTO {
@@ -395,9 +395,9 @@ export interface CreateOrderReturnDTO {
     id: string
     quantity: BigNumberInput
     internal_note?: string
-    metadata?: Record<string, unknown>
+    metadata?: Record<string, unknown> | null
   }[]
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 /** ORDER bundled action flows */

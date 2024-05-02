@@ -31,6 +31,13 @@ export const completeCartWorkflow = createWorkflow(
 
     updateTaxLinesStep({ cart_or_cart_id: cart, force_tax_calculation: true })
 
-    return createOrderFromCartWorkflow({ cart })
+    const finalCart = useRemoteQueryStep({
+      entry_point: "cart",
+      fields: completeCartFields,
+      variables: { id: input.id },
+      list: false,
+    }).config({ name: "final-cart" })
+
+    return createOrderFromCartWorkflow({ cart: finalCart })
   }
 )
