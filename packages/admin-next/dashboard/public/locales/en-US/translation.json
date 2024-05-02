@@ -1534,6 +1534,11 @@
     "endDate": "End date",
     "draft": "Draft"
   },
+  "metadata": {
+    "warnings": {
+      "ignoredKeys": "This entities metadata contains complex values that we currently don't support editing through the admin UI. Due to this, the following keys are currently not being displayed: {{keys}}. You can still edit these values using the API."
+    }
+  },
   "dateTime": {
     "years_one": "Year",
     "years_other": "Years",
