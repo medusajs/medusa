@@ -1,5 +1,11 @@
 # @medusajs/admin-ui
 
+## 2.1.15
+
+### Patch Changes
+
+- [#7203](https://github.com/medusajs/medusa/pull/7203) [`1422cd2900`](https://github.com/medusajs/medusa/commit/1422cd2900d9883ddac0cab2ca66449fdc1f8bea) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin,admin-ui,medusa): Fixes an issue where the `host` option did not have a default value. Updates the version of `tailwindcss`, `autoprefixer`, and `postcss` in `@medusajs/admin-ui`, to avoid issues when importing components using `tailwindcss@4`. Fixes an issue in `@medusajs/medusa` where the `develop` command would throw an error when `@medusajs/admin` was not installed.
+
 ## 2.1.14
 
 ### Patch Changes

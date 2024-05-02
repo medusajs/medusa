@@ -2,7 +2,7 @@
   "name": "@medusajs/admin-ui",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
-  "version": "2.1.14",
+  "version": "2.1.15",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa.git",
@@ -118,7 +118,7 @@
   },
   "devDependencies": {
     "@babel/types": "7.22.5",
-    "@medusajs/medusa": "^1.20.5",
+    "@medusajs/medusa": "^1.20.6",
     "@medusajs/types": "^1.11.16",
     "@types/pluralize": "^0.0.29",
     "@types/react": "^18.2.0",
