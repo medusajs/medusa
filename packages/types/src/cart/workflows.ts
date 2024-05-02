@@ -122,3 +122,24 @@ export interface PricedShippingOptionDTO extends ShippingOptionDTO {
 export interface CompleteCartWorkflowInputDTO {
   id: string
 }
+
+export interface ConfirmVariantInventoryWorkflowInputDTO {
+  sales_channel_id: string
+  variants: {
+    inventory_items: {
+      inventory: {
+        location_levels: {
+          stock_locations: {
+            sales_channels: {
+              id: string
+            }[]
+          }[]
+        }
+      }[]
+    }[]
+  }[]
+  items: {
+    variant_id?: string
+    quantity: BigNumberInput
+  }[]
+}

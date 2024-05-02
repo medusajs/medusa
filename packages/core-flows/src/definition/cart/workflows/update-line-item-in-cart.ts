@@ -41,6 +41,7 @@ export const updateLineItemInCartWorkflow = createWorkflow(
         "sku",
         "barcode",
         "manage_inventory",
+        "allow_backorder",
         "product.id",
         "product.title",
         "product.description",

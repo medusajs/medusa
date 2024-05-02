@@ -64,6 +64,7 @@ export const createCartWorkflow = createWorkflow(
         "title",
         "sku",
         "manage_inventory",
+        "allow_backorder",
         "barcode",
         "product.id",
         "product.title",

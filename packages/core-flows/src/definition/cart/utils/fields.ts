@@ -49,4 +49,30 @@ export const completeCartFields = [
   "region.*",
   "payment_collection.*",
   "payment_collection.payment_sessions.*",
+
+  "items.variants.id",
+  "items.variants.title",
+  "items.variants.sku",
+  "items.variants.barcode",
+  "items.variants.manage_inventory",
+  "items.variants.allow_backorder",
+  "items.variants.product.id",
+  "items.variants.product.title",
+  "items.variants.product.description",
+  "items.variants.product.subtitle",
+  "items.variants.product.thumbnail",
+  "items.variants.product.type",
+  "items.variants.product.collection",
+  "items.variants.product.handle",
+
+  "items.variants.calculated_price.calculated_amount",
+
+  "items.variants.inventory_items.inventory_item_id",
+  "items.variants.inventory_items.required_quantity",
+
+  "items.variants.inventory_items.inventory.location_levels.stock_locations.id",
+  "items.variants.inventory_items.inventory.location_levels.stock_locations.name",
+
+  "items.variants.inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
+  "items.variants.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
 ]

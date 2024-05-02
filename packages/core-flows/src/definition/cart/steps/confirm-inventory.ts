@@ -8,6 +8,7 @@ interface StepInput {
   items: {
     inventory_item_id: string
     required_quantity: number
+    allow_backorder: boolean
     quantity: number
     location_ids: string[]
   }[]
@@ -23,6 +24,10 @@ export const confirmInventoryStep = createStep(
 
     // TODO: Should be bulk
     const promises = data.items.map(async (item) => {
+      if (item.allow_backorder) {
+        return true
+      }
+
       const itemQuantity = item.required_quantity * item.quantity
 
       return await inventoryService.confirmInventory(
