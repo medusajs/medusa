@@ -116,7 +116,6 @@ export type AdminUpdateShippingOptionType = z.infer<
 >
 export const AdminUpdateShippingOption = z
   .object({
-    id: z.string(),
     name: z.string().optional(),
     data: z.record(z.unknown()).optional(),
     price_type: z.nativeEnum(ShippingOptionPriceTypeEnum).optional(),
@@ -127,5 +126,6 @@ export const AdminUpdateShippingOption = z
     )
       .array()
       .optional(),
+    rules: AdminUpdateShippingOptionRule.or(AdminCreateShippingOptionRule).array().optional(),
   })
   .strict()

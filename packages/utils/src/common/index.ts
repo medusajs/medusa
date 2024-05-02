@@ -1,5 +1,6 @@
 export * from "./alter-columns-helper"
 export * from "./array-difference"
+export * from "./array-intersection"
 export * from "./build-query"
 export * from "./camel-to-snake-case"
 export * from "./container"

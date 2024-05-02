@@ -85,20 +85,11 @@ export const AdminCustomerAddressesParams = createFindParams({
 }).merge(
   z.object({
     q: z.string().optional(),
-    address_name: z.union([z.string(), z.array(z.string())]).optional(),
-    is_default_shipping: z.boolean().optional(),
-    is_default_billing: z.boolean().optional(),
     company: z.union([z.string(), z.array(z.string())]).optional(),
-    first_name: z.union([z.string(), z.array(z.string())]).optional(),
-    last_name: z.union([z.string(), z.array(z.string())]).optional(),
-    address_1: z.union([z.string(), z.array(z.string())]).optional(),
-    address_2: z.union([z.string(), z.array(z.string())]).optional(),
     city: z.union([z.string(), z.array(z.string())]).optional(),
     country_code: z.union([z.string(), z.array(z.string())]).optional(),
     province: z.union([z.string(), z.array(z.string())]).optional(),
     postal_code: z.union([z.string(), z.array(z.string())]).optional(),
-    phone: z.union([z.string(), z.array(z.string())]).optional(),
-    metadata: z.record(z.unknown()).optional(),
   })
 )
 
