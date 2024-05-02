@@ -15,6 +15,7 @@ tags:
     externalDocs:
       description: How to implement cart functionality in your storefront
       url: https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart
+  - name: Collections
   - name: Currencies
   - name: Customers
     description: >
@@ -27,6 +28,8 @@ tags:
     description: >
       A payment collection is useful for managing additional payments, such as
       for Order Edits, or installment payments.
+  - name: Product Categories
+  - name: Products
   - name: Regions
     description: >
       Regions are different countries or geographical regions that the commerce

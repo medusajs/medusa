@@ -1,17 +1,13 @@
-import { Button, Toaster, useToast } from "@medusajs/ui"
+import { Button, Toaster, toast } from "@medusajs/ui"
 
 export default function ToasterSuccess() {
-  const { toast } = useToast()
-
   return (
     <>
       <Toaster />
       <Button
         onClick={() =>
-          toast({
-            title: "Success",
+          toast.success("Success", {
             description: "The quick brown fox jumps over the lazy dog.",
-            variant: "success",
             duration: 5000,
           })
         }
