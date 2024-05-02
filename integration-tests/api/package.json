@@ -15,7 +15,7 @@
     "@medusajs/cache-inmemory": "workspace:*",
     "@medusajs/customer": "workspace:^",
     "@medusajs/event-bus-local": "workspace:*",
-    "@medusajs/inventory": "workspace:^",
+    "@medusajs/inventory": "latest",
     "@medusajs/medusa": "workspace:*",
     "@medusajs/modules-sdk": "workspace:^",
     "@medusajs/pricing": "workspace:^",

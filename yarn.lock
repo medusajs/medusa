@@ -8596,22 +8596,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/inventory@workspace:^, @medusajs/inventory@workspace:packages/inventory":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/inventory@workspace:packages/inventory"
+"@medusajs/inventory@npm:latest":
+  version: 1.11.6
+  resolution: "@medusajs/inventory@npm:1.11.6"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.8
-    "@medusajs/types": ^1.11.12
     "@medusajs/utils": ^1.11.5
     awilix: ^8.0.0
-    cross-env: ^5.2.1
-    jest: ^29.6.3
-    rimraf: ^5.0.1
-    ts-jest: ^29.1.1
     typeorm: ^0.3.16
-    typescript: ^5.1.6
-  languageName: unknown
-  linkType: soft
+  checksum: 0eaa3b20e60ff75c8c15b7d8a15408778860a3263d855b08610b770a20fe282fe1dd279d4c923dfee98a388b9c036d96c89491eb89ef3c82eae220da6a468bcc
+  languageName: node
+  linkType: hard
 
 "@medusajs/link-modules@^0.2.11, @medusajs/link-modules@workspace:packages/modules/link-modules":
   version: 0.0.0-use.local
@@ -9130,22 +9125,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/stock-location@workspace:packages/stock-location":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/stock-location@workspace:packages/stock-location"
+"@medusajs/stock-location@npm:latest":
+  version: 1.11.5
+  resolution: "@medusajs/stock-location@npm:1.11.5"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.8
-    "@medusajs/types": ^1.11.12
     "@medusajs/utils": ^1.11.5
     awilix: ^8.0.0
-    cross-env: ^5.2.1
-    jest: ^29.6.3
-    rimraf: ^5.0.1
-    ts-jest: ^29.1.1
     typeorm: ^0.3.16
-    typescript: ^5.1.6
-  languageName: unknown
-  linkType: soft
+  checksum: 812e5b5f82b4e41e39bddc6148de8b45815c00dfff64d66972b1e61258c98c1c5da037b17df910db06ac7409cd6ea81777b130d025034ec6f14aeb9fc45994bd
+  languageName: node
+  linkType: hard
 
 "@medusajs/store@workspace:^, @medusajs/store@workspace:packages/modules/store":
   version: 0.0.0-use.local
@@ -9332,9 +9322,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/user@workspace:^, @medusajs/user@workspace:packages/user":
+"@medusajs/user@workspace:^, @medusajs/user@workspace:packages/modules/user":
   version: 0.0.0-use.local
-  resolution: "@medusajs/user@workspace:packages/user"
+  resolution: "@medusajs/user@workspace:packages/modules/user"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.10
     "@medusajs/types": ^1.11.15
@@ -30393,7 +30383,7 @@ __metadata:
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
-    "@medusajs/inventory": "workspace:^"
+    "@medusajs/inventory": latest
     "@medusajs/medusa": "workspace:*"
     "@medusajs/modules-sdk": "workspace:^"
     "@medusajs/pricing": "workspace:^"
@@ -30476,7 +30466,7 @@ __metadata:
     "@medusajs/currency": "workspace:^"
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
-    "@medusajs/inventory": "workspace:^"
+    "@medusajs/inventory": latest
     "@medusajs/inventory-next": "workspace:^"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/modules-sdk": "workspace:^"
@@ -30484,6 +30474,7 @@ __metadata:
     "@medusajs/product": "workspace:^"
     "@medusajs/promotion": "workspace:^"
     "@medusajs/region": "workspace:^"
+    "@medusajs/stock-location": latest
     "@medusajs/store": "workspace:^"
     "@medusajs/tax": "workspace:^"
     "@medusajs/types": "workspace:^"
