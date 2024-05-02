@@ -137,6 +137,51 @@ export default class FulfillmentModuleService<
     return joinerConfig
   }
 
+  private setupShippingOptionsConfig_(
+    filters,
+    config
+  ):
+    | FulfillmentTypes.FilterableShippingOptionForContextProps["context"]
+    | undefined {
+    const fieldIdx = config.relations?.indexOf("shipping_options_context")
+    const shouldCalculatePrice = fieldIdx > -1
+
+    const shippingOptionsContext = filters.context ?? {}
+
+    delete filters.context
+
+    if (!shouldCalculatePrice) {
+      return
+    }
+
+    // cleanup virtual field "shipping_options_context"
+    config.relations?.splice(fieldIdx, 1)
+
+    return shippingOptionsContext
+  }
+
+  @InjectManager("baseRepository_")
+  // @ts-ignore
+  async listShippingOptions(
+    filters: FulfillmentTypes.FilterableShippingOptionForContextProps = {},
+    config: FindConfig<FulfillmentTypes.ShippingOptionDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<FulfillmentTypes.ShippingOptionDTO[]> {
+    const optionsContext = this.setupShippingOptionsConfig_(filters, config)
+
+    if (optionsContext) {
+      filters.context = optionsContext
+
+      return await this.listShippingOptionsForContext(
+        filters,
+        config,
+        sharedContext
+      )
+    }
+
+    return await super.listShippingOptions(filters, config, sharedContext)
+  }
+
   @InjectManager("baseRepository_")
   async listShippingOptionsForContext(
     filters: FulfillmentTypes.FilterableShippingOptionForContextProps,

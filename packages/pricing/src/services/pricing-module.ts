@@ -159,15 +159,16 @@ export default class PricingModuleService<
   ): PricingContext["context"] | undefined {
     const fieldIdx = config.relations?.indexOf("calculated_price")
     const shouldCalculatePrice = fieldIdx > -1
+
+    const pricingContext = filters.context ?? {}
+
+    delete filters.context
     if (!shouldCalculatePrice) {
       return
     }
 
-    let pricingContext = filters.context ?? {}
-
     // cleanup virtual field "calculated_price"
     config.relations?.splice(fieldIdx, 1)
-    delete filters.context
 
     return pricingContext
   }
@@ -746,9 +747,9 @@ export default class PricingModuleService<
   ) {
     const input = Array.isArray(data) ? data : [data]
 
-    const ruleAttributes = data
-      .map((d) => d.rules?.map((r) => r.rule_attribute) ?? [])
-      .flat()
+    const ruleAttributes = deduplicate(
+      data.map((d) => d.rules?.map((r) => r.rule_attribute) ?? []).flat()
+    )
 
     const ruleTypes = await this.ruleTypeService_.list(
       { rule_attribute: ruleAttributes },

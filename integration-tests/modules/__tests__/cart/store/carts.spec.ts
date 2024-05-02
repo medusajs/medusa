@@ -666,10 +666,7 @@ medusaIntegrationTestRunner({
             email: "tony@stark.com",
             sales_channel_id: salesChannel.id,
           })
-          console.log(
-            "updated.data.cart --- ",
-            JSON.stringify(updated.data.cart, null, 4)
-          )
+
           expect(updated.status).toEqual(200)
           expect(updated.data.cart).toEqual(
             expect.objectContaining({

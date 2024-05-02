@@ -1,12 +1,11 @@
 import { ListShippingOptionsForCartWorkflowInputDTO } from "@medusajs/types"
+import { deepFlatMap, MedusaError } from "@medusajs/utils"
 import {
   createWorkflow,
   transform,
   WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
-import { listShippingOptionsForContextStep } from "../../../shipping-options"
-import { getShippingOptionPriceSetsStep } from "../steps"
 
 export const listShippingOptionsForCartWorkflowId =
   "list-shipping-options-for-cart"
@@ -15,72 +14,85 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
   (input: WorkflowData<ListShippingOptionsForCartWorkflowInputDTO>) => {
     const scLocationFulfillmentSets = useRemoteQueryStep({
       entry_point: "sales_channels",
-      fields: ["stock_locations.fulfillment_sets.id"],
-      variables: { id: input.sales_channel_id },
-    })
+      fields: [
+        "stock_locations.fulfillment_sets.id",
+        "stock_locations.fulfillment_sets.name",
+        "stock_locations.fulfillment_sets.price_type",
+        "stock_locations.fulfillment_sets.service_zone_id",
+        "stock_locations.fulfillment_sets.shipping_profile_id",
+        "stock_locations.fulfillment_sets.provider_id",
+        "stock_locations.fulfillment_sets.data",
+        "stock_locations.fulfillment_sets.amount",
 
-    const listOptionsInput = transform(
-      { scLocationFulfillmentSets, input },
-      (data) => {
-        const fulfillmentSetIds = data.scLocationFulfillmentSets
-          .map((sc) =>
-            sc.stock_locations.map((loc) =>
-              loc.fulfillment_sets.map(({ id }) => id)
-            )
-          )
-          .flat(2)
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.id",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.name",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.price_type",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.service_zone_id",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.shipping_profile_id",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.provider_id",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.data",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.amount",
 
-        return {
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.type.id",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.type.label",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.type.description",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.type.code",
+
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.provider.id",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.provider.is_enabled",
+
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.calculated_price.calculated_amount",
+      ],
+      variables: {
+        id: input.sales_channel_id,
+        "stock_locations.fulfillment_sets.service_zones.shipping_options": {
           context: {
-            fulfillment_set_id: fulfillmentSetIds,
             address: {
-              city: data.input.shipping_address?.city,
-              country_code: data.input.shipping_address?.country_code,
-              province_code: data.input.shipping_address?.province,
+              city: input.shipping_address?.city,
+              country_code: input.shipping_address?.country_code,
+              province_code: input.shipping_address?.province,
             },
           },
-          config: {
-            select: [
-              "id",
-              "name",
-              "price_type",
-              "service_zone_id",
-              "shipping_profile_id",
-              "provider_id",
-              "data",
-              "amount",
-            ],
-            relations: ["type", "provider"],
+        },
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.calculated_price":
+          {
+            context: {
+              currency_code: input.currency_code,
+            },
           },
-        }
-      }
-    )
-
-    const options = listShippingOptionsForContextStep(listOptionsInput)
-
-    const optionIds = transform({ options }, (data) =>
-      data.options.map((option) => option.id)
-    )
-
-    // TODO: Separate shipping options based on price_type, flat_rate vs calculated
-    const priceSets = getShippingOptionPriceSetsStep({
-      optionIds,
-      context: {
-        currency_code: input.currency_code,
       },
     })
 
     const shippingOptionsWithPrice = transform(
-      { priceSets, options },
+      { options: scLocationFulfillmentSets },
       (data) => {
-        const options = data.options.map((option) => {
-          const price = data.priceSets?.[option.id].calculated_amount
+        const optionsMissingPrices: string[] = []
 
-          return {
-            ...option,
-            amount: price,
+        const options = deepFlatMap(
+          data.options,
+          "stock_locations.fulfillment_sets.service_zones.shipping_options.calculated_price",
+          ({ shipping_options }) => {
+            const { calculated_price, ...options } = shipping_options ?? {}
+
+            if (!calculated_price) {
+              optionsMissingPrices.push(options.id)
+            }
+
+            return {
+              ...options,
+              amount: calculated_price?.calculated_amount,
+            }
           }
-        })
+        )
+
+        if (optionsMissingPrices.length) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Shipping options with IDs ${optionsMissingPrices.join(
+              ", "
+            )} do not have a price`
+          )
+        }
 
         return options
       }
