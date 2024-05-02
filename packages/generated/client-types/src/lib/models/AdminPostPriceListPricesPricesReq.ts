@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 /**
  * The details of the prices to add.
@@ -14,34 +14,36 @@ export interface AdminPostPriceListPricesPricesReq {
     /**
      * The ID of the price.
      */
-    id?: string
+    id?: string;
     /**
      * The ID of the Region for which the price is used. This is only required if `currecny_code` is not provided.
      */
-    region_id?: string
+    region_id?: string;
     /**
      * The 3 character ISO currency code for which the price will be used. This is only required if `region_id` is not provided.
      */
-    currency_code?: string
+    currency_code?: string;
     /**
      * The ID of the Variant for which the price is used.
      */
-    variant_id: string
+    variant_id: string;
     /**
      * The amount to charge for the Product Variant.
      */
-    amount: number
+    amount: number;
     /**
      * The minimum quantity for which the price will be used.
      */
-    min_quantity?: number
+    min_quantity?: number;
     /**
      * The maximum quantity for which the price will be used.
      */
-    max_quantity?: number
-  }>
+    max_quantity?: number;
+  }>;
   /**
    * If set to `true`, the prices will replace all existing prices associated with the Price List.
    */
-  override?: boolean
-}
+  override?: boolean;
+};
+
+

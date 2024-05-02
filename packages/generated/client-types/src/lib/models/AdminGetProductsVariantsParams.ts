@@ -1,68 +1,66 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 export interface AdminGetProductsVariantsParams {
   /**
    * IDs to filter product variants by.
    */
-  id?: string
+  id?: string;
   /**
    * Comma-separated fields that should be included in the returned product variants.
    */
-  fields?: string
+  fields?: string;
   /**
    * Comma-separated relations that should be expanded in the returned product variants.
    */
-  expand?: string
+  expand?: string;
   /**
    * The number of product variants to skip when retrieving the product variants.
    */
-  offset?: number
+  offset?: number;
   /**
    * Limit the number of product variants returned.
    */
-  limit?: number
+  limit?: number;
   /**
    * Search term to search product variants' title, sku, and products' title.
    */
-  q?: string
+  'q'?: string;
   /**
    * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
    */
-  order?: string
+  order?: string;
   /**
    * Filter product variants by whether their inventory is managed or not.
    */
-  manage_inventory?: boolean
+  manage_inventory?: boolean;
   /**
    * Filter product variants by whether they are allowed to be backordered or not.
    */
-  allow_backorder?: boolean
+  allow_backorder?: boolean;
   /**
    * Filter by available inventory quantity
    */
-  inventory_quantity?:
-    | number
-    | {
-        /**
-         * filter by inventory quantity less than this number
-         */
-        lt?: number
-        /**
-         * filter by inventory quantity greater than this number
-         */
-        gt?: number
-        /**
-         * filter by inventory quantity less than or equal to this number
-         */
-        lte?: number
-        /**
-         * filter by inventory quantity greater than or equal to this number
-         */
-        gte?: number
-      }
+  inventory_quantity?: (number | {
+    /**
+     * filter by inventory quantity less than this number
+     */
+    lt?: number;
+    /**
+     * filter by inventory quantity greater than this number
+     */
+    gt?: number;
+    /**
+     * filter by inventory quantity less than or equal to this number
+     */
+    lte?: number;
+    /**
+     * filter by inventory quantity greater than or equal to this number
+     */
+    gte?: number;
+  });
   /**
    * Filter by a creation date range.
    */
@@ -70,20 +68,20 @@ export interface AdminGetProductsVariantsParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
+    gte?: string;
+  };
   /**
    * Filter by an update date range.
    */
@@ -91,18 +89,20 @@ export interface AdminGetProductsVariantsParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
-}
+    gte?: string;
+  };
+};
+
+

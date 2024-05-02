@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 /**
  * The details of the payment sessions to manage.
@@ -14,14 +14,16 @@ export interface StorePostPaymentCollectionsBatchSessionsReq {
     /**
      * The ID of the Payment Provider.
      */
-    provider_id: string
+    provider_id: string;
     /**
      * The payment amount
      */
-    amount: number
+    amount: number;
     /**
      * The ID of the Payment Session to be updated. If no ID is provided, a new payment session is created.
      */
-    session_id?: string
-  }>
-}
+    session_id?: string;
+  }>;
+};
+
+

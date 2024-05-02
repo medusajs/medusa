@@ -1,9 +1,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
-import type { ProductVariant } from "./ProductVariant"
+import type { ProductVariant } from './ProductVariant';
 
 /**
  * A Product Variant Inventory Item links variants with inventory items and denotes the required quantity of the variant.
@@ -12,33 +12,35 @@ export interface ProductVariantInventoryItem {
   /**
    * The product variant inventory item's ID
    */
-  id: string
+  id: string;
   /**
    * The id of the inventory item
    */
-  inventory_item_id: string
+  inventory_item_id: string;
   /**
    * The id of the variant.
    */
-  variant_id: string
+  variant_id: string;
   /**
    * The details of the product variant.
    */
-  variant?: ProductVariant | null
+  variant?: ProductVariant | null;
   /**
    * The quantity of an inventory item required for the variant.
    */
-  required_quantity: number
+  required_quantity: number;
   /**
    * The date with timezone at which the resource was created.
    */
-  created_at: string
+  created_at: string;
   /**
    * The date with timezone at which the resource was updated.
    */
-  updated_at: string
+  updated_at: string;
   /**
    * The date with timezone at which the resource was deleted.
    */
-  deleted_at: string | null
-}
+  deleted_at: string | null;
+};
+
+

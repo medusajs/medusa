@@ -1,15 +1,17 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 export interface AdminPostProductCategoriesParams {
   /**
    * Comma-separated relations that should be expanded in the returned product category.
    */
-  expand?: string
+  expand?: string;
   /**
    * Comma-separated fields that should be included in the returned product category.
    */
-  fields?: string
-}
+  fields?: string;
+};
+
+

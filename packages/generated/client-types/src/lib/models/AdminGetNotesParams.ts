@@ -1,19 +1,21 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 export interface AdminGetNotesParams {
   /**
    * Limit the number of notes returned.
    */
-  limit?: number
+  limit?: number;
   /**
    * The number of notes to skip when retrieving the notes.
    */
-  offset?: number
+  offset?: number;
   /**
    * Filter by resource ID
    */
-  resource_id?: string
-}
+  resource_id?: string;
+};
+
+

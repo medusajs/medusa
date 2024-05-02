@@ -1,21 +1,21 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 export interface AdminGetStockLocationsParams {
   /**
    * Filter by ID.
    */
-  id?: string
+  id?: string;
   /**
    * Filter by name.
    */
-  name?: string
+  name?: string;
   /**
    * A stock-location field to sort-order the retrieved stock locations by.
    */
-  order?: string
+  order?: string;
   /**
    * Filter by a creation date range.
    */
@@ -23,20 +23,20 @@ export interface AdminGetStockLocationsParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
+    gte?: string;
+  };
   /**
    * Filter by an update date range.
    */
@@ -44,20 +44,20 @@ export interface AdminGetStockLocationsParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
+    gte?: string;
+  };
   /**
    * Filter by a deletion date range.
    */
@@ -65,34 +65,36 @@ export interface AdminGetStockLocationsParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
+    gte?: string;
+  };
   /**
    * The number of stock locations to skip when retrieving the stock locations.
    */
-  offset?: number
+  offset?: number;
   /**
    * Limit the number of stock locations returned.
    */
-  limit?: number
+  limit?: number;
   /**
    * Comma-separated relations that should be expanded in the returned stock locations.
    */
-  expand?: string
+  expand?: string;
   /**
    * Comma-separated fields that should be included in the returned stock locations.
    */
-  fields?: string
-}
+  fields?: string;
+};
+
+

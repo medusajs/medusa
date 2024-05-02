@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 /**
  * The details of the product variant to create.
@@ -10,71 +10,71 @@ export interface AdminPostProductsProductVariantsReq {
   /**
    * The title of the product variant.
    */
-  title: string
+  title: string;
   /**
    * The unique SKU of the product variant.
    */
-  sku?: string
+  sku?: string;
   /**
    * The EAN number of the product variant.
    */
-  ean?: string
+  ean?: string;
   /**
    * The UPC number of the product variant.
    */
-  upc?: string
+  upc?: string;
   /**
    * A generic GTIN field of the product variant.
    */
-  barcode?: string
+  barcode?: string;
   /**
    * The Harmonized System code of the product variant.
    */
-  hs_code?: string
+  hs_code?: string;
   /**
    * The amount of stock kept of the product variant.
    */
-  inventory_quantity?: number
+  inventory_quantity?: number;
   /**
    * Whether the product variant can be purchased when out of stock.
    */
-  allow_backorder?: boolean
+  allow_backorder?: boolean;
   /**
    * Whether Medusa should keep track of the inventory of this product variant.
    */
-  manage_inventory?: boolean
+  manage_inventory?: boolean;
   /**
    * The wieght of the product variant.
    */
-  weight?: number
+  weight?: number;
   /**
    * The length of the product variant.
    */
-  length?: number
+  length?: number;
   /**
    * The height of the product variant.
    */
-  height?: number
+  height?: number;
   /**
    * The width of the product variant.
    */
-  width?: number
+  width?: number;
   /**
    * The country of origin of the product variant.
    */
-  origin_country?: string
+  origin_country?: string;
   /**
    * The Manufacturer Identification code of the product variant.
    */
-  mid_code?: string
+  mid_code?: string;
   /**
    * The material composition of the product variant.
    */
-  material?: string
+  material?: string;
   /**
    * An optional set of key-value pairs with additional information.
    */
-  metadata?: Record<string, any>
+  metadata?: Record<string, any>;
   /**
    * An array of product variant prices. A product variant can have different prices for each region or currency code.
    */
@@ -82,24 +82,24 @@ export interface AdminPostProductsProductVariantsReq {
     /**
      * The ID of the Region the price will be used in. This is only required if `currency_code` is not provided.
      */
-    region_id?: string
+    region_id?: string;
     /**
      * The 3 character ISO currency code the price will be used in. This is only required if `region_id` is not provided.
      */
-    currency_code?: string
+    currency_code?: string;
     /**
      * The price amount.
      */
-    amount: number
+    amount: number;
     /**
      * The minimum quantity required to be added to the cart for the price to be used.
      */
-    min_quantity?: number
+    min_quantity?: number;
     /**
      * The maximum quantity required to be added to the cart for the price to be used.
      */
-    max_quantity?: number
-  }>
+    max_quantity?: number;
+  }>;
   /**
    * An array of Product Option values that the variant corresponds to.
    */
@@ -107,10 +107,12 @@ export interface AdminPostProductsProductVariantsReq {
     /**
      * The ID of the Product Option.
      */
-    option_id: string
+    option_id: string;
     /**
      * A value to give to the Product Option.
      */
-    value: string
-  }>
-}
+    value: string;
+  }>;
+};
+
+

@@ -4,6 +4,7 @@
   "workspaces": {
     "packages": [
       "packages/medusa",
+      "packages/modules/*",
       "packages/medusa-js",
       "packages/medusa-react",
       "packages/*",

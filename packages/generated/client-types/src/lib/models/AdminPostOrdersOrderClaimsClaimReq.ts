@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 export interface AdminPostOrdersOrderClaimsClaimReq {
   /**
@@ -11,23 +11,23 @@ export interface AdminPostOrdersOrderClaimsClaimReq {
     /**
      * The ID of the Claim Item.
      */
-    id: string
+    id: string;
     /**
      * The ID of the Line Item that will be claimed.
      */
-    item_id?: string
+    item_id?: string;
     /**
      * The number of items that will be returned
      */
-    quantity?: number
+    quantity?: number;
     /**
      * Short text describing the Claim Item in further detail.
      */
-    note?: string
+    note?: string;
     /**
      * The reason for the Claim
      */
-    reason?: "missing_item" | "wrong_item" | "production_failure" | "other"
+    reason?: 'missing_item' | 'wrong_item' | 'production_failure' | 'other';
     /**
      * A list o tags to add to the Claim Item
      */
@@ -35,12 +35,12 @@ export interface AdminPostOrdersOrderClaimsClaimReq {
       /**
        * Tag ID
        */
-      id?: string
+      id?: string;
       /**
        * Tag value
        */
-      value?: string
-    }>
+      value?: string;
+    }>;
     /**
      * A list of image URL's that will be associated with the Claim
      */
@@ -48,17 +48,17 @@ export interface AdminPostOrdersOrderClaimsClaimReq {
       /**
        * Image ID
        */
-      id?: string
+      id?: string;
       /**
        * Image URL
        */
-      url?: string
-    }>
+      url?: string;
+    }>;
     /**
      * An optional set of key-value pairs to hold additional information.
      */
-    metadata?: Record<string, any>
-  }>
+    metadata?: Record<string, any>;
+  }>;
   /**
    * The Shipping Methods to send the additional Line Items with.
    */
@@ -66,26 +66,28 @@ export interface AdminPostOrdersOrderClaimsClaimReq {
     /**
      * The ID of an existing Shipping Method
      */
-    id?: string
+    id?: string;
     /**
      * The ID of the Shipping Option to create a Shipping Method from
      */
-    option_id?: string
+    option_id?: string;
     /**
      * The price to charge for the Shipping Method
      */
-    price?: number
+    price?: number;
     /**
      * An optional set of key-value pairs to hold additional information.
      */
-    data?: Record<string, any>
-  }>
+    data?: Record<string, any>;
+  }>;
   /**
    * If set to true no notification will be send related to this Swap.
    */
-  no_notification?: boolean
+  no_notification?: boolean;
   /**
    * An optional set of key-value pairs to hold additional information.
    */
-  metadata?: Record<string, any>
-}
+  metadata?: Record<string, any>;
+};
+
+

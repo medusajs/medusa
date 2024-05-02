@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 /**
  * The details of the sales channels to add to the publishable API key.
@@ -14,6 +14,8 @@ export interface AdminPostPublishableApiKeySalesChannelsBatchReq {
     /**
      * The ID of the sales channel
      */
-    id: string
-  }>
-}
+    id: string;
+  }>;
+};
+
+

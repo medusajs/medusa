@@ -1,29 +1,29 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 export interface AdminGetSalesChannelsParams {
   /**
    * Filter by a sales channel ID.
    */
-  id?: string
+  id?: string;
   /**
    * Filter by name.
    */
-  name?: string
+  name?: string;
   /**
    * Filter by description.
    */
-  description?: string
+  description?: string;
   /**
    * term used to search sales channels' names and descriptions.
    */
-  q?: string
+  'q'?: string;
   /**
    * A sales-channel field to sort-order the retrieved sales channels by.
    */
-  order?: string
+  order?: string;
   /**
    * Filter by a creation date range.
    */
@@ -31,20 +31,20 @@ export interface AdminGetSalesChannelsParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
+    gte?: string;
+  };
   /**
    * Filter by an update date range.
    */
@@ -52,20 +52,20 @@ export interface AdminGetSalesChannelsParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
+    gte?: string;
+  };
   /**
    * Filter by a deletion date range.
    */
@@ -73,34 +73,36 @@ export interface AdminGetSalesChannelsParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
+    gte?: string;
+  };
   /**
    * The number of sales channels to skip when retrieving the sales channels.
    */
-  offset?: number
+  offset?: number;
   /**
    * Limit the number of sales channels returned.
    */
-  limit?: number
+  limit?: number;
   /**
    * Comma-separated relations that should be expanded in the returned sales channels.
    */
-  expand?: string
+  expand?: string;
   /**
    * Comma-separated fields that should be included in the returned sales channels.
    */
-  fields?: string
-}
+  fields?: string;
+};
+
+

@@ -1,9 +1,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
-import type { InventoryLevelDTO } from "./InventoryLevelDTO"
+import type { InventoryLevelDTO } from './InventoryLevelDTO';
 
 /**
  * Details of inventory items and their associated location levels.
@@ -16,10 +16,12 @@ export interface AdminInventoryItemsLocationLevelsRes {
     /**
      * The id of the location
      */
-    id: string
+    id: string;
     /**
      * List of stock levels at a given location
      */
-    location_levels: Array<InventoryLevelDTO>
-  }
-}
+    location_levels: Array<InventoryLevelDTO>;
+  };
+};
+
+

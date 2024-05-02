@@ -1,8 +1,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
-import type { AddressPayload } from "./AddressPayload"
+import type { AddressPayload } from './AddressPayload';
 
-export type StorePostCustomersCustomerAddressesAddressReq = AddressPayload
+export type StorePostCustomersCustomerAddressesAddressReq = AddressPayload;
+

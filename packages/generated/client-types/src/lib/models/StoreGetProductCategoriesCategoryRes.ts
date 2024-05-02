@@ -1,9 +1,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
-import type { ProductCategory } from "./ProductCategory"
+import type { ProductCategory } from './ProductCategory';
 
 /**
  * The product category's details.
@@ -12,8 +12,7 @@ export interface StoreGetProductCategoriesCategoryRes {
   /**
    * Product category details.
    */
-  product_category: SetRelation<
-    ProductCategory,
-    "category_children" | "parent_category"
-  >
-}
+  product_category: SetRelation<ProductCategory, 'category_children' | 'parent_category'>;
+};
+
+

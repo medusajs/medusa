@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 /**
  * The details of deleting order edit item changes.
@@ -10,13 +10,15 @@ export interface AdminOrderEditItemChangeDeleteRes {
   /**
    * The ID of the deleted Order Edit Item Change.
    */
-  id: string
+  id: string;
   /**
    * The type of the object that was deleted.
    */
-  object: string
+  object: string;
   /**
    * Whether or not the Order Edit Item Change was deleted.
    */
-  deleted: boolean
-}
+  deleted: boolean;
+};
+
+

@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 /**
  * The product collection's details to update.
@@ -10,13 +10,15 @@ export interface AdminPostCollectionsCollectionReq {
   /**
    * The title of the collection.
    */
-  title?: string
+  title?: string;
   /**
    * An optional handle to be used in slugs. If none is provided, the kebab-case version of the title will be used.
    */
-  handle?: string
+  handle?: string;
   /**
    * An optional set of key-value pairs to hold additional information.
    */
-  metadata?: Record<string, any>
-}
+  metadata?: Record<string, any>;
+};
+
+

@@ -1,73 +1,53 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 export interface StoreGetCustomersCustomerOrdersParams {
   /**
    * term to search orders' display ID, email, shipping address's first name, customer's first name, customer's last name, and customer's phone number.
    */
-  q?: string
+  'q'?: string;
   /**
    * Filter by ID.
    */
-  id?: string
+  id?: string;
   /**
    * Filter by status.
    */
-  status?: Array<
-    "pending" | "completed" | "archived" | "canceled" | "requires_action"
-  >
+  status?: Array<'pending' | 'completed' | 'archived' | 'canceled' | 'requires_action'>;
   /**
    * Fulfillment status to search for.
    */
-  fulfillment_status?: Array<
-    | "not_fulfilled"
-    | "partially_fulfilled"
-    | "fulfilled"
-    | "partially_shipped"
-    | "shipped"
-    | "partially_returned"
-    | "returned"
-    | "canceled"
-    | "requires_action"
-  >
+  fulfillment_status?: Array<'not_fulfilled' | 'partially_fulfilled' | 'fulfilled' | 'partially_shipped' | 'shipped' | 'partially_returned' | 'returned' | 'canceled' | 'requires_action'>;
   /**
    * Payment status to search for.
    */
-  payment_status?: Array<
-    | "not_paid"
-    | "awaiting"
-    | "captured"
-    | "partially_refunded"
-    | "refunded"
-    | "canceled"
-    | "requires_action"
-  >
+  payment_status?: Array<'not_paid' | 'awaiting' | 'captured' | 'partially_refunded' | 'refunded' | 'canceled' | 'requires_action'>;
   /**
    * Filter by display ID.
    */
-  display_id?: string
+  display_id?: string;
   /**
    * Filter by cart ID.
    */
-  cart_id?: string
+  cart_id?: string;
   /**
    * Filter by email.
    */
-  email?: string
+  email?: string;
   /**
    * Filter by region ID.
    */
-  region_id?: string
+  region_id?: string;
   /**
    * Filter by the 3 character ISO currency code of the order.
    */
-  currency_code?: string
+  currency_code?: string;
   /**
    * Filter by tax rate.
    */
-  tax_rate?: string
+  tax_rate?: string;
   /**
    * Filter by a creation date range.
    */
@@ -75,20 +55,20 @@ export interface StoreGetCustomersCustomerOrdersParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
+    gte?: string;
+  };
   /**
    * Filter by an update date range.
    */
@@ -96,20 +76,20 @@ export interface StoreGetCustomersCustomerOrdersParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
+    gte?: string;
+  };
   /**
    * Filter by a cancelation date range.
    */
@@ -117,34 +97,36 @@ export interface StoreGetCustomersCustomerOrdersParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
+    gte?: string;
+  };
   /**
    * Limit the number of orders returned.
    */
-  limit?: number
+  limit?: number;
   /**
    * The number of orders to skip when retrieving the orders.
    */
-  offset?: number
+  offset?: number;
   /**
    * Comma-separated relations that should be expanded in the returned orders.
    */
-  expand?: string
+  expand?: string;
   /**
    * Comma-separated fields that should be included in the returned orders.
    */
-  fields?: string
-}
+  fields?: string;
+};
+
+

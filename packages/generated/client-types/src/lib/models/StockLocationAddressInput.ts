@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 /**
  * Represents a Stock Location Address Input
@@ -10,33 +10,35 @@ export interface StockLocationAddressInput {
   /**
    * Stock location address
    */
-  address_1: string
+  address_1: string;
   /**
    * Stock location address' complement
    */
-  address_2?: string
+  address_2?: string;
   /**
    * Stock location address' city
    */
-  city?: string
+  city?: string;
   /**
    * Stock location address' country
    */
-  country_code: string
+  country_code: string;
   /**
    * Stock location address' phone number
    */
-  phone?: string
+  phone?: string;
   /**
    * Stock location address' postal code
    */
-  postal_code?: string
+  postal_code?: string;
   /**
    * Stock location address' province
    */
-  province?: string
+  province?: string;
   /**
    * An optional key-value map with additional details
    */
-  metadata?: Record<string, any>
-}
+  metadata?: Record<string, any>;
+};
+
+

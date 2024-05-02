@@ -1,33 +1,33 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 export interface GetPublishableApiKeysParams {
   /**
    * term to search publishable API keys' titles.
    */
-  q?: string
+  'q'?: string;
   /**
    * Limit the number of publishable API keys returned.
    */
-  limit?: number
+  limit?: number;
   /**
    * The number of publishable API keys to skip when retrieving the publishable API keys.
    */
-  offset?: number
+  offset?: number;
   /**
    * Comma-separated relations that should be expanded in the returned publishable API keys.
    */
-  expand?: string
+  expand?: string;
   /**
    * Comma-separated fields that should be included in the returned publishable API keys.
    */
-  fields?: string
+  fields?: string;
   /**
    * A field to sort-order the retrieved publishable API keys by.
    */
-  order?: string
+  order?: string;
   /**
    * Filter by a creation date range.
    */
@@ -35,20 +35,20 @@ export interface GetPublishableApiKeysParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
+    gte?: string;
+  };
   /**
    * Filter by a update date range.
    */
@@ -56,20 +56,20 @@ export interface GetPublishableApiKeysParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
+    gte?: string;
+  };
   /**
    * Filter by a revocation date range.
    */
@@ -77,18 +77,20 @@ export interface GetPublishableApiKeysParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string
+    lt?: string;
     /**
      * filter by dates greater than this date
      */
-    gt?: string
+    gt?: string;
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string
+    lte?: string;
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string
-  }
-}
+    gte?: string;
+  };
+};
+
+

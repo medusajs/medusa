@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 /**
  * The details of the product category to create.
@@ -10,29 +10,31 @@ export interface AdminPostProductCategoriesReq {
   /**
    * The name of the product category
    */
-  name: string
+  name: string;
   /**
    * The description of the product category.
    */
-  description?: string
+  description?: string;
   /**
    * The handle of the product category. If none is provided, the kebab-case version of the name will be used. This field can be used as a slug in URLs.
    */
-  handle?: string
+  handle?: string;
   /**
    * If set to `true`, the product category will only be available to admins.
    */
-  is_internal?: boolean
+  is_internal?: boolean;
   /**
    * If set to `false`, the product category will not be available in the storefront.
    */
-  is_active?: boolean
+  is_active?: boolean;
   /**
    * The ID of the parent product category
    */
-  parent_category_id?: string
+  parent_category_id?: string;
   /**
    * An optional set of key-value pairs to hold additional information.
    */
-  metadata?: Record<string, any>
-}
+  metadata?: Record<string, any>;
+};
+
+

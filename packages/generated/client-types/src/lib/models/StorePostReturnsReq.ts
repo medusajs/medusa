@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
 /**
  * The details of the return to create.
@@ -10,7 +10,7 @@ export interface StorePostReturnsReq {
   /**
    * The ID of the Order to create the return for.
    */
-  order_id: string
+  order_id: string;
   /**
    * The items to include in the return.
    */
@@ -18,20 +18,20 @@ export interface StorePostReturnsReq {
     /**
      * The ID of the line item to return.
      */
-    item_id: string
+    item_id: string;
     /**
      * The quantity to return.
      */
-    quantity: number
+    quantity: number;
     /**
      * The ID of the return reason. Return reasons can be retrieved from the List Return Reasons API Route.
      */
-    reason_id?: string
+    reason_id?: string;
     /**
      * A note to add to the item returned.
      */
-    note?: string
-  }>
+    note?: string;
+  }>;
   /**
    * The return shipping method used to return the items. If provided, a fulfillment is automatically created for the return.
    */
@@ -39,6 +39,8 @@ export interface StorePostReturnsReq {
     /**
      * The ID of the Shipping Option to create the Shipping Method from.
      */
-    option_id: string
-  }
-}
+    option_id: string;
+  };
+};
+
+

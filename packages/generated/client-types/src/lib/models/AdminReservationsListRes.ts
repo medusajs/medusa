@@ -1,9 +1,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
+import { SetRelation, Merge } from '../core/ModelUtils';
 
-import type { ExtendedReservationItem } from "./ExtendedReservationItem"
+import type { ExtendedReservationItem } from './ExtendedReservationItem';
 
 /**
  * The list of reservations with pagination fields.
@@ -12,17 +12,19 @@ export interface AdminReservationsListRes {
   /**
    * An array of reservations details.
    */
-  reservations: Array<ExtendedReservationItem>
+  reservations: Array<ExtendedReservationItem>;
   /**
    * The total number of items available
    */
-  count: number
+  count: number;
   /**
    * The number of reservations skipped when retrieving the reservations.
    */
-  offset: number
+  offset: number;
   /**
    * The number of items per page
    */
-  limit: number
-}
+  limit: number;
+};
+
+
