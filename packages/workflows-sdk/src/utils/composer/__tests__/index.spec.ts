@@ -29,11 +29,13 @@ describe("Workflow composer", () => {
       )
 
       const workflow = createWorkflow(getNewWorkflowId(), function () {
-        const subWorkflowRes = subWorkflow.run({ input: "hi from outside" })
+        const subWorkflowRes = subWorkflow.runAsStep({
+          input: "hi from outside",
+        })
         return step3(subWorkflowRes.result)
       })
 
-      const { result } = await workflow().run({ input: {} })
+      const { result } = await workflow.run({ input: {} })
 
       expect(result).toEqual({ result: "hi from outside" })
     })
@@ -80,12 +82,14 @@ describe("Workflow composer", () => {
 
       const workflow = createWorkflow(getNewWorkflowId(), function () {
         step3()
-        const subWorkflowRes = subWorkflow.run({ input: "hi from outside" })
+        const subWorkflowRes = subWorkflow.runAsStep({
+          input: "hi from outside",
+        })
         step4WithError()
         return subWorkflowRes
       })
 
-      const { errors } = await workflow().run({ throwOnError: false })
+      const { errors } = await workflow.run({ throwOnError: false })
 
       expect(errors).toEqual([
         expect.objectContaining({
@@ -122,7 +126,7 @@ describe("Workflow composer", () => {
       })
     })
 
-    const { errors } = await work().run({ input: {}, throwOnError: false })
+    const { errors } = await work.run({ input: {}, throwOnError: false })
 
     expect(errors).toEqual([
       {
