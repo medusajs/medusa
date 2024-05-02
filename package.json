@@ -5,6 +5,7 @@
     "packages": [
       "packages/medusa",
       "packages/modules/*",
+      "packages/core/*",
       "packages/medusa-js",
       "packages/medusa-react",
       "packages/*",

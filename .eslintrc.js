@@ -91,12 +91,13 @@ module.exports = {
 
           "./packages/create-medusa-app/tsconfig.json",
 
-          "./packages/orchestration/tsconfig.json",
-          "./packages/workflows-sdk/tsconfig.spec.json",
-          "./packages/core-flows/tsconfig.spec.json",
-
-          "./packages/types/tsconfig.json",
-          "./packages/utils/tsconfig.json",
+          "./packages/core/orchestration/tsconfig.json",
+          "./packages/core/workflows-sdk/tsconfig.spec.json",
+          "./packages/core/core-flows/tsconfig.spec.json",
+          "./packages/core/modules-sdk/tsconfig.spec.json",
+          "./packages/core/types/tsconfig.spec.json",
+          "./packages/core/utils/tsconfig.spec.json",
+          "./packages/core/medusa-test-utils/tsconfig.spec.json",
 
           "./packages/fulfillment-manual/tsconfig.spec.json",
 
