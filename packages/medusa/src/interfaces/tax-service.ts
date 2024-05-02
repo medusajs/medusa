@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { LineItem } from "../models/line-item"
 import { Region } from "../models/region"
 import { Address } from "../models/address"
@@ -8,69 +10,69 @@ import { LineAllocationsMap } from "../types/totals"
 import { TransactionBaseService } from "./transaction-base-service"
 import { MedusaContainer } from "@medusajs/types"
 
-/**
+/!**
  * A shipping method and the tax rates configured to apply to the
  * shipping method.
- */
+ *!/
 export type ShippingTaxCalculationLine = {
-  /**
+  /!**
    * The shipping method to calculate taxes for.
-   */
+   *!/
   shipping_method: ShippingMethod
-  /**
+  /!**
    * The rates applicable on the shipping method.
-   */
+   *!/
   rates: TaxServiceRate[]
 }
 
-/**
+/!**
  * A line item and the tax rates configured to apply to the
  * product contained in the line item.
- */
+ *!/
 export type ItemTaxCalculationLine = {
-  /**
+  /!**
    * The line item to calculate taxes for.
-   */
+   *!/
   item: LineItem
-  /**
+  /!**
    * The rates applicable on the item.
-   */
+   *!/
   rates: TaxServiceRate[]
 }
 
-/**
+/!**
  * Information relevant to a tax calculation, such as the shipping address where
  * the items are going.
- */
+ *!/
 export type TaxCalculationContext = {
-  /**
+  /!**
    * The shipping address used in the cart.
-   */
+   *!/
   shipping_address: Address | null
-  /**
+  /!**
    * The customer that the cart belongs to.
-   */
+   *!/
   customer: Customer
-  /**
+  /!**
    * The cart's region.
-   */
+   *!/
   region: Region
-  /**
+  /!**
    * Whether the cart is used in a return flow.
-   */
+   *!/
   is_return: boolean
-  /**
+  /!**
    * The shipping methods used in the cart.
-   */
+   *!/
   shipping_methods: ShippingMethod[]
-  /**
+  /!**
    * The gift cards and discounts applied on line items.
    * Each object key or property is an ID of a line item
-   */
+   *!/
   allocation_map: LineAllocationsMap
 }
 
-/**
+/!**
  * ## Overview
  *
  * A tax provider is used to retrieve the tax lines in a cart. The Medusa backend provides a default `system` provider. You can create your own tax provider,
@@ -121,9 +123,9 @@ export type TaxCalculationContext = {
  * ```
  *
  * ---
- */
+ *!/
 export interface ITaxService {
-  /**
+  /!**
    * This method is used when retrieving the tax lines for line items and shipping methods.
    * This occurs during checkout or when calculating totals for orders, swaps, or returns.
    *
@@ -172,7 +174,7 @@ export interface ITaxService {
    *   }
    * }
    * ```
-   */
+   *!/
   getTaxLines(
     itemLines: ItemTaxCalculationLine[],
     shippingLines: ShippingTaxCalculationLine[],
@@ -180,27 +182,27 @@ export interface ITaxService {
   ): Promise<ProviderTaxLine[]>
 }
 
-/**
+/!**
  * @parentIgnore activeManager_,atomicPhase_,shouldRetryTransaction_,withTransaction
- */
+ *!/
 export abstract class AbstractTaxService
   extends TransactionBaseService
   implements ITaxService
 {
-  /**
+  /!**
    * @ignore
-   */
+   *!/
   static _isTaxService = true
   protected static identifier: string
 
-  /**
+  /!**
    * @ignore
-   */
+   *!/
   static isTaxService(object): boolean {
     return object?.constructor?._isTaxService
   }
 
-  /**
+  /!**
    * You can use the `constructor` of your tax provider to access the different services in Medusa through dependency injection.
    *
    * You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
@@ -233,7 +235,7 @@ export abstract class AbstractTaxService
    * }
    *
    * export default MyTaxService
-   */
+   *!/
   protected constructor(
     protected readonly container: Record<string, unknown>,
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -241,9 +243,9 @@ export abstract class AbstractTaxService
     super(container, config)
   }
 
-  /**
+  /!**
    * @ignore
-   */
+   *!/
   public getIdentifier(): string {
     if (!(this.constructor as typeof AbstractTaxService).identifier) {
       throw new Error(`Missing static property "identifier".`)
@@ -257,3 +259,4 @@ export abstract class AbstractTaxService
     context: TaxCalculationContext
   ): Promise<ProviderTaxLine[]>
 }
+*/

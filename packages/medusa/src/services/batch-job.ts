@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { Request } from "express"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
@@ -380,3 +382,4 @@ class BatchJobService extends TransactionBaseService {
 }
 
 export default BatchJobService
+*/

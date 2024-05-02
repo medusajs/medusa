@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { LineItem } from "../models/line-item"
 import { TaxCalculationContext } from "./tax-service"
 import { LineItemTaxLine } from "../models/line-item-tax-line"
@@ -5,7 +7,7 @@ import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
 import { TransactionBaseService } from "./transaction-base-service"
 import { MedusaContainer } from "@medusajs/types"
 
-/**
+/!**
  * ## Overview
  *
  * A tax calculation strategy is used to calculate taxes when calculating a cart's totals. The Medusa
@@ -47,9 +49,9 @@ import { MedusaContainer } from "@medusajs/types"
  * ```
  *
  * ---
- */
+ *!/
 export interface ITaxCalculationStrategy {
-  /**
+  /!**
    * This method calculates the tax amount for a given set of line items under applicable
    * tax conditions and calculation contexts.
    *
@@ -92,7 +94,7 @@ export interface ITaxCalculationStrategy {
    *   return Math.round(lineItemsTax + shippingMethodsTax)
    * }
    * ```
-   */
+   *!/
   calculate(
     items: LineItem[],
     taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[],
@@ -100,21 +102,21 @@ export interface ITaxCalculationStrategy {
   ): Promise<number>
 }
 
-/**
+/!**
  * @parentIgnore activeManager_,atomicPhase_,shouldRetryTransaction_,withTransaction
- */
+ *!/
 export abstract class AbstractTaxCalculationStrategy
   extends TransactionBaseService
   implements ITaxCalculationStrategy
 {
-  /**
+  /!**
    * @ignore
-   */
+   *!/
   static _isTaxCalculationStrategy = true
 
-  /**
+  /!**
    * @ignore
-   */
+   *!/
   static isTaxCalculationStrategy(object): boolean {
     return (
       typeof object.calculate === "function" ||
@@ -122,7 +124,7 @@ export abstract class AbstractTaxCalculationStrategy
     )
   }
 
-  /**
+  /!**
    * You can use the `constructor` of your tax calculation strategy to access the different services in Medusa through dependency injection.
    *
    * You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
@@ -154,7 +156,7 @@ export abstract class AbstractTaxCalculationStrategy
    * }
    *
    * export default TaxCalculationStrategy
-   */
+   *!/
   protected constructor(
     protected readonly container: Record<string, unknown>,
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -168,3 +170,4 @@ export abstract class AbstractTaxCalculationStrategy
     calculationContext: TaxCalculationContext
   ): Promise<number>
 }
+*/

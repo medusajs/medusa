@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import {
   AbstractNotificationService,
   TransactionBaseService,
@@ -45,19 +47,19 @@ class NotificationService extends TransactionBaseService {
     this.notificationProviderRepository_ = notificationProviderRepository
   }
 
-  /**
+  /!**
    * Registers an attachment generator to the service. The generator can be
    * used to generate on demand invoices or other documents.
    * @param service the service to assign to the attachmentGenerator
-   */
+   *!/
   registerAttachmentGenerator(service: unknown): void {
     this.attachmentGenerator_ = service
   }
 
-  /**
+  /!**
    * Takes a list of notification provider ids and persists them in the database.
    * @param providerIds - a list of provider ids
-   */
+   *!/
   async registerInstalledProviders(providerIds: string[]): Promise<void> {
     const { notificationProviderRepository } = this.container_
     const model = this.activeManager_.withRepository(
@@ -70,12 +72,12 @@ class NotificationService extends TransactionBaseService {
     }
   }
 
-  /**
+  /!**
    * Retrieves a list of notifications.
    * @param selector - the params to select the notifications by.
    * @param config - the configuration to apply to the query
    * @return the notifications that satisfy the query.
-   */
+   *!/
   async list(
     selector: Selector<Notification>,
     config: FindConfig<Notification> = {
@@ -89,12 +91,12 @@ class NotificationService extends TransactionBaseService {
     return notifications
   }
 
-  /**
+  /!**
    * Retrieves a list of notifications and total count.
    * @param selector - the params to select the notifications by.
    * @param config - the configuration to apply to the query
    * @return the notifications that satisfy the query as well as the count.
-   */
+   *!/
   async listAndCount(
     selector: Selector<Notification>,
     config: FindConfig<Notification> = {
@@ -110,12 +112,12 @@ class NotificationService extends TransactionBaseService {
     return await notiRepo.findAndCount(query)
   }
 
-  /**
+  /!**
    * Retrieves a notification with a given id
    * @param id - the id of the notification
    * @param config - the configuration to apply to the query
    * @return the notification
-   */
+   *!/
   async retrieve(
     id: string,
     config: FindConfig<Notification> = {}
@@ -138,11 +140,11 @@ class NotificationService extends TransactionBaseService {
     return notification
   }
 
-  /**
+  /!**
    * Subscribes a given provider to an event.
    * @param eventName - the event to subscribe to
    * @param providerId - the provider that the event will be sent to
-   */
+   *!/
   subscribe(eventName: string, providerId: string): void {
     if (typeof providerId !== "string") {
       throw new MedusaError(
@@ -158,12 +160,12 @@ class NotificationService extends TransactionBaseService {
     }
   }
 
-  /**
+  /!**
    * Finds a provider with a given id. Will throw a NOT_FOUND error if the
    * resolution fails.
    * @param id - the id of the provider
    * @return the notification provider
-   */
+   *!/
   protected retrieveProvider_(id: string): AbstractNotificationService {
     try {
       return this.container_[`noti_${id}`]
@@ -175,14 +177,14 @@ class NotificationService extends TransactionBaseService {
     }
   }
 
-  /**
+  /!**
    * Handles an event by relaying the event data to the subscribing providers.
    * The result of the notification send will be persisted in the database in
    * order to allow for resends. Will log any errors that are encountered.
    * @param eventName - the event to handle
    * @param data - the data the event was sent with
    * @return the result of notification subscribed
-   */
+   *!/
   async handleEvent(
     eventName: string,
     data: Record<string, unknown>
@@ -207,14 +209,14 @@ class NotificationService extends TransactionBaseService {
     )
   }
 
-  /**
+  /!**
    * Sends a notification, by calling the given provider's sendNotification
    * method. Persists the Notification in the database.
    * @param event - the name of the event
    * @param eventData - the data the event was sent with
    * @param providerId - the provider that should handle the event.
    * @return the created notification
-   */
+   *!/
   async send(
     event: string,
     eventData: Record<string, unknown>,
@@ -255,14 +257,14 @@ class NotificationService extends TransactionBaseService {
     })
   }
 
-  /**
+  /!**
    * Resends a notification by retrieving a prior notification and calling the
    * underlying provider's resendNotification method.
    * @param {string} id - the id of the notification
    * @param {object} config - any configuration that might override the previous
    *  send
    * @return {Notification} the newly created notification
-   */
+   *!/
   async resend(
     id: string,
     config: FindConfig<Notification> = {}
@@ -294,3 +296,4 @@ class NotificationService extends TransactionBaseService {
 }
 
 export default NotificationService
+*/

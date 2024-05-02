@@ -14,9 +14,6 @@ import { EntitySchema } from "typeorm"
 import {
   AbstractCartCompletionStrategy,
   AbstractNotificationService,
-  AbstractPriceSelectionStrategy,
-  AbstractTaxCalculationStrategy,
-  AbstractTaxService,
 } from "../interfaces"
 import { MiddlewareService } from "../services"
 import {
@@ -31,10 +28,6 @@ import {
 } from "../utils/format-registration-name"
 import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import ScheduledJobsLoader from "./helpers/jobs"
-import {
-  registerAbstractFulfillmentServiceFromClass,
-  registerPaymentProcessorFromClass,
-} from "./helpers/plugins"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
 import { RoutesLoader } from "./helpers/routing"
 import { SubscriberLoader } from "./helpers/subscribers"
@@ -196,7 +189,7 @@ export function registerStrategies(
     const module = require(file).default
 
     switch (true) {
-      case AbstractTaxCalculationStrategy.isTaxCalculationStrategy(
+      /* case AbstractTaxCalculationStrategy.isTaxCalculationStrategy(
         module.prototype
       ): {
         if (!("taxCalculationStrategy" in registeredServices)) {
@@ -212,7 +205,7 @@ export function registerStrategies(
           )
         }
         break
-      }
+      }*/
 
       case AbstractCartCompletionStrategy.isCartCompletionStrategy(
         module.prototype
@@ -249,7 +242,7 @@ export function registerStrategies(
         break
       }*/
 
-      case AbstractPriceSelectionStrategy.isPriceSelectionStrategy(
+      /* case AbstractPriceSelectionStrategy.isPriceSelectionStrategy(
         module.prototype
       ): {
         if (!("priceSelectionStrategy" in registeredServices)) {
@@ -266,7 +259,7 @@ export function registerStrategies(
           )
         }
         break
-      }
+      }*/
 
       default:
         logger.warn(
@@ -441,9 +434,6 @@ export async function registerServices(
 
       const context = { container, pluginDetails, registrationName: name }
 
-      registerPaymentProcessorFromClass(loaded, context)
-      registerAbstractFulfillmentServiceFromClass(loaded, context)
-
       if (OauthService.isOauthService(loaded.prototype)) {
         const appDetails = loaded.getAppDetails(pluginDetails.options)
 
@@ -507,7 +497,7 @@ export async function registerServices(
         })
 
         container.register(isSearchEngineInstalledResolutionKey, asValue(true))
-      } else if (AbstractTaxService.isTaxService(loaded.prototype)) {
+      } /*else if (AbstractTaxService.isTaxService(loaded.prototype)) {
         container.registerAdd(
           "taxProviders",
           asFunction((cradle) => new loaded(cradle, pluginDetails.options), {
@@ -524,7 +514,7 @@ export async function registerServices(
           ),
           [`tp_${loaded.identifier}`]: aliasTo(name),
         })
-      } else {
+      }*/ else {
         container.register({
           [name]: asFunction(
             (cradle) => new loaded(cradle, pluginDetails.options),

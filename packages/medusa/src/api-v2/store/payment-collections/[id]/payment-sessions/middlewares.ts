@@ -1,4 +1,4 @@
-import { transformBody } from "../../../../../api/middlewares"
+import { transformBody } from "../../../../../utils/middlewares"
 import { MiddlewareRoute } from "../../../../../loaders/helpers/routing/types"
 import { StorePostPaymentCollectionsPaymentSessionReq } from "./validators"
 

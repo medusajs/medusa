@@ -1,10 +1,12 @@
+// TODO: we need to discuss this
+/*
 import { MoneyAmount } from "../models"
 import { PriceListType } from "../types/price-list"
 import { TaxServiceRate } from "../types/tax-service"
 import { ITransactionBaseService, MedusaContainer } from "@medusajs/types"
 import { TransactionBaseService } from "./transaction-base-service"
 
-/**
+/!**
  * ## Overview
  *
  * The price selection strategy retrieves the best price for a product variant for a specific context such as selected region, taxes applied,
@@ -37,9 +39,9 @@ import { TransactionBaseService } from "./transaction-base-service"
  * ```
  *
  * ---
- */
+ *!/
 export interface IPriceSelectionStrategy extends ITransactionBaseService {
-  /**
+  /!**
    * This method retrieves one or more product variants' prices. It's used when retrieving product variants or their associated line items.
    * It's also used when retrieving other entities that product variants and line items belong to, such as products and carts respectively.
    *
@@ -139,25 +141,25 @@ export interface IPriceSelectionStrategy extends ITransactionBaseService {
    *   // ...
    * }
    * ```
-   */
+   *!/
   calculateVariantPrice(
     data: {
-      /**
+      /!**
        * The ID of the variant to retrieve its prices.
-       */
+       *!/
       variantId: string
-      /**
+      /!**
        * The variant's quantity in the cart, if available.
-       */
+       *!/
       quantity?: number
     }[],
-    /**
+    /!**
      * Details relevant to determine the correct pricing of the variant
-     */
+     *!/
     context: PriceSelectionContext
   ): Promise<Map<string, PriceSelectionResult>>
 
-  /**
+  /!**
    * This method is called when prices of product variants have changed.
    * You can use it to invalidate prices stored in the cache.
    *
@@ -199,30 +201,30 @@ export interface IPriceSelectionStrategy extends ITransactionBaseService {
    * Learn more about the cache service in [this documentation](https://docs.medusajs.com/development/cache/overview).
    *
    * :::
-   */
+   *!/
   onVariantsPricesUpdate(variantIds: string[]): Promise<void>
 }
 
-/**
+/!**
  * @parentIgnore activeManager_,atomicPhase_,shouldRetryTransaction_,withTransaction
- */
+ *!/
 export abstract class AbstractPriceSelectionStrategy
   extends TransactionBaseService
   implements IPriceSelectionStrategy
 {
-  /**
+  /!**
    * @ignore
-   */
+   *!/
   static _isPriceSelectionStrategy = true
 
-  /**
+  /!**
    * @ignore
-   */
+   *!/
   static isPriceSelectionStrategy(object): boolean {
     return object?.constructor?._isPriceSelectionStrategy
   }
 
-  /**
+  /!**
    * You can use the `constructor` of your price-selection strategy to access the different services in Medusa through dependency injection.
    *
    * @param {Record<string, unknown>} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.
@@ -252,7 +254,7 @@ export abstract class AbstractPriceSelectionStrategy
    * }
    *
    * export default  MyStrategy
-   */
+   *!/
   protected constructor(
     protected readonly container: Record<string, unknown>,
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -263,9 +265,9 @@ export abstract class AbstractPriceSelectionStrategy
   public abstract calculateVariantPrice(
     data: {
       variantId: string
-      /**
+      /!**
        * @ignore
-       */
+       *!/
       taxRates: TaxServiceRate[]
       quantity?: number
     }[],
@@ -277,59 +279,59 @@ export abstract class AbstractPriceSelectionStrategy
   }
 }
 
-/**
+/!**
  * @interface
  *
  * The context of the price selection.
- */
+ *!/
 export type PriceSelectionContext = {
-  /**
+  /!**
    * The cart's ID. This is used when the prices are being retrieved for the variant of a line item,
    * as it is used to determine the current region and currency code of the context.
-   */
+   *!/
   cart_id?: string
-  /**
+  /!**
    * The ID of the customer viewing the variant.
-   */
+   *!/
   customer_id?: string
-  /**
+  /!**
    * The region's ID.
-   */
+   *!/
   region_id?: string
-  /**
+  /!**
    * The quantity of the item in the cart. This is used to filter out price lists that have
    * `min_quantity` or `max_quantity` conditions set.
-   */
+   *!/
   quantity?: number
-  /**
+  /!**
    * The currency code the customer is using.
-   */
+   *!/
   currency_code?: string
-  /**
+  /!**
    * Whether the price list's prices should be retrieved or not.
-   */
+   *!/
   include_discount_prices?: boolean
-  /**
+  /!**
    * The tax rates to be applied. This is only used for
    * [Tax-Inclusive Pricing](https://docs.medusajs.com/modules/taxes/inclusive-pricing).
-   */
+   *!/
   tax_rates?: TaxServiceRate[]
-  /**
+  /!**
    * Whether to calculate the prices even if the value of an earlier price calculation
    * is available in the cache.
-   */
+   *!/
   ignore_cache?: boolean
 }
 
-/**
+/!**
  * @enum
  *
  * The type of default price type.
- */
+ *!/
 enum DefaultPriceType {
-  /**
+  /!**
    * The `calculatedPrice` is the original price.
-   */
+   *!/
   DEFAULT = "default",
 }
 
@@ -337,38 +339,39 @@ enum DefaultPriceType {
 export type PriceType = DefaultPriceType | PriceListType
 export const PriceType = { ...DefaultPriceType, ...PriceListType }
 
-/**
+/!**
  * @interface
  *
  * The price selection result of a variant.
- */
+ *!/
 export type PriceSelectionResult = {
-  /**
+  /!**
    * The original price of the variant which depends on the selected region or currency code in the context object.
    * If both region ID and currency code are available in the context object, the region has higher precedence.
-   */
+   *!/
   originalPrice: number | null
-  /**
+  /!**
    * Whether the original price includes taxes or not. This is only available
    * for [Tax-Inclusive Pricing](https://docs.medusajs.com/modules/taxes/inclusive-pricing).
-   */
+   *!/
   originalPriceIncludesTax?: boolean | null
-  /**
+  /!**
    * The lowest price among the prices of the product variant retrieved using the context object.
-   */
+   *!/
   calculatedPrice: number | null
-  /**
+  /!**
    * Whether the calculated price includes taxes or not.
    * This is only available for [Tax-Inclusive Pricing](https://docs.medusajs.com/modules/taxes/inclusive-pricing).
-   */
+   *!/
   calculatedPriceIncludesTax?: boolean | null
-  /**
+  /!**
    * The type of price applied in `calculatedPrice`.
-   */
+   *!/
   calculatedPriceType?: PriceType
-  /**
+  /!**
    * All possible prices of the variant that are retrieved using the `context` object.
    * It can include its original price and its price lists if there are any.
-   */
+   *!/
   prices: MoneyAmount[]
 }
+*/
