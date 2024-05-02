@@ -1,3 +1,7 @@
+import {
+  createShippingOptionsWorkflow,
+  updateShippingOptionsWorkflow,
+} from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FulfillmentSetDTO,
@@ -8,16 +12,12 @@ import {
   ShippingProfileDTO,
   UpdateShippingOptionsWorkflowInput,
 } from "@medusajs/types"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
-import {
-  createShippingOptionsWorkflow,
-  updateShippingOptionsWorkflow,
-} from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
   RuleOperator,
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
 jest.setTimeout(100000)
 
@@ -97,6 +97,10 @@ medusaIntegrationTestRunner({
                 region_id: region.id,
                 amount: 100,
               },
+              {
+                currency_code: "dkk",
+                amount: 1000,
+              },
             ],
             rules: [
               {
@@ -111,26 +115,11 @@ medusaIntegrationTestRunner({
           input: [shippingOptionData],
         })
 
-        const updateData: UpdateShippingOptionsWorkflowInput = {
-          id: result[0].id,
-          name: "Test shipping option",
-          price_type: "flat",
-          type: {
-            code: "manual-type",
-            label: "Manual Type",
-            description: "Manual Type Description",
-          },
-        }
-
-        await updateShippingOptionsWorkflow(container).run({
-          input: [updateData],
-        })
-
         const remoteQuery = container.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
 
-        const remoteQueryObject = remoteQueryObjectFromString({
+        let remoteQueryObject = remoteQueryObjectFromString({
           entryPoint: "shipping_option",
           variables: {
             id: result[0].id,
@@ -155,10 +144,50 @@ medusaIntegrationTestRunner({
 
         const [createdShippingOption] = await remoteQuery(remoteQueryObject)
 
-        const prices = createdShippingOption.prices
-        delete createdShippingOption.prices
+        const usdPrice = createdShippingOption.prices.find((price) => {
+          return price.currency_code === "usd"
+        })
 
-        expect(createdShippingOption).toEqual(
+        const dkkPrice = createdShippingOption.prices.find((price) => {
+          return price.currency_code === "dkk"
+        })
+
+        const updateData: UpdateShippingOptionsWorkflowInput = {
+          id: createdShippingOption.id,
+          name: "Test shipping option",
+          price_type: "flat",
+          type: {
+            code: "manual-type",
+            label: "Manual Type",
+            description: "Manual Type Description",
+          },
+          prices: [
+            // We keep the usd price as is
+            // update the dkk price to 100
+            // delete the third price eur
+            // create a new eur one instead
+            usdPrice,
+            {
+              ...dkkPrice,
+              amount: 100,
+            },
+            {
+              region_id: region.id,
+              amount: 1000,
+            },
+          ],
+        }
+
+        await updateShippingOptionsWorkflow(container).run({
+          input: [updateData],
+        })
+
+        const [updatedShippingOption] = await remoteQuery(remoteQueryObject)
+
+        const prices = updatedShippingOption.prices
+        delete updatedShippingOption.prices
+
+        expect(updatedShippingOption).toEqual(
           expect.objectContaining({
             id: result[0].id,
             name: updateData.name,
@@ -178,7 +207,7 @@ medusaIntegrationTestRunner({
           })
         )
 
-        expect(prices).toHaveLength(2)
+        expect(prices).toHaveLength(3)
         expect(prices).toContainEqual(
           expect.objectContaining({
             currency_code: "usd",
@@ -188,8 +217,13 @@ medusaIntegrationTestRunner({
         expect(prices).toContainEqual(
           expect.objectContaining({
             currency_code: "eur",
+            amount: 1000,
+          })
+        )
+        expect(prices).toContainEqual(
+          expect.objectContaining({
+            currency_code: "dkk",
             amount: 100,
-            rules_count: 1,
           })
         )
       })

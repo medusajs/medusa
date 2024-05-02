@@ -5,6 +5,7 @@ import { AdminShippingOptionRuleResponse } from "./shipping-option-rule"
 import { AdminShippingProfileResponse } from "./shipping-profile"
 import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
 import { AdminPriceSetPriceResponse } from "../../pricing"
+import { DeleteResponse, PaginatedResponse } from "../../common"
 
 /**
  * @experimental
@@ -34,5 +35,18 @@ interface AdminShippingOptionResponse {
  * @experimental
  */
 export interface AdminShippingOptionRetrieveResponse {
-  shipping_option: AdminShippingOptionResponse[]
+  shipping_option: AdminShippingOptionResponse
 }
+
+/**
+ * @experimental
+ */
+export interface AdminShippingOptionListResponse extends PaginatedResponse {
+  shipping_options: AdminShippingOptionResponse[]
+}
+
+/**
+ * @experimental
+ */
+export interface AdminShippingOptionDeleteResponse
+  extends DeleteResponse<"shipping_option"> {}

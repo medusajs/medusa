@@ -110,4 +110,9 @@ export interface UpdateFulfillmentDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
+
+  /**
+   * The labels associated with the fulfillment.
+   */
+  labels?: Omit<CreateFulfillmentLabelDTO, "fulfillment_id">[]
 }

@@ -13,7 +13,26 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminPostInvitesInviteAcceptReq"
+ *         type: object
+ *         description: SUMMARY
+ *         required:
+ *           - email
+ *           - first_name
+ *           - last_name
+ *         properties:
+ *           first_name:
+ *             type: string
+ *             title: first_name
+ *             description: The invite's first name.
+ *           last_name:
+ *             type: string
+ *             title: last_name
+ *             description: The invite's last name.
+ *           email:
+ *             type: string
+ *             title: email
+ *             description: The invite's email.
+ *             format: email
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

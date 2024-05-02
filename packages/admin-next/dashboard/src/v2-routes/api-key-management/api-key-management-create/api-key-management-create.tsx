@@ -1,10 +1,15 @@
+import { useLocation } from "react-router-dom"
 import { RouteFocusModal } from "../../../components/route-modal"
-import { CreatePublishableApiKeyForm } from "./components/create-publishable-api-key-form"
+import { getApiKeyTypeFromPathname } from "../common/utils"
+import { ApiKeyCreateForm } from "./components/api-key-create-form"
 
 export const ApiKeyManagementCreate = () => {
+  const { pathname } = useLocation()
+  const keyType = getApiKeyTypeFromPathname(pathname)
+
   return (
     <RouteFocusModal>
-      <CreatePublishableApiKeyForm />
+      <ApiKeyCreateForm keyType={keyType} />
     </RouteFocusModal>
   )
 }

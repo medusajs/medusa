@@ -1,11 +1,14 @@
 import {
+  LocalWorkflow,
   OrchestratorBuilder,
   TransactionContext as OriginalWorkflowTransactionContext,
+  TransactionModelOptions,
   TransactionPayload,
   TransactionStepsDefinition,
   WorkflowHandler,
 } from "@medusajs/orchestration"
-import { Context, MedusaContainer } from "@medusajs/types"
+import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
+import { ExportedWorkflow } from "../../helper"
 
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
   (this: CreateWorkflowComposerContext) => WorkflowData<TOutput>
@@ -19,13 +22,18 @@ type StepFunctionReturnConfig<TOutput> = {
   ): WorkflowData<TOutput>
 }
 
+type KeysOfUnion<T> = T extends T ? keyof T : never
+
 /**
  * A step function to be used in a workflow.
  *
  * @typeParam TInput - The type of the input of the step.
  * @typeParam TOutput - The type of the output of the step.
  */
-export type StepFunction<TInput, TOutput = unknown> = (keyof TInput extends []
+export type StepFunction<
+  TInput,
+  TOutput = unknown
+> = (KeysOfUnion<TInput> extends []
   ? // Function that doesn't expect any input
     {
       (): WorkflowData<TOutput> & StepFunctionReturnConfig<TOutput>
@@ -129,3 +137,89 @@ export type WorkflowTransactionContext = StepExecutionContext &
   OriginalWorkflowTransactionContext & {
     invoke: { [key: string]: { output: any } }
   }
+
+/**
+ * An exported workflow, which is the type of a workflow constructed by the {@link createWorkflow} function. The exported workflow can be invoked to create
+ * an executable workflow, optionally within a specified container. So, to execute the workflow, you must invoke the exported workflow, then run the
+ * `run` method of the exported workflow.
+ *
+ * @example
+ * To execute a workflow:
+ *
+ * ```ts
+ * myWorkflow()
+ *   .run({
+ *     input: {
+ *       name: "John"
+ *     }
+ *   })
+ *   .then(({ result }) => {
+ *     console.log(result)
+ *   })
+ * ```
+ *
+ * To specify the container of the workflow, you can pass it as an argument to the call of the exported workflow. This is necessary when executing the workflow
+ * within a Medusa resource such as an API Route or a Subscriber.
+ *
+ * For example:
+ *
+ * ```ts
+ * import type {
+ *   MedusaRequest,
+ *   MedusaResponse
+ * } from "@medusajs/medusa";
+ * import myWorkflow from "../../../workflows/hello-world";
+ *
+ * export async function GET(
+ *   req: MedusaRequest,
+ *   res: MedusaResponse
+ * ) {
+ *   const { result } = await myWorkflow(req.scope)
+ *     .run({
+ *       input: {
+ *         name: req.query.name as string
+ *       }
+ *     })
+ *
+ *   res.send(result)
+ * }
+ * ```
+ */
+export type ReturnWorkflow<
+  TData,
+  TResult,
+  THooks extends Record<string, Function>
+> = {
+  <TDataOverride = undefined, TResultOverride = undefined>(
+    container?: LoadedModule[] | MedusaContainer
+  ): Omit<
+    LocalWorkflow,
+    "run" | "registerStepSuccess" | "registerStepFailure" | "cancel"
+  > &
+    ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
+} & THooks & {
+    runAsStep: ({
+      input,
+    }: {
+      input: TData
+    }) => ReturnType<StepFunction<TData, TResult>>
+    run: <TDataOverride = undefined, TResultOverride = undefined>(
+      ...args: Parameters<
+        ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
+      >
+    ) => ReturnType<
+      ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
+    >
+    getName: () => string
+    config: (config: TransactionModelOptions) => void
+  }
+
+/**
+ * Extract the raw type of the expected input data of a workflow.
+ *
+ * @example
+ * type WorkflowInputData = UnwrapWorkflowInputDataType<typeof myWorkflow>
+ */
+export type UnwrapWorkflowInputDataType<
+  T extends ReturnWorkflow<any, any, any>
+> = T extends ReturnWorkflow<infer TData, infer R, infer THooks> ? TData : never

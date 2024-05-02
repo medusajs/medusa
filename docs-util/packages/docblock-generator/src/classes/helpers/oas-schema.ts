@@ -10,7 +10,7 @@ import formatOas from "../../utils/format-oas.js"
 import pluralize from "pluralize"
 import { wordsToPascal } from "../../utils/str-formatting.js"
 
-type ParsedSchema = {
+export type ParsedSchema = {
   schema: OpenApiSchema
   schemaPrefix: string
 }
@@ -63,17 +63,41 @@ class OasSchemaHelper {
     // and convert those
     if (schema.properties) {
       Object.keys(schema.properties).forEach((property) => {
-        if (
-          "$ref" in schema.properties![property] ||
-          !(schema.properties![property] as OpenApiSchema)["x-schemaName"]
-        ) {
+        const propertySchema = schema.properties![property]
+        if ("$ref" in propertySchema) {
           return
         }
 
+        // if the property is an array, possibly convert its items schema
+        // to a reference.
+        if (
+          propertySchema.type === "array" &&
+          propertySchema.items &&
+          !("$ref" in propertySchema.items)
+        ) {
+          propertySchema.items =
+            this.schemaToReference(propertySchema.items) || propertySchema.items
+        } else if (
+          propertySchema.oneOf ||
+          propertySchema.allOf ||
+          propertySchema.anyOf
+        ) {
+          // if the property is a combination of types, go through each of
+          // the types and try to convert them to references.
+          const schemaTarget =
+            propertySchema.oneOf || propertySchema.allOf || propertySchema.anyOf
+          schemaTarget!.forEach((item, index) => {
+            if ("$ref" in item) {
+              return
+            }
+
+            schemaTarget![index] = this.schemaToReference(item) || item
+          })
+        }
+
         schema.properties![property] =
-          this.schemaToReference(
-            schema.properties![property] as OpenApiSchema
-          ) || schema.properties![property]
+          this.schemaToReference(propertySchema as OpenApiSchema) ||
+          propertySchema
       })
     }
 

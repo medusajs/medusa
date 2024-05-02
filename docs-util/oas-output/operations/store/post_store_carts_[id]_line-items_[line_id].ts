@@ -39,7 +39,20 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - quantity
+ *           - metadata
+ *         properties:
+ *           quantity:
+ *             type: number
+ *             title: quantity
+ *             description: The cart's quantity.
+ *           metadata:
+ *             type: object
+ *             description: The cart's metadata.
+ *             properties: {}
  * 
 */
 

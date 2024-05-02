@@ -20,7 +20,8 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminDeletePricingRuleTypesRuleTypeReq"
+ *         description: SUMMARY
+ *         properties: {}
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

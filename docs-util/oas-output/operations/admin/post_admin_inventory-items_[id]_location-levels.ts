@@ -19,7 +19,25 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminPostInventoryItemsItemLocationLevelsReq"
+ *         type: object
+ *         description: SUMMARY
+ *         required:
+ *           - location_id
+ *           - stocked_quantity
+ *           - incoming_quantity
+ *         properties:
+ *           location_id:
+ *             type: string
+ *             title: location_id
+ *             description: The inventory item's location id.
+ *           stocked_quantity:
+ *             type: number
+ *             title: stocked_quantity
+ *             description: The inventory item's stocked quantity.
+ *           incoming_quantity:
+ *             type: number
+ *             title: incoming_quantity
+ *             description: The inventory item's incoming quantity.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

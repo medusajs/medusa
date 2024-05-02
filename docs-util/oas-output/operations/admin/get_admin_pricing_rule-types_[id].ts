@@ -20,7 +20,15 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminGetPricingRuleTypesRuleTypeParams"
+ *         type: object
+ *         description: SUMMARY
+ *         properties:
+ *           fields:
+ *             type: string
+ *             title: fields
+ *             description: The pricing's fields.
+ *         required:
+ *           - fields
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

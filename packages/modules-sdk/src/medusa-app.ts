@@ -204,6 +204,7 @@ export type MedusaAppOutput = {
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
   onApplicationShutdown: () => Promise<void>
+  onApplicationPrepareShutdown: () => Promise<void>
 }
 
 export type MedusaAppOptions = {
@@ -242,11 +243,16 @@ async function MedusaApp_({
   migrationOnly?: boolean
 } = {}): Promise<MedusaAppOutput> {
   const sharedContainer_ = createMedusaContainer({}, sharedContainer)
+
   const onApplicationShutdown = async () => {
     await promiseAll([
       MedusaModule.onApplicationShutdown(),
       sharedContainer_.dispose(),
     ])
+  }
+
+  const onApplicationPrepareShutdown = async () => {
+    await promiseAll([MedusaModule.onApplicationPrepareShutdown()])
   }
 
   const modules: MedusaModuleConfig =
@@ -311,6 +317,7 @@ async function MedusaApp_({
   if (loaderOnly) {
     return {
       onApplicationShutdown,
+      onApplicationPrepareShutdown,
       modules: allModules,
       link: undefined,
       query: async () => {
@@ -404,6 +411,7 @@ async function MedusaApp_({
 
   return {
     onApplicationShutdown,
+    onApplicationPrepareShutdown,
     modules: allModules,
     link: remoteLink,
     query,

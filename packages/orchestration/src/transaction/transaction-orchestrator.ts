@@ -720,6 +720,9 @@ export class TransactionOrchestrator extends EventEmitter {
                 )
                 .then(async (response: any) => {
                   if (!step.definition.backgroundExecution) {
+                    const eventName = DistributedTransactionEvent.STEP_AWAITING
+                    transaction.emit(eventName, { step, transaction })
+
                     return
                   }
 

@@ -299,5 +299,6 @@ export interface IModuleService {
   __hooks?: {
     onApplicationStart?: () => Promise<void>
     onApplicationShutdown?: () => Promise<void>
+    onApplicationPrepareShutdown?: () => Promise<void>
   }
 }

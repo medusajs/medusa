@@ -1,244 +1,60 @@
-import { OperatorMap } from "@medusajs/types"
-import { Type } from "class-transformer"
-import {
-  IsBoolean,
-  IsEmail,
-  IsNotEmpty,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { extendedFindParamsMixin, FindParams } from "../../../types/common"
-import { OperatorMapValidator } from "../../../types/validators/operator-map"
+import { createFindParams, createSelectParams } from "../../utils/validators"
+import { z } from "zod"
+import { AddressPayload } from "../../utils/common-validators"
 
-export class StoreGetCustomersMeParams extends FindParams {}
+export const StoreGetCustomerParams = createSelectParams()
 
-export class StorePostCustomersReq {
-  @IsString()
-  @IsOptional()
-  first_name: string
+export const StoreCreateCustomer = z.object({
+  email: z.string().email().optional(),
+  company_name: z.string().optional(),
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  phone: z.string().optional(),
+})
 
-  @IsString()
-  @IsOptional()
-  last_name: string
+export const StoreUpdateCustomer = z.object({
+  company_name: z.string().nullable().optional(),
+  first_name: z.string().nullable().optional(),
+  last_name: z.string().nullable().optional(),
+  phone: z.string().nullable().optional(),
+})
 
-  @IsEmail()
-  email: string
+export const StoreGetCustomerAddressParams = createSelectParams()
 
-  @IsString()
-  @IsOptional()
-  phone?: string
+export const StoreCreateCustomerAddress = AddressPayload.merge(
+  z.object({
+    address_name: z.string().optional(),
+    is_default_shipping: z.boolean().optional(),
+    is_default_billing: z.boolean().optional(),
+  })
+)
 
-  @IsString()
-  @IsOptional()
-  company_name?: string
+export const StoreUpdateCustomerAddress = StoreCreateCustomerAddress
 
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
+export const StoreGetCustomerAddressesParams = createFindParams({
+  offset: 0,
+  limit: 50,
+}).merge(
+  z.object({
+    q: z.string().optional(),
+    city: z.union([z.string(), z.array(z.string())]).optional(),
+    country_code: z.union([z.string(), z.array(z.string())]).optional(),
+    postal_code: z.union([z.string(), z.array(z.string())]).optional(),
+  })
+)
 
-export class StorePostCustomersMeAddressesReq {
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  address_name?: string
-
-  @IsBoolean()
-  @IsOptional()
-  is_default_shipping?: boolean
-
-  @IsBoolean()
-  @IsOptional()
-  is_default_billing?: boolean
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  company?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  first_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  last_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  address_1?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  address_2?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  city?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  country_code?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  province?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  postal_code?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  phone?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
-
-export class StorePostCustomersMeAddressesAddressReq {
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  address_name?: string
-
-  @IsBoolean()
-  @IsOptional()
-  is_default_shipping?: boolean
-
-  @IsBoolean()
-  @IsOptional()
-  is_default_billing?: boolean
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  company?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  first_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  last_name?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  address_1?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  address_2?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  city?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  country_code?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  province?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  postal_code?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  phone?: string
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
-
-export class StoreGetCustomersMeAddressesParams extends extendedFindParamsMixin(
-  {
-    limit: 100,
-    offset: 0,
-  }
-) {
-  @IsOptional()
-  @IsString({ each: true })
-  address_name?: string | string[] | OperatorMap<string>
-
-  @IsOptional()
-  @IsBoolean()
-  is_default_shipping?: boolean
-
-  @IsOptional()
-  @IsBoolean()
-  is_default_billing?: boolean
-
-  @IsOptional()
-  @IsString({ each: true })
-  company?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  first_name?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  last_name?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  address_1?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  address_2?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  city?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  country_code?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  province?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  postal_code?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @IsString({ each: true })
-  phone?: string | string[] | OperatorMap<string> | null
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  metadata?: OperatorMap<Record<string, unknown>>
-}
+export type StoreGetCustomerParamsType = z.infer<typeof StoreGetCustomerParams>
+export type StoreCreateCustomerType = z.infer<typeof StoreCreateCustomer>
+export type StoreUpdateCustomerType = z.infer<typeof StoreUpdateCustomer>
+export type StoreGetCustomerAddressParamsType = z.infer<
+  typeof StoreGetCustomerAddressParams
+>
+export type StoreGetCustomerAddressesParamsType = z.infer<
+  typeof StoreCreateCustomerAddress
+>
+export type StoreCreateCustomerAddressType = z.infer<
+  typeof StoreCreateCustomerAddress
+>
+export type StoreUpdateCustomerAddressType = z.infer<
+  typeof StoreUpdateCustomerAddress
+>

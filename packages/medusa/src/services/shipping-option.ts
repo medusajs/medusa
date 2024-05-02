@@ -398,7 +398,7 @@ class ShippingOptionService extends TransactionBaseService {
       )
     }
 
-    const amount = option.includes_tax ? cart.total! : cart.subtotal!
+    const amount = option.includes_tax ? (cart.subtotal! + cart.item_tax_total!) : cart.subtotal!
 
     const requirementResults: boolean[] = option.requirements.map(
       (requirement) => {

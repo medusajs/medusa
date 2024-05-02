@@ -39,7 +39,25 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - title
+ *           - handle
+ *           - metadata
+ *         properties:
+ *           title:
+ *             type: string
+ *             title: title
+ *             description: The collection's title.
+ *           handle:
+ *             type: string
+ *             title: handle
+ *             description: The collection's handle.
+ *           metadata:
+ *             type: object
+ *             description: The collection's metadata.
+ *             properties: {}
  * 
 */
 

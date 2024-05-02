@@ -6,7 +6,7 @@ type UploadFilesStepInput = {
   files: {
     filename: string
     mimeType: string
-    content: Blob
+    content: string
   }[]
 }
 

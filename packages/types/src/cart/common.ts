@@ -1,6 +1,6 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
-import { BigNumberValue } from "../totals"
+import { BigNumberRawValue, BigNumberValue } from "../totals"
 
 /**
  * The adjustment line details.
@@ -21,6 +21,11 @@ export interface AdjustmentLineDTO {
    * The amount to adjust the original amount with.
    */
   amount: BigNumberValue
+
+  /**
+   * The raw amount to adjust the original amount with.
+   */
+  raw_amount: BigNumberRawValue
 
   /**
    * The ID of the associated cart.
@@ -153,6 +158,16 @@ export interface ShippingMethodTaxLineDTO extends TaxLineDTO {
    * The subtotal tax relative to the shipping method.
    */
   subtotal: BigNumberValue
+
+  /**
+   * The raw total tax relative to the shipping method.
+   */
+  raw_total: BigNumberRawValue
+
+  /**
+   * The raw subtotal tax relative to the shipping method.
+   */
+  raw_subtotal: BigNumberRawValue
 }
 
 /**
@@ -178,6 +193,16 @@ export interface LineItemTaxLineDTO extends TaxLineDTO {
    * The subtotal tax relative to the item.
    */
   subtotal: BigNumberValue
+
+  /**
+   * The raw total tax relative to the item.
+   */
+  raw_total: BigNumberRawValue
+
+  /**
+   * The raw subtotal tax relative to the item.
+   */
+  raw_subtotal: BigNumberRawValue
 }
 
 /**
@@ -372,6 +397,46 @@ export interface CartShippingMethodDTO {
    * The discount tax total of the cart shipping method.
    */
   discount_tax_total: BigNumberValue
+
+  /**
+   * The raw original total of the cart shipping method.
+   */
+  raw_original_total: BigNumberRawValue
+
+  /**
+   * The raw original subtotal of the cart shipping method.
+   */
+  raw_original_subtotal: BigNumberRawValue
+
+  /**
+   * The raw original tax total of the cart shipping method.
+   */
+  raw_original_tax_total: BigNumberRawValue
+
+  /**
+   * The raw total of the cart shipping method.
+   */
+  raw_total: BigNumberRawValue
+
+  /**
+   * The raw subtotal of the cart shipping method.
+   */
+  raw_subtotal: BigNumberRawValue
+
+  /**
+   * The raw tax total of the cart shipping method.
+   */
+  raw_tax_total: BigNumberRawValue
+
+  /**
+   * The raw discount total of the cart shipping method.
+   */
+  raw_discount_total: BigNumberRawValue
+
+  /**
+   * The raw discount tax total of the cart shipping method.
+   */
+  raw_discount_tax_total: BigNumberRawValue
 }
 
 /**
@@ -432,6 +497,61 @@ export interface CartLineItemTotalsDTO {
    * The discount tax total of the cart line item.
    */
   discount_tax_total: BigNumberValue
+
+  /**
+   * The raw original total of the cart line item.
+   */
+  raw_original_total: BigNumberRawValue
+
+  /**
+   * The raw original subtotal of the cart line item.
+   */
+  raw_original_subtotal: BigNumberRawValue
+
+  /**
+   * The raw original tax total of the cart line item.
+   */
+  raw_original_tax_total: BigNumberRawValue
+
+  /**
+   * The raw item total of the cart line item.
+   */
+  raw_item_total: BigNumberRawValue
+
+  /**
+   * The raw item subtotal of the cart line item.
+   */
+  raw_item_subtotal: BigNumberRawValue
+
+  /**
+   * The raw item tax total of the cart line item.
+   */
+  raw_item_tax_total: BigNumberRawValue
+
+  /**
+   * The raw total of the cart line item.
+   */
+  raw_total: BigNumberRawValue
+
+  /**
+   * The raw subtotal of the cart line item.
+   */
+  raw_subtotal: BigNumberRawValue
+
+  /**
+   * The raw tax total of the cart line item.
+   */
+  raw_tax_total: BigNumberRawValue
+
+  /**
+   * The raw discount total of the cart line item.
+   */
+  raw_discount_total: BigNumberRawValue
+
+  /**
+   * The raw discount tax total of the cart line item.
+   */
+  raw_discount_tax_total: BigNumberRawValue
 }
 
 /**
@@ -738,11 +858,6 @@ export interface CartDTO {
   discount_total: BigNumberValue
 
   /**
-   * The raw discount total of the cart.
-   */
-  raw_discount_total: any
-
-  /**
    * The discount tax total of the cart.
    */
   discount_tax_total: BigNumberValue
@@ -786,6 +901,116 @@ export interface CartDTO {
    * The original shipping tax total of the cart.
    */
   original_shipping_tax_total: BigNumberValue
+
+  /**
+   * The raw original item total of the cart.
+   */
+  raw_original_item_total: BigNumberRawValue
+
+  /**
+   * The raw original item subtotal of the cart.
+   */
+  raw_original_item_subtotal: BigNumberRawValue
+
+  /**
+   * The raw original item tax total of the cart.
+   */
+  raw_original_item_tax_total: BigNumberRawValue
+
+  /**
+   * The raw item total of the cart.
+   */
+  raw_item_total: BigNumberRawValue
+
+  /**
+   * The raw item subtotal of the cart.
+   */
+  raw_item_subtotal: BigNumberRawValue
+
+  /**
+   * The raw item tax total of the cart.
+   */
+  raw_item_tax_total: BigNumberRawValue
+
+  /**
+   * The raw original total of the cart.
+   */
+  raw_original_total: BigNumberRawValue
+
+  /**
+   * The raw original subtotal of the cart.
+   */
+  raw_original_subtotal: BigNumberRawValue
+
+  /**
+   * The raw original tax total of the cart.
+   */
+  raw_original_tax_total: BigNumberRawValue
+
+  /**
+   * The raw total of the cart.
+   */
+  raw_total: BigNumberRawValue
+
+  /**
+   * The raw subtotal of the cart. (Excluding taxes)
+   */
+  raw_subtotal: BigNumberRawValue
+
+  /**
+   * The raw tax total of the cart.
+   */
+  raw_tax_total: BigNumberRawValue
+
+  /**
+   * The raw discount total of the cart.
+   */
+  raw_discount_total: BigNumberRawValue
+
+  /**
+   * The raw discount tax total of the cart.
+   */
+  raw_discount_tax_total: BigNumberRawValue
+
+  /**
+   * The raw gift card total of the cart.
+   */
+  raw_gift_card_total: BigNumberRawValue
+
+  /**
+   * The raw gift card tax total of the cart.
+   */
+  raw_gift_card_tax_total: BigNumberRawValue
+
+  /**
+   * The raw shipping total of the cart.
+   */
+  raw_shipping_total: BigNumberRawValue
+
+  /**
+   * The raw shipping subtotal of the cart.
+   */
+  raw_shipping_subtotal: BigNumberRawValue
+
+  /**
+   * The raw shipping tax total of the cart.
+   */
+  raw_shipping_tax_total: BigNumberRawValue
+
+  /**
+   * The raw original shipping total of the cart.
+   */
+  raw_original_shipping_total: BigNumberRawValue
+
+  /**
+   * The raw original shipping subtotal of the cart.
+   */
+  raw_original_shipping_subtotal: BigNumberRawValue
+
+  /**
+   * The raw original shipping tax total of the cart.
+   */
+  raw_original_shipping_tax_total: BigNumberRawValue
 }
 
 /**
@@ -920,7 +1145,7 @@ export interface FilterableShippingMethodProps
   /**
    * Filter the shipping methods by the ID of their associated shipping option.
    */
-  shipping_option_id?: string | string[]
+  shipping_option_id?: string | string[] | OperatorMap<string>
 }
 
 /**

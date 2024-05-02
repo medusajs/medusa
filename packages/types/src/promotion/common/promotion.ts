@@ -9,8 +9,6 @@ import { CampaignDTO } from "./campaign"
 import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
 
 /**
- * @interface
- *
  * The promotion's possible types.
  */
 export type PromotionTypeValues = "standard" | "buyget"
@@ -143,6 +141,11 @@ export interface UpdatePromotionDTO {
  */
 export interface FilterablePromotionProps
   extends BaseFilterable<FilterablePromotionProps> {
+  /**
+   * The IDs to filter the promotions by.
+   */
+  q?: string
+
   /**
    * The IDs to filter the promotions by.
    */

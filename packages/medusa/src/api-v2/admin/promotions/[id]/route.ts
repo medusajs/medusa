@@ -2,40 +2,40 @@ import {
   deletePromotionsWorkflow,
   updatePromotionsWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPromotionModuleService, UpdatePromotionDTO } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
+import { refetchPromotion } from "../helpers"
 import {
-  AdminGetPromotionsParams,
-  AdminPostPromotionsPromotionReq,
+  AdminGetPromotionParamsType,
+  AdminUpdatePromotionType,
 } from "../validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetPromotionsParams>,
+  req: AuthenticatedMedusaRequest<AdminGetPromotionParamsType>,
   res: MedusaResponse
 ) => {
   const idOrCode = req.params.id
-  const promotionModuleService: IPromotionModuleService = req.scope.resolve(
-    ModuleRegistrationName.PROMOTION
-  )
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "promotion",
+    variables: {
+      filters: { $or: [{ id: idOrCode }, { code: idOrCode }] },
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
 
-  const [promotion] = await promotionModuleService.list(
-    { $or: [{ id: idOrCode }, { code: idOrCode }] },
-    {
-      select: req.retrieveConfig.select,
-      relations: req.retrieveConfig.relations,
-      take: 1,
-    }
-  )
-
+  const [promotion] = await remoteQuery(queryObject)
   if (!promotion) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Promotion with id or code: does-not-exist was not found`
+      `Promotion with id or code: ${idOrCode} was not found`
     )
   }
 
@@ -43,7 +43,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostPromotionsPromotionReq>,
+  req: AuthenticatedMedusaRequest<AdminUpdatePromotionType>,
   res: MedusaResponse
 ) => {
   const updatePromotions = updatePromotionsWorkflow(req.scope)
@@ -51,8 +51,8 @@ export const POST = async (
     {
       id: req.params.id,
       ...req.validatedBody,
-    },
-  ] as UpdatePromotionDTO[]
+    } as any,
+  ]
 
   const { result, errors } = await updatePromotions.run({
     input: { promotionsData },
@@ -63,7 +63,13 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ promotion: result[0] })
+  const promotion = await refetchPromotion(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ promotion })
 }
 
 export const DELETE = async (

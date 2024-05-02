@@ -3,6 +3,10 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
+import {
+  TextCell,
+  TextHeader,
+} from "../../../../../components/table/table-cells/common/text-cell"
 import { getPriceListStatus } from "../../../common/utils"
 import { PricingTableActions } from "./pricing-table-actions"
 
@@ -14,7 +18,7 @@ export const usePricingTableColumns = () => {
   return useMemo(
     () => [
       columnHelper.accessor("title", {
-        header: t("fields.name"),
+        header: () => <TextHeader text={t("fields.name")} />,
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor("status", {
@@ -26,8 +30,8 @@ export const usePricingTableColumns = () => {
         },
       }),
       columnHelper.accessor("prices", {
-        header: t("fields.prices"),
-        cell: (info) => info.getValue()?.length || "-",
+        header: t("pricing.table.pricesHeader"),
+        cell: (info) => <TextCell text={`${info.getValue()?.length || "-"}`} />,
       }),
       columnHelper.display({
         id: "actions",

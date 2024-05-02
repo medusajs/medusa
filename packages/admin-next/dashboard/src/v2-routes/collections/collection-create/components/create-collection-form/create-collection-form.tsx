@@ -1,15 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Text } from "@medusajs/ui"
-import { useAdminCreateCollection } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
+import { HandleInput } from "../../../../../components/common/handle-input"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useCreateCollection } from "../../../../../hooks/api/collections"
 
 const CreateCollectionSchema = zod.object({
   title: zod.string().min(1),
@@ -28,7 +29,7 @@ export const CreateCollectionForm = () => {
     resolver: zodResolver(CreateCollectionSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminCreateCollection()
+  const { mutateAsync, isPending } = useCreateCollection()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
@@ -52,13 +53,13 @@ export const CreateCollectionForm = () => {
               size="small"
               variant="primary"
               type="submit"
-              isLoading={isLoading}
+              isLoading={isPending}
             >
               {t("actions.create")}
             </Button>
           </div>
         </RouteFocusModal.Header>
-        <RouteFocusModal.Body className="flex flex-col items-center py-16">
+        <RouteFocusModal.Body className="flex flex-col items-center p-16">
           <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
               <Heading>{t("collections.createCollection")}</Heading>
@@ -66,7 +67,7 @@ export const CreateCollectionForm = () => {
                 {t("collections.createCollectionHint")}
               </Text>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <Form.Field
                 control={form.control}
                 name="title"
@@ -95,23 +96,7 @@ export const CreateCollectionForm = () => {
                         {t("fields.handle")}
                       </Form.Label>
                       <Form.Control>
-                        <div className="relative">
-                          <div className="absolute inset-y-0 left-0 z-10 flex w-8 items-center justify-center border-r">
-                            <Text
-                              className="text-ui-fg-muted"
-                              size="small"
-                              leading="compact"
-                              weight="plus"
-                            >
-                              /
-                            </Text>
-                          </div>
-                          <Input
-                            autoComplete="off"
-                            {...field}
-                            className="pl-10"
-                          />
-                        </div>
+                        <HandleInput {...field} />
                       </Form.Control>
                       <Form.ErrorMessage />
                     </Form.Item>

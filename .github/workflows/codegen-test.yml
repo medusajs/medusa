@@ -34,7 +34,7 @@ jobs:
           extension: codegen
 
       - name: Build Packages - Force
-        run: yarn build --force --no-cache
+        run: yarn build --force
 
       - name: Assert latest codegen build committed
         run: ./scripts/assert-codegen-build-committed-actions.sh

@@ -14,7 +14,7 @@ export const detachProductsFromSalesChannelsStepId =
 export const detachProductsFromSalesChannelsStep = createStep(
   detachProductsFromSalesChannelsStepId,
   async (input: StepInput, { container }) => {
-    if (!input.links.length) {
+    if (!input.links?.length) {
       return new StepResponse(void 0, [])
     }
 

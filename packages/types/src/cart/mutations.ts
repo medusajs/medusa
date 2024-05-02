@@ -674,6 +674,11 @@ export interface CreateShippingMethodDTO {
   amount: BigNumberInput
 
   /**
+   * The amount of the shipping method.
+   */
+  shipping_option_id?: string
+
+  /**
    * The data of the shipping method.
    */
   data?: Record<string, unknown>
@@ -702,6 +707,11 @@ export interface CreateShippingMethodForSingleCartDTO {
    * The amount of the shipping method.
    */
   amount: BigNumberInput
+
+  /**
+   * The amount of the shipping method.
+   */
+  shipping_option_id?: string
 
   /**
    * The data of the shipping method.

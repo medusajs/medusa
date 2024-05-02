@@ -39,7 +39,15 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - name
+ *         properties:
+ *           name:
+ *             type: string
+ *             title: name
+ *             description: The customer group's name.
  * 
 */
 

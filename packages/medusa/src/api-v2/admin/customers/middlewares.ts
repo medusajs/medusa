@@ -3,7 +3,7 @@ import * as QueryConfig from "./query-config"
 import {
   AdminCreateCustomer,
   AdminCreateCustomerAddress,
-  AdminCustomerAdressesParams,
+  AdminCustomerAddressesParams,
   AdminCustomerParams,
   AdminCustomersParams,
   AdminUpdateCustomer,
@@ -19,7 +19,7 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["ALL"],
     matcher: "/admin/customers*",
-    middlewares: [authenticate("admin", ["bearer", "session"])],
+    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
   },
   {
     method: ["GET"],
@@ -38,7 +38,7 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformBody(AdminCreateCustomer),
       validateAndTransformQuery(
         AdminCustomerParams,
-        QueryConfig.listTransformQueryConfig
+        QueryConfig.retrieveTransformQueryConfig
       ),
     ],
   },
@@ -48,7 +48,7 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       validateAndTransformQuery(
         AdminCustomerParams,
-        QueryConfig.listTransformQueryConfig
+        QueryConfig.retrieveTransformQueryConfig
       ),
     ],
   },
@@ -59,26 +59,48 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformBody(AdminUpdateCustomer),
       validateAndTransformQuery(
         AdminCustomerParams,
-        QueryConfig.listTransformQueryConfig
+        QueryConfig.retrieveTransformQueryConfig
       ),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/customers/:id/addresses",
-    middlewares: [validateAndTransformBody(AdminCreateCustomerAddress)],
+    middlewares: [
+      validateAndTransformBody(AdminCreateCustomerAddress),
+      validateAndTransformQuery(
+        AdminCustomerParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/customers/:id/addresses/:address_id",
-    middlewares: [validateAndTransformBody(AdminUpdateCustomerAddress)],
+    middlewares: [
+      validateAndTransformBody(AdminUpdateCustomerAddress),
+      validateAndTransformQuery(
+        AdminCustomerParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/customers/:id/addresses/:address_id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminCustomerParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["GET"],
     matcher: "/admin/customers/:id/addresses",
     middlewares: [
       validateAndTransformQuery(
-        AdminCustomerAdressesParams,
+        AdminCustomerAddressesParams,
         QueryConfig.listAddressesTransformQueryConfig
       ),
     ],

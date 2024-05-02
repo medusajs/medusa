@@ -102,6 +102,11 @@ export interface InventoryItemDTO {
  */
 export interface FilterableInventoryItemProps {
   /**
+   * Search term to search inventory items' attributes.
+   */
+  q?: string
+
+  /**
    * The IDs to filter inventory items by.
    */
   id?: string | string[]
@@ -110,11 +115,6 @@ export interface FilterableInventoryItemProps {
    * Filter inventory items by the ID of their associated location.
    */
   location_id?: string | string[]
-
-  /**
-   * Search term to search inventory items' attributes.
-   */
-  q?: string
 
   /**
    * The SKUs to filter inventory items by.

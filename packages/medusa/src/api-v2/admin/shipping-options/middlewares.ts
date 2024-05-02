@@ -2,66 +2,77 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 import {
   AdminCreateShippingOption,
+  AdminCreateShippingOptionRule,
   AdminGetShippingOptionParams,
-  AdminShippingOptionRulesBatchAdd,
-  AdminShippingOptionRulesBatchRemove,
+  AdminGetShippingOptionRuleParams,
+  AdminGetShippingOptionsParams,
   AdminUpdateShippingOption,
+  AdminUpdateShippingOptionRule,
 } from "./validators"
-import { retrieveTransformQueryConfig } from "./query-config"
+import {
+  listTransformQueryConfig,
+  retrieveRuleTransformQueryConfig,
+  retrieveTransformQueryConfig,
+} from "./query-config"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
+import { createBatchBody } from "../../utils/validators"
 
 export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/shipping-options*",
     middlewares: [authenticate("admin", ["bearer", "session"])],
   },
-
+  {
+    method: ["GET"],
+    matcher: "/admin/shipping-options",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetShippingOptionsParams,
+        listTransformQueryConfig
+      ),
+    ],
+  },
   {
     method: ["POST"],
     matcher: "/admin/shipping-options",
     middlewares: [
+      validateAndTransformBody(AdminCreateShippingOption),
       validateAndTransformQuery(
         AdminGetShippingOptionParams,
         retrieveTransformQueryConfig
       ),
-      validateAndTransformBody(AdminCreateShippingOption),
     ],
   },
-
   {
     method: ["POST"],
     matcher: "/admin/shipping-options/:id",
     middlewares: [
-      validateAndTransformQuery(
-        AdminGetShippingOptionParams,
-        retrieveTransformQueryConfig
-      ),
       validateAndTransformBody(AdminUpdateShippingOption),
-    ],
-  },
-
-  {
-    method: ["POST"],
-    matcher: "/admin/shipping-options/:id/rules/batch/add",
-    middlewares: [
       validateAndTransformQuery(
         AdminGetShippingOptionParams,
         retrieveTransformQueryConfig
       ),
-      validateAndTransformBody(AdminShippingOptionRulesBatchAdd),
     ],
   },
-
+  {
+    method: ["DELETE"],
+    matcher: "/admin/shipping-options/:id",
+  },
   {
     method: ["POST"],
-    matcher: "/admin/shipping-options/:id/rules/batch/remove",
+    matcher: "/admin/shipping-options/:id/rules/batch",
     middlewares: [
-      validateAndTransformQuery(
-        AdminGetShippingOptionParams,
-        retrieveTransformQueryConfig
+      validateAndTransformBody(
+        createBatchBody(
+          AdminCreateShippingOptionRule,
+          AdminUpdateShippingOptionRule
+        )
       ),
-      validateAndTransformBody(AdminShippingOptionRulesBatchRemove),
+      validateAndTransformQuery(
+        AdminGetShippingOptionRuleParams,
+        retrieveRuleTransformQueryConfig
+      ),
     ],
   },
 ]

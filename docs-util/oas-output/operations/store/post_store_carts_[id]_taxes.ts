@@ -15,7 +15,15 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/StorePostCartsCartTaxesReq"
+ *         type: object
+ *         description: SUMMARY
+ *         properties:
+ *           fields:
+ *             type: string
+ *             title: fields
+ *             description: The cart's fields.
+ *         required:
+ *           - fields
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

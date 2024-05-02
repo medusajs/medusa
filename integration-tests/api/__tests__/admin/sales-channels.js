@@ -157,40 +157,30 @@ medusaIntegrationTestRunner({
       })
 
       it("should list the sales channel using filters", async () => {
-        const response = await breaking(
-          async () => {
-            return await api.get(`/admin/sales-channels?q=2`, adminReqConfig)
-          },
-          () => undefined
+        const response = await api.get(
+          `/admin/sales-channels?q=2`,
+          adminReqConfig
         )
 
-        breaking(
-          () => {
-            expect(response.status).toEqual(200)
-            expect(response.data.sales_channels).toBeTruthy()
-            expect(response.data.sales_channels.length).toBe(1)
-            expect(response.data).toEqual({
-              count: 1,
-              limit: 20,
-              offset: 0,
-              sales_channels: expect.arrayContaining([
-                expect.objectContaining({
-                  id: expect.any(String),
-                  name: salesChannel2.name,
-                  description: salesChannel2.description,
-                  is_disabled: false,
-                  deleted_at: null,
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                }),
-              ]),
-            })
-          },
-          () => {
-            // TODO: Free text search is not supported in the new sales channel API (yet)
-            expect(response).toBeUndefined()
-          }
-        )
+        expect(response.status).toEqual(200)
+        expect(response.data.sales_channels).toBeTruthy()
+        expect(response.data.sales_channels.length).toBe(1)
+        expect(response.data).toEqual({
+          count: 1,
+          limit: 20,
+          offset: 0,
+          sales_channels: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              name: salesChannel2.name,
+              description: salesChannel2.description,
+              is_disabled: false,
+              deleted_at: null,
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            }),
+          ]),
+        })
       })
 
       it("should list the sales channel using properties filters", async () => {
@@ -218,6 +208,37 @@ medusaIntegrationTestRunner({
             }),
           ]),
         })
+      })
+
+      it("should support searching of sales channels", async () => {
+        await breaking(
+          () => {},
+          async () => {
+            await api.post(
+              "/admin/sales-channels",
+              { name: "first channel", description: "to fetch" },
+              adminReqConfig
+            )
+
+            await api.post(
+              "/admin/sales-channels",
+              { name: "second channel", description: "not in response" },
+              adminReqConfig
+            )
+
+            const response = await api.get(
+              `/admin/sales-channels?q=fetch`,
+              adminReqConfig
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.sales_channels).toEqual([
+              expect.objectContaining({
+                name: "first channel",
+              }),
+            ])
+          }
+        )
       })
     })
 
@@ -413,7 +434,6 @@ medusaIntegrationTestRunner({
             ContainerRegistrationKeys.REMOTE_LINK
           )
 
-          console.warn("testing")
           await remoteLink.create([
             {
               [Modules.SALES_CHANNEL]: {
@@ -828,7 +848,7 @@ medusaIntegrationTestRunner({
     describe("POST /admin/sales-channels/:id/products/batch", () => {
       // BREAKING CHANGE: Endpoint has changed
       // from: /admin/sales-channels/:id/products/batch
-      // to: /admin/sales-channels/:id/products/batch/add
+      // to: /admin/sales-channels/:id/products
 
       let { salesChannel, product } = {}
 
@@ -861,12 +881,14 @@ medusaIntegrationTestRunner({
       })
 
       it("should add products to a sales channel", async () => {
-        const payload = {
-          product_ids: breaking(
-            () => [{ id: product.id }],
-            () => [product.id]
-          ),
-        }
+        const payload = breaking(
+          () => ({
+            product_ids: [{ id: product.id }],
+          }),
+          () => ({
+            add: [product.id],
+          })
+        )
 
         const response = await breaking(
           async () => {
@@ -878,7 +900,7 @@ medusaIntegrationTestRunner({
           },
           async () => {
             return await api.post(
-              `/admin/sales-channels/${salesChannel.id}/products/batch/add`,
+              `/admin/sales-channels/${salesChannel.id}/products`,
               payload,
               adminReqConfig
             )

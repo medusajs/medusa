@@ -6,14 +6,17 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
+import { useRemoteQueryStep } from "../../../common"
 import {
   findOneOrAnyRegionStep,
   findOrCreateCustomerStep,
   findSalesChannelStep,
+  refreshCartShippingMethodsStep,
   updateCartsStep,
 } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
+import { cartFieldsForRefreshSteps } from "../utils/fields"
 import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
 
 export const updateCartWorkflowId = "update-cart"
@@ -63,6 +66,14 @@ export const updateCartWorkflow = createWorkflow(
 
     const carts = updateCartsStep([cartInput])
 
+    const cart = useRemoteQueryStep({
+      entry_point: "cart",
+      fields: cartFieldsForRefreshSteps,
+      variables: { id: cartInput.id },
+      list: false,
+    }).config({ name: "refetch–cart" })
+
+    refreshCartShippingMethodsStep({ cart })
     updateTaxLinesStep({ cart_or_cart_id: carts[0].id })
     refreshCartPromotionsStep({
       id: input.id,

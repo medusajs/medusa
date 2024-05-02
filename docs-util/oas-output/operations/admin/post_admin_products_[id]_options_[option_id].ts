@@ -45,7 +45,28 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - id
+ *           - title
+ *           - values
+ *         properties:
+ *           id:
+ *             type: string
+ *             title: id
+ *             description: The product's ID.
+ *           title:
+ *             type: string
+ *             title: title
+ *             description: The product's title.
+ *           values:
+ *             type: array
+ *             description: The product's values.
+ *             items:
+ *               type: string
+ *               title: values
+ *               description: The value's values.
  * 
 */
 

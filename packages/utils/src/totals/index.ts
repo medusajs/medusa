@@ -1,4 +1,5 @@
 export * from "./cart"
+export * from "./create-raw-properties-from-bignumber"
 export * from "./line-item"
 export * from "./math"
 export * from "./promotion"

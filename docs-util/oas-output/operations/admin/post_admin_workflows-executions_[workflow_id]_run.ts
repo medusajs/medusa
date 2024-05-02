@@ -19,7 +19,17 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminPostWorkflowsRunReq"
+ *         type: object
+ *         description: SUMMARY
+ *         properties:
+ *           input: {}
+ *           transaction_id:
+ *             type: string
+ *             title: transaction_id
+ *             description: The workflows execution's transaction id.
+ *         required:
+ *           - input
+ *           - transaction_id
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

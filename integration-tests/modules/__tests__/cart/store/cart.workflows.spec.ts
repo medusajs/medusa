@@ -26,7 +26,7 @@ import {
   ISalesChannelModuleService,
   IStockLocationServiceNext,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, RuleOperator } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
@@ -601,7 +601,7 @@ medusaIntegrationTestRunner({
           ])
 
           cart = await cartModuleService.retrieve(cart.id, {
-            select: ["id", "region_id", "currency_code"],
+            select: ["id", "region_id", "currency_code", "sales_channel_id"],
           })
 
           await addToCartWorkflow(appContainer).run({
@@ -707,7 +707,7 @@ medusaIntegrationTestRunner({
 
           expect(errors).toEqual([
             {
-              action: "get-variant-price-sets",
+              action: "confirm-inventory-step",
               handlerType: "invoke",
               error: expect.objectContaining({
                 message: `Variants with IDs ${product.variants[0].id} do not have a price`,
@@ -736,10 +736,11 @@ medusaIntegrationTestRunner({
 
           expect(errors).toEqual([
             {
-              action: "validate-variants-exist",
+              action: "use-remote-query",
               handlerType: "invoke",
               error: expect.objectContaining({
-                message: `Variants with IDs prva_foo do not exist`,
+                // TODO: Implement error message handler for Remote Query throw_if_key_not_found
+                message: `productService id not found: prva_foo`,
               }),
             },
           ])
@@ -1280,7 +1281,7 @@ medusaIntegrationTestRunner({
           expect(updatedPaymentCollection).toEqual(
             expect.objectContaining({
               id: paymentCollection.id,
-              amount: 4242,
+              amount: 5000,
             })
           )
 
@@ -1397,34 +1398,44 @@ medusaIntegrationTestRunner({
           })
         })
       })
+
       describe("AddShippingMethodToCartWorkflow", () => {
-        it("should add shipping method to cart", async () => {
-          let cart = await cartModuleService.create({
+        let cart
+        let shippingProfile
+        let fulfillmentSet
+        let priceSet
+
+        beforeEach(async () => {
+          cart = await cartModuleService.create({
             currency_code: "usd",
+            shipping_address: {
+              country_code: "us",
+              province: "ny",
+            },
           })
 
-          const shippingProfile =
-            await fulfillmentModule.createShippingProfiles({
-              name: "Test",
-              type: "default",
-            })
+          shippingProfile = await fulfillmentModule.createShippingProfiles({
+            name: "Test",
+            type: "default",
+          })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          fulfillmentSet = await fulfillmentModule.create({
             name: "Test",
             type: "test-type",
             service_zones: [
               {
                 name: "Test",
-                geo_zones: [
-                  {
-                    type: "country",
-                    country_code: "us",
-                  },
-                ],
+                geo_zones: [{ type: "country", country_code: "us" }],
               },
             ],
           })
 
+          priceSet = await pricingModule.create({
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+        })
+
+        it("should add shipping method to cart", async () => {
           const shippingOption = await fulfillmentModule.createShippingOptions({
             name: "Test shipping option",
             service_zone_id: fulfillmentSet.service_zones[0].id,
@@ -1436,41 +1447,26 @@ medusaIntegrationTestRunner({
               description: "Test description",
               code: "test-code",
             },
-          })
-
-          const priceSet = await pricingModule.create({
-            prices: [
+            rules: [
               {
-                amount: 3000,
-                currency_code: "usd",
+                operator: RuleOperator.EQ,
+                attribute: "shipping_address.province",
+                value: "ny",
               },
             ],
           })
 
           await remoteLink.create([
             {
-              [Modules.FULFILLMENT]: {
-                shipping_option_id: shippingOption.id,
-              },
-              [Modules.PRICING]: {
-                price_set_id: priceSet.id,
-              },
+              [Modules.FULFILLMENT]: { shipping_option_id: shippingOption.id },
+              [Modules.PRICING]: { price_set_id: priceSet.id },
             },
           ])
 
-          cart = await cartModuleService.retrieve(cart.id, {
-            select: ["id", "region_id", "currency_code"],
-          })
-
           await addShippingMethodToWorkflow(appContainer).run({
             input: {
-              options: [
-                {
-                  id: shippingOption.id,
-                },
-              ],
+              options: [{ id: shippingOption.id }],
               cart_id: cart.id,
-              currency_code: cart.currency_code,
             },
           })
 
@@ -1490,6 +1486,77 @@ medusaIntegrationTestRunner({
               ]),
             })
           )
+        })
+
+        it("should throw error when shipping option is not valid", async () => {
+          const shippingOption = await fulfillmentModule.createShippingOptions({
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            rules: [
+              {
+                operator: RuleOperator.EQ,
+                attribute: "shipping_address.city",
+                value: "sf",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.FULFILLMENT]: { shipping_option_id: shippingOption.id },
+              [Modules.PRICING]: { price_set_id: priceSet.id },
+            },
+          ])
+
+          const { errors } = await addShippingMethodToWorkflow(
+            appContainer
+          ).run({
+            input: {
+              options: [{ id: shippingOption.id }],
+              cart_id: cart.id,
+            },
+            throwOnError: false,
+          })
+
+          // Rules are setup only for Germany, this should throw an error
+          expect(errors).toEqual([
+            expect.objectContaining({
+              error: expect.objectContaining({
+                message: `Shipping Options are invalid for cart.`,
+                type: "invalid_data",
+              }),
+            }),
+          ])
+        })
+
+        it("should throw error when shipping option is not present in the db", async () => {
+          const { errors } = await addShippingMethodToWorkflow(
+            appContainer
+          ).run({
+            input: {
+              options: [{ id: "does-not-exist" }],
+              cart_id: cart.id,
+            },
+            throwOnError: false,
+          })
+
+          // Rules are setup only for Berlin, this should throw an error
+          expect(errors).toEqual([
+            expect.objectContaining({
+              error: expect.objectContaining({
+                message: "Shipping Options are invalid for cart.",
+                type: "invalid_data",
+              }),
+            }),
+          ])
         })
       })
 
@@ -1813,13 +1880,9 @@ medusaIntegrationTestRunner({
           })
 
           expect(errors).toEqual([
-            {
-              action: "get-shipping-option-price-sets",
-              error: expect.objectContaining({
-                message: `Shipping options with IDs ${shippingOption.id} do not have a price`,
-              }),
-              handlerType: "invoke",
-            },
+            expect.objectContaining({
+              message: `Shipping options with IDs ${shippingOption.id} do not have a price`,
+            }),
           ])
         })
       })

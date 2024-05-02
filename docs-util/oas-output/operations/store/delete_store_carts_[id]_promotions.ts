@@ -34,7 +34,18 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - promo_codes
+ *         properties:
+ *           promo_codes:
+ *             type: array
+ *             description: The cart's promo codes.
+ *             items:
+ *               type: string
+ *               title: promo_codes
+ *               description: The promo code's promo codes.
  * 
 */
 

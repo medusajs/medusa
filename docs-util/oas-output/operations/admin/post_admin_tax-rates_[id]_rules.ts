@@ -19,7 +19,20 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminPostTaxRatesTaxRateRulesReq"
+ *         type: object
+ *         description: SUMMARY
+ *         required:
+ *           - reference
+ *           - reference_id
+ *         properties:
+ *           reference:
+ *             type: string
+ *             title: reference
+ *             description: The tax rate's reference.
+ *           reference_id:
+ *             type: string
+ *             title: reference_id
+ *             description: The tax rate's reference id.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

@@ -19,7 +19,25 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminUpdateUserRequest"
+ *         type: object
+ *         description: SUMMARY
+ *         required:
+ *           - first_name
+ *           - last_name
+ *           - avatar_url
+ *         properties:
+ *           first_name:
+ *             type: string
+ *             title: first_name
+ *             description: The user's first name.
+ *           last_name:
+ *             type: string
+ *             title: last_name
+ *             description: The user's last name.
+ *           avatar_url:
+ *             type: string
+ *             title: avatar_url
+ *             description: The user's avatar url.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

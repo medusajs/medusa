@@ -1,5 +1,12 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import {
+  Button,
+  Checkbox,
+  Container,
+  Heading,
+  toast,
+  usePrompt,
+} from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -29,7 +36,13 @@ export const SalesChannelProductSection = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const { searchParams, raw } = useProductTableQuery({ pageSize: PAGE_SIZE })
-  const { products, count, isLoading, isError, error } = useProducts(
+  const {
+    products,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useProducts(
     {
       ...searchParams,
       sales_channel_id: [salesChannel.id],
@@ -87,7 +100,17 @@ export const SalesChannelProductSection = ({
       },
       {
         onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t("salesChannels.toast.update"),
+            dismissLabel: t("actions.close"),
+          })
           setRowSelection({})
+        },
+        onError: (error) => {
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissLabel: t("actions.close"),
+          })
         },
       }
     )
@@ -199,9 +222,20 @@ const ProductListCellActions = ({
   const { mutateAsync } = useSalesChannelRemoveProducts(salesChannelId)
 
   const onRemove = async () => {
-    await mutateAsync({
-      product_ids: [productId],
-    })
+    try {
+      await mutateAsync({
+        product_ids: [productId],
+      })
+      toast.success(t("general.success"), {
+        description: t("salesChannels.toast.update"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (

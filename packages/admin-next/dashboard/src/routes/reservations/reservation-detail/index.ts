@@ -1,1 +1,1 @@
-export { ReservationDetail as Component } from "./reservation-edit"
+export { ReservationDetail as Component } from "./reservation-detail"

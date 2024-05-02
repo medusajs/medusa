@@ -33,7 +33,16 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - email
+ *         properties:
+ *           email:
+ *             type: string
+ *             title: email
+ *             description: The invite's email.
+ *             format: email
  * 
 */
 

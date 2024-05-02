@@ -39,7 +39,15 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - revoke_in
+ *         properties:
+ *           revoke_in:
+ *             type: number
+ *             title: revoke_in
+ *             description: The api key's revoke in.
  * 
 */
 

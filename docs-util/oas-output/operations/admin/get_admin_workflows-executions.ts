@@ -35,7 +35,54 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - limit
+ *           - fields
+ *           - order
+ *           - offset
+ *           - transaction_id
+ *           - workflow_id
+ *         properties:
+ *           limit:
+ *             type: number
+ *             title: limit
+ *             description: The workflows execution's limit.
+ *           fields:
+ *             type: string
+ *             title: fields
+ *             description: The workflows execution's fields.
+ *           order:
+ *             type: string
+ *             title: order
+ *             description: The workflows execution's order.
+ *           offset:
+ *             type: number
+ *             title: offset
+ *             description: The workflows execution's offset.
+ *           transaction_id:
+ *             oneOf:
+ *               - type: string
+ *                 title: transaction_id
+ *                 description: The workflows execution's transaction id.
+ *               - type: array
+ *                 description: The workflows execution's transaction id.
+ *                 items:
+ *                   type: string
+ *                   title: transaction_id
+ *                   description: The transaction id's details.
+ *           workflow_id:
+ *             oneOf:
+ *               - type: string
+ *                 title: workflow_id
+ *                 description: The workflows execution's workflow id.
+ *               - type: array
+ *                 description: The workflows execution's workflow id.
+ *                 items:
+ *                   type: string
+ *                   title: workflow_id
+ *                   description: The workflow id's details.
  * 
 */
 

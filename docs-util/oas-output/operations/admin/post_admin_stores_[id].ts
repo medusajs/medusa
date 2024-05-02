@@ -39,7 +39,48 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - name
+ *           - supported_currency_codes
+ *           - default_currency_code
+ *           - default_sales_channel_id
+ *           - default_region_id
+ *           - default_location_id
+ *           - metadata
+ *         properties:
+ *           name:
+ *             type: string
+ *             title: name
+ *             description: The store's name.
+ *           supported_currency_codes:
+ *             type: array
+ *             description: The store's supported currency codes.
+ *             items:
+ *               type: string
+ *               title: supported_currency_codes
+ *               description: The supported currency code's supported currency codes.
+ *           default_currency_code:
+ *             type: string
+ *             title: default_currency_code
+ *             description: The store's default currency code.
+ *           default_sales_channel_id:
+ *             type: string
+ *             title: default_sales_channel_id
+ *             description: The store's default sales channel id.
+ *           default_region_id:
+ *             type: string
+ *             title: default_region_id
+ *             description: The store's default region id.
+ *           default_location_id:
+ *             type: string
+ *             title: default_location_id
+ *             description: The store's default location id.
+ *           metadata:
+ *             type: object
+ *             description: The store's metadata.
+ *             properties: {}
  * 
 */
 

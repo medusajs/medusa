@@ -19,7 +19,15 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminPostPaymentsCapturesReq"
+ *         type: object
+ *         description: SUMMARY
+ *         properties:
+ *           amount:
+ *             type: number
+ *             title: amount
+ *             description: The payment's amount.
+ *         required:
+ *           - amount
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

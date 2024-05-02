@@ -12,12 +12,12 @@ export const deleteStockLocationsStep = createStep(
 
     return new StepResponse(void 0, input)
   },
-  async (deletedLocaitonIds, { container }) => {
-    if (!deletedLocaitonIds?.length) {
+  async (deletedLocationIds, { container }) => {
+    if (!deletedLocationIds?.length) {
       return
     }
     const service = container.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
-    await service.restore(deletedLocaitonIds)
+    await service.restore(deletedLocationIds)
   }
 )

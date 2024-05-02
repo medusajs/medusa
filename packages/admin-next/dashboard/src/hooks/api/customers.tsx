@@ -1,4 +1,9 @@
 import {
+  AdminCustomerListResponse,
+  AdminCustomerResponse,
+  DeleteResponse,
+} from "@medusajs/types"
+import {
   QueryKey,
   UseMutationOptions,
   UseQueryOptions,
@@ -9,13 +14,9 @@ import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { CreateCustomerReq, UpdateCustomerReq } from "../../types/api-payloads"
-import {
-  AdminCustomerResponse,
-  AdminCustomerListResponse,
-} from "@medusajs/types"
 
 const CUSTOMERS_QUERY_KEY = "customers" as const
-const customersQueryKeys = queryKeysFactory(CUSTOMERS_QUERY_KEY)
+export const customersQueryKeys = queryKeysFactory(CUSTOMERS_QUERY_KEY)
 
 export const useCustomer = (
   id: string,
@@ -82,6 +83,24 @@ export const useUpdateCustomer = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.detail(id) })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDeleteCustomer = (
+  id: string,
+  options?: UseMutationOptions<DeleteResponse, Error, void>
+) => {
+  return useMutation({
+    mutationFn: () => client.customers.delete(id),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: customersQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: customersQueryKeys.detail(id),
+      })
 
       options?.onSuccess?.(data, variables, context)
     },

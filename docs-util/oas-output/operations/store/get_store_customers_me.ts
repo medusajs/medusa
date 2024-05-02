@@ -28,7 +28,15 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - fields
+ *         properties:
+ *           fields:
+ *             type: string
+ *             title: fields
+ *             description: The customer's fields.
  * 
 */
 

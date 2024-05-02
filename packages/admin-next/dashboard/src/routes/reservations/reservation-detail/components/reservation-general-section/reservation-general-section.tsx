@@ -1,6 +1,7 @@
+import { Container, Heading } from "@medusajs/ui"
+
 import { ExtendedReservationItem } from "@medusajs/medusa"
-import { Container } from "@medusajs/ui"
-import { useAdminInventoryItem } from "medusa-react"
+import { useInventoryItem } from "../../../../../hooks/api/inventory"
 
 type ReservationGeneralSectionProps = {
   reservation: ExtendedReservationItem
@@ -11,11 +12,11 @@ type ReservationGeneralSectionProps = {
 export const ReservationGeneralSection = ({
   reservation,
 }: ReservationGeneralSectionProps) => {
-  const { inventory_item, isLoading, isError, error } = useAdminInventoryItem(
+  const { inventory_item, isPending, isError, error } = useInventoryItem(
     reservation.inventory_item_id
   )
 
-  if (isLoading || !inventory_item) {
+  if (isPending || !inventory_item) {
     return <div>Loading...</div>
   }
 

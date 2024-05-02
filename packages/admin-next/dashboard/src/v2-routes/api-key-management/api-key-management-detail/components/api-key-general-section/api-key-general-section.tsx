@@ -1,11 +1,13 @@
 import { PencilSquare, Trash, XCircle } from "@medusajs/icons"
 import { ApiKeyDTO } from "@medusajs/types"
 import {
+  Badge,
   Container,
   Copy,
   Heading,
   StatusBadge,
   Text,
+  toast,
   usePrompt,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -18,6 +20,12 @@ import {
   useRevokeApiKey,
 } from "../../../../../hooks/api/api-keys"
 import { useUser } from "../../../../../hooks/api/users"
+import { useDate } from "../../../../../hooks/use-date"
+import {
+  getApiKeyStatusProps,
+  getApiKeyTypeProps,
+  prettifyRedactedToken,
+} from "../../../common/utils"
 
 type ApiKeyGeneralSectionProps = {
   apiKey: ApiKeyDTO
@@ -27,6 +35,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const prompt = usePrompt()
+  const { getFullDate } = useDate()
 
   const { mutateAsync: revokeAsync } = useRevokeApiKey(apiKey.id)
   const { mutateAsync: deleteAsync } = useDeleteApiKey(apiKey.id)
@@ -34,7 +43,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.deleteKeyWarning", {
+      description: t("apiKeyManagement.delete.warning", {
         title: apiKey.title,
       }),
       confirmText: t("actions.delete"),
@@ -47,7 +56,19 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
 
     await deleteAsync(undefined, {
       onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("apiKeyManagement.delete.successToast", {
+            title: apiKey.title,
+          }),
+          dismissLabel: t("general.close"),
+        })
         navigate("..", { replace: true })
+      },
+      onError: (err) => {
+        toast.error(t("general.error"), {
+          description: err.message,
+          dismissLabel: t("general.close"),
+        })
       },
     })
   }
@@ -55,10 +76,10 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const handleRevoke = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.revokeKeyWarning", {
+      description: t("apiKeyManagement.revoke.warning", {
         title: apiKey.title,
       }),
-      confirmText: t("apiKeyManagement.revoke"),
+      confirmText: t("apiKeyManagement.actions.revoke"),
       cancelText: t("actions.cancel"),
     })
 
@@ -66,7 +87,22 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
       return
     }
 
-    await revokeAsync()
+    await revokeAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("apiKeyManagement.revoke.successToast", {
+            title: apiKey.title,
+          }),
+          dismissLabel: t("general.close"),
+        })
+      },
+      onError: (err) => {
+        toast.error(t("general.error"), {
+          description: err.message,
+          dismissLabel: t("general.close"),
+        })
+      },
+    })
   }
 
   const dangerousActions = [
@@ -80,19 +116,24 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   if (!apiKey.revoked_at) {
     dangerousActions.unshift({
       icon: <XCircle />,
-      label: t("apiKeyManagement.revoke"),
+      label: t("apiKeyManagement.actions.revoke"),
       onClick: handleRevoke,
     })
   }
+
+  const apiKeyStatus = getApiKeyStatusProps(apiKey.revoked_at, t)
+  const apiKeyType = getApiKeyTypeProps(apiKey.type, t)
 
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{apiKey.title}</Heading>
-        <div className="flex items-center gap-x-2">
-          <StatusBadge color={apiKey.revoked_at ? "red" : "green"}>
-            {apiKey.revoked_at ? t("general.revoked") : t("general.active")}
-          </StatusBadge>
+        <div className="flex items-center gap-x-4">
+          <div className="flex items-center gap-x-2">
+            <StatusBadge color={apiKeyStatus.color}>
+              {apiKeyStatus.label}
+            </StatusBadge>
+          </div>
           <ActionMenu
             groups={[
               {
@@ -100,7 +141,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
                   {
                     label: t("actions.edit"),
                     icon: <PencilSquare />,
-                    to: `/settings/api-key-management/${apiKey.id}/edit`,
+                    to: "edit",
                   },
                 ],
               },
@@ -111,31 +152,52 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
           />
         </div>
       </div>
-      <div className="grid grid-cols-2 items-center px-6 py-4">
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.key")}
         </Text>
-        <div className="bg-ui-bg-subtle border-ui-border-base box-border flex w-fit cursor-default items-center gap-x-0.5 overflow-hidden rounded-full border pl-2 pr-1">
-          <Text size="xsmall" leading="compact" className="truncate">
-            {apiKey.redacted}
-          </Text>
-          <Copy
-            content={apiKey.token}
-            variant="mini"
-            className="text-ui-fg-subtle"
-          />
-        </div>
+        {apiKey.type === "secret" ? (
+          <Badge size="2xsmall" className="w-fit">
+            {prettifyRedactedToken(apiKey.redacted)}
+          </Badge>
+        ) : (
+          <Copy asChild content={apiKey.token}>
+            <Badge size="2xsmall" className="w-fit max-w-40 cursor-pointer">
+              <Text size="xsmall" leading="compact" className="truncate">
+                {prettifyRedactedToken(apiKey.redacted)}
+              </Text>
+            </Badge>
+          </Copy>
+        )}
       </div>
-      <div className="grid grid-cols-2 items-center px-6 py-4">
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          {t("apiKeyManagement.createdBy")}
+          {t("fields.type")}
+        </Text>
+        <Text size="small" leading="compact">
+          {apiKeyType.label}
+        </Text>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("apiKeyManagement.fields.lastUsedAtLabel")}
+        </Text>
+        <Text size="small" leading="compact">
+          {apiKey.last_used_at
+            ? getFullDate({ date: apiKey.last_used_at, includeTime: true })
+            : "-"}
+        </Text>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("apiKeyManagement.fields.createdByLabel")}
         </Text>
         <ActionBy userId={apiKey.created_by} />
       </div>
       {apiKey.revoked_at && (
         <div className="grid grid-cols-2 items-center px-6 py-4">
           <Text size="small" leading="compact" weight="plus">
-            {t("apiKeyManagement.revokedBy")}
+            {t("apiKeyManagement.fields.revokedByLabel")}
           </Text>
           <ActionBy userId={apiKey.revoked_by} />
         </div>

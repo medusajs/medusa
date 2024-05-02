@@ -1,13 +1,15 @@
-import { Outlet } from "react-router-dom"
+import { Outlet, useLocation } from "react-router-dom"
+import { getApiKeyTypeFromPathname } from "../common/utils"
 import { ApiKeyManagementListTable } from "./components/api-key-management-list-table"
 
-// TODO: Add secret API keys
-
 export const ApiKeyManagementList = () => {
+  const { pathname } = useLocation()
+
+  const keyType = getApiKeyTypeFromPathname(pathname)
+
   return (
     <div className="flex flex-col gap-y-2">
-      <ApiKeyManagementListTable keyType="publishable" />
-      {/* <ApiKeyManagementListTable keyType="secret" /> */}
+      <ApiKeyManagementListTable keyType={keyType} />
       <Outlet />
     </div>
   )

@@ -33,7 +33,17 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - title
+ *           - type
+ *         properties:
+ *           title:
+ *             type: string
+ *             title: title
+ *             description: The api key's title.
+ *           type: {}
  * 
 */
 

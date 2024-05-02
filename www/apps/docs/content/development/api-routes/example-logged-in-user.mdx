@@ -23,16 +23,16 @@ Learn more about [middlewares in its guide](./add-middleware.mdx).
 Create the file `src/api/middlewares.ts` with the following content:
 
 ```ts title="src/api/middlewares.ts"
-import type { 
+import { 
   authenticate,
-  MiddlewaresConfig, 
-  User, 
-  UserService,
 } from "@medusajs/medusa"
 import type { 
   MedusaNextFunction, 
   MedusaRequest, 
   MedusaResponse,
+  MiddlewaresConfig, 
+  User, 
+  UserService,
 } from "@medusajs/medusa"
 
 const registerLoggedInUser = async (
