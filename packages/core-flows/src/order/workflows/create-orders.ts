@@ -7,15 +7,13 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
-import {
-  confirmInventoryStep,
-  findOneOrAnyRegionStep,
-  findOrCreateCustomerStep,
-  findSalesChannelStep,
-  getVariantPriceSetsStep,
-  getVariantsStep,
-  validateVariantsExistStep,
-} from "../../definition/cart"
+import { confirmInventoryStep } from "../../definition/cart/steps/confirm-inventory"
+import { findOneOrAnyRegionStep } from "../../definition/cart/steps/find-one-or-any-region"
+import { findOrCreateCustomerStep } from "../../definition/cart/steps/find-or-create-customer"
+import { findSalesChannelStep } from "../../definition/cart/steps/find-sales-channel"
+import { getVariantPriceSetsStep } from "../../definition/cart/steps/get-variant-price-sets"
+import { getVariantsStep } from "../../definition/cart/steps/get-variants"
+import { validateVariantsExistStep } from "../../definition/cart/steps/validate-variants-existence"
 import { prepareConfirmInventoryInput } from "../../definition/cart/utils/prepare-confirm-inventory-input"
 import { prepareLineItemData } from "../../definition/cart/utils/prepare-line-item-data"
 import { createOrdersStep, updateOrderTaxLinesStep } from "../steps"

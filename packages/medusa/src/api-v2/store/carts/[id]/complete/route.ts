@@ -7,7 +7,15 @@ export const POST = async (
   req: MedusaRequest<StoreCompleteCartType>,
   res: MedusaResponse
 ) => {
-  const { errors } = await completeCartWorkflow(req.scope).run({
+  const { idempotency_key: idempotencyKey } = req.validatedBody
+
+  // If the idempotencyKey is present:
+  //  - is workflow is running?
+  //    = throw error
+  //  - else
+  //   - re-run the workflow at the failed step
+
+  const { errors, result } = await completeCartWorkflow(req.scope).run({
     input: { id: req.params.id },
     throwOnError: false,
   })
@@ -17,7 +25,7 @@ export const POST = async (
   }
 
   const order = await refetchOrder(
-    req.params.id,
+    result.id,
     req.scope,
     req.remoteQueryConfig.fields
   )

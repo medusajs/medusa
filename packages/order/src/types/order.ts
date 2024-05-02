@@ -8,7 +8,7 @@ export interface CreateOrderDTO {
   currency_code: string
   status?: OrderStatus
   no_notification?: boolean
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface UpdateOrderDTO {
@@ -21,5 +21,5 @@ export interface UpdateOrderDTO {
   currency_code?: string
   status?: OrderStatus
   no_notification?: boolean
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }

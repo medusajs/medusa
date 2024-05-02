@@ -14,7 +14,7 @@ export interface UpsertOrderAddressDTO {
   province?: string
   postal_code?: string
   phone?: string
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface UpdateOrderAddressDTO extends UpsertOrderAddressDTO {
@@ -41,7 +41,7 @@ export interface CreateOrderDTO {
   items?: CreateOrderLineItemDTO[]
   shipping_methods?: Omit<CreateOrderShippingMethodDTO, "order_id">[]
   transactions?: Omit<CreateOrderTransactionDTO, "order_id">[]
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 
   promo_codes?: string[]
 }
@@ -57,7 +57,7 @@ export interface UpdateOrderDTO {
   billing_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
   email?: string
   no_notification?: boolean
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 /** ORDER END */
@@ -167,7 +167,7 @@ export interface CreateOrderLineItemDTO {
   tax_lines?: CreateOrderTaxLineDTO[]
   adjustments?: CreateOrderAdjustmentDTO[]
 
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface CreateOrderLineItemForOrderDTO extends CreateOrderLineItemDTO {
