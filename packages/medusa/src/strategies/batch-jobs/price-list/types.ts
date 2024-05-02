@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { EntityManager } from "typeorm"
 import { FileService } from "medusa-interfaces"
 
@@ -19,9 +21,9 @@ export type PriceListImportBatchJob = BatchJob & {
   }
 }
 
-/**
+/!**
  * DI props for the Product import strategy
- */
+ *!/
 export type InjectedProps = {
   priceListService: PriceListService
   batchJobService: BatchJobService
@@ -31,9 +33,9 @@ export type InjectedProps = {
   manager: EntityManager
 }
 
-/**
+/!**
  * Data shape returned by the CSVParser.
- */
+ *!/
 export type TParsedPriceListImportRowData = Record<
   string,
   string | number | (string | number | object)[]
@@ -60,30 +62,31 @@ export type ParsedPriceListImportPrice =
       region_name: string
     }
 
-/**
+/!**
  * CSV parser's row reducer result data shape.
- */
+ *!/
 export type TBuiltPriceListImportLine = Record<string, any>
 
-/**
+/!**
  * Schema definition of for an import CSV file.
- */
+ *!/
 export type PriceListImportCsvSchema = CsvSchema<
   TParsedPriceListImportRowData,
   TBuiltPriceListImportLine
 >
 
-/**
+/!**
  * Import Batch job context column type.
- */
+ *!/
 export type PriceListImportJobContext = {
   price_list_id: string
   fileKey: string
 }
 
-/**
+/!**
  * Supported batch job import ops.
- */
+ *!/
 export enum OperationType {
   PricesCreate = "PRICE_LIST_PRICE_CREATE",
 }
+*/

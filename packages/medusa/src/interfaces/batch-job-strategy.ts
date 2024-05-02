@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { BatchJob } from "../models"
 import { BatchJobService } from "../services"
 import { ProductExportBatchJob } from "../strategies/batch-jobs/product/types"
@@ -5,27 +7,27 @@ import { BatchJobResultError, CreateBatchJobInput } from "../types/batch-job"
 import { TransactionBaseService } from "./transaction-base-service"
 
 export interface IBatchJobStrategy extends TransactionBaseService {
-  /**
+  /!**
    * Method for preparing a batch job for processing
-   */
+   *!/
   prepareBatchJobForProcessing(
     batchJobEntity: CreateBatchJobInput,
     req: Express.Request
   ): Promise<CreateBatchJobInput>
 
-  /**
+  /!**
    * Method for pre-processing a batch job
-   */
+   *!/
   preProcessBatchJob(batchJobId: string): Promise<void>
 
-  /**
+  /!**
    *  Method does the actual processing of the job. Should report back on the progress of the operation.
-   */
+   *!/
   processJob(batchJobId: string): Promise<void>
 
-  /**
+  /!**
    * Builds and returns a template file that can be downloaded and filled in
-   */
+   *!/
   buildTemplate(): Promise<string>
 }
 
@@ -112,3 +114,4 @@ export abstract class AbstractBatchJobStrategy
     })
   }
 }
+*/

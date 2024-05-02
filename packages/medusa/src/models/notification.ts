@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import {
   BeforeInsert,
   Column,
@@ -58,16 +60,16 @@ export class Notification extends BaseEntity {
   @JoinColumn({ name: "provider_id" })
   provider: NotificationProvider
 
-  /**
+  /!**
    * @apiIgnore
-   */
+   *!/
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "noti")
   }
 }
 
-/**
+/!**
  * @schema Notification
  * title: "Notification"
  * description: "A notification is an alert sent, typically to customers, using the installed Notification Provider as a reaction to internal events such as `order.placed`. Notifications can be resent."
@@ -154,4 +156,5 @@ export class Notification extends BaseEntity {
  *     description: The date with timezone at which the resource was updated.
  *     type: string
  *     format: date-time
- */
+ *!/
+*/

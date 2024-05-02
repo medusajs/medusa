@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { Product, ProductVariant } from "../../../../models"
 import {
   ProductColumnDefinition,
@@ -832,3 +834,4 @@ export const productImportProductCategoriesColumnsDefinition: CsvSchema<
       }
     ),
 }
+*/

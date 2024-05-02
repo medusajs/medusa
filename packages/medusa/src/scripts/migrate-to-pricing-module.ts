@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { IPricingModuleService, PricingTypes } from "@medusajs/types"
 import { promiseAll } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
@@ -213,3 +215,4 @@ migrate({ directory: process.cwd() })
     Logger.info("Failed to migrate price lists")
     process.exit(1)
   })
+*/

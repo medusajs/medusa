@@ -3,7 +3,7 @@ import {
   promiseAll,
   upperCaseFirst,
 } from "@medusajs/utils"
-import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
+import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
 import { Express } from "express"
 import glob from "glob"
 import { OauthService } from "medusa-interfaces"
@@ -12,9 +12,7 @@ import { EOL } from "os"
 import path from "path"
 import { EntitySchema } from "typeorm"
 import {
-  AbstractBatchJobStrategy,
   AbstractCartCompletionStrategy,
-  AbstractFileService,
   AbstractNotificationService,
   AbstractPriceSelectionStrategy,
   AbstractTaxCalculationStrategy,
@@ -234,7 +232,7 @@ export function registerStrategies(
         break
       }
 
-      case AbstractBatchJobStrategy.isBatchJobStrategy(module.prototype): {
+      /* case AbstractBatchJobStrategy.isBatchJobStrategy(module.prototype): {
         container.registerAdd(
           "batchJobStrategies",
           asFunction((cradle) => new module(cradle, pluginDetails.options))
@@ -249,7 +247,7 @@ export function registerStrategies(
           [`batchType_${module.batchType}`]: aliasTo(name),
         })
         break
-      }
+      }*/
 
       case AbstractPriceSelectionStrategy.isPriceSelectionStrategy(
         module.prototype
@@ -483,7 +481,7 @@ export async function registerServices(
           ),
           [`noti_${loaded.identifier}`]: aliasTo(name),
         })
-      } else if (AbstractFileService.isFileService(loaded.prototype)) {
+      } /* else if (AbstractFileService.isFileService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which file storage provider we need to use
         container.register({
@@ -495,7 +493,7 @@ export async function registerServices(
           ),
           [`fileService`]: aliasTo(name),
         })
-      } else if (AbstractSearchService.isSearchService(loaded.prototype)) {
+      }*/ else if (AbstractSearchService.isSearchService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which search provider we need to use
         container.register({

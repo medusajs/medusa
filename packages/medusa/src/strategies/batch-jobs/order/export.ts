@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { FlagRouter } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import {
@@ -327,3 +329,4 @@ class OrderExportStrategy extends AbstractBatchJobStrategy {
 }
 
 export default OrderExportStrategy
+*/

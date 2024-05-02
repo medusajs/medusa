@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import {
   BatchJobService,
@@ -26,9 +28,9 @@ import { PriceListPriceCreateInput } from "../../../types/price-list"
 import { TParsedProductImportRowData } from "../product/types"
 import { promiseAll } from "@medusajs/utils"
 
-/*
+/!*
  * Default strategy class used for a batch import of products/variants.
- */
+ *!/
 class PriceListImportStrategy extends AbstractBatchJobStrategy {
   static identifier = "price-list-import-strategy"
 
@@ -77,12 +79,12 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
     throw new Error("Not implemented!")
   }
 
-  /**
+  /!**
    * Create a description of a row on which the error occurred and throw a Medusa error.
    *
    * @param row - Parsed CSV row data
    * @param errorDescription - Concrete error
-   */
+   *!/
   protected static throwDescriptiveError(
     row: TParsedPriceListImportRowData,
     errorDescription?: string
@@ -115,12 +117,12 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
     return batchJob
   }
 
-  /**
+  /!**
    * Generate instructions for creation of prices from parsed CSV rows.
    *
    * @param priceListId - the ID of the price list where the prices will be created
    * @param csvData - An array of parsed CSV rows.
-   */
+   *!/
   async getImportInstructions(
     priceListId: string,
     csvData: TParsedPriceListImportRowData[]
@@ -171,12 +173,12 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
     }
   }
 
-  /**
+  /!**
    * Prepare prices records for insert - find and append region ids to records that contain a region name.
    *
    * @param prices - the parsed prices to prepare
    * @returns the prepared prices. All prices have amount in DB format, currency_code and if applicable region_id.
-   */
+   *!/
   protected async prepareVariantPrices(
     prices: ParsedPriceListImportPrice[]
   ): Promise<PriceListImportOperationPrice[]> {
@@ -219,14 +221,14 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
     return operationalPrices
   }
 
-  /**
+  /!**
    * A worker method called after a batch job has been created.
    * The method parses a CSV file, generates sets of instructions
    * for processing and stores these instructions to a JSON file
    * which is uploaded to a bucket.
    *
    * @param batchJobId - An id of a job that is being preprocessed.
-   */
+   *!/
   async preProcessBatchJob(batchJobId: string): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
     const batchJob = (await this.batchJobService_
@@ -282,12 +284,12 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
       })
   }
 
-  /**
+  /!**
    * The main processing method called after a batch job
    * is ready/confirmed for processing.
    *
    * @param batchJobId - An id of a batch job that is being processed.
-   */
+   *!/
   async processJob(batchJobId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
       const batchJob = (await this.batchJobService_
@@ -328,12 +330,12 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
     })
   }
 
-  /**
+  /!**
    * Store import ops JSON file to a bucket.
    *
    * @param batchJobId - An id of the current batch job being processed.
    * @param results - An object containing parsed CSV data.
-   */
+   *!/
   protected async uploadImportOpsFile(
     batchJobId: string,
     results: Record<OperationType, TParsedProductImportRowData[]>
@@ -369,12 +371,12 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
     await promiseAll(uploadPromises)
   }
 
-  /**
+  /!**
    * Download parsed ops JSON file.
    *
    * @param batchJob - the current batch job being processed
    * @param op - Type of import operation.
-   */
+   *!/
   protected async downloadImportOpsFile(
     batchJob: BatchJob,
     op: OperationType
@@ -402,11 +404,11 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
     })
   }
 
-  /**
+  /!**
    * Delete parsed CSV ops files.
    *
    * @param batchJob - the current batch job being processed
-   */
+   *!/
   protected async deleteOpsFiles(batchJob: BatchJob): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
@@ -422,12 +424,12 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
     }
   }
 
-  /**
+  /!**
    * Update count of processed data in the batch job `result` column
    * and cleanup temp JSON files.
    *
    * @param batchJob - The current batch job being processed.
-   */
+   *!/
   private async finalize(batchJob: PriceListImportBatchJob): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
@@ -466,9 +468,9 @@ enum PriceListRowKeys {
   PRICES = "prices",
 }
 
-/**
+/!**
  * Schema definition for the CSV parser.
- */
+ *!/
 const CSVSchema: PriceListImportCsvSchema = {
   columns: [
     {
@@ -527,3 +529,4 @@ const CSVSchema: PriceListImportCsvSchema = {
     },
   ],
 }
+*/

@@ -1,4 +1,6 @@
-/* eslint-disable valid-jsdoc */
+// TODO: we need to discuss this
+/*
+/!* eslint-disable valid-jsdoc *!/
 import {
   CreateProductVariants,
   UpdateProductVariants,
@@ -41,14 +43,14 @@ import {
 } from "./types/columns-definition"
 import { transformProductData, transformVariantData } from "./utils"
 
-/**
+/!**
  * Process this many variant rows before reporting progress.
- */
+ *!/
 const BATCH_SIZE = 100
 
-/**
+/!**
  * Default strategy class used for a batch import of products/variants.
- */
+ *!/
 class ProductImportStrategy extends AbstractBatchJobStrategy {
   static identifier = "product-import-strategy"
 
@@ -131,12 +133,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     throw new Error("Not implemented!")
   }
 
-  /**
+  /!**
    * Create a description of a row on which the error occurred and throw a Medusa error.
    *
    * @param row - Parsed CSV row data
    * @param errorDescription - Concrete error
-   */
+   *!/
   protected static throwDescriptiveError(
     row: TParsedProductImportRowData,
     errorDescription?: string
@@ -151,11 +153,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, message)
   }
 
-  /**
+  /!**
    * Generate instructions for update/create of products/variants from parsed CSV rows.
    *
    * @param csvData - An array of parsed CSV rows.
-   */
+   *!/
   async getImportInstructions(
     csvData: TParsedProductImportRowData[]
   ): Promise<Record<OperationType, TParsedProductImportRowData[]>> {
@@ -204,11 +206,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     }
   }
 
-  /**
+  /!**
    * Prepare prices records for insert - find and append region ids to records that contain a region name.
    *
    * @param row - An object containing parsed row data.
-   */
+   *!/
   protected async prepareVariantPrices(row): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
@@ -247,14 +249,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     row["variant.prices"] = prices
   }
 
-  /**
+  /!**
    * A worker method called after a batch job has been created.
    * The method parses a CSV file, generates sets of instructions
    * for processing and stores these instructions to a JSON file
    * which is uploaded to a bucket.
    *
    * @param batchJobId - An id of a job that is being preprocessed.
-   */
+   *!/
   async preProcessBatchJob(batchJobId: string): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
     const batchJob = await this.batchJobService_
@@ -317,12 +319,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       })
   }
 
-  /**
+  /!**
    * The main processing method called after a batch job
    * is ready/confirmed for processing.
    *
    * @param batchJobId - An id of a batch job that is being processed.
-   */
+   *!/
   async processJob(batchJobId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
       const batchJob = (await this.batchJobService_
@@ -337,7 +339,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     })
   }
 
-  /**
+  /!**
    * Create, or retrieve by name, sales channels from the input data.
    *
    * NOTE: Sales channel names provided in the CSV must exist in the DB.
@@ -345,7 +347,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    *
    * @param data an array of sales channels partials
    * @return an array of sales channels created or retrieved by name
-   */
+   *!/
   private async processSalesChannels(
     data: Pick<SalesChannel, "name" | "id">[]
   ): Promise<SalesChannel[]> {
@@ -386,11 +388,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     return salesChannels
   }
 
-  /**
+  /!**
    * Method retrieves product categories from handles provided in the CSV.
    *
    * @param data array of product category handles
-   */
+   *!/
   private async processCategories(
     data: { handle: string }[]
   ): Promise<{ id: string }[]> {
@@ -413,11 +415,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     return retIds
   }
 
-  /**
+  /!**
    * Method creates products using `ProductService` and parsed data from a CSV row.
    *
    * @param batchJob - The current batch job being processed.
-   */
+   *!/
   private async createProducts(batchJob: ProductImportBatchJob): Promise<void> {
     if (!batchJob.result.operations[OperationType.ProductCreate]) {
       return
@@ -507,11 +509,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     }
   }
 
-  /**
+  /!**
    * Method updates existing products in the DB using a CSV row data.
    *
    * @param batchJob - The current batch job being processed.
-   */
+   *!/
   private async updateProducts(batchJob: ProductImportBatchJob): Promise<void> {
     if (!batchJob.result.operations[OperationType.ProductUpdate]) {
       return
@@ -605,12 +607,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     }
   }
 
-  /**
+  /!**
    * Method creates product variants from a CSV data.
    * Method also handles processing of variant options.
    *
    * @param batchJob - The current batch job being processed.
-   */
+   *!/
   private async createVariants(batchJob: ProductImportBatchJob): Promise<void> {
     if (!batchJob.result.operations[OperationType.VariantCreate]) {
       return
@@ -687,11 +689,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     }
   }
 
-  /**
+  /!**
    * Method updates product variants from a CSV data.
    *
    * @param batchJob - The current batch job being processed.
-   */
+   *!/
   private async updateVariants(batchJob: ProductImportBatchJob): Promise<void> {
     if (!batchJob.result.operations[OperationType.VariantUpdate]) {
       return
@@ -755,12 +757,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     }
   }
 
-  /**
+  /!**
    * Extend records used for creating variant options with corresponding product option ids.
    *
    * @param variantOp - Parsed row data form CSV
    * @param productId - id of variant's product
-   */
+   *!/
   protected async prepareVariantOptions(
     variantOp,
     productId: string
@@ -779,12 +781,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     }
   }
 
-  /**
+  /!**
    * Store import ops JSON file to a bucket.
    *
    * @param batchJobId - An id of the current batch job being processed.
    * @param results - An object containing parsed CSV data.
-   */
+   *!/
   protected async uploadImportOpsFile(
     batchJobId: string,
     results: Record<OperationType, TParsedProductImportRowData[]>
@@ -820,12 +822,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     await promiseAll(uploadPromises)
   }
 
-  /**
+  /!**
    * Download parsed ops JSON file.
    *
    * @param batchJob - the current batch job being processed
    * @param op - Type of import operation.
-   */
+   *!/
   protected async downloadImportOpsFile(
     batchJob: BatchJob,
     op: OperationType
@@ -853,11 +855,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     })
   }
 
-  /**
+  /!**
    * Delete parsed CSV ops files.
    *
    * @param batchJob - the current batch job being processed
-   */
+   *!/
   protected async deleteOpsFiles(batchJob: BatchJob): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
@@ -873,12 +875,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     }
   }
 
-  /**
+  /!**
    * Update count of processed data in the batch job `result` column
    * and cleanup temp JSON files.
    *
    * @param batchJob - The current batch job being processed.
-   */
+   *!/
   private async finalize(batchJob: BatchJob): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
@@ -899,13 +901,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     await this.deleteOpsFiles(batchJob)
   }
 
-  /**
+  /!**
    * Store the progress in the batch job `result` column.
    * Method is called after every update/create operation,
    * but after every `BATCH_SIZE` processed rows info is written to the DB.
    *
    * @param batchJobId - An id of the current batch job being processed.
-   */
+   *!/
   private async updateProgress(batchJobId: string): Promise<void> {
     const newCount = (this.processedCounter[batchJobId] || 0) + 1
     this.processedCounter[batchJobId] = newCount
@@ -933,3 +935,4 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 }
 
 export default ProductImportStrategy
+*/

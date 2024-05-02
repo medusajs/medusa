@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { MedusaContainer } from "@medusajs/types"
 import { createContainerLike, FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { humanizeAmount } from "medusa-core-utils"
@@ -42,13 +44,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     ...defaultAdminProductRelations,
     "variants.prices.region",
   ]
-  /*
+  /!*
    *
    * The dynamic columns corresponding to the lowest level of relations are built later on.
    * You can have a look at the buildHeader method that take care of appending the other
    * column descriptors to this map.
    *
-   */
+   *!/
   protected readonly columnsDefinition = { ...productColumnsDefinition }
   protected readonly salesChannelsColumnsDefinition = {
     ...productSalesChannelColumnsDefinition,
@@ -668,7 +670,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       })
   }
 
-  /**
+  /!**
    * Return the maximum number of each relation that must appears in the export.
    * The number of item of a relation can vary between 0-Infinity and therefore the number of columns
    * that will be added to the export correspond to that number
@@ -680,7 +682,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
    *   pricesData: Set<string>
    * })
    * @private
-   */
+   *!/
   private getProductRelationsDynamicColumnsShape(products: Product[]): {
     optionColumnCount: number
     imageColumnCount: number
@@ -752,3 +754,4 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     }
   }
 }
+*/

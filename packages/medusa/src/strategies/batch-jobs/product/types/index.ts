@@ -1,3 +1,10 @@
+export type TParsedProductImportRowData = Record<
+  string,
+  string | number | object | undefined | (string | number | object)[]
+>
+
+// TODO: we need to discuss this
+/*
 import { RemoteQueryFunction } from "@medusajs/types"
 import { FlagRouter } from "@medusajs/utils"
 import { FileService } from "medusa-interfaces"
@@ -96,9 +103,9 @@ export type ProductImportInjectedProps = {
   manager: EntityManager
 }
 
-/**
+/!**
  * Import Batch job context column type.
- */
+ *!/
 export type ProductImportJobContext = {
   total: number
   fileKey: string
@@ -112,17 +119,17 @@ export type ProductImportBatchJob = BatchJob & {
   }
 }
 
-/**
+/!**
  * Schema definition of for an import CSV file.
- */
+ *!/
 export type ProductImportCsvSchema = CsvSchema<
   TParsedProductImportRowData,
   TBuiltProductImportLine
 >
 
-/**
+/!**
  * Supported batch job import ops.
- */
+ *!/
 export enum OperationType {
   ProductCreate = "PRODUCT_CREATE",
   ProductUpdate = "PRODUCT_UPDATE",
@@ -130,17 +137,17 @@ export enum OperationType {
   VariantUpdate = "VARIANT_UPDATE",
 }
 
-/**
+/!**
  * Data shape returned by the CSVParser.
- */
+ *!/
 export type TParsedProductImportRowData = Record<
   string,
   string | number | object | undefined | (string | number | object)[]
 >
 
-/**
+/!**
  * CSV parser's row reducer result data shape.
- */
+ *!/
 export type TBuiltProductImportLine = Record<string, any>
 
 export type ProductImportDescriptor = CsvSchemaColumn<
@@ -156,3 +163,4 @@ export type ProductColumnDefinition = {
     exportDescriptor?: ProductExportDescriptor | DynamicProductExportDescriptor
   }
 }
+*/

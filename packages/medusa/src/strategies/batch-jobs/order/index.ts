@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { BatchJob, Order } from "../../../models"
 import { Selector } from "../../../types/common"
 
@@ -151,3 +153,4 @@ export const orderExportPropertiesDescriptors: OrderDescriptor[] = [
     accessor: (order: Order): string => order.currency_code,
   },
 ]
+*/
