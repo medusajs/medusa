@@ -593,6 +593,8 @@ moduleIntegrationTestRunner({
               shippingOptionData
             )
 
+            const existingRule = shippingOption.rules[0]!
+
             const updateData: UpdateShippingOptionDTO = {
               id: shippingOption.id,
               name: "updated-test",
@@ -609,6 +611,10 @@ moduleIntegrationTestRunner({
                 amount: 2000,
               },
               rules: [
+                {
+                  ...existingRule,
+                  value: "false",
+                },
                 {
                   attribute: "new-test",
                   operator: "eq",
@@ -640,21 +646,30 @@ moduleIntegrationTestRunner({
                 data: updateData.data,
                 rules: expect.arrayContaining([
                   expect.objectContaining({
+                    id: existingRule.id,
+                    value: '"false"',
+                  }),
+                  expect.objectContaining({
                     id: expect.any(String),
-                    attribute: updateData.rules[0].attribute,
-                    operator: updateData.rules[0].operator,
-                    value: updateData.rules[0].value,
+                    attribute: updateData.rules[1].attribute,
+                    operator: updateData.rules[1].operator,
+                    value: updateData.rules[1].value,
                   }),
                 ]),
               })
             )
 
             const rules = await service.listShippingOptionRules()
-            expect(rules).toHaveLength(1)
-            expect(rules[0]).toEqual(
-              expect.objectContaining({
-                id: updatedShippingOption.rules[0].id,
-              })
+            expect(rules).toHaveLength(2)
+            expect(rules).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  id: updatedShippingOption.rules[0].id,
+                }),
+                expect.objectContaining({
+                  id: updatedShippingOption.rules[1].id,
+                }),
+              ])
             )
 
             const types = await service.listShippingOptionTypes()

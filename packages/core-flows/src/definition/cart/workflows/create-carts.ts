@@ -14,8 +14,6 @@ import {
   findOrCreateCustomerStep,
   findSalesChannelStep,
   getVariantPriceSetsStep,
-  getVariantsStep,
-  validateVariantsExistStep,
 } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
@@ -44,76 +42,8 @@ export const createCartWorkflow = createWorkflow(
       findOrCreateCustomerStep({
         customerId: input.customer_id,
         email: input.email,
-      }),
-      validateVariantsExistStep({ variantIds })
+      })
     )
-
-    const variants = getVariantsStep({
-      filter: { id: variantIds },
-      config: {
-        select: [
-          "id",
-          "title",
-          "sku",
-          "manage_inventory",
-          "barcode",
-          "product.id",
-          "product.title",
-          "product.description",
-          "product.subtitle",
-          "product.thumbnail",
-          "product.type",
-          "product.collection",
-          "product.handle",
-        ],
-        relations: ["product"],
-      },
-    })
-
-    const salesChannelLocations = useRemoteQueryStep({
-      entry_point: "sales_channels",
-      fields: ["id", "name", "stock_locations.id", "stock_locations.name"],
-      variables: { id: salesChannel.id },
-    })
-
-    const productVariantInventoryItems = useRemoteQueryStep({
-      entry_point: "product_variant_inventory_items",
-      fields: ["variant_id", "inventory_item_id", "required_quantity"],
-      variables: { variant_id: variantIds },
-    }).config({ name: "inventory-items" })
-
-    const confirmInventoryInput = transform(
-      { productVariantInventoryItems, salesChannelLocations, input, variants },
-      (data) => {
-        // We don't want to confirm inventory if there are no items in the cart.
-        if (!data.input.items) {
-          return { items: [] }
-        }
-
-        if (!data.salesChannelLocations.length) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Sales channel ${data.input.sales_channel_id} is not associated with any stock locations.`
-          )
-        }
-
-        const items = prepareConfirmInventoryInput({
-          product_variant_inventory_items: data.productVariantInventoryItems,
-          location_ids: data.salesChannelLocations[0].stock_locations.map(
-            (l) => l.id
-          ),
-          items: data.input.items!,
-          variants: data.variants.map((v) => ({
-            id: v.id,
-            manage_inventory: v.manage_inventory,
-          })),
-        })
-
-        return { items }
-      }
-    )
-
-    confirmInventoryStep(confirmInventoryInput)
 
     // TODO: This is on par with the context used in v1.*, but we can be more flexible.
     const pricingContext = transform(
@@ -126,6 +56,111 @@ export const createCartWorkflow = createWorkflow(
         }
       }
     )
+
+    const variants = useRemoteQueryStep({
+      entry_point: "variants",
+      fields: [
+        "id",
+        "title",
+        "sku",
+        "manage_inventory",
+        "barcode",
+        "product.id",
+        "product.title",
+        "product.description",
+        "product.subtitle",
+        "product.thumbnail",
+        "product.type",
+        "product.collection",
+        "product.handle",
+
+        "calculated_price.calculated_amount",
+
+        "inventory_items.inventory_item_id",
+        "inventory_items.required_quantity",
+
+        "inventory_items.inventory.location_levels.stock_locations.id",
+        "inventory_items.inventory.location_levels.stock_locations.name",
+
+        "inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
+        "inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
+      ],
+      variables: {
+        id: variantIds,
+        calculated_price: {
+          context: pricingContext,
+        },
+      },
+      throw_if_key_not_found: true,
+    })
+
+    const confirmInventoryInput = transform(
+      { input, salesChannel, variants },
+      (data) => {
+        const managedVariants = data.variants.filter((v) => v.manage_inventory)
+        if (!managedVariants.length) {
+          return { items: [] }
+        }
+
+        const productVariantInventoryItems: any[] = []
+
+        const stockLocations = managedVariants
+          .map((v) => v.inventory_items)
+          .flat()
+          .map((ii) => {
+            productVariantInventoryItems.push({
+              variant_id: ii.variant_id,
+              inventory_item_id: ii.inventory_item_id,
+              required_quantity: ii.required_quantity,
+            })
+
+            return ii.inventory.location_levels
+          })
+          .flat()
+          .map((ll) => ll.stock_locations)
+          .flat()
+
+        const salesChannelId = data.salesChannel?.id
+        if (salesChannelId) {
+          const salesChannels = stockLocations
+            .map((sl) => sl.sales_channels)
+            .flat()
+            .filter((sc) => sc.id === salesChannelId)
+
+          if (!salesChannels.length) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Sales channel ${salesChannelId} is not associated with any stock locations.`
+            )
+          }
+        }
+
+        const priceNotFound: string[] = data.variants
+          .filter((v) => !v.calculated_price)
+          .map((v) => v.id)
+
+        if (priceNotFound.length) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Variants with IDs ${priceNotFound.join(", ")} do not have a price`
+          )
+        }
+
+        const items = prepareConfirmInventoryInput({
+          product_variant_inventory_items: productVariantInventoryItems,
+          location_ids: stockLocations.map((l) => l.id),
+          items: data.input.items!,
+          variants: data.variants.map((v) => ({
+            id: v.id,
+            manage_inventory: v.manage_inventory,
+          })),
+        })
+
+        return { items }
+      }
+    )
+
+    confirmInventoryStep(confirmInventoryInput)
 
     const priceSets = getVariantPriceSetsStep({
       variantIds,
