@@ -569,7 +569,7 @@ moduleIntegrationTestRunner({
         })
 
         describe("on update", () => {
-          it.only("should update a shipping option", async () => {
+          it("should update a shipping option", async () => {
             const fulfillmentSet = await service.create({
               name: "test",
               type: "test-type",
