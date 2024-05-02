@@ -121,7 +121,7 @@ function Location(props: LocationProps) {
           </div>
 
           {/*ACTION*/}
-          <div className="flex grow-0 items-center gap-2 divide-x">
+          <div className="flex h-[12px] grow-0 items-center gap-4 divide-x overflow-hidden">
             <ActionMenu
               groups={[
                 {
@@ -141,7 +141,7 @@ function Location(props: LocationProps) {
               ]}
             />
             <Button
-              className="text-ui-fg-interactive rounded-none hover:bg-transparent"
+              className="text-ui-fg-interactive rounded-none pl-5 hover:bg-transparent"
               onClick={() => navigate(`/settings/shipping/${location.id}`)}
               variant="transparent"
             >
