@@ -3,7 +3,7 @@ import * as QueryConfig from "./query-config"
 import {
   AdminCreateCustomer,
   AdminCreateCustomerAddress,
-  AdminCustomerAdressesParams,
+  AdminCustomerAddressesParams,
   AdminCustomerParams,
   AdminCustomersParams,
   AdminUpdateCustomer,
@@ -100,7 +100,7 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/customers/:id/addresses",
     middlewares: [
       validateAndTransformQuery(
-        AdminCustomerAdressesParams,
+        AdminCustomerAddressesParams,
         QueryConfig.listAddressesTransformQueryConfig
       ),
     ],
