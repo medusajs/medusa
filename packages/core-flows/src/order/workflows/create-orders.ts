@@ -172,6 +172,8 @@ export const createOrdersWorkflow = createWorkflow(
           ),
           quantity: item.quantity as number,
           metadata: item?.metadata ?? {},
+          taxLines: item.tax_lines || [],
+          adjustments: item.adjustments || [],
         })
       })
 

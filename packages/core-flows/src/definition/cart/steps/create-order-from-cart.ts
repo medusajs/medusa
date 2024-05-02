@@ -13,6 +13,17 @@ export const createOrderFromCartWorkflow = createStep(
   async (input: StepInput, { container }) => {
     const { cart } = input
 
+    const itemAdjustments = (cart.items || [])
+      ?.map((item) => item.adjustments || [])
+      .flat(1)
+    const shippingAdjustments = (cart.shipping_methods || [])
+      ?.map((sm) => sm.adjustments || [])
+      .flat(1)
+
+    const promoCodes = [...itemAdjustments, ...shippingAdjustments]
+      .map((adjustment) => adjustment.code)
+      .filter((code) => Boolean) as string[]
+
     const { transaction, result } = await createOrdersWorkflow(container).run({
       input: {
         region_id: cart.region?.id,
@@ -23,12 +34,12 @@ export const createOrderFromCartWorkflow = createStep(
         currency_code: cart.currency_code,
         shipping_address: cart.shipping_address,
         billing_address: cart.billing_address,
+        // TODO: This should be handle correctly
         no_notification: false,
         items: cart.items,
         shipping_methods: cart.shipping_methods,
         metadata: cart.metadata,
-        // TODO: fetch promo codes from adjustments
-        promo_codes: [],
+        promo_codes: promoCodes,
       },
     })
 
