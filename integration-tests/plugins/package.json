@@ -23,6 +23,7 @@
     "@medusajs/product": "workspace:^",
     "@medusajs/promotion": "workspace:^",
     "@medusajs/region": "workspace:^",
+    "@medusajs/stock-location": "latest",
     "@medusajs/store": "workspace:^",
     "@medusajs/tax": "workspace:^",
     "@medusajs/user": "workspace:^",
