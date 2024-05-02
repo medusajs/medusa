@@ -1,5 +1,5 @@
 export * from "./api"
-export * from "./api/middlewares"
+export * from "./utils/middlewares"
 export * from "./interfaces"
 export * from "./models"
 export * from "./modules-config"

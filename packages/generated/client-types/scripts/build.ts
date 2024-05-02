@@ -1,8 +1,7 @@
 import execa from "execa"
 import os from "os"
 import fs from "fs/promises"
-import path from "path"
-import { sep } from "path"
+import path, { sep } from "path"
 
 const basePath = path.resolve(__dirname, `../`)
 
@@ -16,7 +15,13 @@ async function run() {
 }
 
 const generateOASSources = async (outDir: string) => {
-  const params = ["oas", `--out-dir=${outDir}`, "--type=combined", "--local"]
+  const params = [
+    "oas",
+    `--out-dir=${outDir}`,
+    "--type=combined",
+    "--local",
+    "--v2",
+  ]
   const { all: logs } = await execa("medusa-oas", params, {
     cwd: basePath,
     all: true,
