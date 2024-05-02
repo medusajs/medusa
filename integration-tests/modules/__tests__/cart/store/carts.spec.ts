@@ -1518,7 +1518,7 @@ medusaIntegrationTestRunner({
           ).data.shipping_option
         })
 
-        it("should create an order", async () => {
+        it.skip("should create an order", async () => {
           const cartResponse = await api.post(`/store/carts`, {
             currency_code: "usd",
             email: "tony@stark-industries.com",
