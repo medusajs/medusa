@@ -16,7 +16,7 @@ let { Product } = {}
 medusaIntegrationTestRunner({
   env: {
     MEDUSA_FF_PRODUCT_CATEGORIES: true,
-    // MEDUSA_FF_MEDUSA_V2: true,
+    MEDUSA_FF_MEDUSA_V2: true,
   },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let appContainer
@@ -477,6 +477,37 @@ medusaIntegrationTestRunner({
             ],
           }),
         ])
+      })
+
+      it.only("adds all ancestors to categories in a nested way", async () => {
+        const response = await api.get(
+          `/admin/product-categories/${productCategoryChild1.id}?include_ancestors_tree=true`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product_category).toEqual(
+          expect.objectContaining({
+            id: productCategoryChild1.id,
+            name: "rank 1",
+            rank: 1,
+            parent_category: expect.objectContaining({
+              id: productCategoryChild.id,
+              name: "cashmere",
+              rank: 0,
+              parent_category: expect.objectContaining({
+                id: productCategory.id,
+                name: "sweater",
+                rank: 0,
+                parent_category: expect.objectContaining({
+                  id: productCategoryParent.id,
+                  name: "Mens",
+                  rank: 0,
+                }),
+              }),
+            }),
+          })
+        )
       })
     })
 

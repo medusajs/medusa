@@ -140,6 +140,8 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       }
     })
 
+    console.log("Descendants: ", include.descendants)
+
     const populateChildren = (category, level = 0) => {
       const categories = allCategories.filter(
         (child) => child.parent_category_id === category.id
@@ -170,6 +172,8 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       return populateChildren(fullCategory)
     })
 
+    console.log(JSON.stringify(populatedProductCategories))
+
     return populatedProductCategories
   }
 
@@ -187,7 +191,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
 
     // Ref: Building descendants
     // mpath and parent_category_id needs to be added to the query for the tree building to be done accurately
-    if (includeDescendantsTree) {
+    if (includeDescendantsTree || includeAncestorsTree) {
       fields.indexOf("mpath") === -1 && fields.push("mpath")
       fields.indexOf("parent_category_id") === -1 &&
         fields.push("parent_category_id")
@@ -202,9 +206,6 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       findOptions_.where as MikroFilterQuery<ProductCategory>,
       findOptions_.options as MikroOptions<ProductCategory>
     )
-    if (!includeDescendantsTree) {
-      return [productCategories, count]
-    }
 
     if (!includeDescendantsTree && !includeAncestorsTree) {
       return [productCategories, count]
