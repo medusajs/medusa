@@ -1,12 +1,10 @@
-import { AbstractFileService } from "@medusajs/medusa"
 import * as fs from "fs"
 import mkdirp from "mkdirp"
 import { resolve } from "path"
 import stream from "stream"
 
-export default class LocalFileService extends AbstractFileService {
+export default class LocalFileService {
   constructor({}, options) {
-    super({}, options)
     this.upload_dir_ =
       process.env.UPLOAD_DIR ?? options.upload_dir ?? "uploads/images"
 

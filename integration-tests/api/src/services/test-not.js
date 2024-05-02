@@ -1,10 +1,7 @@
-import { NotificationService } from "medusa-interfaces"
-
-class TestNotiService extends NotificationService {
+class TestNotiService {
   static identifier = "test-not"
 
   constructor() {
-    super()
   }
 
   async sendNotification() {

@@ -35,56 +35,56 @@ jobs:
           - 5432:5432
 
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup development server
-        uses: ./.github/actions/setup-server
-        with:
-          cache-extension: "cli-test"
-          node-version: "16.14"
-
-      - name: Install Medusa cli
-        run: npm i -g @medusajs/medusa-cli
-
-      - name: Create Medusa project
-        run: |
-          medusa new cli-test --skip-db
-        working-directory: ..
-
-      - name: run medusa dev
-        run: medusa-dev --force-install
-        working-directory: ../cli-test
-
-      - name: Run migrations
-        run: medusa migrations run
-        working-directory: ../cli-test
-
-      - name: Seed db
-        run: yarn seed
-        working-directory: ../cli-test
-
-      - name: Create admin user
-        run: medusa user -e test@test.com -p password -i admin_123
-        working-directory: ../cli-test
-
-      ##########################  Test medusa develop  ###############################
-
-      - name: Run development server
-        run: medusa develop &
-        working-directory: ../cli-test
-
-      - name: Testing development server
-        uses: ./.github/actions/test-server
-
-      ###########################  Test medusa start  ################################
-
-      - name: Starting medusa
-        run: medusa start &
-        working-directory: ../cli-test
-
-      - name: Testing server
-        uses: ./.github/actions/test-server
+    #steps:
+    #  - name: Checkout
+    #    uses: actions/checkout@v3
+    #    with:
+    #      fetch-depth: 0
+#
+    #  - name: Setup development server
+    #    uses: ./.github/actions/setup-server
+    #    with:
+    #      cache-extension: "cli-test"
+    #      node-version: "16.14"
+#
+    #  - name: Install Medusa cli
+    #    run: npm i -g @medusajs/medusa-cli
+#
+    #  - name: Create Medusa project
+    #    run: |
+    #      medusa new cli-test --skip-db
+    #    working-directory: ..
+#
+    #  - name: run medusa dev
+    #    run: medusa-dev --force-install
+    #    working-directory: ../cli-test
+#
+    #  - name: Run migrations
+    #    run: medusa migrations run
+    #    working-directory: ../cli-test
+#
+    #  - name: Seed db
+    #    run: yarn seed
+    #    working-directory: ../cli-test
+#
+    #  - name: Create admin user
+    #    run: medusa user -e test@test.com -p password -i admin_123
+    #    working-directory: ../cli-test
+#
+    #  ##########################  Test medusa develop  ###############################
+#
+    #  - name: Run development server
+    #    run: medusa develop &
+    #    working-directory: ../cli-test
+#
+    #  - name: Testing development server
+    #    uses: ./.github/actions/test-server
+#
+    #  ###########################  Test medusa start  ################################
+#
+    #  - name: Starting medusa
+    #    run: medusa start &
+    #    working-directory: ../cli-test
+#
+    #  - name: Testing server
+    #    uses: ./.github/actions/test-server

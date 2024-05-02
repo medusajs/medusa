@@ -1,10 +1,7 @@
-import { AbstractPaymentService } from "@medusajs/medusa"
-
-class TestPayService extends AbstractPaymentService {
+class TestPayService {
   static identifier = "test-pay"
 
   constructor(_) {
-    super(_)
   }
 
   async getStatus(paymentData) {
@@ -33,6 +30,10 @@ class TestPayService extends AbstractPaymentService {
     return data
   }
 
+  async createPaymentNew(inputData) {
+    return inputData
+  }
+
   async retrievePayment(data) {
     return {}
   }
@@ -42,6 +43,12 @@ class TestPayService extends AbstractPaymentService {
   }
 
   async authorizePayment(sessionData, context = {}) {
+    if (
+      sessionData.cart_id === "cart-id-tax-line-testing-for-pending-payment"
+    ) {
+      return { data: {}, status: "pending" }
+    }
+
     return { data: {}, status: "authorized" }
   }
 
@@ -51,6 +58,10 @@ class TestPayService extends AbstractPaymentService {
 
   async updatePayment(sessionData, cart) {
     return {}
+  }
+
+  async updatePaymentNew(sessionData) {
+    return sessionData
   }
 
   async deletePayment(payment) {

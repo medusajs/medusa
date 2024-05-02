@@ -1,10 +1,7 @@
-import { FulfillmentService } from "medusa-interfaces"
-
-class TestFulService extends FulfillmentService {
+class TestFulService {
   static identifier = "test-ful"
 
   constructor() {
-    super()
   }
 
   getFulfillmentOptions() {
@@ -24,11 +21,11 @@ class TestFulService extends FulfillmentService {
   }
 
   canCalculate() {
-    return false
+    return true
   }
 
-  calculatePrice() {
-    throw Error("Manual Fulfillment service cannot calculatePrice")
+  calculatePrice(data) {
+    return data.price
   }
 
   createOrder() {

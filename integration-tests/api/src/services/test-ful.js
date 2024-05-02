@@ -1,10 +1,7 @@
-import { FulfillmentService } from "medusa-interfaces"
-
-class TestFulService extends FulfillmentService {
+class TestFulService {
   static identifier = "test-ful"
 
   constructor() {
-    super()
   }
 
   getFulfillmentOptions() {
