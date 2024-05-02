@@ -1090,7 +1090,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * ```
    */
   listShippingOptions(
-    filters?: FilterableShippingOptionProps,
+    filters?: FilterableShippingOptionForContextProps,
     config?: FindConfig<ShippingOptionDTO>,
     sharedContext?: Context
   ): Promise<ShippingOptionDTO[]>
@@ -1156,6 +1156,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    */
+
   listShippingOptionsForContext(
     filters: FilterableShippingOptionForContextProps,
     config?: FindConfig<ShippingOptionDTO>,
