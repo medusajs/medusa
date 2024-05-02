@@ -395,6 +395,11 @@ export const ExampleRegistry: Record<string, ExampleType> = {
     component: React.lazy(async () => import("@/examples/toaster-demo")),
     file: "src/examples/toaster-demo.tsx",
   },
+  "toaster-dismiss": {
+    name: "toaster-dismiss",
+    component: React.lazy(async () => import("@/examples/toaster-dismiss")),
+    file: "src/examples/toaster-dismiss.tsx",
+  },
   "toaster-warning": {
     name: "toaster-warning",
     component: React.lazy(async () => import("@/examples/toaster-warning")),

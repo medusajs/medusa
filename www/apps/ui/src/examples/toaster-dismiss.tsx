@@ -1,14 +1,14 @@
 import { Button, Toaster, toast } from "@medusajs/ui"
 
-export default function ToasterWarning() {
+export default function DismissableToaster() {
   return (
     <>
       <Toaster />
       <Button
         onClick={() =>
-          toast.warning("Warning", {
+          toast.info("Info", {
             description: "The quick brown fox jumps over the lazy dog.",
-            duration: 5000,
+            dismissable: true,
           })
         }
       >
