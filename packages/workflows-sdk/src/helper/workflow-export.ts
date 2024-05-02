@@ -1,12 +1,9 @@
 import {
-  DistributedTransaction,
-  DistributedTransactionEvents,
   LocalWorkflow,
   TransactionHandlerType,
   TransactionState,
-  TransactionStepError,
 } from "@medusajs/orchestration"
-import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
+import { LoadedModule, MedusaContainer } from "@medusajs/types"
 
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { MedusaContextType } from "@medusajs/utils"
@@ -14,139 +11,15 @@ import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
 import { resolveValue } from "../utils/composer"
-
-export type FlowRunOptions<TData = unknown> = {
-  input?: TData
-  context?: Context
-  resultFrom?: string | string[] | Symbol
-  throwOnError?: boolean
-  events?: DistributedTransactionEvents
-}
-
-export type FlowRegisterStepSuccessOptions<TData = unknown> = {
-  idempotencyKey: string
-  response?: TData
-  context?: Context
-  resultFrom?: string | string[] | Symbol
-  throwOnError?: boolean
-  events?: DistributedTransactionEvents
-}
-
-export type FlowRegisterStepFailureOptions<TData = unknown> = {
-  idempotencyKey: string
-  response?: TData
-  context?: Context
-  resultFrom?: string | string[] | Symbol
-  throwOnError?: boolean
-  events?: DistributedTransactionEvents
-}
-
-export type FlowCancelOptions = {
-  transaction?: DistributedTransaction
-  transactionId?: string
-  context?: Context
-  throwOnError?: boolean
-  events?: DistributedTransactionEvents
-}
-
-export type WorkflowResult<TResult = unknown> = {
-  errors: TransactionStepError[]
-  transaction: DistributedTransaction
-  result: TResult
-}
-
-export type ExportedWorkflow<
-  TData = unknown,
-  TResult = unknown,
-  TDataOverride = undefined,
-  TResultOverride = undefined
-> = {
-  run: (
-    args?: FlowRunOptions<
-      TDataOverride extends undefined ? TData : TDataOverride
-    >
-  ) => Promise<
-    WorkflowResult<
-      TResultOverride extends undefined ? TResult : TResultOverride
-    >
-  >
-  registerStepSuccess: (
-    args?: FlowRegisterStepSuccessOptions<
-      TDataOverride extends undefined ? TData : TDataOverride
-    >
-  ) => Promise<
-    WorkflowResult<
-      TResultOverride extends undefined ? TResult : TResultOverride
-    >
-  >
-  registerStepFailure: (
-    args?: FlowRegisterStepFailureOptions<
-      TDataOverride extends undefined ? TData : TDataOverride
-    >
-  ) => Promise<
-    WorkflowResult<
-      TResultOverride extends undefined ? TResult : TResultOverride
-    >
-  >
-  cancel: (args?: FlowCancelOptions) => Promise<WorkflowResult>
-}
-
-export type MainExportedWorkflow<TData = unknown, TResult = unknown> = {
-  // Main function on the exported workflow
-  <TDataOverride = undefined, TResultOverride = undefined>(
-    container?: LoadedModule[] | MedusaContainer
-  ): Omit<
-    LocalWorkflow,
-    "run" | "registerStepSuccess" | "registerStepFailure" | "cancel"
-  > &
-    ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
-
-  /**
-   * You can also directly call run, registerStepSuccess, registerStepFailure and cancel on the exported workflow
-   */
-
-  run<TDataOverride = undefined, TResultOverride = undefined>(
-    args?: FlowRunOptions<
-      TDataOverride extends undefined ? TData : TDataOverride
-    > & {
-      container?: LoadedModule[] | MedusaContainer
-    }
-  ): Promise<
-    WorkflowResult<
-      TResultOverride extends undefined ? TResult : TResultOverride
-    >
-  >
-
-  registerStepSuccess<TDataOverride = undefined, TResultOverride = undefined>(
-    args?: FlowRegisterStepSuccessOptions<
-      TDataOverride extends undefined ? TData : TDataOverride
-    > & {
-      container?: LoadedModule[] | MedusaContainer
-    }
-  ): Promise<
-    WorkflowResult<
-      TResultOverride extends undefined ? TResult : TResultOverride
-    >
-  >
-
-  registerStepFailure<TDataOverride = undefined, TResultOverride = undefined>(
-    args?: FlowRegisterStepFailureOptions<
-      TDataOverride extends undefined ? TData : TDataOverride
-    > & {
-      container?: LoadedModule[] | MedusaContainer
-    }
-  ): Promise<
-    WorkflowResult<
-      TResultOverride extends undefined ? TResult : TResultOverride
-    >
-  >
-
-  cancel(
-    args?: FlowCancelOptions & {
-      container?: LoadedModule[] | MedusaContainer
-    }
-  ): Promise<WorkflowResult>
-}
+import {
+  ExportedWorkflow,
+  FlowCancelOptions,
+  FlowRegisterStepFailureOptions,
+  FlowRegisterStepSuccessOptions,
+  FlowRunOptions,
+  MainExportedWorkflow,
+  WorkflowResult,
+} from "./type"
 
 function createContextualWorkflowRunner<
   TData = unknown,
@@ -172,12 +45,6 @@ function createContextualWorkflowRunner<
   "run" | "registerStepSuccess" | "registerStepFailure" | "cancel"
 > &
   ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride> {
-  if (!container) {
-    container = MedusaModule.getLoadedModules().map(
-      (mod) => Object.values(mod)[0]
-    )
-  }
-
   const flow = new LocalWorkflow(workflowId, container!)
 
   const originalRun = flow.run.bind(flow)
@@ -187,9 +54,24 @@ function createContextualWorkflowRunner<
 
   const originalExecution = async (
     method,
-    { throwOnError, resultFrom, isCancel = false },
+    {
+      throwOnError,
+      resultFrom,
+      isCancel = false,
+      container: executionContainer,
+    },
     ...args
   ) => {
+    if (!executionContainer && !flow.container) {
+      executionContainer = MedusaModule.getLoadedModules().map(
+        (mod) => Object.values(mod)[0]
+      )
+    }
+
+    if (!flow.container) {
+      flow.container = executionContainer
+    }
+
     const transaction = await method.apply(method, args)
 
     let errors = transaction.getErrors(TransactionHandlerType.INVOKE)
@@ -236,6 +118,7 @@ function createContextualWorkflowRunner<
       throwOnError,
       resultFrom,
       events,
+      container,
     }: FlowRunOptions = {
       throwOnError: true,
       resultFrom: defaultResult,
@@ -269,7 +152,7 @@ function createContextualWorkflowRunner<
 
     return await originalExecution(
       originalRun,
-      { throwOnError, resultFrom },
+      { throwOnError, resultFrom, container },
       context.transactionId,
       input,
       context,
@@ -286,6 +169,7 @@ function createContextualWorkflowRunner<
       throwOnError,
       resultFrom,
       events,
+      container,
     }: FlowRegisterStepSuccessOptions = {
       idempotencyKey: "",
       throwOnError: true,
@@ -304,7 +188,7 @@ function createContextualWorkflowRunner<
 
     return await originalExecution(
       originalRegisterStepSuccess,
-      { throwOnError, resultFrom },
+      { throwOnError, resultFrom, container },
       idempotencyKey,
       response,
       context,
@@ -321,6 +205,7 @@ function createContextualWorkflowRunner<
       throwOnError,
       resultFrom,
       events,
+      container,
     }: FlowRegisterStepFailureOptions = {
       idempotencyKey: "",
       throwOnError: true,
@@ -339,7 +224,7 @@ function createContextualWorkflowRunner<
 
     return await originalExecution(
       originalRegisterStepFailure,
-      { throwOnError, resultFrom },
+      { throwOnError, resultFrom, container },
       idempotencyKey,
       response,
       context,
@@ -355,6 +240,7 @@ function createContextualWorkflowRunner<
       context: outerContext,
       throwOnError,
       events,
+      container,
     }: FlowCancelOptions = {
       throwOnError: true,
     }
@@ -373,6 +259,7 @@ function createContextualWorkflowRunner<
         throwOnError,
         resultFrom: undefined,
         isCancel: true,
+        container,
       },
       transaction ?? transactionId,
       context,
@@ -397,6 +284,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
     TDataOverride = undefined,
     TResultOverride = undefined
   >(
+    // TODO: rm when all usage have been migrated
     container?: LoadedModule[] | MedusaContainer
   ): Omit<
     LocalWorkflow,
@@ -456,9 +344,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
   >(
     args?: FlowRunOptions<
       TDataOverride extends undefined ? TData : TDataOverride
-    > & {
-      container?: LoadedModule[] | MedusaContainer
-    }
+    >
   ): Promise<
     WorkflowResult<
       TResultOverride extends undefined ? TResult : TResultOverride
@@ -482,9 +368,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
   >(
     args?: FlowRegisterStepSuccessOptions<
       TDataOverride extends undefined ? TData : TDataOverride
-    > & {
-      container?: LoadedModule[] | MedusaContainer
-    }
+    >
   ): Promise<
     WorkflowResult<
       TResultOverride extends undefined ? TResult : TResultOverride
@@ -512,9 +396,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
   >(
     args?: FlowRegisterStepFailureOptions<
       TDataOverride extends undefined ? TData : TDataOverride
-    > & {
-      container?: LoadedModule[] | MedusaContainer
-    }
+    >
   ): Promise<
     WorkflowResult<
       TResultOverride extends undefined ? TResult : TResultOverride
@@ -537,9 +419,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
   }
 
   exportedWorkflow.cancel = async (
-    args?: FlowCancelOptions & {
-      container?: LoadedModule[] | MedusaContainer
-    }
+    args?: FlowCancelOptions
   ): Promise<WorkflowResult> => {
     const container = args?.container
     delete args?.container
@@ -552,5 +432,5 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
   }
 
   MedusaWorkflow.registerWorkflow(workflowId, exportedWorkflow)
-  return exportedWorkflow
+  return exportedWorkflow as MainExportedWorkflow<TData, TResult>
 }

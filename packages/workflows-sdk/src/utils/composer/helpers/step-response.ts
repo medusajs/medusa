@@ -1,5 +1,5 @@
 import { PermanentStepFailureError } from "@medusajs/orchestration"
-import { OrchestrationUtils } from "@medusajs/utils"
+import { isDefined, OrchestrationUtils } from "@medusajs/utils"
 
 /**
  * This class is used to create the response returned by a step. A step return its data by returning an instance of `StepResponse`.
@@ -26,13 +26,15 @@ export class StepResponse<TOutput, TCompensateInput = TOutput> {
     /**
      * The output of the step.
      */
-    output: TOutput,
+    output?: TOutput,
     /**
      * The input to be passed as a parameter to the step's compensation function. If not provided, the `output` will be provided instead.
      */
     compensateInput?: TCompensateInput
   ) {
-    this.#output = output
+    if (isDefined(output)) {
+      this.#output = output
+    }
     this.#compensateInput = (compensateInput ?? output) as TCompensateInput
   }
 
