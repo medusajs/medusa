@@ -10,18 +10,21 @@ import {
   Logger,
   MedusaContainer,
 } from "@medusajs/types"
-import { InjectSharedContext, MedusaContext, isString } from "@medusajs/utils"
+import { InjectSharedContext, isString, MedusaContext } from "@medusajs/utils"
 import {
   FlowRunOptions,
   MedusaWorkflow,
-  ReturnWorkflow,
   resolveValue,
+  ReturnWorkflow,
 } from "@medusajs/workflows-sdk"
 import Redis from "ioredis"
 import { ulid } from "ulid"
 import type { RedisDistributedTransactionStorage } from "../utils"
 
-export type WorkflowOrchestratorRunOptions<T> = FlowRunOptions<T> & {
+export type WorkflowOrchestratorRunOptions<T> = Omit<
+  FlowRunOptions<T>,
+  "container"
+> & {
   transactionId?: string
   container?: ContainerLike
 }
