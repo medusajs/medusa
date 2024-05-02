@@ -11,6 +11,12 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateCustomer } from "../../../../../hooks/api/customers"
+import { Metadata } from "../../../../../components/forms/metadata"
+import {
+  formValuesToMetadata,
+  metadataToFormValues,
+} from "../../../../../lib/metadata.ts"
+import { metadataFormSchema } from "../../../../../lib/validation"
 
 type EditCustomerFormProps = {
   customer: AdminCustomerResponse["customer"]
@@ -22,6 +28,7 @@ const EditCustomerSchema = zod.object({
   last_name: zod.string().optional(),
   company_name: zod.string().optional(),
   phone: zod.string().optional(),
+  metadata: metadataFormSchema,
 })
 
 export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
@@ -35,6 +42,7 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
       last_name: customer.last_name || "",
       company_name: customer.company_name || "",
       phone: customer.phone || "",
+      metadata: metadataToFormValues(customer.metadata),
     },
     resolver: zodResolver(EditCustomerSchema),
   })
@@ -49,6 +57,7 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
         last_name: data.last_name || null,
         phone: data.phone || null,
         company_name: data.company_name || null,
+        metadata: formValuesToMetadata(data.metadata),
       },
       {
         onSuccess: ({ customer }) => {
@@ -156,6 +165,7 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
                 )
               }}
             />
+            <Metadata form={form} />
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>
