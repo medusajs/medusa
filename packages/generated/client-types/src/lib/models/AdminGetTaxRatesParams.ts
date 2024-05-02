@@ -1,21 +1,21 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetTaxRatesParams {
   /**
    * Filter by name.
    */
-  name?: string;
+  name?: string
   /**
    * Filter by Region IDs
    */
-  region_id?: (string | Array<string>);
+  region_id?: string | Array<string>
   /**
    * Filter by code.
    */
-  code?: string;
+  code?: string
   /**
    * Filter by a creation date range.
    */
@@ -23,20 +23,20 @@ export interface AdminGetTaxRatesParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string;
+    lt?: string
     /**
      * filter by dates greater than this date
      */
-    gt?: string;
+    gt?: string
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string;
+    lte?: string
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string;
-  };
+    gte?: string
+  }
   /**
    * Filter by an update date range.
    */
@@ -44,20 +44,20 @@ export interface AdminGetTaxRatesParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string;
+    lt?: string
     /**
      * filter by dates greater than this date
      */
-    gt?: string;
+    gt?: string
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string;
+    lte?: string
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string;
-  };
+    gte?: string
+  }
   /**
    * Filter by a deletion date range.
    */
@@ -65,65 +65,65 @@ export interface AdminGetTaxRatesParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string;
+    lt?: string
     /**
      * filter by dates greater than this date
      */
-    gt?: string;
+    gt?: string
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string;
+    lte?: string
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string;
-  };
+    gte?: string
+  }
   /**
    * Filter by Rate
    */
-  rate?: (number | {
-    /**
-     * filter by rates less than this number
-     */
-    lt?: number;
-    /**
-     * filter by rates greater than this number
-     */
-    gt?: number;
-    /**
-     * filter by rates less than or equal to this number
-     */
-    lte?: number;
-    /**
-     * filter by rates greater than or equal to this number
-     */
-    gte?: number;
-  });
+  rate?:
+    | number
+    | {
+        /**
+         * filter by rates less than this number
+         */
+        lt?: number
+        /**
+         * filter by rates greater than this number
+         */
+        gt?: number
+        /**
+         * filter by rates less than or equal to this number
+         */
+        lte?: number
+        /**
+         * filter by rates greater than or equal to this number
+         */
+        gte?: number
+      }
   /**
    * Term used to search tax rates by name.
    */
-  'q'?: string;
+  q?: string
   /**
    * A tax rate field to sort-order the retrieved tax rates by.
    */
-  order?: string;
+  order?: string
   /**
    * The number of tax rates to skip when retrieving the tax rates.
    */
-  offset?: number;
+  offset?: number
   /**
    * Limit the number of tax rates returned.
    */
-  limit?: number;
+  limit?: number
   /**
    * Comma-separated fields that should be included in the returned tax rate.
    */
-  fields?: Array<string>;
+  fields?: Array<string>
   /**
    * Comma-separated relations that should be expanded in the returned tax rate.
    */
-  expand?: Array<string>;
-};
-
-
+  expand?: Array<string>
+}

@@ -1,19 +1,19 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
-import type { ResponseInventoryItem } from './ResponseInventoryItem';
+import type { ResponseInventoryItem } from "./ResponseInventoryItem"
 
 export interface VariantInventory {
   /**
    * the ID of the variant
    */
-  id: string;
+  id: string
   /**
    * The inventory details.
    */
-  inventory: ResponseInventoryItem;
+  inventory: ResponseInventoryItem
   /**
    * Details about the variant's inventory availability in sales channels.
    */
@@ -21,16 +21,14 @@ export interface VariantInventory {
     /**
      * Sales channel's name
      */
-    channel_name: string;
+    channel_name: string
     /**
      * Sales channel's ID
      */
-    channel_id: string;
+    channel_id: string
     /**
      * Available quantity in the sales channel
      */
-    available_quantity: number;
-  }>;
-};
-
-
+    available_quantity: number
+  }>
+}

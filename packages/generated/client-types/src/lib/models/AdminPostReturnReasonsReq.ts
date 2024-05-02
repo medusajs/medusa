@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
  * The details of the return reason to create.
@@ -10,23 +10,21 @@ export interface AdminPostReturnReasonsReq {
   /**
    * The label to display to the Customer.
    */
-  label: string;
+  label: string
   /**
    * A unique value of the return reason.
    */
-  value: string;
+  value: string
   /**
    * The ID of the parent return reason.
    */
-  parent_return_reason_id?: string;
+  parent_return_reason_id?: string
   /**
    * The description of the Reason.
    */
-  description?: string;
+  description?: string
   /**
    * An optional set of key-value pairs with additional information.
    */
-  metadata?: Record<string, any>;
-};
-
-
+  metadata?: Record<string, any>
+}

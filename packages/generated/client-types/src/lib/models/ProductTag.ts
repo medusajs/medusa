@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
  * A Product Tag can be added to Products for easy filtering and grouping.
@@ -10,27 +10,25 @@ export interface ProductTag {
   /**
    * The product tag's ID
    */
-  id: string;
+  id: string
   /**
    * The value that the Product Tag represents
    */
-  value: string;
+  value: string
   /**
    * The date with timezone at which the resource was created.
    */
-  created_at: string;
+  created_at: string
   /**
    * The date with timezone at which the resource was updated.
    */
-  updated_at: string;
+  updated_at: string
   /**
    * The date with timezone at which the resource was deleted.
    */
-  deleted_at: string | null;
+  deleted_at: string | null
   /**
    * An optional key-value map with additional details
    */
-  metadata: Record<string, any> | null;
-};
-
-
+  metadata: Record<string, any> | null
+}

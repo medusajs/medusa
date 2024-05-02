@@ -1,41 +1,39 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostStockLocationsReqAddress {
   /**
    * Stock location address
    */
-  address_1: string;
+  address_1: string
   /**
    * Stock location address' complement
    */
-  address_2?: string;
+  address_2?: string
   /**
    * Stock location address' company
    */
-  company?: string;
+  company?: string
   /**
    * Stock location address' city
    */
-  city?: string;
+  city?: string
   /**
    * The two character ISO code for the country.
    */
-  country_code: string;
+  country_code: string
   /**
    * Stock location address' phone number
    */
-  phone?: string;
+  phone?: string
   /**
    * Stock location address' postal code
    */
-  postal_code?: string;
+  postal_code?: string
   /**
    * Stock location address' province
    */
-  province?: string;
-};
-
-
+  province?: string
+}

@@ -1,33 +1,33 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetUsersParams {
   /**
    * Filter by email.
    */
-  email?: string;
+  email?: string
   /**
    * Filter by first name.
    */
-  first_name?: string;
+  first_name?: string
   /**
    * Filter by last name.
    */
-  last_name?: string;
+  last_name?: string
   /**
    * Term used to search users' first name, last name, and email.
    */
-  'q'?: string;
+  q?: string
   /**
    * A user field to sort-order the retrieved users by.
    */
-  order?: string;
+  order?: string
   /**
    * Filter by user IDs.
    */
-  id?: (string | Array<string>);
+  id?: string | Array<string>
   /**
    * Filter by a creation date range.
    */
@@ -35,20 +35,20 @@ export interface AdminGetUsersParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string;
+    lt?: string
     /**
      * filter by dates greater than this date
      */
-    gt?: string;
+    gt?: string
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string;
+    lte?: string
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string;
-  };
+    gte?: string
+  }
   /**
    * Filter by an update date range.
    */
@@ -56,20 +56,20 @@ export interface AdminGetUsersParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string;
+    lt?: string
     /**
      * filter by dates greater than this date
      */
-    gt?: string;
+    gt?: string
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string;
+    lte?: string
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string;
-  };
+    gte?: string
+  }
   /**
    * Filter by a deletion date range.
    */
@@ -77,32 +77,30 @@ export interface AdminGetUsersParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string;
+    lt?: string
     /**
      * filter by dates greater than this date
      */
-    gt?: string;
+    gt?: string
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string;
+    lte?: string
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string;
-  };
+    gte?: string
+  }
   /**
    * The number of users to skip when retrieving the users.
    */
-  offset?: number;
+  offset?: number
   /**
    * Limit the number of users returned.
    */
-  limit?: number;
+  limit?: number
   /**
    * Comma-separated fields that should be included in the returned users.
    */
-  fields?: string;
-};
-
-
+  fields?: string
+}

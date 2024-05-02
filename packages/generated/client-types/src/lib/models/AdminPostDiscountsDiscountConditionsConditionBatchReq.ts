@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
  * The details of the resources to add.
@@ -14,8 +14,6 @@ export interface AdminPostDiscountsDiscountConditionsConditionBatchReq {
     /**
      * The ID of the item
      */
-    id: string;
-  }>;
-};
-
-
+    id: string
+  }>
+}

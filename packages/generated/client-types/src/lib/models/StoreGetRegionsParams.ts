@@ -1,17 +1,17 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StoreGetRegionsParams {
   /**
    * The number of regions to skip when retrieving the regions.
    */
-  offset?: number;
+  offset?: number
   /**
    * Limit the number of regions returned.
    */
-  limit?: number;
+  limit?: number
   /**
    * Filter by a creation date range.
    */
@@ -19,20 +19,20 @@ export interface StoreGetRegionsParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string;
+    lt?: string
     /**
      * filter by dates greater than this date
      */
-    gt?: string;
+    gt?: string
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string;
+    lte?: string
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string;
-  };
+    gte?: string
+  }
   /**
    * Filter by an update date range.
    */
@@ -40,20 +40,18 @@ export interface StoreGetRegionsParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string;
+    lt?: string
     /**
      * filter by dates greater than this date
      */
-    gt?: string;
+    gt?: string
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string;
+    lte?: string
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string;
-  };
-};
-
-
+    gte?: string
+  }
+}

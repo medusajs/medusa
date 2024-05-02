@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
  * A tax line represents the taxes amount applied to a line item.
@@ -10,31 +10,29 @@ export interface TaxLine {
   /**
    * The tax line's ID
    */
-  id: string;
+  id: string
   /**
    * A code to identify the tax type by
    */
-  code: string | null;
+  code: string | null
   /**
    * A human friendly name for the tax
    */
-  name: string;
+  name: string
   /**
    * The numeric rate to charge tax by
    */
-  rate: number;
+  rate: number
   /**
    * The date with timezone at which the resource was created.
    */
-  created_at: string;
+  created_at: string
   /**
    * The date with timezone at which the resource was updated.
    */
-  updated_at: string;
+  updated_at: string
   /**
    * An optional key-value map with additional details
    */
-  metadata: Record<string, any> | null;
-};
-
-
+  metadata: Record<string, any> | null
+}

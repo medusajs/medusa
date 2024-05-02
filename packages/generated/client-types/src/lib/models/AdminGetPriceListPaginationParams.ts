@@ -1,53 +1,53 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetPriceListPaginationParams {
   /**
    * Limit the number of price lists returned.
    */
-  limit?: number;
+  limit?: number
   /**
    * The number of price lists to skip when retrieving the price lists.
    */
-  offset?: number;
+  offset?: number
   /**
    * Comma-separated relations that should be expanded in the returned price lists.
    */
-  expand?: string;
+  expand?: string
   /**
    * Comma-separated fields that should be included in the returned price lists.
    */
-  fields?: string;
+  fields?: string
   /**
    * A price-list field to sort-order the retrieved price lists by.
    */
-  order?: string;
+  order?: string
   /**
    * Filter by ID
    */
-  id?: string;
+  id?: string
   /**
    * term to search price lists' description, name, and customer group's name.
    */
-  'q'?: string;
+  q?: string
   /**
    * Filter by status.
    */
-  status?: Array<'active' | 'draft'>;
+  status?: Array<"active" | "draft">
   /**
    * Filter by name
    */
-  name?: string;
+  name?: string
   /**
    * Filter by customer-group IDs.
    */
-  customer_groups?: Array<string>;
+  customer_groups?: Array<string>
   /**
    * Filter by type.
    */
-  type?: Array<'sale' | 'override'>;
+  type?: Array<"sale" | "override">
   /**
    * Filter by a creation date range.
    */
@@ -55,20 +55,20 @@ export interface AdminGetPriceListPaginationParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string;
+    lt?: string
     /**
      * filter by dates greater than this date
      */
-    gt?: string;
+    gt?: string
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string;
+    lte?: string
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string;
-  };
+    gte?: string
+  }
   /**
    * Filter by an update date range.
    */
@@ -76,20 +76,20 @@ export interface AdminGetPriceListPaginationParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string;
+    lt?: string
     /**
      * filter by dates greater than this date
      */
-    gt?: string;
+    gt?: string
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string;
+    lte?: string
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string;
-  };
+    gte?: string
+  }
   /**
    * Filter by a deletion date range.
    */
@@ -97,20 +97,18 @@ export interface AdminGetPriceListPaginationParams {
     /**
      * filter by dates less than this date
      */
-    lt?: string;
+    lt?: string
     /**
      * filter by dates greater than this date
      */
-    gt?: string;
+    gt?: string
     /**
      * filter by dates less than or equal to this date
      */
-    lte?: string;
+    lte?: string
     /**
      * filter by dates greater than or equal to this date
      */
-    gte?: string;
-  };
-};
-
-
+    gte?: string
+  }
+}

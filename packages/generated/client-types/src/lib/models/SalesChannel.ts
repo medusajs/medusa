@@ -1,12 +1,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
-import type { Cart } from './Cart';
-import type { Order } from './Order';
-import type { PublishableApiKey } from './PublishableApiKey';
-import type { SalesChannelLocation } from './SalesChannelLocation';
+import type { Cart } from "./Cart"
+import type { Order } from "./Order"
+import type { PublishableApiKey } from "./PublishableApiKey"
+import type { SalesChannelLocation } from "./SalesChannelLocation"
 
 /**
  * A Sales Channel is a method a business offers its products for purchase for the customers. For example, a Webshop can be a sales channel, and a mobile app can be another.
@@ -15,51 +15,49 @@ export interface SalesChannel {
   /**
    * The sales channel's ID
    */
-  id: string;
+  id: string
   /**
    * The name of the sales channel.
    */
-  name: string;
+  name: string
   /**
    * The description of the sales channel.
    */
-  description: string | null;
+  description: string | null
   /**
    * Specify if the sales channel is enabled or disabled.
    */
-  is_disabled: boolean;
+  is_disabled: boolean
   /**
    * The details of the stock locations related to the sales channel.
    */
-  locations?: Array<SalesChannelLocation>;
+  locations?: Array<SalesChannelLocation>
   /**
    * The date with timezone at which the resource was created.
    */
-  created_at: string;
+  created_at: string
   /**
    * The date with timezone at which the resource was updated.
    */
-  updated_at: string;
+  updated_at: string
   /**
    * The date with timezone at which the resource was deleted.
    */
-  deleted_at: string | null;
+  deleted_at: string | null
   /**
    * An optional key-value map with additional details
    */
-  metadata?: Record<string, any> | null;
+  metadata?: Record<string, any> | null
   /**
    * The associated carts.
    */
-  carts?: Array<Cart> | null;
+  carts?: Array<Cart> | null
   /**
    * The associated orders.
    */
-  orders?: Array<Order> | null;
+  orders?: Array<Order> | null
   /**
    * The associated publishable API keys.
    */
-  publishableKeys?: Array<PublishableApiKey> | null;
-};
-
-
+  publishableKeys?: Array<PublishableApiKey> | null
+}

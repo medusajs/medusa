@@ -1,25 +1,23 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StorePostSearchReq {
   /**
    * The search query.
    */
-  'q'?: string;
+  q?: string
   /**
    * The number of products to skip when retrieving the products.
    */
-  offset?: number;
+  offset?: number
   /**
    * Limit the number of products returned.
    */
-  limit?: number;
+  limit?: number
   /**
    * Pass filters based on the search service.
    */
-  filter?: any;
-};
-
-
+  filter?: any
+}

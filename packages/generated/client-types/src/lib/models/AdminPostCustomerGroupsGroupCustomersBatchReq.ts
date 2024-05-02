@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
  * The customers to add to the customer group.
@@ -14,8 +14,6 @@ export interface AdminPostCustomerGroupsGroupCustomersBatchReq {
     /**
      * ID of the customer
      */
-    id: string;
-  }>;
-};
-
-
+    id: string
+  }>
+}

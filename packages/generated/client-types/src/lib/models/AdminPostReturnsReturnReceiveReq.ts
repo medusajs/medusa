@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
  * The details of the received return.
@@ -14,20 +14,18 @@ export interface AdminPostReturnsReturnReceiveReq {
     /**
      * The ID of the Line Item.
      */
-    item_id: string;
+    item_id: string
     /**
      * The quantity of the Line Item.
      */
-    quantity: number;
-  }>;
+    quantity: number
+  }>
   /**
    * The amount to refund.
    */
-  refund?: number;
+  refund?: number
   /**
    * The ID of the location to return items from.
    */
-  location_id?: string;
-};
-
-
+  location_id?: string
+}

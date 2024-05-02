@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
  * The details of the customer to create.
@@ -10,27 +10,25 @@ export interface AdminPostCustomersReq {
   /**
    * The customer's email.
    */
-  email: string;
+  email: string
   /**
    * The customer's first name.
    */
-  first_name: string;
+  first_name: string
   /**
    * The customer's last name.
    */
-  last_name: string;
+  last_name: string
   /**
    * The customer's password.
    */
-  password: string;
+  password: string
   /**
    * The customer's phone number.
    */
-  phone?: string;
+  phone?: string
   /**
    * An optional set of key-value pairs to hold additional information.
    */
-  metadata?: Record<string, any>;
-};
-
-
+  metadata?: Record<string, any>
+}

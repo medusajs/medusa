@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import { SetRelation, Merge } from '../core/ModelUtils';
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
  * The details of the order refund.
@@ -10,19 +10,17 @@ export interface AdminPostOrdersOrderRefundsReq {
   /**
    * The amount to refund. It should be less than or equal the `refundable_amount` of the order.
    */
-  amount: number;
+  amount: number
   /**
    * The reason for the Refund.
    */
-  reason: string;
+  reason: string
   /**
    * A note with additional details about the Refund.
    */
-  note?: string;
+  note?: string
   /**
    * If set to `true`, no notification will be sent to the customer related to this Refund.
    */
-  no_notification?: boolean;
-};
-
-
+  no_notification?: boolean
+}
