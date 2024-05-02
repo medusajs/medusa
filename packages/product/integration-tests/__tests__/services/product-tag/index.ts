@@ -99,7 +99,7 @@ moduleIntegrationTestRunner({
         })
 
         it("list product tags by value matching string", async () => {
-          const tagsResults = await service.list({ value: "united kingdom" })
+          const tagsResults = await service.list({ q: "united kingdom" })
 
           expect(tagsResults).toEqual([
             expect.objectContaining({
@@ -184,8 +184,11 @@ moduleIntegrationTestRunner({
               products: [
                 {
                   id: "test-1",
+                  collection_id: null,
+                  type_id: null,
                 },
               ],
+              value: "France",
             }),
           ])
         })

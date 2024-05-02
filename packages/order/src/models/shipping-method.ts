@@ -10,13 +10,11 @@ import {
   Cascade,
   Collection,
   Entity,
-  ManyToOne,
   OneToMany,
   OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import Order from "./order"
 import ShippingMethodAdjustment from "./shipping-method-adjustment"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
 
@@ -25,45 +23,10 @@ const ShippingOptionIdIndex = createPsqlIndexStatementHelper({
   columns: "shipping_option_id",
 })
 
-const OrderIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_shipping_method",
-  columns: "order_id",
-})
-
-const OrderVersionIndex = createPsqlIndexStatementHelper({
-  tableName: "order_shipping_method",
-  columns: ["order_id", "version"],
-})
-
 @Entity({ tableName: "order_shipping_method" })
-@OrderVersionIndex.MikroORMIndex()
 export default class ShippingMethod {
   @PrimaryKey({ columnType: "text" })
   id: string
-
-  @ManyToOne({
-    entity: () => Order,
-    columnType: "text",
-    fieldName: "order_id",
-    mapToPk: true,
-    cascade: [Cascade.REMOVE],
-  })
-  @OrderIdIndex.MikroORMIndex()
-  order_id: string
-
-  @ManyToOne({
-    entity: () => Order,
-    fieldName: "order_id",
-    cascade: [Cascade.REMOVE],
-    persist: false,
-  })
-  order: Order
-
-  @Property({
-    columnType: "integer",
-    defaultRaw: "1",
-  })
-  version: number = 1
 
   @Property({ columnType: "text" })
   name: string
@@ -129,11 +92,9 @@ export default class ShippingMethod {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordsm")
-    this.order_id ??= this.order?.id
   }
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordsm")
-    this.order_id ??= this.order?.id
   }
 }

@@ -1,5 +1,5 @@
 import { DAL } from "@medusajs/types"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { DALUtils, Searchable, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
@@ -24,9 +24,11 @@ export default class Region {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   name: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   currency_code: string
 

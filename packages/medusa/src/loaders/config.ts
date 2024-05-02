@@ -1,4 +1,4 @@
-import { getConfigFile } from "medusa-core-utils"
+import { getConfigFile, isDefined } from "medusa-core-utils"
 import { ConfigModule } from "../types/global"
 import logger from "./logger"
 
@@ -58,11 +58,24 @@ export default (rootDirectory: string): ConfigModule => {
     )
   }
 
+  let worker_mode = configModule?.projectConfig?.worker_mode
+  if (!isDefined(worker_mode)) {
+    const env = process.env.MEDUSA_WORKER_MODE
+    if (isDefined(env)) {
+      if (env === "shared" || env === "worker" || env === "server") {
+        worker_mode = env
+      }
+    } else {
+      worker_mode = "shared"
+    }
+  }
+
   return {
     projectConfig: {
       jwt_secret: jwt_secret ?? "supersecret",
       cookie_secret: cookie_secret ?? "supersecret",
       ...configModule?.projectConfig,
+      worker_mode,
     },
     modules: configModule.modules ?? {},
     featureFlags: configModule?.featureFlags ?? {},

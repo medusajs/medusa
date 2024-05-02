@@ -5,7 +5,6 @@ import {
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
   Entity,
   ManyToOne,
   OnInit,
@@ -42,6 +41,13 @@ type OrderSummaryTotals = {
 const OrderIdVersionIndex = createPsqlIndexStatementHelper({
   tableName: "order_summary",
   columns: ["order_id", "version"],
+  where: "deleted_at IS NOT NULL",
+})
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
 })
 
 @Entity({ tableName: "order_summary" })
@@ -55,14 +61,11 @@ export default class OrderSummary {
     columnType: "text",
     fieldName: "order_id",
     mapToPk: true,
-    cascade: [Cascade.REMOVE],
+    onDelete: "cascade",
   })
   order_id: string
 
-  @ManyToOne({
-    entity: () => Order,
-    fieldName: "order_id",
-    cascade: [Cascade.REMOVE],
+  @ManyToOne(() => Order, {
     persist: false,
   })
   order: Order
@@ -90,6 +93,10 @@ export default class OrderSummary {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  @DeletedAtIndex.MikroORMIndex()
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

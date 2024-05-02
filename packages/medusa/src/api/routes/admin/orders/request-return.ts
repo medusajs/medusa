@@ -1,3 +1,4 @@
+import { Logger } from "@medusajs/types"
 import { isDefined, MedusaError } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import {
@@ -18,7 +19,6 @@ import {
 import { FindParams } from "../../../../types/common"
 import { OrdersReturnItem } from "../../../../types/orders"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
-import { Logger } from "@medusajs/types"
 
 /**
  * @oas [post] /admin/orders/{id}/return
@@ -340,6 +340,25 @@ type ReturnObj = {
 }
 
 /**
+ * The return's shipping method details.
+ */
+class ReturnShipping {
+  /**
+   * The ID of the shipping option used for the return.
+   */
+  @IsString()
+  @IsOptional()
+  option_id?: string
+
+  /**
+   * The shipping method's price.
+   */
+  @IsInt()
+  @IsOptional()
+  price?: number
+}
+
+/**
  * @schema AdminPostOrdersOrderReturnsReq
  * type: object
  * description: "The details of the requested return."
@@ -425,25 +444,6 @@ export class AdminPostOrdersOrderReturnsReq {
   @IsOptional()
   @IsString()
   location_id?: string
-}
-
-/**
- * The return's shipping method details.
- */
-class ReturnShipping {
-  /**
-   * The ID of the shipping option used for the return.
-   */
-  @IsString()
-  @IsOptional()
-  option_id?: string
-
-  /**
-   * The shipping method's price.
-   */
-  @IsInt()
-  @IsOptional()
-  price?: number
 }
 
 export class AdminPostOrdersOrderReturnsParams extends FindParams {}

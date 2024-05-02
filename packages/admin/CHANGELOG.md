@@ -1,5 +1,24 @@
 # @medusajs/admin
 
+## 7.1.13
+
+### Patch Changes
+
+- [#6883](https://github.com/medusajs/medusa/pull/6883) [`eadc5e8a79`](https://github.com/medusajs/medusa/commit/eadc5e8a794ec07f7b523808aa0fec2ac394c984) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat: Admin V2 API keys
+
+- Updated dependencies [[`40686ba980`](https://github.com/medusajs/medusa/commit/40686ba98077c1c509744c0bd44fea4d4786abaa), [`0bf0bf819b`](https://github.com/medusajs/medusa/commit/0bf0bf819b04e0c96aabf1e959d4a592970e64ec), [`c3efac5a0d`](https://github.com/medusajs/medusa/commit/c3efac5a0d6cfa38e1af8d248138fa83934a8ceb)]:
+  - @medusajs/admin-ui@2.1.14
+  - medusa-core-utils@1.2.2
+
+## 7.1.12
+
+### Patch Changes
+
+- [#6824](https://github.com/medusajs/medusa/pull/6824) [`ef58826dd2`](https://github.com/medusajs/medusa/commit/ef58826dd240ef4093a08fbafb6788f1f7e4087f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui, admin): Add missing regions relation
+
+- Updated dependencies [[`ef58826dd2`](https://github.com/medusajs/medusa/commit/ef58826dd240ef4093a08fbafb6788f1f7e4087f)]:
+  - @medusajs/admin-ui@2.1.13
+
 ## 7.1.11
 
 ### Patch Changes

@@ -1,30 +1,30 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
-import { BigNumberRawValue } from "../totals"
+import { BigNumberRawValue, BigNumberValue } from "../totals"
 
 export type OrderSummaryDTO = {
-  total: number
-  subtotal: number
-  total_tax: number
+  total: BigNumberValue
+  subtotal: BigNumberValue
+  total_tax: BigNumberValue
 
-  ordered_total: number
-  fulfilled_total: number
-  returned_total: number
-  return_request_total: number
-  write_off_total: number
-  projected_total: number
+  ordered_total: BigNumberValue
+  fulfilled_total: BigNumberValue
+  returned_total: BigNumberValue
+  return_request_total: BigNumberValue
+  write_off_total: BigNumberValue
+  projected_total: BigNumberValue
 
-  net_total: number
-  net_subtotal: number
-  net_total_tax: number
+  net_total: BigNumberValue
+  net_subtotal: BigNumberValue
+  net_total_tax: BigNumberValue
 
-  future_total: number
-  future_subtotal: number
-  future_total_tax: number
-  future_projected_total: number
+  future_total: BigNumberValue
+  future_subtotal: BigNumberValue
+  future_total_tax: BigNumberValue
+  future_projected_total: BigNumberValue
 
-  balance: number
-  future_balance: number
+  balance: BigNumberValue
+  future_balance: BigNumberValue
 }
 
 export interface OrderAdjustmentLineDTO {
@@ -39,7 +39,7 @@ export interface OrderAdjustmentLineDTO {
   /**
    * The amount of the adjustment line
    */
-  amount: number
+  amount: BigNumberValue
   /**
    * The ID of the associated order
    */
@@ -134,6 +134,26 @@ export interface OrderShippingMethodTaxLineDTO extends OrderTaxLineDTO {
    * The ID of the associated shipping method
    */
   shipping_method_id: string
+
+  /**
+   * The total tax relative to the shipping method.
+   */
+  total: BigNumberValue
+
+  /**
+   * The subtotal tax relative to the shipping method.
+   */
+  subtotal: BigNumberValue
+
+  /**
+   * The raw total tax relative to the shipping method.
+   */
+  raw_total: BigNumberRawValue
+
+  /**
+   * The raw subtotal tax relative to the shipping method.
+   */
+  raw_subtotal: BigNumberRawValue
 }
 
 export interface OrderLineItemTaxLineDTO extends OrderTaxLineDTO {
@@ -145,6 +165,26 @@ export interface OrderLineItemTaxLineDTO extends OrderTaxLineDTO {
    * The ID of the associated line item
    */
   item_id: string
+
+  /**
+   * The total tax relative to the item.
+   */
+  total: BigNumberValue
+
+  /**
+   * The subtotal tax relative to the item.
+   */
+  subtotal: BigNumberValue
+
+  /**
+   * The raw total tax relative to the item.
+   */
+  raw_total: BigNumberRawValue
+
+  /**
+   * The raw subtotal tax relative to the item.
+   */
+  raw_subtotal: BigNumberRawValue
 }
 
 export interface OrderAddressDTO {
@@ -233,8 +273,12 @@ export interface OrderShippingMethodDTO {
   /**
    * The price of the shipping method
    */
-  unit_price: number
+  amount: BigNumberValue
 
+  /**
+   * The raw price of the shipping method
+   */
+  raw_amount: BigNumberRawValue
   /**
    * Whether the shipping method price is tax inclusive or not
    */
@@ -277,27 +321,197 @@ export interface OrderShippingMethodDTO {
    */
   updated_at: Date | string
 
-  total: number
-  subtotal: number
-  tax_total: number
-  discount_total: number
-  discount_tax_total: number
+  /**
+   * The original total of the order shipping method.
+   */
+  original_total: BigNumberValue
+
+  /**
+   * The original subtotal of the order shipping method.
+   */
+  original_subtotal: BigNumberValue
+
+  /**
+   * The original tax total of the order shipping method.
+   */
+  original_tax_total: BigNumberValue
+
+  /**
+   * The total of the order shipping method.
+   */
+  total: BigNumberValue
+
+  /**
+   * The subtotal of the order shipping method.
+   */
+  subtotal: BigNumberValue
+
+  /**
+   * The tax total of the order shipping method.
+   */
+  tax_total: BigNumberValue
+
+  /**
+   * The discount total of the order shipping method.
+   */
+  discount_total: BigNumberValue
+
+  /**
+   * The discount tax total of the order shipping method.
+   */
+  discount_tax_total: BigNumberValue
+
+  /**
+   * The raw original total of the order shipping method.
+   */
+  raw_original_total: BigNumberRawValue
+
+  /**
+   * The raw original subtotal of the order shipping method.
+   */
+  raw_original_subtotal: BigNumberRawValue
+
+  /**
+   * The raw original tax total of the order shipping method.
+   */
+  raw_original_tax_total: BigNumberRawValue
+
+  /**
+   * The raw total of the order shipping method.
+   */
+  raw_total: BigNumberRawValue
+
+  /**
+   * The raw subtotal of the order shipping method.
+   */
+  raw_subtotal: BigNumberRawValue
+
+  /**
+   * The raw tax total of the order shipping method.
+   */
+  raw_tax_total: BigNumberRawValue
+
+  /**
+   * The raw discount total of the order shipping method.
+   */
+  raw_discount_total: BigNumberRawValue
+
+  /**
+   * The raw discount tax total of the order shipping method.
+   */
+  raw_discount_tax_total: BigNumberRawValue
 }
 
 export interface OrderLineItemTotalsDTO {
-  original_total: number
-  original_subtotal: number
-  original_tax_total: number
+  /**
+   * The original total of the order line item.
+   */
+  original_total: BigNumberValue
 
-  item_total: number
-  item_subtotal: number
-  item_tax_total: number
+  /**
+   * The original subtotal of the order line item.
+   */
+  original_subtotal: BigNumberValue
 
-  total: number
-  subtotal: number
-  tax_total: number
-  discount_total: number
-  discount_tax_total: number
+  /**
+   * The original tax total of the order line item.
+   */
+  original_tax_total: BigNumberValue
+
+  /**
+   * The item total of the order line item.
+   */
+  item_total: BigNumberValue
+
+  /**
+   * The item subtotal of the order line item.
+   */
+  item_subtotal: BigNumberValue
+
+  /**
+   * The item tax total of the order line item.
+   */
+  item_tax_total: BigNumberValue
+
+  /**
+   * The total of the order line item.
+   */
+  total: BigNumberValue
+
+  /**
+   * The subtotal of the order line item.
+   */
+  subtotal: BigNumberValue
+
+  /**
+   * The tax total of the order line item.
+   */
+  tax_total: BigNumberValue
+
+  /**
+   * The discount total of the order line item.
+   */
+  discount_total: BigNumberValue
+
+  /**
+   * The discount tax total of the order line item.
+   */
+  discount_tax_total: BigNumberValue
+
+  /**
+   * The raw original total of the order line item.
+   */
+  raw_original_total: BigNumberRawValue
+
+  /**
+   * The raw original subtotal of the order line item.
+   */
+  raw_original_subtotal: BigNumberRawValue
+
+  /**
+   * The raw original tax total of the order line item.
+   */
+  raw_original_tax_total: BigNumberRawValue
+
+  /**
+   * The raw item total of the order line item.
+   */
+  raw_item_total: BigNumberRawValue
+
+  /**
+   * The raw item subtotal of the order line item.
+   */
+  raw_item_subtotal: BigNumberRawValue
+
+  /**
+   * The raw item tax total of the order line item.
+   */
+  raw_item_tax_total: BigNumberRawValue
+
+  /**
+   * The raw total of the order line item.
+   */
+  raw_total: BigNumberRawValue
+
+  /**
+   * The raw subtotal of the order line item.
+   */
+  raw_subtotal: BigNumberRawValue
+
+  /**
+   * The raw tax total of the order line item.
+   */
+  raw_tax_total: BigNumberRawValue
+
+  /**
+   * The raw discount total of the order line item.
+   */
+  raw_discount_total: BigNumberRawValue
+
+  /**
+   * The raw discount tax total of the order line item.
+   */
+  raw_discount_tax_total: BigNumberRawValue
 }
 
 export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
@@ -417,6 +631,16 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
   raw_unit_price: BigNumberRawValue
 
   /**
+   * The quantity of the order line item.
+   */
+  quantity: number
+
+  /**
+   * The raw quantity of the order line item.
+   */
+  raw_quantity: BigNumberRawValue
+
+  /**
    * The associated tax lines.
    *
    * @expandable
@@ -443,6 +667,11 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
    * The date when the order line item was last updated.
    */
   updated_at: Date
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 export interface OrderItemDTO {
@@ -623,6 +852,226 @@ export interface OrderDTO {
    * When the order was updated.
    */
   updated_at?: string | Date
+
+  /**
+   * The original item total of the order.
+   */
+  original_item_total: BigNumberValue
+
+  /**
+   * The original item subtotal of the order.
+   */
+  original_item_subtotal: BigNumberValue
+
+  /**
+   * The original item tax total of the order.
+   */
+  original_item_tax_total: BigNumberValue
+
+  /**
+   * The item total of the order.
+   */
+  item_total: BigNumberValue
+
+  /**
+   * The item subtotal of the order.
+   */
+  item_subtotal: BigNumberValue
+
+  /**
+   * The item tax total of the order.
+   */
+  item_tax_total: BigNumberValue
+
+  /**
+   * The original total of the order.
+   */
+  original_total: BigNumberValue
+
+  /**
+   * The original subtotal of the order.
+   */
+  original_subtotal: BigNumberValue
+
+  /**
+   * The original tax total of the order.
+   */
+  original_tax_total: BigNumberValue
+
+  /**
+   * The total of the order.
+   */
+  total: BigNumberValue
+
+  /**
+   * The subtotal of the order. (Excluding taxes)
+   */
+  subtotal: BigNumberValue
+
+  /**
+   * The tax total of the order.
+   */
+  tax_total: BigNumberValue
+
+  /**
+   * The discount total of the order.
+   */
+  discount_total: BigNumberValue
+
+  /**
+   * The discount tax total of the order.
+   */
+  discount_tax_total: BigNumberValue
+
+  /**
+   * The gift card total of the order.
+   */
+  gift_card_total: BigNumberValue
+
+  /**
+   * The gift card tax total of the order.
+   */
+  gift_card_tax_total: BigNumberValue
+
+  /**
+   * The shipping total of the order.
+   */
+  shipping_total: BigNumberValue
+
+  /**
+   * The shipping subtotal of the order.
+   */
+  shipping_subtotal: BigNumberValue
+
+  /**
+   * The shipping tax total of the order.
+   */
+  shipping_tax_total: BigNumberValue
+
+  /**
+   * The original shipping total of the order.
+   */
+  original_shipping_total: BigNumberValue
+
+  /**
+   * The original shipping subtotal of the order.
+   */
+  original_shipping_subtotal: BigNumberValue
+
+  /**
+   * The original shipping tax total of the order.
+   */
+  original_shipping_tax_total: BigNumberValue
+
+  /**
+   * The raw original item total of the order.
+   */
+  raw_original_item_total: BigNumberRawValue
+
+  /**
+   * The raw original item subtotal of the order.
+   */
+  raw_original_item_subtotal: BigNumberRawValue
+
+  /**
+   * The raw original item tax total of the order.
+   */
+  raw_original_item_tax_total: BigNumberRawValue
+
+  /**
+   * The raw item total of the order.
+   */
+  raw_item_total: BigNumberRawValue
+
+  /**
+   * The raw item subtotal of the order.
+   */
+  raw_item_subtotal: BigNumberRawValue
+
+  /**
+   * The raw item tax total of the order.
+   */
+  raw_item_tax_total: BigNumberRawValue
+
+  /**
+   * The raw original total of the order.
+   */
+  raw_original_total: BigNumberRawValue
+
+  /**
+   * The raw original subtotal of the order.
+   */
+  raw_original_subtotal: BigNumberRawValue
+
+  /**
+   * The raw original tax total of the order.
+   */
+  raw_original_tax_total: BigNumberRawValue
+
+  /**
+   * The raw total of the order.
+   */
+  raw_total: BigNumberRawValue
+
+  /**
+   * The raw subtotal of the order. (Excluding taxes)
+   */
+  raw_subtotal: BigNumberRawValue
+
+  /**
+   * The raw tax total of the order.
+   */
+  raw_tax_total: BigNumberRawValue
+
+  /**
+   * The raw discount total of the order.
+   */
+  raw_discount_total: BigNumberRawValue
+
+  /**
+   * The raw discount tax total of the order.
+   */
+  raw_discount_tax_total: BigNumberRawValue
+
+  /**
+   * The raw gift card total of the order.
+   */
+  raw_gift_card_total: BigNumberRawValue
+
+  /**
+   * The raw gift card tax total of the order.
+   */
+  raw_gift_card_tax_total: BigNumberRawValue
+
+  /**
+   * The raw shipping total of the order.
+   */
+  raw_shipping_total: BigNumberRawValue
+
+  /**
+   * The raw shipping subtotal of the order.
+   */
+  raw_shipping_subtotal: BigNumberRawValue
+
+  /**
+   * The raw shipping tax total of the order.
+   */
+  raw_shipping_tax_total: BigNumberRawValue
+
+  /**
+   * The raw original shipping total of the order.
+   */
+  raw_original_shipping_total: BigNumberRawValue
+
+  /**
+   * The raw original shipping subtotal of the order.
+   */
+  raw_original_shipping_subtotal: BigNumberRawValue
+
+  /**
+   * The raw original shipping tax total of the order.
+   */
+  raw_original_shipping_tax_total: BigNumberRawValue
 }
 
 export interface OrderChangeDTO {
@@ -738,11 +1187,11 @@ export interface OrderChangeActionDTO {
   /**
    * The action of the order change action
    */
-  action: Record<string, unknown>
+  action: string
   /**
-   * The metadata of the order change action
+   * The details of the order change action
    */
-  metadata?: Record<string, unknown> | null
+  details: Record<string, unknown> | null
   /**
    * The internal note of the order change action
    */
@@ -775,7 +1224,11 @@ export interface OrderTransactionDTO {
   /**
    * The amount of the transaction
    */
-  amount: number
+  amount: BigNumberValue
+  /**
+   * The raw amount of the transaction
+   */
+  raw_amount: BigNumberRawValue
   /**
    * The currency code of the transaction
    */
@@ -877,28 +1330,42 @@ export interface FilterableOrderShippingMethodTaxLineProps
 
 export interface FilterableOrderChangeProps
   extends BaseFilterable<FilterableOrderChangeProps> {
-  id?: string | string[]
-  order_id?: string | string[]
-  status?: string | string[]
-  requested_by?: string | string[]
-  confirmed_by?: string | string[]
-  declined_by?: string | string[]
-  canceled_by?: string | string[]
+  id?: string | string[] | OperatorMap<string>
+  order_id?: string | string[] | OperatorMap<string>
+  status?: string | string[] | OperatorMap<string>
+  requested_by?: string | string[] | OperatorMap<string>
+  confirmed_by?: string | string[] | OperatorMap<string>
+  declined_by?: string | string[] | OperatorMap<string>
+  canceled_by?: string | string[] | OperatorMap<string>
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
+  canceled_at?: OperatorMap<string>
 }
 
 export interface FilterableOrderChangeActionProps
   extends BaseFilterable<FilterableOrderChangeActionProps> {
-  id?: string | string[]
-  order_change_id?: string | string[]
-  reference?: string | string[]
-  reference_id?: string | string[]
+  id?: string | string[] | OperatorMap<string>
+  order_change_id?: string | string[] | OperatorMap<string>
+  reference?: string | string[] | OperatorMap<string>
+  reference_id?: string | string[] | OperatorMap<string>
 }
 
 export interface FilterableOrderTransactionProps
   extends BaseFilterable<FilterableOrderTransactionProps> {
-  id?: string | string[]
-  order_id?: string | string[]
-  currency_code?: string | string[]
-  reference?: string | string[]
-  reference_id?: string | string[]
+  id?: string | string[] | OperatorMap<string>
+  order_id?: string | string[] | OperatorMap<string>
+  currency_code?: string | string[] | OperatorMap<string>
+  reference?: string | string[] | OperatorMap<string>
+  reference_id?: string | string[] | OperatorMap<string>
+
+  created_at?: OperatorMap<string>
+}
+
+export interface FilterableOrderItemProps
+  extends BaseFilterable<FilterableOrderItemProps> {
+  id?: string | string[] | OperatorMap<string>
+  order_id?: string | string[] | OperatorMap<string>
+  version?: string | string[] | OperatorMap<string>
+  item_id?: string | string[] | OperatorMap<string>
 }

@@ -19,13 +19,18 @@ type StepFunctionReturnConfig<TOutput> = {
   ): WorkflowData<TOutput>
 }
 
+type KeysOfUnion<T> = T extends T ? keyof T : never
+
 /**
  * A step function to be used in a workflow.
  *
  * @typeParam TInput - The type of the input of the step.
  * @typeParam TOutput - The type of the output of the step.
  */
-export type StepFunction<TInput, TOutput = unknown> = (keyof TInput extends []
+export type StepFunction<
+  TInput,
+  TOutput = unknown
+> = (KeysOfUnion<TInput> extends []
   ? // Function that doesn't expect any input
     {
       (): WorkflowData<TOutput> & StepFunctionReturnConfig<TOutput>
@@ -86,6 +91,31 @@ export type CreateWorkflowComposerContext = {
  * The step's context.
  */
 export interface StepExecutionContext {
+  /**
+   * The ID of the workflow.
+   */
+  workflowId: string
+
+  /**
+   * The attempt number of the step.
+   */
+  attempt: number
+
+  /**
+   * The idempoency key of the step.
+   */
+  idempotencyKey: string
+
+  /**
+   * The name of the step.
+   */
+  stepName: string
+
+  /**
+   * The action of the step.
+   */
+  action: "invoke" | "compensate"
+
   /**
    * The container used to access resources, such as services, in the step.
    */

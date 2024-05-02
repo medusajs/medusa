@@ -1,13 +1,13 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
-import { ProductTypes } from "@medusajs/types"
+import { BigNumberInput, ProductTypes } from "@medusajs/types"
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type VariantPrice = {
   region_id?: string
   currency_code?: string
-  amount: number
-  min_quantity?: number
-  max_quantity?: number
+  amount: BigNumberInput
+  min_quantity?: BigNumberInput
+  max_quantity?: BigNumberInput
 }
 
 type HandlerInput = {

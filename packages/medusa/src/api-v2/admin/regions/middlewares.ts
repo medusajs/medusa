@@ -1,15 +1,14 @@
 import * as QueryConfig from "./query-config"
-
-import {
-  AdminGetRegionsParams,
-  AdminGetRegionsRegionParams,
-  AdminPostRegionsRegionReq,
-  AdminPostRegionsReq,
-} from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
-
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformQuery } from "../../utils/validate-query"
+import {
+  AdminCreateRegion,
+  AdminGetRegionParams,
+  AdminGetRegionsParams,
+  AdminUpdateRegion,
+} from "./validators"
+import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -21,7 +20,7 @@ export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/regions",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetRegionsParams,
         QueryConfig.listTransformQueryConfig
       ),
@@ -31,8 +30,8 @@ export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/regions/:id",
     middlewares: [
-      transformQuery(
-        AdminGetRegionsRegionParams,
+      validateAndTransformQuery(
+        AdminGetRegionParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -40,11 +39,23 @@ export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/regions",
-    middlewares: [transformBody(AdminPostRegionsReq)],
+    middlewares: [
+      validateAndTransformBody(AdminCreateRegion),
+      validateAndTransformQuery(
+        AdminGetRegionParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/regions/:id",
-    middlewares: [transformBody(AdminPostRegionsRegionReq)],
+    middlewares: [
+      validateAndTransformBody(AdminUpdateRegion),
+      validateAndTransformQuery(
+        AdminGetRegionParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
 ]

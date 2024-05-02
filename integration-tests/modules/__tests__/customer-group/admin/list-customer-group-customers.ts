@@ -13,7 +13,7 @@ const adminHeaders = {
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
-    describe("GET /admin/customer-groups/:id/customers", () => {
+    describe("GET customer group customers", () => {
       let appContainer
       let customerModuleService: ICustomerModuleService
 
@@ -54,7 +54,7 @@ medusaIntegrationTestRunner({
         )
 
         const response = await api.get(
-          `/admin/customer-groups/${group.id}/customers`,
+          `/admin/customers?groups[]=${group.id}`,
           adminHeaders
         )
 

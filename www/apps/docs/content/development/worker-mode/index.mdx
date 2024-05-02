@@ -1,0 +1,52 @@
+# Worker Mode for a Medusa Instance
+
+In this document, you'll learn about the worker mode in Medusa and its importance in production.
+
+## What is a Worker?
+
+Workers are processes running separately from the main application. They're useful for executing long-running or resource-heavy tasks in the background, such as importing products or updating a search index.
+
+With a worker, these tasks are offloaded to a separate process. So, they won't affect the performance of the main application.
+
+![Diagram showcasing how the server and worker work together](https://res.cloudinary.com/dza7lstvk/image/upload/v1711459873/Medusa%20Book/medusa-worker_klkbch.jpg)
+
+While workers are especially good for intensive tasks, it's recommended to always configuring a worker process in your setup if possible.
+
+---
+
+## Medusa Runtimes
+
+Medusa has three runtime modes:
+
+- `server`: the API Routes are registered, and no workers are started.
+- `worker`: the API Routes aren't registered, and workers are started.
+- `shared`: (default) the API routes are registered, and workers are started.
+
+The runtime mode is configured by the [worker_mode configuration](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx#worker_mode) in `medusa-config.js`.
+
+For example:
+
+```js title="medusa-config.js"
+const projectConfig = {
+  // ...,
+  database_url: "...",
+  worker_mode: "worker",
+}
+```
+
+---
+
+## Usage in Production
+
+When deploying the Medusa backend in production, it's recommended to deploy two instances:
+
+1. One having the `worker_mode` configuration set to `server`.
+2. Another having the `worker_mode` configuration set to `worker`.
+
+In this case, it's best to set the `worker_mode` configuration's value to an environment variable, then set that environment variable differently for each deployed instance. For development, you can use `shared` as the environment variable's values.
+
+:::tip
+
+Check out the [Railway Deployment Guide](../../deployments/server/deploying-on-railway.mdx) as an example.
+
+:::

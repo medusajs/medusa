@@ -1,8 +1,8 @@
+import { isObject } from "./is-object"
+
 /**
  * Convert a string fields array to a remote query object
- * @param entryPoint
- * @param variables
- * @param fields
+ * @param config - The configuration object
  *
  * @example
  * const fields = [
@@ -83,42 +83,73 @@
  * //   },
  * // }
  */
-export function remoteQueryObjectFromString({
-  entryPoint,
-  variables,
-  fields,
-}: {
-  entryPoint: string
-  variables?: any
-  fields: string[]
-}): object {
+export function remoteQueryObjectFromString(
+  config:
+    | {
+        entryPoint: string
+        variables?: any
+        fields: string[]
+      }
+    | {
+        service: string
+        variables?: any
+        fields: string[]
+      }
+): object {
+  const { entryPoint, service, variables, fields } = {
+    ...config,
+    entryPoint: "entryPoint" in config ? config.entryPoint : undefined,
+    service: "service" in config ? config.service : undefined,
+  }
+
+  const entryKey = (entryPoint ?? service) as string
+
   const remoteJoinerConfig: object = {
-    [entryPoint]: {
+    [entryKey]: {
       fields: [],
+      isServiceAccess: !!service, // specifies if the entry point is a service
     },
   }
 
-  if (variables) {
-    remoteJoinerConfig[entryPoint]["__args"] = variables
-  }
+  const usedVariables = new Set()
 
   for (const field of fields) {
     if (!field.includes(".")) {
-      remoteJoinerConfig[entryPoint]["fields"].push(field)
+      remoteJoinerConfig[entryKey]["fields"].push(field)
       continue
     }
 
     const fieldSegments = field.split(".")
     const fieldProperty = fieldSegments.pop()
 
+    let combinedPath = ""
+
     const deepConfigRef = fieldSegments.reduce((acc, curr) => {
-      acc[curr] ??= {}
+      combinedPath = combinedPath ? combinedPath + "." + curr : curr
+
+      if (isObject(variables) && combinedPath in variables) {
+        acc[curr] ??= {}
+        acc[curr]["__args"] = variables[combinedPath]
+        usedVariables.add(combinedPath)
+      } else {
+        acc[curr] ??= {}
+      }
+
       return acc[curr]
-    }, remoteJoinerConfig[entryPoint])
+    }, remoteJoinerConfig[entryKey])
 
     deepConfigRef["fields"] ??= []
     deepConfigRef["fields"].push(fieldProperty)
   }
+
+  const topLevelArgs = {}
+  for (const key of Object.keys(variables ?? {})) {
+    if (!usedVariables.has(key)) {
+      topLevelArgs[key] = variables[key]
+    }
+  }
+
+  remoteJoinerConfig[entryKey]["__args"] = topLevelArgs ?? {}
 
   return remoteJoinerConfig
 }

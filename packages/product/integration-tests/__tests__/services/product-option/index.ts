@@ -210,6 +210,7 @@ moduleIntegrationTestRunner({
           expect(serialized).toEqual({
             id: optionId,
             title: optionValue,
+            product_id: null,
           })
         })
       })
@@ -340,7 +341,7 @@ moduleIntegrationTestRunner({
 
           const productOptions = await service.list(
             {
-              title: "US%",
+              q: "US%",
             },
             {
               relations: ["product"],

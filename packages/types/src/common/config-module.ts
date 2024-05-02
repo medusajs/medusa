@@ -3,8 +3,8 @@ import {
   InternalModuleDeclaration,
 } from "../modules-sdk"
 
-import { LoggerOptions } from "typeorm"
 import { RedisOptions } from "ioredis"
+import { LoggerOptions } from "typeorm"
 
 /**
  * @interface
@@ -175,6 +175,54 @@ export type ProjectConfigOptions = {
    * ```
    */
   admin_cors?: string
+  /**
+   * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
+   *
+   * `auth_cors` is a string used to specify the accepted URLs or patterns for API Routes starting with `/auth`. It can either be one accepted origin, or a comma-separated list of accepted origins.
+   *
+   * Every origin in that list must either be:
+   *
+   * 1. A URL. For example, `http://localhost:7001`. The URL must not end with a backslash;
+   * 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
+   *
+   * @example
+   * Some example values of common use cases:
+   *
+   * ```bash
+   * # Allow different ports locally starting with 700
+   * AUTH_CORS=/http:\/\/localhost:700\d+$/
+   *
+   * # Allow any origin ending with vercel.app. For example, admin.vercel.app
+   * AUTH_CORS=/vercel\.app$/
+   *
+   * # Allow all HTTP requests
+   * AUTH_CORS=/http:\/\/.+/
+   * ```
+   *
+   * Then, set the configuration in `medusa-config.js`:
+   *
+   * ```js title="medusa-config.js"
+   * module.exports = {
+   *   projectConfig: {
+   *     auth_cors: process.env.AUTH_CORS,
+   *     // ...
+   *   },
+   *   // ...
+   * }
+   * ```
+   *
+   * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
+   *
+   * ```js title="medusa-config.js"
+   * module.exports = {
+   *   projectConfig: {
+   *     auth_cors: "/http:\\/\\/localhost:700\\d+$/",
+   *     // ...
+   *   },
+   *   // ...
+   * }
+   * ```
+   */
   auth_cors?: string
   /**
    * A random string used to create cookie tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
@@ -356,6 +404,41 @@ export type ProjectConfigOptions = {
   }
 
   /**
+   * An object that includes additional configurations to pass to the database connection for v2. You can pass any configuration. One defined configuration to pass is
+   * `ssl` which enables support for TLS/SSL connections.
+   *
+   * This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`.
+   * During development, it’s recommended not to pass this option.
+   *
+   * @example
+   * ```js title="medusa-config.js"
+   * module.exports = {
+   *   projectConfig: {
+   *     database_driver_options:
+   *       process.env.NODE_ENV !== "development"
+   *         ? { connection: { ssl: { rejectUnauthorized: false } } }
+   *         : {},
+   *     // ...
+   *   },
+   *   // ...
+   * }
+   * ```
+   */
+  database_driver_options?: Record<string, unknown> & {
+    connection?: {
+      /**
+       * Configure support for TLS/SSL connection
+       */
+      ssl?: {
+        /**
+         * Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found.
+         */
+        rejectUnauthorized?: false
+      }
+    }
+  }
+
+  /**
    * Used to specify the URL to connect to Redis. This is only used for scheduled jobs. If you omit this configuration, scheduled jobs won't work.
    *
    * :::note
@@ -485,6 +568,28 @@ export type ProjectConfigOptions = {
    * ```
    */
   jobs_batch_size?: number
+
+  /**
+   * Configure the application's worker mode. Default is `shared`.
+   *
+   * - Use `shared` to run the application in a single process.
+   * - Use `worker` to run the a worker process only.
+   * - Use `server` to run the application server only.
+   *
+   * Learn more in [this guide](https://docs.medusajs.com/development/medusa-worker).
+   *
+   * @example
+   * ```js title="medusa-config.js"
+   * module.exports = {
+   *   projectConfig: {
+   *     worker_mode: "shared"
+   *     // ...
+   *   },
+   *   // ...
+   * }
+   * ```
+   */
+  worker_mode?: "shared" | "worker" | "server"
 }
 
 /**
@@ -638,4 +743,12 @@ export type ConfigModule = {
    * :::
    */
   featureFlags: Record<string, boolean | string>
+}
+
+export type PluginDetails = {
+  resolve: string
+  name: string
+  id: string
+  options: Record<string, unknown>
+  version: string
 }

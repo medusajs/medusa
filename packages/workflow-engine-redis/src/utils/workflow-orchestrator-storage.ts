@@ -64,6 +64,15 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     )
   }
 
+  async onApplicationPrepareShutdown() {
+    // Close worker gracefully, i.e. wait for the current jobs to finish
+    await this.worker.close()
+  }
+
+  async onApplicationShutdown() {
+    await this.queue.close()
+  }
+
   setWorkflowOrchestratorService(workflowOrchestratorService) {
     this.workflowOrchestratorService_ = workflowOrchestratorService
   }
@@ -98,22 +107,6 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
       throwOnError: false,
     })
   }
-
-  /*private stringifyWithSymbol(key, value) {
-    if (key === "__type" && typeof value === "symbol") {
-      return Symbol.keyFor(value)
-    }
-
-    return value
-  }
-
-  private jsonWithSymbol(key, value) {
-    if (key === "__type" && typeof value === "string") {
-      return Symbol.for(value)
-    }
-
-    return value
-  }*/
 
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
     const data = await this.redisClient.get(key)
@@ -201,7 +194,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
         stepId: step.id,
       },
       {
-        delay: interval * 1000,
+        delay: interval > 0 ? interval * 1000 : undefined,
         jobId: this.getJobId(JobType.RETRY, transaction, step),
         removeOnComplete: true,
       }
@@ -276,7 +269,10 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     const key = [type, transaction.modelId, transaction.transactionId]
 
     if (step) {
-      key.push(step.id)
+      key.push(step.id, step.attempts + "")
+      if (step.isCompensating()) {
+        key.push("compensate")
+      }
     }
 
     return key.join(":")

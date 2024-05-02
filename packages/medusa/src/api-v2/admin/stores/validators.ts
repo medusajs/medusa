@@ -1,75 +1,30 @@
-import { Type } from "class-transformer"
-import {
-  IsArray,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+import { createFindParams, createSelectParams } from "../../utils/validators"
+import { z } from "zod"
 
-export class AdminGetStoresStoreParams extends FindParams {}
-/**
- * Parameters used to filter and configure the pagination of the retrieved api keys.
- */
-export class AdminGetStoresParams extends extendedFindParamsMixin({
+export type AdminGetStoreParamsType = z.infer<typeof AdminGetStoreParams>
+export const AdminGetStoreParams = createSelectParams()
+
+export type AdminGetStoresParamsType = z.infer<typeof AdminGetStoresParams>
+export const AdminGetStoresParams = createFindParams({
   limit: 50,
   offset: 0,
-}) {
-  /**
-   * Search parameter for api keys.
-   */
-  @IsString({ each: true })
-  @IsOptional()
-  id?: string | string[]
+}).merge(
+  z.object({
+    q: z.string().optional(),
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    name: z.union([z.string(), z.array(z.string())]).optional(),
+    $and: z.lazy(() => AdminGetStoresParams.array()).optional(),
+    $or: z.lazy(() => AdminGetStoresParams.array()).optional(),
+  })
+)
 
-  /**
-   * Filter by title
-   */
-  @IsString({ each: true })
-  @IsOptional()
-  name?: string | string[]
-
-  // Additional filters from BaseFilterable
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AdminGetStoresParams)
-  $and?: AdminGetStoresParams[]
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AdminGetStoresParams)
-  $or?: AdminGetStoresParams[]
-}
-
-export class AdminPostStoresStoreReq {
-  @IsOptional()
-  @IsString()
-  name?: string
-
-  @IsOptional()
-  @IsArray()
-  supported_currency_codes?: string[]
-
-  @IsOptional()
-  @IsString()
-  default_currency_code?: string
-
-  @IsOptional()
-  @IsString()
-  default_sales_channel_id?: string
-
-  @IsOptional()
-  @IsString()
-  default_region_id?: string
-
-  @IsOptional()
-  @IsString()
-  default_location_id?: string
-
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
-
-export class AdminDeleteStoresStoreReq {}
+export type AdminUpdateStoreType = z.infer<typeof AdminUpdateStore>
+export const AdminUpdateStore = z.object({
+  name: z.string().optional(),
+  supported_currency_codes: z.array(z.string()).optional(),
+  default_currency_code: z.string().optional(),
+  default_sales_channel_id: z.string().optional(),
+  default_region_id: z.string().optional(),
+  default_location_id: z.string().optional(),
+  metadata: z.record(z.unknown()).optional(),
+})

@@ -1,4 +1,3 @@
-import { DAL } from "@medusajs/types"
 import {
   DALUtils,
   createPsqlIndexStatementHelper,
@@ -10,21 +9,13 @@ import {
   Entity,
   Filter,
   Index,
+  ManyToMany,
   ManyToOne,
   OnInit,
-  OneToMany,
-  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { ProductOption, ProductVariant, ProductVariantOption } from "./index"
-
-type OptionalFields =
-  | "allow_backorder"
-  | "manage_inventory"
-  | "option_id"
-  | DAL.SoftDeletableEntityDateColumns
-type OptionalRelations = "product" | "option" | "variant"
+import { ProductOption, ProductVariant } from "./index"
 
 const optionValueOptionIdIndexName = "IDX_option_value_option_id_unique"
 const optionValueOptionIdIndexStatement = createPsqlIndexStatementHelper({
@@ -39,25 +30,29 @@ optionValueOptionIdIndexStatement.MikroORMIndex()
 @Entity({ tableName: "product_option_value" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductOptionValue {
-  [OptionalProps]?: OptionalFields | OptionalRelations
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
   @Property({ columnType: "text" })
   value: string
 
-  @Property({ columnType: "text", nullable: true })
-  option_id!: string
+  @ManyToOne(() => ProductOption, {
+    columnType: "text",
+    fieldName: "option_id",
+    mapToPk: true,
+    nullable: true,
+    onDelete: "cascade",
+  })
+  option_id: string | null
 
   @ManyToOne(() => ProductOption, {
-    index: "IDX_product_option_value_option_id",
-    fieldName: "option_id",
+    nullable: true,
+    persist: false,
   })
-  option: ProductOption
+  option: ProductOption | null
 
-  @OneToMany(() => ProductVariantOption, (value) => value.option_value, {})
-  variant_options = new Collection<ProductVariantOption>(this)
+  @ManyToMany(() => ProductVariant, (variant) => variant.options)
+  variants = new Collection<ProductVariant>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
@@ -82,13 +77,10 @@ class ProductOptionValue {
   deleted_at?: Date
 
   @OnInit()
+  @BeforeCreate()
   onInit() {
     this.id = generateEntityId(this.id, "optval")
-  }
-
-  @BeforeCreate()
-  beforeCreate() {
-    this.id = generateEntityId(this.id, "optval")
+    this.option_id ??= this.option?.id ?? null
   }
 }
 

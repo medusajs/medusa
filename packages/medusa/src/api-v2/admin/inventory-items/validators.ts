@@ -1,137 +1,129 @@
+import { z } from "zod"
 import {
-  DateComparisonOperator,
-  FindParams,
-  NumericalComparisonOperator,
-  StringComparisonOperator,
-  extendedFindParamsMixin,
-} from "../../../types/common"
-import {
-  IsBoolean,
-  IsEmail,
-  IsNotEmpty,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { Transform, Type } from "class-transformer"
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
+import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
 
-import { IsType } from "../../../utils"
+export type AdminGetInventoryItemParamsType = z.infer<
+  typeof AdminGetInventoryItemParams
+>
+export const AdminGetInventoryItemParams = createSelectParams()
 
-export class AdminGetInventoryItemsItemParams extends FindParams {}
-
-/**
- * Parameters used to filter and configure the pagination of the retrieved inventory items.
- */
-export class AdminGetInventoryItemsParams extends extendedFindParamsMixin({
+export type AdminGetInventoryItemsParamsType = z.infer<
+  typeof AdminGetInventoryItemsParams
+>
+export const AdminGetInventoryItemsParams = createFindParams({
   limit: 20,
   offset: 0,
-}) {
-  /**
-   * IDs to filter inventory items by.
-   */
-  @IsOptional()
-  @IsType([String, [String]])
-  id?: string | string[]
+}).merge(
+  z.object({
+    q: z.string().optional(),
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    location_id: z.union([z.string(), z.array(z.string())]).optional(),
+    sku: z.union([z.string(), z.array(z.string())]).optional(),
+    origin_country: z.union([z.string(), z.array(z.string())]).optional(),
+    mid_code: z.union([z.string(), z.array(z.string())]).optional(),
+    hs_code: z.union([z.string(), z.array(z.string())]).optional(),
+    material: z.union([z.string(), z.array(z.string())]).optional(),
+    requires_shipping: z
+      .preprocess(
+        (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
+        z.boolean().optional()
+      )
+      .optional(),
+    weight: createOperatorMap(z.number(), parseFloat).optional(),
+    length: createOperatorMap(z.number(), parseFloat).optional(),
+    height: createOperatorMap(z.number(), parseFloat).optional(),
+    width: createOperatorMap(z.number(), parseFloat).optional(),
+    $and: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
+    $or: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
+  })
+)
 
-  /**
-   * Search terms to search inventory items' sku, title, and description.
-   */
-  @IsOptional()
-  @IsString()
-  q?: string
+export type AdminGetInventoryLocationLevelParamsType = z.infer<
+  typeof AdminGetInventoryLocationLevelParams
+>
+export const AdminGetInventoryLocationLevelParams = createSelectParams()
 
-  /**
-   * Location IDs to filter inventory items by.
-   */
-  @IsOptional()
-  @IsType([String, [String]])
-  location_id?: string | string[]
+export type AdminGetInventoryLocationLevelsParamsType = z.infer<
+  typeof AdminGetInventoryLocationLevelsParams
+>
+export const AdminGetInventoryLocationLevelsParams = createFindParams({
+  limit: 50,
+  offset: 0,
+}).merge(
+  z.object({
+    location_id: z.union([z.string(), z.array(z.string())]).optional(),
+    $and: z
+      .lazy(() => AdminGetInventoryLocationLevelsParams.array())
+      .optional(),
+    $or: z.lazy(() => AdminGetInventoryLocationLevelsParams.array()).optional(),
+  })
+)
 
-  /**
-   * SKUs to filter inventory items by.
-   */
-  @IsOptional()
-  @IsType([String, [String]])
-  sku?: string | string[]
+export type AdminCreateInventoryLocationLevelType = z.infer<
+  typeof AdminCreateInventoryLocationLevel
+>
+export const AdminCreateInventoryLocationLevel = z
+  .object({
+    location_id: z.string(),
+    stocked_quantity: z.number().min(0).optional(),
+    incoming_quantity: z.number().min(0).optional(),
+  })
+  .strict()
 
-  /**
-   * Origin countries to filter inventory items by.
-   */
-  @IsOptional()
-  @IsType([String, [String]])
-  origin_country?: string | string[]
+export type AdminUpdateInventoryLocationLevelType = z.infer<
+  typeof AdminUpdateInventoryLocationLevel
+>
+export const AdminUpdateInventoryLocationLevel = z
+  .object({
+    stocked_quantity: z.number().min(0).optional(),
+    incoming_quantity: z.number().min(0).optional(),
+  })
+  .strict()
 
-  /**
-   * MID codes to filter inventory items by.
-   */
-  @IsOptional()
-  @IsType([String, [String]])
-  mid_code?: string | string[]
+export type AdminCreateInventoryItemType = z.infer<
+  typeof AdminCreateInventoryItem
+>
+export const AdminCreateInventoryItem = z
+  .object({
+    sku: z.string().optional(),
+    hs_code: z.string().optional(),
+    weight: z.number().optional(),
+    length: z.number().optional(),
+    height: z.number().optional(),
+    width: z.number().optional(),
+    origin_country: z.string().optional(),
+    mid_code: z.string().optional(),
+    material: z.string().optional(),
+    title: z.string().optional(),
+    description: z.string().optional(),
+    requires_shipping: z.boolean().optional(),
+    thumbnail: z.string().optional(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
+  })
+  .strict()
 
-  /**
-   * Materials to filter inventory items by.
-   */
-  @IsOptional()
-  @IsType([String, [String]])
-  material?: string | string[]
-
-  /**
-   * String filters to apply to inventory items' `hs_code` field.
-   */
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  hs_code?: string | string[] | StringComparisonOperator
-
-  /**
-   * Number filters to apply to inventory items' `weight` field.
-   */
-  @IsOptional()
-  @IsType([Number, NumericalComparisonOperator])
-  weight?: number | NumericalComparisonOperator
-
-  /**
-   * Number filters to apply to inventory items' `length` field.
-   */
-  @IsOptional()
-  @IsType([Number, NumericalComparisonOperator])
-  length?: number | NumericalComparisonOperator
-
-  /**
-   * Number filters to apply to inventory items' `height` field.
-   */
-  @IsOptional()
-  @IsType([Number, NumericalComparisonOperator])
-  height?: number | NumericalComparisonOperator
-
-  /**
-   * Number filters to apply to inventory items' `width` field.
-   */
-  @IsOptional()
-  @IsType([Number, NumericalComparisonOperator])
-  width?: number | NumericalComparisonOperator
-
-  /**
-   * Filter inventory items by whether they require shipping.
-   */
-  @IsBoolean()
-  @IsOptional()
-  @Transform(({ value }) => value === "true")
-  requires_shipping?: boolean
-}
-
-export class AdminPostInventoryItemsItemLocationLevelsReq {
-  @IsString()
-  location_id: string
-
-  @IsNumber()
-  stocked_quantity: number
-
-  @IsOptional()
-  @IsNumber()
-  incoming_quantity?: number
-}
-
-// eslint-disable-next-line
-export class AdminPostInventoryItemsItemLocationLevelsParams extends FindParams {}
+export type AdminUpdateInventoryItemType = z.infer<
+  typeof AdminUpdateInventoryItem
+>
+export const AdminUpdateInventoryItem = z
+  .object({
+    sku: z.string().optional(),
+    hs_code: z.string().optional(),
+    weight: z.number().optional(),
+    length: z.number().optional(),
+    height: z.number().optional(),
+    width: z.number().optional(),
+    origin_country: z.string().optional(),
+    mid_code: z.string().optional(),
+    material: z.string().optional(),
+    title: z.string().optional(),
+    description: z.string().optional(),
+    requires_shipping: z.boolean().optional(),
+    thumbnail: z.string().optional(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
+  })
+  .strict()

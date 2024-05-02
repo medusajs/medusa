@@ -1,18 +1,28 @@
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
-import { defaultAdminCurrencyFields } from "../query-config"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const variables = { code: req.params.code }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "currency",
     variables,
-    fields: defaultAdminCurrencyFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const [currency] = await remoteQuery(queryObject)
+  if (!currency) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Currency with code: ${req.params.code} was not found`
+    )
+  }
+
   res.status(200).json({ currency })
 }

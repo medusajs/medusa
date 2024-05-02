@@ -5,13 +5,13 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
-import { CreateInventoryLevelInput } from "@medusajs/types"
+import { InventoryNext } from "@medusajs/types"
 import { createStep } from "@medusajs/workflows-sdk"
 
 export const validateInventoryLocationsStepId = "validate-inventory-levels-step"
 export const validateInventoryLocationsStep = createStep(
   validateInventoryLocationsStepId,
-  async (data: CreateInventoryLevelInput[], { container }) => {
+  async (data: InventoryNext.CreateInventoryLevelInput[], { container }) => {
     const remoteQuery = container.resolve(
       ContainerRegistrationKeys.REMOTE_QUERY
     )

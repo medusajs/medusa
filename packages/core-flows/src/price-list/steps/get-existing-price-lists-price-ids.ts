@@ -14,9 +14,9 @@ export const getExistingPriceListsPriceIdsStep = createStep(
     )
 
     const existingPrices = priceListIds.length
-      ? await pricingModule.listPriceSetMoneyAmounts(
+      ? await pricingModule.listPrices(
           { price_list_id: priceListIds },
-          { relations: ["price_list"] }
+          { relations: ["price_list"], take: null }
         )
       : []
 

@@ -12,6 +12,7 @@ import {
   ModuleExports,
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
+  RemoteJoinerOptions,
   RemoteJoinerQuery,
   RemoteQueryFunction,
 } from "@medusajs/types"
@@ -21,6 +22,7 @@ import {
   isObject,
   isString,
   ModulesSdkUtils,
+  promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
@@ -71,7 +73,8 @@ export async function loadModules(
   modulesConfig,
   sharedContainer,
   migrationOnly = false,
-  loaderOnly = false
+  loaderOnly = false,
+  workerMode: "shared" | "worker" | "server" = "server"
 ) {
   const allModules = {}
 
@@ -113,6 +116,7 @@ export async function loadModules(
         moduleExports,
         migrationOnly,
         loaderOnly,
+        workerMode,
       })) as LoadedModule
 
       if (loaderOnly) {
@@ -199,9 +203,12 @@ export type MedusaAppOutput = {
   entitiesMap?: Record<string, any>
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
+  onApplicationShutdown: () => Promise<void>
+  onApplicationPrepareShutdown: () => Promise<void>
 }
 
 export type MedusaAppOptions = {
+  workerMode?: "shared" | "worker" | "server"
   sharedContainer?: MedusaContainer
   sharedResourcesConfig?: SharedResources
   loadedModules?: LoadedModule[]
@@ -232,18 +239,22 @@ async function MedusaApp_({
   onApplicationStartCb,
   migrationOnly = false,
   loaderOnly = false,
-}: MedusaAppOptions & { migrationOnly?: boolean } = {}): Promise<{
-  modules: Record<string, LoadedModule | LoadedModule[]>
-  link: RemoteLink | undefined
-  query: (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any>
-  entitiesMap?: Record<string, any>
-  notFound?: Record<string, Record<string, string>>
-  runMigrations: RunMigrationFn
-}> {
+  workerMode = "server",
+}: MedusaAppOptions & {
+  migrationOnly?: boolean
+} = {}): Promise<MedusaAppOutput> {
   const sharedContainer_ = createMedusaContainer({}, sharedContainer)
+
+  const onApplicationShutdown = async () => {
+    await promiseAll([
+      MedusaModule.onApplicationShutdown(),
+      sharedContainer_.dispose(),
+    ])
+  }
+
+  const onApplicationPrepareShutdown = async () => {
+    await promiseAll([MedusaModule.onApplicationPrepareShutdown()])
+  }
 
   const modules: MedusaModuleConfig =
     modulesConfig ??
@@ -300,11 +311,14 @@ async function MedusaApp_({
     modules,
     sharedContainer_,
     migrationOnly,
-    loaderOnly
+    loaderOnly,
+    workerMode
   )
 
   if (loaderOnly) {
     return {
+      onApplicationShutdown,
+      onApplicationPrepareShutdown,
       modules: allModules,
       link: undefined,
       query: async () => {
@@ -340,9 +354,10 @@ async function MedusaApp_({
 
   const query = async (
     query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
+    variables?: Record<string, unknown>,
+    options?: RemoteJoinerOptions
   ) => {
-    return await remoteQuery.query(query, variables)
+    return await remoteQuery.query(query, variables, options)
   }
 
   const runMigrations: RunMigrationFn = async (
@@ -379,6 +394,8 @@ async function MedusaApp_({
   }
 
   return {
+    onApplicationShutdown,
+    onApplicationPrepareShutdown,
     modules: allModules,
     link: remoteLink,
     query,

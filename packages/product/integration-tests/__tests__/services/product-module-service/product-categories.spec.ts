@@ -1,10 +1,13 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { Product, ProductCategory } from "@models"
-import { MockEventBusService } from "medusa-test-utils"
+import {
+  MockEventBusService,
+  SuiteOptions,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { productCategoriesRankData } from "../../../__fixtures__/product-category/data"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 

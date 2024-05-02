@@ -1,118 +1,84 @@
-import { Type } from "class-transformer"
-import {
-  IsArray,
-  IsEmail,
-  IsInt,
-  IsNotEmpty,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { AddressPayload, FindParams } from "../../../types/common"
-import { IsType } from "../../../utils"
+import { z } from "zod"
+import { AddressPayload } from "../../utils/common-validators"
+import { createSelectParams } from "../../utils/validators"
 
-export class StoreGetCartsCartParams extends FindParams {}
+export type StoreGetPromotionType = z.infer<typeof StoreGetCartsCart>
+export const StoreGetCartsCart = createSelectParams()
 
-export class Item {
-  @IsNotEmpty()
-  @IsString()
-  variant_id: string
+const ItemSchema = z.object({
+  variant_id: z.string(),
+  quantity: z.number(),
+})
 
-  @IsNotEmpty()
-  @IsInt()
-  quantity: number
-}
+export type StoreCreateCartType = z.infer<typeof StoreCreateCart>
+export const StoreCreateCart = z
+  .object({
+    region_id: z.string().optional().nullable(),
+    shipping_address: z.union([AddressPayload, z.string()]).optional(),
+    billing_address: z.union([AddressPayload, z.string()]).optional(),
+    email: z.string().email().optional().nullable(),
+    currency_code: z.string().optional(),
+    items: z.array(ItemSchema).optional(),
+    sales_channel_id: z.string().optional().nullable(),
+    metadata: z.record(z.unknown()).optional().nullable(),
+  })
+  .strict()
 
-export class StorePostCartReq {
-  @IsOptional()
-  @IsString()
-  region_id?: string
+export type StoreAddCartPromotionsType = z.infer<typeof StoreAddCartPromotions>
+export const StoreAddCartPromotions = z
+  .object({
+    promo_codes: z.array(z.string()),
+  })
+  .strict()
 
-  @IsOptional()
-  @IsType([AddressPayload, String])
-  shipping_address?: AddressPayload | string
+export type StoreRemoveCartPromotionsType = z.infer<
+  typeof StoreRemoveCartPromotions
+>
+export const StoreRemoveCartPromotions = z
+  .object({
+    promo_codes: z.array(z.string()),
+  })
+  .strict()
 
-  @IsOptional()
-  @IsType([AddressPayload, String])
-  billing_address?: AddressPayload | string
+export type StoreUpdateCartType = z.infer<typeof StoreUpdateCart>
+export const StoreUpdateCart = z
+  .object({
+    region_id: z.string().optional().nullable(),
+    email: z.string().email().optional().nullable(),
+    billing_address: z.union([AddressPayload, z.string()]).optional(),
+    shipping_address: z.union([AddressPayload, z.string()]).optional(),
+    sales_channel_id: z.string().optional().nullable(),
+    metadata: z.record(z.unknown()).optional().nullable(),
+    promo_codes: z.array(z.string()).optional(),
+  })
+  .strict()
 
-  @IsOptional()
-  @IsString()
-  email?: string
+export type StoreCalculateCartTaxesType = z.infer<
+  typeof StoreCalculateCartTaxes
+>
+export const StoreCalculateCartTaxes = createSelectParams()
 
-  @IsOptional()
-  @IsString()
-  currency_code?: string
+export type StoreAddCartLineItemType = z.infer<typeof StoreAddCartLineItem>
+export const StoreAddCartLineItem = z.object({
+  variant_id: z.string(),
+  quantity: z.number(),
+  metadata: z.record(z.unknown()).optional(),
+})
 
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => Item)
-  items?: Item[]
+export type StoreUpdateCartLineItemType = z.infer<
+  typeof StoreUpdateCartLineItem
+>
+export const StoreUpdateCartLineItem = z.object({
+  quantity: z.number(),
+  metadata: z.record(z.unknown()).optional(),
+})
 
-  @IsString()
-  @IsOptional()
-  sales_channel_id?: string
-
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
-
-export class StorePostCartsCartPromotionsReq {
-  @IsArray()
-  @Type(() => String)
-  promo_codes: string[]
-}
-
-export class StoreDeleteCartsCartPromotionsReq {
-  @IsArray()
-  @Type(() => String)
-  promo_codes: string[]
-}
-
-export class StorePostCartsCartReq {
-  @IsOptional()
-  @IsString()
-  region_id?: string
-
-  @IsEmail()
-  @IsOptional()
-  email?: string
-
-  @IsOptional()
-  @IsType([AddressPayload, String])
-  billing_address?: AddressPayload | string
-
-  @IsOptional()
-  @IsType([AddressPayload, String])
-  shipping_address?: AddressPayload | string
-
-  @IsOptional()
-  @IsString()
-  sales_channel_id?: string
-
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-
-  @IsOptional()
-  @IsArray()
-  @Type(() => String)
-  promo_codes?: string[]
-
-  // @IsOptional()
-  // @IsArray()
-  // @ValidateNested({ each: true })
-  // @Type(() => GiftCard)
-  // gift_cards?: GiftCard[]
-
-  // @IsOptional()
-  // @IsArray()
-  // @ValidateNested({ each: true })
-  // @Type(() => Discount)
-  // discounts?: Discount[]
-}
-
-export class StorePostCartsCartTaxesReq {}
+export type StoreAddCartShippingMethodsType = z.infer<
+  typeof StoreAddCartShippingMethods
+>
+export const StoreAddCartShippingMethods = z
+  .object({
+    option_id: z.string(),
+    data: z.record(z.unknown()).optional(),
+  })
+  .strict()

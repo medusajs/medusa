@@ -7,9 +7,32 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
-// List inventory-items
+import { createInventoryItemsWorkflow } from "@medusajs/core-flows"
+import {
+  AdminCreateInventoryItemType,
+  AdminGetInventoryItemsParamsType,
+} from "./validators"
+import { refetchInventoryItem } from "./helpers"
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminCreateInventoryItemType>,
+  res: MedusaResponse
+) => {
+  const { result } = await createInventoryItemsWorkflow(req.scope).run({
+    input: { items: [req.validatedBody] },
+  })
+
+  const inventoryItem = await refetchInventoryItem(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ inventory_item: inventoryItem })
+}
+
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetInventoryItemsParamsType>,
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
@@ -18,11 +41,9 @@ export const GET = async (
     entryPoint: "inventory_items",
     variables: {
       filters: req.filterableFields,
-      order: req.listConfig.order,
-      skip: req.listConfig.skip,
-      take: req.listConfig.take,
+      ...req.remoteQueryConfig.pagination,
     },
-    fields: [...(req.listConfig.select as string[])],
+    fields: req.remoteQueryConfig.fields,
   })
 
   const { rows: inventory_items, metadata } = await remoteQuery({

@@ -4,12 +4,18 @@ import {
   TransactionHandlerType,
   TransactionStep,
 } from "@medusajs/orchestration"
-import { ContainerLike, Context, MedusaContainer } from "@medusajs/types"
+import {
+  ContainerLike,
+  Context,
+  Logger,
+  MedusaContainer,
+} from "@medusajs/types"
 import { InjectSharedContext, MedusaContext, isString } from "@medusajs/utils"
 import {
   FlowRunOptions,
   MedusaWorkflow,
   ReturnWorkflow,
+  resolveValue,
 } from "@medusajs/workflows-sdk"
 import Redis from "ioredis"
 import { ulid } from "ulid"
@@ -74,28 +80,56 @@ export class WorkflowOrchestratorService {
   protected redisPublisher: Redis
   protected redisSubscriber: Redis
   private subscribers: Subscribers = new Map()
+  private activeStepsCount: number = 0
+  private logger: Logger
+
+  protected redisDistributedTransactionStorage_: RedisDistributedTransactionStorage
 
   constructor({
+    dataLoaderOnly,
     redisDistributedTransactionStorage,
     redisPublisher,
     redisSubscriber,
+    logger,
   }: {
+    dataLoaderOnly: boolean
     redisDistributedTransactionStorage: RedisDistributedTransactionStorage
     workflowOrchestratorService: WorkflowOrchestratorService
     redisPublisher: Redis
     redisSubscriber: Redis
+    logger: Logger
   }) {
     this.redisPublisher = redisPublisher
     this.redisSubscriber = redisSubscriber
+    this.logger = logger
 
     redisDistributedTransactionStorage.setWorkflowOrchestratorService(this)
-    DistributedTransaction.setStorage(redisDistributedTransactionStorage)
+
+    if (!dataLoaderOnly) {
+      DistributedTransaction.setStorage(redisDistributedTransactionStorage)
+    }
+
+    this.redisDistributedTransactionStorage_ =
+      redisDistributedTransactionStorage
 
     this.redisSubscriber.on("message", async (_, message) => {
       const { instanceId, data } = JSON.parse(message)
 
       await this.notify(data, false, instanceId)
     })
+  }
+
+  async onApplicationShutdown() {
+    await this.redisDistributedTransactionStorage_.onApplicationShutdown()
+  }
+
+  async onApplicationPrepareShutdown() {
+    // eslint-disable-next-line max-len
+    await this.redisDistributedTransactionStorage_.onApplicationPrepareShutdown()
+
+    while (this.activeStepsCount > 0) {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+    }
   }
 
   @InjectSharedContext()
@@ -508,34 +542,57 @@ export class WorkflowOrchestratorService {
 
       onStepBegin: async ({ step, transaction }) => {
         customEventHandlers?.onStepBegin?.({ step, transaction })
+        this.activeStepsCount++
 
         await notify({ eventType: "onStepBegin", step })
       },
       onStepSuccess: async ({ step, transaction }) => {
-        const response = transaction.getContext().invoke[step.id]
+        const stepName = step.definition.action!
+        const response = await resolveValue(
+          transaction.getContext().invoke[stepName],
+          transaction
+        )
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
-
         await notify({ eventType: "onStepSuccess", step, response })
+
+        this.activeStepsCount--
       },
       onStepFailure: async ({ step, transaction }) => {
-        const errors = transaction.getErrors(TransactionHandlerType.INVOKE)[
-          step.id
-        ]
-        customEventHandlers?.onStepFailure?.({ step, transaction, errors })
+        const stepName = step.definition.action!
+        const errors = transaction
+          .getErrors(TransactionHandlerType.INVOKE)
+          .filter((err) => err.action === stepName)
 
+        customEventHandlers?.onStepFailure?.({ step, transaction, errors })
         await notify({ eventType: "onStepFailure", step, errors })
+
+        this.activeStepsCount--
+      },
+      onStepAwaiting: async ({ step, transaction }) => {
+        customEventHandlers?.onStepAwaiting?.({ step, transaction })
+
+        await notify({ eventType: "onStepAwaiting", step })
+
+        this.activeStepsCount--
       },
 
       onCompensateStepSuccess: async ({ step, transaction }) => {
-        const response = transaction.getContext().compensate[step.id]
-        customEventHandlers?.onStepSuccess?.({ step, transaction, response })
+        const stepName = step.definition.action!
+        const response = transaction.getContext().compensate[stepName]
+        customEventHandlers?.onCompensateStepSuccess?.({
+          step,
+          transaction,
+          response,
+        })
 
         await notify({ eventType: "onCompensateStepSuccess", step, response })
       },
       onCompensateStepFailure: async ({ step, transaction }) => {
-        const errors = transaction.getErrors(TransactionHandlerType.COMPENSATE)[
-          step.id
-        ]
+        const stepName = step.definition.action!
+        const errors = transaction
+          .getErrors(TransactionHandlerType.COMPENSATE)
+          .filter((err) => err.action === stepName)
+
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
         await notify({ eventType: "onCompensateStepFailure", step, errors })

@@ -27,6 +27,7 @@ import parseOas, { ExistingOas } from "../../utils/parse-oas.js"
 import OasSchemaHelper from "../helpers/oas-schema.js"
 import formatOas from "../../utils/format-oas.js"
 import { DEFAULT_OAS_RESPONSES } from "../../constants.js"
+import SchemaFactory from "../helpers/schema-factory.js"
 
 export const API_ROUTE_PARAM_REGEX = /\[(.+?)\]/g
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
@@ -48,6 +49,7 @@ type ParameterType = "query" | "path"
  * since API routes are functions.
  */
 class OasKindGenerator extends FunctionKindGenerator {
+  public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
   private MAX_LEVEL = 4
   // we can't use `{summary}` because it causes an MDX error
@@ -67,6 +69,7 @@ class OasKindGenerator extends FunctionKindGenerator {
   protected baseOutputPath: string
   protected oasExamplesGenerator: OasExamplesGenerator
   protected oasSchemaHelper: OasSchemaHelper
+  protected schemaFactory: SchemaFactory
 
   constructor(options: GeneratorOptions) {
     super(options)
@@ -76,6 +79,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     this.tags = new Map()
     this.oasSchemaHelper = new OasSchemaHelper()
+    this.schemaFactory = new SchemaFactory()
     this.init()
 
     this.generatorEventManager.listen(
@@ -166,12 +170,13 @@ class OasKindGenerator extends FunctionKindGenerator {
    * @param options - The options to get the OAS.
    * @returns The OAS as a string that can be used as a comment in a TypeScript file.
    */
-  getDocBlock(
+  async getDocBlock(
     node: ts.Node | FunctionOrVariableNode,
     options?: GetDocBlockOptions
-  ): string {
+  ): Promise<string> {
+    // TODO use AiGenerator to generate descriptions + examples
     if (!this.isAllowed(node)) {
-      return super.getDocBlock(node, options)
+      return await super.getDocBlock(node, options)
     }
 
     const actualNode = ts.isVariableStatement(node)
@@ -179,7 +184,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       : node
 
     if (!actualNode) {
-      return super.getDocBlock(node, options)
+      return await super.getDocBlock(node, options)
     }
     const methodName = this.getHTTPMethodName(node)
 
@@ -1228,6 +1233,21 @@ class OasKindGenerator extends FunctionKindGenerator {
         : this.defaultSummary
     const typeAsString = this.checker.typeToString(itemType)
 
+    const schemaFromFactory = this.schemaFactory.tryGetSchema(
+      itemType.symbol?.getName() ||
+        itemType.aliasSymbol?.getName() ||
+        title ||
+        typeAsString,
+      {
+        title: title || typeAsString,
+        description,
+      }
+    )
+
+    if (schemaFromFactory) {
+      return schemaFromFactory
+    }
+
     switch (true) {
       case itemType.flags === ts.TypeFlags.Enum:
         const enumMembers: string[] = []
@@ -1440,6 +1460,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             })
           })
         }
+
         const objSchema: OpenApiSchema = {
           type: "object",
           description,
@@ -1741,6 +1762,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     }
 
     oldSchemaObj!.required = newSchemaObj?.required
+    oldSchemaObj!["x-schemaName"] = newSchemaObj?.["x-schemaName"]
 
     if (oldSchemaObj!.type === "object") {
       if (!oldSchemaObj?.properties && newSchemaObj?.properties) {

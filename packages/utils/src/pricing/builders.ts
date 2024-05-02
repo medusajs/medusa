@@ -1,15 +1,15 @@
 import {
+  PriceDTO,
   PriceListRuleDTO,
   PriceRuleDTO,
-  PriceSetMoneyAmountDTO,
   ProductVariantDTO,
   UpdatePriceListPriceDTO,
 } from "@medusajs/types"
 
 export function buildPriceListRules(
-  priceListRules: PriceListRuleDTO[]
-): Record<string, string[]> {
-  return priceListRules.reduce((acc, curr) => {
+  priceListRules?: PriceListRuleDTO[]
+): Record<string, string[]> | undefined {
+  return priceListRules?.reduce((acc, curr) => {
     const ruleAttribute = curr.rule_type.rule_attribute
     const ruleValues = curr.price_list_rule_values || []
 
@@ -20,9 +20,13 @@ export function buildPriceListRules(
 }
 
 export function buildPriceSetRules(
-  priceRules: PriceRuleDTO[]
-): Record<string, string> {
-  return priceRules.reduce((acc, curr) => {
+  priceRules?: PriceRuleDTO[]
+): Record<string, string> | undefined {
+  if (typeof priceRules === "undefined") {
+    return undefined
+  }
+
+  return priceRules?.reduce((acc, curr) => {
     const ruleAttribute = curr.rule_type.rule_attribute
     const ruleValue = curr.value
 
@@ -33,37 +37,42 @@ export function buildPriceSetRules(
 }
 
 export function buildPriceSetPricesForCore(
-  priceSetMoneyAmounts: (PriceSetMoneyAmountDTO & {
-    price_set: PriceSetMoneyAmountDTO["price_set"] & {
+  prices: (PriceDTO & {
+    price_set?: PriceDTO["price_set"] & {
       variant?: ProductVariantDTO
     }
   })[]
 ): Record<string, any>[] {
-  return priceSetMoneyAmounts.map((priceSetMoneyAmount) => {
-    const productVariant = (priceSetMoneyAmount.price_set as any).variant
-    const rules: Record<string, string> = priceSetMoneyAmount.price_rules
-      ? buildPriceSetRules(priceSetMoneyAmount.price_rules)
-      : {}
+  return prices?.map((price) => {
+    const productVariant = (price.price_set as any)?.variant
+    const rules: Record<string, string> | undefined =
+      typeof price.price_rules === "undefined"
+        ? undefined
+        : buildPriceSetRules(price.price_rules || [])
+
+    delete price.price_rules
+    delete price.price_set
 
     return {
-      ...priceSetMoneyAmount.money_amount,
-      variant_id: productVariant?.id ?? null,
+      ...price,
+      variant_id: productVariant?.id ?? undefined,
       rules,
     }
   })
 }
 
 export function buildPriceSetPricesForModule(
-  priceSetMoneyAmounts: PriceSetMoneyAmountDTO[]
+  prices: PriceDTO[]
 ): UpdatePriceListPriceDTO[] {
-  return priceSetMoneyAmounts.map((priceSetMoneyAmount) => {
-    const rules: Record<string, string> = priceSetMoneyAmount.price_rules
-      ? buildPriceSetRules(priceSetMoneyAmount.price_rules)
-      : {}
+  return prices?.map((price) => {
+    const rules: Record<string, string> | undefined =
+      typeof price.price_rules === "undefined"
+        ? undefined
+        : buildPriceSetRules(price.price_rules || [])
 
     return {
-      ...priceSetMoneyAmount.money_amount!,
-      price_set_id: priceSetMoneyAmount.price_set!?.id!,
+      ...price,
+      price_set_id: price.price_set!?.id!,
       rules,
     }
   })

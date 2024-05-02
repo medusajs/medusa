@@ -10,6 +10,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from "typeorm"
 
 import { MedusaV2Flag } from "@medusajs/utils"
@@ -50,7 +51,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => Cart, (cart) => cart.items)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart: Relation<Cart>
 
   @Index()
   @Column({ nullable: true })
@@ -58,7 +59,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => Order, (order) => order.items)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @Index()
   @Column({ nullable: true })
@@ -66,7 +67,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => Swap, (swap) => swap.additional_items)
   @JoinColumn({ name: "swap_id" })
-  swap: Swap
+  swap: Relation<Swap>
 
   @Index()
   @Column({ nullable: true })
@@ -74,17 +75,17 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => ClaimOrder, (co) => co.additional_items)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order: Relation<ClaimOrder>
 
   @OneToMany(() => LineItemTaxLine, (tl) => tl.item, {
     cascade: ["insert", "remove"],
   })
-  tax_lines: LineItemTaxLine[]
+  tax_lines: Relation<LineItemTaxLine>[]
 
   @OneToMany(() => LineItemAdjustment, (lia) => lia.item, {
     cascade: ["insert", "remove"],
   })
-  adjustments: LineItemAdjustment[]
+  adjustments: Relation<LineItemAdjustment>[]
 
   @Column({ nullable: true, type: "varchar" })
   original_item_id?: string | null
@@ -94,7 +95,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => OrderEdit, (orderEdit) => orderEdit.items)
   @JoinColumn({ name: "order_edit_id" })
-  order_edit?: OrderEdit | null
+  order_edit?: Relation<OrderEdit> | null
 
   @Column()
   title: string
@@ -129,7 +130,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => ProductVariant)
   @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  variant: Relation<ProductVariant>
 
   @FeatureFlagColumn(MedusaV2Flag.key, { nullable: true, type: "text" })
   product_id: string | null

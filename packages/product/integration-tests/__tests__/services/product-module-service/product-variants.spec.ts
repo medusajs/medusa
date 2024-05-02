@@ -19,35 +19,42 @@ moduleIntegrationTestRunner({
       let productTwo: Product
 
       beforeEach(async () => {
-        const testManager = await MikroOrmWrapper.forkManager()
-
-        productOne = testManager.create(Product, {
+        productOne = await service.create({
           id: "product-1",
           title: "product 1",
           status: ProductTypes.ProductStatus.PUBLISHED,
+          options: [
+            {
+              title: "size",
+              values: ["large", "small"],
+            },
+            {
+              title: "color",
+              values: ["red", "blue"],
+            },
+          ],
         })
 
-        productTwo = testManager.create(Product, {
+        productTwo = await service.create({
           id: "product-2",
           title: "product 2",
           status: ProductTypes.ProductStatus.PUBLISHED,
         })
 
-        variantOne = testManager.create(ProductVariant, {
+        variantOne = await service.createVariants({
           id: "test-1",
           title: "variant 1",
           inventory_quantity: 10,
-          product: productOne,
+          product_id: productOne.id,
+          options: { size: "large" },
         })
 
-        variantTwo = testManager.create(ProductVariant, {
+        variantTwo = await service.createVariants({
           id: "test-2",
           title: "variant",
           inventory_quantity: 10,
-          product: productTwo,
+          product_id: productTwo.id,
         })
-
-        await testManager.persistAndFlush([variantOne, variantTwo])
       })
 
       describe("listAndCountVariants", () => {
@@ -163,6 +170,102 @@ moduleIntegrationTestRunner({
           expect(error.message).toEqual(
             "ProductVariant with id: does-not-exist was not found"
           )
+        })
+      })
+
+      describe("updateVariants", () => {
+        it("should update the title of the variant successfully", async () => {
+          await service.upsertVariants([
+            {
+              id: variantOne.id,
+              title: "new test",
+            },
+          ])
+
+          const productVariant = await service.retrieveVariant(variantOne.id)
+          expect(productVariant.title).toEqual("new test")
+        })
+
+        it("should upsert the options of a variant successfully", async () => {
+          await service.upsertVariants([
+            {
+              id: variantOne.id,
+              options: { size: "small" },
+            },
+          ])
+
+          const productVariant = await service.retrieveVariant(variantOne.id, {
+            relations: ["options"],
+          })
+          expect(productVariant.options).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                value: "small",
+              }),
+            ])
+          )
+        })
+
+        it("should do a partial update on the options of a variant successfully", async () => {
+          await service.updateVariants(variantOne.id, {
+            options: { size: "small", color: "red" },
+          })
+
+          const productVariant = await service.retrieveVariant(variantOne.id, {
+            relations: ["options"],
+          })
+
+          expect(productVariant.options).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                value: "small",
+              }),
+              expect.objectContaining({
+                value: "red",
+              }),
+            ])
+          )
+        })
+
+        it("should throw an error when an id does not exist", async () => {
+          let error
+
+          try {
+            await service.updateVariants("does-not-exist", {})
+          } catch (e) {
+            error = e
+          }
+
+          expect(error.message).toEqual(
+            `Cannot update non-existing variants with ids: does-not-exist`
+          )
+        })
+      })
+
+      describe("softDelete variant", () => {
+        it("should soft delete a variant and its relations", async () => {
+          const beforeDeletedVariants = await service.listVariants(
+            { id: variantOne.id },
+            {
+              relations: ["options"],
+            }
+          )
+
+          await service.softDeleteVariants([variantOne.id])
+          const deletedVariants = await service.listVariants(
+            { id: variantOne.id },
+            {
+              relations: ["options"],
+              withDeleted: true,
+            }
+          )
+
+          expect(deletedVariants).toHaveLength(1)
+          expect(deletedVariants[0].deleted_at).not.toBeNull()
+
+          for (const variantOption of deletedVariants[0].options) {
+            expect(variantOption?.deleted_at).toBeNull()
+          }
         })
       })
     })

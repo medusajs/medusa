@@ -1,12 +1,12 @@
 import { promiseAll } from "@medusajs/utils"
 import { Express } from "express"
 import glob from "glob"
-import _ from "lodash"
 import { trackInstallation } from "medusa-telemetry"
 import { EOL } from "os"
 import path from "path"
 import { ConfigModule, Logger, MedusaContainer } from "../types/global"
 import ScheduledJobsLoader from "./helpers/jobs"
+import { getResolvedPlugins } from "./helpers/resolve-plugins"
 import { RoutesLoader } from "./helpers/routing"
 import { SubscriberLoader } from "./helpers/subscribers"
 import logger from "./logger"
@@ -41,11 +41,20 @@ export default async ({
 }: Options): Promise<void> => {
   const resolved = getResolvedPlugins(rootDirectory, configModule) || []
 
+  const shouldStartAPI = configModule.projectConfig.worker_mode !== "worker"
+
   await promiseAll(
     resolved.map(async (pluginDetails) => {
-      await registerApi(pluginDetails, app, container, configModule, activityId)
+      if (shouldStartAPI) {
+        await registerApi(
+          pluginDetails,
+          app,
+          container,
+          configModule,
+          activityId
+        )
+      }
       await registerSubscribers(pluginDetails, container, activityId)
-      await registerWorkflows(pluginDetails)
     })
   )
 
@@ -66,23 +75,6 @@ export default async ({
   }
 
   resolved.forEach((plugin) => trackInstallation(plugin.name, "plugin"))
-}
-
-function getResolvedPlugins(
-  rootDirectory: string,
-  configModule: ConfigModule,
-  extensionDirectoryPath = "dist"
-): undefined | PluginDetails[] {
-  const extensionDirectory = path.join(rootDirectory, extensionDirectoryPath)
-  return [
-    {
-      resolve: extensionDirectory,
-      name: MEDUSA_PROJECT_NAME,
-      id: createPluginId(MEDUSA_PROJECT_NAME),
-      options: configModule,
-      version: createFileContentHash(process.cwd(), `**`),
-    },
-  ]
 }
 
 async function runLoaders(
@@ -177,24 +169,7 @@ async function registerSubscribers(
     path.join(pluginDetails.resolve, "subscribers"),
     container,
     pluginDetails.options,
-    activityId
+    activityId,
+    true
   ).load()
-}
-
-/**
- * import files from the workflows directory to run the registration of the wofklows
- * @param pluginDetails
- */
-async function registerWorkflows(pluginDetails: PluginDetails): Promise<void> {
-  const files = glob.sync(`${pluginDetails.resolve}/workflows/*.js`, {})
-  await Promise.all(files.map(async (file) => import(file)))
-}
-
-// TODO: Create unique id for each plugin
-function createPluginId(name: string): string {
-  return name
-}
-
-function createFileContentHash(path, files): string {
-  return path + files
 }

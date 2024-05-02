@@ -1,4 +1,4 @@
-import { Context, DAL } from "@medusajs/types"
+import { Context, DAL, PricingTypes } from "@medusajs/types"
 import {
   InjectTransactionManager,
   MedusaContext,
@@ -6,7 +6,6 @@ import {
   validateRuleAttributes,
 } from "@medusajs/utils"
 import { RuleType } from "@models"
-import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   ruleTypeRepository: DAL.RepositoryService
@@ -26,17 +25,17 @@ export default class RuleTypeService<
   }
 
   create(
-    data: ServiceTypes.CreateRuleTypeDTO,
+    data: PricingTypes.CreateRuleTypeDTO,
     sharedContext: Context
   ): Promise<TEntity>
   create(
-    data: ServiceTypes.CreateRuleTypeDTO[],
+    data: PricingTypes.CreateRuleTypeDTO[],
     sharedContext: Context
   ): Promise<TEntity[]>
 
   @InjectTransactionManager("ruleTypeRepository_")
   async create(
-    data: ServiceTypes.CreateRuleTypeDTO | ServiceTypes.CreateRuleTypeDTO[],
+    data: PricingTypes.CreateRuleTypeDTO | PricingTypes.CreateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity | TEntity[]> {
     const data_ = Array.isArray(data) ? data : [data]
@@ -46,12 +45,12 @@ export default class RuleTypeService<
 
   // @ts-ignore
   update(
-    data: ServiceTypes.UpdateRuleTypeDTO[],
+    data: PricingTypes.UpdateRuleTypeDTO[],
     sharedContext: Context
   ): Promise<TEntity[]>
   // @ts-ignore
   update(
-    data: ServiceTypes.UpdateRuleTypeDTO,
+    data: PricingTypes.UpdateRuleTypeDTO,
     sharedContext: Context
   ): Promise<TEntity>
 
@@ -59,7 +58,7 @@ export default class RuleTypeService<
   // TODO: add support for selector? and then rm ts ignore
   // @ts-ignore
   async update(
-    data: ServiceTypes.UpdateRuleTypeDTO | ServiceTypes.UpdateRuleTypeDTO[],
+    data: PricingTypes.UpdateRuleTypeDTO | PricingTypes.UpdateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity | TEntity[]> {
     const data_ = Array.isArray(data) ? data : [data]

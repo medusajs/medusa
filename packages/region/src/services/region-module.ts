@@ -101,25 +101,36 @@ export default class RegionModuleService<
   ): Promise<Region[]> {
     let normalizedInput = RegionModuleService.normalizeInput(data)
 
-    const validations = [
-      this.validateCountries(
-        normalizedInput.map((r) => r.countries ?? []).flat(),
-        sharedContext
-      ),
-    ] as const
-
-    // Assign the full country object so the ORM updates the relationship
-    const [dbCountries] = await promiseAll(validations)
-    const dbCountriesMap = new Map(dbCountries.map((d) => [d.iso_2, d]))
     let normalizedDbRegions = normalizedInput.map((region) =>
       removeUndefined({
         ...region,
-        countries: region.countries?.map((c) => dbCountriesMap.get(c)),
+        countries: undefined,
       })
     )
 
-    // Create the regions and update the country region_id
-    return await this.regionService_.create(normalizedDbRegions, sharedContext)
+    const result = await this.regionService_.create(
+      normalizedDbRegions,
+      sharedContext
+    )
+
+    if (data.some((input) => input.countries?.length)) {
+      await this.validateCountries(
+        normalizedInput.map((r) => r.countries ?? []).flat(),
+        sharedContext
+      )
+
+      await this.countryService_.update(
+        normalizedInput.map((region, i) => ({
+          selector: { iso_2: region.countries },
+          data: {
+            region_id: result[i].id,
+          },
+        })),
+        sharedContext
+      )
+    }
+
+    return result
   }
 
   async upsert(
@@ -213,6 +224,13 @@ export default class RegionModuleService<
       .map((region) => region.id)
       .flat()
 
+    let normalizedDbRegions = normalizedInput.map((region) =>
+      removeUndefined({
+        ...region,
+        countries: undefined, // -> delete countries if passed because we want to do update "manually"
+      })
+    )
+
     if (regionsWithCountryUpdate.length) {
       await this.countryService_.update(
         {
@@ -223,24 +241,22 @@ export default class RegionModuleService<
         },
         sharedContext
       )
-    }
 
-    const validations = [
-      this.validateCountries(
+      await this.validateCountries(
         normalizedInput.map((d) => d.countries ?? []).flat(),
         sharedContext
-      ),
-    ] as const
+      )
 
-    // Assign the full country object so the ORM updates the relationship
-    const [dbCountries] = await promiseAll(validations)
-    const dbCountriesMap = new Map(dbCountries.map((d) => [d.iso_2, d]))
-    let normalizedDbRegions = normalizedInput.map((region) =>
-      removeUndefined({
-        ...region,
-        countries: region.countries?.map((c) => dbCountriesMap.get(c)),
-      })
-    )
+      await this.countryService_.update(
+        normalizedInput.map((region) => ({
+          selector: { iso_2: region.countries },
+          data: {
+            region_id: region.id,
+          },
+        })),
+        sharedContext
+      )
+    }
 
     return await this.regionService_.update(normalizedDbRegions, sharedContext)
   }
@@ -256,6 +272,14 @@ export default class RegionModuleService<
     )
   }
 
+  /**
+   * Validate that countries can be assigned to a region.
+   *
+   * NOTE: this method relies on countries of the regions that we are assigning to need to be unassigned first.
+   * @param countries
+   * @param sharedContext
+   * @private
+   */
   private async validateCountries(
     countries: string[] | undefined,
     sharedContext: Context

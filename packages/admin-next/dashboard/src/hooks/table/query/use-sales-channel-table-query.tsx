@@ -1,7 +1,7 @@
 import { AdminGetSalesChannelsParams } from "@medusajs/medusa"
 import { useQueryParams } from "../../use-query-params"
 
-type UseCustomerTableQueryProps = {
+type UseSalesChannelTableQueryProps = {
   prefix?: string
   pageSize?: number
 }
@@ -9,7 +9,7 @@ type UseCustomerTableQueryProps = {
 export const useSalesChannelTableQuery = ({
   prefix,
   pageSize = 20,
-}: UseCustomerTableQueryProps) => {
+}: UseSalesChannelTableQueryProps) => {
   const queryObject = useQueryParams(
     ["offset", "q", "order", "created_at", "updated_at"],
     prefix
@@ -21,9 +21,9 @@ export const useSalesChannelTableQuery = ({
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     order,
-    created_at: created_at ? JSON.parse(created_at) : undefined,
-    updated_at: updated_at ? JSON.parse(updated_at) : undefined,
-    q,
+    // created_at: created_at ? JSON.parse(created_at) : undefined,
+    // updated_at: updated_at ? JSON.parse(updated_at) : undefined,
+    // q, // Re-enable when params are fixed
   }
 
   return {

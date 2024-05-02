@@ -131,6 +131,45 @@
       },
       "required": ["domain"]
     },
+    "promotions": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      },
+      "required": ["domain"]
+    },
+    "taxRegions": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      },
+      "required": ["domain"]
+    },
+    "taxRates": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "object"
+        }
+      },
+      "required": ["domain"]
+    },
+    "campaigns": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      },
+      "required": ["domain"]
+    },
     "giftCards": {
       "type": "object",
       "properties": {
@@ -175,6 +214,23 @@
         }
       },
       "required": ["domain", "role", "roles"]
+    },
+    "statuses": {
+      "type": "object",
+      "properties": {
+        "scheduled": {
+          "type": "string"
+        },
+        "expired": {
+          "type": "string"
+        },
+        "active": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "string"
+        }
+      }
     },
     "fields": {
       "type": "object",

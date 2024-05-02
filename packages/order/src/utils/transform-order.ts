@@ -1,8 +1,16 @@
 import { OrderTypes } from "@medusajs/types"
-import { deduplicate, isDefined } from "@medusajs/utils"
+import {
+  createRawPropertiesFromBigNumber,
+  decorateCartTotals,
+  deduplicate,
+  isDefined,
+} from "@medusajs/utils"
 
 export function formatOrder(
-  order
+  order,
+  options: {
+    includeTotals?: boolean
+  }
 ): OrderTypes.OrderDTO | OrderTypes.OrderDTO[] {
   const isArray = Array.isArray(order)
   const orders = [...(isArray ? order : [order])]
@@ -21,9 +29,24 @@ export function formatOrder(
       }
     })
 
+    order.shipping_methods = order.shipping_methods?.map((shippingMethod) => {
+      const sm = { ...shippingMethod.shipping_method }
+
+      delete shippingMethod.shipping_method
+      return {
+        ...sm,
+        order_id: shippingMethod.order_id,
+        detail: {
+          ...shippingMethod,
+        },
+      }
+    })
+
     order.summary = order.summary?.[0]?.totals
 
-    return order
+    return options?.includeTotals
+      ? createRawPropertiesFromBigNumber(decorateCartTotals(order))
+      : order
   })
 
   return isArray ? orders : orders[0]
@@ -48,6 +71,16 @@ export function mapRepositoryToOrderModel(config) {
         if (rel == "summary" && type === "fields") {
           obj.populate.push("summary")
           return "summary.totals"
+        } else if (
+          rel.includes("shipping_methods") &&
+          !rel.includes("shipping_methods.shipping_method")
+        ) {
+          obj.populate.push("shipping_methods.shipping_method")
+
+          return rel.replace(
+            "shipping_methods",
+            "shipping_methods.shipping_method"
+          )
         } else if (rel.includes("items.detail")) {
           return rel.replace("items.detail", "items")
         } else if (rel == "items") {
