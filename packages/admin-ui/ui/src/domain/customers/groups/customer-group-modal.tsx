@@ -5,6 +5,7 @@ import {
 } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import {
   CustomerGroupGeneralForm,
   CustomerGroupGeneralFormType,
@@ -20,7 +21,6 @@ import Modal from "../../../components/molecules/modal"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { nestedForm } from "../../../utils/nested-form"
-import { useTranslation } from "react-i18next"
 
 type CustomerGroupModalProps = {
   open: boolean
