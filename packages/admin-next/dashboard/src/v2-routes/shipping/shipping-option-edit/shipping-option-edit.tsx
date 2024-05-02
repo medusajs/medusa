@@ -13,9 +13,7 @@ export const ShippingOptionEdit = () => {
   const { location_id, fset_id, zone_id, so_id } = useParams()
   const isReturn = searchParams.has("is_return")
 
-  const { shipping_options, isPending, isError, error } = useShippingOptions({
-    id: so_id,
-  })
+  const { shipping_options, isPending, isError, error } = useShippingOptions()
 
   const shippingOption = shipping_options?.find((so) => so.id === so_id)
 
