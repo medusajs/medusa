@@ -3,7 +3,7 @@ import {
   AddFulfillmentShippingOptionRulesWorkflowDTO,
   IFulfillmentModuleService,
 } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const createShippingOptionRulesStepId = "create-shipping-option-rules"
 export const createShippingOptionRulesStep = createStep(
@@ -18,12 +18,12 @@ export const createShippingOptionRulesStep = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    const createdPromotionRules =
+    const createdShippingOptionRules =
       await fulfillmentModule.createShippingOptionRules(data)
 
     return new StepResponse(
-      createdPromotionRules,
-      createdPromotionRules.map((pr) => pr.id)
+      createdShippingOptionRules,
+      createdShippingOptionRules.map((pr) => pr.id)
     )
   },
   async (ruleIds, { container }) => {

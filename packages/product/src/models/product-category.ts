@@ -55,6 +55,7 @@ class ProductCategory {
   @Property({ columnType: "text", default: "", nullable: false })
   description?: string
 
+  @Searchable()
   @Property({ columnType: "text", nullable: false })
   handle?: string
 

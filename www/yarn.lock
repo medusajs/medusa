@@ -4337,7 +4337,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/ui-preset@npm:^1.1.2, @medusajs/ui-preset@npm:latest":
+"@medusajs/icons@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@medusajs/icons@npm:1.2.1"
+  peerDependencies:
+    react: ^16.x || ^17.x || ^18.x
+  checksum: bdda0af295d5cd83682b5689a8fc711a03639b7d4eb5aa2a6648e99af969363ec942dc7fe3cb21e27b6b70ea5a94a9e1b5e10b28f57ae4c7211a8807f84200c8
+  languageName: node
+  linkType: hard
+
+"@medusajs/ui-preset@npm:^1.1.2":
   version: 1.1.2
   resolution: "@medusajs/ui-preset@npm:1.1.2"
   dependencies:
@@ -4346,6 +4355,18 @@ __metadata:
   peerDependencies:
     tailwindcss: ">=3.0.0"
   checksum: 63b525eee5d5a6a7d2d9596f6cc9015c221a3a55c83f524511d35eeb6916261baeae472e8748725480016a38e379f6a1a34e373d4ca824bbabdb151605086f94
+  languageName: node
+  linkType: hard
+
+"@medusajs/ui-preset@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "@medusajs/ui-preset@npm:1.1.3"
+  dependencies:
+    "@tailwindcss/forms": ^0.5.3
+    tailwindcss-animate: ^1.0.6
+  peerDependencies:
+    tailwindcss: ">=3.0.0"
+  checksum: 36b3cbe3d1b3ab2666abe84499dc19a57fe88e886704ca82b42105b5ba078638c6af8d2032d09da12d2324c485966ef2840f6a06192690b986b3c5f025308c68
   languageName: node
   linkType: hard
 
@@ -4385,6 +4406,46 @@ __metadata:
     react: ^18.0.0
     react-dom: ^18.0.0
   checksum: 1d044632044b9a3e06ed86d574ad67ccefe797a23b839f32f9d15a2563c4c40fc74b0faf1826bef4aa256b34c30dcae8dc1f11d456de2bfc506162d92fe512d5
+  languageName: node
+  linkType: hard
+
+"@medusajs/ui@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@medusajs/ui@npm:3.0.0"
+  dependencies:
+    "@medusajs/icons": ^1.2.1
+    "@radix-ui/react-accordion": ^1.1.2
+    "@radix-ui/react-alert-dialog": ^1.0.4
+    "@radix-ui/react-avatar": ^1.0.3
+    "@radix-ui/react-checkbox": ^1.0.4
+    "@radix-ui/react-dialog": ^1.0.4
+    "@radix-ui/react-dropdown-menu": ^2.0.5
+    "@radix-ui/react-label": ^2.0.2
+    "@radix-ui/react-popover": ^1.0.6
+    "@radix-ui/react-portal": ^1.0.3
+    "@radix-ui/react-radio-group": ^1.1.3
+    "@radix-ui/react-scroll-area": ^1.0.4
+    "@radix-ui/react-select": ^2.0.0
+    "@radix-ui/react-slot": ^1.0.2
+    "@radix-ui/react-switch": ^1.0.3
+    "@radix-ui/react-tabs": ^1.0.4
+    "@radix-ui/react-tooltip": ^1.0.6
+    "@react-aria/datepicker": ^3.5.0
+    "@react-stately/datepicker": ^3.5.0
+    clsx: ^1.2.1
+    copy-to-clipboard: ^3.3.3
+    cva: 1.0.0-beta.1
+    date-fns: ^2.30.0
+    prism-react-renderer: ^2.0.6
+    prismjs: ^1.29.0
+    react-currency-input-field: ^3.6.11
+    react-day-picker: ^8.8.0
+    sonner: ^1.4.41
+    tailwind-merge: ^2.2.1
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: 06d34783a4954f51ef3a5282e59cb3fd367f58d435739525a543af84213fc22c745f10849f0178fdf7c4e19bda3872a7e3ca628e1f4498ac03c95affa98b5266
   languageName: node
   linkType: hard
 
@@ -21823,6 +21884,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sonner@npm:^1.4.41":
+  version: 1.4.41
+  resolution: "sonner@npm:1.4.41"
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: 31467ecab0fcbd5161fb76d158c698841b524686f7f598eecbc2a58d76bc496b5d5242df4350e274575aa3df59428d3aacd534415c968b19fc309c192c443330
+  languageName: node
+  linkType: hard
+
 "sort-css-media-queries@npm:2.1.0":
   version: 2.1.0
   resolution: "sort-css-media-queries@npm:2.1.0"
@@ -23033,8 +23104,8 @@ __metadata:
   dependencies:
     "@faker-js/faker": ^8.0.2
     "@medusajs/icons": ^1.2.0
-    "@medusajs/ui": ^2.4.1
-    "@medusajs/ui-preset": latest
+    "@medusajs/ui": ^3.0.0
+    "@medusajs/ui-preset": ^1.1.3
     "@radix-ui/react-dialog": ^1.0.4
     "@radix-ui/react-scroll-area": ^1.0.4
     "@radix-ui/react-tabs": ^1.0.4

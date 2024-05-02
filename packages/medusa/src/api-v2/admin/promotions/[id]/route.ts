@@ -2,18 +2,20 @@ import {
   deletePromotionsWorkflow,
   updatePromotionsWorkflow,
 } from "@medusajs/core-flows"
-import { MedusaError } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
+import { refetchPromotion } from "../helpers"
 import {
   AdminGetPromotionParamsType,
   AdminUpdatePromotionType,
 } from "../validators"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
-import { refetchPromotion } from "../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetPromotionParamsType>,
@@ -33,7 +35,7 @@ export const GET = async (
   if (!promotion) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Promotion with id or code: does-not-exist was not found`
+      `Promotion with id or code: ${idOrCode} was not found`
     )
   }
 
