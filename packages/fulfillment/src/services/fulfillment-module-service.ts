@@ -38,9 +38,9 @@ import {
   ShippingOptionType,
   ShippingProfile,
 } from "@models"
-import {isContextValid, validateAndNormalizeRules} from "@utils"
-import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
-import {UpdateShippingOptionsInput} from "../types/service"
+import { isContextValid, validateAndNormalizeRules } from "@utils"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { UpdateShippingOptionsInput } from "../types/service"
 import FulfillmentProviderService from "./fulfillment-provider"
 
 const generateMethodForModels = [
@@ -1148,14 +1148,33 @@ export default class FulfillmentModuleService<
         shippingOption
       )
 
-      const existingRulesMap = new Map(
-        existingRules.map((rule) => [rule.id, rule])
-      )
+      const existingRulesMap: Map<
+        string,
+        FulfillmentTypes.UpdateShippingOptionRuleDTO | ShippingOptionRule
+      > = new Map(existingRules.map((rule) => [rule.id, rule]))
 
       const updatedRules = shippingOption.rules
-      const updatedRuleIds = updatedRules
-        .map((r) => "id" in r && r.id)
-        .filter((id): id is string => !!id)
+        .map((rule) => {
+          if ("id" in rule) {
+            const existingRule = (existingRulesMap.get(rule.id) ??
+              {}) as FulfillmentTypes.UpdateShippingOptionRuleDTO
+
+            const ruleData: FulfillmentTypes.UpdateShippingOptionRuleDTO = {
+              ...existingRule,
+              ...rule,
+            }
+
+            existingRulesMap.set(rule.id, ruleData)
+            return ruleData
+          }
+
+          return
+        })
+        .filter(Boolean) as FulfillmentTypes.UpdateShippingOptionRuleDTO[]
+
+      validateAndNormalizeRules(updatedRules)
+
+      const updatedRuleIds = updatedRules.map((r) => "id" in r && r.id)
 
       const toDeleteRuleIds = arrayDifference(
         updatedRuleIds,
@@ -1166,19 +1185,9 @@ export default class FulfillmentModuleService<
         ruleIdsToDelete.push(...toDeleteRuleIds)
       }
 
-      const newRules = updatedRules
-        .map((rule) => {
-          if (!("id" in rule)) {
-            return rule
-          }
-          return
-        })
-        .filter(Boolean)
-
-      validateAndNormalizeRules(newRules as Record<string, unknown>[])
-
       shippingOption.rules = shippingOption.rules.map((rule) => {
         if (!("id" in rule)) {
+          validateAndNormalizeRules([rule])
           return rule
         }
         return existingRulesMap.get(rule.id)!
