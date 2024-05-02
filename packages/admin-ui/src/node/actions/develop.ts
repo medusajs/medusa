@@ -22,8 +22,8 @@ export async function develop({
     backend: "http://localhost:9000",
     develop: {
       open: true,
-      host: "localhost",
       port: 7001,
+      host: "localhost",
       logLevel: "error",
       stats: "normal",
       allowedHosts: "auto",
