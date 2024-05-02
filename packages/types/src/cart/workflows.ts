@@ -118,3 +118,7 @@ export interface ListShippingOptionsForCartWorkflowInputDTO {
 export interface PricedShippingOptionDTO extends ShippingOptionDTO {
   amount: BigNumberInput
 }
+
+export interface CompleteCartWorkflowInputDTO {
+  id: string
+}
