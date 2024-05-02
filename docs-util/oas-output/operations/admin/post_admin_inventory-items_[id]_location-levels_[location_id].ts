@@ -25,7 +25,20 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminPostInventoryItemsItemLocationLevelsLevelReq"
+ *         type: object
+ *         description: SUMMARY
+ *         properties:
+ *           incoming_quantity:
+ *             type: number
+ *             title: incoming_quantity
+ *             description: The inventory item's incoming quantity.
+ *           stocked_quantity:
+ *             type: number
+ *             title: stocked_quantity
+ *             description: The inventory item's stocked quantity.
+ *         required:
+ *           - stocked_quantity
+ *           - incoming_quantity
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -37,8 +50,6 @@
  * tags:
  *   - Inventory Items
  * responses:
- *   "200":
- *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

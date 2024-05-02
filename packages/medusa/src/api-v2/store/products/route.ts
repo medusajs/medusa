@@ -4,7 +4,6 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { wrapWithCategoryFilters } from "./helpers"
 import { StoreGetProductsParamsType } from "./validators"
 
 export const GET = async (
@@ -12,18 +11,20 @@ export const GET = async (
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-  const context = isPresent(req.pricingContext)
-    ? {
-        "variants.calculated_price": { context: req.pricingContext },
-      }
-    : undefined
+  const context: object = {}
+
+  if (isPresent(req.pricingContext)) {
+    context["variants.calculated_price"] = {
+      context: req.pricingContext,
+    }
+  }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product",
     variables: {
-      filters: wrapWithCategoryFilters(req.filterableFields),
-      ...context,
+      filters: req.filterableFields,
       ...req.remoteQueryConfig.pagination,
+      ...context,
     },
     fields: req.remoteQueryConfig.fields,
   })

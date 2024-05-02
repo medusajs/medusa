@@ -1,5 +1,15 @@
 # Change Log
 
+## 9.0.17
+
+### Patch Changes
+
+- [#6827](https://github.com/medusajs/medusa/pull/6827) [`0c0b425de7`](https://github.com/medusajs/medusa/commit/0c0b425de7b154b80b712ab17b16215cf62d1e83) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa-react,medusa,types,dashboard): added empty state for promotions list page
+
+- [#6883](https://github.com/medusajs/medusa/pull/6883) [`eadc5e8a79`](https://github.com/medusajs/medusa/commit/eadc5e8a794ec07f7b523808aa0fec2ac394c984) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat: Admin V2 API keys
+
+- [#6882](https://github.com/medusajs/medusa/pull/6882) [`5e30b8cce6`](https://github.com/medusajs/medusa/commit/5e30b8cce63524d939a5068050798b0d8fcb9a53) Thanks [@riqwan](https://github.com/riqwan)! - feat(dashboard): added details page for promotions
+
 ## 9.0.16
 
 ### Patch Changes

@@ -2,28 +2,35 @@ import {
   deleteLineItemsWorkflow,
   updateLineItemInCartWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICartModuleService } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
 import { refetchCart } from "../../../helpers"
 import { StoreUpdateCartLineItemType } from "../../../validators"
+import { prepareListQuery } from "../../../../../../utils/get-query-config"
 
 export const POST = async (
   req: MedusaRequest<StoreUpdateCartLineItemType>,
   res: MedusaResponse
 ) => {
-  const cartModuleService = req.scope.resolve<ICartModuleService>(
-    ModuleRegistrationName.CART
+  const cart = await refetchCart(
+    req.params.id,
+    req.scope,
+    prepareListQuery(
+      {},
+      {
+        defaults: [
+          "id",
+          "region_id",
+          "customer_id",
+          "sales_channel_id",
+          "currency_code",
+          "*items",
+        ],
+      }
+    ).remoteQueryConfig.fields
   )
 
-  const cart = await cartModuleService.retrieve(req.params.id, {
-    select: ["id", "region_id", "currency_code"],
-    relations: ["region", "items", "items.variant_id"],
-  })
-
   const item = cart.items?.find((i) => i.id === req.params.line_id)
-
   if (!item) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
