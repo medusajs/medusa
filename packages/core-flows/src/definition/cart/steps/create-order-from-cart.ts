@@ -7,9 +7,9 @@ interface StepInput {
   cart: CartWorkflowDTO
 }
 
-export const createOrderFromCartWorkflowId = "create-order-from-cart"
-export const createOrderFromCartWorkflow = createStep(
-  createOrderFromCartWorkflowId,
+export const createOrderFromCartStepId = "create-order-from-cart"
+export const createOrderFromCartStep = createStep(
+  createOrderFromCartStepId,
   async (input: StepInput, { container }) => {
     const { cart } = input
 

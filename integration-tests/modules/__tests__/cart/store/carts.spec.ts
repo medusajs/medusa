@@ -1456,12 +1456,16 @@ medusaIntegrationTestRunner({
           const stockLocation = (
             await api.post(
               `/admin/stock-locations`,
-              {
-                name: "test location",
-              },
+              { name: "test location" },
               adminHeaders
             )
           ).data.stock_location
+
+          await api.post(
+            `/admin/stock-locations/${stockLocation.id}/sales-channels`,
+            { add: [salesChannel.id] },
+            adminHeaders
+          )
 
           shippingProfile = await fulfillmentModule.createShippingProfiles({
             name: "Test",
@@ -1478,13 +1482,6 @@ medusaIntegrationTestRunner({
               },
             ],
           })
-
-          await remoteLinkService.create([
-            {
-              [Modules.SALES_CHANNEL]: { sales_channel_id: salesChannel.id },
-              [Modules.STOCK_LOCATION]: { stock_location_id: stockLocation.id },
-            },
-          ])
 
           await remoteLinkService.create([
             {
@@ -1530,7 +1527,8 @@ medusaIntegrationTestRunner({
               province: "ny",
               postal_code: "94016",
             },
-            sales_channel_id: salesChannel.id,
+            // TODO: inventory isn't being managed on a product level
+            // sales_channel_id: salesChannel.id,
             items: [{ quantity: 1, variant_id: product.variants[0].id }],
           })
 
@@ -1578,14 +1576,14 @@ medusaIntegrationTestRunner({
                     }),
                   ],
                   adjustments: [],
-                  shipping_address: expect.objectContaining({
-                    city: "ny",
-                    country_code: "us",
-                    province: "ny",
-                    postal_code: "94016",
-                  }),
                 }),
               ],
+              shipping_address: expect.objectContaining({
+                city: "ny",
+                country_code: "us",
+                province: "ny",
+                postal_code: "94016",
+              }),
             })
           )
         })

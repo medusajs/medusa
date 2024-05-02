@@ -1,7 +1,7 @@
 import { CompleteCartWorkflowInputDTO, OrderDTO } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { createOrderFromCartWorkflow } from "../steps"
+import { createOrderFromCartStep } from "../steps"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { completeCartFields } from "../utils/fields"
 
@@ -38,6 +38,6 @@ export const completeCartWorkflow = createWorkflow(
       list: false,
     }).config({ name: "final-cart" })
 
-    return createOrderFromCartWorkflow({ cart: finalCart })
+    return createOrderFromCartStep({ cart: finalCart })
   }
 )
