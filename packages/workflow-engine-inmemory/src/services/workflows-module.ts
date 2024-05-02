@@ -9,9 +9,9 @@ import {
 import {
   InjectManager,
   InjectSharedContext,
+  isString,
   MedusaContext,
   MedusaError,
-  isString,
 } from "@medusajs/utils"
 import type {
   IWorkflowEngineService,
@@ -191,7 +191,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     transactionId: string,
     @MedusaContext() context: Context = {}
   ) {
-    return this.workflowOrchestratorService_.getRunningTransaction(
+    return await this.workflowOrchestratorService_.getRunningTransaction(
       workflowId,
       transactionId,
       context
@@ -211,7 +211,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     },
     @MedusaContext() context: Context = {}
   ) {
-    return this.workflowOrchestratorService_.setStepSuccess(
+    return await this.workflowOrchestratorService_.setStepSuccess(
       {
         idempotencyKey,
         stepResponse,
@@ -234,7 +234,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     },
     @MedusaContext() context: Context = {}
   ) {
-    return this.workflowOrchestratorService_.setStepFailure(
+    return await this.workflowOrchestratorService_.setStepFailure(
       {
         idempotencyKey,
         stepResponse,
