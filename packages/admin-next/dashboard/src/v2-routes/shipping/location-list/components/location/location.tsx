@@ -6,14 +6,54 @@ import {
   toast,
   usePrompt,
 } from "@medusajs/ui"
-import { FulfillmentSetDTO, StockLocationDTO } from "@medusajs/types"
+import {
+  FulfillmentSetDTO,
+  SalesChannelDTO,
+  StockLocationDTO,
+} from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { Buildings, PencilSquare, Trash } from "@medusajs/icons"
 import { useNavigate } from "react-router-dom"
 
 import { countries } from "../../../../../lib/countries"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { useDeleteStockLocation } from "../../../../../hooks/api/stock-locations.tsx"
+import { useDeleteStockLocation } from "../../../../../hooks/api/stock-locations"
+import { BadgeListSummary } from "../../../../../components/common/badge-list-summary"
+
+type SalesChannelsProps = {
+  salesChannels?: SalesChannelDTO[]
+}
+
+function SalesChannels(props: SalesChannelsProps) {
+  const { t } = useTranslation()
+  const { salesChannels } = props
+
+  return (
+    <div className="flex flex-col px-6 py-5">
+      <div className="flex items-center justify-between">
+        <Text
+          size="small"
+          weight="plus"
+          className="text-ui-fg-subtle flex-1"
+          as="div"
+        >
+          {t(`shipping.fulfillmentSet.salesChannels`)}
+        </Text>
+        <div className="flex-1 text-left">
+          {salesChannels?.length ? (
+            <BadgeListSummary
+              inline
+              n={3}
+              list={salesChannels.map((s) => s.name)}
+            />
+          ) : (
+            "-"
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 enum FulfillmentSetType {
   Delivery = "delivery",
@@ -150,6 +190,8 @@ function Location(props: LocationProps) {
           </div>
         </div>
       </div>
+
+      <SalesChannels salesChannels={location.sales_channels} />
 
       <FulfillmentSet
         type={FulfillmentSetType.Pickup}

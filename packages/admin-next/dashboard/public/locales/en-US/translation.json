@@ -658,6 +658,7 @@
     },
     "fulfillmentSet": {
       "placeholder": "Not covered by any shipping zones.",
+      "salesChannels": "Connected Sales Channels",
       "delete": "Delete shipping",
       "disableWarning": "Are you sure that you wnat to disable \"{{name}}\"? This will delete all assocciated service zones and shipping options.",
       "create": {

@@ -120,6 +120,9 @@ export const useUpdateStockLocationSalesChannels = (
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.details(),
       })
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.lists(),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

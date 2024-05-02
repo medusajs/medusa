@@ -3,8 +3,8 @@ import { LoaderFunctionArgs } from "react-router-dom"
 import { client } from "../../../lib/client"
 import { queryClient } from "../../../lib/medusa"
 import { StockLocationListRes } from "../../../types/api-responses"
-import { locationListFields } from "./const"
 import { stockLocationsQueryKeys } from "../../../hooks/api/stock-locations"
+import { locationListFields } from "./const"
 
 const shippingListQuery = () => ({
   queryKey: stockLocationsQueryKeys.lists(),
