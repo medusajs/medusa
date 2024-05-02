@@ -14,6 +14,7 @@ import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-opti
 import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
 import { isOptionEnabledInStore } from "../../../../../lib/shipping-options"
 import { formatProvider } from "../../../../../lib/format-provider"
+import { pick } from "../../../../../lib/common"
 
 enum ShippingAllocation {
   FlatRate = "flat",
@@ -63,35 +64,33 @@ export const EditShippingOptionForm = ({
   )
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    const rules = shippingOption.rules.map((r) => ({ ...r }))
+    const rules = shippingOption.rules.map((r) => ({
+      ...pick(r, ["id", "attribute", "operator", "value"]),
+    }))
 
-    // TODO: API currently doesn't support update so uncomment this when the endpoint is fixed
-    // const storeRule = rules.find((r) => r.attribute === "enabled_in_store")
-    // if (!storeRule) {
-    //   rules.push({
-    //     value: values.enabled_in_store ? "true" : "false",
-    //     attribute: "enabled_in_store",
-    //     operator: "eq",
-    //   })
-    // } else {
-    //   storeRule.value = values.enabled_in_store
-    // }
-
-    // TODO: POST to /rules for update
+    const storeRule = rules.find((r) => r.attribute === "enabled_in_store")
+    if (!storeRule) {
+      // NOTE: should always exist sice we always create this rule when we create a shipping option
+      rules.push({
+        value: values.enabled_in_store ? "true" : "false",
+        attribute: "enabled_in_store",
+        operator: "eq",
+      })
+    } else {
+      storeRule.value = values.enabled_in_store ? "true" : "false"
+    }
 
     await mutateAsync(
       {
-        // TODO: why is passing ID mandatory with the schema definition
-        id: shippingOption.id,
         name: values.name,
         price_type: values.price_type,
         shipping_profile_id: values.shipping_profile_id,
         provider_id: values.provider_id,
+        rules,
       },
       {
         onSuccess: () => {
           toast.success(t("general.success"), {
-            // description: t("regions.toast.edit"),
             dismissLabel: t("actions.close"),
           })
           handleSuccess()
