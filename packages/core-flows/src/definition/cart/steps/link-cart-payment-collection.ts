@@ -1,4 +1,5 @@
 import { Modules } from "@medusajs/modules-sdk"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type StepInput = {
@@ -13,7 +14,7 @@ export const linkCartAndPaymentCollectionsStepId =
 export const linkCartAndPaymentCollectionsStep = createStep(
   linkCartAndPaymentCollectionsStepId,
   async (data: StepInput, { container }) => {
-    const remoteLink = container.resolve("remoteLink")
+    const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
     const links = data.links.map((d) => ({
       [Modules.CART]: { cart_id: d.cart_id },
@@ -29,7 +30,7 @@ export const linkCartAndPaymentCollectionsStep = createStep(
       return
     }
 
-    const remoteLink = container.resolve("remoteLink")
+    const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
     const links = data.links.map((d) => ({
       [Modules.CART]: { cart_id: d.cart_id },
