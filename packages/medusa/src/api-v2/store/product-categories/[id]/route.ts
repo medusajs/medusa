@@ -1,21 +1,21 @@
 import { StoreProductCategoryResponse } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { refetchCategory } from "../helpers"
+import { refetchEntity } from "../../../utils/refetch-entity"
 import { StoreProductCategoryParamsType } from "../validators"
-import { MedusaError } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<StoreProductCategoryParamsType>,
   res: MedusaResponse<StoreProductCategoryResponse>
 ) => {
-  const category = await refetchCategory(
+  const category = await refetchEntity(
+    "product_category",
     req.params.id,
     req.scope,
-    req.remoteQueryConfig.fields,
-    req.filterableFields
+    req.remoteQueryConfig.fields
   )
 
   if (!category) {

@@ -196,7 +196,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it.only("gets list of product category with immediate children and parents", async () => {
+      it("gets list of product category with immediate children and parents", async () => {
         const path = breaking(
           () => `/admin/product-categories?limit=7`,
           () =>
@@ -479,7 +479,7 @@ medusaIntegrationTestRunner({
         ])
       })
 
-      it("adds all ancestors to categories in a nested way", async () => {
+      it.only("adds all ancestors to categories in a nested way", async () => {
         const response = await api.get(
           `/admin/product-categories/${productCategoryChild1.id}?include_ancestors_tree=true`,
           adminHeaders
