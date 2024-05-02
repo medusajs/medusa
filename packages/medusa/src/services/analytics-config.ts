@@ -7,7 +7,6 @@ import {
   CreateAnalyticsConfig,
   UpdateAnalyticsConfig,
 } from "../types/analytics-config"
-import UserService from "./user"
 
 type InjectedDependencies = {
   analyticsConfigRepository: typeof AnalyticsRepository
@@ -16,7 +15,6 @@ type InjectedDependencies = {
 
 class AnalyticsConfigService extends TransactionBaseService {
   protected readonly analyticsConfigRepository_: typeof AnalyticsRepository
-  protected readonly userService_: UserService
 
   constructor({ analyticsConfigRepository }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
@@ -73,7 +71,7 @@ class AnalyticsConfigService extends TransactionBaseService {
     const config = await this.retrieve(userId).catch(() => undefined)
 
     if (!config) {
-      return this.create(userId, {
+      return await this.create(userId, {
         opt_out: update.opt_out ?? false,
         anonymize: update.anonymize ?? false,
       })
