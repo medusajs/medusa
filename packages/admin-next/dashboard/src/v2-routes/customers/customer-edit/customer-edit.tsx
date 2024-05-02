@@ -18,7 +18,7 @@ export const CustomerEdit = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("customers.editCustomer")}</Heading>
+        <Heading>{t("customers.edit.header")}</Heading>
       </RouteDrawer.Header>
       {!isLoading && customer && <EditCustomerForm customer={customer} />}
     </RouteDrawer>
