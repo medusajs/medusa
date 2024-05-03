@@ -58,7 +58,8 @@ export const NavItem = ({
           "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex items-center gap-x-2 rounded-md px-2 py-2.5 outline-none md:py-1.5",
           {
             "bg-ui-bg-base hover:bg-ui-bg-base-hover shadow-elevation-card-rest":
-              location.pathname.startsWith(to),
+              location.pathname === to ||
+              location.pathname.startsWith(to + "/"), // TODO: utilise `NavLink` and `end` prop instead of this manual check
             "max-md:hidden": items && items.length > 0,
           }
         )}

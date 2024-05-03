@@ -3,6 +3,7 @@ export const defaultAdminShippingOptionFields = [
   "name",
   "price_type",
   "data",
+  "provider_id",
   "metadata",
   "created_at",
   "updated_at",
