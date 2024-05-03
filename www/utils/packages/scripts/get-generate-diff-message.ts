@@ -1,7 +1,7 @@
 import { execSync } from "child_process"
 import * as core from "@actions/core"
 
-const command = `git --no-pager diff --minimal --name-only ../../../www/apps/resources/references`
+const command = `git --no-pager diff --minimal --name-only ../../../apps/resources/references`
 const diffOutput = execSync(command).toString()
 
 const files = diffOutput.toString().split("\n").filter(Boolean)

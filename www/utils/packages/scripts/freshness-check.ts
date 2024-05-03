@@ -17,16 +17,7 @@ const linearClient = new LinearClient({
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const repoPath = path.join(
-  __dirname,
-  "..",
-  "..",
-  "..",
-  "www",
-  "apps",
-  "book",
-  "app"
-)
+const repoPath = path.join(__dirname, "..", "..", "..", "apps", "book", "app")
 let freshnessCheckLabelId = ""
 let documentationTeamId = ""
 

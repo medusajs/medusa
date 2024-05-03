@@ -3,7 +3,7 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "generate:ui": "yarn start --src ../../../packages/design-system/ui/src --output ../../../www/apps/ui/src/specs --clean",
+    "generate:ui": "yarn start --src ../../../../packages/design-system/ui/src --output ../../../apps/ui/src/specs --clean",
     "build": "tsc",
     "watch": "tsc --watch",
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
