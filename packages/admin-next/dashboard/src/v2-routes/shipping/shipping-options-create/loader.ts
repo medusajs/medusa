@@ -1,12 +1,12 @@
-import { adminStockLocationsKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
 
 import { client } from "../../../lib/client"
 import { queryClient } from "../../../lib/medusa"
 import { StockLocationRes } from "../../../types/api-responses"
+import { stockLocationsQueryKeys } from "../../../hooks/api/stock-locations"
 
 const fulfillmentSetCreateQuery = (id: string) => ({
-  queryKey: adminStockLocationsKeys.list(), // Use the list cache key for now
+  queryKey: stockLocationsQueryKeys.list(), // Use the list cache key for now
   queryFn: async () =>
     client.stockLocations.retrieve(id, {
       fields:

@@ -6,14 +6,14 @@ import {
   useRouteModal,
 } from "../../../../../../components/route-modal"
 
-import { CountrySelect } from "../../../../../../components/common/country-select"
-import { Form } from "../../../../../../components/common/form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { InventoryNext } from "@medusajs/types"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useUpdateInventoryItem } from "../../../../../../hooks/api/inventory"
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { Form } from "../../../../../../components/common/form"
+import { CountrySelect } from "../../../../../../components/inputs/country-select"
+import { useUpdateInventoryItem } from "../../../../../../hooks/api/inventory"
 
 type EditInventoryItemAttributeFormProps = {
   item: InventoryNext.InventoryItemDTO

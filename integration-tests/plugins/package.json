@@ -30,9 +30,7 @@
     "@medusajs/utils": "workspace:^",
     "@medusajs/workflow-engine-inmemory": "workspace:*",
     "faker": "^5.5.3",
-    "medusa-fulfillment-webshipper": "workspace:*",
     "medusa-interfaces": "workspace:*",
-    "medusa-plugin-sendgrid": "workspace:*",
     "pg": "^8.11.0",
     "typeorm": "^0.3.16"
   },

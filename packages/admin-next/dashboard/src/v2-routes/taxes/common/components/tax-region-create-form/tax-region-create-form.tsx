@@ -6,10 +6,10 @@ import * as zod from "zod"
 
 import { TaxRegionResponse } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
-import { PercentageInput } from "../../../../../components/common/percentage-input"
+import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
-  RouteFocusModal,
-  useRouteModal,
+    RouteFocusModal,
+    useRouteModal,
 } from "../../../../../components/route-modal"
 import { useCreateTaxRegion } from "../../../../../hooks/api/tax-regions"
 import { countries } from "../../../../../lib/countries"
