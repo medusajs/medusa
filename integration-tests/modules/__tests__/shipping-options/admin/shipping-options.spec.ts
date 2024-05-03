@@ -226,7 +226,18 @@ medusaIntegrationTestRunner({
                 amount: 1000,
               },
             ],
-            rules: [shippingOptionRule],
+            rules: [
+              {
+                operator: RuleOperator.EQ,
+                attribute: "old_attr",
+                value: "old value",
+              },
+              {
+                operator: RuleOperator.EQ,
+                attribute: "old_attr_2",
+                value: "true",
+              },
+            ],
           }
 
           const response = await api.post(
@@ -240,6 +251,14 @@ medusaIntegrationTestRunner({
           const eurPrice = response.data.shipping_option.prices.find(
             (p) => p.currency_code === "eur"
           )
+
+          const oldAttrRule = response.data.shipping_option.rules.find(
+            (r) => r.attribute === "old_attr"
+          )
+          const oldAttr2Rule = response.data.shipping_option.rules.find(
+            (r) => r.attribute === "old_attr_2"
+          )
+
           const updateShippingOptionPayload = {
             name: "Updated shipping option",
             provider_id: "manual_test-provider",
@@ -254,6 +273,28 @@ medusaIntegrationTestRunner({
                 amount: 10000,
               },
             ],
+            rules: [
+              {
+                // Un touched
+                id: oldAttrRule.id,
+                operator: RuleOperator.EQ,
+                attribute: "old_attr",
+                value: "old value",
+              },
+              {
+                // Updated
+                id: oldAttr2Rule.id,
+                operator: RuleOperator.EQ,
+                attribute: "old_attr_2",
+                value: "false",
+              },
+              {
+                // Created
+                operator: RuleOperator.EQ,
+                attribute: "new_attr",
+                value: "true",
+              },
+            ],
           }
 
           const updateResponse = await api.post(
@@ -264,6 +305,7 @@ medusaIntegrationTestRunner({
 
           expect(updateResponse.status).toEqual(200)
           expect(updateResponse.data.shipping_option.prices).toHaveLength(2)
+          expect(updateResponse.data.shipping_option.rules).toHaveLength(3)
           expect(updateResponse.data.shipping_option).toEqual(
             expect.objectContaining({
               id: expect.any(String),
@@ -300,6 +342,18 @@ medusaIntegrationTestRunner({
                   operator: "eq",
                   attribute: "old_attr",
                   value: "old value",
+                }),
+                expect.objectContaining({
+                  id: expect.any(String),
+                  operator: "eq",
+                  attribute: "old_attr_2",
+                  value: "false",
+                }),
+                expect.objectContaining({
+                  id: expect.any(String),
+                  operator: "eq",
+                  attribute: "new_attr",
+                  value: "true",
                 }),
               ]),
             })

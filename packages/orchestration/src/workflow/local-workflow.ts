@@ -1,11 +1,11 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
-  MedusaContext,
-  MedusaContextType,
-  MedusaModuleType,
   createMedusaContainer,
   isDefined,
   isString,
+  MedusaContext,
+  MedusaContextType,
+  MedusaModuleType,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
@@ -29,7 +29,7 @@ type StepHandler = {
 }
 
 export class LocalWorkflow {
-  protected container: MedusaContainer
+  protected container_: MedusaContainer
   protected workflowId: string
   protected flow: OrchestratorBuilder
   protected customOptions: Partial<TransactionModelOptions> = {}
@@ -37,9 +37,17 @@ export class LocalWorkflow {
   protected handlers: Map<string, StepHandler>
   protected medusaContext?: Context
 
+  get container() {
+    return this.container_
+  }
+
+  set container(modulesLoaded: LoadedModule[] | MedusaContainer) {
+    this.resolveContainer(modulesLoaded)
+  }
+
   constructor(
     workflowId: string,
-    modulesLoaded: LoadedModule[] | MedusaContainer
+    modulesLoaded?: LoadedModule[] | MedusaContainer
   ) {
     const globalWorkflow = WorkflowManager.getWorkflow(workflowId)
     if (!globalWorkflow) {
@@ -51,6 +59,10 @@ export class LocalWorkflow {
     this.workflow = globalWorkflow
     this.handlers = new Map(globalWorkflow.handlers_)
 
+    this.resolveContainer(modulesLoaded)
+  }
+
+  private resolveContainer(modulesLoaded?: LoadedModule[] | MedusaContainer) {
     let container
 
     if (!Array.isArray(modulesLoaded) && modulesLoaded) {
@@ -68,7 +80,7 @@ export class LocalWorkflow {
       }
     }
 
-    this.container = this.contextualizedMedusaModules(container)
+    this.container_ = this.contextualizedMedusaModules(container)
   }
 
   private contextualizedMedusaModules(container) {
@@ -326,7 +338,7 @@ export class LocalWorkflow {
 
     const transaction = await orchestrator.beginTransaction(
       uniqueTransactionId,
-      handler(this.container, context),
+      handler(this.container_, context),
       input
     )
 
@@ -349,7 +361,7 @@ export class LocalWorkflow {
 
     const transaction = await orchestrator.retrieveExistingTransaction(
       uniqueTransactionId,
-      handler(this.container, context)
+      handler(this.container_, context)
     )
 
     return transaction
@@ -397,7 +409,7 @@ export class LocalWorkflow {
 
     const transaction = await orchestrator.registerStepSuccess(
       idempotencyKey,
-      handler(this.container, context),
+      handler(this.container_, context),
       undefined,
       response
     )
@@ -425,7 +437,7 @@ export class LocalWorkflow {
     const transaction = await orchestrator.registerStepFailure(
       idempotencyKey,
       error,
-      handler(this.container, context)
+      handler(this.container_, context)
     )
 
     cleanUpEventListeners()

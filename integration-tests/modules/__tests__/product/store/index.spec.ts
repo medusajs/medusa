@@ -33,6 +33,27 @@ medusaIntegrationTestRunner({
         return [response.data.product, response.data.product.variants || []]
       }
 
+      const createCategory = async (data, productIds) => {
+        const response = await api.post(
+          "/admin/product-categories",
+          data,
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/product-categories/${response.data.product_category.id}/products`,
+          { add: productIds },
+          adminHeaders
+        )
+
+        const response2 = await api.get(
+          `/admin/product-categories/${response.data.product_category.id}?fields=*products`,
+          adminHeaders
+        )
+
+        return response2.data.product_category
+      }
+
       const createSalesChannel = async (data, productIds) => {
         const response = await api.post(
           "/admin/sales-channels",
@@ -156,6 +177,30 @@ medusaIntegrationTestRunner({
           ])
         })
 
+        it("should list all products for a category", async () => {
+          const category = await createCategory(
+            { name: "test", is_internal: false, is_active: true },
+            [product.id]
+          )
+
+          const category2 = await createCategory(
+            { name: "test2", is_internal: true, is_active: true },
+            [product4.id]
+          )
+
+          const response = await api.get(
+            `/store/products?category_id[]=${category.id}&category_id[]=${category2.id}`
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.count).toEqual(1)
+          expect(response.data.products).toEqual([
+            expect.objectContaining({
+              id: product.id,
+            }),
+          ])
+        })
+
         describe("with publishable keys", () => {
           let salesChannel1
           let salesChannel2
@@ -192,6 +237,18 @@ medusaIntegrationTestRunner({
               `/store/products?sales_channel_id[]=${salesChannel1.id}`,
               { headers: { "x-publishable-api-key": publishableKey1.token } }
             )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.count).toEqual(1)
+            expect(response.data.products).toEqual([
+              expect.objectContaining({
+                id: product.id,
+              }),
+            ])
+          })
+
+          it("should list products by id", async () => {
+            let response = await api.get(`/store/products?id[]=${product.id}`)
 
             expect(response.status).toEqual(200)
             expect(response.data.count).toEqual(1)
@@ -345,6 +402,34 @@ medusaIntegrationTestRunner({
                   id: expect.any(String),
                 }),
               ],
+            })
+          )
+        })
+
+        // TODO: There are 2 problems that need to be solved to enable this test
+        // 1. When adding product to another category, the product is being removed from earlier assigned categories
+        // 2. MikroORM seems to be doing a join strategy to load relationships, we need to send a separate query to fetch relationships
+        // to scope the relationships
+        it.skip("should list only categories that are public and active", async () => {
+          const category = await createCategory(
+            { name: "test 1", is_internal: true, is_active: true },
+            [product.id]
+          )
+
+          await createCategory(
+            { name: "test 2", is_internal: false, is_active: true },
+            [product.id]
+          )
+
+          const response = await api.get(
+            `/store/products/${product.id}?fields=*categories`
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.product).toEqual(
+            expect.objectContaining({
+              id: product.id,
+              categories: [expect.objectContaining({ id: category.id })],
             })
           )
         })

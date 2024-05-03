@@ -82,3 +82,10 @@ export const StoreAddCartShippingMethods = z
     data: z.record(z.unknown()).optional(),
   })
   .strict()
+
+export const StoreCompleteCart = z
+  .object({
+    idempotency_key: z.string().optional(),
+  })
+  .strict()
+export type StoreCompleteCartType = z.infer<typeof StoreCompleteCart>

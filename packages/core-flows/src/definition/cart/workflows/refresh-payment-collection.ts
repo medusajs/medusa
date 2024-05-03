@@ -3,6 +3,7 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import {
@@ -49,21 +50,20 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
         "payment_collection.payment_sessions.id",
       ],
       variables: { id: input.cart_id },
+      throw_if_key_not_found: true,
     })
+
+    const cart = transform({ carts }, (data) => data.carts[0])
 
     deletePaymentSessionStep({
-      payment_session_id: carts[0].payment_collection.payment_sessions?.[0].id,
+      payment_session_id: cart.payment_collection.payment_sessions?.[0].id,
     })
 
-    // TODO: Temporary fixed cart total, so we can test the workflow.
-    //  This will be removed when the totals utilities are built.
-    const cartTotal = 4242
-
     updatePaymentCollectionStep({
-      selector: { id: carts[0].payment_collection.id },
+      selector: { id: cart.payment_collection.id },
       update: {
-        amount: cartTotal,
-        currency_code: carts[0].currency_code,
+        amount: cart.total,
+        currency_code: cart.currency_code,
       },
     })
   }
