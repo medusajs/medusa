@@ -1,5 +1,5 @@
 # Checks if the announcement bar info was last edited more than 6 days ago, and if so removes it
-name: Remove Docs Release Announcement Bar
+name: Remove Docs Release Announcement Bar (v1)
 on:
   schedule:
     - cron: "0 0 * * *"
@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          ref: "v1.x"
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
@@ -51,7 +52,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: "chore(docs): Removed Docs Announcement Bar (automated)"
-          base: "develop"
+          base: "v1.x"
           title: "chore(docs): Removed Docs Announcement Bar (automated)"
           labels: "type: chore"
           add-paths: www/apps/docs/**
