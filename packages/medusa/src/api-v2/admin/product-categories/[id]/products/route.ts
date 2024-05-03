@@ -7,7 +7,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import { refetchCategory } from "../../helpers"
+import { refetchEntity } from "../../../../utils/refetch-entity"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<LinkMethodRequest>,
@@ -24,11 +24,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const category = await refetchCategory(
-    req.params.id,
+  const category = await refetchEntity(
+    "product_category",
+    id,
     req.scope,
-    req.remoteQueryConfig.fields,
-    req.filterableFields
+    req.remoteQueryConfig.fields
   )
 
   res.status(200).json({ product_category: category })

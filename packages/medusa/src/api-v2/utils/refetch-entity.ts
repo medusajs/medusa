@@ -9,7 +9,8 @@ export const refetchEntities = async (
   entryPoint: string,
   idOrFilter: string | object,
   scope: MedusaContainer,
-  fields: string[]
+  fields: string[],
+  pagination: object = {}
 ) => {
   const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const filters = isString(idOrFilter) ? { id: idOrFilter } : idOrFilter
@@ -23,7 +24,7 @@ export const refetchEntities = async (
     delete filters.context
   }
 
-  let variables = { filters, ...context }
+  let variables = { filters, ...context, ...pagination }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint,
