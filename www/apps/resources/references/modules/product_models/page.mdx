@@ -1,0 +1,39 @@
+---
+displayed_sidebar: productModelReference
+slug: /references/product/models
+---
+
+import { TypeList } from "docs-ui"
+
+# Product Module Data Models Reference
+
+This documentation provides a reference to the data models in the Product Module
+
+## Relations Overview
+
+```mermaid
+erDiagram
+	Product ||--|| ProductOption : options
+	Product ||--|| ProductVariant : variants
+	Product }|--|{ ProductCollection : collection
+	Product }|--|{ ProductType : type
+	Product }|--|{ ProductTag : tags
+	Product }|--|{ Image : images
+	Product }|--|{ ProductCategory : categories
+	ProductCategory }|--|{ ProductCategory : parent_category
+	ProductVariant }|--|{ ProductOptionValue : options
+	ProductOption ||--|| ProductOptionValue : values
+
+```
+
+## Classes
+
+- [ProductCategory](../../product_models/classes/product_models.ProductCategory/page.mdx)
+- [ProductCollection](../../product_models/classes/product_models.ProductCollection/page.mdx)
+- [Image](../../product_models/classes/product_models.Image/page.mdx)
+- [ProductOptionValue](../../product_models/classes/product_models.ProductOptionValue/page.mdx)
+- [ProductOption](../../product_models/classes/product_models.ProductOption/page.mdx)
+- [ProductTag](../../product_models/classes/product_models.ProductTag/page.mdx)
+- [ProductType](../../product_models/classes/product_models.ProductType/page.mdx)
+- [ProductVariant](../../product_models/classes/product_models.ProductVariant/page.mdx)
+- [Product](../../product_models/classes/product_models.Product/page.mdx)

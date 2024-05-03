@@ -1,0 +1,98 @@
+---
+sidebar_position: 4
+---
+
+import { 
+  EllipsisHorizontal, 
+} from "@medusajs/icons"
+
+export const metadata = {
+  title: `Edit an Order’s Items`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to edit items in an order. This includes adding, updating, or deleting items.
+
+## Overview
+
+Using the Medusa Admin, you can edit an order to:
+
+- Add a new item to the order.
+- Edit the quantity of an existing item in the order.
+- Delete an item from the order.
+
+When you request an order edit, the changes aren’t saved on the order until the order edit is confirmed.
+
+There are two ways to confirm an order edit request:
+
+1. The customer reviews the order edit. If they accept the order edit and an additional payment is required, then they’ll have to authorize that payment. The customer can also reject the order edit;
+2. Or you force-confirm the order edit. If there are any additional payment required, you have to handle that manually with the customer.
+
+---
+
+## Request an Order Edit
+
+<Note type="check">
+
+You can’t request an order edit for an order if another order edit is already requested.
+
+</Note>
+
+{/* TODO check info for correctness */}
+
+To request an order edit:
+
+1. Open the order details page.
+2. In the Summary section, click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon.
+3. In the new form that opens:
+    1. To add an item:
+        1. Click on the “Add items” button.
+        2. In the drawer that opens, click on the checkbox next to the items you want to add.
+        3. Once done, click on the “Add products” button.
+    2. To update an item’s quantity:
+        1. Find the item in the table under the "Current Items" section.
+        2. Change the value under the Quantity column.
+    5. To delete an item:
+        1. Find the item in the table under the "Current Items" section.
+        2. Change the value under the Quantity column to `0`.
+    6. Optionally enter a note for the customer to see in the Note field.
+4. Once done, click on the Save button.
+
+---
+
+## Force Confirm an Order
+
+<Note type="warning">
+
+Force-confirming an order makes irreversible changes to the order.
+
+</Note>
+
+<Note>
+
+If the order edit requires additional payment, you’ll have to manually receive that payment from the customer.
+
+</Note>
+
+{/* TODO check info for correctness */}
+
+To force confirm an order:
+
+1. Open the order details page.
+2. Find the order edit in the Timeline section.
+3. Click on the “Force Confirm” button.
+4. Confirm your action by clicking the “Yes, Force Confirm” button in the pop-up.
+
+---
+
+## Cancel an Order Edit Request
+
+To cancel an order-edit request:
+
+{/* TODO check info for correctness */}
+
+1. Open the order details page.
+2. Find the order edit in the Timeline section.
+3. Click on the “Cancel Order Edit” button.
+4. Click the button again to confirm canceling the order.

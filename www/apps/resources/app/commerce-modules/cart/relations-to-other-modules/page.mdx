@@ -1,0 +1,39 @@
+export const metadata = {
+  title: `Relations between Cart Module and Other Modules`,
+}
+
+# {metadata.title}
+
+When Commerce Modules are used together in a Medusa application, the Medusa application handles building the relations between these modules.
+
+This document showcases the relation between the Cart Module and other Commerce Modules.
+
+## Customer Module
+
+A cart is scoped to the customer using it. The Medusa application forms a relation between the `Cart` and `Customer` data models.
+
+![A diagram showcasing an example of how resources from the Cart and Customer modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711537276/Medusa%20Resources/cart-customer_pnjvuw.jpg)
+
+---
+
+## Payment Module
+
+The Payment Module allows you to associate payments with a cart. The Medusa application forms a relation between the `Cart` and `PaymentCollection` data models.
+
+![A diagram showcasing an example of how resources from the Cart and Payment modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711537849/Medusa%20Resources/cart-payment_ixziqm.jpg)
+
+---
+
+## Promotion Module
+
+A promotion can be applied on line items and shipping methods of a cart. The Medusa application forms a relation between the `Cart` and `Promotion` data models.
+
+![A diagram showcasing an example of how resources from the Cart and Promotion modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711538015/Medusa%20Resources/cart-promotion_kuh9vm.jpg)
+
+---
+
+## Sales Channel Module
+
+A cart is scoped to a sales channel. The Medusa application forms a relation between the `Cart` and `SalesChannel` data models.
+
+![A diagram showcasing an example of how resources from the Cart and Sales Channel modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711538159/Medusa%20Resources/cart-sales-channel_n2oi0v.jpg)

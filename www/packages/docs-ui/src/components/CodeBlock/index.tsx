@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from "react"
 import clsx from "clsx"
 import { HighlightProps, Highlight, themes } from "prism-react-renderer"
-import { CopyButton, Tooltip, LegacyLink } from "@/components"
+import { CopyButton, Tooltip, Link } from "@/components"
 import { useColorMode } from "@/providers"
 import { ExclamationCircle, PlaySolid, SquareTwoStack } from "@medusajs/icons"
 import { CodeBlockHeader, CodeBlockHeaderMeta } from "./Header"
@@ -269,8 +269,7 @@ export const CodeBlock = ({
                       tokens.length > 1 && "px-[6px] pb-[6px]"
                     )}
                   >
-                    {/* TODO replace with Link once we move away from Docusaurus */}
-                    <LegacyLink
+                    <Link
                       href={`${GITHUB_ISSUES_PREFIX}&title=${encodeURIComponent(
                         `Docs(Code Issue): `
                       )}`}
@@ -284,7 +283,7 @@ export const CodeBlock = ({
                       rel="noreferrer"
                     >
                       <ExclamationCircle className={clsx(iconColor)} />
-                    </LegacyLink>
+                    </Link>
                   </Tooltip>
                 )}
                 {!noCopy && (
