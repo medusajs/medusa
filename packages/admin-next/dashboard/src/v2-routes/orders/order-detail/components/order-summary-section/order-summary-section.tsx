@@ -36,21 +36,21 @@ const Header = ({ order }: { order: OrderDTO }) => {
         groups={[
           {
             actions: [
-              {
-                label: t("orders.summary.editItems"),
-                to: `/orders/${order.id}/edit`,
-                icon: <PencilSquare />,
-              },
-              {
-                label: t("orders.summary.allocateItems"),
-                to: "#", // TODO: Open modal to allocate items
-                icon: <Buildings />,
-              },
-              {
-                label: t("orders.summary.requestReturn"),
-                to: `/orders/${order.id}/returns`,
-                icon: <ArrowUturnLeft />,
-              },
+              // {
+              //   label: t("orders.summary.editItems"),
+              //   to: `/orders/${order.id}/edit`,
+              //   icon: <PencilSquare />,
+              // },
+              // {
+              //   label: t("orders.summary.allocateItems"),
+              //   to: "#", // TODO: Open modal to allocate items
+              //   icon: <Buildings />,
+              // },
+              // {
+              //   label: t("orders.summary.requestReturn"),
+              //   to: `/orders/${order.id}/returns`,
+              //   icon: <ArrowUturnLeft />,
+              // },
             ],
           },
         ]}

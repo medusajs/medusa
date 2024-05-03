@@ -66,11 +66,11 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
           groups={[
             {
               actions: [
-                {
-                  label: t("actions.cancel"),
-                  onClick: handleCancel,
-                  icon: <XCircle />,
-                },
+                // {
+                //   label: t("actions.cancel"),
+                //   onClick: handleCancel,
+                //   icon: <XCircle />,
+                // },
               ],
             },
           ]}
