@@ -424,11 +424,13 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("adds all descendants to categories in a nested way", async () => {
+      it.only("adds all descendants to categories in a nested way", async () => {
         const response = await api.get(
           `/admin/product-categories?parent_category_id=null&include_descendants_tree=true&limit=7`,
           adminHeaders
         )
+        
+        console.log(response.data.product_categories)
 
         expect(response.status).toEqual(200)
         expect(response.data.count).toEqual(1)
@@ -479,7 +481,7 @@ medusaIntegrationTestRunner({
         ])
       })
 
-      it.only("adds all ancestors to categories in a nested way", async () => {
+      it("adds all ancestors to categories in a nested way", async () => {
         const response = await api.get(
           `/admin/product-categories/${productCategoryChild1.id}?include_ancestors_tree=true`,
           adminHeaders
@@ -490,6 +492,7 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: productCategoryChild1.id,
             name: "rank 1",
+            category_children: [],
             rank: 1,
             parent_category: expect.objectContaining({
               id: productCategoryChild.id,

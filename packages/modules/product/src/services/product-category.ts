@@ -94,12 +94,6 @@ export default class ProductCategoryService<
     )
     queryOptions.where ??= {}
 
-    const cats = (await this.productCategoryRepository_.find(
-      queryOptions,
-      transformOptions,
-      sharedContext
-    )) as TEntity[]
-
     return (await this.productCategoryRepository_.find(
       queryOptions,
       transformOptions,

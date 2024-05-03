@@ -370,6 +370,8 @@ export class RemoteJoiner {
       relationship
     )
 
+    console.log("Response: ", JSON.stringify(response))
+
     const isObj = isDefined(response.path)
     let resData = isObj ? response.data[response.path!] : response.data
 
@@ -387,6 +389,8 @@ export class RemoteJoiner {
     const filteredDataArray = resData.map((data: any) =>
       RemoteJoiner.filterFields(data, expand.fields, expand.expands)
     )
+
+    console.log("Filtered data: ", JSON.stringify(expand.fields), JSON.stringify(expand.expands))
 
     if (isObj) {
       response.data[response.path!] = filteredDataArray

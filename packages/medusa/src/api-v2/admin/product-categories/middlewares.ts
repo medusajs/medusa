@@ -1,6 +1,5 @@
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
-import { maybeIncludeDescendantsAndAncestors } from "../../utils/middlewares/product-categories/attach-descendants-or-ancestors"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import { createLinkBody } from "../../utils/validators"
@@ -16,9 +15,7 @@ export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["ALL"],
     matcher: "/admin/product-categories*",
-    middlewares: [
-      authenticate("admin", ["bearer", "session", "api-key"]),
-    ],
+    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
   },
   {
     method: ["GET"],
@@ -28,7 +25,6 @@ export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
         AdminProductCategoriesParams,
         QueryConfig.listProductCategoryConfig
       ),
-      maybeIncludeDescendantsAndAncestors(),
     ],
   },
   {
@@ -39,7 +35,6 @@ export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
         AdminProductCategoryParams,
         QueryConfig.retrieveProductCategoryConfig
       ),
-      maybeIncludeDescendantsAndAncestors(),
     ],
   },
   {
@@ -51,7 +46,6 @@ export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
         AdminProductCategoryParams,
         QueryConfig.retrieveProductCategoryConfig
       ),
-      maybeIncludeDescendantsAndAncestors(),
     ],
   },
   {
@@ -63,7 +57,6 @@ export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
         AdminProductCategoryParams,
         QueryConfig.retrieveProductCategoryConfig
       ),
-      maybeIncludeDescendantsAndAncestors(),
     ],
   },
   {
@@ -75,7 +68,6 @@ export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
         AdminProductCategoryParams,
         QueryConfig.retrieveProductCategoryConfig
       ),
-      maybeIncludeDescendantsAndAncestors(),
     ],
   },
 ]
