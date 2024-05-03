@@ -38,19 +38,19 @@ export const OrderDetail = () => {
     <div className="flex flex-col gap-x-4 xl:flex-row xl:items-start">
       <div className="flex w-full flex-col gap-y-2">
         <OrderGeneralSection order={order} />
-        {/*<OrderSummarySection order={order} />*/}
+        <OrderSummarySection order={order} />
         {/*<OrderPaymentSection order={order} />*/}
         {/*<OrderFulfillmentSection order={order} />*/}
         <div className="flex flex-col gap-y-2 xl:hidden">
-          {/*<OrderCustomerSection order={order} />*/}
-          {/*<OrderActivitySection order={order} />*/}
+          <OrderCustomerSection order={order} />
+          <OrderActivitySection order={order} />
         </div>
         <JsonViewSection data={order} />
       </div>
-      {/*<div className="hidden w-full max-w-[400px] flex-col gap-y-2 xl:flex">*/}
-      {/*  <OrderCustomerSection order={order} />*/}
-      {/*  <OrderActivitySection order={order} />*/}
-      {/*</div>*/}
+      <div className="hidden w-full max-w-[400px] flex-col gap-y-2 xl:flex">
+        <OrderCustomerSection order={order} />
+        <OrderActivitySection order={order} />
+      </div>
       <Outlet />
     </div>
   )

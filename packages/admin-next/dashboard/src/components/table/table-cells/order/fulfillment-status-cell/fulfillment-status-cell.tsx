@@ -14,7 +14,7 @@ export const FulfillmentStatusCell = ({
 
   if (!status) {
     // TODO: remove this once fulfillment<>order link is added
-    return null
+    return "-"
   }
 
   const { label, color } = getOrderFulfillmentStatus(t, status)

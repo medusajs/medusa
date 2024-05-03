@@ -3,17 +3,15 @@ const DEFAULT_PROPERTIES = [
   "status",
   "created_at",
   "email",
-  // "fulfillment_status", // -> todo replacement for this
-  "payment_status",
+  // "fulfillment_status", // -> TODO replacement for this
+  // "payment_status", // -> TODO replacement for this
   "total",
   "currency_code",
 ]
 
 const DEFAULT_RELATIONS = [
   "*customer",
-  "*items",
-  // "*sales_channel", // TODO link
-  "*shipping_address",
+  // "*sales_channel", // TODO check link
 ]
 
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(
