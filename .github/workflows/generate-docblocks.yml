@@ -1,9 +1,9 @@
-name: Generate Docblocks [Automated]
+name: Generate Docblocks (v1) [Automated]
 
 on:
   push:
     branches:
-      - develop
+      - v1.x
   workflow_dispatch:
 
 jobs:
@@ -13,6 +13,9 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: "v1.x"
 
       - name: Setup Node.js 18
         uses: actions/setup-node@v3
@@ -69,6 +72,9 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: "v1.x"
 
       - name: Setup Node.js 18
         uses: actions/setup-node@v3
@@ -110,6 +116,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          base: "v1.x"
           title: "chore(docs): Generated OAS"
           body: "This PR holds all generated OAS for the upcoming release."
           branch: "chore/generate-oas"

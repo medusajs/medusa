@@ -1,9 +1,9 @@
-name: Generate References for Docblocks [Automated]
+name: Generate References for Docblocks (v1) [Automated]
 
 on:
   pull_request:
     branches:
-      - develop
+      - v1.x
     types:
       - closed
   workflow_dispatch:
@@ -27,6 +27,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          ref: "v1.x"
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
@@ -77,7 +78,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: "chore(docs): Generated References (automated)"
-          base: "develop"
+          base: "v1.x"
           title: "chore(docs): Generated References"
           labels: "type: chore"
           add-paths: www/apps/docs/content/references/**

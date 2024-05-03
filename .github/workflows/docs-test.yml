@@ -1,8 +1,10 @@
-name: Documentation Tests
+name: Documentation Tests (v1)
 on: 
   pull_request:
     paths:
       - www/**
+    branches:
+      - 'v1.x'
 
 jobs:
   docs-test:

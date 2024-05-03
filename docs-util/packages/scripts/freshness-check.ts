@@ -58,6 +58,7 @@ async function scanDirectory(startPath: string) {
         repo: "medusa",
         path: filePath,
         per_page: 1,
+        sha: "v1.x"
       }
     )
 
