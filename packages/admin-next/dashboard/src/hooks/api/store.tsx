@@ -6,11 +6,11 @@ import {
   useQuery,
 } from "@tanstack/react-query"
 
-import { queryKeysFactory } from "medusa-react"
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { UpdateStoreReq } from "../../types/api-payloads"
 import { StoreRes } from "../../types/api-responses"
+import { queryKeysFactory } from "../../lib/query-key-factory"
 
 const STORE_QUERY_KEY = "store" as const
 const storeQueryKeys = queryKeysFactory(STORE_QUERY_KEY)
