@@ -90,10 +90,10 @@ module.exports = {
           "./packages/stock-location/tsconfig.spec.json",
 
           "./packages/create-medusa-app/tsconfig.json",
+          "./packages/core-flows/tsconfig.spec.json",
 
           "./packages/core/orchestration/tsconfig.json",
           "./packages/core/workflows-sdk/tsconfig.spec.json",
-          "./packages/core/core-flows/tsconfig.spec.json",
           "./packages/core/modules-sdk/tsconfig.spec.json",
           "./packages/core/types/tsconfig.spec.json",
           "./packages/core/utils/tsconfig.spec.json",

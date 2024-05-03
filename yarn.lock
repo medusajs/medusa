@@ -8266,9 +8266,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/core-flows@^0.0.9, @medusajs/core-flows@workspace:packages/core/core-flows":
+"@medusajs/core-flows@^0.0.9, @medusajs/core-flows@workspace:packages/core-flows":
   version: 0.0.0-use.local
-  resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
+  resolution: "@medusajs/core-flows@workspace:packages/core-flows"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/orchestration": ^0.5.7
