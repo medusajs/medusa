@@ -140,7 +140,7 @@ function getInternalModuleResolution(
   }
 
   const isObj = isObject(moduleConfig)
-  let resolutionPath = definition.defaultPackage
+  let resolutionPath = definition?.defaultPackage
 
   // If user added a module and it's overridable, we resolve that instead
   const isStr = isString(moduleConfig)
@@ -160,11 +160,11 @@ function getInternalModuleResolution(
     definition,
     dependencies: [
       ...new Set(
-        (definition.dependencies || []).concat(additionalDependencies)
+        (definition?.dependencies ?? []).concat(additionalDependencies)
       ),
     ],
     moduleDeclaration: {
-      ...(definition.defaultModuleDeclaration ?? {}),
+      ...(definition?.defaultModuleDeclaration ?? {}),
       ...moduleDeclaration,
     },
     moduleExports,
