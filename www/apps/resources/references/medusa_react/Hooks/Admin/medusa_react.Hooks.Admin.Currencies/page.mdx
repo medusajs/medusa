@@ -1,0 +1,144 @@
+---
+slug: /references/medusa-react/hooks/admin/currencies
+---
+
+import { TypeList } from "docs-ui"
+
+# Currencies
+
+Queries and Mutations listed here are used to send requests to the [Admin Currency API Routes](https://docs.medusajs.com/api/admin#currencies).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+A store can use unlimited currencies, and each region must be associated with at least one currency.
+Currencies are defined within the Medusa backend. The methods in this class allow admins to list and update currencies.
+
+Related Guide: [How to manage currencies](https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies).
+
+## Mutations
+
+### useAdminUpdateCurrency
+
+This hook updates a currency's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUpdateCurrency } from "medusa-react"
+
+type Props = {
+  currencyCode: string
+}
+
+const Currency = ({ currencyCode }: Props) => {
+  const updateCurrency = useAdminUpdateCurrency(currencyCode)
+  // ...
+
+  const handleUpdate = (includes_tax: boolean) => {
+    updateCurrency.mutate({
+      includes_tax,
+    }, {
+      onSuccess: ({ currency }) => {
+        console.log(currency)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Currency
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"code","type":"`string`","description":"The currency's code.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateCurrency"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostCurrenciesCurrencyReq","type":"[AdminPostCurrenciesCurrencyReq](../../../../medusa/classes/medusa.AdminPostCurrenciesCurrencyReq/page.mdx)","optional":false,"defaultValue":"","description":"The details to update in the currency","expandable":false,"children":[{"name":"includes_tax","type":"`boolean`","description":"Tax included in prices of currency.","optional":true,"defaultValue":"","expandable":false,"featureFlag":"tax_inclusive_pricing","children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateCurrency"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminCurrenciesRes","type":"[AdminCurrenciesRes](../../../../medusa/types/medusa.AdminCurrenciesRes/page.mdx)","optional":false,"defaultValue":"","description":"A currency's details.","expandable":false,"children":[{"name":"currency","type":"[Currency](../../../../currency_models/classes/currency_models.Currency/page.mdx)","description":"Currency details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"symbol","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"symbol_native","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"decimal_digits","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rounding","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_rounding","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateCurrency"/>
+
+___
+
+## Queries
+
+### useAdminCurrencies
+
+This hook retrieves a list of currencies. The currencies can be filtered by fields such as `code`. 
+The currencies can also be sorted or paginated.
+
+#### Example
+
+To list currencies:
+
+```ts
+import React from "react"
+import { useAdminCurrencies } from "medusa-react"
+
+const Currencies = () => {
+  const { currencies, isLoading } = useAdminCurrencies()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {currencies && !currencies.length && (
+        <span>No Currencies</span>
+      )}
+      {currencies && currencies.length > 0 && (
+        <ul>
+          {currencies.map((currency) => (
+            <li key={currency.code}>{currency.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Currencies
+```
+
+By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```ts
+import React from "react"
+import { useAdminCurrencies } from "medusa-react"
+
+const Currencies = () => {
+  const { currencies, limit, offset, isLoading } = useAdminCurrencies({
+    limit: 10,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {currencies && !currencies.length && (
+        <span>No Currencies</span>
+      )}
+      {currencies && currencies.length > 0 && (
+        <ul>
+          {currencies.map((currency) => (
+            <li key={currency.code}>{currency.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Currencies
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminGetCurrenciesParams](../../../../medusa/classes/medusa.AdminGetCurrenciesParams/page.mdx)","description":"Filters and pagination configurations to apply on retrieved currencies.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"Code to filter currencies by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Search parameter for currencies.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"includes_tax","type":"`boolean`","description":"Filter currencies by whether they include tax.","optional":true,"defaultValue":"","expandable":false,"featureFlag":"tax_inclusive_pricing","children":[]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.\nBy default, the returned currencies will be sorted by their `created_at` field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":true,"defaultValue":"0","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":true,"defaultValue":"20","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCurrencies"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currencies","type":"[Currency](../../../../currency_models/classes/currency_models.Currency/page.mdx)[]","description":"An array of currency details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"symbol","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"symbol_native","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"decimal_digits","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rounding","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_rounding","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCurrencies"/>

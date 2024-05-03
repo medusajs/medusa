@@ -1,0 +1,17 @@
+export const metadata = {
+  title: `Relations between Order Module and Other Modules`,
+}
+
+# {metadata.title}
+
+When Commerce Modules are used together in a Medusa application, the Medusa application handles building the relations between these modules.
+
+This document showcases the relation between the Order Module and other Commerce Modules.
+
+## Sales Channel Module
+
+Orders can be scoped to a sales channel. The Medusa application forms a relation between the `Order` and the `SalesChannel` data models.
+
+![A diagram showcasing an example of how resources from the Order and Sales Channel modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1712315409/Medusa%20Resources/order-sales-channel_dy72gx.jpg)
+
+This is useful for omnichannel purposes. Associating an order with a sales channel in turn ensures that associated products, inventory, and other details are also scoped to that sales channel.

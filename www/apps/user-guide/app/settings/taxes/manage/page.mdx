@@ -1,0 +1,38 @@
+---
+sidebar_position: 1
+---
+
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Taxes`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to view and manage taxes in your Medusa Admin.
+
+## View Taxes
+
+To view taxes, go to Settings → Taxes.
+
+In the Taxes page, you'll find a list of regions. If you click on a region, you'll find its tax settings and rates.
+
+---
+
+## Edit a Region’s Tax Settings
+
+To edit a region’s tax settings:
+
+1. Go to Settings → Taxes.
+2. Click on the region to edit its tax settings.
+3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right of the first section.
+4. Choose Edit from the dropdown.
+5. In the drawer that opens, edit the tax settings:
+    - In the Tax Provider field, you can change the system tax provider to a custom one.
+    - In the "Default tax rate" field, you can change the default tax rate of the region.
+    - In the "Default tax code" field, you can change the default tax code of the region.
+    - By default, taxes are created automatically during checkout. However, in some cases you may choose to disable this behavior if you don't want many requests sent to a custom third-party service. In that case, you can disable the "Calculate taxes automatically" field, but beware that you or your developer has to implement the tax calculation functionality during checkout manually.
+    - By default, taxes aren't applied on gift cards during checkout. To enable applying them on gift cards, enable the "Apply taxes on gift cards" field.
+    - You can change whether a region's prices are tax-inclusive by toggling the "Tax inclusive pricing" field.
+6. Once you're done, click the Save button.

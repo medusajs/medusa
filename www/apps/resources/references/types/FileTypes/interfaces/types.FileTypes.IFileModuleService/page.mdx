@@ -1,0 +1,109 @@
+import { TypeList } from "docs-ui"
+
+# IFileModuleService
+
+The main service interface for the File Module.
+
+## Methods
+
+### create
+
+`**create**(data, sharedContext?): Promise&#60;[FileDTO](../types.FileTypes.FileDTO/page.mdx)[]&#62;`
+
+This method uploads files to the designated file storage system.
+
+#### Example
+
+```ts
+const [file] = await fileModuleService.create([{
+  filename: "product.png",
+  mimeType: "image/png",
+  content: "somecontent"
+}])
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateFileDTO](../types.FileTypes.CreateFileDTO/page.mdx)[]","description":"The files to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"filename","type":"`string`","description":"The filename of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"mimeType","type":"`string`","description":"The mimetype of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"content","type":"`Blob`","description":"The file content","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/types.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="create"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[FileDTO](../types.FileTypes.FileDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The created files.","expandable":false,"children":[{"name":"FileDTO[]","type":"[FileDTO](../types.FileTypes.FileDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"FileDTO","type":"`object`","description":"The File details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="create"/>
+
+`**create**(data, sharedContext?): Promise&#60;[FileDTO](../types.FileTypes.FileDTO/page.mdx)&#62;`
+
+This method uploads a file to the designated file storage system.
+
+#### Example
+
+```ts
+const file = await fileModuleService.create({
+  filename: "product.png",
+  mimeType: "image/png",
+  content: "somecontent"
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateFileDTO](../types.FileTypes.CreateFileDTO/page.mdx)","description":"The file to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"filename","type":"`string`","description":"The filename of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"mimeType","type":"`string`","description":"The mimetype of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"content","type":"`Blob`","description":"The file content","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/types.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="create"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[FileDTO](../types.FileTypes.FileDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The created file.","expandable":false,"children":[{"name":"FileDTO","type":"[FileDTO](../types.FileTypes.FileDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the File.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"url","type":"`string`","description":"The URL of the File.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="create"/>
+
+### delete
+
+`**delete**(ids, sharedContext?): Promise&#60;void&#62;`
+
+This method deletes files by their IDs.
+
+#### Example
+
+```ts
+await fileModuleService.delete(["file_123"])
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"ids","type":"`string`[]","description":"The IDs of the files.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sharedContext","type":"[Context](../../../interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/types.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="delete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the files are deleted successfully.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+
+`**delete**(id, sharedContext?): Promise&#60;void&#62;`
+
+This method deletes a file by its ID.
+
+#### Example
+
+```ts
+await fileModuleService.delete("file_123")
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the file.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sharedContext","type":"[Context](../../../interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/types.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="delete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the file is deleted successfully.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+
+### retrieve
+
+This method retrieves a file with a downloadable URL by its ID.
+
+#### Example
+
+```ts
+const file = await fileModuleService.retrieve("file_123")
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the file.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../../CommonTypes/interfaces/types.CommonTypes.FindConfig/page.mdx)&#60;[FileDTO](../types.FileTypes.FileDTO/page.mdx)&#62;","description":"The configurations determining how the file is retrieved. Its properties, such as `select` or `relations`, accept the\nattributes or relations associated with a file.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"select","type":"(`string` \\| keyof Entity)[]","description":"An array of strings, each being attribute names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"skip","type":"`null` \\| `number`","description":"A number indicating the number of records to skip before retrieving the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"take","type":"`null` \\| `number`","description":"A number indicating the number of records to return in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"relations","type":"`string`[]","description":"An array of strings, each being relation names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`object`","description":"An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC`\nto sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"withDeleted","type":"`boolean`","description":"A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n`SoftDeletableEntity` class.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"filters","type":"`Record<string, any>`","description":"Enable ORM specific defined filters","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/types.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="retrieve"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[FileDTO](../types.FileTypes.FileDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The retrieved file.","expandable":false,"children":[{"name":"FileDTO","type":"[FileDTO](../types.FileTypes.FileDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the File.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"url","type":"`string`","description":"The URL of the File.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="retrieve"/>

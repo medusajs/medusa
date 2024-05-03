@@ -1,0 +1,9 @@
+import { TypeList } from "docs-ui"
+
+# StoreGetOrdersParams
+
+Filters to narrow down the looked-up order, with configurations applied on the retrieved order.
+
+## Properties
+
+<TypeList types={[{"name":"display_id","type":"`number`","description":"Display ID of the order.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"Email of the order.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_address","type":"[ShippingAddressPayload](../medusa.ShippingAddressPayload/page.mdx)","description":"Filter the retrieved order by its shipping address details.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"postal_code","type":"`string`","description":"Postal code.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="StoreGetOrdersParams"/>

@@ -13,14 +13,11 @@ import {
   getCustomNamespaceTag,
   shouldHaveCustomNamespace,
 } from "../../utils/medusa-react-utils.js"
-import {
-  camelToWords,
-  capitalize,
-  normalizeName,
-} from "../../utils/str-formatting.js"
 import GeneratorEventManager from "../helpers/generator-event-manager.js"
 import { CommonCliOptions } from "../../types/index.js"
 import AiGenerator from "../helpers/ai-generator.js"
+import { camelToWords, capitalize } from "utils"
+import { normalizeName } from "../../utils/str-formatting.js"
 
 export type GeneratorOptions = {
   checker: ts.TypeChecker

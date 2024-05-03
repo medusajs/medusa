@@ -8,6 +8,7 @@ export type SectionKey =
   | "member_declaration_signatures"
   | "member_declaration_typeDeclaration"
   | "member_declaration_example"
+  | "member_declaration_children"
   | "member_getteSetter_getSignature"
   | "member_getteSetter_setSignature"
   | "member_signatures"
@@ -37,6 +38,10 @@ export type SectionKey =
   | "reflection_callable"
   | "reflection_indexable"
 
+export type Sections = {
+  [k in SectionKey]?: boolean
+}
+
 export type ParameterStyle = "table" | "list" | "component"
 
 export type FormattingOptionsType = {
@@ -44,9 +49,7 @@ export type FormattingOptionsType = {
 }
 
 export type FormattingOptionType = {
-  sections?: {
-    [k in SectionKey]: boolean
-  }
+  sections?: Sections
   reflectionGroups?: {
     [k: string]: boolean
   }
@@ -54,8 +57,8 @@ export type FormattingOptionType = {
     [k: string]: boolean
   }
   reflectionTitle?: {
-    kind: boolean
-    typeParameters: boolean
+    kind?: boolean
+    typeParameters?: boolean
     prefix?: string
     suffix?: string
     fullReplacement?: string

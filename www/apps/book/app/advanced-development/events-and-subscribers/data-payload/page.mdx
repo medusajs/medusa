@@ -1,0 +1,44 @@
+export const metadata = {
+  title: `${pageNumber} Event Data Payload`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how subscribers receive an event's data payload.
+
+## How to Access Data Payload
+
+When events are emitted, they’re emitted with a data payload. 
+
+The object that the subscriber function receives as a parameter has a `data` property, which is the event's data payload.
+
+For example:
+
+export const highlights = [
+  ["8", "", "The event's data payload."],
+  ["9", "{ id: string }", "The type of expected data payloads."]
+]
+
+```ts title="src/subscribers/product-created.ts" highlights={highlights}
+import {
+  ProductService,
+  SubscriberArgs,
+  type SubscriberConfig,
+} from "@medusajs/medusa"
+
+export default async function productCreateHandler({
+  data,
+}: SubscriberArgs<{ id: string }>) {
+  console.log(`The product ${data.id} was created`)
+}
+
+export const config: SubscriberConfig = {
+  event: ProductService.Events.CREATED,
+}
+```
+
+This logs the product ID received in the `ProductService.Events.CREATED` (`product-created`) event’s data payload to the console.
+
+## List of Events with Data Payload
+
+Refer to [this reference](!resources!/events-reference) for a full list of events emitted by Medusa and their data payloads.

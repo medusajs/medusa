@@ -1,0 +1,6874 @@
+{
+	"id": 11541,
+	"name": "store",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 11680,
+			"name": "FindConfig",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An object that is used to configure how an entity is retrieved from the database. It accepts as a typed parameter an "
+					},
+					{
+						"kind": "code",
+						"text": "`Entity`"
+					},
+					{
+						"kind": "text",
+						"text": " class,\nwhich provides correct typing of field names in its properties."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 11681,
+					"name": "select",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of strings, each being attribute names of the entity to retrieve in the result."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "intrinsic",
+									"name": "string"
+								},
+								{
+									"type": "typeOperator",
+									"operator": "keyof",
+									"target": {
+										"type": "reference",
+										"target": 11691,
+										"name": "Entity",
+										"package": "@medusajs/types",
+										"qualifiedName": "FindConfig.Entity",
+										"refersToTypeParameter": true
+									}
+								}
+							]
+						}
+					}
+				},
+				{
+					"id": 11682,
+					"name": "skip",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A number indicating the number of records to skip before retrieving the results."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 11683,
+					"name": "take",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A number indicating the number of records to return in the result."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 11684,
+					"name": "relations",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of strings, each being relation names of the entity to retrieve in the result."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 11685,
+					"name": "order",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be "
+							},
+							{
+								"kind": "code",
+								"text": "`ASC`"
+							},
+							{
+								"kind": "text",
+								"text": "\nto sort retrieved records in an ascending order, or "
+							},
+							{
+								"kind": "code",
+								"text": "`DESC`"
+							},
+							{
+								"kind": "text",
+								"text": " to sort retrieved records in a descending order."
+							}
+						]
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 11686,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"indexSignature": {
+								"id": 11687,
+								"name": "__index",
+								"variant": "signature",
+								"kind": 8192,
+								"flags": {},
+								"parameters": [
+									{
+										"id": 11688,
+										"name": "K",
+										"variant": "param",
+										"kind": 32768,
+										"flags": {},
+										"type": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"type": {
+									"type": "union",
+									"types": [
+										{
+											"type": "literal",
+											"value": "ASC"
+										},
+										{
+											"type": "literal",
+											"value": "DESC"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				{
+					"id": 11689,
+					"name": "withDeleted",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n"
+							},
+							{
+								"kind": "code",
+								"text": "`SoftDeletableEntity`"
+							},
+							{
+								"kind": "text",
+								"text": " class."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				},
+				{
+					"id": 11690,
+					"name": "filters",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Enable ORM specific defined filters"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11681,
+						11682,
+						11683,
+						11684,
+						11685,
+						11689,
+						11690
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 11691,
+					"name": "Entity",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {}
+				}
+			]
+		},
+		{
+			"id": 11740,
+			"name": "BaseFilterable",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An object used to allow specifying flexible queries with and/or conditions."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 11741,
+					"name": "$and",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"target": 11740,
+									"typeArguments": [
+										{
+											"type": "reference",
+											"target": 11743,
+											"name": "T",
+											"package": "@medusajs/types",
+											"qualifiedName": "BaseFilterable.T",
+											"refersToTypeParameter": true
+										}
+									],
+									"name": "BaseFilterable",
+									"package": "@medusajs/types"
+								},
+								{
+									"type": "reference",
+									"target": 11743,
+									"name": "T",
+									"package": "@medusajs/types",
+									"qualifiedName": "BaseFilterable.T",
+									"refersToTypeParameter": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"id": 11742,
+					"name": "$or",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"target": 11740,
+									"typeArguments": [
+										{
+											"type": "reference",
+											"target": 11743,
+											"name": "T",
+											"package": "@medusajs/types",
+											"qualifiedName": "BaseFilterable.T",
+											"refersToTypeParameter": true
+										}
+									],
+									"name": "BaseFilterable",
+									"package": "@medusajs/types"
+								},
+								{
+									"type": "reference",
+									"target": 11743,
+									"name": "T",
+									"package": "@medusajs/types",
+									"qualifiedName": "BaseFilterable.T",
+									"refersToTypeParameter": true
+								}
+							]
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11741,
+						11742
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 11743,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {}
+				}
+			],
+			"extendedBy": [
+				{
+					"type": "reference",
+					"target": 11675,
+					"name": "FilterableStoreProps"
+				}
+			]
+		},
+		{
+			"id": 11692,
+			"name": "SoftDeleteReturn",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 11693,
+					"name": "returnLinkableKeys",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of strings, each being the ID attribute names of the entity's relations."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": 11694,
+							"name": "TReturnableLinkableKeys",
+							"package": "@medusajs/types",
+							"refersToTypeParameter": true
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11693
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 11694,
+					"name": "TReturnableLinkableKeys",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			]
+		},
+		{
+			"id": 11695,
+			"name": "RestoreReturn",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An object that is used to specify an entity's related entities that should be restored when the main entity is restored."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 11696,
+					"name": "returnLinkableKeys",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of strings, each being the ID attribute names of the entity's relations."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": 11697,
+							"name": "TReturnableLinkableKeys",
+							"package": "@medusajs/types",
+							"refersToTypeParameter": true
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11696
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 11697,
+					"name": "TReturnableLinkableKeys",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			]
+		},
+		{
+			"id": 11798,
+			"name": "MessageBody",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"typeParameters": [
+				{
+					"id": 11807,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "unknown"
+					}
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 11799,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 11800,
+							"name": "metadata",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reflection",
+								"declaration": {
+									"id": 11801,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 11802,
+											"name": "service",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 11803,
+											"name": "action",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 11804,
+											"name": "object",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 11805,
+											"name": "eventGroupId",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												11802,
+												11803,
+												11804,
+												11805
+											]
+										}
+									]
+								}
+							}
+						},
+						{
+							"id": 11806,
+							"name": "data",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 11807,
+								"name": "T",
+								"package": "@medusajs/types",
+								"refersToTypeParameter": true
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								11800,
+								11806
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 11762,
+			"name": "Message",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"typeParameters": [
+				{
+					"id": 11767,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "unknown"
+					}
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 11763,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 11764,
+							"name": "eventName",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 11765,
+							"name": "body",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 11798,
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 11767,
+										"name": "T",
+										"package": "@medusajs/types",
+										"refersToTypeParameter": true
+									}
+								],
+								"name": "MessageBody",
+								"package": "@medusajs/types"
+							}
+						},
+						{
+							"id": 11766,
+							"name": "options",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								11764,
+								11765,
+								11766
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 11774,
+			"name": "MessageFormat",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"typeParameters": [
+				{
+					"id": 11784,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "unknown"
+					}
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 11775,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 11776,
+							"name": "eventName",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 11777,
+							"name": "metadata",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reflection",
+								"declaration": {
+									"id": 11778,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 11779,
+											"name": "service",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 11780,
+											"name": "action",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 11781,
+											"name": "object",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 11782,
+											"name": "eventGroupId",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												11779,
+												11780,
+												11781,
+												11782
+											]
+										}
+									]
+								}
+							}
+						},
+						{
+							"id": 11783,
+							"name": "data",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "reference",
+										"target": 11784,
+										"name": "T",
+										"package": "@medusajs/types",
+										"refersToTypeParameter": true
+									},
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 11784,
+											"name": "T",
+											"package": "@medusajs/types",
+											"refersToTypeParameter": true
+										}
+									}
+								]
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								11776,
+								11777,
+								11783
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 11788,
+			"name": "JoinerRelationship",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 11789,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 11790,
+							"name": "alias",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 11791,
+							"name": "foreignKey",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 11792,
+							"name": "primaryKey",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 11793,
+							"name": "serviceName",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 11794,
+							"name": "isInternalService",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "If true, the relationship is an internal service from the medusa core\nTODO: Remove when there are no more \"internal\" services"
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 11795,
+							"name": "inverse",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "In an inverted relationship the foreign key is on the other service and the primary key is on the current service"
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 11796,
+							"name": "isList",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Force the relationship to return a list"
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 11797,
+							"name": "args",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Extra arguments to pass to the remoteFetchData callback"
+									}
+								]
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "any"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								11790,
+								11791,
+								11792,
+								11793,
+								11794,
+								11795,
+								11796,
+								11797
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 11785,
+			"name": "JoinerServiceConfigAlias",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 11786,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 11787,
+					"name": "args",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Extra arguments to pass to the remoteFetchData callback"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11786,
+						11787
+					]
+				}
+			]
+		},
+		{
+			"id": 11744,
+			"name": "JoinerServiceConfig",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 11745,
+					"name": "serviceName",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11746,
+					"name": "alias",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Property name to use as entrypoint to the service"
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "reference",
+								"target": 11785,
+								"name": "JoinerServiceConfigAlias",
+								"package": "@medusajs/types"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "reference",
+									"target": 11785,
+									"name": "JoinerServiceConfigAlias",
+									"package": "@medusajs/types"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 11747,
+					"name": "fieldAlias",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "reflection",
+										"declaration": {
+											"id": 11748,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 11749,
+													"name": "path",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 11750,
+													"name": "forwardArgumentsOnPath",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														11749,
+														11750
+													]
+												}
+											]
+										}
+									}
+								]
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 11751,
+					"name": "primaryKeys",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 11752,
+					"name": "relationships",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": 11788,
+							"name": "JoinerRelationship",
+							"package": "@medusajs/types"
+						}
+					}
+				},
+				{
+					"id": 11753,
+					"name": "extends",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reflection",
+							"declaration": {
+								"id": 11754,
+								"name": "__type",
+								"variant": "declaration",
+								"kind": 65536,
+								"flags": {},
+								"children": [
+									{
+										"id": 11755,
+										"name": "serviceName",
+										"variant": "declaration",
+										"kind": 1024,
+										"flags": {},
+										"type": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									},
+									{
+										"id": 11756,
+										"name": "relationship",
+										"variant": "declaration",
+										"kind": 1024,
+										"flags": {},
+										"type": {
+											"type": "reference",
+											"target": 11788,
+											"name": "JoinerRelationship",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"groups": [
+									{
+										"title": "Properties",
+										"children": [
+											11755,
+											11756
+										]
+									}
+								]
+							}
+						}
+					}
+				},
+				{
+					"id": 11757,
+					"name": "args",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Extra arguments to pass to the remoteFetchData callback"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11745,
+						11746,
+						11747,
+						11751,
+						11752,
+						11753,
+						11757
+					]
+				}
+			]
+		},
+		{
+			"id": 11698,
+			"name": "ModuleJoinerConfig",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "intersection",
+				"types": [
+					{
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Omit"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 11744,
+								"name": "JoinerServiceConfig",
+								"package": "@medusajs/types"
+							},
+							{
+								"type": "union",
+								"types": [
+									{
+										"type": "literal",
+										"value": "serviceName"
+									},
+									{
+										"type": "literal",
+										"value": "primaryKeys"
+									},
+									{
+										"type": "literal",
+										"value": "relationships"
+									},
+									{
+										"type": "literal",
+										"value": "extends"
+									}
+								]
+							}
+						],
+						"name": "Omit",
+						"package": "typescript"
+					},
+					{
+						"type": "reflection",
+						"declaration": {
+							"id": 11699,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 11700,
+									"name": "schema",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "GraphQL schema for the all module's available entities and fields"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 11701,
+									"name": "relationships",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 11758,
+											"name": "ModuleJoinerRelationship",
+											"package": "@medusajs/types"
+										}
+									}
+								},
+								{
+									"id": 11702,
+									"name": "extends",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reflection",
+											"declaration": {
+												"id": 11703,
+												"name": "__type",
+												"variant": "declaration",
+												"kind": 65536,
+												"flags": {},
+												"children": [
+													{
+														"id": 11704,
+														"name": "serviceName",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {},
+														"type": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													},
+													{
+														"id": 11705,
+														"name": "fieldAlias",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {
+															"isOptional": true
+														},
+														"type": {
+															"type": "reference",
+															"target": {
+																"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																"qualifiedName": "Record"
+															},
+															"typeArguments": [
+																{
+																	"type": "intrinsic",
+																	"name": "string"
+																},
+																{
+																	"type": "union",
+																	"types": [
+																		{
+																			"type": "intrinsic",
+																			"name": "string"
+																		},
+																		{
+																			"type": "reflection",
+																			"declaration": {
+																				"id": 11706,
+																				"name": "__type",
+																				"variant": "declaration",
+																				"kind": 65536,
+																				"flags": {},
+																				"children": [
+																					{
+																						"id": 11707,
+																						"name": "path",
+																						"variant": "declaration",
+																						"kind": 1024,
+																						"flags": {},
+																						"type": {
+																							"type": "intrinsic",
+																							"name": "string"
+																						}
+																					},
+																					{
+																						"id": 11708,
+																						"name": "forwardArgumentsOnPath",
+																						"variant": "declaration",
+																						"kind": 1024,
+																						"flags": {
+																							"isOptional": true
+																						},
+																						"type": {
+																							"type": "array",
+																							"elementType": {
+																								"type": "intrinsic",
+																								"name": "string"
+																							}
+																						}
+																					},
+																					{
+																						"id": 11709,
+																						"name": "isList",
+																						"variant": "declaration",
+																						"kind": 1024,
+																						"flags": {
+																							"isOptional": true
+																						},
+																						"type": {
+																							"type": "intrinsic",
+																							"name": "boolean"
+																						}
+																					}
+																				],
+																				"groups": [
+																					{
+																						"title": "Properties",
+																						"children": [
+																							11707,
+																							11708,
+																							11709
+																						]
+																					}
+																				]
+																			}
+																		}
+																	]
+																}
+															],
+															"name": "Record",
+															"package": "typescript"
+														}
+													},
+													{
+														"id": 11710,
+														"name": "relationship",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {},
+														"type": {
+															"type": "reference",
+															"target": 11758,
+															"name": "ModuleJoinerRelationship",
+															"package": "@medusajs/types"
+														}
+													}
+												],
+												"groups": [
+													{
+														"title": "Properties",
+														"children": [
+															11704,
+															11705,
+															11710
+														]
+													}
+												]
+											}
+										}
+									}
+								},
+								{
+									"id": 11711,
+									"name": "serviceName",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 11712,
+									"name": "primaryKeys",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 11713,
+									"name": "isLink",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If the module is a link module"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								},
+								{
+									"id": 11714,
+									"name": "linkableKeys",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Keys that can be used to link to other modules. e.g { product_id: \"Product\" } \"Product\" being the entity it refers to"
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "string"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								},
+								{
+									"id": 11715,
+									"name": "isReadOnlyLink",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If true it expands a RemoteQuery property but doesn't create a pivot table"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								},
+								{
+									"id": 11716,
+									"name": "databaseConfig",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 11717,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 11718,
+													"name": "tableName",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "Name of the pivot table. If not provided it is auto generated"
+															}
+														]
+													},
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 11719,
+													"name": "idPrefix",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "Prefix for the id column. If not provided it is \"link\""
+															}
+														]
+													},
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 11720,
+													"name": "extraFields",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "Record"
+														},
+														"typeArguments": [
+															{
+																"type": "intrinsic",
+																"name": "string"
+															},
+															{
+																"type": "reflection",
+																"declaration": {
+																	"id": 11721,
+																	"name": "__type",
+																	"variant": "declaration",
+																	"kind": 65536,
+																	"flags": {},
+																	"children": [
+																		{
+																			"id": 11722,
+																			"name": "type",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {},
+																			"type": {
+																				"type": "union",
+																				"types": [
+																					{
+																						"type": "literal",
+																						"value": "date"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "time"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "datetime"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "bigint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "blob"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "uint8array"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "array"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "enumArray"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "enum"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "json"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "integer"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "smallint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "tinyint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "mediumint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "float"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "double"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "boolean"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "decimal"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "string"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "uuid"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "text"
+																					}
+																				]
+																			}
+																		},
+																		{
+																			"id": 11723,
+																			"name": "defaultValue",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"type": {
+																				"type": "intrinsic",
+																				"name": "string"
+																			}
+																		},
+																		{
+																			"id": 11724,
+																			"name": "nullable",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"type": {
+																				"type": "intrinsic",
+																				"name": "boolean"
+																			}
+																		},
+																		{
+																			"id": 11725,
+																			"name": "options",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"comment": {
+																				"summary": [
+																					{
+																						"kind": "text",
+																						"text": "Mikro-orm options for the column"
+																					}
+																				]
+																			},
+																			"type": {
+																				"type": "reference",
+																				"target": {
+																					"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																					"qualifiedName": "Record"
+																				},
+																				"typeArguments": [
+																					{
+																						"type": "intrinsic",
+																						"name": "string"
+																					},
+																					{
+																						"type": "intrinsic",
+																						"name": "unknown"
+																					}
+																				],
+																				"name": "Record",
+																				"package": "typescript"
+																			}
+																		}
+																	],
+																	"groups": [
+																		{
+																			"title": "Properties",
+																			"children": [
+																				11722,
+																				11723,
+																				11724,
+																				11725
+																			]
+																		}
+																	]
+																}
+															}
+														],
+														"name": "Record",
+														"package": "typescript"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														11718,
+														11719,
+														11720
+													]
+												}
+											]
+										}
+									}
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										11700,
+										11701,
+										11702,
+										11711,
+										11712,
+										11713,
+										11714,
+										11715,
+										11716
+									]
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": 11758,
+			"name": "ModuleJoinerRelationship",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "intersection",
+				"types": [
+					{
+						"type": "reference",
+						"target": 11788,
+						"name": "JoinerRelationship",
+						"package": "@medusajs/types"
+					},
+					{
+						"type": "reflection",
+						"declaration": {
+							"id": 11759,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 11760,
+									"name": "isInternalService",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more \"internal\" services"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								},
+								{
+									"id": 11761,
+									"name": "deleteCascade",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If true, the link joiner will cascade deleting the relationship"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										11760,
+										11761
+									]
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": 11613,
+			"name": "IModuleService",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"extendedBy": [
+				{
+					"type": "reference",
+					"target": 11542,
+					"name": "IStoreModuleService"
+				}
+			]
+		},
+		{
+			"id": 11768,
+			"name": "MessageAggregatorFormat",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 11769,
+					"name": "groupBy",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 11770,
+					"name": "sortBy",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 11771,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"indexSignature": {
+								"id": 11772,
+								"name": "__index",
+								"variant": "signature",
+								"kind": 8192,
+								"flags": {},
+								"parameters": [
+									{
+										"id": 11773,
+										"name": "key",
+										"variant": "param",
+										"kind": 32768,
+										"flags": {},
+										"type": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"type": {
+									"type": "union",
+									"types": [
+										{
+											"type": "array",
+											"elementType": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"type": "intrinsic",
+											"name": "string"
+										},
+										{
+											"type": "intrinsic",
+											"name": "number"
+										}
+									]
+								}
+							}
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11769,
+						11770
+					]
+				}
+			]
+		},
+		{
+			"id": 11726,
+			"name": "IMessageAggregator",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 11727,
+					"name": "save",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11728,
+							"name": "save",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 11729,
+									"name": "msg",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": 11762,
+												"name": "Message",
+												"package": "@medusajs/types"
+											},
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"target": 11762,
+													"name": "Message",
+													"package": "@medusajs/types"
+												}
+											}
+										]
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 11730,
+					"name": "getMessages",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11731,
+							"name": "getMessages",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 11732,
+									"name": "format",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"target": 11768,
+										"name": "MessageAggregatorFormat",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 11762,
+											"name": "Message",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 11733,
+					"name": "clearMessages",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11734,
+							"name": "clearMessages",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 11735,
+					"name": "saveRawMessageData",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11736,
+							"name": "saveRawMessageData",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"typeParameter": [
+								{
+									"id": 11737,
+									"name": "T",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {}
+								}
+							],
+							"parameters": [
+								{
+									"id": 11738,
+									"name": "messageData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": 11774,
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": 11737,
+														"name": "T",
+														"package": "@medusajs/types",
+														"refersToTypeParameter": true
+													}
+												],
+												"name": "MessageFormat",
+												"package": "@medusajs/types"
+											},
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"target": 11774,
+													"typeArguments": [
+														{
+															"type": "reference",
+															"target": 11737,
+															"name": "T",
+															"package": "@medusajs/types",
+															"refersToTypeParameter": true
+														}
+													],
+													"name": "MessageFormat",
+													"package": "@medusajs/types"
+												}
+											}
+										]
+									}
+								},
+								{
+									"id": 11739,
+									"name": "options",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Methods",
+					"children": [
+						11727,
+						11730,
+						11733,
+						11735
+					]
+				}
+			]
+		},
+		{
+			"id": 11635,
+			"name": "Context",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "A context used to share resources, such as transaction manager, between the application and the module."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 11636,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "literal",
+						"value": "MedusaContext"
+					}
+				},
+				{
+					"id": 11637,
+					"name": "transactionManager",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of a transaction manager of type "
+							},
+							{
+								"kind": "code",
+								"text": "`TManager`"
+							},
+							{
+								"kind": "text",
+								"text": ", which is a typed parameter passed to the context to specify the type of the "
+							},
+							{
+								"kind": "code",
+								"text": "`transactionManager`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 11646,
+						"name": "TManager",
+						"package": "@medusajs/types",
+						"refersToTypeParameter": true
+					}
+				},
+				{
+					"id": 11638,
+					"name": "manager",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of a manager, typically an entity manager, of type "
+							},
+							{
+								"kind": "code",
+								"text": "`TManager`"
+							},
+							{
+								"kind": "text",
+								"text": ", which is a typed parameter passed to the context to specify the type of the "
+							},
+							{
+								"kind": "code",
+								"text": "`manager`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 11646,
+						"name": "TManager",
+						"package": "@medusajs/types",
+						"refersToTypeParameter": true
+					}
+				},
+				{
+					"id": 11639,
+					"name": "isolationLevel",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the isolation level of the context. Possible values are "
+							},
+							{
+								"kind": "code",
+								"text": "`READ UNCOMMITTED`"
+							},
+							{
+								"kind": "text",
+								"text": ", "
+							},
+							{
+								"kind": "code",
+								"text": "`READ COMMITTED`"
+							},
+							{
+								"kind": "text",
+								"text": ", "
+							},
+							{
+								"kind": "code",
+								"text": "`REPEATABLE READ`"
+							},
+							{
+								"kind": "text",
+								"text": ", or "
+							},
+							{
+								"kind": "code",
+								"text": "`SERIALIZABLE`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11640,
+					"name": "enableNestedTransactions",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A boolean value indicating whether nested transactions are enabled."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				},
+				{
+					"id": 11641,
+					"name": "eventGroupId",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the ID of the group to aggregate the events to be emitted at a later point."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11642,
+					"name": "transactionId",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the ID of the current transaction."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11643,
+					"name": "messageAggregator",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 11726,
+						"name": "IMessageAggregator",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 11644,
+					"name": "requestId",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the ID of the current request."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11645,
+					"name": "idempotencyKey",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the idempotencyKey of the current workflow execution."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11636,
+						11637,
+						11638,
+						11639,
+						11640,
+						11641,
+						11642,
+						11643,
+						11644,
+						11645
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 11646,
+					"name": "TManager",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "unknown"
+					}
+				}
+			]
+		},
+		{
+			"id": 11647,
+			"name": "StoreDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The store details."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 11648,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11649,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The name of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11650,
+					"name": "supported_currency_codes",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The supported currency codes of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 11651,
+					"name": "default_currency_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The default currency code of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11652,
+					"name": "default_sales_channel_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated default sales channel's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11653,
+					"name": "default_region_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated default region's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11654,
+					"name": "default_location_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated default location's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11655,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Holds custom data in key-value pairs."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "any"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					}
+				},
+				{
+					"id": 11656,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The created at of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11657,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The updated at of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11648,
+						11649,
+						11650,
+						11651,
+						11652,
+						11653,
+						11654,
+						11655,
+						11656,
+						11657
+					]
+				}
+			]
+		},
+		{
+			"id": 11675,
+			"name": "FilterableStoreProps",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The filters to apply on the retrieved stores."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 11678,
+					"name": "$and",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"target": 11675,
+									"name": "FilterableStoreProps",
+									"package": "@medusajs/types"
+								},
+								{
+									"type": "reference",
+									"target": 11740,
+									"typeArguments": [
+										{
+											"type": "reference",
+											"target": 11675,
+											"name": "FilterableStoreProps",
+											"package": "@medusajs/types"
+										}
+									],
+									"name": "BaseFilterable",
+									"package": "@medusajs/types"
+								}
+							]
+						}
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": 11741,
+						"name": "BaseFilterable.$and"
+					}
+				},
+				{
+					"id": 11679,
+					"name": "$or",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"target": 11675,
+									"name": "FilterableStoreProps",
+									"package": "@medusajs/types"
+								},
+								{
+									"type": "reference",
+									"target": 11740,
+									"typeArguments": [
+										{
+											"type": "reference",
+											"target": 11675,
+											"name": "FilterableStoreProps",
+											"package": "@medusajs/types"
+										}
+									],
+									"name": "BaseFilterable",
+									"package": "@medusajs/types"
+								}
+							]
+						}
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": 11742,
+						"name": "BaseFilterable.$or"
+					}
+				},
+				{
+					"id": 11676,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The IDs to filter the stores by."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 11677,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter stores by their names."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						]
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11678,
+						11679,
+						11676,
+						11677
+					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": 11740,
+					"typeArguments": [
+						{
+							"type": "reference",
+							"target": 11675,
+							"name": "FilterableStoreProps",
+							"package": "@medusajs/types"
+						}
+					],
+					"name": "BaseFilterable",
+					"package": "@medusajs/types"
+				}
+			]
+		},
+		{
+			"id": 11627,
+			"name": "CreateStoreDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The store to be created."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 11628,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The name of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11629,
+					"name": "supported_currency_codes",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The supported currency codes of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 11630,
+					"name": "default_currency_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The default currency code of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11631,
+					"name": "default_sales_channel_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated default sales channel's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11632,
+					"name": "default_region_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated default region's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11633,
+					"name": "default_location_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated default location's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11634,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Holds custom data in key-value pairs."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11628,
+						11629,
+						11630,
+						11631,
+						11632,
+						11633,
+						11634
+					]
+				}
+			]
+		},
+		{
+			"id": 11658,
+			"name": "UpsertStoreDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The attributes in the store to be created or updated."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 11659,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11660,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The name of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11661,
+					"name": "supported_currency_codes",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The supported currency codes of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 11662,
+					"name": "default_currency_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The default currency code of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11663,
+					"name": "default_sales_channel_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated default sales channel's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11664,
+					"name": "default_region_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated default region's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11665,
+					"name": "default_location_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated default location's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11666,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Holds custom data in key-value pairs."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11659,
+						11660,
+						11661,
+						11662,
+						11663,
+						11664,
+						11665,
+						11666
+					]
+				}
+			]
+		},
+		{
+			"id": 11667,
+			"name": "UpdateStoreDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The attributes to update in the store."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 11668,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The name of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11669,
+					"name": "supported_currency_codes",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The supported currency codes of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 11670,
+					"name": "default_currency_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The default currency code of the store."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11671,
+					"name": "default_sales_channel_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated default sales channel's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11672,
+					"name": "default_region_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated default region's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11673,
+					"name": "default_location_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The associated default location's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 11674,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Holds custom data in key-value pairs."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						11668,
+						11669,
+						11670,
+						11671,
+						11672,
+						11673,
+						11674
+					]
+				}
+			]
+		},
+		{
+			"id": 11542,
+			"name": "IStoreModuleService",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The main service interface for the Store Module."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 11543,
+					"name": "create",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11544,
+							"name": "create",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method creates stores."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created stores."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst stores = await storeModuleService.create([\n  {\n    name: \"Acme\",\n    supported_currency_codes: [\"usd\", \"eur\"],\n    default_currency_code: \"usd\",\n  },\n  {\n    name: \"Acme 2\",\n    supported_currency_codes: [\"usd\"],\n    default_currency_code: \"usd\",\n  },\n])\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11545,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The stores to be created."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 11627,
+											"name": "CreateStoreDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								},
+								{
+									"id": 11546,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 11647,
+											"name": "StoreDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 11547,
+							"name": "create",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method creates a store."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created store."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst store = await storeModuleService.create({\n  name: \"Acme\",\n  supported_currency_codes: [\"usd\", \"eur\"],\n  default_currency_code: \"usd\",\n})\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11548,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The store to be created."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11627,
+										"name": "CreateStoreDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 11549,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 11647,
+										"name": "StoreDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 11550,
+					"name": "upsert",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11551,
+							"name": "upsert",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates or creates stores if they don't exist."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created or updated stores."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst stores = await storeModuleService.upsert([\n  {\n    id: \"store_123\",\n    name: \"Acme\",\n  },\n  {\n    name: \"Acme 2\",\n    supported_currency_codes: [\"usd\"],\n    default_currency_code: \"usd\",\n  },\n])\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11552,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes in the stores to be created or updated."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 11658,
+											"name": "UpsertStoreDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								},
+								{
+									"id": 11553,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 11647,
+											"name": "StoreDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 11554,
+							"name": "upsert",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates or creates a store if it doesn't exist."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created or updated store."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst store = await storeModuleService.upsert({\n  id: \"store_123\",\n  name: \"Acme\",\n})\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11555,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes in the store to be created or updated."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11658,
+										"name": "UpsertStoreDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 11556,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 11647,
+										"name": "StoreDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 11557,
+					"name": "update",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11558,
+							"name": "update",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates an existing store."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated store."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst store = await storeModuleService.update(\"store_123\", {\n  name: \"Acme\",\n})\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11559,
+									"name": "id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the store."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 11560,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in the store."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11667,
+										"name": "UpdateStoreDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 11561,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 11647,
+										"name": "StoreDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 11562,
+							"name": "update",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates existing stores matching the specified filters."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated stores."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst store = await storeModuleService.update(\n  {\n    name: [\"Acme\"],\n  },\n  {\n    default_currency_code: \"usd\",\n  }\n)\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11563,
+									"name": "selector",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters specifying which stores to update."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11675,
+										"name": "FilterableStoreProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 11564,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in the store."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11667,
+										"name": "UpdateStoreDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 11565,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 11647,
+											"name": "StoreDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 11566,
+					"name": "delete",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11567,
+							"name": "delete",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method deletes stores by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the stores are deleted successfully."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait storeModuleService.delete([\"store_123\", \"store_321\"])\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11568,
+									"name": "ids",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The IDs of the stores."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 11569,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 11570,
+							"name": "delete",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method deletes a store by its ID."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the store is deleted successfully."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait storeModuleService.delete(\"store_123\")\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11571,
+									"name": "id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the store."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 11572,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 11573,
+					"name": "retrieve",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11574,
+							"name": "retrieve",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a store by its ID."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The retrieved store."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst store = await storeModuleService.retrieve(\"store_123\")\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11575,
+									"name": "id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the store."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 11576,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the store is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a store."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11680,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 11647,
+												"name": "StoreDTO",
+												"package": "@medusajs/types"
+											}
+										],
+										"name": "FindConfig",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 11577,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 11647,
+										"name": "StoreDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 11578,
+					"name": "list",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11579,
+							"name": "list",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of stores based on optional filters and configuration."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of stores."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of stores using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst stores = await storeModuleService.list({\n  id: [\"store_123\", \"store_321\"],\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`15`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst stores = await storeModuleService.list(\n  {\n    id: [\"store_123\", \"store_321\"],\n  },\n  {\n    take: 20,\n    skip: 2,\n  }\n)\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11580,
+									"name": "filters",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved stores."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11675,
+										"name": "FilterableStoreProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 11581,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the store is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a store."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11680,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 11647,
+												"name": "StoreDTO",
+												"package": "@medusajs/types"
+											}
+										],
+										"name": "FindConfig",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 11582,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 11647,
+											"name": "StoreDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 11583,
+					"name": "listAndCount",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11584,
+							"name": "listAndCount",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of stores along with the total count of available stores satisfying the provided filters."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of stores along with their total count."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of stores using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [stores, count] = await storeModuleService.listAndCount(\n  {\n    id: [\"store_123\", \"store_321\"],\n  }\n)\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`15`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [stores, count] = await storeModuleService.listAndCount(\n  {\n    id: [\"store_123\", \"store_321\"],\n  },\n  {\n    take: 20,\n    skip: 2,\n  }\n)\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11585,
+									"name": "filters",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved stores."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11675,
+										"name": "FilterableStoreProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 11586,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the store is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a store."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11680,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 11647,
+												"name": "StoreDTO",
+												"package": "@medusajs/types"
+											}
+										],
+										"name": "FindConfig",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 11587,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "tuple",
+										"elements": [
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"target": 11647,
+													"name": "StoreDTO",
+													"package": "@medusajs/types"
+												}
+											},
+											{
+												"type": "intrinsic",
+												"name": "number"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 11588,
+					"name": "softDelete",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11589,
+							"name": "softDelete",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method soft deletes a store by its IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An object that includes the IDs of related records that were also soft deleted.\nIf there are no related records, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait storeModuleService.softDelete([\n  \"store_123\",\n  \"store_321\",\n])\n```"
+											}
+										]
+									}
+								]
+							},
+							"typeParameter": [
+								{
+									"id": 11590,
+									"name": "TReturnableLinkableKeys",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"default": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"parameters": [
+								{
+									"id": 11591,
+									"name": "storeIds",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The IDs of the stores."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 11592,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11692,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 11590,
+												"name": "TReturnableLinkableKeys",
+												"package": "@medusajs/types",
+												"refersToTypeParameter": true
+											}
+										],
+										"name": "SoftDeleteReturn",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 11593,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "intrinsic",
+												"name": "void"
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 11594,
+					"name": "restore",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11595,
+							"name": "restore",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method restores a soft deleted store by its IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An object that includes the IDs of related records that were restored.\nIf there are no related records restored, the promise resolves to "
+											},
+											{
+												"kind": "code",
+												"text": "`void`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait storeModuleService.restore([\"store_123\", \"store_321\"])\n```"
+											}
+										]
+									}
+								]
+							},
+							"typeParameter": [
+								{
+									"id": 11596,
+									"name": "TReturnableLinkableKeys",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"default": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"parameters": [
+								{
+									"id": 11597,
+									"name": "storeIds",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The IDs of the stores."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 11598,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Configurations determining which relations to restore along with each of the store. You can pass to its "
+											},
+											{
+												"kind": "code",
+												"text": "`returnLinkableKeys`"
+											},
+											{
+												"kind": "text",
+												"text": "\nproperty any of the store's relation attribute names."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11695,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 11596,
+												"name": "TReturnableLinkableKeys",
+												"package": "@medusajs/types",
+												"refersToTypeParameter": true
+											}
+										],
+										"name": "RestoreReturn",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 11599,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 11635,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "intrinsic",
+												"name": "void"
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Methods",
+					"children": [
+						11543,
+						11550,
+						11557,
+						11566,
+						11573,
+						11578,
+						11583,
+						11588,
+						11594
+					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": 11613,
+					"name": "IModuleService",
+					"package": "@medusajs/types"
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Interfaces",
+			"children": [
+				11680,
+				11740,
+				11692,
+				11695,
+				11785,
+				11744,
+				11613,
+				11768,
+				11726,
+				11635,
+				11647,
+				11675,
+				11627,
+				11658,
+				11667,
+				11542
+			]
+		},
+		{
+			"title": "Type Aliases",
+			"children": [
+				11798,
+				11762,
+				11774,
+				11788,
+				11698,
+				11758
+			]
+		}
+	],
+	"packageName": "@medusajs/types",
+	"symbolIdMap": {
+		"11541": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": ""
+		},
+		"11542": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService"
+		},
+		"11543": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.create"
+		},
+		"11544": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.create"
+		},
+		"11545": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "data"
+		},
+		"11546": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11547": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.create"
+		},
+		"11548": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "data"
+		},
+		"11549": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11550": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.upsert"
+		},
+		"11551": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.upsert"
+		},
+		"11552": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "data"
+		},
+		"11553": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11554": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.upsert"
+		},
+		"11555": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "data"
+		},
+		"11556": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11557": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.update"
+		},
+		"11558": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.update"
+		},
+		"11559": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "id"
+		},
+		"11560": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "data"
+		},
+		"11561": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11562": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.update"
+		},
+		"11563": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "selector"
+		},
+		"11564": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "data"
+		},
+		"11565": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11566": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.delete"
+		},
+		"11567": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.delete"
+		},
+		"11568": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "ids"
+		},
+		"11569": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11570": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.delete"
+		},
+		"11571": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "id"
+		},
+		"11572": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11573": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.retrieve"
+		},
+		"11574": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.retrieve"
+		},
+		"11575": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "id"
+		},
+		"11576": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "config"
+		},
+		"11577": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11578": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.list"
+		},
+		"11579": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.list"
+		},
+		"11580": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "filters"
+		},
+		"11581": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "config"
+		},
+		"11582": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11583": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.listAndCount"
+		},
+		"11584": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.listAndCount"
+		},
+		"11585": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "filters"
+		},
+		"11586": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "config"
+		},
+		"11587": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11588": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.softDelete"
+		},
+		"11589": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.softDelete"
+		},
+		"11590": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "TReturnableLinkableKeys"
+		},
+		"11591": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "storeIds"
+		},
+		"11592": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "config"
+		},
+		"11593": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11594": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.restore"
+		},
+		"11595": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "IStoreModuleService.restore"
+		},
+		"11596": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "TReturnableLinkableKeys"
+		},
+		"11597": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "storeIds"
+		},
+		"11598": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "config"
+		},
+		"11599": {
+			"sourceFileName": "../../../packages/types/src/store/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"11613": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "IModuleService"
+		},
+		"11627": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "CreateStoreDTO"
+		},
+		"11628": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "CreateStoreDTO.name"
+		},
+		"11629": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "CreateStoreDTO.supported_currency_codes"
+		},
+		"11630": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "CreateStoreDTO.default_currency_code"
+		},
+		"11631": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "CreateStoreDTO.default_sales_channel_id"
+		},
+		"11632": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "CreateStoreDTO.default_region_id"
+		},
+		"11633": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "CreateStoreDTO.default_location_id"
+		},
+		"11634": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "CreateStoreDTO.metadata"
+		},
+		"11635": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "Context"
+		},
+		"11636": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.__type"
+		},
+		"11637": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.transactionManager"
+		},
+		"11638": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.manager"
+		},
+		"11639": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.isolationLevel"
+		},
+		"11640": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.enableNestedTransactions"
+		},
+		"11641": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.eventGroupId"
+		},
+		"11642": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.transactionId"
+		},
+		"11643": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.messageAggregator"
+		},
+		"11644": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.requestId"
+		},
+		"11645": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.idempotencyKey"
+		},
+		"11646": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "TManager"
+		},
+		"11647": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "StoreDTO"
+		},
+		"11648": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "StoreDTO.id"
+		},
+		"11649": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "StoreDTO.name"
+		},
+		"11650": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "StoreDTO.supported_currency_codes"
+		},
+		"11651": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "StoreDTO.default_currency_code"
+		},
+		"11652": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "StoreDTO.default_sales_channel_id"
+		},
+		"11653": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "StoreDTO.default_region_id"
+		},
+		"11654": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "StoreDTO.default_location_id"
+		},
+		"11655": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "StoreDTO.metadata"
+		},
+		"11656": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "StoreDTO.created_at"
+		},
+		"11657": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "StoreDTO.updated_at"
+		},
+		"11658": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpsertStoreDTO"
+		},
+		"11659": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpsertStoreDTO.id"
+		},
+		"11660": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpsertStoreDTO.name"
+		},
+		"11661": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpsertStoreDTO.supported_currency_codes"
+		},
+		"11662": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpsertStoreDTO.default_currency_code"
+		},
+		"11663": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpsertStoreDTO.default_sales_channel_id"
+		},
+		"11664": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpsertStoreDTO.default_region_id"
+		},
+		"11665": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpsertStoreDTO.default_location_id"
+		},
+		"11666": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpsertStoreDTO.metadata"
+		},
+		"11667": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpdateStoreDTO"
+		},
+		"11668": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpdateStoreDTO.name"
+		},
+		"11669": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpdateStoreDTO.supported_currency_codes"
+		},
+		"11670": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpdateStoreDTO.default_currency_code"
+		},
+		"11671": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpdateStoreDTO.default_sales_channel_id"
+		},
+		"11672": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpdateStoreDTO.default_region_id"
+		},
+		"11673": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpdateStoreDTO.default_location_id"
+		},
+		"11674": {
+			"sourceFileName": "../../../packages/types/src/store/mutations/store.ts",
+			"qualifiedName": "UpdateStoreDTO.metadata"
+		},
+		"11675": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "FilterableStoreProps"
+		},
+		"11676": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "FilterableStoreProps.id"
+		},
+		"11677": {
+			"sourceFileName": "../../../packages/types/src/store/common/store.ts",
+			"qualifiedName": "FilterableStoreProps.name"
+		},
+		"11678": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$and"
+		},
+		"11679": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$or"
+		},
+		"11680": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig"
+		},
+		"11681": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.select"
+		},
+		"11682": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.skip"
+		},
+		"11683": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.take"
+		},
+		"11684": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.relations"
+		},
+		"11685": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.order"
+		},
+		"11686": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "__type"
+		},
+		"11687": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "__type.__index"
+		},
+		"11689": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.withDeleted"
+		},
+		"11690": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.filters"
+		},
+		"11691": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.Entity"
+		},
+		"11692": {
+			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
+			"qualifiedName": "SoftDeleteReturn"
+		},
+		"11693": {
+			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
+			"qualifiedName": "__type.returnLinkableKeys"
+		},
+		"11694": {
+			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
+			"qualifiedName": "TReturnableLinkableKeys"
+		},
+		"11695": {
+			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
+			"qualifiedName": "RestoreReturn"
+		},
+		"11696": {
+			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
+			"qualifiedName": "__type.returnLinkableKeys"
+		},
+		"11697": {
+			"sourceFileName": "../../../packages/types/src/dal/repository-service.ts",
+			"qualifiedName": "TReturnableLinkableKeys"
+		},
+		"11698": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "ModuleJoinerConfig"
+		},
+		"11699": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"11700": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.schema"
+		},
+		"11701": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.relationships"
+		},
+		"11702": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.extends"
+		},
+		"11703": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"11704": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"11705": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.fieldAlias"
+		},
+		"11706": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"11707": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.path"
+		},
+		"11708": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.forwardArgumentsOnPath"
+		},
+		"11709": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isList"
+		},
+		"11710": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.relationship"
+		},
+		"11711": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"11712": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.primaryKeys"
+		},
+		"11713": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isLink"
+		},
+		"11714": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.linkableKeys"
+		},
+		"11715": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isReadOnlyLink"
+		},
+		"11716": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.databaseConfig"
+		},
+		"11717": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"11718": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.tableName"
+		},
+		"11719": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.idPrefix"
+		},
+		"11720": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.extraFields"
+		},
+		"11721": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"11722": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.type"
+		},
+		"11723": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.defaultValue"
+		},
+		"11724": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.nullable"
+		},
+		"11725": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.options"
+		},
+		"11726": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator"
+		},
+		"11727": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.save"
+		},
+		"11728": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.save"
+		},
+		"11729": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "msg"
+		},
+		"11730": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.getMessages"
+		},
+		"11731": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.getMessages"
+		},
+		"11732": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "format"
+		},
+		"11733": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.clearMessages"
+		},
+		"11734": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.clearMessages"
+		},
+		"11735": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.saveRawMessageData"
+		},
+		"11736": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.saveRawMessageData"
+		},
+		"11737": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "T"
+		},
+		"11738": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "messageData"
+		},
+		"11739": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "options"
+		},
+		"11740": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable"
+		},
+		"11741": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$and"
+		},
+		"11742": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$or"
+		},
+		"11743": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.T"
+		},
+		"11744": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig"
+		},
+		"11745": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.serviceName"
+		},
+		"11746": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.alias"
+		},
+		"11747": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.fieldAlias"
+		},
+		"11748": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"11749": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.path"
+		},
+		"11750": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.forwardArgumentsOnPath"
+		},
+		"11751": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.primaryKeys"
+		},
+		"11752": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.relationships"
+		},
+		"11753": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.extends"
+		},
+		"11754": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"11755": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"11756": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.relationship"
+		},
+		"11757": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.args"
+		},
+		"11758": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "ModuleJoinerRelationship"
+		},
+		"11759": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"11760": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"11761": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.deleteCascade"
+		},
+		"11762": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "Message"
+		},
+		"11763": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"11764": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventName"
+		},
+		"11765": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.body"
+		},
+		"11766": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.options"
+		},
+		"11767": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "T"
+		},
+		"11768": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat"
+		},
+		"11769": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat.groupBy"
+		},
+		"11770": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat.sortBy"
+		},
+		"11771": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type"
+		},
+		"11772": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.__index"
+		},
+		"11774": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "MessageFormat"
+		},
+		"11775": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"11776": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventName"
+		},
+		"11777": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"11778": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"11779": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.service"
+		},
+		"11780": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.action"
+		},
+		"11781": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.object"
+		},
+		"11782": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventGroupId"
+		},
+		"11783": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.data"
+		},
+		"11784": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "T"
+		},
+		"11785": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias"
+		},
+		"11786": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.name"
+		},
+		"11787": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.args"
+		},
+		"11788": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerRelationship"
+		},
+		"11789": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"11790": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.alias"
+		},
+		"11791": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.foreignKey"
+		},
+		"11792": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.primaryKey"
+		},
+		"11793": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"11794": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"11795": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.inverse"
+		},
+		"11796": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isList"
+		},
+		"11797": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.args"
+		},
+		"11798": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "MessageBody"
+		},
+		"11799": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"11800": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"11801": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"11802": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.service"
+		},
+		"11803": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.action"
+		},
+		"11804": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.object"
+		},
+		"11805": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventGroupId"
+		},
+		"11806": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.data"
+		},
+		"11807": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "T"
+		}
+	}
+}

@@ -1,0 +1,32 @@
+import SaslSection from '../_sections/database-errors/sasl.mdx'
+import ConnectionErrorSection from '../_sections/database-errors/connection-error.mdx'
+import PrivilegesSection from '../_sections/database-errors/privileges.mdx'
+import DockerSection from "../_sections/database-errors/docker.mdx"
+
+export const metadata = {
+  title: `Database Errors`,
+}
+
+# {metadata.title}
+
+## Can't Connect to PostgreSQL Docker Container
+
+<DockerSection />
+
+---
+
+## Error: SASL: SCRAM-SERVER-FIRST-MESSAGE: Client password must be a string
+
+<SaslSection />
+
+---
+
+## Error: connect ECONNREFUSED ::1:5432
+
+<ConnectionErrorSection />
+
+---
+
+## Database User Privileges
+
+<PrivilegesSection />

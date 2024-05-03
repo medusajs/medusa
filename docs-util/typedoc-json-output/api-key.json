@@ -1,0 +1,6479 @@
+{
+	"id": 0,
+	"name": "api-key",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 171,
+			"name": "ApiKeyType",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An API key's type."
+					}
+				]
+			},
+			"type": {
+				"type": "union",
+				"types": [
+					{
+						"type": "literal",
+						"value": "secret"
+					},
+					{
+						"type": "literal",
+						"value": "publishable"
+					}
+				]
+			}
+		},
+		{
+			"id": 103,
+			"name": "ApiKeyDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The API key details."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 104,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the API key."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 105,
+					"name": "token",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The token of the API key."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 106,
+					"name": "redacted",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The redacted form of the API key's token. This is useful\nwhen showing portion of the token. For example "
+							},
+							{
+								"kind": "code",
+								"text": "`sk_...123`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 107,
+					"name": "title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The title of the API key."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 108,
+					"name": "type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The type of the API key."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 171,
+						"name": "ApiKeyType",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 109,
+					"name": "last_used_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The date the API key was last used."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					}
+				},
+				{
+					"id": 110,
+					"name": "created_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Who created the API key."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 111,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The date the API key was created."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 112,
+					"name": "revoked_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Who revoked the API key. For example,\nthe ID of the user that revoked it."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 113,
+					"name": "revoked_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The date the API key was revoked."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						104,
+						105,
+						106,
+						107,
+						108,
+						109,
+						110,
+						111,
+						112,
+						113
+					]
+				}
+			]
+		},
+		{
+			"id": 121,
+			"name": "FilterableApiKeyProps",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The filters to apply on the retrieved API keys."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 122,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The IDs to filter the API keys by."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 123,
+					"name": "token",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The tokens to filter the API keys by."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 124,
+					"name": "title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The titles to filter the API keys by."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 125,
+					"name": "type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Filter the API keys by their type."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 171,
+						"name": "ApiKeyType",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 126,
+					"name": "$and",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"target": 121,
+									"name": "FilterableApiKeyProps",
+									"package": "@medusajs/types"
+								},
+								{
+									"type": "reference",
+									"target": 186,
+									"typeArguments": [
+										{
+											"type": "reference",
+											"target": 121,
+											"name": "FilterableApiKeyProps",
+											"package": "@medusajs/types"
+										}
+									],
+									"name": "BaseFilterable",
+									"package": "@medusajs/types"
+								}
+							]
+						}
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": 187,
+						"name": "BaseFilterable.$and"
+					}
+				},
+				{
+					"id": 127,
+					"name": "$or",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"target": 121,
+									"name": "FilterableApiKeyProps",
+									"package": "@medusajs/types"
+								},
+								{
+									"type": "reference",
+									"target": 186,
+									"typeArguments": [
+										{
+											"type": "reference",
+											"target": 121,
+											"name": "FilterableApiKeyProps",
+											"package": "@medusajs/types"
+										}
+									],
+									"name": "BaseFilterable",
+									"package": "@medusajs/types"
+								}
+							]
+						}
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": 188,
+						"name": "BaseFilterable.$or"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						122,
+						123,
+						124,
+						125,
+						126,
+						127
+					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": 186,
+					"typeArguments": [
+						{
+							"type": "reference",
+							"target": 121,
+							"name": "FilterableApiKeyProps",
+							"package": "@medusajs/types"
+						}
+					],
+					"name": "BaseFilterable",
+					"package": "@medusajs/types"
+				}
+			]
+		},
+		{
+			"id": 87,
+			"name": "CreateApiKeyDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The API key to be created."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 88,
+					"name": "title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The title of the API key."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 89,
+					"name": "type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The type of the API key."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 171,
+						"name": "ApiKeyType",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 90,
+					"name": "created_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Who created the API key."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						88,
+						89,
+						90
+					]
+				}
+			]
+		},
+		{
+			"id": 114,
+			"name": "UpsertApiKeyDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The attributes in the API key to be created or updated."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 115,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the API key."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 116,
+					"name": "title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The title of the API key."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 117,
+					"name": "type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The type of the API key. Required only when creating an API key."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 171,
+						"name": "ApiKeyType",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 118,
+					"name": "created_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Who created the API key. It's only\nusable and required when creating an API key."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						115,
+						116,
+						117,
+						118
+					]
+				}
+			]
+		},
+		{
+			"id": 119,
+			"name": "UpdateApiKeyDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The attributes to update in the API key."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 120,
+					"name": "title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The title of the API key."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						120
+					]
+				}
+			]
+		},
+		{
+			"id": 140,
+			"name": "RevokeApiKeyDTO",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of revoking an API key."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 141,
+					"name": "revoked_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Who revoked the API key."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 142,
+					"name": "revoke_in",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "When to revoke the API key (time in seconds)."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						141,
+						142
+					]
+				}
+			]
+		},
+		{
+			"id": 1,
+			"name": "IApiKeyModuleService",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The main service interface for the Api Key Module."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 2,
+					"name": "create",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 3,
+							"name": "create",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method creates API keys."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created API keys."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.create([\n  {\n    title: \"Development API key\",\n    type: \"publishable\",\n    created_by: \"user_123\",\n  },\n])\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 4,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The API keys to be created."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 87,
+											"name": "CreateApiKeyDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								},
+								{
+									"id": 5,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 103,
+											"name": "ApiKeyDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 6,
+							"name": "create",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method creates an API key."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created API key."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.create({\n  title: \"Development API key\",\n  type: \"publishable\",\n  created_by: \"user_123\"\n})\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 7,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The API key to be created."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 87,
+										"name": "CreateApiKeyDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 8,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 103,
+										"name": "ApiKeyDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 9,
+					"name": "upsert",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 10,
+							"name": "upsert",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates or creates API keys if they don't exist."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created or updated API keys."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.upsert([\n  {\n    id: \"apk_123\",\n    title: \"My development key\",\n  },\n  {\n    title: \"New development key\",\n    type: \"secret\",\n    created_by: \"user_123\",\n  },\n])\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 11,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes in the API keys that are created or updated."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 114,
+											"name": "UpsertApiKeyDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								},
+								{
+									"id": 12,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 103,
+											"name": "ApiKeyDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 13,
+							"name": "upsert",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates or creates an API key if it doesn't exist."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created or updated API key."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.upsert({\n  id: \"apk_123\",\n  title: \"My development key\"\n})\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 14,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes in the API key that's created or updated."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 114,
+										"name": "UpsertApiKeyDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 15,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 103,
+										"name": "ApiKeyDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 16,
+					"name": "update",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 17,
+							"name": "update",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates an existing API key."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated API key."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.update(\"apk_123\", {\n  title: \"My development key\"\n})\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 18,
+									"name": "id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the API key."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 19,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in the API key."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 119,
+										"name": "UpdateApiKeyDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 20,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 103,
+										"name": "ApiKeyDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 21,
+							"name": "update",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method updates existing API keys."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The updated API keys."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.update(\n  {\n    title: \"Development key\",\n  },\n  {\n    title: \"My development key\",\n  }\n)\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 22,
+									"name": "selector",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters that specify which API keys should be updated."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 121,
+										"name": "FilterableApiKeyProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 23,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in the API keys."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 119,
+										"name": "UpdateApiKeyDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 24,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 103,
+											"name": "ApiKeyDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 25,
+					"name": "delete",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 26,
+							"name": "delete",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method deletes API keys by their IDs."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the API keys are deleted successfully."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait apiKeyModuleService.delete([\"apk_123\"])\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 27,
+									"name": "ids",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The IDs of the API keys."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 28,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 29,
+							"name": "delete",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method deletes an API key by its ID."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the API key is deleted successfully."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nawait apiKeyModuleService.delete(\"apk_123\")\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 30,
+									"name": "id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the API key."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 31,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 32,
+					"name": "retrieve",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 33,
+							"name": "retrieve",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves an API key by its ID."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The retrieved API key."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.retrieve(\"apk_123\")\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 34,
+									"name": "id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the API key."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 35,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the API key is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a api key."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 128,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 103,
+												"name": "ApiKeyDTO",
+												"package": "@medusajs/types"
+											}
+										],
+										"name": "FindConfig",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 36,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 103,
+										"name": "ApiKeyDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 37,
+					"name": "list",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 38,
+							"name": "list",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of API keys based on optional filters and configuration."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of API keys."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of API keys using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKeys = await apiKeyModuleService.list({\n  id: [\"apk_123\", \"apk_321\"]\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`15`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKeys = await apiKeyModuleService.list(\n  {\n    id: [\"apk_123\", \"apk_321\"],\n  },\n  {\n    take: 20,\n    skip: 2,\n  }\n)\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 39,
+									"name": "filters",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved API keys."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 121,
+										"name": "FilterableApiKeyProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 40,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the API key is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a API key."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 128,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 103,
+												"name": "ApiKeyDTO",
+												"package": "@medusajs/types"
+											}
+										],
+										"name": "FindConfig",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 41,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 103,
+											"name": "ApiKeyDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 42,
+					"name": "listAndCount",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 43,
+							"name": "listAndCount",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a paginated list of API keys along with the total count of available API keys satisfying the provided filters."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of API keys along with their total count."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of API keys using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [apiKeys, count] =\nawait apiKeyModuleService.listAndCount({\n  id: [\"apk_123\", \"apk_321\"],\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`15`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst [apiKeys, count] =\n  await apiKeyModuleService.listAndCount(\n    {\n      id: [\"apk_123\", \"apk_321\"],\n    },\n    {\n      take: 15,\n      skip: 2,\n    }\n  )\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 44,
+									"name": "filters",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved API keys."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 121,
+										"name": "FilterableApiKeyProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 45,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the api API is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a API key."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 128,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 103,
+												"name": "ApiKeyDTO",
+												"package": "@medusajs/types"
+											}
+										],
+										"name": "FindConfig",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 46,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "tuple",
+										"elements": [
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"target": 103,
+													"name": "ApiKeyDTO",
+													"package": "@medusajs/types"
+												}
+											},
+											{
+												"type": "intrinsic",
+												"name": "number"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 47,
+					"name": "revoke",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 48,
+							"name": "revoke",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method revokes API keys based on the filters provided."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The revoked API keys."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.revoke(\n  {\n    id: \"apk_123\",\n  },\n  {\n    revoked_by: \"user_123\",\n    // 1 minute\n    revoke_in: 60,\n  }\n)\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 49,
+									"name": "selector",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to specify which API keys should be revoked."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 121,
+										"name": "FilterableApiKeyProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 50,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of revoking the API keys."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 140,
+										"name": "RevokeApiKeyDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 51,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 103,
+											"name": "ApiKeyDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 52,
+							"name": "revoke",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method revokes an API key based on the ID provided."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The revoked API key."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey = await apiKeyModuleService.revoke(\"apk_123\", {\n  revoked_by: \"user_123\",\n  // 1 minute\n  revoke_in: 60,\n})\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 53,
+									"name": "id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the API key to revoke."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 54,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of revoking the API key."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 140,
+										"name": "RevokeApiKeyDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 55,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 103,
+										"name": "ApiKeyDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 56,
+					"name": "authenticate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 57,
+							"name": "authenticate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method verifies whether a token is valid, considering it authenticated."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "If the token is verified successfully, the API key associated with the token is returned. Otherwise, "
+											},
+											{
+												"kind": "code",
+												"text": "`false`"
+											},
+											{
+												"kind": "text",
+												"text": " is returned."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst apiKey =\n  await apiKeyModuleService.authenticate(\"AbCD123987\")\n\nif (!apiKey) {\n  // authentication failed\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 58,
+									"name": "token",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The token to verify."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 59,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 91,
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "literal",
+												"value": false
+											},
+											{
+												"type": "reference",
+												"target": 103,
+												"name": "ApiKeyDTO",
+												"package": "@medusajs/types"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Methods",
+					"children": [
+						2,
+						9,
+						16,
+						25,
+						32,
+						37,
+						42,
+						47,
+						56
+					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": 73,
+					"name": "IModuleService",
+					"package": "@medusajs/types"
+				}
+			]
+		},
+		{
+			"id": 128,
+			"name": "FindConfig",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An object that is used to configure how an entity is retrieved from the database. It accepts as a typed parameter an "
+					},
+					{
+						"kind": "code",
+						"text": "`Entity`"
+					},
+					{
+						"kind": "text",
+						"text": " class,\nwhich provides correct typing of field names in its properties."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 129,
+					"name": "select",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of strings, each being attribute names of the entity to retrieve in the result."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "intrinsic",
+									"name": "string"
+								},
+								{
+									"type": "typeOperator",
+									"operator": "keyof",
+									"target": {
+										"type": "reference",
+										"target": 139,
+										"name": "Entity",
+										"package": "@medusajs/types",
+										"qualifiedName": "FindConfig.Entity",
+										"refersToTypeParameter": true
+									}
+								}
+							]
+						}
+					}
+				},
+				{
+					"id": 130,
+					"name": "skip",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A number indicating the number of records to skip before retrieving the results."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 131,
+					"name": "take",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A number indicating the number of records to return in the result."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 132,
+					"name": "relations",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of strings, each being relation names of the entity to retrieve in the result."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 133,
+					"name": "order",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be "
+							},
+							{
+								"kind": "code",
+								"text": "`ASC`"
+							},
+							{
+								"kind": "text",
+								"text": "\nto sort retrieved records in an ascending order, or "
+							},
+							{
+								"kind": "code",
+								"text": "`DESC`"
+							},
+							{
+								"kind": "text",
+								"text": " to sort retrieved records in a descending order."
+							}
+						]
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 134,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"indexSignature": {
+								"id": 135,
+								"name": "__index",
+								"variant": "signature",
+								"kind": 8192,
+								"flags": {},
+								"parameters": [
+									{
+										"id": 136,
+										"name": "K",
+										"variant": "param",
+										"kind": 32768,
+										"flags": {},
+										"type": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"type": {
+									"type": "union",
+									"types": [
+										{
+											"type": "literal",
+											"value": "ASC"
+										},
+										{
+											"type": "literal",
+											"value": "DESC"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				{
+					"id": 137,
+					"name": "withDeleted",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n"
+							},
+							{
+								"kind": "code",
+								"text": "`SoftDeletableEntity`"
+							},
+							{
+								"kind": "text",
+								"text": " class."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				},
+				{
+					"id": 138,
+					"name": "filters",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Enable ORM specific defined filters"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						129,
+						130,
+						131,
+						132,
+						133,
+						137,
+						138
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 139,
+					"name": "Entity",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {}
+				}
+			]
+		},
+		{
+			"id": 186,
+			"name": "BaseFilterable",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An object used to allow specifying flexible queries with and/or conditions."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 187,
+					"name": "$and",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"target": 186,
+									"typeArguments": [
+										{
+											"type": "reference",
+											"target": 189,
+											"name": "T",
+											"package": "@medusajs/types",
+											"qualifiedName": "BaseFilterable.T",
+											"refersToTypeParameter": true
+										}
+									],
+									"name": "BaseFilterable",
+									"package": "@medusajs/types"
+								},
+								{
+									"type": "reference",
+									"target": 189,
+									"name": "T",
+									"package": "@medusajs/types",
+									"qualifiedName": "BaseFilterable.T",
+									"refersToTypeParameter": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"id": 188,
+					"name": "$or",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "reference",
+									"target": 186,
+									"typeArguments": [
+										{
+											"type": "reference",
+											"target": 189,
+											"name": "T",
+											"package": "@medusajs/types",
+											"qualifiedName": "BaseFilterable.T",
+											"refersToTypeParameter": true
+										}
+									],
+									"name": "BaseFilterable",
+									"package": "@medusajs/types"
+								},
+								{
+									"type": "reference",
+									"target": 189,
+									"name": "T",
+									"package": "@medusajs/types",
+									"qualifiedName": "BaseFilterable.T",
+									"refersToTypeParameter": true
+								}
+							]
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						187,
+						188
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 189,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {}
+				}
+			],
+			"extendedBy": [
+				{
+					"type": "reference",
+					"target": 121,
+					"name": "FilterableApiKeyProps"
+				}
+			]
+		},
+		{
+			"id": 244,
+			"name": "MessageBody",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"typeParameters": [
+				{
+					"id": 253,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "unknown"
+					}
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 245,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 246,
+							"name": "metadata",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reflection",
+								"declaration": {
+									"id": 247,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 248,
+											"name": "service",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 249,
+											"name": "action",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 250,
+											"name": "object",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 251,
+											"name": "eventGroupId",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												248,
+												249,
+												250,
+												251
+											]
+										}
+									]
+								}
+							}
+						},
+						{
+							"id": 252,
+							"name": "data",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 253,
+								"name": "T",
+								"package": "@medusajs/types",
+								"refersToTypeParameter": true
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								246,
+								252
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 208,
+			"name": "Message",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"typeParameters": [
+				{
+					"id": 213,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "unknown"
+					}
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 209,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 210,
+							"name": "eventName",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 211,
+							"name": "body",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 244,
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 213,
+										"name": "T",
+										"package": "@medusajs/types",
+										"refersToTypeParameter": true
+									}
+								],
+								"name": "MessageBody",
+								"package": "@medusajs/types"
+							}
+						},
+						{
+							"id": 212,
+							"name": "options",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								210,
+								211,
+								212
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 220,
+			"name": "MessageFormat",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"typeParameters": [
+				{
+					"id": 230,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "unknown"
+					}
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 221,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 222,
+							"name": "eventName",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 223,
+							"name": "metadata",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reflection",
+								"declaration": {
+									"id": 224,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 225,
+											"name": "service",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 226,
+											"name": "action",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 227,
+											"name": "object",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 228,
+											"name": "eventGroupId",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												225,
+												226,
+												227,
+												228
+											]
+										}
+									]
+								}
+							}
+						},
+						{
+							"id": 229,
+							"name": "data",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "reference",
+										"target": 230,
+										"name": "T",
+										"package": "@medusajs/types",
+										"refersToTypeParameter": true
+									},
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 230,
+											"name": "T",
+											"package": "@medusajs/types",
+											"refersToTypeParameter": true
+										}
+									}
+								]
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								222,
+								223,
+								229
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 234,
+			"name": "JoinerRelationship",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 235,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 236,
+							"name": "alias",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 237,
+							"name": "foreignKey",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 238,
+							"name": "primaryKey",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 239,
+							"name": "serviceName",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 240,
+							"name": "isInternalService",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "If true, the relationship is an internal service from the medusa core\nTODO: Remove when there are no more \"internal\" services"
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 241,
+							"name": "inverse",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "In an inverted relationship the foreign key is on the other service and the primary key is on the current service"
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 242,
+							"name": "isList",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Force the relationship to return a list"
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 243,
+							"name": "args",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Extra arguments to pass to the remoteFetchData callback"
+									}
+								]
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "any"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								236,
+								237,
+								238,
+								239,
+								240,
+								241,
+								242,
+								243
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 231,
+			"name": "JoinerServiceConfigAlias",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 232,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 233,
+					"name": "args",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Extra arguments to pass to the remoteFetchData callback"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						232,
+						233
+					]
+				}
+			]
+		},
+		{
+			"id": 190,
+			"name": "JoinerServiceConfig",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 191,
+					"name": "serviceName",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 192,
+					"name": "alias",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Property name to use as entrypoint to the service"
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "reference",
+								"target": 231,
+								"name": "JoinerServiceConfigAlias",
+								"package": "@medusajs/types"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "reference",
+									"target": 231,
+									"name": "JoinerServiceConfigAlias",
+									"package": "@medusajs/types"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 193,
+					"name": "fieldAlias",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "reflection",
+										"declaration": {
+											"id": 194,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 195,
+													"name": "path",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 196,
+													"name": "forwardArgumentsOnPath",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														195,
+														196
+													]
+												}
+											]
+										}
+									}
+								]
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 197,
+					"name": "primaryKeys",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 198,
+					"name": "relationships",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": 234,
+							"name": "JoinerRelationship",
+							"package": "@medusajs/types"
+						}
+					}
+				},
+				{
+					"id": 199,
+					"name": "extends",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reflection",
+							"declaration": {
+								"id": 200,
+								"name": "__type",
+								"variant": "declaration",
+								"kind": 65536,
+								"flags": {},
+								"children": [
+									{
+										"id": 201,
+										"name": "serviceName",
+										"variant": "declaration",
+										"kind": 1024,
+										"flags": {},
+										"type": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									},
+									{
+										"id": 202,
+										"name": "relationship",
+										"variant": "declaration",
+										"kind": 1024,
+										"flags": {},
+										"type": {
+											"type": "reference",
+											"target": 234,
+											"name": "JoinerRelationship",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"groups": [
+									{
+										"title": "Properties",
+										"children": [
+											201,
+											202
+										]
+									}
+								]
+							}
+						}
+					}
+				},
+				{
+					"id": 203,
+					"name": "args",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Extra arguments to pass to the remoteFetchData callback"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						191,
+						192,
+						193,
+						197,
+						198,
+						199,
+						203
+					]
+				}
+			]
+		},
+		{
+			"id": 143,
+			"name": "ModuleJoinerConfig",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "intersection",
+				"types": [
+					{
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Omit"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 190,
+								"name": "JoinerServiceConfig",
+								"package": "@medusajs/types"
+							},
+							{
+								"type": "union",
+								"types": [
+									{
+										"type": "literal",
+										"value": "serviceName"
+									},
+									{
+										"type": "literal",
+										"value": "primaryKeys"
+									},
+									{
+										"type": "literal",
+										"value": "relationships"
+									},
+									{
+										"type": "literal",
+										"value": "extends"
+									}
+								]
+							}
+						],
+						"name": "Omit",
+						"package": "typescript"
+					},
+					{
+						"type": "reflection",
+						"declaration": {
+							"id": 144,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 145,
+									"name": "schema",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "GraphQL schema for the all module's available entities and fields"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 146,
+									"name": "relationships",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 204,
+											"name": "ModuleJoinerRelationship",
+											"package": "@medusajs/types"
+										}
+									}
+								},
+								{
+									"id": 147,
+									"name": "extends",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reflection",
+											"declaration": {
+												"id": 148,
+												"name": "__type",
+												"variant": "declaration",
+												"kind": 65536,
+												"flags": {},
+												"children": [
+													{
+														"id": 149,
+														"name": "serviceName",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {},
+														"type": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													},
+													{
+														"id": 150,
+														"name": "fieldAlias",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {
+															"isOptional": true
+														},
+														"type": {
+															"type": "reference",
+															"target": {
+																"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																"qualifiedName": "Record"
+															},
+															"typeArguments": [
+																{
+																	"type": "intrinsic",
+																	"name": "string"
+																},
+																{
+																	"type": "union",
+																	"types": [
+																		{
+																			"type": "intrinsic",
+																			"name": "string"
+																		},
+																		{
+																			"type": "reflection",
+																			"declaration": {
+																				"id": 151,
+																				"name": "__type",
+																				"variant": "declaration",
+																				"kind": 65536,
+																				"flags": {},
+																				"children": [
+																					{
+																						"id": 152,
+																						"name": "path",
+																						"variant": "declaration",
+																						"kind": 1024,
+																						"flags": {},
+																						"type": {
+																							"type": "intrinsic",
+																							"name": "string"
+																						}
+																					},
+																					{
+																						"id": 153,
+																						"name": "forwardArgumentsOnPath",
+																						"variant": "declaration",
+																						"kind": 1024,
+																						"flags": {
+																							"isOptional": true
+																						},
+																						"type": {
+																							"type": "array",
+																							"elementType": {
+																								"type": "intrinsic",
+																								"name": "string"
+																							}
+																						}
+																					},
+																					{
+																						"id": 154,
+																						"name": "isList",
+																						"variant": "declaration",
+																						"kind": 1024,
+																						"flags": {
+																							"isOptional": true
+																						},
+																						"type": {
+																							"type": "intrinsic",
+																							"name": "boolean"
+																						}
+																					}
+																				],
+																				"groups": [
+																					{
+																						"title": "Properties",
+																						"children": [
+																							152,
+																							153,
+																							154
+																						]
+																					}
+																				]
+																			}
+																		}
+																	]
+																}
+															],
+															"name": "Record",
+															"package": "typescript"
+														}
+													},
+													{
+														"id": 155,
+														"name": "relationship",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {},
+														"type": {
+															"type": "reference",
+															"target": 204,
+															"name": "ModuleJoinerRelationship",
+															"package": "@medusajs/types"
+														}
+													}
+												],
+												"groups": [
+													{
+														"title": "Properties",
+														"children": [
+															149,
+															150,
+															155
+														]
+													}
+												]
+											}
+										}
+									}
+								},
+								{
+									"id": 156,
+									"name": "serviceName",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 157,
+									"name": "primaryKeys",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 158,
+									"name": "isLink",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If the module is a link module"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								},
+								{
+									"id": 159,
+									"name": "linkableKeys",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Keys that can be used to link to other modules. e.g { product_id: \"Product\" } \"Product\" being the entity it refers to"
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "string"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								},
+								{
+									"id": 160,
+									"name": "isReadOnlyLink",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If true it expands a RemoteQuery property but doesn't create a pivot table"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								},
+								{
+									"id": 161,
+									"name": "databaseConfig",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 162,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 163,
+													"name": "tableName",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "Name of the pivot table. If not provided it is auto generated"
+															}
+														]
+													},
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 164,
+													"name": "idPrefix",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "Prefix for the id column. If not provided it is \"link\""
+															}
+														]
+													},
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 165,
+													"name": "extraFields",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "Record"
+														},
+														"typeArguments": [
+															{
+																"type": "intrinsic",
+																"name": "string"
+															},
+															{
+																"type": "reflection",
+																"declaration": {
+																	"id": 166,
+																	"name": "__type",
+																	"variant": "declaration",
+																	"kind": 65536,
+																	"flags": {},
+																	"children": [
+																		{
+																			"id": 167,
+																			"name": "type",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {},
+																			"type": {
+																				"type": "union",
+																				"types": [
+																					{
+																						"type": "literal",
+																						"value": "date"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "time"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "datetime"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "bigint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "blob"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "uint8array"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "array"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "enumArray"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "enum"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "json"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "integer"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "smallint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "tinyint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "mediumint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "float"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "double"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "boolean"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "decimal"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "string"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "uuid"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "text"
+																					}
+																				]
+																			}
+																		},
+																		{
+																			"id": 168,
+																			"name": "defaultValue",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"type": {
+																				"type": "intrinsic",
+																				"name": "string"
+																			}
+																		},
+																		{
+																			"id": 169,
+																			"name": "nullable",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"type": {
+																				"type": "intrinsic",
+																				"name": "boolean"
+																			}
+																		},
+																		{
+																			"id": 170,
+																			"name": "options",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"comment": {
+																				"summary": [
+																					{
+																						"kind": "text",
+																						"text": "Mikro-orm options for the column"
+																					}
+																				]
+																			},
+																			"type": {
+																				"type": "reference",
+																				"target": {
+																					"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																					"qualifiedName": "Record"
+																				},
+																				"typeArguments": [
+																					{
+																						"type": "intrinsic",
+																						"name": "string"
+																					},
+																					{
+																						"type": "intrinsic",
+																						"name": "unknown"
+																					}
+																				],
+																				"name": "Record",
+																				"package": "typescript"
+																			}
+																		}
+																	],
+																	"groups": [
+																		{
+																			"title": "Properties",
+																			"children": [
+																				167,
+																				168,
+																				169,
+																				170
+																			]
+																		}
+																	]
+																}
+															}
+														],
+														"name": "Record",
+														"package": "typescript"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														163,
+														164,
+														165
+													]
+												}
+											]
+										}
+									}
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										145,
+										146,
+										147,
+										156,
+										157,
+										158,
+										159,
+										160,
+										161
+									]
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": 204,
+			"name": "ModuleJoinerRelationship",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "intersection",
+				"types": [
+					{
+						"type": "reference",
+						"target": 234,
+						"name": "JoinerRelationship",
+						"package": "@medusajs/types"
+					},
+					{
+						"type": "reflection",
+						"declaration": {
+							"id": 205,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 206,
+									"name": "isInternalService",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more \"internal\" services"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								},
+								{
+									"id": 207,
+									"name": "deleteCascade",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If true, the link joiner will cascade deleting the relationship"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										206,
+										207
+									]
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": 73,
+			"name": "IModuleService",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"extendedBy": [
+				{
+					"type": "reference",
+					"target": 1,
+					"name": "IApiKeyModuleService"
+				}
+			]
+		},
+		{
+			"id": 214,
+			"name": "MessageAggregatorFormat",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 215,
+					"name": "groupBy",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 216,
+					"name": "sortBy",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 217,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"indexSignature": {
+								"id": 218,
+								"name": "__index",
+								"variant": "signature",
+								"kind": 8192,
+								"flags": {},
+								"parameters": [
+									{
+										"id": 219,
+										"name": "key",
+										"variant": "param",
+										"kind": 32768,
+										"flags": {},
+										"type": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"type": {
+									"type": "union",
+									"types": [
+										{
+											"type": "array",
+											"elementType": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"type": "intrinsic",
+											"name": "string"
+										},
+										{
+											"type": "intrinsic",
+											"name": "number"
+										}
+									]
+								}
+							}
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						215,
+						216
+					]
+				}
+			]
+		},
+		{
+			"id": 172,
+			"name": "IMessageAggregator",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 173,
+					"name": "save",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 174,
+							"name": "save",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 175,
+									"name": "msg",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": 208,
+												"name": "Message",
+												"package": "@medusajs/types"
+											},
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"target": 208,
+													"name": "Message",
+													"package": "@medusajs/types"
+												}
+											}
+										]
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 176,
+					"name": "getMessages",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 177,
+							"name": "getMessages",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 178,
+									"name": "format",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"target": 214,
+										"name": "MessageAggregatorFormat",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 208,
+											"name": "Message",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 179,
+					"name": "clearMessages",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 180,
+							"name": "clearMessages",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 181,
+					"name": "saveRawMessageData",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 182,
+							"name": "saveRawMessageData",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"typeParameter": [
+								{
+									"id": 183,
+									"name": "T",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {}
+								}
+							],
+							"parameters": [
+								{
+									"id": 184,
+									"name": "messageData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": 220,
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": 183,
+														"name": "T",
+														"package": "@medusajs/types",
+														"refersToTypeParameter": true
+													}
+												],
+												"name": "MessageFormat",
+												"package": "@medusajs/types"
+											},
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"target": 220,
+													"typeArguments": [
+														{
+															"type": "reference",
+															"target": 183,
+															"name": "T",
+															"package": "@medusajs/types",
+															"refersToTypeParameter": true
+														}
+													],
+													"name": "MessageFormat",
+													"package": "@medusajs/types"
+												}
+											}
+										]
+									}
+								},
+								{
+									"id": 185,
+									"name": "options",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Methods",
+					"children": [
+						173,
+						176,
+						179,
+						181
+					]
+				}
+			]
+		},
+		{
+			"id": 91,
+			"name": "Context",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "A context used to share resources, such as transaction manager, between the application and the module."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 92,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "literal",
+						"value": "MedusaContext"
+					}
+				},
+				{
+					"id": 93,
+					"name": "transactionManager",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of a transaction manager of type "
+							},
+							{
+								"kind": "code",
+								"text": "`TManager`"
+							},
+							{
+								"kind": "text",
+								"text": ", which is a typed parameter passed to the context to specify the type of the "
+							},
+							{
+								"kind": "code",
+								"text": "`transactionManager`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 102,
+						"name": "TManager",
+						"package": "@medusajs/types",
+						"refersToTypeParameter": true
+					}
+				},
+				{
+					"id": 94,
+					"name": "manager",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of a manager, typically an entity manager, of type "
+							},
+							{
+								"kind": "code",
+								"text": "`TManager`"
+							},
+							{
+								"kind": "text",
+								"text": ", which is a typed parameter passed to the context to specify the type of the "
+							},
+							{
+								"kind": "code",
+								"text": "`manager`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 102,
+						"name": "TManager",
+						"package": "@medusajs/types",
+						"refersToTypeParameter": true
+					}
+				},
+				{
+					"id": 95,
+					"name": "isolationLevel",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the isolation level of the context. Possible values are "
+							},
+							{
+								"kind": "code",
+								"text": "`READ UNCOMMITTED`"
+							},
+							{
+								"kind": "text",
+								"text": ", "
+							},
+							{
+								"kind": "code",
+								"text": "`READ COMMITTED`"
+							},
+							{
+								"kind": "text",
+								"text": ", "
+							},
+							{
+								"kind": "code",
+								"text": "`REPEATABLE READ`"
+							},
+							{
+								"kind": "text",
+								"text": ", or "
+							},
+							{
+								"kind": "code",
+								"text": "`SERIALIZABLE`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 96,
+					"name": "enableNestedTransactions",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A boolean value indicating whether nested transactions are enabled."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				},
+				{
+					"id": 97,
+					"name": "eventGroupId",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the ID of the group to aggregate the events to be emitted at a later point."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 98,
+					"name": "transactionId",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the ID of the current transaction."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 99,
+					"name": "messageAggregator",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 172,
+						"name": "IMessageAggregator",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 100,
+					"name": "requestId",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the ID of the current request."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 101,
+					"name": "idempotencyKey",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A string indicating the idempotencyKey of the current workflow execution."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						92,
+						93,
+						94,
+						95,
+						96,
+						97,
+						98,
+						99,
+						100,
+						101
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 102,
+					"name": "TManager",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "intrinsic",
+						"name": "unknown"
+					}
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Interfaces",
+			"children": [
+				103,
+				121,
+				87,
+				114,
+				119,
+				140,
+				1,
+				128,
+				186,
+				231,
+				190,
+				73,
+				214,
+				172,
+				91
+			]
+		},
+		{
+			"title": "Type Aliases",
+			"children": [
+				171,
+				244,
+				208,
+				220,
+				234,
+				143,
+				204
+			]
+		}
+	],
+	"packageName": "@medusajs/types",
+	"symbolIdMap": {
+		"0": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": ""
+		},
+		"1": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService"
+		},
+		"2": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.create"
+		},
+		"3": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.create"
+		},
+		"4": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "data"
+		},
+		"5": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"6": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.create"
+		},
+		"7": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "data"
+		},
+		"8": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"9": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.upsert"
+		},
+		"10": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.upsert"
+		},
+		"11": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "data"
+		},
+		"12": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"13": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.upsert"
+		},
+		"14": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "data"
+		},
+		"15": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"16": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.update"
+		},
+		"17": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.update"
+		},
+		"18": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "id"
+		},
+		"19": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "data"
+		},
+		"20": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"21": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.update"
+		},
+		"22": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "selector"
+		},
+		"23": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "data"
+		},
+		"24": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"25": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.delete"
+		},
+		"26": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.delete"
+		},
+		"27": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "ids"
+		},
+		"28": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"29": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.delete"
+		},
+		"30": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "id"
+		},
+		"31": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"32": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.retrieve"
+		},
+		"33": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.retrieve"
+		},
+		"34": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "id"
+		},
+		"35": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "config"
+		},
+		"36": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"37": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.list"
+		},
+		"38": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.list"
+		},
+		"39": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "filters"
+		},
+		"40": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "config"
+		},
+		"41": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"42": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.listAndCount"
+		},
+		"43": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.listAndCount"
+		},
+		"44": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "filters"
+		},
+		"45": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "config"
+		},
+		"46": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"47": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.revoke"
+		},
+		"48": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.revoke"
+		},
+		"49": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "selector"
+		},
+		"50": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "data"
+		},
+		"51": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"52": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.revoke"
+		},
+		"53": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "id"
+		},
+		"54": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "data"
+		},
+		"55": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"56": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.authenticate"
+		},
+		"57": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "IApiKeyModuleService.authenticate"
+		},
+		"58": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "token"
+		},
+		"59": {
+			"sourceFileName": "../../../packages/types/src/api-key/service.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"73": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "IModuleService"
+		},
+		"87": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "CreateApiKeyDTO"
+		},
+		"88": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "CreateApiKeyDTO.title"
+		},
+		"89": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "CreateApiKeyDTO.type"
+		},
+		"90": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "CreateApiKeyDTO.created_by"
+		},
+		"91": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "Context"
+		},
+		"92": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.__type"
+		},
+		"93": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.transactionManager"
+		},
+		"94": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.manager"
+		},
+		"95": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.isolationLevel"
+		},
+		"96": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.enableNestedTransactions"
+		},
+		"97": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.eventGroupId"
+		},
+		"98": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.transactionId"
+		},
+		"99": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.messageAggregator"
+		},
+		"100": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.requestId"
+		},
+		"101": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.idempotencyKey"
+		},
+		"102": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "TManager"
+		},
+		"103": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "ApiKeyDTO"
+		},
+		"104": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "ApiKeyDTO.id"
+		},
+		"105": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "ApiKeyDTO.token"
+		},
+		"106": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "ApiKeyDTO.redacted"
+		},
+		"107": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "ApiKeyDTO.title"
+		},
+		"108": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "ApiKeyDTO.type"
+		},
+		"109": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "ApiKeyDTO.last_used_at"
+		},
+		"110": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "ApiKeyDTO.created_by"
+		},
+		"111": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "ApiKeyDTO.created_at"
+		},
+		"112": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "ApiKeyDTO.revoked_by"
+		},
+		"113": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "ApiKeyDTO.revoked_at"
+		},
+		"114": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "UpsertApiKeyDTO"
+		},
+		"115": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "UpsertApiKeyDTO.id"
+		},
+		"116": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "UpsertApiKeyDTO.title"
+		},
+		"117": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "UpsertApiKeyDTO.type"
+		},
+		"118": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "UpsertApiKeyDTO.created_by"
+		},
+		"119": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "UpdateApiKeyDTO"
+		},
+		"120": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "UpdateApiKeyDTO.title"
+		},
+		"121": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "FilterableApiKeyProps"
+		},
+		"122": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "FilterableApiKeyProps.id"
+		},
+		"123": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "FilterableApiKeyProps.token"
+		},
+		"124": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "FilterableApiKeyProps.title"
+		},
+		"125": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "FilterableApiKeyProps.type"
+		},
+		"126": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$and"
+		},
+		"127": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$or"
+		},
+		"128": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig"
+		},
+		"129": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.select"
+		},
+		"130": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.skip"
+		},
+		"131": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.take"
+		},
+		"132": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.relations"
+		},
+		"133": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.order"
+		},
+		"134": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "__type"
+		},
+		"135": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "__type.__index"
+		},
+		"137": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.withDeleted"
+		},
+		"138": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.filters"
+		},
+		"139": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.Entity"
+		},
+		"140": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "RevokeApiKeyDTO"
+		},
+		"141": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "RevokeApiKeyDTO.revoked_by"
+		},
+		"142": {
+			"sourceFileName": "../../../packages/types/src/api-key/mutations/api-key.ts",
+			"qualifiedName": "RevokeApiKeyDTO.revoke_in"
+		},
+		"143": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "ModuleJoinerConfig"
+		},
+		"144": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"145": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.schema"
+		},
+		"146": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.relationships"
+		},
+		"147": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.extends"
+		},
+		"148": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"149": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"150": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.fieldAlias"
+		},
+		"151": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"152": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.path"
+		},
+		"153": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.forwardArgumentsOnPath"
+		},
+		"154": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isList"
+		},
+		"155": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.relationship"
+		},
+		"156": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"157": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.primaryKeys"
+		},
+		"158": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isLink"
+		},
+		"159": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.linkableKeys"
+		},
+		"160": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isReadOnlyLink"
+		},
+		"161": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.databaseConfig"
+		},
+		"162": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"163": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.tableName"
+		},
+		"164": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.idPrefix"
+		},
+		"165": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.extraFields"
+		},
+		"166": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"167": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.type"
+		},
+		"168": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.defaultValue"
+		},
+		"169": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.nullable"
+		},
+		"170": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.options"
+		},
+		"171": {
+			"sourceFileName": "../../../packages/types/src/api-key/common/api-key.ts",
+			"qualifiedName": "ApiKeyType"
+		},
+		"172": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator"
+		},
+		"173": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.save"
+		},
+		"174": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.save"
+		},
+		"175": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "msg"
+		},
+		"176": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.getMessages"
+		},
+		"177": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.getMessages"
+		},
+		"178": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "format"
+		},
+		"179": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.clearMessages"
+		},
+		"180": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.clearMessages"
+		},
+		"181": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.saveRawMessageData"
+		},
+		"182": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "IMessageAggregator.saveRawMessageData"
+		},
+		"183": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "T"
+		},
+		"184": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "messageData"
+		},
+		"185": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "options"
+		},
+		"186": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable"
+		},
+		"187": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$and"
+		},
+		"188": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$or"
+		},
+		"189": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.T"
+		},
+		"190": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig"
+		},
+		"191": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.serviceName"
+		},
+		"192": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.alias"
+		},
+		"193": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.fieldAlias"
+		},
+		"194": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"195": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.path"
+		},
+		"196": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.forwardArgumentsOnPath"
+		},
+		"197": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.primaryKeys"
+		},
+		"198": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.relationships"
+		},
+		"199": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.extends"
+		},
+		"200": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"201": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"202": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.relationship"
+		},
+		"203": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.args"
+		},
+		"204": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "ModuleJoinerRelationship"
+		},
+		"205": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"206": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"207": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.deleteCascade"
+		},
+		"208": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "Message"
+		},
+		"209": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"210": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventName"
+		},
+		"211": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.body"
+		},
+		"212": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.options"
+		},
+		"213": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "T"
+		},
+		"214": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat"
+		},
+		"215": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat.groupBy"
+		},
+		"216": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat.sortBy"
+		},
+		"217": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type"
+		},
+		"218": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.__index"
+		},
+		"220": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "MessageFormat"
+		},
+		"221": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"222": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventName"
+		},
+		"223": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"224": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"225": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.service"
+		},
+		"226": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.action"
+		},
+		"227": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.object"
+		},
+		"228": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventGroupId"
+		},
+		"229": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.data"
+		},
+		"230": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "T"
+		},
+		"231": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias"
+		},
+		"232": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.name"
+		},
+		"233": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.args"
+		},
+		"234": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerRelationship"
+		},
+		"235": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"236": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.alias"
+		},
+		"237": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.foreignKey"
+		},
+		"238": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.primaryKey"
+		},
+		"239": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"240": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"241": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.inverse"
+		},
+		"242": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isList"
+		},
+		"243": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.args"
+		},
+		"244": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "MessageBody"
+		},
+		"245": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"246": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"247": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"248": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.service"
+		},
+		"249": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.action"
+		},
+		"250": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.object"
+		},
+		"251": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.eventGroupId"
+		},
+		"252": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "__type.data"
+		},
+		"253": {
+			"sourceFileName": "../../../packages/types/src/event-bus/common.ts",
+			"qualifiedName": "T"
+		}
+	}
+}

@@ -1,0 +1,32 @@
+---
+displayed_sidebar: apiKeyReference
+slug: /references/api-key/authenticate
+sidebar_label: authenticate
+---
+
+import { TypeList } from "docs-ui"
+
+# authenticate - API Key Module Reference
+
+This documentation provides a reference to the `authenticate` method. This belongs to the API Key Module.
+
+This method verifies whether a token is valid, considering it authenticated.
+
+## Example
+
+```ts
+const apiKey =
+  await apiKeyModuleService.authenticate("AbCD123987")
+
+if (!apiKey) {
+  // authentication failed
+}
+```
+
+## Parameters
+
+<TypeList types={[{"name":"token","type":"`string`","description":"The token to verify.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sharedContext","type":"[Context](../../../interfaces/api_key.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/api_key.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="authenticate"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;false \\| [ApiKeyDTO](../../../interfaces/api_key.ApiKeyDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"If the token is verified successfully, the API key associated with the token is returned. Otherwise, `false` is returned.","expandable":false,"children":[{"name":"false \\| ApiKeyDTO","type":"`false` \\| [ApiKeyDTO](../../../interfaces/api_key.ApiKeyDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="authenticate"/>

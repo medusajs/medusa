@@ -1,12 +1,8 @@
 import ts from "typescript"
 import { DOCBLOCK_DOUBLE_LINES, DOCBLOCK_NEW_LINE } from "../../constants.js"
-import {
-  camelToTitle,
-  camelToWords,
-  normalizeName,
-  snakeToWords,
-} from "../../utils/str-formatting.js"
 import pluralize from "pluralize"
+import { camelToTitle, camelToWords, snakeToWords } from "utils"
+import { normalizeName } from "../../utils/str-formatting.js"
 
 type TemplateOptions = {
   pluralIndicatorStr?: string

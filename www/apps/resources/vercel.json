@@ -1,0 +1,7 @@
+{
+  "framework": "nextjs",
+  "installCommand": "yarn install",
+  "buildCommand": "turbo run build",
+  "outputDirectory": ".next",
+  "ignoreCommand": "bash ../../ignore-build-script.sh"
+}

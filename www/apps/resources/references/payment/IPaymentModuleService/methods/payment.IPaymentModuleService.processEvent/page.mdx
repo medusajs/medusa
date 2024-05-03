@@ -1,0 +1,38 @@
+---
+displayed_sidebar: paymentReference
+slug: /references/payment/processEvent
+sidebar_label: processEvent
+---
+
+import { TypeList } from "docs-ui"
+
+# processEvent - Payment Module Reference
+
+This documentation provides a reference to the `processEvent` method. This belongs to the Payment Module.
+
+This method handles a webhook event with the associated payment provider.
+
+Learn more about handling webhook events in [this guide](https://docs.medusajs.com/experimental/payment/webhook-events/)
+
+## Example
+
+In the following example, `req` is an instance of `MedusaRequest`:
+
+```ts
+await paymentModuleService.processEvent({
+  provider: "stripe",
+  payload: {
+    data: req.body,
+    rawData: req.rawBody,
+    headers: req.headers,
+  },
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"data","type":"[ProviderWebhookPayload](../../../interfaces/payment.ProviderWebhookPayload/page.mdx)","description":"The webhook event's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"The ID of the provider to pass the webhook event payload to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"`object`","description":"The webhook event payload passed to the specified provider.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"The parsed webhook body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rawData","type":"`string` \\| `Buffer`","description":"The raw webhook request body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, unknown>`","description":"The headers of the webhook request.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="processEvent"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the webhook event is handled successfully.","expandable":false,"children":[]}]}  sectionTitle="processEvent"/>
