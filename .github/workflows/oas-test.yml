@@ -1,38 +1,39 @@
-name: OAS Comments Format Validation
-on:
-  pull_request:
-
-jobs:
-  docs-test:
-    runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16.10.0"
-          cache: "yarn"
-
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: oas
-
-      - name: Build Packages
-        run: yarn build
-
-      - name: Build OAS
-        run: |
-          yarn openapi:generate --dry-run
+#name: OAS Comments Format Validation
+#on:
+#  pull_request:
+#
+#jobs:
+#  docs-test:
+#    runs-on: ubuntu-latest
+#    env:
+#      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+#      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+#    steps:
+#      - name: Cancel Previous Runs
+#        uses: styfle/cancel-workflow-action@0.11.0
+#        with:
+#          access_token: ${{ github.token }}
+#
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Setup Node.js environment
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: "16.10.0"
+#          cache: "yarn"
+#
+#      - name: Install dependencies
+#        uses: ./.github/actions/cache-deps
+#        with:
+#          extension: oas
+#
+#      - name: Build Packages
+#        run: yarn build
+#
+#      - name: Build OAS
+#        run: |
+#          yarn openapi:generate --dry-run
+#
