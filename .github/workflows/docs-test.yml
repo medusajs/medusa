@@ -37,6 +37,13 @@ jobs:
       - name: Build Doc Apps
         working-directory: www
         run: yarn build
+        env:
+          NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
+          NEXT_PUBLIC_DOCS_URL: "https://medusa-docs.vercel.app"
+          NEXT_PUBLIC_UI_URL: "https://docs-ui.vercel.app"
+          # TODO change once we have actual URLs
+          NEXT_PUBLIC_RESOURCES_URL: "http://example.com"
+          NEXT_PUBLIC_USER_GUIDE_URL: "http://example.com"
         
   vale-book:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
@@ -78,6 +85,7 @@ jobs:
         id: directories
 
       - name: Vale Linter
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         uses: errata-ai/vale-action@reviewdog
         with:
           files: ${{ steps.directories.outputs.LIST }}
@@ -129,6 +137,7 @@ jobs:
 
       - name: Vale Linter
         uses: errata-ai/vale-action@reviewdog
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         with:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
@@ -178,8 +187,8 @@ jobs:
         id: directories
 
       - name: Vale Linter
-        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         uses: errata-ai/vale-action@reviewdog
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         with:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
@@ -336,6 +345,10 @@ jobs:
       - name: Install dependencies
         working-directory: www
         run: yarn install
+
+      - name: Build packages and apps
+        working-directory: www
+        run: yarn build
 
       - name: Run Eslint
         working-directory: www
