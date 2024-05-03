@@ -24,11 +24,11 @@ export const associateFulfillmentSetsWithLocationStep = createStep(
       .map((link) => {
         return link.fulfillment_set_ids.map((id) => {
           return {
-            [Modules.FULFILLMENT]: {
-              fulfillment_set_id: id,
-            },
             [Modules.STOCK_LOCATION]: {
               stock_location_id: link.location_id,
+            },
+            [Modules.FULFILLMENT]: {
+              fulfillment_set_id: id,
             },
           }
         })

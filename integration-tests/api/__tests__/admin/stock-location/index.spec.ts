@@ -245,6 +245,14 @@ medusaIntegrationTestRunner({
           object: "stock_location",
           deleted: true,
         })
+
+        const stockLocations = await api.get(
+          `/admin/stock-locations`,
+          adminHeaders
+        )
+
+        expect(stockLocations.status).toEqual(200)
+        expect(stockLocations.data.stock_locations).toEqual([])
       })
 
       it("should successfully delete stock location associations", async () => {
@@ -390,7 +398,7 @@ medusaIntegrationTestRunner({
         stockLocationId = createResponse.data.stock_location.id
       })
 
-      it("should create a fulfillment set for the location", async () => {
+      it.only("should create a fulfillment set for the location and then delete it and its associations", async () => {
         const response = await api.post(
           `/admin/stock-locations/${stockLocationId}/fulfillment-sets?fields=id,*fulfillment_sets`,
           {
@@ -407,6 +415,19 @@ medusaIntegrationTestRunner({
             id: expect.any(String),
           }),
         ])
+
+        await api.delete(
+          `/admin/stock-locations/${stockLocationId}`,
+          adminHeaders
+        )
+
+        const fulfillmentModule = appContainer.resolve(
+          ModuleRegistrationName.FULFILLMENT
+        )
+
+        const sets = await fulfillmentModule.list()
+
+        expect(sets).toHaveLength(0)
       })
 
       // This is really just to test the new Zod middleware. We don't need more of these.

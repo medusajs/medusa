@@ -52,11 +52,11 @@ medusaIntegrationTestRunner({
 
         await remoteLink.create([
           {
-            [Modules.FULFILLMENT]: {
-              fulfillment_set_id: fulfillmentSet.id,
-            },
             [Modules.STOCK_LOCATION]: {
               stock_location_id: euWarehouse.id,
+            },
+            [Modules.FULFILLMENT]: {
+              fulfillment_set_id: fulfillmentSet.id,
             },
           },
         ])
