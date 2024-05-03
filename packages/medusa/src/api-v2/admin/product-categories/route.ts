@@ -7,7 +7,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
+import { refetchEntities } from "../../utils/refetch-entity"
 import {
   AdminCreateProductCategoryType,
   AdminProductCategoriesParamsType,
@@ -48,9 +48,9 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const category = await refetchEntity(
+  const [category] = await refetchEntities(
     "product_category",
-    result.id,
+    { id: result.id, ...req.filterableFields },
     req.scope,
     req.remoteQueryConfig.fields
   )

@@ -10,8 +10,8 @@ export const defaults = [
   "created_at",
   "updated_at",
   "metadata",
-  // "*category_children",
-  // "*parent_category",
+  "parent_category",
+  "category_children",
 ]
 
 export const allowed = [
