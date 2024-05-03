@@ -12,7 +12,7 @@ export interface PartialUpsertOrderItemDTO {
   return_dismissed_quantity?: BigNumberInput
   written_off_quantity?: BigNumberInput
 
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface CreateOrderItemDTO extends PartialUpsertOrderItemDTO {
