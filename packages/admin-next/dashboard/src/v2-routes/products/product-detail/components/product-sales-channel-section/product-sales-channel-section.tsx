@@ -83,7 +83,7 @@ export const ProductSalesChannelSection = ({
       <div>
         <Text className="text-ui-fg-subtle" size="small" leading="compact">
           <Trans
-            i18nKey="products.availableInSalesChannels"
+            i18nKey="sales_channels.availableIn"
             values={{
               x: availableInSalesChannels.length,
               y: count ?? 0,
