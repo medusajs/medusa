@@ -19,138 +19,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@algolia/cache-browser-local-storage@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/cache-browser-local-storage@npm:4.18.0"
-  dependencies:
-    "@algolia/cache-common": 4.18.0
-  checksum: 4d2efe7a523427e13ea3549d89378564bb60de7e4178e33e86ae0fd709b2582486817a20f94c011e6135f14182bb3e37f72047280208903802a3a17daff42b6f
-  languageName: node
-  linkType: hard
-
-"@algolia/cache-common@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/cache-common@npm:4.18.0"
-  checksum: bd68a75ae6c49ee78bb79add9d887ead952b5b6c2829241d35f04fdaa9a7666bc329795c2f0e1f16d035294356b957abacce862eca938691d0a0db734eb884a1
-  languageName: node
-  linkType: hard
-
-"@algolia/cache-in-memory@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/cache-in-memory@npm:4.18.0"
-  dependencies:
-    "@algolia/cache-common": 4.18.0
-  checksum: 3faa3673857272146f32fd906f6b1c97ef0afcb84c7d32902bcfe6dc15cce45e7def0e00bbd8c27d90ad353f40d5b956a0692e1f7c9e1cd7e2296620458e2232
-  languageName: node
-  linkType: hard
-
-"@algolia/client-account@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/client-account@npm:4.18.0"
-  dependencies:
-    "@algolia/client-common": 4.18.0
-    "@algolia/client-search": 4.18.0
-    "@algolia/transporter": 4.18.0
-  checksum: 9bd922abaa55f11a7e4fbc4bea347d345c5d91b5b6f09b5be02ff1a7c41a50f35ec17b4d117edec6a3b5e99c7ffb94409ec640d68728e4c5181e638a691f467a
-  languageName: node
-  linkType: hard
-
-"@algolia/client-analytics@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/client-analytics@npm:4.18.0"
-  dependencies:
-    "@algolia/client-common": 4.18.0
-    "@algolia/client-search": 4.18.0
-    "@algolia/requester-common": 4.18.0
-    "@algolia/transporter": 4.18.0
-  checksum: fceaf153f2eb952bcf5d090aa9ce9c6dd36092b50d7fc67d43d025c76d168b6baf2b73bd0295c891156e11aaae2da65e878359396fc44ad5c5be5e0e83fb9ba4
-  languageName: node
-  linkType: hard
-
-"@algolia/client-common@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/client-common@npm:4.18.0"
-  dependencies:
-    "@algolia/requester-common": 4.18.0
-    "@algolia/transporter": 4.18.0
-  checksum: d898bb3ea10a9deff19efa1cd252bbdfb76800a3eeb7763f87c94c1064af3fafb1b60b687434c53e89832cb5a13024bc9d75f0ae5bf4b7d3fa609a26bb113d01
-  languageName: node
-  linkType: hard
-
-"@algolia/client-personalization@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/client-personalization@npm:4.18.0"
-  dependencies:
-    "@algolia/client-common": 4.18.0
-    "@algolia/requester-common": 4.18.0
-    "@algolia/transporter": 4.18.0
-  checksum: 4a93e672206c2127e760560db436301f89fc26445032c7df41b1a9321798506d4738dbe05668dd3191e97affba5085227cdea4845d3bcb26f49f78fccd87943f
-  languageName: node
-  linkType: hard
-
-"@algolia/client-search@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/client-search@npm:4.18.0"
-  dependencies:
-    "@algolia/client-common": 4.18.0
-    "@algolia/requester-common": 4.18.0
-    "@algolia/transporter": 4.18.0
-  checksum: 23457f9d40384e275d359ab4eea7550a57b9c53c75fa63ec26e6bcd947b1ce96d2f28b6a9caefd8bc47f4d0659b7fd9981fbf09c3e43cf006f6bc934e70f09e5
-  languageName: node
-  linkType: hard
-
-"@algolia/logger-common@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/logger-common@npm:4.18.0"
-  checksum: 31015b2f2261618c44a2876272dc24661d5e02a41fdac1d95a17360637cc76073a73b00f90baa8780979901051d6c4524ccd416390d7a48dff0773bb710fbaa2
-  languageName: node
-  linkType: hard
-
-"@algolia/logger-console@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/logger-console@npm:4.18.0"
-  dependencies:
-    "@algolia/logger-common": 4.18.0
-  checksum: eee7c1c61c72e082bc9842bd92136ec09c87e3b2bc3639df40db191096a4e15f6c4f1475b05729741dad7111cb9a853e3024b33b67a517a3a13af46e421728f6
-  languageName: node
-  linkType: hard
-
-"@algolia/requester-browser-xhr@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/requester-browser-xhr@npm:4.18.0"
-  dependencies:
-    "@algolia/requester-common": 4.18.0
-  checksum: a725d19cb256aa689c07f4e0b7b3db2a2e7d68c99fe103baa52126adf78a62fc25b6eb0969aeccf7d27bab6d3009ff306fe71c65554017a3fa6e57cdf88a07b1
-  languageName: node
-  linkType: hard
-
-"@algolia/requester-common@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/requester-common@npm:4.18.0"
-  checksum: 3e641f6084b34c5849a763048c7d14ac4e91833e944e18364edf4d7da241ce5d66cf8ed9ba55f105e28109dd5fd10fa0d3ed5d709b943fd91d5732c6dee5633c
-  languageName: node
-  linkType: hard
-
-"@algolia/requester-node-http@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/requester-node-http@npm:4.18.0"
-  dependencies:
-    "@algolia/requester-common": 4.18.0
-  checksum: e32eb8d832da528314e61095041ce3c6ea5aa0d1d085f1370ec04da6fec476edcde303f3f1f9be1942562fc7ba2f7dcad64f8d128f1bc3d8477e251f40a64b34
-  languageName: node
-  linkType: hard
-
-"@algolia/transporter@npm:4.18.0":
-  version: 4.18.0
-  resolution: "@algolia/transporter@npm:4.18.0"
-  dependencies:
-    "@algolia/cache-common": 4.18.0
-    "@algolia/logger-common": 4.18.0
-    "@algolia/requester-common": 4.18.0
-  checksum: 5a0ca91479677119ddaceb04bc3d407502c451188ac4f745d4d4e15bf06b4f6db4fc271466c060d66c241cd1d237f6965b034ffe5ac2bf32a8b8c2d1d101d74a
-  languageName: node
-  linkType: hard
-
 "@alloc/quick-lru@npm:^5.2.0":
   version: 5.2.0
   resolution: "@alloc/quick-lru@npm:5.2.0"
@@ -2788,7 +2656,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-instanceof@npm:^7.10.4, @babel/plugin-transform-instanceof@npm:^7.12.1, @babel/plugin-transform-instanceof@npm:^7.12.13, @babel/plugin-transform-instanceof@npm:^7.8.3":
+"@babel/plugin-transform-instanceof@npm:^7.10.4, @babel/plugin-transform-instanceof@npm:^7.12.1, @babel/plugin-transform-instanceof@npm:^7.8.3":
   version: 7.22.5
   resolution: "@babel/plugin-transform-instanceof@npm:7.22.5"
   dependencies:
@@ -8155,7 +8023,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.12.2, @medusajs/medusa@^1.17.1, @medusajs/medusa@^1.19.1, @medusajs/medusa@^1.20.3, @medusajs/medusa@^1.20.4, @medusajs/medusa@^1.20.5, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.17.1, @medusajs/medusa@^1.20.3, @medusajs/medusa@^1.20.4, @medusajs/medusa@^1.20.5, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -8236,7 +8104,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@^1.12.10, @medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@^1.12.3, @medusajs/modules-sdk@^1.12.8, @medusajs/modules-sdk@^1.12.9, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/modules-sdk":
+"@medusajs/modules-sdk@^1.12.10, @medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@^1.12.3, @medusajs/modules-sdk@^1.12.8, @medusajs/modules-sdk@^1.12.9, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
@@ -8650,7 +8518,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.10.0, @medusajs/types@^1.11.12, @medusajs/types@^1.11.14, @medusajs/types@^1.11.15, @medusajs/types@^1.11.16, @medusajs/types@^1.11.6, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.11.12, @medusajs/types@^1.11.14, @medusajs/types@^1.11.15, @medusajs/types@^1.11.16, @medusajs/types@^1.11.6, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -8783,7 +8651,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@1.11.9, @medusajs/utils@^1.10.5, @medusajs/utils@^1.11.2, @medusajs/utils@^1.11.3, @medusajs/utils@^1.11.5, @medusajs/utils@^1.11.7, @medusajs/utils@^1.11.8, @medusajs/utils@^1.11.9, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@1.11.9, @medusajs/utils@^1.11.2, @medusajs/utils@^1.11.5, @medusajs/utils@^1.11.7, @medusajs/utils@^1.11.8, @medusajs/utils@^1.11.9, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
@@ -11740,35 +11608,6 @@ __metadata:
   bin:
     tsub: dist/index.js
   checksum: e4077ddb9b15bf2c068b640f25fc3a834d9e4ef8dd5e9a89ec77e27146f32e577570ebc29f7036a1aca90ea8e7862b8c99f0953abe4f6e0664c48d62dd893450
-  languageName: node
-  linkType: hard
-
-"@sendgrid/client@npm:^7.7.0":
-  version: 7.7.0
-  resolution: "@sendgrid/client@npm:7.7.0"
-  dependencies:
-    "@sendgrid/helpers": ^7.7.0
-    axios: ^0.26.0
-  checksum: acf1db2dcc5181f6f9befba811ba6acb31e50051ab6bded952cb073f117c9237d86013602cdf523b91582c40545e1085a413f1e9e490a46b1d664a5c956c1f3f
-  languageName: node
-  linkType: hard
-
-"@sendgrid/helpers@npm:^7.7.0":
-  version: 7.7.0
-  resolution: "@sendgrid/helpers@npm:7.7.0"
-  dependencies:
-    deepmerge: ^4.2.2
-  checksum: 14dfe9af191dd9ad18f0b2744d6d12dbc80f830507b6112d8c4c1c4741ff282393a06e4b4559c0f404d33971639ecadb1017e0cc3b7187e56ec64ab9ee5ff21c
-  languageName: node
-  linkType: hard
-
-"@sendgrid/mail@npm:^7.1.1":
-  version: 7.7.0
-  resolution: "@sendgrid/mail@npm:7.7.0"
-  dependencies:
-    "@sendgrid/client": ^7.7.0
-    "@sendgrid/helpers": ^7.7.0
-  checksum: 5a1d617f1e3f8d47d4fe188ff08f18fca63e3006545ad1f954bf30887806c810f6c0dea7d8850c24de03b3aca75f70f4324369ed2497d957870b8a65f1451127
   languageName: node
   linkType: hard
 
@@ -18970,28 +18809,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"algoliasearch@npm:^4.15.0":
-  version: 4.18.0
-  resolution: "algoliasearch@npm:4.18.0"
-  dependencies:
-    "@algolia/cache-browser-local-storage": 4.18.0
-    "@algolia/cache-common": 4.18.0
-    "@algolia/cache-in-memory": 4.18.0
-    "@algolia/client-account": 4.18.0
-    "@algolia/client-analytics": 4.18.0
-    "@algolia/client-common": 4.18.0
-    "@algolia/client-personalization": 4.18.0
-    "@algolia/client-search": 4.18.0
-    "@algolia/logger-common": 4.18.0
-    "@algolia/logger-console": 4.18.0
-    "@algolia/requester-browser-xhr": 4.18.0
-    "@algolia/requester-common": 4.18.0
-    "@algolia/requester-node-http": 4.18.0
-    "@algolia/transporter": 4.18.0
-  checksum: 3966bf487d45d06a6904a1ebfc1c8cca92a670e7ed8ee003cf7af9c48ba90eb24c9eb16e8dbc516d3c88ab092672d2c3cdda694c0bc6dc17f65ea8f73650b478
-  languageName: node
-  linkType: hard
-
 "analytics-node@npm:^3.4.0-beta.1":
   version: 3.5.0
   resolution: "analytics-node@npm:3.5.0"
@@ -19806,7 +19623,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.19.0, axios@npm:^0.19.2":
+"axios@npm:^0.19.2":
   version: 0.19.2
   resolution: "axios@npm:0.19.2"
   dependencies:
@@ -19839,15 +19656,6 @@ __metadata:
   dependencies:
     follow-redirects: ^1.14.4
   checksum: d106561e761bf48633633073626eafb80289eb7c7c27f9fae4fb796939b6ecd2c9f63b596e3b3d872f7c0bec6b2fb117c58456d387e4ca2da7fc07c795a979c3
-  languageName: node
-  linkType: hard
-
-"axios@npm:^0.26.0":
-  version: 0.26.1
-  resolution: "axios@npm:0.26.1"
-  dependencies:
-    follow-redirects: ^1.14.8
-  checksum: 77ad7f1e6ca04fcd3fa8af1795b09d8b7c005b71a31f28d99ba40cda0bdcc12a4627801d7fac5efa62b9f667a8402bd54c669039694373bc8d44f6be611f785c
   languageName: node
   linkType: hard
 
@@ -22495,31 +22303,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"contentful-management@npm:^5.27.1":
-  version: 5.28.0
-  resolution: "contentful-management@npm:5.28.0"
-  dependencies:
-    axios: ^0.19.0
-    contentful-sdk-core: ^6.4.0
-    lodash: ^4.17.11
-    type-fest: 0.15.1
-  checksum: 66b79a333330ad9e51d62b77179ae24166d241b2189bdc8203eeb7d6a66291a574b8c503a2c9728df12138294f8f39b79aab5ceda2f40689cecea08925652a8b
-  languageName: node
-  linkType: hard
-
-"contentful-sdk-core@npm:^6.4.0":
-  version: 6.11.0
-  resolution: "contentful-sdk-core@npm:6.11.0"
-  dependencies:
-    fast-copy: ^2.1.0
-    lodash.isplainobject: ^4.0.6
-    lodash.isstring: ^4.0.1
-    p-throttle: ^4.1.1
-    qs: ^6.9.4
-  checksum: c28c609b576320321c83e73d79b70892ec10bd628e50f3041d4e2ee1030b2753f59deb26edc9560977ad7cef33e7c80ef111e538e55c02fd961f02e2e4f69f63
-  languageName: node
-  linkType: hard
-
 "convert-source-map@npm:^1.1.0, convert-source-map@npm:^1.4.0, convert-source-map@npm:^1.5.0, convert-source-map@npm:^1.6.0, convert-source-map@npm:^1.7.0":
   version: 1.9.0
   resolution: "convert-source-map@npm:1.9.0"
@@ -22939,7 +22722,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-fetch@npm:^3.1.5, cross-fetch@npm:^3.1.6":
+"cross-fetch@npm:^3.1.5":
   version: 3.1.8
   resolution: "cross-fetch@npm:3.1.8"
   dependencies:
@@ -23841,13 +23624,6 @@ __metadata:
   version: 1.0.0
   resolution: "delegates@npm:1.0.0"
   checksum: ba05874b91148e1db4bf254750c042bf2215febd23a6d3cda2e64896aef79745fbd4b9996488bd3cafb39ce19dbce0fd6e3b6665275638befffe1c9b312b91b5
-  languageName: node
-  linkType: hard
-
-"denque@npm:^1.5.0":
-  version: 1.5.1
-  resolution: "denque@npm:1.5.1"
-  checksum: 9e6fc1a63e1c9ded38325290302fef40e5ad28471ad8c66d68eaea623ef847bd25fc75a7c3f47396206dc967922615999066470a364e1786f2758d61337872b7
   languageName: node
   linkType: hard
 
@@ -26246,13 +26022,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-copy@npm:^2.1.0":
-  version: 2.1.7
-  resolution: "fast-copy@npm:2.1.7"
-  checksum: 1fa3c6f21305fa49581d543812f0c96429c0748b97c074b1aca5d2d6d43520ff1452a8021b4051f5a894c0fdbcac463797b5660e0813399054914dd91e7f27f5
-  languageName: node
-  linkType: hard
-
 "fast-deep-equal@npm:^3.1.1, fast-deep-equal@npm:^3.1.3":
   version: 3.1.3
   resolution: "fast-deep-equal@npm:3.1.3"
@@ -26848,7 +26617,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.10.0, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.4, follow-redirects@npm:^1.14.8, follow-redirects@npm:^1.14.9, follow-redirects@npm:^1.15.0":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.10.0, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.4, follow-redirects@npm:^1.14.9, follow-redirects@npm:^1.15.0":
   version: 1.15.2
   resolution: "follow-redirects@npm:1.15.2"
   peerDependenciesMeta:
@@ -29252,9 +29021,7 @@ __metadata:
     form-data: ^4.0.0
     jest: ^26.6.3
     jest-environment-node: 26.6.2
-    medusa-fulfillment-webshipper: "workspace:*"
     medusa-interfaces: "workspace:*"
-    medusa-plugin-sendgrid: "workspace:*"
     pg: ^8.11.0
     typeorm: ^0.3.16
   languageName: unknown
@@ -29294,9 +29061,7 @@ __metadata:
     faker: ^5.5.3
     jest: ^26.6.3
     jest-environment-node: 26.6.2
-    medusa-fulfillment-webshipper: "workspace:*"
     medusa-interfaces: "workspace:*"
-    medusa-plugin-sendgrid: "workspace:*"
     medusa-test-utils: "workspace:*"
     pg: ^8.11.0
     typeorm: ^0.3.16
@@ -29337,9 +29102,7 @@ __metadata:
     faker: ^5.5.3
     jest: ^26.6.3
     jest-environment-node: 26.6.2
-    medusa-fulfillment-webshipper: "workspace:*"
     medusa-interfaces: "workspace:*"
-    medusa-plugin-sendgrid: "workspace:*"
     pg: ^8.11.0
     typeorm: ^0.3.16
   languageName: unknown
@@ -34701,58 +34464,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-fulfillment-manual@workspace:packages/medusa-fulfillment-manual":
-  version: 0.0.0-use.local
-  resolution: "medusa-fulfillment-manual@workspace:packages/medusa-fulfillment-manual"
-  dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-classes": ^7.9.5
-    "@babel/plugin-transform-instanceof": ^7.8.3
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
-    "@babel/runtime": ^7.9.6
-    client-sessions: ^0.8.0
-    cross-env: ^5.2.1
-    express: ^4.17.1
-    jest: ^25.5.4
-    medusa-core-utils: ^1.2.1
-    medusa-interfaces: ^1.3.9
-  peerDependencies:
-    medusa-interfaces: 1.3.9
-  languageName: unknown
-  linkType: soft
-
-"medusa-fulfillment-webshipper@workspace:*, medusa-fulfillment-webshipper@workspace:packages/medusa-fulfillment-webshipper":
-  version: 0.0.0-use.local
-  resolution: "medusa-fulfillment-webshipper@workspace:packages/medusa-fulfillment-webshipper"
-  dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-instanceof": ^7.12.13
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
-    "@babel/runtime": ^7.9.6
-    "@medusajs/medusa": ^1.19.1
-    "@medusajs/utils": ^1.11.3
-    axios: ^0.20.0
-    body-parser: ^1.19.0
-    client-sessions: ^0.8.0
-    cors: ^2.8.5
-    cross-env: ^5.2.1
-    express: ^4.17.1
-    jest: ^25.5.4
-    medusa-core-utils: ^1.2.1
-    medusa-interfaces: ^1.3.8
-  peerDependencies:
-    "@medusajs/medusa": ^1.12.0
-    medusa-interfaces: ^1.3.7
-  languageName: unknown
-  linkType: soft
-
-"medusa-interfaces@^1.3.7, medusa-interfaces@^1.3.8, medusa-interfaces@^1.3.9, medusa-interfaces@workspace:*, medusa-interfaces@workspace:packages/medusa-interfaces":
+"medusa-interfaces@^1.3.7, medusa-interfaces@^1.3.9, medusa-interfaces@workspace:*, medusa-interfaces@workspace:packages/medusa-interfaces":
   version: 0.0.0-use.local
   resolution: "medusa-interfaces@workspace:packages/medusa-interfaces"
   dependencies:
@@ -34771,53 +34483,6 @@ __metadata:
     medusa-test-utils: ^1.1.42
     rimraf: ^5.0.1
     typescript: ^4.4.4
-  languageName: unknown
-  linkType: soft
-
-"medusa-plugin-algolia@workspace:packages/medusa-plugin-algolia":
-  version: 0.0.0-use.local
-  resolution: "medusa-plugin-algolia@workspace:packages/medusa-plugin-algolia"
-  dependencies:
-    "@medusajs/modules-sdk": ^1.8.8
-    "@medusajs/types": ^1.10.0
-    "@medusajs/utils": ^1.9.4
-    algoliasearch: ^4.15.0
-    client-sessions: ^0.8.0
-    cross-env: ^5.2.1
-    jest: ^25.5.4
-    rimraf: ^5.0.1
-    typescript: ^4.4.4
-  languageName: unknown
-  linkType: soft
-
-"medusa-plugin-contentful@workspace:packages/medusa-plugin-contentful":
-  version: 0.0.0-use.local
-  resolution: "medusa-plugin-contentful@workspace:packages/medusa-plugin-contentful"
-  dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/node": ^7.7.4
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-classes": ^7.9.5
-    "@babel/plugin-transform-instanceof": ^7.8.3
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
-    "@babel/register": ^7.7.4
-    "@babel/runtime": ^7.9.6
-    "@medusajs/utils": ^1.10.5
-    body-parser: ^1.19.0
-    client-sessions: ^0.8.0
-    contentful-management: ^5.27.1
-    cross-env: ^5.2.1
-    express: ^4.17.1
-    jest: ^25.5.4
-    lodash: ^4.17.21
-    medusa-core-utils: ^1.2.0
-    medusa-interfaces: ^1.3.7
-    medusa-test-utils: ^1.1.40
-    redis: ^3.0.2
-  peerDependencies:
-    medusa-interfaces: ^1.3.7
   languageName: unknown
   linkType: soft
 
@@ -34869,26 +34534,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-plugin-meilisearch@workspace:packages/medusa-plugin-meilisearch":
-  version: 0.0.0-use.local
-  resolution: "medusa-plugin-meilisearch@workspace:packages/medusa-plugin-meilisearch"
-  dependencies:
-    "@medusajs/medusa": ^1.12.2
-    "@medusajs/modules-sdk": ^1.8.8
-    "@medusajs/types": ^1.10.0
-    "@medusajs/utils": ^1.9.4
-    body-parser: ^1.19.0
-    cross-env: ^5.2.1
-    jest: ^25.5.4
-    lodash: ^4.17.21
-    meilisearch: ^0.32.3
-    rimraf: ^5.0.1
-    typescript: ^4.9.5
-  peerDependencies:
-    "@medusajs/medusa": ^1.12.0
-  languageName: unknown
-  linkType: soft
-
 "medusa-plugin-restock-notification@workspace:packages/medusa-plugin-restock-notification":
   version: 0.0.0-use.local
   resolution: "medusa-plugin-restock-notification@workspace:packages/medusa-plugin-restock-notification"
@@ -34933,65 +34578,6 @@ __metadata:
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ">= 1.18.0 < 2"
-    medusa-interfaces: ^1.3.7
-  languageName: unknown
-  linkType: soft
-
-"medusa-plugin-sendgrid@workspace:*, medusa-plugin-sendgrid@workspace:packages/medusa-plugin-sendgrid":
-  version: 0.0.0-use.local
-  resolution: "medusa-plugin-sendgrid@workspace:packages/medusa-plugin-sendgrid"
-  dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/node": ^7.7.4
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-classes": ^7.9.5
-    "@babel/plugin-transform-instanceof": ^7.8.3
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
-    "@babel/register": ^7.7.4
-    "@babel/runtime": ^7.9.6
-    "@sendgrid/mail": ^7.1.1
-    body-parser: ^1.19.0
-    client-sessions: ^0.8.0
-    cross-env: ^5.2.1
-    express: ^4.17.1
-    jest: ^25.5.4
-    medusa-core-utils: ^1.2.0
-    medusa-interfaces: ^1.3.7
-    medusa-test-utils: ^1.1.40
-    typeorm: ^0.3.16
-  peerDependencies:
-    medusa-interfaces: ^1.3.7
-    typeorm: ^0.3.16
-  languageName: unknown
-  linkType: soft
-
-"medusa-plugin-slack-notification@workspace:packages/medusa-plugin-slack-notification":
-  version: 0.0.0-use.local
-  resolution: "medusa-plugin-slack-notification@workspace:packages/medusa-plugin-slack-notification"
-  dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/node": ^7.7.4
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-classes": ^7.9.5
-    "@babel/plugin-transform-instanceof": ^7.8.3
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
-    "@babel/register": ^7.7.4
-    "@babel/runtime": ^7.9.6
-    axios: ^0.19.2
-    body-parser: ^1.19.0
-    client-sessions: ^0.8.0
-    cross-env: ^5.2.1
-    express: ^4.17.1
-    jest: ^25.5.4
-    medusa-core-utils: ^1.2.0
-    medusa-interfaces: ^1.3.7
-    medusa-test-utils: ^1.1.40
-    moment: ^2.27.0
-  peerDependencies:
     medusa-interfaces: ^1.3.7
   languageName: unknown
   linkType: soft
@@ -35124,15 +34710,6 @@ __metadata:
       optional: true
   languageName: unknown
   linkType: soft
-
-"meilisearch@npm:^0.32.3":
-  version: 0.32.5
-  resolution: "meilisearch@npm:0.32.5"
-  dependencies:
-    cross-fetch: ^3.1.6
-  checksum: bf4ced846a9124802217598b374087b2993125b5c37fa7dd67422e578f63d175e20779f726d8c13759b4b63fdd12550b502c88e4736442e316e1b3ac612e09f8
-  languageName: node
-  linkType: hard
 
 "memfs@npm:^3.1.2, memfs@npm:^3.4.3":
   version: 3.5.3
@@ -35782,7 +35359,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.19.3, moment@npm:^2.27.0, moment@npm:^2.29.4, moment@npm:~2.29.3":
+"moment@npm:^2.19.3, moment@npm:^2.29.4, moment@npm:~2.29.3":
   version: 2.29.4
   resolution: "moment@npm:2.29.4"
   checksum: 844c6f3ce42862ac9467c8ca4f5e48a00750078682cc5bda1bc0e50cc7ca88e2115a0f932d65a06e4a90e26cb78892be9b3ca3dd6546ca2c4d994cebb787fc2b
@@ -37254,13 +36831,6 @@ __metadata:
     "@types/retry": 0.12.0
     retry: ^0.13.1
   checksum: d58512f120f1590cfedb4c2e0c42cb3fa66f3cea8a4646632fcb834c56055bb7a6f138aa57b20cc236fb207c9d694e362e0b5c2b14d9b062f67e8925580c73b0
-  languageName: node
-  linkType: hard
-
-"p-throttle@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "p-throttle@npm:4.1.1"
-  checksum: c4bfdcd0318d704b446a7af59dd8e0e32e37ba3d9841dd8dfced1c09742bc2f7a95bc0fcf4072030c62abf4533a9a2ef2954e559462052c5f406ae03d195925a
   languageName: node
   linkType: hard
 
@@ -39647,7 +39217,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.10.0, qs@npm:^6.10.3, qs@npm:^6.11.0, qs@npm:^6.11.2, qs@npm:^6.5.1, qs@npm:^6.9.4":
+"qs@npm:^6.10.0, qs@npm:^6.10.3, qs@npm:^6.11.0, qs@npm:^6.11.2, qs@npm:^6.5.1":
   version: 6.11.2
   resolution: "qs@npm:6.11.2"
   dependencies:
@@ -40859,13 +40429,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redis-commands@npm:^1.7.0":
-  version: 1.7.0
-  resolution: "redis-commands@npm:1.7.0"
-  checksum: c78b46d8d6e811f422961878538c57048a451ab56760d3f1657a7c8f29aaae42cc23890f75655556a59ec67611022e18cb443d2976e6c55036934bfe783aa60e
-  languageName: node
-  linkType: hard
-
 "redis-errors@npm:^1.0.0, redis-errors@npm:^1.2.0":
   version: 1.2.0
   resolution: "redis-errors@npm:1.2.0"
@@ -40879,18 +40442,6 @@ __metadata:
   dependencies:
     redis-errors: ^1.0.0
   checksum: ee16ac4c7b2a60b1f42a2cdaee22b005bd4453eb2d0588b8a4939718997ae269da717434da5d570fe0b05030466eeb3f902a58cf2e8e1ca058bf6c9c596f632f
-  languageName: node
-  linkType: hard
-
-"redis@npm:^3.0.2":
-  version: 3.1.2
-  resolution: "redis@npm:3.1.2"
-  dependencies:
-    denque: ^1.5.0
-    redis-commands: ^1.7.0
-    redis-errors: ^1.2.0
-    redis-parser: ^3.0.0
-  checksum: 452d4ed65948b101e379c1abcce7682619382c90929a6611baae5f7f1d38134ce20ad65adfbaa569b735274b49db14a2ebb622800e0b45a4d1559e2133c7aabe
   languageName: node
   linkType: hard
 
@@ -45737,13 +45288,6 @@ __metadata:
   version: 4.0.8
   resolution: "type-detect@npm:4.0.8"
   checksum: 8fb9a51d3f365a7de84ab7f73b653534b61b622aa6800aecdb0f1095a4a646d3f5eb295322127b6573db7982afcd40ab492d038cf825a42093a58b1e1353e0bd
-  languageName: node
-  linkType: hard
-
-"type-fest@npm:0.15.1":
-  version: 0.15.1
-  resolution: "type-fest@npm:0.15.1"
-  checksum: 2eff115f870aa2802b1624f6a74069b2237124356ad3302896775c875c92d2365ddefcba72e8bd1c1cade26010a5c41b20797686df621cab32c8739dcf26eb8d
   languageName: node
   linkType: hard
 

@@ -98,11 +98,6 @@ module.exports = {
           "./packages/types/tsconfig.json",
           "./packages/utils/tsconfig.json",
 
-          "./packages/fulfillment-manual/tsconfig.spec.json",
-
-          "./packages/medusa-plugin-meilisearch/tsconfig.spec.json",
-          "./packages/medusa-plugin-algolia/tsconfig.spec.json",
-
           "./packages/modules/product/tsconfig.json",
           "./packages/modules/event-bus-local/tsconfig.spec.json",
           "./packages/modules/event-bus-redis/tsconfig.spec.json",
