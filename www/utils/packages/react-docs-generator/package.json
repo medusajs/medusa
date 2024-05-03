@@ -2,7 +2,8 @@
   "name": "react-docs-generator",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "dev": "ts-node src/index.ts",
+    "start": "node dist/index.js",
     "generate:ui": "yarn start --src ../../../../packages/design-system/ui/src --output ../../../apps/ui/src/specs --clean",
     "build": "tsc",
     "watch": "tsc --watch",
