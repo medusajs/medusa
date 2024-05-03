@@ -188,8 +188,7 @@ const useActivityItems = (order: Order) => {
       children: (
         <Text size="small" className="text-ui-fg-subtle">
           {t("orders.activity.events.placed.fromSalesChannel", {
-            // TODO: fetch SC
-            salesChannel: order.sales_channel?.name,
+            salesChannel: order.sales_channel.name,
           })}
         </Text>
       ),
