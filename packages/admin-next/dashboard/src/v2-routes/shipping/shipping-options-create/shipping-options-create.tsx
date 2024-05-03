@@ -1,4 +1,4 @@
-import { useLoaderData, useParams } from "react-router-dom"
+import { useLoaderData, useParams, useSearchParams } from "react-router-dom"
 
 import { RouteFocusModal } from "../../../components/route-modal"
 import { CreateShippingOptionsForm } from "./components/create-shipping-options-form"
@@ -6,6 +6,10 @@ import { stockLocationLoader } from "./loader"
 
 export function ShippingOptionsCreate() {
   const { fset_id, zone_id } = useParams()
+  const [searchParams] = useSearchParams()
+
+  const isReturn = searchParams.has("is_return")
+
   const { stock_location: stockLocation } = useLoaderData() as Awaited<
     ReturnType<typeof stockLocationLoader>
   >
@@ -20,7 +24,7 @@ export function ShippingOptionsCreate() {
 
   return (
     <RouteFocusModal>
-      <CreateShippingOptionsForm zone={zone} />
+      <CreateShippingOptionsForm zone={zone} isReturn={isReturn} />
     </RouteFocusModal>
   )
 }

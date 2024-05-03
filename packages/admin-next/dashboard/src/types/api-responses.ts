@@ -6,6 +6,7 @@ import {
   CampaignDTO,
   CurrencyDTO,
   CustomerGroupDTO,
+  FulfillmentProviderDTO,
   InventoryNext,
   InviteDTO,
   PaymentProviderDTO,
@@ -140,9 +141,17 @@ export type StockLocationDeleteRes = DeleteRes
 export type FulfillmentSetDeleteRes = DeleteRes
 export type ServiceZoneDeleteRes = DeleteRes
 
+// Fulfillment providers
+export type FulfillmentProvidersListRes = {
+  fulfillment_providers: FulfillmentProviderDTO
+} & ListRes
+
 // Shipping options
 export type ShippingOptionRes = { shipping_option: ShippingOptionDTO }
 export type ShippingOptionDeleteRes = DeleteRes
+export type ShippingOptionListRes = {
+  shipping_options: ShippingOptionDTO[]
+} & ListRes
 
 // Shipping profile
 export type ShippingProfileRes = { shipping_profile: ShippingProfileDTO }
