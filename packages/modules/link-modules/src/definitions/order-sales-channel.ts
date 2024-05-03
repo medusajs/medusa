@@ -22,14 +22,12 @@ export const OrderSalesChannel: ModuleJoinerConfig = {
   relationships: [
     {
       serviceName: Modules.ORDER,
-      isInternalService: true,
       primaryKey: "id",
       foreignKey: "order_id",
       alias: "order",
     },
     {
-      serviceName: "salesChannelService",
-      isInternalService: true,
+      serviceName: Modules.SALES_CHANNEL,
       primaryKey: "id",
       foreignKey: "sales_channel_id",
       alias: "sales_channel",
@@ -43,20 +41,18 @@ export const OrderSalesChannel: ModuleJoinerConfig = {
       },
       relationship: {
         serviceName: LINKS.OrderSalesChannel,
-        isInternalService: true,
         primaryKey: "order_id",
         foreignKey: "id",
         alias: "sales_channel_link",
       },
     },
     {
-      serviceName: "salesChannelService",
+      serviceName: Modules.SALES_CHANNEL,
       fieldAlias: {
         orders: "order_link.order",
       },
       relationship: {
         serviceName: LINKS.OrderSalesChannel,
-        isInternalService: true,
         primaryKey: "sales_channel_id",
         foreignKey: "id",
         alias: "order_link",

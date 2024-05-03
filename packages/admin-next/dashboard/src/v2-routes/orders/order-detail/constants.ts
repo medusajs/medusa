@@ -19,9 +19,10 @@ const DEFAULT_RELATIONS = [
   "*customer",
   "*items", // -> we get LineItem here with added `quantity` and `detail` which is actually an OrderItem (which is a parent object to LineItem in the DB)
   // "*items.*variant", // -> TODO should we link this?
-  // "*sales_channel", // TODO link
   "*shipping_address",
   "*billing_address",
+  "*sales_channel",
+  "*promotion",
 ]
 
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(

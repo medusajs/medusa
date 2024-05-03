@@ -9,10 +9,7 @@ const DEFAULT_PROPERTIES = [
   "currency_code",
 ]
 
-const DEFAULT_RELATIONS = [
-  "*customer",
-  // "*sales_channel", // TODO check link
-]
+const DEFAULT_RELATIONS = ["*customer", "*sales_channel"]
 
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(
   ","
