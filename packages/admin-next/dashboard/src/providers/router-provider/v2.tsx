@@ -160,6 +160,10 @@ export const v2Routes: RouteObject[] = [
                 path: "",
                 lazy: () => import("../../v2-routes/orders/order-list"),
               },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/orders/order-detail"),
+              },
             ],
           },
           {
