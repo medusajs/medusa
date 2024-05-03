@@ -5,13 +5,15 @@
     "packages": [
       "packages/medusa",
       "packages/modules/*",
+      "packages/core/*",
+      "packages/cli/*",
+      "packages/testing/*",
       "packages/medusa-js",
       "packages/medusa-react",
       "packages/*",
       "packages/admin-next/*",
       "packages/design-system/*",
       "packages/generated/*",
-      "packages/oas/*",
       "integration-tests/**/*"
     ]
   },

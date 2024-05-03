@@ -1,10 +1,10 @@
 import { RouteFocusModal } from "../../../components/route-modal"
-import { CreateProductPage } from "./components/create-product"
+import { ProductCreateForm } from "./components/product-create-form/product-create-form"
 
 export const ProductCreate = () => {
   return (
     <RouteFocusModal>
-      <CreateProductPage />
+      <ProductCreateForm />
     </RouteFocusModal>
   )
 }
