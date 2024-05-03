@@ -1,0 +1,47 @@
+import { TypeList } from "docs-ui"
+
+# IFileProvider
+
+## Overview
+
+File provider interface for the file module.
+
+## Methods
+
+### upload
+
+This method is used to upload a file
+
+#### Parameters
+
+<TypeList types={[{"name":"file","type":"[ProviderUploadFileDTO](../types.FileTypes.ProviderUploadFileDTO/page.mdx)","description":"The contents and metadata of the file.\nAmong the file’s details, you can access the file’s path in the `path` property of the file object.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"filename","type":"`string`","description":"The filename of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"mimeType","type":"`string`","description":"The mimetype of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"content","type":"`Blob`","description":"The file content","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="upload"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ProviderFileResultDTO](../types.FileTypes.ProviderFileResultDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The details of the upload's result.","expandable":false,"children":[{"name":"ProviderFileResultDTO","type":"[ProviderFileResultDTO](../types.FileTypes.ProviderFileResultDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="upload"/>
+
+### delete
+
+This method is used to delete a file from storage.
+
+#### Parameters
+
+<TypeList types={[{"name":"fileData","type":"[ProviderDeleteFileDTO](../types.FileTypes.ProviderDeleteFileDTO/page.mdx)","description":"The details of the file to remove.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key. When uploading a file, the\nreturned key is used here.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="delete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the file is deleted successfully.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+
+### getPresignedDownloadUrl
+
+This method is used to retrieve a download URL of the file. For some file services, such as S3, a presigned URL indicates a temporary URL to get access to a file.
+
+If your file service doesn’t perform or offer a similar functionality, you can just return the URL to download the file.
+
+#### Parameters
+
+<TypeList types={[{"name":"fileData","type":"[ProviderGetFileDTO](../types.FileTypes.ProviderGetFileDTO/page.mdx)","description":"The details of the file.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file is private.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"The presigned URL to download the file","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>

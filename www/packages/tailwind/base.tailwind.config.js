@@ -723,6 +723,16 @@ module.exports = {
           ".animate-bg-surface": {
             "--animation-color": "var(--docs-bg-subtle-pressed)",
           },
+          ".code-block-highlight-dark": {
+            "*::selection": {
+              "background-color": "var(--docs-code-text-highlight)",
+            },
+          },
+          ".code-block-highlight-light": {
+            "*::selection": {
+              "background-color": "var(--docs-bg-highlight)",
+            },
+          },
         })
         addComponents({
           ".btn-secondary-icon": {

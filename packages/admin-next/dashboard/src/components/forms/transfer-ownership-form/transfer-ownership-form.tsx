@@ -16,9 +16,9 @@ import {
   getOrderPaymentStatus,
 } from "../../../lib/order-helpers"
 import { TransferOwnershipSchema } from "../../../lib/schemas"
-import { Combobox } from "../../common/combobox"
 import { Form } from "../../common/form"
 import { Skeleton } from "../../common/skeleton"
+import { Combobox } from "../../inputs/combobox"
 
 type TransferOwnerShipFieldValues = z.infer<typeof TransferOwnershipSchema>
 

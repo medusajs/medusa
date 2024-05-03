@@ -1,0 +1,148 @@
+export const metadata = {
+  title: `${pageNumber} Logging`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn how to use Medusa’s logging utility.
+
+## Logger Class
+
+Medusa provides a `Logger` class that provides advanced logging functionalities. This includes configuring logging levels or saving logs to a file.
+
+The Medusa application registers the `Logger` class in the Medusa container and each module's container as `logger`. 
+
+---
+
+## How to Log a Message
+
+Resolve the `logger` using the Medusa container to log a message in your resource.
+
+For example, create the file `src/loaders/log-message.ts` with the following content:
+
+export const highlights = [
+  ["4", "resolve", "Resolve the `Logger` class."],
+  ["6", "info", "Log a message of level `info`."]
+]
+
+```ts title="src/loaders/log-message.ts" highlights={highlights}
+import { Logger, MedusaContainer } from "@medusajs/medusa"
+
+export default async (container: MedusaContainer) => {
+  const logger: Logger = container.resolve("logger")
+
+  logger.info("I'm using the logger!")
+}
+```
+
+This creates a loader that resolves the `logger` from the Medusa container and uses it to log a message.
+
+### Test the Loader
+
+To test out the above loader, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+You’ll see the following message as part of the logged messages:
+
+```text
+info:    I'm using the logger!
+```
+
+---
+
+## Log Levels
+
+The `Logger` class has the following methods:
+
+- `info`: The message is logged with level `info`.
+- `warn`: The message is logged with level `warn`.
+- `error`: The message is logged with level `error`.
+- `debug`: The message is logged with level `debug`.
+
+Each of these methods accepts a string parameter to log in the terminal with the associated level.
+
+---
+
+## Logging Configurations
+
+### Log Level
+
+The available log levels, from lowest to highest levels, are:
+
+1. `silly` (default, meaning messages of all levels are logged)
+2. `debug`
+3. `info`
+4. `warn`
+5. `error`
+
+You can change that by setting the `LOG_LEVEL` environment variable to the minimum level you want to be logged.
+
+For example:
+
+```bash
+LOG_LEVEL=error
+```
+
+This logs `error` messages only.
+
+<Note title="Important">
+
+The environment variable must be set as a system environment variable and not in `.env`.
+
+</Note>
+
+### Save Logs in a File
+
+Aside from showing the logs in the terminal, you can save the logs in a file by setting the `LOG_FILE` environment variable to the path of the file relative to the Medusa server’s root directory.
+
+For example:
+
+```bash
+LOG_FILE=all.log
+```
+
+Your logs are now saved in the `all.log` file at the root of your Medusa application.
+
+<Note title="Important">
+
+The environment variable must be set as a system environment variable and not in `.env`.
+
+</Note>
+
+---
+
+## Show Log with Progress
+
+The `Logger` class has an `activity` method used to log a message of level `info`. If the Medusa application is running in a development environment, a spinner starts that can be used to show progress and succeed or fail the progress.
+
+For example:
+
+```ts title="src/loaders/log-message.ts"
+import { Logger, MedusaContainer } from "@medusajs/medusa"
+
+export default async (container: MedusaContainer) => {
+  const logger = container.resolve<Logger>("logger")
+
+  const activityId = logger.activity("First log message")
+
+  logger.progress(activityId, `Second log message`)
+
+  logger.success(activityId, "Last log message")
+}
+
+```
+
+The `activity` method returns the ID of the started activity. This ID can then be passed to one of the following methods of the `Logger` class:
+
+- `progress`: Log a message of level `info` that indicates progress within that same activity.
+- `success`: Log a message of level `info` that indicates that the activity has succeeded. This also ends the associated activity.
+- `failure`: Log a message of level `error` that indicates that the activity has failed. This also ends the associated activity.
+
+<Note>
+
+If you configured the `LOG_LEVEL` environment variable to a level higher than those associated with the above methods, their messages won’t be logged.
+
+</Note>

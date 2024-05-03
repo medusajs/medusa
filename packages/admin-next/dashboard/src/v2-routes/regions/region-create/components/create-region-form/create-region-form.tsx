@@ -19,8 +19,8 @@ import * as zod from "zod"
 
 import { PaymentProviderDTO, RegionCountryDTO } from "@medusajs/types"
 
-import { Combobox } from "../../../../../components/common/combobox"
 import { Form } from "../../../../../components/common/form"
+import { Combobox } from "../../../../../components/inputs/combobox"
 import { SplitView } from "../../../../../components/layout/split-view"
 import {
   RouteFocusModal,

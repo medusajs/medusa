@@ -1,0 +1,74 @@
+---
+sidebar_position: 4
+sidebar_label: Manage Shipping Options
+---
+
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Shipping Options in a Region`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to manage a region’s shipping options in your Medusa Admin.
+
+## What is a Shipping Option?
+
+A shipping option has two types:
+
+- **Outbound**: these options are used in customers' orders. During checkout, a customer chooses one of these shipping options to receive their order. These shipping options are used when you create draft orders as well.
+- **Return**: these options are used when the customer returns an item, whether the return is requested by the customer or the admin user.
+
+---
+
+## Create a Shipping Option
+
+To create a shipping option in a region:
+
+1. Go to Settings → Regions.
+2. Under the Shipping Options section, click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right of the section.
+3. Choose Create from the dropdown.
+4. In the form that opens:
+    1. Under the Type section, choose the shipping option's type.
+    2. To only show and use the shipping option in the admin dashboard, enable the "Admin only" field.
+    3. To specify that the shipping option's price is tax-inclusive, enable the "Tax inclusive pricing" field.
+    4. Specify the shipping option's name in the Name field. This name is shown to customers if "Admin only" is disabled.
+    5. For the Price Type field, specify the shipping option's price type:
+        - **Flat rate**: The shipping option has a fixed price. In this case, you must enter the shipping option's price in the Price field.
+        - **Calculated**: The shipping option's price is calculated, meaning that the amount is shown while placing the order or creating the return.
+    6. For the Shipping Profile field, specify the profile of the items that this shipping option can be used with:
+        - For gift cards, choose Gift Card Profile.
+        - For all other products, choose Default Shipping Profile.
+    7. For the Fulfillment Provider field, choose the region's fulfillment provider used to handle the fulfillment and shipping when this shipping option is used. If you can't find a fulfillment provider, make sure to [add it to the region first](../providers/page.mdx).
+    8. Under the Requirements section, you can specify a minimum and maximum cart subtotal amount. When specified, the shipping option can only be used when this condition is met.
+5. Once you're done, click the Save button.
+
+---
+
+## Edit a Shipping Option
+
+To edit a shipping option in a region:
+
+1. Go to Settings → Regions.
+2. Under the Shipping Options section, find the shipping option to edit and click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> at its right.
+3. Choose Edit from the dropdown.
+4. In the drawer, edit any of the shipping option's details.
+5. Once you're done, click the Save button.
+
+---
+
+## Delete a Shipping Option
+
+<Note type="warning">
+
+Deleting a shipping option is irreversible.
+
+</Note>
+
+To delete a shipping option in a region:
+
+1. Go to Settings → Regions.
+2. Under the Shipping Options section, find the shipping option to delete and click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> at its right.
+3. Choose Delete from the dropdown.
+4. Confirm deleting the shipping option by clicking the Delete button in the pop-up.

@@ -29,6 +29,51 @@ export const tempReorderRank = 99999
 
 // eslint-disable-next-line max-len
 export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeRepository<ProductCategory> {
+  buildFindOptions(
+    findOptions: DAL.FindOptions<ProductCategory> = { where: {} },
+    familyOptions: ProductCategoryTransformOptions = {}
+  ) {
+    const findOptions_ = { ...findOptions }
+    findOptions_.options ??= {}
+
+    const fields = (findOptions_.options.fields ??= [])
+    const populate = (findOptions_.options.populate ??= [])
+
+    // Ref: Building descendants
+    // mpath and parent_category_id needs to be added to the query for the tree building to be done accurately
+    if (
+      familyOptions.includeDescendantsTree ||
+      familyOptions.includeAncestorsTree
+    ) {
+      fields.indexOf("mpath") === -1 && fields.push("mpath")
+      fields.indexOf("parent_category_id") === -1 &&
+        fields.push("parent_category_id")
+    }
+
+    const shouldExpandParent =
+      familyOptions.includeAncestorsTree || fields.includes("parent_category")
+
+    if (shouldExpandParent) {
+      populate.indexOf("parent_category") === -1 &&
+        populate.push("parent_category")
+    }
+
+    const shouldExpandChildren =
+      familyOptions.includeDescendantsTree ||
+      fields.includes("category_children")
+
+    if (shouldExpandChildren) {
+      populate.indexOf("category_children") === -1 &&
+        populate.push("category_children")
+    }
+
+    Object.assign(findOptions_.options, {
+      strategy: LoadStrategy.SELECT_IN,
+    })
+
+    return findOptions_
+  }
+
   async find(
     findOptions: DAL.FindOptions<ProductCategory> = { where: {} },
     transformOptions: ProductCategoryTransformOptions = {},
@@ -36,22 +81,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
   ): Promise<ProductCategory[]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
 
-    const findOptions_ = { ...findOptions }
-    const { includeDescendantsTree, includeAncestorsTree } = transformOptions
-    findOptions_.options ??= {}
-    const fields = (findOptions_.options.fields ??= [])
-
-    // Ref: Building descendants
-    // mpath and parent_category_id needs to be added to the query for the tree building to be done accurately
-    if (includeDescendantsTree || includeAncestorsTree) {
-      fields.indexOf("mpath") === -1 && fields.push("mpath")
-      fields.indexOf("parent_category_id") === -1 &&
-        fields.push("parent_category_id")
-    }
-
-    Object.assign(findOptions_.options, {
-      strategy: LoadStrategy.SELECT_IN,
-    })
+    const findOptions_ = this.buildFindOptions(findOptions, transformOptions)
 
     const productCategories = await manager.find(
       ProductCategory,
@@ -59,14 +89,17 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       findOptions_.options as MikroOptions<ProductCategory>
     )
 
-    if (!includeDescendantsTree && !includeAncestorsTree) {
+    if (
+      !transformOptions.includeDescendantsTree &&
+      !transformOptions.includeAncestorsTree
+    ) {
       return productCategories
     }
 
-    return this.buildProductCategoriesWithTree(
+    return await this.buildProductCategoriesWithTree(
       {
-        descendants: includeDescendantsTree,
-        ancestors: includeAncestorsTree,
+        descendants: transformOptions.includeDescendantsTree,
+        ancestors: transformOptions.includeAncestorsTree,
       },
       productCategories,
       findOptions_
@@ -83,12 +116,6 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     context: Context = {}
   ): Promise<ProductCategory[]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
-
-    const hasPopulateParentCategory = (
-      findOptions.options?.populate ?? ([] as any)
-    ).find((pop) => pop.field === "parent_category")
-
-    include.ancestors = include.ancestors || hasPopulateParentCategory
 
     const mpaths: any[] = []
     const parentMpaths = new Set()
@@ -179,42 +206,27 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     context: Context = {}
   ): Promise<[ProductCategory[], number]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
-
-    const findOptions_ = { ...findOptions }
-    const { includeDescendantsTree, includeAncestorsTree } = transformOptions
-    findOptions_.options ??= {}
-    const fields = (findOptions_.options.fields ??= [])
-
-    // Ref: Building descendants
-    // mpath and parent_category_id needs to be added to the query for the tree building to be done accurately
-    if (includeDescendantsTree) {
-      fields.indexOf("mpath") === -1 && fields.push("mpath")
-      fields.indexOf("parent_category_id") === -1 &&
-        fields.push("parent_category_id")
-    }
-
-    Object.assign(findOptions_.options, {
-      strategy: LoadStrategy.SELECT_IN,
-    })
+    
+    const findOptions_ = this.buildFindOptions(findOptions, transformOptions)
 
     const [productCategories, count] = await manager.findAndCount(
       ProductCategory,
       findOptions_.where as MikroFilterQuery<ProductCategory>,
       findOptions_.options as MikroOptions<ProductCategory>
     )
-    if (!includeDescendantsTree) {
-      return [productCategories, count]
-    }
 
-    if (!includeDescendantsTree && !includeAncestorsTree) {
+    if (
+      !transformOptions.includeDescendantsTree &&
+      !transformOptions.includeAncestorsTree
+    ) {
       return [productCategories, count]
     }
 
     return [
       await this.buildProductCategoriesWithTree(
         {
-          descendants: includeDescendantsTree,
-          ancestors: includeAncestorsTree,
+          descendants: transformOptions.includeDescendantsTree,
+          ancestors: transformOptions.includeAncestorsTree,
         },
         productCategories,
         findOptions_

@@ -1,0 +1,93 @@
+---
+sidebar_position: 3
+sidebar_label: Manage Fulfillments
+---
+
+import { 
+  EllipsisHorizontal, 
+} from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Order's Fulfillments`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn about order fulfillments and how to manage them, including how to create fulfillments and mark them as shipped.
+
+## Create Fulfillment
+
+{/* TODO check after #4 */}
+
+To create a fulfillment for an order:
+
+1. Open the order details page.
+2. Scroll down to the Unfulfilled Items section.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon.
+4. Choose "Create Fulfillment" from the dropdown.
+5. In the form that opens:
+    - Choose the location you want to fulfill the items from.
+    - Under Items to fulfill, enter the quantity of the items you want to fulfill.
+    - Optionally enter any additional information you want to associate with the fulfillment under the Metadata section.
+    - If you don’t want the customer to receive a notification that a fulfillment has been created, uncheck the “Send notifications” checkbox.
+6. Once done, click on the "Create fulfillment" button.
+
+Check the fulfillment details in the Fulfillment and Timeline sections.
+
+---
+
+## Mark a Fulfillment Shipped
+
+<Note type="warning">
+
+Marking a fulfillment shipped is irreversible.
+
+</Note>
+
+<Note type="check">
+
+You must [create a fulfillment](#create-fulfillment) first.
+
+</Note>
+
+{/* TODO check after #4 */}
+
+To mark a fulfillment as shipped in an order:
+
+1. Open the order details page.
+2. Scroll down to the Fulfillment section. If you have more than one fulfillment, find the fulfillment you're looking for.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right of the section.
+4. Click on Mark Shipped in the dropdown.
+5. In the new window that opens:
+    - Enter a tracking number for the shipment.
+    - If you have more than one tracking number, click on the “Add Additional Tracking Number” to add more numbers.
+    - If you don’t want the customer to receive a notification that the fulfillment has been shipped, uncheck the “Send notifications” checkbox.
+6. Once you’re done, click the Complete button.
+
+Shipment details are shown in the Timeline section.
+
+---
+
+## Cancel a Fulfillment
+
+<Note type="warning">
+
+Canceling a fulfillment is irreversible.
+
+</Note>
+
+<Note type="check">
+
+Only a fulfillment that hasn’t been marked as shipped can be canceled.
+
+</Note>
+
+{/* TODO check after #4 */}
+
+To cancel a fulfillment in an order:
+
+1. Open the order details page.
+2. Scroll down to the Fulfillment section. If you have more than one fulfillment, find the fulfillment you're looking for.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right of the section.
+4. Click on Cancel Fulfillment in the dropdown.
+5. Confirm canceling the fulfillment by clicking the “Yes, confirm” button in the pop-up.

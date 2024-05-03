@@ -1,0 +1,510 @@
+---
+slug: /references/medusa-react/hooks/admin/sales_channels
+---
+
+import { TypeList } from "docs-ui"
+
+# Sales Channels
+
+Queries and Mutations listed here are used to send requests to the [Admin Sales Channel API Routes](https://docs.medusajs.com/api/admin#sales-channels).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+A sales channel indicates a channel where products can be sold in. For example, a webshop or a mobile app.
+Admins can manage sales channels and the products available in them.
+
+Related Guide: [How to manage sales channels](https://docs.medusajs.com/modules/sales-channels/admin/manage).
+
+## Mutations
+
+### useAdminCreateSalesChannel
+
+This hook creates a sales channel.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateSalesChannel } from "medusa-react"
+
+const CreateSalesChannel = () => {
+  const createSalesChannel = useAdminCreateSalesChannel()
+  // ...
+
+  const handleCreate = (name: string, description: string) => {
+    createSalesChannel.mutate({
+      name,
+      description,
+    }, {
+      onSuccess: ({ sales_channel }) => {
+        console.log(sales_channel.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default CreateSalesChannel
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostSalesChannelsReq","type":"[AdminPostSalesChannelsReq](../../../../medusa/classes/medusa.AdminPostSalesChannelsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the sales channel to create.","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the Sales Channel","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The description of the Sales Channel","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_disabled","type":"`boolean`","description":"Whether the Sales Channel is disabled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateSalesChannel"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminSalesChannelsRes","type":"[AdminSalesChannelsRes](../../../../medusa/types/medusa.AdminSalesChannelsRes/page.mdx)","optional":false,"defaultValue":"","description":"The sales channel's details.","expandable":false,"children":[{"name":"sales_channel","type":"[SalesChannel](../../../../sales_channel_models/classes/sales_channel_models.SalesChannel/page.mdx)","description":"Sales Channel's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"is_disabled","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`SalesChannelOptionalProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateSalesChannel"/>
+
+### useAdminUpdateSalesChannel
+
+This hook updates a sales channel's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUpdateSalesChannel } from "medusa-react"
+
+type Props = {
+  salesChannelId: string
+}
+
+const SalesChannel = ({ salesChannelId }: Props) => {
+  const updateSalesChannel = useAdminUpdateSalesChannel(
+    salesChannelId
+  )
+  // ...
+
+  const handleUpdate = (
+    is_disabled: boolean
+  ) => {
+    updateSalesChannel.mutate({
+      is_disabled,
+    }, {
+      onSuccess: ({ sales_channel }) => {
+        console.log(sales_channel.is_disabled)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default SalesChannel
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The sales channel's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateSalesChannel"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostSalesChannelsSalesChannelReq","type":"[AdminPostSalesChannelsSalesChannelReq](../../../../medusa/classes/medusa.AdminPostSalesChannelsSalesChannelReq/page.mdx)","optional":false,"defaultValue":"","description":"The details to update of the sales channel.","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the sales channel","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The description of the sales channel.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_disabled","type":"`boolean`","description":"Whether the Sales Channel is disabled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateSalesChannel"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminSalesChannelsRes","type":"[AdminSalesChannelsRes](../../../../medusa/types/medusa.AdminSalesChannelsRes/page.mdx)","optional":false,"defaultValue":"","description":"The sales channel's details.","expandable":false,"children":[{"name":"sales_channel","type":"[SalesChannel](../../../../sales_channel_models/classes/sales_channel_models.SalesChannel/page.mdx)","description":"Sales Channel's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"is_disabled","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`SalesChannelOptionalProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateSalesChannel"/>
+
+### useAdminDeleteSalesChannel
+
+This hook deletes a sales channel. Associated products, stock locations, and other resources are not deleted.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteSalesChannel } from "medusa-react"
+
+type Props = {
+  salesChannelId: string
+}
+
+const SalesChannel = ({ salesChannelId }: Props) => {
+  const deleteSalesChannel = useAdminDeleteSalesChannel(
+    salesChannelId
+  )
+  // ...
+
+  const handleDelete = () => {
+    deleteSalesChannel.mutate(void 0, {
+      onSuccess: ({ id, object, deleted }) => {
+        console.log(id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default SalesChannel
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The sales channel's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteSalesChannel"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../../medusa/interfaces/medusa.DeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteSalesChannel"/>
+
+### useAdminDeleteProductsFromSalesChannel
+
+This hook removes a list of products from a sales channel. This doesn't delete the product. It only removes the 
+association between the product and the sales channel.
+
+#### Example
+
+```ts
+import React from "react"
+import { 
+  useAdminDeleteProductsFromSalesChannel, 
+} from "medusa-react"
+
+type Props = {
+  salesChannelId: string
+}
+
+const SalesChannel = ({ salesChannelId }: Props) => {
+  const deleteProducts = useAdminDeleteProductsFromSalesChannel(
+    salesChannelId
+  )
+  // ...
+
+  const handleDeleteProducts = (productId: string) => {
+    deleteProducts.mutate({
+      product_ids: [
+        {
+          id: productId,
+        },
+      ],
+    }, {
+      onSuccess: ({ sales_channel }) => {
+        console.log(sales_channel.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default SalesChannel
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The sales channel's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteProductsFromSalesChannel"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminDeleteSalesChannelsChannelProductsBatchReq","type":"[AdminDeleteSalesChannelsChannelProductsBatchReq](../../../../medusa/classes/medusa.AdminDeleteSalesChannelsChannelProductsBatchReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the products to delete from the sales channel.","expandable":false,"children":[{"name":"product_ids","type":"[ProductBatchSalesChannel](../../../../medusa/classes/medusa.ProductBatchSalesChannel/page.mdx)[]","description":"The IDs of the products to remove from the sales channel.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the sales channel","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteProductsFromSalesChannel"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminSalesChannelsRes","type":"[AdminSalesChannelsRes](../../../../medusa/types/medusa.AdminSalesChannelsRes/page.mdx)","optional":false,"defaultValue":"","description":"The sales channel's details.","expandable":false,"children":[{"name":"sales_channel","type":"[SalesChannel](../../../../sales_channel_models/classes/sales_channel_models.SalesChannel/page.mdx)","description":"Sales Channel's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"is_disabled","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`SalesChannelOptionalProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteProductsFromSalesChannel"/>
+
+### useAdminAddProductsToSalesChannel
+
+This hook adds a list of products to a sales channel.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminAddProductsToSalesChannel } from "medusa-react"
+
+type Props = {
+  salesChannelId: string
+}
+
+const SalesChannel = ({ salesChannelId }: Props) => {
+  const addProducts = useAdminAddProductsToSalesChannel(
+    salesChannelId
+  )
+  // ...
+
+  const handleAddProducts = (productId: string) => {
+    addProducts.mutate({
+      product_ids: [
+        {
+          id: productId,
+        },
+      ],
+    }, {
+      onSuccess: ({ sales_channel }) => {
+        console.log(sales_channel.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default SalesChannel
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The sales channel's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminAddProductsToSalesChannel"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostSalesChannelsChannelProductsBatchReq","type":"[AdminPostSalesChannelsChannelProductsBatchReq](../../../../medusa/classes/medusa.AdminPostSalesChannelsChannelProductsBatchReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the products to add to the sales channel.","expandable":false,"children":[{"name":"product_ids","type":"[ProductBatchSalesChannel](../../../../medusa/classes/medusa.ProductBatchSalesChannel/page.mdx)[]","description":"The IDs of the products to add to the sales channel","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the sales channel","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminAddProductsToSalesChannel"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminSalesChannelsRes","type":"[AdminSalesChannelsRes](../../../../medusa/types/medusa.AdminSalesChannelsRes/page.mdx)","optional":false,"defaultValue":"","description":"The sales channel's details.","expandable":false,"children":[{"name":"sales_channel","type":"[SalesChannel](../../../../sales_channel_models/classes/sales_channel_models.SalesChannel/page.mdx)","description":"Sales Channel's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"is_disabled","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`SalesChannelOptionalProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminAddProductsToSalesChannel"/>
+
+### useAdminAddLocationToSalesChannel
+
+This hook associates a stock location with a sales channel. It requires the 
+[@medusajs/stock-location](https://docs.medusajs.com/modules/multiwarehouse/install-modules#stock-location-module) module to be installed in
+your Medusa backend.
+
+#### Example
+
+```ts
+import React from "react"
+import { 
+  useAdminAddLocationToSalesChannel
+} from "medusa-react"
+
+type Props = {
+  salesChannelId: string
+}
+
+const SalesChannel = ({ salesChannelId }: Props) => {
+  const addLocation = useAdminAddLocationToSalesChannel()
+  // ...
+
+  const handleAddLocation = (locationId: string) => {
+    addLocation.mutate({
+      sales_channel_id: salesChannelId,
+      location_id: locationId
+    }, {
+      onSuccess: ({ sales_channel }) => {
+        console.log(sales_channel.locations)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default SalesChannel
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"sales_channel_id","type":"`string`","description":"The sales channel's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The location's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminAddLocationToSalesChannel"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminSalesChannelsRes","type":"[AdminSalesChannelsRes](../../../../medusa/types/medusa.AdminSalesChannelsRes/page.mdx)","optional":false,"defaultValue":"","description":"The sales channel's details.","expandable":false,"children":[{"name":"sales_channel","type":"[SalesChannel](../../../../sales_channel_models/classes/sales_channel_models.SalesChannel/page.mdx)","description":"Sales Channel's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"is_disabled","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`SalesChannelOptionalProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminAddLocationToSalesChannel"/>
+
+### useAdminRemoveLocationFromSalesChannel
+
+This hook removes a stock location from a sales channel. This only removes the association between the stock 
+location and the sales channel. It does not delete the stock location. This hook requires the 
+[@medusajs/stock-location](https://docs.medusajs.com/modules/multiwarehouse/install-modules#stock-location-module) module to be installed in
+your Medusa backend.
+
+#### Example
+
+```ts
+import React from "react"
+import { 
+  useAdminRemoveLocationFromSalesChannel
+} from "medusa-react"
+
+type Props = {
+  salesChannelId: string
+}
+
+const SalesChannel = ({ salesChannelId }: Props) => {
+  const removeLocation = useAdminRemoveLocationFromSalesChannel()
+  // ...
+
+  const handleRemoveLocation = (locationId: string) => {
+    removeLocation.mutate({
+      sales_channel_id: salesChannelId,
+      location_id: locationId
+    }, {
+      onSuccess: ({ sales_channel }) => {
+        console.log(sales_channel.locations)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default SalesChannel
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"sales_channel_id","type":"`string`","description":"The sales channel's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The location's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminRemoveLocationFromSalesChannel"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminSalesChannelsRes","type":"[AdminSalesChannelsRes](../../../../medusa/types/medusa.AdminSalesChannelsRes/page.mdx)","optional":false,"defaultValue":"","description":"The sales channel's details.","expandable":false,"children":[{"name":"sales_channel","type":"[SalesChannel](../../../../sales_channel_models/classes/sales_channel_models.SalesChannel/page.mdx)","description":"Sales Channel's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"is_disabled","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`SalesChannelOptionalProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminRemoveLocationFromSalesChannel"/>
+
+___
+
+## Queries
+
+### useAdminSalesChannel
+
+This hook retrieves a sales channel's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminSalesChannel } from "medusa-react"
+
+type Props = {
+  salesChannelId: string
+}
+
+const SalesChannel = ({ salesChannelId }: Props) => {
+  const { 
+    sales_channel, 
+    isLoading, 
+  } = useAdminSalesChannel(salesChannelId)
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {sales_channel && <span>{sales_channel.name}</span>}
+    </div>
+  )
+}
+
+export default SalesChannel
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The sales channel's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminSalesChannel"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"sales_channel","type":"[SalesChannel](../../../../sales_channel_models/classes/sales_channel_models.SalesChannel/page.mdx)","description":"Sales Channel's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"is_disabled","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`SalesChannelOptionalProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminSalesChannel"/>
+
+### useAdminSalesChannels
+
+This hook retrieves a list of sales channels. The sales channels can be filtered by fields such as `q` or `name` 
+passed in the `query` parameter. The sales channels can also be sorted or paginated.
+
+#### Example
+
+To list sales channels:
+
+```tsx
+import React from "react"
+import { useAdminSalesChannels } from "medusa-react"
+
+const SalesChannels = () => {
+  const { sales_channels, isLoading } = useAdminSalesChannels()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {sales_channels && !sales_channels.length && (
+        <span>No Sales Channels</span>
+      )}
+      {sales_channels && sales_channels.length > 0 && (
+        <ul>
+          {sales_channels.map((salesChannel) => (
+            <li key={salesChannel.id}>{salesChannel.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default SalesChannels
+```
+
+To specify relations that should be retrieved within the sales channels:
+
+```tsx
+import React from "react"
+import { useAdminSalesChannels } from "medusa-react"
+
+const SalesChannels = () => {
+  const { 
+    sales_channels, 
+    isLoading
+  } = useAdminSalesChannels({
+    expand: "locations"
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {sales_channels && !sales_channels.length && (
+        <span>No Sales Channels</span>
+      )}
+      {sales_channels && sales_channels.length > 0 && (
+        <ul>
+          {sales_channels.map((salesChannel) => (
+            <li key={salesChannel.id}>{salesChannel.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default SalesChannels
+```
+
+By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```tsx
+import React from "react"
+import { useAdminSalesChannels } from "medusa-react"
+
+const SalesChannels = () => {
+  const { 
+    sales_channels, 
+    limit,
+    offset,
+    isLoading
+  } = useAdminSalesChannels({
+    expand: "locations",
+    limit: 10,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {sales_channels && !sales_channels.length && (
+        <span>No Sales Channels</span>
+      )}
+      {sales_channels && sales_channels.length > 0 && (
+        <ul>
+          {sales_channels.map((salesChannel) => (
+            <li key={salesChannel.id}>{salesChannel.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default SalesChannels
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminGetSalesChannelsParams](../../../../medusa/classes/medusa.AdminGetSalesChannelsParams/page.mdx)","description":"Filters and pagination configurations applied on the retrieved sales channels.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"ID to filter sales channels by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Search term to search sales channels' names and descriptions.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"Name to filter sales channels by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"Description to filter sales channels by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on sales channels' `created_at` field.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"updated_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on sales channels' `updated_at` field.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"deleted_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on sales channels' `deleted_at` field.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":true,"defaultValue":"0","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":true,"defaultValue":"20","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminSalesChannels"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channels","type":"[SalesChannel](../../../../sales_channel_models/classes/sales_channel_models.SalesChannel/page.mdx)[]","description":"An array of sales channels details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"is_disabled","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`SalesChannelOptionalProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminSalesChannels"/>

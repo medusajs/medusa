@@ -6,17 +6,17 @@ import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
 import { Fragment } from "react"
-import { Combobox } from "../../../../../components/common/combobox"
-import { CountrySelect } from "../../../../../components/common/country-select"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
+import { Combobox } from "../../../../../components/inputs/combobox"
+import { CountrySelect } from "../../../../../components/inputs/country-select"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useUpdateProductVariant } from "../../../../../hooks/api/products"
 import { castNumber } from "../../../../../lib/cast-number"
 import { optionalInt } from "../../../../../lib/validation"
-import { useUpdateProductVariant } from "../../../../../hooks/api/products"
 
 type ProductEditVariantFormProps = {
   product: Product

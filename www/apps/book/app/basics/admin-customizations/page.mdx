@@ -1,0 +1,57 @@
+export const metadata = {
+  title: `${pageNumber} Admin Customizations`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn how to customize the Medusa Admin dashboard.
+
+<Note type="soon">
+
+Admin customizations are coming soon.
+
+</Note>
+
+## Overview
+
+The Medusa Admin is installed in your Medusa application and runs at port `7001` when you start the Medusa application.
+
+You can extend or customize the Medusa Admin to add widgets or new pages that interact with API routes and provide admin users with custom functionalities.
+
+---
+
+## Example: Create a Widget
+
+A widget is a React component that can be injected into an existing page in the admin dashboard.
+
+For example, create the file `src/admin/widgets/product-widget.tsx` with the following content:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+import type { WidgetConfig } from "@medusajs/admin"
+
+const ProductWidget = () => {
+  return (
+    <div>
+      <h2>Product Widget</h2>
+    </div>
+  )
+}
+
+export const config: WidgetConfig = {
+  zone: "product.details.after",
+}
+
+export default ProductWidget
+```
+
+This inserts a widget with the text “Product Widget” at the end of a product’s details page.
+
+### Test the Widget
+
+To test out the widget, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, open a product’s details page. You’ll find your custom widget at the bottom of the page.

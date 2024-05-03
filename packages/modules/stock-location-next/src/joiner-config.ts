@@ -6,6 +6,7 @@ import moduleSchema from "./schema"
 
 export const LinkableKeys = {
   stock_location_id: StockLocation.name,
+  location_id: StockLocation.name,
 }
 
 const entityLinkableKeysMap: MapToConfig = {}
@@ -21,10 +22,7 @@ export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
 export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.STOCK_LOCATION,
   primaryKeys: ["id"],
-  linkableKeys: {
-    stock_location_id: StockLocation.name,
-    location_id: StockLocation.name,
-  },
+  linkableKeys: LinkableKeys,
   schema: moduleSchema,
   alias: [
     {

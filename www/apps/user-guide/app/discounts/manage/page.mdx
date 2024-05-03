@@ -1,0 +1,101 @@
+---
+sidebar_position: 2
+---
+
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Discounts`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to manage discounts including editing and deleting a discount.
+
+## View Discount Details
+
+To view a discount’s details:
+
+1. Go to Discounts.
+2. Click on the discount you want to view its details
+
+This opens the discount’s details page.
+
+---
+
+## Edit a Discount
+
+### Change Discount Status
+
+{/* TODO check for correctness */}
+
+<Note>
+
+Changing a discount’s status to published makes it available for customers to use. Changing a discount’s status to draft makes it unavailable for customers to use.
+
+</Note>
+
+To change a discount’s status:
+
+1. Go to the discount details page.
+2. At the top right of the first section, you’ll see the status of the discount (for example, Active). Click on it.
+3. Choose from the dropdown the opposite status (for example, Inactive)
+
+### Edit General Information
+
+To edit a discount’s general information:
+
+1. Go to the discount details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the top right of the first section.
+3. Choose Edit from the dropdown.
+4. In the drawer that opens, edit any of the discount information.
+5. Once done, click the Save button.
+
+---
+
+## Edit Discount Configurations
+
+To edit a discount’s configuration:
+
+1. Go to the discount details page.
+2. Under the Configurations section, click on the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the top right.
+3. Choose Edit from the dropdown.
+4. In the drawer that opens, edit any of the configurations.
+5. Once done, click the Save button.
+
+---
+
+## Manage Discount Conditions
+
+{/* TODO check for correctness */}
+
+To manage a discount's conditions:
+
+1. Go to the discount details page.
+2. Under the Conditions section, click on the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the top right.
+3. Choose Edit from the dropdown.
+4. In the drawer that opens, you can remove or edit an existing discount, or add a new one. Similar to when you created the discount:
+    - To add a condition, click the "Add condition" button.
+    - A condition is segmented to editable fields:
+        - The first field specifies the criteria of the conditon. For example, "products" to apply the condition on the products.
+        - The second field specifies the limit of the condition. For example, "all" to apply the condition on all products.
+        - The third field can be used to specify additions or exceptions to the condition. For example, "except" to add a condition that applies the discount to all products except.
+        - The fourth field specifies the value of the third field's condition. For example, "Shirt" to add a condition that applies the discount to all products except the product "Shirt".
+5. Once you're done, click the Save button.
+
+---
+
+## Delete a Discount
+
+<Note type="warning">
+
+Deleting a discount is irreversible.
+
+</Note>
+
+To delete a discount:
+
+1. Go to the discount details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the top right of the first section.
+3. Choose Delete from the dropdown.
+4. Confirm deleting the discount by entering its code and clicking the Delete button in the pop-up.

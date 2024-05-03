@@ -9,7 +9,9 @@
   },
   "scripts": {
     "build": "turbo run build",
-    "build:docs": "turbo run build --filter=docs",
+    "build:docs": "turbo run build --filter=docs-v2",
+    "build:resources": "turbo run build --filter=resources",
+    "build:user-guide": "turbo run build --filter=user-guide",
     "start": "turbo run start:monorepo",
     "dev": "turbo run dev:monorepo",
     "lint": "turbo run lint",

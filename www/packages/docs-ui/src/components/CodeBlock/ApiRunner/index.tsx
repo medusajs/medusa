@@ -46,11 +46,15 @@ export const ApiRunner = ({
     [apiTestingOptions]
   )
   const [responseLogs, setResponseLogs] = useState<string[]>([])
+  const [responseCode, setResponseCode] = useState<string | undefined>()
   const pushMessage = (...message: string[]) =>
     setResponseLogs((prev) => [...prev, ...message])
   const { runRequest } = useRequestRunner({
     pushLog: pushMessage,
-    onFinish: () => setIsRunning(false),
+    onFinish: (_message, statusCode) => {
+      setIsRunning(false)
+      setResponseCode(statusCode)
+    },
     replaceLog: (message) => setResponseLogs([message]),
   })
 
@@ -149,6 +153,14 @@ export const ApiRunner = ({
           collapsed={true}
           blockStyle="subtle"
           noReport={true}
+          badgeLabel={responseCode}
+          badgeColor={
+            !responseCode
+              ? undefined
+              : responseCode.startsWith("2")
+              ? "green"
+              : "red"
+          }
         />
       )}
     </>

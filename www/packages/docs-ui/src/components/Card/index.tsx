@@ -1,7 +1,7 @@
 import React from "react"
 import { ArrowUpRightOnBox } from "@medusajs/icons"
 import clsx from "clsx"
-import { LegacyLink } from "@/components"
+import { Link } from "@/components"
 
 export type CardProps = {
   startIcon?: React.ReactNode
@@ -57,8 +57,7 @@ export const Card = ({
             {showLinkIcon && (
               <ArrowUpRightOnBox className="text-medusa-fg-subtle min-w-[20px]" />
             )}
-            {/* TODO replace with Link once we move away from Docusaurus */}
-            <LegacyLink
+            <Link
               href={href}
               className="absolute left-0 top-0 h-full w-full rounded"
             />

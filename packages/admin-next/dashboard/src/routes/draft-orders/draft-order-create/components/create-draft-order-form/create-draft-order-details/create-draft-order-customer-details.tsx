@@ -7,8 +7,8 @@ import { useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { json } from "react-router-dom"
 
-import { Combobox } from "../../../../../../components/common/combobox"
 import { Form } from "../../../../../../components/common/form"
+import { Combobox } from "../../../../../../components/inputs/combobox"
 import { useCreateDraftOrder } from "../hooks"
 
 export const CreateDraftOrderCustomerDetails = () => {

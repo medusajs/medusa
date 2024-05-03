@@ -1,0 +1,87 @@
+export const metadata = {
+  title: `${pageNumber} Loaders`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about loaders and how to use them.
+
+## What is a Loader?
+
+A loader is a function executed when the Medusa application starts.
+
+A loader can be created either within a module or in the `src/loaders` directory.
+
+<Note>
+
+This guide explains the first approach. This second approach will be explained in later chapters.
+
+</Note>
+
+---
+
+## How to Create a Loader?
+
+A loader is created in a TypeScript or JavaScript file under the `loaders` directory of a module. The file must export the loader function.
+
+For example, create the file `src/modules/hello/loaders/hello-world.ts` with the following content:
+
+```ts title="src/modules/hello/loaders/hello-world.ts"
+export default function helloWorldLoader() {
+  console.log(
+    "[HELLO MODULE] Just started the Medusa application!"
+  )
+}
+```
+
+### Export Loader in Module Definition
+
+You must export your loaders in the module definition. Otherwise, your Medusa application won't run them.
+
+To do that, import the loader in `src/modules/hello/index.ts` and export it in the module's definition:
+
+```ts title="src/modules/hello/index.ts"
+// other imports...
+import helloWorldLoader from "./loaders/hello-world"
+
+// ...
+
+export default {
+  // ...
+  loaders: [helloWorldLoader],
+}
+```
+
+The value of the `loaders` property of the module definition is an array of loader functions.
+
+### Test Loader
+
+Start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Among the messages logged in the terminal, you’ll see the following message:
+
+```bash
+[HELLO MODULE] Just started the Medusa application!
+```
+
+---
+
+## When to Use
+
+<Note title="Use loaders when" type="success">
+
+- You're performing an action at application start-up.
+- You're establishing a one-time connection with an external system.
+- You're registering a custom resource in the container.
+
+</Note>
+
+<Note title="Don't use loaders if" type="error">
+
+- You want to perform an action continuously or at a set time pattern in the application. Use scheduled jobs instead, which is explained in the next chapter.
+
+</Note>

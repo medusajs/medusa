@@ -7,10 +7,10 @@ import {
   Note,
   Card,
   CardList,
-  LegacyLink,
   DetailsSummary,
   DetailsProps,
   ZoomImg,
+  Link,
 } from "@/components"
 import clsx from "clsx"
 import { Text } from "@medusajs/ui"
@@ -54,13 +54,12 @@ export const MDXComponents: MDXComponentsType = {
       >
         {children}
         {props.id && (
-          // TODO replace with Link once we move away from Docusaurus
-          <LegacyLink
+          <Link
             href={`#${props.id}`}
             className="opacity-0 group-hover/h2:opacity-100 transition-opacity ml-docs_0.5 inline-block"
           >
             #
-          </LegacyLink>
+          </Link>
         )}
       </h2>
     )
@@ -81,13 +80,12 @@ export const MDXComponents: MDXComponentsType = {
       >
         {children}
         {props.id && (
-          // TODO replace with Link once we move away from Docusaurus
-          <LegacyLink
+          <Link
             href={`#${props.id}`}
             className="opacity-0 group-hover/h3:opacity-100 transition-opacity ml-docs_0.5 inline-block"
           >
             #
-          </LegacyLink>
+          </Link>
         )}
       </h3>
     )

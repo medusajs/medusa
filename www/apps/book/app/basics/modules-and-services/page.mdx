@@ -1,0 +1,138 @@
+export const metadata = {
+  title: `${pageNumber} Modules and Services`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about modules, their main service, and how to create them.
+
+## What is a Module?
+
+A module is a package of reusable functionalities that can be integrated into your Medusa application without affecting the overall system.
+
+All commerce and architectural customizations and development start with creating a module.
+
+---
+
+## How to Create a Module
+
+<Note title="Steps Summary">
+
+1. Create module's main service.
+2. Create module definition.
+3. Add module to Medusa's configurations.
+
+</Note>
+
+Modules are created in a sub-directory of `src/modules`. The directory name is the camel-case name of the module.
+
+For example, create the directory `src/modules/hello`.
+
+### 1. Create a Service
+
+A module must defines a service. A service is a TypeScript or JavaScript class holding methods related to a business logic or commerce functionality.
+
+For example, create the service `src/modules/hello/service.ts` with the following content:
+
+```ts title="src/modules/hello/service.ts"
+export default class HelloModuleService {
+  getMessage() {
+    return "Hello, world!"
+  }
+}
+```
+
+When the module is loaded in the Medusa application, its main service is registered in the Medusa container.
+
+### 2. Export Module Definition
+
+A module must have an `index.ts` file in its root directory that exports its definition. The definition specifies the main service of the module.
+
+For example, create the file `src/modules/hello.index.ts` with the following content:
+
+```ts title="src/modules/hello.index.ts" highlights={[["4", "", "The main service of the module."]]}
+import HelloModuleService from "./service"
+
+export default {
+  service: HelloModuleService,
+}
+```
+
+### 3. Register Module in Configurations
+
+The last step is to register the module in Medusa’s configurations.
+
+In `medusa-config.js`, add the module to the `modules` object:
+
+```js title="medusa-config.js" highlights={[["2", "helloModuleService", "The key of the main service to be registered in the Medusa container."]]}
+const modules = {
+  helloModuleService: {
+    resolve: "./dist/modules/hello",
+  },
+  // other modules...
+}
+```
+
+The key (`helloModuleService`) is the name of the module’s main service to be registered in the Medusa container. Its value is an object having the `resolve` property. `resolve` ’s value is either an `npm` package’s name or a path to the directory holding the module.
+
+<Note title="Tip">
+
+When `resolve` points to a directory, it must point to the transpiled module (the directory the module is in after running the `build` command). Hence, the path in the example above points to the module in the `dist` directory.
+
+</Note>
+
+### 4. Test the Module
+
+Since the module's main service is registered in the Medusa container, you can resolve it in other resources to use its functionalities.
+
+One way to test the module is to create the API route `src/api/store/custom/route.ts` with the following content:
+
+```ts title="src/api/store/custom/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import HelloService from "../../../modules/hello/service"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const helloModuleService: HelloService = req.scope.resolve(
+    "helloModuleService"
+  )
+
+  res.json({
+    message: helloModuleService.getMessage(),
+  })
+}
+```
+
+Then, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Finally, send a `GET` request to `/store/custom`:
+
+```bash apiTesting testApiUrl="http://localhost:9000/store/custom" testApiMethod="GET"
+curl http://locahost:9000/store/custom
+```
+
+You’ll receive the following response:
+
+```json
+{
+  "message": "Hello, world!"
+}
+```
+
+---
+
+## When to Use Modules
+
+Use a module when you're implementing custom business logic or extending existing ones.
+
+Some common use cases of when a module is useful:
+
+- You're implementing a custom commerce feature. For example, you're implementing digital products.
+- You want to extend data models in other commerce modules, such as adding a field or a relation to the `Product` model.
+- You want to re-use your custom commerce functionalities across Medusa applications or use them in other environments, such as Edge functions and Next.js apps.

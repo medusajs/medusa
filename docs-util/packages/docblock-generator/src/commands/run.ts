@@ -24,7 +24,7 @@ export default async function run(
       ...options,
     })
 
-    oasGenerator.run()
+    await oasGenerator.run()
   }
 
   console.log(`Finished running.`)

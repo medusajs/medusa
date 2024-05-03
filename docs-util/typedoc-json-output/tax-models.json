@@ -1,0 +1,1442 @@
+{
+	"id": 12346,
+	"name": "tax-models",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"comment": {
+		"summary": [
+			{
+				"text": "## Relations Overview\n\n",
+				"kind": "text"
+			},
+			{
+				"text": "```mermaid\nerDiagram\n\tTaxRate }|--|{ TaxRegion : tax_region\n\tTaxRate ||--|| TaxRateRule : rules\n\tTaxRegion }|--|{ TaxProvider : provider\n\tTaxRegion }|--|{ TaxRegion : parent\n\n```",
+				"kind": "code"
+			}
+		]
+	},
+	"children": [
+		{
+			"id": 12409,
+			"name": "TaxProvider",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 12410,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12411,
+							"name": "new TaxProvider",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 12409,
+								"name": "default",
+								"package": "@medusajs/tax"
+							}
+						}
+					]
+				},
+				{
+					"id": 12414,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "literal",
+						"value": "is_enabled"
+					}
+				},
+				{
+					"id": 12412,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12413,
+					"name": "is_enabled",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "true"
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						12410
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						12414,
+						12412,
+						12413
+					]
+				}
+			]
+		},
+		{
+			"id": 12391,
+			"name": "TaxRateRule",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 12392,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12393,
+							"name": "new TaxRateRule",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 12391,
+								"name": "default",
+								"package": "@medusajs/tax"
+							}
+						}
+					]
+				},
+				{
+					"id": 12408,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 12394,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12395,
+					"name": "tax_rate_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12396,
+					"name": "reference_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12397,
+					"name": "reference",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12398,
+					"name": "tax_rate",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 12347,
+						"name": "default",
+						"package": "@medusajs/tax"
+					}
+				},
+				{
+					"id": 12399,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12400,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12401,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12402,
+					"name": "created_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12403,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12404,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12405,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 12406,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12407,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						12392
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						12408,
+						12394,
+						12395,
+						12396,
+						12397,
+						12398,
+						12399,
+						12400,
+						12401,
+						12402,
+						12403
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						12404,
+						12406
+					]
+				}
+			]
+		},
+		{
+			"id": 12347,
+			"name": "TaxRate",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 12348,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12349,
+							"name": "new TaxRate",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 12347,
+								"name": "default",
+								"package": "@medusajs/tax"
+							}
+						}
+					]
+				},
+				{
+					"id": 12368,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 12350,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12351,
+					"name": "rate",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12352,
+					"name": "code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12353,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12354,
+					"name": "is_default",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "false"
+				},
+				{
+					"id": 12355,
+					"name": "is_combinable",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "false"
+				},
+				{
+					"id": 12356,
+					"name": "tax_region_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12357,
+					"name": "tax_region",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 12369,
+						"name": "default",
+						"package": "@medusajs/tax"
+					}
+				},
+				{
+					"id": 12358,
+					"name": "rules",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 12391,
+								"name": "default",
+								"package": "@medusajs/tax"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 12359,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12360,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12361,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12362,
+					"name": "created_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12363,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12364,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12365,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 12366,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12367,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						12348
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						12368,
+						12350,
+						12351,
+						12352,
+						12353,
+						12354,
+						12355,
+						12356,
+						12357,
+						12358,
+						12359,
+						12360,
+						12361,
+						12362,
+						12363
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						12364,
+						12366
+					]
+				}
+			]
+		},
+		{
+			"id": 12369,
+			"name": "TaxRegion",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 12370,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12371,
+							"name": "new TaxRegion",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 12369,
+								"name": "default",
+								"package": "@medusajs/tax"
+							}
+						}
+					]
+				},
+				{
+					"id": 12390,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 12372,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12373,
+					"name": "provider_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12374,
+					"name": "provider",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 12409,
+						"name": "default",
+						"package": "@medusajs/tax"
+					}
+				},
+				{
+					"id": 12375,
+					"name": "country_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12376,
+					"name": "province_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12377,
+					"name": "parent_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12378,
+					"name": "parent",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 12369,
+						"name": "default",
+						"package": "@medusajs/tax"
+					}
+				},
+				{
+					"id": 12379,
+					"name": "tax_rates",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 12347,
+								"name": "default",
+								"package": "@medusajs/tax"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 12380,
+					"name": "children",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 12369,
+								"name": "default",
+								"package": "@medusajs/tax"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 12381,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12382,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12383,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12384,
+					"name": "created_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12385,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12386,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12387,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 12388,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12389,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						12370
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						12390,
+						12372,
+						12373,
+						12374,
+						12375,
+						12376,
+						12377,
+						12378,
+						12379,
+						12380,
+						12381,
+						12382,
+						12383,
+						12384,
+						12385
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						12386,
+						12388
+					]
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				12409,
+				12391,
+				12347,
+				12369
+			]
+		}
+	],
+	"packageName": "@medusajs/tax",
+	"symbolIdMap": {
+		"12346": {
+			"sourceFileName": "../../../packages/tax/src/models/index.ts",
+			"qualifiedName": ""
+		},
+		"12347": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default"
+		},
+		"12350": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.id"
+		},
+		"12351": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.rate"
+		},
+		"12352": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.code"
+		},
+		"12353": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.name"
+		},
+		"12354": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.is_default"
+		},
+		"12355": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.is_combinable"
+		},
+		"12356": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.tax_region_id"
+		},
+		"12357": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.tax_region"
+		},
+		"12358": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.rules"
+		},
+		"12359": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"12360": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"12361": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"12362": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.created_by"
+		},
+		"12363": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"12364": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"12365": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"12366": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"12367": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"12368": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"12369": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default"
+		},
+		"12372": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.id"
+		},
+		"12373": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.provider_id"
+		},
+		"12374": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.provider"
+		},
+		"12375": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.country_code"
+		},
+		"12376": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.province_code"
+		},
+		"12377": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.parent_id"
+		},
+		"12378": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.parent"
+		},
+		"12379": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.tax_rates"
+		},
+		"12380": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.children"
+		},
+		"12381": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"12382": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"12383": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"12384": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.created_by"
+		},
+		"12385": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"12386": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"12387": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"12388": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"12389": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"12390": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-region.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"12391": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default"
+		},
+		"12394": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.id"
+		},
+		"12395": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.tax_rate_id"
+		},
+		"12396": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.reference_id"
+		},
+		"12397": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.reference"
+		},
+		"12398": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.tax_rate"
+		},
+		"12399": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"12400": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"12401": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"12402": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.created_by"
+		},
+		"12403": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"12404": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"12405": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"12406": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"12407": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"12408": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-rate-rule.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"12409": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-provider.ts",
+			"qualifiedName": "default"
+		},
+		"12412": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-provider.ts",
+			"qualifiedName": "default.id"
+		},
+		"12413": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-provider.ts",
+			"qualifiedName": "default.is_enabled"
+		},
+		"12414": {
+			"sourceFileName": "../../../packages/tax/src/models/tax-provider.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		}
+	}
+}
