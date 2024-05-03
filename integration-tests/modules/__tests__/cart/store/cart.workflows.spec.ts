@@ -1634,11 +1634,11 @@ medusaIntegrationTestRunner({
               },
             },
             {
-              [Modules.FULFILLMENT]: {
-                fulfillment_set_id: fulfillmentSet.id,
-              },
               [Modules.STOCK_LOCATION]: {
                 stock_location_id: location.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_set_id: fulfillmentSet.id,
               },
             },
             {
@@ -1745,11 +1745,11 @@ medusaIntegrationTestRunner({
 
           await remoteLink.create([
             {
-              [Modules.FULFILLMENT]: {
-                fulfillment_set_id: fulfillmentSet.id,
-              },
               [Modules.STOCK_LOCATION]: {
                 stock_location_id: location.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_set_id: fulfillmentSet.id,
               },
             },
             {
@@ -1849,11 +1849,11 @@ medusaIntegrationTestRunner({
               },
             },
             {
-              [Modules.FULFILLMENT]: {
-                fulfillment_set_id: fulfillmentSet.id,
-              },
               [Modules.STOCK_LOCATION]: {
                 stock_location_id: location.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_set_id: fulfillmentSet.id,
               },
             },
           ])

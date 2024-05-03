@@ -68,7 +68,11 @@ export interface InternalModuleService<
   ): Promise<void>
 
   softDelete(
-    idsOrFilter: string[] | InternalFilterQuery,
+    idsOrFilter:
+      | string
+      | string[]
+      | InternalFilterQuery
+      | InternalFilterQuery[],
     sharedContext?: Context
   ): Promise<[TEntity[], Record<string, unknown[]>]>
 

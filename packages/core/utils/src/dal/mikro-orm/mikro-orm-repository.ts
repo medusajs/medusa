@@ -14,7 +14,6 @@ import {
   LoadStrategy,
   ReferenceType,
   RequiredEntityData,
-  wrap,
 } from "@mikro-orm/core"
 import { FindOptions as MikroOptions } from "@mikro-orm/core/drivers/IDatabaseDriver"
 import {
@@ -25,9 +24,9 @@ import {
 } from "@mikro-orm/core/typings"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
-  MedusaError,
   arrayDifference,
   isString,
+  MedusaError,
   promiseAll,
 } from "../../common"
 import { buildQuery } from "../../modules-sdk"
@@ -35,9 +34,9 @@ import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
 } from "../utils"
-import { mikroOrmUpdateDeletedAtRecursively } from "./utils"
-import { mikroOrmSerializer } from "./mikro-orm-serializer"
 import { dbErrorMapper } from "./db-error-mapper"
+import { mikroOrmSerializer } from "./mikro-orm-serializer"
+import { mikroOrmUpdateDeletedAtRecursively } from "./utils"
 
 export class MikroOrmBase<T = any> {
   readonly manager_: any
@@ -101,6 +100,17 @@ export class MikroOrmBaseRepository<T extends object = object>
     super(...arguments)
   }
 
+  static buildUniqueCompositeKeyValue(keys: string[], data: object) {
+    return keys.map((k) => data[k]).join("_")
+  }
+
+  static retrievePrimaryKeys(entity: EntityClass<any> | EntitySchema) {
+    return (
+      (entity as EntitySchema).meta?.primaryKeys ??
+      (entity as EntityClass<any>).prototype.__meta.primaryKeys ?? ["id"]
+    )
+  }
+
   create(data: unknown[], context?: Context): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
@@ -142,21 +152,14 @@ export class MikroOrmBaseRepository<T extends object = object>
   }
 
   async softDelete(
-    idsOrFilter: string[] | InternalFilterQuery,
+    filters:
+      | string
+      | string[]
+      | (FilterQuery<T> & BaseFilterable<FilterQuery<T>>)
+      | (FilterQuery<T> & BaseFilterable<FilterQuery<T>>)[],
     sharedContext: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
-    const isArray = Array.isArray(idsOrFilter)
-    // TODO handle composite keys
-    const filter =
-      isArray || isString(idsOrFilter)
-        ? {
-            id: {
-              $in: isArray ? idsOrFilter : [idsOrFilter],
-            },
-          }
-        : idsOrFilter
-
-    const entities = await this.find({ where: filter as any }, sharedContext)
+    const entities = await this.find({ where: filters as any }, sharedContext)
     const date = new Date()
 
     const manager = this.getActiveManager<SqlEntityManager>(sharedContext)
@@ -284,17 +287,6 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
           return target[prop]
         },
       })
-    }
-
-    static buildUniqueCompositeKeyValue(keys: string[], data: object) {
-      return keys.map((k) => data[k]).join("_")
-    }
-
-    static retrievePrimaryKeys(entity: EntityClass<T> | EntitySchema<T>) {
-      return (
-        (entity as EntitySchema<T>).meta?.primaryKeys ??
-        (entity as EntityClass<T>).prototype.__meta.primaryKeys ?? ["id"]
-      )
     }
 
     async create(data: any[], context?: Context): Promise<T[]> {
@@ -767,6 +759,32 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       )
 
       return orderedEntities
+    }
+
+    async softDelete(
+      filters:
+        | string
+        | string[]
+        | (FilterQuery<T> & BaseFilterable<FilterQuery<T>>)
+        | (FilterQuery<T> & BaseFilterable<FilterQuery<T>>)[],
+      sharedContext: Context = {}
+    ): Promise<[T[], Record<string, unknown[]>]> {
+      const primaryKeys =
+        MikroOrmAbstractBaseRepository_.retrievePrimaryKeys(entity)
+
+      const filterArray = Array.isArray(filters) ? filters : [filters]
+      const normalizedFilters: FilterQuery = {
+        $or: filterArray.map((filter) => {
+          // TODO: add support for composite keys
+          if (isString(filter)) {
+            return { [primaryKeys[0]]: filter }
+          }
+
+          return filter
+        }),
+      }
+
+      return await super.softDelete(normalizedFilters, sharedContext)
     }
   }
 
