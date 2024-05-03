@@ -5,9 +5,9 @@
     "packages": [
       "packages/medusa",
       "packages/modules/*",
+      "packages/modules/providers/*",
       "packages/core/*",
       "packages/cli/*",
-      "packages/testing/*",
       "packages/medusa-js",
       "packages/medusa-react",
       "packages/*",
