@@ -14,9 +14,6 @@
   "version": "0.0.0",
   "type": "module",
   "exports": "./dist/index.js",
-  "bin": {
-    "workflow-diagrams-generator": "dist/index.js"
-  },
   "dependencies": {
     "@faker-js/faker": "^8.4.0",
     "@octokit/core": "^5.0.2",
@@ -34,6 +31,7 @@
     "yaml": "^2.3.4"
   },
   "devDependencies": {
-    "@types/node": "^20.9.4"
+    "@types/node": "^20.9.4",
+    "@types/pluralize": "^0.0.33"
   }
 }

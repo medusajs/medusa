@@ -1,0 +1,44 @@
+---
+sidebar_position: 1
+---
+
+export const metadata = {
+  title: `Create a Discount`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to create a discount.
+
+## How to Create a Discount
+
+{/* TODO check info for correctness */}
+
+To create a discount:
+
+1. Go to Discounts.
+2. Click the Create button.
+3. In the form that opens:
+    1. Choose the one of the following discount types:
+        - **Percentage:** discount a specific percentage.
+        - **Fixed amount:** discount a specific amount.
+        - **Free shipping:** Remove any shipping amount available during checkout.
+    2. In the "Choose valid regions" field, choose the region(s) that the discount can be used in. If you chose the "Fixed amount" type, you can only choose one region.
+    3. Enter the discount code in the Code field.
+    4. If you chose the Percentage type, enter the percentage amount to discount in the Percentage field.
+    5. If you chose the "Fixed amount" type, enter the amount to discount in the Amount field.
+    6. You can optionally enter a description for the discount.
+    7. To use this discount as a parent discount to other discounts, check the "Is this a template discount?" checkbox. This is useful when you want to re-use rules and conditions across multiple discounts.
+    8. To add a start date for the discount, toggle the "Discount has a start date" field and enter the start date in the field shown. If you keep this field disabled, the discount starts immediately after creating the discount.
+    9. To add an expiry date for the discount, toggle the "Discount has an expiry date" field and enter the end date in the field shown. If you keep this field disabled, the discount doesn't have an expiry date.
+    10. To limit the number of times a discount can be used by all customers, toggle the "Limit the number of redemptions?" field and enter the limit in the field shown. If you keep this field disabled, the discount can be used unlimited times.
+    11. To set the duration that the discount runs for, toggle the "Availability duration" field and enter the duration in years, months, days, hours, and minutes.
+    12. Under the Conditions section, you can add discount's conditions that limits which products, customer groups, or shipping methods that the discount can be used with.
+        - To add a condition, click the "Add condition" button.
+        - A condition is segmented to editable fields:
+            - The first field specifies the criteria of the conditon. For example, "products" to apply the condition on the products.
+            - The second field specifies the limit of the condition. For example, "all" to apply the condition on all products.
+            - The third field can be used to specify additions or exceptions to the condition. For example, "except" to add a condition that applies the discount to all products except.
+            - The fourth field specifies the value of the third field's condition. For example, "Shirt" to add a condition that applies the discount to all products except the product "Shirt".
+    13. Under the Metadata section, optionally add additional information as key-value pairs.
+4. Once you're done, click the Save button.

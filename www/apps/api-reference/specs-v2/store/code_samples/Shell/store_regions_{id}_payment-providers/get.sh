@@ -1,0 +1,1 @@
+curl '{backend_url}/store/regions/{id}/payment-providers'

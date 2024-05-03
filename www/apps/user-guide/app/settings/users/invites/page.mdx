@@ -1,0 +1,84 @@
+---
+sidebar_position: 1
+---
+
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Invites`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to manage invites in your store.
+
+## Overview
+
+To add a new user to your team, you must invite them. The user gets a notification of the invite to sign up, but you can also send them the invite link to sign up.
+
+<Note>
+
+The form of notification sent (for example, an email) depends on what's configured in your store. If you're unsure about this, contact your technical team to configure it for you.
+
+</Note>
+
+## Invite a User
+
+To send an invite to a user:
+
+1. Go to Settings → Users.
+2. Click the Invite button.
+3. Enter the user’s email and choose their role.
+4. Once done, click on the "Send invite" button.
+
+<Note title="Info">
+
+A user's role doesn't actually change the user's privileges. All users have the same admin privileges.
+
+</Note>
+
+---
+
+## View Pending Invites
+
+To view pending invites:
+
+1. Go to Settings → Users.
+2. Click the Invite button.
+3. Below the form, you'll find a Pending Invites table with all the invites that haven't been accepted yet.
+
+---
+
+## Resend an Invite
+
+To resend an invite to a user:
+
+1. Go to Settings → Users.
+2. Click the Invite button.
+3. In the Pending Invites table, find the user to resend their invite and click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon.
+4. Choose "Resend invite" from the dropdown.
+
+---
+
+## Get Invite Link
+
+In addition to sending the user an invite, you can copy the invite link and send it manually to the user.
+
+To copy the invite link:
+
+1. Go to Settings → Users.
+2. Click the Invite button.
+3. In the Pending Invites table, find the user to resend their invite and click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon.
+3. Choose “Copy invite link” from the dropdown.
+
+---
+
+## Revoke Invite
+
+To revoke an invite:
+
+1. Go to Settings → Users.
+2. Click the Invite button.
+3. In the Pending Invites table, find the user to resend their invite and click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon.
+4. Choose Revoke from the dropdown.
+5. Confirm revoking the invite by clicking the Revoke button in the pop-up.

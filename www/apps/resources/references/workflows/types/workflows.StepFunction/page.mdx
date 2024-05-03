@@ -1,0 +1,11 @@
+import { TypeList } from "docs-ui"
+
+# StepFunction
+
+ **StepFunction**: KeysOfUnion&#60;TInput&#62; extends [] ? () => TOutput extends `Item`[] ? (`Item` \| [WorkflowData](../workflows.WorkflowData/page.mdx)&#60;Item&#62;)[] : TOutput extends `object` ? &#123; [Key in string \| number \| symbol]: TOutput[Key] \| WorkflowData&#60;(...)[(...)]&#62; &#125; : TOutput & [WorkflowDataProperties](../workflows.WorkflowDataProperties/page.mdx)&#60;TOutput&#62; & TOutput & [WorkflowDataProperties](../workflows.WorkflowDataProperties/page.mdx)&#60;TOutput&#62; & ``{ config: Method config  }`` & StepFunctionReturnConfig&#60;TOutput&#62; : (`input`: TInput \| [WorkflowData](../workflows.WorkflowData/page.mdx)&#60;TInput&#62;) => TOutput extends `Item`[] ? (`Item` \| [WorkflowData](../workflows.WorkflowData/page.mdx)&#60;Item&#62;)[] : TOutput extends `object` ? &#123; [Key in string \| number \| symbol]: TOutput[Key] \| WorkflowData&#60;(...)[(...)]&#62; &#125; : TOutput & [WorkflowDataProperties](../workflows.WorkflowDataProperties/page.mdx)&#60;TOutput&#62; & TOutput & [WorkflowDataProperties](../workflows.WorkflowDataProperties/page.mdx)&#60;TOutput&#62; & ``{ config: Method config  }`` & StepFunctionReturnConfig&#60;TOutput&#62; & [WorkflowDataProperties](../workflows.WorkflowDataProperties/page.mdx)&#60;TOutput&#62;
+
+A step function to be used in a workflow.
+
+## Type Parameters
+
+<TypeList types={[{"name":"TInput","type":"`object`","description":"The type of the input of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TOutput","type":"`object`","description":"The type of the output of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="StepFunction"/>

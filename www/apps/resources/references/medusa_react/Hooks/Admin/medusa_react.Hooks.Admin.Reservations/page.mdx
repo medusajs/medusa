@@ -1,0 +1,313 @@
+---
+slug: /references/medusa-react/hooks/admin/reservations
+---
+
+import { TypeList } from "docs-ui"
+
+# Reservations
+
+Queries and Mutations listed here are used to send requests to the [Admin Reservation API Routes](https://docs.medusajs.com/api/admin#reservations).
+To use these hooks, make sure to install the
+[@medusajs/inventory](https://docs.medusajs.com/modules/multiwarehouse/install-modules#inventory-module) module in your Medusa backend.
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+Reservations, provided by the [Inventory Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module), 
+are quantities of an item that are reserved, typically when an order is placed but not yet fulfilled.
+Reservations can be associated with any resources, but commonly with line items of an order.
+
+Related Guide: [How to manage item allocations in orders](https://docs.medusajs.com/modules/multiwarehouse/admin/manage-item-allocations-in-orders).
+
+## Mutations
+
+### useAdminCreateReservation
+
+This hook creates a reservation which can be associated with any resource, such as an order's line item.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateReservation } from "medusa-react"
+
+const CreateReservation = () => {
+  const createReservation = useAdminCreateReservation()
+  // ...
+
+  const handleCreate = (
+    locationId: string,
+    inventoryItemId: string,
+    quantity: number
+  ) => {
+    createReservation.mutate({
+      location_id: locationId,
+      inventory_item_id: inventoryItemId,
+      quantity,
+    }, {
+      onSuccess: ({ reservation }) => {
+        console.log(reservation.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default CreateReservation
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostReservationsReq","type":"[AdminPostReservationsReq](../../../../medusa/classes/medusa.AdminPostReservationsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the reservation to create.","expandable":false,"children":[{"name":"location_id","type":"`string`","description":"The ID of the location of the reservation.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"inventory_item_id","type":"`string`","description":"The ID of the inventory item the reservation is associated with.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity to reserve.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"line_item_id","type":"`string`","description":"The ID of the line item of the reservation.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The reservation's description.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs with additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateReservation"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminReservationsRes","type":"[AdminReservationsRes](../../../../medusa/types/medusa.AdminReservationsRes/page.mdx)","optional":false,"defaultValue":"","description":"The reservation's details.","expandable":false,"children":[{"name":"reservation","type":"[ReservationItemDTO](../../../../medusa/types/medusa.ReservationItemDTO/page.mdx)","description":"Reservation details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The id of the reservation item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The id of the location of the reservation","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"inventory_item_id","type":"`string`","description":"The id of the inventory item the reservation relates to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The id of the reservation item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"An optional key-value map with additional details","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date with timezone at which the resource was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date with timezone at which the resource was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`string` \\| `Date` \\| `null`","description":"The date with timezone at which the resource was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"line_item_id","type":"`string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string` \\| `null`","description":"Description of the reservation item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`string` \\| `null`","description":"UserId of user who created the reservation item","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateReservation"/>
+
+### useAdminUpdateReservation
+
+This hook updates a reservation's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUpdateReservation } from "medusa-react"
+
+type Props = {
+  reservationId: string
+}
+
+const Reservation = ({ reservationId }: Props) => {
+  const updateReservation = useAdminUpdateReservation(
+    reservationId
+  )
+  // ...
+
+  const handleUpdate = (
+    quantity: number
+  ) => {
+    updateReservation.mutate({
+      quantity,
+    })
+  }
+
+  // ...
+}
+
+export default Reservation
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The reservation's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateReservation"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostReservationsReservationReq","type":"[AdminPostReservationsReservationReq](../../../../medusa/classes/medusa.AdminPostReservationsReservationReq/page.mdx)","optional":false,"defaultValue":"","description":"The details to update of the reservation.","expandable":false,"children":[{"name":"quantity","type":"`number`","description":"The quantity to reserve.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the location associated with the reservation.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The reservation's description.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs with additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateReservation"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminReservationsRes","type":"[AdminReservationsRes](../../../../medusa/types/medusa.AdminReservationsRes/page.mdx)","optional":false,"defaultValue":"","description":"The reservation's details.","expandable":false,"children":[{"name":"reservation","type":"[ReservationItemDTO](../../../../medusa/types/medusa.ReservationItemDTO/page.mdx)","description":"Reservation details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The id of the reservation item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The id of the location of the reservation","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"inventory_item_id","type":"`string`","description":"The id of the inventory item the reservation relates to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The id of the reservation item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"An optional key-value map with additional details","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date with timezone at which the resource was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date with timezone at which the resource was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`string` \\| `Date` \\| `null`","description":"The date with timezone at which the resource was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"line_item_id","type":"`string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string` \\| `null`","description":"Description of the reservation item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`string` \\| `null`","description":"UserId of user who created the reservation item","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateReservation"/>
+
+### useAdminDeleteReservation
+
+This hook deletes a reservation. Associated resources, such as the line item, will not be deleted.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteReservation } from "medusa-react"
+
+type Props = {
+  reservationId: string
+}
+
+const Reservation = ({ reservationId }: Props) => {
+  const deleteReservation = useAdminDeleteReservation(
+    reservationId
+  )
+  // ...
+
+  const handleDelete = () => {
+    deleteReservation.mutate(void 0, {
+      onSuccess: ({ id, object, deleted }) => {
+        console.log(id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Reservation
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The reservation's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteReservation"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../../medusa/interfaces/medusa.DeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteReservation"/>
+
+___
+
+## Queries
+
+### useAdminReservations
+
+This hook retrieves a list of reservations. The reservations can be filtered by fields such as `location_id` or `quantity` 
+passed in the `query` parameter. The reservations can also be paginated.
+
+#### Example
+
+To list reservations:
+
+```tsx
+import React from "react"
+import { useAdminReservations } from "medusa-react"
+
+const Reservations = () => {
+  const { reservations, isLoading } = useAdminReservations()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {reservations && !reservations.length && (
+        <span>No Reservations</span>
+      )}
+      {reservations && reservations.length > 0 && (
+        <ul>
+          {reservations.map((reservation) => (
+            <li key={reservation.id}>{reservation.quantity}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Reservations
+```
+
+To specify relations that should be retrieved within the reservations:
+
+```tsx
+import React from "react"
+import { useAdminReservations } from "medusa-react"
+
+const Reservations = () => {
+  const { 
+    reservations, 
+    isLoading
+  } = useAdminReservations({
+    expand: "location"
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {reservations && !reservations.length && (
+        <span>No Reservations</span>
+      )}
+      {reservations && reservations.length > 0 && (
+        <ul>
+          {reservations.map((reservation) => (
+            <li key={reservation.id}>{reservation.quantity}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Reservations
+```
+
+By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```tsx
+import React from "react"
+import { useAdminReservations } from "medusa-react"
+
+const Reservations = () => {
+  const { 
+    reservations,
+    limit,
+    offset, 
+    isLoading
+  } = useAdminReservations({
+    expand: "location",
+    limit: 10,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {reservations && !reservations.length && (
+        <span>No Reservations</span>
+      )}
+      {reservations && reservations.length > 0 && (
+        <ul>
+          {reservations.map((reservation) => (
+            <li key={reservation.id}>{reservation.quantity}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Reservations
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminGetReservationsParams](../../../../medusa/classes/medusa.AdminGetReservationsParams/page.mdx)","description":"Filters and pagination parameters to apply on the retrieved reservations.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"location_id","type":"`string` \\| `string`[]","description":"Location IDs to filter reservations by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"inventory_item_id","type":"`string`[]","description":"Inventory item IDs to filter reservations by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"line_item_id","type":"`string`[]","description":"Line item IDs to filter reservations by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`string`[]","description":"\"Create by\" user IDs to filter reservations by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"[NumericalComparisonOperator](../../../../medusa/classes/medusa.NumericalComparisonOperator/page.mdx)","description":"Numerical filters to apply on the reservations' `quantity` field.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`number`","description":"The filtered number must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`number`","description":"The filtered number must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`number`","description":"The filtered number must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`number`","description":"The filtered number must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the reservations' `created_at` field.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"updated_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the reservations' `updated_at` field.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"description","type":"`string` \\| [StringComparisonOperator](../../../../medusa/classes/medusa.StringComparisonOperator/page.mdx)","description":"String filters to apply on the reservations' `description` field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":true,"defaultValue":"0","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":true,"defaultValue":"20","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReservations"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reservations","type":"[ReservationItemDTO](../../../../medusa/types/medusa.ReservationItemDTO/page.mdx)[]","description":"An array of reservations details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The id of the reservation item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The id of the location of the reservation","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"inventory_item_id","type":"`string`","description":"The id of the inventory item the reservation relates to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The id of the reservation item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"An optional key-value map with additional details","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date with timezone at which the resource was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date with timezone at which the resource was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`string` \\| `Date` \\| `null`","description":"The date with timezone at which the resource was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"line_item_id","type":"`string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string` \\| `null`","description":"Description of the reservation item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`string` \\| `null`","description":"UserId of user who created the reservation item","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReservations"/>
+
+### useAdminReservation
+
+This hook retrieves a reservation's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminReservation } from "medusa-react"
+
+type Props = {
+  reservationId: string
+}
+
+const Reservation = ({ reservationId }: Props) => {
+  const { reservation, isLoading } = useAdminReservation(
+    reservationId
+  )
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {reservation && (
+        <span>{reservation.inventory_item_id}</span>
+      )}
+    </div>
+  )
+}
+
+export default Reservation
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The reservation's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReservation"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"reservation","type":"[ReservationItemDTO](../../../../medusa/types/medusa.ReservationItemDTO/page.mdx)","description":"Reservation details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The id of the reservation item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The id of the location of the reservation","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"inventory_item_id","type":"`string`","description":"The id of the inventory item the reservation relates to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The id of the reservation item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"An optional key-value map with additional details","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The date with timezone at which the resource was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The date with timezone at which the resource was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`string` \\| `Date` \\| `null`","description":"The date with timezone at which the resource was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"line_item_id","type":"`string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string` \\| `null`","description":"Description of the reservation item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`string` \\| `null`","description":"UserId of user who created the reservation item","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReservation"/>

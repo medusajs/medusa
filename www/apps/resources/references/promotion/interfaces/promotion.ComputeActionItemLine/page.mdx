@@ -1,0 +1,11 @@
+---
+displayed_sidebar: promotionReference
+---
+
+import { TypeList } from "docs-ui"
+
+# ComputeActionItemLine
+
+A cart's line item passed in the context when computing actions.
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the item line.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the line item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subtotal","type":"`number`","description":"The subtotal of the line item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"adjustments","type":"[ComputeActionAdjustmentLine](../promotion.ComputeActionAdjustmentLine/page.mdx)[]","description":"The adjustments applied before on the line item.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the compute action's adjustment line.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The promotion's code.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="ComputeActionItemLine"/>

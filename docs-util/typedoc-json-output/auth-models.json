@@ -1,0 +1,333 @@
+{
+	"id": 519,
+	"name": "auth-models",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 520,
+			"name": "AuthUser",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 521,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 522,
+							"name": "new AuthUser",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 520,
+								"name": "default",
+								"package": "@medusajs/auth"
+							}
+						}
+					]
+				},
+				{
+					"id": 534,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+							"qualifiedName": "OptionalFields"
+						},
+						"name": "OptionalFields",
+						"package": "@medusajs/auth"
+					}
+				},
+				{
+					"id": 523,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 524,
+					"name": "entity_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 525,
+					"name": "provider",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 526,
+					"name": "scope",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 527,
+					"name": "user_metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					}
+				},
+				{
+					"id": 528,
+					"name": "app_metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"defaultValue": "{}"
+				},
+				{
+					"id": 529,
+					"name": "provider_metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 530,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 531,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 532,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 533,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						521
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						534,
+						523,
+						524,
+						525,
+						526,
+						527,
+						528,
+						529
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						530,
+						532
+					]
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				520
+			]
+		}
+	],
+	"packageName": "@medusajs/auth",
+	"symbolIdMap": {
+		"519": {
+			"sourceFileName": "../../../packages/auth/src/models/index.ts",
+			"qualifiedName": ""
+		},
+		"520": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default"
+		},
+		"523": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default.id"
+		},
+		"524": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default.entity_id"
+		},
+		"525": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default.provider"
+		},
+		"526": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default.scope"
+		},
+		"527": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default.user_metadata"
+		},
+		"528": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default.app_metadata"
+		},
+		"529": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default.provider_metadata"
+		},
+		"530": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"531": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"532": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"533": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"534": {
+			"sourceFileName": "../../../packages/auth/src/models/auth-user.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		}
+	}
+}

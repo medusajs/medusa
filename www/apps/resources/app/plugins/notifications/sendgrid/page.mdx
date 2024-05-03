@@ -1,0 +1,4570 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `SendGrid Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+[SendGrid](https://sendgrid.com) is an email and notification service used to send emails to your customers and users.
+
+By integrating SendGrid with Medusa, you’ll be sending email notifications to your users in the following cases:
+
+1. Order-related events include new orders, shipments created, and orders canceled.
+2. Swaps and Returns related events including new return requests of orders and items returned successfully.
+3. When Gift Cards in an order are created.
+4. User-related events including reset passwords.
+5. Restock Notifications for when product stocks are low.
+
+You can also handle custom events.
+
+---
+
+## Install the SendGrid Plugin
+
+<Note type="check">
+
+- [SendGrid account](https://signup.sendgrid.com)
+- [Setup SendGrid single sender](https://docs.sendgrid.com/ui/sending-email/sender-verification)
+- [SendGrid API Key](https://docs.sendgrid.com/ui/account-and-settings/api-keys)
+- [SendGrid email templates](https://docs.sendgrid.com/ui/sending-email/how-to-send-an-email-with-dynamic-templates). Refer to the [Template Reference](#template-reference) for a full list of template types and data sent from Medusa.
+
+</Note>
+
+To install the SendGrid plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install medusa-plugin-sendgrid
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+export const highlights = [
+  ["6", "api_key", "The SendGrid API Key."],
+  ["7", "from", "The from email."],
+  ["8", "order_placed_template", "The ID of the template to use when sending an order confirmation email to the customer."],
+  ["10", "localization", "Add different templates for different locales."],
+  ["12", "order_placed_template", "The template to use when sending an order confirmation email to a customer in Germany."],
+]
+
+```js title="medusa-config.js" highlights={highlights}
+const plugins = [
+  // ...,
+  {
+    resolve: `medusa-plugin-sendgrid`,
+    options: {
+      api_key: process.env.SENDGRID_API_KEY,
+      from: process.env.SENDGRID_FROM,
+      order_placed_template: 
+        process.env.SENDGRID_ORDER_PLACED_ID,
+      localization: {
+        "de-DE": { // locale key
+          order_placed_template:
+            process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
+        },
+      },
+    },
+  },
+]
+```
+
+### SendGrid Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `api_key`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the SendGrid API Key.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `from`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the from email.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `order_placed_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an order confirmation email to the customer. It's triggered by the `order.placed` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `order_canceled_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the customer when their order is canceled. It's triggered by the `order.canceled` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `order_shipped_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the customer when their order is shipped. It's triggered by the `order.shipment_created` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `order_return_requested_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the customer when the admin requests a return. It's triggered by the `order.return_requested` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `order_items_returned_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the customer when an item is returned. It's triggered by the `order.items_returned` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `order_refund_created_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the customer when their order is refunded. It's triggered by the `order.refund_created` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `claim_shipment_created_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the customer when a shipment is created for their order claim. It's triggered by the `claim.shipment_created` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `swap_created_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the customer when the admin creates a swap for their order. It's triggered by the `swap.created` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `swap_shipment_created_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the customer when a shipment is created for their swap. It's triggered by the `swap.shipment_created` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `swap_received_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the customer when their swap is received. It's triggered by the `swap.received` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `gift_card_created_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the customer when a gift card is created for them or when they purchase a gift card. It's triggered by the `gift_card.created` and `order.gift_card_created` events.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `customer_password_reset_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the customer when they request to reset their password. It's triggered by the `customer.password_reset` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `user_password_reset_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the admin user when they request to reset their password. It's triggered by the `user.password_reset` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `medusa_restock_template`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the template to use when sending an email to the admin user when a product has hit the restock quantity threshold. It's triggered by the `restock-notification.restocked` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `localization`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object used to specify different template IDs for specific locales. Its keys are [ISO-8859-1 locales](https://en.wikipedia.org/wiki/ISO/IEC_8859-1) and values are objects. Each object's keys are template names similar to those you pass to the plugin's options, such as `order_placed_template`, and its value the ID of that template for the specified locale.
+
+      For a localization template to be used, the locale key must be stored in the `cart.context.locale` of the cart associated with the event, such as the cart associated with the placed order. For other types of events that aren't associated with a cart, such as custom events, the locale must be in the event payload object under the `locale` key.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+SENDGRID_API_KEY=<API_KEY>
+SENDGRID_FROM=<SEND_FROM_EMAIL>
+SENDGRID_ORDER_PLACED_ID=<ORDER_PLACED_TEMPLATE_ID>
+```
+
+### Custom Templates
+
+Aside from the supported templates mentioned in the [plugin options](#sendgrid-plugin-options) section, you may specify templates for Medusa defined or custom events.
+
+For example:
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...,
+  {
+    resolve: `medusa-plugin-sendgrid`,
+    options: {
+      // other options...
+      product_created_template: 
+        process.env.SENDGRID_ORDER_CREATED_ID,
+      my_custom_event_template:
+        process.env.SENDGRID_CUSTOM_EVENT_ID,
+    },
+  },
+]
+```
+
+Make sure to replace every `.` in the event's name with a `_`.
+
+The data passed to the template is the event's data payload.
+
+---
+
+## Test the Plugin
+
+To test the plugin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, perform an action that triggers sending an email, such as requesting password reset or placing an order. An email from your SendGrid account will be sent to the customer email.
+
+---
+
+## Use SendgridService
+
+Use the `SendgridService` to send emails in other contexts. The service has a `sendEmail` method that accepts an object of the email's details.
+
+For example, in an API Route:
+
+```ts title="src/api/store/email/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/medusa"
+
+export const POST = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const sendgridService = req.scope.resolve("sendgridService")
+  const sendOptions = {
+    templateId: "d-123....",
+    from: "ACME <acme@mail.com>",
+    to: "customer@mail.com",
+    dynamic_template_data: { dynamic: "data" },
+  }
+  sendgridService.sendEmail(sendOptions)
+}
+```
+
+The `sendEmail` method accepts the parameters mentioned in [SendGrid's API reference](https://docs.sendgrid.com/api-reference/mail-send/mail-send).
+
+---
+
+## Template Reference
+
+This section covers the template types supported by the plugin and what variables to expect in your dynamic template. You can use the variables to add details like order total or customer name.
+
+### Order Placed
+
+**Key in plugin options:** `order_placed_template`
+
+**Triggering Event:** `order.placed`
+
+**Description:** Template to use when sending an order confirmation email to the customer.
+
+<Details summaryContent="Example Data">
+  
+  ```json noReport
+  {
+    "afterLoad": [Function],
+    "beforeInsert": [Function],
+    "beforeUpdate": [Function],
+    "billing_address": null,
+    "billing_address_id": null,
+    "canceled_at": null,
+    "cart_id": null,
+    "claims": Array [],
+    "created_at": Any<Date>,
+    "currency_code": "usd",
+    "customer": Object {
+      "billing_address_id": null,
+      "created_at": Any<Date>,
+      "deleted_at": null,
+      "email": "test@testson.com",
+      "first_name": "Reba",
+      "has_account": true,
+      "id": Any<String>,
+      "last_name": "Waelchi",
+      "metadata": null,
+      "phone": "1-308-426-4696",
+      "updated_at": Any<Date>,
+    },
+    "customer_id": Any<String>,
+    "date": Any<String>,
+    "discount_total": "0.00 USD",
+    "discounts": Array [],
+    "display_id": Any<Number>,
+    "draft_order_id": null,
+    "email": "test@testson.com",
+    "external_id": null,
+    "fulfillment_status": "fulfilled",
+    "fulfillments": Array [],
+    "gift_card_tax_total": 0,
+    "gift_card_total": "0.00 USD",
+    "gift_card_transactions": Array [],
+    "gift_cards": Array [],
+    "has_discounts": 0,
+    "has_gift_cards": 0,
+    "id": Any<String>,
+    "idempotency_key": null,
+    "items": Array [
+      Object {
+        "adjustments": Array [],
+        "allow_discounts": true,
+        "cart_id": null,
+        "claim_order_id": null,
+        "created_at": Any<Date>,
+        "description": "",
+        "discount_total": 0,
+        "discounted_price": "12.00 USD",
+        "fulfilled_quantity": 2,
+        "has_shipping": null,
+        "id": "test-item",
+        "is_giftcard": false,
+        "is_return": false,
+        "metadata": null,
+        "order_edit_id": null,
+        "order_id": Any<String>,
+        "original_item_id": null,
+        "original_tax_total": 400,
+        "original_total": 2400,
+        "price": "12.00 USD",
+        "quantity": 2,
+        "raw_discount_total": 0,
+        "returned_quantity": null,
+        "shipped_quantity": 2,
+        "should_merge": true,
+        "subtotal": 2000,
+        "swap_id": null,
+        "tax_lines": Array [
+          Object {
+            "code": "default",
+            "created_at": Any<Date>,
+            "id": Any<String>,
+            "item_id": "test-item",
+            "metadata": null,
+            "name": "default",
+            "rate": 20,
+            "updated_at": Any<Date>,
+          },
+        ],
+        "tax_total": 400,
+        "thumbnail": null,
+        "title": "Incredible Plastic Mouse",
+        "total": 2400,
+        "totals": Object {
+          "discount_total": 0,
+          "original_tax_total": 400,
+          "original_total": 2400,
+          "quantity": 2,
+          "raw_discount_total": 0,
+          "subtotal": 2000,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "item_id": "test-item",
+              "metadata": null,
+              "name": "default",
+              "rate": 20,
+              "updated_at": Any<Date>,
+            },
+          ],
+          "tax_total": 400,
+          "total": 2400,
+          "unit_price": 1000,
+        },
+        "unit_price": 1000,
+        "updated_at": Any<Date>,
+        "variant": Object {
+          "allow_backorder": false,
+          "barcode": null,
+          "created_at": Any<Date>,
+          "deleted_at": null,
+          "ean": null,
+          "height": null,
+          "hs_code": null,
+          "id": "test-variant",
+          "inventory_quantity": 10,
+          "length": null,
+          "manage_inventory": true,
+          "material": null,
+          "metadata": null,
+          "mid_code": null,
+          "origin_country": null,
+          "product": Object {
+            "collection_id": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "description": null,
+            "discountable": true,
+            "external_id": null,
+            "handle": "gorgeous-cotton-table",
+            "height": null,
+            "hs_code": null,
+            "id": "test-product",
+            "is_giftcard": false,
+            "length": null,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "profile": Any<Object>,
+            "profile_id": Any<String>,
+            "profiles": Any<Array>,
+            "status": "draft",
+            "subtitle": null,
+            "thumbnail": null,
+            "title": "Gorgeous Cotton Table",
+            "type_id": null,
+            "updated_at": Any<Date>,
+            "weight": null,
+            "width": null,
+          },
+          "product_id": "test-product",
+          "sku": null,
+          "title": "Refined Wooden Chair",
+          "upc": null,
+          "updated_at": Any<Date>,
+          "variant_rank": 0,
+          "weight": null,
+          "width": null,
+        },
+        "variant_id": "test-variant",
+      },
+    ],
+    "locale": null,
+    "metadata": null,
+    "no_notification": null,
+    "object": "order",
+    "payment_status": "captured",
+    "payments": Array [],
+    "refunded_total": 0,
+    "refunds": Array [],
+    "region": Object {
+      "automatic_taxes": true,
+      "created_at": Any<Date>,
+      "currency_code": "usd",
+      "deleted_at": null,
+      "gift_cards_taxable": true,
+      "id": "test-region",
+      "metadata": null,
+      "name": "Test region",
+      "tax_code": null,
+      "tax_provider_id": null,
+      "tax_rate": 12.5,
+      "updated_at": Any<Date>,
+    },
+    "region_id": "test-region",
+    "returns": Array [],
+    "sales_channel_id": null,
+    "shipping_address": Object {
+      "address_1": "1850 Corine Tunnel",
+      "address_2": null,
+      "city": null,
+      "company": null,
+      "country_code": "us",
+      "created_at": Any<Date>,
+      "customer_id": null,
+      "deleted_at": null,
+      "first_name": "Cornell",
+      "id": Any<String>,
+      "last_name": "Shanahan",
+      "metadata": null,
+      "phone": null,
+      "postal_code": "15102-3998",
+      "province": null,
+      "updated_at": Any<Date>,
+    },
+    "shipping_address_id": Any<String>,
+    "shipping_methods": Array [],
+    "shipping_total": "0.00 USD",
+    "status": "pending",
+    "subtotal": "24.00 USD",
+    "subtotal_ex_tax": "20.00 USD",
+    "swaps": Array [],
+    "tax_rate": null,
+    "tax_total": "4.00 USD",
+    "total": "24.00 USD",
+    "updated_at": Any<Date>,
+  }
+  ```
+
+</Details>
+
+### Order Canceled
+
+**Key in plugin options:** `order_canceled_template`
+
+**Triggering Event:** `order.canceled`
+
+**Description:** Template to use when sending an email to the customer when their order is canceled.
+
+<Details summaryContent="Example Data">
+
+  ```json noReport
+  {
+    "afterLoad": [Function],
+    "beforeInsert": [Function],
+    "beforeUpdate": [Function],
+    "billing_address": null,
+    "billing_address_id": null,
+    "canceled_at": Any<Date>,
+    "cart_id": null,
+    "claims": Array [],
+    "created_at": Any<Date>,
+    "currency_code": "usd",
+    "customer": Object {
+      "billing_address_id": null,
+      "created_at": Any<Date>,
+      "deleted_at": null,
+      "email": "test@testson.com",
+      "first_name": "Lonzo",
+      "has_account": true,
+      "id": Any<String>,
+      "last_name": "Kemmer",
+      "metadata": null,
+      "phone": "499-811-0832",
+      "updated_at": Any<Date>,
+    },
+    "customer_id": Any<String>,
+    "date": Any<String>,
+    "discount_total": "0.00 USD",
+    "discounts": Array [],
+    "display_id": Any<Number>,
+    "draft_order_id": null,
+    "email": "test@testson.com",
+    "external_id": null,
+    "fulfillment_status": "canceled",
+    "fulfillments": Array [],
+    "gift_card_tax_total": 0,
+    "gift_card_total": "0.00 USD",
+    "gift_card_transactions": Array [],
+    "gift_cards": Array [],
+    "has_discounts": 0,
+    "has_gift_cards": 0,
+    "id": Any<String>,
+    "idempotency_key": null,
+    "items": Array [
+      Object {
+        "adjustments": Array [],
+        "allow_discounts": true,
+        "cart_id": null,
+        "claim_order_id": null,
+        "created_at": Any<Date>,
+        "description": "",
+        "discount_total": 0,
+        "fulfilled_quantity": null,
+        "has_shipping": null,
+        "id": "test-item",
+        "is_giftcard": false,
+        "is_return": false,
+        "metadata": null,
+        "order_edit_id": null,
+        "order_id": Any<String>,
+        "original_item_id": null,
+        "original_tax_total": 400,
+        "original_total": 2400,
+        "price": "10.00 USD",
+        "quantity": 2,
+        "raw_discount_total": 0,
+        "returned_quantity": null,
+        "shipped_quantity": null,
+        "should_merge": true,
+        "subtotal": 2000,
+        "swap_id": null,
+        "tax_lines": Array [
+          Object {
+            "code": "default",
+            "created_at": Any<Date>,
+            "id": Any<String>,
+            "item_id": "test-item",
+            "metadata": null,
+            "name": "default",
+            "rate": 20,
+            "updated_at": Any<Date>,
+          },
+        ],
+        "tax_total": 400,
+        "thumbnail": null,
+        "title": "Handcrafted Frozen Tuna",
+        "total": 2400,
+        "unit_price": 1000,
+        "updated_at": Any<Date>,
+        "variant": Object {
+          "allow_backorder": false,
+          "barcode": null,
+          "created_at": Any<Date>,
+          "deleted_at": null,
+          "ean": null,
+          "height": null,
+          "hs_code": null,
+          "id": "test-variant",
+          "inventory_quantity": 10,
+          "length": null,
+          "manage_inventory": true,
+          "material": null,
+          "metadata": null,
+          "mid_code": null,
+          "origin_country": null,
+          "product": Object {
+            "collection_id": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "description": null,
+            "discountable": true,
+            "external_id": null,
+            "handle": "awesome-metal-ball",
+            "height": null,
+            "hs_code": null,
+            "id": "test-product",
+            "is_giftcard": false,
+            "length": null,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "profile": Any<Object>,
+            "profile_id": Any<String>,
+            "profiles": Any<Array>,
+            "status": "draft",
+            "subtitle": null,
+            "thumbnail": null,
+            "title": "Awesome Metal Ball",
+            "type_id": null,
+            "updated_at": Any<Date>,
+            "weight": null,
+            "width": null,
+          },
+          "product_id": "test-product",
+          "sku": null,
+          "title": "Practical Granite Pizza",
+          "upc": null,
+          "updated_at": Any<Date>,
+          "variant_rank": 0,
+          "weight": null,
+          "width": null,
+        },
+        "variant_id": "test-variant",
+      },
+    ],
+    "locale": null,
+    "metadata": null,
+    "no_notification": null,
+    "object": "order",
+    "payment_status": "canceled",
+    "payments": Array [],
+    "refunded_total": 0,
+    "refunds": Array [],
+    "region": Object {
+      "automatic_taxes": true,
+      "created_at": Any<Date>,
+      "currency_code": "usd",
+      "deleted_at": null,
+      "gift_cards_taxable": true,
+      "id": "test-region",
+      "metadata": null,
+      "name": "Test region",
+      "tax_code": null,
+      "tax_provider_id": null,
+      "tax_rate": 12.5,
+      "updated_at": Any<Date>,
+    },
+    "region_id": "test-region",
+    "returns": Array [],
+    "sales_channel_id": null,
+    "shipping_address": Object {
+      "address_1": "84185 Lindsey Centers",
+      "address_2": null,
+      "city": null,
+      "company": null,
+      "country_code": "us",
+      "created_at": Any<Date>,
+      "customer_id": null,
+      "deleted_at": null,
+      "first_name": "Chyna",
+      "id": Any<String>,
+      "last_name": "Osinski",
+      "metadata": null,
+      "phone": null,
+      "postal_code": "51510",
+      "province": null,
+      "updated_at": Any<Date>,
+    },
+    "shipping_address_id": Any<String>,
+    "shipping_methods": Array [
+      Object {
+        "cart_id": null,
+        "claim_order_id": null,
+        "data": Object {},
+        "id": Any<String>,
+        "order_id": Any<String>,
+        "price": 0,
+        "return_id": null,
+        "shipping_option": Object {
+          "admin_only": false,
+          "amount": 500,
+          "created_at": Any<Date>,
+          "data": Object {},
+          "deleted_at": null,
+          "id": Any<String>,
+          "is_return": false,
+          "metadata": null,
+          "name": "free",
+          "price_type": "flat_rate",
+          "profile_id": Any<String>,
+          "provider_id": "test-ful",
+          "region_id": "test-region",
+          "updated_at": Any<Date>,
+        },
+        "shipping_option_id": Any<String>,
+        "swap_id": null,
+        "tax_lines": Array [],
+      },
+    ],
+    "shipping_total": "0.00 USD",
+    "status": "canceled",
+    "subtotal": "20.00 USD",
+    "swaps": Array [],
+    "tax_rate": null,
+    "tax_total": "4.00 USD",
+    "total": "24.00 USD",
+    "updated_at": Any<Date>,
+  }
+  ```
+
+</Details>
+
+### Order Shipment Created
+
+**Key in plugin options:** `order_shipped_template`
+
+**Triggering Event:** `order.shipment_created`
+
+**Description:** Template to use when sending an email to the customer when their order is shipped.
+
+<Details summaryContent='Example Data'>
+
+  ```json noReport
+  {
+    "date": Any<String>,
+    "email": "test@testson.com",
+    "fulfillment": Object {
+      "canceled_at": null,
+      "claim_order_id": null,
+      "created_at": Any<Date>,
+      "data": Object {},
+      "id": Any<String>,
+      "idempotency_key": null,
+      "items": Array [
+        Object {
+          "fulfillment_id": Any<String>,
+          "item_id": "test-item",
+          "quantity": 2,
+        },
+      ],
+      "location_id": null,
+      "metadata": Object {},
+      "no_notification": null,
+      "order_id": Any<String>,
+      "provider_id": "test-ful",
+      "shipped_at": Any<Date>,
+      "swap_id": null,
+      "tracking_links": Array [],
+      "tracking_numbers": Array [],
+      "updated_at": Any<Date>,
+    },
+    "locale": null,
+    "order": Object {
+      "afterLoad": [Function],
+      "beforeInsert": [Function],
+      "beforeUpdate": [Function],
+      "billing_address": null,
+      "billing_address_id": null,
+      "canceled_at": null,
+      "cart_id": null,
+      "claims": Array [],
+      "created_at": Any<Date>,
+      "currency_code": "usd",
+      "customer": Object {
+        "billing_address_id": null,
+        "created_at": Any<Date>,
+        "deleted_at": null,
+        "email": "test@testson.com",
+        "first_name": "Reba",
+        "has_account": true,
+        "id": Any<String>,
+        "last_name": "Waelchi",
+        "metadata": null,
+        "phone": "1-308-426-4696",
+        "updated_at": Any<Date>,
+      },
+      "customer_id": Any<String>,
+      "discount_total": 0,
+      "discounts": Array [],
+      "display_id": Any<Number>,
+      "draft_order_id": null,
+      "email": "test@testson.com",
+      "external_id": null,
+      "fulfillment_status": "shipped",
+      "fulfillments": Array [
+        Object {
+          "canceled_at": null,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "data": Object {},
+          "id": Any<String>,
+          "idempotency_key": null,
+          "items": Array [
+            Object {
+              "fulfillment_id": Any<String>,
+              "item_id": "test-item",
+              "quantity": 2,
+            },
+          ],
+          "location_id": null,
+          "metadata": Object {},
+          "no_notification": null,
+          "order_id": Any<String>,
+          "provider_id": "test-ful",
+          "shipped_at": Any<Date>,
+          "swap_id": null,
+          "tracking_numbers": Array [],
+          "updated_at": Any<Date>,
+        },
+      ],
+      "gift_card_tax_total": 0,
+      "gift_card_total": 0,
+      "gift_card_transactions": Array [],
+      "gift_cards": Array [],
+      "id": Any<String>,
+      "idempotency_key": null,
+      "items": Array [
+        Object {
+          "adjustments": Array [],
+          "allow_discounts": true,
+          "cart_id": null,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "description": "",
+          "discount_total": 0,
+          "fulfilled_quantity": 2,
+          "has_shipping": null,
+          "id": "test-item",
+          "is_giftcard": false,
+          "is_return": false,
+          "metadata": null,
+          "order_edit_id": null,
+          "order_id": Any<String>,
+          "original_item_id": null,
+          "original_tax_total": 400,
+          "original_total": 2400,
+          "quantity": 2,
+          "raw_discount_total": 0,
+          "returned_quantity": null,
+          "shipped_quantity": 2,
+          "should_merge": true,
+          "subtotal": 2000,
+          "swap_id": null,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "item_id": "test-item",
+              "metadata": null,
+              "name": "default",
+              "rate": 20,
+              "updated_at": Any<Date>,
+            },
+          ],
+          "tax_total": 400,
+          "thumbnail": "",
+          "title": "Incredible Plastic Mouse",
+          "total": 2400,
+          "unit_price": 1000,
+          "updated_at": Any<Date>,
+          "variant": Object {
+            "allow_backorder": false,
+            "barcode": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "ean": null,
+            "height": null,
+            "hs_code": null,
+            "id": "test-variant",
+            "inventory_quantity": 10,
+            "length": null,
+            "manage_inventory": true,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "product": Object {
+              "collection_id": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "description": null,
+              "discountable": true,
+              "external_id": null,
+              "handle": "gorgeous-cotton-table",
+              "height": null,
+              "hs_code": null,
+              "id": "test-product",
+              "is_giftcard": false,
+              "length": null,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "profile": Any<Object>,
+              "profile_id": Any<String>,
+              "profiles": Any<Array>,
+              "status": "draft",
+              "subtitle": null,
+              "thumbnail": null,
+              "title": "Gorgeous Cotton Table",
+              "type_id": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "product_id": "test-product",
+            "sku": null,
+            "title": "Refined Wooden Chair",
+            "upc": null,
+            "updated_at": Any<Date>,
+            "variant_rank": 0,
+            "weight": null,
+            "width": null,
+          },
+          "variant_id": "test-variant",
+        },
+      ],
+      "metadata": null,
+      "no_notification": null,
+      "object": "order",
+      "payment_status": "captured",
+      "payments": Array [],
+      "refundable_amount": 0,
+      "refunded_total": 0,
+      "refunds": Array [],
+      "region": Object {
+        "automatic_taxes": true,
+        "created_at": Any<Date>,
+        "currency_code": "usd",
+        "deleted_at": null,
+        "gift_cards_taxable": true,
+        "id": "test-region",
+        "metadata": null,
+        "name": "Test region",
+        "tax_code": null,
+        "tax_provider_id": null,
+        "tax_rate": 12.5,
+        "updated_at": Any<Date>,
+      },
+      "region_id": "test-region",
+      "returns": Array [],
+      "sales_channel_id": null,
+      "shipping_address": Object {
+        "address_1": "1850 Corine Tunnel",
+        "address_2": null,
+        "city": null,
+        "company": null,
+        "country_code": "us",
+        "created_at": Any<Date>,
+        "customer_id": null,
+        "deleted_at": null,
+        "first_name": "Cornell",
+        "id": Any<String>,
+        "last_name": "Shanahan",
+        "metadata": null,
+        "phone": null,
+        "postal_code": "15102-3998",
+        "province": null,
+        "updated_at": Any<Date>,
+      },
+      "shipping_address_id": Any<String>,
+      "shipping_methods": Array [
+        Object {
+          "cart_id": null,
+          "claim_order_id": null,
+          "data": Object {},
+          "id": Any<String>,
+          "order_id": Any<String>,
+          "price": 0,
+          "return_id": null,
+          "shipping_option": Object {
+            "admin_only": false,
+            "amount": 500,
+            "created_at": Any<Date>,
+            "data": Object {},
+            "deleted_at": null,
+            "id": Any<String>,
+            "is_return": false,
+            "metadata": null,
+            "name": "free",
+            "price_type": "flat_rate",
+            "profile_id": Any<String>,
+            "provider_id": "test-ful",
+            "region_id": "test-region",
+            "updated_at": Any<Date>,
+          },
+          "shipping_option_id": Any<String>,
+          "swap_id": null,
+          "tax_lines": Array [],
+        },
+      ],
+      "shipping_total": 0,
+      "status": "pending",
+      "subtotal": 2000,
+      "swaps": Array [],
+      "tax_rate": null,
+      "tax_total": 400,
+      "total": 2400,
+      "updated_at": Any<Date>,
+    },
+    "tracking_links": Array [],
+    "tracking_number": "",
+  }
+  ```
+
+</Details>
+
+### Order Return Requested
+
+**Key in plugin options:** `order_return_requested_template`
+
+**Triggering Event:** `order.return_requested`
+
+**Description:** Template to use when sending an email to the customer when the admin requests a return.
+
+<Details summaryContent="Example Data">
+
+  ```json noReport
+  {
+    "date": Any<String>,
+    "email": "test@testson.com",
+    "has_shipping": false,
+    "items": Array [
+      Object {
+        "allow_discounts": true,
+        "cart_id": null,
+        "claim_order_id": null,
+        "created_at": Any<Date>,
+        "description": "",
+        "fulfilled_quantity": 2,
+        "has_shipping": null,
+        "id": Any<String>,
+        "is_giftcard": false,
+        "is_return": false,
+        "metadata": null,
+        "order_edit_id": null,
+        "order_id": Any<String>,
+        "original_item_id": null,
+        "price": "12.00 USD",
+        "quantity": 1,
+        "returned_quantity": null,
+        "shipped_quantity": 2,
+        "should_merge": true,
+        "swap_id": null,
+        "tax_lines": Array [
+          Object {
+            "code": "default",
+            "created_at": Any<Date>,
+            "id": Any<String>,
+            "item_id": "test-item",
+            "metadata": null,
+            "name": "default",
+            "rate": 20,
+            "updated_at": Any<Date>,
+          },
+        ],
+        "thumbnail": null,
+        "title": "Incredible Plastic Mouse",
+        "totals": Object {
+          "discount_total": 0,
+          "original_tax_total": 200,
+          "original_total": 1200,
+          "quantity": 1,
+          "raw_discount_total": 0,
+          "subtotal": 1000,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "item_id": "test-item",
+              "metadata": null,
+              "name": "default",
+              "rate": 20,
+              "updated_at": Any<Date>,
+            },
+          ],
+          "tax_total": 200,
+          "total": 1200,
+          "unit_price": 1000,
+        },
+        "unit_price": 1000,
+        "updated_at": Any<Date>,
+        "variant": Object {
+          "allow_backorder": false,
+          "barcode": null,
+          "created_at": Any<Date>,
+          "deleted_at": null,
+          "ean": null,
+          "height": null,
+          "hs_code": null,
+          "id": "test-variant",
+          "inventory_quantity": 10,
+          "length": null,
+          "manage_inventory": true,
+          "material": null,
+          "metadata": null,
+          "mid_code": null,
+          "origin_country": null,
+          "product": Object {
+            "collection_id": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "description": null,
+            "discountable": true,
+            "external_id": null,
+            "handle": "gorgeous-cotton-table",
+            "height": null,
+            "hs_code": null,
+            "id": "test-product",
+            "is_giftcard": false,
+            "length": null,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "profile": Any<Object>,
+            "profile_id": Any<String>,
+            "profiles": Any<Array>,
+            "status": "draft",
+            "subtitle": null,
+            "thumbnail": null,
+            "title": "Gorgeous Cotton Table",
+            "type_id": null,
+            "updated_at": Any<Date>,
+            "weight": null,
+            "width": null,
+          },
+          "product_id": "test-product",
+          "sku": null,
+          "title": "Refined Wooden Chair",
+          "upc": null,
+          "updated_at": Any<Date>,
+          "variant_rank": 0,
+          "weight": null,
+          "width": null,
+        },
+        "variant_id": "test-variant",
+      },
+    ],
+    "locale": null,
+    "order": Object {
+      "afterLoad": [Function],
+      "beforeInsert": [Function],
+      "beforeUpdate": [Function],
+      "billing_address_id": null,
+      "canceled_at": null,
+      "cart_id": null,
+      "claims": Array [],
+      "created_at": Any<Date>,
+      "currency_code": "usd",
+      "customer_id": Any<String>,
+      "discounts": Array [],
+      "display_id": Any<Number>,
+      "draft_order_id": null,
+      "email": "test@testson.com",
+      "external_id": null,
+      "fulfillment_status": "fulfilled",
+      "gift_card_transactions": Array [],
+      "gift_cards": Array [],
+      "id": Any<String>,
+      "idempotency_key": null,
+      "items": Array [
+        Object {
+          "adjustments": Array [],
+          "allow_discounts": true,
+          "cart_id": null,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "description": "",
+          "discount_total": 0,
+          "fulfilled_quantity": 2,
+          "has_shipping": null,
+          "id": Any<String>,
+          "is_giftcard": false,
+          "is_return": false,
+          "metadata": null,
+          "order_edit_id": null,
+          "order_id": Any<String>,
+          "original_item_id": null,
+          "original_tax_total": 400,
+          "original_total": 2400,
+          "quantity": 2,
+          "raw_discount_total": 0,
+          "returned_quantity": null,
+          "shipped_quantity": 2,
+          "should_merge": true,
+          "subtotal": 2000,
+          "swap_id": null,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "item_id": "test-item",
+              "metadata": null,
+              "name": "default",
+              "rate": 20,
+              "updated_at": Any<Date>,
+            },
+          ],
+          "tax_total": 400,
+          "thumbnail": "",
+          "title": "Incredible Plastic Mouse",
+          "total": 2400,
+          "unit_price": 1000,
+          "updated_at": Any<Date>,
+          "variant": Object {
+            "allow_backorder": false,
+            "barcode": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "ean": null,
+            "height": null,
+            "hs_code": null,
+            "id": "test-variant",
+            "inventory_quantity": 10,
+            "length": null,
+            "manage_inventory": true,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "product": Object {
+              "collection_id": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "description": null,
+              "discountable": true,
+              "external_id": null,
+              "handle": "gorgeous-cotton-table",
+              "height": null,
+              "hs_code": null,
+              "id": "test-product",
+              "is_giftcard": false,
+              "length": null,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "profile": Any<Object>,
+              "profile_id": Any<String>,
+              "profiles": Any<Array>,
+              "status": "draft",
+              "subtitle": null,
+              "thumbnail": null,
+              "title": "Gorgeous Cotton Table",
+              "type_id": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "product_id": "test-product",
+            "sku": null,
+            "title": "Refined Wooden Chair",
+            "upc": null,
+            "updated_at": Any<Date>,
+            "variant_rank": 0,
+            "weight": null,
+            "width": null,
+          },
+          "variant_id": "test-variant",
+        },
+      ],
+      "metadata": null,
+      "no_notification": null,
+      "object": "order",
+      "payment_status": "captured",
+      "refunds": Array [],
+      "region": Object {
+        "automatic_taxes": true,
+        "created_at": Any<Date>,
+        "currency_code": "usd",
+        "deleted_at": null,
+        "gift_cards_taxable": true,
+        "id": Any<String>,
+        "metadata": null,
+        "name": "Test region",
+        "tax_code": null,
+        "tax_provider_id": null,
+        "tax_rate": 12.5,
+        "updated_at": Any<Date>,
+      },
+      "region_id": "test-region",
+      "returns": Array [
+        Object {
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "id": Any<String>,
+          "idempotency_key": Any<String>,
+          "items": Array [
+            Object {
+              "is_requested": true,
+              "item_id": "test-item",
+              "metadata": null,
+              "note": null,
+              "quantity": 1,
+              "reason_id": null,
+              "received_quantity": null,
+              "requested_quantity": 1,
+              "return_id": Any<String>,
+            },
+          ],
+          "location_id": null,
+          "metadata": null,
+          "no_notification": null,
+          "order_id": Any<String>,
+          "received_at": null,
+          "refund_amount": 1200,
+          "shipping_data": null,
+          "status": "requested",
+          "swap_id": null,
+          "updated_at": Any<Date>,
+        },
+      ],
+      "sales_channel_id": null,
+      "shipping_address": Object {
+        "address_1": "1850 Corine Tunnel",
+        "address_2": null,
+        "city": null,
+        "company": null,
+        "country_code": "us",
+        "created_at": Any<Date>,
+        "customer_id": null,
+        "deleted_at": null,
+        "first_name": "Cornell",
+        "id": Any<String>,
+        "last_name": "Shanahan",
+        "metadata": null,
+        "phone": null,
+        "postal_code": "15102-3998",
+        "province": null,
+        "updated_at": Any<Date>,
+      },
+      "shipping_address_id": Any<String>,
+      "shipping_methods": Array [],
+      "status": "pending",
+      "swaps": Array [],
+      "tax_rate": null,
+      "total": 2400,
+      "updated_at": Any<Date>,
+    },
+    "refund_amount": "12.00 USD",
+    "return_request": Object {
+      "claim_order_id": null,
+      "created_at": Any<Date>,
+      "id": Any<String>,
+      "idempotency_key": Any<String>,
+      "items": Array [
+        Object {
+          "is_requested": true,
+          "item": Object {
+            "allow_discounts": true,
+            "cart_id": null,
+            "claim_order_id": null,
+            "created_at": Any<Date>,
+            "description": "",
+            "fulfilled_quantity": 2,
+            "has_shipping": null,
+            "id": Any<String>,
+            "is_giftcard": false,
+            "is_return": false,
+            "metadata": null,
+            "order_edit_id": null,
+            "order_id": Any<String>,
+            "original_item_id": null,
+            "quantity": 2,
+            "returned_quantity": null,
+            "shipped_quantity": 2,
+            "should_merge": true,
+            "swap_id": null,
+            "tax_lines": Array [
+              Object {
+                "code": "default",
+                "created_at": Any<Date>,
+                "id": Any<String>,
+                "item_id": "test-item",
+                "metadata": null,
+                "name": "default",
+                "rate": 20,
+                "updated_at": Any<Date>,
+              },
+            ],
+            "thumbnail": "",
+            "title": "Incredible Plastic Mouse",
+            "unit_price": 1000,
+            "updated_at": Any<Date>,
+            "variant": Object {
+              "allow_backorder": false,
+              "barcode": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "ean": null,
+              "height": null,
+              "hs_code": null,
+              "id": "test-variant",
+              "inventory_quantity": 10,
+              "length": null,
+              "manage_inventory": true,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "product": Object {
+                "collection_id": null,
+                "created_at": Any<Date>,
+                "deleted_at": null,
+                "description": null,
+                "discountable": true,
+                "external_id": null,
+                "handle": "gorgeous-cotton-table",
+                "height": null,
+                "hs_code": null,
+                "id": "test-product",
+                "is_giftcard": false,
+                "length": null,
+                "material": null,
+                "metadata": null,
+                "mid_code": null,
+                "origin_country": null,
+                "profile": Any<Object>,
+                "profile_id": Any<String>,
+                "profiles": Any<Array>,
+                "status": "draft",
+                "subtitle": null,
+                "thumbnail": null,
+                "title": "Gorgeous Cotton Table",
+                "type_id": null,
+                "updated_at": Any<Date>,
+                "weight": null,
+                "width": null,
+              },
+              "product_id": "test-product",
+              "sku": null,
+              "title": "Refined Wooden Chair",
+              "upc": null,
+              "updated_at": Any<Date>,
+              "variant_rank": 0,
+              "weight": null,
+              "width": null,
+            },
+            "variant_id": "test-variant",
+          },
+          "item_id": "test-item",
+          "metadata": null,
+          "note": null,
+          "quantity": 1,
+          "reason_id": null,
+          "received_quantity": null,
+          "requested_quantity": 1,
+          "return_id": Any<String>,
+        },
+      ],
+      "location_id": null,
+      "metadata": null,
+      "no_notification": null,
+      "order_id": Any<String>,
+      "received_at": null,
+      "refund_amount": "12.00 USD",
+      "shipping_data": null,
+      "shipping_method": null,
+      "status": "requested",
+      "swap_id": null,
+      "updated_at": Any<Date>,
+    },
+    "shipping_total": "0.00 USD",
+    "subtotal": "12.00 USD",
+  }
+  ```
+
+</Details>
+
+### Order Items Returned
+
+**Key in plugin options:** `order_items_returned_template`
+
+**Triggering Event:** `order.items_returned`
+
+**Description:** Template to use when sending an email to the customer when an item is returned.
+
+<Details summaryContent="Example Data">
+
+  ```json noReport
+  {
+    "date": Any<String>,
+    "email": "test@testson.com",
+    "has_shipping": false,
+    "items": Array [
+      Object {
+        "allow_discounts": true,
+        "cart_id": null,
+        "claim_order_id": null,
+        "created_at": Any<Date>,
+        "description": "",
+        "fulfilled_quantity": 2,
+        "has_shipping": null,
+        "id": Any<String>,
+        "is_giftcard": false,
+        "is_return": false,
+        "metadata": null,
+        "order_edit_id": null,
+        "order_id": Any<String>,
+        "original_item_id": null,
+        "price": "12.00 USD",
+        "quantity": 1,
+        "returned_quantity": 1,
+        "shipped_quantity": 2,
+        "should_merge": true,
+        "swap_id": null,
+        "tax_lines": Array [
+          Object {
+            "code": "default",
+            "created_at": Any<Date>,
+            "id": Any<String>,
+            "item_id": "test-item",
+            "metadata": null,
+            "name": "default",
+            "rate": 20,
+            "updated_at": Any<Date>,
+          },
+        ],
+        "thumbnail": null,
+        "title": "Incredible Plastic Mouse",
+        "totals": Object {
+          "discount_total": 0,
+          "original_tax_total": 200,
+          "original_total": 1200,
+          "quantity": 1,
+          "raw_discount_total": 0,
+          "subtotal": 1000,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "item_id": "test-item",
+              "metadata": null,
+              "name": "default",
+              "rate": 20,
+              "updated_at": Any<Date>,
+            },
+          ],
+          "tax_total": 200,
+          "total": 1200,
+          "unit_price": 1000,
+        },
+        "unit_price": 1000,
+        "updated_at": Any<Date>,
+        "variant": Object {
+          "allow_backorder": false,
+          "barcode": null,
+          "created_at": Any<Date>,
+          "deleted_at": null,
+          "ean": null,
+          "height": null,
+          "hs_code": null,
+          "id": "test-variant",
+          "inventory_quantity": 10,
+          "length": null,
+          "manage_inventory": true,
+          "material": null,
+          "metadata": null,
+          "mid_code": null,
+          "origin_country": null,
+          "product": Object {
+            "collection_id": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "description": null,
+            "discountable": true,
+            "external_id": null,
+            "handle": "gorgeous-cotton-table",
+            "height": null,
+            "hs_code": null,
+            "id": "test-product",
+            "is_giftcard": false,
+            "length": null,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "profile": Any<Object>,
+            "profile_id": Any<String>,
+            "profiles": Any<Array>,
+            "status": "draft",
+            "subtitle": null,
+            "thumbnail": null,
+            "title": "Gorgeous Cotton Table",
+            "type_id": null,
+            "updated_at": Any<Date>,
+            "weight": null,
+            "width": null,
+          },
+          "product_id": "test-product",
+          "sku": null,
+          "title": "Refined Wooden Chair",
+          "upc": null,
+          "updated_at": Any<Date>,
+          "variant_rank": 0,
+          "weight": null,
+          "width": null,
+        },
+        "variant_id": "test-variant",
+      },
+    ],
+    "locale": null,
+    "order": Object {
+      "afterLoad": [Function],
+      "beforeInsert": [Function],
+      "beforeUpdate": [Function],
+      "billing_address_id": null,
+      "canceled_at": null,
+      "cart_id": null,
+      "claims": Array [],
+      "created_at": Any<Date>,
+      "currency_code": "usd",
+      "customer_id": Any<String>,
+      "discounts": Array [],
+      "display_id": Any<Number>,
+      "draft_order_id": null,
+      "email": "test@testson.com",
+      "external_id": null,
+      "fulfillment_status": "requires_action",
+      "gift_card_transactions": Array [],
+      "gift_cards": Array [],
+      "id": Any<String>,
+      "idempotency_key": null,
+      "items": Array [
+        Object {
+          "adjustments": Array [],
+          "allow_discounts": true,
+          "cart_id": null,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "description": "",
+          "discount_total": 0,
+          "fulfilled_quantity": 2,
+          "has_shipping": null,
+          "id": Any<String>,
+          "is_giftcard": false,
+          "is_return": false,
+          "metadata": null,
+          "order_edit_id": null,
+          "order_id": Any<String>,
+          "original_item_id": null,
+          "original_tax_total": 400,
+          "original_total": 2400,
+          "quantity": 2,
+          "raw_discount_total": 0,
+          "returned_quantity": 1,
+          "shipped_quantity": 2,
+          "should_merge": true,
+          "subtotal": 2000,
+          "swap_id": null,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "item_id": "test-item",
+              "metadata": null,
+              "name": "default",
+              "rate": 20,
+              "updated_at": Any<Date>,
+            },
+          ],
+          "tax_total": 400,
+          "thumbnail": "",
+          "title": "Incredible Plastic Mouse",
+          "total": 2400,
+          "unit_price": 1000,
+          "updated_at": Any<Date>,
+          "variant": Object {
+            "allow_backorder": false,
+            "barcode": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "ean": null,
+            "height": null,
+            "hs_code": null,
+            "id": "test-variant",
+            "inventory_quantity": 10,
+            "length": null,
+            "manage_inventory": true,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "product": Object {
+              "collection_id": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "description": null,
+              "discountable": true,
+              "external_id": null,
+              "handle": "gorgeous-cotton-table",
+              "height": null,
+              "hs_code": null,
+              "id": "test-product",
+              "is_giftcard": false,
+              "length": null,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "profile": Any<Object>,
+              "profile_id": Any<String>,
+              "profiles": Any<Array>,
+              "status": "draft",
+              "subtitle": null,
+              "thumbnail": null,
+              "title": "Gorgeous Cotton Table",
+              "type_id": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "product_id": "test-product",
+            "sku": null,
+            "title": "Refined Wooden Chair",
+            "upc": null,
+            "updated_at": Any<Date>,
+            "variant_rank": 0,
+            "weight": null,
+            "width": null,
+          },
+          "variant_id": "test-variant",
+        },
+      ],
+      "metadata": null,
+      "no_notification": null,
+      "object": "order",
+      "payment_status": "captured",
+      "refunds": Array [],
+      "region": Object {
+        "automatic_taxes": true,
+        "created_at": Any<Date>,
+        "currency_code": "usd",
+        "deleted_at": null,
+        "gift_cards_taxable": true,
+        "id": Any<String>,
+        "metadata": null,
+        "name": "Test region",
+        "tax_code": null,
+        "tax_provider_id": null,
+        "tax_rate": 12.5,
+        "updated_at": Any<Date>,
+      },
+      "region_id": "test-region",
+      "returns": Array [
+        Object {
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "id": Any<String>,
+          "idempotency_key": Any<String>,
+          "items": Array [
+            Object {
+              "is_requested": true,
+              "item_id": "test-item",
+              "metadata": null,
+              "note": null,
+              "quantity": 1,
+              "reason_id": null,
+              "received_quantity": 1,
+              "requested_quantity": 1,
+              "return_id": Any<String>,
+            },
+          ],
+          "location_id": null,
+          "metadata": null,
+          "no_notification": null,
+          "order_id": Any<String>,
+          "received_at": Any<Date>,
+          "refund_amount": 1200,
+          "shipping_data": null,
+          "status": "received",
+          "swap_id": null,
+          "updated_at": Any<Date>,
+        },
+      ],
+      "sales_channel_id": null,
+      "shipping_address": Object {
+        "address_1": "1850 Corine Tunnel",
+        "address_2": null,
+        "city": null,
+        "company": null,
+        "country_code": "us",
+        "created_at": Any<Date>,
+        "customer_id": null,
+        "deleted_at": null,
+        "first_name": "Cornell",
+        "id": Any<String>,
+        "last_name": "Shanahan",
+        "metadata": null,
+        "phone": null,
+        "postal_code": "15102-3998",
+        "province": null,
+        "updated_at": Any<Date>,
+      },
+      "shipping_address_id": Any<String>,
+      "shipping_methods": Array [],
+      "status": "pending",
+      "swaps": Array [],
+      "tax_rate": null,
+      "total": 2400,
+      "updated_at": Any<Date>,
+    },
+    "refund_amount": "12.00 USD",
+    "return_request": Object {
+      "claim_order_id": null,
+      "created_at": Any<Date>,
+      "id": Any<String>,
+      "idempotency_key": Any<String>,
+      "items": Array [
+        Object {
+          "is_requested": true,
+          "item": Object {
+            "allow_discounts": true,
+            "cart_id": null,
+            "claim_order_id": null,
+            "created_at": Any<Date>,
+            "description": "",
+            "fulfilled_quantity": 2,
+            "has_shipping": null,
+            "id": Any<String>,
+            "is_giftcard": false,
+            "is_return": false,
+            "metadata": null,
+            "order_edit_id": null,
+            "order_id": Any<String>,
+            "original_item_id": null,
+            "quantity": 2,
+            "returned_quantity": 1,
+            "shipped_quantity": 2,
+            "should_merge": true,
+            "swap_id": null,
+            "tax_lines": Array [
+              Object {
+                "code": "default",
+                "created_at": Any<Date>,
+                "id": Any<String>,
+                "item_id": "test-item",
+                "metadata": null,
+                "name": "default",
+                "rate": 20,
+                "updated_at": Any<Date>,
+              },
+            ],
+            "thumbnail": "",
+            "title": "Incredible Plastic Mouse",
+            "unit_price": 1000,
+            "updated_at": Any<Date>,
+            "variant": Object {
+              "allow_backorder": false,
+              "barcode": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "ean": null,
+              "height": null,
+              "hs_code": null,
+              "id": "test-variant",
+              "inventory_quantity": 10,
+              "length": null,
+              "manage_inventory": true,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "product": Object {
+                "collection_id": null,
+                "created_at": Any<Date>,
+                "deleted_at": null,
+                "description": null,
+                "discountable": true,
+                "external_id": null,
+                "handle": "gorgeous-cotton-table",
+                "height": null,
+                "hs_code": null,
+                "id": "test-product",
+                "is_giftcard": false,
+                "length": null,
+                "material": null,
+                "metadata": null,
+                "mid_code": null,
+                "origin_country": null,
+                "profile": Any<Object>,
+                "profile_id": Any<String>,
+                "profiles": Any<Array>,
+                "status": "draft",
+                "subtitle": null,
+                "thumbnail": null,
+                "title": "Gorgeous Cotton Table",
+                "type_id": null,
+                "updated_at": Any<Date>,
+                "weight": null,
+                "width": null,
+              },
+              "product_id": "test-product",
+              "sku": null,
+              "title": "Refined Wooden Chair",
+              "upc": null,
+              "updated_at": Any<Date>,
+              "variant_rank": 0,
+              "weight": null,
+              "width": null,
+            },
+            "variant_id": "test-variant",
+          },
+          "item_id": "test-item",
+          "metadata": null,
+          "note": null,
+          "quantity": 1,
+          "reason_id": null,
+          "received_quantity": 1,
+          "requested_quantity": 1,
+          "return_id": Any<String>,
+        },
+      ],
+      "location_id": null,
+      "metadata": null,
+      "no_notification": null,
+      "order_id": Any<String>,
+      "received_at": Any<Date>,
+      "refund_amount": "12.00 USD",
+      "shipping_data": null,
+      "shipping_method": null,
+      "status": "received",
+      "swap_id": null,
+      "updated_at": Any<Date>,
+    },
+    "shipping_total": "0.00 USD",
+    "subtotal": "12.00 USD",
+  }
+  ```
+
+</Details>
+
+### Order Refund Created
+
+**Key in plugin options:** `order_refund_created_template`
+
+**Triggering Event:** `order.refund_created`
+
+**Description:** Template to use when sending an email to the customer when their order is refunded.
+
+<Details summaryContent="Example Data">
+
+  ```json noReport
+  {
+    "order": Object {
+      "billing_address_id": null,
+      "canceled_at": null,
+      "cart_id": null,
+      "created_at": Any<Date>,
+      "currency_code": "usd",
+      "customer_id": Any<String>,
+      "display_id": Any<Number>,
+      "draft_order_id": null,
+      "email": "test@testson.com",
+      "external_id": null,
+      "fulfillment_status": "fulfilled",
+      "id": Any<String>,
+      "idempotency_key": null,
+      "items": Array [
+        Object {
+          "allow_discounts": true,
+          "cart_id": null,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "description": "",
+          "fulfilled_quantity": 2,
+          "has_shipping": null,
+          "id": Any<String>,
+          "is_giftcard": false,
+          "is_return": false,
+          "metadata": null,
+          "order_edit_id": null,
+          "order_id": Any<String>,
+          "original_item_id": null,
+          "quantity": 2,
+          "returned_quantity": null,
+          "shipped_quantity": 2,
+          "should_merge": true,
+          "swap_id": null,
+          "thumbnail": "",
+          "title": "Incredible Plastic Mouse",
+          "unit_price": 1000,
+          "updated_at": Any<Date>,
+          "variant": Object {
+            "allow_backorder": false,
+            "barcode": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "ean": null,
+            "height": null,
+            "hs_code": null,
+            "id": "test-variant",
+            "inventory_quantity": 10,
+            "length": null,
+            "manage_inventory": true,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "product": Object {
+              "collection_id": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "description": null,
+              "discountable": true,
+              "external_id": null,
+              "handle": "gorgeous-cotton-table",
+              "height": null,
+              "hs_code": null,
+              "id": "test-product",
+              "is_giftcard": false,
+              "length": null,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "profile": Any<Object>,
+              "profile_id": Any<String>,
+              "profiles": Any<Array>,
+              "status": "draft",
+              "subtitle": null,
+              "thumbnail": null,
+              "title": "Gorgeous Cotton Table",
+              "type_id": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "product_id": "test-product",
+            "sku": null,
+            "title": "Refined Wooden Chair",
+            "upc": null,
+            "updated_at": Any<Date>,
+            "variant_rank": 0,
+            "weight": null,
+            "width": null,
+          },
+          "variant_id": "test-variant",
+        },
+      ],
+      "metadata": null,
+      "no_notification": null,
+      "object": "order",
+      "payment_status": "captured",
+      "region_id": "test-region",
+      "sales_channel_id": null,
+      "shipping_address": Object {
+        "address_1": "1850 Corine Tunnel",
+        "address_2": null,
+        "city": null,
+        "company": null,
+        "country_code": "us",
+        "created_at": Any<Date>,
+        "customer_id": null,
+        "deleted_at": null,
+        "first_name": "Cornell",
+        "id": Any<String>,
+        "last_name": "Shanahan",
+        "metadata": null,
+        "phone": null,
+        "postal_code": "15102-3998",
+        "province": null,
+        "updated_at": Any<Date>,
+      },
+      "shipping_address_id": Any<String>,
+      "status": "pending",
+      "tax_rate": null,
+      "updated_at": Any<Date>,
+    },
+    "refund": {
+      "id": Any<String>,
+      "order_id": Any<String>,
+      "payment_id": Any<String>,
+      "amount": Any<Number>,
+      "note": Any<String>,
+      "reason": Any<String>,
+      "idempotency_key": Any<String>,
+      "created_at": Any<Date>,
+      "updated_at": Any<Date>,
+      "metadata": null
+    },
+    "refund_amount": 1200,
+    "email": "test@testson.com"
+  }
+  ```
+
+</Details>
+
+### Claim Shipment Created
+
+**Key in plugin options:** `claim_shipment_created_template`
+
+**Triggering Event:** `claim.shipment_created`
+
+**Description:** Template to use when sending an email to the customer when a shipment is created for their order claim.
+
+<Details summaryContent="Example Data">
+
+  ```json noReport
+  {
+    "claim": Object {
+      "canceled_at": null,
+      "created_at": Any<Date>,
+      "deleted_at": null,
+      "fulfillment_status": "shipped",
+      "id": Any<String>,
+      "idempotency_key": Any<String>,
+      "metadata": null,
+      "no_notification": null,
+      "order": Object {
+        "billing_address_id": null,
+        "canceled_at": null,
+        "cart_id": null,
+        "created_at": Any<Date>,
+        "currency_code": "usd",
+        "customer_id": Any<String>,
+        "display_id": Any<Number>,
+        "draft_order_id": null,
+        "email": "test@testson.com",
+        "external_id": null,
+        "fulfillment_status": "fulfilled",
+        "id": Any<String>,
+        "idempotency_key": null,
+        "items": Array [
+          Object {
+            "allow_discounts": true,
+            "cart_id": null,
+            "claim_order_id": null,
+            "created_at": Any<Date>,
+            "description": "",
+            "fulfilled_quantity": 2,
+            "has_shipping": null,
+            "id": Any<String>,
+            "is_giftcard": false,
+            "is_return": false,
+            "metadata": null,
+            "order_edit_id": null,
+            "order_id": Any<String>,
+            "original_item_id": null,
+            "quantity": 2,
+            "returned_quantity": null,
+            "shipped_quantity": 2,
+            "should_merge": true,
+            "swap_id": null,
+            "thumbnail": "",
+            "title": "Incredible Plastic Mouse",
+            "unit_price": 1000,
+            "updated_at": Any<Date>,
+            "variant": Object {
+              "allow_backorder": false,
+              "barcode": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "ean": null,
+              "height": null,
+              "hs_code": null,
+              "id": "test-variant",
+              "inventory_quantity": 10,
+              "length": null,
+              "manage_inventory": true,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "product": Object {
+                "collection_id": null,
+                "created_at": Any<Date>,
+                "deleted_at": null,
+                "description": null,
+                "discountable": true,
+                "external_id": null,
+                "handle": "gorgeous-cotton-table",
+                "height": null,
+                "hs_code": null,
+                "id": "test-product",
+                "is_giftcard": false,
+                "length": null,
+                "material": null,
+                "metadata": null,
+                "mid_code": null,
+                "origin_country": null,
+                "profile": Any<Object>,
+                "profile_id": Any<String>,
+                "profiles": Any<Array>,
+                "status": "draft",
+                "subtitle": null,
+                "thumbnail": null,
+                "title": "Gorgeous Cotton Table",
+                "type_id": null,
+                "updated_at": Any<Date>,
+                "weight": null,
+                "width": null,
+              },
+              "product_id": "test-product",
+              "sku": null,
+              "title": "Refined Wooden Chair",
+              "upc": null,
+              "updated_at": Any<Date>,
+              "variant_rank": 0,
+              "weight": null,
+              "width": null,
+            },
+            "variant_id": "test-variant",
+          },
+        ],
+        "metadata": null,
+        "no_notification": null,
+        "object": "order",
+        "payment_status": "captured",
+        "region_id": "test-region",
+        "sales_channel_id": null,
+        "shipping_address": Object {
+          "address_1": "1850 Corine Tunnel",
+          "address_2": null,
+          "city": null,
+          "company": null,
+          "country_code": "us",
+          "created_at": Any<Date>,
+          "customer_id": null,
+          "deleted_at": null,
+          "first_name": "Cornell",
+          "id": Any<String>,
+          "last_name": "Shanahan",
+          "metadata": null,
+          "phone": null,
+          "postal_code": "15102-3998",
+          "province": null,
+          "updated_at": Any<Date>,
+        },
+        "shipping_address_id": Any<String>,
+        "status": "pending",
+        "tax_rate": null,
+        "updated_at": Any<Date>,
+      },
+      "order_id": Any<String>,
+      "payment_status": "na",
+      "refund_amount": null,
+      "shipping_address_id": Any<String>,
+      "type": "replace",
+      "updated_at": Any<Date>,
+    },
+    "email": "test@testson.com",
+    "fulfillment": Object {
+      "canceled_at": null,
+      "claim_order_id": Any<String>,
+      "created_at": Any<Date>,
+      "data": Object {},
+      "id": Any<String>,
+      "idempotency_key": null,
+      "items": Array [
+        Object {
+          "fulfillment_id": Any<String>,
+          "item_id": Any<String>,
+          "quantity": 1,
+        },
+      ],
+      "location_id": null,
+      "metadata": Object {},
+      "no_notification": null,
+      "order_id": null,
+      "provider_id": "test-ful",
+      "shipped_at": Any<Date>,
+      "swap_id": null,
+      "tracking_links": Array [],
+      "tracking_numbers": Array [],
+      "updated_at": Any<Date>,
+    },
+    "locale": null,
+    "order": Object {
+      "billing_address_id": null,
+      "canceled_at": null,
+      "cart_id": null,
+      "created_at": Any<Date>,
+      "currency_code": "usd",
+      "customer_id": Any<String>,
+      "display_id": Any<Number>,
+      "draft_order_id": null,
+      "email": "test@testson.com",
+      "external_id": null,
+      "fulfillment_status": "fulfilled",
+      "id": Any<String>,
+      "idempotency_key": null,
+      "items": Array [
+        Object {
+          "allow_discounts": true,
+          "cart_id": null,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "description": "",
+          "fulfilled_quantity": 2,
+          "has_shipping": null,
+          "id": Any<String>,
+          "is_giftcard": false,
+          "is_return": false,
+          "metadata": null,
+          "order_edit_id": null,
+          "order_id": Any<String>,
+          "original_item_id": null,
+          "quantity": 2,
+          "returned_quantity": null,
+          "shipped_quantity": 2,
+          "should_merge": true,
+          "swap_id": null,
+          "thumbnail": "",
+          "title": "Incredible Plastic Mouse",
+          "unit_price": 1000,
+          "updated_at": Any<Date>,
+          "variant": Object {
+            "allow_backorder": false,
+            "barcode": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "ean": null,
+            "height": null,
+            "hs_code": null,
+            "id": "test-variant",
+            "inventory_quantity": 10,
+            "length": null,
+            "manage_inventory": true,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "product": Object {
+              "collection_id": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "description": null,
+              "discountable": true,
+              "external_id": null,
+              "handle": "gorgeous-cotton-table",
+              "height": null,
+              "hs_code": null,
+              "id": "test-product",
+              "is_giftcard": false,
+              "length": null,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "profile": Any<Object>,
+              "profile_id": Any<String>,
+              "profiles": Any<Array>,
+              "status": "draft",
+              "subtitle": null,
+              "thumbnail": null,
+              "title": "Gorgeous Cotton Table",
+              "type_id": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "product_id": "test-product",
+            "sku": null,
+            "title": "Refined Wooden Chair",
+            "upc": null,
+            "updated_at": Any<Date>,
+            "variant_rank": 0,
+            "weight": null,
+            "width": null,
+          },
+          "variant_id": "test-variant",
+        },
+      ],
+      "metadata": null,
+      "no_notification": null,
+      "object": "order",
+      "payment_status": "captured",
+      "region_id": "test-region",
+      "sales_channel_id": null,
+      "shipping_address": Object {
+        "address_1": "1850 Corine Tunnel",
+        "address_2": null,
+        "city": null,
+        "company": null,
+        "country_code": "us",
+        "created_at": Any<Date>,
+        "customer_id": null,
+        "deleted_at": null,
+        "first_name": "Cornell",
+        "id": Any<String>,
+        "last_name": "Shanahan",
+        "metadata": null,
+        "phone": null,
+        "postal_code": "15102-3998",
+        "province": null,
+        "updated_at": Any<Date>,
+      },
+      "shipping_address_id": Any<String>,
+      "status": "pending",
+      "tax_rate": null,
+      "updated_at": Any<Date>,
+    },
+    "tracking_links": Array [],
+    "tracking_number": "",
+  }
+  ```
+
+</Details>
+
+### Swap Created
+
+**Key in plugin options:** `swap_created_template`
+
+**Triggering Event:** `swap.created`
+
+**Description:** Template to use when sending an email to the customer when the admin creates a swap for their order.
+
+<Details summaryContent="Example Data">
+
+  ```json noReport
+  {
+    "locale": null,
+    "swap": Object {
+      "additional_items": Array [
+        Object {
+          "allow_discounts": true,
+          "cart_id": Any<String>,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "description": "Small Wooden Computer",
+          "fulfilled_quantity": 1,
+          "has_shipping": true,
+          "id": Any<String>,
+          "is_giftcard": false,
+          "is_return": false,
+          "metadata": Object {},
+          "order_id": null,
+          "quantity": 1,
+          "returned_quantity": null,
+          "shipped_quantity": 1,
+          "should_merge": true,
+          "swap_id": Any<String>,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "item_id": Any<String>,
+              "metadata": null,
+              "name": "default",
+              "rate": 12.5,
+              "updated_at": Any<Date>,
+            },
+          ],
+          "thumbnail": null,
+          "title": "Awesome Metal Ball",
+          "unit_price": 1000,
+          "updated_at": Any<Date>,
+          "variant": Object {
+            "allow_backorder": false,
+            "barcode": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "ean": null,
+            "height": null,
+            "hs_code": null,
+            "id": "variant-2",
+            "inventory_quantity": 9,
+            "length": null,
+            "manage_inventory": true,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "product": Object {
+              "collection_id": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "description": null,
+              "discountable": true,
+              "external_id": null,
+              "handle": null,
+              "height": null,
+              "hs_code": null,
+              "id": "test-product",
+              "is_giftcard": false,
+              "length": null,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "profile_id": Any<String>,
+              "status": "draft",
+              "subtitle": null,
+              "thumbnail": null,
+              "title": "Awesome Metal Ball",
+              "type_id": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "product_id": "test-product",
+            "sku": null,
+            "title": "Small Wooden Computer",
+            "upc": null,
+            "updated_at": Any<Date>,
+            "weight": null,
+            "width": null,
+          },
+          "variant_id": "variant-2",
+        },
+      ],
+      "return_order": Object {
+        "claim_order_id": null,
+        "created_at": Any<Date>,
+        "id": Any<String>,
+        "idempotency_key": null,
+        "items": Array [
+          Object {
+            "is_requested": true,
+            "item_id": "test-item",
+            "metadata": null,
+            "note": null,
+            "quantity": 1,
+            "reason_id": null,
+            "received_quantity": null,
+            "requested_quantity": 1,
+            "return_id": Any<String>,
+          },
+        ],
+        "metadata": null,
+        "no_notification": null,
+        "order_id": null,
+        "received_at": null,
+        "refund_amount": 1200,
+        "shipping_data": null,
+        "status": "requested",
+        "swap_id": Any<String>,
+        "updated_at": Any<Date>,
+      },
+      "allow_backorder": true,
+      "canceled_at": null,
+      "cart_id": Any<String>,
+      "confirmed_at": Any<Date>,
+      "created_at": Any<Date>,
+      "deleted_at": null,
+      "difference_due": 488,
+      "fulfillment_status": "shipped",
+      "id": Any<String>,
+      "idempotency_key": Any<String>,
+      "metadata": null,
+      "no_notification": null,
+      "order_id": Any<String>,
+      "payment_status": "awaiting",
+      "shipping_address_id": Any<String>,
+      "updated_at": Any<Date>,
+    },
+    "order": Object {
+      "discounts": Array [],
+      "billing_address_id": null,
+      "canceled_at": null,
+      "cart_id": null,
+      "created_at": Any<Date>,
+      "currency_code": "usd",
+      "customer_id": Any<String>,
+      "display_id": Any<Number>,
+      "draft_order_id": null,
+      "email": "test@testson.com",
+      "external_id": null,
+      "fulfillment_status": "fulfilled",
+      "id": Any<String>,
+      "idempotency_key": null,
+      "items": Array [
+        Object {
+          "allow_discounts": true,
+          "cart_id": null,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "description": "",
+          "fulfilled_quantity": 2,
+          "has_shipping": null,
+          "id": Any<String>,
+          "is_giftcard": false,
+          "is_return": false,
+          "metadata": null,
+          "order_id": Any<String>,
+          "quantity": 2,
+          "returned_quantity": null,
+          "shipped_quantity": 2,
+          "should_merge": true,
+          "swap_id": null,
+          "thumbnail": "",
+          "title": "Intelligent Plastic Chips",
+          "unit_price": 1000,
+          "updated_at": Any<Date>,
+          "variant": Object {
+            "allow_backorder": false,
+            "barcode": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "ean": null,
+            "height": null,
+            "hs_code": null,
+            "id": "test-variant",
+            "inventory_quantity": 10,
+            "length": null,
+            "manage_inventory": true,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "product": Object {
+              "collection_id": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "description": null,
+              "discountable": true,
+              "external_id": null,
+              "handle": null,
+              "height": null,
+              "hs_code": null,
+              "id": "test-product",
+              "is_giftcard": false,
+              "length": null,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "profile_id": Any<String>,
+              "status": "draft",
+              "subtitle": null,
+              "thumbnail": null,
+              "title": "Awesome Metal Ball",
+              "type_id": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "product_id": "test-product",
+            "sku": null,
+            "title": "Practical Granite Pizza",
+            "upc": null,
+            "updated_at": Any<Date>,
+            "weight": null,
+            "width": null,
+          },
+          "variant_id": "test-variant",
+        },
+      ],
+      "metadata": null,
+      "no_notification": null,
+      "object": "order",
+      "payment_status": "captured",
+      "region_id": "test-region",
+      "shipping_address": Object {
+        "address_1": "84185 Lindsey Centers",
+        "address_2": null,
+        "city": null,
+        "company": null,
+        "country_code": "us",
+        "created_at": Any<Date>,
+        "customer_id": null,
+        "deleted_at": null,
+        "first_name": "Chyna",
+        "id": Any<String>,
+        "last_name": "Osinski",
+        "metadata": null,
+        "phone": null,
+        "postal_code": "51510",
+        "province": null,
+        "updated_at": Any<Date>,
+      },
+      "shipping_address_id": Any<String>,
+      "status": "pending",
+      "tax_rate": null,
+      "updated_at": Any<Date>,
+      "swaps": Array [],
+    },
+    "return_request": Object {
+      "claim_order_id": null,
+      "created_at": Any<Date>,
+      "id": Any<String>,
+      "idempotency_key": Any<String>,
+      "items": Array [
+        Object {
+          "is_requested": true,
+          "item": Object {
+            "allow_discounts": true,
+            "cart_id": null,
+            "claim_order_id": null,
+            "created_at": Any<Date>,
+            "description": "",
+            "fulfilled_quantity": 2,
+            "has_shipping": null,
+            "id": Any<String>,
+            "is_giftcard": false,
+            "is_return": false,
+            "metadata": null,
+            "order_id": Any<String>,
+            "quantity": 2,
+            "returned_quantity": 1,
+            "shipped_quantity": 2,
+            "should_merge": true,
+            "swap_id": null,
+            "tax_lines": Array [
+              Object {
+                "code": "default",
+                "created_at": Any<Date>,
+                "id": Any<String>,
+                "item_id": "test-item",
+                "metadata": null,
+                "name": "default",
+                "rate": 20,
+                "updated_at": Any<Date>,
+              },
+            ],
+            "thumbnail": "",
+            "title": "Intelligent Plastic Chips",
+            "unit_price": 1000,
+            "updated_at": Any<Date>,
+            "variant": Object {
+              "allow_backorder": false,
+              "barcode": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "ean": null,
+              "height": null,
+              "hs_code": null,
+              "id": "test-variant",
+              "inventory_quantity": 11,
+              "length": null,
+              "manage_inventory": true,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "product": Object {
+                "collection_id": null,
+                "created_at": Any<Date>,
+                "deleted_at": null,
+                "description": null,
+                "discountable": true,
+                "external_id": null,
+                "handle": null,
+                "height": null,
+                "hs_code": null,
+                "id": "test-product",
+                "is_giftcard": false,
+                "length": null,
+                "material": null,
+                "metadata": null,
+                "mid_code": null,
+                "origin_country": null,
+                "profile_id": Any<String>,
+                "status": "draft",
+                "subtitle": null,
+                "thumbnail": null,
+                "title": "Awesome Metal Ball",
+                "type_id": null,
+                "updated_at": Any<Date>,
+                "weight": null,
+                "width": null,
+              },
+              "product_id": "test-product",
+              "sku": null,
+              "title": "Practical Granite Pizza",
+              "upc": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "variant_id": "test-variant",
+          },
+          "item_id": "test-item",
+          "metadata": null,
+          "note": null,
+          "quantity": 1,
+          "reason_id": null,
+          "received_quantity": null,
+          "requested_quantity": 1,
+          "return_id": Any<String>,
+        },
+      ],
+      "metadata": null,
+      "no_notification": null,
+      "order_id": Any<String>,
+      "received_at": Any<Date>,
+      "refund_amount": "12.00 USD",
+      "shipping_data": null,
+      "shipping_method": null,
+      "status": "received",
+      "swap_id": null,
+      "updated_at": Any<Date>,
+    },
+    "date": Any<String>,
+    "swapLink": Any<String>,
+    "email": "test@testson.com",
+    "items": Array [
+      Object {
+        "allow_discounts": true,
+        "cart_id": null,
+        "claim_order_id": null,
+        "created_at": Any<Date>,
+        "description": "",
+        "discounted_price": "12.00 USD",
+        "fulfilled_quantity": 2,
+        "has_shipping": null,
+        "id": "test-item",
+        "is_giftcard": false,
+        "is_return": false,
+        "metadata": null,
+        "order_id": Any<String>,
+        "price": "12.00 USD",
+        "quantity": 2,
+        "returned_quantity": null,
+        "shipped_quantity": 2,
+        "should_merge": true,
+        "swap_id": null,
+        "tax_lines": Array [
+          Object {
+            "code": "default",
+            "created_at": Any<Date>,
+            "id": Any<String>,
+            "item_id": "test-item",
+            "metadata": null,
+            "name": "default",
+            "rate": 20,
+            "updated_at": Any<Date>,
+          },
+        ],
+        "thumbnail": null,
+        "title": "Intelligent Plastic Chips",
+        "totals": Object {
+          "discount_total": 0,
+          "gift_card_total": 0,
+          "original_tax_total": 400,
+          "original_total": 2400,
+          "quantity": 2,
+          "subtotal": 2000,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "item_id": "test-item",
+              "metadata": null,
+              "name": "default",
+              "rate": 20,
+              "updated_at": Any<Date>,
+            },
+          ],
+          "tax_total": 400,
+          "total": 2400,
+          "unit_price": 1000,
+        },
+        "unit_price": 1000,
+        "updated_at": Any<Date>,
+        "variant": Object {
+          "allow_backorder": false,
+          "barcode": null,
+          "created_at": Any<Date>,
+          "deleted_at": null,
+          "ean": null,
+          "height": null,
+          "hs_code": null,
+          "id": "test-variant",
+          "inventory_quantity": 10,
+          "length": null,
+          "manage_inventory": true,
+          "material": null,
+          "metadata": null,
+          "mid_code": null,
+          "origin_country": null,
+          "product": Object {
+            "collection_id": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "description": null,
+            "discountable": true,
+            "external_id": null,
+            "handle": null,
+            "height": null,
+            "hs_code": null,
+            "id": "test-product",
+            "is_giftcard": false,
+            "length": null,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "profile_id": Any<String>,
+            "status": "draft",
+            "subtitle": null,
+            "thumbnail": null,
+            "title": "Awesome Metal Ball",
+            "type_id": null,
+            "updated_at": Any<Date>,
+            "weight": null,
+            "width": null,
+          },
+          "product_id": "test-product",
+          "sku": null,
+          "title": "Practical Granite Pizza",
+          "upc": null,
+          "updated_at": Any<Date>,
+          "weight": null,
+          "width": null,
+        },
+        "variant_id": "test-variant",
+      },
+    ],
+    "return_items": Array[...], //same as items
+    "return_total": "12.00 USD",
+    "refund_amount": "12.00 USD",
+    "additional_total": "11.25 USD"
+  }
+  ```
+
+</Details>
+
+### Swap Shipment Created
+
+**Key in plugin options:** `swap_shipment_created_template`
+
+**Triggering Event:** `swap.shipment_created`
+
+**Description:** Template to use when sending an email to the customer when a shipment is created for their swap.
+
+<Details summaryContent="Example Data">
+
+  ```json noReport
+  {
+    "additional_total": "16.88 USD",
+    "date": Any<String>,
+    "email": "test@testson.com",
+    "fulfillment": Object {
+      "canceled_at": null,
+      "claim_order_id": null,
+      "created_at": Any<Date>,
+      "data": Object {},
+      "id": Any<String>,
+      "idempotency_key": null,
+      "items": Array [
+        Object {
+          "fulfillment_id": Any<String>,
+          "item_id": Any<String>,
+          "quantity": 1,
+        },
+      ],
+      "location_id": null,
+      "metadata": Object {},
+      "no_notification": null,
+      "order_id": null,
+      "provider_id": "test-ful",
+      "shipped_at": Any<Date>,
+      "swap_id": Any<String>,
+      "tracking_links": Array [],
+      "tracking_numbers": Array [],
+      "updated_at": Any<Date>,
+    },
+    "items": Array [
+      Object {
+        "allow_discounts": true,
+        "cart_id": Any<String>,
+        "claim_order_id": null,
+        "created_at": Any<Date>,
+        "description": "Small Wooden Computer",
+        "discounted_price": "11.25 USD",
+        "fulfilled_quantity": 1,
+        "has_shipping": true,
+        "id": Any<String>,
+        "is_giftcard": false,
+        "is_return": false,
+        "metadata": Object {},
+        "order_edit_id": null,
+        "order_id": null,
+        "original_item_id": null,
+        "price": "11.25 USD",
+        "quantity": 1,
+        "returned_quantity": null,
+        "shipped_quantity": 1,
+        "should_merge": true,
+        "swap_id": Any<String>,
+        "tax_lines": Array [
+          Object {
+            "code": "default",
+            "created_at": Any<Date>,
+            "id": Any<String>,
+            "item_id": Any<String>,
+            "metadata": null,
+            "name": "default",
+            "rate": 12.5,
+            "updated_at": Any<Date>,
+          },
+        ],
+        "thumbnail": null,
+        "title": "Awesome Metal Ball",
+        "unit_price": 1000,
+        "updated_at": Any<Date>,
+        "variant": Object {
+          "allow_backorder": false,
+          "barcode": null,
+          "created_at": Any<Date>,
+          "deleted_at": null,
+          "ean": null,
+          "height": null,
+          "hs_code": null,
+          "id": "variant-2",
+          "inventory_quantity": 10,
+          "length": null,
+          "manage_inventory": true,
+          "material": null,
+          "metadata": null,
+          "mid_code": null,
+          "origin_country": null,
+          "product": Object {
+            "collection_id": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "description": null,
+            "discountable": true,
+            "external_id": null,
+            "handle": "awesome-metal-ball",
+            "height": null,
+            "hs_code": null,
+            "id": "test-product",
+            "is_giftcard": false,
+            "length": null,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "profile": Any<Object>,
+            "profile_id": Any<String>,
+            "profiles": Any<Array>,
+            "status": "draft",
+            "subtitle": null,
+            "thumbnail": null,
+            "title": "Awesome Metal Ball",
+            "type_id": null,
+            "updated_at": Any<Date>,
+            "weight": null,
+            "width": null,
+          },
+          "product_id": "test-product",
+          "sku": null,
+          "title": "Small Wooden Computer",
+          "upc": null,
+          "updated_at": Any<Date>,
+          "variant_rank": 0,
+          "weight": null,
+          "width": null,
+        },
+        "variant_id": "variant-2",
+      },
+    ],
+    "locale": null,
+    "order": Object {
+      "afterLoad": [Function],
+      "beforeInsert": [Function],
+      "beforeUpdate": [Function],
+      "billing_address_id": null,
+      "canceled_at": null,
+      "cart_id": null,
+      "created_at": Any<Date>,
+      "currency_code": "usd",
+      "customer_id": Any<String>,
+      "discounts": Array [],
+      "display_id": Any<Number>,
+      "draft_order_id": null,
+      "email": "test@testson.com",
+      "external_id": null,
+      "fulfillment_status": "fulfilled",
+      "id": Any<String>,
+      "idempotency_key": null,
+      "items": Array [
+        Object {
+          "allow_discounts": true,
+          "cart_id": null,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "description": "",
+          "fulfilled_quantity": 2,
+          "has_shipping": null,
+          "id": Any<String>,
+          "is_giftcard": false,
+          "is_return": false,
+          "metadata": null,
+          "order_edit_id": null,
+          "order_id": Any<String>,
+          "original_item_id": null,
+          "quantity": 2,
+          "returned_quantity": null,
+          "shipped_quantity": 2,
+          "should_merge": true,
+          "swap_id": null,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "item_id": Any<String>,
+              "metadata": null,
+              "name": "default",
+              "rate": 20,
+              "updated_at": Any<Date>,
+            },
+          ],
+          "thumbnail": "",
+          "title": "Handcrafted Frozen Tuna",
+          "unit_price": 1000,
+          "updated_at": Any<Date>,
+          "variant": Object {
+            "allow_backorder": false,
+            "barcode": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "ean": null,
+            "height": null,
+            "hs_code": null,
+            "id": "test-variant",
+            "inventory_quantity": 10,
+            "length": null,
+            "manage_inventory": true,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "product": Object {
+              "collection_id": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "description": null,
+              "discountable": true,
+              "external_id": null,
+              "handle": "awesome-metal-ball",
+              "height": null,
+              "hs_code": null,
+              "id": "test-product",
+              "is_giftcard": false,
+              "length": null,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "profile": Any<Object>,
+              "profile_id": Any<String>,
+              "profiles": Any<Array>,
+              "status": "draft",
+              "subtitle": null,
+              "thumbnail": null,
+              "title": "Awesome Metal Ball",
+              "type_id": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "product_id": "test-product",
+            "sku": null,
+            "title": "Practical Granite Pizza",
+            "upc": null,
+            "updated_at": Any<Date>,
+            "variant_rank": 0,
+            "weight": null,
+            "width": null,
+          },
+          "variant_id": "test-variant",
+        },
+      ],
+      "metadata": null,
+      "no_notification": null,
+      "object": "order",
+      "payment_status": "captured",
+      "region": Object {
+        "automatic_taxes": true,
+        "created_at": Any<Date>,
+        "currency_code": "usd",
+        "deleted_at": null,
+        "gift_cards_taxable": true,
+        "id": Any<String>,
+        "metadata": null,
+        "name": "Test region",
+        "tax_code": null,
+        "tax_provider_id": null,
+        "tax_rate": 12.5,
+        "updated_at": Any<Date>,
+      },
+      "region_id": "test-region",
+      "sales_channel_id": null,
+      "shipping_address_id": Any<String>,
+      "status": "pending",
+      "swaps": Array [
+        Object {
+          "additional_items": Array [
+            Object {
+              "allow_discounts": true,
+              "cart_id": Any<String>,
+              "claim_order_id": null,
+              "created_at": Any<Date>,
+              "description": "Small Wooden Computer",
+              "fulfilled_quantity": 1,
+              "has_shipping": true,
+              "id": Any<String>,
+              "is_giftcard": false,
+              "is_return": false,
+              "metadata": Object {},
+              "order_edit_id": null,
+              "order_id": null,
+              "original_item_id": null,
+              "quantity": 1,
+              "returned_quantity": null,
+              "shipped_quantity": 1,
+              "should_merge": true,
+              "swap_id": Any<String>,
+              "tax_lines": Array [
+                Object {
+                  "code": "default",
+                  "created_at": Any<Date>,
+                  "id": Any<String>,
+                  "item_id": Any<String>,
+                  "metadata": null,
+                  "name": "default",
+                  "rate": 12.5,
+                  "updated_at": Any<Date>,
+                },
+              ],
+              "thumbnail": null,
+              "title": "Awesome Metal Ball",
+              "unit_price": 1000,
+              "updated_at": Any<Date>,
+              "variant": Object {
+                "allow_backorder": false,
+                "barcode": null,
+                "created_at": Any<Date>,
+                "deleted_at": null,
+                "ean": null,
+                "height": null,
+                "hs_code": null,
+                "id": "variant-2",
+                "inventory_quantity": 10,
+                "length": null,
+                "manage_inventory": true,
+                "material": null,
+                "metadata": null,
+                "mid_code": null,
+                "origin_country": null,
+                "product": Object {
+                  "collection_id": null,
+                  "created_at": Any<Date>,
+                  "deleted_at": null,
+                  "description": null,
+                  "discountable": true,
+                  "external_id": null,
+                  "handle": "awesome-metal-ball",
+                  "height": null,
+                  "hs_code": null,
+                  "id": "test-product",
+                  "is_giftcard": false,
+                  "length": null,
+                  "material": null,
+                  "metadata": null,
+                  "mid_code": null,
+                  "origin_country": null,
+                  "profile": Any<Object>,
+                  "profile_id": Any<String>,
+                  "profiles": Any<Array>,
+                  "status": "draft",
+                  "subtitle": null,
+                  "thumbnail": null,
+                  "title": "Awesome Metal Ball",
+                  "type_id": null,
+                  "updated_at": Any<Date>,
+                  "weight": null,
+                  "width": null,
+                },
+                "product_id": "test-product",
+                "sku": null,
+                "title": "Small Wooden Computer",
+                "upc": null,
+                "updated_at": Any<Date>,
+                "variant_rank": 0,
+                "weight": null,
+                "width": null,
+              },
+              "variant_id": "variant-2",
+            },
+          ],
+          "allow_backorder": true,
+          "canceled_at": null,
+          "cart_id": Any<String>,
+          "confirmed_at": Any<Date>,
+          "created_at": Any<Date>,
+          "deleted_at": null,
+          "difference_due": 488,
+          "fulfillment_status": "shipped",
+          "id": Any<String>,
+          "idempotency_key": Any<String>,
+          "metadata": null,
+          "no_notification": null,
+          "order_id": Any<String>,
+          "payment_status": "awaiting",
+          "shipping_address_id": Any<String>,
+          "updated_at": Any<Date>,
+        },
+      ],
+      "tax_rate": null,
+      "updated_at": Any<Date>,
+    },
+    "paid_total": "4.88 USD",
+    "refund_amount": "12.00 USD",
+    "return_total": "12.00 USD",
+    "swap": Object {
+      "additional_items": Array [
+        Object {
+          "allow_discounts": true,
+          "cart_id": Any<String>,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "description": "Small Wooden Computer",
+          "fulfilled_quantity": 1,
+          "has_shipping": true,
+          "id": Any<String>,
+          "is_giftcard": false,
+          "is_return": false,
+          "metadata": Object {},
+          "order_edit_id": null,
+          "order_id": null,
+          "original_item_id": null,
+          "quantity": 1,
+          "returned_quantity": null,
+          "shipped_quantity": 1,
+          "should_merge": true,
+          "swap_id": Any<String>,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "item_id": Any<String>,
+              "metadata": null,
+              "name": "default",
+              "rate": 12.5,
+              "updated_at": Any<Date>,
+            },
+          ],
+          "thumbnail": null,
+          "title": "Awesome Metal Ball",
+          "unit_price": 1000,
+          "updated_at": Any<Date>,
+          "variant": Object {
+            "allow_backorder": false,
+            "barcode": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "ean": null,
+            "height": null,
+            "hs_code": null,
+            "id": "variant-2",
+            "inventory_quantity": 10,
+            "length": null,
+            "manage_inventory": true,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "product": Object {
+              "collection_id": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "description": null,
+              "discountable": true,
+              "external_id": null,
+              "handle": "awesome-metal-ball",
+              "height": null,
+              "hs_code": null,
+              "id": "test-product",
+              "is_giftcard": false,
+              "length": null,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "profile": Any<Object>,
+              "profile_id": Any<String>,
+              "profiles": Any<Array>,
+              "status": "draft",
+              "subtitle": null,
+              "thumbnail": null,
+              "title": "Awesome Metal Ball",
+              "type_id": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "product_id": "test-product",
+            "sku": null,
+            "title": "Small Wooden Computer",
+            "upc": null,
+            "updated_at": Any<Date>,
+            "variant_rank": 0,
+            "weight": null,
+            "width": null,
+          },
+          "variant_id": "variant-2",
+        },
+      ],
+      "allow_backorder": true,
+      "canceled_at": null,
+      "cart_id": Any<String>,
+      "confirmed_at": Any<Date>,
+      "created_at": Any<Date>,
+      "deleted_at": null,
+      "difference_due": 488,
+      "fulfillment_status": "shipped",
+      "id": Any<String>,
+      "idempotency_key": Any<String>,
+      "metadata": null,
+      "no_notification": null,
+      "order_id": Any<String>,
+      "payment_status": "awaiting",
+      "return_order": Object {
+        "claim_order_id": null,
+        "created_at": Any<Date>,
+        "id": Any<String>,
+        "idempotency_key": null,
+        "items": Array [
+          Object {
+            "is_requested": true,
+            "item_id": "test-item",
+            "metadata": null,
+            "note": null,
+            "quantity": 1,
+            "reason_id": null,
+            "received_quantity": null,
+            "requested_quantity": 1,
+            "return_id": Any<String>,
+          },
+        ],
+        "location_id": null,
+        "metadata": null,
+        "no_notification": null,
+        "order_id": null,
+        "received_at": null,
+        "refund_amount": 1200,
+        "shipping_data": null,
+        "status": "requested",
+        "swap_id": Any<String>,
+        "updated_at": Any<Date>,
+      },
+      "shipping_address": Object {
+        "address_1": "121 W Something St",
+        "address_2": null,
+        "city": "ville la something",
+        "company": null,
+        "country_code": "us",
+        "created_at": Any<Date>,
+        "customer_id": null,
+        "deleted_at": null,
+        "first_name": "Chyna",
+        "id": Any<String>,
+        "last_name": "Osinski",
+        "metadata": null,
+        "phone": "12353245",
+        "postal_code": "1234",
+        "province": "something",
+        "updated_at": Any<Date>,
+      },
+      "shipping_address_id": Any<String>,
+      "shipping_methods": Array [
+        Object {
+          "cart_id": Any<String>,
+          "claim_order_id": null,
+          "data": Object {},
+          "id": Any<String>,
+          "order_id": null,
+          "price": 500,
+          "return_id": null,
+          "shipping_option": Object {
+            "admin_only": false,
+            "amount": 500,
+            "created_at": Any<Date>,
+            "data": Object {},
+            "deleted_at": null,
+            "id": Any<String>,
+            "is_return": false,
+            "metadata": null,
+            "name": "Test Method",
+            "price_type": "flat_rate",
+            "profile_id": Any<String>,
+            "provider_id": "test-ful",
+            "region_id": "test-region",
+            "updated_at": Any<Date>,
+          },
+          "shipping_option_id": Any<String>,
+          "swap_id": Any<String>,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "metadata": null,
+              "name": "default",
+              "rate": 12.5,
+              "shipping_method_id": Any<String>,
+              "updated_at": Any<Date>,
+            },
+          ],
+        },
+      ],
+      "updated_at": Any<Date>,
+    },
+    "tax_amount": "-0.12 USD",
+    "tracking_links": Array [],
+    "tracking_number": "",
+  }
+  ```
+
+</Details>
+
+### Swap Received
+
+**Key in plugin options:** `swap_received_template`
+
+**Triggering Event:** `swap.received`
+
+**Description:** Template to use when sending an email to the customer when their swap is received.
+
+<Details summaryContent="Example Data">
+
+  ```json noReport
+  {
+    "locale": null,
+    "swap": Object {
+      "additional_items": Array [
+        Object {
+          "allow_discounts": true,
+          "cart_id": Any<String>,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "description": "Small Wooden Computer",
+          "fulfilled_quantity": 1,
+          "has_shipping": true,
+          "id": Any<String>,
+          "is_giftcard": false,
+          "is_return": false,
+          "metadata": Object {},
+          "order_id": null,
+          "quantity": 1,
+          "returned_quantity": null,
+          "shipped_quantity": 1,
+          "should_merge": true,
+          "swap_id": Any<String>,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "item_id": Any<String>,
+              "metadata": null,
+              "name": "default",
+              "rate": 12.5,
+              "updated_at": Any<Date>,
+            },
+          ],
+          "thumbnail": null,
+          "title": "Awesome Metal Ball",
+          "unit_price": 1000,
+          "updated_at": Any<Date>,
+          "variant": Object {
+            "allow_backorder": false,
+            "barcode": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "ean": null,
+            "height": null,
+            "hs_code": null,
+            "id": "variant-2",
+            "inventory_quantity": 9,
+            "length": null,
+            "manage_inventory": true,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "product": Object {
+              "collection_id": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "description": null,
+              "discountable": true,
+              "external_id": null,
+              "handle": null,
+              "height": null,
+              "hs_code": null,
+              "id": "test-product",
+              "is_giftcard": false,
+              "length": null,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "profile_id": Any<String>,
+              "status": "draft",
+              "subtitle": null,
+              "thumbnail": null,
+              "title": "Awesome Metal Ball",
+              "type_id": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "product_id": "test-product",
+            "sku": null,
+            "title": "Small Wooden Computer",
+            "upc": null,
+            "updated_at": Any<Date>,
+            "weight": null,
+            "width": null,
+          },
+          "variant_id": "variant-2",
+        },
+      ],
+      "return_order": Object {
+        "claim_order_id": null,
+        "created_at": Any<Date>,
+        "id": Any<String>,
+        "idempotency_key": null,
+        "items": Array [
+          Object {
+            "is_requested": true,
+            "item_id": "test-item",
+            "metadata": null,
+            "note": null,
+            "quantity": 1,
+            "reason_id": null,
+            "received_quantity": null,
+            "requested_quantity": 1,
+            "return_id": Any<String>,
+          },
+        ],
+        "metadata": null,
+        "no_notification": null,
+        "order_id": null,
+        "received_at": null,
+        "refund_amount": 1200,
+        "shipping_data": null,
+        "status": "requested",
+        "swap_id": Any<String>,
+        "updated_at": Any<Date>,
+      },
+      "allow_backorder": true,
+      "canceled_at": null,
+      "cart_id": Any<String>,
+      "confirmed_at": Any<Date>,
+      "created_at": Any<Date>,
+      "deleted_at": null,
+      "difference_due": 488,
+      "fulfillment_status": "shipped",
+      "id": Any<String>,
+      "idempotency_key": Any<String>,
+      "metadata": null,
+      "no_notification": null,
+      "order_id": Any<String>,
+      "payment_status": "awaiting",
+      "shipping_address_id": Any<String>,
+      "updated_at": Any<Date>,
+    },
+    "order": Object {
+      "discounts": Array [],
+      "billing_address_id": null,
+      "canceled_at": null,
+      "cart_id": null,
+      "created_at": Any<Date>,
+      "currency_code": "usd",
+      "customer_id": Any<String>,
+      "display_id": Any<Number>,
+      "draft_order_id": null,
+      "email": "test@testson.com",
+      "external_id": null,
+      "fulfillment_status": "fulfilled",
+      "id": Any<String>,
+      "idempotency_key": null,
+      "items": Array [
+        Object {
+          "allow_discounts": true,
+          "cart_id": null,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "description": "",
+          "fulfilled_quantity": 2,
+          "has_shipping": null,
+          "id": Any<String>,
+          "is_giftcard": false,
+          "is_return": false,
+          "metadata": null,
+          "order_id": Any<String>,
+          "quantity": 2,
+          "returned_quantity": null,
+          "shipped_quantity": 2,
+          "should_merge": true,
+          "swap_id": null,
+          "thumbnail": "",
+          "title": "Intelligent Plastic Chips",
+          "unit_price": 1000,
+          "updated_at": Any<Date>,
+          "variant": Object {
+            "allow_backorder": false,
+            "barcode": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "ean": null,
+            "height": null,
+            "hs_code": null,
+            "id": "test-variant",
+            "inventory_quantity": 10,
+            "length": null,
+            "manage_inventory": true,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "product": Object {
+              "collection_id": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "description": null,
+              "discountable": true,
+              "external_id": null,
+              "handle": null,
+              "height": null,
+              "hs_code": null,
+              "id": "test-product",
+              "is_giftcard": false,
+              "length": null,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "profile_id": Any<String>,
+              "status": "draft",
+              "subtitle": null,
+              "thumbnail": null,
+              "title": "Awesome Metal Ball",
+              "type_id": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "product_id": "test-product",
+            "sku": null,
+            "title": "Practical Granite Pizza",
+            "upc": null,
+            "updated_at": Any<Date>,
+            "weight": null,
+            "width": null,
+          },
+          "variant_id": "test-variant",
+        },
+      ],
+      "metadata": null,
+      "no_notification": null,
+      "object": "order",
+      "payment_status": "captured",
+      "region_id": "test-region",
+      "shipping_address": Object {
+        "address_1": "84185 Lindsey Centers",
+        "address_2": null,
+        "city": null,
+        "company": null,
+        "country_code": "us",
+        "created_at": Any<Date>,
+        "customer_id": null,
+        "deleted_at": null,
+        "first_name": "Chyna",
+        "id": Any<String>,
+        "last_name": "Osinski",
+        "metadata": null,
+        "phone": null,
+        "postal_code": "51510",
+        "province": null,
+        "updated_at": Any<Date>,
+      },
+      "shipping_address_id": Any<String>,
+      "status": "pending",
+      "tax_rate": null,
+      "updated_at": Any<Date>,
+      "swaps": Array [],
+    },
+    "return_request": Object {
+      "claim_order_id": null,
+      "created_at": Any<Date>,
+      "id": Any<String>,
+      "idempotency_key": Any<String>,
+      "items": Array [
+        Object {
+          "is_requested": true,
+          "item": Object {
+            "allow_discounts": true,
+            "cart_id": null,
+            "claim_order_id": null,
+            "created_at": Any<Date>,
+            "description": "",
+            "fulfilled_quantity": 2,
+            "has_shipping": null,
+            "id": Any<String>,
+            "is_giftcard": false,
+            "is_return": false,
+            "metadata": null,
+            "order_id": Any<String>,
+            "quantity": 2,
+            "returned_quantity": 1,
+            "shipped_quantity": 2,
+            "should_merge": true,
+            "swap_id": null,
+            "tax_lines": Array [
+              Object {
+                "code": "default",
+                "created_at": Any<Date>,
+                "id": Any<String>,
+                "item_id": "test-item",
+                "metadata": null,
+                "name": "default",
+                "rate": 20,
+                "updated_at": Any<Date>,
+              },
+            ],
+            "thumbnail": "",
+            "title": "Intelligent Plastic Chips",
+            "unit_price": 1000,
+            "updated_at": Any<Date>,
+            "variant": Object {
+              "allow_backorder": false,
+              "barcode": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "ean": null,
+              "height": null,
+              "hs_code": null,
+              "id": "test-variant",
+              "inventory_quantity": 11,
+              "length": null,
+              "manage_inventory": true,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "product": Object {
+                "collection_id": null,
+                "created_at": Any<Date>,
+                "deleted_at": null,
+                "description": null,
+                "discountable": true,
+                "external_id": null,
+                "handle": null,
+                "height": null,
+                "hs_code": null,
+                "id": "test-product",
+                "is_giftcard": false,
+                "length": null,
+                "material": null,
+                "metadata": null,
+                "mid_code": null,
+                "origin_country": null,
+                "profile_id": Any<String>,
+                "status": "draft",
+                "subtitle": null,
+                "thumbnail": null,
+                "title": "Awesome Metal Ball",
+                "type_id": null,
+                "updated_at": Any<Date>,
+                "weight": null,
+                "width": null,
+              },
+              "product_id": "test-product",
+              "sku": null,
+              "title": "Practical Granite Pizza",
+              "upc": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "variant_id": "test-variant",
+          },
+          "item_id": "test-item",
+          "metadata": null,
+          "note": null,
+          "quantity": 1,
+          "reason_id": null,
+          "received_quantity": null,
+          "requested_quantity": 1,
+          "return_id": Any<String>,
+        },
+      ],
+      "metadata": null,
+      "no_notification": null,
+      "order_id": Any<String>,
+      "received_at": Any<Date>,
+      "refund_amount": "12.00 USD",
+      "shipping_data": null,
+      "shipping_method": null,
+      "status": "received",
+      "swap_id": null,
+      "updated_at": Any<Date>,
+    },
+    "date": Any<String>,
+    "swapLink": Any<String>,
+    "email": "test@testson.com",
+    "items": Array [
+      Object {
+        "allow_discounts": true,
+        "cart_id": null,
+        "claim_order_id": null,
+        "created_at": Any<Date>,
+        "description": "",
+        "discounted_price": "12.00 USD",
+        "fulfilled_quantity": 2,
+        "has_shipping": null,
+        "id": "test-item",
+        "is_giftcard": false,
+        "is_return": false,
+        "metadata": null,
+        "order_id": Any<String>,
+        "price": "12.00 USD",
+        "quantity": 2,
+        "returned_quantity": null,
+        "shipped_quantity": 2,
+        "should_merge": true,
+        "swap_id": null,
+        "tax_lines": Array [
+          Object {
+            "code": "default",
+            "created_at": Any<Date>,
+            "id": Any<String>,
+            "item_id": "test-item",
+            "metadata": null,
+            "name": "default",
+            "rate": 20,
+            "updated_at": Any<Date>,
+          },
+        ],
+        "thumbnail": null,
+        "title": "Intelligent Plastic Chips",
+        "totals": Object {
+          "discount_total": 0,
+          "gift_card_total": 0,
+          "original_tax_total": 400,
+          "original_total": 2400,
+          "quantity": 2,
+          "subtotal": 2000,
+          "tax_lines": Array [
+            Object {
+              "code": "default",
+              "created_at": Any<Date>,
+              "id": Any<String>,
+              "item_id": "test-item",
+              "metadata": null,
+              "name": "default",
+              "rate": 20,
+              "updated_at": Any<Date>,
+            },
+          ],
+          "tax_total": 400,
+          "total": 2400,
+          "unit_price": 1000,
+        },
+        "unit_price": 1000,
+        "updated_at": Any<Date>,
+        "variant": Object {
+          "allow_backorder": false,
+          "barcode": null,
+          "created_at": Any<Date>,
+          "deleted_at": null,
+          "ean": null,
+          "height": null,
+          "hs_code": null,
+          "id": "test-variant",
+          "inventory_quantity": 10,
+          "length": null,
+          "manage_inventory": true,
+          "material": null,
+          "metadata": null,
+          "mid_code": null,
+          "origin_country": null,
+          "product": Object {
+            "collection_id": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "description": null,
+            "discountable": true,
+            "external_id": null,
+            "handle": null,
+            "height": null,
+            "hs_code": null,
+            "id": "test-product",
+            "is_giftcard": false,
+            "length": null,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "profile_id": Any<String>,
+            "status": "draft",
+            "subtitle": null,
+            "thumbnail": null,
+            "title": "Awesome Metal Ball",
+            "type_id": null,
+            "updated_at": Any<Date>,
+            "weight": null,
+            "width": null,
+          },
+          "product_id": "test-product",
+          "sku": null,
+          "title": "Practical Granite Pizza",
+          "upc": null,
+          "updated_at": Any<Date>,
+          "weight": null,
+          "width": null,
+        },
+        "variant_id": "test-variant",
+      },
+    ],
+    "return_items": Array[...], //same as items
+    "return_total": "12.00 USD",
+    "tax_total": "4.00 USD",
+    "refund_amount": "12.00 USD",
+    "additional_total": "11.25 USD"
+  }
+  ```
+
+</Details>
+
+### Gift Card Created
+
+**Key in plugin options:** `gift_card_created_template`
+
+**Triggering Events:** `gift_card.created` and `order.gift_card_created`
+
+**Description:** Template to be to the customer sent when a gift card in their order has been created.
+
+<Details summaryContent="Example Data">
+
+  ```json noReport
+  {
+    "code": Any<String>,
+    "value": 100,
+    "balance": 100,
+    "display_value": "100.00",
+    "region": Object {
+      "automatic_taxes": true,
+      "created_at": Any<Date>,
+      "currency_code": "usd",
+      "deleted_at": null,
+      "fulfillment_providers": Array [],
+      "gift_cards_taxable": true,
+      "id": Any<String>,
+      "metadata": null,
+      "name": "Test region",
+      "payment_providers": Array [
+        PaymentProvider {
+          "id": "test-pay",
+          "is_installed": true,
+        },
+      ],
+      "tax_code": null,
+      "tax_provider_id": null,
+      "tax_rate": 12.5,
+      "updated_at": Any<Date>,
+    },
+    "region_id": "test-region",
+    "order": Object {
+      "billing_address_id": null,
+      "canceled_at": null,
+      "cart_id": null,
+      "created_at": Any<Date>,
+      "currency_code": "usd",
+      "customer_id": Any<String>,
+      "display_id": Any<Number>,
+      "draft_order_id": null,
+      "email": "test@testson.com",
+      "external_id": null,
+      "fulfillment_status": "fulfilled",
+      "id": Any<String>,
+      "idempotency_key": null,
+      "items": Array [
+        Object {
+          "allow_discounts": true,
+          "cart_id": null,
+          "claim_order_id": null,
+          "created_at": Any<Date>,
+          "description": "",
+          "fulfilled_quantity": 2,
+          "has_shipping": null,
+          "id": Any<String>,
+          "is_giftcard": false,
+          "is_return": false,
+          "metadata": null,
+          "order_id": Any<String>,
+          "quantity": 2,
+          "returned_quantity": null,
+          "shipped_quantity": 2,
+          "should_merge": true,
+          "swap_id": null,
+          "thumbnail": "",
+          "title": "Intelligent Plastic Chips",
+          "unit_price": 1000,
+          "updated_at": Any<Date>,
+          "variant": Object {
+            "allow_backorder": false,
+            "barcode": null,
+            "created_at": Any<Date>,
+            "deleted_at": null,
+            "ean": null,
+            "height": null,
+            "hs_code": null,
+            "id": "test-variant",
+            "inventory_quantity": 10,
+            "length": null,
+            "manage_inventory": true,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "product": Object {
+              "collection_id": null,
+              "created_at": Any<Date>,
+              "deleted_at": null,
+              "description": null,
+              "discountable": true,
+              "external_id": null,
+              "handle": null,
+              "height": null,
+              "hs_code": null,
+              "id": "test-product",
+              "is_giftcard": false,
+              "length": null,
+              "material": null,
+              "metadata": null,
+              "mid_code": null,
+              "origin_country": null,
+              "profile_id": Any<String>,
+              "status": "draft",
+              "subtitle": null,
+              "thumbnail": null,
+              "title": "Awesome Metal Ball",
+              "type_id": null,
+              "updated_at": Any<Date>,
+              "weight": null,
+              "width": null,
+            },
+            "product_id": "test-product",
+            "sku": null,
+            "title": "Practical Granite Pizza",
+            "upc": null,
+            "updated_at": Any<Date>,
+            "weight": null,
+            "width": null,
+          },
+          "variant_id": "test-variant",
+        },
+      ],
+      "metadata": null,
+      "no_notification": null,
+      "object": "order",
+      "payment_status": "captured",
+      "region_id": "test-region",
+      "shipping_address": Object {
+        "address_1": "84185 Lindsey Centers",
+        "address_2": null,
+        "city": null,
+        "company": null,
+        "country_code": "us",
+        "created_at": Any<Date>,
+        "customer_id": null,
+        "deleted_at": null,
+        "first_name": "Chyna",
+        "id": Any<String>,
+        "last_name": "Osinski",
+        "metadata": null,
+        "phone": null,
+        "postal_code": "51510",
+        "province": null,
+        "updated_at": Any<Date>,
+      },
+      "shipping_address_id": Any<String>,
+      "status": "pending",
+      "tax_rate": null,
+      "updated_at": Any<Date>,
+    },
+    "order_id": Any<String>,
+    "is_disabled": false,
+    "created_at": Any<Date>,
+    "updated_at": Any<Date>,
+    "deleted_at": null,
+    "locale": null,
+    "email": "test@testson.com",
+    "display_value": 4
+  }
+  ```
+
+</Details>
+
+### Customer Password Reset
+
+**Key in plugin options:** `customer_password_reset_template`
+
+**Triggering Event:** `customer.password_reset`
+
+**Description:** Template to use when sending an email to the customer when they request to reset their password.
+
+<Details summaryContent="Example Data">
+
+  ```json noReport
+  {
+    "id": Any<String>,
+    "email": "test@testson.com",
+    "first_name": "Chyna",
+    "last_name": "Osinski",
+    "token": Any<String>,
+  }
+  ```
+
+</Details>
+
+### User Password Reset
+
+**Key in plugin options:** `user_password_reset_template`
+
+**Triggering Event:** `user.password_reset`
+
+**Description:** Template to use when sending an email to the admin user when they request to reset their password.
+
+<Details summaryContent="Example Data">
+
+  ```json noReport
+  {
+    "email": "test@testson.com",
+    "token": Any<String>,
+  }
+  ```
+
+</Details>
+
+### Restock Notification
+
+**Key in plugin options:** medusa_restock_template
+
+**Triggering Event:** `restock-notification.restocked`
+
+**Description:** Template to use when sending an email to the admin user when a product has hit the restock quantity threshold.
+
+<Details summaryContent="Example Data">
+
+  ```json noReport
+  {
+    "product": Object {
+      "collection_id": null,
+      "created_at": Any<Date>,
+      "deleted_at": null,
+      "description": null,
+      "discountable": true,
+      "external_id": null,
+      "handle": null,
+      "height": null,
+      "hs_code": null,
+      "id": "test-product",
+      "is_giftcard": false,
+      "length": null,
+      "material": null,
+      "metadata": null,
+      "mid_code": null,
+      "origin_country": null,
+      "profile_id": Any<String>,
+      "status": "draft",
+      "subtitle": null,
+      "thumbnail": "",
+      "title": "Awesome Metal Ball",
+      "type_id": null,
+      "updated_at": Any<Date>,
+      "weight": null,
+      "width": null,
+    },
+    "variant": Object {
+      "allow_backorder": false,
+      "barcode": null,
+      "created_at": Any<Date>,
+      "deleted_at": null,
+      "ean": null,
+      "height": null,
+      "hs_code": null,
+      "id": "test-variant",
+      "inventory_quantity": 10,
+      "length": null,
+      "manage_inventory": true,
+      "material": null,
+      "metadata": null,
+      "mid_code": null,
+      "origin_country": null,
+      "product": Object {
+        "collection_id": null,
+        "created_at": Any<Date>,
+        "deleted_at": null,
+        "description": null,
+        "discountable": true,
+        "external_id": null,
+        "handle": null,
+        "height": null,
+        "hs_code": null,
+        "id": "test-product",
+        "is_giftcard": false,
+        "length": null,
+        "material": null,
+        "metadata": null,
+        "mid_code": null,
+        "origin_country": null,
+        "profile_id": Any<String>,
+        "status": "draft",
+        "subtitle": null,
+        "thumbnail": null,
+        "title": "Awesome Metal Ball",
+        "type_id": null,
+        "updated_at": Any<Date>,
+        "weight": null,
+        "width": null,
+      },
+      "product_id": "test-product",
+      "sku": null,
+      "title": "Practical Granite Pizza",
+      "upc": null,
+      "updated_at": Any<Date>,
+      "weight": null,
+      "width": null,
+    },
+    "variant_id": "test-variant",
+    "emails": Array [
+      "test@testson.com"
+    ]
+  }
+  ```
+
+</Details>
+

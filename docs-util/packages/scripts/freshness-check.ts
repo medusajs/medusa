@@ -24,8 +24,8 @@ const repoPath = path.join(
   "..",
   "www",
   "apps",
-  "docs",
-  "content"
+  "book",
+  "app"
 )
 let freshnessCheckLabelId = ""
 let documentationTeamId = ""

@@ -1,0 +1,98 @@
+---
+sidebar_position: 7
+---
+
+import { 
+  EllipsisHorizontal, 
+} from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Exchanges`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to manage order exchanges including how to find customers’ requested order exchanges, how to create them, and how to fulfill them.
+
+## Find Requested Order Exchanges
+
+{/* TODO check info for correctness */}
+
+To find customers’ requested order exchanges:
+
+1. Go to an order’s details page.
+2. In the Timeline section, if there are any requested exchanges you’ll find them with the title “Exchange Requested”.
+
+---
+
+## Create an Order Exchange
+
+{/* TODO check steps for correctness */}
+
+<Note type="check">
+
+The order’s payment must be captured and the order's items must be fulfilled first.
+
+</Note>
+
+To create an order exchange:
+
+1. Go to an order’s details page.
+2. In the Timeline section, click on the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon.
+3. Click on Register Exchange from the dropdown.
+4. In the new form that opens, there are two steps:
+    1. In the first step, choose the items to return to the customer. Once you're done, click on the Continue button.
+    2. In the second step:
+        1. For each item under the "Items to return" section, enter the item's quantity, choose the return reason, and optionally provide a note that's shown to the customer.
+        2. Under the Shipping section:
+            1. Choose the location the item is returned to.
+            2. Choose the shipping method used to return the item.
+        3. Under the "Items to send" section:
+            1. To add items to send, click the "Add items" button and choose the Products from the drawer, then click "Add products".
+            2. To change an item's quantity, change the value under its Quantity column.
+        4. If a refund is required, you can change the amount refunded by toggling the "Custom refund" button and entering the new amount in the field shown.
+        5. To disable sending a notification to the customer regarding the exchange, toggle the "Send notifications" button.
+5. Once you’re done, click the Save button.
+
+---
+
+## Mark an Exchange’s Return as Received
+
+{/* TODO check steps for correctness */}
+
+To mark a return that is part of an exchange as received:
+
+1. Go to an order’s details page.
+2. In the Timeline section, find the order exchange.
+3. Click on the Receive Return button.
+4. Check the items you want to mark as received.
+5. Click the Complete button.
+
+---
+
+## Cancel an Exchange
+
+<Note type="warning">
+
+Canceling an exchange is irreversible.
+
+</Note>
+
+<Note type="check">
+
+The return of the exchange must be canceled first. If the return has been marked as received, the exchange can’t be canceled.
+
+</Note>
+
+{/* TODO check steps for correctness */}
+
+To cancel an exchange:
+
+1. Go to an order’s details page.
+2. In the Timeline section, find the order exchange.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon next to it.
+4. Click on “Cancel return” from the dropdown.
+5. Confirm canceling the return by clicking the “Yes, cancel” button in the pop-up.
+6. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon again next to the order exchange.
+7. Click on “Cancel exchange” from the dropdown.
+8. Confirm canceling the exchange by clicking the “Yes, cancel” button in the pop-up.

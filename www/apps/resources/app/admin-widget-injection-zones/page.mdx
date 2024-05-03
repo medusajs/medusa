@@ -1,0 +1,821 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Admin Widget Injection Zones`,
+}
+
+# {metadata.title}
+
+This documentation page includes the list of injection zones you can add Admin Widgets to.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `login.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added before the login form.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `login.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added after the login form.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `order.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the orders list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `order.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the order list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `order.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the order details page
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `OrderDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          order, // Order object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `order.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the end of the order details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `OrderDetailsWidgetProps` imported from `@medusajs/admin`
+
+        ```ts noCopy noReport
+        {
+          order, // Order object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `draft_order.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the draft orders list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `draft_order.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the draft orders list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `draft_order.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the draft order details page
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DraftOrderDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          draftOrder, // DraftOrder object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `draft_order.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the draft order details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DraftOrderDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          draftOrder, // DraftOrder object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `customer.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the customers list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `customer.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the customers list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `customer.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the customer details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `CustomerDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          customer, // Customer object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `customer.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the customer details page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `CustomerDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          customer, // Customer object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `customer_group.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the customer groups list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `customer_group.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the customer groups list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `customer_group.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the customer group details page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `CustomerGroupDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          customerGroup, // CustomerGroup object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `customer_group.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the customer group details page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `CustomerGroupDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          customerGroup, // CustomerGroup object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the product list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the products list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the product details page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `ProductDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          product, // Product object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the product details page
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `ProductDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          product, // Product object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product_collection.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the product collections list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product_collection.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the product collections list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product_collection.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the product collection details page
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `ProductCollectionDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          productCollection, // Collection object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product_collection.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the product collection details page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `ProductCollectionDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          productCollection, // Collection object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `price_list.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the Pricing list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `price_list.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the Pricing list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `price_list.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a price list's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `PriceListDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          priceList, // PriceList object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `price_list.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a price list's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `PriceListDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          priceList, // PriceList object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `discount.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the discounts list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `discount.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the discounts list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `discount.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a discount's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `DiscountDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          discount, // Discount object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `discount.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a discount's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `DiscountDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          discount, // Discount object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `gift_card.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the gift cards list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `gift_card.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the gift cards list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `gift_card.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a gift card's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `GiftCardDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          giftCard, // Product object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `gift_card.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a gift card's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `GiftCardDetailsWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          giftCard, // Product object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `custom_gift_card.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a custom gift card's page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `GiftCardCustomWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          giftCard, // GiftCard object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `custom_gift_card.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a custom gift card's page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Type `GiftCardCustomWidgetProps` imported from `@medusajs/admin`.
+
+        ```ts noCopy noReport
+        {
+          giftCard, // GiftCard object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

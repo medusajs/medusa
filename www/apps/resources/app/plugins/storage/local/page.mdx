@@ -1,0 +1,127 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Local File Storage Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+The Local File Storage plugin allows you to upload media assets, such as product images, to a local directory. This is useful during development.
+
+<Note title="Tip">
+
+For production, it's recommended to use a storage plugin that hosts your images on a third-party service. This storage plugin doesn't handle advanced features such as presigned URLs.
+
+</Note>
+
+---
+
+## Install the Local File Storage Plugin
+
+To install the Local File Storage plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install @medusajs/file-local
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...
+  {
+    resolve: `@medusajs/file-local`,
+    options: {
+      // optional
+    },
+  },
+]
+```
+
+### Local File Storage Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `upload_dir`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the relative path to upload the files to.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `uploads/images`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `backend_url`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the URL of your Medusa application. This is helpful if you deploy your application or change the port used.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `http://localhost:9000`
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Test the Plugin
+
+To test the plugin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, upload a product image either using the [Medusa Admin](!user-guide!/products/manage#manage-product-media) or the [Admin API routes](https://docs.medusajs.com/api/admin#uploads_postuploads).
+
+---
+
+## Next.js Starter Configuration
+
+If you’re using the [Next.js Starter storefront](../../../nextjs-starter/page.mdx), add the following option to the exported object in `next.config.js`:
+
+```js title="next.config.js"
+const { withStoreConfig } = require("./store-config")
+
+// ...
+
+module.exports = withStoreConfig({
+  // ...
+  images: {
+    domains: [
+      // ...
+      "{medusa_domain}",
+    ],
+  },
+})
+```
+
+This adds the Medusa application's domain name into the configured images domain names. If you don't add the configuration, you’ll receive the error ["next/image Un-configured Host”](https://nextjs.org/docs/messages/next-image-unconfigured-host).
+
+Make sure to replace `{medusa_domain}` with the domain of your Medusa application. For example, `localhost`.

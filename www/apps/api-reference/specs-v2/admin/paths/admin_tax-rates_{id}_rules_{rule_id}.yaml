@@ -1,0 +1,48 @@
+delete:
+  operationId: DeleteTaxRatesIdRulesRule_id
+  summary: Remove Rules from Tax Rate
+  description: >-
+    Remove a list of rules from a tax rate. This doesn't delete the Rule, only
+    the association between the Rule and the tax rate.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The tax rate's ID.
+      required: true
+      schema:
+        type: string
+    - name: rule_id
+      in: path
+      description: The tax rate's rule id.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_tax-rates_{id}_rules_{rule_id}/delete.sh
+  tags:
+    - Tax Rates
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

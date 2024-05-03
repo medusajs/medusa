@@ -5,4 +5,5 @@ export declare type DocsConfig = {
   baseUrl: string
   sidebar: SidebarSectionItemsType
   filesBasePath?: string
+  useNextLinks?: boolean
 }

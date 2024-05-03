@@ -4,11 +4,61 @@
  * summary: Create Customer
  * description: Create a customer.
  * x-authenticated: false
- * parameters: []
+ * parameters:
+ *   - name: expand
+ *     in: query
+ *     description: Comma-separated relations that should be expanded in the returned data.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: expand
+ *       description: Comma-separated relations that should be expanded in the returned data.
+ *   - name: fields
+ *     in: query
+ *     description: Comma-separated fields that should be included in the returned data.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: fields
+ *       description: Comma-separated fields that should be included in the returned data.
+ *   - name: offset
+ *     in: query
+ *     description: The number of items to skip when retrieving a list.
+ *     required: false
+ *     schema:
+ *       type: number
+ *       title: offset
+ *       description: The number of items to skip when retrieving a list.
+ *   - name: limit
+ *     in: query
+ *     description: Limit the number of items returned in the list.
+ *     required: false
+ *     schema:
+ *       type: number
+ *       title: limit
+ *       description: Limit the number of items returned in the list.
+ *   - name: order
+ *     in: query
+ *     description: Field to sort items in the list by.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: order
+ *       description: Field to sort items in the list by.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/CreateCustomerAddress"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: curl -X POST '{backend_url}/store/customers/me/addresses'
+ *     source: |-
+ *       curl -X POST '{backend_url}/store/customers/me/addresses' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "customer_id": "{value}"
+ *       }'
  * tags:
  *   - Customers
  * responses:

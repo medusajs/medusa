@@ -1,0 +1,338 @@
+---
+sidebar_position: 1
+---
+
+import { DotsSix, EllipsisHorizontal, XMark } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Products`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to create new products, edit a product's details, and more.
+
+## Create a Product
+
+{/* TODO check for correctness */}
+
+To create a new product:
+
+1. Go to the Products page.
+2. Click on the Create button at the top right.
+3. In the new form that opens, there are two steps:
+    1. In the first step:
+        1. Enter the product's name under the Title field. This is the only required field in the form.
+        2. Optionally enter the values of the Subtitle, Material, and Description fields.
+        3. In the Handle field, enter a dash (`-`) separated string that's used as part of the product's URL when the customer views it on the storefront. If not specified, the handle is generated from the Title field's value.
+        4. If you don't want discounts to be applied on the product, toggle the Discountable button.
+        5. Under the Organize section, all fields are optional:
+            1. Choose types, collections, categories, or tags that the product belongs to.
+            2. To add sales channels that the product is available in:
+                1. Click on the Add Sales Channel button.
+                2. In the drawer that opens, choose the sales channels to add the products to.
+                3. Once done, click on the "Add channels" button.
+        6. Under the Variants section:
+            1. To add a product option:
+                1. Enter the title (for example, "Color") and the variations (for example, "Black") into the "Product options" table.
+                2. To add multiple variations, set the variations' value to a comma-separated list of values (for example, "Black, White").
+                3. To add a new option, press <Kbd>tab</Kbd> when at the last column of the current row to add a new row.
+            2. After you add options, product variants are created automatically from these options.
+                - You can disable creating a product variant by unchecking its checkbox.
+                - You can re-order the product variants by dragging the <InlineIcon Icon={DotsSix} alt="drag" /> icon.
+        7. Under the Attributes section, enter stock and shipping related details of the product, such as width, height, MID code, and more.
+        8. Under the Thumbnail section, upload an image used as the thumbnail of the product.
+        9. Under the Medusa section, upload the product's images.
+        10. Once you're done, click on the Continue button.
+    2. In the second step, enter the details of the product's variants, such as title, SKU, or price.
+4. Once done, click the Save button.
+
+---
+
+## View Product Details
+
+To view a product’s details:
+
+1. Go to the Products page.
+2. Click on the product you want to view.
+
+---
+
+## Edit a Product’s General Information
+
+{/* TODO check for correctness */}
+
+To edit a product’s general information:
+
+1. Go to the product’s details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at the top right of the first section.
+3. Choose “Edit General Information” from the dropdown.
+4. In the drawer that opens, edit any of the product's general information.
+5. Once done, click on the Confirm button.
+
+---
+
+## Change a Product’s Status
+
+{/* TODO check for correctness */}
+
+To change a product’s status:
+
+1. Go to the product’s details page.
+2. Click on the status at the top right of the first section. For example, if the current status of the product is Active, you should see Active written at the top right of the first section.
+3. Click on the status in the dropdown to change the status.
+
+---
+
+## Manage Product Media
+
+{/* TODO check for correctness */}
+
+To manage the product's media:
+
+1. Go to the product's details page.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon in the top right of the Media section.
+3. Choose Edit from the dropdown.
+4. In the form that opens:
+    1. To upload an image, drag and drop the image to the box at the right, or click the box to select media to upload.
+    2. To set an image as a thumbnail image:
+        1. Hover over the image.
+        2. Click the checkbox shown at the top right of the image.
+        3. Press <Kbd>T</Kbd> to make the image a thumbnail.
+    3. To delete one or more images:
+        1. Hover over the image.
+        2. Click the checkbox shown at the top right of the images to select.
+        3. Press <Kbd>D</Kbd> to delete the images.
+5. Once you're done, click the Save button.
+
+---
+
+## Add Product Option
+
+{/* TODO check for correctness */}
+
+To add a product option:
+
+1. Go to the product’s details page.
+2. In the Options section, click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at the top right.
+3. Choose Create from the dropdown.
+4. In the drawer that opens, enter the product option's title.
+5. Once you're done, click the Save button.
+
+<Note>
+
+To add values to the new product option, add a variant.
+
+</Note>
+
+{/* TODO check if product options can be edited */}
+
+{/* ## Manage Product Options
+
+<Note>
+
+After a product is created, the only way to add values to an option is when you add or edit a variant. Adding a new option automatically creates the value “Default Value”. An option’s value is deleted if no variant is using it.
+
+</Note>
+
+To manage a product’s option:
+
+1. Go to the product’s details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon in the top right of the Variants section.
+3. Click on Edit Options from the dropdown.
+4. In the new window that opens:
+    1. You can add a new option by clicking the “Add an option” button.
+    2. You can edit an option’s name by changing its name in the field.
+    3. You can delete an option by clicking the <InlineThemeImage light="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999273/Medusa%20Docs/UI%20Icons/7hztVhj_mj6mxu.png" dark="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999273/Medusa%20Docs/UI%20Icons/7hztVhj_mj6mxu.png" alt="trash" /> icon.
+5. Once you’re done, click on the "Save and close" button. */}
+
+---
+
+## Manage Product Variants
+
+### Add a Variant
+
+{/* TODO check for correctness */}
+
+<Note>
+
+Multiple variants can’t have the same options combination.
+
+</Note>
+
+To add a variant to a product:
+
+1. Go to the product’s details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon in the top right of the Variants section.
+3. Choose "Add variant" from the dropdown.
+4. In the new form that opens:
+    1. Enter the variant's name in the Title field.
+    2. Optionally enter the variant's material in the Material field.
+    3. You'll find a field for each product option to specify its value. You can choose an existing value or enter a new one.
+    4. Under the Stock & Inventory section:
+        1. Enter the general inventory details such as SKU or EAN.
+        2. If you disable the "Manage inventory" field, Medusa assumes the product is always in stock.
+        2. If you enable the "Manage inventory" field, choose the stock locations of the variant in the Locations field.
+        3. If "Allow backorders" is enabled, customers can purchase this variant even if it’s out-of-stock. You can only enable "Allow Backorders" if "Manage Inventory" is enabled.
+    5. Under the Attributes section, enter general details related to shipping such as width, height or MID code.
+5. Once you’re done, click on the Save button.
+
+{/* TODO check if this feature is still available */}
+
+{/* ### Edit Variants Position
+
+To edit variants’ position in a product:
+
+1. Go to the product’s details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon in the top right of the Variants section.
+3. Click on Edit Variants from the dropdown.
+4. In the window that opens:
+    1. Click and hold the <InlineThemeImage light="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999654/Medusa%20Docs/UI%20Icons/zp2QTbO_io0f7i.png" dark="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999654/Medusa%20Docs/UI%20Icons/zp2QTbO_io0f7i.png" alt="grip" /> icon next to the variant, then drag it to the position you want.
+    2. You can also change the inventory of the variants.
+5. Once you’re done, click on the “Save and close” button. */}
+
+### Edit a Variant
+
+{/* TODO check for correctness */}
+
+To edit a variant:
+
+1. Go to the product’s details page.
+2. Find the variant you want to edit in the Variants section.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at its right.
+4. Choose "Edit variant" from the dropdown.
+5. In the drawer that opens, edit the variant’s information.
+6. Once you’re done, click on the Confirm button.
+
+### Duplicate a Variant
+
+{/* TODO check for correctness */}
+
+To duplicate a variant:
+
+1. Go to the product’s details page.
+2. Find the variant you want to duplicate in the Variants section.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at its right.
+4. Choose "Duplicate variant" from the dropdown.
+5. This opens a new form with almost all fields filled except for the selected Options.
+6. Once you’re done, click on the Save button.
+
+### Delete a Variant
+
+{/* TODO check for correctness */}
+
+<Note type="warning">
+
+Deleting a variant is irreversible.
+
+</Note>
+
+To delete a variant:
+
+1. Go to the product’s details page.
+2. Find the variant you want to duplicate in the Variants section.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at its right.
+4. Choose "Delete variant" from the dropdown.
+
+---
+
+## Edit Product Variant Prices
+
+{/* TODO check for correctness */}
+
+The prices bulk editor allows you to edit the prices of a product's variants using a spreadsheet interface.
+
+To open the prices bulk editor:
+
+1. Go to the product's details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at the top right of the Variants section.
+3. Choose "Edit prices" from the dropdown.
+
+This opens the prices bulk editor. Refer to the [Bulk Editor](../../tips/bulk-editor/page.mdx) guide to learn tips about how to use the bulk editor.
+
+Once you're done making changes:
+
+1. Save your changes by clicking the Save button.
+2. In the pop-up that opens:
+    - If you made edits to a value in a currency or region that's now hidden, you'll be shown the option to save all changes or just save the changes made in the currently visible currencies and regions. Choose one of the options then click the "Save changes" button.
+    - Otherwise, you can directly click the "Save changes" button.
+
+To discard the changes you made:
+
+1. Either press <Kbd>esc</Kbd> or click the <InlineIcon Icon={XMark} alt="X" /> icon at the top left.
+2. Confirm discarding the changes by clicking the “Yes, close” button in the pop-up.
+
+---
+
+## Edit Sales Channel Availability
+
+{/* TODO check for correctness */}
+
+To edit the product's availability in sales channels:
+
+1. Go to the product’s details page.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon in the top right of the Sales Channels section.
+3. Choose Edit from the dropdown.
+4. In the form that opens, check or uncheck the sales channels to add or remove availability.
+5. Once you're done, click the Save button.
+
+---
+
+## Edit Product Organization
+
+{/* TODO check for correctness */}
+
+To edit the product's organization details:
+
+1. Go to the product’s details page.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon in the top right of the Organization section.
+3. Choose Edit from the dropdown.
+4. In the drawer that opens, edit the types, collections, categories, and tags that the product belongs to.
+4. Once you're done, click the Save button.
+
+---
+
+## Edit a Product’s Attributes
+
+{/* TODO check for correctness */}
+
+To edit a product’s attributes:
+
+1. Go to the product’s details page.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon in the top right of the Attributes section.
+3. Choose "Edit attributes" from the dropdown.
+4. In the drawer that opens, edit the attribute information of the product.
+5. Once you’re done, click on the Save button.
+
+---
+
+## Duplicate a Product
+
+{/* TODO check if feature is still available */}
+
+To duplicate a product:
+
+1. Go to the Products page.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon next to the product you want to duplicate.
+3. Choose Duplicate from the dropdown.
+
+This creates a product with the same information as the original but as a draft.
+
+---
+
+## Delete a Product
+
+{/* TODO check info for correctness */}
+
+<Note type="warning">
+
+Deleting a product is irreversible.
+
+</Note>
+
+To delete a product:
+
+1. Go to the Products page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon next to the product you want to delete.
+3. Choose Delete from the dropdown.
+4. Confirm deleting the product by clicking the “Yes, confirm” button in the pop-up.

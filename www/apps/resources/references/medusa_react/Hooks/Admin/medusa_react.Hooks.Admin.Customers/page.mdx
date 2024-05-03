@@ -1,0 +1,230 @@
+---
+slug: /references/medusa-react/hooks/admin/customers
+---
+
+import { TypeList } from "docs-ui"
+
+# Customers
+
+Queries and Mutations listed here are used to send requests to the [Admin Customer API Routes](https://docs.medusajs.com/api/admin#customers).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+Related Guide: [How to manage customers](https://docs.medusajs.com/modules/customers/admin/manage-customers).
+
+## Mutations
+
+### useAdminCreateCustomer
+
+This hook creates a customer as an admin.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateCustomer } from "medusa-react"
+
+type CustomerData = {
+  first_name: string
+  last_name: string
+  email: string
+  password: string
+}
+
+const CreateCustomer = () => {
+  const createCustomer = useAdminCreateCustomer()
+  // ...
+
+  const handleCreate = (customerData: CustomerData) => {
+    createCustomer.mutate(customerData, {
+      onSuccess: ({ customer }) => {
+        console.log(customer.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default CreateCustomer
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostCustomersReq","type":"[AdminPostCustomersReq](../../../../medusa/classes/medusa.AdminPostCustomersReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the customer to create.","expandable":false,"children":[{"name":"email","type":"`string`","description":"The customer's email.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`string`","description":"The customer's first name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`string`","description":"The customer's last name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"password","type":"`string`","description":"The customer's password.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"phone","type":"`string`","description":"The customer's phone number.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateCustomer"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminCustomersRes","type":"[AdminCustomersRes](../../../../medusa/types/medusa.AdminCustomersRes/page.mdx)","optional":false,"defaultValue":"","description":"The customer's details.","expandable":false,"children":[{"name":"customer","type":"[Customer](../../../../customer_models/classes/customer_models.Customer/page.mdx)","description":"Customer details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"company_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"email","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"phone","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"has_account","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"groups","type":"Collection&#60;[CustomerGroup](../../../../customer_models/classes/customer_models.CustomerGroup/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"customers","type":"Collection&#60;[Customer](../../../../customer_models/classes/customer_models.Customer/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]}]},{"name":"addresses","type":"Collection&#60;[Address](../../../../customer_models/classes/customer_models.Address/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"[OptionalProps]","type":"[EntityDateColumns](../../../../types/DAL/types/types.DAL.EntityDateColumns/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"address_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"is_default_shipping","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_default_billing","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[Customer](../../../../customer_models/classes/customer_models.Customer/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"company","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"address_1","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"address_2","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"city","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"country_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"province","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"postal_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"phone","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalCustomerProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateCustomer"/>
+
+### useAdminUpdateCustomer
+
+This hook updates a customer's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUpdateCustomer } from "medusa-react"
+
+type CustomerData = {
+  first_name: string
+  last_name: string
+  email: string
+  password: string
+}
+
+type Props = {
+  customerId: string
+}
+
+const Customer = ({ customerId }: Props) => {
+  const updateCustomer = useAdminUpdateCustomer(customerId)
+  // ...
+
+  const handleUpdate = (customerData: CustomerData) => {
+    updateCustomer.mutate(customerData)
+  }
+
+  // ...
+}
+
+export default Customer
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The customer's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateCustomer"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostCustomersCustomerReq","type":"[AdminPostCustomersCustomerReq](../../../../medusa/classes/medusa.AdminPostCustomersCustomerReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the customer to update.","expandable":false,"children":[{"name":"email","type":"`string`","description":"The Customer's email. You can't update the email of a registered customer.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`string`","description":"The Customer's first name.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`string`","description":"The Customer's last name.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"password","type":"`string`","description":"The Customer's password.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"phone","type":"`string`","description":"The Customer's phone number.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"groups","type":"[Group](../../../../medusa/classes/medusa.Group/page.mdx)[]","description":"A list of customer groups to which the customer belongs.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of a customer group","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateCustomer"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminCustomersRes","type":"[AdminCustomersRes](../../../../medusa/types/medusa.AdminCustomersRes/page.mdx)","optional":false,"defaultValue":"","description":"The customer's details.","expandable":false,"children":[{"name":"customer","type":"[Customer](../../../../customer_models/classes/customer_models.Customer/page.mdx)","description":"Customer details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"company_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"email","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"phone","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"has_account","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"groups","type":"Collection&#60;[CustomerGroup](../../../../customer_models/classes/customer_models.CustomerGroup/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"customers","type":"Collection&#60;[Customer](../../../../customer_models/classes/customer_models.Customer/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]}]},{"name":"addresses","type":"Collection&#60;[Address](../../../../customer_models/classes/customer_models.Address/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"[OptionalProps]","type":"[EntityDateColumns](../../../../types/DAL/types/types.DAL.EntityDateColumns/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"address_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"is_default_shipping","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_default_billing","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[Customer](../../../../customer_models/classes/customer_models.Customer/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"company","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"address_1","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"address_2","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"city","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"country_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"province","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"postal_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"phone","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalCustomerProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateCustomer"/>
+
+___
+
+## Queries
+
+### useAdminCustomers
+
+This hook retrieves a list of Customers. The customers can be filtered by fields such as 
+`q` or `groups`. The customers can also be paginated.
+
+#### Example
+
+To list customers:
+
+```tsx
+import React from "react"
+import { useAdminCustomers } from "medusa-react"
+
+const Customers = () => {
+  const { customers, isLoading } = useAdminCustomers()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {customers && !customers.length && (
+        <span>No customers</span>
+      )}
+      {customers && customers.length > 0 && (
+        <ul>
+          {customers.map((customer) => (
+            <li key={customer.id}>{customer.first_name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Customers
+```
+
+You can specify relations to be retrieved within each customer. In addition, by default, only the first `50` records are retrieved. 
+You can control pagination by specifying the `limit` and `offset` properties:
+
+```tsx
+import React from "react"
+import { useAdminCustomers } from "medusa-react"
+
+const Customers = () => {
+  const { 
+    customers, 
+    limit,
+    offset,
+    isLoading
+  } = useAdminCustomers({
+    expand: "billing_address",
+    limit: 20,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {customers && !customers.length && (
+        <span>No customers</span>
+      )}
+      {customers && customers.length > 0 && (
+        <ul>
+          {customers.map((customer) => (
+            <li key={customer.id}>{customer.first_name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Customers
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminGetCustomersParams](../../../../medusa/classes/medusa.AdminGetCustomersParams/page.mdx)","description":"Filters and pagination configurations to apply on the retrieved customers.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":false,"defaultValue":"50","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":false,"defaultValue":"0","expandable":false,"children":[]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Search term used to search customers' email, first name, last name.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"has_account","type":"`boolean`","description":"Filter customers by whether they have an account.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"groups","type":"`string`[]","description":"Filter customers by the customer's customer groups.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the customers' `created_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"updated_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the customers' `updated_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCustomers"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customers","type":"[Customer](../../../../customer_models/classes/customer_models.Customer/page.mdx)[]","description":"An array of customer details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"company_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"email","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"phone","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"has_account","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"groups","type":"Collection&#60;[CustomerGroup](../../../../customer_models/classes/customer_models.CustomerGroup/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"customers","type":"Collection&#60;[Customer](../../../../customer_models/classes/customer_models.Customer/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]}]},{"name":"addresses","type":"Collection&#60;[Address](../../../../customer_models/classes/customer_models.Address/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"[OptionalProps]","type":"[EntityDateColumns](../../../../types/DAL/types/types.DAL.EntityDateColumns/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"address_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"is_default_shipping","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_default_billing","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[Customer](../../../../customer_models/classes/customer_models.Customer/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"company","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"address_1","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"address_2","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"city","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"country_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"province","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"postal_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"phone","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalCustomerProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCustomers"/>
+
+### useAdminCustomer
+
+This hook retrieves the details of a customer.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCustomer } from "medusa-react"
+
+type Props = {
+  customerId: string
+}
+
+const Customer = ({ customerId }: Props) => {
+  const { customer, isLoading } = useAdminCustomer(
+    customerId
+  )
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {customer && <span>{customer.first_name}</span>}
+    </div>
+  )
+}
+
+export default Customer
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The customer's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCustomer"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"customer","type":"[Customer](../../../../customer_models/classes/customer_models.Customer/page.mdx)","description":"Customer details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"company_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"email","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"phone","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"has_account","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"groups","type":"Collection&#60;[CustomerGroup](../../../../customer_models/classes/customer_models.CustomerGroup/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"customers","type":"Collection&#60;[Customer](../../../../customer_models/classes/customer_models.Customer/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]}]},{"name":"addresses","type":"Collection&#60;[Address](../../../../customer_models/classes/customer_models.Address/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"[OptionalProps]","type":"[EntityDateColumns](../../../../types/DAL/types/types.DAL.EntityDateColumns/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"address_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"is_default_shipping","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_default_billing","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[Customer](../../../../customer_models/classes/customer_models.Customer/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"company","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"address_1","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"address_2","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"city","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"country_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"province","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"postal_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"phone","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalCustomerProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCustomer"/>

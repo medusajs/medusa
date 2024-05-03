@@ -1,12 +1,12 @@
 {
-	"id": 0,
+	"id": 24090,
 	"name": "notification",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 1,
+			"id": 24091,
 			"name": "ReturnedData",
 			"variant": "declaration",
 			"kind": 256,
@@ -21,7 +21,7 @@
 			},
 			"children": [
 				{
-					"id": 2,
+					"id": 24092,
 					"name": "to",
 					"variant": "declaration",
 					"kind": 1024,
@@ -48,7 +48,7 @@
 					}
 				},
 				{
-					"id": 3,
+					"id": 24093,
 					"name": "status",
 					"variant": "declaration",
 					"kind": 1024,
@@ -67,7 +67,7 @@
 					}
 				},
 				{
-					"id": 4,
+					"id": 24094,
 					"name": "data",
 					"variant": "declaration",
 					"kind": 1024,
@@ -121,15 +121,15 @@
 				{
 					"title": "Properties",
 					"children": [
-						2,
-						3,
-						4
+						24092,
+						24093,
+						24094
 					]
 				}
 			]
 		},
 		{
-			"id": 5,
+			"id": 24095,
 			"name": "INotificationService",
 			"variant": "declaration",
 			"kind": 256,
@@ -232,14 +232,14 @@
 			},
 			"children": [
 				{
-					"id": 6,
+					"id": 24096,
 					"name": "sendNotification",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7,
+							"id": 24097,
 							"name": "sendNotification",
 							"variant": "signature",
 							"kind": 4096,
@@ -282,7 +282,7 @@
 							},
 							"parameters": [
 								{
-									"id": 8,
+									"id": 24098,
 									"name": "event",
 									"variant": "param",
 									"kind": 32768,
@@ -309,7 +309,7 @@
 									}
 								},
 								{
-									"id": 9,
+									"id": 24099,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -352,7 +352,7 @@
 									}
 								},
 								{
-									"id": 10,
+									"id": 24100,
 									"name": "attachmentGenerator",
 									"variant": "param",
 									"kind": 32768,
@@ -412,7 +412,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 1,
+										"target": 24091,
 										"name": "ReturnedData",
 										"package": "@medusajs/medusa"
 									}
@@ -424,14 +424,14 @@
 					]
 				},
 				{
-					"id": 11,
+					"id": 24101,
 					"name": "resendNotification",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12,
+							"id": 24102,
 							"name": "resendNotification",
 							"variant": "signature",
 							"kind": 4096,
@@ -466,7 +466,7 @@
 							},
 							"parameters": [
 								{
-									"id": 13,
+									"id": 24103,
 									"name": "notification",
 									"variant": "param",
 									"kind": 32768,
@@ -521,7 +521,7 @@
 												"kind": "inline-tag",
 												"tag": "@link",
 												"text": "sendNotification",
-												"target": 6,
+												"target": 24096,
 												"tsLinkText": ""
 											},
 											{
@@ -536,7 +536,7 @@
 									}
 								},
 								{
-									"id": 14,
+									"id": 24104,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -563,7 +563,7 @@
 									}
 								},
 								{
-									"id": 15,
+									"id": 24105,
 									"name": "attachmentGenerator",
 									"variant": "param",
 									"kind": 32768,
@@ -623,7 +623,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 1,
+										"target": 24091,
 										"name": "ReturnedData",
 										"package": "@medusajs/medusa"
 									}
@@ -635,7 +635,7 @@
 					]
 				},
 				{
-					"id": 16,
+					"id": 24106,
 					"name": "manager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -658,7 +658,7 @@
 					}
 				},
 				{
-					"id": 17,
+					"id": 24107,
 					"name": "transactionManager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -690,7 +690,7 @@
 					}
 				},
 				{
-					"id": 18,
+					"id": 24108,
 					"name": "activeManager_",
 					"variant": "declaration",
 					"kind": 262144,
@@ -698,7 +698,7 @@
 						"isProtected": true
 					},
 					"getSignature": {
-						"id": 19,
+						"id": 24109,
 						"name": "activeManager_",
 						"variant": "signature",
 						"kind": 524288,
@@ -725,7 +725,7 @@
 					}
 				},
 				{
-					"id": 20,
+					"id": 24110,
 					"name": "__container__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -744,7 +744,7 @@
 					}
 				},
 				{
-					"id": 21,
+					"id": 24111,
 					"name": "__configModule__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -779,7 +779,7 @@
 					}
 				},
 				{
-					"id": 22,
+					"id": 24112,
 					"name": "__moduleDeclaration__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -814,21 +814,21 @@
 					}
 				},
 				{
-					"id": 23,
+					"id": 24113,
 					"name": "withTransaction",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 24,
+							"id": 24114,
 							"name": "withTransaction",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 25,
+									"id": 24115,
 									"name": "transactionManager",
 									"variant": "param",
 									"kind": 32768,
@@ -864,7 +864,7 @@
 					}
 				},
 				{
-					"id": 26,
+					"id": 24116,
 					"name": "shouldRetryTransaction_",
 					"variant": "declaration",
 					"kind": 2048,
@@ -873,14 +873,14 @@
 					},
 					"signatures": [
 						{
-							"id": 27,
+							"id": 24117,
 							"name": "shouldRetryTransaction_",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 28,
+									"id": 24118,
 									"name": "err",
 									"variant": "param",
 									"kind": 32768,
@@ -910,14 +910,14 @@
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 29,
+													"id": 24119,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 30,
+															"id": 24120,
 															"name": "code",
 															"variant": "declaration",
 															"kind": 1024,
@@ -932,7 +932,7 @@
 														{
 															"title": "Properties",
 															"children": [
-																30
+																24120
 															]
 														}
 													]
@@ -960,7 +960,7 @@
 					}
 				},
 				{
-					"id": 31,
+					"id": 24121,
 					"name": "atomicPhase_",
 					"variant": "declaration",
 					"kind": 2048,
@@ -969,7 +969,7 @@
 					},
 					"signatures": [
 						{
-							"id": 32,
+							"id": 24122,
 							"name": "atomicPhase_",
 							"variant": "signature",
 							"kind": 4096,
@@ -995,14 +995,14 @@
 							},
 							"typeParameter": [
 								{
-									"id": 33,
+									"id": 24123,
 									"name": "TResult",
 									"variant": "typeParam",
 									"kind": 131072,
 									"flags": {}
 								},
 								{
-									"id": 34,
+									"id": 24124,
 									"name": "TError",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -1011,7 +1011,7 @@
 							],
 							"parameters": [
 								{
-									"id": 35,
+									"id": 24125,
 									"name": "work",
 									"variant": "param",
 									"kind": 32768,
@@ -1027,21 +1027,21 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 36,
+											"id": 24126,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 37,
+													"id": 24127,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"parameters": [
 														{
-															"id": 38,
+															"id": 24128,
 															"name": "transactionManager",
 															"variant": "param",
 															"kind": 32768,
@@ -1066,7 +1066,7 @@
 														"typeArguments": [
 															{
 																"type": "reference",
-																"target": 33,
+																"target": 24123,
 																"name": "TResult",
 																"package": "@medusajs/medusa",
 																"refersToTypeParameter": true
@@ -1081,7 +1081,7 @@
 									}
 								},
 								{
-									"id": 39,
+									"id": 24129,
 									"name": "isolationOrErrorHandler",
 									"variant": "param",
 									"kind": 32768,
@@ -1111,28 +1111,28 @@
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 40,
+													"id": 24130,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"signatures": [
 														{
-															"id": 41,
+															"id": 24131,
 															"name": "__type",
 															"variant": "signature",
 															"kind": 4096,
 															"flags": {},
 															"parameters": [
 																{
-																	"id": 42,
+																	"id": 24132,
 																	"name": "error",
 																	"variant": "param",
 																	"kind": 32768,
 																	"flags": {},
 																	"type": {
 																		"type": "reference",
-																		"target": 34,
+																		"target": 24124,
 																		"name": "TError",
 																		"package": "@medusajs/medusa",
 																		"refersToTypeParameter": true
@@ -1155,7 +1155,7 @@
 																			},
 																			{
 																				"type": "reference",
-																				"target": 33,
+																				"target": 24123,
 																				"name": "TResult",
 																				"package": "@medusajs/medusa",
 																				"refersToTypeParameter": true
@@ -1174,7 +1174,7 @@
 									}
 								},
 								{
-									"id": 43,
+									"id": 24133,
 									"name": "maybeErrorHandlerOrDontFail",
 									"variant": "param",
 									"kind": 32768,
@@ -1192,28 +1192,28 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 44,
+											"id": 24134,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 45,
+													"id": 24135,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"parameters": [
 														{
-															"id": 46,
+															"id": 24136,
 															"name": "error",
 															"variant": "param",
 															"kind": 32768,
 															"flags": {},
 															"type": {
 																"type": "reference",
-																"target": 34,
+																"target": 24124,
 																"name": "TError",
 																"package": "@medusajs/medusa",
 																"refersToTypeParameter": true
@@ -1236,7 +1236,7 @@
 																	},
 																	{
 																		"type": "reference",
-																		"target": 33,
+																		"target": 24123,
 																		"name": "TResult",
 																		"package": "@medusajs/medusa",
 																		"refersToTypeParameter": true
@@ -1262,7 +1262,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 33,
+										"target": 24123,
 										"name": "TResult",
 										"package": "@medusajs/medusa",
 										"refersToTypeParameter": true
@@ -1289,27 +1289,27 @@
 				{
 					"title": "Properties",
 					"children": [
-						16,
-						17,
-						20,
-						21,
-						22
+						24106,
+						24107,
+						24110,
+						24111,
+						24112
 					]
 				},
 				{
 					"title": "Accessors",
 					"children": [
-						18
+						24108
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						6,
-						11,
-						23,
-						26,
-						31
+						24096,
+						24101,
+						24113,
+						24116,
+						24121
 					]
 				}
 			],
@@ -1327,13 +1327,13 @@
 			"implementedBy": [
 				{
 					"type": "reference",
-					"target": 47,
+					"target": 24137,
 					"name": "AbstractNotificationService"
 				}
 			]
 		},
 		{
-			"id": 47,
+			"id": 24137,
 			"name": "AbstractNotificationService",
 			"variant": "declaration",
 			"kind": 128,
@@ -1342,7 +1342,7 @@
 			},
 			"children": [
 				{
-					"id": 49,
+					"id": 24139,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1355,7 +1355,7 @@
 					}
 				},
 				{
-					"id": 53,
+					"id": 24143,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
@@ -1364,7 +1364,7 @@
 					},
 					"signatures": [
 						{
-							"id": 54,
+							"id": 24144,
 							"name": "new AbstractNotificationService",
 							"variant": "signature",
 							"kind": 16384,
@@ -1398,7 +1398,7 @@
 							},
 							"parameters": [
 								{
-									"id": 55,
+									"id": 24145,
 									"name": "container",
 									"variant": "param",
 									"kind": 32768,
@@ -1440,7 +1440,7 @@
 									}
 								},
 								{
-									"id": 56,
+									"id": 24146,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -1478,7 +1478,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 47,
+								"target": 24137,
 								"name": "AbstractNotificationService",
 								"package": "@medusajs/medusa"
 							},
@@ -1496,7 +1496,7 @@
 					}
 				},
 				{
-					"id": 59,
+					"id": 24149,
 					"name": "container",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1541,7 +1541,7 @@
 					}
 				},
 				{
-					"id": 60,
+					"id": 24150,
 					"name": "config",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1579,7 +1579,7 @@
 					}
 				},
 				{
-					"id": 61,
+					"id": 24151,
 					"name": "sendNotification",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1588,7 +1588,7 @@
 					},
 					"signatures": [
 						{
-							"id": 62,
+							"id": 24152,
 							"name": "sendNotification",
 							"variant": "signature",
 							"kind": 4096,
@@ -1631,7 +1631,7 @@
 							},
 							"parameters": [
 								{
-									"id": 63,
+									"id": 24153,
 									"name": "event",
 									"variant": "param",
 									"kind": 32768,
@@ -1658,7 +1658,7 @@
 									}
 								},
 								{
-									"id": 64,
+									"id": 24154,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1701,7 +1701,7 @@
 									}
 								},
 								{
-									"id": 65,
+									"id": 24155,
 									"name": "attachmentGenerator",
 									"variant": "param",
 									"kind": 32768,
@@ -1761,7 +1761,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 1,
+										"target": 24091,
 										"name": "ReturnedData",
 										"package": "@medusajs/medusa"
 									}
@@ -1771,19 +1771,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 7,
+								"target": 24097,
 								"name": "INotificationService.sendNotification"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 6,
+						"target": 24096,
 						"name": "INotificationService.sendNotification"
 					}
 				},
 				{
-					"id": 66,
+					"id": 24156,
 					"name": "resendNotification",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1792,7 +1792,7 @@
 					},
 					"signatures": [
 						{
-							"id": 67,
+							"id": 24157,
 							"name": "resendNotification",
 							"variant": "signature",
 							"kind": 4096,
@@ -1827,7 +1827,7 @@
 							},
 							"parameters": [
 								{
-									"id": 68,
+									"id": 24158,
 									"name": "notification",
 									"variant": "param",
 									"kind": 32768,
@@ -1882,7 +1882,7 @@
 												"kind": "inline-tag",
 												"tag": "@link",
 												"text": "sendNotification",
-												"target": 6,
+												"target": 24096,
 												"tsLinkText": ""
 											},
 											{
@@ -1897,7 +1897,7 @@
 									}
 								},
 								{
-									"id": 69,
+									"id": 24159,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -1924,7 +1924,7 @@
 									}
 								},
 								{
-									"id": 70,
+									"id": 24160,
 									"name": "attachmentGenerator",
 									"variant": "param",
 									"kind": 32768,
@@ -1984,7 +1984,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 1,
+										"target": 24091,
 										"name": "ReturnedData",
 										"package": "@medusajs/medusa"
 									}
@@ -1994,19 +1994,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 12,
+								"target": 24102,
 								"name": "INotificationService.resendNotification"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 11,
+						"target": 24101,
 						"name": "INotificationService.resendNotification"
 					}
 				},
 				{
-					"id": 71,
+					"id": 24161,
 					"name": "manager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2029,12 +2029,12 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 16,
+						"target": 24106,
 						"name": "INotificationService.manager_"
 					}
 				},
 				{
-					"id": 72,
+					"id": 24162,
 					"name": "transactionManager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2066,12 +2066,12 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 17,
+						"target": 24107,
 						"name": "INotificationService.transactionManager_"
 					}
 				},
 				{
-					"id": 75,
+					"id": 24165,
 					"name": "__container__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2090,12 +2090,12 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 20,
+						"target": 24110,
 						"name": "INotificationService.__container__"
 					}
 				},
 				{
-					"id": 76,
+					"id": 24166,
 					"name": "__configModule__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2130,12 +2130,12 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 21,
+						"target": 24111,
 						"name": "INotificationService.__configModule__"
 					}
 				},
 				{
-					"id": 77,
+					"id": 24167,
 					"name": "__moduleDeclaration__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2170,7 +2170,7 @@
 					},
 					"implementationOf": {
 						"type": "reference",
-						"target": 22,
+						"target": 24112,
 						"name": "INotificationService.__moduleDeclaration__"
 					}
 				}
@@ -2179,27 +2179,27 @@
 				{
 					"title": "Constructors",
 					"children": [
-						53
+						24143
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						49,
-						59,
-						60,
-						71,
-						72,
-						75,
-						76,
-						77
+						24139,
+						24149,
+						24150,
+						24161,
+						24162,
+						24165,
+						24166,
+						24167
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						61,
-						66
+						24151,
+						24156
 					]
 				}
 			],
@@ -2217,7 +2217,7 @@
 			"implementedTypes": [
 				{
 					"type": "reference",
-					"target": 5,
+					"target": 24095,
 					"name": "INotificationService",
 					"package": "@medusajs/medusa"
 				}
@@ -2228,400 +2228,400 @@
 		{
 			"title": "Classes",
 			"children": [
-				47
+				24137
 			]
 		},
 		{
 			"title": "Interfaces",
 			"children": [
-				1,
-				5
+				24091,
+				24095
 			]
 		}
 	],
 	"packageName": "@medusajs/medusa",
 	"symbolIdMap": {
-		"0": {
+		"24090": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": ""
 		},
-		"1": {
+		"24091": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "ReturnedData"
 		},
-		"2": {
+		"24092": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "__type.to"
 		},
-		"3": {
+		"24093": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "__type.status"
 		},
-		"4": {
+		"24094": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "__type.data"
 		},
-		"5": {
+		"24095": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "INotificationService"
 		},
-		"6": {
+		"24096": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "INotificationService.sendNotification"
 		},
-		"7": {
+		"24097": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "INotificationService.sendNotification"
 		},
-		"8": {
+		"24098": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "event"
 		},
-		"9": {
+		"24099": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "data"
 		},
-		"10": {
+		"24100": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "attachmentGenerator"
 		},
-		"11": {
+		"24101": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "INotificationService.resendNotification"
 		},
-		"12": {
+		"24102": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "INotificationService.resendNotification"
 		},
-		"13": {
+		"24103": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "notification"
 		},
-		"14": {
+		"24104": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "config"
 		},
-		"15": {
+		"24105": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "attachmentGenerator"
 		},
-		"16": {
+		"24106": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.manager_"
 		},
-		"17": {
+		"24107": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.transactionManager_"
 		},
-		"18": {
+		"24108": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
-		"19": {
+		"24109": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
-		"20": {
+		"24110": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__container__"
 		},
-		"21": {
+		"24111": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__configModule__"
 		},
-		"22": {
+		"24112": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
 		},
-		"23": {
+		"24113": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
-		"24": {
+		"24114": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
-		"25": {
+		"24115": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"26": {
+		"24116": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
-		"27": {
+		"24117": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
-		"28": {
+		"24118": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "err"
 		},
-		"29": {
+		"24119": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"30": {
+		"24120": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type.code"
 		},
-		"31": {
+		"24121": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
-		"32": {
+		"24122": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
-		"33": {
+		"24123": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TResult"
 		},
-		"34": {
+		"24124": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TError"
 		},
-		"35": {
+		"24125": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "work"
 		},
-		"36": {
+		"24126": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"37": {
+		"24127": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"38": {
+		"24128": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"39": {
+		"24129": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "isolationOrErrorHandler"
 		},
-		"40": {
+		"24130": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"41": {
+		"24131": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"42": {
+		"24132": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		},
-		"43": {
+		"24133": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "maybeErrorHandlerOrDontFail"
 		},
-		"44": {
+		"24134": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"45": {
+		"24135": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"46": {
+		"24136": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		},
-		"47": {
+		"24137": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "AbstractNotificationService"
 		},
-		"49": {
+		"24139": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "AbstractNotificationService.identifier"
 		},
-		"53": {
+		"24143": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "AbstractNotificationService.__constructor"
 		},
-		"54": {
+		"24144": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "AbstractNotificationService"
 		},
-		"55": {
+		"24145": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "container"
 		},
-		"56": {
+		"24146": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "config"
 		},
-		"59": {
+		"24149": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "AbstractNotificationService.container"
 		},
-		"60": {
+		"24150": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "AbstractNotificationService.config"
 		},
-		"61": {
+		"24151": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "AbstractNotificationService.sendNotification"
 		},
-		"62": {
+		"24152": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "AbstractNotificationService.sendNotification"
 		},
-		"63": {
+		"24153": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "event"
 		},
-		"64": {
+		"24154": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "data"
 		},
-		"65": {
+		"24155": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "attachmentGenerator"
 		},
-		"66": {
+		"24156": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "AbstractNotificationService.resendNotification"
 		},
-		"67": {
+		"24157": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "AbstractNotificationService.resendNotification"
 		},
-		"68": {
+		"24158": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "notification"
 		},
-		"69": {
+		"24159": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "config"
 		},
-		"70": {
+		"24160": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/notification-service.ts",
 			"qualifiedName": "attachmentGenerator"
 		},
-		"71": {
+		"24161": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.manager_"
 		},
-		"72": {
+		"24162": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.transactionManager_"
 		},
-		"73": {
+		"24163": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
-		"74": {
+		"24164": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
-		"75": {
+		"24165": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__container__"
 		},
-		"76": {
+		"24166": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__configModule__"
 		},
-		"77": {
+		"24167": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
 		},
-		"78": {
+		"24168": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
-		"79": {
+		"24169": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
-		"80": {
+		"24170": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"81": {
+		"24171": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
-		"82": {
+		"24172": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
-		"83": {
+		"24173": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "err"
 		},
-		"84": {
+		"24174": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"85": {
+		"24175": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type.code"
 		},
-		"86": {
+		"24176": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
-		"87": {
+		"24177": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
-		"88": {
+		"24178": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TResult"
 		},
-		"89": {
+		"24179": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "TError"
 		},
-		"90": {
+		"24180": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "work"
 		},
-		"91": {
+		"24181": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"92": {
+		"24182": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"93": {
+		"24183": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "transactionManager"
 		},
-		"94": {
+		"24184": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "isolationOrErrorHandler"
 		},
-		"95": {
+		"24185": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"96": {
+		"24186": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"97": {
+		"24187": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		},
-		"98": {
+		"24188": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "maybeErrorHandlerOrDontFail"
 		},
-		"99": {
+		"24189": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"100": {
+		"24190": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "__type"
 		},
-		"101": {
+		"24191": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
 			"qualifiedName": "error"
 		}

@@ -1,0 +1,117 @@
+---
+slug: /references/js-client/AdminAuthResource
+---
+
+import { TypeList } from "docs-ui"
+
+# AdminAuthResource
+
+This class is used to send requests to [Admin Auth API Routes](https://docs.medusajs.com/api/admin#auth\_getauth). All its method
+are available in the JS Client under the `medusa.admin.auth` property.
+
+The methods in this class allow admin users to manage their session, such as login or log out.
+You can send authenticated requests for an admin user either using the Cookie header, their API token, or the JWT Token.
+When you log the admin user in using the [createSession](page.mdx#createsession) method, the JS client will automatically attach the
+cookie header in all subsequent requests.
+
+Related Guide: [How to implement user profiles](https://docs.medusajs.com/modules/users/admin/manage-profile).
+
+## Methods
+
+### getSession
+
+Get the currently logged in user's details. Can also be used to check if there is an authenticated user.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.auth.getSession()
+.then(({ user }) => {
+  console.log(user.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="getSession"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminAuthRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the logged-in user's details.","expandable":false,"children":[{"name":"AdminAuthRes","type":"[AdminAuthRes](../../../medusa/types/medusa.AdminAuthRes/page.mdx)","optional":false,"defaultValue":"","description":"The user's details.","expandable":false,"children":[{"name":"user","type":"Omit&#60;User, \"password_hash\"&#62;","description":"User details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalFields`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":true,"defaultValue":"null","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="getSession"/>
+
+### deleteSession
+
+Log out the user and remove their authentication session. This will only work if you're using Cookie session for authentication. If the API token is still passed in the header,
+the user is still authorized to perform admin functionalities in other API Routes.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in
+medusa.admin.auth.deleteSession()
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="deleteSession"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when user is logged out successfully.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="deleteSession"/>
+
+### createSession
+
+Log a User in using their credentials. If the user is authenticated successfully, the cookie is automatically attached to subsequent requests sent with the JS Client.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.admin.AdminAuthResource.createSession({
+  email: "user@example.com",
+  password: "supersecret"
+})
+.then(({ user }) => {
+  console.log(user.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"payload","type":"[AdminPostAuthReq](../../../medusa/classes/medusa.AdminPostAuthReq/page.mdx)","description":"The credentials of the user.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"email","type":"`string`","description":"The user's email.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"password","type":"`string`","description":"The user's password.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createSession"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminAuthRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the user's details.","expandable":false,"children":[{"name":"AdminAuthRes","type":"[AdminAuthRes](../../../medusa/types/medusa.AdminAuthRes/page.mdx)","optional":false,"defaultValue":"","description":"The user's details.","expandable":false,"children":[{"name":"user","type":"Omit&#60;User, \"password_hash\"&#62;","description":"User details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalFields`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":true,"defaultValue":"null","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createSession"/>
+
+### getToken
+
+Authenticate the user and retrieve a JWT token to use for subsequent authenticated requests.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.admin.auth.getToken({
+  email: 'user@example.com',
+  password: 'supersecret'
+})
+.then(({ access_token }) => {
+  console.log(access_token);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"payload","type":"[AdminPostAuthReq](../../../medusa/classes/medusa.AdminPostAuthReq/page.mdx)","description":"The credentials of the user.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"email","type":"`string`","description":"The user's email.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"password","type":"`string`","description":"The user's password.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="getToken"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminBearerAuthRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the access token of the user, if they're authenticated successfully.","expandable":false,"children":[{"name":"AdminBearerAuthRes","type":"[AdminBearerAuthRes](../../../medusa/types/medusa.AdminBearerAuthRes/page.mdx)","optional":false,"defaultValue":"","description":"The access token of the user, if they're authenticated successfully.","expandable":false,"children":[{"name":"access_token","type":"`string`","description":"Access token that can be used to send authenticated requests.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="getToken"/>

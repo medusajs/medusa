@@ -1,0 +1,47 @@
+---
+displayed_sidebar: apiKeyReference
+slug: /references/api-key/listAndCount
+sidebar_label: listAndCount
+---
+
+import { TypeList } from "docs-ui"
+
+# listAndCount - API Key Module Reference
+
+This documentation provides a reference to the `listAndCount` method. This belongs to the API Key Module.
+
+This method retrieves a paginated list of API keys along with the total count of available API keys satisfying the provided filters.
+
+## Example
+
+To retrieve a list of API keys using their IDs:
+
+```ts
+const [apiKeys, count] =
+await apiKeyModuleService.listAndCount({
+  id: ["apk_123", "apk_321"],
+})
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const [apiKeys, count] =
+  await apiKeyModuleService.listAndCount(
+    {
+      id: ["apk_123", "apk_321"],
+    },
+    {
+      take: 15,
+      skip: 2,
+    }
+  )
+```
+
+## Parameters
+
+<TypeList types={[{"name":"filters","type":"[FilterableApiKeyProps](../../../interfaces/api_key.FilterableApiKeyProps/page.mdx)","description":"The filters to apply on the retrieved API keys.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string` \\| `string`[]","description":"The IDs to filter the API keys by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"token","type":"`string` \\| `string`[]","description":"The tokens to filter the API keys by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string` \\| `string`[]","description":"The titles to filter the API keys by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[ApiKeyType](../../../types/api_key.ApiKeyType/page.mdx)","description":"Filter the API keys by their type.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$and","type":"([FilterableApiKeyProps](../../../interfaces/api_key.FilterableApiKeyProps/page.mdx) \\| [BaseFilterable](../../../interfaces/api_key.BaseFilterable/page.mdx)&#60;[FilterableApiKeyProps](../../../interfaces/api_key.FilterableApiKeyProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([FilterableApiKeyProps](../../../interfaces/api_key.FilterableApiKeyProps/page.mdx) \\| [BaseFilterable](../../../interfaces/api_key.BaseFilterable/page.mdx)&#60;[FilterableApiKeyProps](../../../interfaces/api_key.FilterableApiKeyProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"config","type":"[FindConfig](../../../interfaces/api_key.FindConfig/page.mdx)&#60;[ApiKeyDTO](../../../interfaces/api_key.ApiKeyDTO/page.mdx)&#62;","description":"The configurations determining how the api API is retrieved. Its properties, such as `select` or `relations`, accept the\nattributes or relations associated with a API key.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"select","type":"(`string` \\| keyof Entity)[]","description":"An array of strings, each being attribute names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"skip","type":"`null` \\| `number`","description":"A number indicating the number of records to skip before retrieving the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"take","type":"`null` \\| `number`","description":"A number indicating the number of records to return in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"relations","type":"`string`[]","description":"An array of strings, each being relation names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`object`","description":"An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC`\nto sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"withDeleted","type":"`boolean`","description":"A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n`SoftDeletableEntity` class.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"filters","type":"`Record<string, any>`","description":"Enable ORM specific defined filters","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/api_key.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/api_key.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="listAndCount"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[[ApiKeyDTO](../../../interfaces/api_key.ApiKeyDTO/page.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"The list of API keys along with their total count.","expandable":false,"children":[{"name":"ApiKeyDTO[]","type":"[ApiKeyDTO](../../../interfaces/api_key.ApiKeyDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="listAndCount"/>

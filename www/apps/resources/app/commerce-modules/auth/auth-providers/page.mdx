@@ -1,0 +1,39 @@
+export const metadata = {
+  title: `Auth Providers`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how the Auth Module handles authentication using providers.
+
+## What's an Auth Provider?
+
+An auth provider is a TypeScript or JavaScript class used to authenticate customers and users. Each provider implements the authentication logic based on its purpose.
+
+For example, the `emailpass` provider authenticates a user using their email and password, whereas the `google` provider authenticates users using their Google account.
+
+---
+
+## The Auth Provider Class
+
+An auth provider implements the `AbstractAuthModuleProvider` class imported from the `@medusajs/utils` package. The provider must implement the `authenticate` method that authenticates a user.
+
+When you call the `authenticate` method of the Auth Module's main service (`IAuthModuleService`), the method resolves the specified provider and calls its `authenticate` method passing it the second parameter it received:
+
+```ts
+const data = await authModuleService.authenticate(
+    "emailpass",
+    // passed to auth provider
+    {
+      // ...
+    }
+  )
+```
+
+It also returns the same data returned by the auth provider.
+
+<Note>
+
+Learn about the parameters and return type of the `IAuthModuleService`'s `authenticate` method in [this reference](/references/auth/authenticate).
+
+</Note>
