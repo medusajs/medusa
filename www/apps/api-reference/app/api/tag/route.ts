@@ -7,10 +7,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const tagName = searchParams.get("tagName") || ""
   const area = searchParams.get("area")
-  const version =
-    process.env.NEXT_PUBLIC_VERSIONING === "true"
-      ? (searchParams.get("version") as Version) || "1"
-      : "1"
+  const version = (searchParams.get("version") as Version) || "1"
 
   if (area !== "admin" && area !== "store") {
     return NextResponse.json(

@@ -2,7 +2,7 @@ import path from "path"
 import getMonorepoRoot from "./get-monorepo-root.js"
 import ts from "typescript"
 import { minimatch } from "minimatch"
-import { capitalize } from "./str-formatting.js"
+import { capitalize } from "utils"
 
 export const kindsCanHaveNamespace = [
   ts.SyntaxKind.SourceFile,

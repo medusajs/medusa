@@ -1,0 +1,172 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Cheat sheet`,
+}
+
+# {metadata.title}
+
+This chapter provides a cheat sheet for Medusa's resources on when to use or not use them.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Name</Table.HeaderCell>
+      <Table.HeaderCell>Use if</Table.HeaderCell>
+      <Table.HeaderCell>Don't use if</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body className="[&_td]:align-top [&_td]:pt-1 [&_td:first-child]:font-bold">
+    <Table.Row>
+      <Table.Cell>API Routes</Table.Cell>
+      <Table.Cell>
+      
+      - You're exposing custom functionality to be used in the admin dashboard or an external application, such as a storefront.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Modules</Table.Cell>
+      <Table.Cell>
+      
+      - You're implementing custom commerce functionalities to be reused across Medusa applications.
+      - You're implementing custom architectural business logic.
+      - You're adding extending another module's data model to add fields to it, such as the `Product` model.
+      - You're completely replacing an existing commerce module to change how a certain functionality is implemented in the Medusa application.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Data Models</Table.Cell>
+      <Table.Cell>
+      
+      - You want to store data related to your customization in the database.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      - You want to store simple key-value pairs related to a Medusa data model. Instead, use the `metadata` field that models have, which is an object of custom key-value pairs.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Loaders</Table.Cell>
+      <Table.Cell>
+      
+      - You're performing an action at application start-up.
+      - You're establishing a one-time connection with an external system.
+      - You're registering a custom resource in the container.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      - You want to perform an action continuously or at a set time pattern in the application. Use scheduled jobs instead.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Subscribers</Table.Cell>
+      <Table.Cell>
+      
+      - You want to perform an action everytime a specific event is emitted in the Medusa application.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Scheduled Jobs</Table.Cell>
+      <Table.Cell>
+      
+      - You're executing an action at a specified time interval during application runtime.
+      - The action must be executed automatically.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      - You want the action to execute at a specified time interval while the Medusa application isn't running. Instead, use the operating system's equivalent of a cron job.
+      - You want to execute the action once. Use loaders instead.
+      - You want to execute the action if an event occurs. Use subscribers instead.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Workflows</Table.Cell>
+      <Table.Cell>
+      
+      - You're defining a flow with interactions across multiple systems and services.
+      - You're defining flows to be used across different resources. For example, if you want to invoke the flow manually through an API Router, but also want to automate its running through a scheduled job.
+      - You want to define how the series of actions are rolled-back when an error occurs.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Middlewares</Table.Cell>
+      <Table.Cell>
+      
+      - You want to guard API routes by a custom condition.
+      - You're modifying the request body.
+      - You're registering custom resources in the Medusa container.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Batch Jobs</Table.Cell>
+      <Table.Cell>
+      
+      - You’re implementing an asynchronous job that’s triggered manually.
+      - You're tracking the status of the asynchronous job.
+      - You're keeping track of all batch job executions, which are stored in the database.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      - You want to trigger the asynchronous job automatically. Instead, use scheduled jobs. You can also create the batch job in a scheduled job.
+      - You want the task to be performed and finished before consecutive tasks. Instead, use a service.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Plugins</Table.Cell>
+      <Table.Cell>
+      
+      - You're integrating a third-party service into your Medusa application.
+      - You're creating reusable Medusa application customizations.
+      - You're providing features that are specific to a Medusa application, such as a migration tool from another platform to Medusa.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      - You want to run the plugin in isolation.
+      - You want to link custom data models to those in Medusa's commerce modules.
+      - You want to make architectural changes.
+
+      For all of the cases above, use a Module.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

@@ -14,17 +14,17 @@ import {
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import {
-  arrayDifference,
   EmitEvents,
   FulfillmentUtils,
-  getSetDifference,
   InjectManager,
   InjectTransactionManager,
-  isString,
   MedusaContext,
   MedusaError,
   Modules,
   ModulesSdkUtils,
+  arrayDifference,
+  getSetDifference,
+  isString,
   promiseAll,
 } from "@medusajs/utils"
 import {
@@ -137,29 +137,6 @@ export default class FulfillmentModuleService<
     return joinerConfig
   }
 
-  private setupShippingOptionsConfig_(
-    filters,
-    config
-  ):
-    | FulfillmentTypes.FilterableShippingOptionForContextProps["context"]
-    | undefined {
-    const fieldIdx = config.relations?.indexOf("shipping_options_context")
-    const shouldCalculatePrice = fieldIdx > -1
-
-    const shippingOptionsContext = filters.context ?? {}
-
-    delete filters.context
-
-    if (!shouldCalculatePrice) {
-      return
-    }
-
-    // cleanup virtual field "shipping_options_context"
-    config.relations?.splice(fieldIdx, 1)
-
-    return shippingOptionsContext
-  }
-
   @InjectManager("baseRepository_")
   // @ts-ignore
   async listShippingOptions(
@@ -167,11 +144,9 @@ export default class FulfillmentModuleService<
     config: FindConfig<FulfillmentTypes.ShippingOptionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.ShippingOptionDTO[]> {
-    const optionsContext = this.setupShippingOptionsConfig_(filters, config)
-
-    if (optionsContext) {
-      filters.context = optionsContext
-
+    // Eventually, we could call normalizeListShippingOptionsForContextParams to translate the address and make a and condition with the other filters
+    // In that case we could remote the address check below
+    if (filters?.context || filters?.address) {
       return await this.listShippingOptionsForContext(
         filters,
         config,
@@ -1698,21 +1673,23 @@ export default class FulfillmentModuleService<
       const geoZoneConstraints =
         FulfillmentModuleService.buildGeoZoneConstraintsFromAddress(address)
 
-      normalizedFilters = {
-        ...normalizedFilters,
-        service_zone: {
-          ...(normalizedFilters.service_zone ?? {}),
-          geo_zones: {
-            $or: geoZoneConstraints.map((geoZoneConstraint) => ({
-              // Apply eventually provided constraints on the geo zone along side the address constraints
-              ...(normalizedFilters.service_zone?.geo_zones ?? {}),
-              ...geoZoneConstraint,
-            })),
+      if (geoZoneConstraints.length) {
+        normalizedFilters = {
+          ...normalizedFilters,
+          service_zone: {
+            ...(normalizedFilters.service_zone ?? {}),
+            geo_zones: {
+              $or: geoZoneConstraints.map((geoZoneConstraint) => ({
+                // Apply eventually provided constraints on the geo zone along side the address constraints
+                ...(normalizedFilters.service_zone?.geo_zones ?? {}),
+                ...geoZoneConstraint,
+              })),
+            },
           },
-        },
-      }
+        }
 
-      normalizedConfig.relations.push("service_zone.geo_zones")
+        normalizedConfig.relations.push("service_zone.geo_zones")
+      }
     }
 
     normalizedConfig.relations = Array.from(new Set(normalizedConfig.relations))

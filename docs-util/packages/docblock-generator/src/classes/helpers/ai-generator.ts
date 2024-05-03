@@ -2,10 +2,10 @@ import { createReadStream, existsSync } from "fs"
 import OpenAI from "openai"
 import path from "path"
 import ts from "typescript"
-import { pascalToCamel } from "../../utils/str-formatting.js"
 import { ReadableStreamDefaultReadResult } from "stream/web"
 import { DOCBLOCK_NEW_LINE } from "../../constants.js"
 import { AssistantStreamEvent } from "openai/resources/beta/index.mjs"
+import { pascalToCamel } from "utils"
 
 type GenerateExampleOptions = {
   className?: string

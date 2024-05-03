@@ -11,7 +11,7 @@ import {
   SearchSuggestionType,
   SearchHitGroupName,
   Tooltip,
-  LegacyLink,
+  Link,
 } from "@/components"
 import { useAiAssistant, useSearch } from "@/providers"
 import { ArrowUturnLeft, XMarkMini } from "@medusajs/icons"
@@ -382,14 +382,10 @@ export const AiAssistant = () => {
           tooltipChildren={
             <>
               This site is protected by reCAPTCHA and the{" "}
-              {/* TODO replace with Link once we move away from Docusaurus */}
-              <LegacyLink href="https://policies.google.com/privacy">
+              <Link href="https://policies.google.com/privacy">
                 Google Privacy Policy
-              </LegacyLink>{" "}
-              and{" "}
-              <LegacyLink href="https://policies.google.com/terms">
-                ToS
-              </LegacyLink>{" "}
+              </Link>{" "}
+              and <Link href="https://policies.google.com/terms">ToS</Link>{" "}
               apply
             </>
           }

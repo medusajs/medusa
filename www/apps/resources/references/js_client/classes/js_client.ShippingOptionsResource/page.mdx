@@ -1,0 +1,62 @@
+---
+slug: /references/js-client/ShippingOptionsResource
+---
+
+import { TypeList } from "docs-ui"
+
+# ShippingOptionsResource
+
+This class is used to send requests to [Store Shipping Option API Routes](https://docs.medusajs.com/api/store#shipping-options). All its method
+are available in the JS Client under the `medusa.shippingOptions` property.
+
+A shipping option is used to define the available shipping methods during checkout or when creating a return.
+
+Related Guide: [Shipping Option architecture](https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-option).
+
+## Methods
+
+### listCartOptions
+
+Retrieve a list of shipping options available for a cart.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.shippingOptions.listCartOptions(cartId)
+.then(({ shipping_options }) => {
+  console.log(shipping_options.length);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"cart_id","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="listCartOptions"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreShippingOptionsListRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the list of shipping options.","expandable":false,"children":[{"name":"StoreShippingOptionsListRes","type":"[StoreShippingOptionsListRes](../../../medusa/types/medusa.StoreShippingOptionsListRes/page.mdx)","optional":false,"defaultValue":"","description":"The list of shipping options.","expandable":false,"children":[{"name":"shipping_options","type":"[PricedShippingOption](../../../medusa/types/medusa.PricedShippingOption/page.mdx)[]","description":"An array of shipping options details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="listCartOptions"/>
+
+### list
+
+Retrieve a list of shipping options. The shipping options can be filtered using the `query` parameter.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.shippingOptions.list()
+.then(({ shipping_options }) => {
+  console.log(shipping_options.length);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"query","type":"[StoreGetShippingOptionsParams](../../../medusa/classes/medusa.StoreGetShippingOptionsParams/page.mdx)","description":"The filters to apply on the shipping options.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"product_ids","type":"`string`","description":"Product ID that is used to filter shipping options by whether they can be used to ship that product.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"region_id","type":"`string`","description":"Filter the shipping options by the ID of their associated region.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_return","type":"`string`","description":"Filter the shipping options by whether they're return shipping options.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreShippingOptionsListRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the list of shipping options.","expandable":false,"children":[{"name":"StoreShippingOptionsListRes","type":"[StoreShippingOptionsListRes](../../../medusa/types/medusa.StoreShippingOptionsListRes/page.mdx)","optional":false,"defaultValue":"","description":"The list of shipping options.","expandable":false,"children":[{"name":"shipping_options","type":"[PricedShippingOption](../../../medusa/types/medusa.PricedShippingOption/page.mdx)[]","description":"An array of shipping options details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>

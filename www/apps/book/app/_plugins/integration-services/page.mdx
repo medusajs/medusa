@@ -1,0 +1,102 @@
+export const metadata = {
+  title: `${pageNumber} Integration Services`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about special service types used when integrating third-party services.
+
+## Notification Service
+
+A notification service is used to send notifications, such as email, in your Medusa application.
+
+For example, the SendGrid plugin contains a notification service. When the plugin is installed, the Medusa application resolves its notification service to send emails using SendGrid.
+
+A notification service must extend the `AbstractNotificationService` class from the `@medusajs/medusa` package.
+
+Refer to [this reference](!resources!/notification-service) to learn more about creating a notification service.
+
+---
+
+## File Service
+
+A file service is used to upload and download files in your Medusa application.
+
+For example, the S3 plugin contains a file service. When the plugin is installed, the Medusa application resolves its file service to upload and download files, such as product images.
+
+A file service must extend the `AbstractFileService` class from the `@medusajs/medusa` package.
+
+Refer to [this reference](!resources!/file-service) to learn more about creating a file service.
+
+---
+
+## Search Service
+
+A search service is used to search data in your store, such as products.
+
+For example, the MeiliSearch plugin contains a search service. When the plugin is installed, the Medusa application resolves its search service when searching for products.
+
+A search service must extend the `AbstractSearchService` class from the `@medusajs/utils` package.
+
+Refer to [this reference](!resources!/search-service) to learn more about creating a search service.
+
+---
+
+## Other Integration Types
+
+If you’re integrating other types of services, such as a CMS or an ERP system, you can create a standard service that extends the `TransactionBaseService` class and implements the necessary methods for your integration.
+
+Then, you can use that service in other resources, such as an API route or a subscriber.
+
+---
+
+## Integration Services Tips
+
+### Client Initialization
+
+Part of the integration is interacting with the third-party service using a client.
+
+Some third-party services provide a Node.js SDK that you can use. In those cases, you can install the SDK and initialize the client in the constructor.
+
+In other cases, you can install [axios](https://www.npmjs.com/package/axios) and use it to create a client in the constructor.
+
+For example:
+
+```tsx
+import { TransactionBaseService } from "@medusajs/medusa"
+import { Axios } from "axios"
+
+type Options = {
+  erp_url: string
+  token: string
+}
+
+class ErpService extends TransactionBaseService {
+  protected client: Axios
+
+  constructor({}, options: Options) {
+    super(arguments[0], options)
+
+    this.client = new Axios({
+      baseURL: options.erp_url,
+      headers: {
+        Authorization: `Bearer ${options.token}`,
+      },
+    })
+  }
+
+  async retrieveProductErpDetails(productId: string) {
+    const { data } = await this.client.get(
+      `/product/${productId}`
+    )
+
+    return data
+  }
+}
+
+export default ErpService
+```
+
+In the above example, you create a client with `axios`. You use the plugin’s options to set the client’s options, such as the base URL and the authorization token.
+
+Then, you can use the client in other methods to send requests to the third-party service.

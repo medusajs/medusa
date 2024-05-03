@@ -1,0 +1,308 @@
+---
+slug: /references/medusa-react/hooks/admin/claims
+---
+
+import { TypeList } from "docs-ui"
+
+# Claims
+
+Mutations listed here are used to send requests to the [Admin Order API Routes related to claims](https://docs.medusajs.com/api/admin#orders).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+A claim represents a return or replacement request of order items. It allows refunding the customer or replacing some or all of its
+order items with new items.
+
+Related Guide: [How to manage claims](https://docs.medusajs.com/modules/orders/admin/manage-claims).
+
+## Mutations
+
+### useAdminCreateClaim
+
+This hook creates a claim for an order. If a return shipping method is specified, a return will also be created and associated with the claim. If the claim's type is `refund`,
+the refund is processed as well.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateClaim } from "medusa-react"
+
+type Props = {
+  orderId: string
+}
+
+const CreateClaim = ({ orderId }: Props) => {
+  const createClaim = useAdminCreateClaim(orderId)
+  // ...
+
+  const handleCreate = (itemId: string) => {
+    createClaim.mutate({
+      type: "refund",
+      claim_items: [
+        {
+          item_id: itemId,
+          quantity: 1,
+        },
+      ],
+    }, {
+      onSuccess: ({ order }) => {
+        console.log(order.claims)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default CreateClaim
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"orderId","type":"`string`","description":"The ID of the order the claim is associated with.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateClaim"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostOrdersOrderClaimsReq","type":"[AdminPostOrdersOrderClaimsReq](../../../../medusa/classes/medusa.AdminPostOrdersOrderClaimsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the claim to be created.","expandable":false,"children":[{"name":"type","type":"`\"replace\"` \\| `\"refund\"`","description":"The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"claim_items","type":"[Item](../../../../medusa/classes/medusa.Item-1/page.mdx)[]","description":"The Claim Items that the Claim will consist of.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"item_id","type":"`string`","description":"The ID of the Line Item that will be claimed.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The number of items that will be returned","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"note","type":"`string`","description":"Short text describing the Claim Item in further detail.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"reason","type":"`ClaimReason`","description":"The reason for the Claim","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"tags","type":"`string`[]","description":"A list of tags to add to the Claim Item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"images","type":"`string`[]","description":"A list of image URL's that will be associated with the Claim","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"return_shipping","type":"[ReturnShipping](../../../../medusa/classes/medusa.ReturnShipping/page.mdx)","description":"Optional details for the Return Shipping Method, if the items are to be sent back. Providing this field will result in a return being created and associated with the claim.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"option_id","type":"`string`","description":"The ID of the shipping option used for the return.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"price","type":"`number`","description":"The shipping method's price.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"additional_items","type":"[AdditionalItem](../../../../medusa/classes/medusa.AdditionalItem/page.mdx)[]","description":"The new items to send to the Customer. This is only used if the claim's type is `replace`.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"variant_id","type":"`string`","description":"The ID of the Product Variant.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the Product Variant.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"shipping_methods","type":"[ShippingMethod](../../../../medusa/classes/medusa.ShippingMethod-1/page.mdx)[]","description":"The Shipping Methods to send the additional Line Items with. This is only used if the claim's type is `replace`.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of an existing Shipping Method","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"option_id","type":"`string`","description":"The ID of the Shipping Option to create a Shipping Method from","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"price","type":"`number`","description":"The price to charge for the Shipping Method","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"refund_amount","type":"`number`","description":"The amount to refund the customer. This is used when the claim's type is `refund`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_address","type":"[AddressPayload](../../../../medusa/classes/medusa.AddressPayload/page.mdx)","description":"An optional shipping address to send the claimed items to. If not provided, the parent order's shipping address will be used.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"first_name","type":"`string`","description":"First name","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`string`","description":"Last name","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"phone","type":"`string`","description":"Phone Number","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional key-value map with additional details","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"company","type":"`string`","description":"Company","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"address_1","type":"`string`","description":"Address line 1","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"address_2","type":"`string`","description":"Address line 2","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"city","type":"`string`","description":"City","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"The 2 character ISO code of the country in lower case","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"province","type":"`string`","description":"Province","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"postal_code","type":"`string`","description":"Postal Code","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"no_notification","type":"`boolean`","description":"If set to true no notification will be send related to this Claim.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"return_location_id","type":"`string`","description":"The ID of the location used for the associated return.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateClaim"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrdersRes","type":"[AdminOrdersRes](../../../../medusa/types/medusa.AdminOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The order's details.","expandable":false,"children":[{"name":"order","type":"[Order](../../../../types/types/types.Order/page.mdx)","description":"Order details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateClaim"/>
+
+### useAdminUpdateClaim
+
+This hook updates a claim's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUpdateClaim } from "medusa-react"
+
+type Props = {
+  orderId: string
+  claimId: string
+}
+
+const Claim = ({ orderId, claimId }: Props) => {
+  const updateClaim = useAdminUpdateClaim(orderId)
+  // ...
+
+  const handleUpdate = () => {
+    updateClaim.mutate({
+      claim_id: claimId,
+      no_notification: false
+    }, {
+      onSuccess: ({ order }) => {
+        console.log(order.claims)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Claim
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"orderId","type":"`string`","description":"The ID of the order the claim is associated with.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateClaim"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminUpdateClaimReq","type":"[AdminUpdateClaimReq](../../../types/medusa_react.AdminUpdateClaimReq/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"claim_id","type":"`string`","description":"The claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"claim_items","type":"[Item](../../../../medusa/classes/medusa.Item-3/page.mdx)[]","description":"The Claim Items that the Claim will consist of.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the Claim Item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"images","type":"[Image](../../../../medusa/classes/medusa.Image/page.mdx)[]","description":"A list of image URL's that will be associated with the Claim","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"Image ID","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"url","type":"`string`","description":"Image URL","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"tags","type":"[Tag](../../../../medusa/classes/medusa.Tag/page.mdx)[]","description":"A list o tags to add to the Claim Item","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"Tag ID","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"Tag value","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"note","type":"`string`","description":"Short text describing the Claim Item in further detail.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"reason","type":"`string`","description":"The reason for the Claim","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"shipping_methods","type":"[ShippingMethod](../../../../medusa/classes/medusa.ShippingMethod-2/page.mdx)[]","description":"The Shipping Methods to send the additional Line Items with.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of an existing Shipping Method","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"option_id","type":"`string`","description":"The ID of the Shipping Option to create a Shipping Method from","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"price","type":"`number`","description":"The price to charge for the Shipping Method","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"no_notification","type":"`boolean`","description":"If set to true no notification will be send related to this Swap.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateClaim"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrdersRes","type":"[AdminOrdersRes](../../../../medusa/types/medusa.AdminOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The order's details.","expandable":false,"children":[{"name":"order","type":"[Order](../../../../types/types/types.Order/page.mdx)","description":"Order details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateClaim"/>
+
+### useAdminCancelClaim
+
+This hook cancels a claim and change its status. A claim can't be canceled if it has a refund, if its fulfillments haven't been canceled, 
+of if its associated return hasn't been canceled.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCancelClaim } from "medusa-react"
+
+type Props = {
+  orderId: string
+  claimId: string
+}
+
+const Claim = ({ orderId, claimId }: Props) => {
+  const cancelClaim = useAdminCancelClaim(orderId)
+  // ...
+
+  const handleCancel = () => {
+    cancelClaim.mutate(claimId)
+  }
+
+  // ...
+}
+
+export default Claim
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"orderId","type":"`string`","description":"The ID of the order the claim is associated with.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelClaim"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"The claim's ID.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelClaim"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrdersRes","type":"[AdminOrdersRes](../../../../medusa/types/medusa.AdminOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The order's details.","expandable":false,"children":[{"name":"order","type":"[Order](../../../../types/types/types.Order/page.mdx)","description":"Order details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelClaim"/>
+
+### useAdminFulfillClaim
+
+This hook creates a Fulfillment for a Claim, and change its fulfillment status to `partially_fulfilled` or `fulfilled` depending on whether all the items were fulfilled.
+It may also change the status to `requires_action` if any actions are required.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminFulfillClaim } from "medusa-react"
+
+type Props = {
+  orderId: string
+  claimId: string
+}
+
+const Claim = ({ orderId, claimId }: Props) => {
+  const fulfillClaim = useAdminFulfillClaim(orderId)
+  // ...
+
+  const handleFulfill = () => {
+    fulfillClaim.mutate({
+      claim_id: claimId,
+    }, {
+      onSuccess: ({ order }) => {
+        console.log(order.claims)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Claim
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"orderId","type":"`string`","description":"The ID of the order the claim is associated with.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminFulfillClaim"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminFulfillClaimReq","type":"[AdminFulfillClaimReq](../../../types/medusa_react.AdminFulfillClaimReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the claim's fulfillment.","expandable":false,"children":[{"name":"claim_id","type":"`string`","description":"The claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"If set to `true`, no notification will be sent to the customer related to this Claim.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the fulfillment's location.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminFulfillClaim"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrdersRes","type":"[AdminOrdersRes](../../../../medusa/types/medusa.AdminOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The order's details.","expandable":false,"children":[{"name":"order","type":"[Order](../../../../types/types/types.Order/page.mdx)","description":"Order details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminFulfillClaim"/>
+
+### useAdminCancelClaimFulfillment
+
+This hook cancels a claim's fulfillment and change its fulfillment status to `canceled`.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCancelClaimFulfillment } from "medusa-react"
+
+type Props = {
+  orderId: string
+  claimId: string
+}
+
+const Claim = ({ orderId, claimId }: Props) => {
+  const cancelFulfillment = useAdminCancelClaimFulfillment(
+    orderId
+  )
+  // ...
+
+  const handleCancel = (fulfillmentId: string) => {
+    cancelFulfillment.mutate({
+      claim_id: claimId,
+      fulfillment_id: fulfillmentId,
+    }, {
+      onSuccess: ({ order }) => {
+        console.log(order.claims)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Claim
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"orderId","type":"`string`","description":"The ID of the order the claim is associated with.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelClaimFulfillment"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminCancelClaimFulfillmentReq","type":"[AdminCancelClaimFulfillmentReq](../../../types/medusa_react.AdminCancelClaimFulfillmentReq/page.mdx)","optional":false,"defaultValue":"","description":"The cancelation details.","expandable":false,"children":[{"name":"claim_id","type":"`string`","description":"The claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment_id","type":"`string`","description":"The fulfillment's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelClaimFulfillment"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrdersRes","type":"[AdminOrdersRes](../../../../medusa/types/medusa.AdminOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The order's details.","expandable":false,"children":[{"name":"order","type":"[Order](../../../../types/types/types.Order/page.mdx)","description":"Order details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelClaimFulfillment"/>
+
+### useAdminCreateClaimShipment
+
+This hook creates a shipment for the claim and mark its fulfillment as shipped. If the shipment is created successfully, this changes the claim's fulfillment status
+to either `partially_shipped` or `shipped`, depending on whether all the items were shipped.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateClaimShipment } from "medusa-react"
+
+type Props = {
+  orderId: string
+  claimId: string
+}
+
+const Claim = ({ orderId, claimId }: Props) => {
+  const createShipment = useAdminCreateClaimShipment(orderId)
+  // ...
+
+  const handleCreateShipment = (fulfillmentId: string) => {
+    createShipment.mutate({
+      claim_id: claimId,
+      fulfillment_id: fulfillmentId,
+    }, {
+      onSuccess: ({ order }) => {
+        console.log(order.claims)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Claim
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"orderId","type":"`string`","description":"The ID of the order the claim is associated with.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateClaimShipment"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostOrdersOrderClaimsClaimShipmentsReq","type":"[AdminPostOrdersOrderClaimsClaimShipmentsReq](../../../../medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimShipmentsReq/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"fulfillment_id","type":"`string`","description":"The ID of the Fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tracking_numbers","type":"`string`[]","description":"An array of tracking numbers for the shipment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"claim_id","type":"`string`","description":"The claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateClaimShipment"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrdersRes","type":"[AdminOrdersRes](../../../../medusa/types/medusa.AdminOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The order's details.","expandable":false,"children":[{"name":"order","type":"[Order](../../../../types/types/types.Order/page.mdx)","description":"Order details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateClaimShipment"/>

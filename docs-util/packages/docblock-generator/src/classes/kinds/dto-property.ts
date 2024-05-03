@@ -1,11 +1,8 @@
 import ts from "typescript"
 import DefaultKindGenerator, { GetDocBlockOptions } from "./default.js"
 import { DOCBLOCK_END_LINE, DOCBLOCK_START } from "../../constants.js"
-import {
-  camelToWords,
-  normalizeName,
-  snakeToWords,
-} from "../../utils/str-formatting.js"
+import { camelToWords, snakeToWords } from "utils"
+import { normalizeName } from "../../utils/str-formatting.js"
 
 /**
  * A class that generates doc blocks for properties in a DTO interface/type.

@@ -1,0 +1,243 @@
+---
+slug: /references/medusa-react/hooks/admin/shipping_profiles
+---
+
+import { TypeList } from "docs-ui"
+
+# Shipping Profiles
+
+Queries and Mutations listed here are used to send requests to the [Admin Shipping Profile API Routes](https://docs.medusajs.com/api/admin#shipping-profiles).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+A shipping profile is used to group products that can be shipped in the same manner.
+They are created by the admin and they're not associated with a fulfillment provider.
+
+Related Guide: [Shipping Profile architecture](https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-profile).
+
+## Mutations
+
+### useAdminCreateShippingProfile
+
+This hook creates a shipping profile.
+
+#### Example
+
+```ts
+import React from "react"
+import { ShippingProfileType } from "@medusajs/medusa"
+import { useAdminCreateShippingProfile } from "medusa-react"
+
+const CreateShippingProfile = () => {
+  const createShippingProfile = useAdminCreateShippingProfile()
+  // ...
+
+  const handleCreate = (
+    name: string,
+    type: ShippingProfileType
+  ) => {
+    createShippingProfile.mutate({
+      name,
+      type
+    }, {
+      onSuccess: ({ shipping_profile }) => {
+        console.log(shipping_profile.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default CreateShippingProfile
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostShippingProfilesReq","type":"[AdminPostShippingProfilesReq](../../../../medusa/classes/medusa.AdminPostShippingProfilesReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the shipping profile to create.","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the Shipping Profile","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`ShippingProfileType`","description":"The type of the Shipping Profile","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs with additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateShippingProfile"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminShippingProfilesRes","type":"[AdminShippingProfilesRes](../../../../medusa/types/medusa.AdminShippingProfilesRes/page.mdx)","optional":false,"defaultValue":"","description":"The shipping profile's details.","expandable":false,"children":[{"name":"shipping_profile","type":"[ShippingProfile](../../../../fulfillment_models/classes/fulfillment_models.ShippingProfile/page.mdx)","description":"Shipping profile details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_options","type":"Collection&#60;[ShippingOption](../../../../fulfillment_models/classes/fulfillment_models.ShippingOption/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"price_type","type":"[ShippingOptionPriceType](../../../../utils/FulfillmentUtils/enums/utils.FulfillmentUtils.ShippingOptionPriceType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"service_zone_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_profile_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_option_type_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"data","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"service_zone","type":"[ServiceZone](../../../../fulfillment_models/classes/fulfillment_models.ServiceZone/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_profile","type":"`null` \\| [ShippingProfile](../../../../fulfillment_models/classes/fulfillment_models.ShippingProfile/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`null` \\| [FulfillmentProvider](../../../../fulfillment_models/classes/fulfillment_models.FulfillmentProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[ShippingOptionType](../../../../fulfillment_models/classes/fulfillment_models.ShippingOptionType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rules","type":"Collection&#60;[ShippingOptionRule](../../../../fulfillment_models/classes/fulfillment_models.ShippingOptionRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillments","type":"Collection&#60;[Fulfillment](../../../../fulfillment_models/classes/fulfillment_models.Fulfillment/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateShippingProfile"/>
+
+### useAdminUpdateShippingProfile
+
+This hook updates a shipping profile's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { ShippingProfileType } from "@medusajs/medusa"
+import { useAdminUpdateShippingProfile } from "medusa-react"
+
+type Props = {
+  shippingProfileId: string
+}
+
+const ShippingProfile = ({ shippingProfileId }: Props) => {
+  const updateShippingProfile = useAdminUpdateShippingProfile(
+    shippingProfileId
+  )
+  // ...
+
+  const handleUpdate = (
+    name: string,
+    type: ShippingProfileType
+  ) => {
+    updateShippingProfile.mutate({
+      name,
+      type
+    }, {
+      onSuccess: ({ shipping_profile }) => {
+        console.log(shipping_profile.name)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default ShippingProfile
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The shipping profile's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateShippingProfile"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostShippingProfilesProfileReq","type":"[AdminPostShippingProfilesProfileReq](../../../../medusa/classes/medusa.AdminPostShippingProfilesProfileReq/page.mdx)","optional":false,"defaultValue":"","description":"The detail to update of the shipping profile.","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the Shipping Profile","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs with additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`ShippingProfileType`","description":"The type of the Shipping Profile","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"`string`[]","description":"product IDs to associate with the Shipping Profile","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_options","type":"`string`[]","description":"Shipping option IDs to associate with the Shipping Profile","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateShippingProfile"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminShippingProfilesRes","type":"[AdminShippingProfilesRes](../../../../medusa/types/medusa.AdminShippingProfilesRes/page.mdx)","optional":false,"defaultValue":"","description":"The shipping profile's details.","expandable":false,"children":[{"name":"shipping_profile","type":"[ShippingProfile](../../../../fulfillment_models/classes/fulfillment_models.ShippingProfile/page.mdx)","description":"Shipping profile details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_options","type":"Collection&#60;[ShippingOption](../../../../fulfillment_models/classes/fulfillment_models.ShippingOption/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"price_type","type":"[ShippingOptionPriceType](../../../../utils/FulfillmentUtils/enums/utils.FulfillmentUtils.ShippingOptionPriceType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"service_zone_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_profile_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_option_type_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"data","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"service_zone","type":"[ServiceZone](../../../../fulfillment_models/classes/fulfillment_models.ServiceZone/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_profile","type":"`null` \\| [ShippingProfile](../../../../fulfillment_models/classes/fulfillment_models.ShippingProfile/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`null` \\| [FulfillmentProvider](../../../../fulfillment_models/classes/fulfillment_models.FulfillmentProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[ShippingOptionType](../../../../fulfillment_models/classes/fulfillment_models.ShippingOptionType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rules","type":"Collection&#60;[ShippingOptionRule](../../../../fulfillment_models/classes/fulfillment_models.ShippingOptionRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillments","type":"Collection&#60;[Fulfillment](../../../../fulfillment_models/classes/fulfillment_models.Fulfillment/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateShippingProfile"/>
+
+### useAdminDeleteShippingProfile
+
+This hook deletes a shipping profile. Associated shipping options are deleted as well.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteShippingProfile } from "medusa-react"
+
+type Props = {
+  shippingProfileId: string
+}
+
+const ShippingProfile = ({ shippingProfileId }: Props) => {
+  const deleteShippingProfile = useAdminDeleteShippingProfile(
+    shippingProfileId
+  )
+  // ...
+
+  const handleDelete = () => {
+    deleteShippingProfile.mutate(void 0, {
+      onSuccess: ({ id, object, deleted }) => {
+        console.log(id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default ShippingProfile
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The shipping profile's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteShippingProfile"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../../medusa/interfaces/medusa.DeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteShippingProfile"/>
+
+___
+
+## Queries
+
+### useAdminShippingProfiles
+
+This hook retrieves a list of shipping profiles.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminShippingProfiles } from "medusa-react"
+
+const ShippingProfiles = () => {
+  const { 
+    shipping_profiles, 
+    isLoading
+  } = useAdminShippingProfiles()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {shipping_profiles && !shipping_profiles.length && (
+        <span>No Shipping Profiles</span>
+      )}
+      {shipping_profiles && shipping_profiles.length > 0 && (
+        <ul>
+          {shipping_profiles.map((profile) => (
+            <li key={profile.id}>{profile.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default ShippingProfiles
+```
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"shipping_profiles","type":"[ShippingProfile](../../../../fulfillment_models/classes/fulfillment_models.ShippingProfile/page.mdx)[]","description":"An array of shipping profiles details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_options","type":"Collection&#60;[ShippingOption](../../../../fulfillment_models/classes/fulfillment_models.ShippingOption/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"price_type","type":"[ShippingOptionPriceType](../../../../utils/FulfillmentUtils/enums/utils.FulfillmentUtils.ShippingOptionPriceType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"service_zone_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_profile_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_option_type_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"data","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"service_zone","type":"[ServiceZone](../../../../fulfillment_models/classes/fulfillment_models.ServiceZone/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_profile","type":"`null` \\| [ShippingProfile](../../../../fulfillment_models/classes/fulfillment_models.ShippingProfile/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`null` \\| [FulfillmentProvider](../../../../fulfillment_models/classes/fulfillment_models.FulfillmentProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[ShippingOptionType](../../../../fulfillment_models/classes/fulfillment_models.ShippingOptionType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rules","type":"Collection&#60;[ShippingOptionRule](../../../../fulfillment_models/classes/fulfillment_models.ShippingOptionRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillments","type":"Collection&#60;[Fulfillment](../../../../fulfillment_models/classes/fulfillment_models.Fulfillment/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminShippingProfiles"/>
+
+### useAdminShippingProfile
+
+This hook retrieves a shipping profile's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminShippingProfile } from "medusa-react"
+
+type Props = {
+  shippingProfileId: string
+}
+
+const ShippingProfile = ({ shippingProfileId }: Props) => {
+  const { 
+    shipping_profile, 
+    isLoading
+  } = useAdminShippingProfile(
+    shippingProfileId
+  )
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {shipping_profile && (
+        <span>{shipping_profile.name}</span>
+      )}
+    </div>
+  )
+}
+
+export default ShippingProfile
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The shipping option's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminShippingProfile"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"shipping_profile","type":"[ShippingProfile](../../../../fulfillment_models/classes/fulfillment_models.ShippingProfile/page.mdx)","description":"Shipping profile details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_options","type":"Collection&#60;[ShippingOption](../../../../fulfillment_models/classes/fulfillment_models.ShippingOption/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"price_type","type":"[ShippingOptionPriceType](../../../../utils/FulfillmentUtils/enums/utils.FulfillmentUtils.ShippingOptionPriceType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"service_zone_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_profile_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_option_type_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"data","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"service_zone","type":"[ServiceZone](../../../../fulfillment_models/classes/fulfillment_models.ServiceZone/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_profile","type":"`null` \\| [ShippingProfile](../../../../fulfillment_models/classes/fulfillment_models.ShippingProfile/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`null` \\| [FulfillmentProvider](../../../../fulfillment_models/classes/fulfillment_models.FulfillmentProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[ShippingOptionType](../../../../fulfillment_models/classes/fulfillment_models.ShippingOptionType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rules","type":"Collection&#60;[ShippingOptionRule](../../../../fulfillment_models/classes/fulfillment_models.ShippingOptionRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillments","type":"Collection&#60;[Fulfillment](../../../../fulfillment_models/classes/fulfillment_models.Fulfillment/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminShippingProfile"/>

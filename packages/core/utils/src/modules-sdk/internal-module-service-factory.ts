@@ -19,13 +19,13 @@ import {
   MedusaError,
   shouldForceTransaction,
 } from "../common"
+import { FreeTextSearchFilterKey } from "../dal"
 import { buildQuery } from "./build-query"
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
 } from "./decorators"
-import { FreeTextSearchFilterKey } from "../dal"
 
 type SelectorAndData = {
   selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>
@@ -440,10 +440,17 @@ export function internalModuleServiceFactory<
 
     @InjectTransactionManager(propertyRepositoryName)
     async softDelete(
-      idsOrFilter: string[] | InternalFilterQuery,
+      idsOrFilter:
+        | string
+        | string[]
+        | InternalFilterQuery
+        | InternalFilterQuery[],
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], Record<string, unknown[]>]> {
-      if (Array.isArray(idsOrFilter) && !idsOrFilter.length) {
+      if (
+        (Array.isArray(idsOrFilter) && !idsOrFilter.length) ||
+        (!Array.isArray(idsOrFilter) && !idsOrFilter)
+      ) {
         return [[], {}]
       }
 

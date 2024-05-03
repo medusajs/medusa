@@ -1,0 +1,47 @@
+export const metadata = {
+  title: `${pageNumber} HTTP Methods`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about how to add new API routes for each HTTP method.
+
+## Handlers of HTTP Methods
+
+You can define a handler function for each HTTP method in a route file. The function’s name is the name of the HTTP method it handles.
+
+Allowed HTTP methods are: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`, `OPTIONS`, and `HEAD`.
+
+Creating a route handler function for any of the above HTTP methods exposes a new API route for that method.
+
+For example, create the file `src/api/store/hello-world/route.ts` with the following content:
+
+```ts title="src/api/store/hello-world/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/medusa"
+
+export const GET = (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  res.json({
+    message: "[GET] Hello world!",
+  })
+}
+
+export const POST = (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  res.json({
+    message: "[POST] Hello world!",
+  })
+}
+```
+
+This adds two API Routes:
+
+- A `GET` route at `localhost:9000/store/hello-world`.
+- A `POST` route at `localhost:9000/store/hello-world`.

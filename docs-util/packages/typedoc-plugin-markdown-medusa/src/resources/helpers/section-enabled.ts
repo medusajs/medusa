@@ -11,7 +11,8 @@ export default function (theme: MarkdownTheme) {
       return (
         !sections ||
         !(sectionName in sections) ||
-        sections[sectionName as SectionKey]
+        sections[sectionName as SectionKey] ||
+        false
       )
     }
   )

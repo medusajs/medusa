@@ -4,17 +4,69 @@
  * summary: Create Campaign
  * description: Create a campaign.
  * x-authenticated: true
- * parameters: []
+ * parameters:
+ *   - name: expand
+ *     in: query
+ *     description: Comma-separated relations that should be expanded in the returned data.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: expand
+ *       description: Comma-separated relations that should be expanded in the returned data.
+ *   - name: fields
+ *     in: query
+ *     description: Comma-separated fields that should be included in the returned data.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: fields
+ *       description: Comma-separated fields that should be included in the returned data.
+ *   - name: offset
+ *     in: query
+ *     description: The number of items to skip when retrieving a list.
+ *     required: false
+ *     schema:
+ *       type: number
+ *       title: offset
+ *       description: The number of items to skip when retrieving a list.
+ *   - name: limit
+ *     in: query
+ *     description: Limit the number of items returned in the list.
+ *     required: false
+ *     schema:
+ *       type: number
+ *       title: limit
+ *       description: Limit the number of items returned in the list.
+ *   - name: order
+ *     in: query
+ *     description: Field to sort items in the list by.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: order
+ *       description: Field to sort items in the list by.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  *   - jwt_token: []
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/CreateCampaign"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/campaigns' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "name": "Elwin",
+ *         "campaign_identifier": "{value}",
+ *         "starts_at": "2024-11-30T18:47:00.491Z",
+ *         "ends_at": "2025-02-26T07:41:34.259Z"
+ *       }'
  * tags:
  *   - Campaigns
  * responses:
