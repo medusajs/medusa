@@ -10,7 +10,6 @@ import {
 import {
   AdminCollectionsRes,
   AdminProductsRes,
-  AdminPromotionRes,
   AdminRegionsRes,
 } from "@medusajs/medusa"
 import { InventoryItemRes, PriceListRes } from "../../types/api-responses"

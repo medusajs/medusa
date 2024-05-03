@@ -1,4 +1,4 @@
-import { ArrowUturnLeft, Envelope, MinusMini } from "@medusajs/icons"
+import { ArrowUturnLeft, MinusMini } from "@medusajs/icons"
 import { IconButton, Text } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import { useEffect, useMemo, useState } from "react"
