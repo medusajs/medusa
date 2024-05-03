@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
-    "build": "yarn prebuild && tsc --build",
+    "build": "echo ''",
     "prebuild": "ts-node ./scripts/build.ts && yarn prettier",
     "prettier": "prettier --write --loglevel warn ./src/lib",
     "test": "jest --passWithNoTests"
