@@ -10,7 +10,7 @@ export const CartProduct: ModuleJoinerConfig = {
       relationship: {
         serviceName: Modules.PRODUCT,
         primaryKey: "id",
-        foreignKey: "product_id",
+        foreignKey: "items.product_id",
         alias: "product",
       },
     },
@@ -19,25 +19,13 @@ export const CartProduct: ModuleJoinerConfig = {
       relationship: {
         serviceName: Modules.PRODUCT,
         primaryKey: "id",
-        foreignKey: "variant_id",
+        foreignKey: "items.variant_id",
         alias: "variant",
         args: {
           methodSuffix: "Variants",
         },
       },
     },
-    {
-      serviceName: Modules.PRODUCT,
-      relationship: {
-        serviceName: Modules.CART,
-        primaryKey: "variant_id",
-        foreignKey: "id",
-        alias: "carts",
-        isList: true,
-        args: {
-          methodSuffix: "Variants",
-        },
-      },
-    },
+    // TODO: Add 'carts' to product modules
   ],
 }
