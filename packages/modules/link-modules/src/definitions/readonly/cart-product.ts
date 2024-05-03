@@ -26,6 +26,18 @@ export const CartProduct: ModuleJoinerConfig = {
         },
       },
     },
-    // TODO: Add 'carts' to product modules
+    {
+      serviceName: Modules.PRODUCT,
+      relationship: {
+        serviceName: Modules.CART,
+        primaryKey: "variant_id",
+        foreignKey: "id",
+        alias: "cart_items",
+        isList: true,
+        args: {
+          methodSuffix: "LineItems",
+        },
+      },
+    },
   ],
 }
