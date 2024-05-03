@@ -41,14 +41,13 @@
     "typeToConfirm": "Please type {val} to confirm:",
     "noResultsTitle": "No results",
     "noResultsMessage": "Try changing the filters or search query",
+    "noSearchResults": "No search results",
+    "noSearchResultsFor": "No search results for <0>'{{query}}'</0>",
     "noRecordsTitle": "No records",
     "noRecordsMessage": "There are no records to show",
     "unsavedChangesTitle": "Are you sure you want to leave this page?",
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page.",
-    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved.",
-    "timeline": "Timeline",
-    "success": "Success",
-    "error": "Error"
+    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved."
   },
   "validation": {
     "mustBeInt": "The value must be a whole number.",
@@ -162,8 +161,27 @@
   },
   "products": {
     "domain": "Products",
-    "createProductTitle": "Create Product",
-    "createProductHint": "Create a new product to sell in your store.",
+    "create": {
+      "header": "Create Product",
+      "hint": "Create a new product to sell in your store.",
+      "tabs": {
+        "details": "Details",
+        "variants": "Variants"
+      },
+      "variants": {
+        "header": "Variants",
+        "productVariants": {
+          "label": "Product variants",
+          "hint": "Variants left unchecked won't be created. This ranking will affect how the variants are ranked in your frontend.",
+          "alert": "Add options to create variants."
+        },
+        "productOptions": {
+          "label": "Product options",
+          "hint": "Define the options for the product, e.g. color, size, etc."
+        }
+      },
+      "successToast": "Product {{title}} was successfully created."
+    },
     "deleteWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
     "variants": "Variants",
     "attributes": "Attributes",
@@ -296,10 +314,12 @@
     "options": {
       "header": "Options",
       "edit": {
-        "header": "Edit Option"
+        "header": "Edit Option",
+        "successToast": "Option {{title}} was successfully updated."
       },
       "create": {
-        "header": "Create Option"
+        "header": "Create Option",
+        "successToast": "Option {{title}} was successfully created."
       }
     },
     "toasts": {
@@ -349,11 +369,11 @@
     "associatedVariants": "Associated variants",
     "manageLocations": "Manage locations",
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
-    "reservation": { 
+    "reservation": {
       "header": "Reservation of {{itemName}}",
       "editItemDetails": "Edit item details",
       "orderID": "Order ID",
-      "description": "Description", 
+      "description": "Description",
       "location": "Location",
       "inStockAtLocation": "In stock at this location",
       "availableAtLocation": "Available at this location",
@@ -1579,7 +1599,8 @@
     "unitPrice": "Unit price",
     "startDate": "Start date",
     "endDate": "End date",
-    "draft": "Draft"
+    "draft": "Draft",
+    "values": "Values"
   },
   "metadata": {
     "warnings": {
