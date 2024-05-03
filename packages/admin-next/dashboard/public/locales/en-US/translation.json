@@ -68,7 +68,10 @@
     "remove": "Remove",
     "revoke": "Revoke",
     "cancel": "Cancel",
+    "enable": "Enable",
+    "disable": "Disable",
     "complete": "Complete",
+    "viewDetails": "View details",
     "back": "Back",
     "close": "Close",
     "continue": "Continue",
@@ -153,6 +156,9 @@
       "required": "New owner is required."
     }
   },
+  "sales_channels": {
+    "availableIn": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels"
+  },
   "products": {
     "domain": "Products",
     "create": {
@@ -202,7 +208,6 @@
       "noMediaLabel": "The product has no associated media."
     },
     "discountableHint": "When unchecked discounts will not be applied to this product.",
-    "availableInSalesChannels": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels",
     "noSalesChannels": "Not available in any sales channels",
     "variantCount_one": "{{count}} variant",
     "variantCount_other": "{{count}} variants",
@@ -643,15 +648,23 @@
     }
   },
   "shipping": {
-    "title": "Shipping & Delivery",
-    "domain": "Shipping & Delivery",
+    "title": "Location & Shipping",
+    "domain": "Location & Shipping",
     "description": "Choose where you ship and how much you charge for shipping at checkout. Define shipping options specific for your locations.",
+    "createLocation": "Create location",
+    "createLocationDetailsHint": "Specify the details of the location.",
+    "deleteLocation": "Delete location",
     "from": "Shipping from",
     "add": "Add shipping",
     "connectProvider": "Connect provider",
     "addZone": "Add shipping zone",
     "enablePickup": "Enable pickup",
     "enableDelivery": "Enable delivery",
+    "deleteLocation": {
+      "label": "Delete Location",
+      "confirm": "Are you sure you want to delete {{name}} location",
+      "success": "{{name}} location successfully deleted"
+    },
     "noRecords": {
       "action": "Add Location",
       "title": "No inventory locations",
@@ -665,18 +678,25 @@
     },
     "fulfillmentSet": {
       "placeholder": "Not covered by any shipping zones.",
+      "salesChannels": "Connected Sales Channels",
       "delete": "Delete shipping",
+      "disableWarning": "Are you sure that you wnat to disable \"{{name}}\"? This will delete all assocciated service zones and shipping options.",
       "create": {
         "title": "Add service zone for {{fulfillmentSet}}"
       },
+      "toast": {
+        "disable": "\"{{name}}\" disabled"
+      },
       "addZone": "Add service zone",
       "pickup": {
-        "title": "Pickup in",
-        "enable": "Enable pickup"
+        "title": "Pick up",
+        "enable": "Enable pickup",
+        "offers": "Offers pick up in"
       },
       "delivery": {
-        "title": "Shipping to",
-        "enable": "Enable delivery"
+        "title": "Shipping",
+        "enable": "Enable delivery",
+        "offers": "Offers shippping to"
       }
     },
     "serviceZone": {
@@ -686,12 +706,21 @@
         "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone. ",
         "zoneName": "Zone name"
       },
+      "edit":{
+        "title": "Edit Service Zone"
+      },
+      "deleteWarning": "Are you sure you want to delete \"{{name}}\". This will also delete all assocciated shipping options.",
+      "toast": {
+        "delete": "Zone \"{{name}}\" deleted successfully."
+      },
       "editPrices": "Edit prices",
       "editOption": "Edit option",
       "optionsLength_one": "shipping option",
       "optionsLength_other": "shipping options",
+      "returnOptionsLength_one": "return option",
+      "returnOptionsLength_other": "return options",
       "shippingOptionsPlaceholder": "Not covered by any shipping options.",
-      "addShippingOptions": "Add shipping options",
+      "addOption": "Add option",
       "shippingOptions": "Shipping options",
       "returnOptions": "Return options",
       "areas": {
@@ -703,7 +732,7 @@
     },
     "shippingOptions": {
       "create": {
-        "title": "Create shipping options for {{zone}}",
+        "title": "Create a shipping option for {{zone}}",
         "subtitle": "General information",
         "description": "To start selling, all you need is a name and a price",
         "details": "Details",
@@ -716,7 +745,26 @@
         "calculated": "Calculated",
         "calculatedDescription": "Shipping option's price is calculated by the fulfillment provider.",
         "profile": "Shipping profile"
+      },
+      "deleteWarning": "Are you sure you want to delete \"{{name}}\"?",
+      "toast": {
+        "delete": "Shipping option \"{{name}}\" deleted successfully."
+      },
+      "inStore": "Store",
+      "edit": {
+        "title": "Edit Shipping Option",
+        "provider": "Fulfillment provider"
       }
+    },
+    "returnOptions" : {
+      "create": {
+        "title": "Create a return option for {{zone}}"
+      }
+    },
+    "salesChannels": {
+      "title": "Connected Sales Channels",
+      "placeholder": "No connected channels yet.",
+      "connectChannels": "Connect Channels"
     }
   },
   "shippingProfile": {
@@ -1215,10 +1263,8 @@
   },
   "locations": {
     "domain": "Locations",
-    "createLocation": "Create location",
     "editLocation": "Edit location",
     "addSalesChannels": "Add sales channels",
-    "detailsHint": "Specify the details of the location.",
     "noLocationsFound": "No locations found",
     "selectLocations": "Select locations that stock the item.",
     "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
@@ -1408,6 +1454,7 @@
     "scheduled": "Scheduled",
     "expired": "Expired",
     "active": "Active",
+    "enabled": "Enabled",
     "disabled": "Disabled"
   },
   "fields": {
