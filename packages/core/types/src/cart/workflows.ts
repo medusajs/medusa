@@ -124,12 +124,20 @@ export interface CompleteCartWorkflowInputDTO {
 }
 
 export interface ConfirmVariantInventoryWorkflowInputDTO {
+  ignore_price_check?: boolean
+
   sales_channel_id: string
   variants: {
+    id: string
+    manage_inventory: boolean
     inventory_items: {
+      inventory_item_id: string
+      variant_id: string
+      required_quantity: BigNumberInput
       inventory: {
         location_levels: {
           stock_locations: {
+            id: string
             sales_channels: {
               id: string
             }[]

@@ -11,7 +11,10 @@ import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import { addToCartStep, refreshCartShippingMethodsStep } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
-import { cartFieldsForRefreshSteps } from "../utils/fields"
+import {
+  cartFieldsForRefreshSteps,
+  productVariantsFields,
+} from "../utils/fields"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
@@ -38,33 +41,7 @@ export const addToCartWorkflow = createWorkflow(
 
     const variants = useRemoteQueryStep({
       entry_point: "variants",
-      fields: [
-        "id",
-        "title",
-        "sku",
-        "barcode",
-        "manage_inventory",
-        "allow_backorder",
-        "product.id",
-        "product.title",
-        "product.description",
-        "product.subtitle",
-        "product.thumbnail",
-        "product.type",
-        "product.collection",
-        "product.handle",
-
-        "calculated_price.calculated_amount",
-
-        "inventory_items.inventory_item_id",
-        "inventory_items.required_quantity",
-
-        "inventory_items.inventory.location_levels.stock_locations.id",
-        "inventory_items.inventory.location_levels.stock_locations.name",
-
-        "inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
-        "inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
-      ],
+      fields: productVariantsFields,
       variables: {
         id: variantIds,
         calculated_price: {

@@ -22,7 +22,7 @@ export const CartProduct: ModuleJoinerConfig = {
         foreignKey: "variant_id",
         alias: "variant",
         args: {
-          methodSuffix: "Variant",
+          methodSuffix: "Variants",
         },
       },
     },
@@ -35,7 +35,7 @@ export const CartProduct: ModuleJoinerConfig = {
         alias: "carts",
         isList: true,
         args: {
-          methodSuffix: "Variant",
+          methodSuffix: "Variants",
         },
       },
     },

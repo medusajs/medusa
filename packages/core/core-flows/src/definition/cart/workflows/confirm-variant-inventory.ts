@@ -72,7 +72,7 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
         )
       }
 
-      if (priceNotFound.length) {
+      if (priceNotFound.length && !data.input.ignore_price_check) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Variants with IDs ${priceNotFound.join(", ")} do not have a price`

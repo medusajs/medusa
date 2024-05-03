@@ -415,10 +415,12 @@ medusaIntegrationTestRunner({
 
           expect(errors).toEqual([
             {
-              action: "confirm-inventory-step",
+              action: "confirm-item-inventory-as-step",
               handlerType: "invoke",
               error: expect.objectContaining({
-                message: "Some variant does not have the required inventory",
+                message: expect.stringContaining(
+                  "Some variant does not have the required inventory"
+                ),
               }),
             },
           ])
