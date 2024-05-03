@@ -169,7 +169,7 @@ const copy = async (starterPath, rootPath) => {
 }
 
 // Clones starter from URI.
-const clone = async (hostInfo, rootPath) => {
+const clone = async (hostInfo, rootPath, v2 = false) => {
   let url
   // Let people use private repos accessed over SSH.
   if (hostInfo.getDefaultRepresentation() === `sshurl`) {
@@ -179,7 +179,8 @@ const clone = async (hostInfo, rootPath) => {
     url = hostInfo.https({ noCommittish: true, noGitPlus: true })
   }
 
-  const branch = hostInfo.committish ? [`-b`, hostInfo.committish] : []
+  const branch = v2 ? [`-b`, "feat/v2"] : 
+    hostInfo.committish ? [`-b`, hostInfo.committish] : []
 
   const createAct = reporter.activity(`Creating new project from git: ${url}`)
 
@@ -228,7 +229,7 @@ const getMedusaConfig = (rootPath) => {
   return {}
 }
 
-const getPaths = async (starterPath, rootPath) => {
+const getPaths = async (starterPath, rootPath, v2 = false) => {
   let selectedOtherStarter = false
 
   // if no args are passed, prompt user for path and starter
@@ -240,7 +241,7 @@ const getPaths = async (starterPath, rootPath) => {
         message: `What is your project called?`,
         initial: `my-medusa-store`,
       },
-      {
+      !v2 && {
         type: `select`,
         name: `starter`,
         message: `What starter would you like to use?`,
@@ -253,14 +254,14 @@ const getPaths = async (starterPath, rootPath) => {
     ])
 
     // exit gracefully if responses aren't provided
-    if (!response.starter || !response.path.trim()) {
+    if ((!v2 && !response.starter) || !response.path.trim()) {
       throw new Error(
         `Please mention both starter package and project name along with path(if its not in the root)`
       )
     }
 
     selectedOtherStarter = response.starter === `different`
-    starterPath = `medusajs/${response.starter}`
+    starterPath = `medusajs/${v2 ? "medusa-starter-default" : response.starter}`
     rootPath = response.path
   }
 
@@ -523,6 +524,7 @@ export const newStarter = async (args) => {
     dbPass,
     dbPort,
     dbHost,
+    v2
   } = args
 
   const dbCredentials = removeUndefined({
@@ -535,7 +537,8 @@ export const newStarter = async (args) => {
 
   const { starterPath, rootPath, selectedOtherStarter } = await getPaths(
     starter,
-    root
+    root,
+    v2
   )
 
   const urlObject = url.parse(rootPath)
@@ -597,7 +600,7 @@ medusa new ${rootPath} [url-to-starter]
 
   const hostedInfo = hostedGitInfo.fromUrl(starterPath)
   if (hostedInfo) {
-    await clone(hostedInfo, rootPath)
+    await clone(hostedInfo, rootPath, v2)
   } else {
     await copy(starterPath, rootPath)
   }

@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product } from "@medusajs/medusa"
-import { Button, Input } from "@medusajs/ui"
+import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
+
 import { Form } from "../../../../../components/common/form"
+import { ChipInput } from "../../../../../components/inputs/chip-input"
 import {
   RouteDrawer,
   useRouteModal,
@@ -34,12 +36,24 @@ export const CreateProductOptionForm = ({
     resolver: zodResolver(CreateProductOptionSchema),
   })
 
-  const { mutateAsync, isLoading } = useCreateProductOption(product.id)
+  const { mutateAsync, isPending } = useCreateProductOption(product.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(values, {
-      onSuccess: () => {
+      onSuccess: ({ option }) => {
+        toast.success(t("general.success"), {
+          description: t("products.options.create.successToast", {
+            title: option.title,
+          }),
+          dismissLabel: t("general.close"),
+        })
         handleSuccess()
+      },
+      onError: async (err) => {
+        toast.error(t("general.error"), {
+          description: err.message,
+          dismissLabel: t("general.close"),
+        })
       },
     })
   })
@@ -71,21 +85,14 @@ export const CreateProductOptionForm = ({
           <Form.Field
             control={form.control}
             name="values"
-            render={({ field: { value, onChange, ...field } }) => {
+            render={({ field }) => {
               return (
                 <Form.Item>
                   <Form.Label>
                     {t("products.fields.options.variations")}
                   </Form.Label>
                   <Form.Control>
-                    <Input
-                      {...field}
-                      value={(value ?? []).join(",")}
-                      onChange={(e) => {
-                        const val = e.target.value
-                        onChange(val.split(",").map((v) => v.trim()))
-                      }}
-                    />
+                    <ChipInput {...field} />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>
@@ -100,7 +107,7 @@ export const CreateProductOptionForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button type="submit" size="small" isLoading={isLoading}>
+            <Button type="submit" size="small" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

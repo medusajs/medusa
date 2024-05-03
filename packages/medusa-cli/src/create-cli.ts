@@ -113,6 +113,11 @@ function buildLocalCommands(cli, isLocalProject) {
           .option(`db-host`, {
             type: `string`,
             describe: `The database host to use for database setup and migrations.`,
+          })
+          .option(`v2`, {
+            type: `boolean`,
+            describe: `Install Medusa with the V2 feature flag enabled. WARNING: Medusa V2 is still in development and shouldn't be used in production.`,
+            default: false
           }),
       desc: `Create a new Medusa project.`,
       handler: handlerP(newStarter),

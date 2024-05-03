@@ -51,6 +51,7 @@ async function makeRequest<
 
   if (!response.ok) {
     const errorData = await response.json()
+
     // Temp: Add a better error type
     throw new Error(`API error ${response.status}: ${errorData.message}`)
   }
