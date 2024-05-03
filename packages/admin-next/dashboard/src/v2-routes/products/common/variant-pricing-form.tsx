@@ -1,18 +1,18 @@
+import { CurrencyDTO, ProductVariantDTO } from "@medusajs/types"
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
+import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
-import { CreateProductSchemaType } from "../product-create/schema"
+import { useTranslation } from "react-i18next"
 import { DataGrid } from "../../../components/grid/data-grid"
+import { CurrencyCell } from "../../../components/grid/grid-cells/common/currency-cell"
+import { ReadonlyCell } from "../../../components/grid/grid-cells/common/readonly-cell"
+import { DataGridMeta } from "../../../components/grid/types"
 import { useCurrencies } from "../../../hooks/api/currencies"
 import { useStore } from "../../../hooks/api/store"
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
-import { CurrencyDTO, ProductVariantDTO } from "@medusajs/types"
-import { useTranslation } from "react-i18next"
-import { useMemo } from "react"
-import { ReadonlyCell } from "../../../components/grid/grid-cells/common/readonly-cell"
-import { CurrencyCell } from "../../../components/grid/grid-cells/common/currency-cell"
-import { DataGridMeta } from "../../../components/grid/types"
+import { ProductCreateSchemaType } from "../product-create/schema"
 
 type VariantPricingFormProps = {
-  form: UseFormReturn<CreateProductSchemaType>
+  form: UseFormReturn<ProductCreateSchemaType>
 }
 
 export const VariantPricingForm = ({ form }: VariantPricingFormProps) => {

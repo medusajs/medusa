@@ -1,13 +1,13 @@
-import { useUpdateProductVariant } from "../../../hooks/api/products"
-import { RouteFocusModal, useRouteModal } from "../../../components/route-modal"
-import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ExtendedProductDTO } from "../../../types/api-responses"
-import { VariantPricingForm } from "../common/variant-pricing-form"
-import { normalizeVariants } from "../product-create/schema"
 import { Button } from "@medusajs/ui"
+import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+import { RouteFocusModal, useRouteModal } from "../../../components/route-modal"
+import { useUpdateProductVariant } from "../../../hooks/api/products"
+import { ExtendedProductDTO } from "../../../types/api-responses"
+import { VariantPricingForm } from "../common/variant-pricing-form"
+import { normalizeVariants } from "../product-create/utils"
 
 export const UpdateVariantPricesSchema = zod.object({
   variants: zod.array(
@@ -38,7 +38,7 @@ export const PricingEdit = ({ product }: { product: ExtendedProductDTO }) => {
   })
 
   // TODO: Add batch update method here
-  const { mutateAsync, isLoading } = useUpdateProductVariant(product.id, "")
+  const { mutateAsync, isPending } = useUpdateProductVariant(product.id, "")
 
   const handleSubmit = form.handleSubmit(
     async (values) => {
@@ -69,7 +69,7 @@ export const PricingEdit = ({ product }: { product: ExtendedProductDTO }) => {
                 type="submit"
                 variant="primary"
                 size="small"
-                isLoading={isLoading}
+                isLoading={isPending}
               >
                 {t("actions.save")}
               </Button>

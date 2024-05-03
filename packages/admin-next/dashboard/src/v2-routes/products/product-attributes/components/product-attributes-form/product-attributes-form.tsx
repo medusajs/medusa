@@ -4,8 +4,8 @@ import { Button, Input } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { CountrySelect } from "../../../../../components/common/country-select"
 import { Form } from "../../../../../components/common/form"
+import { CountrySelect } from "../../../../../components/inputs/country-select"
 import {
   RouteDrawer,
   useRouteModal,

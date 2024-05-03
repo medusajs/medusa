@@ -1,21 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product } from "@medusajs/medusa"
-import { Button, Input, Select } from "@medusajs/ui"
+import { Button, Select } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { CountrySelect } from "../../../../../components/common/country-select"
 import { Form } from "../../../../../components/common/form"
+import { Combobox } from "../../../../../components/inputs/combobox"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useUpdateProduct } from "../../../../../hooks/api/products"
-import { Combobox } from "../../../../../components/common/combobox"
-import { useProductTypes } from "../../../../../hooks/api/product-types"
-import { useTags } from "../../../../../hooks/api/tags"
-import { useCollections } from "../../../../../hooks/api/collections"
 import { useCategories } from "../../../../../hooks/api/categories"
+import { useCollections } from "../../../../../hooks/api/collections"
+import { useProductTypes } from "../../../../../hooks/api/product-types"
+import { useUpdateProduct } from "../../../../../hooks/api/products"
+import { useTags } from "../../../../../hooks/api/tags"
 
 type ProductOrganizationFormProps = {
   product: Product
@@ -58,7 +57,7 @@ export const ProductOrganizationForm = ({
         category_ids: data.category_ids || undefined,
         tags:
           data.tags?.map((t) => {
-            id: t
+            t
           }) || undefined,
       },
       {
