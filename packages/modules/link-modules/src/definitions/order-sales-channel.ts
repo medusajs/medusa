@@ -10,7 +10,7 @@ export const OrderSalesChannel: ModuleJoinerConfig = {
       serviceName: Modules.ORDER,
       relationship: {
         serviceName: Modules.SALES_CHANNEL,
-        primaryKey: "is",
+        primaryKey: "id",
         foreignKey: "sales_channel_id",
         alias: "sales_channel",
       },
