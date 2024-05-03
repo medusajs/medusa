@@ -81,7 +81,7 @@ module.exports = {
   ignorePatterns: [
     ".eslintrc.js",
     "dist",
-    "oas-output"
+    "generated"
   ],
   overrides: [
     {
@@ -94,9 +94,11 @@ module.exports = {
       parserOptions: {
         project: [
           "./tsconfig.json",
+          "./packages/docblock-generator/tsconfig.json",
           "./packages/react-docs-generator/tsconfig.json",
           "./packages/scripts/tsconfig.json",
           "./packages/typedoc-config/tsconfig.json",
+          "./packages/typedoc-generate-references/tsconfig.json",
           "./packages/typedoc-plugin-custom/tsconfig.json",
           "./packages/typedoc-markdown-medusa-plugin/tsconfig.json",
           "./packages/types/tsconfig.json",

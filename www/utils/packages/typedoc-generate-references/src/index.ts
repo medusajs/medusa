@@ -23,7 +23,7 @@ program
 program
   .command("merge")
   .description(
-    "Merge JSON references located in the `docs-util/typedoc-json-output` directory."
+    "Merge JSON references located in the `www/utils/generated/typedoc-json-output` directory."
   )
   .action(merge)
 

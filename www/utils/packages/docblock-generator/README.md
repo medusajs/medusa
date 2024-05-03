@@ -62,7 +62,7 @@ This command will also remove tags and schemas not used.
 
 ### Generating OAS
 
-If a node is an API route, it generates OAS comments rather than TSDoc comments. The OAS comments are generated and placed in new/existing files under the `docs-util/oas-output/operations` directory.
+If a node is an API route, it generates OAS comments rather than TSDoc comments. The OAS comments are generated and placed in new/existing files under the `www/utils/generated/oas-output/operations` directory.
 
 ### Generating TSDoc Docblocks
 

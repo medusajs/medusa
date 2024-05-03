@@ -22,14 +22,7 @@ program
   .option(
     "--tsconfigPath <tsconfigPath>",
     "Path to TSConfig file.",
-    path.join(
-      __dirname,
-      "..",
-      "..",
-      "typedoc-config",
-      "extended-tsconfig",
-      "ui.json"
-    )
+    path.join(__dirname, "..", "..", "typedoc-config", "ui.json")
   )
   .option("--disable-typedoc", "Whether to disable Typedoc", false)
   .option("--verbose-typedoc", "Whether to show Typedoc logs.", false)

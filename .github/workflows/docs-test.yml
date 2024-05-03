@@ -52,13 +52,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install docs-util Dependencies
+      - name: Install www/utils Dependencies
         run: yarn
-        working-directory: docs-util
+        working-directory: www/utils
 
       - name: Build packages
         run: yarn build
-        working-directory: docs-util
+        working-directory: www/utils
 
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
@@ -67,7 +67,7 @@ jobs:
       # less than 300. This is to avoid a PR hanging in
       # an error state
       - name: Get PR files number
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
         run: 'yarn check:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
@@ -103,6 +103,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install www/utils Dependencies
+        run: yarn
+        working-directory: www/utils
+
+      - name: Build packages
+        run: yarn build
+        working-directory: www/utils
+
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
       # we retrieve the number of changed files
@@ -110,7 +118,7 @@ jobs:
       # less than 300. This is to avoid a PR hanging in
       # an error state
       - name: Get PR files number
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
         run: 'yarn check:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
@@ -145,6 +153,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install www/utils Dependencies
+        run: yarn
+        working-directory: www/utils
+
+      - name: Build packages
+        run: yarn build
+        working-directory: www/utils
+
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
       # we retrieve the number of changed files
@@ -152,7 +168,7 @@ jobs:
       # less than 300. This is to avoid a PR hanging in
       # an error state
       - name: Get PR files number
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
         run: 'yarn check:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
@@ -188,13 +204,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install docs-util Dependencies
+      - name: Install www/utils Dependencies
         run: yarn
-        working-directory: docs-util
+        working-directory: www/utils
 
       - name: Build packages
         run: yarn build
-        working-directory: docs-util
+        working-directory: www/utils
 
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
@@ -203,7 +219,7 @@ jobs:
       # less than 300. This is to avoid a PR hanging in
       # an error state
       - name: Get PR files number
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
         run: 'yarn check:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
@@ -240,13 +256,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install docs-util Dependencies
+      - name: Install www/utils Dependencies
         run: yarn
-        working-directory: docs-util
+        working-directory: www/utils
 
       - name: Build packages
         run: yarn build
-        working-directory: docs-util
+        working-directory: www/utils
 
       # reviewdog throws an error when the number
       # of file changes in a PR is > 300, so
@@ -255,7 +271,7 @@ jobs:
       # less than 300. This is to avoid a PR hanging in
       # an error state
       - name: Get PR files number
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
         run: 'yarn check:pr-files-count ${{ github.ref_name }}'
         id: pr-files
 
