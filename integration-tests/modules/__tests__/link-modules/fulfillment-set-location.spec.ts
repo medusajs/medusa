@@ -62,8 +62,8 @@ medusaIntegrationTestRunner({
         ])
 
         const linkQuery = remoteQueryObjectFromString({
-          entryPoint: "fulfillment_sets",
-          fields: ["id", "stock_locations.id"],
+          entryPoint: "stock_locations",
+          fields: ["id", "fulfillment_sets.id"],
         })
 
         const link = await remoteQuery(linkQuery)
@@ -72,10 +72,10 @@ medusaIntegrationTestRunner({
         expect(link).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
-              id: fulfillmentSet.id,
-              stock_locations: expect.arrayContaining([
+              id: euWarehouse.id,
+              fulfillment_sets: expect.arrayContaining([
                 expect.objectContaining({
-                  id: euWarehouse.id,
+                  id: fulfillmentSet.id,
                 }),
               ]),
             }),

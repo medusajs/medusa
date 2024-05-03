@@ -120,12 +120,12 @@ medusaIntegrationTestRunner({
               }),
               prices: [
                 expect.objectContaining({
-                  amount: 5000,
-                  currency_code: "eur",
-                }),
-                expect.objectContaining({
                   amount: 3000,
                   currency_code: "usd",
+                }),
+                expect.objectContaining({
+                  amount: 5000,
+                  currency_code: "eur",
                 }),
               ],
               calculated_price: expect.objectContaining({
