@@ -398,7 +398,7 @@ medusaIntegrationTestRunner({
         stockLocationId = createResponse.data.stock_location.id
       })
 
-      it.only("should create a fulfillment set for the location and then delete it and its associations", async () => {
+      it("should create a fulfillment set for the location and then delete it and its associations", async () => {
         const response = await api.post(
           `/admin/stock-locations/${stockLocationId}/fulfillment-sets?fields=id,*fulfillment_sets`,
           {
