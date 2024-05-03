@@ -1,8 +1,7 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { CartDTO } from "@medusajs/types"
+import { CartDTO, IFulfillmentModuleService } from "@medusajs/types"
 import { arrayDifference, MedusaError } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
-import { IFulfillmentModuleService } from "../../../../../types/dist/fulfillment/service"
 
 interface StepInput {
   cart: CartDTO
