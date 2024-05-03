@@ -1,0 +1,29 @@
+export const metadata = {
+  title: `${pageNumber} Architectural Modules`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about architectural modules.
+
+## What is an Architectural Module?
+
+An architectural module implements features and mechanisms related to the Medusa application’s architecture and infrastructure.
+
+Since modules are interchangeable, you have more control over Medusa’s architecture. For example, you can choose to use Memcached for event handling instead of Redis.
+
+Medusa currently supports two types of architectural modules: Cache and event modules.
+
+<Note>
+
+Refer to the [Architectural Modules reference](!resources!/architectural-modules) for a list of Medusa’s architectural modules.
+
+</Note>
+
+---
+
+## How to Create an Architectural Module?
+
+You create an architectural module like you’ve been creating custom modules: create a module with a service and export that service in the module’s definition file. The module's service extends an abstract class or interface provided by Medusa with predefined method signatures. 
+
+The next chapters explain the different architectural module types and how to create an architectural module for each.

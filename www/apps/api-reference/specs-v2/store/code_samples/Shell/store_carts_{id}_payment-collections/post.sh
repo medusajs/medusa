@@ -1,0 +1,1 @@
+curl -X POST '{backend_url}/store/carts/{id}/payment-collections'

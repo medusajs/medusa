@@ -1,0 +1,14 @@
+type: object
+description: SUMMARY
+x-schemaName: CreateProductOption
+required:
+  - title
+properties:
+  title:
+    type: string
+    title: title
+    description: The product's title.
+  product_id:
+    type: string
+    title: product_id
+    description: The product's product id.

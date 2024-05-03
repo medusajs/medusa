@@ -1,9 +1,9 @@
 import { Outlet, json } from "react-router-dom"
+import { useMe } from "../../../hooks/api/users"
 import { ProfileGeneralSection } from "./components/profile-general-section"
-import { useV2Session } from "../../../lib/api-v2"
 
 export const ProfileDetail = () => {
-  const { user, isLoading, isError, error } = useV2Session()
+  const { user, isPending: isLoading, isError, error } = useMe()
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -14,7 +14,7 @@ export const ProfileDetail = () => {
       throw error
     }
 
-    throw json("An unknown error has occured", 500)
+    throw json("An unknown error has occurred", 500)
   }
 
   return (

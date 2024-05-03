@@ -7,6 +7,7 @@ import {
 import {
   ICartModuleService,
   ICustomerModuleService,
+  IFulfillmentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IPromotionModuleService,
@@ -14,15 +15,21 @@ import {
   ISalesChannelModuleService,
   ITaxModuleService,
 } from "@medusajs/types"
-import { PromotionRuleOperator, PromotionType } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  PromotionRuleOperator,
+  PromotionType,
+  RuleOperator,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import adminSeeder from "../../../../helpers/admin-seeder"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 import { setupTaxStructure } from "../../fixtures"
 
 jest.setTimeout(100000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 medusaIntegrationTestRunner({
   env,
@@ -38,8 +45,12 @@ medusaIntegrationTestRunner({
       let remoteLink: RemoteLink
       let promotionModule: IPromotionModuleService
       let taxModule: ITaxModuleService
+      let fulfillmentModule: IFulfillmentModuleService
+      let remoteLinkService
+      let regionService: IRegionModuleService
 
       let defaultRegion
+      let region
 
       beforeAll(async () => {
         appContainer = getContainer()
@@ -52,10 +63,17 @@ medusaIntegrationTestRunner({
         remoteLink = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
         promotionModule = appContainer.resolve(ModuleRegistrationName.PROMOTION)
         taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
+        regionService = appContainer.resolve(ModuleRegistrationName.REGION)
+        fulfillmentModule = appContainer.resolve(
+          ModuleRegistrationName.FULFILLMENT
+        )
+        remoteLinkService = appContainer.resolve(
+          ContainerRegistrationKeys.REMOTE_LINK
+        )
       })
 
       beforeEach(async () => {
-        await adminSeeder(dbConnection)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
 
         // Here, so we don't have to create a region for each test
         defaultRegion = await regionModule.create({
@@ -548,7 +566,7 @@ medusaIntegrationTestRunner({
           await setupTaxStructure(taxModule)
 
           const region = await regionModule.create({
-            name: "US",
+            name: "us",
             currency_code: "usd",
           })
 
@@ -562,9 +580,9 @@ medusaIntegrationTestRunner({
             shipping_address: {
               address_1: "test address 1",
               address_2: "test address 2",
-              city: "NY",
-              country_code: "US",
-              province: "NY",
+              city: "ny",
+              country_code: "us",
+              province: "ny",
               postal_code: "94016",
             },
             items: [
@@ -578,11 +596,78 @@ medusaIntegrationTestRunner({
             ],
           })
 
+          const shippingProfile =
+            await fulfillmentModule.createShippingProfiles({
+              name: "Test",
+              type: "default",
+            })
+
+          const fulfillmentSet = await fulfillmentModule.create({
+            name: "Test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "Test",
+                geo_zones: [{ type: "country", country_code: "us" }],
+              },
+            ],
+          })
+
+          const shippingOption = await fulfillmentModule.createShippingOptions({
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            rules: [
+              {
+                operator: RuleOperator.EQ,
+                attribute: "customer.email",
+                value: "tony@stark.com",
+              },
+            ],
+          })
+
+          const shippingOption2 = await fulfillmentModule.createShippingOptions(
+            {
+              name: "Test shipping option",
+              service_zone_id: fulfillmentSet.service_zones[0].id,
+              shipping_profile_id: shippingProfile.id,
+              provider_id: "manual_test-provider",
+              price_type: "flat",
+              type: {
+                label: "Test type",
+                description: "Test description",
+                code: "test-code",
+              },
+              rules: [
+                {
+                  operator: RuleOperator.EQ,
+                  attribute: "customer.email",
+                  value: "tony@stark.com",
+                },
+              ],
+            }
+          )
+
           // Manually inserting shipping methods here since the cart does not
           // currently support it. Move to API when ready.
           await cartModule.addShippingMethods(cart.id, [
-            { amount: 500, name: "express" },
-            { amount: 500, name: "standard" },
+            {
+              amount: 500,
+              name: "express",
+              shipping_option_id: shippingOption.id,
+            },
+            {
+              amount: 500,
+              name: "standard",
+              shipping_option_id: shippingOption2.id,
+            },
           ])
 
           let updated = await api.post(`/store/carts/${cart.id}`, {
@@ -606,13 +691,13 @@ medusaIntegrationTestRunner({
               }),
               sales_channel_id: salesChannel.id,
               shipping_address: expect.objectContaining({
-                city: "NY",
-                country_code: "US",
-                province: "NY",
+                city: "ny",
+                country_code: "us",
+                province: "ny",
               }),
               shipping_methods: expect.arrayContaining([
                 expect.objectContaining({
-                  shipping_option_id: null,
+                  shipping_option_id: shippingOption2.id,
                   amount: 500,
                   tax_lines: [
                     expect.objectContaining({
@@ -625,7 +710,7 @@ medusaIntegrationTestRunner({
                   adjustments: [],
                 }),
                 expect.objectContaining({
-                  shipping_option_id: null,
+                  shipping_option_id: shippingOption.id,
                   amount: 500,
                   tax_lines: [
                     expect.objectContaining({
@@ -682,6 +767,140 @@ medusaIntegrationTestRunner({
                   adjustments: [],
                 }),
               ],
+            })
+          )
+        })
+
+        it("should remove invalid shipping methods", async () => {
+          await setupTaxStructure(taxModule)
+
+          const region = await regionModule.create({
+            name: "US",
+            currency_code: "usd",
+          })
+
+          const cart = await cartModule.create({
+            region_id: region.id,
+            currency_code: "eur",
+            email: "tony@stark.com",
+            shipping_address: {
+              address_1: "test address 1",
+              address_2: "test address 2",
+              city: "ny",
+              country_code: "us",
+              province: "ny",
+              postal_code: "94016",
+            },
+          })
+
+          const shippingProfile =
+            await fulfillmentModule.createShippingProfiles({
+              name: "Test",
+              type: "default",
+            })
+
+          const fulfillmentSet = await fulfillmentModule.create({
+            name: "Test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "Test",
+                geo_zones: [{ type: "country", country_code: "us" }],
+              },
+            ],
+          })
+
+          const shippingOptionOldValid =
+            await fulfillmentModule.createShippingOptions({
+              name: "Test shipping option",
+              service_zone_id: fulfillmentSet.service_zones[0].id,
+              shipping_profile_id: shippingProfile.id,
+              provider_id: "manual_test-provider",
+              price_type: "flat",
+              type: {
+                label: "Test type",
+                description: "Test description",
+                code: "test-code",
+              },
+              rules: [
+                {
+                  operator: RuleOperator.EQ,
+                  attribute: "customer.email",
+                  value: "tony@stark.com",
+                },
+              ],
+            })
+
+          const shippingOptionNewValid =
+            await fulfillmentModule.createShippingOptions({
+              name: "Test shipping option new",
+              service_zone_id: fulfillmentSet.service_zones[0].id,
+              shipping_profile_id: shippingProfile.id,
+              provider_id: "manual_test-provider",
+              price_type: "flat",
+              type: {
+                label: "Test type",
+                description: "Test description",
+                code: "test-code",
+              },
+              rules: [
+                {
+                  operator: RuleOperator.EQ,
+                  attribute: "customer.email",
+                  value: "jon@stark.com",
+                },
+              ],
+            })
+
+          await cartModule.addShippingMethods(cart.id, [
+            // should be removed
+            {
+              amount: 500,
+              name: "express",
+              shipping_option_id: shippingOptionOldValid.id,
+            },
+            // should be kept
+            {
+              amount: 500,
+              name: "express-new",
+              shipping_option_id: shippingOptionNewValid.id,
+            },
+            // should be removed
+            {
+              amount: 500,
+              name: "standard",
+              shipping_option_id: "does-not-exist",
+            },
+          ])
+
+          let updated = await api.post(`/store/carts/${cart.id}`, {
+            email: "jon@stark.com",
+          })
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              email: "jon@stark.com",
+              shipping_methods: [
+                expect.objectContaining({
+                  shipping_option_id: shippingOptionNewValid.id,
+                }),
+              ],
+            })
+          )
+
+          updated = await api.post(`/store/carts/${cart.id}`, {
+            email: null,
+            sales_channel_id: null,
+          })
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              email: null,
+              shipping_methods: [],
             })
           )
         })
@@ -1098,6 +1317,275 @@ medusaIntegrationTestRunner({
             type: "invalid_data",
             message: "country code is required to calculate taxes",
           })
+        })
+      })
+
+      describe("POST /store/carts/:id/shipping-methods", () => {
+        it("should add a shipping methods to a cart", async () => {
+          const cart = await cartModule.create({
+            currency_code: "usd",
+            shipping_address: { country_code: "us" },
+            items: [],
+          })
+
+          const shippingProfile =
+            await fulfillmentModule.createShippingProfiles({
+              name: "Test",
+              type: "default",
+            })
+
+          const fulfillmentSet = await fulfillmentModule.create({
+            name: "Test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "Test",
+                geo_zones: [{ type: "country", country_code: "us" }],
+              },
+            ],
+          })
+
+          const priceSet = await pricingModule.create({
+            prices: [{ amount: 3000, currency_code: "usd" }],
+          })
+
+          const shippingOption = await fulfillmentModule.createShippingOptions({
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            rules: [
+              {
+                operator: RuleOperator.EQ,
+                attribute: "shipping_address.country_code",
+                value: "us",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.FULFILLMENT]: { shipping_option_id: shippingOption.id },
+              [Modules.PRICING]: { price_set_id: priceSet.id },
+            },
+          ])
+
+          let response = await api.post(
+            `/store/carts/${cart.id}/shipping-methods`,
+            { option_id: shippingOption.id }
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              shipping_methods: [
+                {
+                  shipping_option_id: shippingOption.id,
+                  amount: 3000,
+                  id: expect.any(String),
+                  tax_lines: [],
+                  adjustments: [],
+                },
+              ],
+            })
+          )
+        })
+      })
+
+      describe("POST /store/carts/:id/complete", () => {
+        let salesChannel
+        let product
+        let shippingProfile
+        let fulfillmentSet
+        let shippingOption
+
+        beforeEach(async () => {
+          await setupTaxStructure(taxModule)
+          region = await regionService.create({
+            name: "Test region",
+            countries: ["US"],
+            currency_code: "usd",
+          })
+
+          salesChannel = (
+            await api.post(
+              "/admin/sales-channels",
+              { name: "first channel", description: "channel" },
+              adminHeaders
+            )
+          ).data.sales_channel
+
+          product = (
+            await api.post(
+              "/admin/products",
+              {
+                title: "Test fixture",
+                tags: [{ value: "123" }, { value: "456" }],
+                options: [
+                  { title: "size", values: ["large", "small"] },
+                  { title: "color", values: ["green"] },
+                ],
+                variants: [
+                  {
+                    title: "Test variant",
+                    inventory_quantity: 10,
+                    prices: [
+                      {
+                        currency_code: "usd",
+                        amount: 100,
+                      },
+                    ],
+                    options: {
+                      size: "large",
+                      color: "green",
+                    },
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          const stockLocation = (
+            await api.post(
+              `/admin/stock-locations`,
+              { name: "test location" },
+              adminHeaders
+            )
+          ).data.stock_location
+
+          await api.post(
+            `/admin/stock-locations/${stockLocation.id}/sales-channels`,
+            { add: [salesChannel.id] },
+            adminHeaders
+          )
+
+          shippingProfile = await fulfillmentModule.createShippingProfiles({
+            name: "Test",
+            type: "default",
+          })
+
+          fulfillmentSet = await fulfillmentModule.create({
+            name: "Test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "Test",
+                geo_zones: [{ type: "country", country_code: "us" }],
+              },
+            ],
+          })
+
+          await remoteLinkService.create([
+            {
+              [Modules.STOCK_LOCATION]: { stock_location_id: stockLocation.id },
+              [Modules.FULFILLMENT]: { fulfillment_set_id: fulfillmentSet.id },
+            },
+          ])
+
+          shippingOption = (
+            await api.post(
+              `/admin/shipping-options`,
+              {
+                name: "Test shipping option",
+                service_zone_id: fulfillmentSet.service_zones[0].id,
+                shipping_profile_id: shippingProfile.id,
+                provider_id: "manual_test-provider",
+                price_type: "flat",
+                type: {
+                  label: "Test type",
+                  description: "Test description",
+                  code: "test-code",
+                },
+                prices: [
+                  { currency_code: "usd", amount: 1000 },
+                  { region_id: region.id, amount: 1100 },
+                ],
+                rules: [],
+              },
+              adminHeaders
+            )
+          ).data.shipping_option
+        })
+
+        it("should create an order", async () => {
+          const cartResponse = await api.post(`/store/carts`, {
+            currency_code: "usd",
+            email: "tony@stark-industries.com",
+            shipping_address: {
+              address_1: "test address 1",
+              address_2: "test address 2",
+              city: "ny",
+              country_code: "us",
+              province: "ny",
+              postal_code: "94016",
+            },
+            // TODO: inventory isn't being managed on a product level
+            // sales_channel_id: salesChannel.id,
+            items: [{ quantity: 1, variant_id: product.variants[0].id }],
+          })
+
+          const response = await api.post(
+            `/store/carts/${cartResponse.data.cart.id}/complete`,
+            {}
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.order).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              total: 106,
+              subtotal: 100,
+              tax_total: 6,
+              discount_total: 0,
+              discount_tax_total: 0,
+              original_total: 106,
+              original_tax_total: 6,
+              item_total: 106,
+              item_subtotal: 100,
+              item_tax_total: 6,
+              original_item_total: 106,
+              original_item_subtotal: 100,
+              original_item_tax_total: 6,
+              shipping_total: 0,
+              shipping_subtotal: 0,
+              shipping_tax_total: 0,
+              original_shipping_tax_total: 0,
+              original_shipping_tax_subtotal: 0,
+              original_shipping_total: 0,
+              items: [
+                expect.objectContaining({
+                  product_id: product.id,
+                  unit_price: 100,
+                  quantity: 1,
+                  tax_total: 6,
+                  subtotal: 100,
+                  total: 106,
+                  original_total: 106,
+                  discount_total: 0,
+                  tax_lines: [
+                    expect.objectContaining({
+                      rate: 6,
+                    }),
+                  ],
+                  adjustments: [],
+                }),
+              ],
+              shipping_address: expect.objectContaining({
+                city: "ny",
+                country_code: "us",
+                province: "ny",
+                postal_code: "94016",
+              }),
+            })
+          )
         })
       })
     })

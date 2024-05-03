@@ -2,25 +2,35 @@ import {
   deleteLineItemsWorkflow,
   updateLineItemInCartWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICartModuleService } from "@medusajs/types"
-import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
-import { defaultStoreCartFields } from "../../../query-config"
-import { StorePostCartsCartLineItemsItemReq } from "./validators"
+import { refetchCart } from "../../../helpers"
+import { StoreUpdateCartLineItemType } from "../../../validators"
+import { prepareListQuery } from "../../../../../../utils/get-query-config"
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const cartModuleService = req.scope.resolve<ICartModuleService>(
-    ModuleRegistrationName.CART
+export const POST = async (
+  req: MedusaRequest<StoreUpdateCartLineItemType>,
+  res: MedusaResponse
+) => {
+  const cart = await refetchCart(
+    req.params.id,
+    req.scope,
+    prepareListQuery(
+      {},
+      {
+        defaults: [
+          "id",
+          "region_id",
+          "customer_id",
+          "sales_channel_id",
+          "currency_code",
+          "*items",
+        ],
+      }
+    ).remoteQueryConfig.fields
   )
 
-  const cart = await cartModuleService.retrieve(req.params.id, {
-    select: ["id", "region_id", "currency_code"],
-    relations: ["region", "items", "items.variant_id"],
-  })
-
   const item = cart.items?.find((i) => i.id === req.params.line_id)
-
   if (!item) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
@@ -31,7 +41,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const input = {
     cart,
     item,
-    update: req.validatedBody as StorePostCartsCartLineItemsItemReq,
+    update: req.validatedBody,
   }
 
   const { errors } = await updateLineItemInCartWorkflow(req.scope).run({
@@ -43,16 +53,11 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const query = remoteQueryObjectFromString({
-    entryPoint: "cart",
-    fields: defaultStoreCartFields,
-  })
-
-  const [updatedCart] = await remoteQuery(query, {
-    cart: { id: req.params.id },
-  })
+  const updatedCart = await refetchCart(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
   res.status(200).json({ cart: updatedCart })
 }
@@ -69,16 +74,11 @@ export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const query = remoteQueryObjectFromString({
-    entryPoint: "cart",
-    fields: defaultStoreCartFields,
-  })
-
-  const [cart] = await remoteQuery(query, {
-    cart: { id: req.params.id },
-  })
+  const cart = await refetchCart(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
   res.status(200).json({ cart })
 }

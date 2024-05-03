@@ -13,13 +13,11 @@ import {
   getCustomNamespaceTag,
   shouldHaveCustomNamespace,
 } from "../../utils/medusa-react-utils.js"
-import {
-  camelToWords,
-  capitalize,
-  normalizeName,
-} from "../../utils/str-formatting.js"
 import GeneratorEventManager from "../helpers/generator-event-manager.js"
 import { CommonCliOptions } from "../../types/index.js"
+import AiGenerator from "../helpers/ai-generator.js"
+import { camelToWords, capitalize } from "utils"
+import { normalizeName } from "../../utils/str-formatting.js"
 
 export type GeneratorOptions = {
   checker: ts.TypeChecker
@@ -31,6 +29,7 @@ export type GeneratorOptions = {
 export type GetDocBlockOptions = {
   addEnd?: boolean
   summaryPrefix?: string
+  aiGenerator?: AiGenerator
 }
 
 type CommonDocsOptions = {
@@ -54,6 +53,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     ts.SyntaxKind.TypeAliasDeclaration,
     ts.SyntaxKind.PropertySignature,
   ]
+  public name = "default"
   protected allowedKinds: ts.SyntaxKind[]
   protected checker: ts.TypeChecker
   protected defaultSummary = "{summary}"
@@ -99,10 +99,10 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
    * @returns {string} The node's docblock.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getDocBlock(
+  async getDocBlock(
     node: T | ts.Node,
     options: GetDocBlockOptions = { addEnd: true }
-  ): string {
+  ): Promise<string> {
     let str = DOCBLOCK_START
     const summary = this.getNodeSummary({ node })
 
@@ -133,6 +133,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     node,
     symbol,
     nodeType,
+    knowledgeBaseOptions: overrideOptions,
   }: {
     /**
      * The node to retrieve the summary comment for.
@@ -148,12 +149,20 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
      * will try to retrieve it.
      */
     nodeType?: ts.Type
+    /**
+     * Override any of the default knowledge base options
+     * inferred using the {@link getKnowledgeBaseOptions} method
+     */
+    knowledgeBaseOptions?: Partial<RetrieveOptions>
   }): string {
     const syntheticComments = ts.getSyntheticLeadingComments(node)
     if (syntheticComments?.length) {
       return syntheticComments.map((comment) => comment.text).join(" ")
     }
-    const knowledgeBaseOptions = this.getKnowledgeBaseOptions(node)
+    const knowledgeBaseOptions = {
+      ...this.getKnowledgeBaseOptions(node),
+      ...overrideOptions,
+    }
     if (!nodeType) {
       nodeType =
         "type" in node && node.type && ts.isTypeNode(node.type as ts.Node)

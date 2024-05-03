@@ -27,9 +27,7 @@ export const defaultAdminProductsVariantFields = [
 ]
 
 export const retrieveVariantConfig = {
-  defaultFields: defaultAdminProductsVariantFields,
-  defaultRelations: [],
-  allowedRelations: [],
+  defaults: defaultAdminProductsVariantFields,
   isList: false,
 }
 
@@ -42,7 +40,7 @@ export const listVariantConfig = {
 export const defaultAdminProductsOptionFields = ["id", "title"]
 
 export const retrieveOptionConfig = {
-  defaultFields: defaultAdminProductsOptionFields,
+  defaults: defaultAdminProductsOptionFields,
   isList: false,
 }
 

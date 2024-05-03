@@ -1,6 +1,6 @@
-import { useAdminCustomerGroups } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { Filter } from "../../../components/table/data-table"
+import { useCustomerGroups } from "../../api/customer-groups"
 
 const excludeableFields = ["groups"] as const
 
@@ -11,7 +11,7 @@ export const useCustomerTableFilters = (
 
   const isGroupsExcluded = exclude?.includes("groups")
 
-  const { customer_groups } = useAdminCustomerGroups(
+  const { customer_groups } = useCustomerGroups(
     {
       limit: 1000,
       expand: "",

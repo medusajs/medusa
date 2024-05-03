@@ -1,0 +1,348 @@
+---
+slug: /references/medusa-react/hooks/admin/product_collections
+---
+
+import { TypeList } from "docs-ui"
+
+# Product Collections
+
+Queries and Mutations listed here are used to send requests to the [Admin Product Collection API Routes](https://docs.medusajs.com/api/admin#product-collections).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+A product collection is used to organize products for different purposes such as marketing or discount purposes. For example, you can create a Summer Collection.
+
+## Mutations
+
+### useAdminCreateCollection
+
+This hook creates a product collection.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateCollection } from "medusa-react"
+
+const CreateCollection = () => {
+  const createCollection = useAdminCreateCollection()
+  // ...
+
+  const handleCreate = (title: string) => {
+    createCollection.mutate({
+      title
+    }, {
+      onSuccess: ({ collection }) => {
+        console.log(collection.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default CreateCollection
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostCollectionsReq","type":"[AdminPostCollectionsReq](../../../../medusa/classes/medusa.AdminPostCollectionsReq/page.mdx)","optional":false,"defaultValue":"","description":"The product collection's details.","expandable":false,"children":[{"name":"title","type":"`string`","description":"The title of the collection.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"An optional handle to be used in slugs. If none is provided, the kebab-case version of the title will be used.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateCollection"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminCollectionsRes","type":"[AdminCollectionsRes](../../../../medusa/types/medusa.AdminCollectionsRes/page.mdx)","optional":false,"defaultValue":"","description":"The collection's details.","expandable":false,"children":[{"name":"collection","type":"[ProductCollection](../../../../product_models/classes/product_models.ProductCollection/page.mdx)","description":"Product Collection details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"Collection&#60;[Product](../../../../product_models/classes/product_models.Product/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_giftcard","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[ProductStatus](../../../../utils/ProductUtils/enums/utils.ProductUtils.ProductStatus/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"Collection&#60;[ProductOption](../../../../product_models/classes/product_models.ProductOption/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variants","type":"Collection&#60;[ProductVariant](../../../../product_models/classes/product_models.ProductVariant/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"collection_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"collection","type":"`null` \\| [ProductCollection](../../../../product_models/classes/product_models.ProductCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`null` \\| [ProductType](../../../../product_models/classes/product_models.ProductType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tags","type":"Collection&#60;[ProductTag](../../../../product_models/classes/product_models.ProductTag/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"images","type":"Collection&#60;[Image](../../../../product_models/classes/product_models.Image/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"categories","type":"Collection&#60;[ProductCategory](../../../../product_models/classes/product_models.ProductCategory/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountable","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"subtitle","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"thumbnail","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"weight","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"length","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"height","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"width","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"origin_country","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"hs_code","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"mid_code","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"material","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"external_id","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateCollection"/>
+
+### useAdminUpdateCollection
+
+This hook updates a product collection's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUpdateCollection } from "medusa-react"
+
+type Props = {
+  collectionId: string
+}
+
+const Collection = ({ collectionId }: Props) => {
+  const updateCollection = useAdminUpdateCollection(collectionId)
+  // ...
+
+  const handleUpdate = (title: string) => {
+    updateCollection.mutate({
+      title
+    }, {
+      onSuccess: ({ collection }) => {
+        console.log(collection.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Collection
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The product collection's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateCollection"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostCollectionsCollectionReq","type":"[AdminPostCollectionsCollectionReq](../../../../medusa/classes/medusa.AdminPostCollectionsCollectionReq/page.mdx)","optional":false,"defaultValue":"","description":"The product collection's details to update.","expandable":false,"children":[{"name":"title","type":"`string`","description":"The title of the collection.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"An optional handle to be used in slugs. If none is provided, the kebab-case version of the title will be used.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateCollection"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminCollectionsRes","type":"[AdminCollectionsRes](../../../../medusa/types/medusa.AdminCollectionsRes/page.mdx)","optional":false,"defaultValue":"","description":"The collection's details.","expandable":false,"children":[{"name":"collection","type":"[ProductCollection](../../../../product_models/classes/product_models.ProductCollection/page.mdx)","description":"Product Collection details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"Collection&#60;[Product](../../../../product_models/classes/product_models.Product/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_giftcard","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[ProductStatus](../../../../utils/ProductUtils/enums/utils.ProductUtils.ProductStatus/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"Collection&#60;[ProductOption](../../../../product_models/classes/product_models.ProductOption/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variants","type":"Collection&#60;[ProductVariant](../../../../product_models/classes/product_models.ProductVariant/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"collection_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"collection","type":"`null` \\| [ProductCollection](../../../../product_models/classes/product_models.ProductCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`null` \\| [ProductType](../../../../product_models/classes/product_models.ProductType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tags","type":"Collection&#60;[ProductTag](../../../../product_models/classes/product_models.ProductTag/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"images","type":"Collection&#60;[Image](../../../../product_models/classes/product_models.Image/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"categories","type":"Collection&#60;[ProductCategory](../../../../product_models/classes/product_models.ProductCategory/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountable","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"subtitle","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"thumbnail","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"weight","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"length","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"height","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"width","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"origin_country","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"hs_code","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"mid_code","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"material","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"external_id","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateCollection"/>
+
+### useAdminDeleteCollection
+
+This hook deletes a product collection. This does not delete associated products.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteCollection } from "medusa-react"
+
+type Props = {
+  collectionId: string
+}
+
+const Collection = ({ collectionId }: Props) => {
+  const deleteCollection = useAdminDeleteCollection(collectionId)
+  // ...
+
+  const handleDelete = (title: string) => {
+    deleteCollection.mutate(void 0, {
+      onSuccess: ({ id, object, deleted }) => {
+        console.log(id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Collection
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The product collection's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteCollection"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../../medusa/interfaces/medusa.DeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteCollection"/>
+
+### useAdminAddProductsToCollection
+
+This hook adds products to a collection.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminAddProductsToCollection } from "medusa-react"
+
+type Props = {
+  collectionId: string
+}
+
+const Collection = ({ collectionId }: Props) => {
+  const addProducts = useAdminAddProductsToCollection(collectionId)
+  // ...
+
+  const handleAddProducts = (productIds: string[]) => {
+    addProducts.mutate({
+      product_ids: productIds
+    }, {
+      onSuccess: ({ collection }) => {
+        console.log(collection.products)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Collection
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The product collection's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminAddProductsToCollection"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostProductsToCollectionReq","type":"[AdminPostProductsToCollectionReq](../../../../medusa/classes/medusa.AdminPostProductsToCollectionReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the products to add to the collection.","expandable":false,"children":[{"name":"product_ids","type":"`string`[]","description":"An array of Product IDs to add to the Product Collection.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminAddProductsToCollection"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminCollectionsRes","type":"[AdminCollectionsRes](../../../../medusa/types/medusa.AdminCollectionsRes/page.mdx)","optional":false,"defaultValue":"","description":"The collection's details.","expandable":false,"children":[{"name":"collection","type":"[ProductCollection](../../../../product_models/classes/product_models.ProductCollection/page.mdx)","description":"Product Collection details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"Collection&#60;[Product](../../../../product_models/classes/product_models.Product/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_giftcard","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[ProductStatus](../../../../utils/ProductUtils/enums/utils.ProductUtils.ProductStatus/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"Collection&#60;[ProductOption](../../../../product_models/classes/product_models.ProductOption/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variants","type":"Collection&#60;[ProductVariant](../../../../product_models/classes/product_models.ProductVariant/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"collection_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"collection","type":"`null` \\| [ProductCollection](../../../../product_models/classes/product_models.ProductCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`null` \\| [ProductType](../../../../product_models/classes/product_models.ProductType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tags","type":"Collection&#60;[ProductTag](../../../../product_models/classes/product_models.ProductTag/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"images","type":"Collection&#60;[Image](../../../../product_models/classes/product_models.Image/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"categories","type":"Collection&#60;[ProductCategory](../../../../product_models/classes/product_models.ProductCategory/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountable","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"subtitle","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"thumbnail","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"weight","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"length","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"height","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"width","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"origin_country","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"hs_code","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"mid_code","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"material","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"external_id","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminAddProductsToCollection"/>
+
+### useAdminRemoveProductsFromCollection
+
+This hook removes a list of products from a collection. This would not delete the product, 
+only the association between the product and the collection.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminRemoveProductsFromCollection } from "medusa-react"
+
+type Props = {
+  collectionId: string
+}
+
+const Collection = ({ collectionId }: Props) => {
+  const removeProducts = useAdminRemoveProductsFromCollection(collectionId)
+  // ...
+
+  const handleRemoveProducts = (productIds: string[]) => {
+    removeProducts.mutate({
+      product_ids: productIds
+    }, {
+      onSuccess: ({ id, object, removed_products }) => {
+        console.log(removed_products)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Collection
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The product collection's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminRemoveProductsFromCollection"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminDeleteProductsFromCollectionReq","type":"[AdminDeleteProductsFromCollectionReq](../../../../medusa/classes/medusa.AdminDeleteProductsFromCollectionReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the products to remove from the collection.","expandable":false,"children":[{"name":"product_ids","type":"`string`[]","description":"An array of Product IDs to remove from the Product Collection.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminRemoveProductsFromCollection"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminDeleteProductsFromCollectionRes","type":"[AdminDeleteProductsFromCollectionRes](../../../../medusa/types/medusa.AdminDeleteProductsFromCollectionRes/page.mdx)","optional":false,"defaultValue":"","description":"Deletion operation details","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the collection","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of object the removal was executed on","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"removed_products","type":"`string`[]","description":"The IDs of the products removed from the collection","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminRemoveProductsFromCollection"/>
+
+___
+
+## Queries
+
+### useAdminCollections
+
+This hook retrieves a list of product collections. The product collections can be filtered by fields such as `handle` or `title`.
+The collections can also be sorted or paginated.
+
+#### Example
+
+To list product collections:
+
+```tsx
+import React from "react"
+import { useAdminCollections } from "medusa-react"
+
+const Collections = () => {
+  const { collections, isLoading } = useAdminCollections()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {collections && !collections.length && <span>
+        No Product Collections
+      </span>}
+      {collections && collections.length > 0 && (
+        <ul>
+          {collections.map((collection) => (
+            <li key={collection.id}>{collection.title}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Collections
+```
+
+By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```tsx
+import React from "react"
+import { useAdminCollections } from "medusa-react"
+
+const Collections = () => {
+  const { collections, limit, offset, isLoading } = useAdminCollections({
+    limit: 15,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {collections && !collections.length && <span>
+        No Product Collections
+      </span>}
+      {collections && collections.length > 0 && (
+        <ul>
+          {collections.map((collection) => (
+            <li key={collection.id}>{collection.title}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Collections
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminGetCollectionsParams](../../../../medusa/classes/medusa.AdminGetCollectionsParams/page.mdx)","description":"Filters and pagination configurations to apply on the retrieved product collections.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":false,"defaultValue":"10","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":false,"defaultValue":"0","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"Title to filter product collections by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"Handle to filter product collections by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the product collections' `created_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"updated_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the product collections' `updated_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"deleted_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the product collections' `deleted_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"q","type":"`string`","description":"Term to search product collections by their title and handle.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"discount_condition_id","type":"`string`","description":"Filter product collections by their associated discount condition's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCollections"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"collections","type":"[ProductCollection](../../../../product_models/classes/product_models.ProductCollection/page.mdx)[]","description":"an array of collection details","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"Collection&#60;[Product](../../../../product_models/classes/product_models.Product/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_giftcard","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[ProductStatus](../../../../utils/ProductUtils/enums/utils.ProductUtils.ProductStatus/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"Collection&#60;[ProductOption](../../../../product_models/classes/product_models.ProductOption/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variants","type":"Collection&#60;[ProductVariant](../../../../product_models/classes/product_models.ProductVariant/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"collection_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"collection","type":"`null` \\| [ProductCollection](../../../../product_models/classes/product_models.ProductCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`null` \\| [ProductType](../../../../product_models/classes/product_models.ProductType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tags","type":"Collection&#60;[ProductTag](../../../../product_models/classes/product_models.ProductTag/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"images","type":"Collection&#60;[Image](../../../../product_models/classes/product_models.Image/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"categories","type":"Collection&#60;[ProductCategory](../../../../product_models/classes/product_models.ProductCategory/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountable","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"subtitle","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"thumbnail","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"weight","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"length","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"height","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"width","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"origin_country","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"hs_code","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"mid_code","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"material","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"external_id","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCollections"/>
+
+### useAdminCollection
+
+This hook retrieves a product collection by its ID. The products associated with it are expanded and returned as well.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCollection } from "medusa-react"
+
+type Props = {
+  collectionId: string
+}
+
+const Collection = ({ collectionId }: Props) => {
+  const { collection, isLoading } = useAdminCollection(collectionId)
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {collection && <span>{collection.title}</span>}
+    </div>
+  )
+}
+
+export default Collection
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The product collection's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCollection"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"collection","type":"[ProductCollection](../../../../product_models/classes/product_models.ProductCollection/page.mdx)","description":"Product Collection details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"Collection&#60;[Product](../../../../product_models/classes/product_models.Product/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_giftcard","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[ProductStatus](../../../../utils/ProductUtils/enums/utils.ProductUtils.ProductStatus/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"Collection&#60;[ProductOption](../../../../product_models/classes/product_models.ProductOption/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variants","type":"Collection&#60;[ProductVariant](../../../../product_models/classes/product_models.ProductVariant/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"collection_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"collection","type":"`null` \\| [ProductCollection](../../../../product_models/classes/product_models.ProductCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`null` \\| [ProductType](../../../../product_models/classes/product_models.ProductType/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tags","type":"Collection&#60;[ProductTag](../../../../product_models/classes/product_models.ProductTag/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"images","type":"Collection&#60;[Image](../../../../product_models/classes/product_models.Image/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"categories","type":"Collection&#60;[ProductCategory](../../../../product_models/classes/product_models.ProductCategory/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountable","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"subtitle","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"thumbnail","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"weight","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"length","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"height","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"width","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"origin_country","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"hs_code","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"mid_code","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"material","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"external_id","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCollection"/>

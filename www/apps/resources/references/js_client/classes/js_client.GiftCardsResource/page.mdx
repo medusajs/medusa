@@ -1,0 +1,40 @@
+---
+slug: /references/js-client/GiftCardsResource
+---
+
+import { TypeList } from "docs-ui"
+
+# GiftCardsResource
+
+This class is used to send requests to [Store Gift Card API Routes](https://docs.medusajs.com/api/store#gift-cards). All its method
+are available in the JS Client under the `medusa.giftCards` property.
+
+Customers can use gift cards during checkout to deduct the gift card's balance from the checkout total.
+The methods in this class allow retrieving a gift card's details by its code. A gift card can be applied to a cart using [CartsResource](../js_client.CartsResource/page.mdx).
+
+Related Guide: [How to use gift cards in a storefront](https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards).
+
+## Methods
+
+### retrieve
+
+Retrieve a Gift Card's details by its associated unique code.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.giftCards.retrieve(code)
+.then(({ gift_card }) => {
+  console.log(gift_card.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"code","type":"`string`","description":"The code of the gift card.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreGiftCardsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the gift card.","expandable":false,"children":[{"name":"StoreGiftCardsRes","type":"[StoreGiftCardsRes](../../../medusa/types/medusa.StoreGiftCardsRes/page.mdx)","optional":false,"defaultValue":"","description":"The gift card's details.","expandable":false,"children":[{"name":"gift_card","type":"[GiftCard](../../../medusa/classes/medusa.GiftCard/page.mdx)","description":"Gift card details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of a gift card.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>

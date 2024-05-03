@@ -1,42 +1,43 @@
+import { createCustomerAddressesWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
 import {
-  CreateCustomerAddressDTO,
-  ICustomerModuleService,
-} from "@medusajs/types"
-
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createCustomerAddressesWorkflow } from "@medusajs/core-flows"
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { AdminCreateCustomerAddressType } from "../../validators"
+import { refetchCustomer } from "../../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const customerId = req.params.id
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const customerModuleService = req.scope.resolve<ICustomerModuleService>(
-    ModuleRegistrationName.CUSTOMER
-  )
+  const query = remoteQueryObjectFromString({
+    entryPoint: "customer_address",
+    variables: {
+      filters: { ...req.filterableFields, customer_id: customerId },
+      ...req.remoteQueryConfig.pagination,
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
 
-  const [addresses, count] = await customerModuleService.listAndCountAddresses(
-    { ...req.filterableFields, customer_id: customerId },
-    req.listConfig
-  )
-
-  const { offset, limit } = req.validatedQuery
+  const { rows: addresses, metadata } = await remoteQuery(query)
 
   res.json({
-    count,
     addresses,
-    offset,
-    limit,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
   })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateCustomerAddressDTO>,
+  req: AuthenticatedMedusaRequest<AdminCreateCustomerAddressType>,
   res: MedusaResponse
 ) => {
   const customerId = req.params.id
@@ -57,5 +58,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ address: result[0] })
+  const customer = await refetchCustomer(
+    customerId,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ customer })
 }

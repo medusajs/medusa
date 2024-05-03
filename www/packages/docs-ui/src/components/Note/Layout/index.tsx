@@ -18,6 +18,7 @@ export const NoteLayout = ({
     type === "error" ||
     type === "check"
   const isWarningStyle = type === "warning"
+  const isSoonStyle = type === "soon"
 
   return (
     <div
@@ -26,6 +27,7 @@ export const NoteLayout = ({
         isDefaultStyle &&
           "bg-medusa-tag-neutral-bg border-medusa-tag-neutral-border",
         isWarningStyle && "bg-medusa-tag-red-bg border-medusa-tag-red-border",
+        isSoonStyle && "bg-medusa-tag-blue-bg border-medusa-tag-blue-border",
         "[&_a]:no-underline [&_a]:text-medusa-fg-interactive hover:[&_a]:text-medusa-fg-interactive-hover ",
         "mb-docs_2 alert"
       )}
@@ -36,6 +38,7 @@ export const NoteLayout = ({
           className={clsx(
             isDefaultStyle && "text-medusa-tag-neutral-text",
             isWarningStyle && "text-medusa-tag-red-text",
+            isSoonStyle && "text-medusa-tag-blue-text",
             "text-medium flex-1 [&>*:last-child]:mb-0",
             "[&>p>code]:px-docs_0.5 [&>p>code]:text-code-label"
           )}
@@ -43,9 +46,10 @@ export const NoteLayout = ({
           {title && (
             <span
               className={clsx(
-                "txt-compact-medium-plus block mb-docs_0.125",
+                "text-compact-medium-plus block mb-docs_0.125",
                 isDefaultStyle && "text-medusa-fg-base",
-                isWarningStyle && "text-medusa-tag-red-text"
+                isWarningStyle && "text-medusa-tag-red-text",
+                isSoonStyle && "text-medusa-tag-blue-text"
               )}
             >
               {title}

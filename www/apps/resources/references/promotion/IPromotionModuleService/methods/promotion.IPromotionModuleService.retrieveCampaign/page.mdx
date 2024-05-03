@@ -1,0 +1,42 @@
+---
+displayed_sidebar: promotionReference
+slug: /references/promotion/retrieveCampaign
+sidebar_label: retrieveCampaign
+---
+
+import { TypeList } from "docs-ui"
+
+# retrieveCampaign - Promotion Module Reference
+
+This documentation provides a reference to the `retrieveCampaign` method. This belongs to the Promotion Module.
+
+This method retrieves a campaigns by its ID.
+
+## Example
+
+A simple example that retrieves a promotion by its ID:
+
+```ts
+const campaign =
+  await promotionModuleService.retrieveCampaign("procamp_123")
+```
+
+To specify relations that should be retrieved:
+
+```ts
+const campaign =
+  await promotionModuleService.retrieveCampaign(
+    "procamp_123",
+    {
+      relations: ["promotions"],
+    }
+  )
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the campaigns.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../../interfaces/promotion.FindConfig/page.mdx)&#60;[CampaignDTO](../../../interfaces/promotion.CampaignDTO/page.mdx)&#62;","description":"The configurations determining how the campaign is retrieved. Its properties, such as `select` or `relations`, accept the\nattributes or relations associated with a campaign.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"select","type":"(`string` \\| keyof Entity)[]","description":"An array of strings, each being attribute names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"skip","type":"`null` \\| `number`","description":"A number indicating the number of records to skip before retrieving the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"take","type":"`null` \\| `number`","description":"A number indicating the number of records to return in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"relations","type":"`string`[]","description":"An array of strings, each being relation names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`object`","description":"An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC`\nto sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"withDeleted","type":"`boolean`","description":"A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n`SoftDeletableEntity` class.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"filters","type":"`Record<string, any>`","description":"Enable ORM specific defined filters","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/promotion.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/promotion.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="retrieveCampaign"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[CampaignDTO](../../../interfaces/promotion.CampaignDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The retrieved campaigns.","expandable":false,"children":[{"name":"CampaignDTO","type":"[CampaignDTO](../../../interfaces/promotion.CampaignDTO/page.mdx)","optional":false,"defaultValue":"","description":"The campaign details.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the campaign.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The name of the campaign.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The description of the campaign.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"currency","type":"`string`","description":"The currency of the campaign.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"campaign_identifier","type":"`string`","description":"The campaign identifier of the campaign.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"starts_at","type":"`Date`","description":"The start date of the campaign.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ends_at","type":"`Date`","description":"The end date of the campaign.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"budget","type":"[CampaignBudgetDTO](../../../interfaces/promotion.CampaignBudgetDTO/page.mdx)","description":"The associated campaign budget.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the campaign budget.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[CampaignBudgetTypeValues](../../../types/promotion.CampaignBudgetTypeValues/page.mdx)","description":"The type of the campaign budget:\n\n- `spend` indicates that the budget is limited by the amount discounted by the promotions in the associated campaign.\n- `usage` indicates that the budget is limited by the number of times the promotions of the associated campaign have been used.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`null` \\| `number`","description":"The limit of the campaign budget.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"used","type":"`number`","description":"The usage from the campaign budget's limit:\n\n- If the budget's type is `spend`, the value of this attribute is the amount discounted so far by the promotions in the associated campaign.\n- If the budget's type is `usage`, the value of this attribute is the number of times the promotions of the associated campaign have been used so far.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]}  sectionTitle="retrieveCampaign"/>

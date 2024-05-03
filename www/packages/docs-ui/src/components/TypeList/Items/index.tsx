@@ -20,6 +20,7 @@ import {
   TriangleRightMini,
 } from "@medusajs/icons"
 import { decodeStr, isInView } from "@/utils"
+import { usePathname } from "next/navigation"
 import { useIsBrowser } from "../../.."
 
 type CommonProps = ParentCommonProps & {
@@ -39,9 +40,9 @@ const TypeListItem = ({
   elementKey,
   sectionTitle,
   siteUrl = "",
-  pathname,
 }: TypeListItemProps) => {
   const isBrowser = useIsBrowser()
+  const pathname = usePathname()
 
   const groupName = useMemo(() => {
     switch (level) {

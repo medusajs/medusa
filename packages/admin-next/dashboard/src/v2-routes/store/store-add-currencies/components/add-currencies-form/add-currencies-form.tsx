@@ -1,43 +1,28 @@
 import { Currency } from "@medusajs/medusa"
+import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
 import {
-  Badge,
-  Button,
-  Checkbox,
-  Hint,
-  StatusBadge,
-  Table,
-  Tooltip,
-  clx,
-} from "@medusajs/ui"
-import {
-  PaginationState,
+  OnChangeFn,
   RowSelectionState,
   createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
 } from "@tanstack/react-table"
-import {
-  adminCurrenciesKeys,
-  adminStoreKeys,
-  useAdminCustomPost,
-  useAdminCustomQuery,
-} from "medusa-react"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { StoreDTO } from "@medusajs/types"
+import { keepPreviousData } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
-import { OrderBy } from "../../../../../components/filtering/order-by"
-import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useHandleTableScroll } from "../../../../../hooks/use-handle-table-scroll"
-import { useQueryParams } from "../../../../../hooks/use-query-params"
-import { StoreDTO } from "@medusajs/types"
+import { DataTable } from "../../../../../components/table/data-table"
+import { useCurrencies } from "../../../../../hooks/api/currencies"
+import { useUpdateStore } from "../../../../../hooks/api/store"
+import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useCurrenciesTableColumns } from "../../../common/hooks/use-currencies-table-columns"
+import { useCurrenciesTableQuery } from "../../../common/hooks/use-currencies-table-query"
 
 type AddCurrenciesFormProps = {
   store: StoreDTO
@@ -48,6 +33,7 @@ const AddCurrenciesSchema = zod.object({
 })
 
 const PAGE_SIZE = 50
+const PREFIX = "ac"
 
 export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
   const { t } = useTranslation()
@@ -62,84 +48,77 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
 
   const { setValue } = form
 
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: PAGE_SIZE,
-  })
-
-  const pagination = useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize]
-  )
-
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
-  useEffect(() => {
-    const ids = Object.keys(rowSelection)
+  const updater: OnChangeFn<RowSelectionState> = (fn) => {
+    const updated = typeof fn === "function" ? fn(rowSelection) : fn
+
+    const ids = Object.keys(updated)
+
     setValue("currencies", ids, {
       shouldDirty: true,
       shouldTouch: true,
     })
-  }, [rowSelection, setValue])
 
-  const params = useQueryParams(["order"])
-  const filter = {
-    limit: PAGE_SIZE,
-    offset: pageIndex * PAGE_SIZE,
-    ...params,
+    setRowSelection(updated)
   }
-  // @ts-ignore
-  const { data, count, isError, error } = useAdminCustomQuery(
-    "/admin/currencies",
-    adminCurrenciesKeys.list(filter),
-    filter
-  )
+
+  const { raw, searchParams } = useCurrenciesTableQuery({
+    pageSize: 50,
+    prefix: PREFIX,
+  })
+
+  const {
+    currencies,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useCurrencies(searchParams, {
+    placeholderData: keepPreviousData,
+  })
 
   const preSelectedRows = store.supported_currency_codes.map((c) => c)
 
   const columns = useColumns()
 
-  const table = useReactTable({
-    data: data?.currencies ?? [],
+  const { table } = useDataTable({
+    data: currencies ?? [],
     columns,
-    pageCount: Math.ceil((count ?? 0) / PAGE_SIZE),
-    state: {
-      pagination,
-      rowSelection,
-    },
+    count: count,
     getRowId: (row) => row.code,
-    onPaginationChange: setPagination,
-    onRowSelectionChange: setRowSelection,
-    getCoreRowModel: getCoreRowModel(),
     enableRowSelection: (row) => !preSelectedRows.includes(row.original.code),
-    manualPagination: true,
+    enablePagination: true,
+    pageSize: PAGE_SIZE,
+    prefix: PREFIX,
+    rowSelection: {
+      state: rowSelection,
+      updater,
+    },
   })
 
-  const { mutateAsync, isLoading: isMutating } = useAdminCustomPost(
-    `/admin/stores/${store.id}`,
-    adminStoreKeys.details()
-  )
-
-  const { handleScroll, isScrolled, tableContainerRef } = useHandleTableScroll()
+  const { mutateAsync, isPending } = useUpdateStore(store.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const currencies = Array.from(
       new Set([...data.currencies, ...preSelectedRows])
     ) as string[]
 
-    await mutateAsync(
-      {
+    try {
+      await mutateAsync({
         supported_currency_codes: currencies,
-      },
-      {
-        onSuccess: () => {
-          handleSuccess()
-        },
-      }
-    )
+      })
+      toast.success(t("general.success"), {
+        description: t("store.toast.currenciesUpdated"),
+        dismissLabel: t("actions.close"),
+      })
+      handleSuccess()
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   })
 
   if (isError) {
@@ -167,94 +146,26 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
                   {t("actions.cancel")}
                 </Button>
               </RouteFocusModal.Close>
-              <Button size="small" type="submit" isLoading={isMutating}>
+              <Button size="small" type="submit" isLoading={isPending}>
                 {t("actions.save")}
               </Button>
             </div>
           </div>
         </RouteFocusModal.Header>
         <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
-          <div className="flex items-center justify-between border-b px-6 py-4">
-            <div></div>
-            <div className="flex items-center gap-x-2">
-              <OrderBy keys={["code"]} />
-            </div>
-          </div>
-          <div
-            className="flex-1 overflow-y-auto"
-            ref={tableContainerRef}
-            onScroll={handleScroll}
-          >
-            <Table className="relative">
-              <Table.Header
-                className={clx(
-                  "bg-ui-bg-base transition-fg sticky inset-x-0 top-0 z-10 border-t-0",
-                  {
-                    "shadow-elevation-card-hover": isScrolled,
-                  }
-                )}
-              >
-                {table.getHeaderGroups().map((headerGroup) => {
-                  return (
-                    <Table.Row
-                      key={headerGroup.id}
-                      className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th]:w-1/3"
-                    >
-                      {headerGroup.headers.map((header) => {
-                        return (
-                          <Table.HeaderCell key={header.id}>
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                          </Table.HeaderCell>
-                        )
-                      })}
-                    </Table.Row>
-                  )
-                })}
-              </Table.Header>
-              <Table.Body className="border-b-0">
-                {table.getRowModel().rows.map((row) => (
-                  <Table.Row
-                    key={row.id}
-                    className={clx(
-                      "transition-fg last-of-type:border-b-0",
-                      {
-                        "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                          row.getIsSelected(),
-                      },
-                      {
-                        "bg-ui-bg-disabled hover:bg-ui-bg-disabled":
-                          !row.getCanSelect(),
-                      }
-                    )}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <Table.Cell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </Table.Cell>
-                    ))}
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-          </div>
-          <div className="w-full border-t">
-            <LocalizedTablePagination
-              canNextPage={table.getCanNextPage()}
-              canPreviousPage={table.getCanPreviousPage()}
-              nextPage={table.nextPage}
-              previousPage={table.previousPage}
-              count={count ?? 0}
-              pageIndex={pageIndex}
-              pageCount={table.getPageCount()}
-              pageSize={PAGE_SIZE}
-            />
-          </div>
+          <DataTable
+            table={table}
+            pageSize={PAGE_SIZE}
+            count={count}
+            columns={columns}
+            layout="fill"
+            pagination
+            search
+            prefix={PREFIX}
+            orderBy={["code", "name"]}
+            isLoading={isLoading}
+            queryObject={raw}
+          />
         </RouteFocusModal.Body>
       </form>
     </RouteFocusModal.Form>
@@ -265,6 +176,7 @@ const columnHelper = createColumnHelper<Currency>()
 
 const useColumns = () => {
   const { t } = useTranslation()
+  const base = useCurrenciesTableColumns()
 
   return useMemo(
     () => [
@@ -310,29 +222,8 @@ const useColumns = () => {
           return Component
         },
       }),
-      columnHelper.accessor("name", {
-        header: t("fields.name"),
-        cell: ({ getValue }) => getValue(),
-      }),
-      columnHelper.accessor("code", {
-        header: t("fields.code"),
-        cell: ({ getValue }) => (
-          <Badge size="small">{getValue().toUpperCase()}</Badge>
-        ),
-      }),
-      columnHelper.accessor("includes_tax", {
-        header: t("fields.taxInclusivePricing"),
-        cell: ({ getValue }) => {
-          const value = getValue()
-
-          return (
-            <StatusBadge color={value ? "green" : "red"}>
-              {value ? t("general.enabled") : t("general.disabled")}
-            </StatusBadge>
-          )
-        },
-      }),
+      ...base,
     ],
-    [t]
+    [t, base]
   )
 }

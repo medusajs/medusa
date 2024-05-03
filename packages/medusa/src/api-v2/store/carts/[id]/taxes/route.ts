@@ -1,15 +1,10 @@
 import { updateTaxLinesWorkflow } from "@medusajs/core-flows"
-import { Modules } from "@medusajs/modules-sdk"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
-import { defaultStoreCartFields } from "../../query-config"
-import { StorePostCartsCartTaxesReq } from "../../validators"
+import { refetchCart } from "../../helpers"
+import { StoreCalculateCartTaxesType } from "../../validators"
 
 export const POST = async (
-  req: MedusaRequest<StorePostCartsCartTaxesReq>,
+  req: MedusaRequest<StoreCalculateCartTaxesType>,
   res: MedusaResponse
 ) => {
   const workflow = updateTaxLinesWorkflow(req.scope)
@@ -26,18 +21,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const query = remoteQueryObjectFromString({
-    entryPoint: Modules.CART,
-    fields: defaultStoreCartFields,
-  })
-
-  const [cart] = await remoteQuery(query, {
-    cart: { id: req.params.id },
-  })
-
-  // TODO: wrap result with totals when totals calculation is ready
+  const cart = await refetchCart(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
   res.status(200).json({ cart })
 }

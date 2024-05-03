@@ -1,63 +1,62 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Store } from "@medusajs/medusa"
-import { Button, Input } from "@medusajs/ui"
-import { adminStoreKeys, useAdminCustomPost } from "medusa-react"
+import { Button, Input, Select, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import * as zod from "zod"
+import { z } from "zod"
+
 import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useUpdateStore } from "../../../../../hooks/api/store"
+import { ExtendedStoreDTO } from "../../../../../types/api-responses"
+import { useRegions } from "../../../../../hooks/api/regions"
 
 type EditStoreFormProps = {
-  store: Store
+  store: ExtendedStoreDTO
 }
 
-const EditStoreSchema = zod.object({
-  name: zod.string().optional(),
-  swap_link_template: zod.union([zod.literal(""), zod.string().trim().url()]),
-  payment_link_template: zod.union([
-    zod.literal(""),
-    zod.string().trim().url(),
-  ]),
-  invite_link_template: zod.union([zod.literal(""), zod.string().trim().url()]),
+const EditStoreSchema = z.object({
+  name: z.string().min(1),
+  default_currency_code: z.string().optional(),
+  default_region_id: z.string().optional(),
+  // default_location_id: z.string().optional(),
 })
 
 export const EditStoreForm = ({ store }: EditStoreFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const form = useForm<zod.infer<typeof EditStoreSchema>>({
+  const form = useForm<z.infer<typeof EditStoreSchema>>({
     defaultValues: {
       name: store.name,
-      swap_link_template: store.swap_link_template ?? "",
-      payment_link_template: store.payment_link_template ?? "",
-      invite_link_template: store.invite_link_template ?? "",
+      default_region_id: store.default_region_id || undefined,
+      default_currency_code: store.default_currency_code || undefined,
     },
     resolver: zodResolver(EditStoreSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminCustomPost(
-    `/admin/stores/${store.id}`,
-    adminStoreKeys.details()
-  )
+  const { mutateAsync, isPending } = useUpdateStore(store.id)
+
+  const { regions, isPending: isRegionsLoading } = useRegions({ limit: 999 })
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    mutateAsync(
-      {
-        name: values.name,
-        // invite_link_template: values.invite_link_template || undefined,
-        // swap_link_template: values.swap_link_template || undefined,
-        // payment_link_template: values.payment_link_template || undefined,
-      },
-      {
-        onSuccess: () => {
-          handleSuccess()
-        },
-      }
-    )
+    try {
+      await mutateAsync(values)
+
+      handleSuccess()
+
+      toast.success(t("general.success"), {
+        description: t("store.toast.update"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   })
 
   return (
@@ -72,62 +71,66 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
                 <Form.Item>
                   <Form.Label>{t("fields.name")}</Form.Label>
                   <Form.Control>
-                    <Input size="small" {...field} placeholder="ACME" />
+                    <Input placeholder="ACME" {...field} />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>
               )}
             />
+            {/* TODO: Add comboboxes for default sales channel and location */}
             <Form.Field
               control={form.control}
-              name="swap_link_template"
-              render={({ field }) => (
-                <Form.Item>
-                  <Form.Label>{t("store.swapLinkTemplate")}</Form.Label>
-                  <Form.Control>
-                    <Input
-                      size="small"
-                      {...field}
-                      placeholder="https://www.store.com/swap={id}"
-                    />
-                  </Form.Control>
-                  <Form.ErrorMessage />
-                </Form.Item>
-              )}
+              name="default_currency_code"
+              render={({ field: { onChange, ...field } }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("store.defaultCurrency")}</Form.Label>
+                    <Form.Control>
+                      <Select {...field} onValueChange={onChange}>
+                        <Select.Trigger ref={field.ref}>
+                          <Select.Value />
+                        </Select.Trigger>
+                        <Select.Content>
+                          {store.supported_currency_codes.map((code) => (
+                            <Select.Item key={code} value={code}>
+                              {code.toUpperCase()}
+                            </Select.Item>
+                          ))}
+                        </Select.Content>
+                      </Select>
+                    </Form.Control>
+                  </Form.Item>
+                )
+              }}
             />
             <Form.Field
               control={form.control}
-              name="payment_link_template"
-              render={({ field }) => (
-                <Form.Item>
-                  <Form.Label>{t("store.paymentLinkTemplate")}</Form.Label>
-                  <Form.Control>
-                    <Input
-                      size="small"
-                      {...field}
-                      placeholder="https://www.store.com/payment={id}"
-                    />
-                  </Form.Control>
-                  <Form.ErrorMessage />
-                </Form.Item>
-              )}
-            />
-            <Form.Field
-              control={form.control}
-              name="invite_link_template"
-              render={({ field }) => (
-                <Form.Item>
-                  <Form.Label>{t("store.inviteLinkTemplate")}</Form.Label>
-                  <Form.Control>
-                    <Input
-                      size="small"
-                      {...field}
-                      placeholder="https://www.admin.com/invite?token={invite_token}"
-                    />
-                  </Form.Control>
-                  <Form.ErrorMessage />
-                </Form.Item>
-              )}
+              name="default_region_id"
+              render={({ field: { onChange, ...field } }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("store.defaultRegion")}</Form.Label>
+                    <Form.Control>
+                      <Select
+                        {...field}
+                        onValueChange={onChange}
+                        disabled={isRegionsLoading}
+                      >
+                        <Select.Trigger ref={field.ref}>
+                          <Select.Value />
+                        </Select.Trigger>
+                        <Select.Content>
+                          {(regions || []).map((region) => (
+                            <Select.Item key={region.id} value={region.id}>
+                              {region.name}
+                            </Select.Item>
+                          ))}
+                        </Select.Content>
+                      </Select>
+                    </Form.Control>
+                  </Form.Item>
+                )
+              }}
             />
           </div>
         </RouteDrawer.Body>
@@ -138,7 +141,7 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" isLoading={isLoading} type="submit">
+            <Button size="small" isLoading={isPending} type="submit">
               {t("actions.save")}
             </Button>
           </div>

@@ -1,5 +1,3 @@
-import { Request, Response } from "express"
-import { AllocationType, DiscountConditionOperator } from "../../../../models"
 import {
   IsArray,
   IsBoolean,
@@ -13,14 +11,16 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { Request, Response } from "express"
+import { AllocationType, DiscountConditionOperator } from "../../../../models"
 
-import { AdminUpsertConditionsReq } from "../../../../types/discount"
-import DiscountService from "../../../../services/discount"
+import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
+import DiscountService from "../../../../services/discount"
+import { FindParams } from "../../../../types/common"
+import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
-import { Type } from "class-transformer"
-import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /admin/discounts/{id}
@@ -130,6 +130,50 @@ export default async (req: Request, res: Response) => {
   )
 
   res.status(200).json({ discount })
+}
+
+/**
+ * The attributes of the discount rule to update.
+ */
+export class AdminUpdateDiscountRule {
+  /**
+   * The discount rule's ID.
+   */
+  @IsString()
+  @IsNotEmpty()
+  id: string
+
+  /**
+   * The discount rule's description.
+   */
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  /**
+   * The discount rule's value.
+   */
+  @IsNumber()
+  @IsOptional()
+  value?: number
+
+  /**
+   * The discount rule's allocation.
+   */
+  @IsOptional()
+  @IsEnum(AllocationType, {
+    message: `Invalid allocation type, must be one of "total" or "item"`,
+  })
+  allocation?: AllocationType
+
+  /**
+   * The discount rule's discount conditions.
+   */
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AdminUpsertCondition)
+  conditions?: AdminUpsertCondition[]
 }
 
 /**
@@ -275,50 +319,6 @@ export class AdminPostDiscountsDiscountReq {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
-}
-
-/**
- * The attributes of the discount rule to update.
- */
-export class AdminUpdateDiscountRule {
-  /**
-   * The discount rule's ID.
-   */
-  @IsString()
-  @IsNotEmpty()
-  id: string
-
-  /**
-   * The discount rule's description.
-   */
-  @IsString()
-  @IsOptional()
-  description?: string
-
-  /**
-   * The discount rule's value.
-   */
-  @IsNumber()
-  @IsOptional()
-  value?: number
-
-  /**
-   * The discount rule's allocation.
-   */
-  @IsOptional()
-  @IsEnum(AllocationType, {
-    message: `Invalid allocation type, must be one of "total" or "item"`,
-  })
-  allocation?: AllocationType
-
-  /**
-   * The discount rule's discount conditions.
-   */
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => AdminUpsertCondition)
-  conditions?: AdminUpsertCondition[]
 }
 
 /**

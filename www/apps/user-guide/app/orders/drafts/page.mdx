@@ -1,0 +1,139 @@
+---
+sidebar_position: 5
+---
+
+import { 
+  EllipsisHorizontal, 
+} from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Draft Orders`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn more about draft orders, how to create them, and more.
+
+## Overview
+
+Draft orders are orders created by an admin user. Products or custom items are added to the order as purchased items. You can also specify custom shipping amounts.
+
+After a draft order is created and is marked as paid, an order is created based on that draft order and it appears as part of the Orders list.
+
+---
+
+## Create a Draft Order
+
+To create a draft order:
+
+{/* TODO check steps after #3 */}
+
+1. Go to Orders → Draft Orders.
+2. Click on Create button at the top right.
+3. A new window opens with two steps to create the draft order:
+    1. In the first step:
+        1. Under the Region section, choose the region this draft order belongs to.
+        2. Under the Existing Items section, you can add existing products to the draft order. To do that:
+            1. Click on the "Add products" button.
+            2. In the drawer that opens, choose the products you want to add into the draft order by clicking the checkbox at the left of the product.
+            3. Once done, click on the "Add products" button.
+        3. Under the Custom Items section, you can add custom items to the draft order. To do that:
+            1. In the table, enter the item's title, quantity, and price.
+            2. To add another item, press the <Kbd>tab</Kbd> key, then enter that item's details in the new row.
+            3. Once done, click on the "Add custom item" button.
+        4. Under the Shipping section:
+            1. Choose the shipping method of the draft order.
+            2. To optionally change the price of the chosen shipping method, enter the price in the "Custom shipping price" field.
+        5. Under the Customer section, enter the customer's details:
+            1. If the customer exists, choose it from the "Find existing customer" field. You can search the list of customers by name or email. This fills out the other fields in the section.
+            2. If this is a new customer, enter the customer's details such as first name or email.
+        6. Under the Shipping Address section, enter the customer's shipping address details.
+        7. Under the Billing Address section, either:
+            1. Check the "Same as shipping address" checkbox to use the same details as the shipping address;
+            2. Or uncheck the "Same as shipping address" checkbox and enter the billing address's details.
+        8. Under the Metadata section, optionally enter custom key-value pairs.
+        9. Once you're done, click on the Save button.
+    6. In the last step, confirm that all the information is correct:
+        1. To edit any of the information, click on the "Details" step to go back.
+        2. To add a discount, toggle the "Add discount" button and enter the discount code.
+        3. To disable sending a notification to the customer about their draft order, toggle the "Send notifications" button.
+4. Once you’re done, click on the Save button.
+
+---
+
+## Open Draft Order’s Details
+
+To open a draft order’s details page:
+
+1. Go to Orders → Draft Orders.
+2. Select the draft order you want to view.
+
+---
+
+## Edit Shipping Address
+
+{/* TODO check steps after #3 */}
+
+To edit the shipping address of a draft order:
+
+1. Open the draft order details page.
+2. In the Customer section, click on the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the top right.
+3. Choose "Edit shipping address" from the dropdown.
+4. This opens a new window to edit the shipping address’s info.
+5. Once you’re done click on the "Save and close" button.
+
+---
+
+## Cancel Draft Order
+
+<Note type="warning">
+
+Canceling a draft order is irreversible.
+
+</Note>
+
+{/* TODO check steps after #2 */}
+
+To cancel a draft order:
+
+1. Open the draft order details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the top right of the first section.
+3. Choose Cancel from the dropdown.
+4. Confirm canceling the draft order by clicking the “Yes, remove” button in the pop-up.
+
+---
+
+## Mark Draft Order as Paid
+
+<Note>
+
+Marking a draft order as paid creates a new order associated with this draft order.
+
+</Note>
+
+{/* TODO check steps after #2 */}
+
+To mark a draft order as paid:
+
+1. Open the draft order details page.
+2. In the Summary section, click on the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the top right.
+3. Choose "Mark as paid" from the dropdown.
+4. Confirm your action by clicking the “Mark paid” button in the pop-up.
+
+You can find the created order in the Orders page.
+
+---
+
+## Go to Associated Order
+
+<Note type="check">
+
+The draft order must be [marked as paid](#mark-draft-order-as-paid) first.
+
+</Note>
+
+To go to the order associated with the draft order.
+
+1. Go to Orders → Draft Orders.
+2. Find the draft order you're looking for in the list.
+3. Click the link under the Order column.

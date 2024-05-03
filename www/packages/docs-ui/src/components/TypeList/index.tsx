@@ -6,8 +6,6 @@ export type CommonProps = {
   expandUrl?: string
   sectionTitle?: string
   siteUrl?: string
-  // TODO replace this with inferring pathname when using Next.js only
-  pathname?: string
 }
 
 export type Type = {
@@ -35,7 +33,6 @@ export const TypeList = ({
   siteUrl,
   sectionTitle,
   expandUrl,
-  pathname,
   ...props
 }: ParameterTypesType) => {
   return (
@@ -52,7 +49,6 @@ export const TypeList = ({
           expandUrl={expandUrl}
           sectionTitle={sectionTitle}
           siteUrl={siteUrl}
-          pathname={pathname}
         />
       </Suspense>
     </div>

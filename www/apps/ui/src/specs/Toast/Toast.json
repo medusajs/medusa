@@ -1,67 +1,103 @@
 {
-  "description": "This component is based on the [Radix UI Toast](https://www.radix-ui.com/primitives/docs/components/toast) primitives.",
+  "description": "This component is based on the [Sonner](https://sonner.emilkowal.ski/toast) toast library.",
   "methods": [],
   "displayName": "Toast",
   "props": {
-    "variant": {
-      "required": false,
+    "id": {
+      "required": true,
       "tsType": {
         "name": "union",
-        "raw": "\"info\" | \"success\" | \"warning\" | \"error\" | \"loading\"",
+        "raw": "string | number",
         "elements": [
           {
-            "name": "literal",
-            "value": "\"info\""
+            "name": "string"
           },
           {
-            "name": "literal",
-            "value": "\"success\""
-          },
-          {
-            "name": "literal",
-            "value": "\"warning\""
-          },
-          {
-            "name": "literal",
-            "value": "\"error\""
-          },
-          {
-            "name": "literal",
-            "value": "\"loading\""
+            "name": "number"
           }
         ]
       },
-      "description": "The toast's style."
-    },
-    "title": {
-      "required": false,
-      "tsType": {
-        "name": "string"
-      },
-      "description": "The toast's title."
+      "description": "Optional ID of the toast."
     },
     "description": {
       "required": false,
       "tsType": {
         "name": "string"
       },
-      "description": "The toast's content."
+      "description": "The toast's text."
     },
     "action": {
       "required": false,
       "tsType": {
-        "name": "ActionProps"
+        "name": "signature",
+        "type": "object",
+        "raw": "&#123; altText: string ; label: string ; onClick: () => void \\| Promise&#60;void&#62; ; variant?: ToastActionVariant  &#125;",
+        "signature": {
+          "properties": [
+            {
+              "key": "altText",
+              "value": {
+                "name": "string"
+              },
+              "description": "The button's alt text."
+            },
+            {
+              "key": "label",
+              "value": {
+                "name": "string"
+              },
+              "description": "The button's text."
+            },
+            {
+              "key": "onClick",
+              "value": {
+                "name": "signature",
+                "type": "function",
+                "raw": "() => void \\| Promise&#60;void&#62;",
+                "signature": {
+                  "arguments": [],
+                  "return": {
+                    "name": "void \\| Promise&#60;void&#62;"
+                  }
+                }
+              },
+              "description": "The function to execute when the button is clicked."
+            },
+            {
+              "key": "variant",
+              "value": {
+                "name": "ToastActionVariant",
+                "elements": [
+                  {
+                    "name": "union",
+                    "raw": "\"default\" \\| \"destructive\"",
+                    "elements": [
+                      {
+                        "name": "\"default\""
+                      },
+                      {
+                        "name": "\"destructive\""
+                      }
+                    ]
+                  }
+                ],
+                "raw": "ToastActionVariant"
+              },
+              "description": "The button's variant."
+            }
+          ]
+        }
       },
-      "description": "The actions to show in the toast as buttons."
+      "description": "The toast's action buttons."
     },
-    "disableDismiss": {
+    "dismissLabel": {
       "required": false,
       "tsType": {
-        "name": "boolean"
+        "name": "string"
       },
-      "description": "Whether to hide the Close button.",
+      "description": "The label of the dismiss button, if available.",
       "defaultValue": {
-        "value": "false",
+        "value": "\"Close\"",
         "computed": false
       }
     }

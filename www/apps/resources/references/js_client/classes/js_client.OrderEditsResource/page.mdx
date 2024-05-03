@@ -1,0 +1,86 @@
+---
+slug: /references/js-client/OrderEditsResource
+---
+
+import { TypeList } from "docs-ui"
+
+# OrderEditsResource
+
+This class is used to send requests to [Store Order Edits API Routes](https://docs.medusajs.com/api/store#order-edits). All its method
+are available in the JS Client under the `medusa.orderEdits` property.
+
+Order edits are changes made to items in an order such as adding, updating their quantity, or deleting them. Order edits are created by the admin.
+A customer can review order edit requests created by an admin and confirm or decline them.
+
+Related Guide: [How to handle order edits in a storefront](https://docs.medusajs.com/modules/orders/storefront/handle-order-edits).
+
+## Methods
+
+### retrieve
+
+Retrieve an Order Edit's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.orderEdits.retrieve(orderEditId)
+.then(({ order_edit }) => {
+  console.log(order_edit.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order edit.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreOrderEditsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order edit's details.","expandable":false,"children":[{"name":"StoreOrderEditsRes","type":"[StoreOrderEditsRes](../../../medusa/types/medusa.StoreOrderEditsRes/page.mdx)","optional":false,"defaultValue":"","description":"The order edit's details.","expandable":false,"children":[{"name":"order_edit","type":"Omit&#60;OrderEdit, \"internal_note\" \\| \"created_by\" \\| \"confirmed_by\" \\| \"canceled_by\"&#62;","description":"Order edit details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+
+### decline
+
+Decline an Order Edit. The changes are not reflected on the original order.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.orderEdits.decline(orderEditId)
+.then(({ order_edit }) => {
+  console.log(order_edit.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order edit.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[StorePostOrderEditsOrderEditDecline](../../../medusa/classes/medusa.StorePostOrderEditsOrderEditDecline/page.mdx)","description":"The decline details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"declined_reason","type":"`string`","description":"The reason for declining the Order Edit.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="decline"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreOrderEditsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order edit's details.","expandable":false,"children":[{"name":"StoreOrderEditsRes","type":"[StoreOrderEditsRes](../../../medusa/types/medusa.StoreOrderEditsRes/page.mdx)","optional":false,"defaultValue":"","description":"The order edit's details.","expandable":false,"children":[{"name":"order_edit","type":"Omit&#60;OrderEdit, \"internal_note\" \\| \"created_by\" \\| \"confirmed_by\" \\| \"canceled_by\"&#62;","description":"Order edit details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="decline"/>
+
+### complete
+
+Complete and confirm an Order Edit and reflect its changes on the original order. Any additional payment required must be authorized first using the [PaymentCollectionsResource](../js_client.PaymentCollectionsResource/page.mdx) routes.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.orderEdits.complete(orderEditId)
+.then(({ order_edit }) => {
+  console.log(order_edit.id)
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order edit.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="complete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreOrderEditsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order edit's details.","expandable":false,"children":[{"name":"StoreOrderEditsRes","type":"[StoreOrderEditsRes](../../../medusa/types/medusa.StoreOrderEditsRes/page.mdx)","optional":false,"defaultValue":"","description":"The order edit's details.","expandable":false,"children":[{"name":"order_edit","type":"Omit&#60;OrderEdit, \"internal_note\" \\| \"created_by\" \\| \"confirmed_by\" \\| \"canceled_by\"&#62;","description":"Order edit details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="complete"/>

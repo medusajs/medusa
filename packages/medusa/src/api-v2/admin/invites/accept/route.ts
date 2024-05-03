@@ -1,28 +1,24 @@
+import { acceptInviteWorkflow } from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IUserModuleService, InviteWorkflow } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-
-import { AdminPostInvitesInviteAcceptReq } from "../validators"
-import { IUserModuleService } from "@medusajs/types"
-import { InviteWorkflow } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { acceptInviteWorkflow } from "@medusajs/core-flows"
+import { AdminInviteAcceptType } from "../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostInvitesInviteAcceptReq>,
+  req: AuthenticatedMedusaRequest<AdminInviteAcceptType>,
   res: MedusaResponse
 ) => {
   if (req.auth.actor_id) {
     const moduleService: IUserModuleService = req.scope.resolve(
       ModuleRegistrationName.USER
     )
-    const user = moduleService.retrieve(req.auth.actor_id)
+    const user = await moduleService.retrieve(req.auth.actor_id)
     res.status(200).json({ user })
     return
   }
-
-  const workflow = acceptInviteWorkflow(req.scope)
 
   const input = {
     invite_token: req.filterableFields.token as string,
@@ -31,8 +27,9 @@ export const POST = async (
   } as InviteWorkflow.AcceptInviteWorkflowInputDTO
 
   let users
+
   try {
-    const { result } = await workflow.run({ input })
+    const { result } = await acceptInviteWorkflow(req.scope).run({ input })
     users = result
   } catch (e) {
     res.status(401).json({ message: "Unauthorized" })

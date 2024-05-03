@@ -67,8 +67,29 @@ module.exports = {
             resolve: "@medusajs/cache-inmemory",
             options: { ttl: 0 }, // Cache disabled
           },
-          [Modules.STOCK_LOCATION]: true,
-          [Modules.INVENTORY]: true,
+          [Modules.STOCK_LOCATION]: {
+            resolve: "@medusajs/stock-location-next",
+            options: {},
+          },
+          [Modules.INVENTORY]: {
+            resolve: "@medusajs/inventory-next",
+            options: {},
+          },
+          [Modules.FILE]: {
+            resolve: "@medusajs/file",
+            options: {
+              providers: [
+                {
+                  resolve: "@medusajs/file-local-next",
+                  options: {
+                    config: {
+                      local: {},
+                    },
+                  },
+                },
+              ],
+            },
+          },
           [Modules.PRODUCT]: true,
           [Modules.PRICING]: true,
           [Modules.PROMOTION]: true,
@@ -82,6 +103,7 @@ module.exports = {
           [Modules.TAX]: true,
           [Modules.CURRENCY]: true,
           [Modules.PAYMENT]: true,
+          [Modules.FULFILLMENT]: true,
         }
       : {}),
   },

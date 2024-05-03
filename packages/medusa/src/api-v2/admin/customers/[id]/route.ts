@@ -1,40 +1,41 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../types/routing"
-import {
-  CustomerUpdatableFields,
-  ICustomerModuleService,
-} from "@medusajs/types"
-import {
   deleteCustomersWorkflow,
   updateCustomersWorkflow,
 } from "@medusajs/core-flows"
-
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { AdminCustomerResponse } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
+import { refetchCustomer } from "../helpers"
+import { AdminUpdateCustomerType } from "../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<AdminCustomerResponse>
 ) => {
-  const customerModuleService = req.scope.resolve<ICustomerModuleService>(
-    ModuleRegistrationName.CUSTOMER
+  const customer = await refetchCustomer(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
   )
 
-  const customer = await customerModuleService.retrieve(req.params.id, {
-    select: req.retrieveConfig.select,
-    relations: req.retrieveConfig.relations,
-  })
+  if (!customer) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Customer with id: ${req.params.id} not found`
+    )
+  }
 
   res.status(200).json({ customer })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CustomerUpdatableFields>,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<AdminUpdateCustomerType>,
+  res: MedusaResponse<AdminCustomerResponse>
 ) => {
-  const updateCustomers = updateCustomersWorkflow(req.scope)
-  const { result, errors } = await updateCustomers.run({
+  const { errors } = await updateCustomersWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody,
@@ -46,7 +47,12 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ customer: result[0] })
+  const customer = await refetchCustomer(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ customer })
 }
 
 export const DELETE = async (

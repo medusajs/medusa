@@ -1,0 +1,27 @@
+export const metadata = {
+  title: `Relations between Payment Module and Other Modules`,
+}
+
+# {metadata.title}
+
+When Commerce Modules are used together in a Medusa application, the Medusa application handles building the relations between these modules.
+
+This document showcases the relation between the Payment Module and other Commerce Modules.
+
+## Cart Module
+
+The Payment Module can be used with the Cart Module to accept payment for the cart during checkout.
+
+Learn more about this relation in [this documentation](../payment-collection/page.mdx#usage-with-the-cart-module).
+
+---
+
+## Region Module
+
+You can specify for each region which payment providers are available. The Medusa application forms a relation between the `PaymentProvider` and the `Region` data models.
+
+![A diagram showcasing an example of how resources from the Payment and Region modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711569520/Medusa%20Resources/payment-region_jyo2dz.jpg)
+
+This increases the flexibility of your store.
+
+For example, paired with other modules, such as the Cart Module, you only show during checkout the payment providers associated with the cart's region.

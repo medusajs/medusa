@@ -1,12 +1,12 @@
 {
-	"id": 0,
+	"id": 16332,
 	"name": "medusa-config",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 1,
+			"id": 16333,
 			"name": "HttpCompressionOptions",
 			"variant": "declaration",
 			"kind": 256,
@@ -21,7 +21,7 @@
 			},
 			"children": [
 				{
-					"id": 2,
+					"id": 16334,
 					"name": "enabled",
 					"variant": "declaration",
 					"kind": 1024,
@@ -50,7 +50,7 @@
 					}
 				},
 				{
-					"id": 3,
+					"id": 16335,
 					"name": "level",
 					"variant": "declaration",
 					"kind": 1024,
@@ -61,7 +61,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The level of zlib compression to apply to responses. A higher level will result in better compression but will take longer to complete. \nA lower level will result in less compression but will be much faster. The default value is "
+								"text": "The level of zlib compression to apply to responses. A higher level will result in better compression but will take longer to complete.\nA lower level will result in less compression but will be much faster. The default value is "
 							},
 							{
 								"kind": "code",
@@ -79,7 +79,7 @@
 					}
 				},
 				{
-					"id": 4,
+					"id": 16336,
 					"name": "memLevel",
 					"variant": "declaration",
 					"kind": 1024,
@@ -90,7 +90,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "How much memory should be allocated to the internal compression state. It's an integer in the range of 1 (minimum level) and 9 (maximum level). \nThe default value is "
+								"text": "How much memory should be allocated to the internal compression state. It's an integer in the range of 1 (minimum level) and 9 (maximum level).\nThe default value is "
 							},
 							{
 								"kind": "code",
@@ -108,7 +108,7 @@
 					}
 				},
 				{
-					"id": 5,
+					"id": 16337,
 					"name": "threshold",
 					"variant": "declaration",
 					"kind": 1024,
@@ -119,7 +119,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The minimum response body size that compression is applied on. Its value can be the number of bytes or any string accepted by the \n[bytes](https://www.npmjs.com/package/bytes) module. The default value is "
+								"text": "The minimum response body size that compression is applied on. Its value can be the number of bytes or any string accepted by the\n[bytes](https://www.npmjs.com/package/bytes) module. The default value is "
 							},
 							{
 								"kind": "code",
@@ -150,16 +150,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						2,
-						3,
-						4,
-						5
+						16334,
+						16335,
+						16336,
+						16337
 					]
 				}
 			]
 		},
 		{
-			"id": 6,
+			"id": 16338,
 			"name": "ProjectConfigOptions",
 			"variant": "declaration",
 			"kind": 256,
@@ -174,7 +174,7 @@
 			},
 			"children": [
 				{
-					"id": 7,
+					"id": 16339,
 					"name": "store_cors",
 					"variant": "declaration",
 					"kind": 1024,
@@ -193,7 +193,7 @@
 							},
 							{
 								"kind": "text",
-								"text": " is a string used to specify the accepted URLs or patterns for store API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins. \n\nEvery origin in that list must either be:\n\n1. A URL. For example, "
+								"text": " is a string used to specify the accepted URLs or patterns for store API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.\n\nEvery origin in that list must either be:\n\n1. A URL. For example, "
 							},
 							{
 								"kind": "code",
@@ -282,7 +282,7 @@
 					}
 				},
 				{
-					"id": 8,
+					"id": 16340,
 					"name": "admin_cors",
 					"variant": "declaration",
 					"kind": 1024,
@@ -301,7 +301,7 @@
 							},
 							{
 								"kind": "text",
-								"text": " is a string used to specify the accepted URLs or patterns for admin API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins. \n\nEvery origin in that list must either be:\n\n1. A URL. For example, "
+								"text": " is a string used to specify the accepted URLs or patterns for admin API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.\n\nEvery origin in that list must either be:\n\n1. A URL. For example, "
 							},
 							{
 								"kind": "code",
@@ -390,7 +390,123 @@
 					}
 				},
 				{
-					"id": 9,
+					"id": 16341,
+					"name": "auth_cors",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.\n\n"
+							},
+							{
+								"kind": "code",
+								"text": "`auth_cors`"
+							},
+							{
+								"kind": "text",
+								"text": " is a string used to specify the accepted URLs or patterns for API Routes starting with "
+							},
+							{
+								"kind": "code",
+								"text": "`/auth`"
+							},
+							{
+								"kind": "text",
+								"text": ". It can either be one accepted origin, or a comma-separated list of accepted origins.\n\nEvery origin in that list must either be:\n\n1. A URL. For example, "
+							},
+							{
+								"kind": "code",
+								"text": "`http://localhost:7001`"
+							},
+							{
+								"kind": "text",
+								"text": ". The URL must not end with a backslash;\n2. Or a regular expression pattern that can match more than one origin. For example, "
+							},
+							{
+								"kind": "code",
+								"text": "`.example.com`"
+							},
+							{
+								"kind": "text",
+								"text": ". The regex pattern that the backend tests for is "
+							},
+							{
+								"kind": "code",
+								"text": "`^([/~@;%#'])(.*?)\\1([gimsuy]*)$`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Some example values of common use cases:\n\n"
+									},
+									{
+										"kind": "code",
+										"text": "```bash\n# Allow different ports locally starting with 700\nAUTH_CORS=/http://localhost:700\\d+$/\n\n# Allow any origin ending with vercel.app. For example, admin.vercel.app\nAUTH_CORS=/vercel\\.app$/\n\n# Allow all HTTP requests\nAUTH_CORS=/http://.+/\n```"
+									},
+									{
+										"kind": "text",
+										"text": "\n\nThen, set the configuration in "
+									},
+									{
+										"kind": "code",
+										"text": "`medusa-config.js`"
+									},
+									{
+										"kind": "text",
+										"text": ":\n\n"
+									},
+									{
+										"kind": "code",
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    auth_cors: process.env.AUTH_CORS,\n    // ...\n  },\n  // ...\n}\n```"
+									},
+									{
+										"kind": "text",
+										"text": "\n\nIf you’re adding the value directly within "
+									},
+									{
+										"kind": "code",
+										"text": "`medusa-config.js`"
+									},
+									{
+										"kind": "text",
+										"text": ", make sure to add an extra escaping "
+									},
+									{
+										"kind": "code",
+										"text": "`/`"
+									},
+									{
+										"kind": "text",
+										"text": " for every backslash in the pattern. For example:\n\n"
+									},
+									{
+										"kind": "code",
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    auth_cors: \"/http:\\\\/\\\\/localhost:700\\\\d+$/\",\n    // ...\n  },\n  // ...\n}\n```"
+									}
+								]
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 16342,
 					"name": "cookie_secret",
 					"variant": "declaration",
 					"kind": 1024,
@@ -409,7 +525,7 @@
 							},
 							{
 								"kind": "text",
-								"text": " However, in production, if this configuration is not set, an error is thrown and \nthe backend crashes."
+								"text": " However, in production, if this configuration is not set, an error is thrown and\nthe backend crashes."
 							}
 						],
 						"blockTags": [
@@ -430,7 +546,7 @@
 					}
 				},
 				{
-					"id": 10,
+					"id": 16343,
 					"name": "jwt_secret",
 					"variant": "declaration",
 					"kind": 1024,
@@ -470,7 +586,7 @@
 					}
 				},
 				{
-					"id": 11,
+					"id": 16344,
 					"name": "database_database",
 					"variant": "declaration",
 					"kind": 1024,
@@ -489,7 +605,7 @@
 							},
 							{
 								"kind": "text",
-								"text": ", then it’s not required to include it.\n\nMake sure to create the PostgreSQL database before using it. You can check how to create a database in \n[PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html)."
+								"text": ", then it’s not required to include it.\n\nMake sure to create the PostgreSQL database before using it. You can check how to create a database in\n[PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html)."
 							}
 						],
 						"blockTags": [
@@ -498,7 +614,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    database_database: process.env.DATABASE_DATABASE || \n      \"medusa-store\",\n    // ...\n  },\n  // ...\n}\n```"
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    database_database: process.env.DATABASE_DATABASE ||\n      \"medusa-store\",\n    // ...\n  },\n  // ...\n}\n```"
 									}
 								]
 							}
@@ -510,7 +626,7 @@
 					}
 				},
 				{
-					"id": 12,
+					"id": 16345,
 					"name": "database_url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -581,7 +697,7 @@
 							},
 							{
 								"kind": "code",
-								"text": "`[:post]`"
+								"text": "`[:port]`"
 							},
 							{
 								"kind": "text",
@@ -650,7 +766,7 @@
 					}
 				},
 				{
-					"id": 13,
+					"id": 16346,
 					"name": "database_schema",
 					"variant": "declaration",
 					"kind": 1024,
@@ -673,7 +789,7 @@
 							},
 							{
 								"kind": "code",
-								"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    database_schema: process.env.DATABASE_SCHEMA || \n      \"custom\",\n    // ...\n  },\n  // ...\n}\n```"
+								"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    database_schema: process.env.DATABASE_SCHEMA ||\n      \"custom\",\n    // ...\n  },\n  // ...\n}\n```"
 							}
 						]
 					},
@@ -683,7 +799,7 @@
 					}
 				},
 				{
-					"id": 14,
+					"id": 16347,
 					"name": "database_logging",
 					"variant": "declaration",
 					"kind": 1024,
@@ -790,7 +906,7 @@
 					}
 				},
 				{
-					"id": 16,
+					"id": 16349,
 					"name": "database_extra",
 					"variant": "declaration",
 					"kind": 1024,
@@ -801,7 +917,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "An object that includes additional configurations to pass to the database connection. You can pass any configuration. One defined configuration to pass is \n"
+								"text": "An object that includes additional configurations to pass to the database connection. You can pass any configuration. One defined configuration to pass is\n"
 							},
 							{
 								"kind": "code",
@@ -833,7 +949,7 @@
 							},
 							{
 								"kind": "text",
-								"text": ". \nDuring development, it’s recommended not to pass this option."
+								"text": ".\nDuring development, it’s recommended not to pass this option."
 							}
 						],
 						"blockTags": [
@@ -842,7 +958,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    database_extra: \n      process.env.NODE_ENV !== \"development\"\n        ? { ssl: { rejectUnauthorized: false } }\n        : {},\n    // ...\n  },\n  // ...\n}\n```"
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    database_extra:\n      process.env.NODE_ENV !== \"development\"\n        ? { ssl: { rejectUnauthorized: false } }\n        : {},\n    // ...\n  },\n  // ...\n}\n```"
 									}
 								]
 							}
@@ -873,14 +989,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 17,
+									"id": 16350,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 18,
+											"id": 16351,
 											"name": "ssl",
 											"variant": "declaration",
 											"kind": 1024,
@@ -896,14 +1012,14 @@
 											"type": {
 												"type": "reflection",
 												"declaration": {
-													"id": 19,
+													"id": 16352,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 20,
+															"id": 16353,
 															"name": "rejectUnauthorized",
 															"variant": "declaration",
 															"kind": 1024,
@@ -926,7 +1042,7 @@
 														{
 															"title": "Properties",
 															"children": [
-																20
+																16353
 															]
 														}
 													]
@@ -938,7 +1054,7 @@
 										{
 											"title": "Properties",
 											"children": [
-												18
+												16351
 											]
 										}
 									]
@@ -948,7 +1064,198 @@
 					}
 				},
 				{
-					"id": 21,
+					"id": 16354,
+					"name": "database_driver_options",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An object that includes additional configurations to pass to the database connection for v2. You can pass any configuration. One defined configuration to pass is\n"
+							},
+							{
+								"kind": "code",
+								"text": "`ssl`"
+							},
+							{
+								"kind": "text",
+								"text": " which enables support for TLS/SSL connections.\n\nThis is useful for production databases, which can be supported by setting the "
+							},
+							{
+								"kind": "code",
+								"text": "`rejectUnauthorized`"
+							},
+							{
+								"kind": "text",
+								"text": " attribute of "
+							},
+							{
+								"kind": "code",
+								"text": "`ssl`"
+							},
+							{
+								"kind": "text",
+								"text": " object to "
+							},
+							{
+								"kind": "code",
+								"text": "`false`"
+							},
+							{
+								"kind": "text",
+								"text": ".\nDuring development, it’s recommended not to pass this option."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    database_driver_options:\n      process.env.NODE_ENV !== \"development\"\n        ? { connection: { ssl: { rejectUnauthorized: false } } }\n        : {},\n    // ...\n  },\n  // ...\n}\n```"
+									}
+								]
+							}
+						]
+					},
+					"type": {
+						"type": "intersection",
+						"types": [
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							},
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 16355,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 16356,
+											"name": "connection",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "reflection",
+												"declaration": {
+													"id": 16357,
+													"name": "__type",
+													"variant": "declaration",
+													"kind": 65536,
+													"flags": {},
+													"children": [
+														{
+															"id": 16358,
+															"name": "ssl",
+															"variant": "declaration",
+															"kind": 1024,
+															"flags": {
+																"isOptional": true
+															},
+															"comment": {
+																"summary": [
+																	{
+																		"kind": "text",
+																		"text": "Configure support for TLS/SSL connection"
+																	}
+																]
+															},
+															"type": {
+																"type": "reflection",
+																"declaration": {
+																	"id": 16359,
+																	"name": "__type",
+																	"variant": "declaration",
+																	"kind": 65536,
+																	"flags": {},
+																	"children": [
+																		{
+																			"id": 16360,
+																			"name": "rejectUnauthorized",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"comment": {
+																				"summary": [
+																					{
+																						"kind": "text",
+																						"text": "Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found."
+																					}
+																				]
+																			},
+																			"type": {
+																				"type": "literal",
+																				"value": false
+																			}
+																		}
+																	],
+																	"groups": [
+																		{
+																			"title": "Properties",
+																			"children": [
+																				16360
+																			]
+																		}
+																	]
+																}
+															}
+														}
+													],
+													"groups": [
+														{
+															"title": "Properties",
+															"children": [
+																16358
+															]
+														}
+													]
+												}
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												16356
+											]
+										}
+									]
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 16361,
 					"name": "redis_url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -984,7 +1291,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    redis_url: process.env.REDIS_URL || \n      \"redis://localhost:6379\",\n    // ...\n  },\n  // ...\n}\n```"
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    redis_url: process.env.REDIS_URL ||\n      \"redis://localhost:6379\",\n    // ...\n  },\n  // ...\n}\n```"
 									}
 								]
 							}
@@ -996,7 +1303,7 @@
 					}
 				},
 				{
-					"id": 22,
+					"id": 16362,
 					"name": "redis_prefix",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1015,7 +1322,7 @@
 							},
 							{
 								"kind": "text",
-								"text": ". \n\nIf this configuration option is provided, it is prepended to "
+								"text": ".\n\nIf this configuration option is provided, it is prepended to "
 							},
 							{
 								"kind": "code",
@@ -1032,7 +1339,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    redis_prefix: process.env.REDIS_PREFIX || \n      \"medusa:\",\n    // ...\n  },\n  // ...\n}\n```"
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    redis_prefix: process.env.REDIS_PREFIX ||\n      \"medusa:\",\n    // ...\n  },\n  // ...\n}\n```"
 									}
 								]
 							}
@@ -1044,7 +1351,7 @@
 					}
 				},
 				{
-					"id": 23,
+					"id": 16363,
 					"name": "redis_options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1055,7 +1362,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "An object of options to pass ioredis. You can refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions) \nfor the list of available options."
+								"text": "An object of options to pass ioredis. You can refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions)\nfor the list of available options."
 							}
 						],
 						"blockTags": [
@@ -1064,7 +1371,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    redis_options: {\n      connectionName: process.env.REDIS_CONNECTION_NAME || \n        \"medusa\",\n    },\n    // ...\n  },\n  // ...\n}\n```"
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    redis_options: {\n      connectionName: process.env.REDIS_CONNECTION_NAME ||\n        \"medusa\",\n    },\n    // ...\n  },\n  // ...\n}\n```"
 									}
 								]
 							}
@@ -1081,7 +1388,7 @@
 					}
 				},
 				{
-					"id": 24,
+					"id": 16364,
 					"name": "session_options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1101,7 +1408,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    session_options: {\n      name: process.env.SESSION_NAME || \n        \"custom\",\n    },\n    // ...\n  },\n  // ...\n}\n```"
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    session_options: {\n      name: process.env.SESSION_NAME ||\n        \"custom\",\n    },\n    // ...\n  },\n  // ...\n}\n```"
 									}
 								]
 							}
@@ -1118,7 +1425,7 @@
 					}
 				},
 				{
-					"id": 25,
+					"id": 16365,
 					"name": "http_compression",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1129,7 +1436,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there. \nHowever, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.\n\nIts value is an object that has the following properties:\n\nIf you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header "
+								"text": "Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.\nHowever, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.\n\nIts value is an object that has the following properties:\n\nIf you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header "
 							},
 							{
 								"kind": "code",
@@ -1154,13 +1461,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1,
+						"target": 16333,
 						"name": "HttpCompressionOptions",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 26,
+					"id": 16366,
 					"name": "jobs_batch_size",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1171,7 +1478,15 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Configure the number of staged jobs that are polled from the database. Default is 1000."
+								"text": "Configure the number of staged jobs that are polled from the database. Default is "
+							},
+							{
+								"kind": "code",
+								"text": "`1000`"
+							},
+							{
+								"kind": "text",
+								"text": "."
 							}
 						],
 						"blockTags": [
@@ -1190,33 +1505,113 @@
 						"type": "intrinsic",
 						"name": "number"
 					}
+				},
+				{
+					"id": 16367,
+					"name": "worker_mode",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Configure the application's worker mode. Default is "
+							},
+							{
+								"kind": "code",
+								"text": "`shared`"
+							},
+							{
+								"kind": "text",
+								"text": ".\n\n- Use "
+							},
+							{
+								"kind": "code",
+								"text": "`shared`"
+							},
+							{
+								"kind": "text",
+								"text": " to run the application in a single process.\n- Use "
+							},
+							{
+								"kind": "code",
+								"text": "`worker`"
+							},
+							{
+								"kind": "text",
+								"text": " to run the a worker process only.\n- Use "
+							},
+							{
+								"kind": "code",
+								"text": "`server`"
+							},
+							{
+								"kind": "text",
+								"text": " to run the application server only.\n\nLearn more in [this guide](https://docs.medusajs.com/development/medusa-worker)."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    worker_mode: \"shared\"\n    // ...\n  },\n  // ...\n}\n```"
+									}
+								]
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": "shared"
+							},
+							{
+								"type": "literal",
+								"value": "worker"
+							},
+							{
+								"type": "literal",
+								"value": "server"
+							}
+						]
+					}
 				}
 			],
 			"groups": [
 				{
 					"title": "Properties",
 					"children": [
-						7,
-						8,
-						9,
-						10,
-						11,
-						12,
-						13,
-						14,
-						16,
-						21,
-						22,
-						23,
-						24,
-						25,
-						26
+						16339,
+						16340,
+						16341,
+						16342,
+						16343,
+						16344,
+						16345,
+						16346,
+						16347,
+						16349,
+						16354,
+						16361,
+						16362,
+						16363,
+						16364,
+						16365,
+						16366,
+						16367
 					]
 				}
 			]
 		},
 		{
-			"id": 27,
+			"id": 16368,
 			"name": "ConfigModule",
 			"variant": "declaration",
 			"kind": 256,
@@ -1247,7 +1642,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "projectConfig",
-						"target": 28,
+						"target": 16369,
 						"tsLinkText": "projectConfig"
 					},
 					{
@@ -1258,7 +1653,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "plugins",
-						"target": 29,
+						"target": 16370,
 						"tsLinkText": "plugins"
 					},
 					{
@@ -1269,7 +1664,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "modules",
-						"target": 33,
+						"target": 16374,
 						"tsLinkText": "modules"
 					},
 					{
@@ -1280,7 +1675,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "featureFlags",
-						"target": 34,
+						"target": 16375,
 						"tsLinkText": "featureFlags"
 					},
 					{
@@ -1309,13 +1704,13 @@
 					},
 					{
 						"kind": "text",
-						"text": " file at the root of your Medusa backend project. In production, \nsetting the environment variables depends on the hosting provider.\n\n---"
+						"text": " file at the root of your Medusa backend project. In production,\nsetting the environment variables depends on the hosting provider.\n\n---"
 					}
 				]
 			},
 			"children": [
 				{
-					"id": 28,
+					"id": 16369,
 					"name": "projectConfig",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1330,13 +1725,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 6,
+						"target": 16338,
 						"name": "ProjectConfigOptions",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 29,
+					"id": 16370,
 					"name": "plugins",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1345,7 +1740,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "On your Medusa backend, you can use [Plugins](https://docs.medusajs.com/development/plugins/overview) to add custom features or integrate third-party services. \nFor example, installing a plugin to use Stripe as a payment processor.\n\nAside from installing the plugin with NPM, you need to pass the plugin you installed into the "
+								"text": "On your Medusa backend, you can use [Plugins](https://docs.medusajs.com/development/plugins/overview) to add custom features or integrate third-party services.\nFor example, installing a plugin to use Stripe as a payment processor.\n\nAside from installing the plugin with NPM, you need to pass the plugin you installed into the "
 							},
 							{
 								"kind": "code",
@@ -1386,7 +1781,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  plugins: [\n    `medusa-my-plugin-1`,\n    {\n      resolve: `medusa-my-plugin`,\n      options: {\n        apiKey: process.env.MY_API_KEY || \n          `test`,\n      },\n    },\n    // ...\n  ],\n  // ...\n}\n```"
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  plugins: [\n    `medusa-my-plugin-1`,\n    {\n      resolve: `medusa-my-plugin`,\n      options: {\n        apiKey: process.env.MY_API_KEY ||\n          `test`,\n      },\n    },\n    // ...\n  ],\n  // ...\n}\n```"
 									}
 								]
 							}
@@ -1404,14 +1799,14 @@
 								{
 									"type": "reflection",
 									"declaration": {
-										"id": 30,
+										"id": 16371,
 										"name": "__type",
 										"variant": "declaration",
 										"kind": 65536,
 										"flags": {},
 										"children": [
 											{
-												"id": 31,
+												"id": 16372,
 												"name": "resolve",
 												"variant": "declaration",
 												"kind": 1024,
@@ -1422,7 +1817,7 @@
 												}
 											},
 											{
-												"id": 32,
+												"id": 16373,
 												"name": "options",
 												"variant": "declaration",
 												"kind": 1024,
@@ -1452,8 +1847,8 @@
 											{
 												"title": "Properties",
 												"children": [
-													31,
-													32
+													16372,
+													16373
 												]
 											}
 										]
@@ -1464,7 +1859,7 @@
 					}
 				},
 				{
-					"id": 33,
+					"id": 16374,
 					"name": "modules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1475,7 +1870,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "In Medusa, commerce and core logic are modularized to allow developers to extend or replace certain [modules](https://docs.medusajs.com/development/modules/overview) \nwith custom implementations.\n\nAside from installing the module with NPM, you must add it to the exported object in "
+								"text": "In Medusa, commerce and core logic are modularized to allow developers to extend or replace certain [modules](https://docs.medusajs.com/development/modules/overview)\nwith custom implementations.\n\nAside from installing the module with NPM, you must add it to the exported object in "
 							},
 							{
 								"kind": "code",
@@ -1572,7 +1967,7 @@
 								"content": [
 									{
 										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  modules: {\n    eventBus: {\n      resolve: \"@medusajs/event-bus-local\",\n    },\n    cacheService: {\n      resolve: \"@medusajs/cache-redis\",\n      options: { \n        redisUrl: process.env.CACHE_REDIS_URL,\n        ttl: 30,\n      },\n    },\n    // ...\n  },\n  // ...\n}\n```"
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  modules: {\n    eventBus: {\n      resolve: \"@medusajs/event-bus-local\",\n    },\n    cacheService: {\n      resolve: \"@medusajs/cache-redis\",\n      options: {\n        redisUrl: process.env.CACHE_REDIS_URL,\n        ttl: 30,\n      },\n    },\n    // ...\n  },\n  // ...\n}\n```"
 									}
 								]
 							}
@@ -1638,7 +2033,7 @@
 					}
 				},
 				{
-					"id": 34,
+					"id": 16375,
 					"name": "featureFlags",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1647,7 +2042,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Some features in the Medusa backend are guarded by a feature flag. This ensures constant shipping of new features while maintaining the engine’s stability.\n\nYou can specify whether a feature should or shouldn’t be used in your backend by enabling its feature flag. Feature flags can be enabled through either environment \nvariables or through this configuration exported in "
+								"text": "Some features in the Medusa backend are guarded by a feature flag. This ensures constant shipping of new features while maintaining the engine’s stability.\n\nYou can specify whether a feature should or shouldn’t be used in your backend by enabling its feature flag. Feature flags can be enabled through either environment\nvariables or through this configuration exported in "
 							},
 							{
 								"kind": "code",
@@ -1716,162 +2111,333 @@
 				{
 					"title": "Properties",
 					"children": [
-						28,
-						29,
-						33,
-						34
+						16369,
+						16370,
+						16374,
+						16375
 					]
 				}
 			]
+		},
+		{
+			"id": 16376,
+			"name": "PluginDetails",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 16377,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 16378,
+							"name": "resolve",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 16379,
+							"name": "name",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 16380,
+							"name": "id",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 16381,
+							"name": "options",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 16382,
+							"name": "version",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								16378,
+								16379,
+								16380,
+								16381,
+								16382
+							]
+						}
+					]
+				}
+			}
 		}
 	],
 	"groups": [
 		{
 			"title": "Interfaces",
 			"children": [
-				1,
-				6,
-				27
+				16333,
+				16338,
+				16368
+			]
+		},
+		{
+			"title": "Type Aliases",
+			"children": [
+				16376
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"0": {
+		"16332": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": ""
 		},
-		"1": {
+		"16333": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "HttpCompressionOptions"
 		},
-		"2": {
+		"16334": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.enabled"
 		},
-		"3": {
+		"16335": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.level"
 		},
-		"4": {
+		"16336": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.memLevel"
 		},
-		"5": {
+		"16337": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.threshold"
 		},
-		"6": {
+		"16338": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "ProjectConfigOptions"
 		},
-		"7": {
+		"16339": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.store_cors"
 		},
-		"8": {
+		"16340": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.admin_cors"
 		},
-		"9": {
+		"16341": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.auth_cors"
+		},
+		"16342": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.cookie_secret"
 		},
-		"10": {
+		"16343": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.jwt_secret"
 		},
-		"11": {
+		"16344": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.database_database"
 		},
-		"12": {
+		"16345": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.database_url"
 		},
-		"13": {
+		"16346": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.database_schema"
 		},
-		"14": {
+		"16347": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.database_logging"
 		},
-		"16": {
+		"16349": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.database_extra"
 		},
-		"17": {
+		"16350": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"18": {
+		"16351": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.ssl"
 		},
-		"19": {
+		"16352": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"20": {
+		"16353": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.rejectUnauthorized"
 		},
-		"21": {
+		"16354": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.redis_url"
+			"qualifiedName": "__type.database_driver_options"
 		},
-		"22": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.redis_prefix"
-		},
-		"23": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.redis_options"
-		},
-		"24": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.session_options"
-		},
-		"25": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.http_compression"
-		},
-		"26": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.jobs_batch_size"
-		},
-		"27": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "ConfigModule"
-		},
-		"28": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.projectConfig"
-		},
-		"29": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.plugins"
-		},
-		"30": {
+		"16355": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"31": {
+		"16356": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.connection"
+		},
+		"16357": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type"
+		},
+		"16358": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.ssl"
+		},
+		"16359": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type"
+		},
+		"16360": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.rejectUnauthorized"
+		},
+		"16361": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.redis_url"
+		},
+		"16362": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.redis_prefix"
+		},
+		"16363": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.redis_options"
+		},
+		"16364": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.session_options"
+		},
+		"16365": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.http_compression"
+		},
+		"16366": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.jobs_batch_size"
+		},
+		"16367": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.worker_mode"
+		},
+		"16368": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "ConfigModule"
+		},
+		"16369": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.projectConfig"
+		},
+		"16370": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.plugins"
+		},
+		"16371": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type"
+		},
+		"16372": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.resolve"
 		},
-		"32": {
+		"16373": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.options"
 		},
-		"33": {
+		"16374": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.modules"
 		},
-		"34": {
+		"16375": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.featureFlags"
+		},
+		"16376": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "PluginDetails"
+		},
+		"16377": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type"
+		},
+		"16378": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.resolve"
+		},
+		"16379": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.name"
+		},
+		"16380": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.id"
+		},
+		"16381": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.options"
+		},
+		"16382": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.version"
 		}
 	}
 }

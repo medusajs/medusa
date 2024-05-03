@@ -1,6 +1,6 @@
 {
   "name": "medusa-core-utils",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Core utils for Medusa",
   "main": "dist/index.js",
   "engines": {
@@ -29,5 +29,8 @@
     "ts-jest": "^25.5.1",
     "typescript": "^4.4.4"
   },
-  "gitHead": "a69b1e85be1da3b1b5bc4c5446471252623c8808"
+  "gitHead": "a69b1e85be1da3b1b5bc4c5446471252623c8808",
+  "dependencies": {
+    "awilix": "^8.0.0"
+  }
 }

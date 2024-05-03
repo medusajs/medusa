@@ -34,12 +34,6 @@ tags:
     externalDocs:
       description: How to manage currencies
       url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies
-  - name: Customers
-    description: |
-      Customers can either be created when they register through the Store APIs, or created by the admin using the Admin APIs.
-    externalDocs:
-      description: How to manage customers
-      url: https://docs.medusajs.com/modules/customers/admin/manage-customers
   - name: Customer Groups
     description: |
       Customer Groups can be used to organize customers that share similar data or attributes into dedicated groups.
@@ -47,6 +41,12 @@ tags:
     externalDocs:
       description: How to manage customer groups
       url: https://docs.medusajs.com/modules/customers/admin/manage-customer-groups
+  - name: Customers
+    description: |
+      Customers can either be created when they register through the Store APIs, or created by the admin using the Admin APIs.
+    externalDocs:
+      description: How to manage customers
+      url: https://docs.medusajs.com/modules/customers/admin/manage-customers
   - name: Discounts
     description: |
       Admins can create discounts with conditions and rules, providing them with advanced settings for variety of cases.
@@ -86,6 +86,12 @@ tags:
     description: |
       Notifications are sent to customers to inform them of new updates. For example, a notification can be sent to the customer when their order is place or its state is updated.
       The notification's type, such as an email or SMS, is determined by the notification provider installed on the Medusa backend.
+  - name: Order Edits
+    description: |
+      An admin can edit an order to remove, add, or update an item's quantity. When an admin edits an order, they're stored as an `OrderEdit`.
+    externalDocs:
+      description: How to edit an order
+      url: https://docs.medusajs.com/modules/orders/admin/edit-order
   - name: Orders
     description: |
       Orders are purchases made by customers, typically through a storefront using the Store API. Draft orders created by the admin are also transformed to an Order once the payment is captured.
@@ -93,30 +99,18 @@ tags:
     externalDocs:
       description: How to manage orders
       url: https://docs.medusajs.com/modules/orders/admin/manage-orders
-  - name: Order Edits
-    description: |
-      An admin can edit an order to remove, add, or update an item's quantity. When an admin edits an order, they're stored as an `OrderEdit`.
-    externalDocs:
-      description: How to edit an order
-      url: https://docs.medusajs.com/modules/orders/admin/edit-order
-  - name: Payments
-    description: |
-      A payment can be related to an order, swap, return, or more. It can be captured or refunded.
   - name: Payment Collections
     description: |
       A payment collection is useful for managing additional payments, such as for Order Edits, or installment payments.
+  - name: Payments
+    description: |
+      A payment can be related to an order, swap, return, or more. It can be captured or refunded.
   - name: Price Lists
     description: |
       A price list are special prices applied to products based on a set of conditions, such as customer group.
     externalDocs:
       description: How to manage price lists
       url: https://docs.medusajs.com/modules/price-lists/admin/manage-price-lists
-  - name: Products
-    description: |
-      Products are saleable items in a store. This also includes [saleable gift cards](https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-gift-card-product) in a store.
-    externalDocs:
-      description: How to manage products
-      url: https://docs.medusajs.com/modules/products/admin/manage-products
   - name: Product Categories
     description: |
       Products can be categoriezed into categories. A product can be added into more than one category.
@@ -141,6 +135,12 @@ tags:
     externalDocs:
       description: How to manage product variants
       url: https://docs.medusajs.com/modules/products/admin/manage-products#manage-product-variants
+  - name: Products
+    description: |
+      Products are saleable items in a store. This also includes [saleable gift cards](https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-gift-card-product) in a store.
+    externalDocs:
+      description: How to manage products
+      url: https://docs.medusajs.com/modules/products/admin/manage-products
   - name: Publishable API Keys
     description: |
       Publishable API Keys can be used to scope Store API calls with an API key, determining what resources are retrieved when querying the API.
@@ -150,13 +150,6 @@ tags:
     externalDocs:
       description: How to manage publishable API keys
       url: https://docs.medusajs.com/development/publishable-api-keys/admin/manage-publishable-api-keys
-  - name: Reservations
-    description: |
-      Reservations, provided by the [Inventory Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module), are quantities of an item that are reserved, typically when an order is placed but not yet fulfilled.
-      Reservations can be associated with any resources, but commonly with line items of an order.
-    externalDocs:
-      description: How to manage item allocations in orders
-      url: https://docs.medusajs.com/modules/multiwarehouse/admin/manage-item-allocations-in-orders
   - name: Regions
     description: |
       Regions are different countries or geographical regions that the commerce store serves customers in.
@@ -164,6 +157,13 @@ tags:
     externalDocs:
       description: How to manage regions
       url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions
+  - name: Reservations
+    description: |
+      Reservations, provided by the [Inventory Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module), are quantities of an item that are reserved, typically when an order is placed but not yet fulfilled.
+      Reservations can be associated with any resources, but commonly with line items of an order.
+    externalDocs:
+      description: How to manage item allocations in orders
+      url: https://docs.medusajs.com/modules/multiwarehouse/admin/manage-item-allocations-in-orders
   - name: Return Reasons
     description: |
       Return reasons are key-value pairs that are used to specify why an order return is being created.
@@ -1258,6 +1258,11 @@ paths:
           schema:
             type: string
         - in: query
+          name: order
+          description: A field to sort-order the retrieved collections by.
+          schema:
+            type: string
+        - in: query
           name: discount_condition_id
           description: Filter collections by a discount condition ID associated with them.
           schema:
@@ -2261,6 +2266,11 @@ paths:
           description: Comma-separated relations that should be expanded in the returned customer groups.
           schema:
             type: string
+        - in: query
+          name: fields
+          description: Comma-separated fields that should be included in the returned customer groups.
+          schema:
+            type: string
       x-codegen:
         method: list
         queryParams: AdminGetCustomerGroupsParams
@@ -3030,12 +3040,27 @@ paths:
             default: 0
         - in: query
           name: expand
-          description: Comma-separated relations that should be expanded in the returned customer.
+          description: Comma-separated relations that should be expanded in the returned customers.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma-separated fields that should be included in the returned customers.
           schema:
             type: string
         - in: query
           name: q
           description: term to search customers' email, first_name, and last_name fields.
+          schema:
+            type: string
+        - in: query
+          name: has_account
+          description: Filter customers by whether they have an account.
+          schema:
+            type: boolean
+        - in: query
+          name: order
+          description: A field to sort-order the retrieved customers by.
           schema:
             type: string
         - in: query
@@ -3047,6 +3072,50 @@ paths:
             type: array
             items:
               type: string
+        - in: query
+          name: created_at
+          description: Filter by a creation date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Filter by an update date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
       x-codegen:
         method: list
         queryParams: AdminGetCustomersParams
@@ -3465,6 +3534,55 @@ paths:
           description: Comma-separated relations that should be expanded in each returned discount.
           schema:
             type: string
+        - in: query
+          name: order
+          description: A discount field to sort-order the retrieved discounts by.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: Filter by a creation date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Filter by an update date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
       x-codegen:
         method: list
         queryParams: AdminGetDiscountsParams
@@ -5101,6 +5219,77 @@ paths:
           description: a term to search draft orders' display IDs and emails in the draft order's cart
           schema:
             type: string
+        - in: query
+          name: order
+          description: Field to sort retrieved draft orders by.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: A comma-separated list of fields to expand.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: A comma-separated list of fields to include in the response.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: Filter by a creation date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Filter by an update date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: status
+          style: form
+          explode: false
+          description: Filter by status
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - open
+                - completed
       x-codegen:
         method: list
         queryParams: AdminGetDraftOrdersParams
@@ -5946,6 +6135,11 @@ paths:
           description: a term to search gift cards' code or display ID
           schema:
             type: string
+        - in: query
+          name: order
+          description: A gift card field to sort-order the retrieved gift cards by.
+          schema:
+            type: string
       x-codegen:
         method: list
         queryParams: AdminGetGiftCardsParams
@@ -6394,6 +6588,11 @@ paths:
         - in: query
           name: q
           description: term to search inventory item's sku, title, and description.
+          schema:
+            type: string
+        - in: query
+          name: order
+          description: Field to sort-order inventory items by.
           schema:
             type: string
         - in: query
@@ -9654,7 +9853,7 @@ paths:
             type: string
         - in: query
           name: order
-          description: A order field to sort-order the retrieved orders by.
+          description: Field to sort retrieved orders by.
           schema:
             type: string
       x-codegen:
@@ -13958,9 +14157,17 @@ paths:
             type: string
         - in: query
           name: id
-          description: Filter by product ID
+          style: form
+          explode: false
+          description: Filter by product IDs.
           schema:
-            type: string
+            oneOf:
+              - type: string
+                description: ID of the product.
+              - type: array
+                items:
+                  type: string
+                  description: ID of a product.
         - in: query
           name: status
           description: Filter by product status
@@ -14012,7 +14219,7 @@ paths:
           name: is_giftcard
           description: A boolean value to filter by whether the product is a gift card or not.
           schema:
-            type: string
+            type: boolean
         - in: query
           name: type
           description: Filter product type.
@@ -16775,14 +16982,17 @@ paths:
       summary: List a Product's Variants
       description: |
         Retrieve a list of Product Variants associated with a Product. The variants can be paginated.
-
-        By default, each variant will only have the `id` and `variant_id` fields. You can use the `expand` and `fields` request parameters to retrieve more fields or relations.
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
           description: ID of the product.
+          schema:
+            type: string
+        - in: query
+          name: id
+          description: IDs to filter product variants by.
           schema:
             type: string
         - in: query
@@ -16807,6 +17017,92 @@ paths:
           schema:
             type: integer
             default: 100
+        - in: query
+          name: q
+          description: Search term to search product variants' title, sku, and products' title.
+          schema:
+            type: string
+        - in: query
+          name: order
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          schema:
+            type: string
+        - in: query
+          name: manage_inventory
+          description: Filter product variants by whether their inventory is managed or not.
+          schema:
+            type: boolean
+        - in: query
+          name: allow_backorder
+          description: Filter product variants by whether they are allowed to be backordered or not.
+          schema:
+            type: boolean
+        - in: query
+          name: inventory_quantity
+          description: Filter by available inventory quantity
+          schema:
+            oneOf:
+              - type: number
+                description: a specific number to filter by.
+              - type: object
+                description: filter using less and greater than comparisons.
+                properties:
+                  lt:
+                    type: number
+                    description: filter by inventory quantity less than this number
+                  gt:
+                    type: number
+                    description: filter by inventory quantity greater than this number
+                  lte:
+                    type: number
+                    description: filter by inventory quantity less than or equal to this number
+                  gte:
+                    type: number
+                    description: filter by inventory quantity greater than or equal to this number
+        - in: query
+          name: created_at
+          description: Filter by a creation date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Filter by an update date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
       x-codegen:
         method: listVariants
         queryParams: AdminGetProductsVariantsParams
@@ -17228,6 +17524,80 @@ paths:
           description: Comma-separated fields that should be included in the returned publishable API keys.
           schema:
             type: string
+        - in: query
+          name: order
+          description: A field to sort-order the retrieved publishable API keys by.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          required: false
+          description: Filter by a creation date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          required: false
+          description: Filter by a update date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: revoked_at
+          required: false
+          description: Filter by a revocation date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
       x-codegen:
         method: list
         queryParams: GetPublishableApiKeysParams
@@ -23728,6 +24098,72 @@ paths:
           schema:
             type: string
         - in: query
+          name: created_at
+          description: Filter by a creation date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Filter by an update date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: deleted_at
+          description: Filter by a deletion date range.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
           name: rate
           style: form
           explode: false
@@ -23749,6 +24185,16 @@ paths:
                   gte:
                     type: number
                     description: filter by rates greater than or equal to this number
+        - in: query
+          name: q
+          description: Term used to search tax rates by name.
+          schema:
+            type: string
+        - in: query
+          name: order
+          description: A tax rate field to sort-order the retrieved tax rates by.
+          schema:
+            type: string
         - in: query
           name: offset
           description: The number of tax rates to skip when retrieving the tax rates.
@@ -26073,6 +26519,21 @@ paths:
           schema:
             type: number
             default: '100'
+        - in: query
+          name: order
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          schema:
+            type: string
+        - in: query
+          name: manage_inventory
+          description: Filter product variants by whether their inventory is managed or not.
+          schema:
+            type: boolean
+        - in: query
+          name: allow_backorder
+          description: Filter product variants by whether they are allowed to be backordered or not.
+          schema:
+            type: boolean
         - in: query
           name: cart_id
           style: form

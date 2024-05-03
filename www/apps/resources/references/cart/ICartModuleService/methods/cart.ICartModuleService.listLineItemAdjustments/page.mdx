@@ -1,0 +1,62 @@
+---
+displayed_sidebar: cartReference
+slug: /references/cart/listLineItemAdjustments
+sidebar_label: listLineItemAdjustments
+---
+
+import { TypeList } from "docs-ui"
+
+# listLineItemAdjustments - Cart Module Reference
+
+This documentation provides a reference to the `listLineItemAdjustments` method. This belongs to the Cart Module.
+
+This method retrieves a paginated list of line item adjustments based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of line item adjustments using their IDs:
+
+```ts
+const lineItemAdjustments =
+  await cartModuleService.listLineItemAdjustments({
+    id: ["caliadj_123", "caliadj_321"],
+  })
+```
+
+To specify relations that should be retrieved within the line item adjustments:
+
+```ts
+const lineItemAdjustments =
+  await cartModuleService.listLineItemAdjustments(
+    {
+      id: ["caliadj_123", "caliadj_321"],
+    },
+    {
+      relations: ["item"],
+    }
+  )
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const lineItemAdjustments =
+  await cartModuleService.listLineItemAdjustments(
+    {
+      id: ["caliadj_123", "caliadj_321"],
+    },
+    {
+      relations: ["item"],
+      take: 20,
+      skip: 2,
+    }
+  )
+```
+
+## Parameters
+
+<TypeList types={[{"name":"filters","type":"[FilterableLineItemAdjustmentProps](../../../interfaces/cart.FilterableLineItemAdjustmentProps/page.mdx)","description":"The filters to apply on the retrieved line item adjustments.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string` \\| `string`[]","description":"The IDs to filter the line item adjustments by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"item_id","type":"`string` \\| `string`[]","description":"Filter the adjustments by the ID of their associated line item.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"promotion_id","type":"`string` \\| `string`[]","description":"Filter the line item adjustments by the ID of their associated promotion.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string` \\| `string`[]","description":"Filter the line item adjustments by the ID of their associated provider.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"item","type":"[FilterableLineItemProps](../../../interfaces/cart.FilterableLineItemProps/page.mdx)","description":"Filter the adjustments by their associated line item.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string` \\| `string`[]","description":"The IDs to filter the line items by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cart_id","type":"`string` \\| `string`[]","description":"Filter the line items by the ID of their associated cart.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"Filter the line items by their title.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"variant_id","type":"`string` \\| `string`[]","description":"Filter the line items by the ID of their associated variant.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_id","type":"`string` \\| `string`[]","description":"Filter the line items by the ID of their associated product.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$and","type":"([FilterableLineItemProps](../../../interfaces/cart.FilterableLineItemProps/page.mdx) \\| [BaseFilterable](../../../interfaces/cart.BaseFilterable/page.mdx)&#60;[FilterableLineItemProps](../../../interfaces/cart.FilterableLineItemProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([FilterableLineItemProps](../../../interfaces/cart.FilterableLineItemProps/page.mdx) \\| [BaseFilterable](../../../interfaces/cart.BaseFilterable/page.mdx)&#60;[FilterableLineItemProps](../../../interfaces/cart.FilterableLineItemProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"$and","type":"([FilterableLineItemAdjustmentProps](../../../interfaces/cart.FilterableLineItemAdjustmentProps/page.mdx) \\| [BaseFilterable](../../../interfaces/cart.BaseFilterable/page.mdx)&#60;[FilterableLineItemAdjustmentProps](../../../interfaces/cart.FilterableLineItemAdjustmentProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([FilterableLineItemAdjustmentProps](../../../interfaces/cart.FilterableLineItemAdjustmentProps/page.mdx) \\| [BaseFilterable](../../../interfaces/cart.BaseFilterable/page.mdx)&#60;[FilterableLineItemAdjustmentProps](../../../interfaces/cart.FilterableLineItemAdjustmentProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"config","type":"[FindConfig](../../../interfaces/cart.FindConfig/page.mdx)&#60;[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)&#62;","description":"The configurations determining how the line item adjustment is retrieved. Its properties, such as `select` or `relations`, accept the\nattributes or relations associated with a line item adjustment.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"select","type":"(`string` \\| keyof Entity)[]","description":"An array of strings, each being attribute names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"skip","type":"`null` \\| `number`","description":"A number indicating the number of records to skip before retrieving the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"take","type":"`null` \\| `number`","description":"A number indicating the number of records to return in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"relations","type":"`string`[]","description":"An array of strings, each being relation names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`object`","description":"An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC`\nto sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"withDeleted","type":"`boolean`","description":"A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n`SoftDeletableEntity` class.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"filters","type":"`Record<string, any>`","description":"Enable ORM specific defined filters","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/cart.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/cart.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="listLineItemAdjustments"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The list of line item adjustments.","expandable":false,"children":[{"name":"LineItemAdjustmentDTO[]","type":"[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LineItemAdjustmentDTO","type":"`object`","description":"The line item adjustment details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="listLineItemAdjustments"/>

@@ -1,0 +1,289 @@
+---
+slug: /references/payment/provider
+---
+
+import { TypeList } from "docs-ui"
+
+# How to Create a Payment Provider
+
+In this document, you’ll learn how to create a Payment Provider to be used with the Payment Module.
+
+## Overview
+
+A payment provider is used to handle and process payments, such as authorizing, capturing, and refund payments.
+
+Refer to [this guide](https://docs.medusajs.com/experimental/payment/payment-provider/) to learn more about payment providers.
+
+Refer to [this guide](https://docs.medusajs.com/experimental/payment/payment-flow/) to learn more about the payment flow.
+
+---
+
+## How to Create a Payment Provider
+
+A payment provider is a TypeScript or JavaScript class that extends the `AbstractPaymentProvider` class imported from `@medusajsa/utils`.
+
+You can create the payment provider in a module or plugin, then pass that module/plugin in the Payment Module's `providers` option. You can also pass the path to the file
+that defines the provider if it's created in the Medusa application's codebase.
+
+For example:
+
+```ts
+abstract class MyPayment extends AbstractPaymentProvider<MyConfigurations> {
+  // ...
+}
+```
+
+---
+
+## Configuration Type Parameter
+
+The `AbstractPaymentProvider` class accepts an optional type parameter that defines the type of configuration that your payment provider expects.
+
+For example:
+
+```ts
+interface MyConfigurations {
+  apiKey: string
+}
+
+abstract class MyPayment extends AbstractPaymentProvider<MyConfigurations> {
+  // ...
+}
+```
+
+---
+
+## Identifier Property
+
+The `PaymentProvider` data model has 2 properties: `id` and `is_enabled`.
+
+```ts
+class MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {
+  static identifier = "my-payment"
+  // ...
+}
+```
+
+---
+
+## PROVIDER Property
+
+The `PROVIDER` static property is used when registering the provider in the dependency container. Typically, it would have the
+same value as the `identifier` property.
+
+```ts
+class MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {
+  static PROVIDER = "my-payment"
+  // ...
+}
+```
+
+---
+
+## PaymentProviderError
+
+Before diving into the methods of the Payment Provider, you'll notice that part of the expected return signature of these method includes `PaymentProviderError`.
+
+```ts
+interface PaymentProviderError {
+  error: string
+  code?: string
+  detail?: any
+}
+```
+
+While implementing the Payment Provider's methods, if you need to inform the Payment Module that an error occurred at a certain stage,
+return an object having the attributes defined in the `PaymentProviderError` interface.
+
+For example, the Stripe payment provider has the following method to create the error object, which is used within other methods:
+
+```ts
+abstract class StripeBase extends AbstractPaymentProvider {
+  // ...
+  protected buildError(
+   message: string,
+   error: Stripe.StripeRawError | PaymentProviderError | Error
+ ): PaymentProviderError {
+   return {
+     error: message,
+     code: "code" in error ? error.code : "unknown",
+     detail: isPaymentProviderError(error)
+       ? `${error.error}${EOL}${error.detail ?? ""}`
+       : "detail" in error
+       ? error.detail
+       : error.message ?? "",
+   }
+ }
+
+  // used in other methods
+  async retrievePayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProviderError |
+    PaymentProviderSessionResponse["session_data"]
+  > {
+    try {
+      // ...
+    } catch (e) {
+      return this.buildError(
+        "An error occurred in retrievePayment",
+        e
+      )
+    }
+  }
+}
+```
+
+## Type parameters
+
+<TypeList types={[{"name":"TConfig","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="AbstractPaymentProvider"/>
+
+## constructor
+
+You can use the `constructor` of your Payment Provider to have access to resources in your application through the [dependency container](https://docs.medusajs.com/development/fundamentals/dependency-injection).
+
+You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs,
+you can initialize it in the constructor and use it in other methods in the service.
+
+The payment provider also can access the configurations of the module or plugin it's created in as a second parameter.
+
+### Example
+
+```ts
+class MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {
+  // ...
+  constructor(container, config) {
+    super(container, config)
+    // you can access options here
+
+    // you can also initialize a client that
+    // communicates with a third-party service.
+    this.client = new Client(options)
+  }
+  // ...
+}
+```
+
+### Parameters
+
+<TypeList types={[{"name":"container","type":"[MedusaContainer](../../../medusa/types/medusa.MedusaContainer-2/page.mdx)","description":"An instance of `MedusaContainer` that allows you to access other resources in the [dependency container](https://docs.medusajs.com/development/fundamentals/dependency-injection)","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"TConfig","description":"If this provider processor is created in a module or plugin, their options are passed in this parameter.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new AbstractPaymentProvider"/>
+
+___
+
+## capturePayment
+
+### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="capturePayment"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="capturePayment"/>
+
+___
+
+## authorizePayment
+
+### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="authorizePayment"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;PaymentProviderError \\| object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PaymentProviderError \\| object","type":"`PaymentProviderError` \\| `object`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="authorizePayment"/>
+
+___
+
+## cancelPayment
+
+### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="cancelPayment"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="cancelPayment"/>
+
+___
+
+## initiatePayment
+
+### Parameters
+
+<TypeList types={[{"name":"context","type":"`CreatePaymentProviderSession`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="initiatePayment"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;PaymentProviderError \\| PaymentProviderSessionResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PaymentProviderError \\| PaymentProviderSessionResponse","type":"`PaymentProviderError` \\| `PaymentProviderSessionResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="initiatePayment"/>
+
+___
+
+## deletePayment
+
+### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="deletePayment"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="deletePayment"/>
+
+___
+
+## getPaymentStatus
+
+### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getPaymentStatus"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentSessionStatus](../../../payment/enums/payment.PaymentSessionStatus/page.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PaymentSessionStatus","type":"`object`","description":"The status of a payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getPaymentStatus"/>
+
+___
+
+## refundPayment
+
+### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"refundAmount","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="refundPayment"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="refundPayment"/>
+
+___
+
+## retrievePayment
+
+### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="retrievePayment"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| PaymentProviderError&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| `PaymentProviderError`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="retrievePayment"/>
+
+___
+
+## updatePayment
+
+### Parameters
+
+<TypeList types={[{"name":"context","type":"`UpdatePaymentProviderSession`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updatePayment"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;PaymentProviderError \\| PaymentProviderSessionResponse&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PaymentProviderError \\| PaymentProviderSessionResponse","type":"`PaymentProviderError` \\| `PaymentProviderSessionResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="updatePayment"/>
+
+___
+
+## getWebhookActionAndData
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"The parsed webhook body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rawData","type":"`string` \\| `Buffer`","description":"The raw webhook request body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, unknown>`","description":"The headers of the webhook request.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"data.data","type":"`Record<string, unknown>`","description":"The parsed webhook body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data.rawData","type":"`string` \\| `Buffer`","description":"The raw webhook request body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data.headers","type":"`Record<string, unknown>`","description":"The headers of the webhook request.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getWebhookActionAndData"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;WebhookActionResult&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"WebhookActionResult","type":"`WebhookActionResult`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getWebhookActionAndData"/>

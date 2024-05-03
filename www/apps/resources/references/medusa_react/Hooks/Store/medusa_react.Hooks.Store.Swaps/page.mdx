@@ -1,0 +1,124 @@
+---
+slug: /references/medusa-react/hooks/store/swaps
+---
+
+import { TypeList } from "docs-ui"
+
+# Swaps
+
+Queries and Mutations listed here are used to send requests to the [Store Swap API Routes](https://docs.medusajs.com/api/store#swaps).
+
+A swap is created by a customer or an admin to exchange an item with a new one.
+Creating a swap implicitely includes creating a return for the item being exchanged.
+
+Related Guide: [How to create a swap in a storefront](https://docs.medusajs.com/modules/orders/storefront/create-swap)
+
+## Mutations
+
+### useCreateSwap
+
+This hook creates a Swap for an Order. This will also create a return and associate it with the swap. If a return shipping option is specified, the return will automatically be fulfilled.
+To complete the swap, you must use the [useCompleteCart](../medusa_react.Hooks.Store.Carts/page.mdx#usecompletecart) hook passing it the ID of the swap's cart.
+
+An idempotency key will be generated if none is provided in the header `Idempotency-Key` and added to
+the response. If an error occurs during swap creation or the request is interrupted for any reason, the swap creation can be retried by passing the idempotency
+key in the `Idempotency-Key` header.
+
+#### Example
+
+```ts
+import React from "react"
+import { useCreateSwap } from "medusa-react"
+
+type Props = {
+  orderId: string
+}
+
+type CreateData = {
+  return_items: {
+    item_id: string
+    quantity: number
+  }[]
+  additional_items: {
+    variant_id: string
+    quantity: number
+  }[]
+  return_shipping_option: string
+}
+
+const CreateSwap = ({
+  orderId
+}: Props) => {
+  const createSwap = useCreateSwap()
+  // ...
+
+  const handleCreate = (
+    data: CreateData
+  ) => {
+    createSwap.mutate({
+      ...data,
+      order_id: orderId
+    }, {
+      onSuccess: ({ swap }) => {
+        console.log(swap.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default CreateSwap
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"StorePostSwapsReq","type":"[StorePostSwapsReq](../../../../medusa/classes/medusa.StorePostSwapsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the swap to create.","expandable":false,"children":[{"name":"order_id","type":"`string`","description":"The ID of the Order to create the Swap for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"return_items","type":"[Item](../../../../medusa/classes/medusa.Item-7/page.mdx)[]","description":"The items to include in the Return.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"item_id","type":"`string`","description":"The ID of the order's line item to return.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity to return.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reason_id","type":"`string`","description":"The ID of the reason of this return. Return reasons can be retrieved from the List Return Reasons API Route.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"note","type":"`string`","description":"The note to add to the item being swapped.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"additional_items","type":"[AdditionalItem](../../../../medusa/classes/medusa.AdditionalItem-2/page.mdx)[]","description":"The items to exchange the returned items with.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"variant_id","type":"`string`","description":"The ID of the Product Variant.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the variant.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"return_shipping_option","type":"`string`","description":"The ID of the Shipping Option to create the Shipping Method from.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useCreateSwap"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"StoreSwapsRes","type":"[StoreSwapsRes](../../../../medusa/types/medusa.StoreSwapsRes/page.mdx)","optional":false,"defaultValue":"","description":"The swap's details.","expandable":false,"children":[{"name":"swap","type":"`Swap`","description":"Swap details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useCreateSwap"/>
+
+___
+
+## Queries
+
+### useCartSwap
+
+This hook retrieves a Swap's details by the ID of its cart.
+
+#### Example
+
+```ts
+import React from "react"
+import { useCartSwap } from "medusa-react"
+
+type Props = {
+  cartId: string
+}
+
+const Swap = ({ cartId }: Props) => {
+  const { 
+    swap, 
+    isLoading, 
+  } = useCartSwap(cartId)
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {swap && <span>{swap.id}</span>}
+      
+    </div>
+  )
+}
+
+export default Swap
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The ID of the swap's cart.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useCartSwap"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"swap","type":"`Swap`","description":"Swap details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useCartSwap"/>

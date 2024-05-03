@@ -24,7 +24,7 @@ async function generateCountries() {
   const dest = path.join(__dirname, "../src/lib/countries.ts")
   const destDir = path.dirname(dest)
 
-  const fileContent = `/** This file is auto-generated. Do not modify it manually. */\nimport type { Country } from "@medusajs/medusa"\n\nexport const countries: Omit<Country, "region" | "region_id" | "id">[] = ${json}`
+  const fileContent = `/** This file is auto-generated. Do not modify it manually. */\nimport type { RegionCountryDTO } from "@medusajs/types"\n\nexport const countries: Omit<RegionCountryDTO, "id">[] = ${json}`
 
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true })

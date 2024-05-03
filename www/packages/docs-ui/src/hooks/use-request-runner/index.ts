@@ -2,7 +2,7 @@ import { ApiTestingOptions } from "types"
 
 export type useRequestRunnerProps = {
   pushLog: (...message: string[]) => void
-  onFinish: (message: string) => void
+  onFinish: (message: string, statusCode: string) => void
   replaceLog?: (message: string) => void
 }
 
@@ -28,6 +28,8 @@ export const useRequestRunner = ({
       ).toString()}`
     }
 
+    let responseCode = ""
+
     fetch(requestUrl, {
       method: apiRequestOptions.method,
       headers: {
@@ -37,7 +39,10 @@ export const useRequestRunner = ({
         ? JSON.stringify(apiRequestOptions.bodyData)
         : undefined,
     })
-      .then(async (response) => response.json())
+      .then(async (response) => {
+        responseCode = `${response.status}`
+        return response.json()
+      })
       .then((data) => {
         const stringifiedData = JSON.stringify(data, undefined, 2)
         replaceLog ? replaceLog(stringifiedData) : pushLog(stringifiedData)
@@ -50,7 +55,7 @@ export const useRequestRunner = ({
           `ADMIN_CORS=http://localhost:7001,https://docs.medusajs.com`
         )
       })
-      .finally(() => onFinish(`Finished running request.`))
+      .finally(() => onFinish(`Finished running request.`, responseCode))
   }
 
   return {

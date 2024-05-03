@@ -1,43 +1,47 @@
 import {
   AuthenticatedMedusaRequest,
-  MedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import {
-  CreateCustomerAddressDTO,
-  ICustomerModuleService,
-} from "@medusajs/types"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createCustomerAddressesWorkflow } from "@medusajs/core-flows"
+import {
+  StoreCreateCustomerAddressType,
+  StoreGetCustomerAddressesParamsType,
+} from "../../validators"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { refetchCustomer } from "../../helpers"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<StoreGetCustomerAddressesParamsType>,
   res: MedusaResponse
 ) => {
   const customerId = req.auth.actor_id
 
-  const customerModuleService = req.scope.resolve<ICustomerModuleService>(
-    ModuleRegistrationName.CUSTOMER
-  )
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "customer_address",
+    variables: {
+      filters: { ...req.filterableFields, customer_id: customerId },
+      ...req.remoteQueryConfig.pagination,
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
 
-  const [addresses, count] = await customerModuleService.listAndCountAddresses(
-    { ...req.filterableFields, customer_id: customerId },
-    req.listConfig
-  )
-
-  const { offset, limit } = req.validatedQuery
+  const { rows: addresses, metadata } = await remoteQuery(queryObject)
 
   res.json({
-    count,
     addresses,
-    offset,
-    limit,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
   })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateCustomerAddressDTO>,
+  req: AuthenticatedMedusaRequest<StoreCreateCustomerAddressType>,
   res: MedusaResponse
 ) => {
   const customerId = req.auth.actor_id
@@ -50,7 +54,7 @@ export const POST = async (
     },
   ]
 
-  const { result, errors } = await createAddresses.run({
+  const { errors } = await createAddresses.run({
     input: { addresses },
     throwOnError: false,
   })
@@ -59,5 +63,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ address: result[0] })
+  const customer = await refetchCustomer(
+    customerId,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ customer })
 }

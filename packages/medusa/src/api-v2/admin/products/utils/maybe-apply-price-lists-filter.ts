@@ -4,11 +4,11 @@ import {
 } from "@medusajs/utils"
 import { NextFunction } from "express"
 import { MedusaRequest } from "../../../../types/routing"
-import { AdminGetProductsParams } from "../validators"
+import { AdminGetProductsParamsType } from "../validators"
 
 export function maybeApplyPriceListsFilter() {
   return async (req: MedusaRequest, _, next: NextFunction) => {
-    const filterableFields: AdminGetProductsParams = req.filterableFields
+    const filterableFields: AdminGetProductsParamsType = req.filterableFields
 
     if (!filterableFields.price_list_id) {
       return next()
@@ -19,7 +19,7 @@ export function maybeApplyPriceListsFilter() {
 
     const queryObject = remoteQueryObjectFromString({
       entryPoint: "price_list",
-      fields: ["price_set_money_amounts.price_set.variant.id"],
+      fields: ["prices.price_set.variant.id"],
       variables: {
         id: priceListIds,
       },
@@ -33,8 +33,9 @@ export function maybeApplyPriceListsFilter() {
     const priceLists = await remoteQuery(queryObject)
 
     priceLists.forEach((priceList) => {
-      priceList.price_set_money_amounts?.forEach((psma) => {
-        const variantId = psma.price_set?.variant?.id
+      priceList.prices?.forEach((price) => {
+        const variantId = price.price_set?.variant?.id
+
         if (variantId) {
           variantIds.push(variantId)
         }

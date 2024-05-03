@@ -1,108 +1,53 @@
-import { OperatorMap } from "@medusajs/types"
-import { Type } from "class-transformer"
+import { z } from "zod"
 import {
-  IsArray,
-  IsBoolean,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
-import { OperatorMapValidator } from "../../../types/validators/operator-map"
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
-export class AdminGetSalesChannelsSalesChannelParams extends FindParams {}
+export type AdminGetSalesChannelParamsType = z.infer<
+  typeof AdminGetSalesChannelParams
+>
+export const AdminGetSalesChannelParams = createSelectParams()
 
-export class AdminGetSalesChannelsParams extends extendedFindParamsMixin({
+export type AdminGetSalesChannelsParamsType = z.infer<
+  typeof AdminGetSalesChannelsParams
+>
+export const AdminGetSalesChannelsParams = createFindParams({
   limit: 20,
   offset: 0,
-}) {
-  /**
-   * ID to filter sales channels by.
-   */
-  @IsString()
-  @IsOptional()
-  id?: string
+}).merge(
+  z.object({
+    q: z.string().optional(),
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    name: z.union([z.string(), z.array(z.string())]).optional(),
+    description: z.string().optional(),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
+    location_id: z.union([z.string(), z.array(z.string())]).optional(),
+    publishable_key_id: z.union([z.string(), z.array(z.string())]).optional(),
+    $and: z.lazy(() => AdminGetSalesChannelsParams.array()).optional(),
+    $or: z.lazy(() => AdminGetSalesChannelsParams.array()).optional(),
+  })
+)
 
-  /**
-   * Name to filter sales channels by.
-   */
-  @IsOptional()
-  @IsString()
-  name?: string
+export type AdminCreateSalesChannelType = z.infer<
+  typeof AdminCreateSalesChannel
+>
+export const AdminCreateSalesChannel = z.object({
+  name: z.string(),
+  description: z.string().optional(),
+  is_disabled: z.boolean().optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+})
 
-  /**
-   * Description to filter sales channels by.
-   */
-  @IsOptional()
-  @IsString()
-  description?: string
-
-  /**
-   * Date filters to apply on sales channels' `created_at` field.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  created_at?: OperatorMap<string>
-
-  /**
-   * Date filters to apply on sales channels' `updated_at` field.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OperatorMapValidator)
-  updated_at?: OperatorMap<string>
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AdminGetSalesChannelsParams)
-  $and?: AdminGetSalesChannelsParams[]
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AdminGetSalesChannelsParams)
-  $or?: AdminGetSalesChannelsParams[]
-}
-
-export class AdminPostSalesChannelsReq {
-  @IsString()
-  name: string
-
-  @IsString()
-  @IsOptional()
-  description: string
-
-  @IsBoolean()
-  @IsOptional()
-  is_disabled?: boolean
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
-
-export class AdminPostSalesChannelsSalesChannelReq {
-  @IsOptional()
-  @IsString()
-  name?: string
-
-  @IsOptional()
-  @IsString()
-  description?: string
-
-  @IsBoolean()
-  @IsOptional()
-  is_disabled?: boolean
-
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  metadata?: Record<string, unknown>
-}
-
-export class AdminPostSalesChannelsChannelProductsBatchReq {
-  @IsArray()
-  product_ids: string[]
-}
+export type AdminUpdateSalesChannelType = z.infer<
+  typeof AdminUpdateSalesChannel
+>
+export const AdminUpdateSalesChannel = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+  is_disabled: z.boolean().optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+})

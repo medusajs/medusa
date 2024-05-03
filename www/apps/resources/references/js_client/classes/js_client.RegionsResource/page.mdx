@@ -1,0 +1,63 @@
+---
+slug: /references/js-client/RegionsResource
+---
+
+import { TypeList } from "docs-ui"
+
+# RegionsResource
+
+This class is used to send requests to [Store Region API Routes](https://docs.medusajs.com/api/store#regions\_getregions). All its method
+are available in the JS Client under the `medusa.regions` property.
+
+Regions are different countries or geographical regions that the commerce store serves customers in.
+Customers can choose what region they're in, which can be used to change the prices shown based on the region and its currency.
+
+Related Guide: [How to use regions in a storefront](https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions).
+
+## Methods
+
+### list
+
+Retrieve a list of regions. This method is useful to show the customer all available regions to choose from.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.regions.list()
+.then(({ regions, count, limit, offset }) => {
+  console.log(regions.length);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreRegionsListRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the list of regions with pagination fields.","expandable":false,"children":[{"name":"StoreRegionsListRes","type":"[StoreRegionsListRes](../../../medusa/types/medusa.StoreRegionsListRes/page.mdx)","optional":false,"defaultValue":"","description":"The list of regions with pagination fields.","expandable":false,"children":[{"name":"limit","type":"`number`","description":"The limit applied on the retrieved items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before retrieving the list of items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total count of items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regions","type":"[Region](../../../region_models/classes/region_models.Region/page.mdx)[]","description":"An array of regions details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"automatic_taxes","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"countries","type":"Collection&#60;[Country](../../../region_models/classes/region_models.Country/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"iso_2","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"iso_3","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"num_code","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"display_name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"region_id","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"null","expandable":false,"children":[]},{"name":"region","type":"`null` \\| [Region](../../../region_models/classes/region_models.Region/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`RegionOptionalProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>
+
+### retrieve
+
+Retrieve a Region's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.regions.retrieve(regionId)
+.then(({ region }) => {
+  console.log(region.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The region's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreRegionsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the region's details.","expandable":false,"children":[{"name":"StoreRegionsRes","type":"[StoreRegionsRes](../../../medusa/types/medusa.StoreRegionsRes/page.mdx)","optional":false,"defaultValue":"","description":"The region's details.","expandable":false,"children":[{"name":"region","type":"[Region](../../../region_models/classes/region_models.Region/page.mdx)","description":"Region details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"automatic_taxes","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"countries","type":"Collection&#60;[Country](../../../region_models/classes/region_models.Country/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"iso_2","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"iso_3","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"num_code","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"display_name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"region_id","type":"`null` \\| `string`","description":"","optional":true,"defaultValue":"null","expandable":false,"children":[]},{"name":"region","type":"`null` \\| [Region](../../../region_models/classes/region_models.Region/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`RegionOptionalProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>

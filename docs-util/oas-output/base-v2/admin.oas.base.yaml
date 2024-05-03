@@ -19,14 +19,6 @@ tags:
       description: How to manage currencies
       url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies
   - name: Customer Groups
-    description: >
-      Customer Groups can be used to organize customers that share similar data
-      or attributes into dedicated groups.
-
-      This can be useful for different purposes such as setting a different price for a specific customer group.
-    externalDocs:
-      description: How to manage customer groups
-      url: https://docs.medusajs.com/modules/customers/admin/manage-customer-groups
   - name: Customers
     description: >
       Customers can either be created when they register through the Store APIs,
@@ -34,15 +26,11 @@ tags:
     externalDocs:
       description: How to manage customers
       url: https://docs.medusajs.com/modules/customers/admin/manage-customers
-  - name: Fulfillment
+  - name: Draft Orders
+  - name: Fulfillment Providers
+  - name: Fulfillment Sets
+  - name: Fulfillments
   - name: Inventory Items
-    description: >
-      Inventory items, provided by the [Inventory
-      Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module),
-      can be used to manage the inventory of saleable items in your store.
-    externalDocs:
-      description: How to manage inventory items
-      url: https://docs.medusajs.com/modules/multiwarehouse/admin/manage-inventory-items
   - name: Invites
     description: >
       An admin can invite new users to manage their team. This would allow new
@@ -50,27 +38,16 @@ tags:
     externalDocs:
       description: How to manage invites
       url: https://docs.medusajs.com/modules/users/admin/manage-invites
+  - name: Orders
   - name: Payments
-    description: >
-      A payment can be related to an order, swap, return, or more. It can be
-      captured or refunded.
   - name: Price Lists
-    description: >
-      A price list are special prices applied to products based on a set of
-      conditions, such as customer group.
-    externalDocs:
-      description: How to manage price lists
-      url: https://docs.medusajs.com/modules/price-lists/admin/manage-price-lists
   - name: Pricing
+  - name: Product Categories
+  - name: Product Types
   - name: Products
-    description: >
-      Products are saleable items in a store. This also includes [saleable gift
-      cards](https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-gift-card-product)
-      in a store.
-    externalDocs:
-      description: How to manage products
-      url: https://docs.medusajs.com/modules/products/admin/manage-products
   - name: Promotions
+    x-associatedSchema:
+      $ref: "#/components/schemas/Promotion"
   - name: Regions
     description: >
       Regions are different countries or geographical regions that the commerce
@@ -80,6 +57,7 @@ tags:
     externalDocs:
       description: How to manage regions
       url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions
+  - name: Reservations
   - name: Sales Channels
     description: >
       A sales channel indicates a channel where products can be sold in. For
@@ -89,23 +67,14 @@ tags:
     externalDocs:
       description: How to manage sales channels
       url: https://docs.medusajs.com/modules/sales-channels/admin/manage
+  - name: Shipping Options
+  - name: Shipping Profiles
+  - name: Stock Locations
   - name: Stores
   - name: Tax Rates
-    description: >
-      Each region has at least a default tax rate. Admins can create and manage
-      additional tax rates that can be applied for certain conditions, such as
-      for specific product types.
-    externalDocs:
-      description: How to manage tax rates
-      url: https://docs.medusajs.com/modules/taxes/admin/manage-tax-rates
   - name: Tax Regions
+  - name: Uploads
   - name: Users
-    description: >
-      A store can have more than one user, each having the same privileges.
-      Admins can manage users, their passwords, and more.
-    externalDocs:
-      description: How to manage users
-      url: https://docs.medusajs.com/modules/users/admin/manage-users
   - name: Workflows Executions
 servers:
   - url: http://localhost:9000

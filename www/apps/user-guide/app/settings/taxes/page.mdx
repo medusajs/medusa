@@ -1,0 +1,38 @@
+---
+sidebar_position: 6
+---
+
+export const metadata = {
+  title: `Taxes`,
+}
+
+# {metadata.title}
+
+In this document, you’ll get an overview of taxes in Medusa and learn about their importance.
+
+## Overview
+
+Taxes in Medusas are directly associated with [Regions](../regions/page.mdx). As regions and countries often have different tax rates and rules, Medusa supports specifying the tax rate for each region.
+
+Taxes are calculated for products and shipping methods on checkout. Medusa provides a default tax provider to calculate the taxes, and merchants and developers can also integrate custom tax providers for advanced taxes calculation.
+
+---
+
+## How are Taxes Created?
+
+When you create a region, its taxes settings are created as well.
+
+If you specify the tax rate during the region's creation, a default tax rate is created that's applied on all products and shipping options.
+
+---
+
+## Override Tax Rates
+
+You can create tax rates to override the default tax rate. Tax rates can be condition to products, product types, and shipping options.
+
+---
+
+## Learn More About Taxes
+
+- [Manage Taxes](./manage/page.mdx)
+- [Manage Tax Rates](./tax-rates/page.mdx)
