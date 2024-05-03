@@ -6,17 +6,17 @@ import {
   useRouteModal,
 } from "../../../../../../components/route-modal"
 
-import { Combobox } from "../../../../../../components/common/combobox"
-import { Form } from "../../../../../../components/common/form"
-import { InventoryItemRes } from "../../../../../../types/api-responses"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { InventoryNext } from "@medusajs/types"
 import React from "react"
-import { useCreateReservationItem } from "../../../../../../hooks/api/reservations"
 import { useForm } from "react-hook-form"
-import { useInventoryItems } from "../../../../../../hooks/api/inventory"
-import { useStockLocations } from "../../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { Form } from "../../../../../../components/common/form"
+import { Combobox } from "../../../../../../components/inputs/combobox"
+import { useInventoryItems } from "../../../../../../hooks/api/inventory"
+import { useCreateReservationItem } from "../../../../../../hooks/api/reservations"
+import { useStockLocations } from "../../../../../../hooks/api/stock-locations"
+import { InventoryItemRes } from "../../../../../../types/api-responses"
 
 export const CreateReservationSchema = zod.object({
   inventory_item_id: zod.string().min(1),

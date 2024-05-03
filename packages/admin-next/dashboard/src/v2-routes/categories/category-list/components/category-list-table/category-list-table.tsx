@@ -1,25 +1,17 @@
-import { PencilSquare, TriangleRightMini } from "@medusajs/icons"
+import { PencilSquare } from "@medusajs/icons"
 import { AdminProductCategoryResponse } from "@medusajs/types"
-import { Container, Heading, IconButton, Text, clx } from "@medusajs/ui"
+import { Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
-import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
-import {
-  TextCell,
-  TextHeader,
-} from "../../../../../components/table/table-cells/common/text-cell"
 import { useCategories } from "../../../../../hooks/api/categories"
+import { useCategoryTableColumns } from "../../../../../hooks/table/columns/use-category-table-columns"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useCategoryTableQuery } from "../../../common/hooks/use-category-table-query"
-import {
-  getCategoryPath,
-  getIsActiveProps,
-  getIsInternalProps,
-} from "../../../common/utils"
 
 const PAGE_SIZE = 20
 
@@ -51,7 +43,7 @@ export const CategoryListTable = () => {
       }
     )
 
-  const columns = useCategoryTableColumns()
+  const columns = useColumns()
 
   const { table } = useDataTable({
     data: product_categories || [],
@@ -114,83 +106,12 @@ const CategoryRowActions = ({
 const columnHelper =
   createColumnHelper<AdminProductCategoryResponse["product_category"]>()
 
-const useCategoryTableColumns = () => {
-  const { t } = useTranslation()
+const useColumns = () => {
+  const base = useCategoryTableColumns()
 
   return useMemo(
     () => [
-      columnHelper.accessor("name", {
-        header: () => <TextHeader text={t("fields.name")} />,
-        cell: ({ getValue, row }) => {
-          const expandHandler = row.getToggleExpandedHandler()
-
-          console.log(row.original)
-
-          if (row.original.parent_category !== undefined) {
-            const path = getCategoryPath(row.original)
-
-            return (
-              <div className="flex size-full items-center">
-                {path.map((chip) => (
-                  <div key={chip.id}>
-                    <Text>{chip.name}</Text>
-                  </div>
-                ))}
-              </div>
-            )
-          }
-
-          return (
-            <div className="flex size-full items-center gap-x-3 overflow-hidden">
-              <div className="flex size-7 items-center justify-center">
-                {row.getCanExpand() ? (
-                  <IconButton
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      e.preventDefault()
-
-                      expandHandler()
-                    }}
-                    size="small"
-                    variant="transparent"
-                  >
-                    <TriangleRightMini
-                      className={clx({
-                        "rotate-90 transition-transform will-change-transform":
-                          row.getIsExpanded(),
-                      })}
-                    />
-                  </IconButton>
-                ) : null}
-              </div>
-              <span className="truncate">{getValue()}</span>
-            </div>
-          )
-        },
-      }),
-      columnHelper.accessor("handle", {
-        header: () => <TextHeader text={t("fields.handle")} />,
-        cell: ({ getValue }) => {
-          return <TextCell text={`/${getValue()}`} />
-        },
-      }),
-      columnHelper.accessor("is_active", {
-        header: () => <TextHeader text={t("fields.status")} />,
-        cell: ({ getValue }) => {
-          const { color, label } = getIsActiveProps(getValue(), t)
-
-          return <StatusCell color={color}>{label}</StatusCell>
-        },
-      }),
-      columnHelper.accessor("is_internal", {
-        header: () => <TextHeader text={t("categories.fields.visibility")} />,
-        cell: ({ getValue }) => {
-          const { color, label } = getIsInternalProps(getValue(), t)
-
-          return <StatusCell color={color}>{label}</StatusCell>
-        },
-      }),
+      ...base,
       columnHelper.display({
         id: "actions",
         cell: ({ row }) => {
@@ -198,6 +119,6 @@ const useCategoryTableColumns = () => {
         },
       }),
     ],
-    [t]
+    [base]
   )
 }

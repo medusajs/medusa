@@ -1,18 +1,18 @@
+import { PaymentProviderDTO, RegionDTO } from "@medusajs/types"
 import { Button, Input, Select, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { PaymentProviderDTO, RegionDTO } from "@medusajs/types"
 
-import { Combobox } from "../../../../../components/common/combobox"
 import { Form } from "../../../../../components/common/form"
+import { Combobox } from "../../../../../components/inputs/combobox/index.ts"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { formatProvider } from "../../../../../lib/format-provider"
-import { CurrencyInfo } from "../../../../../lib/currencies"
 import { useUpdateRegion } from "../../../../../hooks/api/regions.tsx"
+import { CurrencyInfo } from "../../../../../lib/currencies"
+import { formatProvider } from "../../../../../lib/format-provider"
 
 type EditRegionFormProps = {
   region: RegionDTO

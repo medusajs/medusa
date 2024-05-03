@@ -1,18 +1,18 @@
 import { PricedVariant } from "@medusajs/client-types"
-import { useTranslation } from "react-i18next"
-import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
-import { useState } from "react"
-import { useAdminVariants } from "medusa-react"
-import { Button } from "@medusajs/ui"
 import { Order } from "@medusajs/medusa"
+import { Button } from "@medusajs/ui"
+import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
+import { useAdminVariants } from "medusa-react"
+import { useState } from "react"
+import { useTranslation } from "react-i18next"
 
+import { SplitView } from "../../../../../components/layout/split-view"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table.tsx"
-import { SplitView } from "../../../../../components/layout/split-view"
 
-import { useVariantTableQuery } from "./use-variant-table-query"
 import { useVariantTableColumns } from "./use-variant-table-columns"
 import { useVariantTableFilters } from "./use-variant-table-filters"
+import { useVariantTableQuery } from "./use-variant-table-query"
 
 const PAGE_SIZE = 50
 

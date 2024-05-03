@@ -21,7 +21,7 @@ import {
   RuleOperatorOptionsResponse,
 } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
-import { PercentageInput } from "../../../../../components/common/percentage-input"
+import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -358,7 +358,7 @@ export const CreatePromotionForm = ({
             </div>
           </RouteFocusModal.Header>
 
-          <RouteFocusModal.Body className="w-[800px] mx-auto my-20">
+          <RouteFocusModal.Body className="mx-auto my-20 w-[800px]">
             <ProgressTabs.Content value={Tab.TYPE}>
               <Form.Field
                 control={form.control}
@@ -382,7 +382,7 @@ export const CreatePromotionForm = ({
                                 label={template.title}
                                 description={template.description}
                                 className={clx("", {
-                                  "border-2 border-ui-border-interactive":
+                                  "border-ui-border-interactive border-2":
                                     template.id === field.value,
                                 })}
                               />
@@ -399,7 +399,7 @@ export const CreatePromotionForm = ({
 
             <ProgressTabs.Content
               value={Tab.PROMOTION}
-              className="flex flex-col gap-10 flex-1"
+              className="flex flex-1 flex-col gap-10"
             >
               {form.formState.errors.root && (
                 <Alert
@@ -432,7 +432,7 @@ export const CreatePromotionForm = ({
                               "promotions.form.method.code.description"
                             )}
                             className={clx("basis-1/2", {
-                              "border-2 border-ui-border-interactive":
+                              "border-ui-border-interactive border-2":
                                 "false" === field.value,
                             })}
                           />
@@ -443,7 +443,7 @@ export const CreatePromotionForm = ({
                               "promotions.form.method.automatic.description"
                             )}
                             className={clx("basis-1/2", {
-                              "border-2 border-ui-border-interactive":
+                              "border-ui-border-interactive border-2":
                                 "true" === field.value,
                             })}
                           />
@@ -509,7 +509,7 @@ export const CreatePromotionForm = ({
                               "promotions.form.value_type.fixed.description"
                             )}
                             className={clx("basis-1/2", {
-                              "border-2 border-ui-border-interactive":
+                              "border-ui-border-interactive border-2":
                                 "fixed" === field.value,
                             })}
                           />
@@ -523,7 +523,7 @@ export const CreatePromotionForm = ({
                               "promotions.form.value_type.percentage.description"
                             )}
                             className={clx("basis-1/2", {
-                              "border-2 border-ui-border-interactive":
+                              "border-ui-border-interactive border-2":
                                 "percentage" === field.value,
                             })}
                           />
@@ -604,7 +604,7 @@ export const CreatePromotionForm = ({
                               "promotions.form.type.standard.description"
                             )}
                             className={clx("basis-1/2", {
-                              "border-2 border-ui-border-interactive":
+                              "border-ui-border-interactive border-2":
                                 "standard" === field.value,
                             })}
                           />
@@ -616,7 +616,7 @@ export const CreatePromotionForm = ({
                               "promotions.form.type.buyget.description"
                             )}
                             className={clx("basis-1/2", {
-                              "border-2 border-ui-border-interactive":
+                              "border-ui-border-interactive border-2":
                                 "buyget" === field.value,
                             })}
                           />
@@ -652,7 +652,7 @@ export const CreatePromotionForm = ({
                                 "promotions.form.allocation.each.description"
                               )}
                               className={clx("basis-1/2", {
-                                "border-2 border-ui-border-interactive":
+                                "border-ui-border-interactive border-2":
                                   "each" === field.value,
                               })}
                             />
@@ -666,7 +666,7 @@ export const CreatePromotionForm = ({
                                 "promotions.form.allocation.across.description"
                               )}
                               className={clx("basis-1/2", {
-                                "border-2 border-ui-border-interactive":
+                                "border-ui-border-interactive border-2":
                                   "across" === field.value,
                               })}
                             />

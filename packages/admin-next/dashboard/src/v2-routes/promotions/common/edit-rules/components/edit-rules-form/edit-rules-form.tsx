@@ -7,8 +7,8 @@ import { Fragment, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { Combobox } from "../../../../../../components/common/combobox"
 import { Form } from "../../../../../../components/common/form"
+import { Combobox } from "../../../../../../components/inputs/combobox"
 import { RouteDrawer } from "../../../../../../components/route-modal"
 import { usePromotionRuleValues } from "../../../../../../hooks/api/promotions"
 import { RuleTypeValues } from "../../edit-rules"
@@ -162,7 +162,7 @@ export const RulesFormField = ({
 
         return (
           <Fragment key={`${fieldRule.id}.${index}`}>
-            <div className="flex flex-row gap-2 bg-ui-bg-subtle py-2 px-2 rounded-xl border border-ui-border-base">
+            <div className="bg-ui-bg-subtle border-ui-border-base flex flex-row gap-2 rounded-xl border px-2 py-2">
               <div className="grow">
                 <Form.Field
                   key={`${identifier}.${scope}.${attributeFields.name}`}
@@ -299,7 +299,7 @@ export const RulesFormField = ({
 
             {index < fields.length - 1 && (
               <div className="relative px-6 py-3">
-                <div className="absolute top-0 bottom-0 left-[40px] z-[-1] border-ui-border-strong w-px bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-repeat-y"></div>
+                <div className="border-ui-border-strong absolute bottom-0 left-[40px] top-0 z-[-1] w-px bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-repeat-y"></div>
 
                 <Badge size="2xsmall" className=" text-xs">
                   {t("promotions.form.and")}
@@ -330,7 +330,7 @@ export const RulesFormField = ({
         <Button
           type="button"
           variant="transparent"
-          className="inline-block text-ui-fg-muted hover:text-ui-fg-subtle ml-2"
+          className="text-ui-fg-muted hover:text-ui-fg-subtle ml-2 inline-block"
           onClick={() => {
             const indicesToRemove = fields
               .map((field, index) => (field.required ? null : index))
