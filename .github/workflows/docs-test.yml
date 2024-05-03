@@ -346,9 +346,9 @@ jobs:
         working-directory: www
         run: yarn install
 
-      - name: Build packages and apps
+      - name: Build packages
         working-directory: www
-        run: yarn build
+        run: yarn build:packages
 
       - name: Run Eslint
         working-directory: www
