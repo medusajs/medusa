@@ -1,0 +1,245 @@
+{
+	"id": 2044,
+	"name": "currency-models",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 2045,
+			"name": "Currency",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 2046,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 2047,
+							"name": "new Currency",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 2045,
+								"name": "Currency",
+								"package": "@medusajs/currency"
+							}
+						}
+					]
+				},
+				{
+					"id": 2048,
+					"name": "code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 2049,
+					"name": "symbol",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 2050,
+					"name": "symbol_native",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 2051,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 2052,
+					"name": "decimal_digits",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 2053,
+					"name": "rounding",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "number"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/utils/src/totals/big-number.ts",
+									"qualifiedName": "BigNumber"
+								},
+								"name": "BigNumber",
+								"package": "@medusajs/utils"
+							}
+						]
+					}
+				},
+				{
+					"id": 2054,
+					"name": "raw_rounding",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/totals/big-number.ts",
+							"qualifiedName": "BigNumberRawValue"
+						},
+						"name": "BigNumberRawValue",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 2055,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 2056,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						2046
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						2048,
+						2049,
+						2050,
+						2051,
+						2052,
+						2053,
+						2054,
+						2055,
+						2056
+					]
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				2045
+			]
+		}
+	],
+	"packageName": "@medusajs/currency",
+	"symbolIdMap": {
+		"2044": {
+			"sourceFileName": "../../../packages/currency/src/models/index.ts",
+			"qualifiedName": ""
+		},
+		"2045": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency"
+		},
+		"2048": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.code"
+		},
+		"2049": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.symbol"
+		},
+		"2050": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.symbol_native"
+		},
+		"2051": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.name"
+		},
+		"2052": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.decimal_digits"
+		},
+		"2053": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.rounding"
+		},
+		"2054": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.raw_rounding"
+		},
+		"2055": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.created_at"
+		},
+		"2056": {
+			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
+			"qualifiedName": "Currency.updated_at"
+		}
+	}
+}

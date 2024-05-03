@@ -7,11 +7,13 @@ import {
   ModalProvider,
   PageLoadingProvider,
   ScrollControllerProvider,
+  SiteConfigProvider,
 } from "docs-ui"
 import BaseSpecsProvider from "./base-specs"
 import SidebarProvider from "./sidebar"
 import SearchProvider from "./search"
 import VersionProvider from "./version"
+import { config } from "../config"
 
 type ProvidersProps = {
   children?: React.ReactNode
@@ -20,23 +22,25 @@ type ProvidersProps = {
 const Providers = ({ children }: ProvidersProps) => {
   return (
     <AnalyticsProvider writeKey={process.env.NEXT_PUBLIC_SEGMENT_API_KEY}>
-      <PageLoadingProvider>
-        <ModalProvider>
-          <ColorModeProvider>
-            <BaseSpecsProvider>
-              <ScrollControllerProvider scrollableSelector="#main">
-                <SidebarProvider>
-                  <SearchProvider>
-                    <MobileProvider>
-                      <VersionProvider>{children}</VersionProvider>
-                    </MobileProvider>
-                  </SearchProvider>
-                </SidebarProvider>
-              </ScrollControllerProvider>
-            </BaseSpecsProvider>
-          </ColorModeProvider>
-        </ModalProvider>
-      </PageLoadingProvider>
+      <SiteConfigProvider config={config}>
+        <PageLoadingProvider>
+          <ModalProvider>
+            <ColorModeProvider>
+              <BaseSpecsProvider>
+                <ScrollControllerProvider scrollableSelector="#main">
+                  <SidebarProvider>
+                    <SearchProvider>
+                      <MobileProvider>
+                        <VersionProvider>{children}</VersionProvider>
+                      </MobileProvider>
+                    </SearchProvider>
+                  </SidebarProvider>
+                </ScrollControllerProvider>
+              </BaseSpecsProvider>
+            </ColorModeProvider>
+          </ModalProvider>
+        </PageLoadingProvider>
+      </SiteConfigProvider>
     </AnalyticsProvider>
   )
 }

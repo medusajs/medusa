@@ -1,0 +1,14 @@
+type: object
+description: The option's options.
+x-schemaName: CreateProductVariantOption
+required:
+  - value
+properties:
+  value:
+    type: string
+    title: value
+    description: The option's value.
+  option_id:
+    type: string
+    title: option_id
+    description: The option's option id.

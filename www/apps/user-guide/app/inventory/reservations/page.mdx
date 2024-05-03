@@ -1,0 +1,79 @@
+---
+sidebar_position: 3
+---
+
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Reservations`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to manage reservations in your store.
+
+## View Reservations
+
+To view reservations, go to Inventory from the sidebar, the click the Reservations sub-item shown in the sidebar.
+
+In the reservations page, you can view all reservations.
+
+### Filter by Location
+
+To filter reservations by location:
+
+1. Click the "Add filter" button.
+2. Choose Location from the dropdown.
+3. Choose the locations(s) to filter the list by.
+
+---
+
+## Create a Reservation
+
+{/* TODO check info for correctness */}
+
+Reservations are created manually when an order is created. You can also manage them from the order’s page.
+
+To manually create a reservation item:
+
+1. Go to Inventory → Reservations.
+2. Click on the Create button.
+3. In the form that opens:
+    1. For the “Location” field, select the location the reservation is created in.
+    2. For the “Item to reserve” field, enter or choose the SKU of the item you want to create a reservation for.
+    3. Set the reserved quantity in the "Reserve amount" field.
+    4. You can optionally add a description in the Description field, or add additional data as key-value pairs under the Metadata section.
+4. Once you’re done, click the Save button.
+
+---
+
+## Edit Reservation
+
+{/* TODO check info for correctness */}
+
+To edit a reservation:
+
+1. Go to Inventory → Reservations
+2. Find the reservation you want to edit, and click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon on its right.
+3. Choose Edit from the dropdown.
+4. In the drawer that opens, edit the reservation's details.
+5. Once you’re done, click the Save button.
+
+---
+
+## Delete Reservation
+
+<Note type="warning">
+
+Deleting a reservation is irreversible.
+
+</Note>
+
+{/* TODO check info for correctness */}
+
+To delete a reservation:
+
+1. Go to Inventory → Reservations
+2. Find the reservation you want to delete, and click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon on its right.
+3. Choose Delete from the dropdown.
+4. Confirm deleting the reservation by clicking the Remove button in the pop-up.

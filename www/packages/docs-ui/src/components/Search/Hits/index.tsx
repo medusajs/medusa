@@ -13,7 +13,7 @@ import {
 import { SearchNoResult } from "../NoResults"
 import { SearchHitGroupName } from "./GroupName"
 import { useSearch } from "@/providers"
-import { LegacyLink } from "@/components"
+import { Link } from "@/components"
 
 export type Hierarchy = "lvl0" | "lvl1" | "lvl2" | "lvl3" | "lvl4" | "lvl5"
 
@@ -205,8 +205,7 @@ export const SearchHits = ({
                   />
                 </span>
               )}
-              {/* TODO replace with Link once we move away from Docusaurus */}
-              <LegacyLink
+              <Link
                 href={item.url}
                 className="absolute top-0 left-0 h-full w-full"
                 target="_self"

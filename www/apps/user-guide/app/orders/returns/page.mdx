@@ -1,0 +1,112 @@
+---
+sidebar_position: 6
+sidebar_label: Manage Returns
+---
+
+import { 
+  EllipsisHorizontal, 
+} from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Order’s Returns`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn more about order returns, how to request a return, and more.
+
+## Overview
+
+Part of the order management system that Medusa provides is automating and managing order returns.
+
+There are two ways order returns can be requested:
+
+1. The customer requests a return for an order through the storefront, which the admin user can view on the admin.
+2. The admin user requests to receive a return from the customer. The customer is informed about this through an email.
+
+After a return is requested, the admin user chooses to either cancel the return or mark it as received. When a return is marked as received, a refund is issued to the customer.
+
+---
+
+## Find Return Requests of an Order
+
+To find return requests of an order:
+
+1. Open the order details page.
+2. On the Timeline section, find any returns requested, whether by admin users or by customers.
+
+---
+
+## Request a Return for an Order
+
+{/* TODO check info for correctness */}
+
+To request a return for an order:
+
+1. Open the order details page.
+2. In the Timeline section, click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right.
+3. Choose "Request Return" from the dropdown.
+4. In the new window that opens, there are two steps to follow:
+    1. In the first step:
+        1. Choose the items in the order that you want to request the return.
+        2. Once you're done, click on the "Continue" button.
+    2. In the second step:
+        1. For each item under the "Items to return" section, enter the quantity, choose the [Reason](../../settings/return-reasons/page.mdx), and optionally add a note.
+        2. Under the Shipping section:
+            1. Choose the location to return items to.
+            2. Choose the shipping method used to return the items.
+        3. To change the refunded value:
+            1. Toggle the "Custom refund" button.
+            2. Enter the custom amount in the field shown.
+        4. To disable sending a notification to the customer that the order return is requested, toggle the "Send notifications" button
+5. Once done, click on the Save button.
+
+---
+
+## Receive Return
+
+<Note type="warning">
+
+Once the return is marked as received, a refund is issued to the customer.
+
+</Note>
+
+<Note type="check">
+
+The order's payment must be captured first.
+
+</Note>
+
+{/* TODO check info for correctness */}
+
+To mark a return as received:
+
+1. Open the order details page.
+2. In the Timeline section, find the return requested.
+3. Click on the Receive Return button.
+4. Check or uncheck the items that have been received.
+5. Click the Complete button.
+
+---
+
+## Cancel a Return
+
+<Note type="warning">
+
+Canceling a return is irreversible.
+
+</Note>
+
+<Note type="check">
+
+The return must be [marked as received](#receive-return) first.
+
+</Note>
+
+{/* TODO check info for correctness */}
+
+To cancel a return:
+
+1. Open the order details page.
+2. In the Timeline section, find the return requested and click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon.
+3. Click on “Cancel return” in the dropdown.

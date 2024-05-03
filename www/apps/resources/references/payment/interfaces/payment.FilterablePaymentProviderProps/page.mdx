@@ -1,0 +1,11 @@
+---
+displayed_sidebar: paymentReference
+---
+
+import { TypeList } from "docs-ui"
+
+# FilterablePaymentProviderProps
+
+The filters to apply on the retrieved payment providers.
+
+<TypeList types={[{"name":"$and","type":"([PaymentProviderDTO](../payment.PaymentProviderDTO/page.mdx) \\| [BaseFilterable](../payment.BaseFilterable/page.mdx)&#60;[PaymentProviderDTO](../payment.PaymentProviderDTO/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([PaymentProviderDTO](../payment.PaymentProviderDTO/page.mdx) \\| [BaseFilterable](../payment.BaseFilterable/page.mdx)&#60;[PaymentProviderDTO](../payment.PaymentProviderDTO/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string` \\| `string`[] \\| [OperatorMap](../../types/payment.OperatorMap/page.mdx)&#60;string \\| string[]&#62;","description":"The IDs to filter the payment collection by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"Filter by whether the payment provider is enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="FilterablePaymentProviderProps"/>

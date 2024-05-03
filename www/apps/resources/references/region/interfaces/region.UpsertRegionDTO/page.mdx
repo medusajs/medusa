@@ -1,0 +1,11 @@
+---
+displayed_sidebar: regionReference
+---
+
+import { TypeList } from "docs-ui"
+
+# UpsertRegionDTO
+
+The attributes in the region to be created or updated.
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The id of the region in the case of an update","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The target name of the region. Required when\ncreating a region.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The currency code of the region. Required when\ncreating a region.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"automatic_taxes","type":"`boolean`","description":"Setting to indicate whether taxes need to be applied automatically.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"countries","type":"`string`[]","description":"The region's countries.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="UpsertRegionDTO"/>

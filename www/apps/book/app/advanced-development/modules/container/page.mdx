@@ -1,0 +1,118 @@
+export const metadata = {
+  title: `${pageNumber} Module's Container`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about a module's container and how to register resources in that container.
+
+## Module's Container
+
+Each module has a local container only used by the resources of that module.
+
+So, resources in the module, such as services or loaders, can only resolve resources registered in the module's container.
+
+To register a module's resources in that container, Medusa provides a utility loader factory function that registers your module's services and other resources in the module's container.
+
+---
+
+## How to Register a Modules Resources
+
+In your module's definition file, import the `ModulesSdkUtils` utility functions from the `@medusajs/utils`. Then, use its `moduleContainerLoaderFactory` function to create the container loader and export it in the module's definition.
+
+For example:
+
+```ts title="src/modules/hello/index.ts"
+// other imports...
+import HelloModuleService from "./service"
+import { MyCustom } from "./models/my-custom"
+import { 
+  ModulesSdkUtils, 
+  MikroOrmBaseRepository,
+} from "@medusajs/utils"
+
+// ...
+
+const containerLoader = ModulesSdkUtils.moduleContainerLoaderFactory({
+  moduleModels: {
+    MyCustom,
+  },
+  moduleRepositories: {
+    BaseRepository: MikroOrmBaseRepository,
+  },
+  moduleServices: {
+    HelloModuleService,
+  },
+})
+
+export default {
+  // ...
+  loaders: [containerLoader],
+}
+```
+
+### Container Loader Factory Parameters
+
+The `moduleContainerLoaderFactory` function accepts as a parameter an object with the following properties:
+
+- `moduleModels`: An object of the module's data models, where the key is the model's name and the value is the model class.
+- `moduleRepositories`: An object of the module's repositories. You import here the `MikroOrmBaseRepository` from `@medusajs/utils` and use it as the value of `BaseRepository`.
+- `moduleServices`: An object of the module's services, where the key is the service's registration name and the value is the service class.
+
+### Resources Registered by the Container Loader
+
+The container loader registers in the module's container:
+
+- The services passed in the `moduleServices` property.
+- The repositories provided in the `moduleRepositories`.
+- A generated service for each data model provided in `moduleModels`.
+
+![Example of registered resources in the container](https://res.cloudinary.com/dza7lstvk/image/upload/v1714400573/Medusa%20Book/modules-container_mkcbaq.jpg)
+
+---
+
+## Resolve Resources
+
+### Services
+
+A service's constructor accepts as a first parameter an object used to resolve resources registered in the module's container.
+
+For example, to resolve the `baseRepository` registered by the `containerLoader` in the module's definition:
+
+```ts
+import { DAL } from "@medusajs/types"
+
+type InjectedDependencies = {
+  baseRepository: DAL.RepositoryService
+}
+
+export default class HelloModuleService {
+  protected baseRepository_: DAL.RepositoryService
+  constructor({ baseRepository }: InjectedDependencies) {
+    this.baseRepository_ = baseRepository
+  }
+
+  // ...
+}
+```
+
+### Loader
+
+A loader function in a module accepts as a parameter an object having the property `container`. Its value is the module's container used to resolve resources.
+
+For example:
+
+```ts
+import {
+  LoaderOptions,
+} from "@medusajs/modules-sdk"
+
+
+export default function helloWorldLoader({
+  container,
+}: LoaderOptions) {
+  const myCustomService = container.resolve("myCustomService")
+  
+  // ...
+}
+```

@@ -1,12 +1,11 @@
 import { Switch } from "@medusajs/ui"
 import clsx from "clsx"
 import React from "react"
-import { Key } from "types"
 
 export const Toggle = ({
   className,
   ...props
-}: React.ComponentProps<typeof Switch> & Key) => {
+}: React.ComponentProps<typeof Switch>) => {
   return (
     <Switch
       {...props}

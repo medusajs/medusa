@@ -18,12 +18,6 @@ tags:
   - name: Collections
   - name: Currencies
   - name: Customers
-    description: >
-      A customer can register and manage their information such as addresses,
-      orders, payment methods, and more.
-    externalDocs:
-      description: How to implement customer profiles in your storefront
-      url: https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles
   - name: Payment Collections
     description: >
       A payment collection is useful for managing additional payments, such as
@@ -40,12 +34,6 @@ tags:
       description: How to use regions in a storefront
       url: https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions
   - name: Shipping Options
-    description: >
-      A shipping option is used to define the available shipping methods during
-      checkout or when creating a return.
-    externalDocs:
-      description: Shipping Option architecture
-      url: https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-option
 servers:
   - url: http://localhost:9000
   - url: https://api.medusa-commerce.com

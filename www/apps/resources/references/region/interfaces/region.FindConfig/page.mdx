@@ -1,0 +1,16 @@
+---
+displayed_sidebar: regionReference
+---
+
+import { TypeList } from "docs-ui"
+
+# FindConfig
+
+An object that is used to configure how an entity is retrieved from the database. It accepts as a typed parameter an `Entity` class,
+which provides correct typing of field names in its properties.
+
+## Type parameters
+
+<TypeList types={[{"name":"Entity","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="FindConfig"/>
+
+<TypeList types={[{"name":"select","type":"(`string` \\| keyof Entity)[]","description":"An array of strings, each being attribute names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"skip","type":"`null` \\| `number`","description":"A number indicating the number of records to skip before retrieving the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"take","type":"`null` \\| `number`","description":"A number indicating the number of records to return in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"relations","type":"`string`[]","description":"An array of strings, each being relation names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`object`","description":"An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC`\nto sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"withDeleted","type":"`boolean`","description":"A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n`SoftDeletableEntity` class.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"filters","type":"`Record<string, any>`","description":"Enable ORM specific defined filters","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="FindConfig"/>
