@@ -15,11 +15,13 @@ export const customModuleTitles: Record<string, string> = {
 // if any module requires custom options, they're added to this object
 export const customModulesOptions: Record<string, Partial<TypeDocOptions>> = {
   "inventory-next": {
-    entryPoints: getEntryPoints("packages/types/src/inventory/service-next.ts"),
+    entryPoints: getEntryPoints(
+      "packages/core/types/src/inventory/service-next.ts"
+    ),
   },
   "stock-location-next": {
     entryPoints: getEntryPoints(
-      "packages/types/src/stock-location/service-next.ts"
+      "packages/core/types/src/stock-location/service-next.ts"
     ),
   },
 }

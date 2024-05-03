@@ -39,7 +39,7 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     ignoreApi: true,
   }),
   "medusa-config": getOptions({
-    entryPointPath: "packages/types/src/common/config-module.ts",
+    entryPointPath: "packages/core/types/src/common/config-module.ts",
     tsConfigName: "types.json",
     name: "medusa-config",
   }),
@@ -89,7 +89,8 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "payment-processor",
   }),
   "payment-provider": getOptions({
-    entryPointPath: "packages/utils/src/payment/abstract-payment-provider.ts",
+    entryPointPath:
+      "packages/core/utils/src/payment/abstract-payment-provider.ts",
     tsConfigName: "utils.json",
     name: "payment-provider",
   }),
@@ -101,7 +102,7 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     parentIgnore: true,
   }),
   search: getOptions({
-    entryPointPath: "packages/utils/src/search/abstract-service.ts",
+    entryPointPath: "packages/core/utils/src/search/abstract-service.ts",
     tsConfigName: "utils.json",
     name: "search",
   }),
@@ -118,7 +119,7 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     parentIgnore: true,
   }),
   "tax-provider": getOptions({
-    entryPointPath: "packages/types/src/tax/provider.ts",
+    entryPointPath: "packages/core/types/src/tax/provider.ts",
     tsConfigName: "types.json",
     name: "tax-provider",
   }),
@@ -129,7 +130,7 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     parentIgnore: true,
   }),
   types: getOptions({
-    entryPointPath: "packages/types/src/index.ts",
+    entryPointPath: "packages/core/types/src/index.ts",
     tsConfigName: "types.json",
     name: "types",
     jsonFileName: "0-types",
@@ -140,12 +141,12 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     ],
   }),
   workflows: getOptions({
-    entryPointPath: "packages/workflows-sdk/src/utils/composer/index.ts",
+    entryPointPath: "packages/core/workflows-sdk/src/utils/composer/index.ts",
     tsConfigName: "workflows.json",
     name: "workflows",
   }),
   utils: getOptions({
-    entryPointPath: "packages/utils/src/index.ts",
+    entryPointPath: "packages/core/utils/src/index.ts",
     tsConfigName: "utils.json",
     name: "utils",
     jsonFileName: "0-utils",

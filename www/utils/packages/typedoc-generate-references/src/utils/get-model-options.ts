@@ -10,7 +10,7 @@ export default function getModelOptions({
   moduleName,
   typedocOptions = {},
 }: Options): Partial<TypeDocOptions> {
-  const entryPath = `packages/${moduleName}/src/models/index.ts`
+  const entryPath = `packages/modules/${moduleName}/src/models/index.ts`
 
   return getOptions({
     entryPointPath: entryPath,

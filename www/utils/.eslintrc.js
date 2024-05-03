@@ -97,7 +97,6 @@ module.exports = {
           "./packages/docblock-generator/tsconfig.json",
           "./packages/react-docs-generator/tsconfig.json",
           "./packages/scripts/tsconfig.json",
-          "./packages/typedoc-config/tsconfig.json",
           "./packages/typedoc-generate-references/tsconfig.json",
           "./packages/typedoc-plugin-custom/tsconfig.json",
           "./packages/typedoc-markdown-medusa-plugin/tsconfig.json",

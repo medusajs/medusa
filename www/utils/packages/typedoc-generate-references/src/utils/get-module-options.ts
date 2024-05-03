@@ -11,7 +11,7 @@ export default function getModuleOptions({
   typedocOptions,
 }: Options): Partial<TypeDocOptions> {
   return getOptions({
-    entryPointPath: `packages/types/src/${moduleName}/service.ts`,
+    entryPointPath: `packages/core/types/src/${moduleName}/service.ts`,
     name: moduleName,
     tsConfigName: "types.json",
     entryPointStrategy: "expand",
