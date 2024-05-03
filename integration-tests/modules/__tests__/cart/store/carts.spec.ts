@@ -1197,7 +1197,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /store/carts/:id/payment-collections", () => {
+      describe("POST /store/payment-collections", () => {
         it("should create a payment collection for the cart", async () => {
           const region = await regionModule.create({
             name: "US",
@@ -1209,19 +1209,18 @@ medusaIntegrationTestRunner({
             region_id: region.id,
           })
 
-          const response = await api.post(
-            `/store/carts/${cart.id}/payment-collections`
-          )
+          const response = await api.post(`/store/payment-collections`, {
+            region_id: region.id,
+            cart_id: cart.id,
+            amount: 0,
+            currency_code: cart.currency_code,
+          })
 
           expect(response.status).toEqual(200)
-          expect(response.data.cart).toEqual(
+          expect(response.data.payment_collection).toEqual(
             expect.objectContaining({
-              id: cart.id,
-              currency_code: "usd",
-              payment_collection: expect.objectContaining({
-                id: expect.any(String),
-                amount: 0,
-              }),
+              id: expect.any(String),
+              amount: 0,
             })
           )
         })
@@ -1363,8 +1362,13 @@ medusaIntegrationTestRunner({
             rules: [
               {
                 operator: RuleOperator.EQ,
-                attribute: "shipping_address.country_code",
-                value: "us",
+                attribute: "is_return",
+                value: "false",
+              },
+              {
+                operator: RuleOperator.EQ,
+                attribute: "enabled_in_store",
+                value: "true",
               },
             ],
           })
