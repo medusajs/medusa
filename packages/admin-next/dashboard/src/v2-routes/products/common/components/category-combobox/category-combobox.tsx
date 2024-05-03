@@ -237,7 +237,7 @@ export const CategoryCombobox = forwardRef<
               <div className="p-1">
                 <button
                   className={clx(
-                    "transition-fg grid w-full appearance-none grid-cols-[20px_1fr] items-center justify-center gap-2 px-2 py-1.5 text-left outline-none",
+                    "transition-fg grid w-full appearance-none grid-cols-[20px_1fr] items-center justify-center gap-2 rounded-md px-2 py-1.5 text-left outline-none",
                     "hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed"
                   )}
                   type="button"

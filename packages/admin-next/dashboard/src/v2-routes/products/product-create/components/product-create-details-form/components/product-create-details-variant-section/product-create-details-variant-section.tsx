@@ -8,9 +8,11 @@ import {
   IconButton,
   Input,
   Label,
+  Text,
   clx,
 } from "@medusajs/ui"
 import {
+  Controller,
   FieldArrayWithId,
   UseFormReturn,
   useFieldArray,
@@ -194,6 +196,47 @@ export const ProductCreateVariantsSection = ({
     variants.replace(update)
   }
 
+  const getCheckboxState = (variants: ProductCreateSchemaType["variants"]) => {
+    if (variants.every((variant) => variant.should_create)) {
+      return true
+    }
+
+    if (variants.some((variant) => variant.should_create)) {
+      return "indeterminate"
+    }
+
+    return false
+  }
+
+  const onCheckboxChange = (value: boolean | "indeterminate") => {
+    switch (value) {
+      case true: {
+        const update = watchedVariants.map((variant) => {
+          return {
+            ...variant,
+            should_create: true,
+          }
+        })
+
+        form.setValue("variants", update)
+        break
+      }
+      case false: {
+        const update = watchedVariants.map((variant) => {
+          return {
+            ...variant,
+            should_create: false,
+          }
+        })
+
+        form.setValue("variants", update)
+        break
+      }
+      case "indeterminate":
+        break
+    }
+  }
+
   return (
     <div id="variants" className="flex flex-col gap-y-8">
       <Heading level="h2">{t("products.create.variants.header")}</Heading>
@@ -233,31 +276,36 @@ export const ProductCreateVariantsSection = ({
                       return (
                         <li
                           key={option.id}
-                          className="bg-ui-bg-component shadow-elevation-card-rest grid grid-cols-[1fr_28px] items-center gap-3 rounded-xl px-1.5 py-2"
+                          className="bg-ui-bg-component shadow-elevation-card-rest grid grid-cols-[1fr_28px] items-center gap-1.5 rounded-xl p-1.5"
                         >
-                          <div className="flex flex-col space-y-2">
-                            <Form.Field
-                              control={form.control}
-                              name={`options.${index}.title` as const}
-                              render={({ field }) => {
-                                return (
-                                  <Form.Item className="flex flex-col space-y-1.5">
-                                    <div className="flex items-center pl-2">
-                                      <Form.Label className="txt-compact-xsmall-plus text-ui-fg-muted">
-                                        {t("fields.title")}
-                                      </Form.Label>
-                                    </div>
-                                    <Form.Control>
-                                      <Input
-                                        {...field}
-                                        className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover"
-                                      />
-                                    </Form.Control>
-                                  </Form.Item>
-                                )
-                              }}
+                          <div className="grid grid-cols-[min-content,1fr] items-center gap-1.5">
+                            <div className="flex items-center px-2 py-1.5">
+                              <Label
+                                size="xsmall"
+                                weight="plus"
+                                className="text-ui-fg-subtle"
+                                htmlFor={`options.${index}.title`}
+                              >
+                                {t("fields.title")}
+                              </Label>
+                            </div>
+                            <Input
+                              className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover"
+                              {...form.register(
+                                `options.${index}.title` as const
+                              )}
                             />
-                            <Form.Field
+                            <div className="flex items-center px-2 py-1.5">
+                              <Label
+                                size="xsmall"
+                                weight="plus"
+                                className="text-ui-fg-subtle"
+                                htmlFor={`options.${index}.values`}
+                              >
+                                {t("fields.values")}
+                              </Label>
+                            </div>
+                            <Controller
                               control={form.control}
                               name={`options.${index}.values` as const}
                               render={({ field: { onChange, ...field } }) => {
@@ -267,20 +315,11 @@ export const ProductCreateVariantsSection = ({
                                 }
 
                                 return (
-                                  <Form.Item className="flex flex-col space-y-1.5">
-                                    <div className="flex items-center pl-2">
-                                      <Form.Label className="txt-compact-xsmall-plus text-ui-fg-muted">
-                                        {t("fields.values")}
-                                      </Form.Label>
-                                    </div>
-                                    <Form.Control>
-                                      <ChipInput
-                                        {...field}
-                                        variant="contrast"
-                                        onChange={handleValueChange}
-                                      />
-                                    </Form.Control>
-                                  </Form.Item>
+                                  <ChipInput
+                                    {...field}
+                                    variant="contrast"
+                                    onChange={handleValueChange}
+                                  />
                                 )
                               }}
                             />
@@ -313,6 +352,27 @@ export const ProductCreateVariantsSection = ({
         </div>
         {variants.fields.length > 0 ? (
           <div className="overflow-hidden rounded-xl border">
+            <div
+              className="bg-ui-bg-component text-ui-fg-subtle grid items-center gap-3 border-b px-6 py-3.5"
+              style={{
+                gridTemplateColumns: `20px 28px repeat(${watchedOptions.length}, 1fr)`,
+              }}
+            >
+              <div>
+                <Checkbox
+                  checked={getCheckboxState(watchedVariants)}
+                  onCheckedChange={onCheckboxChange}
+                />
+              </div>
+              <div />
+              {watchedOptions.map((option, index) => (
+                <div key={index}>
+                  <Text size="small" leading="compact" weight="plus">
+                    {option.title}
+                  </Text>
+                </div>
+              ))}
+            </div>
             <SortableList
               items={variants.fields}
               onChange={handleRankChange}
@@ -320,11 +380,16 @@ export const ProductCreateVariantsSection = ({
                 return (
                   <SortableList.Item
                     id={item.id}
-                    className={clx({
+                    className={clx("bg-ui-bg-base border-b", {
                       "border-b-0": index === variants.fields.length - 1,
                     })}
                   >
-                    <div className="flex w-full items-center gap-x-3">
+                    <div
+                      className="text-ui-fg-subtle grid w-full items-center gap-3 px-6 py-3.5"
+                      style={{
+                        gridTemplateColumns: `20px 28px repeat(${watchedOptions.length}, 1fr)`,
+                      }}
+                    >
                       <Form.Field
                         control={form.control}
                         name={`variants.${index}.should_create` as const}
@@ -343,7 +408,11 @@ export const ProductCreateVariantsSection = ({
                         }}
                       />
                       <SortableList.DragHandle />
-                      <span>{item.title}</span>
+                      {Object.values(item.options).map((value, index) => (
+                        <Text key={index} size="small" leading="compact">
+                          {value}
+                        </Text>
+                      ))}
                     </div>
                   </SortableList.Item>
                 )

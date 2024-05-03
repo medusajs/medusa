@@ -195,10 +195,7 @@ const Item = <TItem extends SortableBaseItem>({
   return (
     <SortableItemContext.Provider value={context}>
       <li
-        className={clx(
-          "bg-ui-bg-base txt-compact-small transition-fg flex flex-1 list-none items-center border-b px-6 py-1.5",
-          className
-        )}
+        className={clx("transition-fg flex flex-1 list-none", className)}
         ref={setNodeRef}
         style={style}
       >

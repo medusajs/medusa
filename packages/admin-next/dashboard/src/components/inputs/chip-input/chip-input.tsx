@@ -1,6 +1,8 @@
 import { XMarkMini } from "@medusajs/icons"
 import { Badge, clx } from "@medusajs/ui"
+import { AnimatePresence, motion } from "framer-motion"
 import {
+  FocusEvent,
   KeyboardEvent,
   forwardRef,
   useImperativeHandle,
@@ -47,17 +49,31 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
       () => innerRef.current
     )
 
+    const [duplicateIndex, setDuplicateIndex] = useState<number | null>(null)
+
     const chips = isControlled ? (value as string[]) : uncontrolledValue
 
     const handleAddChip = (chip: string) => {
-      if (!allowDuplicates && chips.includes(chip)) {
+      const cleanValue = chip.trim()
+
+      if (!cleanValue) {
         return
       }
 
-      onChange?.([...chips, chip])
+      if (!allowDuplicates && chips.includes(cleanValue)) {
+        setDuplicateIndex(chips.indexOf(cleanValue))
+
+        setTimeout(() => {
+          setDuplicateIndex(null)
+        }, 300)
+
+        return
+      }
+
+      onChange?.([...chips, cleanValue])
 
       if (!isControlled) {
-        setUncontrolledValue([...chips, chip])
+        setUncontrolledValue([...chips, cleanValue])
       }
     }
 
@@ -66,6 +82,15 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
 
       if (!isControlled) {
         setUncontrolledValue(chips.filter((v) => v !== chip))
+      }
+    }
+
+    const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+      onBlur?.()
+
+      if (e.target.value) {
+        handleAddChip(e.target.value)
+        e.target.value = ""
       }
     }
 
@@ -87,6 +112,12 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
       }
     }
 
+    // create a shake animation using framer motion
+    const shake = {
+      x: [0, -2, 2, -2, 2, 0],
+      transition: { duration: 0.3 },
+    }
+
     return (
       <div
         className={clx(
@@ -94,33 +125,45 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
           "transition-fg focus-within:shadow-borders-interactive-with-active",
           "has-[input:disabled]:bg-ui-bg-disabled has-[input:disabled]:text-ui-fg-disabled has-[input:disabled]:cursor-not-allowed",
           {
-            "bg-ui-bg-base hover:bg-ui-bg-base-hover": variant === "contrast",
+            "bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover":
+              variant === "contrast",
             "bg-ui-bg-field hover:bg-ui-bg-field-hover": variant === "base",
           },
           className
         )}
+        tabIndex={-1}
+        onClick={() => innerRef.current?.focus()}
       >
-        {chips.map((v) => {
+        {chips.map((v, index) => {
           return (
-            <Badge
-              key={`${v}-${crypto.randomUUID()}`}
-              size="2xsmall"
-              className={clx({
-                "pr-0": showRemove,
-              })}
-            >
-              {v}
-              {showRemove && (
-                <button
-                  tabIndex={-1}
-                  type="button"
-                  onClick={() => handleRemoveChip(v)}
-                  className="text-ui-fg-subtle outline-none"
+            <AnimatePresence key={`${v}-${index}`}>
+              <Badge
+                size="2xsmall"
+                className={clx("gap-x-0.5 pl-1.5 pr-1.5", {
+                  "transition-fg pr-1": showRemove,
+                  "shadow-borders-focus": index === duplicateIndex,
+                })}
+                asChild
+              >
+                <motion.div
+                  animate={index === duplicateIndex ? shake : undefined}
                 >
-                  <XMarkMini />
-                </button>
-              )}
-            </Badge>
+                  {v}
+                  {showRemove && (
+                    <button
+                      tabIndex={-1}
+                      type="button"
+                      onClick={() => handleRemoveChip(v)}
+                      className={clx(
+                        "text-ui-fg-subtle transition-fg outline-none"
+                      )}
+                    >
+                      <XMarkMini />
+                    </button>
+                  )}
+                </motion.div>
+              </Badge>
+            </AnimatePresence>
           )
         })}
         <input
@@ -131,9 +174,9 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
             "placeholder:text-ui-fg-muted"
           )}
           onKeyDown={handleKeyDown}
+          onBlur={handleBlur}
           disabled={disabled}
           name={name}
-          onBlur={onBlur}
           ref={innerRef}
         />
       </div>
