@@ -1,5 +1,7 @@
 {
-  "namespaces": ["public"],
+  "namespaces": [
+    "public"
+  ],
   "name": "public",
   "tables": [
     {
@@ -178,7 +180,9 @@
       "indexes": [
         {
           "keyName": "IDX_inventory_item_deleted_at",
-          "columnNames": ["deleted_at"],
+          "columnNames": [
+            "deleted_at"
+          ],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -186,7 +190,9 @@
         },
         {
           "keyName": "IDX_inventory_item_sku_unique",
-          "columnNames": ["sku"],
+          "columnNames": [
+            "sku"
+          ],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -194,7 +200,9 @@
         },
         {
           "keyName": "inventory_item_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -309,7 +317,9 @@
       "indexes": [
         {
           "keyName": "IDX_inventory_level_deleted_at",
-          "columnNames": ["deleted_at"],
+          "columnNames": [
+            "deleted_at"
+          ],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -317,7 +327,9 @@
         },
         {
           "keyName": "IDX_inventory_level_inventory_item_id",
-          "columnNames": ["inventory_item_id"],
+          "columnNames": [
+            "inventory_item_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -325,7 +337,9 @@
         },
         {
           "keyName": "IDX_inventory_level_location_id",
-          "columnNames": ["location_id"],
+          "columnNames": [
+            "location_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -341,7 +355,9 @@
         },
         {
           "keyName": "inventory_level_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -351,9 +367,13 @@
       "foreignKeys": {
         "inventory_level_inventory_item_id_foreign": {
           "constraintName": "inventory_level_inventory_item_id_foreign",
-          "columnNames": ["inventory_item_id"],
+          "columnNames": [
+            "inventory_item_id"
+          ],
           "localTableName": "public.inventory_level",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.inventory_item",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -411,16 +431,6 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
-        },
-        "allow_backorder": {
-          "name": "allow_backorder",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
         },
         "location_id": {
           "name": "location_id",
@@ -491,7 +501,9 @@
       "indexes": [
         {
           "keyName": "IDX_reservation_item_deleted_at",
-          "columnNames": ["deleted_at"],
+          "columnNames": [
+            "deleted_at"
+          ],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -499,7 +511,9 @@
         },
         {
           "keyName": "IDX_reservation_item_line_item_id",
-          "columnNames": ["line_item_id"],
+          "columnNames": [
+            "line_item_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -507,7 +521,9 @@
         },
         {
           "keyName": "IDX_reservation_item_location_id",
-          "columnNames": ["location_id"],
+          "columnNames": [
+            "location_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -515,7 +531,9 @@
         },
         {
           "keyName": "IDX_reservation_item_inventory_item_id",
-          "columnNames": ["inventory_item_id"],
+          "columnNames": [
+            "inventory_item_id"
+          ],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -523,7 +541,9 @@
         },
         {
           "keyName": "reservation_item_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -533,9 +553,13 @@
       "foreignKeys": {
         "reservation_item_inventory_item_id_foreign": {
           "constraintName": "reservation_item_inventory_item_id_foreign",
-          "columnNames": ["inventory_item_id"],
+          "columnNames": [
+            "inventory_item_id"
+          ],
           "localTableName": "public.reservation_item",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.inventory_item",
           "deleteRule": "cascade",
           "updateRule": "cascade"
