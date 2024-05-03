@@ -1,13 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
-  Button,
-  clx,
-  DropdownMenu,
-  Heading,
-  Input,
-  Select,
-  Switch,
-  Text,
+    Button,
+    clx,
+    DropdownMenu,
+    Heading,
+    Input,
+    Select,
+    Switch,
+    Text,
 } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -17,19 +17,19 @@ import { TaxRegionResponse } from "@medusajs/types"
 import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { Form } from "../../../../../components/common/form"
-import { PercentageInput } from "../../../../../components/common/percentage-input"
+import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import { SplitView } from "../../../../../components/layout/split-view"
 import {
-  RouteFocusModal,
-  useRouteModal,
+    RouteFocusModal,
+    useRouteModal,
 } from "../../../../../components/route-modal"
 import { useCreateTaxRate } from "../../../../../hooks/api/tax-rates"
 import { useTaxRegions } from "../../../../../hooks/api/tax-regions"
 import { ConditionsDrawer } from "../../../common/components/conditions-drawer"
 import { ConditionEntities } from "../../../common/constants"
 import {
-  ConditionEntitiesValues,
-  ConditionsOption,
+    ConditionEntitiesValues,
+    ConditionsOption,
 } from "../../../common/types"
 import { Condition } from "../condition"
 

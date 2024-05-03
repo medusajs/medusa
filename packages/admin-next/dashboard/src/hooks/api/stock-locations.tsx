@@ -13,7 +13,9 @@ import {
   CreateFulfillmentSetReq,
   CreateServiceZoneReq,
   CreateStockLocationReq,
+  UpdateServiceZoneReq,
   UpdateStockLocationReq,
+  UpdateStockLocationSalesChannelsReq,
 } from "../../types/api-payloads"
 import {
   FulfillmentSetDeleteRes,
@@ -22,6 +24,7 @@ import {
   StockLocationListRes,
   StockLocationRes,
 } from "../../types/api-responses"
+import { salesChannelsQueryKeys } from "./sales-channels"
 
 const STOCK_LOCATIONS_QUERY_KEY = "stock_locations" as const
 export const stockLocationsQueryKeys = queryKeysFactory(
@@ -38,7 +41,7 @@ export const useStockLocation = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => client.stockLocations.retrieve(id, query),
-    queryKey: stockLocationsQueryKeys.detail(id),
+    queryKey: stockLocationsQueryKeys.detail(id, query),
     ...options,
   })
 
@@ -90,12 +93,36 @@ export const useUpdateStockLocation = (
     mutationFn: (payload) => client.stockLocations.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.detail(id),
+        queryKey: stockLocationsQueryKeys.details(),
       })
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
       })
 
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useUpdateStockLocationSalesChannels = (
+  id: string,
+  options?: UseMutationOptions<
+    StockLocationRes,
+    Error,
+    UpdateStockLocationSalesChannelsReq
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      client.stockLocations.updateSalesChannels(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.lists(),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -134,7 +161,7 @@ export const useCreateFulfillmentSet = (
         queryKey: stockLocationsQueryKeys.lists(),
       })
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.detail(locationId),
+        queryKey: stockLocationsQueryKeys.details(),
       })
       options?.onSuccess?.(data, variables, context)
     },
@@ -152,7 +179,33 @@ export const useCreateServiceZone = (
       client.stockLocations.createServiceZone(fulfillmentSetId, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.detail(locationId),
+        queryKey: stockLocationsQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.lists(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useUpdateServiceZone = (
+  fulfillmentSetId: string,
+  serviceZoneId: string,
+  locationId: string,
+  options?: UseMutationOptions<StockLocationRes, Error, UpdateServiceZoneReq>
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      client.stockLocations.updateServiceZone(
+        fulfillmentSetId,
+        serviceZoneId,
+        payload
+      ),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.details(),
       })
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
@@ -173,6 +226,9 @@ export const useDeleteFulfillmentSet = (
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
       })
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.details(),
+      })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -190,6 +246,9 @@ export const useDeleteServiceZone = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.details(),
       })
 
       options?.onSuccess?.(data, variables, context)

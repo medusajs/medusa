@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
-import { HandleInput } from "../../../../../components/common/handle-input"
+import { HandleInput } from "../../../../../components/inputs/handle-input"
 import {
   RouteFocusModal,
   useRouteModal,
