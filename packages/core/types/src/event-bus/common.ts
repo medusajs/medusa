@@ -3,9 +3,16 @@ export type Subscriber<T = unknown> = (
   eventName: string
 ) => Promise<void>
 
-export type SubscriberContext = {
-  subscriberId: string
+export type Option = Record<string, unknown>
+
+export type Metadata = {
+  service: string
+  action: string
+  object: string
+  eventGroupId?: string
 }
+
+export type SubscriberContext = { subscriberId: string }
 
 export type SubscriberDescriptor = {
   id: string
@@ -13,39 +20,29 @@ export type SubscriberDescriptor = {
 }
 
 export type EventHandler<T = unknown> = (
-  data: T,
-  eventName: string
+  eventName: string,
+  data: T
 ) => Promise<void>
 
 export type EmitData<T = unknown> = {
   eventName: string
   data: T
-  options?: Record<string, unknown>
+  options?: Option
 }
 
 export type MessageBody<T = unknown> = {
-  metadata: {
-    service: string
-    action: string
-    object: string
-    eventGroupId?: string
-  }
+  metadata: Metadata
   data: T
 }
 
 export type Message<T = unknown> = {
   eventName: string
   body: MessageBody<T>
-  options?: Record<string, unknown>
+  options?: Option
 }
 
 export type MessageFormat<T = unknown> = {
   eventName: string
-  metadata: {
-    service: string
-    action: string
-    object: string
-    eventGroupId?: string
-  }
   data: T | T[]
+  metadata: Metadata
 }

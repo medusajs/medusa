@@ -2,84 +2,65 @@ import { Context, EventBusTypes } from "@medusajs/types"
 import { CommonEvents } from "./common-events"
 
 /**
- * Build messages from message data to be consumed by the event bus and emitted to the consumer
- * @param MessageFormat
- * @param options
+ * Builds messages from message data to be consumed by the event bus and emitted to the consumer
+ * @param MessageFormat The message data or array of message data to be processed
+ * @param options Options to be passed to the event bus
  */
 export function buildEventMessages<T>(
   messageData:
     | EventBusTypes.MessageFormat<T>
     | EventBusTypes.MessageFormat<T>[],
-  options?: Record<string, unknown>
+  options?: EventBusTypes.Option
 ): EventBusTypes.Message<T>[] {
-  const messageData_ = Array.isArray(messageData) ? messageData : [messageData]
-  const messages: EventBusTypes.Message<any>[] = []
+  const messageDataArray = Array.isArray(messageData)
+    ? messageData
+    : [messageData]
 
-  messageData_.map((data) => {
-    const data_ = Array.isArray(data.data) ? data.data : [data.data]
-    data_.forEach((bodyData) => {
-      const message = composeMessage(data.eventName, {
-        data: bodyData,
-        service: data.metadata.service,
-        entity: data.metadata.object,
-        action: data.metadata.action,
-        context: {
-          eventGroupId: data.metadata.eventGroupId,
-        } as Context,
-        options,
-      })
-      messages.push(message)
-    })
-  })
-
-  return messages
+  return messageDataArray.flatMap(({ data, eventName, metadata }) =>
+    Array.isArray(data)
+      ? data.map((bodyData) => composeMessage(eventName, bodyData, metadata))
+      : [composeMessage(eventName, data, metadata, options)]
+  )
 }
 
 /**
- * Helper function to compose and normalize a Message to be emitted by EventBus Module
- * @param eventName  Name of the event to be emitted
- * @param data The content of the message
+ * Composes and normalizes a message to be emitted by the EventBus module.
+ * @param eventName The name of the event to be emitted.
+ * @param data The content of the message.
  * @param metadata Metadata of the message
- * @param context Context from the caller service
- * @param options Options to be passed to the event bus
+ * @param context Contextual information from the caller service.
+ * @param options Options to be passed to the event bus.
  */
-export function composeMessage(
+function composeMessage<T>(
   eventName: string,
-  {
-    data,
-    service,
-    entity,
-    action,
-    context = {},
-    options,
-  }: {
-    data: unknown
-    service: string
-    entity: string
-    action?: string
-    context?: Context
-    options?: Record<string, unknown>
-  }
-): EventBusTypes.Message {
-  const act = action || eventName.split(".").pop()
-  if (!action && !Object.values(CommonEvents).includes(act as CommonEvents)) {
+  data: T,
+  metadata: EventBusTypes.Metadata,
+  options?: EventBusTypes.Option
+): EventBusTypes.Message<T> {
+  const { service, object, action, eventGroupId } = metadata
+  const finalAction = action || eventName.split(".").pop()!
+
+  if (
+    !action &&
+    !Object.values(CommonEvents).includes(finalAction as CommonEvents)
+  ) {
     throw new Error("Action is required if eventName is not a CommonEvent")
   }
 
-  const metadata: EventBusTypes.MessageBody["metadata"] = {
+  const messageMetadata: EventBusTypes.MessageBody["metadata"] = {
     service,
-    object: entity,
-    action: act!,
+    object,
+    action: finalAction,
   }
 
-  if (context.eventGroupId) {
-    metadata.eventGroupId = context.eventGroupId
+  if (eventGroupId) {
+    messageMetadata.eventGroupId = eventGroupId
   }
 
   return {
     eventName,
     body: {
-      metadata,
+      metadata: messageMetadata,
       data,
     },
     options,
