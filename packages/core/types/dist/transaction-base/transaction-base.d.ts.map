@@ -1,0 +1,1 @@
+{"version":3,"file":"transaction-base.d.ts","sourceRoot":"","sources":["../../src/transaction-base/transaction-base.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,aAAa,EAAE,MAAM,SAAS,CAAA;AAEvC,MAAM,WAAW,uBAAuB;IACtC,eAAe,CAAC,kBAAkB,CAAC,EAAE,aAAa,GAAG,IAAI,CAAA;CAC1D"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"to-pascal-case.js","sourceRoot":"","sources":["../../src/common/to-pascal-case.ts"],"names":[],"mappings":";;;AAAA,SAAgB,YAAY,CAAC,CAAS;IACpC,OAAO,CAAC,CAAC,OAAO,CAAC,YAAY,EAAE,UAAC,KAAK;QACnC,OAAA,KAAK,CAAC,OAAO,CAAC,IAAI,EAAE,EAAE,CAAC,CAAC,WAAW,EAAE;IAArC,CAAqC,CACtC,CAAA;AACH,CAAC;AAJD,oCAIC"}

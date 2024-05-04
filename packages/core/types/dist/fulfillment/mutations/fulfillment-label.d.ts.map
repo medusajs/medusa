@@ -1,0 +1,1 @@
+{"version":3,"file":"fulfillment-label.d.ts","sourceRoot":"","sources":["../../../src/fulfillment/mutations/fulfillment-label.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,MAAM,WAAW,yBAAyB;IACxC;;OAEG;IACH,eAAe,EAAE,MAAM,CAAA;IAEvB;;OAEG;IACH,YAAY,EAAE,MAAM,CAAA;IAEpB;;OAEG;IACH,SAAS,EAAE,MAAM,CAAA;IAEjB;;OAEG;IACH,cAAc,EAAE,MAAM,CAAA;CACvB"}

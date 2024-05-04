@@ -1,0 +1,3 @@
+import { ExternalModuleDeclaration, InternalModuleDeclaration, ModuleDefinition, ModuleExports, ModuleResolution } from "@medusajs/types";
+export declare const registerMedusaModule: (moduleKey: string, moduleDeclaration?: Partial<InternalModuleDeclaration | ExternalModuleDeclaration> | string | false, moduleExports?: ModuleExports, definition?: ModuleDefinition) => Record<string, ModuleResolution>;
+export declare const registerMedusaLinkModule: (definition: ModuleDefinition, moduleDeclaration: Partial<InternalModuleDeclaration>, moduleExports?: ModuleExports) => Record<string, ModuleResolution>;

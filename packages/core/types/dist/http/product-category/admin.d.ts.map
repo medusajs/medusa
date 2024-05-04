@@ -1,0 +1,1 @@
+{"version":3,"file":"admin.d.ts","sourceRoot":"","sources":["../../../src/http/product-category/admin.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,cAAc,CAAA;AAChD,OAAO,EAAE,uBAAuB,EAAE,MAAM,UAAU,CAAA;AAElD;;GAEG;AACH,MAAM,WAAW,4BAA4B;IAC3C,gBAAgB,EAAE,uBAAuB,CAAA;CAC1C;AAED;;GAEG;AACH,MAAM,WAAW,gCAAiC,SAAQ,iBAAiB;IACzE,kBAAkB,EAAE,uBAAuB,EAAE,CAAA;CAC9C"}

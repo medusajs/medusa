@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../src/components/icon-badge/index.ts"],"names":[],"mappings":"AAAA,cAAc,cAAc,CAAA","sourcesContent":["export * from \"./icon-badge\"\n"]}

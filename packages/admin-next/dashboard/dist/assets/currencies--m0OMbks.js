@@ -1,0 +1,1 @@
+import{V as t,W as u,X as n}from"./index-S--WvUSo.js";const i="currencies",o=n(i),a=(e,r)=>{const{data:s,...c}=t({queryFn:()=>u.currencies.list(e),queryKey:o.list(e),...r});return{...s,...c}};export{a as u};

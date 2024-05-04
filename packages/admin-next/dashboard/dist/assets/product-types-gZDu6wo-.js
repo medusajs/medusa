@@ -1,0 +1,1 @@
+import{V as o,W as u,X as y}from"./index-S--WvUSo.js";const c="product_types",p=y(c),n=(s,t)=>{const{data:e,...r}=o({queryFn:()=>u.productTypes.list(s),queryKey:p.list(s),...t});return{...e,...r}};export{n as u};

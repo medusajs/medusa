@@ -1,0 +1,1 @@
+{"version":3,"file":"string-or-regex-equals.js","sourceRoot":"","sources":["../../src/common/string-or-regex-equals.ts"],"names":[],"mappings":";;;AAAO,IAAM,wBAAwB,GAAG,UACtC,aAA8B,EAC9B,UAAkB;IAElB,IAAI,aAAa,YAAY,MAAM,EAAE;QACnC,OAAO,aAAa,CAAC,IAAI,CAAC,UAAU,CAAC,CAAA;KACtC;IACD,OAAO,aAAa,KAAK,UAAU,CAAA;AACrC,CAAC,CAAA;AARY,QAAA,wBAAwB,4BAQpC"}

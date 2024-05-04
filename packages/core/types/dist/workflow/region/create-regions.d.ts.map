@@ -1,0 +1,1 @@
+{"version":3,"file":"create-regions.d.ts","sourceRoot":"","sources":["../../../src/workflow/region/create-regions.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,SAAS,EAAE,MAAM,cAAc,CAAA;AAEzD,MAAM,WAAW,0BAA0B;IACzC,OAAO,EAAE,CAAC,eAAe,GAAG;QAC1B,iBAAiB,CAAC,EAAE,MAAM,EAAE,CAAA;KAC7B,CAAC,EAAE,CAAA;CACL;AAED,MAAM,MAAM,2BAA2B,GAAG,SAAS,EAAE,CAAA"}

@@ -1,0 +1,1 @@
+import{f as o,d as s}from"./index-S--WvUSo.js";import{r as n}from"./react-PzSkSLoa.js";const c=o({base:"font-sans font-medium",variants:{level:{h1:"h1-core",h2:"h2-core",h3:"h3-core"}},defaultVariants:{level:"h1"}}),i=({level:a="h1",className:e,...t})=>{const r=a||"h1";return n.createElement(r,{className:s(c({level:a}),e),...t})};export{i as H};

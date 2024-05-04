@@ -1,0 +1,1 @@
+{"version":3,"file":"mutations.d.ts","sourceRoot":"","sources":["../../../src/workflows/stock-locations/mutations.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,4CAA4C;IAC3D,WAAW,EAAE,MAAM,CAAA;IACnB,oBAAoB,EAAE;QACpB,IAAI,EAAE,MAAM,CAAA;QACZ,IAAI,EAAE,MAAM,CAAA;KACb,CAAA;CACF"}

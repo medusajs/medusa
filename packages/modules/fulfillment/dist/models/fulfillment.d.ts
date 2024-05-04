@@ -1,0 +1,32 @@
+import { DAL } from "@medusajs/types";
+import { Collection, OptionalProps } from "@mikro-orm/core";
+import Address from "./address";
+import FulfillmentItem from "./fulfillment-item";
+import FulfillmentLabel from "./fulfillment-label";
+import FulfillmentProvider from "./fulfillment-provider";
+import ShippingOption from "./shipping-option";
+type FulfillmentOptionalProps = DAL.SoftDeletableEntityDateColumns;
+export default class Fulfillment {
+    [OptionalProps]?: FulfillmentOptionalProps;
+    id: string;
+    location_id: string;
+    packed_at: Date | null;
+    shipped_at: Date | null;
+    delivered_at: Date | null;
+    canceled_at: Date | null;
+    data: Record<string, unknown> | null;
+    provider_id: string;
+    shipping_option_id: string | null;
+    metadata: Record<string, unknown> | null;
+    shipping_option: ShippingOption | null;
+    provider: FulfillmentProvider;
+    delivery_address: Address;
+    items: Collection<FulfillmentItem, object>;
+    labels: Collection<FulfillmentLabel, object>;
+    created_at: Date;
+    updated_at: Date;
+    deleted_at: Date | null;
+    onCreate(): void;
+    onInit(): void;
+}
+export {};

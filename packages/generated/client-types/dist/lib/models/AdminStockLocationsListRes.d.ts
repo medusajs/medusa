@@ -1,0 +1,22 @@
+import type { StockLocationExpandedDTO } from "./StockLocationExpandedDTO";
+/**
+ * The list of stock locations with pagination fields.
+ */
+export interface AdminStockLocationsListRes {
+    /**
+     * The list of stock locations.
+     */
+    stock_locations: Array<StockLocationExpandedDTO>;
+    /**
+     * The total number of items available
+     */
+    count: number;
+    /**
+     * The number of stock locations skipped when retrieving the stock locations.
+     */
+    offset: number;
+    /**
+     * The number of items per page
+     */
+    limit: number;
+}

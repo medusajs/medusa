@@ -1,0 +1,43 @@
+import { Context, LoadedModule, MedusaContainer } from "@medusajs/types";
+import { DistributedTransaction, DistributedTransactionEvents, TransactionModelOptions, TransactionStepsDefinition } from "../transaction";
+import { OrchestratorBuilder } from "../transaction/orchestrator-builder";
+import { WorkflowDefinition, WorkflowStepHandler } from "./workflow-manager";
+type StepHandler = {
+    invoke: WorkflowStepHandler;
+    compensate?: WorkflowStepHandler;
+};
+export declare class LocalWorkflow {
+    protected container_: MedusaContainer;
+    protected workflowId: string;
+    protected flow: OrchestratorBuilder;
+    protected customOptions: Partial<TransactionModelOptions>;
+    protected workflow: WorkflowDefinition;
+    protected handlers: Map<string, StepHandler>;
+    protected medusaContext?: Context;
+    get container(): LoadedModule[] | MedusaContainer;
+    set container(modulesLoaded: LoadedModule[] | MedusaContainer);
+    constructor(workflowId: string, modulesLoaded?: LoadedModule[] | MedusaContainer);
+    private resolveContainer;
+    private contextualizedMedusaModules;
+    protected commit(): void;
+    getFlow(): TransactionStepsDefinition;
+    private registerEventCallbacks;
+    run(uniqueTransactionId: string, input?: unknown, context?: Context, subscribe?: DistributedTransactionEvents): Promise<DistributedTransaction>;
+    getRunningTransaction(uniqueTransactionId: string, context?: Context): Promise<DistributedTransaction>;
+    cancel(transactionOrTransactionId: string | DistributedTransaction, context?: Context, subscribe?: DistributedTransactionEvents): Promise<DistributedTransaction>;
+    registerStepSuccess(idempotencyKey: string, response?: unknown, context?: Context, subscribe?: DistributedTransactionEvents): Promise<DistributedTransaction>;
+    registerStepFailure(idempotencyKey: string, error?: Error | any, context?: Context, subscribe?: DistributedTransactionEvents): Promise<DistributedTransaction>;
+    setOptions(options: Partial<TransactionModelOptions>): this;
+    addAction(action: string, handler: StepHandler, options?: Partial<TransactionStepsDefinition>): OrchestratorBuilder;
+    replaceAction(existingAction: string, action: string, handler: StepHandler, options?: Partial<TransactionStepsDefinition>): OrchestratorBuilder;
+    insertActionBefore(existingAction: string, action: string, handler: StepHandler, options?: Partial<TransactionStepsDefinition>): OrchestratorBuilder;
+    insertActionAfter(existingAction: string, action: string, handler: StepHandler, options?: Partial<TransactionStepsDefinition>): OrchestratorBuilder;
+    appendAction(action: string, to: string, handler: StepHandler, options?: Partial<TransactionStepsDefinition>): OrchestratorBuilder;
+    moveAction(actionToMove: string, targetAction: string): OrchestratorBuilder;
+    moveAndMergeNextAction(actionToMove: string, targetAction: string): OrchestratorBuilder;
+    mergeActions(where: string, ...actions: string[]): OrchestratorBuilder;
+    deleteAction(action: string, parentSteps?: any): OrchestratorBuilder;
+    pruneAction(action: string): OrchestratorBuilder;
+    protected assertHandler(handler: StepHandler, action: string): void | never;
+}
+export {};

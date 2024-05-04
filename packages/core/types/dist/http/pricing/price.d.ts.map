@@ -1,0 +1,1 @@
+{"version":3,"file":"price.d.ts","sourceRoot":"","sources":["../../../src/http/pricing/price.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,0BAA0B;IACzC,EAAE,EAAE,MAAM,CAAA;IACV,MAAM,EAAE,MAAM,CAAA;IACd,aAAa,EAAE,MAAM,CAAA;IACrB,UAAU,EAAE,MAAM,CAAA;IAClB,UAAU,EAAE,MAAM,CAAA;CACnB"}

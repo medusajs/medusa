@@ -1,0 +1,7 @@
+import { moduleDefinition, revertMigration, runMigrations } from "./module-definition";
+export default moduleDefinition;
+export { revertMigration, runMigrations };
+export * from "./initialize";
+export * from "./models";
+export * from "./services";
+export * from "./types";

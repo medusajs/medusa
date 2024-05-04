@@ -1,0 +1,118 @@
+"use strict";
+"use client";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DropdownMenu = void 0;
+const tslib_1 = require("tslib");
+const icons_1 = require("@medusajs/icons");
+const Primitives = tslib_1.__importStar(require("@radix-ui/react-dropdown-menu"));
+const React = tslib_1.__importStar(require("react"));
+const clx_1 = require("../../utils/clx");
+/**
+ * This component is based on the [Radix UI Dropdown Menu](https://www.radix-ui.com/primitives/docs/components/dropdown-menu) primitive.
+ */
+const Root = Primitives.Root;
+Root.displayName = "DropdownMenu";
+/**
+ * This component is based on the [Radix UI Dropdown Menu Trigger](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#trigger) primitive.
+ */
+const Trigger = Primitives.Trigger;
+Trigger.displayName = "DropdownMenu.Trigger";
+/**
+ * This component is based on the [Radix UI Dropdown Menu Group](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#group) primitive.
+ */
+const Group = Primitives.Group;
+Group.displayName = "DropdownMenu.Group";
+/**
+ * This component is based on the [Radix UI Dropdown Menu Sub](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#sub) primitive.
+ */
+const SubMenu = Primitives.Sub;
+SubMenu.displayName = "DropdownMenu.SubMenu";
+/**
+ * This component is based on the [Radix UI Dropdown Menu RadioGroup](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#radiogroup) primitive.
+ */
+const RadioGroup = Primitives.RadioGroup;
+RadioGroup.displayName = "DropdownMenu.RadioGroup";
+/**
+ * This component is based on the [Radix UI Dropdown Menu SubTrigger](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#subtrigger) primitive.
+ */
+const SubMenuTrigger = React.forwardRef(({ className, children, ...props }, ref) => (React.createElement(Primitives.SubTrigger, { ref: ref, className: (0, clx_1.clx)("focus-visible:bg-ui-bg-base-pressed data-[state=open]:bg-ui-bg-base-pressed txt-compact-small flex cursor-default select-none items-center rounded-sm px-2 py-1.5 outline-none", className), ...props },
+    children,
+    React.createElement(icons_1.ChevronRightMini, { className: "ml-auto" }))));
+SubMenuTrigger.displayName = "DropdownMenu.SubMenuTrigger";
+/**
+ * This component is based on the [Radix UI Dropdown Menu SubContent](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#subcontent) primitive.
+ */
+const SubMenuContent = React.forwardRef(({ className, collisionPadding = 8, ...props }, ref) => (React.createElement(Primitives.Portal, null,
+    React.createElement(Primitives.SubContent, { ref: ref, collisionPadding: collisionPadding, className: (0, clx_1.clx)("bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] min-w-[8rem] overflow-hidden rounded-lg p-1", "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2", className), ...props }))));
+SubMenuContent.displayName = "DropdownMenu.SubMenuContent";
+/**
+ * This component is based on the [Radix UI Dropdown Menu Content](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#content) primitive.
+ */
+const Content = React.forwardRef(({ className, sideOffset = 8, collisionPadding = 8, align = "center", ...props }, ref) => (React.createElement(Primitives.Portal, null,
+    React.createElement(Primitives.Content, { ref: ref, sideOffset: sideOffset, align: align, collisionPadding: collisionPadding, className: (0, clx_1.clx)("bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] min-w-[220px] overflow-hidden rounded-lg p-1", "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2", className), ...props }))));
+Content.displayName = "DropdownMenu.Content";
+/**
+ * This component is based on the [Radix UI Dropdown Menu Item](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#item) primitive.
+ */
+const Item = React.forwardRef(({ className, ...props }, ref) => (React.createElement(Primitives.Item, { ref: ref, className: (0, clx_1.clx)("bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none", className), ...props })));
+Item.displayName = "DropdownMenu.Item";
+/**
+ * This component is based on the [Radix UI Dropdown Menu CheckboxItem](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#checkboxitem) primitive.
+ */
+const CheckboxItem = React.forwardRef(({ className, children, checked, ...props }, ref) => (React.createElement(Primitives.CheckboxItem, { ref: ref, className: (0, clx_1.clx)("focus-visible:bg-ui-bg-base-pressed hover:bg-ui-bg-base-hover text-ui-fg-base data-[disabled]:text-ui-fg-disabled relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-9 pr-2 text-sm outline-none transition-colors data-[disabled]:pointer-events-none", className), checked: checked, ...props },
+    React.createElement("span", { className: "absolute left-3 flex h-5 w-5 items-center justify-center" },
+        React.createElement(Primitives.ItemIndicator, null,
+            React.createElement(icons_1.CheckMini, null))),
+    children)));
+CheckboxItem.displayName = "DropdownMenu.CheckboxItem";
+/**
+ * This component is based on the [Radix UI Dropdown Menu RadioItem](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#radioitem) primitive.
+ */
+const RadioItem = React.forwardRef(({ className, children, ...props }, ref) => (React.createElement(Primitives.RadioItem, { ref: ref, className: (0, clx_1.clx)("focus-visible:bg-ui-bg-base-pressed hover:bg-ui-base-hover bg-ui-bg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-9 pr-2 text-sm outline-none transition-colors data-[disabled]:pointer-events-none data-[state=checked]:font-medium data-[disabled]:opacity-50", className), ...props },
+    React.createElement("span", { className: "absolute left-3 flex h-5 w-5 items-center justify-center" },
+        React.createElement(Primitives.ItemIndicator, null,
+            React.createElement(icons_1.EllipseMiniSolid, { className: "text-ui-fg-base" }))),
+    children)));
+RadioItem.displayName = "DropdownMenu.RadioItem";
+/**
+ * This component is based on the [Radix UI Dropdown Menu Label](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#label) primitive.
+ */
+const Label = React.forwardRef(({ className, ...props }, ref) => (React.createElement(Primitives.Label, { ref: ref, className: (0, clx_1.clx)("text-ui-fg-subtle txt-compact-xsmall-plus", className), ...props })));
+Label.displayName = "DropdownMenu.Label";
+/**
+ * This component is based on the [Radix UI Dropdown Menu Separator](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#separator) primitive.
+ */
+const Separator = React.forwardRef(({ className, ...props }, ref) => (React.createElement(Primitives.Separator, { ref: ref, className: (0, clx_1.clx)("bg-ui-border-base -mx-1 my-1 h-px", className), ...props })));
+Separator.displayName = "DropdownMenu.Separator";
+/**
+ * This component is based on the `span` element and supports all of its props
+ */
+const Shortcut = ({ className, ...props }) => {
+    return (React.createElement("span", { className: (0, clx_1.clx)("text-ui-fg-subtle txt-compact-small ml-auto tracking-widest", className), ...props }));
+};
+Shortcut.displayName = "DropdownMenu.Shortcut";
+/**
+ * This component is based on the `span` element and supports all of its props
+ */
+const Hint = ({ className, ...props }) => {
+    return (React.createElement("span", { className: (0, clx_1.clx)("text-ui-fg-subtle txt-compact-small ml-auto tracking-widest", className), ...props }));
+};
+Hint.displayName = "DropdownMenu.Hint";
+const DropdownMenu = Object.assign(Root, {
+    Trigger,
+    Group,
+    SubMenu,
+    SubMenuContent,
+    SubMenuTrigger,
+    Content,
+    Item,
+    CheckboxItem,
+    RadioGroup,
+    RadioItem,
+    Label,
+    Separator,
+    Shortcut,
+    Hint,
+});
+exports.DropdownMenu = DropdownMenu;
+//# sourceMappingURL=dropdown-menu.js.map

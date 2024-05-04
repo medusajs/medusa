@@ -1,0 +1,1 @@
+import{j as e,d as l}from"./index-S--WvUSo.js";const t=({orientation:r="horizontal",variant:a="solid",className:o,...s})=>e.jsx("div",{"aria-orientation":r,role:"separator",className:l({"w-full border-t":r==="horizontal","h-full border-l":r==="vertical","border-dashed":a==="dashed"},o),...s});export{t as D};

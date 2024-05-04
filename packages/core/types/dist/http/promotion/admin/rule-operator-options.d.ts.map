@@ -1,0 +1,1 @@
+{"version":3,"file":"rule-operator-options.d.ts","sourceRoot":"","sources":["../../../../src/http/promotion/admin/rule-operator-options.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,MAAM,WAAW,2BAA2B;IAC1C,EAAE,EAAE,MAAM,CAAA;IACV,KAAK,EAAE,MAAM,CAAA;IACb,KAAK,EAAE,MAAM,CAAA;CACd;AAED;;GAEG;AACH,MAAM,WAAW,oCAAoC;IACnD,SAAS,EAAE,2BAA2B,EAAE,CAAA;CACzC"}

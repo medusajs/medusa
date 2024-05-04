@@ -1,0 +1,1 @@
+{"version":3,"file":"update-regions.d.ts","sourceRoot":"","sources":["../../../src/workflow/region/update-regions.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,qBAAqB,EAAE,SAAS,EAAE,eAAe,EAAE,MAAM,cAAc,CAAA;AAEhF,MAAM,WAAW,0BAA0B;IACzC,QAAQ,EAAE,qBAAqB,CAAA;IAC/B,MAAM,EAAE,eAAe,GAAG;QACxB,iBAAiB,CAAC,EAAE,MAAM,EAAE,CAAA;KAC7B,CAAA;CACF;AAED,MAAM,MAAM,2BAA2B,GAAG,SAAS,EAAE,CAAA"}

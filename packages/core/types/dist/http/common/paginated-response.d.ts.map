@@ -1,0 +1,1 @@
+{"version":3,"file":"paginated-response.d.ts","sourceRoot":"","sources":["../../../src/http/common/paginated-response.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,iBAAiB;IAChC,KAAK,EAAE,MAAM,CAAA;IACb,MAAM,EAAE,MAAM,CAAA;IACd,KAAK,EAAE,MAAM,CAAA;CACd"}
