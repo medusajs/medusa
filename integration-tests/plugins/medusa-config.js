@@ -67,9 +67,6 @@ module.exports = {
       resolve: "@medusajs/product",
     },
     [Modules.WORKFLOW_ENGINE]: true,
-
-    distributedLockingService: {
-      resolve: "@medusajs/distributed-locking-postgres",
-    },
+    [Modules.LOCKING]: true,
   },
 }

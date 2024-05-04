@@ -1,12 +1,12 @@
 {
-  "name": "@medusajs/distributed-locking-postgres",
+  "name": "@medusajs/locking-postgres",
   "version": "1.0.0",
   "description": "Distributed Locking Module using Postgres for Medusa",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/distributed-locking-postgres"
+    "directory": "packages/locking-postgres"
   },
   "publishConfig": {
     "access": "public"

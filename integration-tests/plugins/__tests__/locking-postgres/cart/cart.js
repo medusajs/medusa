@@ -8,6 +8,7 @@ const adminSeeder = require("../../../helpers/admin-seeder")
 const cartSeeder = require("../../../helpers/cart-seeder")
 const { simpleProductFactory } = require("../../../../api/factories")
 const { simpleSalesChannelFactory } = require("../../../../api/factories")
+const { ModuleRegistrationName } = require("@medusajs/modules-sdk")
 
 jest.setTimeout(30000)
 
@@ -186,16 +187,18 @@ describe("Distributed Locking", () => {
     })
 
     it("Concurrent calls using locking to confirm and reserve stock won't reserve more the available quantity", async () => {
-      const distributedLockingService = appContainer.resolve(
-        "distributedLockingService"
+      const lockingService = appContainer.resolve(
+        ModuleRegistrationName.LOCKING
       )
-      const inventoryService = appContainer.resolve("inventoryService")
+      const inventoryService = appContainer.resolve(
+        ModuleRegistrationName.INVENTORY
+      )
       const prodVarInventoryService = appContainer.resolve(
         "productVariantInventoryService"
       )
 
       const confirmAndReserve = async (quantity) => {
-        await distributedLockingService.execute(
+        await lockingService.execute(
           `variantReserve:${variantId}`,
           async () => {
             const inventoryConfirmed =
