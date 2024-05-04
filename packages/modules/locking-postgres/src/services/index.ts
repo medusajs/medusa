@@ -1,1 +1,1 @@
-export { default as DistributedLockingService } from "./distributed-locking"
+export { default as LockingModuleService } from "./locking-module"

@@ -1,42 +1,28 @@
-import { EntityManager } from "typeorm"
 import {
-  ConfigurableModuleDeclaration,
-  IDistributedLockingService,
-  MODULE_RESOURCE_TYPE,
-  TransactionBaseService,
-} from "@medusajs/medusa"
-import { MedusaError } from "medusa-core-utils"
+  DAL,
+  ILockingService,
+  InternalModuleDeclaration,
+} from "@medusajs/types"
 
 type InjectedDependencies = {
-  manager: EntityManager
+  baseRepository: DAL.RepositoryService
 }
 
-export default class DistributedLockingService
-  extends TransactionBaseService
-  implements IDistributedLockingService
-{
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
+export default class LockingModuleService implements ILockingService {
+  protected baseRepository_: DAL.RepositoryService
+
   constructor(
-    { manager }: InjectedDependencies,
-    options?: unknown,
-    moduleDeclaration?: ConfigurableModuleDeclaration
+    { baseRepository }: InjectedDependencies,
+    protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
     super(...arguments)
 
-    if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "At the moment this module can only be used with shared resources"
-      )
-    }
-
-    this.manager_ = manager
+    this.baseRepository_ = baseRepository
   }
 
-  private getManager(): EntityManager {
-    return this.transactionManager_ ?? this.manager_
+  private getDriver() {
+    return (this.baseRepository_ as any).getEntityManager().getDriver()
   }
 
   async execute<T>(
@@ -46,7 +32,7 @@ export default class DistributedLockingService
   ): Promise<T> {
     const numKey = this.hashStringToInt(key)
 
-    return await this.getManager().transaction(async (manager) => {
+    return await this.getDriver().transaction(async (manager) => {
       const ops: Promise<unknown>[] = []
       if (timeoutSeconds > 0) {
         ops.push(this.getTimeout(timeoutSeconds))
@@ -55,7 +41,7 @@ export default class DistributedLockingService
       const fnName = "pg_advisory_xact_lock"
       const lock = new Promise((ok, nok) => {
         manager
-          .query(`SELECT ${fnName}($1)`, [numKey])
+          .execute(`SELECT ${fnName}($1)`, [numKey])
           .then((rs) => ok(rs[0][fnName]))
           .catch((err) => nok(err))
       })
@@ -68,7 +54,7 @@ export default class DistributedLockingService
   }
 
   async acquire(key: string, ownerId?: string, expire?: number): Promise<void> {
-    const [row] = await this.getManager().query(
+    const [row] = await this.getDriver().execute(
       `SELECT owner_id, expiration, now() AS now FROM distributed_locking WHERE id = $1`,
       [key]
     )
@@ -77,7 +63,7 @@ export default class DistributedLockingService
       const expireSql = expire
         ? "NOW() + INTERVAL '${+expire} SECONDS'"
         : "NULL"
-      await this.getManager().query(
+      await this.getDriver().execute(
         `INSERT INTO distributed_locking (id, owner_id, expiration) VALUES ($1, $2, ${expireSql})`,
         [key, ownerId ?? null]
       )
@@ -96,7 +82,7 @@ export default class DistributedLockingService
         ? ", expiration = NOW() + INTERVAL '${+expire} SECONDS'"
         : ""
 
-      await this.getManager().query(
+      await this.getDriver().execute(
         `UPDATE distributed_locking SET owner_id = $2 ${expireSql} WHERE id = $1`,
         [key, ownerId ?? null]
       )
@@ -107,7 +93,7 @@ export default class DistributedLockingService
   }
 
   async release(key: string, ownerId: string): Promise<boolean> {
-    const [row] = await this.getManager().query(
+    const [row] = await this.getDriver().execute(
       `SELECT owner_id, expiration, now() AS now FROM distributed_locking WHERE id = $1`,
       [key]
     )
@@ -116,7 +102,7 @@ export default class DistributedLockingService
       return false
     }
 
-    await this.getManager().query(
+    await this.getDriver().execute(
       `DELETE FROM distributed_locking WHERE id = $1`,
       [key]
     )
@@ -126,9 +112,9 @@ export default class DistributedLockingService
 
   async releaseAll(ownerId?: string): Promise<void> {
     if (typeof ownerId === "undefined") {
-      await this.getManager().query(`TRUNCATE TABLE distributed_locking`)
+      await this.getDriver().execute(`TRUNCATE TABLE distributed_locking`)
     } else {
-      await this.getManager().query(
+      await this.getDriver().execute(
         `DELETE FROM distributed_locking WHERE owner_id = $1`,
         [ownerId]
       )

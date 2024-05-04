@@ -1,1 +1,1 @@
-export * from "./distributed-locking"
+export { default as Locking } from "./locking"
