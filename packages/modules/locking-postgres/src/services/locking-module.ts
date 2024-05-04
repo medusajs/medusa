@@ -53,53 +53,69 @@ export default class LockingModuleService implements ILockingModuleService {
     })
   }
 
-  async acquire(
-    key: string,
-    ownerId?: string,
-    expire?: number,
-    sharedContext: Context = {}
-  ): Promise<void> {
+  private async loadLock(key: string): Promise<{
+    owner_id: string | null
+    expiration: number | null
+    now: number
+  }> {
     const [row] = await this.getManager().execute(
       `SELECT owner_id, expiration, NOW() AS now FROM locking WHERE id = ?`,
       [key]
     )
+
+    return row
+  }
+
+  async acquire(
+    key: string,
+    ownerId: string | null = null,
+    expire?: number,
+    sharedContext: Context = {}
+  ): Promise<void> {
+    const row = await this.loadLock(key)
 
     if (!row) {
       const expireSql = expire
         ? "NOW() + INTERVAL '${+expire} SECONDS'"
         : "NULL"
 
-      await this.getManager()
-        .execute(
+      try {
+        await this.getManager().execute(
           `INSERT INTO locking (id, owner_id, expiration) VALUES (?, ?, ${expireSql})`,
           [key, ownerId ?? null]
         )
-        .catch(() => {
-          throw new Error(`"${key}" is already locked.`)
-        })
+      } catch (err) {
+        if (err.toString().includes("locking_pkey")) {
+          const owner = await this.loadLock(key)
+          if (ownerId != owner.owner_id) {
+            throw new Error(`"${key}" is already locked.`)
+          }
+        } else {
+          throw err
+        }
+      }
       return
+    }
+
+    if (row.owner_id !== ownerId) {
+      throw new Error(`"${key}" is already locked.`)
     }
 
     if (!row.expiration && row.owner_id == ownerId) {
       return
     }
 
-    const refresh =
-      row.owner_id == ownerId && (expire || row.expiration <= row.now)
+    const canRefresh =
+      row.owner_id == ownerId && (expire || row.expiration! <= row.now)
 
-    if (refresh) {
-      const expireSql = expire
-        ? ", expiration = NOW() + INTERVAL '${+expire} SECONDS'"
-        : ""
-
-      await this.getManager().execute(
-        `UPDATE locking SET owner_id = ? ${expireSql} WHERE id = ?`,
-        [ownerId ?? null, key]
-      )
+    if (!canRefresh || !expire) {
       return
-    } else if (row.owner_id !== ownerId) {
-      throw new Error(`"${key}" is already locked.`)
     }
+
+    await this.getManager().execute(
+      `UPDATE locking SET owner_id = ?, expiration = NOW() + INTERVAL '${+expire} SECONDS' WHERE id = ?`,
+      [ownerId ?? null, key]
+    )
   }
 
   async release(
@@ -122,7 +138,7 @@ export default class LockingModuleService implements ILockingModuleService {
   }
 
   async releaseAll(
-    ownerId?: string,
+    ownerId: string | null = null,
     sharedContext: Context = {}
   ): Promise<void> {
     if (!isDefined(ownerId)) {
