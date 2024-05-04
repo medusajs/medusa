@@ -123,10 +123,7 @@ export default class LockingModuleService implements ILockingModuleService {
     ownerId: string | null = null,
     sharedContext: Context = {}
   ): Promise<boolean> {
-    const [row] = await this.getManager().execute(
-      `SELECT owner_id, expiration, NOW() AS now FROM locking WHERE id = ?`,
-      [key]
-    )
+    const row = await this.loadLock(key)
 
     if (!row || row.owner_id != ownerId) {
       return false
