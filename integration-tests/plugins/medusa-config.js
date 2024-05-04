@@ -67,6 +67,5 @@ module.exports = {
       resolve: "@medusajs/product",
     },
     [Modules.WORKFLOW_ENGINE]: true,
-    [Modules.LOCKING]: true,
   },
 }

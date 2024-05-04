@@ -104,7 +104,6 @@ module.exports = {
           [Modules.CURRENCY]: true,
           [Modules.PAYMENT]: true,
           [Modules.FULFILLMENT]: true,
-          [Modules.LOCKING]: true,
         }
       : {}),
   },
