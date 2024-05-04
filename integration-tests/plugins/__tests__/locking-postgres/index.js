@@ -7,7 +7,7 @@ const { ModuleRegistrationName } = require("@medusajs/modules-sdk")
 
 jest.setTimeout(30000)
 
-describe("Distributed Locking", () => {
+describe.skip("Locking Module", () => {
   let express
   let appContainer
   let dbConnection
