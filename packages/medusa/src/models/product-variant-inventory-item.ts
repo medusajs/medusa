@@ -5,6 +5,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  Relation,
 } from "typeorm"
 import { SoftDeletableEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
@@ -22,11 +23,14 @@ export class ProductVariantInventoryItem extends SoftDeletableEntity {
 
   @ManyToOne(() => ProductVariant, (variant) => variant.inventory_items)
   @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  variant: Relation<ProductVariant>
 
   @Column({ type: "int", default: 1 })
   required_quantity: number
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "pvitem")
@@ -36,7 +40,7 @@ export class ProductVariantInventoryItem extends SoftDeletableEntity {
 /**
  * @schema ProductVariantInventoryItem
  * title: "Product Variant Inventory Item"
- * description: "Product Variant Inventory Items link variants with inventory items and denote the number of inventory items constituting a variant."
+ * description: "A Product Variant Inventory Item links variants with inventory items and denotes the required quantity of the variant."
  * type: object
  * required:
  *   - created_at
@@ -58,11 +62,12 @@ export class ProductVariantInventoryItem extends SoftDeletableEntity {
  *     description: The id of the variant.
  *     type: string
  *   variant:
- *     description: A ProductVariant object. Available if the relation `variant` is expanded.
+ *     description: The details of the product variant.
+ *     x-expandable: "variant"
  *     nullable: true
  *     $ref: "#/components/schemas/ProductVariant"
  *   required_quantity:
- *     description: The quantity of an inventory item required for one quantity of the variant.
+ *     description: The quantity of an inventory item required for the variant.
  *     type: integer
  *     default: 1
  *   created_at:

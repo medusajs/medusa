@@ -25,18 +25,9 @@ describe("ProductVariantService", () => {
       },
     })
 
-    const priceSelectionStrat = {
-      calculateVariantPrice: (variantId, context) => {
-        return {
-          originalPrice: null,
-          calculatedPrice: null,
-          prices: [],
-        }
-      },
-    }
     const priceSelectionStrategy = {
-      withTransaction: (manager) => {
-        return priceSelectionStrat
+      withTransaction: function (manager) {
+        return this
       },
     }
 
@@ -257,25 +248,18 @@ describe("ProductVariantService", () => {
       },
     })
 
-    const priceSelectionStrat = {
-      calculateVariantPrice: (variantId, context) => {
-        return {
-          originalPrice: null,
-          calculatedPrice: null,
-          calculatedPriceType: undefined,
-          prices: [],
-        }
-      },
-    }
-
     const priceSelectionStrategy = {
-      withTransaction: (manager) => {
-        return priceSelectionStrat
+      withTransaction: function (manager) {
+        return this
       },
     }
 
     const productVariantRepository = MockRepository({
       findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
+      update: (data) => ({
+        generatedMaps: [data],
+      }),
+      create: (data) => data,
     })
 
     const moneyAmountRepository = MockRepository({
@@ -315,22 +299,56 @@ describe("ProductVariantService", () => {
       })
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-variant.updated",
+      expect(eventBusService.emit).toHaveBeenCalledWith([
+        {
+          eventName: "product-variant.updated",
+          data: {
+            id: IdMap.getId("ironman"),
+            fields: ["title"],
+          },
+        },
+      ])
+
+      expect(productVariantRepository.update).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.update).toHaveBeenCalledWith(
+        { id: IdMap.getId("ironman") },
         {
           id: IdMap.getId("ironman"),
-          fields: ["title"],
+          title: "new title",
         }
       )
-
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
-      expect(productVariantRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("ironman"),
-        title: "new title",
-      })
     })
 
     it("successfully updates variant", async () => {
+      await productVariantService.update(
+        { id: IdMap.getId("ironman"), title: "new title" },
+        {
+          title: "new title 2",
+        }
+      )
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith([
+        {
+          eventName: "product-variant.updated",
+          data: {
+            id: IdMap.getId("ironman"),
+            fields: ["title"],
+          },
+        },
+      ])
+
+      expect(productVariantRepository.update).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.update).toHaveBeenCalledWith(
+        { id: IdMap.getId("ironman") },
+        {
+          id: IdMap.getId("ironman"),
+          title: "new title 2",
+        }
+      )
+    })
+
+    it("successfully avoid to update variant if the data have not changed", async () => {
       await productVariantService.update(
         { id: IdMap.getId("ironman"), title: "new title" },
         {
@@ -338,20 +356,9 @@ describe("ProductVariantService", () => {
         }
       )
 
-      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-variant.updated",
-        {
-          id: IdMap.getId("ironman"),
-          fields: ["title"],
-        }
-      )
+      expect(eventBusService.emit).toHaveBeenCalledTimes(0)
 
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
-      expect(productVariantRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("ironman"),
-        title: "new title",
-      })
+      expect(productVariantRepository.save).toHaveBeenCalledTimes(0)
     })
 
     it("throws if provided variant is missing an id", async () => {
@@ -376,22 +383,27 @@ describe("ProductVariantService", () => {
       })
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-variant.updated",
+      expect(eventBusService.emit).toHaveBeenCalledWith([
+        {
+          eventName: "product-variant.updated",
+          data: {
+            id: IdMap.getId("ironman"),
+            fields: ["title", "metadata"],
+          },
+        },
+      ])
+
+      expect(productVariantRepository.update).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.update).toHaveBeenCalledWith(
+        { id: IdMap.getId("ironman") },
         {
           id: IdMap.getId("ironman"),
-          fields: ["title", "metadata"],
+          title: "new title",
+          metadata: {
+            testing: "this",
+          },
         }
       )
-
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
-      expect(productVariantRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("ironman"),
-        title: "new title",
-        metadata: {
-          testing: "this",
-        },
-      })
     })
 
     it("successfully updates variant inventory_quantity", async () => {
@@ -401,20 +413,25 @@ describe("ProductVariantService", () => {
       })
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-variant.updated",
+      expect(eventBusService.emit).toHaveBeenCalledWith([
+        {
+          eventName: "product-variant.updated",
+          data: {
+            id: IdMap.getId("ironman"),
+            fields: ["title", "inventory_quantity"],
+          },
+        },
+      ])
+
+      expect(productVariantRepository.update).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.update).toHaveBeenCalledWith(
+        { id: IdMap.getId("ironman") },
         {
           id: IdMap.getId("ironman"),
-          fields: ["title", "inventory_quantity"],
+          inventory_quantity: 98,
+          title: "new title",
         }
       )
-
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
-      expect(productVariantRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("ironman"),
-        inventory_quantity: 98,
-        title: "new title",
-      })
     })
 
     it("successfully updates variant prices", async () => {
@@ -429,17 +446,19 @@ describe("ProductVariantService", () => {
       })
 
       expect(productVariantService.updateVariantPrices).toHaveBeenCalledTimes(1)
-      expect(productVariantService.updateVariantPrices).toHaveBeenCalledWith(
-        IdMap.getId("ironman"),
-        [
-          {
-            currency_code: "dkk",
-            amount: 1000,
-          },
-        ]
-      )
+      expect(productVariantService.updateVariantPrices).toHaveBeenCalledWith([
+        {
+          variantId: IdMap.getId("ironman"),
+          prices: [
+            {
+              currency_code: "dkk",
+              amount: 1000,
+            },
+          ],
+        },
+      ])
 
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.update).toHaveBeenCalledTimes(1)
     })
 
     it("successfully updates variant options", async () => {
@@ -460,7 +479,7 @@ describe("ProductVariantService", () => {
         "red"
       )
 
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.update).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -554,12 +573,17 @@ describe("ProductVariantService", () => {
     })
 
     const priceSelectionStrat = {
-      calculateVariantPrice: (variantId, context) => {
-        return Promise.resolve({
-          originalPrice: null,
-          calculatedPrice: 1000,
-          prices: [],
-        })
+      calculateVariantPrice: async ([{ variantId }], context) => {
+        return new Map([
+          [
+            variantId,
+            {
+              originalPrice: null,
+              calculatedPrice: 1000,
+              prices: [],
+            },
+          ],
+        ])
       },
     }
 
@@ -628,8 +652,32 @@ describe("ProductVariantService", () => {
           amount: 750,
         })
       },
+      find: (query) => {
+        if (query.where.region_id === IdMap.getId("cali")) {
+          return Promise.resolve([])
+        }
+        return Promise.resolve([
+          {
+            id: IdMap.getId("dkk"),
+            variant_id: IdMap.getId("ironman"),
+            currency_code: "dkk",
+            amount: 750,
+          },
+        ])
+      },
       create: (p) => p,
       remove: () => Promise.resolve(),
+      insertBulk: (data) => data,
+    })
+
+    const productVariantRepository = MockRepository({
+      find: (query) => {
+        return Promise.resolve([
+          {
+            id: IdMap.getId("ironman"),
+          },
+        ])
+      },
     })
 
     const oldPrices = [
@@ -648,11 +696,29 @@ describe("ProductVariantService", () => {
     moneyAmountRepository.upsertVariantCurrencyPrice = jest
       .fn()
       .mockImplementation(() => Promise.resolve())
+    moneyAmountRepository.findCurrencyMoneyAmounts = jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve([
+          {
+            id: IdMap.getId("dkk"),
+            variant_id: IdMap.getId("ironman"),
+            currency_code: "dkk",
+          },
+        ])
+      )
+    moneyAmountRepository.findRegionMoneyAmounts = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve([]))
 
-    const regionService = {
+    const priceSelectionStrategy = {
       withTransaction: function () {
         return this
       },
+      onVariantsPricesUpdate: (variantIds) => Promise.resolve(),
+    }
+
+    const regionService = {
       list: jest.fn().mockImplementation((config) => {
         const idOrIds = config.id
 
@@ -670,21 +736,26 @@ describe("ProductVariantService", () => {
           name: "California",
         })
       },
+      withTransaction: function () {
+        return this
+      },
     }
 
     const productVariantService = new ProductVariantService({
       manager: MockManager,
       eventBusService,
       regionService,
+      priceSelectionStrategy,
       moneyAmountRepository,
+      productVariantRepository,
     })
 
     beforeEach(async () => {
       jest.clearAllMocks()
     })
 
-    it("successfully removes obsolete prices and calls save on new/existing prices", async () => {
-      await productVariantService.updateVariantPrices("ironman", [
+    it("successfully removes obsolete prices and create new prices", async () => {
+      await productVariantService.updateVariantPrices(IdMap.getId("ironman"), [
         {
           currency_code: "usd",
           amount: 4000,
@@ -695,15 +766,14 @@ describe("ProductVariantService", () => {
         moneyAmountRepository.deleteVariantPricesNotIn
       ).toHaveBeenCalledTimes(1)
 
-      expect(
-        moneyAmountRepository.upsertVariantCurrencyPrice
-      ).toHaveBeenCalledTimes(1)
-      expect(
-        moneyAmountRepository.upsertVariantCurrencyPrice
-      ).toHaveBeenCalledWith("ironman", {
-        currency_code: "usd",
-        amount: 4000,
-      })
+      expect(moneyAmountRepository.insertBulk).toHaveBeenCalledTimes(1)
+      expect(moneyAmountRepository.insertBulk).toHaveBeenCalledWith([
+        {
+          variant: { id: IdMap.getId("ironman") },
+          currency_code: "usd",
+          amount: 4000,
+        },
+      ])
     })
 
     it("successfully creates new a region price", async () => {
@@ -716,35 +786,33 @@ describe("ProductVariantService", () => {
 
       expect(moneyAmountRepository.create).toHaveBeenCalledTimes(1)
       expect(moneyAmountRepository.create).toHaveBeenCalledWith({
-        variant_id: IdMap.getId("ironman"),
+        variant: { id: IdMap.getId("ironman") },
         region_id: IdMap.getId("cali"),
+        currency_code: "usd",
         amount: 100,
       })
 
-      expect(moneyAmountRepository.save).toHaveBeenCalledTimes(1)
+      expect(moneyAmountRepository.insertBulk).toHaveBeenCalledTimes(1)
     })
 
-    it("successfully creates a currency price", async () => {
+    it("successfully updates a currency price", async () => {
       await productVariantService.updateVariantPrices(IdMap.getId("ironman"), [
         {
           id: IdMap.getId("dkk"),
           currency_code: "dkk",
-          amount: 750,
+          amount: 850,
         },
       ])
 
       expect(moneyAmountRepository.create).toHaveBeenCalledTimes(0)
 
-      expect(
-        moneyAmountRepository.upsertVariantCurrencyPrice
-      ).toHaveBeenCalledTimes(1)
-      expect(
-        moneyAmountRepository.upsertVariantCurrencyPrice
-      ).toHaveBeenCalledWith(IdMap.getId("ironman"), {
-        id: IdMap.getId("dkk"),
-        currency_code: "dkk",
-        amount: 750,
-      })
+      expect(moneyAmountRepository.update).toHaveBeenCalledTimes(1)
+      expect(moneyAmountRepository.update).toHaveBeenCalledWith(
+        { id: IdMap.getId("dkk") },
+        {
+          amount: 850,
+        }
+      )
     })
   })
 
@@ -881,14 +949,16 @@ describe("ProductVariantService", () => {
 
   describe("delete", () => {
     const productVariantRepository = MockRepository({
-      findOne: (query) => {
+      find: (query) => {
         if (query.where.id === IdMap.getId("ironmanv2")) {
-          return Promise.resolve(undefined)
+          return Promise.resolve([])
         }
-        return Promise.resolve({
-          id: IdMap.getId("ironman"),
-          product_id: IdMap.getId("product-test"),
-        })
+        return Promise.resolve([
+          {
+            id: IdMap.getId("ironman"),
+            product_id: IdMap.getId("product-test"),
+          },
+        ])
       },
     })
 
@@ -906,20 +976,22 @@ describe("ProductVariantService", () => {
       await productVariantService.delete(IdMap.getId("ironman"))
 
       expect(productVariantRepository.softRemove).toBeCalledTimes(1)
-      expect(productVariantRepository.softRemove).toBeCalledWith(
+      expect(productVariantRepository.softRemove).toBeCalledWith([
         expect.objectContaining({
           id: IdMap.getId("ironman"),
-        })
-      )
+        }),
+      ])
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-variant.deleted",
+      expect(eventBusService.emit).toHaveBeenCalledWith([
         {
-          id: IdMap.getId("ironman"),
-          product_id: IdMap.getId("product-test"),
-        }
-      )
+          eventName: "product-variant.deleted",
+          data: {
+            id: IdMap.getId("ironman"),
+            product_id: IdMap.getId("product-test"),
+          },
+        },
+      ])
     })
 
     it("successfully resolves if variant does not exist", async () => {

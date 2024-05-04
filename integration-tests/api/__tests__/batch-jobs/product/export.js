@@ -1,19 +1,19 @@
 const path = require("path")
 const fs = require("fs/promises")
 import { resolve, sep } from "path"
-import { simpleSalesChannelFactory } from "../../../factories"
+import { simpleSalesChannelFactory } from "../../../../factories"
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
-const userSeeder = require("../../../helpers/user-seeder")
-const productSeeder = require("../../../helpers/product-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const userSeeder = require("../../../../helpers/user-seeder")
+const productSeeder = require("../../../../helpers/product-seeder")
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -30,7 +30,6 @@ describe("Batch job of product-export type", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
-      redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
     })
   })
@@ -61,6 +60,7 @@ describe("Batch job of product-export type", () => {
     const db = useDb()
     await db.teardown()
 
+    // @ts-ignore
     try {
       const isFileExists = (await fs.stat(exportFilePath))?.isFile()
 
@@ -75,8 +75,8 @@ describe("Batch job of product-export type", () => {
 
         await fs.unlink(exportFilePath)
       }
-    } catch (e) {
-      console.log(e)
+    } catch (err) {
+      // noop
     }
   })
 

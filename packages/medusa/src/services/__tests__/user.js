@@ -3,7 +3,7 @@ import UserService from "../user"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
@@ -11,7 +11,7 @@ const eventBusService = {
 describe("UserService", () => {
   describe("retrieve", () => {
     const userRepository = MockRepository({
-      findOne: () => Promise.resolve({ id: IdMap.getId("ironman") }),
+      find: () => Promise.resolve([{ id: IdMap.getId("ironman") }]),
     })
     const userService = new UserService({
       manager: MockManager,
@@ -25,8 +25,8 @@ describe("UserService", () => {
     it("successfully retrieves a user", async () => {
       const result = await userService.retrieve(IdMap.getId("ironman"))
 
-      expect(userRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(userRepository.findOne).toHaveBeenCalledWith({
+      expect(userRepository.find).toHaveBeenCalledTimes(1)
+      expect(userRepository.find).toHaveBeenCalledWith({
         where: { id: IdMap.getId("ironman") },
       })
 
@@ -78,7 +78,7 @@ describe("UserService", () => {
 
   describe("update", () => {
     const userRepository = MockRepository({
-      findOne: () => Promise.resolve({ id: IdMap.getId("ironman") }),
+      find: () => Promise.resolve([{ id: IdMap.getId("ironman") }]),
     })
     const userService = new UserService({
       manager: MockManager,
@@ -159,8 +159,8 @@ describe("UserService", () => {
 
   describe("generateResetPasswordToken", () => {
     const userRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({ id: IdMap.getId("ironman"), password_hash: "lol" }),
+      find: () =>
+        Promise.resolve([{ id: IdMap.getId("ironman"), password_hash: "lol" }]),
     })
 
     const userService = new UserService({

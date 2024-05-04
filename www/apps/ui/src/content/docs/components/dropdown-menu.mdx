@@ -1,0 +1,46 @@
+---
+title: "Dropdown Menu"
+description: "Displays a menu to the user—such as a set of actions or functions—triggered by a button."
+component: true
+---
+
+<ComponentExample name="dropdown-menu-demo" />
+
+## Usage
+
+---
+
+```tsx
+import { DropdownMenu } from "@medusajs/ui"
+```
+
+```tsx
+<DropdownMenu>
+  <DropdownMenu.Trigger>Trigger</DropdownMenu.Trigger>
+  <DropdownMenu.Content>
+    <DropdownMenu.Item>Edit</DropdownMenu.Item>
+    <DropdownMenu.Item>Add</DropdownMenu.Item>
+    <DropdownMenu.Item>Delete</DropdownMenu.Item>
+  </DropdownMenu.Content>
+</DropdownMenu>
+```
+
+## API Reference
+
+---
+
+<ComponentReference mainComponent="DropdownMenu" componentsToShow={[
+  "DropdownMenu",
+  "DropdownMenu.Shortcut",
+  "DropdownMenu.Hint",
+]} />
+
+## Examples
+
+---
+
+### Sorting
+
+Implementing collection sorting choices using a Dropdown Menu:
+
+<ComponentExample name="dropdown-menu-sorting" />

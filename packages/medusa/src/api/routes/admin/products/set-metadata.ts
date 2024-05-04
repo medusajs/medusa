@@ -1,14 +1,18 @@
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
-import { IsString } from "class-validator"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { IsString } from "class-validator"
+import { PricingService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /products/{id}/metadata
+ * @oas [post] /admin/products/{id}/metadata
  * operationId: "PostProductsProductMetadata"
- * summary: "Set Product Metadata"
- * description: "Set metadata key/value pair for Product"
+ * summary: "Set Metadata"
+ * description: "Set the metadata of a Product. It can be any key-value pair, which allows adding custom data to a product."
+ * externalDocs:
+ *   description: "Learn about the metadata attribute, and how to delete and update it."
+ *   url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
@@ -26,19 +30,19 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.setMetadata(product_id, {
- *       key: 'test',
- *         value: 'true'
+ *       medusa.admin.products.setMetadata(productId, {
+ *         key: "test",
+ *         value: "true"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/products/{id}/metadata' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/products/{id}/metadata' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "key": "test",
  *           "value": "true"
@@ -46,8 +50,9 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
@@ -77,6 +82,8 @@ export default async (req, res) => {
   )
 
   const productService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
+
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
     return await productService.withTransaction(transactionManager).update(id, {
@@ -84,10 +91,12 @@ export default async (req, res) => {
     })
   })
 
-  const product = await productService.retrieve(id, {
+  const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
+
+  const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.status(200).json({ product })
 }

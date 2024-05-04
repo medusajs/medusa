@@ -1,0 +1,94 @@
+---
+title: "Toast"
+description: "A succinct message that is displayed temporarily."
+component: true
+---
+
+<ComponentExample name="toaster-demo" />
+
+## Usage
+
+---
+
+Import the `toast` utility and `Toaster` component from `@medusajs/ui`:
+
+```tsx
+import { Toaster, toast } from "@medusajs/ui"
+```
+
+Then, add the `Toaster` component somewhere in your tree:
+
+```tsx
+<Toaster />
+```
+
+Finally, use the `toast` utility to display a toast:
+
+```tsx
+return (
+  <Button 
+    onClick={() => 
+      toast.info("Toast title", {
+        description: "Toast body",
+      })
+    }
+  >
+    Trigger
+  </Button>
+)
+```
+
+## API Reference
+
+---
+
+### Toast Utility Functions
+
+The `toast` utility has the following functions to display different variants of toasts:
+
+- `info`
+- `error`
+- `success`
+- `warning`
+- `loading`
+
+Each of these functions accept two parameters:
+
+1. A string indicating the title of the toast.
+2. An object of props to pass to the underlying `Toast` component.
+
+### Toast Props
+
+<ComponentReference mainComponent="Toast" />
+
+### Toaster Props
+
+<ComponentReference mainComponent="Toaster" />
+
+## Examples
+
+---
+
+### Dismissable Toast
+
+<ComponentExample name="toaster-dismiss" />
+
+### Warning
+
+<ComponentExample name="toaster-warning" />
+
+### Error
+
+<ComponentExample name="toaster-error" />
+
+### Success
+
+<ComponentExample name="toaster-success" />
+
+### Loading
+
+<ComponentExample name="toaster-loading" />
+
+### With Action
+
+<ComponentExample name="toaster-with-action" />

@@ -1,21 +1,21 @@
 const fs = require("fs")
 const path = require("path")
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
-const batchJobSeeder = require("../../../helpers/batch-job-seeder")
-const userSeeder = require("../../../helpers/user-seeder")
-const { simpleProductFactory } = require("../../../factories")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const batchJobSeeder = require("../../../../helpers/batch-job-seeder")
+const userSeeder = require("../../../../helpers/user-seeder")
+const { simpleProductFactory } = require("../../../../factories")
 const {
   simpleProductCollectionFactory,
-} = require("../../../factories/simple-product-collection-factory")
+} = require("../../../../factories/simple-product-collection-factory")
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -63,7 +63,6 @@ describe("Product import batch job", () => {
 
     medusaProcess = await setupServer({
       cwd,
-      redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
     })
   })
@@ -81,7 +80,7 @@ describe("Product import batch job", () => {
     await batchJobSeeder(dbConnection)
     await adminSeeder(dbConnection)
     await userSeeder(dbConnection)
-     await simpleProductCollectionFactory(dbConnection, [
+    await simpleProductCollectionFactory(dbConnection, [
       {
         handle: collectionHandle1,
       },
@@ -184,7 +183,7 @@ describe("Product import batch job", () => {
               ean: null,
               upc: null,
               inventory_quantity: 10,
-              prices: [
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   currency_code: "eur",
                   amount: 100,
@@ -199,7 +198,7 @@ describe("Product import batch job", () => {
                   amount: 130,
                   region_id: "region-product-import-1",
                 }),
-              ],
+              ]),
               options: expect.arrayContaining([
                 expect.objectContaining({
                   value: "option 1 value red",
@@ -211,24 +210,24 @@ describe("Product import batch job", () => {
             }),
           ],
           type: null,
-          images: [
+          images: expect.arrayContaining([
             expect.objectContaining({
               url: "test-image.png",
             }),
-          ],
-          options: [
+          ]),
+          options: expect.arrayContaining([
             expect.objectContaining({
               title: "test-option-1",
             }),
             expect.objectContaining({
               title: "test-option-2",
             }),
-          ],
-          tags: [
+          ]),
+          tags: expect.arrayContaining([
             expect.objectContaining({
               value: "123_1",
             }),
-          ],
+          ]),
           collection: expect.objectContaining({
             handle: collectionHandle1,
           }),
@@ -250,7 +249,7 @@ describe("Product import batch job", () => {
               ean: null,
               upc: null,
               inventory_quantity: 10,
-              prices: [
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   currency_code: "eur",
                   amount: 100,
@@ -265,7 +264,7 @@ describe("Product import batch job", () => {
                   amount: 130,
                   region_id: "region-product-import-1",
                 }),
-              ],
+              ]),
               options: expect.arrayContaining([
                 expect.objectContaining({
                   value: "option 1 value red",
@@ -277,19 +276,19 @@ describe("Product import batch job", () => {
             }),
           ],
           type: null,
-          images: [
+          images: expect.arrayContaining([
             expect.objectContaining({
               url: "test-image.png",
             }),
-          ],
-          options: [
+          ]),
+          options: expect.arrayContaining([
             expect.objectContaining({
               title: "test-option-1",
             }),
             expect.objectContaining({
               title: "test-option-2",
             }),
-          ],
+          ]),
           tags: [],
           collection: expect.objectContaining({
             handle: collectionHandle1,

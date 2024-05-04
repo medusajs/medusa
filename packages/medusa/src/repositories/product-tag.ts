@@ -1,6 +1,9 @@
-import { EntityRepository, In, Repository } from "typeorm"
+import { In } from "typeorm"
 import { ProductTag } from "../models/product-tag"
-import { ExtendedFindConfig, Selector } from "../types/common"
+import { ExtendedFindConfig } from "../types/common"
+import { dataSource } from "../loaders/database"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { promiseAll } from "@medusajs/utils"
 
 type UpsertTagsInput = (Partial<ProductTag> & {
   value: string
@@ -12,7 +15,7 @@ type ProductTagSelector = Partial<ProductTag> & {
 }
 
 export type DefaultWithoutRelations = Omit<
-  ExtendedFindConfig<ProductTag, ProductTagSelector>,
+  ExtendedFindConfig<ProductTag>,
   "relations"
 >
 
@@ -22,75 +25,85 @@ export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
   }
 }
 
-@EntityRepository(ProductTag)
-export class ProductTagRepository extends Repository<ProductTag> {
-  public async listTagsByUsage(count = 10): Promise<ProductTag[]> {
-    return await this.query(
-      `
-          SELECT id, COUNT(pts.product_tag_id) as usage_count, pt.value
-          FROM product_tag pt
-                   LEFT JOIN product_tags pts ON pt.id = pts.product_tag_id
-          GROUP BY id
-          ORDER BY usage_count DESC
-              LIMIT $1
-      `,
-      [count]
-    )
-  }
+export const ProductTagRepository = dataSource
+  .getRepository(ProductTag)
+  .extend({
+    async insertBulk(
+      data: QueryDeepPartialEntity<ProductTag>[]
+    ): Promise<ProductTag[]> {
+      const queryBuilder = this.createQueryBuilder()
+        .insert()
+        .into(ProductTag)
+        .values(data)
 
-  public async upsertTags(tags: UpsertTagsInput): Promise<ProductTag[]> {
-    const tagsValues = tags.map((tag) => tag.value)
-    const existingTags = await this.find({
-      where: {
-        value: In(tagsValues),
-      },
-    })
-    const existingTagsMap = new Map(
-      existingTags.map<[string, ProductTag]>((tag) => [tag.value, tag])
-    )
-
-    const upsertedTags: ProductTag[] = []
-
-    for (const tag of tags) {
-      const aTag = existingTagsMap.get(tag.value)
-      if (aTag) {
-        upsertedTags.push(aTag)
-      } else {
-        const newTag = this.create(tag)
-        const savedTag = await this.save(newTag)
-        upsertedTags.push(savedTag)
+      if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
+        const rawTags = await queryBuilder.execute()
+        return rawTags.generatedMaps.map((d) => this.create(d)) as ProductTag[]
       }
-    }
 
-    return upsertedTags
-  }
+      const rawTags = await queryBuilder.returning("*").execute()
+      return rawTags.generatedMaps.map((d) => this.create(d))
+    },
 
-  async findAndCountByDiscountConditionId(
-    conditionId: string,
-    query: ExtendedFindConfig<ProductTag, Selector<ProductTag>>
-  ) {
-    const qb = this.createQueryBuilder("pt")
+    async listTagsByUsage(take = 10): Promise<ProductTag[]> {
+      const qb = this.createQueryBuilder("pt")
+        .select(["id", "COUNT(pts.product_tag_id) as usage_count", "value"])
+        .leftJoin("product_tags", "pts", "pt.id = pts.product_tag_id")
+        .groupBy("id")
+        .orderBy("usage_count", "DESC")
+        .limit(take)
 
-    if (query?.select) {
-      qb.select(query.select.map((select) => `pt.${select}`))
-    }
+      return await qb.getRawMany()
+    },
 
-    if (query.skip) {
-      qb.skip(query.skip)
-    }
-
-    if (query.take) {
-      qb.take(query.take)
-    }
-
-    return await qb
-      .where(query.where)
-      .innerJoin(
-        "discount_condition_product_tag",
-        "dc_pt",
-        `dc_pt.product_tag_id = pt.id AND dc_pt.condition_id = :dcId`,
-        { dcId: conditionId }
+    async upsertTags(tags: UpsertTagsInput): Promise<ProductTag[]> {
+      const tagsValues = tags.map((tag) => tag.value)
+      const existingTags = await this.find({
+        where: {
+          value: In(tagsValues),
+        },
+      })
+      const existingTagsMap = new Map(
+        existingTags.map<[string, ProductTag]>((tag) => [tag.value, tag])
       )
-      .getManyAndCount()
-  }
-}
+
+      const upsertedTags: ProductTag[] = []
+      const tagsToCreate: QueryDeepPartialEntity<ProductTag>[] = []
+
+      for (const tag of tags) {
+        const aTag = existingTagsMap.get(tag.value)
+        if (aTag) {
+          upsertedTags.push(aTag)
+        } else {
+          const newTag = this.create(tag)
+          tagsToCreate.push(newTag as QueryDeepPartialEntity<ProductTag>)
+        }
+      }
+
+      if (tagsToCreate.length) {
+        const newTags = await this.insertBulk(tagsToCreate)
+        upsertedTags.push(...newTags)
+      }
+
+      return upsertedTags
+    },
+
+    async findAndCountByDiscountConditionId(
+      conditionId: string,
+      query: ExtendedFindConfig<ProductTag>
+    ) {
+      const qb = this.createQueryBuilder("pt")
+        .where(query.where)
+        .setFindOptions(query)
+        .innerJoin(
+          "discount_condition_product_tag",
+          "dc_pt",
+          `dc_pt.product_tag_id = pt.id AND dc_pt.condition_id = :dcId`,
+          { dcId: conditionId }
+        )
+
+      return await promiseAll([qb.getMany(), qb.getCount()])
+    },
+  })
+
+export default ProductTagRepository

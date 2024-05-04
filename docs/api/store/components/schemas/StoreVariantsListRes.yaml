@@ -1,6 +1,0 @@
-type: object
-properties:
-  variants:
-    type: array
-    items:
-      $ref: ./PricedVariant.yaml

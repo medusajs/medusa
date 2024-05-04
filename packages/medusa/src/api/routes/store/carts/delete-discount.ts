@@ -1,15 +1,21 @@
-import { EntityManager } from "typeorm"
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+
+import { EntityManager } from "typeorm"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [delete] /carts/{id}/discounts/{code}
+ * @oas [delete] /store/carts/{id}/discounts/{code}
  * operationId: DeleteCartsCartDiscountsDiscount
- * description: "Removes a Discount from a Cart."
  * summary: "Remove Discount"
+ * description: "Remove a Discount from a Cart. This only removes the application of the discount, and not completely deletes it. The totals will be re-calculated and the payment sessions
+ *  will be refreshed after the removal."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
- *   - (path) code=* {string} The unique Discount code.
+ *   - (path) id=* {string} The ID of the Cart.
+ *   - (path) code=* {string} The unique discount code.
  * x-codegen:
  *   method: deleteDiscount
  * x-codeSamples:
@@ -18,16 +24,16 @@ import { CartService } from "../../../../services"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.deleteDiscount(cart_id, code)
+ *       medusa.carts.deleteDiscount(cartId, code)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/discounts/{code}'
+ *       curl -X DELETE '{backend_url}/store/carts/{id}/discounts/{code}'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -51,6 +57,8 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   await manager.transaction(async (m) => {
     // Remove the discount
@@ -71,5 +79,10 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart: data })
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
+
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }

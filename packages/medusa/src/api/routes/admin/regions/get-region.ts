@@ -1,12 +1,11 @@
-import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
-
 import RegionService from "../../../../services/region"
+import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /regions/{id}
+ * @oas [get] /admin/regions/{id}
  * operationId: "GetRegionsRegion"
  * summary: "Get a Region"
- * description: "Retrieves a Region."
+ * description: "Retrieve a Region's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
@@ -19,20 +18,47 @@ import RegionService from "../../../../services/region"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.regions.retrieve(region_id)
+ *       medusa.admin.regions.retrieve(regionId)
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminRegion } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const { region, isLoading } = useAdminRegion(
+ *           regionId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {region && <span>{region.name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/regions/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/regions/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
@@ -56,10 +82,10 @@ import RegionService from "../../../../services/region"
 export default async (req, res) => {
   const { region_id } = req.params
   const regionService: RegionService = req.scope.resolve("regionService")
-  const region = await regionService.retrieve(region_id, {
-    select: defaultAdminRegionFields,
-    relations: defaultAdminRegionRelations,
-  })
+
+  const region = await regionService.retrieve(region_id, req.retrieveConfig)
 
   res.status(200).json({ region })
 }
+
+export class AdminGetRegionsRegionParams extends FindParams {}

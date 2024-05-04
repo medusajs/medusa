@@ -3,15 +3,15 @@ import DiscountService from "../../../../services/discount"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /discounts/code/{code}
+ * @oas [get] /admin/discounts/code/{code}
  * operationId: "GetDiscountsDiscountCode"
  * summary: "Get Discount by Code"
- * description: "Retrieves a Discount by its discount code"
+ * description: "Retrieve a Discount's details by its discount code"
  * x-authenticated: true
  * parameters:
  *   - (path) code=* {string} The code of the Discount
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned discount.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned discount.
  * x-codegen:
  *   method: retrieveByCode
  *   queryParams: AdminGetDiscountsDiscountCodeParams
@@ -25,17 +25,42 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.discounts.retrieveByCode(code)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminGetDiscountByCode } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountCode: string
+ *       }
+ *
+ *       const Discount = ({ discountCode }: Props) => {
+ *         const { discount, isLoading } = useAdminGetDiscountByCode(
+ *           discountCode
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {discount && <span>{discount.code}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/discounts/code/{code}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/discounts/code/{code}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Discount
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK

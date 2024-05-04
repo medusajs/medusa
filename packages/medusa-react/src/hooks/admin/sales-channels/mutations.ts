@@ -16,13 +16,38 @@ import {
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminProductKeys } from "../products"
+import { adminStockLocationsKeys } from "../stock-locations"
 import { adminSalesChannelsKeys } from "./queries"
 
 /**
- * Hook provides a mutation function for creating sales channel.
- *
- * @experimental This feature is under development and may change in the future.
- * To use this feature please enable the corresponding feature flag in your medusa backend project.
+ * This hook creates a sales channel.
+ * 
+ * @example
+ * import React from "react"
+ * import { useAdminCreateSalesChannel } from "medusa-react"
+ * 
+ * const CreateSalesChannel = () => {
+ *   const createSalesChannel = useAdminCreateSalesChannel()
+ *   // ...
+ * 
+ *   const handleCreate = (name: string, description: string) => {
+ *     createSalesChannel.mutate({
+ *       name,
+ *       description,
+ *     }, {
+ *       onSuccess: ({ sales_channel }) => {
+ *         console.log(sales_channel.id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default CreateSalesChannel
+ * 
+ * @customNamespace Hooks.Admin.Sales Channels
+ * @category Mutations
  */
 export const useAdminCreateSalesChannel = (
   options?: UseMutationOptions<
@@ -41,13 +66,47 @@ export const useAdminCreateSalesChannel = (
   )
 }
 
-/** update a sales channel
- * @experimental This feature is under development and may change in the future.
- * To use this feature please enable feature flag `sales_channels` in your medusa backend project.
- * @description updates a sales channel
- * @returns the updated medusa sales channel
+/**
+ * This hook updates a sales channel's details.
+ * 
+ * @example
+ * import React from "react"
+ * import { useAdminUpdateSalesChannel } from "medusa-react"
+ * 
+ * type Props = {
+ *   salesChannelId: string
+ * }
+ * 
+ * const SalesChannel = ({ salesChannelId }: Props) => {
+ *   const updateSalesChannel = useAdminUpdateSalesChannel(
+ *     salesChannelId
+ *   )
+ *   // ...
+ * 
+ *   const handleUpdate = (
+ *     is_disabled: boolean
+ *   ) => {
+ *     updateSalesChannel.mutate({
+ *       is_disabled,
+ *     }, {
+ *       onSuccess: ({ sales_channel }) => {
+ *         console.log(sales_channel.is_disabled)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default SalesChannel
+ * 
+ * @customNamespace Hooks.Admin.Sales Channels
+ * @category Mutations
  */
 export const useAdminUpdateSalesChannel = (
+  /**
+   * The sales channel's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminSalesChannelsRes>,
@@ -69,13 +128,42 @@ export const useAdminUpdateSalesChannel = (
 }
 
 /**
- * Delete a sales channel
- * @experimental This feature is under development and may change in the future.
- * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
- * @param id
- * @param options
+ * This hook deletes a sales channel. Associated products, stock locations, and other resources are not deleted.
+ * 
+ * @example
+ * import React from "react"
+ * import { useAdminDeleteSalesChannel } from "medusa-react"
+ * 
+ * type Props = {
+ *   salesChannelId: string
+ * }
+ * 
+ * const SalesChannel = ({ salesChannelId }: Props) => {
+ *   const deleteSalesChannel = useAdminDeleteSalesChannel(
+ *     salesChannelId
+ *   )
+ *   // ...
+ * 
+ *   const handleDelete = () => {
+ *     deleteSalesChannel.mutate(void 0, {
+ *       onSuccess: ({ id, object, deleted }) => {
+ *         console.log(id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default SalesChannel
+ * 
+ * @customNamespace Hooks.Admin.Sales Channels
+ * @category Mutations
  */
 export const useAdminDeleteSalesChannel = (
+  /**
+   * The sales channel's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminSalesChannelsDeleteRes>,
@@ -96,14 +184,51 @@ export const useAdminDeleteSalesChannel = (
 }
 
 /**
- * Remove products from a sales channel
- * @experimental This feature is under development and may change in the future.
- * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
- * @description remove products from a sales channel
- * @param id
- * @param options
+ * This hook removes a list of products from a sales channel. This doesn't delete the product. It only removes the 
+ * association between the product and the sales channel.
+ * 
+ * @example
+ * import React from "react"
+ * import { 
+ *   useAdminDeleteProductsFromSalesChannel, 
+ * } from "medusa-react"
+ * 
+ * type Props = {
+ *   salesChannelId: string
+ * }
+ * 
+ * const SalesChannel = ({ salesChannelId }: Props) => {
+ *   const deleteProducts = useAdminDeleteProductsFromSalesChannel(
+ *     salesChannelId
+ *   )
+ *   // ...
+ * 
+ *   const handleDeleteProducts = (productId: string) => {
+ *     deleteProducts.mutate({
+ *       product_ids: [
+ *         {
+ *           id: productId,
+ *         },
+ *       ],
+ *     }, {
+ *       onSuccess: ({ sales_channel }) => {
+ *         console.log(sales_channel.id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default SalesChannel
+ * 
+ * @customNamespace Hooks.Admin.Sales Channels
+ * @category Mutations
  */
 export const useAdminDeleteProductsFromSalesChannel = (
+  /**
+   * The sales channel's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminSalesChannelsRes>,
@@ -130,14 +255,48 @@ export const useAdminDeleteProductsFromSalesChannel = (
 }
 
 /**
- * Add products to a sales channel
- * @experimental This feature is under development and may change in the future.
- * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
- * @description Add products to a sales channel
- * @param id
- * @param options
+ * This hook adds a list of products to a sales channel.
+ * 
+ * @example
+ * import React from "react"
+ * import { useAdminAddProductsToSalesChannel } from "medusa-react"
+ * 
+ * type Props = {
+ *   salesChannelId: string
+ * }
+ * 
+ * const SalesChannel = ({ salesChannelId }: Props) => {
+ *   const addProducts = useAdminAddProductsToSalesChannel(
+ *     salesChannelId
+ *   )
+ *   // ...
+ * 
+ *   const handleAddProducts = (productId: string) => {
+ *     addProducts.mutate({
+ *       product_ids: [
+ *         {
+ *           id: productId,
+ *         },
+ *       ],
+ *     }, {
+ *       onSuccess: ({ sales_channel }) => {
+ *         console.log(sales_channel.id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default SalesChannel
+ * 
+ * @customNamespace Hooks.Admin.Sales Channels
+ * @category Mutations
  */
 export const useAdminAddProductsToSalesChannel = (
+  /**
+   * The sales channel's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminSalesChannelsRes>,
@@ -159,6 +318,151 @@ export const useAdminAddProductsToSalesChannel = (
         adminProductKeys.list({ sales_channel_id: [id] }),
       ],
       options
+    )
+  )
+}
+
+/**
+ * This hook associates a stock location with a sales channel. It requires the 
+ * [@medusajs/stock-location](https://docs.medusajs.com/modules/multiwarehouse/install-modules#stock-location-module) module to be installed in
+ * your Medusa backend.
+ * 
+ * @example
+ * import React from "react"
+ * import { 
+ *   useAdminAddLocationToSalesChannel
+ * } from "medusa-react"
+ * 
+ * type Props = {
+ *   salesChannelId: string
+ * }
+ * 
+ * const SalesChannel = ({ salesChannelId }: Props) => {
+ *   const addLocation = useAdminAddLocationToSalesChannel()
+ *   // ...
+ * 
+ *   const handleAddLocation = (locationId: string) => {
+ *     addLocation.mutate({
+ *       sales_channel_id: salesChannelId,
+ *       location_id: locationId
+ *     }, {
+ *       onSuccess: ({ sales_channel }) => {
+ *         console.log(sales_channel.locations)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default SalesChannel
+ * 
+ * @customNamespace Hooks.Admin.Sales Channels
+ * @category Mutations
+ */
+export const useAdminAddLocationToSalesChannel = (
+  options?: UseMutationOptions<
+    Response<AdminSalesChannelsRes>,
+    Error,
+    {
+      /**
+       * The sales channel's ID.
+       */
+      sales_channel_id: string
+      /**
+       * The location's ID.
+       */
+      location_id: string
+    }
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(({ sales_channel_id, location_id }) => {
+    return client.admin.salesChannels.addLocation(sales_channel_id, {
+      location_id,
+    })
+  }, buildOptions(
+    queryClient, 
+    [
+      adminSalesChannelsKeys.lists(), 
+      adminSalesChannelsKeys.details(), 
+      adminStockLocationsKeys.all
+    ], 
+    options
+    )
+  )
+}
+
+/**
+ * This hook removes a stock location from a sales channel. This only removes the association between the stock 
+ * location and the sales channel. It does not delete the stock location. This hook requires the 
+ * [@medusajs/stock-location](https://docs.medusajs.com/modules/multiwarehouse/install-modules#stock-location-module) module to be installed in
+ * your Medusa backend.
+ * 
+ * @example
+ * import React from "react"
+ * import { 
+ *   useAdminRemoveLocationFromSalesChannel
+ * } from "medusa-react"
+ * 
+ * type Props = {
+ *   salesChannelId: string
+ * }
+ * 
+ * const SalesChannel = ({ salesChannelId }: Props) => {
+ *   const removeLocation = useAdminRemoveLocationFromSalesChannel()
+ *   // ...
+ * 
+ *   const handleRemoveLocation = (locationId: string) => {
+ *     removeLocation.mutate({
+ *       sales_channel_id: salesChannelId,
+ *       location_id: locationId
+ *     }, {
+ *       onSuccess: ({ sales_channel }) => {
+ *         console.log(sales_channel.locations)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default SalesChannel
+ * 
+ * @customNamespace Hooks.Admin.Sales Channels
+ * @category Mutations
+ */
+export const useAdminRemoveLocationFromSalesChannel = (
+  options?: UseMutationOptions<
+    Response<AdminSalesChannelsRes>,
+    Error,
+    {
+      /**
+       * The sales channel's ID.
+       */
+      sales_channel_id: string
+      /**
+       * The location's ID.
+       */
+      location_id: string
+    }
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(({ sales_channel_id, location_id }) => {
+    return client.admin.salesChannels.removeLocation(sales_channel_id, {
+      location_id,
+    })
+  }, buildOptions(
+    queryClient, 
+    [
+      adminSalesChannelsKeys.lists(), 
+      adminSalesChannelsKeys.details(), 
+      adminStockLocationsKeys.all
+    ], 
+    options
     )
   )
 }

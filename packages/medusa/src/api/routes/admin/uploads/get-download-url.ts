@@ -2,10 +2,10 @@ import { AbstractFileService } from "../../../../interfaces"
 import { IsString } from "class-validator"
 
 /**
- * @oas [post] /uploads/download-url
+ * @oas [post] /admin/uploads/download-url
  * operationId: "PostUploadsDownloadUrl"
  * summary: "Get a File's Download URL"
- * description: "Creates a presigned download url for a file"
+ * description: "Create and retrieve a presigned or public download URL for a file. The URL creation is handled by the file service installed on the Medusa backend."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -24,21 +24,46 @@ import { IsString } from "class-validator"
  *       })
  *       .then(({ download_url }) => {
  *         console.log(download_url);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreatePresignedDownloadUrl } from "medusa-react"
+ *
+ *       const Image = () => {
+ *         const createPresignedUrl = useAdminCreatePresignedDownloadUrl()
+ *         // ...
+ *
+ *         const handlePresignedUrl = (fileKey: string) => {
+ *           createPresignedUrl.mutate({
+ *             file_key: fileKey
+ *           }, {
+ *             onSuccess: ({ download_url }) => {
+ *               console.log(download_url)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Image
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/uploads/download-url' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/uploads/download-url' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "file_key": "{file_key}"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Upload
+ *   - Uploads
  * responses:
  *   200:
  *     description: OK
@@ -72,11 +97,12 @@ export default async (req, res) => {
 /**
  * @schema AdminPostUploadsDownloadUrlReq
  * type: object
+ * description: "The details of the file to retrieve its download URL."
  * required:
  *   - file_key
  * properties:
  *   file_key:
- *     description: "key of the file to obtain the download link for"
+ *     description: "key of the file to obtain the download link for. This is obtained when you first uploaded the file, or by the file service if you used it directly."
  *     type: string
  */
 export class AdminPostUploadsDownloadUrlReq {

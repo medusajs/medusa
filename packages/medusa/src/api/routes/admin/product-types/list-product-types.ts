@@ -9,21 +9,21 @@ import { IsType } from "../../../../utils/validators/is-type"
 import ProductTypeService from "../../../../services/product-type"
 
 /**
- * @oas [get] /product-types
+ * @oas [get] /admin/product-types
  * operationId: "GetProductTypes"
  * summary: "List Product Types"
- * description: "Retrieve a list of Product Types."
+ * description: "Retrieve a list of product types. The product types can be filtered by fields such as `q` or `value`. The product types can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) limit=20 {integer} The number of types to return.
- *   - (query) offset=0 {integer} The number of items to skip before the results.
- *   - (query) order {string} The field to sort items by.
- *   - (query) discount_condition_id {string} The discount condition id on which to filter the product types.
+ *   - (query) limit=20 {integer} Limit the number of product types returned.
+ *   - (query) offset=0 {integer} The number of product types to skip when retrieving the product types.
+ *   - (query) order {string} A product type field to sort-order the retrieved product types by.
+ *   - (query) discount_condition_id {string} Filter by the ID of a discount condition. Only product types that this discount condition is applied to will be retrieved.
  *   - in: query
  *     name: value
  *     style: form
  *     explode: false
- *     description: The type values to search for
+ *     description: Filter by value.
  *     schema:
  *       type: array
  *       items:
@@ -32,15 +32,15 @@ import ProductTypeService from "../../../../services/product-type"
  *     name: id
  *     style: form
  *     explode: false
- *     description: The type IDs to search for
+ *     description: Filter by product type IDs.
  *     schema:
  *       type: array
  *       items:
  *         type: string
- *   - (query) q {string} A query string to search values for
+ *   - (query) q {string} term to search product types' values.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting product types were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -62,7 +62,7 @@ import ProductTypeService from "../../../../services/product-type"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting product types were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -95,17 +95,50 @@ import ProductTypeService from "../../../../services/product-type"
  *       medusa.admin.productTypes.list()
  *       .then(({ product_types }) => {
  *         console.log(product_types.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminProductTypes } from "medusa-react"
+ *
+ *       function ProductTypes() {
+ *         const {
+ *           product_types,
+ *           isLoading
+ *         } = useAdminProductTypes()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {product_types && !product_types.length && (
+ *               <span>No Product Tags</span>
+ *             )}
+ *             {product_types && product_types.length > 0 && (
+ *               <ul>
+ *                 {product_types.map(
+ *                   (type) => (
+ *                     <li key={type.id}>{type.value}</li>
+ *                   )
+ *                 )}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ProductTypes
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/product-types' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/product-types' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product Type
+ *   - Product Types
  * responses:
  *  "200":
  *    description: OK
@@ -146,32 +179,56 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product types.
+ */
 // eslint-disable-next-line max-len
 export class AdminGetProductTypesParams extends FindPaginationParams {
+  /**
+   * IDs to filter product types by.
+   */
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   id?: string | string[] | StringComparisonOperator
 
+  /**
+   * Search terms to search product types' value.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Values to filter product types by.
+   */
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   value?: string | string[] | StringComparisonOperator
 
+  /**
+   * Date filters to apply on the product types' `created_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the product types' `updated_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   updated_at?: DateComparisonOperator
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 
+  /**
+   * Filter product types by their associated discount condition's ID.
+   */
   @IsString()
   @IsOptional()
   discount_condition_id?: string

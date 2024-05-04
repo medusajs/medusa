@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://docs.medusajs.com/ui/assets/sitemap.xml

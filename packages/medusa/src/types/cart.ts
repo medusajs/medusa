@@ -1,8 +1,14 @@
-import { ValidateNested } from "class-validator"
-import { IsType } from "../utils/validators/is-type"
+import {
+  AddressPayload,
+  DateComparisonOperator,
+  StringComparisonOperator,
+} from "./common"
 import { Cart, CartType } from "../models/cart"
-import { AddressPayload, DateComparisonOperator, StringComparisonOperator } from "./common"
+
+import { IsType } from "../utils/validators/is-type"
 import { Region } from "../models"
+import { ValidateNested } from "class-validator"
+import { CustomerTypes } from "@medusajs/types"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isCart(object: any): object is Cart {
@@ -29,10 +35,11 @@ export type LineItemUpdate = {
   metadata?: Record<string, unknown>
   region_id?: string
   variant_id?: string
+  should_calculate_prices?: boolean
 }
 
 export type LineItemValidateData = {
-  variant?: { product_id: string };
+  variant?: { product_id: string }
   variant_id: string
 }
 
@@ -54,6 +61,7 @@ export type CartCreateProps = {
   shipping_address?: Partial<AddressPayload>
   gift_cards?: GiftCard[]
   discounts?: Discount[]
+  customer?: CustomerTypes.CustomerDTO
   customer_id?: string
   type?: CartType
   context?: object

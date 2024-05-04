@@ -32,6 +32,7 @@ export type FilterableUserProps = PartialPick<
   | "email"
   | "first_name"
   | "last_name"
+  | "role"
   | "created_at"
   | "updated_at"
   | "deleted_at"

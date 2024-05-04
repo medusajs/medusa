@@ -1,10 +1,9 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { EventBusService, StoreService } from "../index"
 import SalesChannelService from "../sales-channel"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { EventBusService, StoreService } from "../index"
-import { FindConditions, FindManyOptions, FindOneOptions } from "typeorm"
-import { SalesChannel } from "../../models"
 import { store, StoreServiceMock } from "../__mocks__/store"
+import { FlagRouter } from "@medusajs/utils"
 
 describe("SalesChannelService", () => {
   const salesChannelData = {
@@ -15,38 +14,12 @@ describe("SalesChannelService", () => {
 
   const salesChannelRepositoryMock = {
     ...MockRepository({
-      findOneWithRelations: jest
-        .fn()
-        .mockImplementation(
-          (
-            relations: Array<keyof SalesChannel> = [],
-            optionsWithoutRelations: Omit<
-              FindManyOptions<SalesChannel>,
-              "relations"
-            >
-          ): any => {
-            return Promise.resolve({
-              id:
-                (optionsWithoutRelations?.where as FindConditions<SalesChannel>)
-                  ?.id ?? IdMap.getId("sc_adjhlukiaeswhfae"),
-              ...salesChannelData,
-            })
-          }
-        ),
-      findOne: jest
-        .fn()
-        .mockImplementation(
-          (queryOrId: string | FindOneOptions<SalesChannel>): any => {
-            return Promise.resolve({
-              id:
-                typeof queryOrId === "string"
-                  ? queryOrId
-                  : (queryOrId?.where as FindConditions<SalesChannel>)?.id ??
-                    IdMap.getId("sc_adjhlukiaeswhfae"),
-              ...salesChannelData,
-            })
-          }
-        ),
+      findOne: jest.fn().mockImplementation((query) => {
+        return Promise.resolve({
+          id: query.where.id,
+          ...salesChannelData,
+        })
+      }),
       findAndCount: jest.fn().mockImplementation(() =>
         Promise.resolve([
           {
@@ -96,6 +69,7 @@ describe("SalesChannelService", () => {
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -118,6 +92,7 @@ describe("SalesChannelService", () => {
         manager: MockManager,
         eventBusService: EventBusServiceMock as unknown as EventBusService,
         salesChannelRepository: salesChannelRepositoryMock,
+        featureFlagRouter: new FlagRouter({}),
         storeService: {
           ...StoreServiceMock,
           retrieve: jest.fn().mockImplementation(() => {
@@ -147,6 +122,7 @@ describe("SalesChannelService", () => {
   describe("retrieve", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      featureFlagRouter: new FlagRouter({}),
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
@@ -167,10 +143,9 @@ describe("SalesChannelService", () => {
         ...salesChannelData,
       })
 
-      expect(
-        salesChannelRepositoryMock.findOneWithRelations
-      ).toHaveBeenLastCalledWith(undefined, {
+      expect(salesChannelRepositoryMock.findOne).toHaveBeenLastCalledWith({
         where: { id: IdMap.getId("sales_channel_1") },
+        relationLoadStrategy: "query",
       })
     })
   })
@@ -178,6 +153,7 @@ describe("SalesChannelService", () => {
   describe("update", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      featureFlagRouter: new FlagRouter({}),
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
@@ -213,6 +189,7 @@ describe("SalesChannelService", () => {
   describe("list", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      featureFlagRouter: new FlagRouter({}),
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
@@ -282,6 +259,7 @@ describe("SalesChannelService", () => {
   describe("delete", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      featureFlagRouter: new FlagRouter({}),
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: {
@@ -337,6 +315,7 @@ describe("SalesChannelService", () => {
   describe("Remove products", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      featureFlagRouter: new FlagRouter({}),
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
@@ -368,6 +347,7 @@ describe("SalesChannelService", () => {
   describe("Add products", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      featureFlagRouter: new FlagRouter({}),
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
@@ -386,7 +366,8 @@ describe("SalesChannelService", () => {
       expect(salesChannelRepositoryMock.addProducts).toHaveBeenCalledTimes(1)
       expect(salesChannelRepositoryMock.addProducts).toHaveBeenCalledWith(
         IdMap.getId("sales_channel_1"),
-        [IdMap.getId("sales_channel_1_product_1")]
+        [IdMap.getId("sales_channel_1_product_1")],
+        false
       )
       expect(salesChannel).toBeTruthy()
       expect(salesChannel).toEqual({

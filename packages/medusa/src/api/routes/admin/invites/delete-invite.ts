@@ -2,10 +2,10 @@ import { EntityManager } from "typeorm"
 import InviteService from "../../../../services/invite"
 
 /**
- * @oas [delete] /invites/{invite_id}
+ * @oas [delete] /admin/invites/{invite_id}
  * operationId: "DeleteInvitesInvite"
  * summary: "Delete an Invite"
- * description: "Deletes an Invite"
+ * description: "Delete an Invite. Only invites that weren't accepted can be deleted."
  * x-authenticated: true
  * parameters:
  *   - (path) invite_id=* {string} The ID of the Invite
@@ -18,20 +18,47 @@ import InviteService from "../../../../services/invite"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.invites.delete(invite_id)
+ *       medusa.admin.invites.delete(inviteId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteInvite } from "medusa-react"
+ *
+ *       type Props = {
+ *         inviteId: string
+ *       }
+ *
+ *       const DeleteInvite = ({ inviteId }: Props) => {
+ *         const deleteInvite = useAdminDeleteInvite(inviteId)
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteInvite.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Invite
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/invites/{invite_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/invites/{invite_id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Invite
+ *   - Invites
  * responses:
  *   200:
  *     description: OK

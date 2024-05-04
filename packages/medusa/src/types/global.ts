@@ -1,7 +1,6 @@
-import { AwilixContainer } from "awilix"
+import { CommonTypes } from "@medusajs/types"
 import { Request } from "express"
-import { LoggerOptions } from "typeorm"
-import { Logger as _Logger } from "winston"
+import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
 import { Customer, User } from "../models"
 import { FindConfig, RequestQueryFields } from "./common"
 
@@ -13,11 +12,48 @@ declare global {
       scope: MedusaContainer
       validatedQuery: RequestQueryFields & Record<string, unknown>
       validatedBody: unknown
-      listConfig: FindConfig<unknown>
-      retrieveConfig: FindConfig<unknown>
-      filterableFields: Record<string, unknown>
+      /**
+       * TODO: shouldn't this correspond to returnable fields instead of allowed fields? also it is used by the cleanResponseData util
+       */
       allowedProperties: string[]
+      /**
+       * An object containing the select, relation, skip, take and order to be used with medusa internal services
+       */
+      listConfig: FindConfig<unknown>
+      /**
+       * An object containing the select, relation to be used with medusa internal services
+       */
+      retrieveConfig: FindConfig<unknown>
+      /**
+       * An object containing fields and variables to be used with the remoteQuery
+       */
+      remoteQueryConfig: {
+        fields: string[]
+        pagination: {
+          order?: Record<string, string>
+          skip?: number
+          take?: number
+        }
+      }
+      /**
+       * An object containing the fields that are filterable e.g `{ id: Any<String> }`
+       */
+      filterableFields: Record<string, unknown>
+      includes?: Record<string, boolean>
+      /**
+       * An array of fields and relations that are allowed to be queried, this can be set by the
+       * consumer as part of a middleware and it will take precedence over the defaultAllowedFields
+       * @deprecated use `allowed` instead
+       */
+      allowedFields?: string[]
+      /**
+       * An array of fields and relations that are allowed to be queried, this can be set by the
+       * consumer as part of a middleware and it will take precedence over the defaultAllowedFields set
+       * by the api
+       */
+      allowed?: string[]
       errors: string[]
+      requestId?: string
     }
   }
 }
@@ -28,120 +64,24 @@ export type ClassConstructor<T> = {
   new (...args: unknown[]): T
 }
 
-export type MedusaContainer = AwilixContainer & {
-  registerAdd: <T>(name: string, registration: T) => MedusaContainer
-}
+export type MedusaContainer = coreMedusaContainer
 
-export type Logger = _Logger & {
-  progress: (activityId: string, msg: string) => void
-  info: (msg: string) => void
-  warn: (msg: string) => void
-}
-
-export enum MODULE_SCOPE {
-  INTERNAL = "internal",
-  EXTERNAL = "external",
-}
-
-export enum MODULE_RESOURCE_TYPE {
-  SHARED = "shared",
-  ISOLATED = "isolated",
-}
-
-export type ConfigurableModuleDeclaration = {
-  scope: MODULE_SCOPE.INTERNAL
-  resources: MODULE_RESOURCE_TYPE
-  resolve?: string
-  options?: Record<string, unknown>
-}
-/*
-| {
-    scope: MODULE_SCOPE.external
-    server: {
-      type: "built-in" | "rest" | "tsrpc" | "grpc" | "gql"
-      url: string
-      options?: Record<string, unknown>
-    }
-  }
-*/
-
-export type ModuleResolution = {
-  resolutionPath: string | false
-  definition: ModuleDefinition
-  options?: Record<string, unknown>
-  moduleDeclaration?: ConfigurableModuleDeclaration
-}
-
-export type ModuleDefinition = {
-  key: string
-  registrationName: string
-  defaultPackage: string | false
-  label: string
-  canOverride?: boolean
-  isRequired?: boolean
-  defaultModuleDeclaration: ConfigurableModuleDeclaration
-}
-
-export type LoaderOptions = {
-  container: MedusaContainer
-  configModule: ConfigModule
-  options?: Record<string, unknown>
-  logger?: Logger
+export type Logger = {
+  panic: (data) => void
+  shouldLog: (level: string) => void
+  setLogLevel: (level: string) => void
+  unsetLogLevel: () => void
+  activity: (message: string, config?) => void
+  progress: (activityId, message) => void
+  error: (messageOrError, error?) => void
+  failure: (activityId, message) => void
+  success: (activityId, message) => void
+  debug: (message) => void
+  info: (message) => void
+  warn: (message) => void
+  log: (...args) => void
 }
 
 export type Constructor<T> = new (...args: any[]) => T
 
-export type ModuleExports = {
-  loaders: ((
-    options: LoaderOptions,
-    moduleDeclaration?: ConfigurableModuleDeclaration
-  ) => Promise<void>)[]
-  service: Constructor<any>
-  migrations?: any[] // TODO: revisit migrations type
-  models?: Constructor<any>[]
-}
-
-type SessionOptions = {
-  name?: string
-  resave?: boolean
-  rolling?: boolean
-  saveUninitialized?: boolean
-  secret?: string
-  ttl?: number
-}
-
-export type ConfigModule = {
-  projectConfig: {
-    redis_url?: string
-
-    session_options?: SessionOptions
-
-    jwt_secret?: string
-    cookie_secret?: string
-
-    database_url?: string
-    database_type: string
-    database_database?: string
-    database_schema?: string
-    database_logging: LoggerOptions
-
-    database_extra?: Record<string, unknown> & {
-      ssl: { rejectUnauthorized: false }
-    }
-    store_cors?: string
-    admin_cors?: string
-  }
-  featureFlags: Record<string, boolean | string>
-  modules?: Record<
-    string,
-    false | string | Partial<ConfigurableModuleDeclaration>
-  >
-  moduleResolutions?: Record<string, ModuleResolution>
-  plugins: (
-    | {
-        resolve: string
-        options: Record<string, unknown>
-      }
-    | string
-  )[]
-}
+export type ConfigModule = CommonTypes.ConfigModule

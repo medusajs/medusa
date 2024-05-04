@@ -6,21 +6,21 @@ const {
   CustomerGroup,
 } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
-const discountSeeder = require("../../helpers/discount-seeder")
-const { simpleProductFactory } = require("../../factories")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const discountSeeder = require("../../../helpers/discount-seeder")
+const { simpleProductFactory } = require("../../../factories")
 const {
   simpleDiscountFactory,
-} = require("../../factories/simple-discount-factory")
+} = require("../../../factories/simple-discount-factory")
 
 jest.setTimeout(30000)
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -324,7 +324,7 @@ describe("/admin/discounts", () => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("invalid_data")
           expect(err.response.data.message).toEqual(
-            "type must be a valid enum value"
+            "type must be one of the following values: fixed, percentage, free_shipping"
           )
         })
     })
@@ -666,7 +666,7 @@ describe("/admin/discounts", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -770,7 +770,7 @@ describe("/admin/discounts", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1381,7 +1381,7 @@ describe("/admin/discounts", () => {
 
       const resultingDiscount = await api.get(
         "/admin/discounts/test-discount",
-        { headers: { Authorization: "Bearer test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       expect(resultingDiscount.status).toEqual(200)
@@ -1879,7 +1879,7 @@ describe("/admin/discounts", () => {
       const cond = discount.data.discount.rule.conditions[0]
 
       const response = await api.post(
-        `/admin/discounts/test-discount/conditions/${cond.id}?expand=rule,rule.conditions,rule.conditions.products`,
+        `/admin/discounts/test-discount/conditions/${cond.id}?expand=rule.conditions.products.profiles`,
         {
           products: [prod2.id],
         },
@@ -1911,6 +1911,8 @@ describe("/admin/discounts", () => {
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   profile_id: expect.any(String),
+                  profiles: expect.any(Array),
+                  profile: expect.any(Object),
                   type_id: expect.any(String),
                   id: "test-product",
                 },
@@ -2047,7 +2049,7 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       const discountCondition = await api.get(
-        "/admin/discounts/test-discount/conditions/test-condition?expand=products&fields=id,type",
+        "/admin/discounts/test-discount/conditions/test-condition?expand=products.profiles&fields=id,type",
         adminReqConfig
       )
 
@@ -2061,6 +2063,8 @@ describe("/admin/discounts", () => {
           {
             id: "test-product",
             profile_id: expect.any(String),
+            profiles: expect.any(Array),
+            profile: expect.any(Object),
             type_id: expect.any(String),
             created_at: expect.any(String),
             updated_at: expect.any(String),
@@ -2353,7 +2357,7 @@ describe("/admin/discounts", () => {
       const cond = discount.data.discount.rule.conditions[0]
 
       const response = await api.post(
-        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule,rule.conditions,rule.conditions.products`,
+        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule.conditions.products.profiles`,
         {
           resources: [{ id: prod2.id }, { id: prod3.id }],
         },
@@ -2490,7 +2494,7 @@ describe("/admin/discounts", () => {
       const cond = discount.data.discount.rule.conditions[0]
 
       const response = await api.delete(
-        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule,rule.conditions,rule.conditions.products`,
+        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule.conditions.products.profiles`,
         {
           ...adminReqConfig,
           data: {

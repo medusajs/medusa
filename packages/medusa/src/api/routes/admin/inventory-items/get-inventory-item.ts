@@ -1,18 +1,21 @@
-import { IInventoryService } from "../../../../interfaces"
+import { IInventoryService } from "@medusajs/types"
 import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
 import { joinLevels } from "./utils/join-levels"
 
 /**
- * @oas [get] /inventory-items/{id}
+ * @oas [get] /admin/inventory-items/{id}
  * operationId: "GetInventoryItemsInventoryItem"
- * summary: "Retrive an Inventory Item."
- * description: "Retrives an Inventory Item."
+ * summary: "Get an Inventory Item"
+ * description: "Retrieve an Inventory Item's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned inventory item.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned inventory item.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: AdminGetInventoryItemsItemParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -23,16 +26,43 @@ import { joinLevels } from "./utils/join-levels"
  *       medusa.admin.inventoryItems.retrieve(inventoryItemId)
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminInventoryItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         inventoryItemId: string
+ *       }
+ *
+ *       const InventoryItem = ({ inventoryItemId }: Props) => {
+ *         const {
+ *           inventory_item,
+ *           isLoading
+ *         } = useAdminInventoryItem(inventoryItemId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {inventory_item && (
+ *               <span>{inventory_item.sku}</span>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default InventoryItem
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json'
+ *       curl '{backend_url}/admin/inventory-items/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Inventory Items
  * responses:

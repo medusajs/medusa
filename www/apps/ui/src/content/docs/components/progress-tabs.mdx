@@ -1,0 +1,49 @@
+---
+title: "Progress Tabs"
+description: "A set of layered content panels, known as tabs, specifically designed for implementing multi-step tasks"
+component: true
+---
+
+<ComponentExample name="progress-tabs-demo" />
+
+## Usage
+
+---
+
+```tsx
+import { ProgressTabs } from "@medusajs/ui"
+```
+
+```tsx
+<ProgressTabs defaultValue="general">
+  <ProgressTabs.List>
+    <ProgressTabs.Trigger value="general">
+      General
+    </ProgressTabs.Trigger>
+    <ProgressTabs.Trigger value="shipping">
+        Shipping
+    </ProgressTabs.Trigger>
+    <ProgressTabs.Trigger value="payment">
+      Payment
+    </ProgressTabs.Trigger>
+  </ProgressTabs.List>
+  <ProgressTabs.Content value="general">
+    {/* Content */}
+  </ProgressTabs.Content>
+    <ProgressTabs.Content value="shipping">
+       {/* Content */}
+    </ProgressTabs.Content>
+    <ProgressTabs.Content value="payment">
+        {/* Content */}
+  </ProgressTabs.Content>
+</ProgressTabs>
+```
+
+## API Reference
+
+---
+
+<ComponentReference mainComponent="ProgressTabs" componentsToShow={[
+  "ProgressTabs",
+  "ProgressTabs.ProgressIndicator"
+]} />

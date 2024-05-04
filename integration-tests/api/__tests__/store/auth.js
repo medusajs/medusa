@@ -1,8 +1,8 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
 const { Customer } = require("@medusajs/medusa")
 
@@ -49,15 +49,18 @@ describe("/store/auth", () => {
 
     expect(response.status).toEqual(200)
     expect(response.data.customer.password_hash).toEqual(undefined)
-    expect(response.data.customer).toMatchSnapshot({
-      id: expect.any(String),
-      created_at: expect.any(String),
-      updated_at: expect.any(String),
-      first_name: "test",
-      last_name: "testesen",
-      phone: null,
-      email: "test@testesen.dk",
-    })
+    expect(response.data.customer).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        first_name: "test",
+        last_name: "testesen",
+        phone: null,
+        email: "test@testesen.dk",
+        shipping_addresses: expect.arrayContaining([]),
+      })
+    )
   })
 
   describe("Store session management", () => {
@@ -126,6 +129,27 @@ describe("/store/auth", () => {
       } catch (err) {
         expect(err.response.status).toEqual(401)
       }
+    })
+
+    it("creates customer JWT token correctly", async () => {
+      const api = useApi()
+
+      const authResponse = await api.post("/store/auth/token", {
+        email: "oli@test.dk",
+        password: "test",
+      })
+
+      const token = authResponse.data.access_token;
+
+      expect(token).toEqual(expect.any(String))
+
+      const me = await api.get("/store/auth", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      expect(me.status).toEqual(200)
     })
   })
 })

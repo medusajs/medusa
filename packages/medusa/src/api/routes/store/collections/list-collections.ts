@@ -5,16 +5,25 @@ import ProductCollectionService from "../../../../services/product-collection"
 import { Type } from "class-transformer"
 
 /**
- * @oas [get] /collections
+ * @oas [get] /store/collections
  * operationId: "GetCollections"
  * summary: "List Collections"
- * description: "Retrieve a list of Product Collection."
+ * description: "Retrieve a list of product collections. The product collections can be filtered by fields such as `handle` or `created_at`. The product collections can also be paginated."
  * parameters:
- *   - (query) offset=0 {integer} The number of collections to skip before starting to collect the collections set
- *   - (query) limit=10 {integer} The number of collections to return
+ *   - (query) offset=0 {integer} The number of product collections to skip when retrieving the product collections.
+ *   - (query) limit=10 {integer} Limit the number of product collections returned.
+ *   - in: query
+ *     name: handle
+ *     style: form
+ *     explode: false
+ *     description: Filter by handles
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting collections were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -36,7 +45,7 @@ import { Type } from "class-transformer"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting collections were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -68,13 +77,40 @@ import { Type } from "class-transformer"
  *       medusa.collections.list()
  *       .then(({ collections, limit, offset, count }) => {
  *         console.log(collections.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCollections } from "medusa-react"
+ *
+ *       const ProductCollections = () => {
+ *         const { collections, isLoading } = useCollections()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {collections && collections.length === 0 && (
+ *               <span>No Product Collections</span>
+ *             )}
+ *             {collections && collections.length > 0 && (
+ *               <ul>
+ *                 {collections.map((collection) => (
+ *                   <li key={collection.id}>{collection.title}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ProductCollections
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/collections'
+ *       curl '{backend_url}/store/collections'
  * tags:
- *   - Collection
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK
@@ -109,26 +145,46 @@ export default async (req, res) => {
   res.status(200).json({ collections, count, limit: take, offset: skip })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product collections.
+ */
 export class StoreGetCollectionsParams {
+  /**
+   * Handles to filter product collections by.
+   */
   @IsOptional()
   @IsArray()
   handle?: string[]
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 10
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit?: number = 10
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * Date filters to apply on the product collections' `created_at` date
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the product collections' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)

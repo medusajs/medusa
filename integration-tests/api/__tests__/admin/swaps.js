@@ -1,12 +1,12 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const orderSeeder = require("../../helpers/order-seeder")
-const swapSeeder = require("../../helpers/swap-seeder")
-const adminSeeder = require("../../helpers/admin-seeder")
+const orderSeeder = require("../../../helpers/order-seeder")
+const swapSeeder = require("../../../helpers/swap-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 const {
   simpleProductFactory,
@@ -14,15 +14,21 @@ const {
   simpleDiscountFactory,
   simpleRegionFactory,
   simpleShippingOptionFactory,
-} = require("../../factories")
+} = require("../../../factories")
 const {
   simpleCustomerFactory,
-} = require("../../factories/simple-customer-factory")
+} = require("../../../factories/simple-customer-factory")
 const {
   default: startServerWithEnvironment,
-} = require("../../../helpers/start-server-with-environment")
+} = require("../../../environment-helpers/start-server-with-environment")
 
 jest.setTimeout(30000)
+
+const adminHeaders = {
+  headers: {
+    "x-medusa-access-token": "test_token",
+  },
+}
 
 describe("/admin/swaps", () => {
   describe("tax exclusive", () => {
@@ -57,11 +63,7 @@ describe("/admin/swaps", () => {
         const api = useApi()
 
         const response = await api
-          .get("/admin/swaps/test-swap", {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          })
+          .get("/admin/swaps/test-swap", adminHeaders)
           .catch((err) => {
             console.log(err)
           })
@@ -88,11 +90,7 @@ describe("/admin/swaps", () => {
         const api = useApi()
 
         const response = await api
-          .get("/admin/swaps/disc-swap", {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          })
+          .get("/admin/swaps/disc-swap", adminHeaders)
           .catch((err) => {
             console.log(err)
           })
@@ -131,11 +129,7 @@ describe("/admin/swaps", () => {
         const api = useApi()
 
         const response = await api
-          .get("/admin/swaps/", {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          })
+          .get("/admin/swaps/", adminHeaders)
           .catch((err) => {
             console.log(err)
           })
@@ -149,6 +143,17 @@ describe("/admin/swaps", () => {
             id: "test-swap",
           })
         )
+      })
+
+      it("should list the swaps with correct pagination", async () => {
+        const api = useApi()
+
+        const response = await api.get("/admin/swaps?limit=5", adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toBe(8)
+        expect(response.data.limit).toBe(5)
+        expect(response.data.swaps.length).toBe(5)
       })
     })
 
@@ -268,11 +273,7 @@ describe("/admin/swaps", () => {
           {
             items: [{ item_id: "line-item", quantity: 1 }],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminHeaders
         )
 
         const fulfillmentId = fulfilledOrder.data.order.fulfillments[0].id
@@ -282,22 +283,10 @@ describe("/admin/swaps", () => {
           {
             fulfillment_id: fulfillmentId,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminHeaders
         )
 
-        await api.post(
-          `/admin/orders/${orderId}/capture`,
-          {},
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
+        await api.post(`/admin/orders/${orderId}/capture`, {}, adminHeaders)
 
         // ********* CREATE SWAP *********
         const createSwap = await api.post(
@@ -311,11 +300,7 @@ describe("/admin/swaps", () => {
             ],
             additional_items: [{ variant_id: "prod-b-var", quantity: 1 }],
           },
-          {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          }
+          adminHeaders
         )
 
         let swap = createSwap.data.order.swaps[0]
@@ -335,11 +320,7 @@ describe("/admin/swaps", () => {
         await api.post(`/store/carts/${swap.cart_id}/complete`)
 
         swap = await api
-          .get(`/admin/swaps/${swap.id}`, {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          })
+          .get(`/admin/swaps/${swap.id}`, adminHeaders)
           .catch((err) => {
             console.log(err)
           })
@@ -349,7 +330,7 @@ describe("/admin/swaps", () => {
           {}
         )
 
-        // ********* VALIDATE *********
+        // ********* VALIDATE  *********
         expect(swap.data.swap.difference_due).toBe(swapCart.data.cart.total)
       })
     })
@@ -495,11 +476,7 @@ describe("/admin/swaps", () => {
           {
             items: [{ item_id: "line-item", quantity: 1 }],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminHeaders
         )
 
         const fulfillmentId = fulfilledOrder.data.order.fulfillments[0].id
@@ -509,22 +486,10 @@ describe("/admin/swaps", () => {
           {
             fulfillment_id: fulfillmentId,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminHeaders
         )
 
-        await api.post(
-          `/admin/orders/${orderId}/capture`,
-          {},
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
+        await api.post(`/admin/orders/${orderId}/capture`, {}, adminHeaders)
 
         // ********* CREATE SWAP *********
         const createSwap = await api.post(
@@ -538,11 +503,7 @@ describe("/admin/swaps", () => {
             ],
             additional_items: [{ variant_id: "prod-b-var", quantity: 1 }],
           },
-          {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          }
+          adminHeaders
         )
 
         let swap = createSwap.data.order.swaps[0]
@@ -562,11 +523,7 @@ describe("/admin/swaps", () => {
         await api.post(`/store/carts/${swap.cart_id}/complete`)
 
         swap = await api
-          .get(`/admin/swaps/${swap.id}`, {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          })
+          .get(`/admin/swaps/${swap.id}`, adminHeaders)
           .catch((err) => {
             console.log(err)
           })

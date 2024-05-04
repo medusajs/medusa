@@ -1,8 +1,8 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { rest } from "msw"
-import { server } from "../../../../mocks/server"
-import { useShippingOptions, useCartShippingOptions } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../../../mocks/data"
+import { server } from "../../../../mocks/server"
+import { useCartShippingOptions, useShippingOptions } from "../../../../src/"
 import { createWrapper } from "../../../utils"
 
 describe("useShippingOptions hook", () => {

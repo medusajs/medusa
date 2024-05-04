@@ -8,15 +8,16 @@ import { Type } from "class-transformer"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [delete] /product-categories/{id}/products/batch
+ * @oas [delete] /admin/product-categories/{id}/products/batch
  * operationId: "DeleteProductCategoriesCategoryProductsBatch"
- * summary: "Delete Products"
+ * summary: "Remove Products from Category"
  * description: "Remove a list of products from a product category."
  * x-authenticated: true
+ * x-featureFlag: "product_categories"
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category.
- *   - (query) expand {string} (Comma separated) Category fields to be expanded in the response.
- *   - (query) fields {string} (Comma separated) Category fields to be retrieved in the response.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned product category.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned product category.
  * requestBody:
  *   content:
  *     application/json:
@@ -32,22 +33,60 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.productCategories.removeProducts(product_category_id, {
+ *       medusa.admin.productCategories.removeProducts(productCategoryId, {
  *         product_ids: [
  *           {
- *             id: product_id
+ *             id: productId
  *           }
  *         ]
  *       })
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteProductsFromCategory } from "medusa-react"
+ *
+ *       type ProductsData = {
+ *         id: string
+ *       }
+ *
+ *       type Props = {
+ *         productCategoryId: string
+ *       }
+ *
+ *       const Category = ({
+ *         productCategoryId
+ *       }: Props) => {
+ *         const deleteProducts = useAdminDeleteProductsFromCategory(
+ *           productCategoryId
+ *         )
+ *         // ...
+ *
+ *         const handleDeleteProducts = (
+ *           productIds: ProductsData[]
+ *         ) => {
+ *           deleteProducts.mutate({
+ *             product_ids: productIds
+ *           }, {
+ *             onSuccess: ({ product_category }) => {
+ *               console.log(product_category.products)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Category
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/product-categories/{id}/products/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE '{backend_url}/admin/product-categories/{id}/products/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
  *             {
@@ -58,8 +97,9 @@ import { FindParams } from "../../../../types/common"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *   "200":
  *     description: OK
@@ -109,11 +149,12 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminDeleteProductCategoriesCategoryProductsBatchReq
  * type: object
+ * description: "The details of the products to delete from the product category."
  * required:
  *   - product_ids
  * properties:
  *   product_ids:
- *     description: The IDs of the products to delete from the Product Category.
+ *     description: The IDs of the products to delete from the product category.
  *     type: array
  *     items:
  *       type: object

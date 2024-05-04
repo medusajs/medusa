@@ -101,8 +101,47 @@ export default (app) => {
 /**
  * @schema AdminOrderEditsRes
  * type: object
+ * description: "The order edit details."
+ * x-expanded-relations:
+ *   field: order_edit
+ *   relations:
+ *     - changes
+ *     - changes.line_item
+ *     - changes.line_item.variant
+ *     - changes.original_line_item
+ *     - changes.original_line_item.variant
+ *     - items
+ *     - items.adjustments
+ *     - items.tax_lines
+ *     - items.variant
+ *     - payment_collection
+ *   implicit:
+ *     - items
+ *     - items.tax_lines
+ *     - items.adjustments
+ *     - items.variant
+ *   totals:
+ *     - difference_due
+ *     - discount_total
+ *     - gift_card_tax_total
+ *     - gift_card_total
+ *     - shipping_total
+ *     - subtotal
+ *     - tax_total
+ *     - total
+ *     - items.discount_total
+ *     - items.gift_card_total
+ *     - items.original_tax_total
+ *     - items.original_total
+ *     - items.refundable
+ *     - items.subtotal
+ *     - items.tax_total
+ *     - items.total
+ * required:
+ *   - order_edit
  * properties:
  *   order_edit:
+ *     description: "Order edit details"
  *     $ref: "#/components/schemas/OrderEdit"
  */
 export type AdminOrderEditsRes = {
@@ -112,9 +151,51 @@ export type AdminOrderEditsRes = {
 /**
  * @schema AdminOrderEditsListRes
  * type: object
+ * description: "The list of order edits with pagination fields."
+ * x-expanded-relations:
+ *   field: order_edits
+ *   relations:
+ *     - changes
+ *     - changes.line_item
+ *     - changes.line_item.variant
+ *     - changes.original_line_item
+ *     - changes.original_line_item.variant
+ *     - items
+ *     - items.adjustments
+ *     - items.tax_lines
+ *     - items.variant
+ *     - payment_collection
+ *   implicit:
+ *     - items
+ *     - items.tax_lines
+ *     - items.adjustments
+ *     - items.variant
+ *   totals:
+ *     - difference_due
+ *     - discount_total
+ *     - gift_card_tax_total
+ *     - gift_card_total
+ *     - shipping_total
+ *     - subtotal
+ *     - tax_total
+ *     - total
+ *     - items.discount_total
+ *     - items.gift_card_total
+ *     - items.original_tax_total
+ *     - items.original_total
+ *     - items.refundable
+ *     - items.subtotal
+ *     - items.tax_total
+ *     - items.total
+ * required:
+ *   - order_edits
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   order_edits:
  *     type: array
+ *     description: "An array of order edit details"
  *     items:
  *       $ref: "#/components/schemas/OrderEdit"
  *   count:
@@ -122,7 +203,7 @@ export type AdminOrderEditsRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of order edits skipped when retrieving the order edits.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -134,6 +215,10 @@ export type AdminOrderEditsListRes = PaginatedResponse & {
 /**
  * @schema AdminOrderEditDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -152,6 +237,11 @@ export type AdminOrderEditDeleteRes = DeleteResponse
 /**
  * @schema AdminOrderEditItemChangeDeleteRes
  * type: object
+ * description: "The details of deleting order edit item changes."
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string

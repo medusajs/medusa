@@ -1,5 +1,3 @@
-import { Request, Response } from "express"
-import { AllocationType, DiscountConditionOperator } from "../../../../models"
 import {
   IsArray,
   IsBoolean,
@@ -13,25 +11,27 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { Request, Response } from "express"
+import { AllocationType, DiscountConditionOperator } from "../../../../models"
 
-import { AdminUpsertConditionsReq } from "../../../../types/discount"
-import DiscountService from "../../../../services/discount"
+import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
+import DiscountService from "../../../../services/discount"
+import { FindParams } from "../../../../types/common"
+import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
-import { Type } from "class-transformer"
-import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /discounts/{id}
+ * @oas [post] /admin/discounts/{id}
  * operationId: "PostDiscountsDiscount"
  * summary: "Update a Discount"
- * description: "Updates a Discount with a given set of rules that define how the Discount behaves."
+ * description: "Update a Discount with a given set of rules that define how the Discount is applied."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each item of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each item of the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned discount.
+ *   - (query) fields {string} Comma-separated fields that should be retrieved in the returned discount.
  * requestBody:
  *   content:
  *     application/json:
@@ -47,26 +47,51 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.update(discount_id, {
- *         code: 'TEST'
+ *       medusa.admin.discounts.update(discountId, {
+ *         code: "TEST"
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateDiscount } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const updateDiscount = useAdminUpdateDiscount(discountId)
+ *         // ...
+ *
+ *         const handleUpdate = (isDisabled: boolean) => {
+ *           updateDiscount.mutate({
+ *             is_disabled: isDisabled,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/discounts/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/discounts/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "code": "TEST"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Discount
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK
@@ -108,14 +133,59 @@ export default async (req: Request, res: Response) => {
 }
 
 /**
+ * The attributes of the discount rule to update.
+ */
+export class AdminUpdateDiscountRule {
+  /**
+   * The discount rule's ID.
+   */
+  @IsString()
+  @IsNotEmpty()
+  id: string
+
+  /**
+   * The discount rule's description.
+   */
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  /**
+   * The discount rule's value.
+   */
+  @IsNumber()
+  @IsOptional()
+  value?: number
+
+  /**
+   * The discount rule's allocation.
+   */
+  @IsOptional()
+  @IsEnum(AllocationType, {
+    message: `Invalid allocation type, must be one of "total" or "item"`,
+  })
+  allocation?: AllocationType
+
+  /**
+   * The discount rule's discount conditions.
+   */
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AdminUpsertCondition)
+  conditions?: AdminUpsertCondition[]
+}
+
+/**
  * @schema AdminPostDiscountsDiscountReq
  * type: object
+ * description: "The details of the discount to update."
  * properties:
  *   code:
  *     type: string
- *     description: A unique code that will be used to redeem the Discount
+ *     description: A unique code that will be used to redeem the discount
  *   rule:
- *     description: The Discount Rule that defines how Discounts are calculated
+ *     description: The discount rule that defines how discounts are calculated
  *     type: object
  *     required:
  *       - id
@@ -128,14 +198,15 @@ export default async (req: Request, res: Response) => {
  *         description: "A short description of the discount"
  *       value:
  *         type: number
- *         description: "The value that the discount represents; this will depend on the type of the discount"
+ *         description: "The value that the discount represents. This will depend on the type of the discount."
  *       allocation:
  *         type: string
- *         description: "The scope that the discount should apply to."
+ *         description: >-
+ *           The scope that the discount should apply to. `total` indicates that the discount should be applied on the cart total, and `item` indicates that the discount should be applied to each discountable item in the cart.
  *         enum: [total, item]
  *       conditions:
  *         type: array
- *         description: "A set of conditions that can be used to limit when the discount can be used. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided."
+ *         description: "A set of conditions that can be used to limit when the discount can be used. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided based on the discount condition's type."
  *         items:
  *           type: object
  *           required:
@@ -143,62 +214,68 @@ export default async (req: Request, res: Response) => {
  *           properties:
  *             id:
  *               type: string
- *               description: "The ID of the Rule"
+ *               description: "The ID of the condition"
  *             operator:
  *               type: string
- *               description: Operator of the condition
+ *               description: >-
+ *                 Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
+ *                 discountable resources are everything but the specified resources.
  *               enum: [in, not_in]
  *             products:
  *               type: array
- *               description: list of product IDs if the condition is applied on products.
+ *               description: list of product IDs if the condition's type is `products`.
  *               items:
  *                 type: string
  *             product_types:
  *               type: array
- *               description: list of product type IDs if the condition is applied on product types.
+ *               description: list of product type IDs if the condition's type is `product_types`.
  *               items:
  *                 type: string
  *             product_collections:
  *               type: array
- *               description: list of product collection IDs if the condition is applied on product collections.
+ *               description: list of product collection IDs if the condition's type is `product_collections`.
  *               items:
  *                 type: string
  *             product_tags:
  *               type: array
- *               description: list of product tag IDs if the condition is applied on product tags.
+ *               description: list of product tag IDs if the condition's type is `product_tags`.
  *               items:
  *                 type: string
  *             customer_groups:
  *               type: array
- *               description: list of customer group IDs if the condition is applied on customer groups.
+ *               description: list of customer group IDs if the condition's type is `customer_groups`.
  *               items:
  *                 type: string
  *   is_disabled:
  *     type: boolean
- *     description: Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers.
+ *     description: >-
+ *       Whether the discount code is disabled on creation. If set to `true`, it will not be available for customers.
  *   starts_at:
  *     type: string
  *     format: date-time
- *     description: The time at which the Discount should be available.
+ *     description: The date and time at which the discount should be available.
  *   ends_at:
  *     type: string
  *     format: date-time
- *     description: The time at which the Discount should no longer be available.
+ *     description: The date and time at which the discount should no longer be available.
  *   valid_duration:
  *     type: string
- *     description: Duration the discount runs between
+ *     description: The duration the discount runs between
  *     example: P3Y6M4DT12H30M5S
  *   usage_limit:
  *     type: number
- *     description: Maximum times the discount can be used
+ *     description: Maximum number of times the discount can be used
  *   regions:
- *     description: A list of Region ids representing the Regions in which the Discount can be used.
+ *     description: A list of region IDs representing the Regions in which the Discount can be used.
  *     type: array
  *     items:
  *       type: string
  *   metadata:
  *      description: An object containing metadata of the discount
  *      type: object
+ *      externalDocs:
+ *        description: "Learn about the metadata attribute, and how to delete and update it."
+ *        url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostDiscountsDiscountReq {
   @IsString()
@@ -244,37 +321,20 @@ export class AdminPostDiscountsDiscountReq {
   metadata?: Record<string, unknown>
 }
 
-export class AdminUpdateDiscountRule {
-  @IsString()
-  @IsNotEmpty()
-  id: string
-
-  @IsString()
-  @IsOptional()
-  description?: string
-
-  @IsNumber()
-  @IsOptional()
-  value?: number
-
-  @IsOptional()
-  @IsEnum(AllocationType, {
-    message: `Invalid allocation type, must be one of "total" or "item"`,
-  })
-  allocation?: AllocationType
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => AdminUpsertCondition)
-  conditions?: AdminUpsertCondition[]
-}
-
+/**
+ * The attributes to create or update in the discount condition.
+ */
 export class AdminUpsertCondition extends AdminUpsertConditionsReq {
+  /**
+   * The discount condition's ID.
+   */
   @IsString()
   @IsOptional()
   id?: string
 
+  /**
+   * The discount condition's operator.
+   */
   @IsString()
   @IsOptional()
   operator: DiscountConditionOperator

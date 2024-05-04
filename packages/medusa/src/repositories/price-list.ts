@@ -1,127 +1,83 @@
-import { groupBy, map } from "lodash"
-import {
-  Brackets,
-  EntityRepository,
-  FindManyOptions,
-  FindOperator,
-  Repository,
-} from "typeorm"
-import { PriceList } from "../models/price-list"
-import { CustomFindOptions, ExtendedFindConfig } from "../types/common"
-import { FilterablePriceListProps } from "../types/price-list"
+import { FindOperator, FindOptionsWhere, ILike, In } from "typeorm"
+import { PriceList, ProductVariantMoneyAmount } from "../models"
+import { ExtendedFindConfig } from "../types/common"
+import { dataSource } from "../loaders/database"
+import { promiseAll } from "@medusajs/utils"
 
-export type PriceListFindOptions = CustomFindOptions<
-  PriceList,
-  "status" | "type"
->
-
-@EntityRepository(PriceList)
-export class PriceListRepository extends Repository<PriceList> {
-  public async getFreeTextSearchResultsAndCount(
-    q: string,
-    options: PriceListFindOptions = { where: {} },
-    groups: FindOperator<string[]>,
-    relations: string[] = []
+export const PriceListRepository = dataSource.getRepository(PriceList).extend({
+  async listAndCount(
+    query: ExtendedFindConfig<PriceList>,
+    q?: string
   ): Promise<[PriceList[], number]> {
-    options.where = options.where ?? {}
+    const query_ = { ...query }
+    query_.relationLoadStrategy = "query"
+    query_.where = query.where as FindOptionsWhere<PriceList>
 
-    const qb = this.createQueryBuilder("price_list")
-      .leftJoinAndSelect("price_list.customer_groups", "customer_group")
-      .select(["price_list.id"])
-      .where(options.where)
-      .andWhere(
-        new Brackets((qb) => {
-          qb.where(`price_list.description ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`price_list.name ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`customer_group.name ILIKE :q`, { q: `%${q}%` })
-        })
-      )
-      .skip(options.skip)
-      .take(options.take)
+    const groups = query_.where.customer_groups as unknown as FindOperator<
+      string[]
+    >
+    delete query_.where.customer_groups
 
-    if (groups) {
-      qb.andWhere("group.id IN (:...ids)", { ids: groups.value })
-    }
+    if (groups || q) {
+      query_.relations = query_.relations ?? {}
+      query_.relations.customer_groups =
+        query_.relations.customer_groups ?? true
 
-    const [results, count] = await qb.getManyAndCount()
-
-    const price_lists = await this.findWithRelations(
-      relations,
-      results.map((r) => r.id)
-    )
-
-    return [price_lists, count]
-  }
-
-  public async findWithRelations(
-    relations: string[] = [],
-    idsOrOptionsWithoutRelations:
-      | Omit<FindManyOptions<PriceList>, "relations">
-      | string[] = {}
-  ): Promise<PriceList[]> {
-    let entities
-    if (Array.isArray(idsOrOptionsWithoutRelations)) {
-      entities = await this.findByIds(idsOrOptionsWithoutRelations)
-    } else {
-      entities = await this.find(idsOrOptionsWithoutRelations)
-    }
-    const groupedRelations: Record<string, string[]> = {}
-    for (const relation of relations) {
-      const [topLevel] = relation.split(".")
-      if (groupedRelations[topLevel]) {
-        groupedRelations[topLevel].push(relation)
-      } else {
-        groupedRelations[topLevel] = [relation]
+      if (groups) {
+        query_.where.customer_groups = {
+          id: In(groups.value),
+        }
       }
     }
-    const entitiesIds = entities.map(({ id }) => id)
-    const entitiesIdsWithRelations = await Promise.all(
-      Object.values(groupedRelations).map(async (relations: string[]) => {
-        return this.findByIds(entitiesIds, {
-          select: ["id"],
-          relations: relations as string[],
-        })
-      })
-    ).then((entitiesIdsWithRelations) => entitiesIdsWithRelations.flat())
-    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
 
-    const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return map(entitiesAndRelationsById, (entityAndRelations) =>
-      this.merge(this.create(), ...entityAndRelations)
-    )
-  }
+    if (q) {
+      const groupsWhere = query_.where.customer_groups ?? {}
 
-  public async findOneWithRelations(
-    relations: (keyof PriceList)[] = [],
-    options: Omit<FindManyOptions<PriceList>, "relations"> = {}
-  ): Promise<PriceList | undefined> {
-    options.take = 1
+      query_.where = query_.where ?? {}
+      query_.where = [
+        {
+          ...query_.where,
+          name: ILike(`%${q}%`),
+        },
+        {
+          ...query_.where,
+          description: ILike(`%${q}%`),
+        },
+        {
+          ...query_.where,
+          customer_groups: {
+            ...groupsWhere,
+            name: ILike(`%${q}%`),
+          },
+        },
+      ]
+    }
 
-    return (await this.findWithRelations(relations, options))?.pop()
-  }
+    return await promiseAll([this.find(query_), this.count(query_)])
+  },
 
-  async listAndCount(
-    query: ExtendedFindConfig<FilterablePriceListProps>,
-    groups: FindOperator<string[]>
-  ): Promise<[PriceList[], number]> {
-    const qb = this.createQueryBuilder("price_list")
-      .where(query.where)
-      .skip(query.skip)
-      .take(query.take)
+  async listPriceListsVariantIdsMap(
+    priceListIds: string | string[]
+  ): Promise<{ [priceListId: string]: string[] }> {
+    priceListIds = Array.isArray(priceListIds) ? priceListIds : [priceListIds]
 
-    if (groups) {
-      qb.leftJoinAndSelect("price_list.customer_groups", "group").andWhere(
-        "group.id IN (:...ids)",
-        { ids: groups.value }
+    const data = await this.createQueryBuilder("pl")
+      .innerJoin("pl.prices", "prices")
+      .innerJoinAndSelect(
+        ProductVariantMoneyAmount,
+        "pvma",
+        "pvma.money_amount_id = prices.id"
       )
-    }
+      .where("pl.id IN (:...ids)", { ids: priceListIds })
+      .execute()
 
-    if (query.relations?.length) {
-      query.relations.forEach((rel) => {
-        qb.leftJoinAndSelect(`price_list.${rel}`, rel)
-      })
-    }
+    return data.reduce((acc, curr) => {
+      acc[curr["pl_id"]] ??= []
+      acc[curr["pl_id"]].push(curr["pvma_variant_id"])
+      acc[curr["pl_id"]] = [...new Set(acc[curr["pl_id"]])]
+      return acc
+    }, {})
+  },
+})
 
-    return await qb.getManyAndCount()
-  }
-}
+export default PriceListRepository

@@ -8,10 +8,10 @@ import { ValidateNested } from "class-validator"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customer-groups/{id}/customers/batch
+ * @oas [post] /admin/customer-groups/{id}/customers/batch
  * operationId: "PostCustomerGroupsGroupCustomersBatch"
- * summary: "Add Customers"
- * description: "Adds a list of customers, represented by id's, to a customer group."
+ * summary: "Add Customers to Group"
+ * description: "Add a list of customers to a customer group."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the customer group.
@@ -29,22 +29,54 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.customerGroups.addCustomers(customer_group_id, {
+ *       medusa.admin.customerGroups.addCustomers(customerGroupId, {
  *         customer_ids: [
  *           {
- *             id: customer_id
+ *             id: customerId
  *           }
  *         ]
  *       })
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminAddCustomersToCustomerGroup,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerGroupId: string
+ *       }
+ *
+ *       const CustomerGroup = ({ customerGroupId }: Props) => {
+ *         const addCustomers = useAdminAddCustomersToCustomerGroup(
+ *           customerGroupId
+ *         )
+ *         // ...
+ *
+ *         const handleAddCustomers= (customerId: string) => {
+ *           addCustomers.mutate({
+ *             customer_ids: [
+ *               {
+ *                 id: customerId,
+ *               },
+ *             ],
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CustomerGroup
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/customer-groups/{id}/customers/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/customer-groups/{id}/customers/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "customer_ids": [
  *               {
@@ -55,8 +87,9 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Customer Group
+ *   - Customer Groups
  * responses:
  *   200:
  *     description: OK
@@ -107,6 +140,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostCustomerGroupsGroupCustomersBatchReq
  * type: object
+ * description: "The customers to add to the customer group."
  * required:
  *   - customer_ids
  * properties:

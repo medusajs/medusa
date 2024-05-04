@@ -1,15 +1,16 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
+import { FindParams } from "../../../../types/common"
 import middlewares, {
   transformBody,
-  transformQuery,
+  transformStoreQuery,
 } from "../../../middlewares"
 import requireCustomerAuthentication from "../../../middlewares/require-customer-authentication"
-import { StorePostCustomersCustomerOrderClaimReq } from "./request-order"
 import { StorePostCustomersCustomerAcceptClaimReq } from "./confirm-order-request"
 import { StoreGetOrderParams } from "./get-order"
 import { StoreGetOrdersParams } from "./lookup-order"
+import { StorePostCustomersCustomerOrderClaimReq } from "./request-order"
 
 const route = Router()
 
@@ -21,7 +22,7 @@ export default (app) => {
    */
   route.get(
     "/",
-    transformQuery(StoreGetOrdersParams, {
+    transformStoreQuery(StoreGetOrdersParams, {
       defaultFields: defaultStoreOrdersFields,
       defaultRelations: defaultStoreOrdersRelations,
       allowedFields: allowedStoreOrdersFields,
@@ -36,7 +37,7 @@ export default (app) => {
    */
   route.get(
     "/:id",
-    transformQuery(StoreGetOrderParams, {
+    transformStoreQuery(StoreGetOrderParams, {
       defaultFields: defaultStoreOrdersFields,
       defaultRelations: defaultStoreOrdersRelations,
       allowedFields: allowedStoreOrdersFields,
@@ -50,6 +51,12 @@ export default (app) => {
    */
   route.get(
     "/cart/:cart_id",
+    transformStoreQuery(FindParams, {
+      defaultFields: defaultStoreOrdersFields,
+      defaultRelations: defaultStoreOrdersRelations,
+      allowedFields: allowedStoreOrdersFields,
+      allowedRelations: allowedStoreOrdersRelations,
+    }),
     middlewares.wrap(require("./get-order-by-cart").default)
   )
 
@@ -75,8 +82,8 @@ export const defaultStoreOrdersRelations = [
   "fulfillments.tracking_links",
   "items",
   "items.variant",
-  "items.variant.product",
   "shipping_methods",
+  "shipping_methods.shipping_option",
   "discounts",
   "discounts.rule",
   "customer",
@@ -102,14 +109,6 @@ export const defaultStoreOrdersFields = [
   "currency_code",
   "tax_rate",
   "created_at",
-  "shipping_total",
-  "discount_total",
-  "tax_total",
-  "items.refundable",
-  "refunded_total",
-  "gift_card_total",
-  "subtotal",
-  "total",
 ] as (keyof Order)[]
 
 export const allowedStoreOrdersFields = [
@@ -125,19 +124,105 @@ export const allowedStoreOrdersFields = [
   "refundable_amount",
   "gift_card_total",
   "gift_card_tax_total",
+  "items.refundable",
 ]
 
 /**
  * @schema StoreOrdersRes
  * type: object
+ * description: "The order's details."
+ * required:
+ *   - order
+ * x-expanded-relations:
+ *   field: order
+ *   relations:
+ *     - customer
+ *     - discounts
+ *     - discounts.rule
+ *     - fulfillments
+ *     - fulfillments.tracking_links
+ *     - items
+ *     - items.variant
+ *     - payments
+ *     - region
+ *     - shipping_address
+ *     - shipping_methods
+ *   eager:
+ *     - fulfillments.items
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
+ *     - shipping_methods.shipping_option
+ *   implicit:
+ *     - claims
+ *     - claims.additional_items
+ *     - claims.additional_items.adjustments
+ *     - claims.additional_items.refundable
+ *     - claims.additional_items.tax_lines
+ *     - discounts
+ *     - discounts.rule
+ *     - gift_card_transactions
+ *     - gift_card_transactions.gift_card
+ *     - gift_cards
+ *     - items
+ *     - items.adjustments
+ *     - items.refundable
+ *     - items.tax_lines
+ *     - items.variant
+ *     - items.variant.product
+ *     - items.variant.product.profiles
+ *     - refunds
+ *     - region
+ *     - shipping_methods
+ *     - shipping_methods.tax_lines
+ *     - swaps
+ *     - swaps.additional_items
+ *     - swaps.additional_items.adjustments
+ *     - swaps.additional_items.refundable
+ *     - swaps.additional_items.tax_lines
+ *   totals:
+ *     - discount_total
+ *     - gift_card_tax_total
+ *     - gift_card_total
+ *     - paid_total
+ *     - refundable_amount
+ *     - refunded_total
+ *     - shipping_total
+ *     - subtotal
+ *     - tax_total
+ *     - total
+ *     - claims.additional_items.discount_total
+ *     - claims.additional_items.gift_card_total
+ *     - claims.additional_items.original_tax_total
+ *     - claims.additional_items.original_total
+ *     - claims.additional_items.refundable
+ *     - claims.additional_items.subtotal
+ *     - claims.additional_items.tax_total
+ *     - claims.additional_items.total
+ *     - items.discount_total
+ *     - items.gift_card_total
+ *     - items.original_tax_total
+ *     - items.original_total
+ *     - items.refundable
+ *     - items.subtotal
+ *     - items.tax_total
+ *     - items.total
+ *     - swaps.additional_items.discount_total
+ *     - swaps.additional_items.gift_card_total
+ *     - swaps.additional_items.original_tax_total
+ *     - swaps.additional_items.original_total
+ *     - swaps.additional_items.refundable
+ *     - swaps.additional_items.subtotal
+ *     - swaps.additional_items.tax_total
+ *     - swaps.additional_items.total
  * properties:
  *   order:
+ *     description: "Order details."
  *     $ref: "#/components/schemas/Order"
  */
 export type StoreOrdersRes = {
   order: Order
 }
 
-export * from "./lookup-order"
 export * from "./confirm-order-request"
+export * from "./lookup-order"
 export * from "./request-order"

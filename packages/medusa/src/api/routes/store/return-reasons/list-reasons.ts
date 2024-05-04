@@ -5,10 +5,10 @@ import {
 import ReturnReasonService from "../../../../services/return-reason"
 
 /**
- * @oas [get] /return-reasons
+ * @oas [get] /store/return-reasons
  * operationId: "GetReturnReasons"
  * summary: "List Return Reasons"
- * description: "Retrieves a list of Return Reasons."
+ * description: "Retrieve a list of Return Reasons. This is useful when implementing a Create Return flow in the storefront."
  * x-codegen:
  *   method: list
  * x-codeSamples:
@@ -20,13 +20,42 @@ import ReturnReasonService from "../../../../services/return-reason"
  *       medusa.returnReasons.list()
  *       .then(({ return_reasons }) => {
  *         console.log(return_reasons.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useReturnReasons } from "medusa-react"
+ *
+ *       const ReturnReasons = () => {
+ *         const {
+ *           return_reasons,
+ *           isLoading
+ *         } = useReturnReasons()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {return_reasons?.length && (
+ *               <ul>
+ *                 {return_reasons.map((returnReason) => (
+ *                   <li key={returnReason.id}>
+ *                     {returnReason.label}
+ *                   </li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ReturnReasons
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/return-reasons'
+ *       curl '{backend_url}/store/return-reasons'
  * tags:
- *   - Return Reason
+ *   - Return Reasons
  * responses:
  *   200:
  *     description: OK

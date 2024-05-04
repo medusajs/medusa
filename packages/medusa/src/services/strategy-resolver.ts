@@ -8,12 +8,8 @@ type InjectedDependencies = {
 }
 
 export default class StrategyResolver extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor(protected readonly container: InjectedDependencies) {
     super(container)
-    this.manager_ = container.manager
   }
 
   resolveBatchJobByType(type: string): AbstractBatchJobStrategy {

@@ -7,10 +7,10 @@ import { SalesChannelService } from "../../../../services"
 import { Type } from "class-transformer"
 
 /**
- * @oas [delete] /sales-channels/{id}/products/batch
+ * @oas [delete] /admin/sales-channels/{id}/products/batch
  * operationId: "DeleteSalesChannelsChannelProductsBatch"
- * summary: "Delete Products"
- * description: "Remove a list of products from a sales channel."
+ * summary: "Remove Products from Sales Channel"
+ * description: "Remove a list of products from a sales channel. This does not delete the product. It only removes the association between the product and the sales channel."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales Channel
@@ -28,22 +28,58 @@ import { Type } from "class-transformer"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.salesChannels.removeProducts(sales_channel_id, {
+ *       medusa.admin.salesChannels.removeProducts(salesChannelId, {
  *         product_ids: [
  *           {
- *             id: product_id
+ *             id: productId
  *           }
  *         ]
  *       })
  *       .then(({ sales_channel }) => {
- *         console.log(sales_channel.id);
- *       });
+ *         console.log(sales_channel.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminDeleteProductsFromSalesChannel,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         salesChannelId: string
+ *       }
+ *
+ *       const SalesChannel = ({ salesChannelId }: Props) => {
+ *         const deleteProducts = useAdminDeleteProductsFromSalesChannel(
+ *           salesChannelId
+ *         )
+ *         // ...
+ *
+ *         const handleDeleteProducts = (productId: string) => {
+ *           deleteProducts.mutate({
+ *             product_ids: [
+ *               {
+ *                 id: productId,
+ *               },
+ *             ],
+ *           }, {
+ *             onSuccess: ({ sales_channel }) => {
+ *               console.log(sales_channel.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default SalesChannel
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/sales-channels/{id}/products/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE '{backend_url}/admin/sales-channels/{id}/products/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
  *             {
@@ -54,8 +90,9 @@ import { Type } from "class-transformer"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Sales Channel
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK
@@ -102,11 +139,12 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminDeleteSalesChannelsChannelProductsBatchReq
  * type: object
+ * description: "The details of the products to delete from the sales channel."
  * required:
  *   - product_ids
  * properties:
  *   product_ids:
- *     description: The IDs of the products to delete from the Sales Channel.
+ *     description: The IDs of the products to remove from the sales channel.
  *     type: array
  *     items:
  *       type: object

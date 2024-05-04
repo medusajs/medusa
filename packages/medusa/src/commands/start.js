@@ -2,6 +2,7 @@ import "core-js/stable"
 import "regenerator-runtime/runtime"
 
 import express from "express"
+import { GracefulShutdownServer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
@@ -17,22 +18,54 @@ export default async function ({ port, directory }) {
 
     const app = express()
 
-    const { dbConnection } = await loaders({ directory, expressApp: app })
-    const serverActivity = Logger.activity(`Creating server`)
-    const server = app.listen(port, (err) => {
-      if (err) {
-        return
+    try {
+      const { dbConnection, shutdown, prepareShutdown } = await loaders({
+        directory,
+        expressApp: app,
+      })
+
+      const serverActivity = Logger.activity(`Creating server`)
+      const server = GracefulShutdownServer.create(
+        app.listen(port, (err) => {
+          if (err) {
+            return
+          }
+          Logger.success(serverActivity, `Server is ready on port: ${port}`)
+          track("CLI_START_COMPLETED")
+        })
+      )
+
+      // Handle graceful shutdown
+      const gracefulShutDown = () => {
+        Logger.info("Gracefully shutting down server")
+        server
+          .shutdown()
+          .then(async () => {
+            return await prepareShutdown()
+          })
+          .then(async () => {
+            await shutdown()
+            process.exit(0)
+          })
+          .catch((e) => {
+            Logger.error("Error received when shutting down the server.", e)
+            process.exit(1)
+          })
       }
-      Logger.success(serverActivity, `Server is ready on port: ${port}`)
-      track("CLI_START_COMPLETED")
-    })
 
-    scheduleJob(CRON_SCHEDULE, () => {
-      track("PING")
-    })
+      process.on("SIGTERM", gracefulShutDown)
+      process.on("SIGINT", gracefulShutDown)
 
-    return { dbConnection, server }
+      scheduleJob(CRON_SCHEDULE, () => {
+        track("PING")
+      })
+
+      return { dbConnection, server }
+    } catch (err) {
+      Logger.error("Error starting server", err)
+      process.exit(1)
+    }
   }
 
-  const { dbConnection, server } = await start()
+  await start()
 }

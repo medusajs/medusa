@@ -3,15 +3,15 @@ import { OrderEditService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /order-edits/{id}
+ * @oas [get] /admin/order-edits/{id}
  * operationId: "GetOrderEditsOrderEdit"
- * summary: "Get an OrderEdit"
- * description: "Retrieves a OrderEdit."
+ * summary: "Get an Order Edit"
+ * description: "Retrieve an Order Edit's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in each returned order edit.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order edit.
  * x-codegen:
  *   method: retrieve
  *   queryParams: GetOrderEditsOrderEditParams
@@ -23,19 +23,45 @@ import { FindParams } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.retrieve(orderEditId)
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminOrderEdit } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *       }
+ *
+ *       const OrderEdit = ({ orderEditId }: Props) => {
+ *         const {
+ *           order_edit,
+ *           isLoading,
+ *         } = useAdminOrderEdit(orderEditId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {order_edit && <span>{order_edit.status}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default OrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/order-edits/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/order-edits/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

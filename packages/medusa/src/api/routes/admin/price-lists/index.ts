@@ -1,20 +1,22 @@
-import { Router } from "express"
 import "reflect-metadata"
+
 import { PriceList, Product } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { AdminGetPriceListPaginationParams } from "./list-price-lists"
-import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
 import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "../products"
-import { AdminPostPriceListsPriceListReq } from "./create-price-list"
-import { FlagRouter } from "../../../../utils/flag-router"
+
+import { FlagRouter } from "@medusajs/utils"
+import { Router } from "express"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { AdminPostPriceListsPriceListReq } from "./create-price-list"
+import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
+import { AdminGetPriceListPaginationParams } from "./list-price-lists"
 
 const route = Router()
 
@@ -50,6 +52,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
     "/:id/products/:product_id/prices",
     middlewares.wrap(require("./delete-product-prices").default)
   )
+
+  route.delete(
+    "/:id/products/prices/batch",
+    middlewares.wrap(require("./delete-products-prices-batch").default)
+  )
+
   route.delete(
     "/:id/variants/:variant_id/prices",
     middlewares.wrap(require("./delete-variant-prices").default)
@@ -91,13 +99,26 @@ export const defaultAdminPriceListFields = [
   "deleted_at",
 ]
 
-export const defaultAdminPriceListRelations = ["prices", "customer_groups"]
+export const defaultAdminPriceListRelations = [
+  "prices",
+  "prices.variants",
+  "customer_groups",
+]
 
 /**
  * @schema AdminPriceListRes
  * type: object
+ * description: "The price list's details."
+ * x-expanded-relations:
+ *   field: price_list
+ *   relations:
+ *     - customer_groups
+ *     - prices
+ * required:
+ *   - price_list
  * properties:
  *   price_list:
+ *     description: "Price List details."
  *     $ref: "#/components/schemas/PriceList"
  */
 export type AdminPriceListRes = {
@@ -107,15 +128,21 @@ export type AdminPriceListRes = {
 /**
  * @schema AdminPriceListDeleteBatchRes
  * type: object
+ * description: "The details of deleting a price list."
+ * required:
+ *   - ids
+ *   - object
+ *   - deleted
  * properties:
  *   ids:
  *     type: array
+ *     description: The IDs of the deleted prices.
  *     items:
  *       type: string
- *       description: The IDs of the deleted Money Amounts (Prices).
+ *       description: The ID of a deleted price.
  *   object:
  *     type: string
- *     description: The type of the object that was deleted.
+ *     description: The type of the object that was deleted. A price is also named `money-amount`.
  *     default: money-amount
  *   deleted:
  *     type: boolean
@@ -131,15 +158,19 @@ export type AdminPriceListDeleteBatchRes = {
 /**
  * @schema AdminPriceListDeleteProductPricesRes
  * type: object
+ * required:
+ *   - ids
+ *   - object
+ *   - deleted
  * properties:
  *    ids:
  *     type: array
- *     description: The price ids that have been deleted.
+ *     description: The IDs of the deleted prices.
  *     items:
  *       type: string
  *    object:
  *      type: string
- *      description: The type of the object that was deleted.
+ *      description: The type of the object that was deleted. A price is also named `money-amount`.
  *      default: money-amount
  *    deleted:
  *      type: boolean
@@ -151,15 +182,19 @@ export type AdminPriceListDeleteProductPricesRes = AdminPriceListDeleteBatchRes
 /**
  * @schema AdminPriceListDeleteVariantPricesRes
  * type: object
+ * required:
+ *   - ids
+ *   - object
+ *   - deleted
  * properties:
  *    ids:
  *     type: array
- *     description: The price ids that have been deleted.
+ *     description: The IDs of the deleted prices.
  *     items:
  *       type: string
  *    object:
  *      type: string
- *      description: The type of the object that was deleted.
+ *      description: The type of the object that was deleted. A price is also named `money-amount`.
  *      default: money-amount
  *    deleted:
  *      type: boolean
@@ -171,6 +206,10 @@ export type AdminPriceListDeleteVariantPricesRes = AdminPriceListDeleteBatchRes
 /**
  * @schema AdminPriceListDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -189,9 +228,16 @@ export type AdminPriceListDeleteRes = DeleteResponse
 /**
  * @schema AdminPriceListsListRes
  * type: object
+ * description: "The list of price lists with pagination fields."
+ * required:
+ *   - price_lists
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   price_lists:
  *    type: array
+ *    description: "An array of price lists details."
  *    items:
  *      $ref: "#/components/schemas/PriceList"
  *   count:
@@ -199,7 +245,7 @@ export type AdminPriceListDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of price lists skipped when retrieving the price lists.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -211,9 +257,27 @@ export type AdminPriceListsListRes = PaginatedResponse & {
 /**
  * @schema AdminPriceListsProductsListRes
  * type: object
+ * description: "The list of products with pagination fields."
+ * x-expanded-relations:
+ *   field: products
+ *   relations:
+ *     - categories
+ *     - collection
+ *     - images
+ *     - options
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ * required:
+ *   - products
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   products:
  *     type: array
+ *     description: "An array of products details."
  *     items:
  *       $ref: "#/components/schemas/Product"
  *   count:
@@ -221,7 +285,7 @@ export type AdminPriceListsListRes = PaginatedResponse & {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of price lists skipped when retrieving the price lists.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -233,8 +297,9 @@ export type AdminPriceListsProductsListRes = PaginatedResponse & {
 export * from "./add-prices-batch"
 export * from "./create-price-list"
 export * from "./delete-price-list"
+export * from "./delete-prices-batch"
+export * from "./delete-products-prices-batch"
 export * from "./get-price-list"
+export * from "./list-price-list-products"
 export * from "./list-price-lists"
 export * from "./update-price-list"
-export * from "./delete-prices-batch"
-export * from "./list-price-list-products"

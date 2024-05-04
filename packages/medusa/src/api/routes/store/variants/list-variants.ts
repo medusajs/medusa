@@ -1,4 +1,3 @@
-import { IsInt, IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -6,43 +5,74 @@ import {
   ProductVariantService,
   RegionService,
 } from "../../../../services"
+import { IsInt, IsOptional, IsString } from "class-validator"
 
-import { Type } from "class-transformer"
-import { omit } from "lodash"
-import { defaultStoreVariantRelations } from "."
+import { IsType } from "../../../../utils/validators/is-type"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { FilterableProductVariantProps } from "../../../../types/product-variant"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
-import { IsType } from "../../../../utils/validators/is-type"
-import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { promiseAll } from "@medusajs/utils"
 
 /**
- * @oas [get] /variants
+ * @oas [get] /store/variants
  * operationId: GetVariants
  * summary: Get Product Variants
- * description: "Retrieves a list of Product Variants"
+ * description: |
+ *   Retrieves a list of product variants. The product variants can be filtered by fields such as `id` or `title`. The product variants can also be paginated.
+ *
+ *   For accurate and correct pricing of the product variants based on the customer's context, it's highly recommended to pass fields such as
+ *   `region_id`, `currency_code`, and `cart_id` when available.
+ *
+ *   Passing `sales_channel_id` ensures retrieving only variants of products available in the specified sales channel.
+ *   You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
+ * externalDocs:
+ *   description: "How to pass product pricing parameters"
+ *   url: "https://docs.medusajs.com/modules/products/storefront/show-products#product-pricing-parameters"
  * parameters:
- *   - (query) ids {string} A comma separated list of Product Variant ids to filter by.
- *   - (query) sales_channel_id {string} A sales channel id for result configuration.
- *   - (query) expand {string} A comma separated list of Product Variant relations to load.
- *   - (query) offset=0 {number} How many product variants to skip in the result.
- *   - (query) limit=100 {number} Maximum number of Product Variants to return.
- *   - (query) cart_id {string} The id of the Cart to set prices based on.
- *   - (query) region_id {string} The id of the Region to set prices based on.
- *   - (query) currency_code {string} The currency code to use for price selection.
+ *   - (query) ids {string} Filter by a comma-separated list of IDs. If supplied, it overrides the `id` parameter.
+ *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: Filter by one or more IDs. If `ids` is supplied, it's overrides the value of this parameter.
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: Filter by an ID.
+ *         - type: array
+ *           description: Filter by IDs.
+ *           items:
+ *             type: string
+ *   - (query) sales_channel_id {string} "Filter by sales channel IDs. When provided, only products available in the selected sales channels are retrieved. Alternatively, you can pass a
+ *      publishable API key in the request header and this will have the same effect."
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned product variants.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned product variants.
+ *   - (query) offset=0 {number} The number of products to skip when retrieving the product variants.
+ *   - (query) limit=100 {number} Limit the number of product variants returned.
+ *   - (query) cart_id {string} The ID of the cart. This is useful for accurate pricing based on the cart's context.
+ *   - (query) region_id {string} The ID of the region. This is useful for accurate pricing based on the selected region.
+ *   - in: query
+ *     name: currency_code
+ *     style: form
+ *     explode: false
+ *     description: A 3 character ISO currency code. This is useful for accurate pricing based on the selected currency.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *         description: See a list of codes.
  *   - in: query
  *     name: title
  *     style: form
  *     explode: false
- *     description: product variant title to search for.
+ *     description: Filter by title
  *     schema:
  *       oneOf:
  *         - type: string
- *           description: a single title to search by
+ *           description: a single title to filter by
  *         - type: array
- *           description: multiple titles to search by
+ *           description: multiple titles to filter by
  *           items:
  *             type: string
  *   - in: query
@@ -51,32 +81,42 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *     schema:
  *       oneOf:
  *         - type: number
- *           description: a specific number to search by.
+ *           description: A specific number to filter by.
  *         - type: object
- *           description: search using less and greater than comparisons.
+ *           description: Filter using less and greater than comparisons.
  *           properties:
  *             lt:
  *               type: number
- *               description: filter by inventory quantity less than this number
+ *               description: Filter by inventory quantity less than this number
  *             gt:
  *               type: number
- *               description: filter by inventory quantity greater than this number
+ *               description: Filter by inventory quantity greater than this number
  *             lte:
  *               type: number
- *               description: filter by inventory quantity less than or equal to this number
+ *               description: Filter by inventory quantity less than or equal to this number
  *             gte:
  *               type: number
- *               description: filter by inventory quantity greater than or equal to this number
+ *               description: Filter by inventory quantity greater than or equal to this number
  * x-codegen:
  *   method: list
  *   queryParams: StoreGetVariantsParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.product.variants.list()
+ *       .then(({ variants }) => {
+ *         console.log(variants.length);
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/variants'
+ *       curl '{backend_url}/store/variants'
  * tags:
- *   - Product Variant
+ *   - Product Variants
  * responses:
  *   200:
  *     description: OK
@@ -97,43 +137,24 @@ import { FlagRouter } from "../../../../utils/flag-router"
  */
 export default async (req, res) => {
   const validated = await validator(StoreGetVariantsParams, req.query)
-  const { expand, offset, limit } = validated
-
-  let expandFields: string[] = []
-  if (expand) {
-    expandFields = expand.split(",")
-  }
 
   const customer_id = req.user?.customer_id
 
-  const listConfig = {
-    relations: expandFields.length
-      ? expandFields
-      : defaultStoreVariantRelations,
-    skip: offset,
-    take: limit,
-  }
-
-  const filterableFields: FilterableProductVariantProps = omit(validated, [
-    "ids",
-    "limit",
-    "offset",
-    "expand",
-    "cart_id",
-    "region_id",
-    "currency_code",
-  ])
+  let {
+    cart_id,
+    region_id,
+    currency_code,
+    sales_channel_id,
+    ids,
+    ...filterableFields
+  } = req.filterableFields
 
   if (validated.ids) {
-    filterableFields.id = validated.ids.split(",")
+    filterableFields["id"] = validated.ids.split(",")
   }
 
-  let sales_channel_id = validated.sales_channel_id
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    if (req.publishableApiKeyScopes?.sales_channel_id.length === 1) {
-      sales_channel_id = req.publishableApiKeyScopes.sales_channel_id[0]
-    }
+  if (req.publishableApiKeyScopes?.sales_channel_ids.length === 1) {
+    sales_channel_id = req.publishableApiKeyScopes.sales_channel_ids[0]
   }
 
   const pricingService: PricingService = req.scope.resolve("pricingService")
@@ -144,8 +165,9 @@ export default async (req, res) => {
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
   const regionService: RegionService = req.scope.resolve("regionService")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
 
-  const rawVariants = await variantService.list(filterableFields, listConfig)
+  const variants = await variantService.list(filterableFields, req.listConfig)
 
   let regionId = validated.region_id
   let currencyCode = validated.currency_code
@@ -160,53 +182,82 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const pricedVariants = await pricingService.setVariantPrices(rawVariants, {
-    cart_id: validated.cart_id,
-    region_id: regionId,
-    currency_code: currencyCode,
-    customer_id: customer_id,
-    include_discount_prices: true,
-  })
+  const decoratePromises: Promise<any>[] = []
 
-  const variants = await productVariantInventoryService.setVariantAvailability(
-    pricedVariants,
-    sales_channel_id
+  decoratePromises.push(
+    (await pricingService.setVariantPrices(variants, {
+      cart_id: validated.cart_id,
+      region_id: regionId,
+      currency_code: currencyCode,
+      customer_id: customer_id,
+      include_discount_prices: true,
+    })) as any
   )
+
+  decoratePromises.push(
+    (await productVariantInventoryService.setVariantAvailability(
+      variants,
+      sales_channel_id
+    )) as any
+  )
+  await promiseAll(decoratePromises)
 
   res.json({ variants })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product variants.
+ */
 export class StoreGetVariantsParams extends PriceSelectionParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 100
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit?: number = 100
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
 
-  @IsOptional()
-  @IsString()
-  expand?: string
-
+  /**
+   * ID to filter the product variants by.
+   */
   @IsOptional()
   @IsString()
   ids?: string
 
+  /**
+   * Filter product variants by the ID of their associated sales channel.
+   */
   @IsOptional()
   @IsString()
   sales_channel_id?: string
 
+  /**
+   * IDs to filter product variants by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   id?: string | string[]
 
+  /**
+   * Titles to filter product variants by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   title?: string | string[]
 
+  /**
+   * Number filters to apply on the product variants' `inventory_quantity` field.
+   */
   @IsOptional()
   @IsType([Number, NumericalComparisonOperator])
   inventory_quantity?: number | NumericalComparisonOperator

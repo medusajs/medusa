@@ -4,11 +4,15 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /users/password-token
+ * @oas [post] /admin/users/password-token
  * operationId: "PostUsersUserPasswordToken"
  * summary: "Request Password Reset"
- * description: "Generates a password token for a User with a given email."
- * x-authenticated: true
+ * description: "Generate a password token for an admin user with a given email. This also triggers the `user.password_reset` event. So, if you have a Notification Service installed
+ * that can handle this event, a notification, such as an email, will be sent to the user. The token is triggered as part of the `user.password_reset` event's payload.
+ * That token must be used later to reset the password using the [Reset Password](https://docs.medusajs.com/api/admin#users_postusersuserpassword) API Route."
+ * externalDocs:
+ *   description: How to reset a user's password
+ *   url: https://docs.medusajs.com/modules/users/admin/manage-profile#reset-password
  * requestBody:
  *   content:
  *     application/json:
@@ -24,28 +28,55 @@ import { EntityManager } from "typeorm"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.users.sendResetPasswordToken({
- *         email: 'user@example.com'
+ *         email: "user@example.com"
  *       })
  *       .then(() => {
  *         // successful
  *       })
  *       .catch(() => {
  *         // error occurred
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminSendResetPasswordToken } from "medusa-react"
+ *
+ *       const Login = () => {
+ *         const requestPasswordReset = useAdminSendResetPasswordToken()
+ *         // ...
+ *
+ *         const handleResetPassword = (
+ *           email: string
+ *         ) => {
+ *           requestPasswordReset.mutate({
+ *             email
+ *           }, {
+ *             onSuccess: () => {
+ *               // successful
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Login
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/users/password-token' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/users/password-token' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - User
+ *   - Users
  * responses:
  *   204:
  *     description: OK
@@ -66,15 +97,19 @@ export default async (req, res) => {
   const validated = await validator(AdminResetPasswordTokenRequest, req.body)
 
   const userService: UserService = req.scope.resolve("userService")
-  const user = await userService.retrieveByEmail(validated.email)
+  const user = await userService
+    .retrieveByEmail(validated.email)
+    .catch(() => undefined)
 
-  // Should call a email service provider that sends the token to the user
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await userService
-      .withTransaction(transactionManager)
-      .generateResetPasswordToken(user.id)
-  })
+  if (user) {
+    // Should call a email service provider that sends the token to the user
+    const manager: EntityManager = req.scope.resolve("manager")
+    await manager.transaction(async (transactionManager) => {
+      return await userService
+        .withTransaction(transactionManager)
+        .generateResetPasswordToken(user.id)
+    })
+  }
 
   res.sendStatus(204)
 }
@@ -82,11 +117,12 @@ export default async (req, res) => {
 /**
  * @schema AdminResetPasswordTokenRequest
  * type: object
+ * description: "The details of the password reset token request."
  * required:
  *   - email
  * properties:
  *   email:
- *     description: "The Users email."
+ *     description: "The User's email."
  *     type: string
  *     format: email
  */

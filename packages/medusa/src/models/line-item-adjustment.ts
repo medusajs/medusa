@@ -6,12 +6,12 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
+  Relation,
 } from "typeorm"
 
-import { DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, generateEntityId } from "../utils"
 import { Discount } from "./discount"
 import { LineItem } from "./line-item"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Index(["discount_id", "item_id"], {
@@ -28,25 +28,31 @@ export class LineItemAdjustment {
 
   @ManyToOne(() => LineItem, (li) => li.adjustments, { onDelete: "CASCADE" })
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item: Relation<LineItem>
 
   @Column()
   description: string
 
   @ManyToOne(() => Discount)
   @JoinColumn({ name: "discount_id" })
-  discount: Discount
+  discount: Relation<Discount>
 
   @Index()
   @Column({ nullable: true })
   discount_id: string
 
-  @Column({ type: "int" })
+  @Column({
+    type: "numeric",
+    transformer: { to: (value) => value, from: (value) => parseFloat(value) },
+  })
   amount: number
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "lia")
@@ -56,7 +62,7 @@ export class LineItemAdjustment {
 /**
  * @schema LineItemAdjustment
  * title: "Line Item Adjustment"
- * description: "Represents a Line Item Adjustment"
+ * description: "A Line Item Adjustment includes details on discounts applied on a line item."
  * type: object
  * required:
  *   - amount
@@ -75,7 +81,8 @@ export class LineItemAdjustment {
  *     type: string
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   item:
- *     description: Available if the relation `item` is expanded.
+ *     description: The details of the line item.
+ *     x-expandable: "item"
  *     nullable: true
  *     $ref: "#/components/schemas/LineItem"
  *   description:
@@ -88,16 +95,20 @@ export class LineItemAdjustment {
  *     type: string
  *     example: disc_01F0YESMW10MGHWJKZSDDMN0VN
  *   discount:
- *     description: Available if the relation `discount` is expanded.
+ *     description: The details of the discount associated with the adjustment.
+ *     x-expandable: "discount"
  *     nullable: true
  *     $ref: "#/components/schemas/Discount"
  *   amount:
  *     description: The adjustment amount
- *     type: integer
+ *     type: number
  *     example: 1000
  *   metadata:
  *     description: An optional key-value map with additional details
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

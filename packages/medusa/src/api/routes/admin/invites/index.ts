@@ -35,6 +35,10 @@ export default (app) => {
 /**
  * @schema AdminInviteDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -45,17 +49,21 @@ export default (app) => {
  *     default: invite
  *   deleted:
  *     type: boolean
- *     description: Whether or not the Invite was deleted.
+ *     description: Whether or not the invite was deleted.
  *     default: true
  */
 export type AdminInviteDeleteRes = DeleteResponse
 
 /**
  * @schema AdminListInvitesRes
+ * description: "The list of invites."
  * type: object
+ * required:
+ *   - invites
  * properties:
  *   invites:
  *     type: array
+ *     description: An array of invites
  *     items:
  *       $ref: "#/components/schemas/Invite"
  */

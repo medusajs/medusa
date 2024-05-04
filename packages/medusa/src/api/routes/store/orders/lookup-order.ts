@@ -9,24 +9,22 @@ import { Type } from "class-transformer"
 
 import { OrderService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
-
-import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /orders
+ * @oas [get] /store/orders
  * operationId: "GetOrders"
  * summary: "Look Up an Order"
- * description: "Look up an order using filters."
+ * description: "Look up an order using filters. If the filters don't narrow down the results to a single order, a 404 response is returned with no orders."
  * parameters:
- *   - (query) display_id=* {number} The display id given to the Order.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the result.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the result.
+ *   - (query) display_id=* {number} Filter by ID.
+ *   - (query) fields {string} Comma-separated fields that should be expanded in the returned order.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
  *   - in: query
  *     name: email
  *     style: form
  *     explode: false
- *     description: The email associated with this order.
+ *     description: Filter by email.
  *     required: true
  *     schema:
  *       type: string
@@ -35,7 +33,7 @@ import { FindParams } from "../../../../types/common"
  *     name: shipping_address
  *     style: form
  *     explode: false
- *     description: The shipping address associated with this order.
+ *     description: Filter by the shipping address's postal code.
  *     schema:
  *       type: object
  *       properties:
@@ -53,17 +51,50 @@ import { FindParams } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.orders.lookupOrder({
  *         display_id: 1,
- *         email: 'user@example.com'
+ *         email: "user@example.com"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useOrders } from "medusa-react"
+ *
+ *       type Props = {
+ *         displayId: number
+ *         email: string
+ *       }
+ *
+ *       const Order = ({
+ *         displayId,
+ *         email
+ *       }: Props) => {
+ *         const {
+ *           order,
+ *           isLoading,
+ *         } = useOrders({
+ *           display_id: displayId,
+ *           email,
+ *         })
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {order && <span>{order.display_id}</span>}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/orders?display_id=1&email=user@example.com'
+ *       curl '{backend_url}/store/orders?display_id=1&email=user@example.com'
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -102,23 +133,43 @@ export default async (req, res) => {
 
   const order = orders[0]
 
-  res.json({ order: cleanResponseData(order, req.allowedProperties || []) })
+  res.json({
+    order: cleanResponseData(order, req.allowedProperties || []),
+  })
 }
 
+/**
+ * Filters to apply on the order's shipping address.
+ */
 export class ShippingAddressPayload {
+  /**
+   * Postal code.
+   */
   @IsOptional()
   @IsString()
   postal_code?: string
 }
 
+/**
+ * Filters to narrow down the looked-up order, with configurations applied on the retrieved order.
+ */
 export class StoreGetOrdersParams extends FindParams {
+  /**
+   * Display ID of the order.
+   */
   @IsNumber()
   @Type(() => Number)
   display_id: number
 
+  /**
+   * Email of the order.
+   */
   @IsEmail()
   email: string
 
+  /**
+   * Filter the retrieved order by its shipping address details.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => ShippingAddressPayload)

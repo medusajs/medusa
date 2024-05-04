@@ -3,23 +3,27 @@ import {
   OrderService,
   SwapService,
 } from "../../../../services"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersSwapFulfillmentsCancel"
  * summary: "Cancel Swap's Fulfilmment"
- * description: "Registers a Swap's Fulfillment as canceled."
+ * description: "Cancel a swap's fulfillment and change its fulfillment status to `canceled`."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Order which the Swap relates to.
- *   - (path) swap_id=* {string} The ID of the Swap which the Fulfillment relates to.
- *   - (path) fulfillment_id=* {string} The ID of the Fulfillment.
+ *   - (path) id=* {string} The ID of the order the swap is associated with.
+ *   - (path) swap_id=* {string} The ID of the swap.
+ *   - (path) fulfillment_id=* {string} The ID of the fulfillment.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * x-codegen:
  *   method: cancelSwapFulfillment
+ *   params: AdminPostOrdersSwapFulfillementsCancelParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -27,20 +31,54 @@ import { MedusaError } from "medusa-core-utils"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.cancelSwapFulfillment(order_id, swap_id, fulfillment_id)
+ *       medusa.admin.orders.cancelSwapFulfillment(orderId, swapId, fulfillmentId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCancelSwapFulfillment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string,
+ *         swapId: string
+ *       }
+ *
+ *       const Swap = ({
+ *         orderId,
+ *         swapId
+ *       }: Props) => {
+ *         const cancelFulfillment = useAdminCancelSwapFulfillment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleCancelFulfillment = (
+ *           fulfillmentId: string
+ *         ) => {
+ *           cancelFulfillment.mutate({
+ *             swap_id: swapId,
+ *             fulfillment_id: fulfillmentId,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Swap
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST '{backend_url}/admin/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Fulfillment
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -94,10 +132,12 @@ export default async (req, res) => {
       .cancelFulfillment(fulfillment_id)
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
+
+// eslint-disable-next-line max-len
+export class AdminPostOrdersOrderSwapFulfillementsCancelParams extends FindParams {}

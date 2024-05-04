@@ -4,10 +4,10 @@ import { EntityManager } from "typeorm"
 import CustomerService from "../../../../services/customer"
 
 /**
- * @oas [delete] /customers/me/addresses/{address_id}
+ * @oas [delete] /store/customers/me/addresses/{address_id}
  * operationId: DeleteCustomersCustomerAddressesAddress
  * summary: Delete an Address
- * description: "Removes an Address from the Customer's saved addresses."
+ * description: "Delete an Address from the Customer's saved addresses."
  * x-authenticated: true
  * parameters:
  *   - (path) address_id=* {string} The id of the Address to remove.
@@ -20,19 +20,20 @@ import CustomerService from "../../../../services/customer"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged
- *       medusa.customers.addresses.deleteAddress(address_id)
+ *       medusa.customers.addresses.deleteAddress(addressId)
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl -X DELETE '{backend_url}/store/customers/me/addresses/{address_id}' \
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK

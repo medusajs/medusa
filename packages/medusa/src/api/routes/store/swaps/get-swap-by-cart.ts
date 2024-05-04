@@ -1,10 +1,11 @@
 import SwapService from "../../../../services/swap"
+import { defaultStoreSwapRelations } from "."
 
 /**
- * @oas [get] /swaps/{cart_id}
+ * @oas [get] /store/swaps/{cart_id}
  * operationId: GetSwapsSwapCartId
  * summary: Get by Cart ID
- * description: "Retrieves a Swap by the id of the Cart used to confirm the Swap."
+ * description: "Retrieve a Swap's details by the ID of its cart."
  * parameters:
  *   - (path) cart_id {string} The id of the Cart
  * x-codegen:
@@ -15,16 +16,41 @@ import SwapService from "../../../../services/swap"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.swaps.retrieveByCartId(cart_id)
+ *       medusa.swaps.retrieveByCartId(cartId)
  *       .then(({ swap }) => {
  *         console.log(swap.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCartSwap } from "medusa-react"
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Swap = ({ cartId }: Props) => {
+ *         const {
+ *           swap,
+ *           isLoading,
+ *         } = useCartSwap(cartId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {swap && <span>{swap.id}</span>}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Swap
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/swaps/{cart_id}'
+ *       curl '{backend_url}/store/swaps/{cart_id}'
  * tags:
- *   - Swap
+ *   - Swaps
  * responses:
  *   200:
  *     description: OK
@@ -48,7 +74,10 @@ export default async (req, res) => {
 
   const swapService: SwapService = req.scope.resolve("swapService")
 
-  const swap = await swapService.retrieveByCartId(cart_id)
+  const swap = await swapService.retrieveByCartId(
+    cart_id,
+    defaultStoreSwapRelations
+  )
 
   res.json({ swap })
 }

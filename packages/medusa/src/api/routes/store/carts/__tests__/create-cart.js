@@ -1,7 +1,7 @@
-import { IdMap } from "medusa-test-utils"
-import { request } from "../../../../../helpers/test-request"
 import { CartServiceMock } from "../../../../../services/__mocks__/cart"
+import { IdMap } from "medusa-test-utils"
 import { LineItemServiceMock } from "../../../../../services/__mocks__/line-item"
+import { request } from "../../../../../helpers/test-request"
 
 describe("POST /store/carts", () => {
   describe("successfully creates a cart", () => {

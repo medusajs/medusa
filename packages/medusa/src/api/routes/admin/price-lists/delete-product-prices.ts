@@ -2,14 +2,14 @@ import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 
 /**
- * @oas [delete] /price-lists/{id}/products/{product_id}/prices
+ * @oas [delete] /admin/price-lists/{id}/products/{product_id}/prices
  * operationId: "DeletePriceListsPriceListProductsProductPrices"
- * summary: "Delete Product's Prices"
- * description: "Delete all the prices related to a specific product in a price list"
+ * summary: "Delete a Product's Prices"
+ * description: "Delete all the prices related to a specific product in a price list."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Price List that the Money Amounts that will be deleted belongs to.
- *   - (path) product_id=* {string} The ID of the product from which the money amount will be deleted.
+ *   - (path) id=* {string} The ID of the Price List.
+ *   - (path) product_id=* {string} The ID of the product from which the prices will be deleted.
  * x-codegen:
  *   method: deleteProductPrices
  * x-codeSamples:
@@ -19,20 +19,56 @@ import PriceListService from "../../../../services/price-list"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.deleteProductPrices(price_list_id, product_id)
+ *       medusa.admin.priceLists.deleteProductPrices(priceListId, productId)
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminDeletePriceListProductPrices
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *         productId: string
+ *       }
+ *
+ *       const PriceListProduct = ({
+ *         priceListId,
+ *         productId
+ *       }: Props) => {
+ *         const deleteProductPrices = useAdminDeletePriceListProductPrices(
+ *           priceListId,
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleDeleteProductPrices = () => {
+ *           deleteProductPrices.mutate(void 0, {
+ *             onSuccess: ({ ids, deleted, object }) => {
+ *               console.log(ids)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceListProduct
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/price-lists/{id}/products/{product_id}/prices' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/price-lists/{id}/products/{product_id}/prices' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Price List
+ *   - Price Lists
  * responses:
  *   200:
  *     description: OK
@@ -55,18 +91,18 @@ import PriceListService from "../../../../services/price-list"
  */
 export default async (req, res) => {
   const { id, product_id } = req.params
-
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const [deletedPriceIds] = await manager.transaction(
-    async (transactionManager) => {
-      return await priceListService
-        .withTransaction(transactionManager)
-        .deleteProductPrices(id, [product_id])
-    }
-  )
+  let deletedPriceIds: string[] = []
+
+  const [deletedIds] = await manager.transaction(async (transactionManager) => {
+    return await priceListService
+      .withTransaction(transactionManager)
+      .deleteProductPrices(id, [product_id])
+  })
+  deletedPriceIds = deletedIds
 
   return res.json({
     ids: deletedPriceIds,

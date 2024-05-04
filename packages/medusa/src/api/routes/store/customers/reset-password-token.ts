@@ -4,10 +4,14 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /customers/password-token
+ * @oas [post] /store/customers/password-token
  * operationId: PostCustomersCustomerPasswordToken
  * summary: Request Password Reset
- * description: "Creates a reset password token to be used in a subsequent /reset-password request. The password token should be sent out of band e.g. via email and will not be returned."
+ * description: "Create a reset password token to be used in a subsequent Reset Password API Route. This emits the event `customer.password_reset`. If a notification provider is
+ *  installed in the Medusa backend and is configured to handle this event, a notification to the customer, such as an email, may be sent with reset instructions."
+ * externalDocs:
+ *   description: "How to reset password"
+ *   url: "https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles#reset-password"
  * requestBody:
  *   content:
  *     application/json:
@@ -22,7 +26,7 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.customers.generatePasswordToken({
- *         email: 'user@example.com'
+ *         email: "user@example.com"
  *       })
  *       .then(() => {
  *         // successful
@@ -33,13 +37,13 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/password-token' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/customers/password-token' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com"
  *       }'
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   204:
  *     description: OK
@@ -66,17 +70,19 @@ export default async (req, res) => {
     "customerService"
   ) as CustomerService
 
-  const customer = await customerService.retrieveRegisteredByEmail(
-    validated.email
-  )
+  const customer = await customerService
+    .retrieveRegisteredByEmail(validated.email)
+    .catch(() => undefined)
 
-  // Will generate a token and send it to the customer via an email provider
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await customerService
-      .withTransaction(transactionManager)
-      .generateResetPasswordToken(customer.id)
-  })
+  if (customer) {
+    // Will generate a token and send it to the customer via an email provider
+    const manager: EntityManager = req.scope.resolve("manager")
+    await manager.transaction(async (transactionManager) => {
+      return await customerService
+        .withTransaction(transactionManager)
+        .generateResetPasswordToken(customer.id)
+    })
+  }
 
   res.sendStatus(204)
 }
@@ -88,7 +94,7 @@ export default async (req, res) => {
  *   - email
  * properties:
  *   email:
- *     description: "The email of the customer."
+ *     description: "The customer's email."
  *     type: string
  *     format: email
  */

@@ -10,38 +10,38 @@ import { Type } from "class-transformer"
 import { Request, Response } from "express"
 
 /**
- * @oas [get] /product-tags
+ * @oas [get] /admin/product-tags
  * operationId: "GetProductTags"
  * summary: "List Product Tags"
- * description: "Retrieve a list of Product Tags."
+ * description: "Retrieve a list of product tags. The product tags can be filtered by fields such as `q` or `value`. The product tags can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) limit=10 {integer} The number of tags to return.
- *   - (query) offset=0 {integer} The number of items to skip before the results.
- *   - (query) order {string} The field to sort items by.
- *   - (query) discount_condition_id {string} The discount condition id on which to filter the tags.
+ *   - (query) limit=10 {integer} Limit the number of product tags returned.
+ *   - (query) offset=0 {integer} The number of product tags to skip when retrieving the product tags.
+ *   - (query) order {string} A product tag field to sort-order the retrieved product tags by.
+ *   - (query) discount_condition_id {string} Filter by the ID of a discount condition. Only product tags that this discount condition is applied to will be retrieved.
  *   - in: query
  *     name: value
  *     style: form
  *     explode: false
- *     description: The tag values to search for
+ *     description: Filter by tag value.
  *     schema:
  *       type: array
  *       items:
  *         type: string
- *   - (query) q {string} A query string to search values for
+ *   - (query) q {string} term to search product tags' values.
  *   - in: query
  *     name: id
  *     style: form
  *     explode: false
- *     description: The tag IDs to search for
+ *     description: Filter by tag IDs.
  *     schema:
  *       type: array
  *       items:
  *         type: string
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting product tags were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -63,7 +63,7 @@ import { Request, Response } from "express"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting product tags were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -96,17 +96,50 @@ import { Request, Response } from "express"
  *       medusa.admin.productTags.list()
  *       .then(({ product_tags }) => {
  *         console.log(product_tags.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminProductTags } from "medusa-react"
+ *
+ *       function ProductTags() {
+ *         const {
+ *           product_tags,
+ *           isLoading
+ *         } = useAdminProductTags()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {product_tags && !product_tags.length && (
+ *               <span>No Product Tags</span>
+ *             )}
+ *             {product_tags && product_tags.length > 0 && (
+ *               <ul>
+ *                 {product_tags.map(
+ *                   (tag) => (
+ *                     <li key={tag.id}>{tag.value}</li>
+ *                   )
+ *                 )}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ProductTags
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/product-tags' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/product-tags' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product Tag
+ *   - Product Tags
  * responses:
  *  "200":
  *    description: OK
@@ -145,43 +178,78 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * {@inheritDoc FindPaginationParams}
+ */
 export class AdminGetProductTagsPaginationParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 10
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 10
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product tags.
+ */
 export class AdminGetProductTagsParams extends AdminGetProductTagsPaginationParams {
+  /**
+   * IDs to filter product tags by.
+   */
   @IsOptional()
   @IsType([String, [String], StringComparisonOperator])
   id?: string | string[] | StringComparisonOperator
 
+  /**
+   * Search term to search product tags' value.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Values to search product tags by.
+   */
   @IsOptional()
   @IsType([String, [String], StringComparisonOperator])
   value?: string | string[] | StringComparisonOperator
 
+  /**
+   * Date filters to apply on the product tags' `created_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the product tags' `updated_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   updated_at?: DateComparisonOperator
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 
+  /**
+   * Filter product tags by their associated discount condition's ID.
+   */
   @IsString()
   @IsOptional()
   discount_condition_id?: string

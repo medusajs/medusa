@@ -1,0 +1,129 @@
+{{#if (sectionEnabled "member_declaration_title")}}
+
+{{{declarationTitle}}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_comment")}}
+
+{{> comment}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_example")}}
+
+{{{example this}}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_typeParameters")}}
+
+{{#if typeParameters}}
+
+{{{titleLevel}}} Type Parameters
+
+{{#with typeParameters}}
+
+{{{typeParameter sectionTitle=../name}}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if type.declaration}}
+
+{{#if (sectionEnabled "member_declaration_indexSignature")}}
+
+{{#if type.declaration.indexSignature}}
+
+{{#with type.declaration.indexSignature}}
+
+{{titleLevel}} Index signature
+
+{{{indexSignatureTitle}}}
+
+{{> comment}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_signatures")}}
+
+{{#if type.declaration.signatures}}
+
+{{#if type.declaration.children}}
+
+{{{titleLevel}}} Call signature
+
+{{else}}
+
+{{{titleLevel}}} Type declaration
+
+{{/if}}
+
+{{#each type.declaration.signatures}}
+
+{{incrementCurrentTitleLevel}}
+
+{{> member.signature-wrapper showSources=false parent=../type.declaration }}
+
+{{decrementCurrentTitleLevel}}
+
+{{/each}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_typeDeclaration")}}
+
+{{#if type.declaration.children}}
+
+{{#with type.declaration}}
+
+{{{titleLevel}}} Properties
+
+{{/with}}
+
+{{#with type.declaration.children}}
+
+{{{typeDeclarationMembers sectionTitle=../name}}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_children")}}
+
+{{#if (shouldExpandDeclarationChildren)}}
+
+{{#each (getDeclarationChildren)}}
+
+{{> member}}
+
+{{/each}}
+
+{{else}}
+
+{{#with (getDeclarationChildren)}}
+
+{{{titleLevel}}} Properties
+
+{{{typeDeclarationMembers sectionTitle=../name}}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{> member.sources}}

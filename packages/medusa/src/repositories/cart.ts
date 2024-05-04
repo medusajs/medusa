@@ -1,44 +1,36 @@
-import { flatten, groupBy, map, merge } from "lodash"
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
-import { Cart } from "../models/cart"
+import { objectToStringPath } from "@medusajs/utils"
+import { FindManyOptions, FindOptionsRelations } from "typeorm"
+import { dataSource } from "../loaders/database"
+import { Cart } from "../models"
+import {
+  getGroupedRelations,
+  mergeEntitiesWithRelations,
+  queryEntityWithIds,
+} from "../utils/repository"
 
-@EntityRepository(Cart)
-export class CartRepository extends Repository<Cart> {
-  public async findWithRelations(
-    relations: string[] = [],
+export const CartRepository = dataSource.getRepository(Cart).extend({
+  async findWithRelations(
+    relations: FindOptionsRelations<Cart> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Cart>, "relations"> = {}
   ): Promise<Cart[]> {
     const entities = await this.find(optionsWithoutRelations)
     const entitiesIds = entities.map(({ id }) => id)
 
-    const groupedRelations = {}
-    for (const rel of relations) {
-      const [topLevel] = rel.split(".")
-      if (groupedRelations[topLevel]) {
-        groupedRelations[topLevel].push(rel)
-      } else {
-        groupedRelations[topLevel] = [rel]
-      }
-    }
+    const groupedRelations = getGroupedRelations(objectToStringPath(relations))
 
-    const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(async ([_, rels]) => {
-        return this.findByIds(entitiesIds, {
-          select: ["id"],
-          relations: rels as string[],
-        })
-      })
-    ).then(flatten)
-    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
+    const entitiesIdsWithRelations = await queryEntityWithIds({
+      repository: this,
+      entityIds: entitiesIds,
+      groupedRelations,
+      select: ["id"],
+    })
 
-    const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return map(entitiesAndRelationsById, (entityAndRelations) =>
-      merge({}, ...entityAndRelations)
-    )
-  }
+    const entitiesAndRelations = entities.concat(entitiesIdsWithRelations)
+    return mergeEntitiesWithRelations<Cart>(entitiesAndRelations)
+  },
 
-  public async findOneWithRelations(
-    relations: string[] = [],
+  async findOneWithRelations(
+    relations: FindOptionsRelations<Cart> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Cart>, "relations"> = {}
   ): Promise<Cart> {
     // Limit 1
@@ -49,5 +41,6 @@ export class CartRepository extends Repository<Cart> {
       optionsWithoutRelations
     )
     return result[0]
-  }
-}
+  },
+})
+export default CartRepository

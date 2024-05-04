@@ -1,10 +1,10 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
+import { fixtures } from "../../../../mocks/data"
 import {
   useAdminCreateGiftCard,
-  useAdminUpdateGiftCard,
   useAdminDeleteGiftCard,
+  useAdminUpdateGiftCard,
 } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminCreateGiftCard hook", () => {

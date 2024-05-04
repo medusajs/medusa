@@ -1,9 +1,3 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
-
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata, validateId } from "../utils"
-
 import {
   Cart,
   CartType,
@@ -19,15 +13,12 @@ import {
   SwapFulfillmentStatus,
   SwapPaymentStatus,
 } from "../models"
-import { SwapRepository } from "../repositories/swap"
-import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
-import { CreateShipmentConfig } from "../types/fulfillment"
-import { OrdersReturnItem } from "../types/orders"
-import CartService from "./cart"
 import {
+  CartService,
   CustomShippingOptionService,
   EventBusService,
   FulfillmentService,
+  LineItemAdjustmentService,
   LineItemService,
   OrderService,
   PaymentProviderService,
@@ -36,7 +27,16 @@ import {
   ShippingOptionService,
   TotalsService,
 } from "./index"
-import LineItemAdjustmentService from "./line-item-adjustment"
+import { EntityManager, In } from "typeorm"
+import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { buildQuery, setMetadata, validateId } from "../utils"
+
+import { CreateShipmentConfig } from "../types/fulfillment"
+import { OrdersReturnItem } from "../types/orders"
+import { SwapRepository } from "../repositories/swap"
+import { TransactionBaseService } from "../interfaces"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedProps = {
   manager: EntityManager
@@ -44,7 +44,6 @@ type InjectedProps = {
   swapRepository: typeof SwapRepository
 
   cartService: CartService
-  eventBus: EventBusService
   orderService: OrderService
   returnService: ReturnService
   totalsService: TotalsService
@@ -74,9 +73,6 @@ class SwapService extends TransactionBaseService {
     FULFILLMENT_CREATED: "swap.fulfillment_created",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly swapRepository_: typeof SwapRepository
 
   protected readonly cartService_: CartService
@@ -94,7 +90,6 @@ class SwapService extends TransactionBaseService {
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
-    manager,
     swapRepository,
     eventBusService,
     cartService,
@@ -111,8 +106,6 @@ class SwapService extends TransactionBaseService {
   }: InjectedProps) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-
-    this.manager_ = manager
 
     this.swapRepository_ = swapRepository
     this.totalsService_ = totalsService
@@ -219,20 +212,14 @@ class SwapService extends TransactionBaseService {
       )
     }
 
-    const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
+    const swapRepo = this.activeManager_.withRepository(this.swapRepository_)
 
     const { cartSelects, cartRelations, ...newConfig } =
       this.transformQueryForCart(config)
 
     const query = buildQuery({ id: swapId }, newConfig)
 
-    const relations = query.relations as (keyof Swap)[]
-    delete query.relations
-
-    const swap = await swapRepo.findOneWithRelations(
-      relations,
-      query as FindConfig<Swap>
-    )
+    const swap = await swapRepo.findOne(query)
 
     if (!swap) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Swap was not found")
@@ -240,7 +227,7 @@ class SwapService extends TransactionBaseService {
 
     if (cartRelations || cartSelects) {
       swap.cart = await this.cartService_
-        .withTransaction(this.manager_)
+        .withTransaction(this.activeManager_)
         .retrieve(swap.cart_id, {
           select: cartSelects,
           relations: cartRelations,
@@ -261,7 +248,7 @@ class SwapService extends TransactionBaseService {
     cartId: string,
     relations: FindConfig<Swap>["relations"] = []
   ): Promise<Swap | never> {
-    const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
+    const swapRepo = this.activeManager_.withRepository(this.swapRepository_)
 
     const swap = await swapRepo.findOne({
       where: {
@@ -292,13 +279,31 @@ class SwapService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Swap[]> {
-    const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
+    const [swaps] = await this.listAndCount(selector, config)
+
+    return swaps
+  }
+
+  /**
+   * List swaps.
+   *
+   * @param selector - the query object for find
+   * @param config - the configuration used to find the objects. contains relations, skip, and take.
+   * @return the result of the find operation
+   */
+  async listAndCount(
+    selector: Selector<Swap>,
+    config: FindConfig<Swap> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[Swap[], number]> {
+    const swapRepo = this.activeManager_.withRepository(this.swapRepository_)
     const query = buildQuery(selector, config)
+    query.relationLoadStrategy = "query"
 
-    const relations = query.relations as (keyof Swap)[]
-    delete query.relations
-
-    return await swapRepo.findWithRelations(relations, query)
+    return await swapRepo.findAndCount(query)
   }
 
   /**
@@ -323,6 +328,7 @@ class SwapService extends TransactionBaseService {
       no_notification?: boolean
       idempotency_key?: string
       allow_backorder?: boolean
+      location_id?: string
     } = { no_notification: undefined }
   ): Promise<Swap | never> {
     const { no_notification, ...rest } = custom
@@ -353,7 +359,7 @@ class SwapService extends TransactionBaseService {
       let newItems: LineItem[] = []
 
       if (additionalItems) {
-        newItems = await Promise.all(
+        newItems = await promiseAll(
           additionalItems.map(async ({ variant_id, quantity }) => {
             if (variant_id === null) {
               throw new MedusaError(
@@ -375,7 +381,7 @@ class SwapService extends TransactionBaseService {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const swapRepo = manager.withRepository(this.swapRepository_)
       const created = swapRepo.create({
         ...rest,
         fulfillment_status: SwapFulfillmentStatus.NOT_FULFILLED,
@@ -393,6 +399,7 @@ class SwapService extends TransactionBaseService {
         items: returnItems as OrdersReturnItem[],
         shipping_method: returnShipping,
         no_notification: evaluatedNoNotification,
+        location_id: custom.location_id,
       })
 
       await this.eventBus_
@@ -432,7 +439,7 @@ class SwapService extends TransactionBaseService {
         )
       }
 
-      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const swapRepo = manager.withRepository(this.swapRepository_)
       if (swap.difference_due < 0) {
         if (swap.payment_status === "difference_refunded") {
           return swap
@@ -553,7 +560,7 @@ class SwapService extends TransactionBaseService {
         // await this.updateShippingAddress_(swap, update.shipping_address)
       }
 
-      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const swapRepo = manager.withRepository(this.swapRepository_)
       return await swapRepo.save(swap)
     })
   }
@@ -570,15 +577,15 @@ class SwapService extends TransactionBaseService {
    */
   async createCart(
     swapId: string,
-    customShippingOptions: { option_id: string; price: number }[] = []
+    customShippingOptions: { option_id: string; price: number }[] = [],
+    context: { sales_channel_id?: string } = {}
   ): Promise<Swap | never> {
     return await this.atomicPhase_(async (manager) => {
-      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const swapRepo = manager.withRepository(this.swapRepository_)
 
       const swap = await this.retrieve(swapId, {
         relations: [
-          "order",
-          "order.items",
+          "order.items.variant.product.profiles",
           "order.swaps",
           "order.swaps.additional_items",
           "order.discounts",
@@ -590,6 +597,7 @@ class SwapService extends TransactionBaseService {
           "return_order",
           "return_order.items",
           "return_order.shipping_method",
+          "return_order.shipping_method.shipping_option",
           "return_order.shipping_method.tax_lines",
         ],
       })
@@ -622,6 +630,8 @@ class SwapService extends TransactionBaseService {
         shipping_address_id: order.shipping_address_id,
         region_id: order.region_id,
         customer_id: order.customer_id,
+        sales_channel_id:
+          context.sales_channel_id ?? order.sales_channel_id ?? undefined,
         type: CartType.SWAP,
         metadata: {
           swap_id: swap.id,
@@ -643,7 +653,7 @@ class SwapService extends TransactionBaseService {
       const lineItemAdjustmentServiceTx =
         this.lineItemAdjustmentService_.withTransaction(manager)
 
-      await Promise.all(
+      await promiseAll(
         swap.additional_items.map(
           async (item) =>
             await lineItemServiceTx.update(item.id, {
@@ -655,10 +665,16 @@ class SwapService extends TransactionBaseService {
       cart = await this.cartService_
         .withTransaction(manager)
         .retrieve(cart.id, {
-          relations: ["items", "region", "discounts", "discounts.rule"],
+          relations: [
+            "items",
+            "items.variant",
+            "region",
+            "discounts",
+            "discounts.rule",
+          ],
         })
 
-      await Promise.all(
+      await promiseAll(
         cart.items.map(async (item) => {
           // we generate adjustments in case the cart has any discounts that should be applied to the additional items
           await lineItemAdjustmentServiceTx.createAdjustmentForLineItem(
@@ -775,7 +791,7 @@ class SwapService extends TransactionBaseService {
             order_id: swap.order_id,
           })
 
-        await Promise.all(
+        await promiseAll(
           items.map(async (item) => {
             if (item.variant_id) {
               await this.productVariantInventoryService_.reserveQuantity(
@@ -804,7 +820,7 @@ class SwapService extends TransactionBaseService {
       swap.payment_status =
         total === 0 ? SwapPaymentStatus.CONFIRMED : SwapPaymentStatus.AWAITING
 
-      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const swapRepo = manager.withRepository(this.swapRepository_)
       const result = await swapRepo.save(swap)
 
       const shippingOptionServiceTx =
@@ -841,7 +857,7 @@ class SwapService extends TransactionBaseService {
    */
   async cancel(swapId: string): Promise<Swap | never> {
     return await this.atomicPhase_(async (manager) => {
-      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const swapRepo = manager.withRepository(this.swapRepository_)
 
       const swap = await this.retrieve(swapId, {
         relations: ["payment", "fulfillments", "return_order"],
@@ -910,15 +926,16 @@ class SwapService extends TransactionBaseService {
   ): Promise<Swap | never> {
     return await this.atomicPhase_(async (manager) => {
       const { metadata, no_notification } = config
-      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const swapRepo = manager.withRepository(this.swapRepository_)
 
       const swap = await this.retrieve(swapId, {
         relations: [
           "payment",
           "shipping_address",
-          "additional_items",
           "additional_items.tax_lines",
+          "additional_items.variant.product.profiles",
           "shipping_methods",
+          "shipping_methods.shipping_option",
           "shipping_methods.tax_lines",
           "order",
           "order.region",
@@ -981,7 +998,7 @@ class SwapService extends TransactionBaseService {
             item_id: i.id,
             quantity: i.quantity,
           })),
-          { swap_id: swapId, metadata }
+          { swap_id: swapId, metadata, location_id: config.location_id }
         )
 
       let successfullyFulfilled: FulfillmentItem[] = []
@@ -1042,7 +1059,7 @@ class SwapService extends TransactionBaseService {
    */
   async cancelFulfillment(fulfillmentId: string): Promise<Swap | never> {
     return await this.atomicPhase_(async (manager) => {
-      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const swapRepo = manager.withRepository(this.swapRepository_)
       const canceled = await this.fulfillmentService_
         .withTransaction(manager)
         .cancelFulfillment(fulfillmentId)
@@ -1082,7 +1099,7 @@ class SwapService extends TransactionBaseService {
   ): Promise<Swap | never> {
     return await this.atomicPhase_(async (manager) => {
       const { metadata, no_notification } = config
-      const swapRepo = manager.getCustomRepository(this.swapRepository_)
+      const swapRepo = manager.withRepository(this.swapRepository_)
 
       const swap = await this.retrieve(swapId, {
         relations: ["additional_items"],
@@ -1154,11 +1171,9 @@ class SwapService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const validatedId = validateId(swapId)
 
-        const swapRepo = transactionManager.getCustomRepository(
-          this.swapRepository_
-        )
+        const swapRepo = transactionManager.withRepository(this.swapRepository_)
 
-        const swap = await swapRepo.findOne(validatedId)
+        const swap = await swapRepo.findOne({ where: { id: validatedId } })
 
         if (!swap) {
           throw new MedusaError(

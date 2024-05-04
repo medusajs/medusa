@@ -1,10 +1,17 @@
-import { BeforeInsert, Column, Entity, Index, OneToMany } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  Relation,
+} from "typeorm"
 
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { Product } from "./product"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import _ from "lodash"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { Product } from "./product"
 
 @Entity()
 export class ProductCollection extends SoftDeletableEntity {
@@ -16,11 +23,14 @@ export class ProductCollection extends SoftDeletableEntity {
   handle: string
 
   @OneToMany(() => Product, (product) => product.collection)
-  products: Product[]
+  products: Relation<Product>[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private createHandleIfNotProvided(): void {
     if (this.id) return
@@ -35,7 +45,7 @@ export class ProductCollection extends SoftDeletableEntity {
 /**
  * @schema ProductCollection
  * title: "Product Collection"
- * description: "Product Collections represents a group of Products that are related."
+ * description: "A Product Collection allows grouping together products for promotional purposes. For example, an admin can create a Summer collection, add products to it, and showcase it on the storefront."
  * type: object
  * required:
  *   - created_at
@@ -60,8 +70,9 @@ export class ProductCollection extends SoftDeletableEntity {
  *     type: string
  *     example: summer-collection
  *   products:
- *     description: The Products contained in the Product Collection. Available if the relation `products` is expanded.
+ *     description: The details of the products that belong to this product collection.
  *     type: array
+ *     x-expandable: "products"
  *     items:
  *       $ref: "#/components/schemas/Product"
  *   created_at:
@@ -82,4 +93,7 @@ export class ProductCollection extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

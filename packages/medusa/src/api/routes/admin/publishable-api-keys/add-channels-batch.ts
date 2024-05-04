@@ -7,10 +7,10 @@ import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [post] /publishable-api-keys/{id}/sales-channels/batch
+ * @oas [post] /admin/publishable-api-keys/{id}/sales-channels/batch
  * operationId: "PostPublishableApiKeySalesChannelsChannelsBatch"
- * summary: "Add SalesChannels"
- * description: "Assign a batch of sales channels to a publishable api key."
+ * summary: "Add Sales Channels"
+ * description: "Add a list of sales channels to a publishable API key."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Publishable Api Key.
@@ -31,19 +31,58 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       medusa.admin.publishableApiKeys.addSalesChannelsBatch(publishableApiKeyId, {
  *         sales_channel_ids: [
  *           {
- *             id: channel_id
+ *             id: channelId
  *           }
  *         ]
  *       })
  *       .then(({ publishable_api_key }) => {
  *         console.log(publishable_api_key.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminAddPublishableKeySalesChannelsBatch,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         publishableApiKeyId: string
+ *       }
+ *
+ *       const PublishableApiKey = ({
+ *         publishableApiKeyId
+ *       }: Props) => {
+ *         const addSalesChannels =
+ *           useAdminAddPublishableKeySalesChannelsBatch(
+ *             publishableApiKeyId
+ *           )
+ *         // ...
+ *
+ *         const handleAdd = (salesChannelId: string) => {
+ *           addSalesChannels.mutate({
+ *             sales_channel_ids: [
+ *               {
+ *                 id: salesChannelId,
+ *               },
+ *             ],
+ *           }, {
+ *             onSuccess: ({ publishable_api_key }) => {
+ *               console.log(publishable_api_key.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/publishable-api-keys/{pak_id}/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/publishable-api-keys/{pak_id}/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "sales_channel_ids": [
  *             {
@@ -54,8 +93,9 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - PublishableApiKey
+ *   - Publishable Api Keys
  * responses:
  *   200:
  *     description: OK
@@ -106,11 +146,12 @@ export default async (req: Request, res: Response): Promise<void> => {
 /**
  * @schema AdminPostPublishableApiKeySalesChannelsBatchReq
  * type: object
+ * description: "The details of the sales channels to add to the publishable API key."
  * required:
  *   - sales_channel_ids
  * properties:
  *   sales_channel_ids:
- *     description: The IDs of the sales channels to add to the publishable api key
+ *     description: The IDs of the sales channels to add to the publishable API key
  *     type: array
  *     items:
  *       type: object

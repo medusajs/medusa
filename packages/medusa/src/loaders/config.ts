@@ -1,7 +1,6 @@
-import { getConfigFile } from "medusa-core-utils"
+import { getConfigFile, isDefined } from "medusa-core-utils"
 import { ConfigModule } from "../types/global"
 import logger from "./logger"
-import registerModuleDefinitions from "./module-definitions"
 
 const isProduction = ["production", "prod"].includes(process.env.NODE_ENV || "")
 
@@ -59,22 +58,26 @@ export default (rootDirectory: string): ConfigModule => {
     )
   }
 
-  if (!configModule?.projectConfig?.database_type) {
-    console.log(
-      `[medusa-config] ⚠️ database_type not found. fallback to default sqlite.`
-    )
+  let worker_mode = configModule?.projectConfig?.worker_mode
+  if (!isDefined(worker_mode)) {
+    const env = process.env.MEDUSA_WORKER_MODE
+    if (isDefined(env)) {
+      if (env === "shared" || env === "worker" || env === "server") {
+        worker_mode = env
+      }
+    } else {
+      worker_mode = "shared"
+    }
   }
-
-  const moduleResolutions = registerModuleDefinitions(configModule)
 
   return {
     projectConfig: {
       jwt_secret: jwt_secret ?? "supersecret",
       cookie_secret: cookie_secret ?? "supersecret",
       ...configModule?.projectConfig,
+      worker_mode,
     },
     modules: configModule.modules ?? {},
-    moduleResolutions,
     featureFlags: configModule?.featureFlags ?? {},
     plugins: configModule?.plugins ?? [],
   }

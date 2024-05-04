@@ -41,12 +41,18 @@ export const defaultAdminShippingProfilesFields: (keyof ShippingProfile)[] = [
   "metadata",
 ]
 
-export const defaultAdminShippingProfilesRelations: (keyof ShippingProfile)[] =
-  ["products", "shipping_options"]
+export const defaultAdminShippingProfilesRelations: string[] = [
+  "products.profiles",
+  "shipping_options",
+]
 
 /**
  * @schema AdminDeleteShippingProfileRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -65,8 +71,17 @@ export type AdminDeleteShippingProfileRes = DeleteResponse
 /**
  * @schema AdminShippingProfilesRes
  * type: object
+ * description: "The shipping profile's details."
+ * x-expanded-relations:
+ *   field: shipping_profile
+ *   relations:
+ *     - products
+ *     - shipping_options
+ * required:
+ *   - shipping_profile
  * properties:
  *   shipping_profile:
+ *     description: Shipping profile details.
  *     $ref: "#/components/schemas/ShippingProfile"
  */
 export type AdminShippingProfilesRes = {
@@ -76,9 +91,13 @@ export type AdminShippingProfilesRes = {
 /**
  * @schema AdminShippingProfilesListRes
  * type: object
+ * description: "The list of shipping profiles."
+ * required:
+ *   - shipping_profiles
  * properties:
  *   shipping_profiles:
  *     type: array
+ *     description: An array of shipping profiles details.
  *     items:
  *       $ref: "#/components/schemas/ShippingProfile"
  */

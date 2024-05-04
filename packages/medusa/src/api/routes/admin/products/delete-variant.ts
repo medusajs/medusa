@@ -8,10 +8,10 @@ import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /products/{id}/variants/{variant_id}
+ * @oas [delete] /admin/products/{id}/variants/{variant_id}
  * operationId: "DeleteProductsProductVariantsVariant"
  * summary: "Delete a Product Variant"
- * description: "Deletes a Product Variant."
+ * description: "Delete a Product Variant."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
@@ -25,20 +25,53 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.deleteVariant(product_id, variant_id)
+ *       medusa.admin.products.deleteVariant(productId, variantId)
  *       .then(({ variant_id, object, deleted, product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteVariant } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *         variantId: string
+ *       }
+ *
+ *       const ProductVariant = ({
+ *         productId,
+ *         variantId
+ *       }: Props) => {
+ *         const deleteVariant = useAdminDeleteVariant(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteVariant.mutate(variantId, {
+ *             onSuccess: ({ variant_id, object, deleted, product }) => {
+ *               console.log(product.variants)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ProductVariant
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/products/{id}/variants/{variant_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/products/{id}/variants/{variant_id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
@@ -80,7 +113,7 @@ export default async (req, res) => {
     relations: defaultAdminProductRelations,
   })
 
-  const [product] = await pricingService.setProductPrices([data])
+  const [product] = await pricingService.setAdminProductPricing([data])
 
   res.json({
     variant_id,

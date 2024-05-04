@@ -1,8 +1,8 @@
 /**
- * @oas [get] /batch-jobs/{id}
+ * @oas [get] /admin/batch-jobs/{id}
  * operationId: "GetBatchJobsBatchJob"
  * summary: "Get a Batch Job"
- * description: "Retrieves a Batch Job."
+ * description: "Retrieve the details of a batch job."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Batch Job
@@ -15,20 +15,43 @@
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.batchJobs.retrieve(batch_job_id)
+ *       medusa.admin.batchJobs.retrieve(batchJobId)
  *       .then(({ batch_job }) => {
  *         console.log(batch_job.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminBatchJob } from "medusa-react"
+ *
+ *       type Props = {
+ *         batchJobId: string
+ *       }
+ *
+ *       const BatchJob = ({ batchJobId }: Props) => {
+ *         const { batch_job, isLoading } = useAdminBatchJob(batchJobId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {batch_job && <span>{batch_job.created_by}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default BatchJob
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/batch-jobs/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/batch-jobs/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Batch Job
+ *   - Batch Jobs
  * responses:
  *  "200":
  *    description: OK

@@ -1,5 +1,5 @@
-import { useRequestOrderAccess, useGrantOrderAccess } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
+import { useGrantOrderAccess, useRequestOrderAccess } from "../../../../src/"
 import { createWrapper } from "../../../utils"
 
 describe("useGrantOrderAccess hook", () => {

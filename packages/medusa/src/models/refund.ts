@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToOne,
+  Relation,
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
@@ -14,11 +15,31 @@ import { generateEntityId } from "../utils/generate-entity-id"
 import { Order } from "./order"
 import { Payment } from "./payment"
 
+/**
+ * @enum
+ *
+ * The reason of the refund.
+ */
 export enum RefundReason {
+  /**
+   * The refund is applied as a discount.
+   */
   DISCOUNT = "discount",
+  /**
+   * The refund is applied because of a created return.
+   */
   RETURN = "return",
+  /**
+   * The refund is applied because of a created swap.
+   */
   SWAP = "swap",
+  /**
+   * The refund is applied because of a created claim.
+   */
   CLAIM = "claim",
+  /**
+   * The refund is created for a custom reason.
+   */
   OTHER = "other",
 }
 
@@ -34,11 +55,11 @@ export class Refund extends BaseEntity {
 
   @ManyToOne(() => Order, (order) => order.payments)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @OneToOne(() => Payment, { nullable: true })
   @JoinColumn({ name: "payment_id" })
-  payment: Payment
+  payment: Relation<Payment>
 
   @Column({ type: "int" })
   amount: number
@@ -55,6 +76,9 @@ export class Refund extends BaseEntity {
   @Column({ nullable: true })
   idempotency_key: string
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ref")
@@ -64,7 +88,7 @@ export class Refund extends BaseEntity {
 /**
  * @schema Refund
  * title: "Refund"
- * description: "Refund represent an amount of money transfered back to the Customer for a given reason. Refunds may occur in relation to Returns, Swaps and Claims, but can also be initiated by a store operator."
+ * description: "A refund represents an amount of money transfered back to the customer for a given reason. Refunds may occur in relation to Returns, Swaps and Claims, but can also be initiated by an admin for an order."
  * type: object
  * required:
  *   - amount
@@ -83,21 +107,23 @@ export class Refund extends BaseEntity {
  *     type: string
  *     example: ref_01G1G5V27GYX4QXNARRQCW1N8T
  *   order_id:
- *     description: The id of the Order that the Refund is related to.
+ *     description: The ID of the order this refund was created for.
  *     nullable: true
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation `order` is expanded.
+ *     description: The details of the order this refund was created for.
+ *     x-expandable: "order"
  *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   payment_id:
- *     description: The payment's ID if available
+ *     description: The payment's ID, if available.
  *     nullable: true
  *     type: string
  *     example: pay_01G8ZCC5W42ZNY842124G7P5R9
  *   payment:
- *     description: Available if the relation `payment` is expanded.
+ *     description: The details of the payment associated with the refund.
+ *     x-expandable: "payment"
  *     nullable: true
  *     $ref: "#/components/schemas/Payment"
  *   amount:
@@ -124,7 +150,7 @@ export class Refund extends BaseEntity {
  *     nullable: true
  *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       url: https://docs.medusajs.com/development/idempotency-key/overview.md
  *       description: Learn more how to use the idempotency key.
  *   created_at:
  *     description: The date with timezone at which the resource was created.
@@ -139,4 +165,7 @@ export class Refund extends BaseEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

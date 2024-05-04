@@ -6,10 +6,14 @@ import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /batch-jobs
+ * @oas [post] /admin/batch-jobs
  * operationId: "PostBatchJobs"
  * summary: "Create a Batch Job"
- * description: "Creates a Batch Job."
+ * description: "Create a Batch Job to be executed asynchronously in the Medusa backend. If `dry_run` is set to `true`, the batch job will not be executed until the it is confirmed,
+ *  which can be done using the Confirm Batch Job API Route."
+ * externalDocs:
+ *   description: "How to create a batch job"
+ *   url: "https://docs.medusajs.com/development/batch-jobs/create#create-batch-job"
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -31,13 +35,39 @@ import { validator } from "../../../../utils/validator"
  *         dry_run: false
  *       }).then((({ batch_job }) => {
  *         console.log(batch_job.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateBatchJob } from "medusa-react"
+ *
+ *       const CreateBatchJob = () => {
+ *         const createBatchJob = useAdminCreateBatchJob()
+ *         // ...
+ *
+ *         const handleCreateBatchJob = () => {
+ *           createBatchJob.mutate({
+ *             type: "publish-products",
+ *             context: {},
+ *             dry_run: true
+ *           }, {
+ *             onSuccess: ({ batch_job }) => {
+ *               console.log(batch_job)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateBatchJob
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/batch-jobs' \
- *       --header 'Content-Type: application/json' \
- *       --header 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/batch-jobs' \
+ *       -H 'Content-Type: application/json' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       --data-raw '{
  *           "type": "product-export",
  *           "context": { }
@@ -45,8 +75,9 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Batch Job
+ *   - Batch Jobs
  * responses:
  *   201:
  *     description: OK
@@ -91,13 +122,15 @@ export default async (req, res) => {
 /**
  * @schema AdminPostBatchesReq
  * type: object
+ * description: The details of the batch job to create.
  * required:
  *   - type
  *   - context
  * properties:
  *   type:
  *     type: string
- *     description: The type of batch job to start.
+ *     description: >-
+ *       The type of batch job to start, which is defined by the `batchType` property of the associated batch job strategy.
  *     example: product-export
  *   context:
  *     type: object
@@ -120,7 +153,7 @@ export default async (req, res) => {
  *           - images
  *   dry_run:
  *     type: boolean
- *     description: Set a batch job in dry_run mode to get some information on what will be done without applying any modifications.
+ *     description: Set a batch job in dry_run mode, which would delay executing the batch job until it's confirmed.
  *     default: false
  */
 export class AdminPostBatchesReq {

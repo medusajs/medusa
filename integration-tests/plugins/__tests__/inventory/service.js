@@ -1,30 +1,30 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const {
+  startBootstrapApp,
+} = require("../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const { getContainer } = require("../../../environment-helpers/use-container")
+const { useExpressServer } = require("../../../environment-helpers/use-api")
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 describe("Inventory Module", () => {
+  let shutdownServer
   let appContainer
   let dbConnection
-  let express
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
-    appContainer = container
-
-    express = app.listen(port, (err) => {
-      process.send(port)
-    })
+    shutdownServer = await startBootstrapApp({ cwd })
+    appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {
@@ -294,6 +294,104 @@ describe("Inventory Module", () => {
           updated_at: expect.any(Date),
         })
       )
+    })
+
+    describe("updateInventoryLevel", () => {
+      it("should pass along the correct context when doing a bulk update", async () => {
+        const inventoryService = appContainer.resolve("inventoryService")
+
+        const inventoryItem = await inventoryService.createInventoryItem({
+          sku: "sku_1",
+          origin_country: "CH",
+          mid_code: "mid code",
+          material: "lycra",
+          weight: 100,
+          length: 200,
+          height: 50,
+          width: 50,
+          metadata: {
+            abc: 123,
+          },
+          hs_code: "hs_code 123",
+          requires_shipping: true,
+        })
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: inventoryItem.id,
+          location_id: "location_123",
+          stocked_quantity: 50,
+          reserved_quantity: 0,
+          incoming_quantity: 0,
+        })
+
+        let error
+        try {
+          await inventoryService.updateInventoryLevels(
+            [
+              {
+                inventory_item_id: inventoryItem.id,
+                location_id: "location_123",
+                stocked_quantity: 25,
+                reserved_quantity: 4,
+                incoming_quantity: 10,
+              },
+            ],
+            {
+              transactionManager: {},
+            }
+          )
+        } catch (e) {
+          error = e
+        }
+        expect(error.message).toEqual("manager.getRepository is not a function")
+      })
+
+      it("should pass along the correct context when doing a single update", async () => {
+        const inventoryService = appContainer.resolve("inventoryService")
+
+        const inventoryItem = await inventoryService.createInventoryItem({
+          sku: "sku_1",
+          origin_country: "CH",
+          mid_code: "mid code",
+          material: "lycra",
+          weight: 100,
+          length: 200,
+          height: 50,
+          width: 50,
+          metadata: {
+            abc: 123,
+          },
+          hs_code: "hs_code 123",
+          requires_shipping: true,
+        })
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: inventoryItem.id,
+          location_id: "location_123",
+          stocked_quantity: 50,
+          reserved_quantity: 0,
+          incoming_quantity: 0,
+        })
+
+        let error
+        try {
+          await inventoryService.updateInventoryLevel(
+            inventoryItem.id,
+            "location_123",
+            {
+              stocked_quantity: 25,
+              reserved_quantity: 4,
+              incoming_quantity: 10,
+            },
+            {
+              transactionManager: {},
+            }
+          )
+        } catch (e) {
+          error = e
+        }
+        expect(error.message).toEqual("manager.getRepository is not a function")
+      })
     })
 
     it("deleteInventoryLevel", async () => {

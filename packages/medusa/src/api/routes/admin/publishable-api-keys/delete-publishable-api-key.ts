@@ -3,13 +3,13 @@ import { EntityManager } from "typeorm"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [delete] /publishable-api-keys/{id}
+ * @oas [delete] /admin/publishable-api-keys/{id}
  * operationId: "DeletePublishableApiKeysPublishableApiKey"
- * summary: "Delete PublishableApiKey"
- * description: "Deletes a PublishableApiKeys"
+ * summary: "Delete Publishable API Key"
+ * description: "Delete a Publishable API Key. Associated resources, such as sales channels, are not deleted."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the PublishableApiKeys to delete.
+ *   - (path) id=* {string} The ID of the Publishable API Key to delete.
  * x-codegen:
  *   method: delete
  * x-codeSamples:
@@ -23,16 +23,47 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id)
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeletePublishableApiKey } from "medusa-react"
+ *
+ *       type Props = {
+ *         publishableApiKeyId: string
+ *       }
+ *
+ *       const PublishableApiKey = ({
+ *         publishableApiKeyId
+ *       }: Props) => {
+ *         const deleteKey = useAdminDeletePublishableApiKey(
+ *           publishableApiKeyId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteKey.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/publishable-api-key/{pka_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/publishable-api-key/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - PublishableApiKey
+ *   - Publishable Api Keys
  * responses:
  *   200:
  *     description: OK

@@ -1,19 +1,18 @@
-import { FulfillmentProvider, PaymentProvider, Store } from "../../../../models"
+import { FlagRouter } from "@medusajs/utils"
+import { defaultRelationsExtended } from "."
 import {
   FulfillmentProviderService,
   PaymentProviderService,
   StoreService,
 } from "../../../../services"
-import { FeatureFlagsResponse } from "../../../../types/feature-flags"
-import { ModulesResponse } from "../../../../types/modules"
-import { FlagRouter } from "../../../../utils/flag-router"
-import { ModulesHelper } from "../../../../utils/module-helper"
+import { ExtendedStoreDTO } from "../../../../types/store"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 /**
- * @oas [get] /store
+ * @oas [get] /admin/store
  * operationId: "GetStore"
  * summary: "Get Store details"
- * description: "Retrieves the Store details"
+ * description: "Retrieve the Store's details."
  * x-authenticated: true
  * x-codegen:
  *   method: retrieve
@@ -27,15 +26,37 @@ import { ModulesHelper } from "../../../../utils/module-helper"
  *       medusa.admin.store.retrieve()
  *       .then(({ store }) => {
  *         console.log(store.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminStore } from "medusa-react"
+ *
+ *       const Store = () => {
+ *         const {
+ *           store,
+ *           isLoading
+ *         } = useAdminStore()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {store && <span>{store.name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Store
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/store' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/store' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Store
  * responses:
@@ -44,7 +65,7 @@ import { ModulesHelper } from "../../../../utils/module-helper"
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminStoresRes"
+ *           $ref: "#/components/schemas/AdminExtendedStoresRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -62,7 +83,6 @@ export default async (req, res) => {
   const storeService: StoreService = req.scope.resolve("storeService")
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-  const modulesHelper: ModulesHelper = req.scope.resolve("modulesHelper")
 
   const paymentProviderService: PaymentProviderService = req.scope.resolve(
     "paymentProviderService"
@@ -70,22 +90,26 @@ export default async (req, res) => {
   const fulfillmentProviderService: FulfillmentProviderService =
     req.scope.resolve("fulfillmentProviderService")
 
-  const relations = ["currencies", "default_currency"]
+  const relations = [...defaultRelationsExtended]
   if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
     relations.push("default_sales_channel")
   }
 
   const data = (await storeService.retrieve({
     relations,
-  })) as Store & {
-    payment_providers: PaymentProvider[]
-    fulfillment_providers: FulfillmentProvider[]
-    feature_flags: FeatureFlagsResponse
-    modules: ModulesResponse
-  }
+  })) as ExtendedStoreDTO
 
   data.feature_flags = featureFlagRouter.listFlags()
-  data.modules = modulesHelper.modules
+  data.modules = MedusaModule.getLoadedModules()
+    .map((loadedModule) => {
+      return Object.entries(loadedModule).map(([key, service]) => {
+        return {
+          module: key,
+          resolution: service.__definition.defaultPackage,
+        }
+      })
+    })
+    .flat()
 
   const paymentProviders = await paymentProviderService.list()
   const fulfillmentProviders = await fulfillmentProviderService.list()

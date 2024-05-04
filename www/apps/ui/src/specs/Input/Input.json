@@ -1,0 +1,33 @@
+{
+  "description": "This component is based on the `input` element and supports all of its props",
+  "methods": [],
+  "displayName": "Input",
+  "props": {
+    "size": {
+      "defaultValue": {
+        "value": "\"base\"",
+        "computed": false
+      },
+      "description": "The input's size.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"small\" \\| \"base\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
+          {
+            "name": "literal",
+            "value": "\"base\""
+          }
+        ]
+      },
+      "required": false
+    }
+  },
+  "composes": [
+    "VariantProps",
+    "Omit"
+  ]
+}

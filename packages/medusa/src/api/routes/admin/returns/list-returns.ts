@@ -1,19 +1,20 @@
 import { IsNumber, IsOptional } from "class-validator"
 
-import { ReturnService } from "../../../../services"
-import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { FindConfig } from "../../../../types/common"
 import { Return } from "../../../../models"
+import { ReturnService } from "../../../../services"
+import { Type } from "class-transformer"
+import { defaultRelationsList } from "."
+import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /returns
+ * @oas [get] /admin/returns
  * operationId: "GetReturns"
  * summary: "List Returns"
- * description: "Retrieves a list of Returns"
+ * description: "Retrieve a list of Returns. The returns can be paginated."
  * parameters:
- *   - (query) limit=50 {number} The upper limit for the amount of responses returned.
- *   - (query) offset=0 {number} The offset of the list returned.
+ *   - (query) limit=50 {number} Limit the number of Returns returned.
+ *   - (query) offset=0 {number} The number of Returns to skip when retrieving the Returns.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetReturnsParams
@@ -26,18 +27,48 @@ import { Return } from "../../../../models"
  *       // must be previously logged in or use api token
  *       medusa.admin.returns.list()
  *       .then(({ returns, limit, offset, count }) => {
- *         console.log(returns.length);
- *       });
+ *         console.log(returns.length)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminReturns } from "medusa-react"
+ *
+ *       const Returns = () => {
+ *         const { returns, isLoading } = useAdminReturns()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {returns && !returns.length && (
+ *               <span>No Returns</span>
+ *             )}
+ *             {returns && returns.length > 0 && (
+ *               <ul>
+ *                 {returns.map((returnData) => (
+ *                   <li key={returnData.id}>
+ *                     {returnData.status}
+ *                   </li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Returns
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/returns' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/returns' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Return
+ *   - Returns
  * responses:
  *   200:
  *     description: OK
@@ -66,28 +97,41 @@ export default async (req, res) => {
   const selector = {}
 
   const listConfig = {
-    relations: ["swap", "order"],
+    relations: defaultRelationsList,
     skip: validated.offset,
     take: validated.limit,
     order: { created_at: "DESC" },
   } as FindConfig<Return>
 
-  const returns = await returnService.list(selector, { ...listConfig })
+  const [returns, count] = await returnService.listAndCount(selector, {
+    ...listConfig,
+  })
 
   res.json({
     returns,
-    count: returns.length,
+    count,
     offset: validated.offset,
     limit: validated.limit,
   })
 }
 
+/**
+ * {@inheritDoc FindPaginationParams}
+ */
 export class AdminGetReturnsParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   limit?: number = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 50
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)

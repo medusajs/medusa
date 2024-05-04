@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
-import { Notification } from "../models/notification"
+import { Notification } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(Notification)
-export class NotificationRepository extends Repository<Notification> {}
+export const NotificationRepository = dataSource.getRepository(Notification)
+export default NotificationRepository

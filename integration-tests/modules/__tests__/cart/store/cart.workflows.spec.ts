@@ -94,7 +94,7 @@ medusaIntegrationTestRunner({
       })
 
       describe("CreateCartWorkflow", () => {
-        it.only("should create a cart", async () => {
+        it("should create a cart", async () => {
           const region = await regionModuleService.create({
             name: "US",
             currency_code: "usd",
@@ -186,62 +186,6 @@ medusaIntegrationTestRunner({
           const cart = await cartModuleService.retrieve(result.id, {
             relations: ["items"],
           })
-
-          console.log(
-            JSON.stringify(
-              await remoteQuery(
-                `
-            query {
-              cart {
-                id
-                items {
-                  id
-                  quantity
-                  variant {
-                    id
-                    title
-                    sku
-                    product {
-                      id
-                      title
-                    }
-                  }
-                }
-              }
-            }
-            `
-              ),
-              null,
-              2
-            )
-          )
-
-          console.log(
-            JSON.stringify(
-              await remoteQuery(`
-                query {
-                  product {
-                    id
-                    title
-                    variants {
-                      id
-                      title
-                      sku
-                      cart_items {
-                        id
-                        quantity
-                        cart {
-                          id
-                        }
-                      }
-                    }
-                  }
-                }
-              `),
-              null,
-              2
-            )
-          )
 
           expect(cart).toEqual(
             expect.objectContaining({
@@ -471,12 +415,10 @@ medusaIntegrationTestRunner({
 
           expect(errors).toEqual([
             {
-              action: "confirm-item-inventory-as-step",
+              action: "confirm-inventory-step",
               handlerType: "invoke",
               error: expect.objectContaining({
-                message: expect.stringContaining(
-                  "Some variant does not have the required inventory"
-                ),
+                message: "Some variant does not have the required inventory",
               }),
             },
           ])
@@ -765,13 +707,10 @@ medusaIntegrationTestRunner({
 
           expect(errors).toEqual([
             {
-              action: "confirm-item-inventory-as-step",
+              action: "confirm-inventory-step",
               handlerType: "invoke",
               error: expect.objectContaining({
-                // TODO: FIX runAsStep nested errors
-                message: expect.stringContaining(
-                  `Variants with IDs ${product.variants[0].id} do not have a price`
-                ),
+                message: `Variants with IDs ${product.variants[0].id} do not have a price`,
               }),
             },
           ])

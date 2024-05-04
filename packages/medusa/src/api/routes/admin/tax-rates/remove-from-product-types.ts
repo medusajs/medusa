@@ -7,15 +7,15 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [delete] /tax-rates/{id}/product-types/batch
+ * @oas [delete] /admin/tax-rates/{id}/product-types/batch
  * operationId: "DeleteTaxRatesTaxRateProductTypes"
- * summary: "Delete from Product Types"
- * description: "Removes a Tax Rate from a list of Product Types"
+ * summary: "Remove Product Types from Rate"
+ * description: "Remove product types from a tax rate. This only removes the association between the product types and the tax rate. It does not delete the product types."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
  *     name: fields
- *     description: "Which fields should be included in the result."
+ *     description: "Comma-separated fields that should be included in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  *         type: string
  *   - in: query
  *     name: expand
- *     description: "Which fields should be expanded and retrieved in the result."
+ *     description: "Comma-separated relations that should be expanded in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -47,20 +47,54 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.taxRates.removeProductTypes(tax_rate_id, {
+ *       medusa.admin.taxRates.removeProductTypes(taxRateId, {
  *         product_types: [
- *           product_type_id
+ *           productTypeId
  *         ]
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminDeleteProductTypeTaxRates,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         taxRateId: string
+ *       }
+ *
+ *       const TaxRate = ({ taxRateId }: Props) => {
+ *         const removeProductTypes = useAdminDeleteProductTypeTaxRates(
+ *           taxRateId
+ *         )
+ *         // ...
+ *
+ *         const handleRemoveProductTypes = (
+ *           productTypeIds: string[]
+ *         ) => {
+ *           removeProductTypes.mutate({
+ *             product_types: productTypeIds,
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.product_types)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default TaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/tax-rates/{id}/product-types/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE '{backend_url}/admin/tax-rates/{id}/product-types/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *          "product_types": [
  *            "{product_type_id}"
@@ -69,8 +103,9 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK
@@ -124,12 +159,13 @@ export default async (req, res) => {
 /**
  * @schema AdminDeleteTaxRatesTaxRateProductTypesReq
  * type: object
+ * description: "Product types to remove from the tax rates."
  * required:
  *   - product_types
  * properties:
  *   product_types:
  *     type: array
- *     description: "The IDs of the types of products to remove association with this tax rate"
+ *     description: "The IDs of the product types to remove their association with this tax rate."
  *     items:
  *       type: string
  */
@@ -138,11 +174,20 @@ export class AdminDeleteTaxRatesTaxRateProductTypesReq {
   product_types: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminDeleteTaxRatesTaxRateProductTypesParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

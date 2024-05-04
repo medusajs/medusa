@@ -1,22 +1,6 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
-import {
-  FulfillmentStatus,
-  LineItem,
-  Order,
-  PaymentStatus,
-  Return,
-  ReturnItem,
-  ReturnStatus,
-} from "../models"
-import { ReturnRepository } from "../repositories/return"
-import { ReturnItemRepository } from "../repositories/return-item"
-import { FindConfig, Selector } from "../types/common"
-import { OrdersReturnItem } from "../types/orders"
 import { CreateReturnInput, UpdateReturnInput } from "../types/return"
-import { buildQuery, setMetadata } from "../utils"
-
+import { DeepPartial, EntityManager } from "typeorm"
+import { FindConfig, Selector } from "../types/common"
 import {
   FulfillmentProviderService,
   LineItemService,
@@ -27,6 +11,24 @@ import {
   TaxProviderService,
   TotalsService,
 } from "."
+import {
+  FulfillmentStatus,
+  LineItem,
+  Order,
+  PaymentStatus,
+  Return,
+  ReturnItem,
+  ReturnStatus,
+} from "../models"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { buildQuery, calculatePriceTaxAmount, setMetadata } from "../utils"
+
+import { OrdersReturnItem } from "../types/orders"
+import { ReturnItemRepository } from "../repositories/return-item"
+import { ReturnRepository } from "../repositories/return"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -40,6 +42,7 @@ type InjectedDependencies = {
   fulfillmentProviderService: FulfillmentProviderService
   orderService: OrderService
   productVariantInventoryService: ProductVariantInventoryService
+  featureFlagRouter: FlagRouter
 }
 
 type Transformer = (
@@ -49,9 +52,6 @@ type Transformer = (
 ) => Promise<DeepPartial<LineItem>> | DeepPartial<LineItem>
 
 class ReturnService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly totalsService_: TotalsService
   protected readonly returnRepository_: typeof ReturnRepository
   protected readonly returnItemRepository_: typeof ReturnItemRepository
@@ -63,9 +63,9 @@ class ReturnService extends TransactionBaseService {
   protected readonly orderService_: OrderService
   // eslint-disable-next-line
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
-    manager,
     totalsService,
     lineItemService,
     returnRepository,
@@ -76,11 +76,11 @@ class ReturnService extends TransactionBaseService {
     fulfillmentProviderService,
     orderService,
     productVariantInventoryService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.totalsService_ = totalsService
     this.returnRepository_ = returnRepository
     this.returnItemRepository_ = returnItemRepository
@@ -91,6 +91,7 @@ class ReturnService extends TransactionBaseService {
     this.returnReasonService_ = returnReasonService
     this.orderService_ = orderService
     this.productVariantInventoryService_ = productVariantInventoryService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -128,7 +129,7 @@ class ReturnService extends TransactionBaseService {
       }
     }
 
-    const toReturn = await Promise.all(
+    const toReturn = await promiseAll(
       items.map(async (data) => {
         const item = merged.find((i) => i.id === data.item_id)
         return transformer(item, data.quantity, data)
@@ -151,9 +152,28 @@ class ReturnService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Return[]> {
-    const returnRepo = this.manager_.getCustomRepository(this.returnRepository_)
+    const [returns] = await this.listAndCount(selector, config)
+    return returns
+  }
+
+  /**
+   * @param selector - the query object for find
+   * @param config - the config object for find
+   * @return the result of the find operation
+   */
+  async listAndCount(
+    selector: Selector<Return>,
+    config: FindConfig<Return> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[Return[], number]> {
+    const returnRepo = this.activeManager_.withRepository(
+      this.returnRepository_
+    )
     const query = buildQuery(selector, config)
-    return returnRepo.find(query)
+    return returnRepo.findAndCount(query)
   }
 
   /**
@@ -172,7 +192,7 @@ class ReturnService extends TransactionBaseService {
         )
       }
 
-      const retRepo = manager.getCustomRepository(this.returnRepository_)
+      const retRepo = manager.withRepository(this.returnRepository_)
 
       ret.status = ReturnStatus.CANCELED
 
@@ -270,7 +290,7 @@ class ReturnService extends TransactionBaseService {
       )
     }
 
-    const returnRepository = this.manager_.getCustomRepository(
+    const returnRepository = this.activeManager_.withRepository(
       this.returnRepository_
     )
 
@@ -291,7 +311,7 @@ class ReturnService extends TransactionBaseService {
     swapId: string,
     relations: string[] = []
   ): Promise<Return | never> {
-    const returnRepository = this.manager_.getCustomRepository(
+    const returnRepository = this.activeManager_.withRepository(
       this.returnRepository_
     )
 
@@ -333,7 +353,7 @@ class ReturnService extends TransactionBaseService {
         ret[key] = value
       }
 
-      const retRepo = manager.getCustomRepository(this.returnRepository_)
+      const retRepo = manager.withRepository(this.returnRepository_)
       return await retRepo.save(ret)
     })
   }
@@ -348,9 +368,7 @@ class ReturnService extends TransactionBaseService {
    */
   async create(data: CreateReturnInput): Promise<Return | never> {
     return await this.atomicPhase_(async (manager) => {
-      const returnRepository = manager.getCustomRepository(
-        this.returnRepository_
-      )
+      const returnRepository = manager.withRepository(this.returnRepository_)
 
       const orderId = data.order_id
       if (data.swap_id) {
@@ -440,7 +458,7 @@ class ReturnService extends TransactionBaseService {
         )
       }
 
-      const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)
+      const rItemRepo = manager.withRepository(this.returnItemRepository_)
       returnObject.items = returnLines.map((i) =>
         rItemRepo.create({
           item_id: i.id,
@@ -474,11 +492,33 @@ class ReturnService extends TransactionBaseService {
           .withTransaction(manager)
           .createShippingTaxLines(shippingMethod, calculationContext)
 
+        const includesTax =
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          ) && shippingMethod.includes_tax
+
+        const taxRate = taxLines.reduce((acc, curr) => {
+          return acc + curr.rate / 100
+        }, 0)
+
+        const taxAmountIncludedInPrice = !includesTax
+          ? 0
+          : Math.round(
+              calculatePriceTaxAmount({
+                price: shippingMethod.price,
+                taxRate,
+                includesTax,
+              })
+            )
+
+        const shippingPriceWithoutTax =
+          shippingMethod.price - taxAmountIncludedInPrice
+
         const shippingTotal =
-          shippingMethod.price +
+          shippingPriceWithoutTax +
           taxLines.reduce(
             (acc, tl) =>
-              acc + Math.round(shippingMethod.price * (tl.rate / 100)),
+              acc + Math.round(shippingPriceWithoutTax * (tl.rate / 100)),
             0
           )
 
@@ -518,7 +558,9 @@ class ReturnService extends TransactionBaseService {
         {
           id: returnOrder.items.map(({ item_id }) => item_id),
         },
-        { relations: ["tax_lines"] }
+        {
+          relations: ["tax_lines", "variant.product.profiles"],
+        }
       )
 
       returnData.items = returnOrder.items.map((item) => {
@@ -543,7 +585,7 @@ class ReturnService extends TransactionBaseService {
       returnOrder.shipping_data =
         await this.fulfillmentProviderService_.createReturn(returnData)
 
-      const returnRepo = manager.getCustomRepository(this.returnRepository_)
+      const returnRepo = manager.withRepository(this.returnRepository_)
       return await returnRepo.save(returnOrder)
     })
   }
@@ -552,8 +594,8 @@ class ReturnService extends TransactionBaseService {
    * Registers a previously requested return as received. This will create a
    * refund to the customer. If the returned items don't match the requested
    * items the return status will be updated to requires_action. This behaviour
-   * is useful in sitautions where a custom refund amount is requested, but the
-   * retuned items are not matching the requested items. Setting the
+   * is useful in situations where a custom refund amount is requested, but the
+   * returned items are not matching the requested items. Setting the
    * allowMismatch argument to true, will process the return, ignoring any
    * mismatches.
    * @param returnId - the orderId to return to
@@ -571,9 +613,7 @@ class ReturnService extends TransactionBaseService {
     context: { locationId?: string } = {}
   ): Promise<Return | never> {
     return await this.atomicPhase_(async (manager) => {
-      const returnRepository = manager.getCustomRepository(
-        this.returnRepository_
-      )
+      const returnRepository = manager.withRepository(this.returnRepository_)
 
       const returnObj = await this.retrieve(returnId, {
         relations: ["items", "swap", "swap.additional_items"],
@@ -603,6 +643,7 @@ class ReturnService extends TransactionBaseService {
             "discounts.rule",
             "refunds",
             "shipping_methods",
+            "shipping_methods.shipping_option",
             "region",
             "swaps",
             "swaps.additional_items",

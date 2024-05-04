@@ -2,6 +2,11 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import { DeepPartial } from "typeorm/common/DeepPartial"
 
+import {
+  FlagRouter,
+  MedusaV2Flag,
+  selectorConstraintsToString,
+} from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
@@ -17,7 +22,6 @@ import { FindConfig, Selector } from "../types/common"
 import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
 import { ProductVariantPricing } from "../types/pricing"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import {
   PricingService,
   ProductService,
@@ -42,9 +46,6 @@ type InjectedDependencies = {
 }
 
 class LineItemService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly lineItemRepository_: typeof LineItemRepository
   protected readonly itemTaxLineRepo_: typeof LineItemTaxLineRepository
   protected readonly cartRepository_: typeof CartRepository
@@ -57,7 +58,6 @@ class LineItemService extends TransactionBaseService {
   protected readonly taxProviderService_: TaxProviderService
 
   constructor({
-    manager,
     lineItemRepository,
     lineItemTaxLineRepository,
     productVariantService,
@@ -72,7 +72,6 @@ class LineItemService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.lineItemRepository_ = lineItemRepository
     this.itemTaxLineRepo_ = lineItemTaxLineRepository
     this.productVariantService_ = productVariantService
@@ -93,8 +92,9 @@ class LineItemService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<LineItem[]> {
-    const manager = this.manager_
-    const lineItemRepo = manager.getCustomRepository(this.lineItemRepository_)
+    const lineItemRepo = this.activeManager_.withRepository(
+      this.lineItemRepository_
+    )
     const query = buildQuery(selector, config)
     return await lineItemRepo.find(query)
   }
@@ -106,8 +106,7 @@ class LineItemService extends TransactionBaseService {
    * @return the line item
    */
   async retrieve(id: string, config = {}): Promise<LineItem | never> {
-    const manager = this.manager_
-    const lineItemRepository = manager.getCustomRepository(
+    const lineItemRepository = this.activeManager_.withRepository(
       this.lineItemRepository_
     )
 
@@ -138,11 +137,11 @@ class LineItemService extends TransactionBaseService {
   ): Promise<LineItem[]> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const lineItemRepo = transactionManager.getCustomRepository(
+        const lineItemRepo = transactionManager.withRepository(
           this.lineItemRepository_
         )
 
-        const itemTaxLineRepo = transactionManager.getCustomRepository(
+        const itemTaxLineRepo = transactionManager.withRepository(
           this.itemTaxLineRepo_
         )
 
@@ -214,15 +213,18 @@ class LineItemService extends TransactionBaseService {
           quantity
         )
 
+        // Resolve data
         const data = isString(variantIdOrData)
           ? {
               variantId: variantIdOrData,
               quantity: quantity as number,
             }
           : variantIdOrData
+
         const resolvedContext = isString(variantIdOrData)
           ? context
           : (regionIdOrContext as GenerateLineItemContext)
+
         const regionId = (
           isString(variantIdOrData)
             ? regionIdOrContext
@@ -233,6 +235,11 @@ class LineItemService extends TransactionBaseService {
           Array.isArray(data) ? data : [data]
         ) as GenerateInputData[]
 
+        const resolvedDataMap = new Map(
+          resolvedData.map((d) => [d.variantId, d])
+        )
+
+        // Retrieve variants
         const variants = await this.productVariantService_.list(
           {
             id: resolvedData.map((d) => d.variantId),
@@ -242,25 +249,57 @@ class LineItemService extends TransactionBaseService {
           }
         )
 
+        // Validate that all variants has been found
+        const inputDataVariantId = new Set(resolvedData.map((d) => d.variantId))
+        const foundVariants = new Set(variants.map((v) => v.id))
+        const notFoundVariants = new Set(
+          [...inputDataVariantId].filter((x) => !foundVariants.has(x))
+        )
+
+        if (notFoundVariants.size) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Unable to generate the line items, some variant has not been found: ${[
+              ...notFoundVariants,
+            ].join(", ")}`
+          )
+        }
+
+        // Prepare data to retrieve variant pricing
         const variantsMap = new Map<string, ProductVariant>()
-        const variantIdsToCalculatePricingFor: string[] = []
+        const variantsToCalculatePricingFor: {
+          variantId: string
+          quantity: number
+        }[] = []
 
         for (const variant of variants) {
           variantsMap.set(variant.id, variant)
-          if (resolvedContext.unit_price == null) {
-            variantIdsToCalculatePricingFor.push(variant.id)
+
+          const variantResolvedData = resolvedDataMap.get(variant.id)
+          if (
+            resolvedContext.unit_price == null &&
+            variantResolvedData?.unit_price == null
+          ) {
+            variantsToCalculatePricingFor.push({
+              variantId: variant.id,
+              quantity: variantResolvedData!.quantity,
+            })
           }
         }
 
-        const variantsPricing = await this.pricingService_
-          .withTransaction(transactionManager)
-          .getProductVariantsPricing(variantIdsToCalculatePricingFor, {
-            region_id: regionId,
-            quantity: quantity,
-            customer_id: context?.customer_id,
-            include_discount_prices: true,
-          })
+        let variantsPricing = {}
 
+        if (variantsToCalculatePricingFor.length) {
+          variantsPricing = await this.pricingService_
+            .withTransaction(transactionManager)
+            .getProductVariantsPricing(variantsToCalculatePricingFor, {
+              region_id: regionId,
+              customer_id: context?.customer_id,
+              include_discount_prices: true,
+            })
+        }
+
+        // Generate line items
         const generatedItems: LineItem[] = []
 
         for (const variantData of resolvedData) {
@@ -274,6 +313,8 @@ class LineItemService extends TransactionBaseService {
             variantData.quantity,
             {
               ...resolvedContext,
+              unit_price: variantData.unit_price ?? resolvedContext.unit_price,
+              metadata: variantData.metadata ?? resolvedContext.metadata,
               variantPricing,
             }
           )
@@ -313,8 +354,6 @@ class LineItemService extends TransactionBaseService {
       variantPricing: ProductVariantPricing
     }
   ): Promise<LineItem> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
-
     let unit_price = Number(context.unit_price) < 0 ? 0 : context.unit_price
     let unitPriceIncludesTax = false
     let shouldMerge = false
@@ -325,6 +364,15 @@ class LineItemService extends TransactionBaseService {
       unitPriceIncludesTax =
         !!context.variantPricing?.calculated_price_includes_tax
       unit_price = context.variantPricing?.calculated_price ?? undefined
+    }
+
+    if (unit_price == null) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot generate line item for variant "${
+          variant.title ?? variant.product.title ?? variant.id
+        }" without a price`
+      )
     }
 
     const rawLineItem: Partial<LineItem> = {
@@ -340,6 +388,10 @@ class LineItemService extends TransactionBaseService {
       should_merge: shouldMerge,
     }
 
+    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
+      rawLineItem.product_id = variant.product_id
+    }
+
     if (
       this.featureFlagRouter_.isFeatureEnabled(
         TaxInclusivePricingFeatureFlag.key
@@ -350,7 +402,7 @@ class LineItemService extends TransactionBaseService {
 
     rawLineItem.order_edit_id = context.order_edit_id || null
 
-    const lineItemRepo = transactionManager.getCustomRepository(
+    const lineItemRepo = this.activeManager_.withRepository(
       this.lineItemRepository_
     )
 
@@ -371,11 +423,13 @@ class LineItemService extends TransactionBaseService {
   >(data: T): Promise<TResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const lineItemRepository = transactionManager.getCustomRepository(
+        const lineItemRepository = transactionManager.withRepository(
           this.lineItemRepository_
         )
 
-        const data_ = Array.isArray(data) ? data : [data]
+        const data_ = (
+          Array.isArray(data) ? data : [data]
+        ) as DeepPartial<LineItem>[]
 
         const items = lineItemRepository.create(data_)
         const lineItems = await lineItemRepository.save(items)
@@ -401,7 +455,7 @@ class LineItemService extends TransactionBaseService {
 
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const lineItemRepository = transactionManager.getCustomRepository(
+        const lineItemRepository = transactionManager.withRepository(
           this.lineItemRepository_
         )
 
@@ -411,9 +465,7 @@ class LineItemService extends TransactionBaseService {
         let lineItems = await this.list(selector)
 
         if (!lineItems.length) {
-          const selectorConstraints = Object.entries(selector)
-            .map(([key, value]) => `${key}: ${value}`)
-            .join(", ")
+          const selectorConstraints = selectorConstraintsToString(selector)
 
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
@@ -431,37 +483,46 @@ class LineItemService extends TransactionBaseService {
     )
   }
 
+  async delete(ids: string[]): Promise<LineItem[]>
+  async delete(id: string): Promise<LineItem | void>
+
   /**
    * Deletes a line item.
    * @param id - the id of the line item to delete
    * @return the result of the delete operation
    */
-  async delete(id: string): Promise<LineItem | undefined> {
+  async delete(id: string | string[]): Promise<LineItem[] | LineItem | void> {
+    const ids = Array.isArray(id) ? id : [id]
+
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const lineItemRepository = transactionManager.getCustomRepository(
+        const lineItemRepository = transactionManager.withRepository(
           this.lineItemRepository_
         )
 
-        return await lineItemRepository
-          .findOne({ where: { id } })
-          .then((lineItem) => lineItem && lineItemRepository.remove(lineItem))
+        const lineItems = await lineItemRepository.find({
+          where: { id: In(ids) },
+        })
+
+        if (!lineItems?.length) {
+          return Array.isArray(id) ? [] : void 0
+        }
+
+        const removedItems = await lineItemRepository.remove(lineItems)
+        return Array.isArray(id) ? removedItems : removedItems[0]
       }
     )
   }
 
   /**
+   * @deprecated no the cascade on the entity takes care of it
    * Deletes a line item with the tax lines.
    * @param id - the id of the line item to delete
    * @return the result of the delete operation
    */
-  async deleteWithTaxLines(id: string): Promise<LineItem | undefined> {
+  async deleteWithTaxLines(id: string): Promise<LineItem | void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const lineItemRepository = transactionManager.getCustomRepository(
-          this.lineItemRepository_
-        )
-
         await this.taxProviderService_
           .withTransaction(transactionManager)
           .clearLineItemsTaxLines([id])
@@ -477,7 +538,7 @@ class LineItemService extends TransactionBaseService {
    * @return a new line item tax line
    */
   public createTaxLine(args: DeepPartial<LineItemTaxLine>): LineItemTaxLine {
-    const itemTaxLineRepo = this.manager_.getCustomRepository(
+    const itemTaxLineRepo = this.activeManager_.withRepository(
       this.itemTaxLineRepo_
     )
 
@@ -502,7 +563,7 @@ class LineItemService extends TransactionBaseService {
         }
       )
 
-      const lineItemRepository = manager.getCustomRepository(
+      const lineItemRepository = manager.withRepository(
         this.lineItemRepository_
       )
 
@@ -567,22 +628,46 @@ class LineItemService extends TransactionBaseService {
     regionIdOrContext: T extends string ? string : GenerateLineItemContext,
     quantity?: number
   ): void | never {
+    const errorMessage =
+      "Unable to generate the line item because one or more required argument(s) are missing"
+
     if (isString(variantIdOrData)) {
       if (!quantity || !regionIdOrContext || !isString(regionIdOrContext)) {
         throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          "The generate method has been called with a variant id but one of the argument quantity or regionId is missing. Please, provide the variantId, quantity and regionId."
+          MedusaError.Types.INVALID_DATA,
+          `${errorMessage}. Ensure quantity, regionId, and variantId are passed`
         )
       }
-    } else {
-      const resolvedContext = regionIdOrContext as GenerateLineItemContext
 
-      if (!resolvedContext.region_id) {
+      if (!variantIdOrData) {
         throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          "The generate method has been called with the data but the context is missing either region_id or region. Please provide at least one of region or region_id."
+          MedusaError.Types.INVALID_DATA,
+          `${errorMessage}. Ensure variant id is passed`
         )
       }
+      return
+    }
+
+    const resolvedContext = regionIdOrContext as GenerateLineItemContext
+
+    if (!resolvedContext?.region_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `${errorMessage}. Ensure region or region_id are passed`
+      )
+    }
+
+    const variantsData = Array.isArray(variantIdOrData)
+      ? variantIdOrData
+      : [variantIdOrData]
+
+    const hasMissingVariantId = variantsData.some((d) => !d?.variantId)
+
+    if (hasMissingVariantId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `${errorMessage}. Ensure a variant id is passed for each variant`
+      )
     }
   }
 }

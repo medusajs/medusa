@@ -1,9 +1,9 @@
-import { useOrders } from "../../../../src/hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { rest } from "msw"
+import { fixtures } from "../../../../mocks/data"
 import { server } from "../../../../mocks/server"
 import { useCartOrder, useOrder } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
+import { useOrders } from "../../../../src/hooks"
 import { createWrapper } from "../../../utils"
 
 describe("useOrder hook", () => {

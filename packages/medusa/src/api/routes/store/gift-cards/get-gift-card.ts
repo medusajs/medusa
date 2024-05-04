@@ -1,12 +1,13 @@
 import { defaultStoreGiftCardFields, defaultStoreGiftCardRelations } from "."
 
 import GiftCardService from "../../../../services/gift-card"
+import { Logger } from "@medusajs/types"
 
 /**
- * @oas [get] /gift-cards/{code}
+ * @oas [get] /store/gift-cards/{code}
  * operationId: "GetGiftCardsCode"
  * summary: "Get Gift Card by Code"
- * description: "Retrieves a Gift Card by its associated unique code."
+ * description: "Retrieve a Gift Card's details by its associated unique code."
  * parameters:
  *   - (path) code=* {string} The unique Gift Card code.
  * x-codegen:
@@ -20,13 +21,38 @@ import GiftCardService from "../../../../services/gift-card"
  *       medusa.giftCards.retrieve(code)
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useGiftCard } from "medusa-react"
+ *
+ *       type Props = {
+ *         giftCardCode: string
+ *       }
+ *
+ *       const GiftCard = ({ giftCardCode }: Props) => {
+ *         const { gift_card, isLoading, isError } = useGiftCard(
+ *           giftCardCode
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {gift_card && <span>{gift_card.value}</span>}
+ *             {isError && <span>Gift Card does not exist</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default GiftCard
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/gift-cards/{code}'
+ *       curl '{backend_url}/store/gift-cards/{code}'
  * tags:
- *   - Gift Card
+ *   - Gift Cards
  * responses:
  *   200:
  *     description: OK
@@ -58,7 +84,8 @@ export default async (req, res) => {
 
     res.json({ gift_card: giftCard })
   } catch (error) {
-    console.log(error)
+    const logger: Logger = req.scope.resolve("logger")
+    logger.log(error)
     throw error
   }
 }

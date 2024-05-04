@@ -1,139 +1,138 @@
-import {
-  Brackets,
-  DeleteResult,
-  EntityRepository,
-  FindManyOptions,
-  In,
-  Repository,
-} from "typeorm"
+import { DeleteResult, FindOptionsWhere, ILike, In } from "typeorm"
 import { SalesChannel } from "../models"
-import { ExtendedFindConfig, Selector } from "../types/common"
-import { flatten, groupBy, merge } from "lodash"
+import { ExtendedFindConfig } from "../types/common"
+import { dataSource } from "../loaders/database"
+import { generateEntityId } from "../utils"
+import { ProductSalesChannel } from "../models/product-sales-channel"
 
-@EntityRepository(SalesChannel)
-export class SalesChannelRepository extends Repository<SalesChannel> {
-  public async findWithRelations(
-    relations: (keyof SalesChannel | string)[] = [],
-    idsOrOptionsWithoutRelations:
-      | Omit<FindManyOptions<SalesChannel>, "relations">
-      | string[] = {}
-  ): Promise<[SalesChannel[], number]> {
-    let entities: SalesChannel[] = []
-    let count = 0
-    if (Array.isArray(idsOrOptionsWithoutRelations)) {
-      entities = await this.findByIds(idsOrOptionsWithoutRelations)
-      count = idsOrOptionsWithoutRelations.length
-    } else {
-      const [results, resultCount] = await this.findAndCount(
-        idsOrOptionsWithoutRelations
-      )
-      entities = results
-      count = resultCount
-    }
-    const entitiesIds = entities.map(({ id }) => id)
+const productSalesChannelTable = "product_sales_channel"
 
-    const groupedRelations = {}
-    for (const rel of relations) {
-      const [topLevel] = rel.split(".")
-      if (groupedRelations[topLevel]) {
-        groupedRelations[topLevel].push(rel)
-      } else {
-        groupedRelations[topLevel] = [rel]
+export const SalesChannelRepository = dataSource
+  .getRepository(SalesChannel)
+  .extend({
+    async getFreeTextSearchResults_(
+      q: string,
+      options: ExtendedFindConfig<SalesChannel> & { withCount?: boolean } = {
+        where: {},
       }
-    }
+    ): Promise<SalesChannel[] | [SalesChannel[], number]> {
+      const options_ = { ...options }
 
-    const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(async ([_, rels]) => {
-        return this.findByIds(entitiesIds, {
-          select: ["id"],
-          relations: rels as string[],
-        })
-      })
-    ).then(flatten)
-    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
+      options_.where = options_.where as FindOptionsWhere<SalesChannel>
+      delete options_?.where?.name
+      delete options_?.where?.description
 
-    const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return [
-      Object.values(entitiesAndRelationsById).map((v) => merge({}, ...v)),
-      count,
-    ]
-  }
+      options_.where = [
+        {
+          ...options_.where,
+          name: ILike(`%${q}%`),
+        },
+        {
+          ...options_.where,
+          description: ILike(`%${q}%`),
+        },
+      ]
 
-  public async getFreeTextSearchResultsAndCount(
-    q: string,
-    options: ExtendedFindConfig<SalesChannel, Selector<SalesChannel>> = {
-      where: {},
-    }
-  ): Promise<[SalesChannel[], number]> {
-    const options_ = { ...options }
-    delete options_?.where?.name
-    delete options_?.where?.description
+      let qb = this.createQueryBuilder()
+        .select()
+        .where(options_.where)
+        .skip(options_.skip)
+        .take(options_.take)
 
-    let qb = this.createQueryBuilder("sales_channel")
-      .select()
-      .where(options_.where)
-      .andWhere(
-        new Brackets((qb) => {
-          qb.where(`sales_channel.description ILIKE :q`, {
-            q: `%${q}%`,
-          }).orWhere(`sales_channel.name ILIKE :q`, { q: `%${q}%` })
-        })
-      )
-      .skip(options.skip)
-      .take(options.take)
+      if (options_.withDeleted) {
+        qb = qb.withDeleted()
+      }
 
-    if (options.withDeleted) {
-      qb = qb.withDeleted()
-    }
+      return await (options_.withCount ? qb.getManyAndCount() : qb.getMany())
+    },
 
-    return await qb.getManyAndCount()
-  }
+    async getFreeTextSearchResultsAndCount(
+      q: string,
+      options: ExtendedFindConfig<SalesChannel> = {
+        where: {},
+      }
+    ): Promise<[SalesChannel[], number]> {
+      return (await this.getFreeTextSearchResults_(q, {
+        ...options,
+        withCount: true,
+      })) as [SalesChannel[], number]
+    },
 
-  async removeProducts(
-    salesChannelId: string,
-    productIds: string[]
-  ): Promise<DeleteResult> {
-    return await this.createQueryBuilder()
-      .delete()
-      .from("product_sales_channel")
-      .where({
+    async getFreeTextSearchResults(
+      q: string,
+      options: ExtendedFindConfig<SalesChannel> = {
+        where: {},
+      }
+    ): Promise<SalesChannel[]> {
+      return (await this.getFreeTextSearchResults_(
+        q,
+        options
+      )) as SalesChannel[]
+    },
+
+    async removeProducts(
+      salesChannelId: string,
+      productIds: string[]
+    ): Promise<DeleteResult> {
+      const whereOptions = {
         sales_channel_id: salesChannelId,
         product_id: In(productIds),
-      })
-      .execute()
-  }
+      }
 
-  async addProducts(
-    salesChannelId: string,
-    productIds: string[]
-  ): Promise<void> {
-    await this.createQueryBuilder()
-      .insert()
-      .into("product_sales_channel")
-      .values(
-        productIds.map((id) => ({
-          sales_channel_id: salesChannelId,
-          product_id: id,
+      return await this.createQueryBuilder()
+        .delete()
+        .from(productSalesChannelTable)
+        .where(whereOptions)
+        .execute()
+    },
+
+    async addProducts(
+      salesChannelId: string,
+      productIds: string[],
+      isMedusaV2Enabled?: boolean
+    ): Promise<void> {
+      let valuesToInsert = productIds.map((id) => ({
+        sales_channel_id: salesChannelId,
+        product_id: id,
+      }))
+
+      if (isMedusaV2Enabled) {
+        valuesToInsert = valuesToInsert.map((v) => ({
+          ...v,
+          id: generateEntityId(undefined, "prodsc"),
         }))
-      )
-      .orIgnore()
-      .execute()
-  }
+      }
 
-  public async findOneWithRelations(
-    relations: Array<keyof SalesChannel> = [],
-    optionsWithoutRelations: Omit<
-      FindManyOptions<SalesChannel>,
-      "relations"
-    > = {}
-  ): Promise<SalesChannel> {
-    // Limit 1
-    optionsWithoutRelations.take = 1
+      await this.createQueryBuilder()
+        .insert()
+        .into(
+          isMedusaV2Enabled ? ProductSalesChannel : productSalesChannelTable
+        )
+        .values(valuesToInsert)
+        .orIgnore()
+        .execute()
+    },
 
-    const [result] = await this.findWithRelations(
-      relations,
-      optionsWithoutRelations
-    )
-    return result[0]
-  }
-}
+    async listProductIdsBySalesChannelIds(
+      salesChannelIds: string | string[]
+    ): Promise<{ [salesChannelId: string]: string[] }> {
+      salesChannelIds = Array.isArray(salesChannelIds)
+        ? salesChannelIds
+        : [salesChannelIds]
+
+      const result = await this.createQueryBuilder()
+        .select(["sales_channel_id", "product_id"])
+        .from(productSalesChannelTable, "psc")
+        .where({ sales_channel_id: In(salesChannelIds) })
+        .execute()
+
+      return result.reduce((acc, curr) => {
+        acc[curr.sales_channel_id] ??= []
+        acc[curr.sales_channel_id].push(curr.product_id)
+
+        return acc
+      }, {})
+    },
+  })
+
+export default SalesChannelRepository

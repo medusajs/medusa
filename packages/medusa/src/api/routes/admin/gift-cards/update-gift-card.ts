@@ -1,16 +1,16 @@
 import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
 
-import { GiftCardService } from "../../../../services"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { GiftCardService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /gift-cards/{id}
+ * @oas [post] /admin/gift-cards/{id}
  * operationId: "PostGiftCardsGiftCard"
  * summary: "Update a Gift Card"
- * description: "Update a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region."
+ * description: "Update a Gift Card's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Gift Card.
@@ -28,26 +28,57 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.giftCards.update(gift_card_id, {
+ *       medusa.admin.giftCards.update(giftCardId, {
  *         region_id
  *       })
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateGiftCard } from "medusa-react"
+ *
+ *       type Props = {
+ *         customGiftCardId: string
+ *       }
+ *
+ *       const CustomGiftCard = ({ customGiftCardId }: Props) => {
+ *         const updateGiftCard = useAdminUpdateGiftCard(
+ *           customGiftCardId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (regionId: string) => {
+ *           updateGiftCard.mutate({
+ *             region_id: regionId,
+ *           }, {
+ *             onSuccess: ({ gift_card }) => {
+ *               console.log(gift_card.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CustomGiftCard
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/gift-cards/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/gift-cards/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "region_id": "{region_id}"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Gift Card
+ *   - Gift Cards
  * responses:
  *   200:
  *     description: OK
@@ -93,23 +124,28 @@ export default async (req, res) => {
 /**
  * @schema AdminPostGiftCardsGiftCardReq
  * type: object
+ * description: "The details to update of the gift card."
  * properties:
  *   balance:
  *     type: integer
  *     description: The value (excluding VAT) that the Gift Card should represent.
  *   is_disabled:
  *     type: boolean
- *     description: Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers.
+ *     description: >-
+ *       Whether the Gift Card is disabled on creation. If set to `true`, the gift card will not be available for customers.
  *   ends_at:
  *     type: string
  *     format: date-time
- *     description: The time at which the Gift Card should no longer be available.
+ *     description: The date and time at which the Gift Card should no longer be available.
  *   region_id:
  *     description: The ID of the Region in which the Gift Card can be used.
  *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostGiftCardsGiftCardReq {
   @IsOptional()
@@ -123,7 +159,7 @@ export class AdminPostGiftCardsGiftCardReq {
   @IsOptional()
   @IsDate()
   @Type(() => Date)
-  ends_at?: Date
+  ends_at?: Date | null
 
   @IsOptional()
   @IsString()

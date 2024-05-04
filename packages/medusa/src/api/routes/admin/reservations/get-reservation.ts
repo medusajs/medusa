@@ -1,14 +1,14 @@
-import { MedusaError } from "medusa-core-utils"
-import { IInventoryService } from "../../../../interfaces"
+import { IInventoryService } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 
 /**
- * @oas [get] /reservations/{id}
+ * @oas [get] /admin/reservations/{id}
  * operationId: "GetReservationsReservation"
  * summary: "Get a Reservation"
- * description: "Retrieves a single reservation using its id"
+ * description: "Retrieve a reservation's details."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the reservation to retrieve.
+ *   - (path) id=* {string} The ID of the reservation.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -16,27 +16,52 @@ import { IInventoryService } from "../../../../interfaces"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.reservations.retrieve(reservation_id)
+ *       medusa.admin.reservations.retrieve(reservationId)
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminReservation } from "medusa-react"
+ *
+ *       type Props = {
+ *         reservationId: string
+ *       }
+ *
+ *       const Reservation = ({ reservationId }: Props) => {
+ *         const { reservation, isLoading } = useAdminReservation(
+ *           reservationId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {reservation && <span>{reservation.inventory_item_id}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Reservation
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/reservations/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/reservations/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Reservation
+ *   - Reservations
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminPostReservationsReq"
+ *           $ref: "#/components/schemas/AdminReservationsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -11,7 +11,7 @@ const DEFAULT_PARSE_OPTIONS = {
 
 class CsvParser<
   TSchema extends CsvSchema<TParserResult, TOutputResult> = CsvSchema,
-  TParserResult = unknown,
+  TParserResult extends object = Record<string, unknown>,
   TOutputResult = unknown
 > extends AbstractParser<TSchema, TParserResult, ParseConfig, TOutputResult> {
   protected readonly $$delimiter: string = ";"
@@ -146,7 +146,8 @@ class CsvParser<
     tupleKey: string,
     columnMap: Record<string, TSchema["columns"][number]>
   ): TSchema["columns"][number] | undefined {
-    if (columnMap[tupleKey]) {
+    // @ts-ignore
+    if (columnMap[tupleKey] && !columnMap[tupleKey].match) {
       return columnMap[tupleKey]
     }
 

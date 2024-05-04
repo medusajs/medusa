@@ -3,23 +3,27 @@ import {
   FulfillmentService,
   OrderService,
 } from "../../../../services"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersClaimFulfillmentsCancel"
- * summary: "Cancel Claim Fulfillment"
- * description: "Registers a claim's fulfillment as canceled."
+ * summary: "Cancel Claim's Fulfillment"
+ * description: "Cancel a claim's fulfillment and change its fulfillment status to `canceled`."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Order which the Claim relates to.
- *   - (path) claim_id=* {string} The ID of the Claim which the Fulfillment relates to.
- *   - (path) fulfillment_id=* {string} The ID of the Fulfillment.
+ *   - (path) id=* {string} The ID of the order the claim is associated with.
+ *   - (path) claim_id=* {string} The ID of the claim.
+ *   - (path) fulfillment_id=* {string} The ID of the fulfillment.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * x-codegen:
  *   method: cancelClaimFulfillment
+ *   params: AdminPostOrdersClaimFulfillmentsCancelParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -27,20 +31,53 @@ import { MedusaError } from "medusa-core-utils"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.cancelClaimFulfillment(order_id, claim_id, fulfillment_id)
+ *       medusa.admin.orders.cancelClaimFulfillment(orderId, claimId, fulfillmentId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCancelClaimFulfillment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *         claimId: string
+ *       }
+ *
+ *       const Claim = ({ orderId, claimId }: Props) => {
+ *         const cancelFulfillment = useAdminCancelClaimFulfillment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleCancel = (fulfillmentId: string) => {
+ *           cancelFulfillment.mutate({
+ *             claim_id: claimId,
+ *             fulfillment_id: fulfillmentId,
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.claims)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Claim
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST '{backend_url}/admin/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Fulfillment
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -94,9 +131,11 @@ export default async (req, res) => {
       .cancelFulfillment(fulfillment_id)
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
-  res.json({ order })
+
+  res.json({ order: cleanResponseData(order, []) })
 }
+
+export class AdminPostOrdersClaimFulfillmentsCancelParams extends FindParams {}

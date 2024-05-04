@@ -2,11 +2,11 @@ import UserService from "../../../../services/user"
 import _ from "lodash"
 
 /**
- * @oas [get] /auth
+ * @oas [get] /admin/auth
  * operationId: "GetAuth"
  * summary: "Get Current User"
  * x-authenticated: true
- * description: "Gets the currently logged in User."
+ * description: "Get the currently logged in user's details."
  * x-codegen:
  *   method: getSession
  * x-codeSamples:
@@ -19,15 +19,34 @@ import _ from "lodash"
  *       medusa.admin.auth.getSession()
  *       .then(({ user }) => {
  *         console.log(user.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminGetSession } from "medusa-react"
+ *
+ *       const Profile = () => {
+ *         const { user, isLoading } = useAdminGetSession()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {user && <span>{user.email}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Profile
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/auth' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/auth' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Auth
  * responses:
@@ -52,8 +71,10 @@ import _ from "lodash"
  */
 export default async (req, res) => {
   try {
+    const userId = req.user.id || req.user.userId
+
     const userService: UserService = req.scope.resolve("userService")
-    const user = await userService.retrieve(req.user.userId)
+    const user = await userService.retrieve(userId)
 
     const cleanRes = _.omit(user, ["password_hash"])
     res.status(200).json({ user: cleanRes })

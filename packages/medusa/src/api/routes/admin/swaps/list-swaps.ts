@@ -1,19 +1,19 @@
-import { Type } from "class-transformer"
 import { IsInt, IsOptional } from "class-validator"
 
-import { SwapService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { FindConfig } from "../../../../types/common"
 import { Swap } from "../../../../models"
+import { SwapService } from "../../../../services"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /swaps
+ * @oas [get] /admin/swaps
  * operationId: "GetSwaps"
  * summary: "List Swaps"
- * description: "Retrieves a list of Swaps."
+ * description: "Retrieve a list of Swaps. The swaps can be paginated."
  * parameters:
- *   - (query) limit=50 {number} The upper limit for the amount of responses returned.
- *   - (query) offset=0 {number} The offset of the list returned.
+ *   - (query) limit=50 {number} Limit the number of swaps returned.
+ *   - (query) offset=0 {number} The number of swaps to skip when retrieving the swaps.
  * x-authenticated: true
  * x-codegen:
  *   method: list
@@ -28,17 +28,43 @@ import { Swap } from "../../../../models"
  *       medusa.admin.swaps.list()
  *       .then(({ swaps }) => {
  *         console.log(swaps.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminSwaps } from "medusa-react"
+ *
+ *       const Swaps = () => {
+ *         const { swaps, isLoading } = useAdminSwaps()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {swaps && !swaps.length && <span>No Swaps</span>}
+ *             {swaps && swaps.length > 0 && (
+ *               <ul>
+ *                 {swaps.map((swap) => (
+ *                   <li key={swap.id}>{swap.payment_status}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Swaps
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/swaps' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/swaps' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Swap
+ *   - Swaps
  * responses:
  *   200:
  *     description: OK
@@ -72,17 +98,28 @@ export default async (req, res) => {
     order: { created_at: "DESC" },
   }
 
-  const swaps = await swapService.list(selector, { ...listConfig })
+  const [swaps, count] = await swapService.listAndCount(selector, {
+    ...listConfig,
+  })
 
-  res.json({ swaps, count: swaps.length, offset, limit })
+  res.json({ swaps, count, offset, limit })
 }
 
+/**
+ * {@inheritDoc FindPaginationParams}
+ */
 export class AdminGetSwapsParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsInt()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsInt()
   @IsOptional()
   @Type(() => Number)

@@ -1,7 +1,10 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { OrderServiceMock } from "../../../../../services/__mocks__/order"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "../index"
+import {
+  defaultAdminOrdersFields,
+  defaultAdminOrdersRelations,
+} from "../../../../../types/orders"
 
 describe("GET /admin/orders", () => {
   describe("successfully gets an order", () => {
@@ -27,6 +30,15 @@ describe("GET /admin/orders", () => {
 
     it("calls orderService retrieve", () => {
       expect(OrderServiceMock.retrieveWithTotals).toHaveBeenCalledTimes(1)
+
+      const expectedRelations = [
+        ...defaultAdminOrdersRelations,
+        "sales_channel",
+      ]
+
+      expect(
+        OrderServiceMock.retrieveWithTotals.mock.calls[0][1].relations
+      ).toHaveLength(expectedRelations.length)
       expect(OrderServiceMock.retrieveWithTotals).toHaveBeenCalledWith(
         IdMap.getId("test-order"),
         {
@@ -47,7 +59,10 @@ describe("GET /admin/orders", () => {
             }
           ),
           // TODO [MEDUSA_FF_SALES_CHANNELS]: Remove when sales channel flag is removed entirely
-          relations: [...defaultAdminOrdersRelations, "sales_channel"],
+          relations: expect.arrayContaining(expectedRelations),
+        },
+        {
+          includes: undefined,
         }
       )
     })

@@ -1,10 +1,33 @@
 import {
-  ExtendedFindConfig,
-  FindConfig,
-  Selector,
-  Writable,
-} from "../types/common"
-import { FindOperator, In, IsNull, Raw } from "typeorm"
+  And,
+  FindManyOptions,
+  FindOperator,
+  FindOptionsRelations,
+  FindOptionsSelect,
+  FindOptionsWhere,
+  ILike,
+  In,
+  IsNull,
+  LessThan,
+  LessThanOrEqual,
+  MoreThan,
+  MoreThanOrEqual,
+} from "typeorm"
+import { ExtendedFindConfig, FindConfig } from "../types/common"
+
+import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
+import { isObject } from "./is-object"
+import { buildOrder, buildRelations, buildSelects } from "@medusajs/utils"
+
+const operatorsMap = {
+  lt: (value) => LessThan(value),
+  gt: (value) => MoreThan(value),
+  lte: (value) => LessThanOrEqual(value),
+  gte: (value) => MoreThanOrEqual(value),
+  contains: (value) => ILike(`%${value}%`),
+  starts_with: (value) => ILike(`${value}%`),
+  ends_with: (value) => ILike(`%${value}`),
+}
 
 /**
  * Used to build TypeORM queries.
@@ -12,77 +35,12 @@ import { FindOperator, In, IsNull, Raw } from "typeorm"
  * @param config The config
  * @return The QueryBuilderConfig
  */
-export function buildQuery<TWhereKeys, TEntity = unknown>(
+export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
   selector: TWhereKeys,
   config: FindConfig<TEntity> = {}
-): ExtendedFindConfig<TEntity, TWhereKeys> {
-  const build = (obj: Selector<TEntity>): Partial<Writable<TWhereKeys>> => {
-    return Object.entries(obj).reduce((acc, [key, value]: any) => {
-      // Undefined values indicate that they have no significance to the query.
-      // If the query is looking for rows where a column is not set it should use null instead of undefined
-      if (typeof value === "undefined") {
-        return acc
-      }
-
-      if (value === null) {
-        acc[key] = IsNull()
-        return acc
-      }
-
-      const subquery: {
-        operator: "<" | ">" | "<=" | ">="
-        value: unknown
-      }[] = []
-
-      switch (true) {
-        case value instanceof FindOperator:
-          acc[key] = value
-          break
-        case Array.isArray(value):
-          acc[key] = In([...(value as unknown[])])
-          break
-        case value !== null && typeof value === "object":
-          Object.entries(value).map(([modifier, val]) => {
-            switch (modifier) {
-              case "lt":
-                subquery.push({ operator: "<", value: val })
-                break
-              case "gt":
-                subquery.push({ operator: ">", value: val })
-                break
-              case "lte":
-                subquery.push({ operator: "<=", value: val })
-                break
-              case "gte":
-                subquery.push({ operator: ">=", value: val })
-                break
-              default:
-                acc[key] = value
-                break
-            }
-          })
-
-          if (subquery.length) {
-            acc[key] = Raw(
-              (a) =>
-                subquery
-                  .map((s, index) => `${a} ${s.operator} :${index}`)
-                  .join(" AND "),
-              subquery.map((s) => s.value)
-            )
-          }
-          break
-        default:
-          acc[key] = value
-          break
-      }
-
-      return acc
-    }, {} as Partial<Writable<TWhereKeys>>)
-  }
-
-  const query: ExtendedFindConfig<TEntity, TWhereKeys> = {
-    where: build(selector),
+) {
+  const query: ExtendedFindConfig<TEntity> = {
+    where: buildWhere<TWhereKeys, TEntity>(selector),
   }
 
   if ("deleted_at" in selector) {
@@ -90,24 +48,196 @@ export function buildQuery<TWhereKeys, TEntity = unknown>(
   }
 
   if ("skip" in config) {
-    query.skip = config.skip
+    ;(query as FindManyOptions<TEntity>).skip = config.skip ?? undefined
   }
 
   if ("take" in config) {
-    query.take = config.take
+    ;(query as FindManyOptions<TEntity>).take = config.take ?? undefined
   }
 
-  if ("relations" in config) {
-    query.relations = config.relations
+  if (config.relations) {
+    query.relations = buildRelations(
+      config.relations
+    ) as FindOptionsRelations<TEntity>
   }
 
-  if ("select" in config) {
-    query.select = config.select
+  if (config.select) {
+    query.select = buildSelects(
+      config.select as string[]
+    ) as FindOptionsSelect<TEntity>
   }
 
-  if ("order" in config) {
-    query.order = config.order
+  if (config.order) {
+    query.order = buildOrder(config.order) as FindOptionsOrder<TEntity>
   }
 
   return query
+}
+
+/**
+ * @param constraints
+ *
+ * @example
+ * const q = buildWhere(
+ *   {
+ *     id: "1234",
+ *     test1: ["123", "12", "1"],
+ *     test2: Not("this"),
+ *     date: { gt: date },
+ *     amount: { gt: 10 },
+ *   },
+ *)
+ *
+ * // Output
+ * {
+ *    id: "1234",
+ *    test1: In(["123", "12", "1"]),
+ *    test2: Not("this"),
+ *    date: MoreThan(date),
+ *    amount: MoreThan(10)
+ * }
+ */
+function buildWhere<TWhereKeys extends object, TEntity>(
+  constraints: TWhereKeys
+): FindOptionsWhere<TEntity> | FindOptionsWhere<TEntity>[] {
+  let where: FindOptionsWhere<TEntity> | FindOptionsWhere<TEntity>[] = {}
+
+  if (Array.isArray(constraints)) {
+    where = []
+    constraints.forEach((constraint) => {
+      ;(where as FindOptionsWhere<TEntity>[]).push(
+        buildWhere(constraint) as FindOptionsWhere<TEntity>
+      )
+    })
+
+    return where
+  }
+
+  for (const [key, value] of Object.entries(constraints)) {
+    if (value === undefined) {
+      continue
+    }
+
+    if (value === null) {
+      where[key] = IsNull()
+      continue
+    }
+
+    if (value instanceof FindOperator) {
+      where[key] = value
+      continue
+    }
+
+    if (Array.isArray(value)) {
+      where[key] = In(value)
+      continue
+    }
+
+    if (typeof value === "object") {
+      Object.entries(value).forEach(([objectKey, objectValue]) => {
+        where[key] = where[key] || []
+        if (operatorsMap[objectKey]) {
+          where[key].push(operatorsMap[objectKey](objectValue))
+        } else {
+          if (objectValue != undefined && typeof objectValue === "object") {
+            where[key] = buildWhere<any, TEntity>(objectValue)
+            return
+          }
+          where[key] = value
+        }
+        return
+      })
+
+      if (!Array.isArray(where[key])) {
+        continue
+      }
+
+      if (where[key].length === 1) {
+        where[key] = where[key][0]
+      } else {
+        where[key] = And(...where[key])
+      }
+
+      continue
+    }
+
+    where[key] = value
+  }
+
+  return where
+}
+
+/**
+ * Revert new object structure of find options to the legacy structure of previous version
+ * @deprecated in favor of import { objectToStringPath } from "@medusajs/utils"
+ * @example
+ * input: {
+ *   test: {
+ *     test1: true,
+ *     test2: true,
+ *     test3: {
+ *       test4: true
+ *     },
+ *   },
+ *   test2: true
+ * }
+ * output: ['test.test1', 'test.test2', 'test.test3.test4', 'test2']
+ * @param input
+ */
+export function buildLegacyFieldsListFrom<TEntity>(
+  input:
+    | FindOptionsWhere<TEntity>
+    | FindOptionsSelect<TEntity>
+    | FindOptionsOrder<TEntity>
+    | FindOptionsRelations<TEntity> = {}
+): (keyof TEntity)[] {
+  if (!Object.keys(input).length) {
+    return []
+  }
+
+  const output: Set<string> = new Set(Object.keys(input))
+
+  for (const key of Object.keys(input)) {
+    if (input[key] != undefined && typeof input[key] === "object") {
+      const deepRes = buildLegacyFieldsListFrom(input[key])
+
+      const items = deepRes.reduce((acc, val) => {
+        acc.push(`${key}.${val}`)
+        return acc
+      }, [] as string[])
+
+      items.forEach((item) => output.add(item))
+      continue
+    }
+
+    output.add(key)
+  }
+
+  return Array.from(output) as (keyof TEntity)[]
+}
+
+export function addOrderToSelect<TEntity>(
+  order: FindOptionsOrder<TEntity>,
+  select: FindOptionsSelect<TEntity>
+): void {
+  for (const orderBy of Object.keys(order)) {
+    if (isObject(order[orderBy])) {
+      select[orderBy] =
+        select[orderBy] && isObject(select[orderBy]) ? select[orderBy] : {}
+      addOrderToSelect(order[orderBy], select[orderBy])
+      continue
+    }
+
+    select[orderBy] = isObject(select[orderBy])
+      ? { ...select[orderBy], id: true, [orderBy]: true }
+      : true
+  }
+}
+
+export function nullableValue(value: any): FindOperator<any> {
+  if (value === null) {
+    return IsNull()
+  } else {
+    return value
+  }
 }

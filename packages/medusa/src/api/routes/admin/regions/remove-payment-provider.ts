@@ -4,10 +4,10 @@ import { EntityManager } from "typeorm"
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [delete] /regions/{id}/payment-providers/{provider_id}
+ * @oas [delete] /admin/regions/{id}/payment-providers/{provider_id}
  * operationId: "PostRegionsRegionPaymentProvidersProvider"
- * summary: "Delete Payment Provider"
- * description: "Removes a Payment Provider."
+ * summary: "Remove Payment Provider"
+ * description: "Remove a Payment Provider from a Region. The payment provider will still be available for usage in other regions."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
@@ -21,20 +21,54 @@ import RegionService from "../../../../services/region"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.regions.deletePaymentProvider(region_id, 'manual')
+ *       medusa.admin.regions.deletePaymentProvider(regionId, "manual")
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminRegionDeletePaymentProvider
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const removePaymentProvider =
+ *           useAdminRegionDeletePaymentProvider(regionId)
+ *         // ...
+ *
+ *         const handleRemovePaymentProvider = (
+ *           providerId: string
+ *         ) => {
+ *           removePaymentProvider.mutate(providerId, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.payment_providers)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/regions/{id}/payment-providers/manual' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/regions/{id}/payment-providers/{provider_id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK

@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  Relation,
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
@@ -16,11 +17,31 @@ import { resolveDbType } from "../utils/db-aware-column"
 
 import { LineItem, Order, OrderItemChange, PaymentCollection } from "."
 
+/**
+ * @enum
+ *
+ * The order edit's status.
+ */
 export enum OrderEditStatus {
+  /**
+   * The order edit is confirmed.
+   */
   CONFIRMED = "confirmed",
+  /**
+   * The order edit is declined.
+   */
   DECLINED = "declined",
+  /**
+   * The order edit is requested.
+   */
   REQUESTED = "requested",
+  /**
+   * The order edit is created.
+   */
   CREATED = "created",
+  /**
+   * The order edit is canceled.
+   */
   CANCELED = "canceled",
 }
 
@@ -32,12 +53,12 @@ export class OrderEdit extends BaseEntity {
 
   @ManyToOne(() => Order, (o) => o.edits)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @OneToMany(() => OrderItemChange, (oic) => oic.order_edit, {
     cascade: true,
   })
-  changes: OrderItemChange[]
+  changes: Relation<OrderItemChange>[]
 
   @Column({ nullable: true })
   internal_note?: string
@@ -73,7 +94,7 @@ export class OrderEdit extends BaseEntity {
   canceled_at?: Date
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.order_edit)
-  items: LineItem[]
+  items: Relation<LineItem>[]
 
   @Index()
   @Column({ nullable: true })
@@ -96,11 +117,17 @@ export class OrderEdit extends BaseEntity {
 
   status: OrderEditStatus
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "oe")
   }
 
+  /**
+   * @apiIgnore
+   */
   @AfterLoad()
   loadStatus(): void {
     if (this.requested_at) {
@@ -123,7 +150,7 @@ export class OrderEdit extends BaseEntity {
 /**
  * @schema OrderEdit
  * title: "Order Edit"
- * description: "Order edit keeps track of order items changes."
+ * description: "Order edit allows modifying items in an order, such as adding, updating, or deleting items from the original order. Once the order edit is confirmed, the changes are reflected on the original order."
  * type: object
  * required:
  *   - canceled_at
@@ -153,11 +180,13 @@ export class OrderEdit extends BaseEntity {
  *     type: string
  *     example: order_01G2SG30J8C85S4A5CHM2S1NS2
  *   order:
- *     description: Available if the relation `order` is expanded.
+ *     description: The details of the order that this order edit was created for.
+ *     x-expandable: "order"
  *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   changes:
- *     description: Available if the relation `changes` is expanded.
+ *     description: The details of all the changes on the original order's line items.
+ *     x-expandable: "changes"
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/OrderItemChange"
@@ -251,8 +280,9 @@ export class OrderEdit extends BaseEntity {
  *       - created
  *       - canceled
  *   items:
- *     description: Available if the relation `items` is expanded.
+ *     description: The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.
  *     type: array
+ *     x-expandable: "items"
  *     items:
  *       $ref: "#/components/schemas/LineItem"
  *   payment_collection_id:
@@ -261,7 +291,8 @@ export class OrderEdit extends BaseEntity {
  *     type: string
  *     example: paycol_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   payment_collection:
- *     description: Available if the relation `payment_collection` is expanded.
+ *     description: The details of the payment collection used to authorize additional payment if necessary.
+ *     x-expandable: "payment_collection"
  *     nullable: true
  *     $ref: "#/components/schemas/PaymentCollection"
  *   created_at:

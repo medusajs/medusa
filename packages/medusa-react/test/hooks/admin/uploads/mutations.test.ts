@@ -1,8 +1,8 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data"
 import {
-  useAdminDeleteFile,
   useAdminCreatePresignedDownloadUrl,
+  useAdminDeleteFile,
 } from "../../../../src"
 import { createWrapper } from "../../../utils"
 

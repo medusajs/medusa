@@ -3,29 +3,29 @@ import {
   defaultAdminNotificationsFields,
   defaultAdminNotificationsRelations,
 } from "./"
-import { Notification } from "../../../../models"
-import { FindConfig } from "../../../../types/common"
 
+import { FindConfig } from "../../../../types/common"
+import { Notification } from "../../../../models"
 import { NotificationService } from "../../../../services"
 import { Type } from "class-transformer"
 import { pick } from "lodash"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /notifications
+ * @oas [get] /admin/notifications
  * operationId: "GetNotifications"
  * summary: "List Notifications"
- * description: "Retrieves a list of Notifications."
+ * description: "Retrieve a list of notifications. The notifications can be filtered by fields such as `event_name` or `resource_type`. The notifications can also be paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) offset=0 {integer} The number of notifications to skip before starting to collect the notifications set
- *   - (query) limit=50 {integer} The number of notifications to return
- *   - (query) fields {string} Comma separated fields to include in the result set
- *   - (query) expand {string} Comma separated fields to populate
- *   - (query) event_name {string} The name of the event that the notification was sent for.
- *   - (query) resource_type {string} The type of resource that the Notification refers to.
- *   - (query) resource_id {string} The ID of the resource that the Notification refers to.
- *   - (query) to {string} The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id
+ *   - (query) offset=0 {integer} The number of inventory items to skip when retrieving the inventory items.
+ *   - (query) limit=50 {integer} Limit the number of notifications returned.
+ *   - (query) fields {string} Comma-separated fields that should be included in each returned notification.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in each returned notification.
+ *   - (query) event_name {string} Filter by the name of the event that triggered sending this notification.
+ *   - (query) resource_type {string} Filter by the resource type.
+ *   - (query) resource_id {string} Filter by the resource ID.
+ *   - (query) to {string} Filter by the address that the Notification was sent to. This will usually be an email address, but it can also represent other addresses such as a chat bot user id.
  *   - (query) include_resends {string} A boolean indicating whether the result set should include resent notifications or not
  * x-codegen:
  *   method: list
@@ -40,17 +40,45 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.notifications.list()
  *       .then(({ notifications }) => {
  *         console.log(notifications.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminNotifications } from "medusa-react"
+ *
+ *       const Notifications = () => {
+ *         const { notifications, isLoading } = useAdminNotifications()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {notifications && !notifications.length && (
+ *               <span>No Notifications</span>
+ *             )}
+ *             {notifications && notifications.length > 0 && (
+ *               <ul>
+ *                 {notifications.map((notification) => (
+ *                   <li key={notification.id}>{notification.to}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Notifications
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/notifications' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/notifications' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Notification
+ *   - Notifications
  * responses:
  *   200:
  *     description: OK
@@ -135,7 +163,10 @@ export default async (req, res) => {
     order: { created_at: "DESC" },
   } as FindConfig<Notification>
 
-  const notifications = await notificationService.list(selector, listConfig)
+  const [notifications, count] = await notificationService.listAndCount(
+    selector,
+    listConfig
+  )
 
   const resultFields = [
     ...(listConfig.select ?? []),
@@ -143,44 +174,76 @@ export default async (req, res) => {
   ]
   const data = notifications.map((o) => pick(o, resultFields))
 
-  res.json({ notifications: data })
+  res.json({ notifications: data, count, limit, offset })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved notifications.
+ */
 export class AdminGetNotificationsParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit?: number = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsOptional()
   @IsString()
   fields?: string
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsOptional()
   @IsString()
   expand?: string
 
+  /**
+   * Event name to filter notifications by.
+   */
   @IsOptional()
   @IsString()
   event_name?: string
 
+  /**
+   * Resource type to filter notifications by.
+   */
   @IsOptional()
   @IsString()
   resource_type?: string
 
+  /**
+   * Resource ID to filter notifications by.
+   */
   @IsOptional()
   @IsString()
   resource_id?: string
 
+  /**
+   * Filter notifications by their `to` field.
+   */
   @IsOptional()
   @IsString()
   to?: string
 
+  /**
+   * Whether to include resends in the results.
+   */
   @IsOptional()
   @IsBooleanString()
   include_resends?: string

@@ -1,0 +1,41 @@
+---
+title: "Prompt"
+description: "Displays a dialog triggered by a button"
+component: true
+---
+
+<ComponentExample name="prompt-demo" />
+
+## Usage
+
+---
+
+```tsx
+import { Prompt } from "@medusajs/ui"
+```
+
+```tsx
+<Prompt>
+  <Prompt.Trigger>Trigger</Prompt.Trigger>
+  <Prompt.Content>
+    <Prompt.Header>
+      <Prompt.Title>Title</Prompt.Title>
+      <Prompt.Description>Description</Prompt.Description>
+    </Prompt.Header>
+    <Prompt.Footer>
+      <Prompt.Cancel>Cancel</Prompt.Cancel>
+      <Prompt.Action>Delete</Prompt.Action>
+    </Prompt.Footer>
+  </Prompt.Content>
+</Prompt>
+```
+
+## API Reference
+
+---
+
+<ComponentReference mainComponent="Prompt" componentsToShow={[
+  "Prompt",
+  "Prompt.Header",
+  "Prompt.Footer"
+]} />

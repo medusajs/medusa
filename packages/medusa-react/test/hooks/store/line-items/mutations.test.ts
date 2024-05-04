@@ -1,10 +1,10 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
+import { fixtures } from "../../../../mocks/data"
 import {
   useCreateLineItem,
-  useUpdateLineItem,
   useDeleteLineItem,
+  useUpdateLineItem,
 } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useCreateLineItem hook", () => {

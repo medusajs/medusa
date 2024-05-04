@@ -1,10 +1,20 @@
-import { PricingService, ProductService } from "../../../../services"
+import {
+  PricingService,
+  ProductService,
+  ProductVariantInventoryService,
+  SalesChannelService,
+} from "../../../../services"
+
+import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
+import { FindParams } from "../../../../types/common"
+import { retrieveProduct } from "../../../../utils"
+import { defaultAdminProductRemoteQueryObject } from "./index"
 
 /**
- * @oas [get] /products/{id}
+ * @oas [get] /admin/products/{id}
  * operationId: "GetProductsProduct"
  * summary: "Get a Product"
- * description: "Retrieves a Product."
+ * description: "Retrieve a Product's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
@@ -17,20 +27,47 @@ import { PricingService, ProductService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.retrieve(product_id)
+ *       medusa.admin.products.retrieve(productId)
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminProduct } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *       }
+ *
+ *       const Product = ({ productId }: Props) => {
+ *         const {
+ *           product,
+ *           isLoading,
+ *         } = useAdminProduct(productId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {product && <span>{product.title}</span>}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Product
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/products/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/products/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
@@ -56,10 +93,69 @@ export default async (req, res) => {
 
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const isMedusaV2FlagOn = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
-  const rawProduct = await productService.retrieve(id, req.retrieveConfig)
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  let rawProduct
+  if (isMedusaV2FlagOn) {
+    rawProduct = await retrieveProduct(
+      req.scope,
+      id,
+      defaultAdminProductRemoteQueryObject
+    )
+  } else {
+    rawProduct = await productService.retrieve(id, req.retrieveConfig)
+  }
+
+  // We only set prices if variants.prices are requested
+  const shouldSetPricing = ["variants", "variants.prices"].every((relation) =>
+    req.retrieveConfig.relations?.includes(relation)
+  )
+
+  const product = rawProduct
+
+  const decoratePromises: Promise<any>[] = []
+  if (shouldSetPricing) {
+    decoratePromises.push(pricingService.setAdminProductPricing([product]))
+  }
+
+  const shouldSetAvailability =
+    req.retrieveConfig.relations?.includes("variants")
+
+  if (shouldSetAvailability) {
+    let salesChannels
+
+    if (isMedusaV2FlagOn) {
+      const remoteQuery = req.scope.resolve("remoteQuery")
+      const query = {
+        sales_channel: {
+          fields: ["id"],
+        },
+      }
+      salesChannels = await remoteQuery(query)
+    } else {
+      const salesChannelService: SalesChannelService = req.scope.resolve(
+        "salesChannelService"
+      )
+      ;[salesChannels] = await salesChannelService.listAndCount(
+        {},
+        { select: ["id"] }
+      )
+    }
+
+    decoratePromises.push(
+      productVariantInventoryService.setProductAvailability(
+        [product],
+        salesChannels.map((salesChannel) => salesChannel.id)
+      )
+    )
+  }
+  await promiseAll(decoratePromises)
 
   res.json({ product })
 }
+
+export class AdminGetProductParams extends FindParams {}

@@ -5,10 +5,10 @@ import { IsString } from "class-validator"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [post] /publishable-api-keys
+ * @oas [post] /admin/publishable-api-keys
  * operationId: "PostPublishableApiKeys"
- * summary: "Create PublishableApiKey"
- * description: "Creates a PublishableApiKey."
+ * summary: "Create Publishable API Key"
+ * description: "Create a Publishable API Key."
  * requestBody:
  *   content:
  *     application/json:
@@ -30,20 +30,45 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       .then(({ publishable_api_key }) => {
  *         console.log(publishable_api_key.id)
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreatePublishableApiKey } from "medusa-react"
+ *
+ *       const CreatePublishableApiKey = () => {
+ *         const createKey = useAdminCreatePublishableApiKey()
+ *         // ...
+ *
+ *         const handleCreate = (title: string) => {
+ *           createKey.mutate({
+ *             title,
+ *           }, {
+ *             onSuccess: ({ publishable_api_key }) => {
+ *               console.log(publishable_api_key.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreatePublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/publishable-api-keys' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/publishable-api-keys' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Web API Key"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - PublishableApiKey
+ *   - Publishable Api Keys
  * responses:
  *   200:
  *     description: OK
@@ -86,11 +111,12 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostPublishableApiKeysReq
  * type: object
+ * description: "The details of the publishable API key to create."
  * required:
  *   - title
  * properties:
  *   title:
- *     description: A title for the publishable api key
+ *     description: The title of the publishable API key
  *     type: string
  */
 export class AdminPostPublishableApiKeysReq {

@@ -2,13 +2,13 @@ import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 
 /**
- * @oas [delete] /price-lists/{id}
+ * @oas [delete] /admin/price-lists/{id}
  * operationId: "DeletePriceListsPriceList"
  * summary: "Delete a Price List"
- * description: "Deletes a Price List"
+ * description: "Delete a Price List and its associated prices."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Price List to delete.
+ *   - (path) id=* {string} The ID of the Price List.
  * x-codegen:
  *   method: delete
  * x-codeSamples:
@@ -18,20 +18,49 @@ import PriceListService from "../../../../services/price-list"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.delete(price_list_id)
+ *       medusa.admin.priceLists.delete(priceListId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeletePriceList } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceList = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const deletePriceList = useAdminDeletePriceList(priceListId)
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deletePriceList.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/price-lists/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/price-lists/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Price List
+ *   - Price Lists
  * responses:
  *   200:
  *     description: OK
@@ -54,12 +83,12 @@ import PriceListService from "../../../../services/price-list"
  */
 export default async (req, res) => {
   const { id } = req.params
+  const manager: EntityManager = req.scope.resolve("manager")
 
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
-  const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    return await priceListService.withTransaction(transactionManager).delete(id)
+    await priceListService.withTransaction(transactionManager).delete(id)
   })
 
   res.json({

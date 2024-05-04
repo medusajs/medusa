@@ -3,15 +3,15 @@ import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /discounts/{id}
+ * @oas [get] /admin/discounts/{id}
  * operationId: "GetDiscountsDiscount"
  * summary: "Get a Discount"
- * description: "Retrieves a Discount"
+ * description: "Retrieve a Discount."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned discount.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned discount.
  * x-codegen:
  *   method: retrieve
  *   queryParams: AdminGetDiscountParams
@@ -22,20 +22,45 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.retrieve(discount_id)
+ *       medusa.admin.discounts.retrieve(discountId)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDiscount } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const { discount, isLoading } = useAdminDiscount(
+ *           discountId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {discount && <span>{discount.code}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/discounts/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/discounts/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Discount
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK

@@ -1,22 +1,27 @@
-import { IsInt, IsOptional, ValidateNested } from "class-validator"
+import { IsOptional, ValidateNested } from "class-validator"
 
-import { DateComparisonOperator } from "../../../../types/common"
-import RegionService from "../../../../services/region"
 import { Type } from "class-transformer"
-import { omit } from "lodash"
-import { validator } from "../../../../utils/validator"
+import RegionService from "../../../../services/region"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 
 /**
- * @oas [get] /regions
+ * @oas [get] /store/regions
  * operationId: GetRegions
  * summary: List Regions
- * description: "Retrieves a list of Regions."
+ * description: "Retrieve a list of regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated. This API Route is useful to
+ *  show the customer all available regions to choose from."
+ * externalDocs:
+ *   description: "How to use regions in a storefront"
+ *   url: "https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions"
  * parameters:
- *   - (query) offset=0 {integer} How many regions to skip in the result.
+ *   - (query) offset=0 {integer} The number of regions to skip when retrieving the regions.
  *   - (query) limit=100 {integer} Limit the number of regions returned.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting regions were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -38,7 +43,7 @@ import { validator } from "../../../../utils/validator"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting regions were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -68,15 +73,41 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.regions.list()
- *       .then(({ regions }) => {
+ *       .then(({ regions, count, limit, offset }) => {
  *         console.log(regions.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useRegions } from "medusa-react"
+ *
+ *       const Regions = () => {
+ *         const { regions, isLoading } = useRegions()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {regions?.length && (
+ *               <ul>
+ *                 {regions.map((region) => (
+ *                   <li key={region.id}>
+ *                     {region.name}
+ *                   </li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Regions
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/regions'
+ *       curl '{backend_url}/store/regions'
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
@@ -96,35 +127,21 @@ import { validator } from "../../../../utils/validator"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreGetRegionsParams, req.query)
-  const { limit, offset } = validated
-
   const regionService: RegionService = req.scope.resolve("regionService")
+  const { limit, offset } = req.validatedQuery
 
-  const filterableFields = omit(validated, ["limit", "offset"])
+  const [regions, count] = await regionService.listAndCount(
+    req.filterableFields,
+    req.listConfig
+  )
 
-  const listConfig = {
-    relations: ["countries", "payment_providers", "fulfillment_providers"],
-    skip: offset,
-    take: limit,
-  }
-
-  const regions = await regionService.list(filterableFields, listConfig)
-
-  res.json({ regions })
+  res.json({ regions, count, limit, offset })
 }
 
-export class StoreGetRegionsParams {
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  limit?: number = 100
-
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  offset?: number = 0
-
+export class StoreGetRegionsParams extends extendedFindParamsMixin({
+  limit: 100,
+  offset: 0,
+}) {
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)

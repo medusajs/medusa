@@ -1,6 +1,5 @@
-
 import dotenv from "dotenv"
-import { createConnection } from "typeorm"
+import { DataSource } from "typeorm"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import Logger from "../loaders/logger"
 import {
@@ -16,11 +15,12 @@ import { typeormConfig } from "./db-config"
 dotenv.config()
 
 const migrate = async function ({ typeormConfig }): Promise<void> {
-  const connection = await createConnection(typeormConfig)
+  const dataSource = new DataSource(typeormConfig)
+  await dataSource.initialize()
 
   const BATCH_SIZE = 1000
 
-  await connection.transaction(async (manager) => {
+  await dataSource.transaction(async (manager) => {
     const discountRuleCount = await manager
       .createQueryBuilder()
       .from(DiscountRule, "dr")
@@ -42,18 +42,22 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
         .offset(offset)
         .getRawMany()
 
-      const discountConditionRepo = manager
-        .getCustomRepository(DiscountConditionRepository)
+      const discountConditionRepo = manager.withRepository(
+        DiscountConditionRepository
+      )
       await manager
         .createQueryBuilder()
         .insert()
         .into(DiscountCondition)
         .values(
-          discountRules.map((dr) => discountConditionRepo.create({
-            type: DiscountConditionType.PRODUCTS,
-            operator: DiscountConditionOperator.IN,
-            discount_rule_id: dr.dr_id,
-          }) as QueryDeepPartialEntity<DiscountCondition>)
+          discountRules.map(
+            (dr) =>
+              discountConditionRepo.create({
+                type: DiscountConditionType.PRODUCTS,
+                operator: DiscountConditionOperator.IN,
+                discount_rule_id: dr.dr_id,
+              }) as QueryDeepPartialEntity<DiscountCondition>
+          )
         )
         .orIgnore()
         .execute()
@@ -98,11 +102,13 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
   })
 
   // Validate results
-  const noDanglingProductsValidation = await connection.manager
-    .query(`SELECT drp.discount_rule_id, drp.product_id, dcp.product_id FROM "discount_rule_products" drp
-  LEFT JOIN discount_condition dc ON dc.discount_rule_id = drp.discount_rule_id
-  LEFT JOIN discount_condition_product dcp ON dcp.condition_id = dc.id AND dcp.product_id = drp.product_id
-  WHERE dcp.product_id IS NULL`)
+  const noDanglingProductsValidation = await dataSource.manager
+    .query(`SELECT drp.discount_rule_id, drp.product_id, dcp.product_id
+            FROM "discount_rule_products" drp
+                     LEFT JOIN discount_condition dc ON dc.discount_rule_id = drp.discount_rule_id
+                     LEFT JOIN discount_condition_product dcp
+                               ON dcp.condition_id = dc.id AND dcp.product_id = drp.product_id
+            WHERE dcp.product_id IS NULL`)
 
   if (
     noDanglingProductsValidation &&
@@ -121,6 +127,6 @@ migrate({ typeormConfig })
     Logger.info("Database migration completed successfully")
     process.exit()
   })
-  .catch((err) => console.log(err))
+  .catch((err) => Logger.log(err))
 
 export default migrate

@@ -5,21 +5,27 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
 import { TrackingLink } from "../../../../models"
-import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/shipment
+ * @oas [post] /admin/orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
- * summary: "Create a Shipment"
- * description: "Registers a Fulfillment as shipped."
+ * summary: "Ship a Fulfillment"
+ * description: "Create a shipment and mark a fulfillment as shipped. This changes the order's fulfillment status to either `partially_shipped` or `shipped`, depending on
+ *  whether all the items were shipped."
  * x-authenticated: true
+ * externalDocs:
+ *   description: Fulfillments of orders
+ *   url: https://docs.medusajs.com/modules/orders/#fulfillments-in-orders
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -27,6 +33,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderShipmentReq"
  * x-codegen:
  *   method: createShipment
+ *   params: AdminPostOrdersOrderShipmentParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -39,21 +46,54 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateShipment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const createShipment = useAdminCreateShipment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           fulfillmentId: string
+ *         ) => {
+ *           createShipment.mutate({
+ *             fulfillment_id: fulfillmentId,
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.fulfillment_status)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/shipment' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/orders/{id}/shipment' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "fulfillment_id": "{fulfillment_id}"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -77,7 +117,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminPostOrdersOrderShipmentReq, req.body)
+  const validated = req.validatedBody
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
@@ -98,17 +138,17 @@ export default async (req, res) => {
       )
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 /**
  * @schema AdminPostOrdersOrderShipmentReq
  * type: object
+ * description: "The details of the shipment to create."
  * required:
  *   - fulfillment_id
  * properties:
@@ -138,3 +178,5 @@ export class AdminPostOrdersOrderShipmentReq {
   @IsOptional()
   no_notification?: boolean
 }
+
+export class AdminPostOrdersOrderShipmentParams extends FindParams {}

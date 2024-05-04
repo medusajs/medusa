@@ -19,8 +19,9 @@ const defaultFields = [
 
 const defaultRelations = [
   "countries",
-  "payment_providers",
+  "currency",
   "fulfillment_providers",
+  "payment_providers",
 ]
 
 describe("GET /admin/regions/:region_id", () => {
@@ -44,11 +45,14 @@ describe("GET /admin/regions/:region_id", () => {
 
     it("calls service addCountry", () => {
       expect(RegionServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(
+        RegionServiceMock.retrieve.mock.calls[0][1].relations
+      ).toHaveLength(defaultRelations.length)
       expect(RegionServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("testRegion"),
         {
           select: defaultFields,
-          relations: defaultRelations,
+          relations: expect.arrayContaining(defaultRelations),
         }
       )
     })

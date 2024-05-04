@@ -7,15 +7,15 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /tax-rates/{id}/product-types/batch
+ * @oas [post] /admin/tax-rates/{id}/product-types/batch
  * operationId: "PostTaxRatesTaxRateProductTypes"
  * summary: "Add to Product Types"
- * description: "Associates a Tax Rate with a list of Product Types"
+ * description: "Add Product Types to a Tax Rate."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
  *     name: fields
- *     description: "Which fields should be included in the result."
+ *     description: "Comma-separated fields that should be included in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  *         type: string
  *   - in: query
  *     name: expand
- *     description: "Which fields should be expanded and retrieved in the result."
+ *     description: "Comma-separated relations that should be expanded in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -47,20 +47,52 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.taxRates.addProductTypes(tax_rate_id, {
+ *       medusa.admin.taxRates.addProductTypes(taxRateId, {
  *         product_types: [
- *           product_type_id
+ *           productTypeId
  *         ]
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminCreateProductTypeTaxRates,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         taxRateId: string
+ *       }
+ *
+ *       const TaxRate = ({ taxRateId }: Props) => {
+ *         const addProductTypes = useAdminCreateProductTypeTaxRates(
+ *           taxRateId
+ *         )
+ *         // ...
+ *
+ *         const handleAddProductTypes = (productTypeIds: string[]) => {
+ *           addProductTypes.mutate({
+ *             product_types: productTypeIds,
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.product_types)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default TaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/tax-rates/{id}/product-types/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/tax-rates/{id}/product-types/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *          "product_types": [
  *            "{product_type_id}"
@@ -69,8 +101,9 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK
@@ -124,6 +157,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesTaxRateProductTypesReq
  * type: object
+ * description: "The product types to add to the tax rate."
  * required:
  *   - product_types
  * properties:
@@ -138,11 +172,20 @@ export class AdminPostTaxRatesTaxRateProductTypesReq {
   product_types: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminPostTaxRatesTaxRateProductTypesParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

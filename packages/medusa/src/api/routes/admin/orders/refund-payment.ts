@@ -5,20 +5,22 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { OrderService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/refund
+ * @oas [post] /admin/orders/{id}/refund
  * operationId: "PostOrdersOrderRefunds"
  * summary: "Create a Refund"
- * description: "Issues a Refund."
+ * description: "Refund an amount for an order. The amount must be less than or equal the `refundable_amount` of the order."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -26,6 +28,7 @@ import { EntityManager } from "typeorm"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderRefundsReq"
  * x-codegen:
  *   method: refundPayment
+ *   params: AdminPostOrdersOrderRefundsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,19 +36,53 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.refundPayment(order_id, {
+ *       medusa.admin.orders.refundPayment(orderId, {
  *         amount: 1000,
- *         reason: 'Do not like it'
+ *         reason: "Do not like it"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminRefundPayment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const refundPayment = useAdminRefundPayment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleRefund = (
+ *           amount: number,
+ *           reason: string
+ *         ) => {
+ *           refundPayment.mutate({
+ *             amount,
+ *             reason,
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.refunds)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/adasda/refund' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/orders/adasda/refund' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "amount": 1000,
  *           "reason": "Do not like it"
@@ -53,8 +90,9 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -78,7 +116,7 @@ import { EntityManager } from "typeorm"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminPostOrdersOrderRefundsReq, req.body)
+  const validated = req.validatedBody
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
@@ -91,23 +129,23 @@ export default async (req, res) => {
       })
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.status(200).json({ order })
+  res.status(200).json({ order: cleanResponseData(order, []) })
 }
 
 /**
  * @schema AdminPostOrdersOrderRefundsReq
  * type: object
+ * description: "The details of the order refund."
  * required:
  *   - amount
  *   - reason
  * properties:
  *   amount:
- *     description: The amount to refund.
+ *     description: The amount to refund. It should be less than or equal the `refundable_amount` of the order.
  *     type: integer
  *   reason:
  *     description: The reason for the Refund.
@@ -116,7 +154,8 @@ export default async (req, res) => {
  *     description: A note with additional details about the Refund.
  *     type: string
  *   no_notification:
- *     description: If set to true no notification will be send related to this Refund.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Refund.
  *     type: boolean
  */
 export class AdminPostOrdersOrderRefundsReq {
@@ -136,3 +175,5 @@ export class AdminPostOrdersOrderRefundsReq {
   @IsOptional()
   no_notification?: boolean
 }
+
+export class AdminPostOrdersOrderRefundsParams extends FindParams {}

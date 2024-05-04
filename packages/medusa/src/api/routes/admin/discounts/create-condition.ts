@@ -9,15 +9,16 @@ import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /discounts/{discount_id}/conditions
+ * @oas [post] /admin/discounts/{discount_id}/conditions
  * operationId: "PostDiscountsDiscountConditions"
  * summary: "Create a Condition"
- * description: "Creates a DiscountCondition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided."
+ * description: "Create a Discount Condition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided, based on the type of discount condition.
+ *  For example, if the discount condition's type is `products`, the `products` field should be provided in the request body."
  * x-authenticated: true
  * parameters:
- *   - (path) discount_id=* {string} The ID of the Product.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
+ *   - (path) discount_id=* {string} The ID of the discount.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned discount.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned discount.
  * requestBody:
  *   content:
  *     application/json:
@@ -34,26 +35,61 @@ import { FindParams } from "../../../../types/common"
  *       import { DiscountConditionOperator } from "@medusajs/medusa"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.createCondition(discount_id, {
- *         operator: DiscountConditionOperator.IN
+ *       medusa.admin.discounts.createCondition(discountId, {
+ *         operator: DiscountConditionOperator.IN,
+ *         products: [productId]
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { DiscountConditionOperator } from "@medusajs/medusa"
+ *       import { useAdminDiscountCreateCondition } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const createCondition = useAdminDiscountCreateCondition(discountId)
+ *         // ...
+ *
+ *         const handleCreateCondition = (
+ *           operator: DiscountConditionOperator,
+ *           products: string[]
+ *         ) => {
+ *           createCondition.mutate({
+ *             operator,
+ *             products
+ *           }, {
+ *             onSuccess: ({ discount }) => {
+ *               console.log(discount.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/discounts/{id}/conditions' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/discounts/{id}/conditions' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "operator": "in"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Discount Condition
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK
@@ -105,32 +141,34 @@ export default async (req: Request, res: Response) => {
  *   - operator
  * properties:
  *   operator:
- *      description: Operator of the condition
+ *      description: >-
+ *        Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
+ *        discountable resources are everything but the specified resources.
  *      type: string
  *      enum: [in, not_in]
  *   products:
  *      type: array
- *      description: list of product IDs if the condition is applied on products.
+ *      description: list of product IDs if the condition's type is `products`.
  *      items:
  *        type: string
  *   product_types:
  *      type: array
- *      description: list of product type IDs if the condition is applied on product types.
+ *      description: list of product type IDs if the condition's type is `product_types`.
  *      items:
  *        type: string
  *   product_collections:
  *      type: array
- *      description: list of product collection IDs if the condition is applied on product collections.
+ *      description: list of product collection IDs if the condition's type is `product_collections`.
  *      items:
  *        type: string
  *   product_tags:
  *      type: array
- *      description: list of product tag IDs if the condition is applied on product tags.
+ *      description: list of product tag IDs if the condition's type is `product_tags`.
  *      items:
  *        type: string
  *   customer_groups:
  *      type: array
- *      description: list of customer group IDs if the condition is applied on customer groups.
+ *      description: list of customer group IDs if the condition's type is `customer_groups`.
  *      items:
  *        type: string
  */

@@ -21,9 +21,9 @@ done
 
 echo $status_code
 
-if [[ "$status_code" =  000 ]] ; then 
-  echo "Site status changed to $status_code" 
+if [[ "$status_code" =  000 ]] ; then
+  echo "Site status changed to $status_code"
   exit 1
-else 
+else
   exit 0
 fi

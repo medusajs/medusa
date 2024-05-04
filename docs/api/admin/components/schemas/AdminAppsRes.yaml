@@ -1,4 +1,0 @@
-type: object
-properties:
-  apps:
-    $ref: ./OAuth.yaml

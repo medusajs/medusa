@@ -1,10 +1,10 @@
 import ProductCollectionService from "../../../../services/product-collection"
 
 /**
- * @oas [get] /collections/{id}
+ * @oas [get] /store/collections/{id}
  * operationId: "GetCollectionsCollection"
  * summary: "Get a Collection"
- * description: "Retrieves a Product Collection."
+ * description: "Retrieve a Product Collection's details."
  * parameters:
  *   - (path) id=* {string} The id of the Product Collection
  * x-codegen:
@@ -15,16 +15,38 @@ import ProductCollectionService from "../../../../services/product-collection"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.collections.retrieve(collection_id)
+ *       medusa.collections.retrieve(collectionId)
  *       .then(({ collection }) => {
  *         console.log(collection.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         collectionId: string
+ *       }
+ *
+ *       const ProductCollection = ({ collectionId }: Props) => {
+ *         const { collection, isLoading } = useCollection(collectionId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {collection && <span>{collection.title}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ProductCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/collections/{id}'
+ *       curl '{backend_url}/store/collections/{id}'
  * tags:
- *   - Collection
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK

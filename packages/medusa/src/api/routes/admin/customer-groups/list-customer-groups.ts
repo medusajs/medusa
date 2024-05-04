@@ -1,21 +1,21 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 
+import { Type } from "class-transformer"
 import { CustomerGroupService } from "../../../../services"
 import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
-import { Type } from "class-transformer"
 
 /**
- * @oas [get] /customer-groups
+ * @oas [get] /admin/customer-groups
  * operationId: "GetCustomerGroups"
  * summary: "List Customer Groups"
- * description: "Retrieve a list of customer groups."
+ * description: "Retrieve a list of customer groups. The customer groups can be filtered by fields such as `name` or `id. The customer groups can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching customer group names.
- *   - (query) offset=0 {integer} How many groups to skip in the result.
- *   - (query) order {string} the field used to order the customer groups.
- *   - (query) discount_condition_id {string} The discount condition id on which to filter the customer groups.
+ *   - (query) q {string} term to search customer groups by name.
+ *   - (query) offset=0 {integer} The number of customer groups to skip when retrieving the customer groups.
+ *   - (query) order {string} A field to sort order the retrieved customer groups by.
+ *   - (query) discount_condition_id {string} Filter by discount condition ID.
  *   - in: query
  *     name: id
  *     style: form
@@ -26,7 +26,7 @@ import { Type } from "class-transformer"
  *         - type: string
  *           description: customer group ID
  *         - type: array
- *           description: multiple customer group IDs
+ *           description: an array of customer group IDs
  *           items:
  *             type: string
  *         - type: object
@@ -50,13 +50,13 @@ import { Type } from "class-transformer"
  *     description: Filter by the customer group name
  *     schema:
  *       type: array
- *       description: multiple customer group names
+ *       description: an array of customer group names
  *       items:
  *         type: string
  *         description: customer group name
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting customer groups were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -78,7 +78,7 @@ import { Type } from "class-transformer"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting customer groups were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -98,8 +98,9 @@ import { Type } from "class-transformer"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) limit=10 {integer} Limit the number of customer groups returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer groups of the result.
+ *   - (query) limit=10 {integer} The number of customer groups to return.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customer groups.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned customer groups.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetCustomerGroupsParams
@@ -113,17 +114,52 @@ import { Type } from "class-transformer"
  *       medusa.admin.customerGroups.list()
  *       .then(({ customer_groups, limit, offset, count }) => {
  *         console.log(customer_groups.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCustomerGroups } from "medusa-react"
+ *
+ *       const CustomerGroups = () => {
+ *         const {
+ *           customer_groups,
+ *           isLoading,
+ *         } = useAdminCustomerGroups()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {customer_groups && !customer_groups.length && (
+ *               <span>No Customer Groups</span>
+ *             )}
+ *             {customer_groups && customer_groups.length > 0 && (
+ *               <ul>
+ *                 {customer_groups.map(
+ *                   (customerGroup) => (
+ *                     <li key={customerGroup.id}>
+ *                       {customerGroup.name}
+ *                     </li>
+ *                   )
+ *                 )}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default CustomerGroups
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/customer-groups' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/customer-groups' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Customer Group
+ *   - Customer Groups
  * responses:
  *   200:
  *     description: OK
@@ -163,22 +199,44 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved customer groups.
+ */
 export class AdminGetCustomerGroupsParams extends FilterableCustomerGroupProps {
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 10
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string
+
+  /**
+   * {@inheritDoc FindPaginationParams.fields}
+   */
+  @IsString()
+  @IsOptional()
+  fields?: string
 }

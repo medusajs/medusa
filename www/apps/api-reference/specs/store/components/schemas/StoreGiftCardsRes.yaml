@@ -1,0 +1,8 @@
+description: The gift card's details.
+type: object
+required:
+  - gift_card
+properties:
+  gift_card:
+    description: Gift card details.
+    $ref: ./GiftCard.yaml

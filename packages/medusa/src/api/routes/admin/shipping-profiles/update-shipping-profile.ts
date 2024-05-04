@@ -10,12 +10,16 @@ import { EntityManager } from "typeorm"
 import { ShippingProfileType } from "../../../../models"
 import { ShippingProfileService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import {
+  defaultAdminShippingProfilesFields,
+  defaultAdminShippingProfilesRelations,
+} from "."
 
 /**
- * @oas [post] /shipping-profiles/{id}
+ * @oas [post] /admin/shipping-profiles/{id}
  * operationId: "PostShippingProfilesProfile"
  * summary: "Update a Shipping Profile"
- * description: "Updates a Shipping Profile"
+ * description: "Update a Shipping Profile's details."
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Profile.
  * requestBody:
@@ -32,26 +36,62 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.shippingProfiles.update(shipping_profile_id, {
+ *       medusa.admin.shippingProfiles.update(shippingProfileId, {
  *         name: 'Large Products'
  *       })
  *       .then(({ shipping_profile }) => {
  *         console.log(shipping_profile.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { ShippingProfileType } from "@medusajs/medusa"
+ *       import { useAdminUpdateShippingProfile } from "medusa-react"
+ *
+ *       type Props = {
+ *         shippingProfileId: string
+ *       }
+ *
+ *       const ShippingProfile = ({ shippingProfileId }: Props) => {
+ *         const updateShippingProfile = useAdminUpdateShippingProfile(
+ *           shippingProfileId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string,
+ *           type: ShippingProfileType
+ *         ) => {
+ *           updateShippingProfile.mutate({
+ *             name,
+ *             type
+ *           }, {
+ *             onSuccess: ({ shipping_profile }) => {
+ *               console.log(shipping_profile.name)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ShippingProfile
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/shipping-profiles/{id} \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/shipping-profiles/{id} \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Large Products"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Shipping Profile
+ *   - Shipping Profiles
  * responses:
  *   200:
  *     description: OK
@@ -91,13 +131,18 @@ export default async (req, res) => {
       .update(profile_id, validated)
   })
 
-  const data = await profileService.retrieve(profile_id)
+  const data = await profileService.retrieve(profile_id, {
+    select: defaultAdminShippingProfilesFields,
+    relations: defaultAdminShippingProfilesRelations,
+  })
+
   res.status(200).json({ shipping_profile: data })
 }
 
 /**
  * @schema AdminPostShippingProfilesProfileReq
  * type: object
+ * description: "The detail to update of the shipping profile."
  * properties:
  *   name:
  *     description: The name of the Shipping Profile
@@ -105,15 +150,18 @@ export default async (req, res) => {
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   type:
  *     description: The type of the Shipping Profile
  *     type: string
  *     enum: [default, gift_card, custom]
  *   products:
- *     description: An optional array of product ids to associate with the Shipping Profile
+ *     description: product IDs to associate with the Shipping Profile
  *     type: array
  *   shipping_options:
- *     description: An optional array of shipping option ids to associate with the Shipping Profile
+ *     description: Shipping option IDs to associate with the Shipping Profile
  *     type: array
  */
 export class AdminPostShippingProfilesProfileReq {

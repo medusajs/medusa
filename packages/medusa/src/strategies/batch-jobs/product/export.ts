@@ -1,9 +1,16 @@
+import { MedusaContainer } from "@medusajs/types"
+import { createContainerLike, FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { humanizeAmount } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { defaultAdminProductRelations } from "../../../api"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
+import ProductCategoryFeatureFlag from "../../../loaders/feature-flags/product-categories"
+import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import { Product, ProductVariant } from "../../../models"
 import { BatchJobService, ProductService } from "../../../services"
 import { BatchJobStatus, CreateBatchJobInput } from "../../../types/batch-job"
-import { defaultAdminProductRelations } from "../../../api"
+import { FindProductConfig } from "../../../types/product"
+import { csvCellContentFormatter, listProducts } from "../../../utils"
 import { prepareListQuery } from "../../../utils/get-query-config"
 import {
   DynamicProductExportDescriptor,
@@ -12,11 +19,8 @@ import {
   ProductExportInjectedDependencies,
   ProductExportPriceData,
 } from "./types"
-import { FindProductConfig } from "../../../types/product"
-import { FlagRouter } from "../../../utils/flag-router"
-import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
-import { csvCellContentFormatter } from "../../../utils"
 import {
+  productCategoriesColumnsDefinition,
   productColumnsDefinition,
   productSalesChannelColumnsDefinition,
 } from "./types/columns-definition"
@@ -32,6 +36,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
   protected readonly productService_: ProductService
   protected readonly fileService_: IFileService
   protected readonly featureFlagRouter_: FlagRouter
+  protected readonly remoteQuery_: any
 
   protected readonly defaultRelations_ = [
     ...defaultAdminProductRelations,
@@ -49,6 +54,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     ...productSalesChannelColumnsDefinition,
   }
 
+  protected readonly productCategoriesColumnDefinitions = {
+    ...productCategoriesColumnsDefinition,
+  }
+
   private readonly NEWLINE_ = "\r\n"
   private readonly DELIMITER_ = ";"
   private readonly DEFAULT_LIMIT = 50
@@ -59,6 +68,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     productService,
     fileService,
     featureFlagRouter,
+    remoteQuery,
   }: ProductExportInjectedDependencies) {
     super({
       manager,
@@ -66,8 +76,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       productService,
       fileService,
       featureFlagRouter,
+      remoteQuery,
     })
 
+    this.remoteQuery_ = remoteQuery
     this.manager_ = manager
     this.batchJobService_ = batchJobService
     this.productService_ = productService
@@ -76,6 +88,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
 
     if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
       this.defaultRelations_.push("sales_channels")
+    }
+
+    if (featureFlagRouter.isFeatureEnabled(ProductCategoryFeatureFlag.key)) {
+      this.defaultRelations_.push("categories")
     }
   }
 
@@ -98,7 +114,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       ...context
     } = (batchJob?.context ?? {}) as ProductExportBatchJobContext
 
-    const listConfig = prepareListQuery(
+    const { listConfig } = prepareListQuery(
       {
         limit,
         offset,
@@ -122,6 +138,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
   }
 
   async preProcessBatchJob(batchJobId: string): Promise<void> {
+    const isMedusaV2Enabled = this.featureFlagRouter_.isFeatureEnabled(
+      MedusaV2Flag.key
+    )
+
     return await this.atomicPhase_(async (transactionManager) => {
       const batchJob = (await this.batchJobService_
         .withTransaction(transactionManager)
@@ -131,12 +151,29 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       const limit = batchJob.context?.list_config?.take ?? this.DEFAULT_LIMIT
 
       const { list_config = {}, filterable_fields = {} } = batchJob.context
-      const [productList, count] = await this.productService_
-        .withTransaction(transactionManager)
-        .listAndCount(filterable_fields, {
-          ...(list_config ?? {}),
-          take: Math.min(batchJob.context.batch_size ?? Infinity, limit),
-        } as FindProductConfig)
+      let productList: Product[] = []
+      let count = 0
+      const container = createContainerLike(
+        this.__container__
+      ) as MedusaContainer
+
+      if (isMedusaV2Enabled) {
+        ;[productList, count] = await listProducts(
+          container,
+          filterable_fields,
+          {
+            ...list_config,
+            take: null,
+          }
+        )
+      } else {
+        ;[productList, count] = await this.productService_
+          .withTransaction(transactionManager)
+          .listAndCount(filterable_fields, {
+            ...(list_config ?? {}),
+            take: Math.min(batchJob.context.batch_size ?? Infinity, limit),
+          } as FindProductConfig)
+      }
 
       const productCount = batchJob.context?.batch_size ?? count
       let products: Product[] = productList
@@ -144,17 +181,30 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       let dynamicOptionColumnCount = 0
       let dynamicImageColumnCount = 0
       let dynamicSalesChannelsColumnCount = 0
+      let dynamicProductCategoriesColumnCount = 0
       let pricesData = new Set<string>()
 
       while (offset < productCount) {
         if (!products?.length) {
-          products = await this.productService_
-            .withTransaction(transactionManager)
-            .list(filterable_fields, {
-              ...list_config,
-              skip: offset,
-              take: Math.min(productCount - offset, limit),
-            } as FindProductConfig)
+          if (isMedusaV2Enabled) {
+            ;[productList, count] = await listProducts(
+              container,
+              filterable_fields,
+              {
+                ...list_config,
+                skip: offset,
+                take: Math.min(productCount - offset, limit),
+              }
+            )
+          } else {
+            products = await this.productService_
+              .withTransaction(transactionManager)
+              .list(filterable_fields, {
+                ...list_config,
+                skip: offset,
+                take: Math.min(productCount - offset, limit),
+              } as FindProductConfig)
+          }
         }
 
         const shapeData = this.getProductRelationsDynamicColumnsShape(products)
@@ -170,6 +220,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
           shapeData.salesChannelsColumnCount,
           dynamicSalesChannelsColumnCount
         )
+        dynamicProductCategoriesColumnCount = Math.max(
+          shapeData.productCategoriesColumnCount,
+          dynamicProductCategoriesColumnCount
+        )
         pricesData = new Set([...pricesData, ...shapeData.pricesData])
 
         offset += products.length
@@ -184,6 +238,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
               dynamicImageColumnCount,
               dynamicOptionColumnCount,
               dynamicSalesChannelsColumnCount,
+              dynamicProductCategoriesColumnCount,
               prices: [...pricesData].map((stringifyData) =>
                 JSON.parse(stringifyData)
               ),
@@ -314,12 +369,14 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       dynamicImageColumnCount,
       dynamicOptionColumnCount,
       dynamicSalesChannelsColumnCount,
+      dynamicProductCategoriesColumnCount,
     } = batchJob?.context?.shape ?? {}
 
     this.appendMoneyAmountDescriptors(prices)
     this.appendOptionsDescriptors(dynamicOptionColumnCount)
     this.appendImagesDescriptors(dynamicImageColumnCount)
     this.appendSalesChannelsDescriptors(dynamicSalesChannelsColumnCount)
+    this.appendProductCategoriesDescriptors(dynamicProductCategoriesColumnCount)
 
     const exportedColumns = Object.values(this.columnsDefinition)
       .map(
@@ -403,6 +460,56 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     }
   }
 
+  private appendProductCategoriesDescriptors(maxCategoriesCount): void {
+    const columnNameHandleBuilder = (this.productCategoriesColumnDefinitions[
+      "Product Category Handle"
+    ]!.exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
+    const columnNameNameBuilder = (this.productCategoriesColumnDefinitions[
+      "Product Category Name"
+    ]!.exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
+    const columnNameDescriptionBuilder = (this
+      .productCategoriesColumnDefinitions["Product Category Description"]!
+      .exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
+    for (let i = 0; i < maxCategoriesCount; ++i) {
+      let columnNameId = columnNameHandleBuilder(i)
+
+      this.columnsDefinition[columnNameId] = {
+        name: columnNameId,
+        exportDescriptor: {
+          accessor: (product: Product) => product?.categories[i]?.handle ?? "",
+          entityName: "product",
+        },
+      }
+
+      columnNameId = columnNameNameBuilder(i)
+
+      this.columnsDefinition[columnNameId] = {
+        name: columnNameId,
+        exportDescriptor: {
+          accessor: (product: Product) => product?.categories[i]?.name ?? "",
+          entityName: "product",
+        },
+      }
+
+      columnNameId = columnNameDescriptionBuilder(i)
+
+      this.columnsDefinition[columnNameId] = {
+        name: columnNameId,
+        exportDescriptor: {
+          accessor: (product: Product) =>
+            product?.categories[i]?.description ?? "",
+          entityName: "product",
+        },
+      }
+    }
+  }
+
   private appendOptionsDescriptors(maxOptionsCount: number): void {
     for (let i = 0; i < maxOptionsCount; ++i) {
       const columnNameNameBuilder = (this.columnsDefinition["Option Name"]!
@@ -426,11 +533,17 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
 
       const columnNameNameValue = columnNameValueBuilder(i)
 
+      // option values are not guaranteed to keep the same order as options on product. Pick them in the same order as product options
       this.columnsDefinition[columnNameNameValue] = {
         name: columnNameNameValue,
         exportDescriptor: {
-          accessor: (variant: ProductVariant) =>
-            variant?.options[i]?.value ?? "",
+          accessor: (
+            variant: ProductVariant,
+            context?: { product?: Product }
+          ) =>
+            variant?.options.find(
+              (ov) => ov.option_id === context!.product!.options[i]?.id
+            )?.value ?? "",
           entityName: "variant",
         },
       }
@@ -460,7 +573,12 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
                     priceData.currency_code.toLowerCase()
                 )
               })
-              return price?.amount?.toString() ?? ""
+              return price?.amount
+                ? humanizeAmount(
+                    price?.amount,
+                    priceData.currency_code!
+                  ).toString()
+                : ""
             },
             entityName: "variant",
           },
@@ -487,7 +605,12 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
                     priceData.region?.id?.toLowerCase()
                 )
               })
-              return price?.amount?.toString() ?? ""
+              return price?.amount
+                ? humanizeAmount(
+                    price?.amount,
+                    priceData.region!.currency_code!
+                  ).toString()
+                : ""
             },
             entityName: "variant",
           },
@@ -516,7 +639,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
         }
         if (columnSchema.entityName === "variant") {
           const formattedContent = csvCellContentFormatter(
-            columnSchema.accessor(variant)
+            columnSchema.accessor(variant, { product: product })
           )
           variantLineData.push(formattedContent)
         }
@@ -546,7 +669,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
   }
 
   /**
-   * Return the maximun number of each relation that must appears in the export.
+   * Return the maximum number of each relation that must appears in the export.
    * The number of item of a relation can vary between 0-Infinity and therefore the number of columns
    * that will be added to the export correspond to that number
    * @param products - The main entity to get the relation shape from
@@ -562,11 +685,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     optionColumnCount: number
     imageColumnCount: number
     salesChannelsColumnCount: number
+    productCategoriesColumnCount: number
     pricesData: Set<string>
   } {
     let optionColumnCount = 0
     let imageColumnCount = 0
     let salesChannelsColumnCount = 0
+    let productCategoriesColumnCount = 0
     const pricesData = new Set<string>()
 
     // Retrieve the highest count of each object to build the dynamic columns later
@@ -580,10 +705,21 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
       ) {
-        const salesChannelCount = product?.sales_channels?.length ?? 0
+        const salesChannelCount =
+          (product as Product)?.sales_channels?.length ?? 0
         salesChannelsColumnCount = Math.max(
           salesChannelsColumnCount,
           salesChannelCount
+        )
+      }
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(ProductCategoryFeatureFlag.key)
+      ) {
+        const categoriesCount = product?.categories?.length ?? 0
+        productCategoriesColumnCount = Math.max(
+          productCategoriesColumnCount,
+          categoriesCount
         )
       }
 
@@ -611,6 +747,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       optionColumnCount,
       imageColumnCount,
       salesChannelsColumnCount,
+      productCategoriesColumnCount,
       pricesData,
     }
   }

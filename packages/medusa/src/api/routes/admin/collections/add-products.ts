@@ -3,15 +3,16 @@ import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
 import ProductCollectionService from "../../../../services/product-collection"
+import { defaultAdminCollectionsRelations } from "./index"
 
 /**
- * @oas [post] /collections/{id}/products/batch
+ * @oas [post] /admin/collections/{id}/products/batch
  * operationId: "PostProductsToCollection"
- * summary: "Update Products"
- * description: "Updates products associated with a Product Collection"
+ * summary: "Add Products to Collection"
+ * description: "Add products to a product collection."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Collection.
+ *   - (path) id=* {string} The ID of the product collection.
  * requestBody:
  *   content:
  *     application/json:
@@ -20,12 +21,55 @@ import ProductCollectionService from "../../../../services/product-collection"
  * x-codegen:
  *   method: addProducts
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.collections.addProducts(collectionId, {
+ *         product_ids: [
+ *           productId1,
+ *           productId2
+ *         ]
+ *       })
+ *       .then(({ collection }) => {
+ *         console.log(collection.products)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminAddProductsToCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         collectionId: string
+ *       }
+ *
+ *       const Collection = ({ collectionId }: Props) => {
+ *         const addProducts = useAdminAddProductsToCollection(collectionId)
+ *         // ...
+ *
+ *         const handleAddProducts = (productIds: string[]) => {
+ *           addProducts.mutate({
+ *             product_ids: productIds
+ *           }, {
+ *             onSuccess: ({ collection }) => {
+ *               console.log(collection.products)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Collection
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/collections/{id}/products/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/collections/{id}/products/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
  *               "prod_01G1G5V2MBA328390B5AXJ610F"
@@ -34,8 +78,9 @@ import ProductCollectionService from "../../../../services/product-collection"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Collection
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK
@@ -67,10 +112,14 @@ export default async (req: Request, res: Response) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const collection = await manager.transaction(async (transactionManager) => {
+  const updated = await manager.transaction(async (transactionManager) => {
     return await productCollectionService
       .withTransaction(transactionManager)
       .addProducts(id, validatedBody.product_ids)
+  })
+
+  const collection = await productCollectionService.retrieve(updated.id, {
+    relations: defaultAdminCollectionsRelations,
   })
 
   res.status(200).json({ collection })
@@ -79,6 +128,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostProductsToCollectionReq
  * type: object
+ * description: "The details of the products to add to the collection."
  * required:
  *   - product_ids
  * properties:

@@ -7,13 +7,13 @@ import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [delete] /publishable-api-keys/{id}/sales-channels/batch
+ * @oas [delete] /admin/publishable-api-keys/{id}/sales-channels/batch
  * operationId: "DeletePublishableApiKeySalesChannelsChannelsBatch"
- * summary: "Delete SalesChannels"
- * description: "Remove a batch of sales channels from a publishable api key."
+ * summary: "Remove Sales Channels"
+ * description: "Remove a list of sales channels from a publishable API key. This doesn't delete the sales channels and only removes the association between them and the publishable API key."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Publishable Api Key.
+ *   - (path) id=* {string} The ID of the Publishable API Key.
  * requestBody:
  *   content:
  *     application/json:
@@ -31,19 +31,58 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       medusa.admin.publishableApiKeys.deleteSalesChannelsBatch(publishableApiKeyId, {
  *         sales_channel_ids: [
  *           {
- *             id: channel_id
+ *             id: channelId
  *           }
  *         ]
  *       })
  *       .then(({ publishable_api_key }) => {
  *         console.log(publishable_api_key.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminRemovePublishableKeySalesChannelsBatch,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         publishableApiKeyId: string
+ *       }
+ *
+ *       const PublishableApiKey = ({
+ *         publishableApiKeyId
+ *       }: Props) => {
+ *         const deleteSalesChannels =
+ *           useAdminRemovePublishableKeySalesChannelsBatch(
+ *             publishableApiKeyId
+ *           )
+ *         // ...
+ *
+ *         const handleDelete = (salesChannelId: string) => {
+ *           deleteSalesChannels.mutate({
+ *             sales_channel_ids: [
+ *               {
+ *                 id: salesChannelId,
+ *               },
+ *             ],
+ *           }, {
+ *             onSuccess: ({ publishable_api_key }) => {
+ *               console.log(publishable_api_key.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE '{backend_url}/admin/publishable-api-keys/{id}/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "sales_channel_ids": [
  *             {
@@ -54,8 +93,9 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - PublishableApiKey
+ *   - Publishable Api Keys
  * responses:
  *   200:
  *     description: OK
@@ -106,11 +146,12 @@ export default async (req: Request, res: Response): Promise<void> => {
 /**
  * @schema AdminDeletePublishableApiKeySalesChannelsBatchReq
  * type: object
+ * description: "The details of the sales channels to remove from the publishable API key."
  * required:
  *   - sales_channel_ids
  * properties:
  *   sales_channel_ids:
- *     description: The IDs of the sales channels to delete from the publishable api key
+ *     description: The IDs of the sales channels to remove from the publishable API key
  *     type: array
  *     items:
  *       type: object

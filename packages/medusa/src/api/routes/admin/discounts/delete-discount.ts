@@ -2,10 +2,10 @@ import DiscountService from "../../../../services/discount"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /discounts/{id}
+ * @oas [delete] /admin/discounts/{id}
  * operationId: "DeleteDiscountsDiscount"
  * summary: "Delete a Discount"
- * description: "Deletes a Discount."
+ * description: "Delete a Discount. Deleting the discount will make it unavailable for customers to use."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount
@@ -18,20 +18,39 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.delete(discount_id)
+ *       medusa.admin.discounts.delete(discountId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteDiscount } from "medusa-react"
+ *
+ *       const Discount = () => {
+ *         const deleteDiscount = useAdminDeleteDiscount(discount_id)
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteDiscount.mutate()
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/discounts/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/discounts/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Discount
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK

@@ -6,10 +6,10 @@ import {
 import { ReturnReasonService } from "../../../../services"
 
 /**
- * @oas [get] /return-reasons/{id}
+ * @oas [get] /admin/return-reasons/{id}
  * operationId: "GetReturnReasonsReason"
  * summary: "Get a Return Reason"
- * description: "Retrieves a Return Reason."
+ * description: "Retrieve a Return Reason's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Return Reason.
@@ -22,20 +22,45 @@ import { ReturnReasonService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.returnReasons.retrieve(return_reason_id)
+ *       medusa.admin.returnReasons.retrieve(returnReasonId)
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminReturnReason } from "medusa-react"
+ *
+ *       type Props = {
+ *         returnReasonId: string
+ *       }
+ *
+ *       const ReturnReason = ({ returnReasonId }: Props) => {
+ *         const { return_reason, isLoading } = useAdminReturnReason(
+ *           returnReasonId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {return_reason && <span>{return_reason.label}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ReturnReason
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/return-reasons/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/return-reasons/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Return Reason
+ *   - Return Reasons
  * responses:
  *   200:
  *     description: OK

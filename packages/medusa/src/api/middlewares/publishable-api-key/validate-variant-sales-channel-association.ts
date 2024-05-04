@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 
 import PublishableApiKeyService from "../../../services/publishable-api-key"
-import { ProductService, ProductVariantService } from "../../../services"
+import { ProductVariantService } from "../../../services"
 
 /**
  * The middleware check if requested product is assigned to a SC associated with PK in the header.
@@ -25,16 +25,22 @@ async function validateProductVariantSalesChannelAssociation(
       "publishableApiKeyService"
     )
 
-    const { sales_channel_id: salesChannelIds } =
+    const { sales_channel_ids: salesChannelIds } =
       await publishableKeyService.getResourceScopes(pubKey)
 
-    if (
-      salesChannelIds.length &&
-      !(await productVariantService.isVariantInSalesChannels(
-        req.params.id,
-        salesChannelIds
-      ))
-    ) {
+    let isVariantInSalesChannel = false
+
+    try {
+      isVariantInSalesChannel =
+        await productVariantService.isVariantInSalesChannels(
+          req.params.id,
+          salesChannelIds
+        )
+    } catch (error) {
+      next(error)
+    }
+
+    if (salesChannelIds.length && !isVariantInSalesChannel) {
       req.errors = req.errors ?? []
       req.errors.push(
         `Variant with id: ${req.params.id} is not associated with sales channels defined by the Publishable API Key passed in the header of the request.`

@@ -1,15 +1,17 @@
-import { MedusaError } from "medusa-core-utils"
 import {
   AbstractNotificationService,
   TransactionBaseService,
 } from "../interfaces"
+import { FindConfig, Selector } from "../types/common"
+
 import { EntityManager } from "typeorm"
 import { Logger } from "../types/global"
-import { NotificationRepository } from "../repositories/notification"
-import { NotificationProviderRepository } from "../repositories/notification-provider"
-import { FindConfig, Selector } from "../types/common"
-import { buildQuery } from "../utils"
+import { MedusaError } from "medusa-core-utils"
 import { Notification } from "../models"
+import { NotificationProviderRepository } from "../repositories/notification-provider"
+import { NotificationRepository } from "../repositories/notification"
+import { buildQuery } from "../utils"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -20,9 +22,6 @@ type InjectedDependencies = {
 type NotificationProviderKey = `noti_${string}`
 
 class NotificationService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected subscribers_ = {}
   protected attachmentGenerator_: unknown = null
   protected readonly container_: InjectedDependencies & {
@@ -36,20 +35,12 @@ class NotificationService extends TransactionBaseService {
   constructor(container: InjectedDependencies) {
     super(container)
 
-    const {
-      manager,
-      notificationProviderRepository,
-      notificationRepository,
-      logger,
-    } = container
+    const { notificationProviderRepository, notificationRepository, logger } =
+      container
 
     this.container_ = container
 
-    /** @private @const {EntityManager} */
-    this.manager_ = manager
     this.logger_ = logger
-
-    /** @private @const {NotificationRepository} */
     this.notificationRepository_ = notificationRepository
     this.notificationProviderRepository_ = notificationProviderRepository
   }
@@ -68,8 +59,10 @@ class NotificationService extends TransactionBaseService {
    * @param providerIds - a list of provider ids
    */
   async registerInstalledProviders(providerIds: string[]): Promise<void> {
-    const { manager, notificationProviderRepository } = this.container_
-    const model = manager.getCustomRepository(notificationProviderRepository)
+    const { notificationProviderRepository } = this.container_
+    const model = this.activeManager_.withRepository(
+      notificationProviderRepository
+    )
     await model.update({}, { is_installed: false })
     for (const id of providerIds) {
       const n = model.create({ id, is_installed: true })
@@ -91,11 +84,30 @@ class NotificationService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Notification[]> {
-    const notiRepo = this.manager_.getCustomRepository(
+    const [notifications] = await this.listAndCount(selector, config)
+
+    return notifications
+  }
+
+  /**
+   * Retrieves a list of notifications and total count.
+   * @param selector - the params to select the notifications by.
+   * @param config - the configuration to apply to the query
+   * @return the notifications that satisfy the query as well as the count.
+   */
+  async listAndCount(
+    selector: Selector<Notification>,
+    config: FindConfig<Notification> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[Notification[], number]> {
+    const notiRepo = this.activeManager_.withRepository(
       this.notificationRepository_
     )
     const query = buildQuery(selector, config)
-    return await notiRepo.find(query)
+    return await notiRepo.findAndCount(query)
   }
 
   /**
@@ -108,7 +120,7 @@ class NotificationService extends TransactionBaseService {
     id: string,
     config: FindConfig<Notification> = {}
   ): Promise<Notification | never> {
-    const notiRepository = this.manager_.getCustomRepository(
+    const notiRepository = this.activeManager_.withRepository(
       this.notificationRepository_
     )
 
@@ -183,10 +195,10 @@ class NotificationService extends TransactionBaseService {
       return Promise.resolve()
     }
 
-    return Promise.all(
+    return promiseAll(
       subs.map(async (providerId) => {
         return this.send(eventName, data, providerId).catch((err) => {
-          console.log(err)
+          this.logger_.log(err)
           this.logger_.warn(
             `An error occured while ${providerId} was processing a notification for ${eventName}: ${err.message}`
           )
@@ -200,7 +212,7 @@ class NotificationService extends TransactionBaseService {
    * method. Persists the Notification in the database.
    * @param event - the name of the event
    * @param eventData - the data the event was sent with
-   * @param providerId - the provider that should hande the event.
+   * @param providerId - the provider that should handle the event.
    * @return the created notification
    */
   async send(
@@ -221,7 +233,7 @@ class NotificationService extends TransactionBaseService {
       }
 
       const { to, data } = result
-      const notiRepo = transactionManager.getCustomRepository(
+      const notiRepo = transactionManager.withRepository(
         this.notificationRepository_
       )
 
@@ -265,7 +277,7 @@ class NotificationService extends TransactionBaseService {
         this.attachmentGenerator_
       )
 
-      const notiRepo = transactionManager.getCustomRepository(
+      const notiRepo = transactionManager.withRepository(
         this.notificationRepository_
       )
       const resendNoti: Record<string, unknown> = { ...notification, id: null }

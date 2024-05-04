@@ -4,11 +4,11 @@ import { EntityManager } from "typeorm"
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [delete] /regions/{id}/countries/{country_code}
+ * @oas [delete] /admin/regions/{id}/countries/{country_code}
  * operationId: "PostRegionsRegionCountriesCountry"
- * summary: "Delete Country"
+ * summary: "Remove Country"
  * x-authenticated: true
- * description: "Removes a Country from the list of Countries in a Region"
+ * description: "Remove a Country from the list of Countries in a Region. The country will still be available in the system, and it can be used in other regions."
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
  *   - in: path
@@ -29,20 +29,51 @@ import RegionService from "../../../../services/region"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.regions.deleteCountry(region_id, 'dk')
+ *       medusa.admin.regions.deleteCountry(regionId, "dk")
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminRegionRemoveCountry } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const removeCountry = useAdminRegionRemoveCountry(regionId)
+ *         // ...
+ *
+ *         const handleRemoveCountry = (
+ *           countryCode: string
+ *         ) => {
+ *           removeCountry.mutate(countryCode, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.countries)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/regions/{id}/countries/dk' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/regions/{id}/countries/{country_code}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK

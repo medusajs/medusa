@@ -9,14 +9,14 @@ import { pickBy } from "lodash"
 import { isDefined } from "medusa-core-utils"
 
 /**
- * @oas [get] /batch-jobs
+ * @oas [get] /admin/batch-jobs
  * operationId: "GetBatchJobs"
  * summary: "List Batch Jobs"
- * description: "Retrieve a list of Batch Jobs."
+ * description: "Retrieve a list of Batch Jobs. The batch jobs can be filtered by fields such as `type` or `confirmed_at`. The batch jobs can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) limit=10 {integer} The number of batch jobs to return.
- *   - (query) offset=0 {integer} The number of batch jobs to skip before results.
+ *   - (query) limit=10 {integer} Limit the number of batch jobs returned.
+ *   - (query) offset=0 {integer} The number of batch jobs to skip when retrieving the batch jobs.
  *   - in: query
  *     name: id
  *     style: form
@@ -43,7 +43,7 @@ import { isDefined } from "medusa-core-utils"
  *     name: confirmed_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.
+ *     description: Filter by a confirmation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -67,7 +67,7 @@ import { isDefined } from "medusa-core-utils"
  *     name: pre_processed_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.
+ *     description: Filter by a pre-processing date range.
  *     schema:
  *       type: object
  *       properties:
@@ -91,7 +91,7 @@ import { isDefined } from "medusa-core-utils"
  *     name: completed_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was completed, i.e. less than, greater than etc.
+ *     description: Filter by a completion date range.
  *     schema:
  *       type: object
  *       properties:
@@ -115,7 +115,7 @@ import { isDefined } from "medusa-core-utils"
  *     name: failed_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was failed, i.e. less than, greater than etc.
+ *     description: Filter by a failure date range.
  *     schema:
  *       type: object
  *       properties:
@@ -139,7 +139,7 @@ import { isDefined } from "medusa-core-utils"
  *     name: canceled_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.
+ *     description: Filter by a cancelation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -159,14 +159,14 @@ import { isDefined } from "medusa-core-utils"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) order {string} Field used to order retrieved batch jobs
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ *   - (query) order {string} A batch-job field to sort-order the retrieved batch jobs by.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned batch jobs.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned batch jobs.
  *   - in: query
  *     name: created_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was created, i.e. less than, greater than etc.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -190,7 +190,7 @@ import { isDefined } from "medusa-core-utils"
  *     name: updated_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -222,18 +222,51 @@ import { isDefined } from "medusa-core-utils"
  *       // must be previously logged in or use api token
  *       medusa.admin.batchJobs.list()
  *       .then(({ batch_jobs, limit, offset, count }) => {
- *         console.log(batch_jobs.length);
- *       });
+ *         console.log(batch_jobs.length)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminBatchJobs } from "medusa-react"
+ *
+ *       const BatchJobs = () => {
+ *         const {
+ *           batch_jobs,
+ *           limit,
+ *           offset,
+ *           count,
+ *           isLoading
+ *         } = useAdminBatchJobs()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {batch_jobs?.length && (
+ *               <ul>
+ *                 {batch_jobs.map((batchJob) => (
+ *                   <li key={batchJob.id}>
+ *                     {batchJob.id}
+ *                   </li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default BatchJobs
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/batch-jobs' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/batch-jobs' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Batch Job
+ *   - Batch Jobs
  * responses:
  *  "200":
  *    description: OK
@@ -275,40 +308,70 @@ export default async (req: Request, res) => {
   })
 }
 
+/**
+ * Request parameters used to configure and paginate retrieved batch jobs.
+ */
 export class AdminGetBatchPaginationParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 10
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsString()
   @IsOptional()
   fields?: string
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 }
 
+/**
+ * Parameters used to filter and configure pagination of the retrieved batch jobs.
+ */
 export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
+  /**
+   * IDs to filter batch jobs by.
+   */
   @IsOptional()
   @IsArray()
   @IsType([String, [String]])
   id?: string | string[]
 
+  /**
+   * Types to filter batch jobs by.
+   */
   @IsArray()
   @IsOptional()
   type?: string[]
 
+  /**
+   * Date filters to apply on the batch jobs' `confirmed_at` date.
+   */
   @IsOptional()
   @Transform(({ value }) => {
     return value === "null" ? null : value
@@ -316,6 +379,9 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @Type(() => DateComparisonOperator)
   confirmed_at?: DateComparisonOperator | null
 
+  /**
+   * Date filters to apply on the batch jobs' `pre_processed_at` date.
+   */
   @IsOptional()
   @Transform(({ value }) => {
     return value === "null" ? null : value
@@ -323,6 +389,9 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @Type(() => DateComparisonOperator)
   pre_processed_at?: DateComparisonOperator | null
 
+  /**
+   * Date filters to apply on the batch jobs' `completed_at` date.
+   */
   @IsOptional()
   @Transform(({ value }) => {
     return value === "null" ? null : value
@@ -330,6 +399,9 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @Type(() => DateComparisonOperator)
   completed_at?: DateComparisonOperator | null
 
+  /**
+   * Date filters to apply on the batch jobs' `failed_at` date.
+   */
   @IsOptional()
   @Transform(({ value }) => {
     return value === "null" ? null : value
@@ -337,6 +409,9 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @Type(() => DateComparisonOperator)
   failed_at?: DateComparisonOperator | null
 
+  /**
+   * Date filters to apply on the batch jobs' `canceled_at` date.
+   */
   @IsOptional()
   @Transform(({ value }) => {
     return value === "null" ? null : value
@@ -344,10 +419,16 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @Type(() => DateComparisonOperator)
   canceled_at?: DateComparisonOperator | null
 
+  /**
+   * Date filters to apply on the batch jobs' `created_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the batch jobs' `updated_at` date.
+   */
   @IsOptional()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator

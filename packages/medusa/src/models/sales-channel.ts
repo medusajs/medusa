@@ -1,8 +1,23 @@
-import { BeforeInsert, Column, OneToMany } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  Relation,
+} from "typeorm"
 
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
+import { MedusaV2Flag } from "@medusajs/utils"
 import { SoftDeletableEntity } from "../interfaces"
-import { generateEntityId } from "../utils"
+import { DbAwareColumn, generateEntityId } from "../utils"
+import {
+  FeatureFlagDecorators,
+  FeatureFlagEntity,
+} from "../utils/feature-flag-decorators"
+import { Cart } from "./cart"
+import { Order } from "./order"
+import { Product } from "./product"
+import { PublishableApiKey } from "./publishable-api-key"
 import { SalesChannelLocation } from "./sales-channel-location"
 
 @FeatureFlagEntity("sales_channels")
@@ -16,6 +31,69 @@ export class SalesChannel extends SoftDeletableEntity {
   @Column({ default: false })
   is_disabled: boolean
 
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null
+
+  @ManyToMany(() => Product)
+  @JoinTable({
+    name: "product_sales_channel",
+    inverseJoinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+    joinColumn: {
+      name: "sales_channel_id",
+      referencedColumnName: "id",
+    },
+  })
+  products: Relation<Product>[]
+
+  @FeatureFlagDecorators(MedusaV2Flag.key, [
+    ManyToMany(() => Cart),
+    JoinTable({
+      name: "cart_sales_channel",
+      joinColumn: {
+        name: "sales_channel_id",
+        referencedColumnName: "id",
+      },
+      inverseJoinColumn: {
+        name: "cart_id",
+        referencedColumnName: "id",
+      },
+    }),
+  ])
+  carts: Relation<Cart>[]
+
+  @FeatureFlagDecorators(MedusaV2Flag.key, [
+    ManyToMany(() => Order),
+    JoinTable({
+      name: "order_sales_channel",
+      joinColumn: {
+        name: "sales_channel_id",
+        referencedColumnName: "id",
+      },
+      inverseJoinColumn: {
+        name: "order_id",
+        referencedColumnName: "id",
+      },
+    }),
+  ])
+  orders: Relation<Order>[]
+
+  @ManyToMany(() => PublishableApiKey)
+  @JoinTable({
+    name: "publishable_api_key_sales_channel",
+    inverseJoinColumn: {
+      name: "publishable_key_id",
+      referencedColumnName: "id",
+    },
+    joinColumn: {
+      name: "sales_channel_id",
+      referencedColumnName: "id",
+    },
+  })
+  publishableKeys: Relation<PublishableApiKey>[]
+
   @OneToMany(
     () => SalesChannelLocation,
     (scLocation) => scLocation.sales_channel,
@@ -23,8 +101,11 @@ export class SalesChannel extends SoftDeletableEntity {
       cascade: ["soft-remove", "remove"],
     }
   )
-  locations: SalesChannelLocation[]
+  locations: Relation<SalesChannelLocation>[]
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "sc")
@@ -34,7 +115,7 @@ export class SalesChannel extends SoftDeletableEntity {
 /**
  * @schema SalesChannel
  * title: "Sales Channel"
- * description: "A Sales Channel"
+ * description: "A Sales Channel is a method a business offers its products for purchase for the customers. For example, a Webshop can be a sales channel, and a mobile app can be another."
  * type: object
  * required:
  *   - created_at
@@ -63,8 +144,9 @@ export class SalesChannel extends SoftDeletableEntity {
  *    type: boolean
  *    default: false
  *  locations:
- *    description: The Stock Locations related to the sales channel. Available if the relation `locations` is expanded.
+ *    description: The details of the stock locations related to the sales channel.
  *    type: array
+ *    x-expandable: "locations"
  *    items:
  *      $ref: "#/components/schemas/SalesChannelLocation"
  *  created_at:
@@ -80,4 +162,35 @@ export class SalesChannel extends SoftDeletableEntity {
  *    nullable: true
  *    type: string
  *    format: date-time
+ *  metadata:
+ *    description: An optional key-value map with additional details
+ *    nullable: true
+ *    type: object
+ *    example: {car: "white"}
+ *    externalDocs:
+ *      description: "Learn about the metadata attribute, and how to delete and update it."
+ *      url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
+ *  carts:
+ *    description: The associated carts.
+ *    type: array
+ *    nullable: true
+ *    x-expandable: "carts"
+ *    x-featureFlag: "medusa_v2"
+ *    items:
+ *      $ref: "#/components/schemas/Cart"
+ *  orders:
+ *    description: The associated orders.
+ *    type: array
+ *    nullable: true
+ *    x-expandable: "orders"
+ *    x-featureFlag: "medusa_v2"
+ *    items:
+ *      $ref: "#/components/schemas/Order"
+ *  publishableKeys:
+ *    description: The associated publishable API keys.
+ *    type: array
+ *    nullable: true
+ *    x-expandable: "publishableKeys"
+ *    items:
+ *      $ref: "#/components/schemas/PublishableApiKey"
  */

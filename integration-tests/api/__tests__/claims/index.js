@@ -1,17 +1,17 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 const {
   simpleOrderFactory,
   simpleShippingOptionFactory,
   simplePaymentFactory,
   simpleProductFactory,
-} = require("../../factories")
+} = require("../../../factories")
 
 describe("Claims", () => {
   let medusaProcess
@@ -59,7 +59,7 @@ describe("Claims", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -100,7 +100,7 @@ describe("Claims", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -144,7 +144,7 @@ describe("Claims", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -183,7 +183,7 @@ describe("Claims", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -219,7 +219,7 @@ describe("Claims", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -284,7 +284,7 @@ describe("Claims", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -294,7 +294,7 @@ describe("Claims", () => {
       {},
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -333,7 +333,7 @@ describe("Claims", () => {
         },
         {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -351,7 +351,7 @@ describe("Claims", () => {
   })
 })
 
-const createReturnableOrder = async (dbConnection, options = {}) => {
+export const createReturnableOrder = async (dbConnection, options = {}) => {
   await simpleProductFactory(
     dbConnection,
     {

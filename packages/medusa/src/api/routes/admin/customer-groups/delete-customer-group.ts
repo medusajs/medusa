@@ -4,10 +4,10 @@ import { CustomerGroupService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /customer-groups/{id}
+ * @oas [delete] /admin/customer-groups/{id}
  * operationId: "DeleteCustomerGroupsCustomerGroup"
  * summary: "Delete a Customer Group"
- * description: "Deletes a CustomerGroup."
+ * description: "Delete a customer group. This doesn't delete the customers associated with the customer group."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Customer Group
@@ -20,20 +20,45 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.customerGroups.delete(customer_group_id)
+ *       medusa.admin.customerGroups.delete(customerGroupId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteCustomerGroup } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerGroupId: string
+ *       }
+ *
+ *       const CustomerGroup = ({ customerGroupId }: Props) => {
+ *         const deleteCustomerGroup = useAdminDeleteCustomerGroup(
+ *           customerGroupId
+ *         )
+ *         // ...
+ *
+ *         const handleDeleteCustomerGroup = () => {
+ *           deleteCustomerGroup.mutate()
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CustomerGroup
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/customer-groups/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/customer-groups/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Customer Group
+ *   - Customer Groups
  * responses:
  *   200:
  *     description: OK

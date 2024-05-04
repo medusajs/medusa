@@ -2,10 +2,10 @@ const jwt = require("jsonwebtoken")
 const path = require("path")
 const { Address, Customer, Order, Region } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const { simpleOrderFactory } = require("../../factories")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const { simpleOrderFactory } = require("../../../factories")
 
 jest.setTimeout(30000)
 
@@ -293,16 +293,19 @@ describe("/store/customers", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.orders).toEqual([
-        expect.objectContaining({
-          display_id: 3,
-          status: "canceled",
-        }),
-        expect.objectContaining({
-          display_id: 1,
-          status: "completed",
-        }),
-      ])
+      expect(response.data.orders.length).toEqual(2)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            display_id: 3,
+            status: "canceled",
+          }),
+          expect.objectContaining({
+            display_id: 1,
+            status: "completed",
+          }),
+        ])
+      )
       expect(response.data.orders.length).toEqual(2)
     })
   })
@@ -520,6 +523,41 @@ describe("/store/customers", () => {
       })
 
       expect(response.status).toEqual(204)
+    })
+
+    it("Returns 204 for non-existent customer", async () => {
+      const api = useApi()
+
+      const response = await api.post(`/store/customers/password-token`, {
+        email: "non-existent@test.com",
+      })
+
+      expect(response.status).toEqual(204)
+    })
+  })
+
+  describe("POST /store/customers/password-reset", () => {
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("Returns 204 for non-existent customer", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(`/store/customers/password-reset`, {
+          email: "non-existent@test.com",
+          token: "token",
+          password: "password",
+        })
+        .catch((error) => {
+          return error
+        })
+      expect(response.response.status).toEqual(401)
+      expect(response.response.data).toEqual({
+        type: "unauthorized",
+        message: "Invalid or expired password reset token",
+      })
     })
   })
 })

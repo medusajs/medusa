@@ -1,11 +1,11 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
 import {
-  useManageMultiplePaymentSessions,
-  useManagePaymentSession,
   useAuthorizePaymentSession,
   useAuthorizePaymentSessionsBatch,
+  useManageMultiplePaymentSessions,
+  useManagePaymentSession,
   usePaymentCollectionRefreshPaymentSession,
 } from "../../../../src"
-import { renderHook } from "@testing-library/react-hooks"
 import { createWrapper } from "../../../utils"
 
 describe("useManageMultiplePaymentSessions hook", () => {

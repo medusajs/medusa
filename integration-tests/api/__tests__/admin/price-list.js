@@ -1,29 +1,29 @@
 const path = require("path")
 const { Region } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
+const setupServer = require("../../../environment-helpers/setup-server")
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb, initDb } = require("../../../helpers/use-db")
+  require("../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb, initDb } = require("../../../environment-helpers/use-db")
 
 const {
   simpleProductFactory,
   simplePriceListFactory,
   simpleRegionFactory,
-} = require("../../factories")
-const adminSeeder = require("../../helpers/admin-seeder")
-const customerSeeder = require("../../helpers/customer-seeder")
-const priceListSeeder = require("../../helpers/price-list-seeder")
-const productSeeder = require("../../helpers/product-seeder")
+} = require("../../../factories")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const customerSeeder = require("../../../helpers/customer-seeder")
+const priceListSeeder = require("../../../helpers/price-list-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 describe("/admin/price-lists", () => {
   let medusaProcess
@@ -168,6 +168,8 @@ describe("/admin/price-lists", () => {
             price_list_id: "pl_no_customer_groups",
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            variant: expect.any(Object),
+            variants: expect.any(Array),
           },
           {
             id: expect.any(String),
@@ -179,6 +181,8 @@ describe("/admin/price-lists", () => {
             price_list_id: "pl_no_customer_groups",
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            variant: expect.any(Object),
+            variants: expect.any(Array),
           },
           {
             id: expect.any(String),
@@ -190,6 +194,8 @@ describe("/admin/price-lists", () => {
             price_list_id: "pl_no_customer_groups",
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            variant: expect.any(Object),
+            variants: expect.any(Array),
           },
         ],
         created_at: expect.any(String),
@@ -452,6 +458,8 @@ describe("/admin/price-lists", () => {
             region_id: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            variant: expect.any(Object),
+            variants: expect.any(Array),
             deleted_at: null,
           },
           {
@@ -461,6 +469,8 @@ describe("/admin/price-lists", () => {
             min_quantity: 101,
             max_quantity: 500,
             variant_id: "test-variant",
+            variant: expect.any(Object),
+            variants: expect.any(Array),
             price_list_id: "pl_no_customer_groups",
             region_id: null,
             created_at: expect.any(String),
@@ -474,6 +484,8 @@ describe("/admin/price-lists", () => {
             min_quantity: 501,
             max_quantity: 1000,
             variant_id: "test-variant",
+            variant: expect.any(Object),
+            variants: expect.any(Array),
             price_list_id: "pl_no_customer_groups",
             region_id: null,
             created_at: expect.any(String),
@@ -485,6 +497,8 @@ describe("/admin/price-lists", () => {
             amount: 85,
             currency_code: "usd",
             variant_id: "test-variant_1",
+            variant: expect.any(Object),
+            variants: expect.any(Array),
             price_list_id: "pl_no_customer_groups",
             min_quantity: null,
             max_quantity: null,
@@ -498,6 +512,8 @@ describe("/admin/price-lists", () => {
             amount: 10,
             currency_code: "usd",
             variant_id: "test-variant",
+            variant: expect.any(Object),
+            variants: expect.any(Array),
             price_list_id: "pl_no_customer_groups",
             min_quantity: null,
             max_quantity: null,
@@ -560,6 +576,8 @@ describe("/admin/price-lists", () => {
         region_id: null,
         created_at: expect.any(String),
         updated_at: expect.any(String),
+        variant: expect.any(Object),
+        variants: expect.any(Array),
       })
     })
 
@@ -690,6 +708,8 @@ describe("/admin/price-lists", () => {
           variant_id: "test-variant",
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -701,6 +721,8 @@ describe("/admin/price-lists", () => {
           variant_id: "test-variant",
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -712,6 +734,8 @@ describe("/admin/price-lists", () => {
           variant_id: "test-variant",
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -723,6 +747,8 @@ describe("/admin/price-lists", () => {
           max_quantity: 2000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -734,6 +760,8 @@ describe("/admin/price-lists", () => {
           max_quantity: 3000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -745,6 +773,8 @@ describe("/admin/price-lists", () => {
           max_quantity: 4000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
       ])
     })
@@ -802,6 +832,8 @@ describe("/admin/price-lists", () => {
           max_quantity: 2000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -813,6 +845,8 @@ describe("/admin/price-lists", () => {
           max_quantity: 3000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -824,6 +858,8 @@ describe("/admin/price-lists", () => {
           max_quantity: 4000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
       ])
     })
@@ -859,45 +895,47 @@ describe("/admin/price-lists", () => {
       expect(response.status).toEqual(200)
 
       expect(response.data.price_list.prices.length).toEqual(3) // initially this PL has 1 MA record
-      expect(response.data.price_list.prices).toMatchSnapshot([
-        {
-          id: "ma_test_4",
-          currency_code: "usd",
-          amount: 70,
-          price_list_id: "pl_with_some_ma",
-          variant_id: "test-variant",
-          region_id: null,
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-          deleted_at: null,
-        },
-        {
-          id: expect.any(String),
-          currency_code: "eur",
-          amount: 100,
-          min_quantity: null,
-          max_quantity: null,
-          price_list_id: "pl_with_some_ma",
-          variant_id: "test-variant",
-          region_id: "region-pl",
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-          deleted_at: null,
-        },
-        {
-          id: expect.any(String),
-          currency_code: "usd",
-          amount: 200,
-          min_quantity: null,
-          max_quantity: null,
-          price_list_id: "pl_with_some_ma",
-          variant_id: "test-variant",
-          region_id: null,
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-          deleted_at: null,
-        },
-      ])
+      expect(response.data.price_list.prices).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "ma_test_4",
+            currency_code: "usd",
+            amount: 70,
+            price_list_id: "pl_with_some_ma",
+            variant_id: "test-variant",
+            region_id: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+          }),
+          expect.objectContaining({
+            id: expect.any(String),
+            currency_code: "usd",
+            amount: 200,
+            min_quantity: null,
+            max_quantity: null,
+            price_list_id: "pl_with_some_ma",
+            variant_id: "test-variant",
+            region_id: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+          }),
+          expect.objectContaining({
+            id: expect.any(String),
+            currency_code: "eur",
+            amount: 100,
+            min_quantity: null,
+            max_quantity: null,
+            price_list_id: "pl_with_some_ma",
+            variant_id: "test-variant",
+            region_id: "region-pl",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+          }),
+        ])
+      )
     })
   })
 
@@ -1108,52 +1146,66 @@ describe("/admin/price-lists", () => {
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
       expect(response.data.products).toHaveLength(2)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-prod-2",
-          variants: expect.arrayContaining([
-            expect.objectContaining({
-              id: "test-variant-3",
-              prices: expect.arrayContaining([
-                expect.objectContaining({ currency_code: "usd", amount: 100 }),
-              ]),
-            }),
-            expect.objectContaining({
-              id: "test-variant-4",
-              prices: expect.arrayContaining([
-                expect.objectContaining({ currency_code: "usd", amount: 100 }),
-                expect.objectContaining({
-                  currency_code: "usd",
-                  amount: 150,
-                  price_list_id: "test-list",
-                }),
-              ]),
-            }),
-          ]),
-        }),
-        expect.objectContaining({
-          id: "test-prod-1",
-          variants: expect.arrayContaining([
-            expect.objectContaining({
-              id: "test-variant-1",
-              prices: expect.arrayContaining([
-                expect.objectContaining({ currency_code: "usd", amount: 100 }),
-                expect.objectContaining({
-                  currency_code: "usd",
-                  amount: 150,
-                  price_list_id: "test-list",
-                }),
-              ]),
-            }),
-            expect.objectContaining({
-              id: "test-variant-2",
-              prices: expect.arrayContaining([
-                expect.objectContaining({ currency_code: "usd", amount: 100 }),
-              ]),
-            }),
-          ]),
-        }),
-      ])
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-prod-1",
+            variants: expect.arrayContaining([
+              expect.objectContaining({
+                id: "test-variant-1",
+                prices: expect.arrayContaining([
+                  expect.objectContaining({
+                    currency_code: "usd",
+                    amount: 100,
+                  }),
+                  expect.objectContaining({
+                    currency_code: "usd",
+                    amount: 150,
+                    price_list_id: "test-list",
+                  }),
+                ]),
+              }),
+              expect.objectContaining({
+                id: "test-variant-2",
+                prices: expect.arrayContaining([
+                  expect.objectContaining({
+                    currency_code: "usd",
+                    amount: 100,
+                  }),
+                ]),
+              }),
+            ]),
+          }),
+          expect.objectContaining({
+            id: "test-prod-2",
+            variants: expect.arrayContaining([
+              expect.objectContaining({
+                id: "test-variant-3",
+                prices: expect.arrayContaining([
+                  expect.objectContaining({
+                    currency_code: "usd",
+                    amount: 100,
+                  }),
+                ]),
+              }),
+              expect.objectContaining({
+                id: "test-variant-4",
+                prices: expect.arrayContaining([
+                  expect.objectContaining({
+                    currency_code: "usd",
+                    amount: 100,
+                  }),
+                  expect.objectContaining({
+                    currency_code: "usd",
+                    amount: 150,
+                    price_list_id: "test-list",
+                  }),
+                ]),
+              }),
+            ]),
+          }),
+        ])
+      )
     })
 
     it("lists only product 2", async () => {
@@ -1271,21 +1323,26 @@ describe("/admin/price-lists", () => {
     it("should delete all the prices that are part of the price list for the specified product", async () => {
       const api = useApi()
 
-      response = await api.get("/admin/price-lists/test-list", adminReqConfig)
+      let response = await api.get(
+        "/admin/price-lists/test-list",
+        adminReqConfig
+      )
 
       expect(response.status).toBe(200)
       expect(response.data.price_list.prices.length).toBe(3)
 
-      let response = await api.delete(
+      response = await api.delete(
         `/admin/price-lists/test-list/products/${product1.id}/prices`,
         adminReqConfig
       )
 
       expect(response.status).toBe(200)
       expect(response.data).toEqual({
-        ids: product1.variants.map((variant, i) => {
-          return getCustomPriceIdFromVariant(variant.id, i)
-        }),
+        ids: expect.arrayContaining(
+          product1.variants.map((variant, i) => {
+            return getCustomPriceIdFromVariant(variant.id, i)
+          })
+        ),
         object: "money-amount",
         deleted: true,
       })
@@ -1299,13 +1356,16 @@ describe("/admin/price-lists", () => {
     it("should delete all the prices that are part of the price list for the specified variant", async () => {
       const api = useApi()
 
-      response = await api.get("/admin/price-lists/test-list", adminReqConfig)
+      let response = await api.get(
+        "/admin/price-lists/test-list",
+        adminReqConfig
+      )
 
       expect(response.status).toBe(200)
       expect(response.data.price_list.prices.length).toBe(3)
 
       const variant = product2.variants[0]
-      let response = await api.delete(
+      response = await api.delete(
         `/admin/price-lists/test-list/variants/${variant.id}/prices`,
         adminReqConfig
       )

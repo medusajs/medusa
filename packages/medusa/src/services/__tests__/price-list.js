@@ -1,7 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { MoneyAmountRepository } from "../../repositories/money-amount"
-import { FlagRouter } from "../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
 import PriceListService from "../price-list"
 import { RegionServiceMock } from "../__mocks__/region"
 
@@ -127,14 +127,19 @@ describe("PriceListService", () => {
     updateRelatedMoneyAmountRepository.create = jest
       .fn()
       .mockImplementation((rawEntity) => Promise.resolve(rawEntity))
+
     updateRelatedMoneyAmountRepository.save = jest
       .fn()
       .mockImplementation(() => Promise.resolve())
     updateRelatedMoneyAmountRepository.updatePriceListPrices =
-      new MoneyAmountRepository().updatePriceListPrices
+      MoneyAmountRepository.updatePriceListPrices
 
+    const manager = {
+      save: (entities) => Promise.resolve(entities),
+      create: (entities) => Promise.resolve(entities),
+    }
     const updateRelatedPriceListService = new PriceListService({
-      manager: MockManager,
+      manager: { ...MockManager, ...manager },
       customerGroupService,
       priceListRepository,
       moneyAmountRepository: updateRelatedMoneyAmountRepository,

@@ -5,15 +5,16 @@ import { FindParams } from "../../../../types/common"
 import { defaultAdminProductCategoryRelations } from "."
 
 /**
- * @oas [get] /product-categories/{id}
+ * @oas [get] /admin/product-categories/{id}
  * operationId: "GetProductCategoriesCategory"
  * summary: "Get a Product Category"
- * description: "Retrieves a Product Category."
+ * description: "Retrieve a Product Category's details."
  * x-authenticated: true
+ * x-featureFlag: "product_categories"
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the results.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned product category.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned product category.
  * x-codegen:
  *   method: retrieve
  *   queryParams: AdminGetProductCategoryParams
@@ -24,20 +25,51 @@ import { defaultAdminProductCategoryRelations } from "."
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.productCategories.retrieve(product_category_id)
+ *       medusa.admin.productCategories.retrieve(productCategoryId)
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminProductCategory } from "medusa-react"
+ *
+ *       type Props = {
+ *         productCategoryId: string
+ *       }
+ *
+ *       const Category = ({
+ *         productCategoryId
+ *       }: Props) => {
+ *         const {
+ *           product_category,
+ *           isLoading,
+ *         } = useAdminProductCategory(productCategoryId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {product_category && (
+ *               <span>{product_category.name}</span>
+ *             )}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Category
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/product-categories/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/product-categories/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *  "200":
  *    description: OK

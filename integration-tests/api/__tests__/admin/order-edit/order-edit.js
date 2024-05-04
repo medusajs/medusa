@@ -2,15 +2,15 @@ const path = require("path")
 const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
 const { IdMap } = require("medusa-test-utils")
 
-const { useApi } = require("../../../../helpers/use-api")
-const { useDb, initDb } = require("../../../../helpers/use-db")
-const adminSeeder = require("../../../helpers/admin-seeder")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { useDb, initDb } = require("../../../../environment-helpers/use-db")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 const {
   simpleOrderEditFactory,
-} = require("../../../factories/simple-order-edit-factory")
+} = require("../../../../factories/simple-order-edit-factory")
 const {
   simpleOrderItemChangeFactory,
-} = require("../../../factories/simple-order-item-change-factory")
+} = require("../../../../factories/simple-order-item-change-factory")
 const {
   simpleLineItemFactory,
   simpleProductFactory,
@@ -18,14 +18,14 @@ const {
   simpleDiscountFactory,
   simpleCartFactory,
   simpleRegionFactory,
-} = require("../../../factories")
-const setupServer = require("../../../../helpers/setup-server")
+} = require("../../../../factories")
+const setupServer = require("../../../../environment-helpers/setup-server")
 
-jest.setTimeout(30000)
+jest.setTimeout(100000)
 
 const adminHeaders = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -470,7 +470,7 @@ describe("/admin/order-edits", () => {
         withDeleted: true,
       })
 
-      expect(orderEdit).toBeUndefined()
+      expect(orderEdit).toBeNull()
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
         id,
@@ -534,7 +534,7 @@ describe("/admin/order-edits", () => {
         withDeleted: true,
       })
 
-      expect(orderEdit).toBeUndefined()
+      expect(orderEdit).toBeNull()
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
         id: orderEditId,
@@ -2482,6 +2482,9 @@ describe("/admin/order-edits", () => {
       )
       expect(item2.adjustments).toHaveLength(1)
 
+      expect(item1.adjustments[0].amount).toBeCloseTo(1333, 0)
+      expect(item2.adjustments[0].amount).toBeCloseTo(667, 0)
+
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: orderEditId,
@@ -2531,7 +2534,6 @@ describe("/admin/order-edits", () => {
               adjustments: expect.arrayContaining([
                 expect.objectContaining({
                   discount_id: discount.id,
-                  amount: 1333,
                 }),
               ]),
             }),
@@ -2564,7 +2566,6 @@ describe("/admin/order-edits", () => {
               adjustments: expect.arrayContaining([
                 expect.objectContaining({
                   discount_id: discount.id,
-                  amount: 667,
                 }),
               ]),
             }),

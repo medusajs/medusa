@@ -1,0 +1,64 @@
+name: Send release notifications
+on:
+  release:
+    types: [published]
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.10.0"
+          cache: "yarn"
+
+      - name: Post to Slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: "releases"
+          payload: |
+            {
+              "blocks":[
+                {
+                  "type": "header",
+                  "text":  {
+                    "type": "plain_text",
+                    "text": "${{ github.event.release.tag_name}} is out! 🚢"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ github.event.release.html_url }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_RELEASE }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      - name: Generate Discord Notification
+        id: notification
+        run: message=$(node ./scripts/generate-discord-message.js '${{ github.event.release.tag_name}}' '${{ github.event.release.html_url }}') && echo ::set-output name=message::${message//$'\n'/'%0A'}
+
+      - name: Discord Notification
+        id: discord-notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
+        uses: Ilshidur/action-discord@0.3.2
+        with:
+          args: ${{ steps.notification.outputs.message }}

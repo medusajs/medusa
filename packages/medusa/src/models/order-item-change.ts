@@ -14,9 +14,23 @@ import { DbAwareColumn } from "../utils/db-aware-column"
 import { LineItem } from "./line-item"
 import { OrderEdit } from "./order-edit"
 
+/**
+ * @enum
+ * 
+ * The type of the order edit item change.
+ */
 export enum OrderEditItemChangeType {
+  /**
+   * A new item to be added to the original order.
+   */
   ITEM_ADD = "item_add",
+  /**
+   * An existing item to be removed from the original order.
+   */
   ITEM_REMOVE = "item_remove",
+  /**
+   * An existing item to be updated in the original order.
+   */
   ITEM_UPDATE = "item_update",
 }
 
@@ -51,6 +65,9 @@ export class OrderItemChange extends SoftDeletableEntity {
   @JoinColumn({ name: "line_item_id" })
   line_item?: LineItem
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "oic")
@@ -60,7 +77,7 @@ export class OrderItemChange extends SoftDeletableEntity {
 /**
  * @schema OrderItemChange
  * title: "Order Item Change"
- * description: "Represents an order edit item change"
+ * description: "An order item change is a change made within an order edit to an order's items. These changes are not reflected on the original order until the order edit is confirmed."
  * type: object
  * required:
  *   - created_at
@@ -88,7 +105,8 @@ export class OrderItemChange extends SoftDeletableEntity {
  *     type: string
  *     example: oe_01G2SG30J8C85S4A5CHM2S1NS2
  *   order_edit:
- *     description: Available if the relation `order_edit` is expanded.
+ *     description: The details of the order edit the item change is associated with.
+ *     x-expandable: "order_edit"
  *     nullable: true
  *     $ref: "#/components/schemas/OrderEdit"
  *   original_line_item_id:
@@ -97,7 +115,8 @@ export class OrderItemChange extends SoftDeletableEntity {
  *      type: string
  *      example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   original_line_item:
- *      description: Available if the relation `original_line_item` is expanded.
+ *      description: The details of the original line item this item change references. This is used if the item change updates or deletes the original item.
+ *      x-expandable: "original_line_item"
  *      nullable: true
  *      $ref: "#/components/schemas/LineItem"
  *   line_item_id:
@@ -106,7 +125,8 @@ export class OrderItemChange extends SoftDeletableEntity {
  *      type: string
  *      example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   line_item:
- *      description: Available if the relation `line_item` is expanded.
+ *      description: The details of the resulting line item after the item change. This line item is then used in the original order once the order edit is confirmed.
+ *      x-expandable: "line_item"
  *      nullable: true
  *      $ref: "#/components/schemas/LineItem"
  *   created_at:

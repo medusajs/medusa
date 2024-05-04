@@ -1,10 +1,10 @@
 import { PaymentProviderService } from "../../../../services"
 
 /**
- * @oas [get] /store/payment-providers
+ * @oas [get] /admin/store/payment-providers
  * operationId: "GetStorePaymentProviders"
  * summary: "List Payment Providers"
- * description: "Retrieves the configured Payment Providers"
+ * description: "Retrieve a list of available Payment Providers in a store."
  * x-authenticated: true
  * x-codegen:
  *   method: listPaymentProviders
@@ -18,15 +18,47 @@ import { PaymentProviderService } from "../../../../services"
  *       medusa.admin.store.listPaymentProviders()
  *       .then(({ payment_providers }) => {
  *         console.log(payment_providers.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminStorePaymentProviders } from "medusa-react"
+ *
+ *       const PaymentProviders = () => {
+ *         const {
+ *           payment_providers,
+ *           isLoading
+ *         } = useAdminStorePaymentProviders()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {payment_providers && !payment_providers.length && (
+ *               <span>No Payment Providers</span>
+ *             )}
+ *             {payment_providers &&
+ *               payment_providers.length > 0 &&(
+ *                 <ul>
+ *                   {payment_providers.map((provider) => (
+ *                     <li key={provider.id}>{provider.id}</li>
+ *                   ))}
+ *                 </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default PaymentProviders
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/store/payment-providers' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/store/payment-providers' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Store
  * responses:

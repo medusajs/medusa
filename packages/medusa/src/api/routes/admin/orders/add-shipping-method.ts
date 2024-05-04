@@ -5,19 +5,21 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { OrderService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/shipping-methods
+ * @oas [post] /admin/orders/{id}/shipping-methods
  * operationId: "PostOrdersOrderShippingMethods"
  * summary: "Add a Shipping Method"
- * description: "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced."
+ * description: "Add a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced."
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -26,6 +28,7 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * x-codegen:
  *   method: addShippingMethod
+ *   params: AdminPostOrdersOrderShippingMethodsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,19 +36,53 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.addShippingMethod(order_id, {
+ *       medusa.admin.orders.addShippingMethod(orderId, {
  *         price: 1000,
  *         option_id
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminAddShippingMethod } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const addShippingMethod = useAdminAddShippingMethod(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleAddShippingMethod = (
+ *           optionId: string,
+ *           price: number
+ *         ) => {
+ *           addShippingMethod.mutate({
+ *             option_id: optionId,
+ *             price
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.shipping_methods)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/shipping-methods' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/orders/{id}/shipping-methods' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "price": 1000,
  *           "option_id": "{option_id}"
@@ -53,8 +90,9 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -78,10 +116,7 @@ import { EntityManager } from "typeorm"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(
-    AdminPostOrdersOrderShippingMethodsReq,
-    req.body
-  )
+  const validated = req.validatedBody
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
@@ -94,17 +129,17 @@ export default async (req, res) => {
       })
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.status(200).json({ order })
+  res.status(200).json({ order: cleanResponseData(order, []) })
 }
 
 /**
  * @schema AdminPostOrdersOrderShippingMethodsReq
  * type: object
+ * description: "The shipping method's details."
  * required:
  *   - price
  *   - option_id
@@ -115,9 +150,9 @@ export default async (req, res) => {
  *   option_id:
  *     type: string
  *     description: The ID of the Shipping Option to create the Shipping Method from.
- *   date:
+ *   data:
  *     type: object
- *     description: The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider.
+ *     description: The data required for the Shipping Option to create a Shipping Method. This depends on the Fulfillment Provider.
  */
 export class AdminPostOrdersOrderShippingMethodsReq {
   @IsInt()
@@ -132,3 +167,5 @@ export class AdminPostOrdersOrderShippingMethodsReq {
   @IsOptional()
   data?: Record<string, unknown> = {}
 }
+
+export class AdminPostOrdersOrderShippingMethodsParams extends FindParams {}

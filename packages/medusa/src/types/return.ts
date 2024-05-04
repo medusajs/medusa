@@ -17,6 +17,7 @@ export type CreateReturnInput = {
   no_notification?: boolean
   metadata?: Record<string, unknown>
   refund_amount?: number
+  location_id?: string
 }
 
 export type UpdateReturnInput = {

@@ -1,9 +1,0 @@
-src
-.prettierrc
-.env
-.babelrc.js
-.eslintrc
-.gitignore
-
-.yarn
-.turbo

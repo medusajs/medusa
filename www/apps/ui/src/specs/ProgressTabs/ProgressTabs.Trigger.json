@@ -1,0 +1,9 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "ProgressTabs.Trigger",
+  "props": {},
+  "composes": [
+    "Omit"
+  ]
+}

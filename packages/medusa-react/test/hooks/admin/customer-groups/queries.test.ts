@@ -1,11 +1,11 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 
+import { fixtures } from "../../../../mocks/data"
 import {
   useAdminCustomerGroup,
   useAdminCustomerGroupCustomers,
   useAdminCustomerGroups,
 } from "../../../../src"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminCustomerGroup hook", () => {

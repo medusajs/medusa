@@ -1,8 +1,8 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import EventBusService from "../event-bus"
 
-import { EventBusService } from "../index"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
 import PublishableApiKeyService from "../publishable-api-key"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 const pubKeyToRetrieve = {
   id: IdMap.getId("pub-key-to-retrieve"),
@@ -18,7 +18,7 @@ describe("PublishableApiKeyService", () => {
   })
 
   const publishableApiKeyRepository = MockRepository({
-    findOneWithRelations: (data) => ({ ...pubKeyToRetrieve, ...data }),
+    findOne: (data) => ({ ...pubKeyToRetrieve, ...data }),
     create: (data) => {
       return {
         ...pubKeyToRetrieve,
@@ -41,13 +41,12 @@ describe("PublishableApiKeyService", () => {
     await publishableApiKeyService.retrieve(
       IdMap.getId("order-edit-with-changes")
     )
-    expect(
-      publishableApiKeyRepository.findOneWithRelations
-    ).toHaveBeenCalledTimes(1)
-    expect(
-      publishableApiKeyRepository.findOneWithRelations
-    ).toHaveBeenCalledWith(undefined, {
-      where: { id: IdMap.getId("order-edit-with-changes") },
+    expect(publishableApiKeyRepository.findOne).toHaveBeenCalledTimes(1)
+    expect(publishableApiKeyRepository.findOne).toHaveBeenCalledWith({
+      relationLoadStrategy: "query",
+      where: {
+        id: IdMap.getId("order-edit-with-changes"),
+      },
     })
   })
 

@@ -31,6 +31,9 @@ export class Invite extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "invite")
@@ -40,7 +43,7 @@ export class Invite extends SoftDeletableEntity {
 /**
  * @schema Invite
  * title: "Invite"
- * description: "Represents an invite"
+ * description: "An invite is created when an admin user invites a new user to join the store's team. Once the invite is accepted, it's deleted."
  * type: object
  * required:
  *   - accepted
@@ -63,7 +66,7 @@ export class Invite extends SoftDeletableEntity {
  *     type: string
  *     format: email
  *   role:
- *     description: The user's role.
+ *     description: The user's role. These roles don't change the privileges of the user.
  *     nullable: true
  *     type: string
  *     enum:
@@ -100,4 +103,7 @@ export class Invite extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

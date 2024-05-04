@@ -7,10 +7,10 @@ import { AddressCreatePayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customers/me/addresses
+ * @oas [post] /store/customers/me/addresses
  * operationId: PostCustomersCustomerAddresses
  * summary: "Add a Shipping Address"
- * description: "Adds a Shipping Address to a Customer's saved addresses."
+ * description: "Add a Shipping Address to a Customer's saved addresses."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -28,28 +28,26 @@ import { validator } from "../../../../utils/validator"
  *       // must be previously logged
  *       medusa.customers.addresses.addAddress({
  *         address: {
- *           first_name: 'Celia',
- *           last_name: 'Schumm',
- *           address_1: '225 Bednar Curve',
- *           city: 'Danielville',
- *           country_code: 'US',
- *           postal_code: '85137',
- *           phone: '981-596-6748 x90188',
- *           company: 'Wyman LLC',
- *           address_2: '',
- *           province: 'Georgia',
- *           metadata: {}
+ *           first_name: "Celia",
+ *           last_name: "Schumm",
+ *           address_1: "225 Bednar Curve",
+ *           city: "Danielville",
+ *           country_code: "US",
+ *           postal_code: "85137",
+ *           phone: "981-596-6748 x90188",
+ *           company: "Wyman LLC",
+ *           province: "Georgia",
  *         }
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/me/addresses' \
- *       --header 'Cookie: connect.sid={sid}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/customers/me/addresses' \
+ *       -H 'Authorization: Bearer {access_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "address": {
  *             "first_name": "Celia",
@@ -62,8 +60,9 @@ import { validator } from "../../../../utils/validator"
  *       }'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *  "200":
  *    description: "A successful response"
@@ -116,17 +115,8 @@ export default async (req, res) => {
  *   - address
  * properties:
  *   address:
- *     description: "The Address to add to the Customer."
- *     allOf:
- *       - $ref: "#/components/schemas/AddressFields"
- *       - type: object
- *         required:
- *           - first_name
- *           - last_name
- *           - address_1
- *           - city
- *           - country_code
- *           - postal_code
+ *     description: "The Address to add to the Customer's saved addresses."
+ *     $ref: "#/components/schemas/AddressCreatePayload"
  */
 export class StorePostCustomersCustomerAddressesReq {
   @ValidateNested()

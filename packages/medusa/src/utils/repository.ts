@@ -1,10 +1,22 @@
+import { promiseAll } from "@medusajs/utils"
 import { flatten, groupBy, map, merge } from "lodash"
-import { EntityMetadata, Repository, SelectQueryBuilder } from "typeorm"
+import {
+  EntityMetadata,
+  ObjectLiteral,
+  Repository,
+  SelectQueryBuilder,
+} from "typeorm"
 import { ExtendedFindConfig } from "../types/common"
+
+// Regex matches all '.' except the rightmost
+export const positiveLookaheadDotReplacer = new RegExp(/\.(?=[^.]*\.)/, "g")
+// Replace all '.' with '__' to avoid typeorm's automatic aliasing
+export const dotReplacer = new RegExp(/\./, "g")
 
 /**
  * Custom query entity, it is part of the creation of a custom findWithRelationsAndCount needs.
  * Allow to query the relations for the specified entity ids
+ *
  * @param repository
  * @param entityIds
  * @param groupedRelations
@@ -12,71 +24,103 @@ import { ExtendedFindConfig } from "../types/common"
  * @param select
  * @param customJoinBuilders
  */
-export async function queryEntityWithIds<T>(
-  repository: Repository<T>,
-  entityIds: string[],
-  groupedRelations: { [toplevel: string]: string[] },
+export async function queryEntityWithIds<T extends ObjectLiteral>({
+  repository,
+  entityIds,
+  groupedRelations,
   withDeleted = false,
-  select: (keyof T)[] = [],
-  customJoinBuilders: ((
+  select = [],
+  customJoinBuilders = [],
+}: {
+  repository: Repository<T>
+  entityIds: string[]
+  groupedRelations: { [toplevel: string]: string[] }
+  withDeleted?: boolean
+  select?: (keyof T)[]
+  customJoinBuilders?: ((
     qb: SelectQueryBuilder<T>,
     alias: string,
     toplevel: string
-  ) => boolean)[] = []
-): Promise<T[]> {
+  ) => false | undefined)[]
+}): Promise<T[]> {
   const alias = repository.metadata.name.toLowerCase()
-  return await Promise.all(
-    Object.entries(groupedRelations).map(async ([toplevel, rels]) => {
-      let querybuilder = repository.createQueryBuilder(alias)
+  return await promiseAll(
+    Object.entries(groupedRelations).map(
+      async ([toplevel, topLevelRelations]) => {
+        let querybuilder = repository.createQueryBuilder(alias)
 
-      if (select && select.length) {
-        querybuilder.select(select.map((f) => `${alias}.${f as string}`))
-      }
-
-      let shouldAttachDefault = true
-      for (const customJoinBuilder of customJoinBuilders) {
-        const result = customJoinBuilder(querybuilder, alias, toplevel)
-        shouldAttachDefault = shouldAttachDefault && result
-      }
-
-      // If the toplevel relation has been attached with a customJoinBuilder and the function return false then
-      // do not attach the toplevel join bellow.
-      if (shouldAttachDefault) {
-        querybuilder = querybuilder.leftJoinAndSelect(
-          `${alias}.${toplevel}`,
-          toplevel
-        )
-      }
-
-      for (const rel of rels) {
-        const [_, rest] = rel.split(".")
-        if (!rest) {
-          continue
+        if (select?.length) {
+          querybuilder.select(
+            (select as string[])
+              .filter(function (s) {
+                return s.startsWith(toplevel) || !s.includes(".")
+              })
+              .map((column) => {
+                // In case the column is the toplevel relation, we need to replace the dot with a double underscore if it also contains top level relations
+                if (column.includes(toplevel)) {
+                  return topLevelRelations.some((rel) => column.includes(rel))
+                    ? column.replace(positiveLookaheadDotReplacer, "__")
+                    : column
+                }
+                return `${alias}.${column}`
+              })
+          )
         }
-        // Regex matches all '.' except the rightmost
-        querybuilder = querybuilder.leftJoinAndSelect(
-          rel.replace(/\.(?=[^.]*\.)/g, "__"),
-          rel.replace(".", "__")
-        )
-      }
 
-      if (withDeleted) {
-        querybuilder = querybuilder
-          .where(`${alias}.id IN (:...entitiesIds)`, {
-            entitiesIds: entityIds,
-          })
-          .withDeleted()
-      } else {
-        querybuilder = querybuilder.where(
-          `${alias}.deleted_at IS NULL AND ${alias}.id IN (:...entitiesIds)`,
-          {
-            entitiesIds: entityIds,
+        let shouldAttachDefault: boolean | undefined = true
+        for (const customJoinBuilder of customJoinBuilders) {
+          const result = customJoinBuilder(querybuilder, alias, toplevel)
+          if (result === undefined) {
+            continue
           }
-        )
-      }
 
-      return querybuilder.getMany()
-    })
+          shouldAttachDefault = shouldAttachDefault && result
+        }
+
+        if (shouldAttachDefault) {
+          const regexp = new RegExp(`^${toplevel}\\.\\w+$`)
+          const joinMethod = (select as string[]).filter(
+            (key) => !!key.match(regexp)
+          ).length
+            ? "leftJoin"
+            : "leftJoinAndSelect"
+
+          querybuilder = querybuilder[joinMethod](
+            `${alias}.${toplevel}`,
+            toplevel
+          )
+        }
+
+        for (const rel of topLevelRelations) {
+          const [_, rest] = rel.split(".")
+          if (!rest) {
+            continue
+          }
+
+          const regexp = new RegExp(`^${rel}\\.\\w+$`)
+          const joinMethod = (select as string[]).filter(
+            (key) => !!key.match(regexp)
+          ).length
+            ? "leftJoin"
+            : "leftJoinAndSelect"
+
+          querybuilder = querybuilder[joinMethod](
+            rel.replace(positiveLookaheadDotReplacer, "__"),
+            rel.replace(dotReplacer, "__")
+          )
+        }
+
+        querybuilder = querybuilder.where(`${alias}.id IN (:...entitiesIds)`, {
+          entitiesIds: entityIds,
+        })
+
+        if (withDeleted) {
+          querybuilder.withDeleted()
+        }
+
+        return querybuilder.getMany()
+      }
+    )
   ).then(flatten)
 }
 
@@ -84,63 +128,139 @@ export async function queryEntityWithIds<T>(
  * Custom query entity without relations, it is part of the creation of a custom findWithRelationsAndCount needs.
  * Allow to query the entities without taking into account the relations. The relations will be queried separately
  * using the queryEntityWithIds util
+ *
  * @param repository
  * @param optionsWithoutRelations
  * @param shouldCount
  * @param customJoinBuilders
  */
-export async function queryEntityWithoutRelations<T>(
-  repository: Repository<T>,
-  optionsWithoutRelations: Omit<ExtendedFindConfig<T, unknown>, "relations">,
+export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
+  repository,
+  optionsWithoutRelations,
   shouldCount = false,
+  customJoinBuilders = [],
+}: {
+  repository: Repository<T>
+  optionsWithoutRelations: Omit<ExtendedFindConfig<T>, "relations">
+  shouldCount: boolean
   customJoinBuilders: ((
     qb: SelectQueryBuilder<T>,
     alias: string
-  ) => void)[] = []
-): Promise<[T[], number]> {
+  ) => Promise<{ relation: string; preventOrderJoin: boolean } | void>)[]
+}): Promise<[T[], number]> {
   const alias = repository.metadata.name.toLowerCase()
 
-  const qb = repository
-    .createQueryBuilder(alias)
-    .select([`${alias}.id`])
-    .skip(optionsWithoutRelations.skip)
-    .take(optionsWithoutRelations.take)
+  const qb = repository.createQueryBuilder(alias).select([`${alias}.id`])
 
   if (optionsWithoutRelations.where) {
     qb.where(optionsWithoutRelations.where)
   }
 
-  if (optionsWithoutRelations.order) {
-    const toSelect: string[] = []
-    const parsed = Object.entries(optionsWithoutRelations.order).reduce(
-      (acc, [k, v]) => {
-        const key = `${alias}.${k}`
-        toSelect.push(key)
-        acc[key] = v
-        return acc
-      },
-      {}
-    )
-    qb.addSelect(toSelect)
-    qb.orderBy(parsed)
+  const shouldJoins: { relation: string; shouldJoin: boolean }[] = []
+  for (const customJoinBuilder of customJoinBuilders) {
+    const result = await customJoinBuilder(qb, alias)
+    if (result) {
+      shouldJoins.push({
+        relation: result.relation,
+        shouldJoin: !result.preventOrderJoin,
+      })
+    }
   }
 
-  for (const customJoinBuilder of customJoinBuilders) {
-    customJoinBuilder(qb, alias)
-  }
+  applyOrdering({
+    repository,
+    order: (optionsWithoutRelations.order as any) ?? {},
+    qb,
+    alias,
+    shouldJoin: (relationToJoin) => {
+      return shouldJoins.every(
+        ({ relation, shouldJoin }) =>
+          relation !== relationToJoin ||
+          (relation === relationToJoin && shouldJoin)
+      )
+    },
+  })
 
   if (optionsWithoutRelations.withDeleted) {
     qb.withDeleted()
   }
 
+  /*
+   * Deduplicate tuples for join + ordering (e.g. variants.prices.amount) since typeorm doesnt
+   * know how to manage it by itself
+   */
+  const expressionMapAllOrderBys = qb.expressionMap.allOrderBys
+  if (
+    expressionMapAllOrderBys &&
+    Object.keys(expressionMapAllOrderBys).length
+  ) {
+    const orderBysString = Object.keys(expressionMapAllOrderBys)
+      .map((column) => {
+        return `${column} ${expressionMapAllOrderBys[column]}`
+      })
+      .join(", ")
+
+    qb.addSelect(
+      `row_number() OVER (PARTITION BY ${alias}.id ORDER BY ${orderBysString}) AS rownum`
+    )
+  } else {
+    qb.addSelect(`1 AS rownum`)
+  }
+
+  /*
+   * In typeorm SelectQueryBuilder, the orderBy is removed from the original query when there is pagination
+   * and join involved together.
+   *
+   * This workaround allows us to include the order as part of the original query (including joins) before
+   * selecting the distinct ids of the main alias entity. The distinct ids deduplication
+   * is managed by the rownum column added to the select below.
+   *
+   * see: node_modules/typeorm/query-builder/SelectQueryBuilder.js(1973)
+   */
+  const outerQb = new SelectQueryBuilder(qb.connection, (qb as any).queryRunner)
+    .select(`${qb.escape(`${alias}_id`)}`)
+    .from(`(${qb.getQuery()})`, alias)
+    .where(`${alias}.rownum = 1`)
+    .setParameters(qb.getParameters())
+    .setNativeParameters(qb.expressionMap.nativeParameters)
+    .offset(optionsWithoutRelations.skip)
+    .limit(optionsWithoutRelations.take)
+
+  const mapToEntities = (array: any) => {
+    return array.map((rawProduct) => ({
+      id: rawProduct[`${alias}_id`],
+    })) as unknown as T[]
+  }
+
   let entities: T[]
   let count = 0
   if (shouldCount) {
-    const result = await qb.getManyAndCount()
-    entities = result[0]
-    count = result[1]
+    const outerQbCount = new SelectQueryBuilder(
+      qb.connection,
+      (qb as any).queryRunner
+    )
+      .select(`COUNT(1)`, `count`)
+      .from(`(${qb.getQuery()})`, alias)
+      .where(`${alias}.rownum = 1`)
+      .setParameters(qb.getParameters())
+      .setNativeParameters(qb.expressionMap.nativeParameters)
+      .orderBy()
+      .groupBy()
+      .offset(undefined)
+      .limit(undefined)
+      .skip(undefined)
+      .take(undefined)
+
+    const result = await promiseAll([
+      outerQb.getRawMany(),
+      outerQbCount.getRawOne(),
+    ])
+
+    entities = mapToEntities(result[0])
+    count = Number(result[1].count)
   } else {
-    entities = await qb.getMany()
+    const result = await outerQb.getRawMany()
+    entities = mapToEntities(result)
   }
 
   return [entities, count]
@@ -188,7 +308,7 @@ export function mergeEntitiesWithRelations<T>(
  * @param alias
  * @param shouldJoin In case a join is already applied elsewhere and therefore you want to avoid to re joining the data in that case you can return false for specific relations
  */
-export function applyOrdering<T>({
+export function applyOrdering<T extends ObjectLiteral>({
   repository,
   order,
   qb,
@@ -247,7 +367,10 @@ export function applyOrdering<T>({
       }
 
       const key = `${alias}.${orderPath}`
-      toSelect.push(key)
+      // Prevent ambiguous column error when top level entity id is ordered
+      if (orderPath !== "id") {
+        toSelect.push(key)
+      }
       acc[key] = orderDirection
       return acc
     },

@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "composite": false,
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "checkJs": false,
+    "jsx": "react",
+    "lib": ["ES2015", "DOM"],
+    "module": "ESNext",
+    "target": "es6",
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "baseUrl": "src",
+    "declarationDir": "dist",
+    "paths": {
+      "@medusajs/icon": ["src/index.ts"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["dist", "build", "node_modules", "./src/**/*.spec.tsx"]
+}

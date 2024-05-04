@@ -1,11 +1,18 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { FlagRouter } from "../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
 import DiscountService from "../discount"
 import { TotalsServiceMock } from "../__mocks__/totals"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
 import { In } from "typeorm"
 
 const featureFlagRouter = new FlagRouter({})
+
+const eventBusService = {
+  emit: jest.fn(),
+  withTransaction: function () {
+    return this
+  },
+}
 
 describe("DiscountService", () => {
   describe("create", () => {
@@ -29,6 +36,7 @@ describe("DiscountService", () => {
       discountRuleRepository,
       regionService,
       featureFlagRouter,
+      eventBusService
     })
 
     beforeEach(() => {
@@ -67,7 +75,7 @@ describe("DiscountService", () => {
         .catch((e) => e)
 
       expect(err.type).toEqual("invalid_data")
-      expect(err.message).toEqual("Discount must have atleast 1 region")
+      expect(err.message).toEqual("Discount must have at least 1 region")
       expect(discountRepository.create).toHaveBeenCalledTimes(0)
     })
 
@@ -99,6 +107,8 @@ describe("DiscountService", () => {
       })
 
       expect(discountRepository.save).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(DiscountService.Events.CREATED, {id: undefined})
     })
 
     it("successfully creates discount with start and end dates", async () => {
@@ -737,8 +747,9 @@ describe("DiscountService", () => {
         }
       )
 
-      expect(adjustment1).toBe(291)
-      expect(adjustment2).toBe(109)
+      // The sum of both is equal to the expected 400
+      expect(adjustment1).toBeCloseTo(291, 0)
+      expect(adjustment2).toBeCloseTo(109, 0)
     })
 
     it("returns line item amount if discount exceeds lime item price", async () => {

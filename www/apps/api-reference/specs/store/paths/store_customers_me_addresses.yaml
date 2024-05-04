@@ -1,0 +1,45 @@
+post:
+  operationId: PostCustomersCustomerAddresses
+  summary: Add a Shipping Address
+  description: Add a Shipping Address to a Customer's saved addresses.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StorePostCustomersCustomerAddressesReq.yaml
+  x-codegen:
+    method: addAddress
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_customers_me_addresses/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_customers_me_addresses/post.sh
+  security:
+    - cookie_auth: []
+    - jwt_token: []
+  tags:
+    - Customers
+  responses:
+    '200':
+      description: A successful response
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCustomersRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

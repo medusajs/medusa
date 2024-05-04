@@ -4,15 +4,15 @@ import { defaultAdminCustomersRelations } from "."
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /customers/{id}
+ * @oas [get] /admin/customers/{id}
  * operationId: "GetCustomersCustomer"
  * summary: "Get a Customer"
- * description: "Retrieves a Customer."
+ * description: "Retrieve the details of a customer."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Customer.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the customer.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the customer.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customer.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned customer.
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
@@ -22,20 +22,45 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.customers.retrieve(customer_id)
+ *       medusa.admin.customers.retrieve(customerId)
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCustomer } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerId: string
+ *       }
+ *
+ *       const Customer = ({ customerId }: Props) => {
+ *         const { customer, isLoading } = useAdminCustomer(
+ *           customerId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {customer && <span>{customer.first_name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Customer
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/customers/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/customers/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK

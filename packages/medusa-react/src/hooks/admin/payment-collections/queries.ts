@@ -13,7 +13,43 @@ export const adminPaymentCollectionQueryKeys = queryKeysFactory<
 
 type AdminPaymentCollectionKey = typeof adminPaymentCollectionQueryKeys
 
+/**
+ * This hook retrieves a Payment Collection's details.
+ * 
+ * @example
+ * import React from "react"
+ * import { useAdminPaymentCollection } from "medusa-react"
+ * 
+ * type Props = {
+ *   paymentCollectionId: string
+ * }
+ * 
+ * const PaymentCollection = ({ paymentCollectionId }: Props) => {
+ *   const { 
+ *     payment_collection, 
+ *     isLoading, 
+ *   } = useAdminPaymentCollection(paymentCollectionId)
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {payment_collection && (
+ *         <span>{payment_collection.status}</span>
+ *       )}
+ *       
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default PaymentCollection
+ * 
+ * @customNamespace Hooks.Admin.Payment Collections
+ * @category Queries
+ */
 export const useAdminPaymentCollection = (
+  /**
+   * The payment collection's ID.
+   */
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<AdminPaymentCollectionsRes>,

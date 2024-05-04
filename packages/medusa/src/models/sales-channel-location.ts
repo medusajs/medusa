@@ -1,8 +1,15 @@
-import { BeforeInsert, Column, Index, JoinColumn, ManyToOne } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  Relation,
+} from "typeorm"
 
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { SoftDeletableEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
+import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { SalesChannel } from "./sales-channel"
 
 @FeatureFlagEntity("sales_channels")
@@ -17,8 +24,11 @@ export class SalesChannelLocation extends SoftDeletableEntity {
 
   @ManyToOne(() => SalesChannel, (sc) => sc.locations)
   @JoinColumn({ name: "sales_channel_id" })
-  sales_channel: SalesChannel
+  sales_channel: Relation<SalesChannel>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "scloc")
@@ -28,7 +38,7 @@ export class SalesChannelLocation extends SoftDeletableEntity {
 /**
  * @schema SalesChannelLocation
  * title: "Sales Channel Stock Location"
- * description: "Sales Channel Stock Location link sales channels with stock locations."
+ * description: "This represents the association between a sales channel and a stock locations."
  * type: object
  * required:
  *   - created_at
@@ -43,14 +53,15 @@ export class SalesChannelLocation extends SoftDeletableEntity {
  *     type: string
  *     example: scloc_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   sales_channel_id:
- *     description: "The id of the Sales Channel"
+ *     description: "The ID of the Sales Channel"
  *     type: string
  *     example: sc_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   location_id:
- *     description: "The id of the Location Stock."
+ *     description: "The ID of the Location Stock."
  *     type: string
  *   sales_channel:
- *     description: The sales channel the location is associated with. Available if the relation `sales_channel` is expanded.
+ *     description: The details of the sales channel the location is associated with.
+ *     x-expandable: "sales_channel"
  *     nullable: true
  *     $ref: "#/components/schemas/SalesChannel"
  *   created_at:

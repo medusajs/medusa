@@ -1,0 +1,41 @@
+---
+sidebar_position: 1
+---
+
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Inventory`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to manage inventory in the Medusa Admin.
+
+## Check Inventory
+
+To check your store’s inventory, go to the Inventory page. Here, you’ll see the all available inventory of product variants.
+
+### Filter by Location
+
+To filter the shown results by location:
+
+1. Click on the "Add filter" button.
+2. Select Location from the dropdown.
+3. Select the location(s) to filter ther results by.
+
+---
+
+## Change Variant Inventory Quantity
+
+{/* TODO check info for correctness */}
+
+To change a product variant’s inventory quantity:
+
+1. Go to the Inventory page.
+2. Click the product variant to edit its inventory.
+3. Under the "Location levels" section, find the location to edit the quantity in.
+4. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the right of the location.
+5. Choose "Adjust availability" from the dropdown.
+6. In the drawer that opens, edit the "In Stock" field with the new stock quantity of the variant.
+7. Once you're done, click the Save button.

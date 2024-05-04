@@ -24,8 +24,11 @@ describe("GET /admin/products/:id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls get product from productSerice", () => {
+    it("calls get product from productService", () => {
       expect(ProductServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(
+        ProductServiceMock.retrieve.mock.calls[0][1].relations
+      ).toHaveLength(11)
       expect(ProductServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("product1"),
         {
@@ -40,7 +43,6 @@ describe("GET /admin/products/:id", () => {
             "is_giftcard",
             "discountable",
             "thumbnail",
-            "profile_id",
             "collection_id",
             "type_id",
             "weight",
@@ -56,18 +58,19 @@ describe("GET /admin/products/:id", () => {
             "deleted_at",
             "metadata",
           ],
-          relations: [
-            "variants",
-            "variants.prices",
-            "variants.options",
+          relations: expect.arrayContaining([
+            "collection",
             "images",
             "options",
+            "options.values",
+            "profiles",
+            "sales_channels",
             "tags",
             "type",
-            "collection",
-            "categories",
-            "sales_channels",
-          ],
+            "variants",
+            "variants.options",
+            "variants.prices",
+          ]),
         }
       )
     })

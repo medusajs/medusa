@@ -5,8 +5,15 @@ import BaseService from "./base-service"
  * provides the necessary methods for creating, authorizing and managing
  * payments.
  * @interface
+ * @deprecated use AbstractPaymentProcessor from @medusajs/medusa instead
  */
 class BasePaymentService extends BaseService {
+  static _isPaymentService = true
+
+  static isPaymentService(obj) {
+    return obj?.constructor?._isPaymentService
+  }
+
   constructor() {
     super()
   }

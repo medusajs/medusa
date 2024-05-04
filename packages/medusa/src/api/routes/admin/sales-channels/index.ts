@@ -15,6 +15,7 @@ import { AdminGetSalesChannelsParams } from "./list-sales-channels"
 import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
 import { AdminPostSalesChannelsChannelStockLocationsReq } from "./associate-stock-location"
 import { AdminDeleteSalesChannelsChannelStockLocationsReq } from "./remove-stock-location"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
@@ -47,11 +48,19 @@ export default (app) => {
   )
   salesChannelRouter.post(
     "/stock-locations",
+    checkRegisteredModules({
+      stockLocationService:
+        "Stock Locations are not enabled. Please add a Stock Location module to enable this functionality.",
+    }),
     transformBody(AdminPostSalesChannelsChannelStockLocationsReq),
     middlewares.wrap(require("./associate-stock-location").default)
   )
   salesChannelRouter.delete(
     "/stock-locations",
+    checkRegisteredModules({
+      stockLocationService:
+        "Stock Locations are not enabled. Please add a Stock Location module to enable this functionality.",
+    }),
     transformBody(AdminDeleteSalesChannelsChannelStockLocationsReq),
     middlewares.wrap(require("./remove-stock-location").default)
   )
@@ -79,8 +88,12 @@ export default (app) => {
 /**
  * @schema AdminSalesChannelsRes
  * type: object
+ * description: "The sales channel's details."
+ * required:
+ *   - sales_channel
  * properties:
  *   sales_channel:
+ *     description: Sales Channel's details.
  *     $ref: "#/components/schemas/SalesChannel"
  */
 export type AdminSalesChannelsRes = {
@@ -90,6 +103,10 @@ export type AdminSalesChannelsRes = {
 /**
  * @schema AdminSalesChannelsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -108,6 +125,10 @@ export type AdminSalesChannelsDeleteRes = DeleteResponse
 /**
  * @schema AdminSalesChannelsDeleteLocationRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -126,9 +147,16 @@ export type AdminSalesChannelsDeleteLocationRes = DeleteResponse
 /**
  * @schema AdminSalesChannelsListRes
  * type: object
+ * description: "The list of sales channels with pagination fields."
+ * required:
+ *   - sales_channels
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   sales_channels:
  *     type: array
+ *     description: "An array of sales channels details."
  *     items:
  *       $ref: "#/components/schemas/SalesChannel"
  *   count:
@@ -136,7 +164,7 @@ export type AdminSalesChannelsDeleteLocationRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of items skipped before the returned results
  *   limit:
  *     type: integer
  *     description: The number of items per page

@@ -51,7 +51,8 @@ export class Currency {
  *    type: string
  *    example: US Dollar
  *  includes_tax:
- *    description: "[EXPERIMENTAL] Does the currency prices include tax"
+ *    description: "Whether the currency prices include tax"
  *    type: boolean
+ *    x-featureFlag: "tax_inclusive_pricing"
  *    default: false
  */

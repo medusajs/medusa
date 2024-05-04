@@ -4,13 +4,13 @@ import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}
+ * @oas [post] /admin/payment-collections/{id}
  * operationId: "PostPaymentCollectionsPaymentCollection"
- * summary: "Update PaymentCollection"
- * description: "Updates a PaymentCollection."
+ * summary: "Update Payment Collection"
+ * description: "Update a Payment Collection's details."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the PaymentCollection.
+ *   - (path) id=* {string} The ID of the Payment Collection.
  * requestBody:
  *   content:
  *     application/json:
@@ -25,26 +25,59 @@ import { PaymentCollectionService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.paymentCollections.update(payment_collection_id, {
- *         description: "Description of payCol"
+ *       medusa.admin.paymentCollections.update(paymentCollectionId, {
+ *         description
  *       })
- *         .then(({ payment_collection }) => {
- *           console.log(payment_collection.id)
- *         })
+ *       .then(({ payment_collection }) => {
+ *         console.log(payment_collection.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdatePaymentCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({ paymentCollectionId }: Props) => {
+ *         const updateCollection = useAdminUpdatePaymentCollection(
+ *           paymentCollectionId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           description: string
+ *         ) => {
+ *           updateCollection.mutate({
+ *             description
+ *           }, {
+ *             onSuccess: ({ payment_collection }) => {
+ *               console.log(payment_collection.description)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/payment-collections/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/payment-collections/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *           "description": "Description of payCol"
+ *           "description": "Description of payment collection"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - PaymentCollection
+ *   - Payment Collections
  * responses:
  *   200:
  *     description: OK
@@ -88,13 +121,17 @@ export default async (req, res) => {
 /**
  * @schema AdminUpdatePaymentCollectionsReq
  * type: object
+ * description: "The details to update of the payment collection."
  * properties:
  *   description:
- *     description: An optional description to create or update the payment collection.
+ *     description: A description to create or update the payment collection.
  *     type: string
  *   metadata:
- *     description: An optional set of key-value pairs to hold additional information.
+ *     description: A set of key-value pairs to hold additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminUpdatePaymentCollectionsReq {
   @IsString()

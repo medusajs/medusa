@@ -1,0 +1,39 @@
+{
+  "name": "typedoc-plugin-markdown-medusa",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "1.0.0",
+  "description": "A plugin that creates a theme with customization capabilities.",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Shahed Nasser",
+  "scripts": {
+    "build": "tsc && copyfiles --up 1 ./src/**/*.hbs ./dist/",
+    "lint": "eslint --ext .ts src"
+  },
+  "peerDependencies": {
+    "typedoc": "0.25.x"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.10",
+    "copyfiles": "^2.4.1",
+    "types": "*",
+    "typescript": "5.2"
+  },
+  "keywords": [
+    "typedocplugin",
+    "packages",
+    "monorepo",
+    "typedoc"
+  ],
+  "dependencies": {
+    "handlebars": "^4.7.8",
+    "utils": "*"
+  }
+}

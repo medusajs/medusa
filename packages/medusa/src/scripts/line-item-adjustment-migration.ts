@@ -1,13 +1,13 @@
 import dotenv from "dotenv"
 import { createConnection, SelectQueryBuilder } from "typeorm"
-import Logger from "../loaders/logger"
 import { LineItem } from "../models/line-item"
 import { LineItemAdjustment } from "../models/line-item-adjustment"
 import { typeormConfig } from "./db-config"
+import Logger from "../loaders/logger"
 
 dotenv.config()
 
-const migrate = async function({ typeormConfig }) {
+const migrate = async function ({ typeormConfig }) {
   const connection = await createConnection(typeormConfig)
 
   const BATCH_SIZE = 1000
@@ -98,6 +98,6 @@ migrate({ typeormConfig })
     Logger.info("Database migration completed successfully")
     process.exit()
   })
-  .catch((err) => console.log(err))
+  .catch((err) => Logger.log(err))
 
 export default migrate

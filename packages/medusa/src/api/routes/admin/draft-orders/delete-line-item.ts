@@ -8,16 +8,17 @@ import {
 import { DraftOrder } from "../../../.."
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [delete] /draft-orders/{id}/line-items/{line_id}
+ * @oas [delete] /admin/draft-orders/{id}/line-items/{line_id}
  * operationId: DeleteDraftOrdersDraftOrderLineItemsItem
  * summary: Delete a Line Item
- * description: "Removes a Line Item from a Draft Order."
+ * description: "Delete a Line Item from a Draft Order."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.
- *   - (path) line_id=* {string} The ID of the Draft Order.
+ *   - (path) line_id=* {string} The ID of the line item.
  * x-codegen:
  *   method: removeLineItem
  * x-codeSamples:
@@ -27,20 +28,49 @@ import { MedusaError } from "medusa-core-utils"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.draftOrders.removeLineItem(draft_order_id, item_id)
+ *       medusa.admin.draftOrders.removeLineItem(draftOrderId, itemId)
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         draftOrderId: string
+ *       }
+ *
+ *       const DraftOrder = ({ draftOrderId }: Props) => {
+ *         const deleteLineItem = useAdminDraftOrderRemoveLineItem(
+ *           draftOrderId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = (itemId: string) => {
+ *           deleteLineItem.mutate(itemId, {
+ *             onSuccess: ({ draft_order }) => {
+ *               console.log(draft_order.cart)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/draft-orders/{id}/line-items/{line_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/draft-orders/{id}/line-items/{line_id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
@@ -93,6 +123,8 @@ export default async (req, res) => {
         select: defaultAdminDraftOrdersCartFields,
       })
 
-    res.status(200).json({ draft_order: draftOrder })
+    res.status(200).json({
+      draft_order: cleanResponseData(draftOrder, []),
+    })
   })
 }

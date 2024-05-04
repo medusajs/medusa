@@ -7,14 +7,15 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [delete] /order-edits/{id}/items/{item_id}
+ * @oas [delete] /admin/order-edits/{id}/items/{item_id}
  * operationId: "DeleteOrderEditsOrderEditLineItemsLineItem"
- * summary: "Delete a Line Item"
- * description: "Delete line items from an order edit and create change item"
+ * summary: "Delete Line Item"
+ * description: "Create a line item change in the order edit that indicates deleting an item in the original order. The item in the original order will not be deleted until the order edit is
+ *  confirmed."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Order Edit to delete from.
- *   - (path) item_id=* {string} The ID of the order edit item to delete from order.
+ *   - (path) id=* {string} The ID of the Order Edit.
+ *   - (path) item_id=* {string} The ID of line item in the original order.
  * x-codegen:
  *   method: removeLineItem
  * x-codeSamples:
@@ -24,20 +25,53 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.removeLineItem(order_edit_id, line_item_id)
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       medusa.admin.orderEdits.removeLineItem(orderEditId, lineItemId)
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminOrderEditDeleteLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *         itemId: string
+ *       }
+ *
+ *       const OrderEditLineItem = ({
+ *         orderEditId,
+ *         itemId
+ *       }: Props) => {
+ *         const removeLineItem = useAdminOrderEditDeleteLineItem(
+ *           orderEditId,
+ *           itemId
+ *         )
+ *
+ *         const handleRemoveLineItem = () => {
+ *           removeLineItem.mutate(void 0, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.changes)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEditLineItem
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/order-edits/{id}/items/{item_id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

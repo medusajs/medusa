@@ -1,11 +1,21 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { useDb, initDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb, initDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
-const promotionsSeeder = require("../../helpers/price-selection-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const promotionsSeeder = require("../../../helpers/price-selection-seeder")
+const {
+  Product,
+  ShippingProfileType,
+  ShippingProfile,
+  ProductOption,
+  CustomerGroup,
+  PriceList,
+  ProductVariant,
+  Customer,
+} = require("@medusajs/medusa")
 
 jest.setTimeout(30000)
 
@@ -76,13 +86,13 @@ describe("Promotions", () => {
       expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price1",
+            id: "test-price-1",
             region_id: "test-region",
             currency_code: "usd",
             amount: 120,
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price-3",
             region_id: "test-region",
             currency_code: "usd",
             price_list_id: "pl",
@@ -131,13 +141,13 @@ describe("Promotions", () => {
       expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price1",
+            id: "test-price-1",
             region_id: "test-region",
             currency_code: "usd",
             amount: 120,
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price-3",
             region_id: "test-region",
             currency_code: "usd",
             price_list_id: "pl",
@@ -426,13 +436,13 @@ describe("Promotions", () => {
       expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price1",
+            id: "test-price-1",
             region_id: "test-region",
             currency_code: "usd",
             amount: 120,
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price-3",
             region_id: "test-region",
             currency_code: "usd",
             price_list_id: "pl",
@@ -444,6 +454,55 @@ describe("Promotions", () => {
             currency_code: "usd",
             amount: 100,
             price_list: expect.objectContaining({}),
+          }),
+        ])
+      )
+    })
+
+    it("should only join price lists with customer groups for the customer, not empty groups", async () => {
+      const api = useApi()
+
+      const authResponse = await api.post("/store/auth", {
+        email: "test5@email-pl.com",
+        password: "test",
+      })
+
+      const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
+
+      const res = await api
+        .get("/store/products/test-product-pl?cart_id=test-cart", {
+          headers: {
+            Cookie: authCookie,
+          },
+        })
+        .catch((error) => console.log(error))
+
+      const variant = res.data.product.variants[0]
+
+      expect(variant.prices.length).toEqual(2)
+
+      expect(variant).toEqual(
+        expect.objectContaining({
+          id: "test-variant-pl",
+          calculated_price: 110,
+        })
+      )
+
+      expect(variant.prices.length).toEqual(2)
+      expect(variant.prices).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-price1120",
+            region_id: "test-region",
+            currency_code: "usd",
+            amount: 120,
+          }),
+          expect.objectContaining({
+            id: "test-price2120",
+            region_id: "test-region",
+            currency_code: "usd",
+            price_list_id: "pl_current_pl",
+            amount: 110,
           }),
         ])
       )

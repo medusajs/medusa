@@ -1,17 +1,23 @@
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { IsBooleanString, IsOptional, IsString } from "class-validator"
-import { PricingService, ProductService } from "../../../../services"
+import { defaultRelations } from "."
+import {
+  PricingService,
+  ProductService,
+  ShippingProfileService,
+} from "../../../../services"
 import ShippingOptionService from "../../../../services/shipping-option"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /shipping-options
+ * @oas [get] /store/shipping-options
  * operationId: GetShippingOptions
  * summary: Get Shipping Options
- * description: "Retrieves a list of Shipping Options."
+ * description: "Retrieve a list of Shipping Options."
  * parameters:
- *   - (query) is_return {boolean} Whether return Shipping Options should be included. By default all Shipping Options are returned.
- *   - (query) product_ids {string} A comma separated list of Product ids to filter Shipping Options by.
- *   - (query) region_id {string} the Region to retrieve Shipping Options from.
+ *   - (query) is_return {boolean} Whether return shipping options should be included. By default, all shipping options are returned.
+ *   - (query) product_ids {string} "Comma-separated list of Product IDs to filter Shipping Options by. If provided, only shipping options that can be used with the provided products are retrieved."
+ *   - (query) region_id {string} "The ID of the region that the shipping options belong to. If not provided, all shipping options are retrieved."
  * x-codegen:
  *   method: list
  *   queryParams: StoreGetShippingOptionsParams
@@ -24,13 +30,43 @@ import { validator } from "../../../../utils/validator"
  *       medusa.shippingOptions.list()
  *       .then(({ shipping_options }) => {
  *         console.log(shipping_options.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useShippingOptions } from "medusa-react"
+ *
+ *       const ShippingOptions = () => {
+ *         const {
+ *           shipping_options,
+ *           isLoading,
+ *         } = useShippingOptions()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {shipping_options?.length &&
+ *               shipping_options?.length > 0 && (
+ *               <ul>
+ *                 {shipping_options?.map((shipping_option) => (
+ *                   <li key={shipping_option.id}>
+ *                     {shipping_option.id}
+ *                   </li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ShippingOptions
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/shipping-options'
+ *       curl '{backend_url}/store/shipping-options'
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK
@@ -60,6 +96,10 @@ export default async (req, res) => {
   const shippingOptionService: ShippingOptionService = req.scope.resolve(
     "shippingOptionService"
   )
+  const shippingProfileService: ShippingProfileService = req.scope.resolve(
+    "shippingProfileService"
+  )
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   // should be selector
   const query: Record<string, unknown> = {}
@@ -75,12 +115,19 @@ export default async (req, res) => {
   query.admin_only = false
 
   if (productIds.length) {
-    const prods = await productService.list({ id: productIds })
-    query.profile_id = prods.map((p) => p.profile_id)
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+      const productShippinProfileMap =
+        await shippingProfileService.getMapProfileIdsByProductIds(productIds)
+
+      query.profile_id = [...productShippinProfileMap.values()]
+    } else {
+      const prods = await productService.list({ id: productIds })
+      query.profile_id = prods.map((p) => p.profile_id)
+    }
   }
 
   const options = await shippingOptionService.list(query, {
-    relations: ["requirements"],
+    relations: defaultRelations,
   })
 
   const data = await pricingService.setShippingOptionPrices(options)
@@ -88,15 +135,27 @@ export default async (req, res) => {
   res.status(200).json({ shipping_options: data })
 }
 
+/**
+ * Filters to apply on the retrieved shipping options.
+ */
 export class StoreGetShippingOptionsParams {
+  /**
+   * Product ID that is used to filter shipping options by whether they can be used to ship that product.
+   */
   @IsOptional()
   @IsString()
   product_ids?: string
 
+  /**
+   * Filter the shipping options by the ID of their associated region.
+   */
   @IsOptional()
   @IsString()
   region_id?: string
 
+  /**
+   * Filter the shipping options by whether they're return shipping options.
+   */
   @IsOptional()
   @IsBooleanString()
   is_return?: string

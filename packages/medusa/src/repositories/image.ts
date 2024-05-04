@@ -1,9 +1,26 @@
-import { EntityRepository, In, Repository } from "typeorm"
-import { Image } from "../models/image"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
-@EntityRepository(Image)
-export class ImageRepository extends Repository<Image> {
-  public async upsertImages(imageUrls: string[]) {
+import { In } from "typeorm"
+import { dataSource } from "../loaders/database"
+import { Image } from "../models"
+
+export const ImageRepository = dataSource.getRepository(Image).extend({
+  async insertBulk(data: QueryDeepPartialEntity<Image>[]): Promise<Image[]> {
+    const queryBuilder = this.createQueryBuilder()
+      .insert()
+      .into(Image)
+      .values(data)
+
+    if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
+      const rawImages = await queryBuilder.execute()
+      return rawImages.generatedMaps.map((d) => this.create(d)) as Image[]
+    }
+
+    const rawImages = await queryBuilder.returning("*").execute()
+    return rawImages.generatedMaps.map((d) => this.create(d))
+  },
+
+  async upsertImages(imageUrls: string[]) {
     const existingImages = await this.find({
       where: {
         url: In(imageUrls),
@@ -14,18 +31,24 @@ export class ImageRepository extends Repository<Image> {
     )
 
     const upsertedImgs: Image[] = []
+    const imageToCreate: QueryDeepPartialEntity<Image>[] = []
 
-    for (const url of imageUrls) {
+    imageUrls.forEach((url) => {
       const aImg = existingImagesMap.get(url)
       if (aImg) {
         upsertedImgs.push(aImg)
       } else {
         const newImg = this.create({ url })
-        const savedImg = await this.save(newImg)
-        upsertedImgs.push(savedImg)
+        imageToCreate.push(newImg as QueryDeepPartialEntity<Image>)
       }
+    })
+
+    if (imageToCreate.length) {
+      const newImgs = await this.insertBulk(imageToCreate)
+      upsertedImgs.push(...newImgs)
     }
 
     return upsertedImgs
-  }
-}
+  },
+})
+export default ImageRepository

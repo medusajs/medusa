@@ -1,8 +1,8 @@
-import { TransactionBaseService } from "./transaction-base-service"
-import { BatchJobResultError, CreateBatchJobInput } from "../types/batch-job"
-import { ProductExportBatchJob } from "../strategies/batch-jobs/product/types"
-import { BatchJobService } from "../services"
 import { BatchJob } from "../models"
+import { BatchJobService } from "../services"
+import { ProductExportBatchJob } from "../strategies/batch-jobs/product/types"
+import { BatchJobResultError, CreateBatchJobInput } from "../types/batch-job"
+import { TransactionBaseService } from "./transaction-base-service"
 
 export interface IBatchJobStrategy extends TransactionBaseService {
   /**
@@ -33,10 +33,15 @@ export abstract class AbstractBatchJobStrategy
   extends TransactionBaseService
   implements IBatchJobStrategy
 {
+  static _isBatchJobStrategy = true
   static identifier: string
   static batchType: string
 
   protected abstract batchJobService_: BatchJobService
+
+  static isBatchJobStrategy(object): object is IBatchJobStrategy {
+    return object?.constructor?._isBatchJobStrategy
+  }
 
   async prepareBatchJobForProcessing(
     batchJob: CreateBatchJobInput,
@@ -106,10 +111,4 @@ export abstract class AbstractBatchJobStrategy
       }
     })
   }
-}
-
-export function isBatchJobStrategy(
-  object: unknown
-): object is IBatchJobStrategy {
-  return object instanceof AbstractBatchJobStrategy
 }

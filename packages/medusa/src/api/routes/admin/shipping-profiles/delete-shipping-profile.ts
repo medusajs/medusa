@@ -2,10 +2,10 @@ import { EntityManager } from "typeorm"
 import { ShippingProfileService } from "../../../../services"
 
 /**
- * @oas [delete] /shipping-profiles/{id}
+ * @oas [delete] /admin/shipping-profiles/{id}
  * operationId: "DeleteShippingProfilesProfile"
  * summary: "Delete a Shipping Profile"
- * description: "Deletes a Shipping Profile."
+ * description: "Delete a Shipping Profile. Associated shipping options are deleted as well."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Profile.
@@ -18,20 +18,49 @@ import { ShippingProfileService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.shippingProfiles.delete(profile_id)
+ *       medusa.admin.shippingProfiles.delete(profileId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteShippingProfile } from "medusa-react"
+ *
+ *       type Props = {
+ *         shippingProfileId: string
+ *       }
+ *
+ *       const ShippingProfile = ({ shippingProfileId }: Props) => {
+ *         const deleteShippingProfile = useAdminDeleteShippingProfile(
+ *           shippingProfileId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteShippingProfile.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ShippingProfile
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/shipping-profiles/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/shipping-profiles/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Shipping Profile
+ *   - Shipping Profiles
  * responses:
  *   200:
  *     description: OK

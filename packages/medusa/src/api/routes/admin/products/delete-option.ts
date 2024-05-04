@@ -4,10 +4,10 @@ import { EntityManager } from "typeorm"
 import { ProductService } from "../../../../services"
 
 /**
- * @oas [delete] /products/{id}/options/{option_id}
+ * @oas [delete] /admin/products/{id}/options/{option_id}
  * operationId: "DeleteProductsProductOptionsOption"
  * summary: "Delete a Product Option"
- * description: "Deletes a Product Option. Before a Product Option can be deleted all Option Values for the Product Option must be the same. You may, for example, have to delete some of your variants prior to deleting the Product Option"
+ * description: "Delete a Product Option. If there are product variants that use this product option, they must be deleted before deleting the product option."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
@@ -21,20 +21,53 @@ import { ProductService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.deleteOption(product_id, option_id)
- *       .then(({ option_id, object, delete, product }) => {
+ *       medusa.admin.products.deleteOption(productId, optionId)
+ *       .then(({ option_id, object, deleted, product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteProductOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *         optionId: string
+ *       }
+ *
+ *       const ProductOption = ({
+ *         productId,
+ *         optionId
+ *       }: Props) => {
+ *         const deleteOption = useAdminDeleteProductOption(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteOption.mutate(optionId, {
+ *             onSuccess: ({ option_id, object, deleted, product }) => {
+ *               console.log(product.options)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ProductOption
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/products/{id}/options/{option_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/products/{id}/options/{option_id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK

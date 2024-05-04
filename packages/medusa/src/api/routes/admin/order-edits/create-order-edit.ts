@@ -8,10 +8,10 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits
+ * @oas [post] /admin/order-edits
  * operationId: "PostOrderEdits"
  * summary: "Create an OrderEdit"
- * description: "Creates an OrderEdit."
+ * description: "Create an Order Edit."
  * requestBody:
  *   content:
  *     application/json:
@@ -27,22 +27,46 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.create({ order_id })
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       medusa.admin.orderEdits.create({ orderId })
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateOrderEdit } from "medusa-react"
+ *
+ *       const CreateOrderEdit = () => {
+ *         const createOrderEdit = useAdminCreateOrderEdit()
+ *
+ *         const handleCreateOrderEdit = (orderId: string) => {
+ *           createOrderEdit.mutate({
+ *             order_id: orderId,
+ *           }, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateOrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/order-edits' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/order-edits' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{ "order_id": "my_order_id", "internal_note": "my_optional_note" }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK
@@ -92,6 +116,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostOrderEditsReq
  * type: object
+ * description: "The details of the order edit to create."
  * required:
  *   - order_id
  * properties:
@@ -99,7 +124,7 @@ export default async (req: Request, res: Response) => {
  *     description: The ID of the order to create the edit for.
  *     type: string
  *   internal_note:
- *     description: An optional note to create for the order edit.
+ *     description: An optional note to associate with the order edit.
  *     type: string
  */
 export class AdminPostOrderEditsReq {

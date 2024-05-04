@@ -2,8 +2,11 @@ import { NextFunction, Request, RequestHandler, Response } from "express"
 
 type handler = (req: Request, res: Response) => Promise<void>
 
+/**
+ * @deprecated use `import { wrapHandler } from "@medusajs/utils"`
+ */
 export default (fn: handler): RequestHandler => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     if (req?.errors?.length) {
       return res.status(400).json({
         errors: req.errors,
@@ -12,7 +15,11 @@ export default (fn: handler): RequestHandler => {
       })
     }
 
-    return fn(req, res).catch(next)
+    try {
+      return await fn(req, res)
+    } catch (err) {
+      next(err)
+    }
   }
 }
 

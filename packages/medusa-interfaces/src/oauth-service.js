@@ -5,6 +5,12 @@ import BaseService from "./base-service"
  * @interface
  */
 class BaseOauthService extends BaseService {
+  static _isOauthService = true
+
+  static isOauthService(obj) {
+    return obj?.constructor?._isOauthService
+  }
+
   constructor() {
     super()
   }

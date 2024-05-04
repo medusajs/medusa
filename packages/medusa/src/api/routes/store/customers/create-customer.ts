@@ -8,10 +8,12 @@ import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customers
+ * @oas [post] /store/customers
  * operationId: PostCustomers
  * summary: Create a Customer
- * description: "Creates a Customer account."
+ * description: "Register a new customer. This will also automatically authenticate the customer and set their login session in the response Cookie header.
+ *  The cookie session can be used in subsequent requests to authenticate the customer.
+ *  When using Medusa's JS or Medusa React clients, the cookie is automatically attached to subsequent requests."
  * requestBody:
  *   content:
  *     application/json:
@@ -26,19 +28,49 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.customers.create({
- *         first_name: 'Alec',
- *         last_name: 'Reynolds',
- *         email: 'user@example.com',
- *         password: 'supersecret'
+ *         first_name: "Alec",
+ *         last_name: "Reynolds",
+ *         email: "user@example.com",
+ *         password: "supersecret"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCreateCustomer } from "medusa-react"
+ *
+ *       const RegisterCustomer = () => {
+ *         const createCustomer = useCreateCustomer()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           customerData: {
+ *             first_name: string
+ *             last_name: string
+ *             email: string
+ *             password: string
+ *           }
+ *         ) => {
+ *           // ...
+ *           createCustomer.mutate(customerData, {
+ *             onSuccess: ({ customer }) => {
+ *               console.log(customer.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default RegisterCustomer
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/customers' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "first_name": "Alec",
  *           "last_name": "Reynolds",
@@ -46,7 +78,7 @@ import { validator } from "../../../../utils/validator"
  *           "password": "supersecret"
  *       }'
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK
@@ -101,13 +133,7 @@ export default async (req, res) => {
     select: defaultStoreCustomersFields,
   })
 
-  // Add JWT to cookie
-  const {
-    projectConfig: { jwt_secret },
-  } = req.scope.resolve("configModule")
-  req.session.jwt_store = jwt.sign({ customer_id: customer.id }, jwt_secret!, {
-    expiresIn: "30d",
-  })
+  req.session.customer_id = customer.id
 
   res.status(200).json({ customer })
 }
@@ -115,6 +141,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCustomersReq
  * type: object
+ * description: "The details of the customer to create."
  * required:
  *   - first_name
  *   - last_name
@@ -122,21 +149,21 @@ export default async (req, res) => {
  *   - password
  * properties:
  *   first_name:
- *     description: "The Customer's first name."
+ *     description: "The customer's first name."
  *     type: string
  *   last_name:
- *     description: "The Customer's last name."
+ *     description: "The customer's last name."
  *     type: string
  *   email:
- *     description: "The email of the customer."
+ *     description: "The customer's email."
  *     type: string
  *     format: email
  *   password:
- *     description: "The Customer's password."
+ *     description: "The customer's password."
  *     type: string
  *     format: password
  *   phone:
- *     description: "The Customer's phone number."
+ *     description: "The customer's phone number."
  *     type: string
  */
 export class StorePostCustomersReq {

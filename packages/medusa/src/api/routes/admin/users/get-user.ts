@@ -1,10 +1,10 @@
 import UserService from "../../../../services/user"
 
 /**
- * @oas [get] /users/{id}
+ * @oas [get] /admin/users/{id}
  * operationId: "GetUsersUser"
  * summary: "Get a User"
- * description: "Retrieves a User."
+ * description: "Retrieve an admin user's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the User.
@@ -17,20 +17,45 @@ import UserService from "../../../../services/user"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.users.retrieve(user_id)
+ *       medusa.admin.users.retrieve(userId)
  *       .then(({ user }) => {
  *         console.log(user.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUser } from "medusa-react"
+ *
+ *       type Props = {
+ *         userId: string
+ *       }
+ *
+ *       const User = ({ userId }: Props) => {
+ *         const { user, isLoading } = useAdminUser(
+ *           userId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {user && <span>{user.first_name} {user.last_name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default User
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/users/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/users/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - User
+ *   - Users
  * responses:
  *   200:
  *     description: OK

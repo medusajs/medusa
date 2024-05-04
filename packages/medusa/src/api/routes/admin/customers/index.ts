@@ -23,8 +23,17 @@ export default (app) => {
 /**
  * @schema AdminCustomersRes
  * type: object
+ * description: "The customer's details."
+ * x-expanded-relations:
+ *   field: customer
+ *   relations:
+ *     - orders
+ *     - shipping_addresses
+ * required:
+ *   - customer
  * properties:
  *   customer:
+ *     description: "Customer details."
  *     $ref: "#/components/schemas/Customer"
  */
 export type AdminCustomersRes = {
@@ -33,10 +42,17 @@ export type AdminCustomersRes = {
 
 /**
  * @schema AdminCustomersListRes
+ * description: The list of customers with pagination fields.
  * type: object
+ * required:
+ *   - customers
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   customers:
  *     type: array
+ *     description: "An array of customer details."
  *     items:
  *       $ref: "#/components/schemas/Customer"
  *   count:
@@ -44,7 +60,7 @@ export type AdminCustomersRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of customers skipped when retrieving the customers.
  *   limit:
  *     type: integer
  *     description: The number of items per page

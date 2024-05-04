@@ -6,10 +6,10 @@ import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /gift-cards
+ * @oas [post] /admin/gift-cards
  * operationId: "PostGiftCards"
  * summary: "Create a Gift Card"
- * description: "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region."
+ * description: "Create a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -30,21 +30,50 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateGiftCard } from "medusa-react"
+ *
+ *       const CreateCustomGiftCards = () => {
+ *         const createGiftCard = useAdminCreateGiftCard()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           regionId: string,
+ *           value: number
+ *         ) => {
+ *           createGiftCard.mutate({
+ *             region_id: regionId,
+ *             value,
+ *           }, {
+ *             onSuccess: ({ gift_card }) => {
+ *               console.log(gift_card.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateCustomGiftCards
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/gift-cards' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/gift-cards' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "region_id": "{region_id}"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Gift Card
+ *   - Gift Cards
  * responses:
  *   200:
  *     description: OK
@@ -89,6 +118,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostGiftCardsReq
  * type: object
+ * description: "The details of the gift card to create."
  * required:
  *   - region_id
  * properties:
@@ -97,17 +127,21 @@ export default async (req, res) => {
  *     description: The value (excluding VAT) that the Gift Card should represent.
  *   is_disabled:
  *     type: boolean
- *     description: Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers.
+ *     description: >-
+ *       Whether the Gift Card is disabled on creation. If set to `true`, the gift card will not be available for customers.
  *   ends_at:
  *     type: string
  *     format: date-time
- *     description: The time at which the Gift Card should no longer be available.
+ *     description: The date and time at which the Gift Card should no longer be available.
  *   region_id:
  *     description: The ID of the Region in which the Gift Card can be used.
  *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostGiftCardsReq {
   @IsOptional()

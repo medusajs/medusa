@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser"
 import { Express } from "express"
 import session from "express-session"
 import morgan from "morgan"
-import redis from "redis"
+import Redis from "ioredis"
 import { ConfigModule } from "../types/global"
 
 type Options = {
@@ -11,7 +11,10 @@ type Options = {
   configModule: ConfigModule
 }
 
-export default async ({ app, configModule }: Options): Promise<Express> => {
+export default async ({ app, configModule }: Options): Promise<{
+  app: Express,
+  shutdown: () => Promise<void>
+}> => {
   let sameSite: string | boolean = false
   let secure = false
   if (
@@ -38,10 +41,18 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
     store: null,
   }
 
+  let redisClient
+
   if (configModule?.projectConfig?.redis_url) {
     const RedisStore = createStore(session)
-    const redisClient = redis.createClient(configModule.projectConfig.redis_url)
-    sessionOpts.store = new RedisStore({ client: redisClient })
+    redisClient = new Redis(
+      configModule.projectConfig.redis_url, 
+      configModule.projectConfig.redis_options ?? {}
+    )
+    sessionOpts.store = new RedisStore({
+      client: redisClient,
+      prefix: `${configModule?.projectConfig?.redis_prefix ?? ""}sess:`,
+    })
   }
 
   app.set("trust proxy", 1)
@@ -57,5 +68,9 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
     res.status(200).send("OK")
   })
 
-  return app
+  const shutdown = async () => {
+    redisClient?.disconnect()
+  }
+
+  return { app, shutdown }
 }

@@ -2,10 +2,11 @@ import InviteService from "../../../../services/invite"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /invites/{invite_id}/resend
+ * @oas [post] /admin/invites/{invite_id}/resend
  * operationId: "PostInvitesInviteResend"
  * summary: "Resend an Invite"
- * description: "Resends an Invite by triggering the 'invite' created event again"
+ * description: "Resend an Invite. This renews the expiry date by 7 days and generates a new token for the invite. It also triggers the `invite.created` event, so if you have a Notification Provider installed that handles this
+ *  event, a notification should be sent to the email associated with the invite to allow them to accept the invite."
  * x-authenticated: true
  * parameters:
  *   - (path) invite_id=* {string} The ID of the Invite
@@ -18,23 +19,50 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.invites.resend(invite_id)
+ *       medusa.admin.invites.resend(inviteId)
  *       .then(() => {
  *         // successful
  *       })
  *       .catch(() => {
  *         // an error occurred
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminResendInvite } from "medusa-react"
+ *
+ *       type Props = {
+ *         inviteId: string
+ *       }
+ *
+ *       const ResendInvite = ({ inviteId }: Props) => {
+ *         const resendInvite = useAdminResendInvite(inviteId)
+ *         // ...
+ *
+ *         const handleResend = () => {
+ *           resendInvite.mutate(void 0, {
+ *             onSuccess: () => {
+ *               // invite resent successfully
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ResendInvite
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/invites/{invite_id}/resend' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST '{backend_url}/admin/invites/{invite_id}/resend' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Invite
+ *   - Invites
  * responses:
  *   200:
  *     description: OK

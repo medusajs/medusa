@@ -6,10 +6,10 @@ import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customer-groups
+ * @oas [post] /admin/customer-groups
  * operationId: "PostCustomerGroups"
  * summary: "Create a Customer Group"
- * description: "Creates a CustomerGroup."
+ * description: "Create a Customer Group."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -26,25 +26,46 @@ import { validator } from "../../../../utils/validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.customerGroups.create({
- *         name: 'VIP'
+ *         name: "VIP"
  *       })
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateCustomerGroup } from "medusa-react"
+ *
+ *       const CreateCustomerGroup = () => {
+ *         const createCustomerGroup = useAdminCreateCustomerGroup()
+ *         // ...
+ *
+ *         const handleCreate = (name: string) => {
+ *           createCustomerGroup.mutate({
+ *             name,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateCustomerGroup
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/customer-groups' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/customer-groups' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "VIP"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Customer Group
+ *   - Customer Groups
  * responses:
  *   200:
  *     description: OK
@@ -88,6 +109,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostCustomerGroupsReq
  * type: object
+ * description: "The details of the customer group to create."
  * required:
  *   - name
  * properties:
@@ -96,7 +118,10 @@ export default async (req: Request, res: Response) => {
  *     description: Name of the customer group
  *   metadata:
  *     type: object
- *     description: Metadata for the customer.
+ *     description: Metadata of the customer group.
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostCustomerGroupsReq {
   @IsString()

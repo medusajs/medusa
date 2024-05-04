@@ -1,6 +1,6 @@
-import { ShippingOption } from "./../../../../"
 import { Router } from "express"
 import middlewares from "../../../middlewares"
+import { PricedShippingOption } from "../../../../types/pricing"
 
 const route = Router()
 
@@ -16,17 +16,48 @@ export default (app) => {
   return app
 }
 
+export const defaultRelations = ["requirements"]
+
 /**
  * @schema StoreShippingOptionsListRes
  * type: object
+ * description: "The list of shipping options."
+ * x-expanded-relations:
+ *   field: shipping_options
+ *   relations:
+ *     - requirements
+ * required:
+ *   - shipping_options
  * properties:
  *   shipping_options:
  *     type: array
+ *     description: "An array of shipping options details."
  *     items:
- *       $ref: "#/components/schemas/ShippingOption"
+ *       $ref: "#/components/schemas/PricedShippingOption"
  */
 export type StoreShippingOptionsListRes = {
-  shipping_options: ShippingOption[]
+  shipping_options: PricedShippingOption[]
+}
+
+/**
+ * @schema StoreCartShippingOptionsListRes
+ * type: object
+ * x-expanded-relations:
+ *   field: shipping_options
+ *   implicit:
+ *     - profile
+ *     - requirements
+ * required:
+ *   - shipping_options
+ * properties:
+ *   shipping_options:
+ *     type: array
+ *     description: "An array of shipping options details."
+ *     items:
+ *       $ref: "#/components/schemas/PricedShippingOption"
+ */
+export type StoreCartShippingOptionsListRes = {
+  shipping_options: PricedShippingOption[]
 }
 
 export * from "./list-options"

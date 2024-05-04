@@ -1,0 +1,54 @@
+---
+slug: /references/medusa-react/hooks/store/gift_cards
+---
+
+import { TypeList } from "docs-ui"
+
+# Gift Cards
+
+Queries listed here are used to send requests to the [Store Gift Card API Routes](https://docs.medusajs.com/api/store#gift-cards).
+
+Customers can use gift cards during checkout to deduct the gift card's balance from the checkout total.
+
+Related Guide: [How to use gift cards in a storefront](https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards).
+
+## Queries
+
+### useGiftCard
+
+This hook retrieves a Gift Card's details by its associated unique code.
+
+#### Example
+
+```ts
+import React from "react"
+import { useGiftCard } from "medusa-react"
+
+type Props = {
+  giftCardCode: string
+}
+
+const GiftCard = ({ giftCardCode }: Props) => {
+  const { gift_card, isLoading, isError } = useGiftCard(
+    giftCardCode
+  )
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {gift_card && <span>{gift_card.value}</span>}
+      {isError && <span>Gift Card does not exist</span>}
+    </div>
+  )
+}
+
+export default GiftCard
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The gift card's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useGiftCard"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"gift_card","type":"[GiftCard](../../../../medusa/classes/medusa.GiftCard/page.mdx)","description":"Gift card details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of a gift card.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useGiftCard"/>

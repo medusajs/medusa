@@ -1,0 +1,59 @@
+---
+slug: /references/workflows/parallelize
+sidebar_label: parallelize
+---
+
+import { TypeList } from "docs-ui"
+
+# parallelize - Workflows API Reference
+
+This documentation provides a reference to the `parallelize` . It belongs to the `@medusajs/workflows-sdk` package.
+
+This function is used to run multiple steps in parallel. The result of each step will be returned as part of the result array.
+
+## Example
+
+```ts
+import {
+  createWorkflow,
+  parallelize
+} from "@medusajs/workflows-sdk"
+import {
+  createProductStep,
+  getProductStep,
+  createPricesStep,
+  attachProductToSalesChannelStep
+} from "./steps"
+
+interface WorkflowInput {
+  title: string
+}
+
+const myWorkflow = createWorkflow<
+  WorkflowInput,
+  Product
+>("my-workflow", (input) => {
+   const product = createProductStep(input)
+
+   const [prices, productSalesChannel] = parallelize(
+     createPricesStep(product),
+     attachProductToSalesChannelStep(product)
+   )
+
+   const id = product.id
+   return getProductStep(product.id)
+ }
+)
+```
+
+## Type Parameters
+
+<TypeList types={[{"name":"TResult","type":"[WorkflowData](../../types/workflows.WorkflowData/page.mdx)[]","description":"The type of the expected result.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="parallelize"/>
+
+## Parameters
+
+<TypeList types={[{"name":"steps","type":"TResult","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="parallelize"/>
+
+## Returns
+
+<TypeList types={[{"name":"TResult","type":"TResult","optional":false,"defaultValue":"","description":"The step results. The results are ordered in the array by the order they're passed in the function's parameter.","expandable":false,"children":[]}]}  sectionTitle="parallelize"/>

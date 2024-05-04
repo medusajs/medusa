@@ -8,16 +8,17 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  Relation,
 } from "typeorm"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { ClaimImage } from "./claim-image"
 import { ClaimOrder } from "./claim-order"
 import { ClaimTag } from "./claim-tag"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { LineItem } from "./line-item"
 import { ProductVariant } from "./product-variant"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ClaimReason {
   MISSING_ITEM = "missing_item",
@@ -31,7 +32,7 @@ export class ClaimItem extends SoftDeletableEntity {
   @OneToMany(() => ClaimImage, (ci) => ci.claim_item, {
     cascade: ["insert", "remove"],
   })
-  images: ClaimImage[]
+  images: Relation<ClaimImage>[]
 
   @Index()
   @Column()
@@ -39,7 +40,7 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @ManyToOne(() => ClaimOrder, (co) => co.claim_items)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order: Relation<ClaimOrder>
 
   @Index()
   @Column()
@@ -47,7 +48,7 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @ManyToOne(() => LineItem)
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item: Relation<LineItem>
 
   @Index()
   @Column()
@@ -55,10 +56,10 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @ManyToOne(() => ProductVariant)
   @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  variant: Relation<ProductVariant>
 
   @DbAwareColumn({ type: "enum", enum: ClaimReason })
-  reason: ClaimReason
+  reason: Relation<ClaimReason>
 
   @Column({ nullable: true })
   note: string
@@ -78,11 +79,14 @@ export class ClaimItem extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  tags: ClaimTag[]
+  tags: Relation<ClaimTag>[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "citm")
@@ -92,7 +96,7 @@ export class ClaimItem extends SoftDeletableEntity {
 /**
  * @schema ClaimItem
  * title: "Claim Item"
- * description: "Represents a claimed item along with information about the reasons for the claim."
+ * description: "A claim item is an item created as part of a claim. It references an item in the order that should be exchanged or refunded."
  * type: object
  * required:
  *   - claim_order_id
@@ -112,15 +116,17 @@ export class ClaimItem extends SoftDeletableEntity {
  *     type: string
  *     example: citm_01G8ZH853Y6TFXWPG5EYE81X63
  *   images:
- *     description: Available if the relation `images` is expanded.
+ *     description: The claim images that are attached to the claim item.
  *     type: array
+ *     x-expandable: "images"
  *     items:
  *       $ref: "#/components/schemas/ClaimImage"
  *   claim_order_id:
  *     description: The ID of the claim this item is associated with.
  *     type: string
  *   claim_order:
- *     description: A claim order object. Available if the relation `claim_order` is expanded.
+ *     description: The details of the claim this item belongs to.
+ *     x-expandable: "claim_order"
  *     nullable: true
  *     $ref: "#/components/schemas/ClaimOrder"
  *   item_id:
@@ -128,7 +134,8 @@ export class ClaimItem extends SoftDeletableEntity {
  *     type: string
  *     example: item_01G8ZM25TN49YV9EQBE2NC27KC
  *   item:
- *     description: Available if the relation `item` is expanded.
+ *     description: The details of the line item in the original order that this claim item refers to.
+ *     x-expandable: "item"
  *     nullable: true
  *     $ref: "#/components/schemas/LineItem"
  *   variant_id:
@@ -136,7 +143,8 @@ export class ClaimItem extends SoftDeletableEntity {
  *     type: string
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   variant:
- *     description: A variant object. Available if the relation `variant` is expanded.
+ *     description: The details of the product variant to potentially replace the item in the original order.
+ *     x-expandable: "variant"
  *     nullable: true
  *     $ref: "#/components/schemas/ProductVariant"
  *   reason:
@@ -157,8 +165,9 @@ export class ClaimItem extends SoftDeletableEntity {
  *     type: integer
  *     example: 1
  *   tags:
- *     description: User defined tags for easy filtering and grouping. Available if the relation 'tags' is expanded.
+ *     description: User defined tags for easy filtering and grouping.
  *     type: array
+ *     x-expandable: "tags"
  *     items:
  *       $ref: "#/components/schemas/ClaimTag"
  *   created_at:
@@ -179,4 +188,7 @@ export class ClaimItem extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

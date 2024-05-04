@@ -12,6 +12,9 @@ export class Image extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "img")
@@ -21,7 +24,7 @@ export class Image extends SoftDeletableEntity {
 /**
  * @schema Image
  * title: "Image"
- * description: "Images holds a reference to a URL at which the image file can be found."
+ * description: "An Image is used to store details about uploaded images. Images are uploaded by the File Service, and the URL is provided by the File Service."
  * type: object
  * required:
  *   - created_at
@@ -57,4 +60,7 @@ export class Image extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

@@ -1,16 +1,18 @@
+import { Order } from "../../../../models"
 import { OrderService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [get] /orders/{id}
+ * @oas [get] /admin/orders/{id}
  * operationId: "GetOrdersOrder"
  * summary: "Get an Order"
- * description: "Retrieves an Order"
+ * description: "Retrieve an Order's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * x-codegen:
  *   method: retrieve
  *   queryParams: AdminGetOrdersOrderParams
@@ -21,20 +23,47 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.retrieve(order_id)
+ *       medusa.admin.orders.retrieve(orderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminOrder } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const {
+ *           order,
+ *           isLoading,
+ *         } = useAdminOrder(orderId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {order && <span>{order.display_id}</span>}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/orders/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/orders/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -60,9 +89,17 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig)
+  let order: Partial<Order> = await orderService.retrieveWithTotals(
+    id,
+    req.retrieveConfig,
+    {
+      includes: req.includes,
+    }
+  )
 
-  res.json({ order })
+  order = cleanResponseData(order, req.allowedProperties)
+
+  res.json({ order: order })
 }
 
 export class AdminGetOrdersOrderParams extends FindParams {}

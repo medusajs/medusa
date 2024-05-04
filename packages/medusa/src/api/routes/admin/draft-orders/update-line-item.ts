@@ -11,12 +11,13 @@ import { EntityManager } from "typeorm"
 import { LineItemUpdate } from "../../../../types/cart"
 import { MedusaError } from "medusa-core-utils"
 import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /draft-orders/{id}/line-items/{line_id}
+ * @oas [post] /admin/draft-orders/{id}/line-items/{line_id}
  * operationId: "PostDraftOrdersDraftOrderLineItemsItem"
  * summary: "Update a Line Item"
- * description: "Updates a Line Item for a Draft Order"
+ * description: "Update a Line Item in a Draft Order."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.
@@ -35,26 +36,57 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.draftOrders.updateLineItem(draft_order_id, line_id, {
+ *       medusa.admin.draftOrders.updateLineItem(draftOrderId, lineId, {
  *         quantity: 1
  *       })
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDraftOrderUpdateLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         draftOrderId: string
+ *       }
+ *
+ *       const DraftOrder = ({ draftOrderId }: Props) => {
+ *         const updateLineItem = useAdminDraftOrderUpdateLineItem(
+ *           draftOrderId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           itemId: string,
+ *           quantity: number
+ *         ) => {
+ *           updateLineItem.mutate({
+ *             item_id: itemId,
+ *             quantity,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/draft-orders/{id}/line-items/{line_id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/draft-orders/{id}/line-items/{line_id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "quantity": 1
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
@@ -139,26 +171,32 @@ export default async (req, res) => {
         select: defaultAdminDraftOrdersCartFields,
       })
 
-    res.status(200).json({ draft_order: draftOrder })
+    res.status(200).json({
+      draft_order: cleanResponseData(draftOrder, []),
+    })
   })
 }
 
 /**
  * @schema AdminPostDraftOrdersDraftOrderLineItemsItemReq
  * type: object
+ * description: "The details to update of the line item."
  * properties:
  *   unit_price:
- *     description: The potential custom price of the item.
+ *     description: The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.
  *     type: integer
  *   title:
- *     description: The potential custom title of the item.
+ *     description: The title of the line item if `variant_id` is not provided.
  *     type: string
  *   quantity:
- *     description: The quantity of the Line Item.
+ *     description: The quantity of the line item.
  *     type: integer
  *   metadata:
  *     description: The optional key-value map with additional details about the Line Item.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostDraftOrdersDraftOrderLineItemsItemReq {
   @IsString()

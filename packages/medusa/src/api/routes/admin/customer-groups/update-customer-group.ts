@@ -8,10 +8,10 @@ import { defaultAdminCustomerGroupsRelations } from "."
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customer-groups/{id}
+ * @oas [post] /admin/customer-groups/{id}
  * operationId: "PostCustomerGroupsGroup"
  * summary: "Update a Customer Group"
- * description: "Update a CustomerGroup."
+ * description: "Update a Customer Group's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the customer group.
@@ -29,26 +29,53 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.customerGroups.update(customer_group_id, {
- *         name: 'VIP'
+ *       medusa.admin.customerGroups.update(customerGroupId, {
+ *         name: "VIP"
  *       })
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateCustomerGroup } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerGroupId: string
+ *       }
+ *
+ *       const CustomerGroup = ({ customerGroupId }: Props) => {
+ *         const updateCustomerGroup = useAdminUpdateCustomerGroup(
+ *           customerGroupId
+ *         )
+ *         // ..
+ *
+ *         const handleUpdate = (name: string) => {
+ *           updateCustomerGroup.mutate({
+ *             name,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CustomerGroup
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/customer-groups/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/customer-groups/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "VIP"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Customer Group
+ *   - Customer Groups
  * responses:
  *   200:
  *     description: OK
@@ -109,13 +136,17 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostCustomerGroupsGroupReq
  * type: object
+ * description: "The details to update in the customer group."
  * properties:
  *   name:
  *     description: "Name of the customer group"
  *     type: string
  *   metadata:
- *     description: "Metadata for the customer."
+ *     description: "Metadata of the customer group."
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostCustomerGroupsGroupReq {
   @IsString()

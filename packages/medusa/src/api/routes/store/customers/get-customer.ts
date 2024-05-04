@@ -2,10 +2,10 @@ import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
 
 /**
- * @oas [get] /customers/me
+ * @oas [get] /store/customers/me
  * operationId: GetCustomersCustomer
  * summary: Get a Customer
- * description: "Retrieves a Customer - the Customer must be logged in to retrieve their details."
+ * description: "Retrieve the logged-in Customer's details."
  * x-authenticated: true
  * x-codegen:
  *   method: retrieve
@@ -19,16 +19,37 @@ import CustomerService from "../../../../services/customer"
  *       medusa.customers.retrieve()
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useMeCustomer } from "medusa-react"
+ *
+ *       const Customer = () => {
+ *         const { customer, isLoading } = useMeCustomer()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {customer && (
+ *               <span>{customer.first_name} {customer.last_name}</span>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Customer
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/customers/me' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl '{backend_url}/store/customers/me' \
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK

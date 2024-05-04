@@ -1,0 +1,34 @@
+---
+title: "Tabs"
+description: "A set of layered content panels, known as tabs, that display content one panel at a time"
+component: true
+---
+
+<ComponentExample name="tabs-demo" />
+
+## Usage
+
+---
+
+```tsx
+import { Tabs } from "@medusajs/ui"
+```
+
+```tsx
+<Tabs>
+  <Tabs.List>
+    <Tabs.Trigger value="1">Tab 1</Tabs.Trigger>
+    <Tabs.Trigger value="2">Tab 2</Tabs.Trigger>
+    <Tabs.Trigger value="3">Tab 3</Tabs.Trigger>
+  </Tabs.List>
+  <Tabs.Content value="1">Panel 1</Tabs.Content>
+  <Tabs.Content value="2">Panel 2</Tabs.Content>
+  <Tabs.Content value="3">Panel 3</Tabs.Content>
+</Tabs>
+```
+
+## API Reference
+
+---
+
+<ComponentReference mainComponent="Tabs" />

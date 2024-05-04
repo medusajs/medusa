@@ -1,8 +1,8 @@
 import { asValue } from "awilix"
-import RealRedis from "ioredis"
+import Redis from "ioredis"
 import FakeRedis from "ioredis-mock"
-import { ConfigModule, MedusaContainer } from "../types/global"
-import { Logger } from "../types/global"
+import { EOL } from "os"
+import { ConfigModule, Logger, MedusaContainer } from "../types/global"
 
 type Options = {
   container: MedusaContainer
@@ -10,19 +10,30 @@ type Options = {
   logger: Logger
 }
 
+// TODO: Will be removed when the strict dependency on Redis in the core is removed
 async function redisLoader({
   container,
   configModule,
   logger,
-}: Options): Promise<void> {
+}: Options): Promise<{ shutdown: () => Promise<void> }> {
+  let client!: Redis | FakeRedis
+
   if (configModule.projectConfig.redis_url) {
-    // Economical way of dealing with redis clients
-    const client = new RealRedis(configModule.projectConfig.redis_url)
-    const subscriber = new RealRedis(configModule.projectConfig.redis_url)
+    client = new Redis(configModule.projectConfig.redis_url, {
+      // Lazy connect to properly handle connection errors
+      lazyConnect: true,
+      ...(configModule.projectConfig.redis_options ?? {}),
+    })
+
+    try {
+      await client.connect()
+      logger?.info(`Connection to Redis established`)
+    } catch (err) {
+      logger?.error(`An error occurred while connecting to Redis:${EOL} ${err}`)
+    }
 
     container.register({
       redisClient: asValue(client),
-      redisSubscriber: asValue(subscriber),
     })
   } else {
     if (process.env.NODE_ENV === "production") {
@@ -34,12 +45,17 @@ async function redisLoader({
     logger.info("Using fake Redis")
 
     // Economical way of dealing with redis clients
-    const client = new FakeRedis()
+    client = new FakeRedis()
 
     container.register({
       redisClient: asValue(client),
-      redisSubscriber: asValue(client),
     })
+  }
+
+  return {
+    shutdown: async () => {
+      client.disconnect()
+    },
   }
 }
 

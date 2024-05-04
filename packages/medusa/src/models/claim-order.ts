@@ -9,10 +9,13 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  Relation,
   UpdateDateColumn,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Address } from "./address"
 import { ClaimItem } from "./claim-item"
 import { Fulfillment } from "./fulfillment"
@@ -20,29 +23,84 @@ import { LineItem } from "./line-item"
 import { Order } from "./order"
 import { Return } from "./return"
 import { ShippingMethod } from "./shipping-method"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
+/**
+ * @enum
+ *
+ * The claim's type.
+ */
 export enum ClaimType {
+  /**
+   * The claim refunds an amount to the customer.
+   */
   REFUND = "refund",
+  /**
+   * The claim replaces the returned item with a new one.
+   */
   REPLACE = "replace",
 }
 
+/**
+ * @enum
+ *
+ * The claim's payment status
+ */
 export enum ClaimPaymentStatus {
+  /**
+   * The payment status isn't set, which is typically used when the claim's type is `replace`.
+   */
   NA = "na",
+  /**
+   * The payment isn't refunded.
+   */
   NOT_REFUNDED = "not_refunded",
+  /**
+   * The payment is refunded.
+   */
   REFUNDED = "refunded",
 }
 
+/**
+ * @enum
+ *
+ * The claim's fulfillment status.
+ */
 export enum ClaimFulfillmentStatus {
+  /**
+   * The claim's replacement items are not fulfilled.
+   */
   NOT_FULFILLED = "not_fulfilled",
+  /**
+   * Some of the claim's replacement items, but not all, are fulfilled.
+   */
   PARTIALLY_FULFILLED = "partially_fulfilled",
+  /**
+   * The claim's replacement items are fulfilled.
+   */
   FULFILLED = "fulfilled",
+  /**
+   * Some of the claim's replacement items, but not all, are shipped.
+   */
   PARTIALLY_SHIPPED = "partially_shipped",
+  /**
+   * The claim's replacement items are shipped.
+   */
   SHIPPED = "shipped",
+  /**
+   * Some of the claim's items, but not all, are returned.
+   */
   PARTIALLY_RETURNED = "partially_returned",
+  /**
+   * The claim's items are returned.
+   */
   RETURNED = "returned",
+  /**
+   * The claim's fulfillments are canceled.
+   */
   CANCELED = "canceled",
+  /**
+   * The claim's fulfillment requires action.
+   */
   REQUIRES_ACTION = "requires_action",
 }
 
@@ -63,13 +121,13 @@ export class ClaimOrder extends SoftDeletableEntity {
   fulfillment_status: ClaimFulfillmentStatus
 
   @OneToMany(() => ClaimItem, (ci) => ci.claim_order)
-  claim_items: ClaimItem[]
+  claim_items: Relation<ClaimItem>[]
 
   @OneToMany(() => LineItem, (li) => li.claim_order, { cascade: ["insert"] })
-  additional_items: LineItem[]
+  additional_items: Relation<LineItem>[]
 
   @DbAwareColumn({ type: "enum", enum: ClaimType })
-  type: ClaimType
+  type: Relation<ClaimType>
 
   @Index()
   @Column()
@@ -77,10 +135,10 @@ export class ClaimOrder extends SoftDeletableEntity {
 
   @ManyToOne(() => Order, (o) => o.claims)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @OneToOne(() => Return, (ret) => ret.claim_order)
-  return_order: Return
+  return_order: Relation<Return>
 
   @Index()
   @Column({ nullable: true })
@@ -88,17 +146,17 @@ export class ClaimOrder extends SoftDeletableEntity {
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address: Address
+  shipping_address: Relation<Address>
 
   @OneToMany(() => ShippingMethod, (method) => method.claim_order, {
     cascade: ["insert"],
   })
-  shipping_methods: ShippingMethod[]
+  shipping_methods: Relation<ShippingMethod>[]
 
   @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.claim_order, {
     cascade: ["insert"],
   })
-  fulfillments: Fulfillment[]
+  fulfillments: Relation<Fulfillment>[]
 
   @Column({ type: "int", nullable: true })
   refund_amount: number
@@ -124,6 +182,9 @@ export class ClaimOrder extends SoftDeletableEntity {
   @Column({ nullable: true })
   idempotency_key: string
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "claim")
@@ -132,8 +193,8 @@ export class ClaimOrder extends SoftDeletableEntity {
 
 /**
  * @schema ClaimOrder
- * title: "Claim Order"
- * description: "Claim Orders represent a group of faulty or missing items. Each claim order consists of a subset of items associated with an original order, and can contain additional information about fulfillments and returns."
+ * title: "Claim"
+ * description: "A Claim represents a group of faulty or missing items. It consists of claim items that refer to items in the original order that should be replaced or refunded. It also includes details related to shipping and fulfillment."
  * type: object
  * required:
  *   - canceled_at
@@ -184,13 +245,15 @@ export class ClaimOrder extends SoftDeletableEntity {
  *       - requires_action
  *     default: not_fulfilled
  *   claim_items:
- *     description: The items that have been claimed
+ *     description: The details of the items that should be replaced or refunded.
  *     type: array
+ *     x-expandable: "claim_items"
  *     items:
  *       $ref: "#/components/schemas/ClaimItem"
  *   additional_items:
- *     description: Refers to the new items to be shipped when the claim order has the type `replace`
+ *     description: The details of the new items to be shipped when the claim's type is `replace`
  *     type: array
+ *     x-expandable: "additional_items"
  *     items:
  *       $ref: "#/components/schemas/LineItem"
  *   order_id:
@@ -198,11 +261,13 @@ export class ClaimOrder extends SoftDeletableEntity {
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation `order` is expanded.
+ *     description: The details of the order that this claim was created for.
+ *     x-expandable: "order"
  *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   return_order:
- *     description: A return object. Holds information about the return if the claim is to be returned. Available if the relation 'return_order' is expanded
+ *     description: The details of the return associated with the claim if the claim's type is `replace`.
+ *     x-expandable: "return_order"
  *     nullable: true
  *     $ref: "#/components/schemas/Return"
  *   shipping_address_id:
@@ -211,17 +276,20 @@ export class ClaimOrder extends SoftDeletableEntity {
  *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
- *     description: Available if the relation `shipping_address` is expanded.
+ *     description: The details of the address that new items should be shipped to.
+ *     x-expandable: "shipping_address"
  *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   shipping_methods:
- *     description: The shipping methods that the claim order will be shipped with.
+ *     description: The details of the shipping methods that the claim order will be shipped with.
  *     type: array
+ *     x-expandable: "shipping_methods"
  *     items:
  *       $ref: "#/components/schemas/ShippingMethod"
  *   fulfillments:
  *     description: The fulfillments of the new items to be shipped
  *     type: array
+ *     x-expandable: "fulfillments"
  *     items:
  *       $ref: "#/components/schemas/Fulfillment"
  *   refund_amount:
@@ -252,6 +320,9 @@ export class ClaimOrder extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   no_notification:
  *     description: Flag for describing whether or not notifications related to this should be send.
  *     nullable: true
@@ -262,6 +333,6 @@ export class ClaimOrder extends SoftDeletableEntity {
  *     nullable: true
  *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       url: https://docs.medusajs.com/development/idempotency-key/overview.md
  *       description: Learn more how to use the idempotency key.
  */

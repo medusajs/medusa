@@ -1,18 +1,18 @@
-import { Request, Response } from "express"
 import { IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
 
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
-import { extendedFindParamsMixin } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /publishable-api-keys/{id}/sales-channels
+ * @oas [get] /admin/publishable-api-keys/{id}/sales-channels
  * operationId: "GetPublishableApiKeySalesChannels"
- * summary: "List SalesChannels"
- * description: "List PublishableApiKey's SalesChannels"
+ * summary: "List Sales Channels"
+ * description: "List the sales channels associated with a publishable API key. The sales channels can be filtered by fields such as `q`."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Publishable Api Key.
- *   - (query) q {string} Query used for searching sales channels' names and descriptions.
+ *   - (path) id=* {string} The ID of the publishable API key.
+ *   - (query) q {string} query to search sales channels' names and descriptions.
  * x-codegen:
  *   method: listSalesChannels
  *   queryParams: GetPublishableApiKeySalesChannelsParams
@@ -24,19 +24,58 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.publishableApiKeys.listSalesChannels()
- *         .then(({ sales_channels }) => {
- *           console.log(sales_channels.length)
- *         })
+ *       .then(({ sales_channels }) => {
+ *         console.log(sales_channels.length)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminPublishableApiKeySalesChannels,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         publishableApiKeyId: string
+ *       }
+ *
+ *       const SalesChannels = ({
+ *         publishableApiKeyId
+ *       }: Props) => {
+ *         const { sales_channels, isLoading } =
+ *           useAdminPublishableApiKeySalesChannels(
+ *             publishableApiKeyId
+ *           )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {sales_channels && !sales_channels.length && (
+ *               <span>No Sales Channels</span>
+ *             )}
+ *             {sales_channels && sales_channels.length > 0 && (
+ *               <ul>
+ *                 {sales_channels.map((salesChannel) => (
+ *                   <li key={salesChannel.id}>{salesChannel.name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default SalesChannels
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}/sales-channels' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/publishable-api-keys/{id}/sales-channels' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - PublishableApiKey
+ *   - Publishable Api Keys
  * responses:
  *   200:
  *     description: OK
@@ -63,10 +102,13 @@ export default async (req: Request, res: Response) => {
     "publishableApiKeyService"
   )
 
-  const filterableFields = req.filterableFields
+  const validated = await validator(
+    GetPublishableApiKeySalesChannelsParams,
+    req.query
+  )
 
   const salesChannels = await publishableApiKeyService.listSalesChannels(id, {
-    q: filterableFields.q as string | undefined,
+    q: validated.q,
   })
 
   return res.json({
@@ -74,7 +116,13 @@ export default async (req: Request, res: Response) => {
   })
 }
 
-export class GetPublishableApiKeySalesChannelsParams extends extendedFindParamsMixin() {
+/**
+ * Parameters used to filter the sales channels.
+ */
+export class GetPublishableApiKeySalesChannelsParams {
+  /**
+   * Search term to search sales channels' names and descriptions.
+   */
   @IsOptional()
   @IsString()
   q?: string

@@ -1,6 +1,0 @@
-type: object
-properties:
-  apps:
-    type: array
-    items:
-      $ref: ./OAuth.yaml

@@ -1,20 +1,20 @@
 const fs = require("fs")
 const path = require("path")
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 const {
   simpleRegionFactory,
   simplePriceListFactory,
   simpleProductFactory,
-} = require("../../../factories")
+} = require("../../../../factories")
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -64,7 +64,6 @@ describe("Price list import batch job", () => {
 
     medusaProcess = await setupServer({
       cwd,
-      redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
     })
   })
@@ -197,28 +196,23 @@ describe("Price list import batch job", () => {
     expect(priceListRes.data.price_list.prices).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          variant_id: "test-pl-variant",
           currency_code: "usd",
           amount: 1111,
         }),
         expect.objectContaining({
-          variant_id: "test-pl-variant",
           currency_code: "eur",
           region_id: "test-pl-region",
           amount: 2222,
         }),
         expect.objectContaining({
-          variant_id: "test-pl-variant",
           currency_code: "jpy",
           amount: 3333,
         }),
         expect.objectContaining({
-          variant_id: "test-pl-sku-variant",
           currency_code: "usd",
           amount: 4444,
         }),
         expect.objectContaining({
-          variant_id: "test-pl-sku-variant",
           currency_code: "eur",
           region_id: "test-pl-region",
           amount: 5555,

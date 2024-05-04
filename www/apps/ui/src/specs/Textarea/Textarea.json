@@ -1,0 +1,6 @@
+{
+  "description": "This component is based on the `textarea` element and supports all of its props",
+  "methods": [],
+  "displayName": "Textarea",
+  "props": {}
+}

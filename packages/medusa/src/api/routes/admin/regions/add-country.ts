@@ -7,10 +7,10 @@ import RegionService from "../../../../services/region"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /regions/{id}/countries
+ * @oas [post] /admin/regions/{id}/countries
  * operationId: "PostRegionsRegionCountries"
  * summary: "Add Country"
- * description: "Adds a Country to the list of Countries in a Region"
+ * description: "Add a Country to the list of Countries in a Region."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
@@ -28,26 +28,59 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.regions.addCountry(region_id, {
- *         country_code: 'dk'
+ *       medusa.admin.regions.addCountry(regionId, {
+ *         country_code: "dk"
  *       })
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminRegionAddCountry } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const addCountry = useAdminRegionAddCountry(regionId)
+ *         // ...
+ *
+ *         const handleAddCountry = (
+ *           countryCode: string
+ *         ) => {
+ *           addCountry.mutate({
+ *             country_code: countryCode
+ *           }, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.countries)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/regions/{region_id}/countries' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/regions/{region_id}/countries' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "country_code": "dk"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
@@ -94,6 +127,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostRegionsRegionCountriesReq
  * type: object
+ * description: "The details of the country to add to the region."
  * required:
  *   - country_code
  * properties:

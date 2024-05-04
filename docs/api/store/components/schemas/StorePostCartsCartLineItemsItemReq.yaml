@@ -1,7 +1,0 @@
-type: object
-required:
-  - quantity
-properties:
-  quantity:
-    type: number
-    description: The quantity to set the Line Item to.

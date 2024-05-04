@@ -4,10 +4,10 @@ import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/sessions
+ * @oas [post] /store/payment-collections/{id}/sessions
  * operationId: "PostPaymentCollectionsSessions"
- * summary: "Manage a Payment Session"
- * description: "Manages Payment Sessions from Payment Collections."
+ * summary: "Create a Payment Session"
+ * description: "Create a Payment Session for a payment provider in a Payment Collection."
  * x-authenticated: false
  * parameters:
  *   - (path) id=* {string} The ID of the Payment Collection.
@@ -25,24 +25,56 @@ import { PaymentCollectionService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *
- *       // Total amount = 10000
- *
- *       // Adding a payment session
  *       medusa.paymentCollections.managePaymentSession(payment_id, { provider_id: "stripe" })
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useManagePaymentSession } from "medusa-react"
  *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({
+ *         paymentCollectionId
+ *       }: Props) => {
+ *         const managePaymentSession = useManagePaymentSession(
+ *           paymentCollectionId
+ *         )
+ *
+ *         const handleManagePaymentSession = (
+ *           providerId: string
+ *         ) => {
+ *           managePaymentSession.mutate({
+ *             provider_id: providerId
+ *           }, {
+ *             onSuccess: ({ payment_collection }) => {
+ *               console.log(payment_collection.payment_sessions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions'
+ *       curl -X POST '{backend_url}/store/payment-collections/{id}/sessions' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "provider_id": "stripe"
+ *       }'
  * security:
- *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - PaymentCollection
+ *   - Payment Collections
  * responses:
  *   200:
  *     description: OK
@@ -89,6 +121,7 @@ export default async (req, res) => {
 /**
  * @schema StorePaymentCollectionSessionsReq
  * type: object
+ * description: "The details of the payment session to manage."
  * required:
  *   - provider_id
  * properties:

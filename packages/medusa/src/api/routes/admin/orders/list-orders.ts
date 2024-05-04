@@ -1,25 +1,24 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 
-import { AdminListOrdersSelector } from "../../../../types/orders"
-import { Order } from "../../../../models"
-import { OrderService } from "../../../../services"
 import { Type } from "class-transformer"
-import { pick } from "lodash"
+import { OrderService } from "../../../../services"
+import { AdminListOrdersSelector } from "../../../../types/orders"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [get] /orders
+ * @oas [get] /admin/orders
  * operationId: "GetOrders"
  * summary: "List Orders"
- * description: "Retrieves a list of Orders"
+ * description: "Retrieve a list of Orders. The orders can be filtered by fields such as `status` or `display_id`. The order can also be paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching orders by shipping address first name, orders' email, and orders' display ID
- *   - (query) id {string} ID of the order to search for.
+ *   - (query) q {string} term to search orders' shipping address, first name, email, and display ID
+ *   - (query) id {string} Filter by ID.
  *   - in: query
  *     name: status
  *     style: form
  *     explode: false
- *     description: Status to search for
+ *     description: Filter by status
  *     schema:
  *       type: array
  *       items:
@@ -29,7 +28,7 @@ import { pick } from "lodash"
  *     name: fulfillment_status
  *     style: form
  *     explode: false
- *     description: Fulfillment status to search for.
+ *     description: Filter by fulfillment status
  *     schema:
  *       type: array
  *       items:
@@ -39,21 +38,21 @@ import { pick } from "lodash"
  *     name: payment_status
  *     style: form
  *     explode: false
- *     description: Payment status to search for.
+ *     description: Filter by payment status
  *     schema:
  *       type: array
  *       items:
  *         type: string
  *         enum: [captured, awaiting, not_paid, refunded, partially_refunded, canceled, requires_action]
- *   - (query) display_id {string} Display ID to search for.
- *   - (query) cart_id {string} to search for.
- *   - (query) customer_id {string} to search for.
- *   - (query) email {string} to search for.
+ *   - (query) display_id {string} Filter by display ID
+ *   - (query) cart_id {string} Filter by cart ID
+ *   - (query) customer_id {string} Filter by customer ID
+ *   - (query) email {string} Filter by email
  *   - in: query
  *     name: region_id
  *     style: form
  *     explode: false
- *     description: Regions to search orders by
+ *     description: Filter by region IDs.
  *     schema:
  *       oneOf:
  *         - type: string
@@ -66,16 +65,16 @@ import { pick } from "lodash"
  *     name: currency_code
  *     style: form
  *     explode: false
- *     description: Currency code to search for
+ *     description: Filter by currency codes.
  *     schema:
  *       type: string
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
- *   - (query) tax_rate {string} to search for.
+ *   - (query) tax_rate {string} Filter by tax rate.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting orders were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -97,7 +96,7 @@ import { pick } from "lodash"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting orders were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -119,7 +118,7 @@ import { pick } from "lodash"
  *            format: date
  *   - in: query
  *     name: canceled_at
- *     description: Date comparison for when resulting orders were canceled.
+ *     description: Filter by a cancelation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -143,16 +142,17 @@ import { pick } from "lodash"
  *     name: sales_channel_id
  *     style: form
  *     explode: false
- *     description: Filter by Sales Channels
+ *     description: Filter by Sales Channel IDs
  *     schema:
  *       type: array
  *       items:
  *         type: string
  *         description: The ID of a Sales Channel
- *   - (query) offset=0 {integer} How many orders to skip before the results.
+ *   - (query) offset=0 {integer} The number of orders to skip when retrieving the orders.
  *   - (query) limit=50 {integer} Limit the number of orders returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
+ *   - (query) order {string} Field to sort retrieved orders by.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetOrdersParams
@@ -166,17 +166,43 @@ import { pick } from "lodash"
  *       medusa.admin.orders.list()
  *       .then(({ orders, limit, offset, count }) => {
  *         console.log(orders.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminOrders } from "medusa-react"
+ *
+ *       const Orders = () => {
+ *         const { orders, isLoading } = useAdminOrders()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {orders && !orders.length && <span>No Orders</span>}
+ *             {orders && orders.length > 0 && (
+ *               <ul>
+ *                 {orders.map((order) => (
+ *                   <li key={order.id}>{order.display_id}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Orders
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/orders' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/orders' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -200,39 +226,64 @@ import { pick } from "lodash"
 export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const { skip, take, select, relations } = req.listConfig
+  const { skip, take } = req.listConfig
 
   const [orders, count] = await orderService.listAndCount(
     req.filterableFields,
     req.listConfig
   )
 
-  let data: Partial<Order>[] = orders
+  const data = cleanResponseData(orders, req.allowedProperties)
 
-  const fields = [...select, ...relations]
-  if (fields.length) {
-    data = orders.map((o) => pick(o, fields))
-  }
-
-  res.json({ orders: data, count, offset: skip, limit: take })
+  res.json({
+    orders: cleanResponseData(data, []),
+    count,
+    offset: skip,
+    limit: take,
+  })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved orders.
+ */
 export class AdminGetOrdersParams extends AdminListOrdersSelector {
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsString()
   @IsOptional()
   fields?: string
+
+  /**
+   * The field to sort retrieved orders by. By default, the sort order is ascending.
+   * To change the order to descending, prefix the field name with `-`.
+   */
+  @IsOptional()
+  @IsString()
+  order?: string
 }

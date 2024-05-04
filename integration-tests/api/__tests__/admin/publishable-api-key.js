@@ -1,25 +1,24 @@
 const path = require("path")
 const { IdMap } = require("medusa-test-utils")
 
-const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb, initDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   simplePublishableApiKeyFactory,
-} = require("../../factories/simple-publishable-api-key-factory")
+} = require("../../../factories/simple-publishable-api-key-factory")
 const {
   simpleSalesChannelFactory,
   simpleProductFactory,
   simpleRegionFactory,
-} = require("../../factories")
+} = require("../../../factories")
+const setupServer = require("../../../environment-helpers/setup-server")
 
 jest.setTimeout(50000)
 
 const adminHeaders = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -30,22 +29,15 @@ const customerData = {
   last_name: "medusa",
 }
 
-describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
+describe("Publishable API keys", () => {
   let medusaProcess
   let dbConnection
   const adminUserId = "admin_user"
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    const [process, connection] = await startServerWithEnvironment({
-      cwd,
-      env: {
-        MEDUSA_FF_PUBLISHABLE_API_KEYS: true,
-        MEDUSA_FF_SALES_CHANNELS: true,
-      },
-    })
-    dbConnection = connection
-    medusaProcess = process
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -346,14 +338,14 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       expect(response.status).toBe(200)
 
       expect(mappings).toEqual([
-        {
+        expect.objectContaining({
           sales_channel_id: salesChannel1.id,
           publishable_key_id: pubKeyId,
-        },
-        {
+        }),
+        expect.objectContaining({
           sales_channel_id: salesChannel2.id,
           publishable_key_id: pubKeyId,
-        },
+        }),
       ])
 
       expect(response.data.publishable_api_key).toMatchObject({
@@ -393,13 +385,11 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       })
 
       await dbConnection.manager.query(
-        `INSERT INTO 
-            publishable_api_key_sales_channel 
-            (publishable_key_id, sales_channel_id)
-         VALUES
-             ('${pubKeyId}', '${salesChannel1.id}'),
-             ('${pubKeyId}', '${salesChannel2.id}'),
-             ('${pubKeyId}', '${salesChannel3.id}');`
+        `INSERT INTO publishable_api_key_sales_channel
+             (id, publishable_key_id, sales_channel_id)
+         VALUES ('pksc-1','${pubKeyId}', '${salesChannel1.id}'),
+                ('pksc-2','${pubKeyId}', '${salesChannel2.id}'),
+                ('pksc-3','${pubKeyId}', '${salesChannel3.id}');`
       )
     })
 
@@ -427,16 +417,16 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       const mappings = await dbConnection.manager.query(
         `SELECT *
          FROM publishable_api_key_sales_channel
-         WHERE publishable_key_id = '${pubKeyId}'`
+         WHERE publishable_key_id = '${pubKeyId}';`
       )
 
       expect(response.status).toBe(200)
 
       expect(mappings).toEqual([
-        {
+        expect.objectContaining({
           sales_channel_id: salesChannel3.id,
           publishable_key_id: pubKeyId,
-        },
+        }),
       ])
 
       expect(response.data.publishable_api_key).toMatchObject({
@@ -476,12 +466,10 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       })
 
       await dbConnection.manager.query(
-        `INSERT INTO
-             publishable_api_key_sales_channel
-             (publishable_key_id, sales_channel_id)
-         VALUES
-             ('${pubKeyId}', '${salesChannel1.id}'),
-             ('${pubKeyId}', '${salesChannel2.id}');`
+        `INSERT INTO publishable_api_key_sales_channel
+             (id, publishable_key_id, sales_channel_id)
+         VALUES ('pksc-1', '${pubKeyId}', '${salesChannel1.id}'),
+                ('pksc-2', '${pubKeyId}', '${salesChannel2.id}');`
       )
     })
 
@@ -607,7 +595,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
 
       const response = await api.get(`/store/products`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
           "x-publishable-api-key": pubKeyId,
         },
       })
@@ -638,7 +626,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
 
       const response = await api.get(`/store/products`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
           "x-publishable-api-key": pubKeyId,
         },
       })
@@ -674,7 +662,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
         `/store/products?sales_channel_id[0]=${salesChannel2.id}`,
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
             "x-publishable-api-key": pubKeyId,
           },
         }
@@ -690,7 +678,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       )
     })
 
-    it("returns all products if PK is not passed", async () => {
+    it("returns default product from default sales channel if PK is not passed", async () => {
       const api = useApi()
 
       await api.post(
@@ -706,20 +694,14 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
 
       const response = await api.get(`/store/products`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
           // "x-publishable-api-key": pubKeyId,
         },
       })
 
-      expect(response.data.products.length).toBe(3)
+      expect(response.data.products.length).toBe(1)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({
-            id: product1.id,
-          }),
-          expect.objectContaining({
-            id: product2.id,
-          }),
           expect.objectContaining({
             id: product3.id,
           }),
@@ -732,7 +714,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
 
       const response = await api.get(`/store/products`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
           "x-publishable-api-key": pubKeyId,
         },
       })
@@ -769,7 +751,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
           `/store/products?sales_channel_id[]=${salesChannel2.id}`,
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
               "x-publishable-api-key": pubKeyId,
             },
           }
@@ -833,7 +815,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
 
       const response = await api.get(`/store/products/${product1.id}`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
           "x-publishable-api-key": pubKeyId,
         },
       })
@@ -859,7 +841,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       const response = await api
         .get(`/store/products/${product2.id}`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
             "x-publishable-api-key": pubKeyId,
           },
         })
@@ -870,13 +852,69 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       expect(response.status).toEqual(400)
     })
 
+    it("should return 404 when the requested variant doesn't exist", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [{ id: salesChannel1.id }],
+        },
+        adminHeaders
+      )
+
+      const response = await api
+        .get(`/store/variants/does-not-exist`, {
+          headers: {
+            "x-medusa-access-token": "test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        })
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(404)
+      expect(response.data.message).toEqual(
+        "Variant with id: does-not-exist was not found"
+      )
+    })
+
+    it("should return 404 when the requested product doesn't exist", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [{ id: salesChannel1.id }],
+        },
+        adminHeaders
+      )
+
+      const response = await api
+        .get(`/store/products/does-not-exist`, {
+          headers: {
+            "x-medusa-access-token": "test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        })
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(404)
+      expect(response.data.message).toEqual(
+        "Product with id: does-not-exist was not found"
+      )
+    })
+
     it("correctly returns a product if passed PK has no associated SCs", async () => {
       const api = useApi()
 
       let response = await api
         .get(`/store/products/${product1.id}`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
             "x-publishable-api-key": pubKeyId,
           },
         })
@@ -889,7 +927,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       response = await api
         .get(`/store/products/${product2.id}`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
             "x-publishable-api-key": pubKeyId,
           },
         })
@@ -966,7 +1004,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
         },
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
             "x-publishable-api-key": pubKeyId,
           },
         }
@@ -1025,7 +1063,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
         },
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
             "x-publishable-api-key": pubKeyId,
           },
         }
@@ -1078,7 +1116,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
               "x-publishable-api-key": pubKeyId,
             },
           }

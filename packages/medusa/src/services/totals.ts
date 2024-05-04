@@ -1,4 +1,4 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import {
   ITaxCalculationStrategy,
@@ -28,9 +28,9 @@ import {
 } from "../types/totals"
 import { NewTotalsService, TaxProviderService } from "./index"
 
+import { FlagRouter } from "@medusajs/utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { calculatePriceTaxAmount } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 
 type ShippingMethodTotals = {
   price: number
@@ -58,6 +58,8 @@ type LineItemTotals = {
   original_tax_total: number
   tax_lines: LineItemTaxLine[]
   discount_total: number
+
+  raw_discount_total: number
 }
 
 type LineItemTotalsOptions = {
@@ -102,29 +104,24 @@ type CalculationContextOptions = {
  * @implements {BaseService}
  */
 class TotalsService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager
-
   protected readonly taxProviderService_: TaxProviderService
   protected readonly newTotalsService_: NewTotalsService
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
-    manager,
     taxProviderService,
     newTotalsService,
     taxCalculationStrategy,
     featureFlagRouter,
   }: TotalsServiceProps) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.taxProviderService_ = taxProviderService
     this.newTotalsService_ = newTotalsService
     this.taxCalculationStrategy_ = taxCalculationStrategy
 
-    this.manager_ = manager
     this.featureFlagRouter_ = featureFlagRouter
   }
 
@@ -223,7 +220,7 @@ class TotalsService extends TransactionBaseService {
         )
       } else if (totals.tax_lines.length === 0) {
         const orderLines = await this.taxProviderService_
-          .withTransaction(this.manager_)
+          .withTransaction(this.activeManager_)
           .getTaxLines(cartOrOrder.items, calculationContext)
 
         totals.tax_lines = orderLines.filter((ol) => {
@@ -392,7 +389,7 @@ class TotalsService extends TransactionBaseService {
       }
     } else {
       taxLines = await this.taxProviderService_
-        .withTransaction(this.manager_)
+        .withTransaction(this.activeManager_)
         .getTaxLines(cartOrOrder.items, calculationContext)
 
       if (cartOrOrder.type === "swap") {
@@ -465,7 +462,7 @@ class TotalsService extends TransactionBaseService {
             /**
              * Used for the refund computation
              */
-            unit_amount: Math.round(adjustmentAmount / ld.item.quantity),
+            unit_amount: adjustmentAmount / ld.item.quantity,
           }
         } else {
           allocationMap[ld.item.id] = {
@@ -625,6 +622,7 @@ class TotalsService extends TransactionBaseService {
    * @param value - discount value
    * @param discountType - the type of discount (fixed or percentage)
    * @return triples of lineitem, variant and applied discount
+   * @deprecated - in favour of DiscountService.calculateDiscountForLineItem
    */
   calculateDiscount_(
     lineItem: LineItem,
@@ -800,7 +798,8 @@ class TotalsService extends TransactionBaseService {
       subtotal = 0 // in that case we need to know the tax rate to compute it later
     }
 
-    const discount_total = lineItemAllocation.discount?.amount ?? 0
+    const raw_discount_total = lineItemAllocation.discount?.amount ?? 0
+    const discount_total = Math.round(raw_discount_total)
 
     const lineItemTotals: LineItemTotals = {
       unit_price: lineItem.unit_price,
@@ -812,6 +811,8 @@ class TotalsService extends TransactionBaseService {
       original_tax_total: 0,
       tax_total: 0,
       tax_lines: lineItem.tax_lines || [],
+
+      raw_discount_total,
     }
 
     // Tax Information
@@ -872,7 +873,7 @@ class TotalsService extends TransactionBaseService {
             taxLines = lineItem.tax_lines
           } else {
             taxLines = (await this.taxProviderService_
-              .withTransaction(this.manager_)
+              .withTransaction(this.activeManager_)
               .getTaxLines([lineItem], calculationContext)) as LineItemTaxLine[]
           }
         }
@@ -1007,7 +1008,9 @@ class TotalsService extends TransactionBaseService {
       excludeNonDiscounts: true,
     })
 
-    const discountTotal = this.getLineItemAdjustmentsTotal(cartOrOrder)
+    const discountTotal = Math.round(
+      this.getLineItemAdjustmentsTotal(cartOrOrder)
+    )
 
     if (subtotal < 0) {
       return this.rounded(Math.max(subtotal, discountTotal))

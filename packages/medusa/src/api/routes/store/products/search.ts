@@ -6,18 +6,18 @@ import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /products/search
+ * @oas [post] /store/products/search
  * operationId: PostProductsSearch
  * summary: Search Products
- * description: "Run a search query on products using the search engine installed on Medusa"
- * parameters:
- *   - (query) q=* {string} The query to run the search with.
- *   - (query) offset {integer} How many products to skip in the result.
- *   - (query) limit {integer} Limit the number of products returned.
- *   - (query) filter {} Filter based on the search engine.
+ * description: "Run a search query on products using the search service installed on the Medusa backend. The searching is handled through the search service, so the returned data's
+ *  format depends on the search service you're using."
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StorePostSearchReq"
  * x-codegen:
  *   method: search
- *   queryParams: StorePostSearchReq
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -25,17 +25,21 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.products.search({
- *         q: 'Shirt'
+ *         q: "Shirt"
  *       })
  *       .then(({ hits }) => {
  *         console.log(hits.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/products/search?q=Shirt'
+ *       curl -X POST '{backend_url}/store/products/search' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "q": "Shirt"
+ *       }'
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
@@ -76,6 +80,22 @@ export default async (req, res) => {
   res.status(200).send(results)
 }
 
+/**
+ * @schema StorePostSearchReq
+ * type: object
+ * properties:
+ *  q:
+ *    type: string
+ *    description: The search query.
+ *  offset:
+ *    type: number
+ *    description: The number of products to skip when retrieving the products.
+ *  limit:
+ *    type: number
+ *    description: Limit the number of products returned.
+ *  filter:
+ *    description: Pass filters based on the search service.
+ */
 export class StorePostSearchReq {
   @IsOptional()
   @IsString()

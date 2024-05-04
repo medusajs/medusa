@@ -2,12 +2,15 @@ import { CartService, PricingService } from "../../../../services"
 import ShippingProfileService from "../../../../services/shipping-profile"
 
 /**
- * @oas [get] /shipping-options/{cart_id}
+ * @oas [get] /store/shipping-options/{cart_id}
  * operationId: GetShippingOptionsCartId
  * summary: List for Cart
- * description: "Retrieves a list of Shipping Options available to a cart."
+ * description: "Retrieve a list of Shipping Options available for a cart."
+ * externalDocs:
+ *   description: "How to implement shipping step in checkout"
+ *   url: "https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-checkout-flow#shipping-step"
  * parameters:
- *   - (path) cart_id {string} The id of the Cart.
+ *   - (path) cart_id {string} The ID of the Cart.
  * x-codegen:
  *   method: listCartOptions
  * x-codeSamples:
@@ -16,23 +19,59 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.shippingOptions.listCartOptions(cart_id)
+ *       medusa.shippingOptions.listCartOptions(cartId)
  *       .then(({ shipping_options }) => {
  *         console.log(shipping_options.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCartShippingOptions } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const ShippingOptions = ({ cartId }: Props) => {
+ *         const { shipping_options, isLoading } =
+ *           useCartShippingOptions(cartId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {shipping_options && !shipping_options.length && (
+ *               <span>No shipping options</span>
+ *             )}
+ *             {shipping_options && (
+ *               <ul>
+ *                 {shipping_options.map(
+ *                   (shipping_option) => (
+ *                     <li key={shipping_option.id}>
+ *                       {shipping_option.name}
+ *                     </li>
+ *                   )
+ *                 )}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ShippingOptions
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/shipping-options/{cart_id}'
+ *       curl '{backend_url}/store/shipping-options/{cart_id}'
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/StoreShippingOptionsListRes"
+ *           $ref: "#/components/schemas/StoreCartShippingOptionsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -53,12 +92,8 @@ export default async (req, res) => {
     "shippingProfileService"
   )
 
-  const cart = await cartService.retrieveWithTotals(cart_id, {
-    relations: ["items.variant", "items.variant.product"],
-  })
-
+  const cart = await cartService.retrieveWithTotals(cart_id)
   const options = await shippingProfileService.fetchCartOptions(cart)
-
   const data = await pricingService.setShippingOptionPrices(options, {
     cart_id,
   })

@@ -1,0 +1,6 @@
+{
+  "description": "Displays the selected value, or a placeholder if no value is selected.\nIt's based on [Radix UI Select Value](https://www.radix-ui.com/primitives/docs/components/select#value).",
+  "methods": [],
+  "displayName": "Select.Value",
+  "props": {}
+}

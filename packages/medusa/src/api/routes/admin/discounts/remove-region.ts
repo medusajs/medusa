@@ -4,11 +4,11 @@ import DiscountService from "../../../../services/discount"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /discounts/{id}/regions/{region_id}
+ * @oas [delete] /admin/discounts/{id}/regions/{region_id}
  * operationId: "DeleteDiscountsDiscountRegionsRegion"
  * summary: "Remove Region"
  * x-authenticated: true
- * description: "Removes a Region from the list of Regions that a Discount can be used in."
+ * description: "Remove a Region from the list of Regions that a Discount can be used in. This does not delete a region, only the association between it and the discount."
  * parameters:
  *   - (path) id=* {string} The ID of the Discount.
  *   - (path) region_id=* {string} The ID of the Region.
@@ -21,20 +21,47 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.removeRegion(discount_id, region_id)
+ *       medusa.admin.discounts.removeRegion(discountId, regionId)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDiscountRemoveRegion } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const deleteRegion = useAdminDiscountRemoveRegion(discountId)
+ *         // ...
+ *
+ *         const handleDelete = (regionId: string) => {
+ *           deleteRegion.mutate(regionId, {
+ *             onSuccess: ({ discount }) => {
+ *               console.log(discount.regions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/discounts/{id}/regions/{region_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/discounts/{id}/regions/{region_id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Discount
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK

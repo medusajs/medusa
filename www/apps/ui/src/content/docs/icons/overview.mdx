@@ -1,0 +1,54 @@
+---
+title: "Icons"
+description: "React components for Medusa UI icons."
+---
+
+## Overview
+---
+
+Below is a list of all the icons available in the Medusa UI design system.
+
+<IconSearch />
+
+## Installation
+---
+
+The icons are available as an [npm package](https://www.npmjs.com/package/@medusajs/icons). To install the package run:
+
+<PackageInstall packageName="@medusajs/icons" />
+
+## Usage
+---
+
+```tsx
+import { Sun } from "@medusajs/icons"
+
+export default function Component() {
+  return (
+    <Sun />
+  )
+}
+```
+
+<Feedback title={"Icons"} />
+
+## Icon Props
+---
+
+Icons accept all props that an `svg` element accepts.
+
+### Icon Color
+
+By default, outline icons' stroke color and solid icon's fill color are set to `currentColor`.
+
+You can set a different color by passing the `color` prop.
+
+<ComponentExample name="icon-color" />
+
+You can also use a CSS class by passing the `className` prop.
+
+<ComponentExample name="icon-color-classes" />
+
+### Icon Size
+
+All icon's width and height are `20px` and it's not possible to change them.

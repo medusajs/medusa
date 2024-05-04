@@ -5,10 +5,22 @@
   "fixed": [],
   "linked": [],
   "access": "public",
-  "baseBranch": "master",
+  "baseBranch": "develop",
   "updateInternalDependencies": "patch",
-  "ignore": ["integration-tests-api", "integration-tests-plugins", "integration-tests-repositories"],
+  "ignore": [
+    "integration-tests-api",
+    "integration-tests-plugins",
+    "integration-tests-modules",
+    "integration-tests-repositories",
+    "@medusajs/dashboard",
+    "@medusajs/admin-shared",
+    "@medusajs/admin-bundler",
+    "@medusajs/vite-plugin-extension"
+  ],
   "snapshot": {
     "useCalculatedVersion": true
+  },
+  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
+    "onlyUpdatePeerDependentsWhenOutOfRange": true
   }
 }

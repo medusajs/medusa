@@ -1,23 +1,27 @@
+import { EntityManager } from "typeorm"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+
+import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateSalesChannelInput,
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
 
-import { EntityManager } from "typeorm"
-import EventBusService from "./event-bus"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { TransactionBaseService } from "../interfaces"
 import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
-import StoreService from "./store"
-import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
+import EventBusService from "./event-bus"
+import StoreService from "./store"
+import {selectorConstraintsToString} from "@medusajs/utils";
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
   eventBusService: EventBusService
   manager: EntityManager
   storeService: StoreService
+  featureFlagRouter: FlagRouter
 }
 
 class SalesChannelService extends TransactionBaseService {
@@ -27,30 +31,24 @@ class SalesChannelService extends TransactionBaseService {
     DELETED: "sales_channel.deleted",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly salesChannelRepository_: typeof SalesChannelRepository
   protected readonly eventBusService_: EventBusService
   protected readonly storeService_: StoreService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     salesChannelRepository,
     eventBusService,
-    manager,
     storeService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.salesChannelRepository_ = salesChannelRepository
     this.eventBusService_ = eventBusService
     this.storeService_ = storeService
-  }
-
-  private getManager(): EntityManager {
-    return this.transactionManager_ ?? this.manager_
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -64,23 +62,19 @@ class SalesChannelService extends TransactionBaseService {
     selector: Selector<SalesChannel>,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel> {
-    const manager = this.getManager()
-
-    const salesChannelRepo = manager.getCustomRepository(
+    const salesChannelRepo = this.activeManager_.withRepository(
       this.salesChannelRepository_
     )
 
-    const { relations, ...query } = buildQuery(selector, config)
+    const query = buildQuery(selector, config)
 
-    const salesChannel = await salesChannelRepo.findOneWithRelations(
-      relations as (keyof SalesChannel)[],
-      query
-    )
+    const salesChannel = await salesChannelRepo.findOne({
+      ...query,
+      relationLoadStrategy: "query",
+    })
 
     if (!salesChannel) {
-      const selectorConstraints = Object.entries(selector)
-        .map((key, value) => `${key}: ${value}`)
-        .join(", ")
+      const selectorConstraints = selectorConstraintsToString(selector)
 
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -136,8 +130,9 @@ class SalesChannelService extends TransactionBaseService {
   }
 
   /**
-   * Lists sales channels based on the provided parameters and includes the count of
+   * Lists sales channels based on the provided parameters and include the count of
    * sales channels that match the query.
+   *
    * @return an array containing the sales channels as
    *   the first element and the total count of sales channels that matches the query
    *   as the second element.
@@ -149,8 +144,7 @@ class SalesChannelService extends TransactionBaseService {
       take: 20,
     }
   ): Promise<[SalesChannel[], number]> {
-    const manager = this.getManager()
-    const salesChannelRepo = manager.getCustomRepository(
+    const salesChannelRepo = this.activeManager_.withRepository(
       this.salesChannelRepository_
     )
 
@@ -171,6 +165,38 @@ class SalesChannelService extends TransactionBaseService {
   }
 
   /**
+   * Lists sales channels based on the provided parameters.
+   *
+   * @return an array containing the sales channels
+   */
+  async list(
+    selector: QuerySelector<SalesChannel>,
+    config: FindConfig<SalesChannel> = {
+      skip: 0,
+      take: 20,
+    }
+  ): Promise<SalesChannel[]> {
+    const salesChannelRepo = this.activeManager_.withRepository(
+      this.salesChannelRepository_
+    )
+
+    const selector_ = { ...selector }
+    let q: string | undefined
+    if ("q" in selector_) {
+      q = selector_.q
+      delete selector_.q
+    }
+
+    const query = buildQuery(selector_, config)
+
+    if (q) {
+      return await salesChannelRepo.getFreeTextSearchResults(q, query)
+    }
+
+    return await salesChannelRepo.find(query)
+  }
+
+  /**
    * Creates a SalesChannel
    *
    * @experimental This feature is under development and may change in the future.
@@ -179,8 +205,8 @@ class SalesChannelService extends TransactionBaseService {
    */
   async create(data: CreateSalesChannelInput): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (manager) => {
-      const salesChannelRepo: SalesChannelRepository =
-        manager.getCustomRepository(this.salesChannelRepository_)
+      const salesChannelRepo: typeof SalesChannelRepository =
+        manager.withRepository(this.salesChannelRepository_)
 
       const salesChannel = salesChannelRepo.create(data)
 
@@ -199,8 +225,8 @@ class SalesChannelService extends TransactionBaseService {
     data: UpdateSalesChannelInput
   ): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo: SalesChannelRepository =
-        transactionManager.getCustomRepository(this.salesChannelRepository_)
+      const salesChannelRepo: typeof SalesChannelRepository =
+        transactionManager.withRepository(this.salesChannelRepository_)
 
       const salesChannel = await this.retrieve(salesChannelId)
 
@@ -230,7 +256,7 @@ class SalesChannelService extends TransactionBaseService {
    */
   async delete(salesChannelId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(
+      const salesChannelRepo = transactionManager.withRepository(
         this.salesChannelRepository_
       )
 
@@ -298,11 +324,11 @@ class SalesChannelService extends TransactionBaseService {
    * @return the sales channel
    */
   async retrieveDefault(): Promise<SalesChannel> {
-    const manager = this.getManager()
-
-    const store = await this.storeService_.withTransaction(manager).retrieve({
-      relations: ["default_sales_channel"],
-    })
+    const store = await this.storeService_
+      .withTransaction(this.activeManager_)
+      .retrieve({
+        relations: ["default_sales_channel"],
+      })
 
     if (!store.default_sales_channel) {
       throw new MedusaError(
@@ -312,6 +338,22 @@ class SalesChannelService extends TransactionBaseService {
     }
 
     return store.default_sales_channel
+  }
+
+  /**
+   * List all product ids that belongs to the sales channels ids
+   *
+   * @param salesChannelIds
+   */
+  async listProductIdsBySalesChannelIds(
+    salesChannelIds: string | string[]
+  ): Promise<{ [salesChannelId: string]: string[] }> {
+    const salesChannelRepo = this.activeManager_.withRepository(
+      this.salesChannelRepository_
+    )
+    return await salesChannelRepo.listProductIdsBySalesChannelIds(
+      salesChannelIds
+    )
   }
 
   /**
@@ -325,7 +367,7 @@ class SalesChannelService extends TransactionBaseService {
     productIds: string[]
   ): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(
+      const salesChannelRepo = transactionManager.withRepository(
         this.salesChannelRepository_
       )
 
@@ -346,11 +388,19 @@ class SalesChannelService extends TransactionBaseService {
     productIds: string[]
   ): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(
+      const salesChannelRepo = transactionManager.withRepository(
         this.salesChannelRepository_
       )
 
-      await salesChannelRepo.addProducts(salesChannelId, productIds)
+      const isMedusaV2Enabled = this.featureFlagRouter_.isFeatureEnabled(
+        MedusaV2Flag.key
+      )
+
+      await salesChannelRepo.addProducts(
+        salesChannelId,
+        productIds,
+        isMedusaV2Enabled
+      )
 
       return await this.retrieve(salesChannelId)
     })

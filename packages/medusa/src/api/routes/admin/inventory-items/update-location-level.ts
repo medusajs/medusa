@@ -1,26 +1,28 @@
+import { IInventoryService } from "@medusajs/types"
+import { IsNumber, IsOptional, Min } from "class-validator"
 import { Request, Response } from "express"
-import { IsOptional, IsNumber } from "class-validator"
-
-import { IInventoryService } from "../../../../interfaces"
-import { FindParams } from "../../../../types/common"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /inventory-items/{id}/location-levels/{location_id}
+ * @oas [post] /admin/inventory-items/{id}/location-levels/{location_id}
  * operationId: "PostInventoryItemsInventoryItemLocationLevelsLocationLevel"
- * summary: "Update an Inventory Location Level for a given Inventory Item."
- * description: "Updates an Inventory Location Level for a given Inventory Item."
+ * summary: "Update a Location Level"
+ * description: "Update a Location Level's details for a given Inventory Item."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Inventory Item.
- *   - (path) location_id=* {string} The ID of the Location.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (path) id=* {string} The ID of the Inventory Item that the location is associated with.
+ *   - (path) location_id=* {string} The ID of the Location to update.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned location level.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned location level.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostInventoryItemsItemLocationLevelsLevelReq"
+ * x-codegen:
+ *   method: updateLocationLevel
+ *   queryParams: AdminPostInventoryItemsItemLocationLevelsLevelParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,19 +35,54 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateLocationLevel } from "medusa-react"
+ *
+ *       type Props = {
+ *         inventoryItemId: string
+ *       }
+ *
+ *       const InventoryItem = ({ inventoryItemId }: Props) => {
+ *         const updateLocationLevel = useAdminUpdateLocationLevel(
+ *           inventoryItemId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           stockLocationId: string,
+ *           stocked_quantity: number
+ *         ) => {
+ *           updateLocationLevel.mutate({
+ *             stockLocationId,
+ *             stocked_quantity,
+ *           }, {
+ *             onSuccess: ({ inventory_item }) => {
+ *               console.log(inventory_item.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default InventoryItem
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/inventory-items/{id}/location-levels/{location_id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/inventory-items/{id}/location-levels/{location_id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "stocked_quantity": 15
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Inventory Items
  * responses:
@@ -78,11 +115,7 @@ export default async (req: Request, res: Response) => {
   const validatedBody =
     req.validatedBody as AdminPostInventoryItemsItemLocationLevelsLevelReq
 
-  await manager.transaction(async (transactionManager) => {
-    await inventoryService
-      .withTransaction(transactionManager)
-      .updateInventoryLevel(id, location_id, validatedBody)
-  })
+  await inventoryService.updateInventoryLevel(id, location_id, validatedBody)
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
     id,
@@ -106,10 +139,12 @@ export default async (req: Request, res: Response) => {
 export class AdminPostInventoryItemsItemLocationLevelsLevelReq {
   @IsOptional()
   @IsNumber()
+  @Min(0)
   incoming_quantity?: number
 
   @IsOptional()
   @IsNumber()
+  @Min(0)
   stocked_quantity?: number
 }
 

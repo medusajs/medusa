@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
-import { Discount } from "../models/discount"
+import { dataSource } from "../loaders/database"
+import { Discount } from "../models"
 
-@EntityRepository(Discount)
-export class DiscountRepository extends Repository<Discount> {}
+export const DiscountRepository = dataSource.getRepository(Discount)
+export default DiscountRepository

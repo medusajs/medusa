@@ -1,19 +1,27 @@
 import { OrderService, SwapService } from "../../../../services"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/process-payment
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/process-payment
  * operationId: "PostOrdersOrderSwapsSwapProcessPayment"
- * summary: "Process Swap Payment"
- * description: "When there are differences between the returned and shipped Products in a Swap, the difference must be processed. Either a Refund will be issued or a Payment will be captured."
+ * summary: "Process a Swap Payment"
+ * description: "Process a swap's payment either by refunding or issuing a payment. This depends on the `difference_due` of the swap. If `difference_due` is negative, the amount is refunded.
+ *  If `difference_due` is positive, the amount is captured."
  * x-authenticated: true
+ * externalDocs:
+ *   description: Handling a swap's payment
+ *   url: https://docs.medusajs.com/modules/orders/swaps#handling-swap-payment
  * parameters:
- *   - (path) id=* {string} The ID of the Order.
- *   - (path) swap_id=* {string} The ID of the Swap.
+ *   - (path) id=* {string} The ID of the order the swap is associated with.
+ *   - (path) swap_id=* {string} The ID of the swap.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * x-codegen:
  *   method: processSwapPayment
+ *   params: AdminPostOrdersOrderSwapsSwapProcessPaymentParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -21,20 +29,53 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.processSwapPayment(order_id, swap_id)
+ *       medusa.admin.orders.processSwapPayment(orderId, swapId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminProcessSwapPayment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string,
+ *         swapId: string
+ *       }
+ *
+ *       const Swap = ({
+ *         orderId,
+ *         swapId
+ *       }: Props) => {
+ *         const processPayment = useAdminProcessSwapPayment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleProcessPayment = () => {
+ *           processPayment.mutate(swapId, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.swaps)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Swap
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/swaps/{swap_id}/process-payment' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST '{backend_url}/admin/orders/{id}/swaps/{swap_id}/process-payment' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Swap
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -64,12 +105,14 @@ export default async (req, res) => {
 
   await entityManager.transaction(async (manager) => {
     await swapService.withTransaction(manager).processDifference(swap_id)
-
-    const order = await orderService.withTransaction(manager).retrieve(id, {
-      select: defaultAdminOrdersFields,
-      relations: defaultAdminOrdersRelations,
-    })
-
-    res.json({ order })
   })
+
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
+  })
+
+  res.json({ order: cleanResponseData(order, []) })
 }
+
+// eslint-disable-next-line max-len
+export class AdminPostOrdersOrderSwapsSwapProcessPaymentParams extends FindParams {}

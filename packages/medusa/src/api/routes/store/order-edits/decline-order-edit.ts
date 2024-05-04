@@ -8,10 +8,10 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits/{id}/decline
+ * @oas [post] /store/order-edits/{id}/decline
  * operationId: "PostOrderEditsOrderEditDecline"
- * summary: "Decline an OrderEdit"
- * description: "Declines an OrderEdit."
+ * summary: "Decline an Order Edit"
+ * description: "Decline an Order Edit. The changes are not reflected on the original order."
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
  * requestBody:
@@ -27,16 +27,46 @@ import {
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orderEdits.decline(order_edit_id)
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id);
- *         })
+ *       medusa.orderEdits.decline(orderEditId)
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id);
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useDeclineOrderEdit } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *       }
+ *
+ *       const OrderEdit = ({ orderEditId }: Props) => {
+ *         const declineOrderEdit = useDeclineOrderEdit(orderEditId)
+ *         // ...
+ *
+ *         const handleDeclineOrderEdit = (
+ *           declinedReason: string
+ *         ) => {
+ *           declineOrderEdit.mutate({
+ *             declined_reason: declinedReason,
+ *           }, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.declined_at)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/order-edits/{id}/decline'
+ *       curl -X POST '{backend_url}/store/order-edits/{id}/decline'
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK
@@ -85,10 +115,11 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema StorePostOrderEditsOrderEditDecline
  * type: object
+ * description: "The details of the order edit's decline."
  * properties:
  *   declined_reason:
  *     type: string
- *     description: The reason for declining the OrderEdit.
+ *     description: The reason for declining the Order Edit.
  */
 export class StorePostOrderEditsOrderEditDecline {
   @IsOptional()

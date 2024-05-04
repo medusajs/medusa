@@ -5,12 +5,13 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  Relation,
   Unique,
 } from "typeorm"
 
+import { generateEntityId } from "../utils/generate-entity-id"
 import { LineItem } from "./line-item"
 import { TaxLine } from "./tax-line"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Unique(["item_id", "code"])
@@ -21,8 +22,11 @@ export class LineItemTaxLine extends TaxLine {
 
   @ManyToOne(() => LineItem, (li) => li.tax_lines)
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item: Relation<LineItem>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "litl")
@@ -32,7 +36,7 @@ export class LineItemTaxLine extends TaxLine {
 /**
  * @schema LineItemTaxLine
  * title: "Line Item Tax Line"
- * description: "Represents a Line Item Tax Line"
+ * description: "A Line Item Tax Line represents the taxes applied on a line item."
  * type: object
  * required:
  *   - code
@@ -66,7 +70,8 @@ export class LineItemTaxLine extends TaxLine {
  *     type: string
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   item:
- *     description: Available if the relation `item` is expanded.
+ *     description: The details of the line item.
+ *     x-expandable: "item"
  *     nullable: true
  *     $ref: "#/components/schemas/LineItem"
  *   created_at:
@@ -82,4 +87,7 @@ export class LineItemTaxLine extends TaxLine {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

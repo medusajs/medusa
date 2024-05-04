@@ -1,22 +1,24 @@
+import {
+  DeleteResponse,
+  PaginatedResponse,
+  StockLocationTypes,
+} from "@medusajs/types"
 import { Router } from "express"
-import "reflect-metadata"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import { StockLocationDTO } from "../../../../types/stock-location"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { AdminGetStockLocationsParams } from "./list-stock-locations"
-import { AdminGetStockLocationsLocationParams } from "./get-stock-location"
-import {
-  AdminPostStockLocationsLocationParams,
-  AdminPostStockLocationsLocationReq,
-} from "./update-stock-location"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 import {
   AdminPostStockLocationsParams,
   AdminPostStockLocationsReq,
 } from "./create-stock-location"
-import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+import { AdminGetStockLocationsLocationParams } from "./get-stock-location"
+import { AdminGetStockLocationsParams } from "./list-stock-locations"
+import {
+  AdminPostStockLocationsLocationParams,
+  AdminPostStockLocationsLocationReq,
+} from "./update-stock-location"
 
 const route = Router()
 
@@ -79,20 +81,19 @@ export default (app) => {
   return app
 }
 
-export const defaultAdminStockLocationFields: (keyof StockLocationDTO)[] = [
-  "id",
-  "name",
-  "address_id",
-  "metadata",
-  "created_at",
-  "updated_at",
-]
+// eslint-disable-next-line max-len
+export const defaultAdminStockLocationFields: (keyof StockLocationTypes.StockLocationDTO)[] =
+  ["id", "name", "address_id", "metadata", "created_at", "updated_at"]
 
 export const defaultAdminStockLocationRelations = []
 
 /**
  * @schema AdminStockLocationsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -111,37 +112,48 @@ export type AdminStockLocationsDeleteRes = DeleteResponse
 /**
  * @schema AdminStockLocationsRes
  * type: object
+ * description: "The stock location's details."
+ * required:
+ *   - stock_location
  * properties:
  *   stock_location:
- *     $ref: "#/components/schemas/StockLocationDTO"
+ *     description: "Stock location details."
+ *     $ref: "#/components/schemas/StockLocationExpandedDTO"
  */
 export type AdminStockLocationsRes = {
-  stock_location: StockLocationDTO
+  stock_location: StockLocationTypes.StockLocationExpandedDTO
 }
 
 /**
  * @schema AdminStockLocationsListRes
  * type: object
+ * description: "The list of stock locations with pagination fields."
+ * required:
+ *   - stock_locations
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   stock_locations:
  *     type: array
+ *     description: "The list of stock locations."
  *     items:
- *       $ref: "#/components/schemas/StockLocationDTO"
+ *       $ref: "#/components/schemas/StockLocationExpandedDTO"
  *   count:
  *     type: integer
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of stock locations skipped when retrieving the stock locations.
  *   limit:
  *     type: integer
  *     description: The number of items per page
  */
 export type AdminStockLocationsListRes = PaginatedResponse & {
-  stock_locations: StockLocationDTO[]
+  stock_locations: StockLocationTypes.StockLocationExpandedDTO[]
 }
 
-export * from "./list-stock-locations"
-export * from "./get-stock-location"
 export * from "./create-stock-location"
+export * from "./get-stock-location"
+export * from "./list-stock-locations"
 export * from "./update-stock-location"

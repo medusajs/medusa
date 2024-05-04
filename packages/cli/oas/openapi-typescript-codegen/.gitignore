@@ -1,0 +1,7 @@
+/dist
+node_modules
+.DS_store
+.env*
+.env
+*.sql
+/bin

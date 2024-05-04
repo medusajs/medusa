@@ -1,0 +1,33 @@
+---
+displayed_sidebar: pricingReference
+slug: /references/pricing/updatePriceRules
+sidebar_label: updatePriceRules
+---
+
+import { TypeList } from "docs-ui"
+
+# updatePriceRules - Pricing Module Reference
+
+This documentation provides a reference to the `updatePriceRules` method. This belongs to the Pricing Module.
+
+This method is used to update price rules, each with their provided data.
+
+## Example
+
+```ts
+const priceRules =
+  await pricingModuleService.updatePriceRules([
+    {
+      id: "prule_123",
+      price_id: "price_123",
+    },
+  ])
+```
+
+## Parameters
+
+<TypeList types={[{"name":"data","type":"[UpdatePriceRuleDTO](../../../interfaces/pricing.UpdatePriceRuleDTO/page.mdx)[]","description":"The price rules to update, each having attributes that should be updated in a price rule.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"price_set_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"rule_type_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The value of the price rule.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"priority","type":"`number`","description":"The priority of the price rule in comparison to other applicable price rules.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"price_id","type":"`string`","description":"The ID of the associated price.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"price_list_id","type":"`string`","description":"The ID of the associated price list.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/pricing.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/pricing.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="updatePriceRules"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PriceRuleDTO](../../../interfaces/pricing.PriceRuleDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The list of updated price rules.","expandable":false,"children":[{"name":"PriceRuleDTO[]","type":"[PriceRuleDTO](../../../interfaces/pricing.PriceRuleDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PriceRuleDTO","type":"`object`","description":"A price rule's data.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="updatePriceRules"/>

@@ -1,10 +1,10 @@
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /shipping-options/{id}
+ * @oas [delete] /admin/shipping-options/{id}
  * operationId: "DeleteShippingOptionsOption"
- * summary: "Delete a Shipping Option"
- * description: "Deletes a Shipping Option."
+ * summary: "Delete Shipping Option"
+ * description: "Delete a Shipping Option. Once deleted, it can't be used when creating orders or returns."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Option.
@@ -17,20 +17,49 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.shippingOptions.delete(option_id)
+ *       medusa.admin.shippingOptions.delete(optionId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteShippingOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         shippingOptionId: string
+ *       }
+ *
+ *       const ShippingOption = ({ shippingOptionId }: Props) => {
+ *         const deleteShippingOption = useAdminDeleteShippingOption(
+ *           shippingOptionId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteShippingOption.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ShippingOption
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/shipping-options/{option_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/shipping-options/{option_id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK

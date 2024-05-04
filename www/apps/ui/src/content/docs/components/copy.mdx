@@ -1,0 +1,39 @@
+---
+title: "Copy"
+description: "Displays a tooltipped button that puts string contents into the user's clipboard."
+component: true
+---
+
+<ComponentExample name="copy-demo" />
+
+## Usage
+
+---
+
+```tsx
+import { Copy } from "@medusajs/ui"
+```
+
+```tsx
+<Copy content="yarn add @medusajs/ui" />
+```
+
+## API Reference
+
+---
+
+<ComponentReference mainComponent="Copy" />
+
+## Examples
+
+---
+
+### With custom display
+
+<ComponentExample name="copy-custom-display" />
+
+### As child
+
+Using the `asChild` prop, you can render the `<Copy/>` as it's child. This is useful if you want to render a custom button, to prevent rendering a button inside a button.
+
+<ComponentExample name="copy-as-child" />

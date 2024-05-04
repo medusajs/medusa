@@ -1,12 +1,15 @@
 {
   "name": "medusa-plugin-ip-lookup",
-  "version": "1.2.4",
+  "version": "1.2.8",
   "description": "IP lookup middleware for Medusa core",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-plugin-ip-lookup"
+  },
+  "engines": {
+    "node": ">=16"
   },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
@@ -27,10 +30,10 @@
     "@babel/runtime": "^7.7.6",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
-    "medusa-interfaces": "^1.3.5"
+    "medusa-interfaces": "^1.3.7"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.3.5"
+    "medusa-interfaces": "^1.3.7"
   },
   "dependencies": {
     "axios": "^0.20.0"

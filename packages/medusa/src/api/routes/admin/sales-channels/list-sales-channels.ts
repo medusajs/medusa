@@ -9,20 +9,20 @@ import { SalesChannelService } from "../../../../services"
 import { Type } from "class-transformer"
 
 /**
- * @oas [get] /sales-channels
+ * @oas [get] /admin/sales-channels
  * operationId: "GetSalesChannels"
  * summary: "List Sales Channels"
- * description: "Retrieves a list of sales channels"
+ * description: "Retrieve a list of sales channels. The sales channels can be filtered by fields such as `q` or `name`. The sales channels can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) id {string} ID of the sales channel
- *   - (query) name {string} Name of the sales channel
- *   - (query) description {string} Description of the sales channel
- *   - (query) q {string} Query used for searching sales channels' names and descriptions.
- *   - (query) order {string} The field to order the results by.
+ *   - (query) id {string} Filter by a sales channel ID.
+ *   - (query) name {string} Filter by name.
+ *   - (query) description {string} Filter by description.
+ *   - (query) q {string} term used to search sales channels' names and descriptions.
+ *   - (query) order {string} A sales-channel field to sort-order the retrieved sales channels by.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting collections were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -44,7 +44,7 @@ import { Type } from "class-transformer"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting collections were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -66,7 +66,7 @@ import { Type } from "class-transformer"
  *            format: date
  *   - in: query
  *     name: deleted_at
- *     description: Date comparison for when resulting collections were deleted.
+ *     description: Filter by a deletion date range.
  *     schema:
  *       type: object
  *       properties:
@@ -86,10 +86,10 @@ import { Type } from "class-transformer"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) offset=0 {integer} How many sales channels to skip in the result.
+ *   - (query) offset=0 {integer} The number of sales channels to skip when retrieving the sales channels.
  *   - (query) limit=20 {integer} Limit the number of sales channels returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each sales channel of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each sales channel of the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned sales channels.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned sales channels.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetSalesChannelsParams
@@ -102,18 +102,46 @@ import { Type } from "class-transformer"
  *       // must be previously logged in or use api token
  *       medusa.admin.salesChannels.list()
  *       .then(({ sales_channels, limit, offset, count }) => {
- *         console.log(sales_channels.length);
- *       });
+ *         console.log(sales_channels.length)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminSalesChannels } from "medusa-react"
+ *
+ *       const SalesChannels = () => {
+ *         const { sales_channels, isLoading } = useAdminSalesChannels()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {sales_channels && !sales_channels.length && (
+ *               <span>No Sales Channels</span>
+ *             )}
+ *             {sales_channels && sales_channels.length > 0 && (
+ *               <ul>
+ *                 {sales_channels.map((salesChannel) => (
+ *                   <li key={salesChannel.id}>{salesChannel.name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default SalesChannels
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/sales-channels' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/sales-channels' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Sales Channel
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK
@@ -155,38 +183,65 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved sales channels.
+ */
 export class AdminGetSalesChannelsParams extends extendedFindParamsMixin() {
+  /**
+   * ID to filter sales channels by.
+   */
   @IsString()
   @IsOptional()
   id?: string
 
+  /**
+   * Search term to search sales channels' names and descriptions.
+   */
   @IsOptional()
   @IsString()
   q?: string
 
+  /**
+   * Name to filter sales channels by.
+   */
   @IsOptional()
   @IsString()
   name?: string
 
+  /**
+   * Description to filter sales channels by.
+   */
   @IsOptional()
   @IsString()
   description?: string
 
+  /**
+   * Date filters to apply on sales channels' `created_at` field.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on sales channels' `updated_at` field.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on sales channels' `deleted_at` field.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)
   deleted_at?: DateComparisonOperator
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string

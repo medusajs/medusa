@@ -12,13 +12,14 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits/{id}/request
+ * @oas [post] /admin/order-edits/{id}/request
  * operationId: "PostOrderEditsOrderEditRequest"
  * summary: "Request Confirmation"
- * description: "Request customer confirmation of an Order Edit"
+ * description: "Request customer confirmation of an Order Edit. This would emit the event `order-edit.requested` which Notification Providers listen to and send
+ *  a notification to the customer about the order edit."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Order Edit to request confirmation from.
+ *   - (path) id=* {string} The ID of the Order Edit.
  * x-codegen:
  *   method: requestConfirmation
  * x-codeSamples:
@@ -28,20 +29,54 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.requestConfirmation(order_edit_id)
- *         .then({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       medusa.admin.orderEdits.requestConfirmation(orderEditId)
+ *       .then({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminRequestOrderEditConfirmation,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *       }
+ *
+ *       const OrderEdit = ({ orderEditId }: Props) => {
+ *         const requestOrderConfirmation =
+ *           useAdminRequestOrderEditConfirmation(
+ *             orderEditId
+ *           )
+ *
+ *         const handleRequestConfirmation = () => {
+ *           requestOrderConfirmation.mutate(void 0, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(
+ *                 order_edit.requested_at,
+ *                 order_edit.requested_by
+ *               )
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}/request' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST '{backend_url}/admin/order-edits/{id}/request' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

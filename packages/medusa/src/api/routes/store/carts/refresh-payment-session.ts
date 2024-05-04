@@ -1,14 +1,15 @@
 import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/payment-sessions/{provider_id}/refresh
+ * @oas [post] /store/carts/{id}/payment-sessions/{provider_id}/refresh
  * operationId: PostCartsCartPaymentSessionsSession
  * summary: Refresh a Payment Session
- * description: "Refreshes a Payment Session to ensure that it is in sync with the Cart - this is usually not necessary."
+ * description: "Refresh a Payment Session to ensure that it is in sync with the Cart. This is usually not necessary, but is provided for edge cases."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
- *   - (path) provider_id=* {string} The id of the Payment Provider that created the Payment Session to be refreshed.
+ *   - (path) id=* {string} The ID of the Cart.
+ *   - (path) provider_id=* {string} The ID of the Payment Provider that created the Payment Session to be refreshed.
  * x-codegen:
  *   method: refreshPaymentSession
  * x-codeSamples:
@@ -17,16 +18,45 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.refreshPaymentSession(cart_id, 'manual')
+ *       medusa.carts.refreshPaymentSession(cartId, "manual")
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useRefreshPaymentSession } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const refreshPaymentSession = useRefreshPaymentSession(cartId)
+ *
+ *         const handleRefresh = (
+ *           providerId: string
+ *         ) => {
+ *           refreshPaymentSession.mutate({
+ *             provider_id: providerId,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.payment_sessions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual/refresh'
+ *       curl -X POST '{backend_url}/store/carts/{id}/payment-sessions/{provider_id}/refresh'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -67,5 +97,5 @@ export default async (req, res) => {
     ],
   })
 
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }

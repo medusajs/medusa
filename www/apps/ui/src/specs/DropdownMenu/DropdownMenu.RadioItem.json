@@ -1,0 +1,6 @@
+{
+  "description": "This component is based on the [Radix UI Dropdown Menu RadioItem](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#radioitem) primitive.",
+  "methods": [],
+  "displayName": "DropdownMenu.RadioItem",
+  "props": {}
+}

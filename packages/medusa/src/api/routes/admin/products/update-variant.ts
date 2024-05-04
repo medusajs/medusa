@@ -1,3 +1,7 @@
+import { WorkflowTypes } from "@medusajs/types"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { UpdateProductVariants } from "@medusajs/core-flows"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -7,24 +11,22 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { EntityManager } from "typeorm"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
   ProductVariantService,
 } from "../../../../services"
-
-import { Type } from "class-transformer"
-import { EntityManager } from "typeorm"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /products/{id}/variants/{variant_id}
+ * @oas [post] /admin/products/{id}/variants/{variant_id}
  * operationId: "PostProductsProductVariantsVariant"
  * summary: "Update a Product Variant"
- * description: "Update a Product Variant."
+ * description: "Update a Product Variant's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
@@ -43,8 +45,8 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.updateVariant(product_id, variant_id, {
- *         title: 'Color',
+ *       medusa.admin.products.updateVariant(productId, variantId, {
+ *         title: "Color",
  *         prices: [
  *           {
  *             amount: 1000,
@@ -54,20 +56,55 @@ import { validator } from "../../../../utils/validator"
  *         options: [
  *           {
  *             option_id,
- *             value: 'S'
+ *             value: "S"
  *           }
  *         ],
  *         inventory_quantity: 100
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateVariant } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *         variantId: string
+ *       }
+ *
+ *       const ProductVariant = ({
+ *         productId,
+ *         variantId
+ *       }: Props) => {
+ *         const updateVariant = useAdminUpdateVariant(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (title: string) => {
+ *           updateVariant.mutate({
+ *             variant_id: variantId,
+ *             title,
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.variants)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ProductVariant
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/products/asfsaf/variants/saaga' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/products/{id}/variants/{variant_id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Color",
  *           "prices": [
@@ -80,8 +117,9 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
@@ -105,6 +143,13 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id, variant_id } = req.params
 
+  const manager: EntityManager = req.scope.resolve("manager")
+  const productService: ProductService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  const productVariantService: ProductVariantService = req.scope.resolve(
+    "productVariantService"
+  )
   const validated = await validator(
     AdminPostProductsProductVariantsVariantReq,
     req.body
@@ -112,21 +157,36 @@ export default async (req, res) => {
 
   const validatedQueryParams = await validator(PriceSelectionParams, req.query)
 
-  const productService: ProductService = req.scope.resolve("productService")
-  const pricingService: PricingService = req.scope.resolve("pricingService")
-  const productVariantService: ProductVariantService = req.scope.resolve(
-    "productVariantService"
-  )
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    const updateVariantsWorkflow = UpdateProductVariants.updateProductVariants(
+      req.scope
+    )
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    await productVariantService
-      .withTransaction(transactionManager)
-      .update(variant_id, {
-        product_id: id,
-        ...validated,
-      })
-  })
+    const input = {
+      productVariants: [
+        {
+          id: variant_id,
+          ...validated,
+        },
+      ] as WorkflowTypes.ProductWorkflow.UpdateProductVariantsInputDTO[],
+    }
+
+    await updateVariantsWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      await productVariantService
+        .withTransaction(transactionManager)
+        .update(variant_id, {
+          product_id: id,
+          ...validated,
+        })
+    })
+  }
 
   const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
@@ -150,14 +210,12 @@ class ProductVariantOptionReq {
 /**
  * @schema AdminPostProductsProductVariantsVariantReq
  * type: object
- * required:
- *   - prices
  * properties:
  *   title:
- *     description: The title to identify the Product Variant by.
+ *     description: The title of the product variant.
  *     type: string
  *   sku:
- *     description: The unique SKU for the Product Variant.
+ *     description: The unique SKU of the product variant.
  *     type: string
  *   ean:
  *     description: The EAN number of the item.
@@ -166,74 +224,82 @@ class ProductVariantOptionReq {
  *     description: The UPC number of the item.
  *     type: string
  *   barcode:
- *     description: A generic GTIN field for the Product Variant.
+ *     description: A generic GTIN field of the product variant.
  *     type: string
  *   hs_code:
- *     description: The Harmonized System code for the Product Variant.
+ *     description: The Harmonized System code of the product variant.
  *     type: string
  *   inventory_quantity:
- *     description: The amount of stock kept for the Product Variant.
+ *     description: The amount of stock kept of the product variant.
  *     type: integer
  *   allow_backorder:
- *     description: Whether the Product Variant can be purchased when out of stock.
+ *     description: Whether the product variant can be purchased when out of stock.
  *     type: boolean
  *   manage_inventory:
- *     description: Whether Medusa should keep track of the inventory for this Product Variant.
+ *     description: Whether Medusa should keep track of the inventory of this product variant.
  *     type: boolean
  *   weight:
- *     description: The weight of the Product Variant.
+ *     description: The weight of the product variant.
  *     type: number
  *   length:
- *     description: The length of the Product Variant.
+ *     description: The length of the product variant.
  *     type: number
  *   height:
- *     description: The height of the Product Variant.
+ *     description: The height of the product variant.
  *     type: number
  *   width:
- *     description: The width of the Product Variant.
+ *     description: The width of the product variant.
  *     type: number
  *   origin_country:
- *     description: The country of origin of the Product Variant.
+ *     description: The country of origin of the product variant.
  *     type: string
  *   mid_code:
- *     description: The Manufacturer Identification code for the Product Variant.
+ *     description: The Manufacturer Identification code of the product variant.
  *     type: string
  *   material:
- *     description: The material composition of the Product Variant.
+ *     description: The material composition of the product variant.
  *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   prices:
  *     type: array
+ *     description: An array of product variant prices. A product variant can have different prices for each region or currency code.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/modules/products/admin/manage-products#product-variant-prices
+ *       description: Product variant pricing.
  *     items:
  *       type: object
  *       required:
  *         - amount
  *       properties:
  *         id:
- *           description: The ID of the price.
+ *           description: The ID of the price. If provided, the existing price will be updated. Otherwise, a new price will be created.
  *           type: string
  *         region_id:
- *           description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
+ *           description: The ID of the Region the price will be used in. This is only required if `currency_code` is not provided.
  *           type: string
  *         currency_code:
- *           description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *           description: The 3 character ISO currency code the price will be used in. This is only required if `region_id` is not provided.
  *           type: string
  *           externalDocs:
  *             url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *             description: See a list of codes.
  *         amount:
- *           description: The amount to charge for the Product Variant.
+ *           description: The price amount.
  *           type: integer
  *         min_quantity:
- *          description: The minimum quantity for which the price will be used.
+ *          description: The minimum quantity required to be added to the cart for the price to be used.
  *          type: integer
  *         max_quantity:
- *           description: The maximum quantity for which the price will be used.
+ *           description: The maximum quantity required to be added to the cart for the price to be used.
  *           type: integer
  *   options:
  *     type: array
+ *     description: An array of Product Option values that the variant corresponds to.
  *     items:
  *       type: object
  *       required:
@@ -241,10 +307,10 @@ class ProductVariantOptionReq {
  *         - value
  *       properties:
  *         option_id:
- *           description: The ID of the Product Option to set the value for.
+ *           description: The ID of the Product Option.
  *           type: string
  *         value:
- *           description: The value to give for the Product Option.
+ *           description: The value of the Product Option.
  *           type: string
  */
 export class AdminPostProductsProductVariantsVariantReq {

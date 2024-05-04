@@ -1,10 +1,10 @@
 import { PaymentService } from "../../../../services"
 
 /**
- * @oas [post] /payments/{id}/capture
+ * @oas [post] /admin/payments/{id}/capture
  * operationId: "PostPaymentsPaymentCapture"
  * summary: "Capture a Payment"
- * description: "Captures a Payment."
+ * description: "Capture a Payment."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Payment.
@@ -17,20 +17,49 @@ import { PaymentService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.payments.capturePayment(payment_id)
+ *       medusa.admin.payments.capturePayment(paymentId)
  *       .then(({ payment }) => {
  *         console.log(payment.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminPaymentsCapturePayment } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentId: string
+ *       }
+ *
+ *       const Payment = ({ paymentId }: Props) => {
+ *         const capture = useAdminPaymentsCapturePayment(
+ *           paymentId
+ *         )
+ *         // ...
+ *
+ *         const handleCapture = () => {
+ *           capture.mutate(void 0, {
+ *             onSuccess: ({ payment }) => {
+ *               console.log(payment.amount)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Payment
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/payments/{id}/capture' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST '{backend_url}/admin/payments/{id}/capture' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Payment
+ *   - Payments
  * responses:
  *   200:
  *     description: OK

@@ -9,25 +9,32 @@ import {
   ValidateNested,
 } from "class-validator"
 import { Transform, Type } from "class-transformer"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import {
   OrderService,
   ProductVariantInventoryService,
 } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { Fulfillment, LineItem } from "../../../../models"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { promiseAll } from "@medusajs/utils"
 
 /**
- * @oas [post] /orders/{id}/fulfillment
+ * @oas [post] /admin/orders/{id}/fulfillment
  * operationId: "PostOrdersOrderFulfillments"
  * summary: "Create a Fulfillment"
- * description: "Creates a Fulfillment of an Order - will notify Fulfillment Providers to prepare a shipment."
+ * description: "Create a Fulfillment of an Order using the fulfillment provider, and change the order's fulfillment status to either `partially_fulfilled` or `fulfilled`, depending on
+ *  whether all the items were fulfilled."
  * x-authenticated: true
+ * externalDocs:
+ *   description: Fulfillments of orders
+ *   url: https://docs.medusajs.com/modules/orders/#fulfillments-in-orders
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -35,6 +42,7 @@ import { Fulfillment, LineItem } from "../../../../models"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderFulfillmentsReq"
  * x-codegen:
  *   method: createFulfillment
+ *   params: AdminPostOrdersOrderFulfillmentsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -42,7 +50,7 @@ import { Fulfillment, LineItem } from "../../../../models"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.createFulfillment(order_id, {
+ *       medusa.admin.orders.createFulfillment(orderId, {
  *         items: [
  *           {
  *             item_id,
@@ -52,13 +60,51 @@ import { Fulfillment, LineItem } from "../../../../models"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateFulfillment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const createFulfillment = useAdminCreateFulfillment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleCreateFulfillment = (
+ *           itemId: string,
+ *           quantity: number
+ *         ) => {
+ *           createFulfillment.mutate({
+ *             items: [
+ *               {
+ *                 item_id: itemId,
+ *                 quantity,
+ *               },
+ *             ],
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.fulfillments)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/fulfillment' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/orders/{id}/fulfillment' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "items": [
  *             {
@@ -70,8 +116,9 @@ import { Fulfillment, LineItem } from "../../../../models"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Fulfillment
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -95,56 +142,63 @@ import { Fulfillment, LineItem } from "../../../../models"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(
-    AdminPostOrdersOrderFulfillmentsReq,
-    req.body
-  )
+  const { validatedBody } = req as {
+    validatedBody: AdminPostOrdersOrderFulfillmentsReq
+  }
 
   const orderService: OrderService = req.scope.resolve("orderService")
   const pvInventoryService: ProductVariantInventoryService = req.scope.resolve(
     "productVariantInventoryService"
   )
+
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    const { fulfillments: existingFulfillments } = await orderService
-      .withTransaction(transactionManager)
-      .retrieve(id, {
+    const orderServiceTx = orderService.withTransaction(transactionManager)
+
+    const { fulfillments: existingFulfillments } =
+      await orderServiceTx.retrieve(id, {
         relations: ["fulfillments"],
       })
-    const existingFulfillmentMap = new Map(
-      existingFulfillments.map((fulfillment) => [fulfillment.id, fulfillment])
+    const existingFulfillmentSet = new Set(
+      existingFulfillments.map((fulfillment) => fulfillment.id)
     )
 
-    const { fulfillments } = await orderService
-      .withTransaction(transactionManager)
-      .createFulfillment(id, validated.items, {
-        metadata: validated.metadata,
-        no_notification: validated.no_notification,
+    await orderServiceTx.createFulfillment(id, validatedBody.items, {
+      metadata: validatedBody.metadata,
+      no_notification: validatedBody.no_notification,
+      location_id: validatedBody.location_id,
+    })
+
+    if (validatedBody.location_id) {
+      const { fulfillments } = await orderServiceTx.retrieve(id, {
+        relations: [
+          "fulfillments",
+          "fulfillments.items",
+          "fulfillments.items.item",
+        ],
       })
 
-    const pvInventoryServiceTx =
-      pvInventoryService.withTransaction(transactionManager)
+      const pvInventoryServiceTx =
+        pvInventoryService.withTransaction(transactionManager)
 
-    if (validated.location_id) {
       await updateInventoryAndReservations(
-        fulfillments.filter((f) => !existingFulfillmentMap[f.id]),
+        fulfillments.filter((f) => !existingFulfillmentSet.has(f.id)),
         {
           inventoryService: pvInventoryServiceTx,
-          locationId: validated.location_id,
+          locationId: validatedBody.location_id,
         }
       )
     }
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
-const updateInventoryAndReservations = async (
+export const updateInventoryAndReservations = async (
   fulfillments: Fulfillment[],
   context: {
     inventoryService: ProductVariantInventoryService
@@ -153,38 +207,45 @@ const updateInventoryAndReservations = async (
 ) => {
   const { inventoryService, locationId } = context
 
-  fulfillments.map(async ({ items }) => {
-    await inventoryService.validateInventoryAtLocation(
-      items.map(({ item, quantity }) => ({ ...item, quantity } as LineItem)),
-      locationId
-    )
+  await promiseAll(
+    fulfillments.map(async ({ items }) => {
+      await inventoryService.validateInventoryAtLocation(
+        items.map(({ item, quantity }) => ({ ...item, quantity } as LineItem)),
+        locationId
+      )
+    })
+  )
 
-    await Promise.all(
-      items.map(async ({ item, quantity }) => {
-        if (!item.variant_id) {
-          return
-        }
+  await promiseAll(
+    fulfillments.map(async ({ items }) => {
+      await promiseAll(
+        items.map(async ({ item, quantity }) => {
+          if (!item.variant_id) {
+            return
+          }
 
-        await inventoryService.adjustReservationsQuantityByLineItem(
-          item.id,
-          item.variant_id,
-          locationId,
-          -quantity
-        )
+          await inventoryService.adjustReservationsQuantityByLineItem(
+            item.id,
+            item.variant_id,
+            locationId,
+            -quantity
+          )
 
-        await inventoryService.adjustInventory(
-          item.variant_id,
-          locationId,
-          -quantity
-        )
-      })
-    )
-  })
+          await inventoryService.adjustInventory(
+            item.variant_id,
+            locationId,
+            -quantity
+          )
+        })
+      )
+    })
+  )
 }
 
 /**
  * @schema AdminPostOrdersOrderFulfillmentsReq
  * type: object
+ * description: "The details of the fulfillment to be created."
  * required:
  *   - items
  * properties:
@@ -198,17 +259,24 @@ const updateInventoryAndReservations = async (
  *         - quantity
  *       properties:
  *         item_id:
- *           description: The ID of Line Item to fulfill.
+ *           description: The ID of the Line Item to fulfill.
  *           type: string
  *         quantity:
  *           description: The quantity of the Line Item to fulfill.
  *           type: integer
+ *   location_id:
+ *     type: string
+ *     description: "The ID of the location where the items will be fulfilled from."
  *   no_notification:
- *     description: If set to true no notification will be send related to this Swap.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this fulfillment.
  *     type: boolean
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostOrdersOrderFulfillmentsReq {
   @IsArray()
@@ -239,3 +307,5 @@ class Item {
   @IsNotEmpty()
   quantity: number
 }
+
+export class AdminPostOrdersOrderFulfillmentsParams extends FindParams {}

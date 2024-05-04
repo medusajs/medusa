@@ -21,12 +21,15 @@ export default (app) => {
 export const defaultStoreSwapRelations = [
   "order",
   "additional_items",
+  "additional_items.variant",
   "return_order",
   "return_order.shipping_method",
+  "return_order.shipping_method.shipping_option",
   "fulfillments",
   "payment",
   "shipping_address",
   "shipping_methods",
+  "shipping_methods.shipping_option",
   "cart",
 ]
 export const defaultStoreSwapFields: FindConfig<Swap>["select"] = [
@@ -48,8 +51,27 @@ export const defaultStoreSwapFields: FindConfig<Swap>["select"] = [
 /**
  * @schema StoreSwapsRes
  * type: object
+ * description: "The swap's details."
+ * x-expanded-relations:
+ *   field: swap
+ *   relations:
+ *     - additional_items
+ *     - additional_items.variant
+ *     - cart
+ *     - fulfillments
+ *     - order
+ *     - payment
+ *     - return_order
+ *     - return_order.shipping_method
+ *     - shipping_address
+ *     - shipping_methods
+ *   eager:
+ *     - fulfillments.items
+ * required:
+ *   - swap
  * properties:
  *   swap:
+ *     description: "Swap details."
  *     $ref: "#/components/schemas/Swap"
  */
 export type StoreSwapsRes = {

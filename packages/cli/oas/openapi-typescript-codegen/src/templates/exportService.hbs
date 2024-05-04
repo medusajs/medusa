@@ -1,0 +1,119 @@
+{{>header}}
+
+{{#if imports}}
+  import {
+  {{#each imports}}
+    {{{this}}},
+  {{/each}}
+  } {{#if @root.packageNames.models~}}
+    from '{{{@root.packageNames.models}}}';
+  {{else~}}
+    from '../models';
+  {{/if}}
+{{/if}}
+import type { CancelablePromise } from '../core/CancelablePromise';
+{{#if @root.exportClient}}
+import type { BaseHttpRequest } from '../core/BaseHttpRequest';
+{{else}}
+import { OpenAPI } from '../core/OpenAPI';
+import { request as __request } from '../core/request';
+{{/if}}
+
+export class {{{name}}}{{{@root.postfix}}} {
+	{{#if @root.exportClient}}
+
+	constructor(public readonly httpRequest: BaseHttpRequest) {}
+	{{/if}}
+
+	{{#each operations}}
+	/**
+	{{#if deprecated}}
+	 * @deprecated
+	{{/if}}
+	{{#if operationId}}
+	 * {{{escapeComment operationId}}}
+	{{/if}}
+	{{#if summary}}
+	 * {{{escapeComment summary}}}
+	{{/if}}
+	{{#if description}}
+	 * {{{escapeComment description}}}
+	{{/if}}
+	{{#unless @root.useOptions}}
+	{{#if parameters}}
+	{{#each parameters}}
+	 * @param {{{name}}} {{#if description}}{{{escapeComment description}}}{{/if}}
+	{{/each}}
+	{{/if}}
+	{{/unless}}
+	{{#each results}}
+	 * @returns {{{type}}} {{#if description}}{{{escapeComment description}}}{{/if}}
+	{{/each}}
+	 * @throws ApiError
+	 */
+	{{#if @root.exportClient}}
+	public {{{name}}}(
+		{{~#if parameters}}{{~>parameters~}},{{/if}}
+		customHeaders: Record<string, any> = {}
+	): CancelablePromise<{{>result}}> {
+		return this.httpRequest.request({
+	{{else}}
+	public static {{{name}}}(
+		{{#if parameters}}{{~>parameters~}},{{/if}}
+		customHeaders: Record<string, any> = {}
+	): CancelablePromise<{{>result}}> {
+		return __request(OpenAPI, {
+	{{/if}}
+			method: '{{{method}}}',
+			url: '{{{path}}}',
+			{{#if parametersPath}}
+			path: {
+				{{#each parametersPath}}
+				'{{{prop}}}': {{{name}}},
+				{{/each}}
+			},
+			{{/if}}
+			{{#if parametersCookie}}
+			cookies: {
+				{{#each parametersCookie}}
+				'{{{prop}}}': {{{name}}},
+				{{/each}}
+			},
+			{{/if}}
+			headers: customHeaders,
+			{{#if parametersQuery}}
+			query: queryParams,
+			{{/if}}
+			{{#if parametersForm}}
+			formData: {
+				{{#each parametersForm}}
+				'{{{prop}}}': {{{name}}},
+				{{/each}}
+			},
+			{{/if}}
+			{{#if parametersBody}}
+			{{#equals parametersBody.in 'formData'}}
+			formData: {{{parametersBody.name}}},
+			{{/equals}}
+			{{#equals parametersBody.in 'body'}}
+			body: {{{parametersBody.name}}},
+			{{/equals}}
+			{{#if parametersBody.mediaType}}
+			mediaType: '{{{parametersBody.mediaType}}}',
+			{{/if}}
+			{{/if}}
+			{{#if responseHeader}}
+			responseHeader: '{{{responseHeader}}}',
+			{{/if}}
+			{{#if errors}}
+			errors: {
+				{{#each errors}}
+				{{{code}}}: `{{{escapeDescription description}}}`,
+				{{/each}}
+			},
+			{{/if}}
+		});
+	}
+
+	{{/each}}
+}

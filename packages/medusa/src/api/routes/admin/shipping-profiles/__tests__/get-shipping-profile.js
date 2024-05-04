@@ -12,7 +12,7 @@ const defaultFields = [
   "metadata",
 ]
 
-const defaultRelations = ["products", "shipping_options"]
+const defaultRelations = ["products.profiles", "shipping_options"]
 
 describe("GET /admin/shipping-profiles/:profile_id", () => {
   describe("successful retrieval", () => {

@@ -1,27 +1,29 @@
-import _ from "lodash"
-import { asClass, asValue, createContainer } from "awilix"
-import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { FlagRouter } from "../../utils/flag-router"
+import { IsNull, Not } from "typeorm"
+import { NewTotalsService, PricingService, TaxProviderService } from "../index"
+import { asClass, asValue, createContainer } from "awilix"
+
 import CartService from "../cart"
-import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
-import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
-import { newTotalsServiceMock } from "../__mocks__/new-totals"
-import { taxProviderServiceMock } from "../__mocks__/tax-provider"
-import { PaymentSessionStatus } from "../../models"
-import { NewTotalsService, TaxProviderService } from "../index"
-import { cacheServiceMock } from "../__mocks__/cache"
+import { CustomerServiceMock } from "../__mocks__/customer"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
+import { FlagRouter } from "@medusajs/utils"
+import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import { LineItemServiceMock } from "../__mocks__/line-item"
+import { MedusaError } from "medusa-core-utils"
 import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
+import { PaymentSessionStatus } from "../../models"
 import { ProductServiceMock } from "../__mocks__/product"
+import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
-import { LineItemServiceMock } from "../__mocks__/line-item"
 import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
-import { CustomerServiceMock } from "../__mocks__/customer"
-import TaxCalculationStrategy from "../../strategies/tax-calculation"
+import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import SystemTaxService from "../system-tax"
-import { IsNull, Not } from "typeorm"
+import TaxCalculationStrategy from "../../strategies/tax-calculation"
+import _ from "lodash"
+import { cacheServiceMock } from "../__mocks__/cache"
+import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -84,7 +86,7 @@ describe("CartService", () => {
     it("calls cart model functions", () => {
       expect(cartRepository.findOneWithRelations).toHaveBeenCalledTimes(1)
       expect(cartRepository.findOneWithRelations).toHaveBeenCalledWith(
-        undefined,
+        {},
         {
           where: { id: IdMap.getId("emptyCart") },
           select: undefined,
@@ -129,7 +131,9 @@ describe("CartService", () => {
       )
 
       expect(cartRepository.findOne).toBeCalledTimes(1)
-      expect(cartRepository.findOne).toBeCalledWith(id)
+      expect(cartRepository.findOne).toBeCalledWith({
+        where: { id },
+      })
 
       expect(cartRepository.save).toBeCalledTimes(1)
       expect(cartRepository.save).toBeCalledWith({
@@ -167,7 +171,7 @@ describe("CartService", () => {
 
     const addressRepository = MockRepository({
       create: (c) => c,
-      findOne: (id) => {
+      findOneWithRelations: (id) => {
         return {
           id,
           first_name: "LeBron",
@@ -346,7 +350,7 @@ describe("CartService", () => {
     }
 
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("cartWithLine")) {
           return Promise.resolve({
             id: IdMap.getId("cartWithLine"),
@@ -587,7 +591,7 @@ describe("CartService", () => {
     }
 
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("cartWithLine")) {
           return Promise.resolve({
             id: IdMap.getId("cartWithLine"),
@@ -673,7 +677,7 @@ describe("CartService", () => {
       },
     }
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("withShipping")) {
           return Promise.resolve({
             shipping_methods: [
@@ -740,9 +744,9 @@ describe("CartService", () => {
       )
 
       expect(lineItemService.delete).toHaveBeenCalledTimes(1)
-      expect(lineItemService.delete).toHaveBeenCalledWith(
-        IdMap.getId("itemToRemove")
-      )
+      expect(lineItemService.delete).toHaveBeenCalledWith([
+        IdMap.getId("itemToRemove"),
+      ])
 
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
@@ -816,7 +820,7 @@ describe("CartService", () => {
 
   describe("update", () => {
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === "withpays") {
           return Promise.resolve({
             payment_sessions: [
@@ -848,23 +852,33 @@ describe("CartService", () => {
       await cartService.update("withpays", {})
 
       expect(cartRepository.findOneWithRelations).toHaveBeenCalledWith(
-        expect.arrayContaining([
-          "items",
-          "shipping_methods",
-          "shipping_address",
-          "billing_address",
-          "gift_cards",
-          "customer",
-          "region",
-          "payment_sessions",
-          "region.countries",
-          "discounts",
-          "discounts.rule",
-          "discounts.regions",
-        ]),
-        {
-          where: { id: "withpays" },
-        }
+        expect.objectContaining({
+          billing_address: true,
+          customer: true,
+          discounts: {
+            rule: true,
+          },
+          gift_cards: true,
+          items: {
+            variant: {
+              product: {
+                profiles: true,
+              },
+            },
+          },
+          payment_sessions: true,
+          region: { countries: true },
+          shipping_address: true,
+          shipping_methods: {
+            shipping_option: true,
+          },
+        }),
+        expect.objectContaining({
+          select: undefined,
+          where: {
+            id: "withpays",
+          },
+        })
       )
     })
   })
@@ -904,7 +918,7 @@ describe("CartService", () => {
     }
 
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("cannot")) {
           return Promise.resolve({
             items: [
@@ -1229,8 +1243,23 @@ describe("CartService", () => {
 
   describe("setRegion", () => {
     const lineItemService = {
-      update: jest.fn((r) => r),
+      update: jest.fn((id) => ({ id })),
       delete: jest.fn(),
+      retrieve: jest.fn().mockImplementation((lineItemId) => {
+        if (lineItemId === IdMap.getId("existing")) {
+          return Promise.resolve({
+            id: lineItemId,
+          })
+        }
+        return Promise.resolve({
+          id: lineItemId,
+        })
+      }),
+      list: jest.fn().mockImplementation(async (selector) => {
+        return selector.id.map((id) => {
+          return { id }
+        })
+      }),
       withTransaction: function () {
         return this
       },
@@ -1255,6 +1284,25 @@ describe("CartService", () => {
         return this
       },
     }
+
+    const discountService = {
+      list: jest.fn().mockReturnValue(
+        Promise.resolve([
+          {
+            id: IdMap.getId("stays"),
+            regions: [{ id: IdMap.getId("region-us") }],
+          },
+          {
+            id: IdMap.getId("removes"),
+            regions: [],
+          },
+        ])
+      ),
+      withTransaction: function () {
+        return this
+      },
+    }
+
     const cartRepository = MockRepository({
       findOneWithRelations: () =>
         Promise.resolve({
@@ -1294,14 +1342,14 @@ describe("CartService", () => {
       withTransaction: function () {
         return this
       },
-      calculateVariantPrice: async (variantId, context) => {
+      calculateVariantPrice: async ([{ variantId }], context) => {
         if (variantId === IdMap.getId("fail")) {
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
             `Money amount for variant with id ${variantId} in region ${context.region_id} does not exist`
           )
         } else {
-          return { calculatedPrice: 100 }
+          return new Map([[variantId, { calculatedPrice: 100 }]])
         }
       },
     }
@@ -1309,6 +1357,7 @@ describe("CartService", () => {
       manager: MockManager,
       paymentProviderService,
       addressRepository,
+      discountService,
       totalsService,
       cartRepository,
       newTotalsService: newTotalsServiceMock,
@@ -1361,7 +1410,11 @@ describe("CartService", () => {
           shipping_address: {
             country_code: "us",
           },
-          items: [IdMap.getId("testitem")],
+          items: [
+            {
+              id: IdMap.getId("testitem"),
+            },
+          ],
           payment_session: null,
           payment_sessions: [],
           gift_cards: [],
@@ -1378,7 +1431,7 @@ describe("CartService", () => {
 
   describe("setPaymentSession", () => {
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("cartWithLine")) {
           return Promise.resolve({
             total: 100,
@@ -1586,25 +1639,34 @@ describe("CartService", () => {
     }
 
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("cart-to-filter")) {
-          return Promise.resolve(cart3)
+          return Promise.resolve({
+            id: IdMap.getId("cart-to-filter"),
+            ...cart3,
+          })
         }
         if (q.where.id === IdMap.getId("cart-with-session")) {
-          return Promise.resolve(cart2)
+          return Promise.resolve({
+            id: IdMap.getId("cart-with-session"),
+            ...cart2,
+          })
         }
         if (q.where.id === IdMap.getId("cart-remove")) {
-          return Promise.resolve(cart4)
+          return Promise.resolve({ id: IdMap.getId("cart-remove"), ...cart4 })
         }
         if (q.where.id === IdMap.getId("cart-negative")) {
-          return Promise.resolve(cart4)
+          return Promise.resolve({ id: IdMap.getId("cart-negative"), ...cart4 })
         }
         if (
           q.where.id === IdMap.getId("cartWithMixedSelectedInitiatedSessions")
         ) {
-          return Promise.resolve(cart5)
+          return Promise.resolve({
+            id: IdMap.getId("cartWithMixedSelectedInitiatedSessions"),
+            ...cart5,
+          })
         }
-        return Promise.resolve(cart1)
+        return Promise.resolve({ id: q.where.id, ...cart1 })
       },
     })
 
@@ -1688,8 +1750,8 @@ describe("CartService", () => {
 
       expect(paymentSessionRepositoryMock.create).toHaveBeenCalledTimes(1)
       expect(paymentSessionRepositoryMock.save).toHaveBeenCalledTimes(2) // create and update
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledTimes(1)
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledTimes(1)
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: "not_in_region",
       })
     })
@@ -1697,12 +1759,12 @@ describe("CartService", () => {
     it("removes if cart total === 0", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-remove"))
 
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledTimes(2)
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledTimes(2)
 
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: provider1Id,
       })
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: provider2Id,
       })
     })
@@ -1710,12 +1772,12 @@ describe("CartService", () => {
     it("removes if cart total < 0", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-negative"))
 
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledTimes(2)
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledTimes(2)
 
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: provider1Id,
       })
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: provider2Id,
       })
     })
@@ -1792,7 +1854,7 @@ describe("CartService", () => {
     const cartWithCustomSO = buildCart("cart-with-custom-so")
 
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         switch (q.where.id) {
           case IdMap.getId("lines"):
             return Promise.resolve(cart3)
@@ -1991,7 +2053,7 @@ describe("CartService", () => {
     }
 
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("with-d")) {
           return Promise.resolve({
             id: IdMap.getId("cart"),
@@ -2480,7 +2542,7 @@ describe("CartService", () => {
 
   describe("removeDiscount", () => {
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         return Promise.resolve({
           id: IdMap.getId("cart"),
           discounts: [
@@ -2577,6 +2639,7 @@ describe("CartService", () => {
       .register("regionService", asValue(RegionServiceMock))
       .register("lineItemService", asValue(LineItemServiceMock))
       .register("shippingOptionService", asValue(ShippingOptionServiceMock))
+      .register("shippingProfileService", asValue(ShippingProfileServiceMock))
       .register("customerService", asValue(CustomerServiceMock))
       .register("discountService", asValue({}))
       .register("giftCardService", asValue({}))
@@ -2604,6 +2667,10 @@ describe("CartService", () => {
       .register("taxProviderService", asClass(TaxProviderService))
       .register("newTotalsService", asClass(NewTotalsService))
       .register("cartService", asClass(CartService))
+      .register("remoteQuery", asValue(null))
+      .register("remoteLink", asValue(null))
+      .register("pricingModuleService", asValue(undefined))
+      .register("pricingService", asClass(PricingService))
 
     const cartService = container.resolve("cartService")
 

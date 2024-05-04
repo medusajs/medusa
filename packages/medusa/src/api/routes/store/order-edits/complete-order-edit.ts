@@ -9,10 +9,13 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits/{id}/complete
+ * @oas [post] /store/order-edits/{id}/complete
  * operationId: "PostOrderEditsOrderEditComplete"
- * summary: "Completes an OrderEdit"
- * description: "Completes an OrderEdit."
+ * summary: "Complete an Order Edit"
+ * description: "Complete an Order Edit and reflect its changes on the original order. Any additional payment required must be authorized first using the Payment Collection API Routes."
+ * externalDocs:
+ *   description: "How to handle order edits in a storefront"
+ *   url: "https://docs.medusajs.com/modules/orders/storefront/handle-order-edits"
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit.
  * x-codegen:
@@ -23,16 +26,44 @@ import {
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orderEdits.complete(order_edit_id)
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       medusa.orderEdits.complete(orderEditId)
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCompleteOrderEdit } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *       }
+ *
+ *       const OrderEdit = ({ orderEditId }: Props) => {
+ *         const completeOrderEdit = useCompleteOrderEdit(
+ *           orderEditId
+ *         )
+ *         // ...
+ *
+ *         const handleCompleteOrderEdit = () => {
+ *           completeOrderEdit.mutate(void 0, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.confirmed_at)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/order-edits/{id}/complete'
+ *       curl -X POST '{backend_url}/store/order-edits/{id}/complete'
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

@@ -1,0 +1,29 @@
+{
+  "description": "This component is based on [Radix UI Select](https://www.radix-ui.com/primitives/docs/components/select).\nIt also accepts all props of the HTML `select` component.",
+  "methods": [],
+  "displayName": "Select",
+  "props": {
+    "size": {
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"base\" | \"small\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"small\""
+          }
+        ]
+      },
+      "description": "The select's size.",
+      "defaultValue": {
+        "value": "\"base\"",
+        "computed": false
+      }
+    }
+  }
+}

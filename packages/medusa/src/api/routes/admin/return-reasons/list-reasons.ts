@@ -7,10 +7,10 @@ import { ReturnReasonService } from "../../../../services"
 import { Selector } from "../../../../types/common"
 
 /**
- * @oas [get] /return-reasons
+ * @oas [get] /admin/return-reasons
  * operationId: "GetReturnReasons"
  * summary: "List Return Reasons"
- * description: "Retrieves a list of Return Reasons."
+ * description: "Retrieve a list of Return Reasons."
  * x-authenticated: true
  * x-codegen:
  *   method: list
@@ -24,17 +24,47 @@ import { Selector } from "../../../../types/common"
  *       medusa.admin.returnReasons.list()
  *       .then(({ return_reasons }) => {
  *         console.log(return_reasons.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminReturnReasons } from "medusa-react"
+ *
+ *       const ReturnReasons = () => {
+ *         const { return_reasons, isLoading } = useAdminReturnReasons()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {return_reasons && !return_reasons.length && (
+ *               <span>No Return Reasons</span>
+ *             )}
+ *             {return_reasons && return_reasons.length > 0 && (
+ *               <ul>
+ *                 {return_reasons.map((reason) => (
+ *                   <li key={reason.id}>
+ *                     {reason.label}: {reason.value}
+ *                   </li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ReturnReasons
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/return-reasons' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/return-reasons' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Return Reason
+ *   - Return Reasons
  * responses:
  *   200:
  *     description: OK

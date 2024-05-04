@@ -1,45 +1,97 @@
-import { IsInt, IsOptional, IsString } from "class-validator"
-
-import { Type } from "class-transformer"
-import { omit } from "lodash"
+import { IsBoolean, IsInt, IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
+  ProductVariantInventoryService,
   RegionService,
+  SalesChannelService,
 } from "../../../../services"
+
+import { IInventoryService } from "@medusajs/types"
+import { Transform, Type } from "class-transformer"
+import { omit } from "lodash"
 import ProductVariantService from "../../../../services/product-variant"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { AdminPriceSelectionParams } from "../../../../types/price-selection"
+import { PricedVariant } from "../../../../types/pricing"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
- * @oas [get] /variants
+ * @oas [get] /admin/variants
  * operationId: "GetVariants"
  * summary: "List Product Variants"
- * description: "Retrieves a list of Product Variants"
+ * description: "Retrieve a list of Product Variants. The product variant can be filtered by fields such as `id` or `title`. The product variant can also be paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) id {string} A Product Variant id to filter by.
- *   - (query) ids {string} A comma separated list of Product Variant ids to filter by.
- *   - (query) expand {string} A comma separated list of Product Variant relations to load.
- *   - (query) fields {string} A comma separated list of Product Variant fields to include.
- *   - (query) offset=0 {number} How many product variants to skip in the result.
- *   - (query) limit=100 {number} Maximum number of Product Variants to return.
- *   - (query) cart_id {string} The id of the cart to use for price selection.
- *   - (query) region_id {string} The id of the region to use for price selection.
- *   - (query) currency_code {string} The currency code to use for price selection.
- *   - (query) customer_id {string} The id of the customer to use for price selection.
+ *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: Filter by product variant IDs.
+ *     schema:
+ *       oneOf:
+ *        - type: string
+ *          description: A product variant ID.
+ *        - type: array
+ *          description: An array of product variant IDs.
+ *          items:
+ *            type: string
+ *   - (query) expand {string} "Comma-separated relations that should be expanded in the returned product variants."
+ *   - (query) fields {string} "Comma-separated fields that should be included in the returned product variants."
+ *   - (query) offset=0 {number} The number of product variants to skip when retrieving the product variants.
+ *   - (query) limit=100 {number} Limit the number of product variants returned.
+ *   - (query) order {string} The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *   - (query) manage_inventory {boolean} Filter product variants by whether their inventory is managed or not.
+ *   - (query) allow_backorder {boolean} Filter product variants by whether they are allowed to be backordered or not.
+ *   - in: query
+ *     name: cart_id
+ *     style: form
+ *     explode: false
+ *     description: The ID of the cart to use for the price selection context.
+ *     schema:
+ *       type: string
+ *   - in: query
+ *     name: region_id
+ *     style: form
+ *     explode: false
+ *     description: The ID of the region to use for the price selection context.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         description: "Price selection context overview"
+ *         url: "https://docs.medusajs.com/modules/price-lists/price-selection-strategy#context-object"
+ *   - in: query
+ *     name: currency_code
+ *     style: form
+ *     explode: false
+ *     description: The 3 character ISO currency code to use for the price selection context.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         description: "Price selection context overview"
+ *         url: "https://docs.medusajs.com/modules/price-lists/price-selection-strategy#context-object"
+ *   - in: query
+ *     name: customer_id
+ *     style: form
+ *     explode: false
+ *     description: The ID of the customer to use for the price selection context.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         description: "Price selection context overview"
+ *         url: "https://docs.medusajs.com/modules/price-lists/price-selection-strategy#context-object"
  *   - in: query
  *     name: title
  *     style: form
  *     explode: false
- *     description: product variant title to search for.
+ *     description: Filter by title.
  *     schema:
  *       oneOf:
  *         - type: string
- *           description: a single title to search by
+ *           description: a single title to filter by
  *         - type: array
- *           description: multiple titles to search by
+ *           description: multiple titles to filter by
  *           items:
  *             type: string
  *   - in: query
@@ -48,9 +100,9 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     schema:
  *       oneOf:
  *         - type: number
- *           description: a specific number to search by.
+ *           description: a specific number to filter by.
  *         - type: object
- *           description: search using less and greater than comparisons.
+ *           description: filter using less and greater than comparisons.
  *           properties:
  *             lt:
  *               type: number
@@ -77,17 +129,45 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       medusa.admin.variants.list()
  *       .then(({ variants, limit, offset, count }) => {
  *         console.log(variants.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminVariants } from "medusa-react"
+ *
+ *       const Variants = () => {
+ *         const { variants, isLoading } = useAdminVariants()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {variants && !variants.length && (
+ *               <span>No Variants</span>
+ *             )}
+ *             {variants && variants.length > 0 && (
+ *               <ul>
+ *                 {variants.map((variant) => (
+ *                   <li key={variant.id}>{variant.title}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Variants
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/variants' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/variants' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product Variant
+ *   - Product Variants
  * responses:
  *   200:
  *     description: OK
@@ -143,13 +223,35 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const variants = await pricingService.setVariantPrices(rawVariants, {
+  let variants = await pricingService.setAdminVariantPricing(rawVariants, {
     cart_id: req.validatedQuery.cart_id,
     region_id: regionId,
     currency_code: currencyCode,
     customer_id: req.validatedQuery.customer_id,
     include_discount_prices: true,
+    ignore_cache: true,
   })
+
+  const inventoryService: IInventoryService | undefined =
+    req.scope.resolve("inventoryService")
+
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
+  if (inventoryService) {
+    const [salesChannelsIds] = await salesChannelService.listAndCount(
+      {},
+      { select: ["id"] }
+    )
+
+    variants = (await productVariantInventoryService.setVariantAvailability(
+      variants,
+      salesChannelsIds.map((salesChannel) => salesChannel.id)
+    )) as PricedVariant[]
+  }
 
   res.json({
     variants,
@@ -159,38 +261,90 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product variants.
+ */
 export class AdminGetVariantsParams extends AdminPriceSelectionParams {
+  /**
+   * Search term to search product variants' IDs.
+   */
   @IsOptional()
   @IsString()
   q?: string
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 20
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit?: number = 20
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsOptional()
   @IsString()
   expand?: string
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsString()
   @IsOptional()
   fields?: string
 
+  /**
+   * IDs to filter product variants by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   id?: string | string[]
 
+  /**
+   * Titles to filter product variants by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   title?: string | string[]
 
+  /**
+   * Number filters to apply on product variants' `inventory_quantity` field.
+   */
   @IsOptional()
   @IsType([Number, NumericalComparisonOperator])
   inventory_quantity?: number | NumericalComparisonOperator
+
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsString()
+  @IsOptional()
+  order?: string
+
+  /**
+   * Filter product variants by whether their inventory is managed or not.
+   */
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  manage_inventory?: boolean
+
+  /**
+   * Filter product variants by whether they are allowed to be backordered or not.
+   */
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  allow_backorder?: boolean
 }

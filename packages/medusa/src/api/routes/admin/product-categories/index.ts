@@ -1,8 +1,8 @@
 import { Router } from "express"
 
 import middlewares, {
-  transformQuery,
   transformBody,
+  transformQuery,
 } from "../../../middlewares"
 
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
@@ -19,23 +19,23 @@ import listProductCategories, {
 } from "./list-product-categories"
 
 import createProductCategory, {
-  AdminPostProductCategoriesReq,
   AdminPostProductCategoriesParams,
+  AdminPostProductCategoriesReq,
 } from "./create-product-category"
 
 import updateProductCategory, {
-  AdminPostProductCategoriesCategoryReq,
   AdminPostProductCategoriesCategoryParams,
+  AdminPostProductCategoriesCategoryReq,
 } from "./update-product-category"
 
 import addProductsBatch, {
-  AdminPostProductCategoriesCategoryProductsBatchReq,
   AdminPostProductCategoriesCategoryProductsBatchParams,
+  AdminPostProductCategoriesCategoryProductsBatchReq,
 } from "./add-products-batch"
 
 import deleteProductsBatch, {
-  AdminDeleteProductCategoriesCategoryProductsBatchReq,
   AdminDeleteProductCategoriesCategoryProductsBatchParams,
+  AdminDeleteProductCategoriesCategoryProductsBatchReq,
 } from "./delete-products-batch"
 
 import { ProductCategory } from "../../../../models"
@@ -141,18 +141,31 @@ export const allowedAdminProductCategoryRelations = [
 export const defaultProductCategoryFields = [
   "id",
   "name",
+  "description",
   "handle",
   "is_active",
   "is_internal",
+  "rank",
+  "parent_category_id",
   "created_at",
   "updated_at",
+  "metadata",
 ]
 
 /**
  * @schema AdminProductCategoriesCategoryRes
  * type: object
+ * description: "The product category's details."
+ * x-expanded-relations:
+ *   field: product_category
+ *   relations:
+ *     - category_children
+ *     - parent_category
+ * required:
+ *   - product_category
  * properties:
  *   product_category:
+ *     description: "Product category details."
  *     $ref: "#/components/schemas/ProductCategory"
  */
 export type AdminProductCategoriesCategoryRes = {
@@ -162,6 +175,10 @@ export type AdminProductCategoriesCategoryRes = {
 /**
  * @schema AdminProductCategoriesCategoryDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -180,9 +197,21 @@ export type AdminProductCategoriesCategoryDeleteRes = DeleteResponse
 /**
  * @schema AdminProductCategoriesListRes
  * type: object
+ * description: "The list of product categories with pagination fields."
+ * x-expanded-relations:
+ *   field: product_categories
+ *   relations:
+ *     - category_children
+ *     - parent_category
+ * required:
+ *   - product_categories
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   product_categories:
  *     type: array
+ *     description: "An array of product category details."
  *     items:
  *       $ref: "#/components/schemas/ProductCategory"
  *   count:
@@ -190,7 +219,7 @@ export type AdminProductCategoriesCategoryDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of product categories skipped when retrieving the product categories.
  *   limit:
  *     type: integer
  *     description: The number of items per page

@@ -1,8 +1,9 @@
-import path from "path"
-import { ProductCategory } from "@medusajs/medusa"
-import { initDb, useDb } from "../../../helpers/use-db"
-import { simpleProductCategoryFactory } from '../../factories'
 import { ProductCategoryRepository } from "@medusajs/medusa/dist/repositories/product-category"
+import path from "path"
+import { initDb, useDb } from "../../../environment-helpers/use-db"
+import { simpleProductCategoryFactory } from "../../../factories"
+
+jest.setTimeout(30000)
 
 describe("Product Categories", () => {
   let dbConnection
@@ -28,27 +29,33 @@ describe("Product Categories", () => {
 
     beforeEach(async () => {
       a1 = await simpleProductCategoryFactory(dbConnection, {
-        name: 'a1',
-        is_active: true
+        name: "a1",
+        is_active: true,
+        rank: 0,
       })
       a11 = await simpleProductCategoryFactory(dbConnection, {
-        name: 'a11',
+        name: "a11",
         parent_category: a1,
-        is_active: true
+        is_active: true,
+        rank: 0,
       })
       a111 = await simpleProductCategoryFactory(dbConnection, {
-        name: 'a111',
+        name: "a111",
         parent_category: a11,
         is_active: true,
-        is_internal: true
+        is_internal: true,
+        rank: 0,
       })
       a12 = await simpleProductCategoryFactory(dbConnection, {
-        name: 'a12',
+        name: "a12",
         parent_category: a1,
-        is_active: false
+        is_active: false,
+        rank: 1,
       })
 
-      productCategoryRepository = dbConnection.manager.getCustomRepository(ProductCategoryRepository)
+      productCategoryRepository = dbConnection.manager.withRepository(
+        ProductCategoryRepository
+      )
     })
 
     it("can fetch all root categories", async () => {
@@ -57,7 +64,7 @@ describe("Product Categories", () => {
       expect(rootCategories).toEqual([
         expect.objectContaining({
           name: "a1",
-        })
+        }),
       ])
     })
 
@@ -99,47 +106,46 @@ describe("Product Categories", () => {
     let productCategoryRepository
 
     beforeEach(async () => {
-      a1 = await simpleProductCategoryFactory(
-        dbConnection, {
-          name: 'skinny jeans',
-          handle: 'skinny-jeans',
-          is_active: true
-        }
-      )
+      a1 = await simpleProductCategoryFactory(dbConnection, {
+        name: "skinny jeans",
+        handle: "skinny-jeans",
+        is_active: true,
+        rank: 0,
+      })
 
-      a11 = await simpleProductCategoryFactory(
-        dbConnection, {
-          name: 'winter shirts',
-          handle: 'winter-shirts',
-          parent_category: a1,
-          is_active: true
-        }
-      )
+      a11 = await simpleProductCategoryFactory(dbConnection, {
+        name: "winter shirts",
+        handle: "winter-shirts",
+        parent_category: a1,
+        is_active: true,
+        rank: 0,
+      })
 
-      a111 = await simpleProductCategoryFactory(
-        dbConnection, {
-          name: 'running shoes',
-          handle: 'running-shoes',
-          parent_category: a11
-        }
-      )
+      a111 = await simpleProductCategoryFactory(dbConnection, {
+        name: "running shoes",
+        handle: "running-shoes",
+        parent_category: a11,
+        rank: 0,
+      })
 
-      a12 = await simpleProductCategoryFactory(
-        dbConnection, {
-          name: 'casual shoes',
-          handle: 'casual-shoes',
-          parent_category: a1,
-          is_internal: true
-        }
-      )
+      a12 = await simpleProductCategoryFactory(dbConnection, {
+        name: "casual shoes",
+        handle: "casual-shoes",
+        parent_category: a1,
+        is_internal: true,
+        rank: 1,
+      })
 
-      productCategoryRepository = dbConnection.manager.getCustomRepository(ProductCategoryRepository)
+      productCategoryRepository = dbConnection.manager.withRepository(
+        ProductCategoryRepository
+      )
     })
 
     it("fetches all active categories", async () => {
-      const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
-        { where: { is_active: true } },
-      )
+      const [categories, count] =
+        await productCategoryRepository.getFreeTextSearchResultsAndCount({
+          where: { is_active: true },
+        })
 
       expect(count).toEqual(2)
       expect(categories).toEqual([
@@ -153,9 +159,10 @@ describe("Product Categories", () => {
     })
 
     it("fetches all internal categories", async () => {
-      const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
-        { where: { is_internal: true } },
-      )
+      const [categories, count] =
+        await productCategoryRepository.getFreeTextSearchResultsAndCount({
+          where: { is_internal: true },
+        })
 
       expect(count).toEqual(1)
       expect(categories).toEqual([
@@ -166,10 +173,11 @@ describe("Product Categories", () => {
     })
 
     it("fetches all categories with query shoes", async () => {
-      const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
-        { where: {} },
-        'shoes'
-      )
+      const [categories, count] =
+        await productCategoryRepository.getFreeTextSearchResultsAndCount(
+          { where: {} },
+          "shoes"
+        )
 
       expect(count).toEqual(2)
       expect(categories).toEqual([
@@ -183,10 +191,11 @@ describe("Product Categories", () => {
     })
 
     it("fetches all categories with query casual-", async () => {
-      const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
-        { where: {} },
-        'casual-'
-      )
+      const [categories, count] =
+        await productCategoryRepository.getFreeTextSearchResultsAndCount(
+          { where: {} },
+          "casual-"
+        )
 
       expect(count).toEqual(1)
       expect(categories).toEqual([
@@ -197,12 +206,11 @@ describe("Product Categories", () => {
     })
 
     it("builds relations for categories", async () => {
-      const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
-        {
+      const [categories, count] =
+        await productCategoryRepository.getFreeTextSearchResultsAndCount({
           where: { id: a11.id },
-          relations: ['parent_category', 'category_children'],
-        },
-      )
+          relations: { parent_category: true, category_children: true },
+        })
 
       expect(count).toEqual(1)
       expect(categories[0]).toEqual(
@@ -214,8 +222,8 @@ describe("Product Categories", () => {
           category_children: [
             expect.objectContaining({
               id: a111.id,
-            })
-          ]
+            }),
+          ],
         })
       )
     })

@@ -3,12 +3,12 @@ import { Request, Response } from "express"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [get] /publishable-api-keys/{id}
+ * @oas [get] /admin/publishable-api-keys/{id}
  * operationId: "GetPublishableApiKeysPublishableApiKey"
- * summary: "Get a PublishableApiKey"
- * description: "Retrieve the Publishable Api Key."
+ * summary: "Get a Publishable API Key"
+ * description: "Retrieve a publishable API key's details."
  * parameters:
- *   - (path) id=* {string} The ID of the PublishableApiKey.
+ *   - (path) id=* {string} The ID of the Publishable API Key.
  * x-authenticated: true
  * x-codegen:
  *   method: retrieve
@@ -23,16 +23,47 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       .then(({ publishable_api_key }) => {
  *         console.log(publishable_api_key.id)
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminPublishableApiKey,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         publishableApiKeyId: string
+ *       }
+ *
+ *       const PublishableApiKey = ({
+ *         publishableApiKeyId
+ *       }: Props) => {
+ *         const { publishable_api_key, isLoading } =
+ *           useAdminPublishableApiKey(
+ *             publishableApiKeyId
+ *           )
+ *
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {publishable_api_key && <span>{publishable_api_key.title}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default PublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/publishable-api-keys/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - PublishableApiKey
+ *   - Publishable Api Keys
  * responses:
  *   200:
  *     description: OK

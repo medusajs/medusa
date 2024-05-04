@@ -1,15 +1,21 @@
-import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+
 import { EntityManager } from "typeorm"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { setVariantAvailability } from "./create-line-item/utils/handler-steps"
+import { WithRequiredProperty } from "../../../../types/common"
+import { Cart } from "../../../../models"
 
 /**
- * @oas [post] /carts/{id}/payment-sessions
+ * @oas [post] /store/carts/{id}/payment-sessions
  * operationId: "PostCartsCartPaymentSessions"
  * summary: "Create Payment Sessions"
- * description: "Creates Payment Sessions for each of the available Payment Providers in the Cart's Region."
+ * description: "Create Payment Sessions for each of the available Payment Providers in the Cart's Region. If there's only one payment session created,
+ *  it will be selected by default. The creation of the payment session uses the payment provider and may require sending requests to third-party services."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
+ *   - (path) id=* {string} The ID of the Cart.
  * x-codegen:
  *   method: createPaymentSessions
  * x-codeSamples:
@@ -18,16 +24,41 @@ import IdempotencyKeyService from "../../../../services/idempotency-key"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.createPaymentSessions(cart_id)
+ *       medusa.carts.createPaymentSessions(cartId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCreatePaymentSession } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const createPaymentSession = useCreatePaymentSession(cartId)
+ *
+ *         const handleComplete = () => {
+ *           createPaymentSession.mutate(void 0, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.payment_sessions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions'
+ *       curl -X POST '{backend_url}/store/carts/{id}/payment-sessions'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -49,10 +80,10 @@ import IdempotencyKeyService from "../../../../services/idempotency-key"
 export default async (req, res) => {
   const { id } = req.params
 
-  const cartService: CartService = req.scope.resolve("cartService")
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
   )
+
   const manager: EntityManager = req.scope.resolve("manager")
 
   const headerKey = req.get("Idempotency-Key") || ""
@@ -78,35 +109,53 @@ export default async (req, res) => {
   while (inProgress) {
     switch (idempotencyKey.recovery_point) {
       case "started": {
-        await manager
-          .transaction("SERIALIZABLE", async (transactionManager) => {
-            idempotencyKey = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .workStage(
-                idempotencyKey.idempotency_key,
-                async (stageManager) => {
-                  await cartService
-                    .withTransaction(stageManager)
-                    .setPaymentSessions(id)
-
-                  const cart = await cartService
-                    .withTransaction(stageManager)
-                    .retrieveWithTotals(id, {
-                      select: defaultStoreCartFields,
-                      relations: defaultStoreCartRelations,
-                    })
-
-                  return {
-                    response_code: 200,
-                    response_body: { cart },
-                  }
-                }
+        try {
+          const cartService: CartService = req.scope.resolve("cartService")
+          const getCart = async () => {
+            return await cartService
+              .withTransaction(manager)
+              .retrieveWithTotals(
+                id,
+                {
+                  select: defaultStoreCartFields,
+                  relations: [
+                    ...defaultStoreCartRelations,
+                    "region.tax_rates",
+                    "customer",
+                  ],
+                },
+                { force_taxes: true }
               )
+          }
+
+          const cart = await getCart()
+
+          await manager.transaction(async (transactionManager) => {
+            const txCartService =
+              cartService.withTransaction(transactionManager)
+            await txCartService.setPaymentSessions(
+              cart as WithRequiredProperty<Cart, "total">
+            )
           })
-          .catch((e) => {
-            inProgress = false
-            err = e
+
+          const freshCart = await getCart()
+          await setVariantAvailability({
+            cart: freshCart,
+            container: req.scope,
+            manager,
           })
+
+          idempotencyKey = await idempotencyKeyService
+            .withTransaction(manager)
+            .update(idempotencyKey.idempotency_key, {
+              recovery_point: "finished",
+              response_code: 200,
+              response_body: { cart: freshCart },
+            })
+        } catch (e) {
+          inProgress = false
+          err = e
+        }
         break
       }
 
@@ -133,5 +182,11 @@ export default async (req, res) => {
     throw err
   }
 
+  if (idempotencyKey.response_body.cart) {
+    idempotencyKey.response_body.data = cleanResponseData(
+      idempotencyKey.response_body.cart,
+      []
+    )
+  }
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }

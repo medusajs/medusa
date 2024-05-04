@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
 import BaseFulfillmentService from "medusa-interfaces"
 import { EntityManager } from "typeorm"
@@ -34,12 +35,9 @@ type CalculateOptionPriceInput = {
 }
 
 /**
- * Helps retrive fulfillment providers
+ * Helps retrieve fulfillment providers
  */
 class FulfillmentProviderService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly container_: FulfillmentProviderContainer
   // eslint-disable-next-line max-len
   protected readonly fulfillmentProviderRepository_: typeof FulfillmentProviderRepository
@@ -47,16 +45,15 @@ class FulfillmentProviderService extends TransactionBaseService {
   constructor(container: FulfillmentProviderContainer) {
     super(container)
 
-    const { manager, fulfillmentProviderRepository } = container
+    const { fulfillmentProviderRepository } = container
 
     this.container_ = container
-    this.manager_ = manager
     this.fulfillmentProviderRepository_ = fulfillmentProviderRepository
   }
 
   async registerInstalledProviders(providers: string[]): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const fulfillmentProviderRepo = manager.getCustomRepository(
+      const fulfillmentProviderRepo = manager.withRepository(
         this.fulfillmentProviderRepository_
       )
       await fulfillmentProviderRepo.update({}, { is_installed: false })
@@ -69,7 +66,7 @@ class FulfillmentProviderService extends TransactionBaseService {
   }
 
   async list(): Promise<FulfillmentProvider[]> {
-    const fpRepo = this.manager_.getCustomRepository(
+    const fpRepo = this.activeManager_.withRepository(
       this.fulfillmentProviderRepository_
     )
 
@@ -79,7 +76,7 @@ class FulfillmentProviderService extends TransactionBaseService {
   async listFulfillmentOptions(
     providerIds: string[]
   ): Promise<FulfillmentOptions[]> {
-    return await Promise.all(
+    return await promiseAll(
       providerIds.map(async (p) => {
         const provider = this.retrieveProvider(p)
         return {

@@ -1,0 +1,10 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": [
+    "../../../packages/product/tsconfig.json"
+  ],
+  "include": [
+    "../../../packages/product/src",
+    "../../../packages/utils/src/product"
+  ]
+}

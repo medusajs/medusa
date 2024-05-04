@@ -1,0 +1,53 @@
+---
+title: "usePrompt"
+description: ""
+component: true
+---
+
+This hook can be used to prompt the user for confirmation of an action.
+
+## Usage
+
+---
+
+```tsx
+import { usePrompt } from "@medusajs/ui"
+```
+
+```tsx
+const dialog = usePrompt()
+const actionFunction = async () => {
+  const confirmed = await dialog({
+    title: "Are you sure?",
+    description: "Please confirm this action",
+  })
+}
+```
+
+## API Reference
+
+---
+
+### Call Signature
+
+`usePrompt()`
+
+### usePrompt return
+
+<HookValues hook="usePrompt" />
+
+### UsePromptProps
+
+<ComponentReference mainComponent="RenderPrompt" />
+
+## Examples
+
+---
+
+### Basic
+
+<ComponentExample name="use-prompt-demo" />
+
+### With Verification
+
+<ComponentExample name="use-prompt-verification" />

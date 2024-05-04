@@ -5,10 +5,10 @@ import {
 import ReturnReasonService from "../../../../services/return-reason"
 
 /**
- * @oas [get] /return-reasons/{id}
+ * @oas [get] /store/return-reasons/{id}
  * operationId: "GetReturnReasonsReason"
  * summary: "Get a Return Reason"
- * description: "Retrieves a Return Reason."
+ * description: "Retrieve a Return Reason's details."
  * parameters:
  *   - (path) id=* {string} The id of the Return Reason.
  * x-codegen:
@@ -19,16 +19,43 @@ import ReturnReasonService from "../../../../services/return-reason"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.returnReasons.retrieve(reason_id)
+ *       medusa.returnReasons.retrieve(reasonId)
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useReturnReason } from "medusa-react"
+ *
+ *       type Props = {
+ *         returnReasonId: string
+ *       }
+ *
+ *       const ReturnReason = ({ returnReasonId }: Props) => {
+ *         const {
+ *           return_reason,
+ *           isLoading
+ *         } = useReturnReason(
+ *           returnReasonId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {return_reason && <span>{return_reason.label}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ReturnReason
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/return-reasons/{id}'
+ *       curl '{backend_url}/store/return-reasons/{id}'
  * tags:
- *   - Return Reason
+ *   - Return Reasons
  * responses:
  *   200:
  *     description: OK

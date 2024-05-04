@@ -6,21 +6,29 @@ import {
   Index,
   JoinColumn,
   OneToOne,
+  Relation,
 } from "typeorm"
-import {
-  DbAwareColumn,
-  resolveDbGenerationStrategy,
-  resolveDbType,
-} from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
-import { Cart } from "./cart"
-import { Order } from "./order"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { manualAutoIncrement } from "../utils/manual-auto-increment"
+import { Cart } from "./cart"
+import { Order } from "./order"
 
+/**
+ * @enum
+ *
+ * The draft order's status.
+ */
 export enum DraftOrderStatus {
+  /**
+   * The draft order is open.
+   */
   OPEN = "open",
+  /**
+   * The draft order is completed, and an order has been created from it.
+   */
   COMPLETED = "completed",
 }
 
@@ -31,7 +39,7 @@ export class DraftOrder extends BaseEntity {
 
   @Index()
   @Column()
-  @Generated(resolveDbGenerationStrategy("increment"))
+  @Generated("increment")
   display_id: number
 
   @Index()
@@ -40,7 +48,7 @@ export class DraftOrder extends BaseEntity {
 
   @OneToOne(() => Cart, { onDelete: "CASCADE" })
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart: Relation<Cart>
 
   @Index()
   @Column({ nullable: true })
@@ -48,7 +56,7 @@ export class DraftOrder extends BaseEntity {
 
   @OneToOne(() => Order)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @Column({ nullable: true, type: resolveDbType("timestamptz") })
   canceled_at: Date
@@ -65,6 +73,9 @@ export class DraftOrder extends BaseEntity {
   @Column({ nullable: true })
   idempotency_key: string
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {
     this.id = generateEntityId(this.id, "dorder")
@@ -82,7 +93,7 @@ export class DraftOrder extends BaseEntity {
 /**
  * @schema DraftOrder
  * title: "DraftOrder"
- * description: "Represents a draft order"
+ * description: "A draft order is created by an admin without direct involvement of the customer. Once its payment is marked as captured, it is transformed into an order."
  * type: object
  * required:
  *   - canceled_at
@@ -103,7 +114,7 @@ export class DraftOrder extends BaseEntity {
  *     type: string
  *     example: dorder_01G8TJFKBG38YYFQ035MSVG03C
  *   status:
- *     description: The status of the draft order
+ *     description: The status of the draft order. It's changed to `completed` when it's transformed to an order.
  *     type: string
  *     enum:
  *       - open
@@ -119,16 +130,18 @@ export class DraftOrder extends BaseEntity {
  *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: A cart object. Available if the relation `cart` is expanded.
+ *     description: The details of the cart associated with the draft order.
+ *     x-expandable: "cart"
  *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   order_id:
- *     description: The ID of the order associated with the draft order.
+ *     description: The ID of the order created from the draft order when its payment is captured.
  *     nullable: true
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation `order` is expanded.
+ *     description: The details of the order created from the draft order when its payment is captured.
+ *     x-expandable: "order"
  *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   canceled_at:
@@ -151,7 +164,7 @@ export class DraftOrder extends BaseEntity {
  *     nullable: true
  *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       url: https://docs.medusajs.com/development/idempotency-key/overview.md
  *       description: Learn more how to use the idempotency key.
  *   created_at:
  *     description: The date with timezone at which the resource was created.
@@ -166,4 +179,7 @@ export class DraftOrder extends BaseEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

@@ -1,4 +1,0 @@
-type: object
-properties:
-  user:
-    $ref: ./User.yaml

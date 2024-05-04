@@ -8,22 +8,25 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { ClaimService, OrderService } from "../../../../services"
 
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /order/{id}/claims/{claim_id}
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}
  * operationId: "PostOrdersOrderClaimsClaim"
  * summary: "Update a Claim"
- * description: "Updates a Claim."
+ * description: "Update a Claim's details."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Order.
+ *   - (path) id=* {string} The ID of the Order associated with the claim.
  *   - (path) claim_id=* {string} The ID of the Claim.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -31,6 +34,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsClaimReq"
  * x-codegen:
  *   method: updateClaim
+ *   params: AdminPostOrdersOrderClaimsClaimParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -38,26 +42,57 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.updateClaim(order_id, claim_id, {
+ *       medusa.admin.orders.updateClaim(orderId, claimId, {
  *         no_notification: true
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateClaim } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *         claimId: string
+ *       }
+ *
+ *       const Claim = ({ orderId, claimId }: Props) => {
+ *         const updateClaim = useAdminUpdateClaim(orderId)
+ *         // ...
+ *
+ *         const handleUpdate = () => {
+ *           updateClaim.mutate({
+ *             claim_id: claimId,
+ *             no_notification: false
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.claims)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Claim
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/claims/{claim_id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/orders/{id}/claims/{claim_id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "no_notification": true
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Claim
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -96,12 +131,11 @@ export default async (req, res) => {
       .update(claim_id, validated)
   })
 
-  const data = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const data = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.json({ order: data })
+  res.json({ order: cleanResponseData(data, []) })
 }
 
 /**
@@ -165,6 +199,9 @@ export default async (req, res) => {
  *         metadata:
  *           description: An optional set of key-value pairs to hold additional information.
  *           type: object
+ *           externalDocs:
+ *             description: "Learn about the metadata attribute, and how to delete and update it."
+ *             url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   shipping_methods:
  *     description: The Shipping Methods to send the additional Line Items with.
  *     type: array
@@ -189,6 +226,9 @@ export default async (req, res) => {
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostOrdersOrderClaimsClaimReq {
   @IsArray()
@@ -277,3 +317,5 @@ class Tag {
   @IsOptional()
   value?: string
 }
+
+export class AdminPostOrdersOrderClaimsClaimParams extends FindParams {}

@@ -2,19 +2,25 @@ import { EntityManager } from "typeorm"
 import { AbstractCartCompletionStrategy } from "../../../../interfaces"
 import { IdempotencyKey } from "../../../../models"
 import { IdempotencyKeyService } from "../../../../services"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { Logger } from "@medusajs/types"
 
 /**
- * @oas [post] /carts/{id}/complete
+ * @oas [post] /store/carts/{id}/complete
  * summary: "Complete a Cart"
  * operationId: "PostCartsCartComplete"
- * description: "Completes a cart. The following steps will be performed. Payment
- *   authorization is attempted and if more work is required, we simply return
- *   the cart for further updates. If payment is authorized and order is not yet
- *   created, we make sure to do so. The completion of a cart can be performed
- *   idempotently with a provided header `Idempotency-Key`. If not provided, we
- *   will generate one for the request."
+ * description: |
+ *   Complete a cart and place an order or create a swap, based on the cart's type. This includes attempting to authorize the cart's payment.
+ *   If authorizing the payment requires more action, the cart will not be completed and the order will not be placed or the swap will not be created.
+ *
+ *   An idempotency key will be generated if none is provided in the header `Idempotency-Key` and added to
+ *   the response. If an error occurs during cart completion or the request is interrupted for any reason, the cart completion can be retried by passing the idempotency
+ *   key in the `Idempotency-Key` header.
+ * externalDocs:
+ *   description: "Cart completion overview"
+ *   url: "https://docs.medusajs.com/modules/carts-and-checkout/cart#cart-completion"
  * parameters:
- *   - (path) id=* {String} The Cart id.
+ *   - (path) id=* {String} The Cart ID.
  * x-codegen:
  *   method: complete
  * x-codeSamples:
@@ -23,22 +29,47 @@ import { IdempotencyKeyService } from "../../../../services"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.complete(cart_id)
+ *       medusa.carts.complete(cartId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCompleteCart } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const completeCart = useCompleteCart(cartId)
+ *
+ *         const handleComplete = () => {
+ *           completeCart.mutate(void 0, {
+ *             onSuccess: ({ data, type }) => {
+ *               console.log(data.id, type)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/complete'
+ *       curl -X POST '{backend_url}/store/carts/{id}/complete'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
- *     description: "If a cart was successfully authorized, but requires further
- *       action from the user the response body will contain the cart with an
- *       updated payment session. If the Cart was successfully completed the
- *       response body will contain the newly created Order."
+ *     description: "If the payment of the cart was successfully authorized, but requires further
+ *       action from the customer, the response body will contain the cart with an
+ *       updated payment session. Otherwise, if the payment was authorized and the cart was successfully completed, the
+ *       response body will contain either the newly created order or swap, depending on what the cart was created for."
  *     content:
  *       application/json:
  *         schema:
@@ -61,6 +92,7 @@ export default async (req, res) => {
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
   )
+  const logger: Logger = req.scope.resolve("logger")
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -72,7 +104,7 @@ export default async (req, res) => {
         .initializeRequest(headerKey, req.method, req.params, req.path)
     })
   } catch (error) {
-    console.log(error)
+    logger.log(error)
     res.status(409).send("Failed to create idempotency key")
     return
   }
@@ -89,6 +121,10 @@ export default async (req, res) => {
     idempotencyKey,
     req.request_context
   )
+
+  if (response_body.data) {
+    response_body.data = cleanResponseData(response_body.data, [])
+  }
 
   res.status(response_code).json(response_body)
 }

@@ -1,0 +1,9 @@
+If you use the `--db-url` option with the `create-medusa-app` command and the connection to the database fails, try the following:
+
+- Specify `?sslmode=require` at the end of the connection URL. Some PostgreSQL hosting providers, like Vercel, require passing this option. For example:
+
+```bash
+npx create-medusa-app@latest --db-url "postgres://default:<password><host-region>.postgres.vercel-storage.com:5432/verceldb?sslmode=require"
+```
+
+- Change the password to remove special characters. PostgreSQL requires encoding passwords if they have special characters. While the `create-medusa-app` command handles this automatically when you specify the password to the `create-medusa-app` command, when you pass a connection URL with the `--db-url` the command uses that URL as-is. So, you must either encode the special characters in the password yourself, or remove the special characters in the password.

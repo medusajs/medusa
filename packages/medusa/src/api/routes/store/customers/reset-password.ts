@@ -4,12 +4,17 @@ import jwt, { JwtPayload } from "jsonwebtoken"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [post] /customers/password-reset
+ * @oas [post] /store/customers/password-reset
  * operationId: PostCustomersResetPassword
  * summary: Reset Password
- * description: "Resets a Customer's password using a password token created by a previous /password-token request."
+ * description: "Reset a Customer's password using a password token created by a previous request to the Request Password Reset API Route. If the password token expired,
+ *  you must create a new one."
+ * externalDocs:
+ *   description: "How to reset password"
+ *   url: "https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles#reset-password"
  * requestBody:
  *   content:
  *     application/json:
@@ -24,32 +29,32 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.customers.resetPassword({
- *         email: 'user@example.com',
- *         password: 'supersecret',
- *         token: 'supersecrettoken'
+ *         email: "user@example.com",
+ *         password: "supersecret",
+ *         token: "supersecrettoken"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/password-reset' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/customers/password-reset' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com",
  *           "password": "supersecret",
  *           "token": "supersecrettoken"
  *       }'
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/StoreCustomersRes"
+ *           $ref: "#/components/schemas/StoreCustomersResetPasswordRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -70,20 +75,25 @@ export default async (req, res) => {
   )) as StorePostCustomersResetPasswordReq
 
   const customerService: CustomerService = req.scope.resolve("customerService")
-  let customer = await customerService.retrieveRegisteredByEmail(
-    validated.email,
-    {
-      select: ["id", "password_hash"],
-    }
-  )
+  let customer
 
-  const decodedToken = jwt.verify(
-    validated.token,
-    customer.password_hash
-  ) as JwtPayload
-  if (!decodedToken || customer.id !== decodedToken.customer_id) {
-    res.status(401).send("Invalid or expired password reset token")
-    return
+  customer = await customerService
+    .retrieveRegisteredByEmail(validated.email, {
+      select: ["id", "password_hash"],
+    })
+    .catch(() => undefined)
+
+  const decodedToken = customer
+    ? jwt.verify(validated.token, customer.password_hash)
+    : undefined
+  if (
+    !decodedToken ||
+    customer.id !== (decodedToken as JwtPayload)?.customer_id
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.UNAUTHORIZED,
+      "Invalid or expired password reset token"
+    )
   }
 
   const manager: EntityManager = req.scope.resolve("manager")
@@ -108,11 +118,11 @@ export default async (req, res) => {
  *   - token
  * properties:
  *   email:
- *     description: "The email of the customer."
+ *     description: "The customer's email."
  *     type: string
  *     format: email
  *   password:
- *     description: "The Customer's password."
+ *     description: "The customer's password."
  *     type: string
  *     format: password
  *   token:

@@ -59,8 +59,12 @@ export default (app) => {
 /**
  * @schema AdminCustomerGroupsRes
  * type: object
+ * description: "The customer group's details."
+ * required:
+ *   - customer_group
  * properties:
  *   customer_group:
+ *     description: Customer group details.
  *     $ref: "#/components/schemas/CustomerGroup"
  */
 export type AdminCustomerGroupsRes = {
@@ -70,6 +74,10 @@ export type AdminCustomerGroupsRes = {
 /**
  * @schema AdminCustomerGroupsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -88,9 +96,15 @@ export type AdminCustomerGroupsDeleteRes = DeleteResponse
 /**
  * @schema AdminCustomerGroupsListRes
  * type: object
+ * required:
+ *   - customer_groups
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   customer_groups:
  *     type: array
+ *     description: An array of customer group details.
  *     items:
  *       $ref: "#/components/schemas/CustomerGroup"
  *   count:
@@ -98,7 +112,7 @@ export type AdminCustomerGroupsDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of customer groups skipped when retrieving the customer groups.
  *   limit:
  *     type: integer
  *     description: The number of items per page

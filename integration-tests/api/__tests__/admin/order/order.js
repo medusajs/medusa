@@ -9,32 +9,32 @@ const {
 } = require("@medusajs/medusa")
 const idMap = require("medusa-test-utils/src/id-map").default
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
 
-const orderSeeder = require("../../../helpers/order-seeder")
-const swapSeeder = require("../../../helpers/swap-seeder")
-const adminSeeder = require("../../../helpers/admin-seeder")
-const claimSeeder = require("../../../helpers/claim-seeder")
+const orderSeeder = require("../../../../helpers/order-seeder")
+const swapSeeder = require("../../../../helpers/swap-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const claimSeeder = require("../../../../helpers/claim-seeder")
 
 const {
   expectPostCallToReturn,
   expectAllPostCallsToReturn,
   callGet,
   partial,
-} = require("../../../helpers/call-helpers")
+} = require("../../../../helpers/call-helpers")
 const {
   simpleShippingOptionFactory,
   simpleOrderFactory,
   simplePaymentFactory,
   simpleProductFactory,
   simpleLineItemFactory,
-} = require("../../../factories")
+} = require("../../../../factories")
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -77,6 +77,23 @@ describe("/admin/orders", () => {
           console.log(err)
         })
       expect(response.status).toEqual(200)
+    })
+
+    it("gets orders ordered by display_id", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/orders?order=display_id", adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
+
+      const sortedOrders = response.data.orders.sort((a, b) => {
+        return a.display_id - b.display_id
+      })
+
+      expect(response.data.orders).toEqual(sortedOrders)
     })
   })
 
@@ -1177,7 +1194,7 @@ describe("/admin/orders", () => {
       const manager = dbConnection.manager
 
       // add a shipping method so we can fulfill the swap
-      const sm = await manager.create(ShippingMethod, {
+      const sm = manager.create(ShippingMethod, {
         id: "test-method-swap-cart",
         swap_id: sid,
         shipping_option_id: "test-option",
@@ -1615,6 +1632,18 @@ describe("/admin/orders", () => {
               id: "test-billing-address",
               first_name: "lebron",
             }),
+            shipping_total: expect.any(Number),
+            shipping_tax_total: expect.any(Number),
+            discount_total: expect.any(Number),
+            item_tax_total: expect.any(Number),
+            tax_total: expect.any(Number),
+            refunded_total: expect.any(Number),
+            total: expect.any(Number),
+            subtotal: expect.any(Number),
+            paid_total: expect.any(Number),
+            refundable_amount: expect.any(Number),
+            gift_card_total: expect.any(Number),
+            gift_card_tax_total: expect.any(Number),
           },
         ])
       )
@@ -1654,7 +1683,7 @@ describe("/admin/orders", () => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("invalid_data")
           expect(err.response.data.message).toEqual(
-            "each value in status must be a valid enum value"
+            "each value in status must be one of the following values: pending, completed, archived, canceled, requires_action"
           )
         })
     })
@@ -2123,7 +2152,9 @@ describe("/admin/orders", () => {
 
       const manager = dbConnection.manager
       const customOptions = await manager.find(CustomShippingOption, {
-        shipping_option_id: "test-option",
+        where: {
+          shipping_option_id: "test-option",
+        },
       })
 
       expect(response.status).toEqual(200)
@@ -2431,11 +2462,99 @@ describe("/admin/orders", () => {
       )
 
       expect(order.status).toEqual(200)
-      expect(order.data.order).toEqual(
-        expect.objectContaining({
-          id: "test-order",
-        })
+      // id + totals + region relation
+      expect(order.data.order).toEqual({
+        id: "test-order",
+        region: expect.any(Object),
+        shipping_total: 1000,
+        shipping_tax_total: 0,
+        discount_total: 800,
+        item_tax_total: 0,
+        tax_total: 0,
+        refunded_total: 0,
+        total: 8200,
+        subtotal: 8000,
+        paid_total: 10000,
+        refundable_amount: 10000,
+        gift_card_total: 0,
+        gift_card_tax_total: 0,
+      })
+    })
+
+    it("retrieves an order with expand returnable_items only should return the entire object and only returnable_items as relation", async () => {
+      const api = useApi()
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}?expand=returnable_items`,
+        adminReqConfig
       )
+
+      expect(order.status).toEqual(200)
+      // all order properties + totals + returnable_items relation
+      expect(order.data.order).toEqual({
+        id: "test-order",
+        status: "pending",
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        display_id: expect.any(Number),
+        cart_id: null,
+        draft_order_id: null,
+        customer_id: "test-customer",
+        email: "test@email.com",
+        region_id: "test-region",
+        currency_code: "usd",
+        tax_rate: 0,
+        canceled_at: null,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        metadata: null,
+        no_notification: null,
+        sales_channel_id: null,
+        returnable_items: expect.any(Array),
+        shipping_total: 1000,
+        shipping_tax_total: 0,
+        discount_total: 800,
+        item_tax_total: 0,
+        tax_total: 0,
+        refunded_total: 0,
+        total: 8200,
+        subtotal: 8000,
+        paid_total: 10000,
+        refundable_amount: 10000,
+        gift_card_total: 0,
+        gift_card_tax_total: 0,
+        items: [{ refundable: 7200 }],
+        claims: [],
+        swaps: [],
+      })
+    })
+
+    it("retrieves an order with expand returnable_items and field id should return the id and the retunable_items", async () => {
+      const api = useApi()
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}?expand=returnable_items&fields=id`,
+        adminReqConfig
+      )
+
+      expect(order.status).toEqual(200)
+      // id + totals + returnable_items relation
+      expect(order.data.order).toEqual({
+        id: "test-order",
+        returnable_items: expect.any(Array),
+        shipping_total: 1000,
+        shipping_tax_total: 0,
+        discount_total: 800,
+        item_tax_total: 0,
+        tax_total: 0,
+        refunded_total: 0,
+        total: 8200,
+        subtotal: 8000,
+        paid_total: 10000,
+        refundable_amount: 10000,
+        gift_card_total: 0,
+        gift_card_tax_total: 0,
+      })
     })
 
     it("retrieves an order should include the items totals", async () => {
@@ -2527,6 +2646,34 @@ describe("/admin/orders", () => {
             id: "test-region",
             deleted_at: expect.any(String),
           }),
+        })
+      )
+    })
+
+    it("retrieves an order should include a deleted discount", async () => {
+      const api = useApi()
+
+      await dbConnection.manager.query(
+        `UPDATE discount
+         set deleted_at = NOW()
+         WHERE id = 'test-discount';`
+      )
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}`,
+        adminReqConfig
+      )
+
+      expect(order.status).toEqual(200)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+          discounts: expect.arrayContaining([
+            expect.objectContaining({
+              id: "test-discount",
+              deleted_at: expect.any(String),
+            }),
+          ]),
         })
       )
     })

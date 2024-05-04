@@ -1,52 +1,103 @@
-import { IsInt, IsOptional, ValidateNested } from "class-validator"
-import _, { identity } from "lodash"
-import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
-
-import { DateComparisonOperator } from "../../../../types/common"
-import { Region } from "../../../.."
-import RegionService from "../../../../services/region"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { IsOptional, IsString, ValidateNested } from "class-validator"
+import RegionService from "../../../../services/region"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 
 /**
- * @oas [get] /regions
+ * @oas [get] /admin/regions
  * operationId: "GetRegions"
  * summary: "List Regions"
- * description: "Retrieves a list of Regions."
+ * description: "Retrieve a list of Regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated."
  * x-authenticated: true
  * parameters:
+ *  - (query) q {string} Term used to search regions' name.
+ *  - (query) order {string} A field to sort-order the retrieved regions by.
  *  - in: query
  *    name: limit
  *    schema:
  *      type: integer
  *      default: 50
  *    required: false
- *    description: limit the number of regions in response
+ *    description: Limit the number of regions returned.
  *  - in: query
  *    name: offset
  *    schema:
  *      type: integer
  *      default: 0
  *    required: false
- *    description: Offset of regions in response (used for pagination)
+ *    description: The number of regions to skip when retrieving the regions.
  *  - in: query
  *    name: created_at
+ *    required: false
+ *    description: Filter by a creation date range.
  *    schema:
  *      type: object
- *    required: false
- *    description: Date comparison for when resulting region was created, i.e. less than, greater than etc.
+ *      properties:
+ *        lt:
+ *          type: string
+ *          description: filter by dates less than this date
+ *          format: date
+ *        gt:
+ *          type: string
+ *          description: filter by dates greater than this date
+ *          format: date
+ *        lte:
+ *          type: string
+ *          description: filter by dates less than or equal to this date
+ *          format: date
+ *        gte:
+ *          type: string
+ *          description: filter by dates greater than or equal to this date
+ *          format: date
  *  - in: query
  *    name: updated_at
+ *    required: false
+ *    description: Filter by an update date range.
  *    schema:
  *      type: object
- *    required: false
- *    description: Date comparison for when resulting region was updated, i.e. less than, greater than etc.
+ *      properties:
+ *        lt:
+ *          type: string
+ *          description: filter by dates less than this date
+ *          format: date
+ *        gt:
+ *          type: string
+ *          description: filter by dates greater than this date
+ *          format: date
+ *        lte:
+ *          type: string
+ *          description: filter by dates less than or equal to this date
+ *          format: date
+ *        gte:
+ *          type: string
+ *          description: filter by dates greater than or equal to this date
+ *          format: date
  *  - in: query
  *    name: deleted_at
+ *    required: false
+ *    description: Filter by a deletion date range.
  *    schema:
  *      type: object
- *    required: false
- *    description: Date comparison for when resulting region was deleted, i.e. less than, greater than etc.
+ *      properties:
+ *        lt:
+ *          type: string
+ *          description: filter by dates less than this date
+ *          format: date
+ *        gt:
+ *          type: string
+ *          description: filter by dates greater than this date
+ *          format: date
+ *        lte:
+ *          type: string
+ *          description: filter by dates less than or equal to this date
+ *          format: date
+ *        gte:
+ *          type: string
+ *          description: filter by dates greater than or equal to this date
+ *          format: date
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetRegionsParams
@@ -60,17 +111,43 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.regions.list()
  *       .then(({ regions, limit, offset, count }) => {
  *         console.log(regions.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminRegions } from "medusa-react"
+ *
+ *       const Regions = () => {
+ *         const { regions, isLoading } = useAdminRegions()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {regions && !regions.length && <span>No Regions</span>}
+ *             {regions && regions.length > 0 && (
+ *               <ul>
+ *                 {regions.map((region) => (
+ *                   <li key={region.id}>{region.name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Regions
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/regions' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/regions' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
@@ -92,55 +169,62 @@ import { validator } from "../../../../utils/validator"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetRegionsParams, req.query)
-
   const regionService: RegionService = req.scope.resolve("regionService")
+  const { limit, offset } = req.validatedQuery
 
-  const filterableFields = _.omit(validated, ["limit", "offset"])
-
-  const listConfig = {
-    select: defaultAdminRegionFields,
-    relations: defaultAdminRegionRelations,
-    skip: validated.offset,
-    take: validated.limit,
-  }
-
-  const regions: Region[] = await regionService.list(
-    _.pickBy(filterableFields, identity),
-    listConfig
+  const [regions, count] = await regionService.listAndCount(
+    req.filterableFields,
+    req.listConfig
   )
 
   res.json({
     regions,
-    count: regions.length,
-    offset: validated.offset,
-    limit: validated.limit,
+    count,
+    offset,
+    limit,
   })
 }
 
-export class AdminGetRegionsPaginationParams {
-  @IsInt()
+/**
+ * Parameters used to filter and configure the pagination of the retrieved regions.
+ */
+export class AdminGetRegionsParams extends extendedFindParamsMixin({
+  limit: 50,
+  offset: 0,
+}) {
+  /**
+   * Search parameter for regions.
+   */
+  @IsString()
   @IsOptional()
-  @Type(() => Number)
-  limit?: number = 50
+  q?: string
 
-  @IsInt()
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsString()
   @IsOptional()
-  @Type(() => Number)
-  offset?: number = 0
-}
+  order?: string
 
-export class AdminGetRegionsParams extends AdminGetRegionsPaginationParams {
+  /**
+   * Date filters to apply on the regions' `created_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the regions' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the regions' `deleted_at` date.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)

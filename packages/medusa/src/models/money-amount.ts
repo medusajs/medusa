@@ -1,18 +1,23 @@
 import {
+  AfterLoad,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   Index,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
+  Relation,
 } from "typeorm"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Currency } from "./currency"
 import { PriceList } from "./price-list"
 import { ProductVariant } from "./product-variant"
 import { Region } from "./region"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class MoneyAmount extends SoftDeletableEntity {
@@ -22,7 +27,7 @@ export class MoneyAmount extends SoftDeletableEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency?: Currency
+  currency?: Relation<Currency>
 
   @Column({ type: "int" })
   amount: number
@@ -41,36 +46,76 @@ export class MoneyAmount extends SoftDeletableEntity {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "price_list_id" })
-  price_list: PriceList | null
+  price_list: Relation<PriceList> | null
 
-  @Index()
-  @Column({ nullable: true })
-  variant_id: string
-
-  @ManyToOne(() => ProductVariant, (variant) => variant.prices, {
+  @ManyToMany(() => ProductVariant, {
     onDelete: "CASCADE",
   })
-  @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  @JoinTable({
+    name: "product_variant_money_amount",
+    joinColumn: {
+      name: "money_amount_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "variant_id",
+      referencedColumnName: "id",
+    },
+  })
+  variants: Relation<ProductVariant>[]
 
-  @Index()
+  variant: Relation<ProductVariant>
+
+  variant_id: string
+
+  @Index("idx_money_amount_region_id")
   @Column({ nullable: true })
-  region_id: string
+  region_id: string | null
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region?: Region
+  region?: Relation<Region>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): undefined | void {
     this.id = generateEntityId(this.id, "ma")
+
+    if (this.variant || this.variant_id) {
+      this.variants = [
+        { id: this.variant?.id || this.variant_id },
+      ] as ProductVariant[]
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @BeforeUpdate()
+  private beforeUpdate(): void {
+    if (this.variant || this.variant_id) {
+      this.variants = [
+        { id: this.variant?.id || this.variant_id },
+      ] as ProductVariant[]
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @AfterLoad()
+  private afterLoad() {
+    this.variant = this.variants?.[0]
+    this.variant_id = this.variant?.id
   }
 }
 
 /**
  * @schema MoneyAmount
  * title: "Money Amount"
- * description: "Money Amounts represents an amount that a given Product Variant can be purcased for. Each Money Amount either has a Currency or Region associated with it to indicate the pricing in a given Currency or, for fully region-based pricing, the given price in a specific Region. If region-based pricing is used the amount will be in the currency defined for the Reigon."
+ * description: "A Money Amount represent a price amount, for example, a product variant's price or a price in a price list. Each Money Amount either has a Currency or Region associated with it to indicate the pricing in a given Currency or, for fully region-based pricing, the given price in a specific Region. If region-based pricing is used, the amount will be in the currency defined for the Region."
  * type: object
  * required:
  *   - amount
@@ -90,14 +135,15 @@ export class MoneyAmount extends SoftDeletableEntity {
  *     type: string
  *     example: ma_01F0YESHRFQNH5S8Q0PK84YYZN
  *   currency_code:
- *     description: The 3 character currency code that the Money Amount is given in.
+ *     description: The 3 character currency code that the money amount may belong to.
  *     type: string
  *     example: usd
  *     externalDocs:
  *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *       description: See a list of codes.
  *   currency:
- *     description: Available if the relation `currency` is expanded.
+ *     description: The details of the currency that the money amount may belong to.
+ *     x-expandable: "currency"
  *     nullable: true
  *     $ref: "#/components/schemas/Currency"
  *   amount:
@@ -115,21 +161,23 @@ export class MoneyAmount extends SoftDeletableEntity {
  *     type: integer
  *     example: 1
  *   price_list_id:
- *     description: The ID of the price list associated with the money amount
+ *     description: The ID of the price list that the money amount may belong to.
  *     nullable: true
  *     type: string
  *     example: pl_01G8X3CKJXCG5VXVZ87H9KC09W
  *   price_list:
- *     description: Available if the relation `price_list` is expanded.
+ *     description: The details of the price list that the money amount may belong to.
+ *     x-expandable: "price_list"
  *     nullable: true
  *     $ref: "#/components/schemas/PriceList"
  *   variant_id:
- *     description: The id of the Product Variant contained in the Line Item.
+ *     description: The ID of the Product Variant contained in the Line Item.
  *     nullable: true
  *     type: string
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   variant:
- *     description: The Product Variant contained in the Line Item. Available if the relation `variant` is expanded.
+ *     description: The details of the product variant that the money amount may belong to.
+ *     x-expandable: "variant"
  *     nullable: true
  *     $ref: "#/components/schemas/ProductVariant"
  *   region_id:
@@ -138,7 +186,8 @@ export class MoneyAmount extends SoftDeletableEntity {
  *     type: string
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation `region` is expanded.
+ *     description: The details of the region that the money amount may belong to.
+ *     x-expandable: "region"
  *     nullable: true
  *     $ref: "#/components/schemas/Region"
  *   created_at:

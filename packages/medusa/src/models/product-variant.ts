@@ -4,16 +4,18 @@ import {
   Entity,
   Index,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
+  Relation,
 } from "typeorm"
+import { DbAwareColumn, generateEntityId } from "../utils"
 
-import { DbAwareColumn } from "../utils/db-aware-column"
+import { SoftDeletableEntity } from "../interfaces"
 import { MoneyAmount } from "./money-amount"
 import { Product } from "./product"
 import { ProductOptionValue } from "./product-option-value"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 import { ProductVariantInventoryItem } from "./product-variant-inventory-item"
 
 @Entity()
@@ -25,34 +27,44 @@ export class ProductVariant extends SoftDeletableEntity {
   @Column()
   product_id: string
 
-  @ManyToOne(() => Product, (product) => product.variants, { eager: true })
+  @ManyToOne(() => Product, (product) => product.variants)
   @JoinColumn({ name: "product_id" })
-  product: Product
+  product: Relation<Product>
 
-  @OneToMany(() => MoneyAmount, (ma) => ma.variant, {
-    cascade: true,
-    onDelete: "CASCADE",
+  @ManyToMany(() => MoneyAmount, {
+    cascade: ["remove", "soft-remove", "recover"],
   })
-  prices: MoneyAmount[]
+  @JoinTable({
+    name: "product_variant_money_amount",
+    joinColumn: {
+      name: "variant_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "money_amount_id",
+      referencedColumnName: "id",
+    },
+  })
+  prices: Relation<MoneyAmount>[]
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  sku: string
+  sku: string | null
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  barcode: string
+  barcode: string | null
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  ean: string
+  ean: string | null
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  upc: string
+  upc: string | null
 
-  @Column({ nullable: true, default: 0, select: false })
-  variant_rank: number
+  @Column({ nullable: true, type: "text", default: 0 })
+  variant_rank: number | null
 
   @Column({ type: "int" })
   inventory_quantity: number
@@ -63,34 +75,34 @@ export class ProductVariant extends SoftDeletableEntity {
   @Column({ default: true })
   manage_inventory: boolean
 
-  @Column({ nullable: true })
-  hs_code: string
+  @Column({ nullable: true, type: "text" })
+  hs_code: string | null
 
-  @Column({ nullable: true })
-  origin_country: string
+  @Column({ nullable: true, type: "text" })
+  origin_country: string | null
 
-  @Column({ nullable: true })
-  mid_code: string
+  @Column({ nullable: true, type: "text" })
+  mid_code: string | null
 
-  @Column({ nullable: true })
-  material: string
-
-  @Column({ type: "int", nullable: true })
-  weight: number
+  @Column({ nullable: true, type: "text" })
+  material: string | null
 
   @Column({ type: "int", nullable: true })
-  length: number
+  weight: number | null
 
   @Column({ type: "int", nullable: true })
-  height: number
+  length: number | null
 
   @Column({ type: "int", nullable: true })
-  width: number
+  height: number | null
+
+  @Column({ type: "int", nullable: true })
+  width: number | null
 
   @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
     cascade: true,
   })
-  options: ProductOptionValue[]
+  options: Relation<ProductOptionValue>[]
 
   @OneToMany(
     () => ProductVariantInventoryItem,
@@ -99,11 +111,16 @@ export class ProductVariant extends SoftDeletableEntity {
       cascade: ["soft-remove", "remove"],
     }
   )
-  inventory_items: ProductVariantInventoryItem[]
+  inventory_items: Relation<ProductVariantInventoryItem>[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
+  purchasable?: boolean
+
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "variant")
@@ -113,7 +130,7 @@ export class ProductVariant extends SoftDeletableEntity {
 /**
  * @schema ProductVariant
  * title: "Product Variant"
- * description: "Product Variants represent a Product with a specific set of Product Option configurations. The maximum number of Product Variants that a Product can have is given by the number of available Product Option combinations."
+ * description: "A Product Variant represents a Product with a specific set of Product Option configurations. The maximum number of Product Variants that a Product can have is given by the number of available Product Option combinations. A product must at least have one product variant."
  * type: object
  * required:
  *   - allow_backorder
@@ -148,20 +165,22 @@ export class ProductVariant extends SoftDeletableEntity {
  *     type: string
  *     example: Small
  *   product_id:
- *     description: The ID of the Product that the Product Variant belongs to.
+ *     description: The ID of the product that the product variant belongs to.
  *     type: string
  *     example: prod_01G1G5V2MBA328390B5AXJ610F
  *   product:
- *     description: A product object. Available if the relation `product` is expanded.
+ *     description: The details of the product that the product variant belongs to.
+ *     x-expandable: "product"
  *     nullable: true
  *     $ref: "#/components/schemas/Product"
  *   prices:
- *     description: The Money Amounts defined for the Product Variant. Each Money Amount represents a price in a given currency or a price in a specific Region. Available if the relation `prices` is expanded.
+ *     description: The details of the prices of the Product Variant, each represented as a Money Amount. Each Money Amount represents a price in a given currency or a specific Region.
  *     type: array
+ *     x-expandable: "prices"
  *     items:
  *       $ref: "#/components/schemas/MoneyAmount"
  *   sku:
- *     description: The unique stock keeping unit used to identify the Product Variant. This will usually be a unqiue identifer for the item that is to be shipped, and can be referenced across multiple systems.
+ *     description: The unique stock keeping unit used to identify the Product Variant. This will usually be a unique identifer for the item that is to be shipped, and can be referenced across multiple systems.
  *     nullable: true
  *     type: string
  *     example: shirt-123
@@ -238,13 +257,15 @@ export class ProductVariant extends SoftDeletableEntity {
  *     type: number
  *     example: null
  *   options:
- *     description: The Product Option Values specified for the Product Variant. Available if the relation `options` is expanded.
+ *     description: The details of the product options that this product variant defines values for.
  *     type: array
+ *     x-expandable: "options"
  *     items:
  *       $ref: "#/components/schemas/ProductOptionValue"
  *   inventory_items:
- *     description: The Inventory Items related to the product variant. Available if the relation `inventory_items` is expanded.
+ *     description: The details inventory items of the product variant.
  *     type: array
+ *     x-expandable: "inventory_items"
  *     items:
  *       $ref: "#/components/schemas/ProductVariantInventoryItem"
  *   created_at:
@@ -265,4 +286,17 @@ export class ProductVariant extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
+ *   purchasable:
+ *     description: |
+ *        Only used with the inventory modules.
+ *        A boolean value indicating whether the Product Variant is purchasable.
+ *        A variant is purchasable if:
+ *          - inventory is not managed
+ *          - it has no inventory items
+ *          - it is in stock
+ *          - it is backorderable.
+ *     type: boolean
  */

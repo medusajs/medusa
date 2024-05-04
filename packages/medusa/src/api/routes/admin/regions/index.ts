@@ -1,10 +1,12 @@
+import { FlagRouter, wrapHandler } from "@medusajs/utils"
 import { Router } from "express"
-import { Region } from "../../../.."
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 import "reflect-metadata"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { Region } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { transformQuery } from "../../../middlewares"
+import getRegion, { AdminGetRegionsRegionParams } from "./get-region"
+import listRegions, { AdminGetRegionsParams } from "./list-regions"
 
 const route = Router()
 
@@ -15,50 +17,65 @@ export default (app, featureFlagRouter: FlagRouter) => {
     defaultAdminRegionFields.push("includes_tax")
   }
 
-  route.get("/", middlewares.wrap(require("./list-regions").default))
-  route.get("/:region_id", middlewares.wrap(require("./get-region").default))
+  const retrieveTransformQueryConfig = {
+    defaultFields: defaultAdminRegionFields,
+    defaultRelations: defaultAdminRegionRelations,
+    allowedRelations: defaultAdminRegionRelations,
+    isList: false,
+  }
+
+  const listTransformQueryConfig = {
+    ...retrieveTransformQueryConfig,
+    isList: true,
+  }
+
+  route.get(
+    "/",
+    transformQuery(AdminGetRegionsParams, listTransformQueryConfig),
+    wrapHandler(listRegions)
+  )
+
+  route.get(
+    "/:region_id",
+    transformQuery(AdminGetRegionsRegionParams, retrieveTransformQueryConfig),
+    wrapHandler(getRegion)
+  )
 
   route.get(
     "/:region_id/fulfillment-options",
-    middlewares.wrap(require("./get-fulfillment-options").default)
+    wrapHandler(require("./get-fulfillment-options").default)
   )
 
-  route.post("/", middlewares.wrap(require("./create-region").default))
-  route.post(
-    "/:region_id",
-    middlewares.wrap(require("./update-region").default)
-  )
+  route.post("/", wrapHandler(require("./create-region").default))
+  route.post("/:region_id", wrapHandler(require("./update-region").default))
 
-  route.delete(
-    "/:region_id",
-    middlewares.wrap(require("./delete-region").default)
-  )
+  route.delete("/:region_id", wrapHandler(require("./delete-region").default))
 
   route.post(
     "/:region_id/countries",
-    middlewares.wrap(require("./add-country").default)
+    wrapHandler(require("./add-country").default)
   )
   route.delete(
     "/:region_id/countries/:country_code",
-    middlewares.wrap(require("./remove-country").default)
+    wrapHandler(require("./remove-country").default)
   )
 
   route.post(
     "/:region_id/payment-providers",
-    middlewares.wrap(require("./add-payment-provider").default)
+    wrapHandler(require("./add-payment-provider").default)
   )
   route.delete(
     "/:region_id/payment-providers/:provider_id",
-    middlewares.wrap(require("./remove-payment-provider").default)
+    wrapHandler(require("./remove-payment-provider").default)
   )
 
   route.post(
     "/:region_id/fulfillment-providers",
-    middlewares.wrap(require("./add-fulfillment-provider").default)
+    wrapHandler(require("./add-fulfillment-provider").default)
   )
   route.delete(
     "/:region_id/fulfillment-providers/:provider_id",
-    middlewares.wrap(require("./remove-fulfillment-provider").default)
+    wrapHandler(require("./remove-fulfillment-provider").default)
   )
 
   return app
@@ -83,25 +100,55 @@ export const defaultAdminRegionRelations = [
   "countries",
   "payment_providers",
   "fulfillment_providers",
+  "currency",
 ]
 
 /**
  * @schema AdminRegionsRes
  * type: object
+ * description: "The region's details."
+ * x-expanded-relations:
+ *   field: region
+ *   relations:
+ *     - countries
+ *     - fulfillment_providers
+ *     - payment_providers
+ *   eager:
+ *     - fulfillment_providers
+ *     - payment_providers
+ * required:
+ *   - region
  * properties:
  *   region:
+ *     description: "Region details."
  *     $ref: "#/components/schemas/Region"
  */
-export class AdminRegionsRes {
+export type AdminRegionsRes = {
   region: Region
 }
 
 /**
  * @schema AdminRegionsListRes
  * type: object
+ * description: "The list of regions with pagination fields."
+ * x-expanded-relations:
+ *   field: regions
+ *   relations:
+ *     - countries
+ *     - fulfillment_providers
+ *     - payment_providers
+ *   eager:
+ *     - fulfillment_providers
+ *     - payment_providers
+ * required:
+ *   - regions
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   regions:
  *     type: array
+ *     description: "An array of regions details."
  *     items:
  *       $ref: "#/components/schemas/Region"
  *   count:
@@ -109,7 +156,7 @@ export class AdminRegionsRes {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of regions skipped when retrieving the regions.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -121,6 +168,10 @@ export type AdminRegionsListRes = PaginatedResponse & {
 /**
  * @schema AdminRegionsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -144,30 +195,40 @@ export class FulfillmentOption {
 /**
  * @schema AdminGetRegionsRegionFulfillmentOptionsRes
  * type: object
+ * description: "The list of fulfillment options in a region."
+ * required:
+ *   - fulfillment_options
  * properties:
  *   fulfillment_options:
  *     type: array
+ *     description: Fulfillment providers details.
  *     items:
  *       type: object
+ *       required:
+ *         - provider_id
+ *         - options
  *       properties:
  *         provider_id:
- *           type: string
  *           description: ID of the fulfillment provider
+ *           type: string
  *         options:
- *           type: array
  *           description: fulfillment provider options
- *           example:
- *             - id: "manual-fulfillment"
- *             - id: "manual-fulfillment-return"
- *               is_return: true
+ *           type: array
+ *           items:
+ *             type: object
+ *             example:
+ *               - id: "manual-fulfillment"
+ *               - id: "manual-fulfillment-return"
+ *                 is_return: true
  */
 export class AdminGetRegionsRegionFulfillmentOptionsRes {
   fulfillment_options: FulfillmentOption[]
 }
 
+export * from "./add-country"
+export * from "./add-fulfillment-provider"
+export * from "./add-payment-provider"
+export * from "./create-region"
 export * from "./list-regions"
 export * from "./update-region"
-export * from "./create-region"
-export * from "./add-country"
-export * from "./add-payment-provider"
-export * from "./add-fulfillment-provider"
+export * from "./get-region"

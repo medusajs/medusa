@@ -1,0 +1,717 @@
+{
+	"id": 12729,
+	"name": "user-models",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 12747,
+			"name": "Invite",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 12748,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12749,
+							"name": "new Invite",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 12747,
+								"name": "default",
+								"package": "@medusajs/user"
+							}
+						}
+					]
+				},
+				{
+					"id": 12763,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/user/src/models/invite.ts",
+							"qualifiedName": "OptionalFields"
+						},
+						"name": "OptionalFields",
+						"package": "@medusajs/user"
+					}
+				},
+				{
+					"id": 12750,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12751,
+					"name": "email",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12752,
+					"name": "accepted",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "false"
+				},
+				{
+					"id": 12753,
+					"name": "token",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12754,
+					"name": "expires_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12755,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12756,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12757,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12758,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12759,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12760,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 12761,
+					"name": "beforeCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12762,
+							"name": "beforeCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						12748
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						12763,
+						12750,
+						12751,
+						12752,
+						12753,
+						12754,
+						12755,
+						12756,
+						12757,
+						12758
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						12759,
+						12761
+					]
+				}
+			]
+		},
+		{
+			"id": 12730,
+			"name": "User",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 12731,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12732,
+							"name": "new User",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 12730,
+								"name": "default",
+								"package": "@medusajs/user"
+							}
+						}
+					]
+				},
+				{
+					"id": 12746,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/user/src/models/user.ts",
+							"qualifiedName": "OptionalFields"
+						},
+						"name": "OptionalFields",
+						"package": "@medusajs/user"
+					}
+				},
+				{
+					"id": 12733,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12734,
+					"name": "first_name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12735,
+					"name": "last_name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12736,
+					"name": "email",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12737,
+					"name": "avatar_url",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12738,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12739,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12740,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12741,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 12742,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12743,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 12744,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12745,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						12731
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						12746,
+						12733,
+						12734,
+						12735,
+						12736,
+						12737,
+						12738,
+						12739,
+						12740,
+						12741
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						12742,
+						12744
+					]
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				12747,
+				12730
+			]
+		}
+	],
+	"packageName": "@medusajs/user",
+	"symbolIdMap": {
+		"12729": {
+			"sourceFileName": "../../../packages/user/src/models/index.ts",
+			"qualifiedName": ""
+		},
+		"12730": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default"
+		},
+		"12733": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.id"
+		},
+		"12734": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.first_name"
+		},
+		"12735": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.last_name"
+		},
+		"12736": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.email"
+		},
+		"12737": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.avatar_url"
+		},
+		"12738": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"12739": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"12740": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"12741": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"12742": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"12743": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"12744": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"12745": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"12746": {
+			"sourceFileName": "../../../packages/user/src/models/user.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"12747": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default"
+		},
+		"12750": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.id"
+		},
+		"12751": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.email"
+		},
+		"12752": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.accepted"
+		},
+		"12753": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.token"
+		},
+		"12754": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.expires_at"
+		},
+		"12755": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"12756": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"12757": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"12758": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"12759": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"12760": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"12761": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.beforeCreate"
+		},
+		"12762": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.beforeCreate"
+		},
+		"12763": {
+			"sourceFileName": "../../../packages/user/src/models/invite.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		}
+	}
+}

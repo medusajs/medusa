@@ -1,20 +1,25 @@
 const path = require("path")
-const { Region, ShippingProfile, ShippingOption } = require("@medusajs/medusa")
+const {
+  Region,
+  ShippingProfile,
+  ShippingOption,
+  ShippingProfileType,
+} = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
-const cartSeeder = require("../../helpers/cart-seeder")
-const swapSeeder = require("../../helpers/swap-seeder")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb } = require("../../../environment-helpers/use-db")
+const cartSeeder = require("../../../helpers/cart-seeder")
+const swapSeeder = require("../../../helpers/swap-seeder")
 const {
   simpleRegionFactory,
   simpleShippingOptionFactory,
   simpleCartFactory,
   simpleProductFactory,
-} = require("../../factories")
+} = require("../../../factories")
 const {
   default: startServerWithEnvironment,
-} = require("../../../helpers/start-server-with-environment")
+} = require("../../../environment-helpers/start-server-with-environment")
 
 jest.setTimeout(30000)
 
@@ -60,7 +65,9 @@ describe("/store/shipping-options", () => {
         })
 
         const defaultProfile = await manager.findOne(ShippingProfile, {
-          type: "default",
+          where: {
+            type: ShippingProfileType.DEFAULT,
+          },
         })
 
         await manager.insert(ShippingOption, {

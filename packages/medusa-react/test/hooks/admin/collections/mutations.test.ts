@@ -1,12 +1,12 @@
-import {
-  useAdminCreateCollection,
-  useAdminUpdateCollection,
-  useAdminDeleteCollection,
-  useAdminAddProductsToCollection,
-  useAdminRemoveProductsFromCollection,
-} from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data"
+import {
+  useAdminAddProductsToCollection,
+  useAdminCreateCollection,
+  useAdminDeleteCollection,
+  useAdminRemoveProductsFromCollection,
+  useAdminUpdateCollection,
+} from "../../../../src/"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminCreateCollection hook", () => {
@@ -90,7 +90,8 @@ describe("useAdminAddProductsToCollection hook", () => {
     }
 
     const { result, waitFor } = renderHook(
-      () => useAdminAddProductsToCollection(fixtures.get("product_collection").id),
+      () =>
+        useAdminAddProductsToCollection(fixtures.get("product_collection").id),
       {
         wrapper: createWrapper(),
       }
@@ -116,7 +117,10 @@ describe("useAdminRemoveProductsFromCollection hook", () => {
     }
 
     const { result, waitFor } = renderHook(
-      () => useAdminRemoveProductsFromCollection(fixtures.get("product_collection").id),
+      () =>
+        useAdminRemoveProductsFromCollection(
+          fixtures.get("product_collection").id
+        ),
       {
         wrapper: createWrapper(),
       }
@@ -131,7 +135,7 @@ describe("useAdminRemoveProductsFromCollection hook", () => {
       expect.objectContaining({
         id: fixtures.get("product_collection").id,
         object: "product-collection",
-        removed_products: remove.product_ids
+        removed_products: remove.product_ids,
       })
     )
   })

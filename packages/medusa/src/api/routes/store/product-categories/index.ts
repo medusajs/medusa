@@ -1,14 +1,14 @@
 import { Router } from "express"
-import middlewares, { transformQuery } from "../../../middlewares"
 import { ProductCategory } from "../../../../models"
 import { PaginatedResponse } from "../../../../types/common"
+import middlewares, { transformStoreQuery } from "../../../middlewares"
 
 import listProductCategories, {
   StoreGetProductCategoriesParams,
 } from "./list-product-categories"
 
 import getProductCategory, {
-  StoreGetProductCategoryParams,
+  StoreGetProductCategoriesCategoryParams,
 } from "./get-product-category"
 
 const route = Router()
@@ -18,7 +18,7 @@ export default (app) => {
 
   route.get(
     "/",
-    transformQuery(StoreGetProductCategoriesParams, {
+    transformStoreQuery(StoreGetProductCategoriesParams, {
       defaultFields: defaultStoreProductCategoryFields,
       allowedFields: allowedStoreProductCategoryFields,
       defaultRelations: defaultStoreProductCategoryRelations,
@@ -29,7 +29,7 @@ export default (app) => {
 
   route.get(
     "/:id",
-    transformQuery(StoreGetProductCategoryParams, {
+    transformStoreQuery(StoreGetProductCategoriesCategoryParams, {
       defaultFields: defaultStoreProductCategoryFields,
       allowedFields: allowedStoreProductCategoryFields,
       defaultRelations: defaultStoreProductCategoryRelations,
@@ -46,7 +46,7 @@ export const defaultStoreProductCategoryRelations = [
   "category_children",
 ]
 
-export const defaultStoreScope = {
+export const defaultStoreCategoryScope = {
   is_internal: false,
   is_active: true,
 }
@@ -54,26 +54,41 @@ export const defaultStoreScope = {
 export const defaultStoreProductCategoryFields = [
   "id",
   "name",
+  "description",
   "handle",
   "parent_category_id",
   "created_at",
   "updated_at",
+  "rank",
+  "metadata",
 ]
 
 export const allowedStoreProductCategoryFields = [
   "id",
   "name",
+  "description",
   "handle",
   "parent_category_id",
   "created_at",
   "updated_at",
+  "rank",
+  "metadata",
 ]
 
 /**
  * @schema StoreGetProductCategoriesCategoryRes
  * type: object
+ * description: "The product category's details."
+ * x-expanded-relations:
+ *   field: product_category
+ *   relations:
+ *     - category_children
+ *     - parent_category
+ * required:
+ *   - product_category
  * properties:
  *   product_category:
+ *     description: "Product category details."
  *     $ref: "#/components/schemas/ProductCategory"
  */
 export type StoreGetProductCategoriesCategoryRes = {
@@ -81,11 +96,23 @@ export type StoreGetProductCategoriesCategoryRes = {
 }
 
 /**
- * @schema StoreProductCategoriesListRes
+ * @schema StoreGetProductCategoriesRes
  * type: object
+ * description: "The list of product categories with pagination fields."
+ * x-expanded-relations:
+ *   field: product_categories
+ *   relations:
+ *     - category_children
+ *     - parent_category
+ * required:
+ *   - product_categories
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   product_categories:
  *      type: array
+ *      description: "An array of product categories details."
  *      items:
  *        $ref: "#/components/schemas/ProductCategory"
  *   count:
@@ -93,12 +120,12 @@ export type StoreGetProductCategoriesCategoryRes = {
  *      description: The total number of items available
  *   offset:
  *      type: integer
- *      description: The number of items skipped before these items
+ *      description: The number of product categories skipped when retrieving the product categories.
  *   limit:
  *      type: integer
  *      description: The number of items per page
  */
-export type StoreProductCategoriesListRes = PaginatedResponse & {
+export type StoreGetProductCategoriesRes = PaginatedResponse & {
   product_categories: ProductCategory[]
 }
 

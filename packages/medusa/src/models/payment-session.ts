@@ -5,6 +5,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  Relation,
   Unique,
 } from "typeorm"
 
@@ -13,11 +14,31 @@ import { generateEntityId } from "../utils"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Cart } from "./cart"
 
+/**
+ * @enum
+ *
+ * The status of a payment session.
+ */
 export enum PaymentSessionStatus {
+  /**
+   * The payment is authorized.
+   */
   AUTHORIZED = "authorized",
+  /**
+   * The payment is pending.
+   */
   PENDING = "pending",
+  /**
+   * The payment requires an action.
+   */
   REQUIRES_MORE = "requires_more",
+  /**
+   * An error occurred while processing the payment.
+   */
   ERROR = "error",
+  /**
+   * The payment is canceled.
+   */
   CANCELED = "canceled",
 }
 
@@ -34,7 +55,7 @@ export class PaymentSession extends BaseEntity {
 
   @ManyToOne(() => Cart, (cart) => cart.payment_sessions)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart: Relation<Cart>
 
   @Index()
   @Column()
@@ -61,6 +82,9 @@ export class PaymentSession extends BaseEntity {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   payment_authorized_at: Date
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ps")
@@ -70,7 +94,7 @@ export class PaymentSession extends BaseEntity {
 /**
  * @schema PaymentSession
  * title: "Payment Session"
- * description: "Payment Sessions are created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, who is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for capture/refunds/etc."
+ * description: "A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections."
  * type: object
  * required:
  *   - amount
@@ -91,16 +115,17 @@ export class PaymentSession extends BaseEntity {
  *     type: string
  *     example: ps_01G901XNSRM2YS3ASN9H5KG3FZ
  *   cart_id:
- *     description: The id of the Cart that the Payment Session is created for.
+ *     description: The ID of the cart that the payment session was created for.
  *     nullable: true
  *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: A cart object. Available if the relation `cart` is expanded.
+ *     description: The details of the cart that the payment session was created for.
+ *     x-expandable: "cart"
  *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   provider_id:
- *     description: The id of the Payment Provider that is responsible for the Payment Session
+ *     description: The ID of the Payment Provider that is responsible for the Payment Session
  *     type: string
  *     example: manual
  *   is_selected:
@@ -132,7 +157,7 @@ export class PaymentSession extends BaseEntity {
  *     nullable: true
  *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       url: https://docs.medusajs.com/development/idempotency-key/overview.md
  *       description: Learn more how to use the idempotency key.
  *   amount:
  *     description: The amount that the Payment Session has been authorized for.

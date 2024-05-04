@@ -10,21 +10,24 @@ import ProductTagService from "../../../../services/product-tag"
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
- * @oas [get] /product-tags
+ * @oas [get] /store/product-tags
  * operationId: "GetProductTags"
  * summary: "List Product Tags"
- * description: "Retrieve a list of Product Tags."
+ * description: "Retrieve a list of product tags. The product tags can be filtered by fields such as `id` or `q`. The product tags can also be sorted or paginated."
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetProductTagsParams
  * parameters:
- *   - (query) limit=20 {integer} The number of types to return.
- *   - (query) offset=0 {integer} The number of items to skip before the results.
- *   - (query) order {string} The field to sort items by.
- *   - (query) discount_condition_id {string} The discount condition id on which to filter the product tags.
+ *   - (query) limit=20 {integer} Limit the number of product tags returned.
+ *   - (query) offset=0 {integer} The number of product tags to skip when retrieving the product tags.
+ *   - (query) order {string} A product-tag field to sort-order the retrieved product tags by.
+ *   - (query) discount_condition_id {string} Filter by the ID of a discount condition. When provided, only tags that the discount condition applies for will be retrieved.
  *   - in: query
  *     name: value
  *     style: form
  *     explode: false
- *     description: The tag values to search for
+ *     description: Filter by tag values.
  *     schema:
  *       type: array
  *       items:
@@ -33,15 +36,15 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     name: id
  *     style: form
  *     explode: false
- *     description: The tag IDs to search for
+ *     description: Filter by IDs.
  *     schema:
  *       type: array
  *       items:
  *         type: string
- *   - (query) q {string} A query string to search values for
+ *   - (query) q {string} term to search product tag's value.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting product tags were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -63,7 +66,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting product tags were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -92,32 +95,52 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       medusa.productTags.list()
  *       .then(({ product_tags }) => {
  *         console.log(product_tags.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useProductTags } from "medusa-react"
+ *
+ *       function Tags() {
+ *         const {
+ *           product_tags,
+ *           isLoading,
+ *         } = useProductTags()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {product_tags && !product_tags.length && (
+ *               <span>No Product Tags</span>
+ *             )}
+ *             {product_tags && product_tags.length > 0 && (
+ *               <ul>
+ *                 {product_tags.map(
+ *                   (tag) => (
+ *                     <li key={tag.id}>{tag.value}</li>
+ *                   )
+ *                 )}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Tags
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/product-tags'
+ *       curl '{backend_url}/store/product-tags'
  * tags:
- *   - Product Tag
+ *   - Product Tags
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            product_tags:
- *              $ref: "#/components/schemas/ProductTag"
- *            count:
- *              type: integer
- *              description: The total number of items available
- *            offset:
- *              type: integer
- *              description: The number of items skipped before these items
- *            limit:
- *              type: integer
- *              description: The number of items per page
+ *          $ref: "#/components/schemas/StoreProductTagsListRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -150,31 +173,55 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product tags.
+ */
 export class StoreGetProductTagsParams extends FindPaginationParams {
+  /**
+   * IDs to filter product tags by.
+   */
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   id?: string | string[] | StringComparisonOperator
 
+  /**
+   * Search term to search product tags' values.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Values to filter product tags by.
+   */
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   value?: string | string[] | StringComparisonOperator
 
+  /**
+   * Date filters to apply to the product tags' `created_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply to the product tags' `updated_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   updated_at?: DateComparisonOperator
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 
+  /**
+   * Filter product tags by the ID of their associated discount condition.
+   */
   @IsString()
   @IsOptional()
   discount_condition_id?: string

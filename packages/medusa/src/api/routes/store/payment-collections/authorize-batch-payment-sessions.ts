@@ -2,10 +2,10 @@ import { IsArray, IsString } from "class-validator"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/sessions/batch/authorize
+ * @oas [post] /store/payment-collections/{id}/sessions/batch/authorize
  * operationId: "PostPaymentCollectionsSessionsBatchAuthorize"
- * summary: "Authorize PaymentSessions"
- * description: "Authorizes Payment Sessions of a Payment Collection."
+ * summary: "Authorize Payment Sessions"
+ * description: "Authorize the Payment Sessions of a Payment Collection."
  * x-authenticated: false
  * parameters:
  *   - (path) id=* {string} The ID of the Payment Collections.
@@ -23,19 +23,51 @@ import { PaymentCollectionService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.paymentCollections.authorize(payment_id)
+ *       medusa.paymentCollections.authorize(paymentId)
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAuthorizePaymentSessionsBatch } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({
+ *         paymentCollectionId
+ *       }: Props) => {
+ *         const authorizePaymentSessions = useAuthorizePaymentSessionsBatch(
+ *           paymentCollectionId
+ *         )
+ *         // ...
+ *
+ *         const handleAuthorizePayments = (paymentSessionIds: string[]) => {
+ *           authorizePaymentSessions.mutate({
+ *             session_ids: paymentSessionIds
+ *           }, {
+ *             onSuccess: ({ payment_collection }) => {
+ *               console.log(payment_collection.payment_sessions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch/authorize'
+ *       curl -X POST '{backend_url}/store/payment-collections/{id}/sessions/batch/authorize'
  * security:
- *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - PaymentCollection
+ *   - Payment Collections
  * responses:
  *   200:
  *     description: OK
@@ -72,12 +104,13 @@ export default async (req, res) => {
       req.request_context
     )
 
-  res.status(207).json({ payment_collection })
+  res.status(200).json({ payment_collection })
 }
 
 /**
  * @schema StorePostPaymentCollectionsBatchSessionsAuthorizeReq
  * type: object
+ * description: "The details of the payment sessions to authorize."
  * required:
  *   - session_ids
  * properties:

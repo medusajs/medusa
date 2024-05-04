@@ -3,10 +3,10 @@ import { defaultAdminSwapFields, defaultAdminSwapRelations } from "."
 import { SwapService } from "../../../../services"
 
 /**
- * @oas [get] /swaps/{id}
+ * @oas [get] /admin/swaps/{id}
  * operationId: "GetSwapsSwap"
  * summary: "Get a Swap"
- * description: "Retrieves a Swap."
+ * description: "Retrieve a Swap's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Swap.
@@ -19,20 +19,43 @@ import { SwapService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.swaps.retrieve(swap_id)
+ *       medusa.admin.swaps.retrieve(swapId)
  *       .then(({ swap }) => {
  *         console.log(swap.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminSwap } from "medusa-react"
+ *
+ *       type Props = {
+ *         swapId: string
+ *       }
+ *
+ *       const Swap = ({ swapId }: Props) => {
+ *         const { swap, isLoading } = useAdminSwap(swapId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {swap && <span>{swap.id}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Swap
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/swaps/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/swaps/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Swap
+ *   - Swaps
  * responses:
  *   200:
  *     description: OK

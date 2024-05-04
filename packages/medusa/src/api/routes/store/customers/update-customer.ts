@@ -8,10 +8,10 @@ import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
- * @oas [post] /customers/me
+ * @oas [post] /store/customers/me
  * operationId: PostCustomersCustomer
  * summary: Update Customer
- * description: "Updates a Customer's saved details."
+ * description: "Update the logged-in customer's details."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -28,24 +28,57 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged
  *       medusa.customers.update({
- *         first_name: 'Laury'
+ *         first_name: "Laury"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useUpdateMe } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerId: string
+ *       }
+ *
+ *       const Customer = ({ customerId }: Props) => {
+ *         const updateCustomer = useUpdateMe()
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           firstName: string
+ *         ) => {
+ *           // ...
+ *           updateCustomer.mutate({
+ *             id: customerId,
+ *             first_name: firstName,
+ *           }, {
+ *             onSuccess: ({ customer }) => {
+ *               console.log(customer.first_name)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Customer
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/me' \
- *       --header 'Cookie: connect.sid={sid}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/customers/me' \
+ *       -H 'Authorization: Bearer {access_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "first_name": "Laury"
  *       }'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK
@@ -90,32 +123,36 @@ export default async (req, res) => {
 /**
  * @schema StorePostCustomersCustomerReq
  * type: object
+ * description: "The details to update of the customer."
  * properties:
  *   first_name:
- *     description: "The Customer's first name."
+ *     description: "The customer's first name."
  *     type: string
  *   last_name:
- *     description: "The Customer's last name."
+ *     description: "The customer's last name."
  *     type: string
  *   billing_address:
- *     description: "The Address to be used for billing purposes."
+ *     description: "The address to be used for billing purposes."
  *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *         description: The full billing address object
  *       - type: string
  *         description: The ID of an existing billing address
  *   password:
- *     description: "The Customer's password."
+ *     description: "The customer's password."
  *     type: string
  *   phone:
- *     description: "The Customer's phone number."
+ *     description: "The customer's phone number."
  *     type: string
  *   email:
- *     description: "The email of the customer."
+ *     description: "The customer's email."
  *     type: string
  *   metadata:
- *     description: "Metadata about the customer."
+ *     description: "Additional custom data about the customer."
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class StorePostCustomersCustomerReq {
   @IsOptional()

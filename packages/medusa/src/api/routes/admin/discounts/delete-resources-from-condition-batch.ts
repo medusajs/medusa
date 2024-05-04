@@ -9,16 +9,16 @@ import { IsArray } from "class-validator"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [delete] /discounts/{discount_id}/conditions/{condition_id}/batch
+ * @oas [delete] /admin/discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "DeleteDiscountsDiscountConditionsConditionBatch"
- * summary: "Delete Batch Resources"
- * description: "Delete a batch of resources from a discount condition."
+ * summary: "Remove Batch Resources"
+ * description: "Remove a batch of resources from a discount condition. This will only remove the association between the resource and the discount condition, not the resource itself."
  * x-authenticated: true
  * parameters:
- *   - (path) discount_id=* {string} The ID of the Product.
- *   - (path) condition_id=* {string} The ID of the condition on which to add the item.
- *   - (query) expand {string} (Comma separated) Which relations should be expanded in each discount of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each discount of the result.
+ *   - (path) discount_id=* {string} The ID of the discount.
+ *   - (path) condition_id=* {string} The ID of the condition to remove the resources from.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned discount.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned discount.
  * requestBody:
  *   content:
  *     application/json:
@@ -33,26 +33,68 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.deleteConditionResourceBatch(discount_id, condition_id, {
- *         resources: [{ id: item_id }]
+ *       medusa.admin.discounts.deleteConditionResourceBatch(discountId, conditionId, {
+ *         resources: [{ id: itemId }]
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminDeleteDiscountConditionResourceBatch
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *         conditionId: string
+ *       }
+ *
+ *       const DiscountCondition = ({
+ *         discountId,
+ *         conditionId
+ *       }: Props) => {
+ *         const deleteConditionResource = useAdminDeleteDiscountConditionResourceBatch(
+ *           discountId,
+ *           conditionId,
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = (itemId: string) => {
+ *           deleteConditionResource.mutate({
+ *             resources: [
+ *               {
+ *                 id: itemId
+ *               }
+ *             ]
+ *           }, {
+ *             onSuccess: ({ discount }) => {
+ *               console.log(discount.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DiscountCondition
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/discounts/{id}/conditions/{condition_id}/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE '{backend_url}/admin/discounts/{id}/conditions/{condition_id}/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "resources": [{ "id": "item_id" }]
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Discount Condition
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK
@@ -109,17 +151,21 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ discount })
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 // eslint-disable-next-line max-len
 export class AdminDeleteDiscountsDiscountConditionsConditionBatchParams extends FindParams {}
 
 /**
  * @schema AdminDeleteDiscountsDiscountConditionsConditionBatchReq
  * type: object
+ * description: "The resources to remove."
  * required:
  *   - resources
  * properties:
  *   resources:
- *     description: The resources to be deleted from the discount condition
+ *     description: The resources to be removed from the discount condition
  *     type: array
  *     items:
  *       type: object

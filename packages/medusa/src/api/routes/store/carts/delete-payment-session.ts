@@ -1,15 +1,20 @@
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+
 import { EntityManager } from "typeorm"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [delete] /carts/{id}/payment-sessions/{provider_id}
+ * @oas [delete] /store/carts/{id}/payment-sessions/{provider_id}
  * operationId: DeleteCartsCartPaymentSessionsSession
  * summary: "Delete a Payment Session"
- * description: "Deletes a Payment Session on a Cart. May be useful if a payment has failed."
+ * description: "Delete a Payment Session in a Cart. May be useful if a payment has failed. The totals will be recalculated."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
- *   - (path) provider_id=* {string} The id of the Payment Provider used to create the Payment Session to be deleted.
+ *   - (path) id=* {string} The ID of the Cart.
+ *   - (path) provider_id=* {string} The ID of the Payment Provider used to create the Payment Session to be deleted.
  * x-codegen:
  *   method: deletePaymentSession
  * x-codeSamples:
@@ -18,16 +23,45 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.deletePaymentSession(cart_id, 'manual')
+ *       medusa.carts.deletePaymentSession(cartId, "manual")
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useDeletePaymentSession } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const deletePaymentSession = useDeletePaymentSession(cartId)
+ *
+ *         const handleDeletePaymentSession = (
+ *           providerId: string
+ *         ) => {
+ *           deletePaymentSession.mutate({
+ *             provider_id: providerId,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.payment_sessions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual'
+ *       curl -X DELETE '{backend_url}/store/carts/{id}/payment-sessions/{provider_id}'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -51,6 +85,9 @@ export default async (req, res) => {
 
   const cartService: CartService = req.scope.resolve("cartService")
 
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
     return await cartService
@@ -63,5 +100,10 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart: data })
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
+
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }

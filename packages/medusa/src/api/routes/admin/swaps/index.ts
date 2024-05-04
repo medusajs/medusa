@@ -22,17 +22,19 @@ export default (app) => {
 }
 
 export const defaultAdminSwapRelations = [
-  "order",
   "additional_items",
   "additional_items.adjustments",
-  "return_order",
-  "fulfillments",
-  "payment",
-  "shipping_address",
-  "shipping_methods",
   "cart",
   "cart.items",
   "cart.items.adjustments",
+  "cart.items.variant",
+  "fulfillments",
+  "order",
+  "payment",
+  "return_order",
+  "shipping_address",
+  "shipping_methods",
+  "shipping_methods.shipping_option",
 ]
 
 export const defaultAdminSwapFields = [
@@ -56,9 +58,16 @@ export const defaultAdminSwapFields = [
 /**
  * @schema AdminSwapsListRes
  * type: object
+ * description: "The list of swaps with pagination fields."
+ * required:
+ *   - swaps
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   swaps:
  *     type: array
+ *     description: "An array of swaps details."
  *     items:
  *       $ref: "#/components/schemas/Swap"
  *   count:
@@ -66,7 +75,7 @@ export const defaultAdminSwapFields = [
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of swaps skipped when retrieving the swaps.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -78,8 +87,30 @@ export type AdminSwapsListRes = PaginatedResponse & {
 /**
  * @schema AdminSwapsRes
  * type: object
+ * description: "The swap's details."
+ * x-expanded-relations:
+ *   field: swap
+ *   relations:
+ *     - additional_items
+ *     - additional_items.adjustments
+ *     - cart
+ *     - cart.items
+ *     - cart.items.adjustments
+ *     - cart.items.variant
+ *     - fulfillments
+ *     - order
+ *     - payment
+ *     - return_order
+ *     - shipping_address
+ *     - shipping_methods
+ *   eager:
+ *     - fulfillments.items
+ *     - shipping_methods.shipping_option
+ * required:
+ *   - swap
  * properties:
  *   swap:
+ *     description: "Swap details."
  *     $ref: "#/components/schemas/Swap"
  */
 export type AdminSwapsRes = {

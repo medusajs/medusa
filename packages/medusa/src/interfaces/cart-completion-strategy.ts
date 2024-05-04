@@ -1,13 +1,13 @@
+import { TransactionBaseService } from "./transaction-base-service"
 import { IdempotencyKey } from "../models"
 import { RequestContext } from "../types/request"
-import { TransactionBaseService } from "./transaction-base-service"
 
 export type CartCompletionResponse = {
   /** The response code for the completion request */
   response_code: number
 
   /** The response body for the completion request */
-  response_body: object
+  response_body: Record<string, unknown>
 }
 
 export interface ICartCompletionStrategy {
@@ -27,18 +27,18 @@ export interface ICartCompletionStrategy {
 }
 
 export abstract class AbstractCartCompletionStrategy
+  extends TransactionBaseService
   implements ICartCompletionStrategy
 {
+  static _isCartCompletionStrategy = true
+
+  static isCartCompletionStrategy(object): object is ICartCompletionStrategy {
+    return object?.constructor?._isCartCompletionStrategy
+  }
+
   abstract complete(
     cartId: string,
     idempotencyKey: IdempotencyKey,
     context: RequestContext
   ): Promise<CartCompletionResponse>
-}
-
-export function isCartCompletionStrategy(obj: unknown): boolean {
-  return (
-    typeof (obj as AbstractCartCompletionStrategy).complete === "function" ||
-    obj instanceof AbstractCartCompletionStrategy
-  )
 }

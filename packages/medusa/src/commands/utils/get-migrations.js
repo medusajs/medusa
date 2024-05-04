@@ -1,11 +1,16 @@
-import glob from "glob"
-import path from "path"
+import { MedusaModule, registerMedusaModule } from "@medusajs/modules-sdk"
 import fs from "fs"
-import { isString } from "lodash"
 import { sync as existsSync } from "fs-exists-cached"
-import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
+import glob from "glob"
+import { isString } from "lodash"
+import {
+  createRequireFromPath,
+  getConfigFile,
+  isDefined,
+} from "medusa-core-utils"
+import path from "path"
 import { handleConfigError } from "../../loaders/config"
-import registerModuleDefinitions from "../../loaders/module-definitions"
+import { MEDUSA_PROJECT_NAME } from "../../loaders/plugins"
 
 function createFileContentHash(path, files) {
   return path + files
@@ -91,8 +96,13 @@ function resolvePlugin(pluginName) {
 
 export function getInternalModules(configModule) {
   const modules = []
+  const moduleResolutions = {}
 
-  const moduleResolutions = registerModuleDefinitions(configModule)
+  Object.entries(configModule.modules ?? {}).forEach(([moduleKey, module]) => {
+    moduleResolutions[moduleKey] = registerMedusaModule(moduleKey, module)[
+      moduleKey
+    ]
+  })
 
   for (const moduleResolution of Object.values(moduleResolutions)) {
     if (
@@ -104,7 +114,7 @@ export function getInternalModules(configModule) {
 
     let loadedModule = null
     try {
-      loadedModule = require(moduleResolution.moduleDeclaration.resolve).default
+      loadedModule = require(moduleResolution.resolutionPath).default
     } catch (error) {
       console.log("Error loading Module", error)
       continue
@@ -139,10 +149,11 @@ export default (directory, featureFlagRouter) => {
     return details
   })
 
+  // Resolve user's project as a plugin for loading purposes
   resolved.push({
     resolve: `${directory}/dist`,
-    name: `project-plugin`,
-    id: createPluginId(`project-plugin`),
+    name: MEDUSA_PROJECT_NAME,
+    id: createPluginId(MEDUSA_PROJECT_NAME),
     options: {},
     version: createFileContentHash(process.cwd(), `**`),
   })
@@ -158,6 +169,11 @@ export default (directory, featureFlagRouter) => {
     const exists = existsSync(`${p.resolve}/migrations`)
     if (exists) {
       migrationDirs.push(`${p.resolve}/migrations/*.js`)
+      continue
+    }
+    const distExists = existsSync(`${p.resolve}/dist/migrations`)
+    if (distExists) {
+      migrationDirs.push(`${p.resolve}/dist/migrations/*.js`)
     }
   }
 
@@ -179,15 +195,12 @@ export const getEnabledMigrations = (migrationDirs, isFlagEnabled) => {
   return allMigrations
     .map((file) => {
       const loaded = require(file)
-      if (
-        typeof loaded.featureFlag === "undefined" ||
-        isFlagEnabled(loaded.featureFlag)
-      ) {
-        return file
+      if (!isDefined(loaded.featureFlag) || isFlagEnabled(loaded.featureFlag)) {
+        delete loaded.featureFlag
+        return Object.values(loaded)
       }
-
-      return false
     })
+    .flat()
     .filter(Boolean)
 }
 
@@ -199,30 +212,23 @@ export const getModuleMigrations = (configModule, isFlagEnabled) => {
   for (const loadedModule of loadedModules) {
     const mod = loadedModule.loadedModule
 
-    const isolatedMigrations = {}
     const moduleMigrations = (mod.migrations ?? [])
-      .map((migrations) => {
-        const all = []
-        for (const migration of Object.values(migrations)) {
-          // TODO: revisit how Modules export their migration entrypoints up/down
-          if (["up", "down"].includes(migration.name)) {
-            isolatedMigrations[migration.name] = migration
-          } else if (
-            typeof migration.featureFlag === "undefined" ||
-            isFlagEnabled(migration.featureFlag)
-          ) {
-            all.push(migration)
-          }
+      .map((migration) => {
+        if (
+          !isDefined(migration.featureFlag) ||
+          isFlagEnabled(migration.featureFlag)
+        ) {
+          delete migration.featureFlag
+          return Object.values(migration)
         }
-        return all
       })
       .flat()
+      .filter(Boolean)
 
     allModules.push({
       moduleDeclaration: loadedModule.moduleDeclaration,
       models: mod.models ?? [],
       migrations: moduleMigrations,
-      externalMigrations: isolatedMigrations,
     })
   }
 
@@ -251,5 +257,55 @@ export const getModuleSharedResources = (configModule, featureFlagsRouter) => {
   return {
     models,
     migrations,
+  }
+}
+
+export const runIsolatedModulesMigration = async (configModule) => {
+  const moduleResolutions = {}
+  Object.entries(configModule.modules ?? {}).forEach(([moduleKey, module]) => {
+    moduleResolutions[moduleKey] = registerMedusaModule(moduleKey, module)[
+      moduleKey
+    ]
+  })
+
+  for (const moduleResolution of Object.values(moduleResolutions)) {
+    if (
+      !moduleResolution.resolutionPath ||
+      moduleResolution.moduleDeclaration.scope !== "internal" ||
+      moduleResolution.moduleDeclaration.resources !== "isolated"
+    ) {
+      continue
+    }
+
+    await MedusaModule.migrateUp(
+      moduleResolution.definition.key,
+      moduleResolution.resolutionPath,
+      moduleResolution.options
+    )
+  }
+}
+
+export const revertIsolatedModulesMigration = async (configModule) => {
+  const moduleResolutions = {}
+  Object.entries(configModule.modules ?? {}).forEach(([moduleKey, module]) => {
+    moduleResolutions[moduleKey] = registerMedusaModule(moduleKey, module)[
+      moduleKey
+    ]
+  })
+
+  for (const moduleResolution of Object.values(moduleResolutions)) {
+    if (
+      !moduleResolution.resolutionPath ||
+      moduleResolution.moduleDeclaration.scope !== "internal" ||
+      moduleResolution.moduleDeclaration.resources !== "isolated"
+    ) {
+      continue
+    }
+
+    await MedusaModule.migrateDown(
+      moduleResolution.definition.key,
+      moduleResolution.resolutionPath,
+      moduleResolution.options
+    )
   }
 }

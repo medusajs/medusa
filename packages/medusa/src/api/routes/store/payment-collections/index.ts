@@ -2,12 +2,12 @@ import { Router } from "express"
 import "reflect-metadata"
 import middlewares, {
   transformBody,
-  transformQuery,
+  transformStoreQuery,
 } from "../../../middlewares"
 
 import { PaymentCollection, PaymentSession } from "../../../../models"
 import { StorePostPaymentCollectionsBatchSessionsAuthorizeReq } from "./authorize-batch-payment-sessions"
-import { GetPaymentCollectionsParams } from "./get-payment-collection"
+import { StoreGetPaymentCollectionsParams } from "./get-payment-collection"
 import { StorePostPaymentCollectionsBatchSessionsReq } from "./manage-batch-payment-sessions"
 import { StorePaymentCollectionSessionsReq } from "./manage-payment-session"
 
@@ -18,7 +18,7 @@ export default (app, container) => {
 
   route.get(
     "/:id",
-    transformQuery(GetPaymentCollectionsParams, {
+    transformStoreQuery(StoreGetPaymentCollectionsParams, {
       defaultFields: defaultPaymentCollectionFields,
       defaultRelations: defaultPaymentCollectionRelations,
       isList: false,
@@ -74,8 +74,20 @@ export const defaultPaymentCollectionRelations = ["region", "payment_sessions"]
 /**
  * @schema StorePaymentCollectionsRes
  * type: object
+ * description: "The payment collection's details."
+ * x-expanded-relations:
+ *   field: payment_collection
+ *   relations:
+ *     - payment_sessions
+ *     - region
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
+ * required:
+ *   - payment_collection
  * properties:
  *   payment_collection:
+ *     description: "Payment collection's details."
  *     $ref: "#/components/schemas/PaymentCollection"
  */
 export type StorePaymentCollectionsRes = {
@@ -85,8 +97,12 @@ export type StorePaymentCollectionsRes = {
 /**
  * @schema StorePaymentCollectionsSessionRes
  * type: object
+ * description: "The details of the payment session."
+ * required:
+ *   - payment_session
  * properties:
  *   payment_session:
+ *     description: "Payment session's details."
  *     $ref: "#/components/schemas/PaymentSession"
  */
 export type StorePaymentCollectionsSessionRes = {

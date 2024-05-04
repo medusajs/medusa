@@ -1,24 +1,23 @@
-import { IsArray, IsOptional, IsString } from "class-validator"
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
 
+import { omit } from "lodash"
+import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IsType } from "../../../../utils/validators/is-type"
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
-import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
-import { isDefined } from "medusa-core-utils"
 
 /**
- * @oas [post] /tax-rates/{id}
+ * @oas [post] /admin/tax-rates/{id}
  * operationId: "PostTaxRatesTaxRate"
  * summary: "Update a Tax Rate"
- * description: "Updates a Tax Rate"
+ * description: "Update a Tax Rate's details."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
  *     name: fields
- *     description: "Which fields should be included in the result."
+ *     description: "Comma-separated fields that should be included in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -27,7 +26,7 @@ import { isDefined } from "medusa-core-utils"
  *         type: string
  *   - in: query
  *     name: expand
- *     description: "Which fields should be expanded and retrieved in the result."
+ *     description: "Comma-separated relations that should be expanded in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -50,26 +49,57 @@ import { isDefined } from "medusa-core-utils"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.taxRates.update(tax_rate_id, {
- *         name: 'New Tax Rate'
+ *       medusa.admin.taxRates.update(taxRateId, {
+ *         name: "New Tax Rate"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateTaxRate } from "medusa-react"
+ *
+ *       type Props = {
+ *         taxRateId: string
+ *       }
+ *
+ *       const TaxRate = ({ taxRateId }: Props) => {
+ *         const updateTaxRate = useAdminUpdateTaxRate(taxRateId)
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string
+ *         ) => {
+ *           updateTaxRate.mutate({
+ *             name
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.name)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default TaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/tax-rates/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/tax-rates/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "New Tax Rate"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK
@@ -140,19 +170,20 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesTaxRateReq
  * type: object
+ * description: "The details to update of the tax rate."
  * properties:
  *   code:
  *     type: string
- *     description: "A code to identify the tax type by"
+ *     description: "The code of the tax rate."
  *   name:
  *     type: string
- *     description: "A human friendly name for the tax"
+ *     description: "The name of the tax rate."
  *   region_id:
  *     type: string
- *     description: "The ID of the Region that the rate belongs to"
+ *     description: "The ID of the Region that the tax rate belongs to."
  *   rate:
  *     type: number
- *     description: "The numeric rate to charge"
+ *     description: "The numeric rate to charge."
  *   products:
  *     type: array
  *     description: "The IDs of the products associated with this tax rate"
@@ -165,7 +196,7 @@ export default async (req, res) => {
  *       type: string
  *   product_types:
  *     type: array
- *     description: "The IDs of the types of products associated with this tax rate"
+ *     description: "The IDs of the types of product types associated with this tax rate"
  *     items:
  *       type: string
  */
@@ -183,7 +214,7 @@ export class AdminPostTaxRatesTaxRateReq {
   region_id?: string
 
   @IsOptional()
-  @IsType([Number, null])
+  @IsNumber()
   rate?: number | null
 
   @IsOptional()
@@ -199,11 +230,20 @@ export class AdminPostTaxRatesTaxRateReq {
   product_types?: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminPostTaxRatesTaxRateParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

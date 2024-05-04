@@ -5,10 +5,10 @@ import { SalesChannelService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /sales-channels/{id}
+ * @oas [post] /admin/sales-channels/{id}
  * operationId: "PostSalesChannelsSalesChannel"
  * summary: "Update a Sales Channel"
- * description: "Updates a Sales Channel."
+ * description: "Update a Sales Channel's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales Channel.
@@ -26,26 +26,59 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.salesChannels.update(sales_channel_id, {
- *         name: 'App'
+ *       medusa.admin.salesChannels.update(salesChannelId, {
+ *         name: "App"
  *       })
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateSalesChannel } from "medusa-react"
+ *
+ *       type Props = {
+ *         salesChannelId: string
+ *       }
+ *
+ *       const SalesChannel = ({ salesChannelId }: Props) => {
+ *         const updateSalesChannel = useAdminUpdateSalesChannel(
+ *           salesChannelId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           is_disabled: boolean
+ *         ) => {
+ *           updateSalesChannel.mutate({
+ *             is_disabled,
+ *           }, {
+ *             onSuccess: ({ sales_channel }) => {
+ *               console.log(sales_channel.is_disabled)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default SalesChannel
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/sales-channels/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/sales-channels/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "App"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Sales Channel
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK
@@ -90,16 +123,17 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostSalesChannelsSalesChannelReq
  * type: object
+ * description: "The details to update of the sales channel."
  * properties:
  *   name:
  *     type: string
- *     description: Name of the sales channel.
+ *     description: The name of the sales channel
  *   description:
  *     type: string
- *     description:  Sales Channel description.
+ *     description:  The description of the sales channel.
  *   is_disabled:
  *     type: boolean
- *     description:  Indication of if the sales channel is active.
+ *     description: Whether the Sales Channel is disabled.
  */
 export class AdminPostSalesChannelsSalesChannelReq {
   @IsOptional()

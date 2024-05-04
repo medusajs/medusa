@@ -11,15 +11,16 @@ const {
   PaymentSession,
 } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 const {
   simpleRegionFactory,
   simpleProductFactory,
   simpleCartFactory,
   simpleShippingOptionFactory,
-} = require("../../factories")
+  simpleOrderFactory,
+} = require("../../../factories")
 const { MedusaError } = require("medusa-core-utils")
 
 jest.setTimeout(30000)
@@ -67,7 +68,9 @@ describe("/store/carts", () => {
       })
 
       const defaultProfile = await manager.findOne(ShippingProfile, {
-        type: "default",
+        where: {
+          type: ShippingProfile.default,
+        },
       })
       await manager.insert(Product, {
         id: "test-product",
@@ -155,6 +158,56 @@ describe("/store/carts", () => {
       )
     })
 
+    it("retrieves an order by cart id, with totals", async () => {
+      const api = useApi()
+
+      const region = await simpleRegionFactory(dbConnection)
+      const product = await simpleProductFactory(dbConnection)
+
+      const cartRes = await api.post("/store/carts", {
+        region_id: region.id,
+      })
+
+      const cartId = cartRes.data.cart.id
+
+      await api.post(`/store/carts/${cartId}/line-items`, {
+        variant_id: product.variants[0].id,
+        quantity: 1,
+      })
+
+      await api.post(`/store/carts/${cartId}`, {
+        email: "testmailer@medusajs.com",
+      })
+
+      await api.post(`/store/carts/${cartId}/payment-sessions`).catch((err) => {
+        console.error("Error creating payment session: ", err.response.data)
+        return err.response
+      })
+
+      const responseSuccess = await api.post(`/store/carts/${cartId}/complete`)
+
+      const orderId = responseSuccess.data.data.id
+
+      const response = await api.get("/store/orders/cart/" + cartId)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order).toEqual(
+        expect.objectContaining({
+          id: orderId,
+          cart_id: cartId,
+          total: 100,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          tax_total: 0,
+          subtotal: 100,
+          discount_total: 0,
+          shipping_total: 0,
+          refunded_total: 0,
+          paid_total: 100,
+        })
+      )
+    })
+
     it("lookup order response contains only fields defined with `fields` param", async () => {
       const api = useApi()
 
@@ -162,20 +215,39 @@ describe("/store/carts", () => {
         "/store/orders?display_id=111&email=test@email.com&fields=status,email"
       )
 
-      expect(Object.keys(response.data.order)).toEqual([
-        // fields
-        "status",
-        "email",
-        // relations
-        "shipping_address",
-        "fulfillments",
-        "items",
-        "shipping_methods",
-        "discounts",
-        "customer",
-        "payments",
-        "region",
-      ])
+      expect(Object.keys(response.data.order)).toHaveLength(24)
+      expect(Object.keys(response.data.order)).toEqual(
+        expect.arrayContaining([
+          "id",
+          "created_at",
+
+          // fields
+          "status",
+          "email",
+
+          // relations
+          "shipping_address",
+          "fulfillments",
+          "items",
+          "shipping_methods",
+          "discounts",
+          "customer",
+          "payments",
+          "region",
+
+          // totals
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "total",
+          "subtotal",
+          "paid_total",
+          "refundable_amount",
+          "gift_card_total",
+          "gift_card_tax_total",
+        ])
+      )
     })
 
     it("get order response contains only fields defined with `fields` param", async () => {
@@ -183,19 +255,37 @@ describe("/store/carts", () => {
 
       const response = await api.get("/store/orders/order_test?fields=status")
 
-      expect(Object.keys(response.data.order)).toEqual([
-        // fields
-        "status",
-        // default relations
-        "shipping_address",
-        "fulfillments",
-        "items",
-        "shipping_methods",
-        "discounts",
-        "customer",
-        "payments",
-        "region",
-      ])
+      expect(Object.keys(response.data.order)).toHaveLength(22)
+      expect(Object.keys(response.data.order)).toEqual(
+        expect.arrayContaining([
+          "id",
+
+          // fields
+          "status",
+
+          // default relations
+          "shipping_address",
+          "fulfillments",
+          "items",
+          "shipping_methods",
+          "discounts",
+          "customer",
+          "payments",
+          "region",
+
+          // totals
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "total",
+          "subtotal",
+          "paid_total",
+          "refundable_amount",
+          "gift_card_total",
+          "gift_card_tax_total",
+        ])
+      )
     })
 
     it("get order response contains only fields defined with `fields` and `expand` param", async () => {
@@ -205,12 +295,30 @@ describe("/store/carts", () => {
         "/store/orders/order_test?fields=status&expand=billing_address"
       )
 
-      expect(Object.keys(response.data.order)).toEqual([
-        // fields
-        "status",
-        // selected relations
-        "billing_address",
-      ])
+      expect(Object.keys(response.data.order).sort()).toEqual(
+        [
+          "id",
+          // fields
+          "status",
+
+          // selected relations
+          "billing_address",
+
+          // totals
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "total",
+          "subtotal",
+          "paid_total",
+          "refundable_amount",
+          "gift_card_total",
+          "gift_card_tax_total",
+          "item_tax_total",
+          "shipping_tax_total",
+        ].sort()
+      )
     })
 
     it("looks up order", async () => {
@@ -308,12 +416,12 @@ describe("/store/carts", () => {
         })
 
       expect(responseFail.status).toEqual(409)
-      expect(responseFail.data.type).toEqual("not_allowed")
-      expect(responseFail.data.code).toEqual(
+      expect(responseFail.data.errors[0].type).toEqual("not_allowed")
+      expect(responseFail.data.errors[0].code).toEqual(
         MedusaError.Codes.INSUFFICIENT_INVENTORY
       )
 
-      let payments = await manager.find(Payment, { cart_id: cartId })
+      let payments = await manager.find(Payment, { where: { cart_id: cartId } })
       expect(payments).toHaveLength(1)
       expect(payments).toContainEqual(
         expect.objectContaining({
@@ -338,7 +446,7 @@ describe("/store/carts", () => {
       expect(responseSuccess.status).toEqual(200)
       expect(responseSuccess.data.type).toEqual("order")
 
-      payments = await manager.find(Payment, { cart_id: cartId })
+      payments = await manager.find(Payment, { where: { cart_id: cartId } })
       expect(payments).toHaveLength(2)
       expect(payments).toEqual(
         expect.arrayContaining([
@@ -356,7 +464,7 @@ describe("/store/carts", () => {
       await db.teardown()
     })
 
-    it("should fails on cart already completed", async () => {
+    it("should return an order on cart already completed", async () => {
       const api = useApi()
       const manager = dbConnection.manager
 
@@ -391,7 +499,9 @@ describe("/store/carts", () => {
       expect(responseSuccess.status).toEqual(200)
       expect(responseSuccess.data.type).toEqual("order")
 
-      const payments = await manager.find(Payment, { cart_id: cartId })
+      const payments = await manager.find(Payment, {
+        where: { cart_id: cartId },
+      })
       expect(payments).toHaveLength(1)
       expect(payments).toContainEqual(
         expect.objectContaining({
@@ -399,17 +509,16 @@ describe("/store/carts", () => {
         })
       )
 
-      const responseFail = await api
-        .post(`/store/carts/${cartId}/complete`)
-        .catch((err) => {
-          return err.response
-        })
+      const successRes = await api.post(`/store/carts/${cartId}/complete`)
 
-      expect(responseFail.status).toEqual(409)
-      expect(responseFail.data.code).toEqual("cart_incompatible_state")
-      expect(responseFail.data.message).toEqual(
-        "Cart has already been completed"
+      expect(successRes.status).toEqual(200)
+      expect(successRes.data.data).toEqual(
+        expect.objectContaining({
+          cart_id: cartId,
+          id: expect.any(String),
+        })
       )
+      expect(successRes.data.type).toEqual("order")
     })
   })
 

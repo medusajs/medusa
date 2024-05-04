@@ -1,15 +1,16 @@
 import { IsEmail, IsNotEmpty } from "class-validator"
-import jwt from "jsonwebtoken"
 import { EntityManager } from "typeorm"
+import { defaultRelations } from "."
 import AuthService from "../../../../services/auth"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /auth
+ * @oas [post] /store/auth
  * operationId: "PostAuth"
  * summary: "Customer Login"
- * description: "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser."
+ * description: "Log a customer in and includes the Cookie session in the response header. The cookie session can be used in subsequent requests to authenticate the customer.
+ * When using Medusa's JS or Medusa React clients, the cookie is automatically attached to subsequent requests."
  * requestBody:
  *   content:
  *     application/json:
@@ -24,17 +25,17 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.auth.authenticate({
- *         email: 'user@example.com',
- *         password: 'user@example.com'
+ *         email: "user@example.com",
+ *         password: "user@example.com"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/auth' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/auth' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com",
  *           "password": "supersecret"
@@ -77,21 +78,12 @@ export default async (req, res) => {
     return
   }
 
-  // Add JWT to cookie
-  const {
-    projectConfig: { jwt_secret },
-  } = req.scope.resolve("configModule")
-  req.session.jwt_store = jwt.sign(
-    { customer_id: result.customer?.id },
-    jwt_secret!,
-    {
-      expiresIn: "30d",
-    }
-  )
+  // Set customer id on session, this is stored on the server.
+  req.session.customer_id = result.customer?.id
 
   const customerService: CustomerService = req.scope.resolve("customerService")
   const customer = await customerService.retrieve(result.customer?.id || "", {
-    relations: ["orders", "orders.items"],
+    relations: defaultRelations,
   })
 
   res.json({ customer })

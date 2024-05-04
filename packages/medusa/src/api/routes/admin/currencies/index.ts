@@ -35,9 +35,16 @@ export default (app) => {
 /**
  * @schema AdminCurrenciesListRes
  * type: object
+ * description: List of currencies with pagination fields.
+ * required:
+ *   - currencies
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   currencies:
  *     type: array
+ *     description: An array of currency details.
  *     items:
  *       $ref: "#/components/schemas/Currency"
  *   count:
@@ -45,7 +52,7 @@ export default (app) => {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of currencies skipped when retrieving the currencies.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -57,9 +64,13 @@ export type AdminCurrenciesListRes = PaginatedResponse & {
 /**
  * @schema AdminCurrenciesRes
  * type: object
+ * description: A currency's details.
+ * required:
+ *   - currency
  * properties:
  *   currency:
- *       $ref: "#/components/schemas/Currency"
+ *     description: Currency details.
+ *     $ref: "#/components/schemas/Currency"
  */
 export type AdminCurrenciesRes = {
   currency: Currency

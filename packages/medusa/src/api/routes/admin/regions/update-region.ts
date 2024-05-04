@@ -15,10 +15,10 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /regions/{id}
+ * @oas [post] /admin/regions/{id}
  * operationId: "PostRegionsRegion"
  * summary: "Update a Region"
- * description: "Updates a Region"
+ * description: "Update a Region's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
@@ -36,26 +36,59 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.regions.update(region_id, {
- *         name: 'Europe'
+ *       medusa.admin.regions.update(regionId, {
+ *         name: "Europe"
  *       })
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateRegion } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const updateRegion = useAdminUpdateRegion(regionId)
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           countries: string[]
+ *         ) => {
+ *           updateRegion.mutate({
+ *             countries,
+ *           }, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/regions/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/regions/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Europe"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
@@ -99,46 +132,53 @@ export default async (req, res) => {
 /**
  * @schema AdminPostRegionsRegionReq
  * type: object
+ * description: "The details to update of the regions."
  * properties:
  *   name:
  *     description: "The name of the Region"
  *     type: string
  *   currency_code:
- *     description: "The 3 character ISO currency code to use for the Region."
+ *     description: "The 3 character ISO currency code to use in the Region."
  *     type: string
  *     externalDocs:
  *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *       description: See a list of codes.
  *   automatic_taxes:
- *     description: "If true Medusa will automatically calculate taxes for carts in this region. If false you have to manually call POST /carts/:id/taxes."
+ *     description: >-
+ *       If set to `true`, the Medusa backend will automatically calculate taxes for carts in this region. If set to `false`, the taxes must be calculated manually.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/modules/taxes/storefront/manual-calculation
+ *       description: How to calculate taxes in a storefront.
  *     type: boolean
  *   gift_cards_taxable:
- *     description: "Whether gift cards in this region should be applied sales tax when purchasing a gift card"
+ *     description: >-
+ *       If set to `true`, taxes will be applied on gift cards.
  *     type: boolean
  *   tax_provider_id:
- *     description: "The ID of the tax provider to use; if null the system tax provider is used"
+ *     description: "The ID of the tax provider to use. If none provided, the system tax provider is used."
  *     type: string
  *   tax_code:
- *     description: "An optional tax code the Region."
+ *     description: "The tax code of the Region."
  *     type: string
  *   tax_rate:
- *     description: "The tax rate to use on Orders in the Region."
+ *     description: "The tax rate to use in the Region."
  *     type: number
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Tax included in prices of region"
+ *     x-featureFlag: "tax_inclusive_pricing"
+ *     description: "Whether taxes are included in the prices of the region."
  *     type: boolean
  *   payment_providers:
- *     description: "A list of Payment Provider IDs that should be enabled for the Region"
+ *     description: "A list of Payment Provider IDs that can be used in the Region"
  *     type: array
  *     items:
  *       type: string
  *   fulfillment_providers:
- *     description: "A list of Fulfillment Provider IDs that should be enabled for the Region"
+ *     description: "A list of Fulfillment Provider IDs that can be used in the Region"
  *     type: array
  *     items:
  *       type: string
  *   countries:
- *     description: "A list of countries' 2 ISO Characters that should be included in the Region."
+ *     description: "A list of countries' 2 ISO characters that should be included in the Region."
  *     type: array
  *     items:
  *       type: string

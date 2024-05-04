@@ -15,12 +15,17 @@ import EventBusService from "../../../../services/event-bus"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
 import ReturnService from "../../../../services/return"
 import { validator } from "../../../../utils/validator"
+import { defaultRelations } from "."
+import { Logger } from "@medusajs/types"
 
 /**
- * @oas [post] /returns
+ * @oas [post] /store/returns
  * operationId: "PostReturns"
  * summary: "Create Return"
- * description: "Creates a Return for an Order."
+ * description: "Create a Return for an Order. If a return shipping method is specified, the return is automatically fulfilled."
+ * externalDocs:
+ *   description: "How to create a return in a storefront"
+ *   url: "https://docs.medusajs.com/modules/orders/storefront/create-return"
  * requestBody:
  *   content:
  *     application/json:
@@ -45,12 +50,51 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then((data) => {
  *         console.log(data.return.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCreateReturn } from "medusa-react"
+ *
+ *       type CreateReturnData = {
+ *         items: {
+ *           item_id: string,
+ *           quantity: number
+ *         }[]
+ *         return_shipping: {
+ *           option_id: string
+ *         }
+ *       }
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const CreateReturn = ({ orderId }: Props) => {
+ *         const createReturn = useCreateReturn()
+ *         // ...
+ *
+ *         const handleCreate = (data: CreateReturnData) => {
+ *           createReturn.mutate({
+ *             ...data,
+ *             order_id: orderId
+ *           }, {
+ *             onSuccess: ({ return: returnData }) => {
+ *               console.log(returnData.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateReturn
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/returns' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/returns' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "order_id": "asfasf",
  *           "items": [
@@ -61,7 +105,7 @@ import { validator } from "../../../../utils/validator"
  *           ]
  *       }'
  * tags:
- *   - Return
+ *   - Returns
  * responses:
  *   200:
  *     description: OK
@@ -172,7 +216,7 @@ export default async (req, res) => {
                         idempotency_key: idempotencyKey.idempotency_key,
                       },
                       {
-                        relations: ["items", "items.reason"],
+                        relations: defaultRelations,
                       }
                     )
                   if (!returnOrders.length) {
@@ -221,7 +265,8 @@ export default async (req, res) => {
 
     res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
   } catch (err) {
-    console.log(err)
+    const logger: Logger = req.scope.resolve("logger")
+    logger.log(err)
     throw err
   }
 }
@@ -253,15 +298,16 @@ class Item {
 /**
  * @schema StorePostReturnsReq
  * type: object
+ * description: "The details of the return to create."
  * required:
  *   - order_id
  *   - items
  * properties:
  *   order_id:
  *     type: string
- *     description: The ID of the Order to create the Return from.
+ *     description: The ID of the Order to create the return for.
  *   items:
- *     description: "The items to include in the Return."
+ *     description: "The items to include in the return."
  *     type: array
  *     items:
  *       type: object
@@ -270,19 +316,19 @@ class Item {
  *         - quantity
  *       properties:
  *         item_id:
- *           description: The ID of the Line Item from the Order.
+ *           description: The ID of the line item to return.
  *           type: string
  *         quantity:
  *           description: The quantity to return.
  *           type: integer
  *         reason_id:
- *           description: The ID of the return reason.
+ *           description: The ID of the return reason. Return reasons can be retrieved from the List Return Reasons API Route.
  *           type: string
  *         note:
  *           description: A note to add to the item returned.
  *           type: string
  *   return_shipping:
- *     description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
+ *     description: The return shipping method used to return the items. If provided, a fulfillment is automatically created for the return.
  *     type: object
  *     required:
  *       - option_id

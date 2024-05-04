@@ -1,50 +1,50 @@
-import { flatten, groupBy, map, merge } from "lodash"
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
+import { objectToStringPath, promiseAll } from "@medusajs/utils"
+import { flatten } from "lodash"
+import { FindManyOptions, FindOptionsRelations, In } from "typeorm"
+import { dataSource } from "../loaders/database"
 import { Order } from "../models"
+import {
+  getGroupedRelations,
+  mergeEntitiesWithRelations,
+} from "../utils/repository"
 
 const ITEMS_REL_NAME = "items"
 const REGION_REL_NAME = "region"
+const DISCOUNTS_REL_NAME = "discounts"
 
-@EntityRepository(Order)
-export class OrderRepository extends Repository<Order> {
-  public async findWithRelations(
-    relations: string[] = [],
+export const OrderRepository = dataSource.getRepository(Order).extend({
+  async findWithRelations(
+    relations: FindOptionsRelations<Order> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
   ): Promise<Order[]> {
     const entities = await this.find(optionsWithoutRelations)
     const entitiesIds = entities.map(({ id }) => id)
 
-    const groupedRelations: { [topLevel: string]: string[] } = {}
-    for (const rel of relations) {
-      const [topLevel] = rel.split(".")
-      if (groupedRelations[topLevel]) {
-        groupedRelations[topLevel].push(rel)
-      } else {
-        groupedRelations[topLevel] = [rel]
-      }
-    }
+    const groupedRelations = getGroupedRelations(objectToStringPath(relations))
 
-    const entitiesIdsWithRelations = await Promise.all(
+    const entitiesIdsWithRelations = await promiseAll(
       Object.entries(groupedRelations).map(async ([topLevel, rels]) => {
         // If top level is region or items then get deleted region as well
-        return this.findByIds(entitiesIds, {
+        return this.find({
+          where: { id: In(entitiesIds) },
           select: ["id"],
           relations: rels,
-          withDeleted:
-            topLevel === ITEMS_REL_NAME || topLevel === REGION_REL_NAME,
+          withDeleted: [
+            ITEMS_REL_NAME,
+            REGION_REL_NAME,
+            DISCOUNTS_REL_NAME,
+          ].includes(topLevel),
+          relationLoadStrategy: "join",
         })
       })
     ).then(flatten)
 
-    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
+    const entitiesAndRelations = entities.concat(entitiesIdsWithRelations)
+    return mergeEntitiesWithRelations<Order>(entitiesAndRelations)
+  },
 
-    const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-
-    return map(entities, (e) => merge({}, ...entitiesAndRelationsById[e.id]))
-  }
-
-  public async findOneWithRelations(
-    relations: string[] = [],
+  async findOneWithRelations(
+    relations: FindOptionsRelations<Order> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
   ): Promise<Order> {
     // Limit 1
@@ -55,5 +55,7 @@ export class OrderRepository extends Repository<Order> {
       optionsWithoutRelations
     )
     return result[0]
-  }
-}
+  },
+})
+
+export default OrderRepository

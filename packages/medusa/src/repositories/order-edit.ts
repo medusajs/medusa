@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
-import { OrderEdit } from "../models"
+import { OrderEdit } from "../models/order-edit"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(OrderEdit)
-export class OrderEditRepository extends Repository<OrderEdit> {}
+export const OrderEditRepository = dataSource.getRepository(OrderEdit)
+export default OrderEditRepository

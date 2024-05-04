@@ -1,28 +1,34 @@
-import { Router } from "express"
 import "reflect-metadata"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+
 import {
-  InventoryItemDTO,
-  InventoryLevelDTO,
-} from "../../../../types/inventory"
+  AdminPostInventoryItemsInventoryItemParams,
+  AdminPostInventoryItemsInventoryItemReq,
+} from "./update-inventory-item"
+import {
+  AdminPostInventoryItemsItemLocationLevelsLevelParams,
+  AdminPostInventoryItemsItemLocationLevelsLevelReq,
+} from "./update-location-level"
+import {
+  AdminPostInventoryItemsItemLocationLevelsParams,
+  AdminPostInventoryItemsItemLocationLevelsReq,
+} from "./create-location-level"
+import {
+  AdminPostInventoryItemsParams,
+  AdminPostInventoryItemsReq,
+} from "./create-inventory-item"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { InventoryItemDTO, InventoryLevelDTO } from "@medusajs/types"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { AdminGetInventoryItemsParams } from "./list-inventory-items"
-import { AdminGetInventoryItemsItemParams } from "./get-inventory-item"
-import { AdminPostInventoryItemsInventoryItemReq } from "./update-inventory-item"
+
 import { AdminGetInventoryItemsItemLocationLevelsParams } from "./list-location-levels"
-import {
-  AdminPostInventoryItemsItemLocationLevelsReq,
-  AdminPostInventoryItemsItemLocationLevelsParams,
-} from "./create-location-level"
-import {
-  AdminPostInventoryItemsItemLocationLevelsLevelReq,
-  AdminPostInventoryItemsItemLocationLevelsLevelParams,
-} from "./update-location-level"
-import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+import { AdminGetInventoryItemsItemParams } from "./get-inventory-item"
+import { AdminGetInventoryItemsParams } from "./list-inventory-items"
 import { ProductVariant } from "../../../../models"
+import { Router } from "express"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
@@ -48,7 +54,7 @@ export default (app) => {
 
   route.post(
     "/:id",
-    transformQuery(AdminGetInventoryItemsItemParams, {
+    transformQuery(AdminPostInventoryItemsInventoryItemParams, {
       defaultFields: defaultAdminInventoryItemFields,
       defaultRelations: defaultAdminInventoryItemRelations,
       isList: false,
@@ -73,11 +79,22 @@ export default (app) => {
     middlewares.wrap(require("./create-location-level").default)
   )
 
+  route.post(
+    "/",
+    transformQuery(AdminPostInventoryItemsParams, {
+      defaultFields: defaultAdminInventoryItemFields,
+      defaultRelations: defaultAdminInventoryItemRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostInventoryItemsReq),
+    middlewares.wrap(require("./create-inventory-item").default)
+  )
+
   route.get(
     "/:id/location-levels",
     transformQuery(AdminGetInventoryItemsItemLocationLevelsParams, {
-      defaultFields: defaultAdminInventoryItemFields,
-      defaultRelations: defaultAdminInventoryItemRelations,
+      defaultFields: defaultAdminLocationLevelFields,
+      defaultRelations: [],
       isList: false,
     }),
     middlewares.wrap(require("./list-location-levels").default)
@@ -115,6 +132,9 @@ export default (app) => {
 export const defaultAdminInventoryItemFields: (keyof InventoryItemDTO)[] = [
   "id",
   "sku",
+  "title",
+  "description",
+  "thumbnail",
   "origin_country",
   "hs_code",
   "requires_shipping",
@@ -129,13 +149,29 @@ export const defaultAdminInventoryItemFields: (keyof InventoryItemDTO)[] = [
   "updated_at",
 ]
 
+export const defaultAdminLocationLevelFields: (keyof InventoryLevelDTO)[] = [
+  "id",
+  "inventory_item_id",
+  "location_id",
+  "stocked_quantity",
+  "reserved_quantity",
+  "incoming_quantity",
+  "metadata",
+  "created_at",
+  "updated_at",
+]
+
 export const defaultAdminInventoryItemRelations = []
 
 /**
  * @schema AdminInventoryItemsRes
  * type: object
+ * description: The inventory item's details.
+ * required:
+ *   - inventory_item
  * properties:
  *   inventory_item:
+ *     description: Inventory Item details
  *     $ref: "#/components/schemas/InventoryItemDTO"
  */
 export type AdminInventoryItemsRes = {
@@ -145,6 +181,10 @@ export type AdminInventoryItemsRes = {
 /**
  * @schema AdminInventoryItemsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -163,9 +203,15 @@ export type AdminInventoryItemsDeleteRes = DeleteResponse
 /**
  * @schema AdminInventoryItemsListRes
  * type: object
+ * required:
+ *   - inventory_items
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   inventory_items:
  *     type: array
+ *     description: an array of Inventory Item details
  *     items:
  *       $ref: "#/components/schemas/InventoryItemDTO"
  *   count:
@@ -173,7 +219,7 @@ export type AdminInventoryItemsDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of inventory items skipped when retrieving the inventory items.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -183,53 +229,90 @@ export type AdminInventoryItemsListRes = PaginatedResponse & {
 }
 
 /**
+ * @schema DecoratedInventoryItemDTO
+ * type: object
+ * allOf:
+ *   - $ref: "#/components/schemas/InventoryItemDTO"
+ *   - type: object
+ *     required:
+ *       - stocked_quantity
+ *       - reserved_quantity
+ *     properties:
+ *       location_levels:
+ *         type: array
+ *         description: An array of location level details
+ *         items:
+ *           $ref: "#/components/schemas/InventoryLevelDTO"
+ *       variants:
+ *         type: array
+ *         description: An array of product variant details
+ *         items:
+ *           $ref: "#/components/schemas/ProductVariant"
+ *       stocked_quantity:
+ *         type: number
+ *         description: The total quantity of the item in stock across levels
+ *       reserved_quantity:
+ *         type: number
+ *         description: The total quantity of the item available across levels
+ */
+export type DecoratedInventoryItemDTO = InventoryItemDTO & {
+  location_levels?: InventoryLevelDTO[]
+  variants?: ProductVariant[]
+  stocked_quantity: number
+  reserved_quantity: number
+}
+
+/**
  * @schema AdminInventoryItemsListWithVariantsAndLocationLevelsRes
  * type: object
+ * required:
+ *   - inventory_items
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   inventory_items:
  *     type: array
+ *     description: an array of Inventory Item details
  *     items:
- *       allOf:
- *         - $ref: "#/components/schemas/InventoryItemDTO"
- *         - type: object
- *           properties:
- *             location_levels:
- *               type: array
- *               items:
- *                 allOf:
- *                   - $ref: "#/components/schemas/InventoryLevelDTO"
- *             variants:
- *               type: array
- *               items:
- *                 allOf:
- *                   - $ref: "#/components/schemas/ProductVariant"
+ *       $ref: "#/components/schemas/DecoratedInventoryItemDTO"
  *   count:
  *     type: integer
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of inventory items skipped when retrieving the inventory items.
  *   limit:
  *     type: integer
  *     description: The number of items per page
  */
 export type AdminInventoryItemsListWithVariantsAndLocationLevelsRes =
-  Partial<InventoryItemDTO> & {
-    location_levels?: InventoryLevelDTO[]
-    variants?: ProductVariant[]
+  PaginatedResponse & {
+    inventory_items: DecoratedInventoryItemDTO[]
   }
 
 /**
  * @schema AdminInventoryItemsLocationLevelsRes
  * type: object
+ * description: "Details of inventory items and their associated location levels."
+ * required:
+ *   - inventory_item
  * properties:
- *   id:
- *     description: The id of the location
- *   location_levels:
- *     description: List of stock levels at a given location
- *     type: array
- *     items:
- *       $ref: "#/components/schemas/InventoryLevelDTO"
+ *   inventory_item:
+ *     type: object
+ *     description: "An inventory item's ID and associated location levels."
+ *     required:
+ *       - id
+ *       - location_levels
+ *     properties:
+ *       id:
+ *         description: The id of the location
+ *         type: string
+ *       location_levels:
+ *         description: List of stock levels at a given location
+ *         type: array
+ *         items:
+ *           $ref: "#/components/schemas/InventoryLevelDTO"
  */
 export type AdminInventoryItemsLocationLevelsRes = {
   inventory_item: {
@@ -238,9 +321,10 @@ export type AdminInventoryItemsLocationLevelsRes = {
   }
 }
 
-export * from "./list-inventory-items"
-export * from "./get-inventory-item"
-export * from "./update-inventory-item"
-export * from "./list-location-levels"
+export * from "./create-inventory-item"
 export * from "./create-location-level"
+export * from "./get-inventory-item"
+export * from "./list-inventory-items"
+export * from "./list-location-levels"
+export * from "./update-inventory-item"
 export * from "./update-location-level"

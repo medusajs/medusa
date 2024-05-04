@@ -1,16 +1,16 @@
 import { PricingService, ProductService } from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
+import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /products/{id}/options
+ * @oas [post] /admin/products/{id}/options
  * operationId: "PostProductsProductOptions"
- * summary: "Add an Option"
+ * summary: "Add a Product Option"
+ * description: "Add a Product Option to a Product."
  * x-authenticated: true
- * description: "Adds a Product Option to a Product"
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
  * requestBody:
@@ -27,26 +27,59 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.addOption(product_id, {
- *         title: 'Size'
+ *       medusa.admin.products.addOption(productId, {
+ *         title: "Size"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateProductOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *       }
+ *
+ *       const CreateProductOption = ({ productId }: Props) => {
+ *         const createOption = useAdminCreateProductOption(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           title: string
+ *         ) => {
+ *           createOption.mutate({
+ *             title
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.options)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateProductOption
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/products/{id}/options' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/products/{id}/options' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Size"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
@@ -90,7 +123,7 @@ export default async (req, res) => {
     relations: defaultAdminProductRelations,
   })
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
 }
@@ -98,12 +131,14 @@ export default async (req, res) => {
 /**
  * @schema AdminPostProductsProductOptionsReq
  * type: object
+ * description: "The details of the product option to create."
  * required:
  *   - title
  * properties:
  *   title:
- *     description: "The title the Product Option will be identified by i.e. \"Size\""
+ *     description: "The title the Product Option."
  *     type: string
+ *     example: "Size"
  */
 export class AdminPostProductsProductOptionsReq {
   @IsString()

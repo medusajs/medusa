@@ -1,0 +1,6 @@
+extends: existence
+message: "Consider removing or replacing %s with something else."
+level: warning
+ignorecase: true
+tokens:
+  - 'you can'

@@ -1,15 +1,25 @@
 const path = require("path")
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
 const {
   simpleProductFactory,
-  simpleProductCategoryFactory,
-} = require("../../factories")
+  simpleSalesChannelFactory,
+} = require("../../../factories")
 
-const productSeeder = require("../../helpers/store-product-seeder")
-const adminSeeder = require("../../helpers/admin-seeder")
+const productSeeder = require("../../../helpers/store-product-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const {
+  allowedStoreProductsFields,
+  defaultStoreProductsRelations,
+} = require("@medusajs/medusa/dist")
+
+const adminHeaders = {
+  headers: {
+    "x-medusa-access-token": "test_token",
+  },
+}
 
 jest.setTimeout(30000)
 
@@ -20,12 +30,18 @@ describe("/store/products", () => {
   const giftCardId = "giftcard"
   const testProductId = "test-product"
   const testProductId1 = "test-product1"
+  const testProductId2 = "test-product2"
   const testProductFilteringId1 = "test-product_filtering_1"
   const testProductFilteringId2 = "test-product_filtering_2"
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd })
+    dbConnection = await initDb({
+      cwd,
+      env: {
+        CACHE_TTL: 0,
+      },
+    })
     medusaProcess = await setupServer({ cwd })
   })
 
@@ -37,7 +53,14 @@ describe("/store/products", () => {
 
   describe("GET /store/products", () => {
     beforeEach(async () => {
-      await productSeeder(dbConnection)
+      const defaultSalesChannel = await simpleSalesChannelFactory(
+        dbConnection,
+        {
+          id: "sales-channel",
+          is_default: true,
+        }
+      )
+      await productSeeder(dbConnection, defaultSalesChannel)
       await adminSeeder(dbConnection)
     })
 
@@ -89,8 +112,9 @@ describe("/store/products", () => {
         response.data.products.find((p) => p.id === testProductId1)
       )
 
-      expect(testProductIndex).toBe(3)
-      expect(testProduct1Index).toBe(4)
+      // Since they have the same variant titles for rank 2, the order is not guaranteed
+      expect([3, 4]).toContain(testProductIndex)
+      expect([3, 4]).toContain(testProduct1Index)
     })
 
     it("returns a list of ordered products by variants title ASC", async () => {
@@ -116,7 +140,7 @@ describe("/store/products", () => {
       const api = useApi()
 
       await simpleProductFactory(dbConnection, {
-        id: "test-product2",
+        id: testProductId2,
         status: "published",
         variants: [
           {
@@ -131,9 +155,28 @@ describe("/store/products", () => {
         ],
       })
 
-      const response = await api.get(
+      let response = await api.get(
         "/store/products?order=-variants.prices.amount"
       )
+
+      // Update amount to unsure order, same amount will add randomness in the result with the same amounts
+      const productToUpdate = response.data.products.find(
+        (p) => p.id === testProductId
+      )
+      const priceToUpdate = productToUpdate.variants[0].prices[0]
+      const priceData = {
+        id: priceToUpdate.id,
+        currency_code: priceToUpdate.currency_code,
+        amount: 120,
+      }
+
+      await api.post(
+        `/admin/products/${testProductId}/variants/${productToUpdate.variants[0].id}`,
+        { prices: [priceData] },
+        adminHeaders
+      )
+
+      response = await api.get("/store/products?order=-variants.prices.amount")
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(6)
@@ -145,11 +188,11 @@ describe("/store/products", () => {
         response.data.products.find((p) => p.id === testProductId1)
       )
       const testProduct2Index = response.data.products.indexOf(
-        response.data.products.find((p) => p.id === "test-product2")
+        response.data.products.find((p) => p.id === testProductId2)
       )
 
       expect(testProduct2Index).toBe(3) // 200
-      expect(testProductIndex).toBe(4) // 100
+      expect(testProductIndex).toBe(4) // 120
       expect(testProduct1Index).toBe(5) // 100
     })
 
@@ -157,7 +200,7 @@ describe("/store/products", () => {
       const api = useApi()
 
       await simpleProductFactory(dbConnection, {
-        id: "test-product2",
+        id: testProductId2,
         status: "published",
         variants: [
           {
@@ -172,9 +215,28 @@ describe("/store/products", () => {
         ],
       })
 
-      const response = await api.get(
+      let response = await api.get(
         "/store/products?order=variants.prices.amount"
       )
+
+      // Update amount to unsure order, same amount will add randomness in the result with the same amounts
+      const productToUpdate = response.data.products.find(
+        (p) => p.id === testProductId1
+      )
+      const priceToUpdate = productToUpdate.variants[0].prices[0]
+      const priceData = {
+        id: priceToUpdate.id,
+        currency_code: priceToUpdate.currency_code,
+        amount: 120,
+      }
+
+      await api.post(
+        `/admin/products/${testProductId1}/variants/${productToUpdate.variants[0].id}`,
+        { prices: [priceData] },
+        adminHeaders
+      )
+
+      response = await api.get("/store/products?order=variants.prices.amount")
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(6)
@@ -190,7 +252,7 @@ describe("/store/products", () => {
       )
 
       expect(testProductIndex).toBe(0) // 100
-      expect(testProduct1Index).toBe(1) // 100
+      expect(testProduct1Index).toBe(1) // 120
       expect(testProduct2Index).toBe(2) // 200
     })
 
@@ -201,17 +263,24 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.products[0])).toEqual([
-        // fields
-        "handle",
-        // relations
-        "variants",
-        "options",
-        "images",
-        "tags",
-        "collection",
-        "type",
-      ])
+      expect(Object.keys(response.data.products[0])).toHaveLength(10)
+      expect(Object.keys(response.data.products[0])).toEqual(
+        expect.arrayContaining([
+          "id",
+          "created_at",
+
+          // fields
+          "handle",
+          // relations
+          "variants",
+          "options",
+          "images",
+          "tags",
+          "collection",
+          "type",
+          "profiles",
+        ])
+      )
     })
 
     it("returns a list of ordered products by id ASC and filtered with free text search", async () => {
@@ -472,115 +541,6 @@ describe("/store/products", () => {
           expect.not.arrayContaining([notExpect])
         )
       }
-    })
-
-    describe("Product Category filtering", () => {
-      let categoryWithProduct,
-        categoryWithoutProduct,
-        nestedCategoryWithProduct,
-        nested2CategoryWithProduct
-      const nestedCategoryWithProductId = "nested-category-with-product-id"
-      const nested2CategoryWithProductId = "nested2-category-with-product-id"
-      const categoryWithProductId = "category-with-product-id"
-      const categoryWithoutProductId = "category-without-product-id"
-
-      beforeEach(async () => {
-        const manager = dbConnection.manager
-        categoryWithProduct = await simpleProductCategoryFactory(dbConnection, {
-          id: categoryWithProductId,
-          name: "category with Product",
-          products: [{ id: testProductId }],
-        })
-
-        nestedCategoryWithProduct = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            id: nestedCategoryWithProductId,
-            name: "nested category with Product1",
-            parent_category: categoryWithProduct,
-            products: [{ id: testProductId1 }],
-          }
-        )
-
-        nested2CategoryWithProduct = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            id: nested2CategoryWithProductId,
-            name: "nested2 category with Product1",
-            parent_category: nestedCategoryWithProduct,
-            products: [{ id: testProductFilteringId1 }],
-          }
-        )
-
-        categoryWithoutProduct = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            id: categoryWithoutProductId,
-            name: "category without product",
-          }
-        )
-      })
-
-      it("returns a list of products in product category without category children", async () => {
-        const api = useApi()
-        const params = `category_id[]=${categoryWithProductId}`
-        const response = await api.get(`/store/products?${params}`)
-
-        expect(response.status).toEqual(200)
-        expect(response.data.products).toHaveLength(1)
-        expect(response.data.products).toEqual([
-          expect.objectContaining({
-            id: testProductId,
-          }),
-        ])
-      })
-
-      it("returns a list of products in product category without category children explicitly set to false", async () => {
-        const api = useApi()
-        const params = `category_id[]=${categoryWithProductId}&include_category_children=false`
-        const response = await api.get(`/store/products?${params}`)
-
-        expect(response.status).toEqual(200)
-        expect(response.data.products).toHaveLength(1)
-        expect(response.data.products).toEqual([
-          expect.objectContaining({
-            id: testProductId,
-          }),
-        ])
-      })
-
-      it("returns a list of products in product category with category children", async () => {
-        const api = useApi()
-
-        const params = `category_id[]=${categoryWithProductId}&include_category_children=true`
-        const response = await api.get(`/store/products?${params}`)
-
-        expect(response.status).toEqual(200)
-        expect(response.data.products).toHaveLength(3)
-        expect(response.data.products).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              id: testProductId1,
-            }),
-            expect.objectContaining({
-              id: testProductId,
-            }),
-            expect.objectContaining({
-              id: testProductFilteringId1,
-            }),
-          ])
-        )
-      })
-
-      it("returns no products when product category with category children does not have products", async () => {
-        const api = useApi()
-
-        const params = `category_id[]=${categoryWithoutProductId}&include_category_children=true`
-        const response = await api.get(`/store/products?${params}`)
-
-        expect(response.status).toEqual(200)
-        expect(response.data.products).toHaveLength(0)
-      })
     })
   })
 
@@ -1064,11 +1024,7 @@ describe("/store/products", () => {
           {
             status: "published",
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminHeaders
         )
         .catch((err) => {
           console.log(err)
@@ -1090,23 +1046,33 @@ describe("/store/products", () => {
     it("response contains only fields defined with `fields` param", async () => {
       const api = useApi()
 
+      // profile_id is not a column in the products table, so it should be ignored as it
+      // will be rejected by typeorm as invalid, though, it is an entity property
+      // that we want to return, so it part of the allowedStoreProductsFields
+      const fields = allowedStoreProductsFields.filter(
+        (f) => f !== "profile_id"
+      )
+
       const response = await api.get(
-        "/store/products/test-product?fields=handle"
+        `/store/products/test-product?fields=${fields.join(",")}`
       )
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.product)).toEqual([
-        // fields
-        "handle",
-        // relations
-        "variants",
-        "options",
-        "images",
-        "tags",
-        "collection",
-        "type",
-      ])
+      const expectedProperties = [...fields, ...defaultStoreProductsRelations]
+      const actualProperties = [
+        ...Object.keys(response.data.product),
+        ...Object.keys(response.data.product.variants[0]).map(
+          (key) => `variants.${key}`
+        ),
+        "variants.prices.amount",
+        "options.values",
+      ]
+
+      expect(Object.keys(response.data.product).length).toEqual(31)
+      expect(actualProperties).toEqual(
+        expect.arrayContaining(expectedProperties)
+      )
     })
   })
 })

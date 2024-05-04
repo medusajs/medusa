@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
-import { Oauth } from "../models/oauth"
+import { Oauth } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(Oauth)
-export class OauthRepository extends Repository<Oauth> {}
+export const OauthRepository = dataSource.getRepository(Oauth)
+export default OauthRepository

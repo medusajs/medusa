@@ -1,5 +1,8 @@
 import {
+  AfterLoad,
+  AfterUpdate,
   BeforeInsert,
+  BeforeUpdate,
   Check,
   Column,
   Entity,
@@ -7,13 +10,18 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from "typeorm"
 
+import { MedusaV2Flag } from "@medusajs/utils"
 import { BaseEntity } from "../interfaces"
+import { featureFlagRouter } from "../loaders/feature-flags"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { generateEntityId } from "../utils"
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import { DbAwareColumn, generateEntityId } from "../utils"
+import {
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
 import { Cart } from "./cart"
 import { ClaimOrder } from "./claim-order"
 import { LineItemAdjustment } from "./line-item-adjustment"
@@ -43,7 +51,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => Cart, (cart) => cart.items)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart: Relation<Cart>
 
   @Index()
   @Column({ nullable: true })
@@ -51,7 +59,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => Order, (order) => order.items)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @Index()
   @Column({ nullable: true })
@@ -59,7 +67,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => Swap, (swap) => swap.additional_items)
   @JoinColumn({ name: "swap_id" })
-  swap: Swap
+  swap: Relation<Swap>
 
   @Index()
   @Column({ nullable: true })
@@ -67,15 +75,17 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => ClaimOrder, (co) => co.additional_items)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order: Relation<ClaimOrder>
 
-  @OneToMany(() => LineItemTaxLine, (tl) => tl.item, { cascade: ["insert"] })
-  tax_lines: LineItemTaxLine[]
+  @OneToMany(() => LineItemTaxLine, (tl) => tl.item, {
+    cascade: ["insert", "remove"],
+  })
+  tax_lines: Relation<LineItemTaxLine>[]
 
   @OneToMany(() => LineItemAdjustment, (lia) => lia.item, {
-    cascade: ["insert"],
+    cascade: ["insert", "remove"],
   })
-  adjustments: LineItemAdjustment[]
+  adjustments: Relation<LineItemAdjustment>[]
 
   @Column({ nullable: true, type: "varchar" })
   original_item_id?: string | null
@@ -85,7 +95,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => OrderEdit, (orderEdit) => orderEdit.items)
   @JoinColumn({ name: "order_edit_id" })
-  order_edit?: OrderEdit | null
+  order_edit?: Relation<OrderEdit> | null
 
   @Column()
   title: string
@@ -118,9 +128,12 @@ export class LineItem extends BaseEntity {
   @Column({ nullable: true, type: "text" })
   variant_id: string | null
 
-  @ManyToOne(() => ProductVariant, { eager: true })
+  @ManyToOne(() => ProductVariant)
   @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  variant: Relation<ProductVariant>
+
+  @FeatureFlagColumn(MedusaV2Flag.key, { nullable: true, type: "text" })
+  product_id: string | null
 
   @Column({ type: "int" })
   quantity: number
@@ -147,18 +160,61 @@ export class LineItem extends BaseEntity {
   original_total?: number | null
   original_tax_total?: number | null
   discount_total?: number | null
+  raw_discount_total?: number | null
   gift_card_total?: number | null
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "item")
+
+    // This is to maintain compatibility while isolating the product domain
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+      if (
+        this.variant &&
+        Object.keys(this.variant).length === 1 &&
+        this.variant.product_id
+      ) {
+        this.variant = undefined as any
+      }
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @FeatureFlagDecorators(MedusaV2Flag.key, [BeforeUpdate()])
+  beforeUpdate(): void {
+    if (
+      this.variant &&
+      Object.keys(this.variant).length === 1 &&
+      this.variant.product_id
+    ) {
+      this.variant = undefined as any
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @FeatureFlagDecorators(MedusaV2Flag.key, [AfterLoad(), AfterUpdate()])
+  afterUpdateOrLoad(): void {
+    if (this.variant) {
+      return
+    }
+
+    if (this.product_id) {
+      this.variant = { product_id: this.product_id } as any
+    }
   }
 }
 
 /**
  * @schema LineItem
  * title: "Line Item"
- * description: "Line Items represent purchasable units that can be added to a Cart for checkout. When Line Items are purchased they will get copied to the resulting order and can eventually be referenced in Fulfillments and Returns. Line Items may also be created when processing Swaps and Claims."
+ * description: "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits."
  * type: object
  * required:
  *   - allow_discounts
@@ -191,65 +247,72 @@ export class LineItem extends BaseEntity {
  *     type: string
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   cart_id:
- *     description: The ID of the Cart that the Line Item belongs to.
+ *     description: The ID of the cart that the line item may belongs to.
  *     nullable: true
  *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: A cart object. Available if the relation `cart` is expanded.
+ *     description: The details of the cart that the line item may belongs to.
+ *     x-expandable: "cart"
  *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   order_id:
- *     description: The ID of the Order that the Line Item belongs to.
+ *     description: The ID of the order that the line item may belongs to.
  *     nullable: true
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation `order` is expanded.
+ *     description: The details of the order that the line item may belongs to.
+ *     x-expandable: "order"
  *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   swap_id:
- *     description: The id of the Swap that the Line Item belongs to.
+ *     description: The ID of the swap that the line item may belong to.
  *     nullable: true
  *     type: string
  *     example: null
  *   swap:
- *     description: A swap object. Available if the relation `swap` is expanded.
+ *     description: The details of the swap that the line item may belong to.
+ *     x-expandable: "swap"
  *     nullable: true
  *     $ref: "#/components/schemas/Swap"
  *   claim_order_id:
- *     description: The id of the Claim that the Line Item belongs to.
+ *     description: The ID of the claim that the line item may belong to.
  *     nullable: true
  *     type: string
  *     example: null
  *   claim_order:
- *     description: A claim order object. Available if the relation `claim_order` is expanded.
+ *     description: The details of the claim that the line item may belong to.
+ *     x-expandable: "claim_order"
  *     nullable: true
  *     $ref: "#/components/schemas/ClaimOrder"
  *   tax_lines:
- *     description: Available if the relation `tax_lines` is expanded.
+ *     description: The details of the item's tax lines.
+ *     x-expandable: "tax_lines"
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/LineItemTaxLine"
  *   adjustments:
- *     description: Available if the relation `adjustments` is expanded.
+ *     description: The details of the item's adjustments, which are available when a discount is applied on the item.
+ *     x-expandable: "adjustments"
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/LineItemAdjustment"
  *   original_item_id:
- *     description: The id of the original line item
+ *     description: The ID of the original line item. This is useful if the line item belongs to a resource that references an order, such as a return or an order edit.
  *     nullable: true
  *     type: string
  *   order_edit_id:
- *     description: The ID of the order edit to which a cloned item belongs
+ *     description: The ID of the order edit that the item may belong to.
  *     nullable: true
  *     type: string
  *   order_edit:
- *     description: The order edit joined. Available if the relation `order_edit` is expanded.
+ *     description: The details of the order edit.
+ *     x-expandable: "order_edit"
  *     nullable: true
  *     $ref: "#/components/schemas/OrderEdit"
  *   title:
- *     description: The title of the Line Item, this should be easily identifiable by the Customer.
+ *     description: The title of the Line Item.
  *     type: string
  *     example: Medusa Coffee Mug
  *   description:
@@ -294,7 +357,8 @@ export class LineItem extends BaseEntity {
  *     type: string
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   variant:
- *     description: A product variant object. The Product Variant contained in the Line Item. Available if the relation `variant` is expanded.
+ *     description: The details of the product variant that this item was created from.
+ *     x-expandable: "variant"
  *     nullable: true
  *     $ref: "#/components/schemas/ProductVariant"
  *   quantity:
@@ -341,6 +405,10 @@ export class LineItem extends BaseEntity {
  *     type: integer
  *     example: 0
  *   discount_total:
+ *     description: The total of discount of the line item rounded
+ *     type: integer
+ *     example: 0
+ *   raw_discount_total:
  *     description: The total of discount of the line item
  *     type: integer
  *     example: 0
@@ -349,7 +417,8 @@ export class LineItem extends BaseEntity {
  *     type: integer
  *     example: 0
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Indicates if the line item unit_price include tax"
+ *     description: "Indicates if the line item unit_price include tax"
+ *     x-featureFlag: "tax_inclusive_pricing"
  *     type: boolean
  *     default: false
  *   created_at:
@@ -365,4 +434,7 @@ export class LineItem extends BaseEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

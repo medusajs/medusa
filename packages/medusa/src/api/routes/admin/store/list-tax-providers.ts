@@ -1,10 +1,10 @@
 import { TaxProviderService } from "../../../../services"
 
 /**
- * @oas [get] /store/tax-providers
+ * @oas [get] /admin/store/tax-providers
  * operationId: "GetStoreTaxProviders"
  * summary: "List Tax Providers"
- * description: "Retrieves the configured Tax Providers"
+ * description: "Retrieve a list of available Tax Providers in a store."
  * x-authenticated: true
  * x-codegen:
  *   method: listTaxProviders
@@ -18,15 +18,47 @@ import { TaxProviderService } from "../../../../services"
  *       medusa.admin.store.listTaxProviders()
  *       .then(({ tax_providers }) => {
  *         console.log(tax_providers.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminStoreTaxProviders } from "medusa-react"
+ *
+ *       const TaxProviders = () => {
+ *         const {
+ *           tax_providers,
+ *           isLoading
+ *         } = useAdminStoreTaxProviders()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {tax_providers && !tax_providers.length && (
+ *               <span>No Tax Providers</span>
+ *             )}
+ *             {tax_providers &&
+ *               tax_providers.length > 0 &&(
+ *                 <ul>
+ *                   {tax_providers.map((provider) => (
+ *                     <li key={provider.id}>{provider.id}</li>
+ *                   ))}
+ *                 </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default TaxProviders
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/store/tax-providers' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/store/tax-providers' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Store
  * responses:

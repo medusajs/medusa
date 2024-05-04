@@ -1,6 +1,6 @@
-import { EntityRepository, Repository } from "typeorm"
-import { ProductOptionValue } from "../models/product-option-value"
+import { ProductOptionValue } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(ProductOptionValue)
-// eslint-disable-next-line max-len
-export class ProductOptionValueRepository extends Repository<ProductOptionValue> {}
+export const ProductOptionValueRepository =
+  dataSource.getRepository(ProductOptionValue)
+export default ProductOptionValueRepository

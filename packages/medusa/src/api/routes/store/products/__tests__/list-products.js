@@ -18,7 +18,13 @@ describe("GET /store/products", () => {
     it("calls get product from productSerice", () => {
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledWith(
-        { status: ["published"] },
+        {
+          status: ["published"],
+          categories: {
+            is_active: true,
+            is_internal: false,
+          }
+        },
         {
           relations: defaultStoreProductsRelations,
           select: defaultStoreProductsFields,
@@ -49,7 +55,14 @@ describe("GET /store/products", () => {
     it("calls list from productSerice", () => {
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledWith(
-        { is_giftcard: true, status: ["published"] },
+        {
+          is_giftcard: true,
+          status: ["published"],
+          categories: {
+            is_active: true,
+            is_internal: false,
+          }
+        },
         {
           relations: defaultStoreProductsRelations,
           select: defaultStoreProductsFields,

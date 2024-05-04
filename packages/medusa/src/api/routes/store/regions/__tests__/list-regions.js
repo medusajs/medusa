@@ -14,17 +14,36 @@ describe("List regions", () => {
     })
 
     it("calls list from region service", () => {
-      expect(RegionServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(RegionServiceMock.list).toHaveBeenCalledWith(
+      expect(RegionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(
+        RegionServiceMock.listAndCount.mock.calls[0][1].relations
+      ).toHaveLength(4)
+      expect(RegionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
-          relations: [
+          relations: expect.arrayContaining([
             "countries",
-            "payment_providers",
+            "currency",
             "fulfillment_providers",
+            "payment_providers",
+          ]),
+          select: [
+            "id",
+            "name",
+            "currency_code",
+            "tax_rate",
+            "tax_code",
+            "gift_cards_taxable",
+            "automatic_taxes",
+            "tax_provider_id",
+            "metadata",
+            "created_at",
+            "updated_at",
+            "deleted_at",
           ],
           skip: 0,
           take: 100,
+          order: { created_at: "DESC" },
         }
       )
     })

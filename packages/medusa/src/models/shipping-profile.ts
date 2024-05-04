@@ -1,14 +1,35 @@
-import { BeforeInsert, Column, Entity, OneToMany } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  Relation,
+} from "typeorm"
 
-import { DbAwareColumn } from "../utils/db-aware-column"
+import { SoftDeletableEntity } from "../interfaces"
+import { DbAwareColumn, generateEntityId } from "../utils"
 import { Product } from "./product"
 import { ShippingOption } from "./shipping-option"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
+/**
+ * @enum
+ *
+ * The shipping profile's type.
+ */
 export enum ShippingProfileType {
+  /**
+   * The default profile used to ship item.
+   */
   DEFAULT = "default",
+  /**
+   * The profile used to ship gift cards.
+   */
   GIFT_CARD = "gift_card",
+  /**
+   * The profile used to ship custom items.
+   */
   CUSTOM = "custom",
 }
 
@@ -20,15 +41,29 @@ export class ShippingProfile extends SoftDeletableEntity {
   @DbAwareColumn({ type: "enum", enum: ShippingProfileType })
   type: ShippingProfileType
 
-  @OneToMany(() => Product, (product) => product.profile)
-  products: Product[]
+  @ManyToMany(() => Product)
+  @JoinTable({
+    name: "product_shipping_profile",
+    joinColumn: {
+      name: "profile_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+  })
+  products: Relation<Product>[]
 
   @OneToMany(() => ShippingOption, (so) => so.profile)
-  shipping_options: ShippingOption[]
+  shipping_options: Relation<ShippingOption>[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "sp")
@@ -38,7 +73,8 @@ export class ShippingProfile extends SoftDeletableEntity {
 /**
  * @schema ShippingProfile
  * title: "Shipping Profile"
- * description: "Shipping Profiles have a set of defined Shipping Options that can be used to fulfill a given set of Products."
+ * description: "A Shipping Profile has a set of defined Shipping Options that can be used to fulfill a given set of Products. For example, gift cards are shipped differently than physical products,
+ *  so a shipping profile with the type `gift_card` groups together the shipping options that can only be used for gift cards."
  * type: object
  * required:
  *   - created_at
@@ -66,13 +102,15 @@ export class ShippingProfile extends SoftDeletableEntity {
  *       - custom
  *     example: default
  *   products:
- *     description: The Products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.
+ *     description: The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.
  *     type: array
+ *     x-expandable: "products"
  *     items:
  *       $ref: "#/components/schemas/Product"
  *   shipping_options:
- *     description: The Shipping Options that can be used to fulfill the Products in the Shipping Profile. Available if the relation `shipping_options` is expanded.
+ *     description: The details of the shipping options that can be used to create shipping methods for the Products in the Shipping Profile.
  *     type: array
+ *     x-expandable: "shipping_options"
  *     items:
  *       $ref: "#/components/schemas/ShippingOption"
  *   created_at:
@@ -93,4 +131,7 @@ export class ShippingProfile extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

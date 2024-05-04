@@ -24,6 +24,9 @@ export class Oauth {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   data: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "oauth")
@@ -33,7 +36,7 @@ export class Oauth {
 /**
  * @schema OAuth
  * title: "OAuth"
- * description: "Represent an OAuth app"
+ * description: "An Oauth app is typically created by a plugin to handle authentication to third-party services."
  * type: object
  * required:
  *   - application_name

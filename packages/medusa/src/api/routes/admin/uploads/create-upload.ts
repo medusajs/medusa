@@ -1,10 +1,11 @@
+import { promiseAll } from "@medusajs/utils"
 import fs from "fs"
 
 /**
- * @oas [post] /uploads
+ * @oas [post] /admin/uploads
  * operationId: "PostUploads"
- * summary: "Upload files"
- * description: "Uploads at least one file to the specific fileservice that is installed in Medusa."
+ * summary: "Upload Files"
+ * description: "Upload at least one file to a public bucket or storage. The file upload is handled by the file service installed on the Medusa backend."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -25,20 +26,43 @@ import fs from "fs"
  *       medusa.admin.uploads.create(file)
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUploadFile } from "medusa-react"
+ *
+ *       const UploadFile = () => {
+ *         const uploadFile = useAdminUploadFile()
+ *         // ...
+ *
+ *         const handleFileUpload = (file: File) => {
+ *           uploadFile.mutate(file, {
+ *             onSuccess: ({ uploads }) => {
+ *               console.log(uploads[0].key)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default UploadFile
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/uploads' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: image/jpeg' \
+ *       curl -X POST '{backend_url}/admin/uploads' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: image/jpeg' \
  *       --form 'files=@"<FILE_PATH_1>"' \
  *       --form 'files=@"<FILE_PATH_1>"'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Upload
+ *   - Uploads
  * responses:
  *   200:
  *     description: OK
@@ -62,7 +86,7 @@ import fs from "fs"
 export default async (req, res) => {
   const fileService = req.scope.resolve("fileService")
 
-  const result = await Promise.all(
+  const result = await promiseAll(
     req.files.map(async (f) => {
       return fileService.upload(f).then((result) => {
         fs.unlinkSync(f.path)

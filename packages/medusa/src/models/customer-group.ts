@@ -25,6 +25,9 @@ export class CustomerGroup extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "cgrp")
@@ -34,7 +37,7 @@ export class CustomerGroup extends SoftDeletableEntity {
 /**
  * @schema CustomerGroup
  * title: "Customer Group"
- * description: "Represents a customer group"
+ * description: "A customer group that can be used to organize customers into groups of similar traits."
  * type: object
  * required:
  *   - created_at
@@ -53,13 +56,15 @@ export class CustomerGroup extends SoftDeletableEntity {
  *     type: string
  *     example: VIP
  *   customers:
- *     description: The customers that belong to the customer group. Available if the relation `customers` is expanded.
+ *     description: The details of the customers that belong to the customer group.
  *     type: array
+ *     x-expandable: "customers"
  *     items:
  *       $ref: "#/components/schemas/Customer"
  *   price_lists:
- *     description: The price lists that are associated with the customer group. Available if the relation `price_lists` is expanded.
+ *     description: The price lists that are associated with the customer group.
  *     type: array
+ *     x-expandable: "price_lists"
  *     items:
  *       $ref: "#/components/schemas/PriceList"
  *   created_at:
@@ -80,4 +85,7 @@ export class CustomerGroup extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

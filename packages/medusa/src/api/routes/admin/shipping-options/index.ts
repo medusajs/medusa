@@ -1,9 +1,10 @@
+import { FlagRouter } from "@medusajs/utils"
 import { Router } from "express"
-import { ShippingOption } from "../../../.."
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
-import { FlagRouter } from "../../../../utils/flag-router"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { ShippingOption } from "../../../../models"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { AdminGetShippingOptionsParams } from "./list-shipping-options"
 
 const route = Router()
 
@@ -11,10 +12,18 @@ export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/shipping-options", route)
 
   if (featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)) {
-    defaultFields.push("includes_tax")
+    shippingOptionsDefaultFields.push("includes_tax")
   }
 
-  route.get("/", middlewares.wrap(require("./list-shipping-options").default))
+  route.get(
+    "/",
+    transformQuery(AdminGetShippingOptionsParams, {
+      defaultFields: shippingOptionsDefaultFields,
+      defaultRelations: shippingOptionsDefaultRelations,
+      isList: true,
+    }),
+    middlewares.wrap(require("./list-shipping-options").default)
+  )
   route.post("/", middlewares.wrap(require("./create-shipping-option").default))
 
   route.get(
@@ -33,7 +42,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   return app
 }
 
-export const defaultFields = [
+export const shippingOptionsDefaultFields: (keyof ShippingOption)[] = [
   "id",
   "name",
   "region_id",
@@ -50,19 +59,45 @@ export const defaultFields = [
   "metadata",
 ]
 
-export const defaultRelations = ["region", "profile", "requirements"]
+export const shippingOptionsDefaultRelations = [
+  "region",
+  "profile",
+  "requirements",
+]
 
 /**
  * @schema AdminShippingOptionsListRes
  * type: object
+ * description: "The list of shipping options with pagination fields."
+ * x-expanded-relations:
+ *   field: shipping_options
+ *   relations:
+ *     - profile
+ *     - region
+ *     - requirements
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
+ * required:
+ *   - shipping_options
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   shipping_options:
  *     type: array
+ *     description: "An array of shipping options details."
  *     items:
  *       $ref: "#/components/schemas/ShippingOption"
  *   count:
  *     type: integer
  *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of shipping options skipped when retrieving the shipping options.
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
  */
 export type AdminShippingOptionsListRes = PaginatedResponse & {
   shipping_options: ShippingOption[]
@@ -71,8 +106,21 @@ export type AdminShippingOptionsListRes = PaginatedResponse & {
 /**
  * @schema AdminShippingOptionsRes
  * type: object
+ * description: "The shipping option's details."
+ * x-expanded-relations:
+ *   field: shipping_option
+ *   relations:
+ *     - profile
+ *     - region
+ *     - requirements
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
+ * required:
+ *   - shipping_option
  * properties:
  *   shipping_option:
+ *     description: "Shipping option details."
  *     $ref: "#/components/schemas/ShippingOption"
  */
 export type AdminShippingOptionsRes = {
@@ -82,6 +130,10 @@ export type AdminShippingOptionsRes = {
 /**
  * @schema AdminShippingOptionsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string

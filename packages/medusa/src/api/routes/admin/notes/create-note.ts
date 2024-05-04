@@ -5,10 +5,10 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /notes
+ * @oas [post] /admin/notes
  * operationId: "PostNotes"
- * summary: "Creates a Note"
- * description: "Creates a Note which can be associated with any resource as required."
+ * summary: "Create a Note"
+ * description: "Create a Note which can be associated with any resource."
  * x-authenticated: true
  * requestBody:
  *  content:
@@ -26,18 +26,44 @@ import { EntityManager } from "typeorm"
  *       // must be previously logged in or use api token
  *       medusa.admin.notes.create({
  *         resource_id,
- *         resource_type: 'order',
- *         value: 'We delivered this order'
+ *         resource_type: "order",
+ *         value: "We delivered this order"
  *       })
  *       .then(({ note }) => {
  *         console.log(note.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateNote } from "medusa-react"
+ *
+ *       const CreateNote = () => {
+ *         const createNote = useAdminCreateNote()
+ *         // ...
+ *
+ *         const handleCreate = () => {
+ *           createNote.mutate({
+ *             resource_id: "order_123",
+ *             resource_type: "order",
+ *             value: "We delivered this order"
+ *           }, {
+ *             onSuccess: ({ note }) => {
+ *               console.log(note.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateNote
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/notes' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/notes' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "resource_id": "{resource_id}",
  *           "resource_type": "order",
@@ -46,8 +72,9 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Note
+ *   - Notes
  * responses:
  *   200:
  *     description: OK
@@ -92,6 +119,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostNotesReq
  * type: object
+ * description: "The details of the note to be created."
  * required:
  *   - resource_id
  *   - resource_type
@@ -99,10 +127,10 @@ export default async (req, res) => {
  * properties:
  *   resource_id:
  *     type: string
- *     description: The ID of the resource which the Note relates to.
+ *     description: The ID of the resource which the Note relates to. For example, an order ID.
  *   resource_type:
  *     type: string
- *     description: The type of resource which the Note relates to.
+ *     description: The type of resource which the Note relates to. For example, `order`.
  *   value:
  *     type: string
  *     description: The content of the Note to create.

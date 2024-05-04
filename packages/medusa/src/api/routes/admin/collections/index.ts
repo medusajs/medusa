@@ -67,14 +67,20 @@ export const defaultAdminCollectionsFields = [
   "created_at",
   "updated_at",
 ]
-export const defaultAdminCollectionsRelations = ["products"]
+export const defaultAdminCollectionsRelations = ["products.profiles"]
 
 /**
  * @schema AdminCollectionsListRes
  * type: object
+ * required:
+ *   - collections
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   collections:
  *      type: array
+ *      description: an array of collection details
  *      items:
  *        $ref: "#/components/schemas/ProductCollection"
  *   count:
@@ -82,7 +88,7 @@ export const defaultAdminCollectionsRelations = ["products"]
  *      description: The total number of items available
  *   offset:
  *      type: integer
- *      description: The number of items skipped before these items
+ *      description: The number of product collections skipped when retrieving the product collections.
  *   limit:
  *      type: integer
  *      description: The number of items per page
@@ -94,6 +100,10 @@ export type AdminCollectionsListRes = PaginatedResponse & {
 /**
  * @schema AdminCollectionsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -112,6 +122,11 @@ export type AdminCollectionsDeleteRes = DeleteResponse
 /**
  * @schema AdminDeleteProductsFromCollectionRes
  * type: object
+ * description: "Deletion operation details"
+ * required:
+ *   - id
+ *   - object
+ *   - removed_products
  * properties:
  *   id:
  *     type: string
@@ -124,7 +139,7 @@ export type AdminCollectionsDeleteRes = DeleteResponse
  *     description: "The IDs of the products removed from the collection"
  *     type: array
  *     items:
- *       description: "The ID of a Product to add to the Product Collection."
+ *       description: "The ID of the Product removed from the Product Collection."
  *       type: string
  */
 export type AdminDeleteProductsFromCollectionRes = {
@@ -136,8 +151,16 @@ export type AdminDeleteProductsFromCollectionRes = {
 /**
  * @schema AdminCollectionsRes
  * type: object
+ * description: The collection's details.
+ * x-expanded-relations:
+ *   field: collection
+ *   relations:
+ *     - products
+ * required:
+ *   - collection
  * properties:
  *   collection:
+ *     description: "Product Collection details."
  *     $ref: "#/components/schemas/ProductCollection"
  */
 export type AdminCollectionsRes = {

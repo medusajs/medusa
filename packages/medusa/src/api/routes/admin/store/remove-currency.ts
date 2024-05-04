@@ -2,10 +2,10 @@ import { StoreService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /store/currencies/{code}
+ * @oas [delete] /admin/store/currencies/{code}
  * operationId: "DeleteStoreCurrenciesCode"
- * summary: "Delete a Currency Code"
- * description: "Removes a Currency Code from the available currencies."
+ * summary: "Remove a Currency"
+ * description: "Remove a Currency Code from the available currencies in a store. This does not completely delete the currency and it can be added again later to the store."
  * x-authenticated: true
  * parameters:
  *   - in: path
@@ -26,18 +26,41 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.store.deleteCurrency('eur')
+ *       medusa.admin.store.deleteCurrency("eur")
  *       .then(({ store }) => {
- *         console.log(store.id);
- *       });
+ *         console.log(store.currencies);
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteStoreCurrency } from "medusa-react"
+ *
+ *       const Store = () => {
+ *         const deleteCurrency = useAdminDeleteStoreCurrency()
+ *         // ...
+ *
+ *         const handleAdd = (code: string) => {
+ *           deleteCurrency.mutate(code, {
+ *             onSuccess: ({ store }) => {
+ *               console.log(store.currencies)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Store
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/store/currencies/eur' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/store/currencies/{currency_code}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Store
  * responses:

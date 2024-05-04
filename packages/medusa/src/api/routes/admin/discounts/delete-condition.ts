@@ -5,16 +5,16 @@ import { MedusaError } from "medusa-core-utils"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [delete] /discounts/{discount_id}/conditions/{condition_id}
+ * @oas [delete] /admin/discounts/{discount_id}/conditions/{condition_id}
  * operationId: "DeleteDiscountsDiscountConditionsCondition"
  * summary: "Delete a Condition"
- * description: "Deletes a DiscountCondition"
+ * description: "Delete a Discount Condition. This does not delete resources associated to the discount condition."
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The ID of the Discount
- *   - (path) condition_id=* {string} The ID of the DiscountCondition
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (path) condition_id=* {string} The ID of the Discount Condition
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned discount.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned discount.
  * x-codegen:
  *   method: deleteCondition
  *   queryParams: AdminDeleteDiscountsDiscountConditionsConditionParams
@@ -25,20 +25,53 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.deleteCondition(discount_id, condition_id)
+ *       medusa.admin.discounts.deleteCondition(discountId, conditionId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminDiscountRemoveCondition
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const deleteCondition = useAdminDiscountRemoveCondition(
+ *           discountId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = (
+ *           conditionId: string
+ *         ) => {
+ *           deleteCondition.mutate(conditionId, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(deleted)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/discounts/{id}/conditions/{condition_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/discounts/{id}/conditions/{condition_id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Discount Condition
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK

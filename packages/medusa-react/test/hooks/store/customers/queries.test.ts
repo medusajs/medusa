@@ -1,8 +1,8 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { rest } from "msw"
-import { server } from "../../../../mocks/server"
-import { useMeCustomer, useCustomerOrders } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../../../mocks/data"
+import { server } from "../../../../mocks/server"
+import { useCustomerOrders, useMeCustomer } from "../../../../src/"
 import { createWrapper } from "../../../utils"
 
 describe("useMeCustomer hook", () => {

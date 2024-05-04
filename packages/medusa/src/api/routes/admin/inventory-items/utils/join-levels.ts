@@ -1,12 +1,11 @@
-import { IInventoryService } from "../../../../../interfaces"
 import {
+  FilterableInventoryLevelProps,
+  IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
-} from "../../../../../types/inventory"
-
-type LevelWithAvailability = InventoryLevelDTO & {
-  available_quantity: number
-}
+} from "@medusajs/types"
+import { promiseAll } from "@medusajs/utils"
+import { LevelWithAvailability, ResponseInventoryItem } from "../../variants"
 
 export const buildLevelsByInventoryItemId = (
   inventoryLevels: InventoryLevelDTO[],
@@ -27,12 +26,17 @@ export const getLevelsByInventoryItemId = async (
   items: InventoryItemDTO[],
   locationIds: string[],
   inventoryService: IInventoryService
-) => {
-  const [levels] = await inventoryService.listInventoryLevels({
+): Promise<Record<string, LevelWithAvailability[]>> => {
+  const selector: FilterableInventoryLevelProps = {
     inventory_item_id: items.map((inventoryItem) => inventoryItem.id),
-  })
+  }
+  if (locationIds.length) {
+    selector.location_id = locationIds
+  }
 
-  const levelsWithAvailability: LevelWithAvailability[] = await Promise.all(
+  const [levels] = await inventoryService.listInventoryLevels(selector, {})
+
+  const levelsWithAvailability: LevelWithAvailability[] = await promiseAll(
     levels.map(async (level) => {
       const availability = await inventoryService.retrieveAvailableQuantity(
         level.inventory_item_id,
@@ -52,15 +56,29 @@ export const joinLevels = async (
   inventoryItems: InventoryItemDTO[],
   locationIds: string[],
   inventoryService: IInventoryService
-) => {
+): Promise<ResponseInventoryItem[]> => {
   const levelsByItemId = await getLevelsByInventoryItemId(
     inventoryItems,
     locationIds,
     inventoryService
   )
 
-  return inventoryItems.map((inventoryItem) => ({
-    ...inventoryItem,
-    location_levels: levelsByItemId[inventoryItem.id] || [],
-  }))
+  return inventoryItems.map((inventoryItem) => {
+    const levels = levelsByItemId[inventoryItem.id] ?? []
+    const itemAvailability = levels.reduce(
+      (acc, curr) => {
+        return {
+          reserved_quantity: acc.reserved_quantity + curr.reserved_quantity,
+          stocked_quantity: acc.stocked_quantity + curr.stocked_quantity,
+        }
+      },
+      { reserved_quantity: 0, stocked_quantity: 0 }
+    )
+
+    return {
+      ...inventoryItem,
+      ...itemAvailability,
+      location_levels: levels,
+    }
+  })
 }

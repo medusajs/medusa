@@ -1,9 +1,16 @@
-import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  Relation,
+} from "typeorm"
 
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { Fulfillment } from "./fulfillment"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { Fulfillment } from "./fulfillment"
 
 @Entity()
 export class TrackingLink extends SoftDeletableEntity {
@@ -18,7 +25,7 @@ export class TrackingLink extends SoftDeletableEntity {
 
   @ManyToOne(() => Fulfillment, (ful) => ful.tracking_links)
   @JoinColumn({ name: "fulfillment_id" })
-  fulfillment: Fulfillment
+  fulfillment: Relation<Fulfillment>
 
   @Column({ nullable: true })
   idempotency_key: string
@@ -26,6 +33,9 @@ export class TrackingLink extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "tlink")
@@ -35,7 +45,7 @@ export class TrackingLink extends SoftDeletableEntity {
 /**
  * @schema TrackingLink
  * title: "Tracking Link"
- * description: "Tracking Link holds information about tracking numbers for a Fulfillment. Tracking Links can optionally contain a URL that can be visited to see the status of the shipment."
+ * description: "A tracking link holds information about tracking numbers for a Fulfillment. Tracking Links can optionally contain a URL that can be visited to see the status of the shipment. Typically, the tracking link is provided from the third-party service integrated through the used fulfillment provider."
  * type: object
  * required:
  *   - created_at
@@ -62,11 +72,12 @@ export class TrackingLink extends SoftDeletableEntity {
  *     type: string
  *     format: RH370168054CN
  *   fulfillment_id:
- *     description: The id of the Fulfillment that the Tracking Link references.
+ *     description: The ID of the fulfillment that the tracking link belongs to.
  *     type: string
  *     example: ful_01G8ZRTMQCA76TXNAT81KPJZRF
  *   fulfillment:
- *     description: Available if the relation `fulfillment` is expanded.
+ *     description: The details of the fulfillment that the tracking link belongs to.
+ *     x-expandable: "fulfillment"
  *     nullable: true
  *     $ref: "#/components/schemas/Fulfillment"
  *   idempotency_key:
@@ -74,7 +85,7 @@ export class TrackingLink extends SoftDeletableEntity {
  *     nullable: true
  *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       url: https://docs.medusajs.com/development/idempotency-key/overview.md
  *       description: Learn more how to use the idempotency key.
  *   created_at:
  *     description: The date with timezone at which the resource was created.
@@ -94,4 +105,7 @@ export class TrackingLink extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

@@ -1,3 +1,5 @@
+import { PriceListStatus, PriceListType } from "@medusajs/utils"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -6,25 +8,25 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { Request } from "express"
+import { EntityManager } from "typeorm"
+import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+import { featureFlagRouter } from "../../../../loaders/feature-flags"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { PriceList } from "../../../../models"
+import PriceListService from "../../../../services/price-list"
 import {
   AdminPriceListPricesCreateReq,
   CreatePriceListInput,
-  PriceListStatus,
-  PriceListType,
 } from "../../../../types/price-list"
-
-import { Type } from "class-transformer"
-import { Request } from "express"
-import { EntityManager } from "typeorm"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import PriceListService from "../../../../services/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { transformOptionalDate } from "../../../../utils/validators/date-transform"
 
 /**
- * @oas [post] /price-lists
+ * @oas [post] /admin/price-lists
  * operationId: "PostPriceListsPriceList"
  * summary: "Create a Price List"
- * description: "Creates a Price List"
+ * description: "Create a Price List."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -42,26 +44,67 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.priceLists.create({
- *         name: 'New Price List',
- *         description: 'A new price list',
+ *         name: "New Price List",
+ *         description: "A new price list",
  *         type: PriceListType.SALE,
  *         prices: [
  *           {
  *             amount: 1000,
  *             variant_id,
- *             currency_code: 'eur'
+ *             currency_code: "eur"
  *           }
  *         ]
  *       })
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         PriceListStatus,
+ *         PriceListType,
+ *       } from "@medusajs/medusa"
+ *       import { useAdminCreatePriceList } from "medusa-react"
+ *
+ *       type CreateData = {
+ *         name: string
+ *         description: string
+ *         type: PriceListType
+ *         status: PriceListStatus
+ *         prices: {
+ *           amount: number
+ *           variant_id: string
+ *           currency_code: string
+ *           max_quantity: number
+ *         }[]
+ *       }
+ *
+ *       const CreatePriceList = () => {
+ *         const createPriceList = useAdminCreatePriceList()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           data: CreateData
+ *         ) => {
+ *           createPriceList.mutate(data, {
+ *             onSuccess: ({ price_list }) => {
+ *               console.log(price_list.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreatePriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/price-lists' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/price-lists' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "New Price List",
  *           "description": "A new price list",
@@ -77,8 +120,9 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Price List
+ *   - Price Lists
  * responses:
  *   200:
  *     description: OK
@@ -104,10 +148,16 @@ export default async (req: Request, res) => {
     req.scope.resolve("priceListService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const priceList = await manager.transaction(async (transactionManager) => {
+
+  let priceList = await manager.transaction(async (transactionManager) => {
     return await priceListService
       .withTransaction(transactionManager)
       .create(req.validatedBody as CreatePriceListInput)
+  })
+
+  priceList = await priceListService.retrieve(priceList.id, {
+    select: defaultAdminPriceListFields as (keyof PriceList)[],
+    relations: defaultAdminPriceListRelations,
   })
 
   res.json({ price_list: priceList })
@@ -121,6 +171,7 @@ class CustomerGroup {
 /**
  * @schema AdminPostPriceListsPriceListReq
  * type: object
+ * description: "The details of the price list to create."
  * required:
  *   - name
  *   - description
@@ -128,10 +179,10 @@ class CustomerGroup {
  *   - prices
  * properties:
  *   name:
- *     description: "The name of the Price List"
+ *     description: "The name of the Price List."
  *     type: string
  *   description:
- *     description: "A description of the Price List."
+ *     description: "The description of the Price List."
  *     type: string
  *   starts_at:
  *     description: "The date with timezone that the Price List starts being valid."
@@ -148,7 +199,8 @@ class CustomerGroup {
  *      - sale
  *      - override
  *   status:
- *     description: The status of the Price List.
+ *     description: >-
+ *       The status of the Price List. If the status is set to `draft`, the prices created in the price list will not be available of the customer.
  *     type: string
  *     enum:
  *       - active
@@ -163,10 +215,10 @@ class CustomerGroup {
  *          - variant_id
  *        properties:
  *          region_id:
- *            description: The ID of the Region for which the price is used. Only required if currecny_code is not provided.
+ *            description: The ID of the Region for which the price is used. This is only required if `currecny_code` is not provided.
  *            type: string
  *          currency_code:
- *            description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *            description: The 3 character ISO currency code for which the price will be used. This is only required if `region_id` is not provided.
  *            type: string
  *            externalDocs:
  *              url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
@@ -185,7 +237,7 @@ class CustomerGroup {
  *            type: integer
  *   customer_groups:
  *     type: array
- *     description: A list of customer groups that the Price List applies to.
+ *     description: An array of customer groups that the Price List applies to.
  *     items:
  *       type: object
  *       required:
@@ -195,7 +247,8 @@ class CustomerGroup {
  *           description: The ID of a customer group
  *           type: string
  *   includes_tax:
- *      description: "[EXPERIMENTAL] Tax included in prices of price list"
+ *      description: "Tax included in prices of price list"
+ *      x-featureFlag: "tax_inclusive_pricing"
  *      type: boolean
  */
 export class AdminPostPriceListsPriceListReq {
@@ -206,9 +259,11 @@ export class AdminPostPriceListsPriceListReq {
   description: string
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   starts_at?: Date
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   ends_at?: Date
 
   @IsOptional()

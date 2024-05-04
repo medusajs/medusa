@@ -7,10 +7,10 @@ import { SalesChannelService } from "../../../../services"
 import { Type } from "class-transformer"
 
 /**
- * @oas [post] /sales-channels/{id}/products/batch
+ * @oas [post] /admin/sales-channels/{id}/products/batch
  * operationId: "PostSalesChannelsChannelProductsBatch"
- * summary: "Add Products"
- * description: "Assign a batch of product to a sales channel."
+ * summary: "Add Products to Sales Channel"
+ * description: "Add a list of products to a sales channel."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales channel.
@@ -28,22 +28,56 @@ import { Type } from "class-transformer"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.salesChannels.addProducts(sales_channel_id, {
+ *       medusa.admin.salesChannels.addProducts(salesChannelId, {
  *         product_ids: [
  *           {
- *             id: product_id
+ *             id: productId
  *           }
  *         ]
  *       })
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminAddProductsToSalesChannel } from "medusa-react"
+ *
+ *       type Props = {
+ *         salesChannelId: string
+ *       }
+ *
+ *       const SalesChannel = ({ salesChannelId }: Props) => {
+ *         const addProducts = useAdminAddProductsToSalesChannel(
+ *           salesChannelId
+ *         )
+ *         // ...
+ *
+ *         const handleAddProducts = (productId: string) => {
+ *           addProducts.mutate({
+ *             product_ids: [
+ *               {
+ *                 id: productId,
+ *               },
+ *             ],
+ *           }, {
+ *             onSuccess: ({ sales_channel }) => {
+ *               console.log(sales_channel.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default SalesChannel
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/sales-channels/afasf/products/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/sales-channels/{id}/products/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
  *             {
@@ -54,8 +88,9 @@ import { Type } from "class-transformer"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Sales Channel
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK
@@ -102,11 +137,12 @@ export default async (req: Request, res: Response): Promise<void> => {
 /**
  * @schema AdminPostSalesChannelsChannelProductsBatchReq
  * type: object
+ * description: "The details of the products to add to the sales channel."
  * required:
  *   - product_ids
  * properties:
  *   product_ids:
- *     description: The IDs of the products to add to the Sales Channel
+ *     description: The IDs of the products to add to the sales channel
  *     type: array
  *     items:
  *       type: object

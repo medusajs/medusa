@@ -1,9 +1,10 @@
 /**
- * @oas [delete] /auth
+ * @oas [delete] /admin/auth
  * operationId: "DeleteAuth"
  * summary: "User Logout"
  * x-authenticated: true
- * description: "Deletes the current session for the logged in user."
+ * description: "Delete the current session for the logged in user. This will only work if you're using Cookie session for authentication. If the API token is still passed in the header,
+ * the user is still authorized to perform admin functionalities in other API Routes."
  * x-codegen:
  *   method: deleteSession
  * x-codeSamples:
@@ -12,16 +13,39 @@
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       // must be previously logged in or use api token
+ *       // must be previously logged in
  *       medusa.admin.auth.deleteSession()
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteSession } from "medusa-react"
+ *
+ *       const Logout = () => {
+ *         const adminLogout = useAdminDeleteSession()
+ *         // ...
+ *
+ *         const handleLogout = () => {
+ *           adminLogout.mutate(undefined, {
+ *             onSuccess: () => {
+ *               // user logged out.
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Logout
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/auth' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/auth' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Auth
  * responses:
@@ -41,6 +65,13 @@
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  req.session.destroy()
-  res.status(200).end()
+  if (req.session.customer_id) {
+    // if we are also logged in as a customer, persist that session
+    delete req.session.user_id
+  } else {
+    // otherwise, destroy the session
+    req.session.destroy()
+  }
+
+  res.sendStatus(200)
 }

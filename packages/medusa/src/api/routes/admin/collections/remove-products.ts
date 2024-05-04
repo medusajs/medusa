@@ -5,13 +5,13 @@ import { EntityManager } from "typeorm"
 import ProductCollectionService from "../../../../services/product-collection"
 
 /**
- * @oas [delete] /collections/{id}/products/batch
+ * @oas [delete] /admin/collections/{id}/products/batch
  * operationId: "DeleteProductsFromCollection"
- * summary: "Remove Product"
- * description: "Removes products associated with a Product Collection"
+ * summary: "Remove Products from Collection"
+ * description: "Remove a list of products from a collection. This would not delete the product, only the association between the product and the collection."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Collection.
+ *   - (path) id=* {string} The ID of the Product Collection.
  * requestBody:
  *   content:
  *     application/json:
@@ -20,12 +20,55 @@ import ProductCollectionService from "../../../../services/product-collection"
  * x-codegen:
  *   method: removeProducts
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.collections.removeProducts(collectionId, {
+ *         product_ids: [
+ *           productId1,
+ *           productId2
+ *         ]
+ *       })
+ *       .then(({ id, object, removed_products }) => {
+ *         console.log(removed_products)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminRemoveProductsFromCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         collectionId: string
+ *       }
+ *
+ *       const Collection = ({ collectionId }: Props) => {
+ *         const removeProducts = useAdminRemoveProductsFromCollection(collectionId)
+ *         // ...
+ *
+ *         const handleRemoveProducts = (productIds: string[]) => {
+ *           removeProducts.mutate({
+ *             product_ids: productIds
+ *           }, {
+ *             onSuccess: ({ id, object, removed_products }) => {
+ *               console.log(removed_products)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Collection
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/collections/{id}/products/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE '{backend_url}/admin/collections/{id}/products/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
  *               "prod_01G1G5V2MBA328390B5AXJ610F"
@@ -34,8 +77,9 @@ import ProductCollectionService from "../../../../services/product-collection"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Collection
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK
@@ -83,6 +127,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminDeleteProductsFromCollectionReq
  * type: object
+ * description: "The details of the products to remove from the collection."
  * required:
  *   - product_ids
  * properties:

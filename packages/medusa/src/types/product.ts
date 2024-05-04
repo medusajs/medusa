@@ -7,97 +7,154 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   PriceList,
   Product,
+  ProductCategory,
   ProductOptionValue,
   ProductStatus,
   SalesChannel,
-  ProductCategory,
 } from "../models"
+import { DateComparisonOperator, FindConfig, Selector } from "./common"
+
+import { FindOperator } from "typeorm"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
-import { DateComparisonOperator, FindConfig, Selector } from "./common"
 import { PriceListLoadConfig } from "./price-list"
-import { FindOperator } from "typeorm"
 
 /**
- * API Level DTOs + Validation rules
+ * Filters to apply on retrieved products.
  */
 export class FilterableProductProps {
+  /**
+   * IDs to filter products by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   id?: string | string[]
 
+  /**
+   * Search term to search products' title, description, variants' title and sku, and collections' title.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Statuses to filter products by.
+   */
   @IsOptional()
   @IsEnum(ProductStatus, { each: true })
   status?: ProductStatus[]
 
+  /**
+   * Filter products by their associated price lists' ID.
+   */
   @IsArray()
   @IsOptional()
   price_list_id?: string[]
 
+  /**
+   * Filter products by their associated product collection's ID.
+   */
   @IsArray()
   @IsOptional()
   collection_id?: string[]
 
+  /**
+   * Filter products by their associated tags' value.
+   */
   @IsArray()
   @IsOptional()
   tags?: string[]
 
+  /**
+   * Title to filter products by.
+   */
   @IsString()
   @IsOptional()
   title?: string
 
+  /**
+   * Description to filter products by.
+   */
   @IsString()
   @IsOptional()
   description?: string
 
+  /**
+   * Handle to filter products by.
+   */
   @IsString()
   @IsOptional()
   handle?: string
 
+  /**
+   * Filter products by whether they're gift cards.
+   */
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
+  /**
+   * Filter products by their associated product type's ID.
+   */
   @IsArray()
   @IsOptional()
   type_id?: string[]
 
+  /**
+   * Filter products by their associated sales channels' ID.
+   */
   @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
   sales_channel_id?: string[]
 
+  /**
+   * Filter products by their associated discount condition's ID.
+   */
   @IsString()
   @IsOptional()
   discount_condition_id?: string
 
+  /**
+   * Filter products by their associated product category's ID.
+   */
   @IsArray()
   @IsOptional()
   category_id?: string[]
 
+  /**
+   * Whether to include product category children in the response.
+   *
+   * @featureFlag product_categories
+   */
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   include_category_children?: boolean
 
+  /**
+   * Date filters to apply on the products' `created_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the products' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the products' `deleted_at` date.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)
@@ -256,11 +313,28 @@ export class ProductTagReq {
   value: string
 }
 
+/**
+ * The details of a product type, used to create or update an existing product type.
+ */
 export class ProductTypeReq {
+  /**
+   * The ID of the product type. It's only required when referring to an existing product type.
+   */
   @IsString()
   @IsOptional()
   id?: string
 
+  /**
+   * The value of the product type.
+   */
   @IsString()
   value: string
+}
+
+export type ProductFilterOptions = {
+  price_list_id?: FindOperator<PriceList>
+  sales_channel_id?: FindOperator<SalesChannel>
+  category_id?: FindOperator<ProductCategory>
+  include_category_children?: boolean
+  discount_condition_id?: string
 }

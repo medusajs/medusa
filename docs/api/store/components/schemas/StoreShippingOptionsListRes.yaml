@@ -1,6 +1,0 @@
-type: object
-properties:
-  shipping_options:
-    type: array
-    items:
-      $ref: ./ShippingOption.yaml

@@ -1,11 +1,12 @@
+import { promiseAll } from "@medusajs/utils"
 import fs from "fs"
 import { IFileService } from "../../../../interfaces"
 
 /**
- * @oas [post] /uploads/protected
+ * @oas [post] /admin/uploads/protected
  * operationId: "PostUploadsProtected"
  * summary: "Protected File Upload"
- * description: "Uploads at least one file with ACL or a non-public bucket to the specific fileservice that is installed in Medusa."
+ * description: "Upload at least one file to an ACL or a non-public bucket. The file upload is handled by the file service installed on the Medusa backend."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -26,20 +27,43 @@ import { IFileService } from "../../../../interfaces"
  *       medusa.admin.uploads.createProtected(file)
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUploadProtectedFile } from "medusa-react"
+ *
+ *       const UploadFile = () => {
+ *         const uploadFile = useAdminUploadProtectedFile()
+ *         // ...
+ *
+ *         const handleFileUpload = (file: File) => {
+ *           uploadFile.mutate(file, {
+ *             onSuccess: ({ uploads }) => {
+ *               console.log(uploads[0].key)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default UploadFile
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/uploads/protected' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: image/jpeg' \
+ *       curl -X POST '{backend_url}/admin/uploads/protected' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: image/jpeg' \
  *       --form 'files=@"<FILE_PATH_1>"' \
  *       --form 'files=@"<FILE_PATH_1>"'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Upload
+ *   - Uploads
  * responses:
  *   200:
  *     description: OK
@@ -63,7 +87,7 @@ import { IFileService } from "../../../../interfaces"
 export default async (req, res) => {
   const fileService: IFileService = req.scope.resolve("fileService")
 
-  const result = await Promise.all(
+  const result = await promiseAll(
     req.files.map(async (f) => {
       return fileService.uploadProtected(f).then((result) => {
         fs.unlinkSync(f.path)

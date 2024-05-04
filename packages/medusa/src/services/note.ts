@@ -1,12 +1,13 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
-import { NoteRepository } from "../repositories/note"
-import EventBusService from "./event-bus"
 import { FindConfig, Selector } from "../types/common"
-import { Note } from "../models"
-import { buildQuery } from "../utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
+
 import { CreateNoteInput } from "../types/note"
+import { EntityManager } from "typeorm"
+import EventBusService from "./event-bus"
+import { Note } from "../models"
+import { NoteRepository } from "../repositories/note"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -21,19 +22,13 @@ class NoteService extends TransactionBaseService {
     DELETED: "note.deleted",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected readonly noteRepository_: typeof NoteRepository
   protected readonly eventBus_: EventBusService
 
-  constructor({
-    manager,
-    noteRepository,
-    eventBusService,
-  }: InjectedDependencies) {
+  constructor({ noteRepository, eventBusService }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.noteRepository_ = noteRepository
     this.eventBus_ = eventBusService
   }
@@ -55,7 +50,7 @@ class NoteService extends TransactionBaseService {
       )
     }
 
-    const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
+    const noteRepo = this.activeManager_.withRepository(this.noteRepository_)
 
     const query = buildQuery({ id: noteId }, config)
 
@@ -74,24 +69,57 @@ class NoteService extends TransactionBaseService {
   /** Fetches all notes related to the given selector
    * @param selector - the query object for find
    * @param config - the configuration used to find the objects. contains relations, skip, and take.
-   * @param config.relations - Which relations to include in the resulting list of Notes.
-   * @param config.take - How many Notes to take in the resulting list of Notes.
-   * @param config.skip - How many Notes to skip in the resulting list of Notes.
    * @return notes related to the given search.
    */
   async list(
     selector: Selector<Note>,
     config: FindConfig<Note> = {
+      /**
+       * How many Notes to skip in the resulting list of Notes.
+       */
       skip: 0,
+      /**
+       * How many Notes to take in the resulting list of Notes.
+       */
       take: 50,
+      /**
+       * Which relations to include in the resulting list of Notes.
+       */
       relations: [],
     }
   ): Promise<Note[]> {
-    const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
+    const [result] = await this.listAndCount(selector, config)
+
+    return result
+  }
+
+  /** Fetches all notes related to the given selector
+   * @param selector - the query object for find
+   * @param config - the configuration used to find the objects. contains relations, skip, and take.
+   * @return notes related to the given search.
+   */
+  async listAndCount(
+    selector: Selector<Note>,
+    config: FindConfig<Note> = {
+      /**
+       * How many Notes to skip in the resulting list of Notes.
+       */
+      skip: 0,
+      /**
+       * How many Notes to take in the resulting list of Notes.
+       */
+      take: 50,
+      /**
+       * Which relations to include in the resulting list of Notes.
+       */
+      relations: [],
+    }
+  ): Promise<[Note[], number]> {
+    const noteRepo = this.activeManager_.withRepository(this.noteRepository_)
 
     const query = buildQuery(selector, config)
 
-    return noteRepo.find(query)
+    return noteRepo.findAndCount(query)
   }
 
   /**
@@ -109,7 +137,7 @@ class NoteService extends TransactionBaseService {
     const { resource_id, resource_type, value, author_id } = data
 
     return await this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(this.noteRepository_)
+      const noteRepo = manager.withRepository(this.noteRepository_)
 
       const toCreate = {
         resource_id,
@@ -138,9 +166,9 @@ class NoteService extends TransactionBaseService {
    */
   async update(noteId: string, value: string): Promise<Note> {
     return await this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(this.noteRepository_)
+      const noteRepo = manager.withRepository(this.noteRepository_)
 
-      const note = await this.retrieve(noteId, { relations: ["author"] })
+      const note = await this.retrieve(noteId)
 
       note.value = value
 
@@ -160,7 +188,7 @@ class NoteService extends TransactionBaseService {
    */
   async delete(noteId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(this.noteRepository_)
+      const noteRepo = manager.withRepository(this.noteRepository_)
 
       const note = await this.retrieve(noteId)
 

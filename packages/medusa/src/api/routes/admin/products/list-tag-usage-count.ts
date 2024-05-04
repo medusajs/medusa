@@ -1,10 +1,10 @@
 import { ProductService } from "../../../../services"
 
 /**
- * @oas [get] /products/tag-usage
+ * @oas [get] /admin/products/tag-usage
  * operationId: "GetProductsTagUsage"
  * summary: "List Tags Usage Number"
- * description: "Retrieves a list of Product Tags with how many times each is used."
+ * description: "Retrieve a list of Product Tags with how many times each is used in products."
  * x-authenticated: true
  * x-codegen:
  *   method: listTags
@@ -18,17 +18,43 @@ import { ProductService } from "../../../../services"
  *       medusa.admin.products.listTags()
  *       .then(({ tags }) => {
  *         console.log(tags.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminProductTagUsage } from "medusa-react"
+ *
+ *       const ProductTags = (productId: string) => {
+ *         const { tags, isLoading } = useAdminProductTagUsage()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {tags && !tags.length && <span>No Product Tags</span>}
+ *             {tags && tags.length > 0 && (
+ *               <ul>
+ *                 {tags.map((tag) => (
+ *                   <li key={tag.id}>{tag.value} - {tag.usage_count}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ProductTags
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/products/tag-usage' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/products/tag-usage' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product Tag
+ *   - Products
  * responses:
  *   200:
  *     description: OK

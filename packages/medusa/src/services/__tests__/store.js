@@ -46,18 +46,20 @@ describe("StoreService", () => {
     it("successfully retrieve store", async () => {
       await storeService.retrieve().catch(() => void 0)
 
-      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(storeRepository.find).toHaveBeenCalledTimes(1)
     })
   })
 
   describe("update", () => {
     const storeRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({
-          id: IdMap.getId("store"),
-          name: "Medusa",
-          default_currency_code: "usd",
-        }),
+      find: () =>
+        Promise.resolve([
+          {
+            id: IdMap.getId("store"),
+            name: "Medusa",
+            default_currency_code: "usd",
+          },
+        ]),
     })
 
     const currencyRepository = MockRepository({})
@@ -77,7 +79,7 @@ describe("StoreService", () => {
         name: "Medusa Commerce",
       })
 
-      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(storeRepository.find).toHaveBeenCalledTimes(1)
 
       expect(storeRepository.save).toHaveBeenCalledTimes(1)
       expect(storeRepository.save).toHaveBeenCalledWith({
@@ -94,18 +96,20 @@ describe("StoreService", () => {
         })
       ).rejects.toThrow("Currency with code 1cd does not exist")
 
-      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(storeRepository.find).toHaveBeenCalledTimes(1)
     })
   })
 
   describe("addCurrency", () => {
     const storeRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({
-          id: IdMap.getId("store"),
-          name: "Medusa",
-          currencies: [{ code: "dkk" }],
-        }),
+      find: () =>
+        Promise.resolve([
+          {
+            id: IdMap.getId("store"),
+            name: "Medusa",
+            currencies: [{ code: "dkk" }],
+          },
+        ]),
     })
 
     const currencyRepository = MockRepository({
@@ -134,7 +138,7 @@ describe("StoreService", () => {
     it("successfully adds currency", async () => {
       await storeService.addCurrency("sek")
 
-      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(storeRepository.find).toHaveBeenCalledTimes(1)
 
       expect(storeRepository.save).toHaveBeenCalledTimes(1)
       expect(storeRepository.save).toHaveBeenCalledWith({
@@ -155,18 +159,20 @@ describe("StoreService", () => {
         "Currency already added"
       )
 
-      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(storeRepository.find).toHaveBeenCalledTimes(1)
     })
   })
 
   describe("removeCurrency", () => {
     const storeRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({
-          id: IdMap.getId("store"),
-          name: "Medusa",
-          currencies: [{ code: "dkk" }],
-        }),
+      find: () =>
+        Promise.resolve([
+          {
+            id: IdMap.getId("store"),
+            name: "Medusa",
+            currencies: [{ code: "dkk" }],
+          },
+        ]),
     })
 
     const currencyRepository = MockRepository({
@@ -195,7 +201,7 @@ describe("StoreService", () => {
     it("successfully removes currency", async () => {
       await storeService.removeCurrency("dkk")
 
-      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(storeRepository.find).toHaveBeenCalledTimes(1)
 
       expect(storeRepository.save).toHaveBeenCalledTimes(1)
       expect(storeRepository.save).toHaveBeenCalledWith({

@@ -3,21 +3,21 @@ import { Request, Response } from "express"
 import ProductCategoryService from "../../../../services/product-category"
 import { FindParams } from "../../../../types/common"
 import { transformTreeNodesWithConfig } from "../../../../utils/transformers/tree"
-import { defaultStoreScope } from "."
+import { defaultStoreCategoryScope } from "."
 
 /**
- * @oas [get] /product-categories/{id}
+ * @oas [get] /store/product-categories/{id}
  * operationId: "GetProductCategoriesCategory"
  * summary: "Get a Product Category"
- * description: "Retrieves a Product Category."
- * x-authenticated: false
+ * description: "Retrieve a Product Category's details."
+ * x-featureFlag: "product_categories"
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product category.
- *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each product category.
+ *   - (query) fields {string} Comma-separated fields that should be expanded in the returned product category.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned product category.
  * x-codegen:
  *   method: retrieve
- *   queryParams: StoreGetProductCategoryParams
+ *   queryParams: StoreGetProductCategoriesCategoryParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -25,20 +25,45 @@ import { defaultStoreScope } from "."
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.productCategories.retrieve(product_category_id)
- *         .then(({ product_category }) => {
- *           console.log(product_category.id);
- *         });
+ *       medusa.productCategories.retrieve(productCategoryId)
+ *       .then(({ product_category }) => {
+ *         console.log(product_category.id);
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useProductCategory } from "medusa-react"
+ *
+ *       type Props = {
+ *         categoryId: string
+ *       }
+ *
+ *       const Category = ({ categoryId }: Props) => {
+ *         const { product_category, isLoading } = useProductCategory(
+ *           categoryId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {product_category && <span>{product_category.name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Category
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/product-categories/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/store/product-categories/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *  "200":
  *    description: OK
@@ -70,7 +95,7 @@ export default async (req: Request, res: Response) => {
   const productCategory = await productCategoryService.retrieve(
     id,
     retrieveConfig,
-    defaultStoreScope
+    defaultStoreCategoryScope
   )
 
   res.status(200).json({
@@ -80,9 +105,9 @@ export default async (req: Request, res: Response) => {
     product_category: transformTreeNodesWithConfig(
       productCategory,
       retrieveConfig,
-      defaultStoreScope
+      defaultStoreCategoryScope
     ),
   })
 }
 
-export class StoreGetProductCategoryParams extends FindParams {}
+export class StoreGetProductCategoriesCategoryParams extends FindParams {}

@@ -7,11 +7,11 @@ Array [
   "product-export-strategy-product-1;test-product-product-1;Test product;;\\"test-product-description-1
 test-product-description-1 second line
 test-product-description-1 third line
-forth line\\";draft;;;;;;;;;;Test collection 1;test-collection1;test-type-1;123_1;true;;profile_1;profile_type_1;product-export-strategy-variant-1;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;100;110;130;;test-option-1;option 1 value 1;test-option-2;option 2 value 1;test-image.png
+forth line\\";draft;;;;;;;;;;Test collection 1;test-collection1;test-type-1;123_1;true;;profile_1;profile_type_1;product-export-strategy-variant-1;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;1;1.1;1.3;;test-option-1;option 1 value 1;test-option-2;option 2 value 1;test-image.png
 ",
-  "product-export-strategy-product-2;test-product-product-2;Test product;;test-product-description;draft;;;;;;;;;;Test collection;test-collection2;test-type;123;true;;profile_2;profile_type_2;product-export-strategy-variant-2;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;;;;110;test-option;Option 1 value 1;;;test-image.png
+  "product-export-strategy-product-2;test-product-product-2;Test product;;test-product-description;draft;;;;;;;;;;Test collection;test-collection2;test-type;123;true;;profile_2;profile_type_2;product-export-strategy-variant-2;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;;;;1.1;test-option;Option 1 value 1;;;test-image.png
 ",
-  "product-export-strategy-product-2;test-product-product-2;Test product;;test-product-description;draft;;;;;;;;;;Test collection;test-collection2;test-type;123;true;;profile_2;profile_type_2;product-export-strategy-variant-3;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;;120;;;test-option;Option 1 Value 1;;;test-image.png
+  "product-export-strategy-product-2;test-product-product-2;Test product;;test-product-description;draft;;;;;;;;;;Test collection;test-collection2;test-type;123;true;;profile_2;profile_type_2;product-export-strategy-variant-3;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;;1.2;;;test-option;Option 1 Value 1;;;test-image.png
 ",
 ]
 `;
@@ -23,14 +23,14 @@ Array [
   "product-export-strategy-product-1;test-product-product-1;Test product;;\\"test-product-description-1
 test-product-description-1 second line
 test-product-description-1 third line
-forth line\\";draft;;;;;;;;;;Test collection 1;test-collection1;test-type-1;123_1;true;;profile_1;profile_type_1;product-export-strategy-variant-1;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;100;110;130;;test-option-1;option 1 value 1;test-option-2;option 2 value 1;test-image.png;SC 1;SC 1;\\"SC 1
+forth line\\";draft;;;;;;;;;;Test collection 1;test-collection1;test-type-1;123_1;true;;profile_1;profile_type_1;product-export-strategy-variant-1;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;1;1.1;1.3;;test-option-1;option 1 value 1;test-option-2;option 2 value 1;test-image.png;SC 1;SC 1;\\"SC 1
 SC 1 second line
 SC 1 third line
 SC 1 forth line\\";;;
 ",
-  "product-export-strategy-product-2;test-product-product-2;Test product;;test-product-description;draft;;;;;;;;;;Test collection;test-collection2;test-type;123;true;;profile_2;profile_type_2;product-export-strategy-variant-2;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;;;;110;test-option;Option 1 value 1;;;test-image.png;SC 1;SC 1;SC 1;SC 2;SC 2;SC 2
+  "product-export-strategy-product-2;test-product-product-2;Test product;;test-product-description;draft;;;;;;;;;;Test collection;test-collection2;test-type;123;true;;profile_2;profile_type_2;product-export-strategy-variant-2;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;;;;1.1;test-option;Option 1 value 1;;;test-image.png;SC 1;SC 1;SC 1;SC 2;SC 2;SC 2
 ",
-  "product-export-strategy-product-2;test-product-product-2;Test product;;test-product-description;draft;;;;;;;;;;Test collection;test-collection2;test-type;123;true;;profile_2;profile_type_2;product-export-strategy-variant-3;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;;120;;;test-option;Option 1 Value 1;;;test-image.png;SC 1;SC 1;SC 1;SC 2;SC 2;SC 2
+  "product-export-strategy-product-2;test-product-product-2;Test product;;test-product-description;draft;;;;;;;;;;Test collection;test-collection2;test-type;123;true;;profile_2;profile_type_2;product-export-strategy-variant-3;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;;1.2;;;test-option;Option 1 Value 1;;;test-image.png;SC 1;SC 1;SC 1;SC 2;SC 2;SC 2
 ",
 ]
 `;

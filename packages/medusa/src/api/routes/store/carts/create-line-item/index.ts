@@ -2,18 +2,20 @@ import { IsInt, IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../../utils/validator"
 import {
+  addOrUpdateLineItem,
   CreateLineItemSteps,
-  handleAddOrUpdateLineItem,
+  setPaymentSessions,
+  setVariantAvailability,
 } from "./utils/handler-steps"
 import { IdempotencyKey } from "../../../../../models"
-import {
-  initializeIdempotencyRequest,
-  runIdempotencyStep,
-  RunIdempotencyStepOptions,
-} from "../../../../../utils/idempotency"
+import { initializeIdempotencyRequest } from "../../../../../utils/idempotency"
+import { cleanResponseData } from "../../../../../utils/clean-response-data"
+import IdempotencyKeyService from "../../../../../services/idempotency-key"
+import { defaultStoreCartFields, defaultStoreCartRelations } from "../index"
+import { CartService } from "../../../../../services"
 
 /**
- * @oas [post] /carts/{id}/line-items
+ * @oas [post] /store/carts/{id}/line-items
  * operationId: PostCartsCartLineItems
  * summary: "Add a Line Item"
  * description: "Generates a Line Item with a given Product Variant and adds it
@@ -39,18 +41,49 @@ import {
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCreateLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const createLineItem = useCreateLineItem(cartId)
+ *
+ *         const handleAddItem = (
+ *           variantId: string,
+ *           quantity: number
+ *         ) => {
+ *           createLineItem.mutate({
+ *             variant_id: variantId,
+ *             quantity,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.items)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/line-items' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/carts/{id}/line-items' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "variant_id": "{variant_id}",
  *           "quantity": 1
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -88,34 +121,87 @@ export default async (req, res) => {
   let inProgress = true
   let err: unknown = false
 
-  const stepOptions: RunIdempotencyStepOptions = {
-    manager,
-    idempotencyKey,
-    container: req.scope,
-    isolationLevel: "SERIALIZABLE",
-  }
+  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
+    "idempotencyKeyService"
+  )
 
   while (inProgress) {
     switch (idempotencyKey.recovery_point) {
       case CreateLineItemSteps.STARTED: {
-        await runIdempotencyStep(async ({ manager }) => {
-          return await handleAddOrUpdateLineItem(
-            id,
-            {
-              customer_id: customerId,
-              metadata: validated.metadata,
-              quantity: validated.quantity,
-              variant_id: validated.variant_id,
-            },
-            {
-              manager,
-              container: req.scope,
-            }
-          )
-        }, stepOptions).catch((e) => {
+        try {
+          const cartId = id
+          const data = {
+            customer_id: customerId,
+            metadata: validated.metadata,
+            quantity: validated.quantity,
+            variant_id: validated.variant_id,
+          }
+
+          await addOrUpdateLineItem({
+            cartId,
+            container: req.scope,
+            manager,
+            data,
+          })
+
+          idempotencyKey = await idempotencyKeyService
+            .withTransaction(manager)
+            .update(idempotencyKey.idempotency_key, {
+              recovery_point: CreateLineItemSteps.SET_PAYMENT_SESSIONS,
+            })
+        } catch (e) {
           inProgress = false
           err = e
-        })
+        }
+
+        break
+      }
+
+      case CreateLineItemSteps.SET_PAYMENT_SESSIONS: {
+        try {
+          const cartService: CartService = req.scope.resolve("cartService")
+          const getCart = async () => {
+            return await cartService
+              .withTransaction(manager)
+              .retrieveWithTotals(id, {
+                select: defaultStoreCartFields,
+                relations: [
+                  ...defaultStoreCartRelations,
+                  "region.tax_rates",
+                  "customer",
+                ],
+              })
+          }
+
+          const cart = await getCart()
+
+          await manager.transaction(async (transactionManager) => {
+            await setPaymentSessions({
+              cart,
+              container: req.scope,
+              manager: transactionManager,
+            })
+          })
+
+          const freshCart = await getCart()
+          await setVariantAvailability({
+            cart: freshCart,
+            container: req.scope,
+            manager,
+          })
+
+          idempotencyKey = await idempotencyKeyService
+            .withTransaction(manager)
+            .update(idempotencyKey.idempotency_key, {
+              recovery_point: CreateLineItemSteps.FINISHED,
+              response_code: 200,
+              response_body: { cart: freshCart },
+            })
+        } catch (e) {
+          inProgress = false
+          err = e
+        }
+
         break
       }
 
@@ -130,12 +216,20 @@ export default async (req, res) => {
     throw err
   }
 
+  if (idempotencyKey.response_body.cart) {
+    idempotencyKey.response_body.cart = cleanResponseData(
+      idempotencyKey.response_body.cart,
+      []
+    )
+  }
+
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }
 
 /**
  * @schema StorePostCartsCartLineItemsReq
  * type: object
+ * description: "The details of the line item to create."
  * required:
  *   - variant_id
  *   - quantity
@@ -149,6 +243,9 @@ export default async (req, res) => {
  *   metadata:
  *     type: object
  *     description: An optional key-value map with additional details about the Line Item.
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class StorePostCartsCartLineItemsReq {
   @IsString()

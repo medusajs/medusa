@@ -5,28 +5,30 @@ import { TransactionBaseService } from "../interfaces"
 import UserService from "./user"
 import CustomerService from "./customer"
 import { EntityManager } from "typeorm"
+import { Logger } from "@medusajs/types"
 
 type InjectedDependencies = {
   manager: EntityManager
   userService: UserService
   customerService: CustomerService
+  logger: Logger
 }
 
 /**
  * Can authenticate a user based on email password combination
  */
 class AuthService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected readonly userService_: UserService
   protected readonly customerService_: CustomerService
+  protected readonly logger_: Logger
 
-  constructor({ manager, userService, customerService }: InjectedDependencies) {
+  constructor({ userService, customerService, logger }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.userService_ = userService
     this.customerService_ = customerService
+    this.logger_ = logger
   }
 
   /**
@@ -48,25 +50,11 @@ class AuthService extends TransactionBaseService {
    * @param {string} token - the api_token of the user to authenticate
    * @return {AuthenticateResult}
    *    success: whether authentication succeeded
-   *    user: the user document if authentication succeded
+   *    user: the user document if authentication succeeded
    *    error: a string with the error message
    */
   async authenticateAPIToken(token: string): Promise<AuthenticateResult> {
     return await this.atomicPhase_(async (transactionManager) => {
-      if (process.env.NODE_ENV?.startsWith("dev")) {
-        try {
-          const user: User = await this.userService_
-            .withTransaction(transactionManager)
-            .retrieve(token)
-          return {
-            success: true,
-            user,
-          }
-        } catch (error) {
-          // ignore
-        }
-      }
-
       try {
         const user: User = await this.userService_
           .withTransaction(transactionManager)
@@ -91,7 +79,7 @@ class AuthService extends TransactionBaseService {
    * @param {string} password - the password of the user
    * @return {AuthenticateResult}
    *    success: whether authentication succeeded
-   *    user: the user document if authentication succeded
+   *    user: the user document if authentication succeeded
    *    error: a string with the error message
    */
   async authenticate(
@@ -122,7 +110,7 @@ class AuthService extends TransactionBaseService {
           }
         }
       } catch (error) {
-        console.log("error ->", error)
+        this.logger_.log("error", error)
         // ignore
       }
 
@@ -140,7 +128,7 @@ class AuthService extends TransactionBaseService {
    * @param {string} password - the password of the user
    * @return {{ success: (bool), customer: (object | undefined) }}
    *    success: whether authentication succeeded
-   *    user: the user document if authentication succeded
+   *    customer: the customer document if authentication succeded
    *    error: a string with the error message
    */
   async authenticateCustomer(
