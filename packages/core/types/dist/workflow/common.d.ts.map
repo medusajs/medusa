@@ -1,1 +1,0 @@
-{"version":3,"file":"common.d.ts","sourceRoot":"","sources":["../../src/workflow/common.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,mBAAmB;IAClC,UAAU,CAAC,EAAE;QACX,MAAM,CAAC,EAAE,MAAM,EAAE,CAAA;QACjB,SAAS,CAAC,EAAE,MAAM,EAAE,CAAA;KACrB,CAAA;IACD,cAAc,CAAC,EAAE;QACf,MAAM,CAAC,EAAE,MAAM,EAAE,CAAA;QACjB,SAAS,CAAC,EAAE,MAAM,EAAE,CAAA;KACrB,CAAA;CACF"}

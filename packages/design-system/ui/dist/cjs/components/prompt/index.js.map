@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../src/components/prompt/index.ts"],"names":[],"mappings":";;;AAAA,mDAAwB","sourcesContent":["export * from \"./prompt\"\n"]}

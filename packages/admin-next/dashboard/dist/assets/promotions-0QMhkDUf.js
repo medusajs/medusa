@@ -1,1 +1,0 @@
-var a=(e=>(e.SCHEDULED="SCHEDULED",e.EXPIRED="EXPIRED",e.ACTIVE="ACTIVE",e.DISABLED="DISABLED",e))(a||{});const r=e=>{const n=new Date,t=e.campaign;if(!t)return"ACTIVE";if(new Date(t.starts_at)>n)return"SCHEDULED";const E=t.budget,D=E&&E.used>E.limit;return t.ends_at&&new Date(t.ends_at)<n||D?"EXPIRED":"ACTIVE"};export{a as P,r as g};

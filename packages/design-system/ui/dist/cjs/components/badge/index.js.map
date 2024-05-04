@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../src/components/badge/index.ts"],"names":[],"mappings":";;;AAAA,kDAAuB","sourcesContent":["export * from \"./badge\"\n"]}

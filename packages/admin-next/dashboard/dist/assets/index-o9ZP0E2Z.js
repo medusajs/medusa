@@ -1,1 +1,0 @@
-import{j as o}from"./index-S--WvUSo.js";import"./react-PzSkSLoa.js";import"./react-dom-Og6--24v.js";import"./react-router-dom-aSYyayiN.js";const n=()=>o.jsx("div",{children:"404 Not Found"});export{n as Component};

@@ -1,1 +1,0 @@
-import{V as l,W as o,X as i}from"./index-S--WvUSo.js";const u="f_providers",n=i(u),a=(e,r)=>{const{data:s,...t}=l({queryFn:()=>o.fulfillmentProviders.list(e),queryKey:n.list(e),...r});return{...s,...t}};export{a as u};

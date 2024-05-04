@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../src/components/progress-tabs/index.ts"],"names":[],"mappings":";;;AAAA,0DAA+B","sourcesContent":["export * from \"./progress-tabs\"\n"]}

@@ -1,1 +1,0 @@
-import{j as o}from"./index-S--WvUSo.js";import{r as a}from"./react-PzSkSLoa.js";import{a as e,u as n,O as r}from"./react-router-dom-aSYyayiN.js";import"./react-dom-Og6--24v.js";const f=()=>{const t=e(),s=n();return a.useEffect(()=>{s.pathname==="/settings"&&t("/settings/profile")},[s.pathname,t]),o.jsx(r,{})};export{f as Component};

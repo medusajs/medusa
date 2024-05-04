@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../src/components/icon-button/index.ts"],"names":[],"mappings":"AAAA,cAAc,eAAe,CAAA","sourcesContent":["export * from \"./icon-button\"\n"]}

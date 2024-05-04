@@ -1,1 +1,0 @@
-import{V as a,W as o,X as y}from"./index-S--WvUSo.js";const u="categories",c=y(u),g=(e,s,t)=>{const{data:r,...n}=a({queryKey:c.detail(e,s),queryFn:async()=>o.categories.retrieve(e,s),...t});return{...r,...n}},K=(e,s)=>{const{data:t,...r}=a({queryKey:c.list(e),queryFn:async()=>o.categories.list(e),...s});return{...t,...r}};export{g as a,c,K as u};

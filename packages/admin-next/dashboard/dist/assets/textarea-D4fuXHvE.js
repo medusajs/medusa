@@ -1,1 +1,0 @@
-import{r as a}from"./react-PzSkSLoa.js";import{d as s}from"./index-S--WvUSo.js";import{i as m}from"./input-A29ux7yj.js";const o=a.forwardRef(({className:e,...r},t)=>a.createElement("textarea",{ref:t,className:s(m,"txt-small min-h-[60px] w-full px-2 py-1.5",e),...r}));o.displayName="Textarea";export{o as T};

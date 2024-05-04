@@ -1,1 +1,0 @@
-import{j as o}from"./index-S--WvUSo.js";import"./react-PzSkSLoa.js";import"./react-dom-Og6--24v.js";import"./react-router-dom-aSYyayiN.js";const m=()=>o.jsx("div",{className:"flex w-full flex-col gap-y-2"});export{m as Component};

@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../src/hooks/use-prompt/index.ts"],"names":[],"mappings":";;;AAAA,2CAAwC;AAA/B,uGAAA,SAAS,OAAA","sourcesContent":["export { usePrompt } from \"./use-prompt\"\n"]}

@@ -1,1 +1,0 @@
-import{j as l}from"./index-S--WvUSo.js";import{G as o}from"./currency-cell-td0Z0cRW.js";const a=({children:e})=>l.jsx("div",{role:"cell","data-cell-type":o.READONLY,className:"bg-ui-bg-base size-full cursor-not-allowed px-4 py-2.5",children:e});export{a as R};
