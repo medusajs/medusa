@@ -7,7 +7,7 @@ export const POST = async (
   req: MedusaRequest<StoreCompleteCartType>,
   res: MedusaResponse
 ) => {
-  const { idempotency_key: idempotencyKey } = req.validatedBody
+  const cart_id = req.params.id
 
   // If the idempotencyKey is present:
   //  - is workflow is running?
@@ -17,6 +17,9 @@ export const POST = async (
 
   const { errors, result } = await completeCartWorkflow(req.scope).run({
     input: { id: req.params.id },
+    context: {
+      transactionId: cart_id,
+    },
     throwOnError: false,
   })
 
