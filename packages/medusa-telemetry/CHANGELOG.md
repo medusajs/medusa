@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.18-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
 ## 0.0.17
 
 ### Patch Changes

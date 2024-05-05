@@ -1,5 +1,17 @@
 # @medusajs/workflow-engine-redis
 
+## 0.0.5-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
+- Updated dependencies [[`7a351eef09`](https://github.com/medusajs/medusa/commit/7a351eef09f769e1e28e6f136438fa30f607f34b), [`f129415650`](https://github.com/medusajs/medusa/commit/f1294156505f94bfdcbe8c621f39d1655ed5314d), [`c32a31e139`](https://github.com/medusajs/medusa/commit/c32a31e1394609845a5f202b1684d70fea019dc9), [`9d3f495314`](https://github.com/medusajs/medusa/commit/9d3f49531493b4cf73def5a10a57ff0d432cc6db)]:
+  - @medusajs/workflows-sdk@0.1.7-preview.0
+  - @medusajs/types@1.11.17-preview.0
+  - @medusajs/modules-sdk@1.12.12-preview.0
+  - @medusajs/utils@1.11.10-preview.0
+
 ## 0.0.4
 
 ### Patch Changes

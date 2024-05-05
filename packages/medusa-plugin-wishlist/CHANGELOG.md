@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.1.44-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
+- Updated dependencies []:
+  - medusa-core-utils@1.2.3-preview.0
+  - medusa-interfaces@1.3.10-preview.0
+
 ## 1.1.43
 
 ### Patch Changes

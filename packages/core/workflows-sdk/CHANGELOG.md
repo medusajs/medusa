@@ -1,5 +1,18 @@
 # @medusajs/workflows-sdk
 
+## 0.1.7-preview.0
+
+### Patch Changes
+
+- [#7183](https://github.com/medusajs/medusa/pull/7183) [`7a351eef09`](https://github.com/medusajs/medusa/commit/7a351eef09f769e1e28e6f136438fa30f607f34b) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(workflows-sdk): Execute workflows as step in other workflows
+
+- chore: Enter pre-release mode
+
+- Updated dependencies [[`9d3f495314`](https://github.com/medusajs/medusa/commit/9d3f49531493b4cf73def5a10a57ff0d432cc6db)]:
+  - @medusajs/modules-sdk@1.12.12-preview.0
+  - @medusajs/orchestration@0.5.8-preview.0
+  - @medusajs/utils@1.11.10-preview.0
+
 ## 0.1.6
 
 ### Patch Changes

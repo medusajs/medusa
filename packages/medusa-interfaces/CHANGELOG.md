@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.10-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
 ## 1.3.9
 
 ### Patch Changes

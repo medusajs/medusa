@@ -1,5 +1,11 @@
 # @medusajs/client-types
 
+## 0.2.12-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
 ## 0.2.11
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @medusajs/ui-preset
 
+## 1.1.4-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
 ## 1.1.3
 
 ### Patch Changes

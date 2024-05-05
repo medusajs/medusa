@@ -1,5 +1,14 @@
 # @medusajs/ui
 
+## 3.0.1-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
+- Updated dependencies []:
+  - @medusajs/icons@1.2.2-preview.0
+
 ## 3.0.0
 
 ### Major Changes

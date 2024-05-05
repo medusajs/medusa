@@ -1,5 +1,25 @@
 # Change Log
 
+## 1.20.6-preview.0
+
+### Patch Changes
+
+- [#7201](https://github.com/medusajs/medusa/pull/7201) [`f129415650`](https://github.com/medusajs/medusa/commit/f1294156505f94bfdcbe8c621f39d1655ed5314d) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,core-flows,types): added a basic endpoint for complete cart
+
+- chore: Enter pre-release mode
+
+- Updated dependencies [[`7a351eef09`](https://github.com/medusajs/medusa/commit/7a351eef09f769e1e28e6f136438fa30f607f34b), [`f129415650`](https://github.com/medusajs/medusa/commit/f1294156505f94bfdcbe8c621f39d1655ed5314d), [`5bc780a646`](https://github.com/medusajs/medusa/commit/5bc780a64626a89f42a46723a7bc84a41ca3d953), [`520867b074`](https://github.com/medusajs/medusa/commit/520867b074c9b1b77ad78388d6d326058c7d8195), [`9d3f495314`](https://github.com/medusajs/medusa/commit/9d3f49531493b4cf73def5a10a57ff0d432cc6db)]:
+  - @medusajs/workflows-sdk@0.1.7-preview.0
+  - @medusajs/core-flows@0.0.10-preview.0
+  - @medusajs/medusa-cli@1.3.23-preview.0
+  - @medusajs/modules-sdk@1.12.12-preview.0
+  - @medusajs/orchestration@0.5.8-preview.0
+  - @medusajs/utils@1.11.10-preview.0
+  - medusa-core-utils@1.2.3-preview.0
+  - medusa-interfaces@1.3.10-preview.0
+  - medusa-telemetry@0.0.18-preview.0
+  - @medusajs/link-modules@0.2.12-preview.0
+
 ## 1.20.5
 
 ### Patch Changes

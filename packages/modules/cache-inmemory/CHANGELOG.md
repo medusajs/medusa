@@ -1,5 +1,14 @@
 # @medusajs/cache-inmemory
 
+## 1.8.11-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
+- Updated dependencies []:
+  - @medusajs/modules-sdk@1.12.12-preview.0
+
 ## 1.8.10
 
 ### Patch Changes

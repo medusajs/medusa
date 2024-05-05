@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.1.45-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
+- Updated dependencies [[`f129415650`](https://github.com/medusajs/medusa/commit/f1294156505f94bfdcbe8c621f39d1655ed5314d), [`9d3f495314`](https://github.com/medusajs/medusa/commit/9d3f49531493b4cf73def5a10a57ff0d432cc6db)]:
+  - @medusajs/medusa@1.20.6-preview.0
+  - @medusajs/modules-sdk@1.12.12-preview.0
+  - @medusajs/utils@1.11.10-preview.0
+  - medusa-core-utils@1.2.3-preview.0
+
 ## 1.1.44
 
 ### Patch Changes

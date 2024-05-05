@@ -1,5 +1,22 @@
 # @medusajs/fulfillment
 
+## 0.1.3-preview.0
+
+### Patch Changes
+
+- [#7230](https://github.com/medusajs/medusa/pull/7230) [`520867b074`](https://github.com/medusajs/medusa/commit/520867b074c9b1b77ad78388d6d326058c7d8195) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(fulfillment, core-flows): Apply correct address and context + cleanup
+
+- [#7204](https://github.com/medusajs/medusa/pull/7204) [`25b0ccc60a`](https://github.com/medusajs/medusa/commit/25b0ccc60a979f1a0145277d06690a04850b2da7) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(fulfillment): Update shipping options rules
+
+- chore: Enter pre-release mode
+
+- [#7169](https://github.com/medusajs/medusa/pull/7169) [`9d3f495314`](https://github.com/medusajs/medusa/commit/9d3f49531493b4cf73def5a10a57ff0d432cc6db) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Fulfillment - shipping options with context
+
+- Updated dependencies [[`f129415650`](https://github.com/medusajs/medusa/commit/f1294156505f94bfdcbe8c621f39d1655ed5314d), [`c32a31e139`](https://github.com/medusajs/medusa/commit/c32a31e1394609845a5f202b1684d70fea019dc9), [`9d3f495314`](https://github.com/medusajs/medusa/commit/9d3f49531493b4cf73def5a10a57ff0d432cc6db)]:
+  - @medusajs/types@1.11.17-preview.0
+  - @medusajs/modules-sdk@1.12.12-preview.0
+  - @medusajs/utils@1.11.10-preview.0
+
 ## 0.1.2
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @medusajs/cache-redis
 
+## 1.9.2-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
+- Updated dependencies []:
+  - @medusajs/modules-sdk@1.12.12-preview.0
+
 ## 1.9.1
 
 ### Patch Changes

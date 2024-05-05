@@ -1,5 +1,15 @@
 # @medusajs/event-bus-redis
 
+## 1.8.14-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
+- Updated dependencies [[`9d3f495314`](https://github.com/medusajs/medusa/commit/9d3f49531493b4cf73def5a10a57ff0d432cc6db)]:
+  - @medusajs/modules-sdk@1.12.12-preview.0
+  - @medusajs/utils@1.11.10-preview.0
+
 ## 1.8.13
 
 ### Patch Changes

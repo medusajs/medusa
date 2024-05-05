@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.2.9-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
+- Updated dependencies []:
+  - medusa-telemetry@0.0.18-preview.0
+
 ## 1.2.8
 
 ### Patch Changes

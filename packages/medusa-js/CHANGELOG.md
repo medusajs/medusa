@@ -1,5 +1,14 @@
 # Change Log
 
+## 6.1.9-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
+- Updated dependencies [[`f129415650`](https://github.com/medusajs/medusa/commit/f1294156505f94bfdcbe8c621f39d1655ed5314d)]:
+  - @medusajs/medusa@1.20.6-preview.0
+
 ## 6.1.8
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @medusajs/sales-channel
 
+## 0.1.2-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
+- Updated dependencies [[`f129415650`](https://github.com/medusajs/medusa/commit/f1294156505f94bfdcbe8c621f39d1655ed5314d), [`c32a31e139`](https://github.com/medusajs/medusa/commit/c32a31e1394609845a5f202b1684d70fea019dc9), [`9d3f495314`](https://github.com/medusajs/medusa/commit/9d3f49531493b4cf73def5a10a57ff0d432cc6db)]:
+  - @medusajs/types@1.11.17-preview.0
+  - @medusajs/modules-sdk@1.12.12-preview.0
+  - @medusajs/utils@1.11.10-preview.0
+
 ## 0.1.1
 
 ### Patch Changes

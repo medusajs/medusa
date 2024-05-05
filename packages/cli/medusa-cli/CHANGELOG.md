@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.3.23-preview.0
+
+### Patch Changes
+
+- [#7211](https://github.com/medusajs/medusa/pull/7211) [`5bc780a646`](https://github.com/medusajs/medusa/commit/5bc780a64626a89f42a46723a7bc84a41ca3d953) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(medusa-cli): added v2 flag
+
+- chore: Enter pre-release mode
+
+- Updated dependencies [[`9d3f495314`](https://github.com/medusajs/medusa/commit/9d3f49531493b4cf73def5a10a57ff0d432cc6db)]:
+  - @medusajs/utils@1.11.10-preview.0
+  - medusa-core-utils@1.2.3-preview.0
+  - medusa-telemetry@0.0.18-preview.0
+
 ## 1.3.22
 
 ### Patch Changes

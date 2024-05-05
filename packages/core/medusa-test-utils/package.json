@@ -1,6 +1,6 @@
 {
   "name": "medusa-test-utils",
-  "version": "1.1.44",
+  "version": "1.1.45-preview.0",
   "description": "Test utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -24,15 +24,15 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "^1.11.16",
+    "@medusajs/types": "^1.11.17-preview.0",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "rimraf": "^3.0.2",
     "typescript": "^5.1.6"
   },
   "peerDependencies": {
-    "@medusajs/medusa": ">1.19",
-    "@medusajs/modules-sdk": "^1.12.10",
+    "@medusajs/medusa": ">1.20.6-preview.0",
+    "@medusajs/modules-sdk": "^1.12.12-preview.0",
     "axios": "^0.28.0",
     "express": "^4.18.3",
     "get-port": "^5.1.0",
@@ -60,10 +60,10 @@
     }
   },
   "dependencies": {
-    "@medusajs/utils": "^1.11.9",
+    "@medusajs/utils": "^1.11.10-preview.0",
     "@mikro-orm/migrations": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",
-    "medusa-core-utils": "^1.2.2",
+    "medusa-core-utils": "^1.2.3-preview.0",
     "randomatic": "^3.1.1"
   },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"

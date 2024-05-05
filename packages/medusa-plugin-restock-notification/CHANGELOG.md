@@ -1,5 +1,16 @@
 # Change Log
 
+## 7.0.4-preview.0
+
+### Patch Changes
+
+- chore: Enter pre-release mode
+
+- Updated dependencies [[`f129415650`](https://github.com/medusajs/medusa/commit/f1294156505f94bfdcbe8c621f39d1655ed5314d)]:
+  - @medusajs/medusa@1.20.6-preview.0
+  - medusa-core-utils@1.2.3-preview.0
+  - medusa-interfaces@1.3.10-preview.0
+
 ## 7.0.3
 
 ### Patch Changes
