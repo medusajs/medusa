@@ -369,6 +369,7 @@ export class RemoteJoiner {
       uniqueIds,
       relationship
     )
+
     const isObj = isDefined(response.path)
     let resData = isObj ? response.data[response.path!] : response.data
 

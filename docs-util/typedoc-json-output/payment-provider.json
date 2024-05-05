@@ -1,0 +1,1798 @@
+{
+	"id": 24303,
+	"name": "payment-provider",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 24307,
+			"name": "AbstractPaymentProvider",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {
+				"isAbstract": true
+			},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "## Overview\n\nA payment provider is used to handle and process payments, such as authorizing, capturing, and refund payments.\n\nRefer to [this guide](https://docs.medusajs.com/experimental/payment/payment-provider/) to learn more about payment providers.\n\nRefer to [this guide](https://docs.medusajs.com/experimental/payment/payment-flow/) to learn more about the payment flow.\n\n---\n\n## How to Create a Payment Provider\n\nA payment provider is a TypeScript or JavaScript class that extends the "
+					},
+					{
+						"kind": "code",
+						"text": "`AbstractPaymentProvider`"
+					},
+					{
+						"kind": "text",
+						"text": " class imported from "
+					},
+					{
+						"kind": "code",
+						"text": "`@medusajsa/utils`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n\nYou can create the payment provider in a module or plugin, then pass that module/plugin in the Payment Module's "
+					},
+					{
+						"kind": "code",
+						"text": "`providers`"
+					},
+					{
+						"kind": "text",
+						"text": " option. You can also pass the path to the file\nthat defines the provider if it's created in the Medusa application's codebase.\n\nFor example:\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nabstract class MyPayment extends AbstractPaymentProvider<MyConfigurations> {\n  // ...\n}\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n---\n\n## Configuration Type Parameter\n\nThe "
+					},
+					{
+						"kind": "code",
+						"text": "`AbstractPaymentProvider`"
+					},
+					{
+						"kind": "text",
+						"text": " class accepts an optional type parameter that defines the type of configuration that your payment provider expects.\n\nFor example:\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\ninterface MyConfigurations {\n  apiKey: string\n}\n\nabstract class MyPayment extends AbstractPaymentProvider<MyConfigurations> {\n  // ...\n}\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n---\n\n## Identifier Property\n\nThe "
+					},
+					{
+						"kind": "code",
+						"text": "`PaymentProvider`"
+					},
+					{
+						"kind": "text",
+						"text": " data model has 2 properties: "
+					},
+					{
+						"kind": "code",
+						"text": "`id`"
+					},
+					{
+						"kind": "text",
+						"text": " and "
+					},
+					{
+						"kind": "code",
+						"text": "`is_enabled`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nclass MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {\n  static identifier = \"my-payment\"\n  // ...\n}\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n---\n\n## PROVIDER Property\n\nThe "
+					},
+					{
+						"kind": "code",
+						"text": "`PROVIDER`"
+					},
+					{
+						"kind": "text",
+						"text": " static property is used when registering the provider in the dependency container. Typically, it would have the\nsame value as the "
+					},
+					{
+						"kind": "code",
+						"text": "`identifier`"
+					},
+					{
+						"kind": "text",
+						"text": " property.\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nclass MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {\n  static PROVIDER = \"my-payment\"\n  // ...\n}\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n---\n\n## PaymentProviderError\n\nBefore diving into the methods of the Payment Provider, you'll notice that part of the expected return signature of these method includes "
+					},
+					{
+						"kind": "code",
+						"text": "`PaymentProviderError`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\ninterface PaymentProviderError {\n  error: string\n  code?: string\n  detail?: any\n}\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\nWhile implementing the Payment Provider's methods, if you need to inform the Payment Module that an error occurred at a certain stage,\nreturn an object having the attributes defined in the "
+					},
+					{
+						"kind": "code",
+						"text": "`PaymentProviderError`"
+					},
+					{
+						"kind": "text",
+						"text": " interface.\n\nFor example, the Stripe payment provider has the following method to create the error object, which is used within other methods:\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nabstract class StripeBase extends AbstractPaymentProvider {\n  // ...\n  protected buildError(\n   message: string,\n   error: Stripe.StripeRawError | PaymentProviderError | Error\n ): PaymentProviderError {\n   return {\n     error: message,\n     code: \"code\" in error ? error.code : \"unknown\",\n     detail: isPaymentProviderError(error)\n       ? `${error.error}${EOL}${error.detail ?? \"\"}`\n       : \"detail\" in error\n       ? error.detail\n       : error.message ?? \"\",\n   }\n }\n\n  // used in other methods\n  async retrievePayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<\n    PaymentProviderError |\n    PaymentProviderSessionResponse[\"session_data\"]\n  > {\n    try {\n      // ...\n    } catch (e) {\n      return this.buildError(\n        \"An error occurred in retrievePayment\",\n        e\n      )\n    }\n  }\n}\n```"
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 24313,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {
+						"isProtected": true
+					},
+					"signatures": [
+						{
+							"id": 24314,
+							"name": "new AbstractPaymentProvider",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "You can use the "
+									},
+									{
+										"kind": "code",
+										"text": "`constructor`"
+									},
+									{
+										"kind": "text",
+										"text": " of your Payment Provider to have access to resources in your application through the [dependency container](https://docs.medusajs.com/development/fundamentals/dependency-injection).\n\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs,\nyou can initialize it in the constructor and use it in other methods in the service.\n\nThe payment provider also can access the configurations of the module or plugin it's created in as a second parameter."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {\n  // ...\n  constructor(container, config) {\n    super(container, config)\n    // you can access options here\n\n    // you can also initialize a client that\n    // communicates with a third-party service.\n    this.client = new Client(options)\n  }\n  // ...\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"typeParameter": [
+								{
+									"id": 24315,
+									"name": "TConfig",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {},
+									"default": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"parameters": [
+								{
+									"id": 24316,
+									"name": "container",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An instance of "
+											},
+											{
+												"kind": "code",
+												"text": "`MedusaContainer`"
+											},
+											{
+												"kind": "text",
+												"text": " that allows you to access other resources in the [dependency container](https://docs.medusajs.com/development/fundamentals/dependency-injection)"
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
+											"qualifiedName": "MedusaContainer"
+										},
+										"name": "MedusaContainer",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 24317,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If this provider processor is created in a module or plugin, their options are passed in this parameter."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 24315,
+										"name": "TConfig",
+										"package": "@medusajs/utils",
+										"qualifiedName": "AbstractPaymentProvider.TConfig",
+										"refersToTypeParameter": true
+									},
+									"defaultValue": "..."
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": 24307,
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 24315,
+										"name": "TConfig",
+										"package": "@medusajs/utils",
+										"qualifiedName": "AbstractPaymentProvider.TConfig",
+										"refersToTypeParameter": true
+									}
+								],
+								"name": "AbstractPaymentProvider",
+								"package": "@medusajs/utils"
+							}
+						}
+					]
+				},
+				{
+					"id": 24318,
+					"name": "container",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of "
+							},
+							{
+								"kind": "code",
+								"text": "`MedusaContainer`"
+							},
+							{
+								"kind": "text",
+								"text": " that allows you to access other resources in the [dependency container](https://docs.medusajs.com/development/fundamentals/dependency-injection)"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
+							"qualifiedName": "MedusaContainer"
+						},
+						"name": "MedusaContainer",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 24319,
+					"name": "config",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "If this provider processor is created in a module or plugin, their options are passed in this parameter."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 24315,
+						"name": "TConfig",
+						"package": "@medusajs/utils",
+						"qualifiedName": "AbstractPaymentProvider.TConfig",
+						"refersToTypeParameter": true
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 24312,
+					"name": "identifier",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isPublic": true,
+						"isStatic": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The "
+							},
+							{
+								"kind": "code",
+								"text": "`PaymentProvider`"
+							},
+							{
+								"kind": "text",
+								"text": " data model has 2 properties: "
+							},
+							{
+								"kind": "code",
+								"text": "`id`"
+							},
+							{
+								"kind": "text",
+								"text": " and "
+							},
+							{
+								"kind": "code",
+								"text": "`is_enabled`"
+							},
+							{
+								"kind": "text",
+								"text": ".\n\n"
+							},
+							{
+								"kind": "code",
+								"text": "```ts\nclass MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {\n  static identifier = \"my-payment\"\n  // ...\n}\n```"
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 24322,
+					"name": "capturePayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 24323,
+							"name": "capturePayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 24324,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"qualifiedName": "PaymentProviderError"
+												},
+												"name": "PaymentProviderError",
+												"package": "@medusajs/types"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IPaymentProvider.capturePayment"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IPaymentProvider.capturePayment"
+					}
+				},
+				{
+					"id": 24325,
+					"name": "authorizePayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 24326,
+							"name": "authorizePayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 24327,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								},
+								{
+									"id": 24328,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"qualifiedName": "PaymentProviderError"
+												},
+												"name": "PaymentProviderError",
+												"package": "@medusajs/types"
+											},
+											{
+												"type": "reflection",
+												"declaration": {
+													"id": 24329,
+													"name": "__type",
+													"variant": "declaration",
+													"kind": 65536,
+													"flags": {},
+													"children": [
+														{
+															"id": 24330,
+															"name": "status",
+															"variant": "declaration",
+															"kind": 1024,
+															"flags": {},
+															"type": {
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../../packages/types/src/payment/common.ts",
+																	"qualifiedName": "PaymentSessionStatus"
+																},
+																"name": "PaymentSessionStatus",
+																"package": "@medusajs/types"
+															}
+														},
+														{
+															"id": 24331,
+															"name": "data",
+															"variant": "declaration",
+															"kind": 1024,
+															"flags": {},
+															"type": {
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														}
+													],
+													"groups": [
+														{
+															"title": "Properties",
+															"children": [
+																24330,
+																24331
+															]
+														}
+													]
+												}
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IPaymentProvider.authorizePayment"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IPaymentProvider.authorizePayment"
+					}
+				},
+				{
+					"id": 24332,
+					"name": "cancelPayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 24333,
+							"name": "cancelPayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 24334,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"qualifiedName": "PaymentProviderError"
+												},
+												"name": "PaymentProviderError",
+												"package": "@medusajs/types"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IPaymentProvider.cancelPayment"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IPaymentProvider.cancelPayment"
+					}
+				},
+				{
+					"id": 24335,
+					"name": "initiatePayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 24336,
+							"name": "initiatePayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 24337,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+											"qualifiedName": "CreatePaymentProviderSession"
+										},
+										"name": "CreatePaymentProviderSession",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"qualifiedName": "PaymentProviderError"
+												},
+												"name": "PaymentProviderError",
+												"package": "@medusajs/types"
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"qualifiedName": "PaymentProviderSessionResponse"
+												},
+												"name": "PaymentProviderSessionResponse",
+												"package": "@medusajs/types"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IPaymentProvider.initiatePayment"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IPaymentProvider.initiatePayment"
+					}
+				},
+				{
+					"id": 24338,
+					"name": "deletePayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 24339,
+							"name": "deletePayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 24340,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"qualifiedName": "PaymentProviderError"
+												},
+												"name": "PaymentProviderError",
+												"package": "@medusajs/types"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IPaymentProvider.deletePayment"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IPaymentProvider.deletePayment"
+					}
+				},
+				{
+					"id": 24341,
+					"name": "getPaymentStatus",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 24342,
+							"name": "getPaymentStatus",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 24343,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/types/src/payment/common.ts",
+											"qualifiedName": "PaymentSessionStatus"
+										},
+										"name": "PaymentSessionStatus",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IPaymentProvider.getPaymentStatus"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IPaymentProvider.getPaymentStatus"
+					}
+				},
+				{
+					"id": 24344,
+					"name": "refundPayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 24345,
+							"name": "refundPayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 24346,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								},
+								{
+									"id": 24347,
+									"name": "refundAmount",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "number"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"qualifiedName": "PaymentProviderError"
+												},
+												"name": "PaymentProviderError",
+												"package": "@medusajs/types"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IPaymentProvider.refundPayment"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IPaymentProvider.refundPayment"
+					}
+				},
+				{
+					"id": 24348,
+					"name": "retrievePayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 24349,
+							"name": "retrievePayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 24350,
+									"name": "paymentSessionData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"qualifiedName": "PaymentProviderError"
+												},
+												"name": "PaymentProviderError",
+												"package": "@medusajs/types"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IPaymentProvider.retrievePayment"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IPaymentProvider.retrievePayment"
+					}
+				},
+				{
+					"id": 24351,
+					"name": "updatePayment",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 24352,
+							"name": "updatePayment",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 24353,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+											"qualifiedName": "UpdatePaymentProviderSession"
+										},
+										"name": "UpdatePaymentProviderSession",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"qualifiedName": "PaymentProviderError"
+												},
+												"name": "PaymentProviderError",
+												"package": "@medusajs/types"
+											},
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"qualifiedName": "PaymentProviderSessionResponse"
+												},
+												"name": "PaymentProviderSessionResponse",
+												"package": "@medusajs/types"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IPaymentProvider.updatePayment"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IPaymentProvider.updatePayment"
+					}
+				},
+				{
+					"id": 24354,
+					"name": "getWebhookActionAndData",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 24355,
+							"name": "getWebhookActionAndData",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 24356,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 24357,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 24358,
+													"name": "data",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The parsed webhook body."
+															}
+														]
+													},
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "Record"
+														},
+														"typeArguments": [
+															{
+																"type": "intrinsic",
+																"name": "string"
+															},
+															{
+																"type": "intrinsic",
+																"name": "unknown"
+															}
+														],
+														"name": "Record",
+														"package": "typescript"
+													}
+												},
+												{
+													"id": 24359,
+													"name": "rawData",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The raw webhook request body."
+															}
+														]
+													},
+													"type": {
+														"type": "union",
+														"types": [
+															{
+																"type": "intrinsic",
+																"name": "string"
+															},
+															{
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/@types/node/buffer.d.ts",
+																	"qualifiedName": "__global.Buffer"
+																},
+																"name": "Buffer",
+																"package": "@types/node",
+																"qualifiedName": "__global.Buffer"
+															}
+														]
+													}
+												},
+												{
+													"id": 24360,
+													"name": "headers",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The headers of the webhook request."
+															}
+														]
+													},
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "Record"
+														},
+														"typeArguments": [
+															{
+																"type": "intrinsic",
+																"name": "string"
+															},
+															{
+																"type": "intrinsic",
+																"name": "unknown"
+															}
+														],
+														"name": "Record",
+														"package": "typescript"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														24358,
+														24359,
+														24360
+													]
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+											"qualifiedName": "WebhookActionResult"
+										},
+										"name": "WebhookActionResult",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IPaymentProvider.getWebhookActionAndData"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IPaymentProvider.getWebhookActionAndData"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						24313
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						24318,
+						24319,
+						24312
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						24322,
+						24325,
+						24332,
+						24335,
+						24338,
+						24341,
+						24344,
+						24348,
+						24351,
+						24354
+					]
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 24361,
+					"name": "TConfig",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {},
+					"default": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				}
+			],
+			"implementedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+						"qualifiedName": "IPaymentProvider"
+					},
+					"name": "IPaymentProvider",
+					"package": "@medusajs/types"
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				24307
+			]
+		}
+	],
+	"packageName": "@medusajs/utils",
+	"symbolIdMap": {
+		"24303": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": ""
+		},
+		"24307": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider"
+		},
+		"24312": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.identifier"
+		},
+		"24313": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.__constructor"
+		},
+		"24314": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider"
+		},
+		"24315": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.TConfig"
+		},
+		"24316": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "container"
+		},
+		"24317": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "config"
+		},
+		"24318": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.container"
+		},
+		"24319": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.config"
+		},
+		"24322": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.capturePayment"
+		},
+		"24323": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.capturePayment"
+		},
+		"24324": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "paymentSessionData"
+		},
+		"24325": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.authorizePayment"
+		},
+		"24326": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.authorizePayment"
+		},
+		"24327": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "paymentSessionData"
+		},
+		"24328": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "context"
+		},
+		"24329": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "__type"
+		},
+		"24330": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "__type.status"
+		},
+		"24331": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "__type.data"
+		},
+		"24332": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.cancelPayment"
+		},
+		"24333": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.cancelPayment"
+		},
+		"24334": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "paymentSessionData"
+		},
+		"24335": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.initiatePayment"
+		},
+		"24336": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.initiatePayment"
+		},
+		"24337": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "context"
+		},
+		"24338": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.deletePayment"
+		},
+		"24339": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.deletePayment"
+		},
+		"24340": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "paymentSessionData"
+		},
+		"24341": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.getPaymentStatus"
+		},
+		"24342": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.getPaymentStatus"
+		},
+		"24343": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "paymentSessionData"
+		},
+		"24344": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.refundPayment"
+		},
+		"24345": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.refundPayment"
+		},
+		"24346": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "paymentSessionData"
+		},
+		"24347": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "refundAmount"
+		},
+		"24348": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.retrievePayment"
+		},
+		"24349": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.retrievePayment"
+		},
+		"24350": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "paymentSessionData"
+		},
+		"24351": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.updatePayment"
+		},
+		"24352": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.updatePayment"
+		},
+		"24353": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "context"
+		},
+		"24354": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.getWebhookActionAndData"
+		},
+		"24355": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.getWebhookActionAndData"
+		},
+		"24356": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "data"
+		},
+		"24357": {
+			"sourceFileName": "../../../packages/types/src/payment/mutations.ts",
+			"qualifiedName": "__type"
+		},
+		"24358": {
+			"sourceFileName": "../../../packages/types/src/payment/mutations.ts",
+			"qualifiedName": "__type.data"
+		},
+		"24359": {
+			"sourceFileName": "../../../packages/types/src/payment/mutations.ts",
+			"qualifiedName": "__type.rawData"
+		},
+		"24360": {
+			"sourceFileName": "../../../packages/types/src/payment/mutations.ts",
+			"qualifiedName": "__type.headers"
+		},
+		"24361": {
+			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.TConfig"
+		}
+	}
+}

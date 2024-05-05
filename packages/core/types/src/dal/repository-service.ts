@@ -3,8 +3,8 @@ import { Context } from "../shared-context"
 import {
   BaseFilterable,
   FilterQuery,
-  FindOptions,
   FilterQuery as InternalFilterQuery,
+  FindOptions,
   UpsertWithReplaceConfig,
 } from "./index"
 
@@ -61,7 +61,11 @@ export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
    * @returns [T[], Record<string, string[]>] the second value being the map of the entity names and ids that were soft deleted
    */
   softDelete(
-    idsOrFilter: string[] | InternalFilterQuery,
+    idsOrFilter:
+      | string
+      | string[]
+      | InternalFilterQuery
+      | InternalFilterQuery[],
     context?: Context
   ): Promise<[T[], Record<string, unknown[]>]>
 

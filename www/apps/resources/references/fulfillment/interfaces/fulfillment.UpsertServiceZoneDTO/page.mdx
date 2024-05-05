@@ -1,0 +1,11 @@
+---
+displayed_sidebar: fulfillmentReference
+---
+
+import { TypeList } from "docs-ui"
+
+# UpsertServiceZoneDTO
+
+A service zone to be created or updated.
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the service zone.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The name of the service zone.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"geo_zones","type":"(Omit&#60;[CreateCountryGeoZoneDTO](../fulfillment.CreateCountryGeoZoneDTO/page.mdx), \"service_zone_id\"&#62; \\| Omit&#60;[CreateProvinceGeoZoneDTO](../fulfillment.CreateProvinceGeoZoneDTO/page.mdx), \"service_zone_id\"&#62; \\| Omit&#60;[CreateCityGeoZoneDTO](../fulfillment.CreateCityGeoZoneDTO/page.mdx), \"service_zone_id\"&#62; \\| Omit&#60;[CreateZipGeoZoneDTO](../fulfillment.CreateZipGeoZoneDTO/page.mdx), \"service_zone_id\"&#62; \\| `object`)[]","description":"The geo zones associated with the service zone.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="UpsertServiceZoneDTO"/>

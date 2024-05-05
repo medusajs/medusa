@@ -1,0 +1,165 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Twilio SMS Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+[Twilio’s SMS API](https://www.twilio.com/sms) is used to send users SMS messages instantly. It has a lot of additional features such as Whatsapp messaging and conversations.
+
+By integrating Twilio SMS into Medusa, you’ll have easy access to Twilio’s SMS API to send SMS messages to your users and customers. You can use it to send order confirmations, verification codes, reset password messages, and more.
+
+This plugin only gives you access to the Twilio SMS API but doesn't automate sending messages. You’ll have to add this yourself where you need it. There's an [example later in this guide](#example-plugin-usage) on how to send an SMS for a new order.
+
+---
+
+## Install the Twilio SMS Plugin
+
+<Note type="check">
+
+- [Twilio account](https://www.twilio.com/sms)
+- [Twilio account SID](https://help.twilio.com/articles/14726256820123-What-is-a-Twilio-Account-SID-and-where-can-I-find-it-)
+- [Twilio auth token](https://help.twilio.com/articles/223136027-Auth-Tokens-and-How-to-Change-Them?_gl=1*qv22ht*_ga*OTY3NzYwMDAzLjE2OTE0MjA5MDI.*_ga_RRP8K4M4F3*MTcwOTIwMDA2Ny40LjAuMTcwOTIwMDA2Ny4wLjAuMA..)
+- [Twilio phone number](https://help.twilio.com/articles/223135247)
+
+</Note>
+
+To install the Twilio SMS plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install medusa-plugin-twilio-sms
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+export const highlights = [
+  ["6", "account_sid", "The Twilio account SID."],
+  ["7", "auth_token", "The Twilio auth token."],
+  ["8", "from_number", "The Twilio phone number."],
+]
+
+```js title="medusa-config.js" highlights={highlights}
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-twilio-sms`,
+    options: {
+      account_sid: process.env.TWILIO_SMS_ACCOUNT_SID,
+      auth_token: process.env.TWILIO_SMS_AUTH_TOKEN,
+      from_number: process.env.TWILIO_SMS_FROM_NUMBER,
+    },
+  },
+]
+```
+
+### Twilio SMS Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `account_sid`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Twilio account SID.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `auth_token`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Twilio auth token.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `from_number`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Twilio phone number.
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+TWILIO_SMS_ACCOUNT_SID=<YOUR_ACCOUNT_SID>
+TWILIO_SMS_AUTH_TOKEN=<YOUR_AUTH_TOKEN>
+TWILIO_SMS_FROM_NUMBER=<YOUR_TWILIO_NUMBER>
+```
+
+---
+
+## Example Plugin Usage
+
+Resolve and use the `TwilioSmsService` to send SMS.
+
+For example, create the file `src/subscriber/sms.ts` with the following content:
+
+```ts title="src/subscriber/sms.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+  OrderService,
+} from "@medusajs/medusa"
+
+export default async function handleOrderPlaced({
+  data,
+  container,
+}: SubscriberArgs<Record<string, string>>) {
+  const twilioSmsService = container.resolve("twilioSmsService")
+  const orderService: OrderService =
+    container.resolve("orderService")
+
+  const order = await orderService.retrieve(data.id, {
+    relations: ["shipping_address"],
+  })
+
+  if (order.shipping_address.phone) {
+    twilioSmsService.sendSms({
+      to: order.shipping_address.phone,
+      body: "We have received your order #" + data.id,
+    })
+  }
+}
+
+export const config: SubscriberConfig = {
+  event: OrderService.Events.PLACED,
+}
+```
+
+This creates a subscriber that listens to the `OrderService.Events.PLACED` (`order.placed`) event and sends an SMS to the customer confirming their order.
+
+The `sendSms` method of the `TwilioSmsService` accepts an object whose shape is as described in [Twilio's API reference](https://www.twilio.com/docs/sms/api/message-resource#create-a-message-resource).
+
+<Note type="warning">
+
+If you’re on a Twilio trial make sure that the phone number you entered on checkout is a [verified Twilio number on your console](https://console.twilio.com/us1/develop/phone-numbers/manage/verified).
+
+</Note>

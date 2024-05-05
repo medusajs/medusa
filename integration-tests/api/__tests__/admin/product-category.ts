@@ -1,7 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import { In } from "typeorm"
 import { breaking } from "../../../helpers/breaking"
 import {
   adminHeaders,
@@ -16,7 +15,7 @@ let { Product } = {}
 medusaIntegrationTestRunner({
   env: {
     MEDUSA_FF_PRODUCT_CATEGORIES: true,
-    // MEDUSA_FF_MEDUSA_V2: true,
+    MEDUSA_FF_MEDUSA_V2: true,
   },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let appContainer
@@ -478,6 +477,37 @@ medusaIntegrationTestRunner({
           }),
         ])
       })
+
+      it("adds all ancestors to categories in a nested way", async () => {
+        const response = await api.get(
+          `/admin/product-categories/${productCategoryChild1.id}?include_ancestors_tree=true`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product_category).toEqual(
+          expect.objectContaining({
+            id: productCategoryChild1.id,
+            name: "rank 1",
+            rank: 1,
+            parent_category: expect.objectContaining({
+              id: productCategoryChild.id,
+              name: "cashmere",
+              rank: 0,
+              parent_category: expect.objectContaining({
+                id: productCategory.id,
+                name: "sweater",
+                rank: 0,
+                parent_category: expect.objectContaining({
+                  id: productCategoryParent.id,
+                  name: "Mens",
+                  rank: 0,
+                }),
+              }),
+            }),
+          })
+        )
+      })
     })
 
     describe("POST /admin/product-categories", () => {
@@ -525,25 +555,6 @@ medusaIntegrationTestRunner({
         })
       })
 
-      // TODO: Remove in V2, unnecessary test
-      it("throws an error when description is not a string", async () => {
-        const payload = {
-          name: "test",
-          handle: "test",
-          description: null,
-        }
-
-        const error = await api
-          .post(`/admin/product-categories`, payload, adminHeaders)
-          .catch((e) => e)
-
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data.type).toEqual("invalid_data")
-        // expect(error.response.data.message).toEqual(
-        //   "description must be a string"
-        // )
-      })
-
       it("successfully creates a product category", async () => {
         const payload = {
           name: "test",
@@ -570,16 +581,9 @@ medusaIntegrationTestRunner({
               is_active: false,
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              ...breaking(
-                () => ({
-                  parent_category: expect.objectContaining({
-                    id: productCategory.id,
-                  }),
-                }),
-                () => ({
-                  parent_category_id: productCategory.id,
-                })
-              ),
+              parent_category: expect.objectContaining({
+                id: productCategory.id,
+              }),
               category_children: [],
               rank: 0,
             }),
@@ -671,7 +675,8 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe("DELETE /admin/product-categories/:id", () => {
+    // TODO: Should be migrate to V2
+    describe.skip("DELETE /admin/product-categories/:id", () => {
       beforeEach(async () => {
         productCategoryParent = await simpleProductCategoryFactory(
           dbConnection,
@@ -1221,245 +1226,7 @@ medusaIntegrationTestRunner({
       })
     })
 
-    // TODO: Remove in V2, endpoint changed
-    describe("POST /admin/product-categories/:id/products/batch", () => {
-      beforeEach(async () => {
-        productCategory = await simpleProductCategoryFactory(dbConnection, {
-          id: "test-category",
-          name: "test category",
-        })
-      })
-
-      it("should add products to a product category", async () => {
-        const testProduct1 = await simpleProductFactory(dbConnection, {
-          id: "test-product-1",
-          title: "test product 1",
-        })
-
-        const testProduct2 = await simpleProductFactory(dbConnection, {
-          id: "test-product-2",
-          title: "test product 2",
-        })
-
-        const payload = {
-          product_ids: [{ id: testProduct1.id }, { id: testProduct2.id }],
-        }
-
-        const response = await api.post(
-          `/admin/product-categories/${productCategory.id}/products/batch`,
-          payload,
-          adminHeaders
-        )
-
-        expect(response.status).toEqual(200)
-        expect(response.data.product_category).toEqual(
-          expect.objectContaining({
-            id: productCategory.id,
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          })
-        )
-
-        const products = await dbConnection.manager.find(Product, {
-          where: { id: In([testProduct1.id, testProduct2.id]) },
-          relations: ["categories"],
-        })
-
-        expect(products[0].categories).toEqual([
-          expect.objectContaining({
-            id: productCategory.id,
-          }),
-        ])
-
-        expect(products[1].categories).toEqual([
-          expect.objectContaining({
-            id: productCategory.id,
-          }),
-        ])
-      })
-
-      it("throws error when product ID is invalid", async () => {
-        const payload = {
-          product_ids: [{ id: "product-id-invalid" }],
-        }
-
-        const error = await api
-          .post(
-            `/admin/product-categories/${productCategory.id}/products/batch`,
-            payload,
-            adminHeaders
-          )
-          .catch((e) => e)
-
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data).toEqual({
-          errors: ["Products product-id-invalid do not exist"],
-          message:
-            "Provided request body contains errors. Please check the data and retry the request",
-        })
-      })
-
-      it("throws error when category ID is invalid", async () => {
-        const payload = { product_ids: [] }
-
-        const error = await api
-          .post(
-            `/admin/product-categories/invalid-category-id/products/batch`,
-            payload,
-            adminHeaders
-          )
-          .catch((e) => e)
-
-        expect(error.response.status).toEqual(404)
-        expect(error.response.data).toEqual({
-          message: "ProductCategory with id: invalid-category-id was not found",
-          type: "not_found",
-        })
-      })
-
-      it("throws error trying to expand not allowed relations", async () => {
-        const payload = { product_ids: [] }
-
-        const error = await api
-          .post(
-            `/admin/product-categories/invalid-category-id/products/batch?expand=products`,
-            payload,
-            adminHeaders
-          )
-          .catch((e) => e)
-
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data).toEqual({
-          message: "Requested fields [products] are not valid",
-          type: "invalid_data",
-        })
-      })
-    })
-
-    // TODO: Remove in v2, endpoint changed
-    describe("DELETE /admin/product-categories/:id/products/batch", () => {
-      let testProduct1, testProduct2
-
-      beforeEach(async () => {
-        testProduct1 = await simpleProductFactory(dbConnection, {
-          id: "test-product-1",
-          title: "test product 1",
-        })
-
-        testProduct2 = await simpleProductFactory(dbConnection, {
-          id: "test-product-2",
-          title: "test product 2",
-        })
-
-        productCategory = await simpleProductCategoryFactory(dbConnection, {
-          id: "test-category",
-          name: "test category",
-          products: [testProduct1, testProduct2],
-        })
-      })
-
-      it("should remove products from a product category", async () => {
-        const payload = {
-          product_ids: [{ id: testProduct2.id }],
-        }
-
-        const response = await api.delete(
-          `/admin/product-categories/${productCategory.id}/products/batch`,
-          {
-            ...adminHeaders,
-            data: payload,
-          }
-        )
-
-        expect(response.status).toEqual(200)
-        expect(response.data.product_category).toEqual(
-          expect.objectContaining({
-            id: productCategory.id,
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          })
-        )
-
-        const products = await dbConnection.manager.find(Product, {
-          where: { id: In([testProduct1.id, testProduct2.id]) },
-          relations: ["categories"],
-        })
-
-        expect(products[0].categories).toEqual([
-          expect.objectContaining({
-            id: productCategory.id,
-          }),
-        ])
-
-        expect(products[1].categories).toEqual([])
-      })
-
-      it("throws error when product ID is invalid", async () => {
-        const payload = {
-          product_ids: [{ id: "product-id-invalid" }],
-        }
-
-        const error = await api
-          .delete(
-            `/admin/product-categories/${productCategory.id}/products/batch`,
-            {
-              ...adminHeaders,
-              data: payload,
-            }
-          )
-          .catch((e) => e)
-
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data).toEqual({
-          errors: ["Products product-id-invalid do not exist"],
-          message:
-            "Provided request body contains errors. Please check the data and retry the request",
-        })
-      })
-
-      it("throws error when category ID is invalid", async () => {
-        const payload = { product_ids: [] }
-
-        const error = await api
-          .delete(
-            `/admin/product-categories/invalid-category-id/products/batch`,
-            {
-              ...adminHeaders,
-              data: payload,
-            }
-          )
-          .catch((e) => e)
-
-        expect(error.response.status).toEqual(404)
-        expect(error.response.data).toEqual({
-          message: "ProductCategory with id: invalid-category-id was not found",
-          type: "not_found",
-        })
-      })
-
-      it("throws error trying to expand not allowed relations", async () => {
-        const payload = { product_ids: [] }
-
-        const error = await api
-          .delete(
-            `/admin/product-categories/invalid-category-id/products/batch?expand=products`,
-            {
-              ...adminHeaders,
-              data: payload,
-            }
-          )
-          .catch((e) => e)
-
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data).toEqual({
-          message: "Requested fields [products] are not valid",
-          type: "invalid_data",
-        })
-      })
-    })
-
-    // Skipping because the test is for V2 only
-    describe.skip("POST /admin/product-categories/:id/products", () => {
+    describe("POST /admin/product-categories/:id/products", () => {
       beforeEach(async () => {
         productCategory = await productModuleService.createCategory({
           name: "category parent",

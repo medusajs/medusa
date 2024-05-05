@@ -1,0 +1,465 @@
+---
+slug: /references/medusa-react/hooks/admin/draft_orders
+---
+
+import { TypeList } from "docs-ui"
+
+# Draft Orders
+
+Queries and Mutations listed here are used to send requests to the [Admin Draft Order API Routes](https://docs.medusajs.com/api/admin#draft-orders).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+A draft order is an order created manually by the admin. It allows admins to create orders without direct involvement from the customer.
+
+Related Guide: [How to manage draft orders](https://docs.medusajs.com/modules/orders/admin/manage-draft-orders).
+
+## Mutations
+
+### useAdminCreateDraftOrder
+
+This hook creates a Draft Order. A draft order is not transformed into an order until payment is captured.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateDraftOrder } from "medusa-react"
+
+type DraftOrderData = {
+  email: string
+  region_id: string
+  items: {
+    quantity: number,
+    variant_id: string
+  }[]
+  shipping_methods: {
+    option_id: string
+    price: number
+  }[]
+}
+
+const CreateDraftOrder = () => {
+  const createDraftOrder = useAdminCreateDraftOrder()
+  // ...
+
+  const handleCreate = (data: DraftOrderData) => {
+    createDraftOrder.mutate(data, {
+      onSuccess: ({ draft_order }) => {
+        console.log(draft_order.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default CreateDraftOrder
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostDraftOrdersReq","type":"[AdminPostDraftOrdersReq](../../../../medusa/classes/medusa.AdminPostDraftOrdersReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the draft order to create.","expandable":false,"children":[{"name":"email","type":"`string`","description":"The email of the customer of the draft order","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"region_id","type":"`string`","description":"The ID of the region for the draft order","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_methods","type":"[ShippingMethod](../../../../medusa/classes/medusa.ShippingMethod/page.mdx)[]","description":"The shipping methods for the draft order","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"option_id","type":"`string`","description":"The ID of the shipping option in use","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The optional additional data needed for the shipping method","optional":true,"defaultValue":"{}","expandable":false,"children":[]},{"name":"price","type":"`number`","description":"The price of the shipping method.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"status","type":"`string`","description":"The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"billing_address","type":"`string` \\| [AddressPayload](../../../../medusa/classes/medusa.AddressPayload/page.mdx)","description":"The Address to be used for billing purposes.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_address","type":"`string` \\| [AddressPayload](../../../../medusa/classes/medusa.AddressPayload/page.mdx)","description":"The Address to be used for shipping purposes.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"items","type":"[Item](../../../../medusa/classes/medusa.Item/page.mdx)[]","description":"The draft order's line items.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"quantity","type":"`number`","description":"The quantity of the line item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"The title of the line item if `variant\\_id` is not provided.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"unit_price","type":"`number`","description":"The custom price of the line item. If a `variant\\_id` is supplied, the price provided here will override the variant's price.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"variant_id","type":"`string`","description":"The ID of the Product Variant associated with the line item. If the line item is custom, the `variant\\_id` should be omitted.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"The optional key-value map with additional details about the line item.","optional":true,"defaultValue":"{}","expandable":false,"children":[]}]},{"name":"discounts","type":"[Discount](../../../../medusa/classes/medusa.Discount/page.mdx)[]","description":"The discounts to add to the draft order","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customer_id","type":"`string`","description":"The ID of the customer this draft order is associated with.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification_order","type":"`boolean`","description":"An optional flag passed to the resulting order that indicates whether the customer should receive notifications about order updates.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"The optional key-value map with additional details about the Draft Order.","optional":true,"defaultValue":"{}","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateDraftOrder"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminDraftOrdersRes","type":"[AdminDraftOrdersRes](../../../../medusa/types/medusa.AdminDraftOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The list of draft orders.","expandable":false,"children":[{"name":"draft_order","type":"`DraftOrder`","description":"Draft order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateDraftOrder"/>
+
+### useAdminUpdateDraftOrder
+
+This hook updates a Draft Order's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUpdateDraftOrder } from "medusa-react"
+
+type Props = {
+  draftOrderId: string
+}
+
+const DraftOrder = ({ draftOrderId }: Props) => {
+  const updateDraftOrder = useAdminUpdateDraftOrder(
+    draftOrderId
+  )
+  // ...
+
+  const handleUpdate = (email: string) => {
+    updateDraftOrder.mutate({
+      email,
+    }, {
+      onSuccess: ({ draft_order }) => {
+        console.log(draft_order.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default DraftOrder
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The draft order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateDraftOrder"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostDraftOrdersDraftOrderReq","type":"[AdminPostDraftOrdersDraftOrderReq](../../../../medusa/classes/medusa.AdminPostDraftOrdersDraftOrderReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the draft order to update.","expandable":false,"children":[{"name":"region_id","type":"`string`","description":"The ID of the Region to create the Draft Order in.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"The 2 character ISO code for the Country.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"An email to be used in the Draft Order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"billing_address","type":"`string` \\| [AddressPayload](../../../../medusa/classes/medusa.AddressPayload/page.mdx)","description":"The Address to be used for billing purposes.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_address","type":"`string` \\| [AddressPayload](../../../../medusa/classes/medusa.AddressPayload/page.mdx)","description":"The Address to be used for shipping purposes.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"discounts","type":"[Discount](../../../../medusa/classes/medusa.Discount-1/page.mdx)[]","description":"An array of Discount codes to add to the Draft Order.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code that a Discount is identifed by.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customer_id","type":"`string`","description":"The ID of the customer this draft order is associated with.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification_order","type":"`boolean`","description":"An optional flag passed to the resulting order that indicates whether the customer should receive notifications about order updates.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateDraftOrder"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminDraftOrdersRes","type":"[AdminDraftOrdersRes](../../../../medusa/types/medusa.AdminDraftOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The list of draft orders.","expandable":false,"children":[{"name":"draft_order","type":"`DraftOrder`","description":"Draft order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateDraftOrder"/>
+
+### useAdminDeleteDraftOrder
+
+This hook deletes a Draft Order.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteDraftOrder } from "medusa-react"
+
+type Props = {
+  draftOrderId: string
+}
+
+const DraftOrder = ({ draftOrderId }: Props) => {
+  const deleteDraftOrder = useAdminDeleteDraftOrder(
+    draftOrderId
+  )
+  // ...
+
+  const handleDelete = () => {
+    deleteDraftOrder.mutate(void 0, {
+      onSuccess: ({ id, object, deleted }) => {
+        console.log(id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default DraftOrder
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The draft order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteDraftOrder"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../../medusa/interfaces/medusa.DeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteDraftOrder"/>
+
+### useAdminDraftOrderRegisterPayment
+
+This hook capture the draft order's payment. This will also set the draft order's status to `completed` and create an order from the draft order. The payment is captured through Medusa's system payment,
+which is manual payment that isn't integrated with any third-party payment provider. It is assumed that the payment capturing is handled manually by the admin.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDraftOrderRegisterPayment } from "medusa-react"
+
+type Props = {
+  draftOrderId: string
+}
+
+const DraftOrder = ({ draftOrderId }: Props) => {
+  const registerPayment = useAdminDraftOrderRegisterPayment(
+    draftOrderId
+  )
+  // ...
+
+  const handlePayment = () => {
+    registerPayment.mutate(void 0, {
+      onSuccess: ({ order }) => {
+        console.log(order.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default DraftOrder
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The draft order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrderRegisterPayment"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminPostDraftOrdersDraftOrderRegisterPaymentRes","type":"[AdminPostDraftOrdersDraftOrderRegisterPaymentRes](../../../../medusa/types/medusa.AdminPostDraftOrdersDraftOrderRegisterPaymentRes/page.mdx)","optional":false,"defaultValue":"","description":"The order's details.","expandable":false,"children":[{"name":"order","type":"[Order](../../../../types/types/types.Order/page.mdx)","description":"Order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrderRegisterPayment"/>
+
+### useAdminDraftOrderAddLineItem
+
+This hook creates a Line Item in the Draft Order.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDraftOrderAddLineItem } from "medusa-react"
+
+type Props = {
+  draftOrderId: string
+}
+
+const DraftOrder = ({ draftOrderId }: Props) => {
+  const addLineItem = useAdminDraftOrderAddLineItem(
+    draftOrderId
+  )
+  // ...
+
+  const handleAdd = (quantity: number) => {
+    addLineItem.mutate({
+      quantity,
+    }, {
+      onSuccess: ({ draft_order }) => {
+        console.log(draft_order.cart)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default DraftOrder
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The draft order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrderAddLineItem"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostDraftOrdersDraftOrderLineItemsReq","type":"[AdminPostDraftOrdersDraftOrderLineItemsReq](../../../../medusa/classes/medusa.AdminPostDraftOrdersDraftOrderLineItemsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the line item to create.","expandable":false,"children":[{"name":"quantity","type":"`number`","description":"The quantity of the line item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"The title of the line item if `variant\\_id` is not provided.","optional":true,"defaultValue":"\"Custom item\"","expandable":false,"children":[]},{"name":"unit_price","type":"`number`","description":"The custom price of the line item. If a `variant\\_id` is supplied, the price provided here will override the variant's price.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"variant_id","type":"`string`","description":"The ID of the Product Variant associated with the line item. If the line item is custom, the `variant\\_id` should be omitted.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"The optional key-value map with additional details about the Line Item.","optional":true,"defaultValue":"{}","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrderAddLineItem"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminDraftOrdersRes","type":"[AdminDraftOrdersRes](../../../../medusa/types/medusa.AdminDraftOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The list of draft orders.","expandable":false,"children":[{"name":"draft_order","type":"`DraftOrder`","description":"Draft order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrderAddLineItem"/>
+
+### useAdminDraftOrderRemoveLineItem
+
+This hook deletes a Line Item from a Draft Order.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
+
+type Props = {
+  draftOrderId: string
+}
+
+const DraftOrder = ({ draftOrderId }: Props) => {
+  const deleteLineItem = useAdminDraftOrderRemoveLineItem(
+    draftOrderId
+  )
+  // ...
+
+  const handleDelete = (itemId: string) => {
+    deleteLineItem.mutate(itemId, {
+      onSuccess: ({ draft_order }) => {
+        console.log(draft_order.cart)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default DraftOrder
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The draft order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrderRemoveLineItem"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"The ID of the line item to remove.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrderRemoveLineItem"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminDraftOrdersRes","type":"[AdminDraftOrdersRes](../../../../medusa/types/medusa.AdminDraftOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The list of draft orders.","expandable":false,"children":[{"name":"draft_order","type":"`DraftOrder`","description":"Draft order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrderRemoveLineItem"/>
+
+### useAdminDraftOrderUpdateLineItem
+
+This hook updates a Line Item in a Draft Order.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDraftOrderUpdateLineItem } from "medusa-react"
+
+type Props = {
+  draftOrderId: string
+}
+
+const DraftOrder = ({ draftOrderId }: Props) => {
+  const updateLineItem = useAdminDraftOrderUpdateLineItem(
+    draftOrderId
+  )
+  // ...
+
+  const handleUpdate = (
+    itemId: string,
+    quantity: number
+  ) => {
+    updateLineItem.mutate({
+      item_id: itemId,
+      quantity,
+    })
+  }
+
+  // ...
+}
+
+export default DraftOrder
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The draft order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrderUpdateLineItem"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminDraftOrderUpdateLineItemReq","type":"[AdminDraftOrderUpdateLineItemReq](../../../types/medusa_react.AdminDraftOrderUpdateLineItemReq/page.mdx)","optional":false,"defaultValue":"","description":"The details to update of the line item.","expandable":false,"children":[{"name":"item_id","type":"`string`","description":"The line item's ID to update.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"The title of the line item if `variant\\_id` is not provided.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"unit_price","type":"`number`","description":"The custom price of the line item. If a `variant\\_id` is supplied, the price provided here will override the variant's price.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the line item.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"The optional key-value map with additional details about the Line Item.","optional":true,"defaultValue":"{}","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrderUpdateLineItem"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminDraftOrdersRes","type":"[AdminDraftOrdersRes](../../../../medusa/types/medusa.AdminDraftOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The list of draft orders.","expandable":false,"children":[{"name":"draft_order","type":"`DraftOrder`","description":"Draft order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrderUpdateLineItem"/>
+
+___
+
+## Queries
+
+### useAdminDraftOrders
+
+This hook retrieves an list of Draft Orders. The draft orders can be filtered by parameters such as `query`. The draft orders can also paginated.
+
+#### Example
+
+To list draft orders:
+
+```tsx
+import React from "react"
+import { useAdminDraftOrders } from "medusa-react"
+
+const DraftOrders = () => {
+  const { draft_orders, isLoading } = useAdminDraftOrders()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {draft_orders && !draft_orders.length && (
+        <span>No Draft Orders</span>
+      )}
+      {draft_orders && draft_orders.length > 0 && (
+        <ul>
+          {draft_orders.map((order) => (
+            <li key={order.id}>{order.display_id}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default DraftOrders
+```
+
+By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```tsx
+import React from "react"
+import { useAdminDraftOrders } from "medusa-react"
+
+const DraftOrders = () => {
+  const { 
+    draft_orders, 
+    limit,
+    offset,
+    isLoading
+  } = useAdminDraftOrders({
+    limit: 20,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {draft_orders && !draft_orders.length && (
+        <span>No Draft Orders</span>
+      )}
+      {draft_orders && draft_orders.length > 0 && (
+        <ul>
+          {draft_orders.map((order) => (
+            <li key={order.id}>{order.display_id}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default DraftOrders
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminGetDraftOrdersParams](../../../../medusa/classes/medusa.AdminGetDraftOrdersParams/page.mdx)","description":"Filters and pagination configurations to apply on the retrieved draft orders.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"q","type":"`string`","description":"Search term to search draft orders by their display IDs and emails.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Limit the number of items returned in the list.","optional":true,"defaultValue":"50","expandable":false,"children":[]},{"name":"status","type":"[DraftOrderStatusValue](../../../../medusa/types/medusa.DraftOrderStatusValue/page.mdx)[]","description":"Statuses to filter draft orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the draft orders' `created_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"updated_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the draft orders' `updated_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":true,"defaultValue":"0","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":true,"defaultValue":"20","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrders"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"draft_orders","type":"`DraftOrder`[]","description":"An array of draft order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrders"/>
+
+### useAdminDraftOrder
+
+This hook retrieves a Draft Order's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDraftOrder } from "medusa-react"
+
+type Props = {
+  draftOrderId: string
+}
+
+const DraftOrder = ({ draftOrderId }: Props) => {
+  const { 
+    draft_order, 
+    isLoading, 
+  } = useAdminDraftOrder(draftOrderId)
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {draft_order && <span>{draft_order.display_id}</span>}
+      
+    </div>
+  )
+}
+
+export default DraftOrder
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The draft order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrder"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"draft_order","type":"`DraftOrder`","description":"Draft order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDraftOrder"/>

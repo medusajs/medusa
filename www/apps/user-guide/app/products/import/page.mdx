@@ -1,0 +1,82 @@
+---
+sidebar_position: 5
+---
+
+import { ArrowDownTray, Trash, BellAlert } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Import Products`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to import products into your Medusa store.
+
+## Overview
+
+To import products, you must have the products in a CSV file. You can see a template of the CSV file during the import process.
+
+{/* <Note>
+
+TODO add link [this guide](../../modules/products/admin/import-products.mdx#csv-file)
+
+For a list of accepted columns, refer to this guide.
+
+</Note> */}
+
+When you import products into your Medusa store, you’ll either create new products or update existing ones.
+
+---
+
+## Import List of Products
+
+{/* TODO check info for correctness */}
+
+To import products:
+
+1. Go to the Products page.
+2. Click on the Import button at the top right.
+3. In the new window:
+    1. If you’re unsure of what the CSV file’s format must be like, you can download a template CSV file by clicking the <InlineIcon Icon={ArrowDownTray} alt="download" /> icon.
+    2. To upload the CSV file you want to import products from, either:
+        1. Drag and drop the file into the dashed box;
+        2. Or click on the dashed box and choose the file you want to import the products from.
+    3. After you upload the CSV file:
+        1. Check the number of products to be created or updated above the uploaded file’s name.
+        2. You can remove the file you choose by clicking the <InlineIcon Icon={Trash} alt="trash" /> icon.
+4. Once you’re done choosing a file to import products from, click on the Import List button.
+
+This starts the import process. Based on the number of products you’re importing, it can take some time.
+
+<Note>
+
+If you face any errors or difficulties, please contact your technical support team as this could be an issue in the storage integration used.
+
+</Note>
+
+### Check Import Status
+
+{/* TODO check info for correctness */}
+
+To check the status of the import:
+
+1. Click on the <InlineIcon Icon={BellAlert} alt="bell" /> icon at the top right of the page.
+2. Find the product import, which should be the latest item on the list.
+
+If a loading indicator is showing, then the import process is still in progress.
+
+If the import is done, you should see the text “Import of products is done.”
+
+Once the import is done, you should find the created/updated products on the Products page.
+
+---
+
+## Cancel Import
+
+{/* TODO check for correctness and if feature is still available */}
+
+To cancel a product import:
+
+1. Click on the <InlineIcon Icon={BellAlert} alt="bell" /> icon at the top right of the page.
+2. Find the import you want to cancel.
+3. Click on the cancel button.

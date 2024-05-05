@@ -1,0 +1,230 @@
+---
+sidebar_position: 1
+sidebar_label: Manage Details
+---
+
+import { 
+  ArrowsPointingOut, 
+  EllipsisHorizontal, 
+  FaceSmile,
+  ArrowUpCircleSolid
+} from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Order Details`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to find an order’s details page, what information you find on the order details page, and how to manage the order’s details.
+
+## Open Order’s Details
+
+To open an order’s details:
+
+1. Go to Orders.
+2. Select one of the orders.
+
+This opens the order’s details page.
+
+---
+
+## Sections of the Order Details Page
+
+### First Section
+
+The first section of the page shows the summary of the order, including its number, payment and fulfillment status, date created, sales channel, and more.
+
+### Summary
+
+This section includes the summary of the items the customer purchased as well as totals related to taxes, shipping, and more.
+
+### Customer
+
+This section includes the customer’s details, including their contact information and shipping address.
+
+### Activity
+
+{/* TODO check if these details are correct */}
+
+This section of the order details page shows a summary of the order’s history. This includes updates to the order’s status, requests for return or exchange, notes, and more.
+
+### Payments
+
+This section includes details related to the order’s payments, showing a full history of the changes in the payment's status. It also provides actions such as capture the authorized payment.
+
+## Unfulfilled Items
+
+This section includes the details of items that haven't been fulfilled yet. It also provides the action to fulfill items.
+
+### Fulfillment
+
+For every fulfillment you create, a new fulfillment section is added with its number in the title. The section includes details of the fulfillment and actions to perform on it.
+
+### JSON
+
+This section is useful for developers to view the JSON structure of the order's data.
+
+To view the JSON structure, click on the <InlineIcon Icon={ArrowsPointingOut} alt="Expand" /> icon. 
+
+---
+
+## Manage Item Allocation
+
+When a customer places an order, the ordered quantity of the items's underlying product variant is considered reserved (or allocated) in a stock location. This is only applied to product variants that have "Manage Inventory" enabled.
+
+Manage the item's allocation by managing the location that the item's quantity is reserved from.
+
+{/* TODO check information in this section for correctness */}
+
+{/* TODO maybe the following sections belong to one section. */}
+
+### Allocate an Item
+
+Items are allocated by default. However, in some edge cases you may need to allocate an item manually.
+
+To allocate an item:
+
+{/* TODO check information after #5 */}
+
+1. Go to the order details page.
+2. Scroll to the Summary section.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at the top right of the section.
+4. Choose "Allocate items" from the dropdown.
+5. In the form that opens:
+  1. For the Location field, choose the location to allocate the item from.
+  2. In the Items to Allocate section, choose the quantity to allocate for each item.
+6. Once you're done, click the "Save allocation" button.
+
+### Edit Item Allocation
+
+If an item is already allocated, you can edit its allocation by following these steps:
+
+{/* TODO check information after #5 */}
+
+1. Go to the order details page.
+2. Scroll to the Summary section.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at the top right of the section.
+4. Choose "Allocate items" from the dropdown.
+5. In the new window that opens:
+  1. In the Locations field, choose the location to allocate this item from.
+  2. Once done, click the "Save and close" button.
+
+### Delete Item Allocation
+
+{/* TODO check information after #5 */}
+
+To delete an item allocation:
+
+1. Go to the order details page.
+2. Scroll to the Summary section.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at the top right of the section.
+4. Choose "Allocate items" from the dropdown.
+5. In the new window that opens, click on the "Delete allocation" button.
+
+---
+
+## Edit the Shipping Address
+
+{/* TODO check information after #4 */}
+
+To edit the shipping address used for an order:
+
+1. Open the order details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at the top right of the Customer section.
+3. Click on "Edit shipping address" from the dropdown.
+4. This opens a drawer to edit the shipping address.
+5. Once you’re done, click on the Save button.
+
+---
+
+## Edit the Billing Address
+
+{/* TODO check information after #4 */}
+
+To edit the billing address used for an order:
+
+1. Open the order details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at the top right of the Customer section.
+3. Click on "Edit billing address" from the dropdown.
+4. This opens a drawer to edit the billing address.
+5. Once you’re done, click on the Save button.
+
+---
+
+## Edit Email Address
+
+{/* TODO check information after #4 */}
+
+To edit the email address associated with an order:
+
+1. Open the order details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at the top right of the Customer section.
+3. Click on "Edit email" from the dropdown.
+4. This opens a drawer to edit the email address.
+5. Once you’re done, click on the Save button.
+
+---
+
+## Transfer Customer Ownership
+
+{/* TODO check information after #4 */}
+
+To change the customer that placed this order:
+
+1. Open the order details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dot" /> icon at the top right of the Customer section.
+3. Click on "Transfer ownership" from the dropdown.
+4. In the new window that opens choose the new customer to own this order.
+5. Once done, click on the Confirm button.
+
+---
+
+## Add a Note
+
+{/* TODO check information for correctness */}
+
+To add a note to an order:
+
+1. Open the order details page.
+2. In the Timeline section, enter the note in the text field. You can also choose emojis by clicking the <InlineIcon Icon={FaceSmile} alt="emoji" /> icon.
+3. Once done, click on the <InlineIcon Icon={ArrowUpCircleSolid} alt="send" /> icon.
+
+The note is added and shown in the timeline.
+
+---
+
+## Delete a Note
+
+{/* TODO check information for correctness */}
+
+<Note type="warning">
+
+Deleting notes is irreversible.
+
+</Note>
+
+To delete a note in an order:
+
+1. Open the order details page.
+2. In the Timeline section, find the note you want to delete from the timeline.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon next to the note.
+4. Click on Delete from the dropdown.
+5. Confirm deleting the note by clicking the “Yes, delete” button in the pop-up.
+
+---
+
+## Cancel an Order
+
+<Note type="warning">
+
+Canceling an order is irreversible.
+
+</Note>
+
+To cancel an order:
+
+1. Open the order details page.
+2. In the first section showing the order’s number, click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> at the top right.
+3. Click on Cancel Order from the dropdown.
+4. Confirm canceling the order by clicking the “Continue” button in the pop-up.

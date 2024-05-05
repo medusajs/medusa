@@ -44,11 +44,11 @@ export const LINKS = {
     Modules.STOCK_LOCATION,
     "location_id"
   ),
-  FulfillmentSetLocation: composeLinkName(
-    Modules.FULFILLMENT,
-    "fulfillment_set_id",
+  LocationFulfillmentSet: composeLinkName(
     Modules.STOCK_LOCATION,
-    "location_id"
+    "stock_location_id",
+    Modules.FULFILLMENT,
+    "fulfillment_set_id"
   ),
   OrderPromotion: composeLinkName(
     Modules.ORDER,

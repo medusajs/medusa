@@ -1,0 +1,347 @@
+{
+	"id": 10580,
+	"name": "sales-channel-models",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 10581,
+			"name": "SalesChannel",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 10582,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 10583,
+							"name": "new SalesChannel",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 10581,
+								"name": "default",
+								"package": "@medusajs/sales-channel"
+							}
+						}
+					]
+				},
+				{
+					"id": 10596,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+							"qualifiedName": "SalesChannelOptionalProps"
+						},
+						"name": "SalesChannelOptionalProps",
+						"package": "@medusajs/sales-channel"
+					}
+				},
+				{
+					"id": 10584,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 10585,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 10586,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 10587,
+					"name": "is_disabled",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "false"
+				},
+				{
+					"id": 10588,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 10589,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 10590,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 10591,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 10592,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 10593,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 10594,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 10595,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						10582
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						10596,
+						10584,
+						10585,
+						10586,
+						10587,
+						10588,
+						10589,
+						10590,
+						10591
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						10592,
+						10594
+					]
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				10581
+			]
+		}
+	],
+	"packageName": "@medusajs/sales-channel",
+	"symbolIdMap": {
+		"10580": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/index.ts",
+			"qualifiedName": ""
+		},
+		"10581": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default"
+		},
+		"10584": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.id"
+		},
+		"10585": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.name"
+		},
+		"10586": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.description"
+		},
+		"10587": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.is_disabled"
+		},
+		"10588": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"10589": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"10590": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"10591": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"10592": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"10593": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"10594": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"10595": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"10596": {
+			"sourceFileName": "../../../packages/sales-channel/src/models/sales-channel.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		}
+	}
+}

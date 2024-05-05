@@ -12,11 +12,11 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
+  MapToConfig,
   isString,
   kebabCase,
   lowerCaseFirst,
   mapObjectTo,
-  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"

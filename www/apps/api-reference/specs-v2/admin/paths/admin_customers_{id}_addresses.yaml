@@ -1,0 +1,82 @@
+get:
+  operationId: GetCustomersIdAddresses
+  summary: List Addresses
+  description: >-
+    Retrieve a list of addresses in a customer. The addresses can be filtered by
+    fields like FILTER FIELDS. The addresses can also be paginated.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The customer's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_customers_{id}_addresses/get.sh
+  tags:
+    - Customers
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
+post:
+  operationId: PostCustomersIdAddresses
+  summary: Add Addresses to Customer
+  description: Add a list of addresses to a customer.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The customer's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_customers_{id}_addresses/post.sh
+  tags:
+    - Customers
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

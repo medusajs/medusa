@@ -1,7 +1,7 @@
 import React from "react"
 import ReactMarkdown from "react-markdown"
 import { ReactMarkdownOptions } from "react-markdown/lib/react-markdown"
-import { MDXComponents, LegacyLink } from "@/components"
+import { MDXComponents, Link } from "@/components"
 import clsx from "clsx"
 import { NormalComponents } from "react-markdown/lib/complex-types"
 import { SpecialComponents } from "react-markdown/lib/ast-to-react"
@@ -33,8 +33,7 @@ export const MarkdownContent = ({
               </pre>
             )
           },
-          // TODO replace with Link once we move away from Docusaurus
-          a: LegacyLink,
+          a: Link,
         }
       }
       {...props}

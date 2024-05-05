@@ -1,0 +1,39 @@
+---
+displayed_sidebar: pricingReference
+slug: /references/pricing/addPriceListPrices
+sidebar_label: addPriceListPrices
+---
+
+import { TypeList } from "docs-ui"
+
+# addPriceListPrices - Pricing Module Reference
+
+This documentation provides a reference to the `addPriceListPrices` method. This belongs to the Pricing Module.
+
+This method is used to add prices to price lists.
+
+## Example
+
+```ts
+const priceLists =
+  await pricingModuleService.addPriceListPrices([
+    {
+      price_list_id: "plist_123",
+      prices: [
+        {
+          currency_code: "usd",
+          amount: 500,
+          price_set_id: "pset_123",
+        },
+      ],
+    },
+  ])
+```
+
+## Parameters
+
+<TypeList types={[{"name":"data","type":"[AddPriceListPricesDTO](../../../interfaces/pricing.AddPriceListPricesDTO/page.mdx)[]","description":"The prices to add for each price list.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"price_list_id","type":"`string`","description":"The ID of the price list to add prices to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"prices","type":"[CreatePriceListPriceDTO](../../../interfaces/pricing.CreatePriceListPriceDTO/page.mdx)[]","description":"The prices to add.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"currency_code","type":"`string`","description":"The currency code of this money amount.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberInput](../../../types/pricing.BigNumberInput/page.mdx)","description":"The amount of this money amount.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"price_set_id","type":"`string`","description":"The ID of the associated price set.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The ID of the money amount.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"min_quantity","type":"`null` \\| [BigNumberInput](../../../types/pricing.BigNumberInput/page.mdx)","description":"The minimum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"max_quantity","type":"`null` \\| [BigNumberInput](../../../types/pricing.BigNumberInput/page.mdx)","description":"The maximum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"rules","type":"[CreatePriceSetPriceRules](../../../interfaces/pricing.CreatePriceSetPriceRules/page.mdx)","description":"The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/pricing.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/pricing.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="addPriceListPrices"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PriceDTO](../../../interfaces/pricing.PriceDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The updated price lists.","expandable":false,"children":[{"name":"PriceDTO[]","type":"[PriceDTO](../../../interfaces/pricing.PriceDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PriceDTO","type":"`object`","description":"A price's data.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="addPriceListPrices"/>

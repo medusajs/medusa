@@ -1,0 +1,127 @@
+import { Table } from "docs-ui"
+import { Check, XMark } from "@medusajs/icons"
+
+export const metadata = {
+  title: `${pageNumber} Plugin Development`,
+}
+
+# {metadata.title}
+
+In the next chapters, you’ll learn about plugins, their use in your application, and how to create and publish plugins.
+
+## What is a Plugin?
+
+A plugin is an NPM package that consists of Medusa customizations. It adds new functionalities or integrates third-party services, such as a CMS or MeiliSearch.
+
+Plugins can be added or removed from your Medusa application without causing side effects.
+
+<Note title="Use plugins when" type="success">
+
+- You're integrating a third-party service into your Medusa application.
+- You're creating reusable Medusa application customizations.
+- You're providing features that are specific to a Medusa application, such as a migration tool from another platform to Medusa.
+
+</Note>
+
+---
+
+## Plugins vs Modules
+
+Both plugins and modules are NPM packages that can be installed on your Medusa application without affecting the overall system.
+
+However, there are key differences between plugins and modules:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Criteria</Table.HeaderCell>
+      <Table.HeaderCell className="!text-center">Plugins</Table.HeaderCell>
+      <Table.HeaderCell className="!text-center">Modules</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Run in isolation of a Medusa application.</Table.Cell>
+      <Table.Cell><XMark className="mx-auto" /></Table.Cell>
+      <Table.Cell><Check className="mx-auto" /></Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Can consist of Medusa application customizations, such as API routes or admin widgets.</Table.Cell>
+      <Table.Cell><Check className="mx-auto" /></Table.Cell>
+      <Table.Cell><XMark className="mx-auto" /></Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Link custom data models to those of Medusa's commerce modules.</Table.Cell>
+      <Table.Cell><XMark className="mx-auto" /></Table.Cell>
+      <Table.Cell><Check className="mx-auto" /></Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Make architectural changes, such as change the pub/sub service used to emit events.</Table.Cell>
+      <Table.Cell><XMark className="mx-auto" /></Table.Cell>
+      <Table.Cell><Check className="mx-auto" /></Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Official and Community Plugins
+
+Medusa provides official plugins that integrate third-party services like Algolia, SendGrid, S3, and more.
+
+You can also check out the [Plugins Library](https://medusajs.com/plugins/) for a full list of plugins created by the community.
+
+---
+
+## How are Plugins Installed?
+
+Plugins are installed through NPM. Then, you must add them to the `plugins` array exported as part of the configurations in `medusa-config.js`.
+
+If you check the `plugins` array in your `medusa-config.js`, you'll find a few plugins already installed:
+
+```js title="medusa-config.js"
+const plugins = [
+  `medusa-fulfillment-manual`,
+  `medusa-payment-manual`,
+  {
+    resolve: `@medusajs/file-local`,
+    options: {
+      upload_dir: "uploads",
+    },
+  },
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      autoRebuild: true,
+      develop: {
+        open: false,
+      },
+    },
+  },
+]
+```
+
+The items in the `plugins` array can either be:
+
+- A string which is the plugin's name. In this case, the plugin doesn't require any options;
+- Or an object having the following properties:
+    - `resolve`: the plugin's name.
+    - `options`: An object of options to pass to the plugin.
+
+### Configure Admin Customizations
+
+If a plugin provides customizations to the admin dashboard, you can pass a special option `enableUI` whose value is a boolean indicating whether the admin customizations should be enabled. By default, its value is `false`.
+
+For example:
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-custom`,
+    options: {
+      // other options...
+      enableUI: true,
+    },
+  },
+]
+```

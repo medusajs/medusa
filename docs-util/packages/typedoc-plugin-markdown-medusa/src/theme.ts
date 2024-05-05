@@ -206,7 +206,7 @@ export class MarkdownTheme extends Theme {
         reflection,
         directory: mapping.directory,
       }) +
-      (this.mdxOutput ? ".mdx" : ".md")
+      `/page.${this.mdxOutput ? "mdx" : "md"}`
     )
   }
 

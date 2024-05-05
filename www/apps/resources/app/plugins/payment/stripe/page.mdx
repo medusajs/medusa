@@ -1,0 +1,447 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Stripe Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+[Stripe](https://stripe.com/) is a battle-tested and unified platform for transaction handling. Stripe supplies you with the technical components needed to handle transactions safely and all the analytical features necessary to gain insight into your sales. These features are also available in a safe test environment which allows for a concern-free development process.
+
+---
+
+## Install the PayPal Plugin
+
+<Note type="check">
+
+- [Stripe account](https://stripe.com).
+- [Stripe API Key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard)
+- For deployed Medusa applications, a [Stripe webhook secret](https://docs.stripe.com/webhooks#add-a-webhook-endpoint). When creating the Webhook, set the endpoint URL to `{medusa_url}/stripe/hooks`, where `{medusa_url}` with the URL to your deployed Medusa application.
+
+</Note>
+
+To install the Stripe plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install medusa-payment-stripe
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+export const highlights = [
+  ["6", "api_key", "The Stripe API key."],
+]
+
+```js title="medusa-config.js" highlights={highlights}
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-payment-stripe`,
+    options: {
+      api_key: process.env.STRIPE_API_KEY,
+    },
+  },
+]
+```
+
+### Stripe Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `api_key`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the [Stripe API key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `webhook_secret`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the [Stripe webhook secret](https://docs.stripe.com/webhooks#add-a-webhook-endpoint). This is only useful for deployed Medusa applications.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `capture`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A boolean indicating whether to automatically capture payments when an order is placed.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+     `false`. Payments are authorized when an order is placed and the admin user captures the payment manually.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `automatic_payment_methods`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A boolean value indicating whether to enable Stripe's automatic payment methods. This is useful if you're integrating services like Apple pay or Google pay.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+     `false`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `payment_description`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string used as the default description of a payment if none is available in `cart.context.payment_description`.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `webhook_delay`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A number indicating the delay in milliseconds before processing the webhook event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `5000` (five seconds)
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `webhook_retries`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A number of times to retry the webhook event processing in case of an error.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `3`
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
+```
+
+---
+
+## Test the Stripe Plugin
+
+To test the plugin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, you must enable the Stripe Payment Provider in at least one region to use it. You can do that using either the [Medusa Admin](!user-guide!/settings/regions/providers), or the [Admin API Routes](https://docs.medusajs.com/api/admin#regions_postregionsregionpaymentproviders).
+
+Finally, try to place an order using either a [storefront](../../../nextjs-starter/page.mdx) or the [Store API Routes](https://docs.medusajs.com/api/store). You can use Stripe during checkout and to process the order's payment.
+
+---
+
+## Webhook Events
+
+This plugin handles the following Stripe webhook events:
+
+- `payment_intent.succeeded`: If the payment is associated with a payment collection, the plugin captures the payments within the webhook listener of this event. Otherwise, it checks first if an order is created and, if not, completes the cart which creates the order. It also captures the payment of the order associated with the cart if it's not captured already.
+- `payment_intent.amount_capturable_updated`: If no order is created for the cart associated with the payment, the webhook listener completes the cart and creates the order.
+- `payment_intent.payment_failed`: the webhook listener prints the error message received from Stripe into the logs.
+
+---
+
+## Storefront Setup
+
+This section provides an example of how to add Stripe as a payment method in custom storefronts. For the Next.js storefront, refer to [this guide](../../../nextjs-starter/page.mdx#stripe-integration)
+
+### Integration Steps Overview
+
+1. When the user reaches the payment section during checkout, [create payment sessions](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsessions).
+2. If the user chooses Stripe, select the Stripe provider's [the payment session](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsession) in the cart.
+3. After the user enters their card details and submits the form, confirm the payment with Stripe.
+4. If successful, [complete the cart](https://docs.medusajs.com/api/store#carts_postcartscartcomplete) in Medusa.
+
+### Add to Custom Storefront
+
+<Note>
+
+This example assumes your storefront uses React. If not, the steps generally clarify how to implement it in your storefront.
+
+</Note>
+
+In your storefront, install [Stripe's React and JavaScript libraries](https://docs.stripe.com/stripe-js/react) and the [Medusa JS Client library](https://www.npmjs.com/package/@medusajs/medusa-js):
+
+```bash npm2yarn
+npm install --save @stripe/react-stripe-js @stripe/stripe-js @medusajs/medusa-js
+```
+
+Then, add [Stripe's publishable key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard) as an environment variable based on the framework you’re using.
+
+After that, create a container component that holds the payment card component:
+
+export const containerHighlights = [
+  ["6", `"<STRIPE_PUB_KEY>"`, "Stripe's publishable key."]
+]
+
+```tsx
+import { useState } from "react"
+import { Elements } from "@stripe/react-stripe-js"
+import Form from "./Form"
+import { loadStripe } from "@stripe/stripe-js"
+
+const stripePromise = loadStripe("<STRIPE_PUB_KEY>")
+
+export default function Container() {
+  const [clientSecret, setClientSecret] = useState()
+
+  // TODO set clientSecret
+
+  return (
+    <div>
+      {clientSecret && (
+        <Elements
+          stripe={stripePromise}
+          options={{
+            clientSecret,
+          }}
+        >
+          <Form clientSecret={clientSecret} cartId={cartId} />
+        </Elements>
+      )}
+    </div>
+  )
+}
+```
+
+In this component, you use Stripe’s `loadStripe` function outside of the component’s implementation to ensure that Stripe doesn’t re-load with every change. The function accepts Stripe's publishable key.
+
+Then, inside the component’s implementation, you add a state variable `clientSecret` which you’ll retrieve in the next section. 
+
+The `Elements` Stripe component wraps a `Form` component that you’ll create next. The `Elements` component allows child elements to get access to the card’s inputs and their data using Stripe’s `useElements` hook.
+
+Next, create a new file for the `Form` component with the following content:
+
+```tsx
+import {
+  CardElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js"
+
+export default function Form({ clientSecret, cartId }) {
+  const stripe = useStripe()
+  const elements = useElements()
+
+  async function handlePayment(e) {
+    e.preventDefault()
+    // TODO handle payment
+  }
+
+  return (
+    <form>
+      <CardElement />
+      <button onClick={handlePayment}>Submit</button>
+    </form>
+  )
+}
+```
+
+The `useStripe` hook gives you access to the stripe instance to confirm the payment later. The `useElements` hook gives you access to the card element to retrieve the entered card details safely.
+
+You’ll now implement the integration steps explained earlier in the `Container` component.
+
+Start by initializing the Medusa client:
+
+```tsx
+import Medusa from "@medusajs/medusa-js"
+
+export default function Container() {
+  const client = new Medusa({
+    baseUrl: "http://localhost:9000",
+    maxRetries: 3,
+  })
+  // ...
+}
+```
+
+Then, in the place of the `//TODO`, initialize the payment sessions and create a payment session if Stripe is available:
+
+```tsx
+client.carts.createPaymentSessions(cart.id).then(({ cart }) => {
+  // check if stripe is selected
+  const isStripeAvailable = cart.payment_sessions?.some(
+    (session) => session.provider_id === "stripe"
+  )
+  if (!isStripeAvailable) {
+    return
+  }
+
+  // select stripe payment session
+  client.carts
+    .setPaymentSession(cart.id, {
+      provider_id: "stripe",
+    })
+    .then(({ cart }) => {
+      setClientSecret(cart.payment_session.data.client_secret)
+    })
+})
+
+```
+
+<Note>
+
+It’s assumed you have access to the `cart` object throughout your storefront. Ideally, the `cart` should be managed through a context. In that case, you probably wouldn’t need a `clientSecret` state variable as you can use the client secret directly from the `cart` object.
+
+</Note>
+
+Once the client secret is set, the form is shown to the user.
+
+The last step in the integration step is confirming the payment with Stripe and if it’s done successfully, completing the customer's order.
+
+In the `Form` component, initialize the Medusa client or re-use the same client in the `Container` element
+
+```tsx
+import Medusa from "@medusajs/medusa-js"
+
+export default function Form() {
+  const client = new Medusa({
+    baseUrl: "http://localhost:9000",
+    maxRetries: 3,
+  })
+  // ...
+}
+```
+
+Then, replace the `//TODO` in the `handlePayment` function with the following content:
+
+```jsx
+return stripe.confirmCardPayment(clientSecret, {
+  payment_method: {
+    card: elements.getElement(CardElement),
+    billing_details: {
+      name,
+      email,
+      phone,
+      address: {
+        city,
+        country,
+        line1,
+        line2,
+        postal_code,
+      },
+    },
+  },
+}).then(({ error, paymentIntent }) => {
+  // TODO handle errors
+  client.carts.complete(cartId).then(
+    (resp) => console.log(resp)
+  )
+})
+```
+
+You use the `confirmCardPayment` method in the `stripe` object passing it the client secret, which you can access in the cart object if it’s available through a context.
+
+This method also requires as a second parameter an object of the customer’s information including `name`, `email`, and their address.
+
+Once the promise resolves you handle any errors that could've occurred. If no errors occurred, you complete the customer’s order.
+
+If you run the Medusa application and the storefront, you can use Stripe during checkout.
