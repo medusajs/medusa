@@ -89,6 +89,41 @@ moduleIntegrationTestRunner({
           expect(inventoryLevel.reserved_quantity).toEqual(2)
         })
 
+        it("should check inventory levels before creating reservation", async () => {
+          const reserveMoreThanInStock = service.createReservationItems({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+            quantity: 3,
+          })
+
+          expect(reserveMoreThanInStock).rejects.toThrow(
+            `Not enough stock available for item ${inventoryItem.id} at location location-1`
+          )
+
+          let inventoryLevel =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            )
+
+          expect(inventoryLevel.reserved_quantity).toEqual(0)
+
+          await service.createReservationItems({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+            allow_backorder: true,
+            quantity: 3,
+          })
+
+          inventoryLevel =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            )
+
+          expect(inventoryLevel.reserved_quantity).toEqual(3)
+        })
+
         it("should create reservationItems from array", async () => {
           const data = [
             {
@@ -99,6 +134,7 @@ moduleIntegrationTestRunner({
             {
               inventory_item_id: inventoryItem.id,
               location_id: "location-2",
+              allow_backorder: true,
               quantity: 3,
             },
           ]
