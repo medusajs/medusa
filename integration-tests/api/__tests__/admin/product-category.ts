@@ -565,7 +565,7 @@ medusaIntegrationTestRunner({
         }
 
         const response = await api.post(
-          `/admin/product-categories`,
+          `/admin/product-categories?fields=*category_children,*parent_category`,
           payload,
           adminHeaders
         )
@@ -600,7 +600,7 @@ medusaIntegrationTestRunner({
         }
 
         const response = await api.post(
-          `/admin/product-categories`,
+          `/admin/product-categories?fields=*category_children`,
           payload,
           adminHeaders
         )
@@ -987,7 +987,7 @@ medusaIntegrationTestRunner({
 
       it("successfully updates a product category", async () => {
         const response = await api.post(
-          `/admin/product-categories/${productCategoryChild2.id}`,
+          `/admin/product-categories/${productCategoryChild2.id}?fields=*category_children`,
           {
             name: "test",
             handle: "test",
@@ -1196,7 +1196,7 @@ medusaIntegrationTestRunner({
         )
 
         const parentResponse = await api.get(
-          `/admin/product-categories/${productCategoryChild2.parent_category_id}`,
+          `/admin/product-categories/${productCategoryChild2.parent_category_id}?fields=*category_children`,
           adminHeaders
         )
 

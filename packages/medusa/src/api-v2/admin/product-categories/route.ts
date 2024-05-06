@@ -19,7 +19,7 @@ export const GET = async (
 ) => {
   const { rows: product_categories, metadata } = await refetchEntities(
     "product_category",
-    { include_descendants_tree: true, ...req.filterableFields },
+    req.filterableFields,
     req.scope,
     req.remoteQueryConfig.fields,
     req.remoteQueryConfig.pagination
@@ -50,7 +50,7 @@ export const POST = async (
 
   const [category] = await refetchEntities(
     "product_category",
-    { id: result.id, include_descendants_tree: true, include_ancestors_tree: true, ...req.filterableFields },
+    { id: result.id, ...req.filterableFields },
     req.scope,
     req.remoteQueryConfig.fields
   )
