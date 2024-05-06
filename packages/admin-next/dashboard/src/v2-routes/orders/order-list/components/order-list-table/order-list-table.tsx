@@ -29,7 +29,7 @@ export const OrderListTable = () => {
     }
   )
 
-  // const filters = useOrderTableFilters()
+  const filters = useOrderTableFilters()
   const columns = useOrderTableColumns({})
 
   const { table } = useDataTable({
@@ -54,7 +54,7 @@ export const OrderListTable = () => {
         table={table}
         pagination
         navigateTo={(row) => `/orders/${row.original.id}`}
-        // filters={filters}
+        filters={filters}
         count={count}
         search
         isLoading={isLoading}

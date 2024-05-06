@@ -3,6 +3,7 @@ const DEFAULT_PROPERTIES = [
   "status",
   "created_at",
   "email",
+  "display_id",
   // "fulfillment_status", // -> TODO replacement for this
   // "payment_status", // -> TODO replacement for this
   "total",
