@@ -4,14 +4,14 @@ import {
   ProductCategoryTransformOptions,
   ProductTypes,
 } from "@medusajs/types"
-import {DALUtils, isDefined, MedusaError} from "@medusajs/utils"
+import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import {SqlEntityManager} from "@mikro-orm/postgresql"
-import {ProductCategory} from "@models"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { ProductCategory } from "@models"
 
 export type ReorderConditions = {
   targetCategoryId: string
@@ -191,10 +191,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
 
       if (include.descendants) {
         category.category_children = categories.map((child) => {
-          return populateChildren(
-            categoriesById.get(child.id),
-            level + 1
-          )
+          return populateChildren(categoriesById.get(child.id), level + 1)
         })
       }
 

@@ -10,7 +10,7 @@ import {
   productCategoriesRankData,
 } from "../../../__fixtures__/product-category/data"
 
-jest.setTimeout(300000)
+jest.setTimeout(30000)
 
 moduleIntegrationTestRunner({
   moduleName: Modules.PRODUCT,

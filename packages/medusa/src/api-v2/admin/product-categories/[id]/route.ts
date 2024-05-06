@@ -16,10 +16,7 @@ export const GET = async (
 ) => {
   const [category] = await refetchEntities(
     "product_category",
-    {
-      id: req.params.id,
-      ...req.filterableFields,
-    },
+    { id: req.params.id, ...req.filterableFields },
     req.scope,
     req.remoteQueryConfig.fields
   )
