@@ -91,10 +91,7 @@ export const defaultStoreCartFields = [
 
   "payment_collection.id",
   "payment_collection.amount",
-  "payment_collection.payment_sessions.id",
-  "payment_collection.payment_sessions.currency_code",
-  "payment_collection.payment_sessions.status",
-  "payment_collection.payment_sessions.amount",
+  "*payment_collection.payment_sessions",
 ]
 
 export const retrieveTransformQueryConfig = {

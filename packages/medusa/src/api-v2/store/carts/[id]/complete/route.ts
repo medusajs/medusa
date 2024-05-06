@@ -5,6 +5,7 @@ import { refetchOrder } from "../../../orders/helpers"
 import { refetchCart } from "../../helpers"
 import { defaultStoreCartFields } from "../../query-config"
 import { StoreCompleteCartType } from "../../validators"
+import { prepareRetrieveQuery } from "../../../../../utils/get-query-config"
 
 export const POST = async (
   req: MedusaRequest<StoreCompleteCartType>,
@@ -31,7 +32,16 @@ export const POST = async (
 
     // If we end up with errors outside of statusOKErrors, it means that the cart is not in a state to be
     // completed. In these cases, we return a 400.
-    const cart = await refetchCart(cart_id, req.scope, defaultStoreCartFields)
+    const cart = await refetchCart(
+      cart_id,
+      req.scope,
+      prepareRetrieveQuery(
+        {},
+        {
+          defaults: defaultStoreCartFields,
+        }
+      ).remoteQueryConfig.fields
+    )
 
     if (!statusOKErrors.includes(error.type)) {
       throw error
