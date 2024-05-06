@@ -28,7 +28,7 @@ moduleIntegrationTestRunner({
         return false
       }
 
-      it("should execute functions respecint the key locked", async () => {
+      it("should execute functions respecting the key locked", async () => {
         // 10 parallel calls to buy should oversell the stock
         const prom: any[] = []
         for (let i = 0; i < 10; i++) {
@@ -39,7 +39,7 @@ moduleIntegrationTestRunner({
 
         replenishStock()
 
-        // 10 parallel calls to buy should with lock should not oversell the stock
+        // 10 parallel calls to buy with lock should not oversell the stock
         const promWLock: any[] = []
         for (let i = 0; i < 10; i++) {
           promWLock.push(service.execute("item_1", buy))
@@ -90,6 +90,19 @@ moduleIntegrationTestRunner({
         const release = await service.release(keyToLock, user_1)
         expect(release).toBe(true)
       })
+    })
+
+    it("should release lock in case of failure", async () => {
+      const fn_1 = jest.fn(async () => {
+        throw new Error("Error")
+      })
+      const fn_2 = jest.fn(async () => {})
+
+      await service.execute("lock_key", fn_1).catch(() => {})
+      await service.execute("lock_key", fn_2).catch(() => {})
+
+      expect(fn_1).toBeCalledTimes(1)
+      expect(fn_2).toBeCalledTimes(1)
     })
   },
 })
