@@ -55,7 +55,7 @@ export const commandOptions: Option[] = [
   new Option("-F, --force", "Ignore OAS validation and output OAS files."),
   new Option(
     "--v2", 
-    "Generate OAS files for V2 endpoints. This loads OAS from docs-util/oas-output/operations directory"
+    "Generate OAS files for V2 endpoints. This loads OAS from www/utils/generated/oas-output/operations directory"
   ),
   new Option(
     "--local",
@@ -157,7 +157,7 @@ async function getOASFromCodebase(
    * For now, we only use it if the --v2 flag it passed to the CLI tool.
    */
   const oasOutputPath = path.resolve(
-    __dirname, "..", "..", "..", "..", "docs-util", "oas-output"
+    __dirname, "..", "..", "..", "..", "..", "www", "utils", "generated", "oas-output"
   )
   const gen = await swaggerInline(
     v2 ? [
