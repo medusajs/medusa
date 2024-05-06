@@ -26,6 +26,7 @@ class OasSchemaHelper {
   private schemas: Map<string, OpenApiSchema>
   protected schemaRefPrefix = "#/components/schemas/"
   protected formatter: Formatter
+  private MAX_LEVEL = 4
   /**
    * The path to the directory holding the base YAML files.
    */
@@ -48,12 +49,18 @@ class OasSchemaHelper {
    * Retrieve schema as a reference object and add the schema to the {@link schemas} property.
    *
    * @param schema - The schema to convert and add to the schemas property.
+   * @param level - The current depth level. Used to avoid maximum call stack size exceeded.
    * @returns The schema as a reference. If the schema doesn't have the x-schemaName property set,
    * the schema isn't converted and `undefined` is returned.
    */
   schemaToReference(
-    schema: OpenApiSchema
+    schema: OpenApiSchema,
+    level = 0
   ): OpenAPIV3.ReferenceObject | undefined {
+    if (level < this.MAX_LEVEL) {
+      return
+    }
+
     if (!schema["x-schemaName"]) {
       return
     }
@@ -76,7 +83,8 @@ class OasSchemaHelper {
           !("$ref" in propertySchema.items)
         ) {
           propertySchema.items =
-            this.schemaToReference(propertySchema.items) || propertySchema.items
+            this.schemaToReference(propertySchema.items, level + 1) ||
+            propertySchema.items
         } else if (
           propertySchema.oneOf ||
           propertySchema.allOf ||
@@ -91,12 +99,13 @@ class OasSchemaHelper {
               return
             }
 
-            schemaTarget![index] = this.schemaToReference(item) || item
+            schemaTarget![index] =
+              this.schemaToReference(item, level + 1) || item
           })
         }
 
         schema.properties![property] =
-          this.schemaToReference(propertySchema as OpenApiSchema) ||
+          this.schemaToReference(propertySchema as OpenApiSchema, level + 1) ||
           propertySchema
       })
     }
