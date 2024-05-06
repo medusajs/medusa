@@ -1,5 +1,5 @@
 import { ConfirmVariantInventoryWorkflowInputDTO } from "@medusajs/types"
-import { MedusaError, deepFlatMap, isDefined } from "@medusajs/utils"
+import { MedusaError, deepFlatMap } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
@@ -8,13 +8,24 @@ import {
 import { confirmInventoryStep } from "../steps"
 import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 
+interface Output {
+  items: {
+    inventory_item_id: string
+    required_quantity: number
+    allow_backorder: boolean
+    quantity: number
+    location_ids: string[]
+  }[]
+}
+
 export const confirmVariantInventoryWorkflowId = "confirm-item-inventory"
 export const confirmVariantInventoryWorkflow = createWorkflow(
   confirmVariantInventoryWorkflowId,
-  (input: WorkflowData<ConfirmVariantInventoryWorkflowInputDTO>) => {
+  (
+    input: WorkflowData<ConfirmVariantInventoryWorkflowInputDTO>
+  ): WorkflowData<Output> => {
     const confirmInventoryInput = transform({ input }, (data) => {
       const productVariantInventoryItems = new Map<string, any>()
-      const priceNotFound: string[] = []
       const stockLocationIds = new Set<string>()
       const allVariants = new Map<string, any>()
       let hasSalesChannelStockLocation = false
@@ -31,10 +42,6 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
             sales_channels?.id === salesChannelId
           ) {
             hasSalesChannelStockLocation = true
-          }
-
-          if (!isDefined(variants.calculated_price)) {
-            priceNotFound.push(variants.id)
           }
 
           stockLocationIds.add(stock_locations.id)
@@ -72,13 +79,6 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
         )
       }
 
-      if (priceNotFound.length && !data.input.ignore_price_check) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Variants with IDs ${priceNotFound.join(", ")} do not have a price`
-        )
-      }
-
       const items = prepareConfirmInventoryInput({
         product_variant_inventory_items: Array.from(
           productVariantInventoryItems.values()
@@ -92,5 +92,7 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
     })
 
     confirmInventoryStep(confirmInventoryInput)
+
+    return confirmInventoryInput
   }
 )

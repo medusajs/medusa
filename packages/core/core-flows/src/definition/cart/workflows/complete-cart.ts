@@ -6,7 +6,9 @@ import {
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { createOrderFromCartStep } from "../steps"
+import { reserveInventoryStep } from "../steps/reserve-inventory"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
+import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import { completeCartFields } from "../utils/fields"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 
@@ -54,7 +56,9 @@ export const completeCartWorkflow = createWorkflow(
       }
     )
 
-    confirmVariantInventoryWorkflow.runAsStep({
+    validateVariantPricesStep({ variants })
+
+    const formatedInventoryItems = confirmVariantInventoryWorkflow.runAsStep({
       input: {
         ignore_price_check: true,
         sales_channel_id,
@@ -64,6 +68,8 @@ export const completeCartWorkflow = createWorkflow(
     })
 
     updateTaxLinesStep({ cart_or_cart_id: cart, force_tax_calculation: true })
+
+    reserveInventoryStep(formatedInventoryItems)
 
     const finalCart = useRemoteQueryStep({
       entry_point: "cart",
