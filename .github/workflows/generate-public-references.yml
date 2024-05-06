@@ -42,13 +42,13 @@ jobs:
       - name: Generate API Reference
         run: yarn openapi:generate
 
-      - name: Install and Build docs-util dependencies
+      - name: Install and Build www/utils dependencies
         run: yarn && yarn build
-        working-directory: docs-util
+        working-directory: www/utils
 
       - name: Generate Changeset
         run: "yarn generate:changeset"
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
@@ -92,13 +92,13 @@ jobs:
       - name: Generate API Reference (v2)
         run: yarn openapi:generate --v2
 
-      - name: Install and Build docs-util dependencies
+      - name: Install and Build www/utils dependencies
         run: yarn && yarn build
-        working-directory: docs-util
+        working-directory: www/utils
 
       - name: Generate Changeset
         run: "yarn generate:changeset"
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
@@ -141,19 +141,19 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
-        working-directory: docs-util
+        working-directory: www/utils
 
       - name: Build Workspace dependencies
         run: yarn build
-        working-directory: docs-util
+        working-directory: www/utils
 
       - name: Generate UI Specs
         run: yarn generate:ui
-        working-directory: docs-util/packages/react-docs-generator
+        working-directory: www/utils/packages/react-docs-generator
 
       - name: Generate Changeset
         run: "yarn generate:changeset"
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4

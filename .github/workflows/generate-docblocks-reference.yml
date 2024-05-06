@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       referenceName:
-        description: 'Reference to Generate. Use either `all` or a name of a config file in `docs-util/packages/typedoc-config` such as `product`.'
+        description: 'Reference to Generate. Use either `all` or a name of a config file in `www/utils/packages/typedoc-config` such as `product`.'
         required: false
         default: 'all'
 
@@ -48,30 +48,30 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
-        working-directory: docs-util
+        working-directory: www/utils
 
       - name: Build Workspace dependencies
         run: yarn build
-        working-directory: docs-util
+        working-directory: www/utils
 
       - name: Generate References
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: "yarn start generate ${{ github.event.inputs.referenceName }} --merge"
-        working-directory: docs-util/packages/typedoc-generate-references
+        working-directory: www/utils/packages/typedoc-generate-references
 
       - name: Generate References
         if: ${{ github.event_name != 'workflow_dispatch' }}
         run: "yarn start generate all --merge"
-        working-directory: docs-util/packages/typedoc-generate-references
+        working-directory: www/utils/packages/typedoc-generate-references
 
       - name: Generate Changeset
         run: "yarn generate:changeset"
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
 
       - name: Get PR Message
         id: pr-message
         run: yarn generate:message
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
