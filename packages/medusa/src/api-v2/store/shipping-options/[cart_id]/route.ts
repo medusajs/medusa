@@ -14,7 +14,6 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     select: [
       "id",
       "sales_channel_id",
-      "subtotal",
       "currency_code",
       "shipping_address.city",
       "shipping_address.country_code",

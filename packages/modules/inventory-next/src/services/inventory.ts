@@ -15,11 +15,12 @@ import {
   InjectManager,
   InjectTransactionManager,
   InventoryEvents,
-  isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  isDefined,
   partitionArray,
+  promiseAll,
 } from "@medusajs/utils"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
@@ -169,6 +170,27 @@ export default class InventoryModuleService<
     InventoryNext.ReservationItemDTO[] | InventoryNext.ReservationItemDTO
   > {
     const toCreate = Array.isArray(input) ? input : [input]
+
+    const checkLevels = toCreate.map(async (item) => {
+      if (!!item.allow_backorder) {
+        return
+      }
+
+      const available = await this.retrieveAvailableQuantity(
+        item.inventory_item_id,
+        [item.location_id],
+        context
+      )
+
+      if (available < item.quantity) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Not enough stock available for item ${item.inventory_item_id} at location ${item.location_id}`
+        )
+      }
+    })
+
+    await promiseAll(checkLevels)
 
     const created = await this.createReservationItems_(toCreate, context)
 

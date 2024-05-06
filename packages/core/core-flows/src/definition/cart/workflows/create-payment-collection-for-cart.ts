@@ -1,13 +1,9 @@
-import {
-  CartDTO,
-  CreatePaymentCollectionForCartWorkflowInputDTO,
-} from "@medusajs/types"
+import { CreatePaymentCollectionForCartWorkflowInputDTO } from "@medusajs/types"
 import {
   WorkflowData,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { retrieveCartStep } from "../steps"
 import { createPaymentCollectionsStep } from "../steps/create-payment-collection"
 import { linkCartAndPaymentCollectionsStep } from "../steps/link-cart-payment-collection"
 
@@ -17,7 +13,7 @@ export const createPaymentCollectionForCartWorkflow = createWorkflow(
   createPaymentCollectionForCartWorkflowId,
   (
     input: WorkflowData<CreatePaymentCollectionForCartWorkflowInputDTO>
-  ): WorkflowData<CartDTO> => {
+  ): WorkflowData<void> => {
     const created = createPaymentCollectionsStep([input])
 
     const link = transform({ cartId: input.cart_id, created }, (data) => ({
@@ -30,9 +26,5 @@ export const createPaymentCollectionForCartWorkflow = createWorkflow(
     }))
 
     linkCartAndPaymentCollectionsStep(link)
-
-    const cart = retrieveCartStep({ id: input.cart_id })
-
-    return cart
   }
 )

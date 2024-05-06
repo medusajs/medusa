@@ -6679,9 +6679,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/file-local-next@workspace:packages/file-local":
+"@medusajs/file-local-next@workspace:packages/modules/providers/file-local":
   version: 0.0.0-use.local
-  resolution: "@medusajs/file-local-next@workspace:packages/file-local"
+  resolution: "@medusajs/file-local-next@workspace:packages/modules/providers/file-local"
   dependencies:
     "@medusajs/utils": ^1.11.7
     cross-env: ^5.2.1
@@ -6691,9 +6691,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/file-s3@workspace:packages/file-s3":
+"@medusajs/file-s3@workspace:packages/modules/providers/file-s3":
   version: 0.0.0-use.local
-  resolution: "@medusajs/file-s3@workspace:packages/file-s3"
+  resolution: "@medusajs/file-s3@workspace:packages/modules/providers/file-s3"
   dependencies:
     "@aws-sdk/client-s3": ^3.556.0
     "@aws-sdk/s3-request-presigner": ^3.556.0
@@ -6735,9 +6735,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/fulfillment-manual@workspace:*, @medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/fulfillment-manual":
+"@medusajs/fulfillment-manual@workspace:*, @medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
   version: 0.0.0-use.local
-  resolution: "@medusajs/fulfillment-manual@workspace:packages/fulfillment-manual"
+  resolution: "@medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual"
   dependencies:
     "@medusajs/utils": ^1.11.7
     body-parser: ^1.19.0
@@ -7121,9 +7121,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/payment-stripe@workspace:packages/payment-stripe":
+"@medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe":
   version: 0.0.0-use.local
-  resolution: "@medusajs/payment-stripe@workspace:packages/payment-stripe"
+  resolution: "@medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe"
   dependencies:
     "@medusajs/medusa": ^1.20.3
     "@medusajs/utils": ^1.11.7
