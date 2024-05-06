@@ -9,7 +9,7 @@ import {
   StoreCreatePaymentSession,
 } from "./validators"
 
-export const storePaymentRoutesMiddlewares: MiddlewareRoute[] = [
+export const storePaymentCollectionsMiddlewares: MiddlewareRoute[] = [
   {
     method: "ALL",
     matcher: "/store/payment-collections*",

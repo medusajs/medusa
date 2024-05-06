@@ -1,5 +1,4 @@
 import { createPaymentSessionsWorkflow } from "@medusajs/core-flows"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

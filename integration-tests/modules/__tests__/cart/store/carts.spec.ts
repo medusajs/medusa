@@ -1224,6 +1224,77 @@ medusaIntegrationTestRunner({
             })
           )
         })
+
+        it("should return an existing payment collection for the cart", async () => {
+          const region = await regionModule.create({
+            name: "US",
+            currency_code: "usd",
+          })
+
+          const cart = await cartModule.create({
+            currency_code: "usd",
+            region_id: region.id,
+          })
+
+          const firstCollection = (
+            await api.post(`/store/payment-collections`, {
+              region_id: region.id,
+              cart_id: cart.id,
+              amount: 0,
+              currency_code: cart.currency_code,
+            })
+          ).data.payment_collection
+
+          const response = await api.post(`/store/payment-collections`, {
+            region_id: region.id,
+            cart_id: cart.id,
+            amount: 0,
+            currency_code: cart.currency_code,
+          })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.payment_collection.id).toEqual(
+            firstCollection.id
+          )
+        })
+
+        it("should create a new payment collection for a new cart", async () => {
+          const region = await regionModule.create({
+            name: "US",
+            currency_code: "usd",
+          })
+
+          const firstCart = await cartModule.create({
+            currency_code: "usd",
+            region_id: region.id,
+          })
+
+          const secondCart = await cartModule.create({
+            currency_code: "usd",
+            region_id: region.id,
+          })
+
+          const firstCollection = (
+            await api.post(`/store/payment-collections`, {
+              region_id: region.id,
+              cart_id: firstCart.id,
+              amount: 0,
+              currency_code: firstCart.currency_code,
+            })
+          ).data.payment_collection
+
+          const secondCollection = (
+            await api.post(`/store/payment-collections`, {
+              region_id: region.id,
+              cart_id: secondCart.id,
+              amount: 0,
+              currency_code: secondCart.currency_code,
+            })
+          ).data.payment_collection
+
+          expect(firstCollection.id).toBeTruthy()
+          expect(firstCollection.id).not.toEqual(secondCollection.id)
+        })
       })
 
       describe("POST /store/carts/:id/taxes", () => {
