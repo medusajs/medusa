@@ -10,6 +10,7 @@ import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory
 
 interface Output {
   items: {
+    id?: string
     inventory_item_id: string
     required_quantity: number
     allow_backorder: boolean
@@ -37,6 +38,10 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
         data.input,
         "variants.inventory_items.inventory.location_levels.stock_locations.sales_channels",
         ({ variants, inventory_items, stock_locations, sales_channels }) => {
+          if (!variants) {
+            return
+          }
+
           if (
             !hasSalesChannelStockLocation &&
             sales_channels?.id === salesChannelId
@@ -44,15 +49,19 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
             hasSalesChannelStockLocation = true
           }
 
-          stockLocationIds.add(stock_locations.id)
+          if (stock_locations) {
+            stockLocationIds.add(stock_locations.id)
+          }
 
-          const inventoryItemId = inventory_items.inventory_item_id
-          if (!productVariantInventoryItems.has(inventoryItemId)) {
-            productVariantInventoryItems.set(inventoryItemId, {
-              variant_id: inventory_items.variant_id,
-              inventory_item_id: inventoryItemId,
-              required_quantity: inventory_items.required_quantity,
-            })
+          if (inventory_items) {
+            const inventoryItemId = inventory_items.inventory_item_id
+            if (!productVariantInventoryItems.has(inventoryItemId)) {
+              productVariantInventoryItems.set(inventoryItemId, {
+                variant_id: inventory_items.variant_id,
+                inventory_item_id: inventoryItemId,
+                required_quantity: inventory_items.required_quantity,
+              })
+            }
           }
 
           if (!allVariants.has(variants.id)) {

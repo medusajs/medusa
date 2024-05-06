@@ -1,9 +1,10 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IInventoryService } from "@medusajs/types"
+import { IInventoryServiceNext } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   items: {
+    id?: string
     inventory_item_id: string
     required_quantity: number
     allow_backorder: boolean
@@ -16,11 +17,12 @@ export const reserveInventoryStepId = "reserve-inventory-step"
 export const reserveInventoryStep = createStep(
   reserveInventoryStepId,
   async (data: StepInput, { container }) => {
-    const inventoryService = container.resolve<IInventoryService>(
+    const inventoryService = container.resolve<IInventoryServiceNext>(
       ModuleRegistrationName.INVENTORY
     )
 
     const items = data.items.map((item) => ({
+      line_item_id: item.id,
       inventory_item_id: item.inventory_item_id,
       quantity: item.required_quantity * item.quantity,
       allow_backorder: item.allow_backorder,
@@ -38,13 +40,11 @@ export const reserveInventoryStep = createStep(
       return
     }
 
-    const inventoryService = container.resolve<IInventoryService>(
+    const inventoryService = container.resolve<IInventoryServiceNext>(
       ModuleRegistrationName.INVENTORY
     )
 
-    await inventoryService.deleteReservationItems({
-      id: data.reservations,
-    })
+    await inventoryService.deleteReservationItems(data.reservations)
 
     return new StepResponse()
   }

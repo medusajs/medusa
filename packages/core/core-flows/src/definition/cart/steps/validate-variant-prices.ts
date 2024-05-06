@@ -1,6 +1,6 @@
 import { BigNumberInput } from "@medusajs/types"
 import { MedusaError, isDefined } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   variants: {
@@ -21,13 +21,11 @@ export const validateVariantPricesStep = createStep(
       }
     }
 
-    if (priceNotFound.length) {
+    if (priceNotFound.length > 0) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Variants with IDs ${priceNotFound.join(", ")} do not have a price`
       )
     }
-
-    return new StepResponse()
   }
 )

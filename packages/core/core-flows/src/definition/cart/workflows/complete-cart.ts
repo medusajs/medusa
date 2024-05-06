@@ -8,7 +8,6 @@ import { useRemoteQueryStep } from "../../../common"
 import { createOrderFromCartStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
-import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import { completeCartFields } from "../utils/fields"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 
@@ -42,6 +41,7 @@ export const completeCartWorkflow = createWorkflow(
         data.cart.items.forEach((item) => {
           allItems.push({
             id: item.id,
+            variant_id: item.variant_id,
             quantity: item.quantity,
           })
 
@@ -56,11 +56,8 @@ export const completeCartWorkflow = createWorkflow(
       }
     )
 
-    validateVariantPricesStep({ variants })
-
     const formatedInventoryItems = confirmVariantInventoryWorkflow.runAsStep({
       input: {
-        ignore_price_check: true,
         sales_channel_id,
         variants,
         items,
