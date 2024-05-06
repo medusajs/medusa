@@ -4,6 +4,7 @@ import {
   Modules,
   RemoteLink,
 } from "@medusajs/modules-sdk"
+import PaymentModuleService from "@medusajs/payment/dist/services/payment-module"
 import {
   ICartModuleService,
   ICustomerModuleService,
@@ -18,6 +19,7 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  MedusaError,
   PromotionRuleOperator,
   PromotionType,
   RuleOperator,
@@ -1737,6 +1739,64 @@ medusaIntegrationTestRunner({
           expect(error.response.data).toEqual({
             type: "invalid_data",
             message: "Payment sessions are required to complete cart",
+          })
+        })
+
+        it("should return cart when payment authorization fails", async () => {
+          const authorizePaymentSessionSpy = jest.spyOn(
+            PaymentModuleService.prototype,
+            "authorizePaymentSession"
+          )
+
+          // Mock the authorizePaymentSession to throw error
+          authorizePaymentSessionSpy.mockImplementation(
+            (id, context, sharedContext) => {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `Throw a random error`
+              )
+            }
+          )
+
+          const cart = (
+            await api.post(`/store/carts`, {
+              currency_code: "usd",
+              email: "tony@stark-industries.com",
+              shipping_address: {
+                address_1: "test address 1",
+                address_2: "test address 2",
+                city: "ny",
+                country_code: "us",
+                province: "ny",
+                postal_code: "94016",
+              },
+              items: [{ quantity: 1, variant_id: product.variants[0].id }],
+            })
+          ).data.cart
+
+          const payColCart = (
+            await api.post(`/store/carts/${cart.id}/payment-collections`, {})
+          ).data.cart
+
+          await api.post(
+            `/store/payment-collections/${payColCart.payment_collection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" }
+          )
+
+          const response = await api.post(
+            `/store/carts/${cart.id}/complete`,
+            {}
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual({
+            type: "cart",
+            cart: expect.objectContaining({}),
+            error: {
+              message: "Payment authorization failed",
+              name: "Error",
+              type: "payment_authorization_error",
+            },
           })
         })
       })
