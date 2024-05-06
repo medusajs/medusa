@@ -175,6 +175,7 @@ function isMedusaModule(mod) {
 }
 
 function cleanAndMergeSchema(loadedSchema) {
+  console.log(loadedSchema)
   const { schema: cleanedSchema, notFound } = cleanGraphQLSchema(loadedSchema)
   const mergedSchema = mergeTypeDefs(cleanedSchema)
   return { schema: makeExecutableSchema({ typeDefs: mergedSchema }), notFound }

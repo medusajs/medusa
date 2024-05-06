@@ -56,6 +56,12 @@ export const LINKS = {
     Modules.PROMOTION,
     "promotion_id"
   ),
+  OrderSalesChannel: composeLinkName(
+    Modules.ORDER,
+    "order_id",
+    Modules.SALES_CHANNEL,
+    "sales_channel_id"
+  ),
   PublishableApiKeySalesChannel: composeLinkName(
     Modules.API_KEY,
     "api_key_id",
