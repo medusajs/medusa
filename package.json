@@ -75,7 +75,7 @@
     "jest": "jest",
     "test": "turbo run test --concurrency=50% --no-daemon --no-cache --force",
     "test:chunk": "./scripts/run-workspace-unit-tests-in-chunks.sh",
-    "test:integration:packages": "turbo run test:integration --concurrency=50% --no-daemon --no-cache --force --filter='./packages/*'",
+    "test:integration:packages": "turbo run test:integration --concurrency=50% --no-daemon --no-cache --force --filter='./packages/**'",
     "test:integration:api": "turbo run test:integration:chunk --concurrency=50% --no-daemon --no-cache --force --filter=integration-tests-api",
     "test:integration:plugins": "turbo run test:integration --concurrency=50% --no-daemon --no-cache --filter=integration-tests-plugins",
     "test:integration:modules": "turbo run test:integration:chunk --concurrency=50% --no-daemon --no-cache --force --filter=integration-tests-modules",
