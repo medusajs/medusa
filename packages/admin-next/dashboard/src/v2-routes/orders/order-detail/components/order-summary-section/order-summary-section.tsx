@@ -9,7 +9,6 @@ import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
-import { useProductVariant } from "../../../../../hooks/api/products.tsx"
 
 type OrderSummarySectionProps = {
   order: OrderDTO
@@ -70,9 +69,6 @@ const Item = ({
 }) => {
   const { t } = useTranslation()
 
-  // TODO: use link instead of fetching this
-  const { variant } = useProductVariant(item.product_id, item.variant_id)
-
   return (
     <div
       key={item.id}
@@ -96,7 +92,7 @@ const Item = ({
             </div>
           )}
           <Text size="small">
-            {variant?.options.map((o) => o.value).join(" · ")}
+            {item.variant?.options.map((o) => o.value).join(" · ")}
           </Text>
         </div>
       </div>
