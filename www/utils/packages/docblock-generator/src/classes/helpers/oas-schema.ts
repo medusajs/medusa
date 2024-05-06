@@ -57,7 +57,7 @@ class OasSchemaHelper {
     schema: OpenApiSchema,
     level = 0
   ): OpenAPIV3.ReferenceObject | undefined {
-    if (level < this.MAX_LEVEL) {
+    if (level > this.MAX_LEVEL) {
       return
     }
 

@@ -1748,6 +1748,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         ? this.oasSchemaHelper.getSchemaByName(newSchema.$ref)?.schema
         : newSchema
     ) as OpenApiSchema | undefined
+
     if (!oldSchemaObj && newSchemaObj) {
       return newSchemaObj
     } else if (oldSchemaObj && !newSchemaObj) {

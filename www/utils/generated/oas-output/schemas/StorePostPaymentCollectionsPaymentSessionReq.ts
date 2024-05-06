@@ -136,10 +136,7 @@
  *             type: array
  *             description: The customer's addresses.
  *             items:
- *               type: object
- *               description: The address's addresses.
- *               x-schemaName: CustomerAddress
- *               properties: {}
+ *               $ref: "#/components/schemas/CustomerAddress"
  *           phone:
  *             type: string
  *             title: phone

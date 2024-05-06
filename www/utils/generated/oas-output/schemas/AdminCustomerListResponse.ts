@@ -1,12 +1,13 @@
 /**
  * @schema AdminCustomerListResponse
  * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminCustomerListResponse
  * required:
  *   - customers
  *   - limit
  *   - offset
  *   - count
- * x-schemaName: AdminCustomerListResponse
  * properties:
  *   customers:
  *     type: array

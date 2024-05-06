@@ -82,8 +82,6 @@
  * tags:
  *   - Api Keys
  * responses:
- *   "200":
- *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
