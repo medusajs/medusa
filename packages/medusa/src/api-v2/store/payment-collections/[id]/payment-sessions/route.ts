@@ -1,36 +1,33 @@
 import { createPaymentSessionsWorkflow } from "@medusajs/core-flows"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import { defaultStorePaymentCollectionFields } from "./query-config"
-import { StorePostPaymentCollectionsPaymentSessionReq } from "./validators"
+import { StoreCreatePaymentSessionType } from "../../validators"
+import { refetchPaymentCollection } from "../../helpers"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<StorePostPaymentCollectionsPaymentSessionReq>,
+  req: AuthenticatedMedusaRequest<StoreCreatePaymentSessionType>,
   res: MedusaResponse
 ) => {
-  const { id } = req.params
-  const { context = {}, provider_id, data } = req.body
+  const collectionId = req.params.id
+  const { context = {}, data, provider_id } = req.body
 
   // If the customer is logged in, we auto-assign them to the payment collection
   if (req.auth?.actor_id) {
-    context.customer = {
-      ...context.customer,
+    ;(context as any).customer = {
       id: req.auth.actor_id,
     }
   }
-
   const workflowInput = {
-    payment_collection_id: id,
+    payment_collection_id: collectionId,
     provider_id: provider_id,
     data,
     context,
   }
 
   const { errors } = await createPaymentSessionsWorkflow(req.scope).run({
-    input: workflowInput as any,
+    input: workflowInput,
     throwOnError: false,
   })
 
@@ -38,15 +35,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const paymentCollection = await refetchPaymentCollection(
+    collectionId,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
-  const query = remoteQueryObjectFromString({
-    entryPoint: "payment_collection",
-    variables: { cart: { id } },
-    fields: defaultStorePaymentCollectionFields,
-  })
-
-  const [result] = await remoteQuery(query)
-
-  res.status(200).json({ payment_collection: result })
+  res.status(200).json({ payment_collection: paymentCollection })
 }
