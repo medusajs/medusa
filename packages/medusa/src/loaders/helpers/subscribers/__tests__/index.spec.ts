@@ -34,7 +34,7 @@ describe("SubscriberLoader", () => {
     expect(registeredPaths.length).toEqual(3)
   })
 
-  it.skip("should have registered subscribers for 5 events", async () => {
+  it("should have registered subscribers for 5 events", async () => {
     /**
      * The 'product-updater.ts' subscriber is registered for the following events:
      * - "product.created"
@@ -52,13 +52,13 @@ describe("SubscriberLoader", () => {
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledTimes(5)
   })
 
-  it.skip("should have registered subscribers with the correct props", async () => {
+  it("should have registered subscribers with the correct props", async () => {
     /**
      * The 'product-updater.ts' subscriber is registered
      * with a explicit subscriberId of "product-updater".
      */
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledWith(
-      /*ProductService.Events.UPDATED,*/
+      "product.updated",
       expect.any(Function),
       {
         subscriberId: "product-updater",
@@ -74,7 +74,7 @@ describe("SubscriberLoader", () => {
      * to infer the subscriberId.
      */
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledWith(
-      /*OrderService.Events.PLACED,*/
+      "order.placed",
       expect.any(Function),
       {
         subscriberId: "order-notifier",
@@ -82,7 +82,7 @@ describe("SubscriberLoader", () => {
     )
 
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledWith(
-      /*OrderService.Events.CANCELED,*/
+      "order.canceled",
       expect.any(Function),
       {
         subscriberId: "order-notifier",
@@ -90,7 +90,7 @@ describe("SubscriberLoader", () => {
     )
 
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledWith(
-      /*OrderService.Events.COMPLETED,*/
+      "order.completed",
       expect.any(Function),
       {
         subscriberId: "order-notifier",
@@ -105,7 +105,7 @@ describe("SubscriberLoader", () => {
      * case is 'variant-created.ts'.
      */
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledWith(
-      /*ProductVariantService.Events.CREATED,*/
+      "variant.created",
       expect.any(Function),
       {
         subscriberId: "variant-created",
