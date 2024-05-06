@@ -709,10 +709,9 @@ medusaIntegrationTestRunner({
 
           expect(errors).toEqual([
             {
-              action: "confirm-item-inventory-as-step",
+              action: "validate-variant-prices",
               handlerType: "invoke",
               error: expect.objectContaining({
-                // TODO: FIX runAsStep nested errors
                 message: expect.stringContaining(
                   `Variants with IDs ${product.variants[0].id} do not have a price`
                 ),
