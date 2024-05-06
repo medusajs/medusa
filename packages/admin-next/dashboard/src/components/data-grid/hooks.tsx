@@ -20,12 +20,21 @@ type UseDataGridCellProps = {
   col: number
 }
 
+function Noop() {}
+
 export const useDataGridCell = ({ row, col }: UseDataGridCellProps) => {
   const coords: CellCoords = useMemo(() => ({ row, col }), [row, col])
   const id = generateCellId(coords)
 
-  const { control, anchor, onRegisterCell, onUnregisterCell, onClickOverlay } =
-    useDataGridContext()
+  const {
+    control,
+    anchor,
+    onRegisterCell,
+    onUnregisterCell,
+    onClickOverlay,
+    getMouseOverHandler,
+    getMouseDownHandler,
+  } = useDataGridContext()
 
   useEffect(() => {
     onRegisterCell(coords)
@@ -37,8 +46,12 @@ export const useDataGridCell = ({ row, col }: UseDataGridCellProps) => {
 
   const container: DataGridCellContainerProps = {
     isAnchor: anchor ? isCellMatch(coords, anchor) : false,
+    wrapper: {
+      onMouseDown: getMouseDownHandler(coords),
+      onMouseOver: getMouseOverHandler(coords),
+    },
     overlay: {
-      onClick: () => onClickOverlay(coords),
+      onClick: Noop,
     },
   }
 

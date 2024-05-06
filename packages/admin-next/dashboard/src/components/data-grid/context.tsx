@@ -1,4 +1,4 @@
-import { createContext } from "react"
+import { MouseEvent, createContext } from "react"
 import { Control, FieldValues } from "react-hook-form"
 import { CellCoords } from "./types"
 
@@ -8,6 +8,12 @@ type DataGridContextType<TForm extends FieldValues> = {
   onRegisterCell: (coordinates: CellCoords) => void
   onUnregisterCell: (coordinates: CellCoords) => void
   onClickOverlay: (coordinates: CellCoords) => void
+  getMouseDownHandler: (
+    coordinates: CellCoords
+  ) => (e: MouseEvent<HTMLElement>) => void
+  getMouseOverHandler: (
+    coordinates: CellCoords
+  ) => ((e: MouseEvent<HTMLElement>) => void) | undefined
 }
 
 export const DataGridContext = createContext<DataGridContextType<any> | null>(

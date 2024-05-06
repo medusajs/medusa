@@ -1,9 +1,17 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import {
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 
-import { clx } from "@medusajs/ui"
+import { Button, DropdownMenu, clx } from "@medusajs/ui"
 import {
   CellContext,
   ColumnDef,
+  OnChangeFn,
   Row,
   VisibilityState,
   flexRender,
@@ -45,8 +53,27 @@ export const DataGridRoot = <
   const { redo, undo, execute } = useCommandHistory()
   const { register, control, getValues, setValue } = state
 
-  const [columnVisibility, onColumnVisibilityChange] =
-    useState<VisibilityState>({})
+  const cols = useMemo(() => new SortedSet<number>(), [])
+  const rows = useMemo(() => new SortedSet<number>(), [])
+
+  const [cells, setCells] = useState<Record<string, boolean>>({})
+
+  const [anchor, setAnchor] = useState<CellCoords | null>(null)
+
+  const [selection, setSelection] = useState<CellCoords[]>([])
+  const [dragSelection, setDragSelection] = useState<CellCoords[]>([])
+
+  const [isSelecting, setIsSelecting] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+
+  const onColumnVisibilityChange: OnChangeFn<VisibilityState> = useCallback(
+    (next) => {
+      const update = typeof next === "function" ? next(columnVisibility) : next
+    },
+    [columnVisibility]
+  )
 
   const grid = useReactTable({
     data: data,
@@ -54,7 +81,7 @@ export const DataGridRoot = <
     state: {
       columnVisibility,
     },
-    onColumnVisibilityChange,
+    onColumnVisibilityChange: setColumnVisibility,
     getSubRows,
     getCoreRowModel: getCoreRowModel(),
   })
@@ -73,18 +100,8 @@ export const DataGridRoot = <
     overscan: 5,
   })
 
-  const cols = useMemo(() => new SortedSet<number>(), [])
-  const rows = useMemo(() => new SortedSet<number>(), [])
-
-  const [cells, setCells] = useState<Record<string, boolean>>({})
-
-  const [anchor, setAnchor] = useState<CellCoords | null>(null)
-  const [selection, setSelection] = useState<CellCoords[]>([])
-
-  const [isSelecting, setIsSelecting] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
-
   const onClickOverlay = useCallback((coords: CellCoords) => {
+    setIsSelecting(true)
     setAnchor(coords)
     setSelection([coords])
   }, [])
@@ -190,7 +207,7 @@ export const DataGridRoot = <
     [anchor, cols, rows, rowVirtualizer]
   )
 
-  const handleKeyDown = useCallback(
+  const handleKeyDownEvent = useCallback(
     (e: KeyboardEvent) => {
       if (ARROW_KEYS.includes(e.key)) {
         handleArrowKeyDown(e)
@@ -199,13 +216,176 @@ export const DataGridRoot = <
     [handleArrowKeyDown]
   )
 
+  const handleMouseUpEvent = useCallback(() => {
+    console.log("Mouse up, End selection")
+    setIsDragging(false)
+    setIsSelecting(false)
+  }, [])
+
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown)
+    window.addEventListener("keydown", handleKeyDownEvent)
+    window.addEventListener("mouseup", handleMouseUpEvent)
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown)
+      window.removeEventListener("keydown", handleKeyDownEvent)
+      window.removeEventListener("mouseup", handleMouseUpEvent)
     }
-  }, [handleKeyDown])
+  }, [handleKeyDownEvent, handleMouseUpEvent])
+
+  const getMouseDownHandler = useCallback((coords: CellCoords) => {
+    return (_e: MouseEvent<HTMLElement>) => {
+      setIsSelecting(true)
+
+      setAnchor(coords)
+      setSelection([coords])
+    }
+  }, [])
+
+  const getMouseOverHandler = useCallback(
+    (coords: CellCoords) => {
+      if (!isDragging && !isSelecting) {
+        return
+      }
+
+      return (_e: MouseEvent<HTMLElement>) => {
+        const { row, col } = coords
+
+        /**
+         * If the column is not the same as the anchor col,
+         * we don't want to select the cell.
+         */
+        if (anchor?.col !== col) {
+          return
+        }
+
+        /**
+         * 1 means the row is below the anchor row.
+         * -1 means the row is above the anchor row.
+         */
+        const direction = row > anchor.row ? 1 : -1
+
+        /**
+         * The last cell in the current selection.
+         */
+        const last = selection[selection.length - 1] ?? anchor
+
+        /**
+         * Check if the row is a neighbour of the last selected row.
+         */
+        const isNeighbour = Math.abs(row - last.row) === 1
+
+        /**
+         * If the current cell is a neighbour, we can simply update
+         * the selection based on the direction.
+         */
+        if (isNeighbour) {
+          if (isSelecting) {
+            setSelection((prev) => {
+              return prev
+                .filter((cell) => {
+                  if (direction === 1) {
+                    return (
+                      (cell.row <= row && cell.row >= anchor.row) ||
+                      cell.row === anchor.row
+                    )
+                  }
+
+                  if (direction === -1) {
+                    return (
+                      (cell.row >= row && cell.row <= anchor.row) ||
+                      cell.row === anchor.row
+                    )
+                  }
+
+                  return cell.row === anchor.row
+                })
+                .concat({ row, col })
+            })
+
+            return
+          }
+
+          if (isDragging) {
+            if (anchor.row === row) {
+              return
+            }
+
+            setDragSelection((prev) => {
+              return prev
+                .filter((cell) => {
+                  if (direction === 1) {
+                    return (
+                      (cell.row <= row && cell.row >= anchor.row) ||
+                      cell.row === anchor.row
+                    )
+                  }
+
+                  if (direction === -1) {
+                    return (
+                      (cell.row >= row && cell.row <= anchor.row) ||
+                      cell.row === anchor.row
+                    )
+                  }
+
+                  return cell.row === anchor.row
+                })
+                .concat({ row, col })
+            })
+
+            return
+          }
+
+          return
+        }
+
+        /**
+         * If the current cell is not a neighbour, we instead
+         * need to calculate all the valid cells between the
+         * anchor and the current cell.
+         */
+        let cells: CellCoords[] = []
+
+        function selectCell(i: number, column: number) {
+          const possibleCell = containerRef.current?.querySelector(
+            `[data-row="${i}"][data-column="${column}"]`
+          )
+
+          if (!possibleCell) {
+            return
+          }
+
+          cells.push({ row: i, col: column })
+        }
+
+        if (direction === 1) {
+          for (let i = anchor.row; i <= row; i++) {
+            selectCell(i, col)
+          }
+        }
+
+        if (direction === -1) {
+          for (let i = anchor.row; i >= row; i--) {
+            selectCell(i, col)
+          }
+        }
+
+        if (isSelecting) {
+          setSelection(cells)
+          return
+        }
+
+        if (isDragging) {
+          cells = cells.filter((cell) => cell.row !== anchor.row)
+
+          setDragSelection(cells)
+          return
+        }
+
+        return
+      }
+    },
+    [anchor, isDragging, isSelecting, selection]
+  )
 
   return (
     <DataGridContext.Provider
@@ -215,9 +395,41 @@ export const DataGridRoot = <
         onRegisterCell,
         onUnregisterCell,
         onClickOverlay,
+        getMouseDownHandler,
+        getMouseOverHandler,
       }}
     >
       <div className="bg-ui-bg-subtle size-full overflow-hidden">
+        <div className="bg-ui-bg-base flex items-center justify-between border-b p-4">
+          <DropdownMenu>
+            <DropdownMenu.Trigger asChild>
+              <Button size="small" variant="secondary">
+                Columns
+              </Button>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content>
+              {grid.getAllLeafColumns().map((column) => {
+                const checked = column.getIsVisible()
+                const disabled = !column.getCanHide()
+
+                if (disabled) {
+                  return null
+                }
+
+                return (
+                  <DropdownMenu.CheckboxItem
+                    key={column.id}
+                    checked={checked}
+                    onCheckedChange={(value) => column.toggleVisibility(value)}
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    {column.id}
+                  </DropdownMenu.CheckboxItem>
+                )
+              })}
+            </DropdownMenu.Content>
+          </DropdownMenu>
+        </div>
         <div
           ref={containerRef}
           style={{
