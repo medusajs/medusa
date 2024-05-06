@@ -59,37 +59,8 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CreateProductVariant"
- * x-codeSamples:
- *   - lang: Shell
- *     label: cURL
- *     source: |-
- *       curl -X POST '{backend_url}/admin/products/{id}/variants' \
- *       -H 'x-medusa-access-token: {api_token}' \
- *       -H 'Content-Type: application/json' \
- *       --data-raw '{
- *         "title": "{value}"
- *       }'
- * tags:
- *   - Products
- * responses:
- *   "400":
- *     $ref: "#/components/responses/400_error"
- *   "401":
- *     $ref: "#/components/responses/unauthorized"
- *   "404":
- *     $ref: "#/components/responses/not_found_error"
- *   "409":
- *     $ref: "#/components/responses/invalid_state_error"
- *   "422":
- *     $ref: "#/components/responses/invalid_request_error"
- *   "500":
- *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
  *         type: object
+ *         description: SUMMARY
  *         required:
  *           - title
  *           - sku
@@ -216,6 +187,59 @@
  *             type: object
  *             description: The product's options.
  *             properties: {}
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |-
+ *       curl -X POST '{backend_url}/admin/products/{id}/variants' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "title": "{value}",
+ *         "sku": "{value}",
+ *         "ean": "{value}",
+ *         "upc": "{value}",
+ *         "barcode": "{value}",
+ *         "hs_code": "{value}",
+ *         "mid_code": "{value}",
+ *         "inventory_quantity": 3621544083324928,
+ *         "allow_backorder": false,
+ *         "manage_inventory": true,
+ *         "variant_rank": 849570489696256,
+ *         "weight": 7893319220723712,
+ *         "length": 2949835917361152,
+ *         "height": 2357674687594496,
+ *         "width": 5150499311452160,
+ *         "origin_country": "{value}",
+ *         "material": "{value}",
+ *         "metadata": {},
+ *         "prices": [
+ *           {
+ *             "currency_code": "{value}",
+ *             "amount": 8952600449777664,
+ *             "min_quantity": 5462512040411136,
+ *             "max_quantity": 4871260370632704
+ *           }
+ *         ],
+ *         "options": {}
+ *       }'
+ * tags:
+ *   - Products
+ * responses:
+ *   "200":
+ *     description: OK
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  * 
 */
 

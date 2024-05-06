@@ -59,33 +59,8 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/UpdateRegion"
- * x-codeSamples:
- *   - lang: Shell
- *     label: cURL
- *     source: |-
- *       curl -X POST '{backend_url}/admin/regions/{id}' \
- *       -H 'x-medusa-access-token: {api_token}'
- * tags:
- *   - Regions
- * responses:
- *   "400":
- *     $ref: "#/components/responses/400_error"
- *   "401":
- *     $ref: "#/components/responses/unauthorized"
- *   "404":
- *     $ref: "#/components/responses/not_found_error"
- *   "409":
- *     $ref: "#/components/responses/invalid_state_error"
- *   "422":
- *     $ref: "#/components/responses/invalid_request_error"
- *   "500":
- *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
  *         type: object
+ *         description: SUMMARY
  *         required:
  *           - name
  *           - currency_code
@@ -124,6 +99,42 @@
  *             type: object
  *             description: The region's metadata.
  *             properties: {}
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |-
+ *       curl -X POST '{backend_url}/admin/regions/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "name": "Alden",
+ *         "currency_code": "{value}",
+ *         "countries": [
+ *           "{value}"
+ *         ],
+ *         "automatic_taxes": false,
+ *         "payment_providers": [
+ *           "{value}"
+ *         ],
+ *         "metadata": {}
+ *       }'
+ * tags:
+ *   - Regions
+ * responses:
+ *   "200":
+ *     description: OK
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  * 
 */
 

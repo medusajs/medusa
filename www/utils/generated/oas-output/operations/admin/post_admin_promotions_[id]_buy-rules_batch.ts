@@ -64,8 +64,6 @@
  * tags:
  *   - Promotions
  * responses:
- *   "200":
- *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -78,6 +76,99 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         type: object
+ *         description: SUMMARY
+ *         properties:
+ *           create:
+ *             type: array
+ *             description: The promotion's create.
+ *             items:
+ *               type: object
+ *               description: The create's details.
+ *               required:
+ *                 - operator
+ *                 - description
+ *                 - attribute
+ *                 - values
+ *               properties:
+ *                 operator:
+ *                   type: string
+ *                   enum:
+ *                     - gte
+ *                     - lte
+ *                     - gt
+ *                     - lt
+ *                     - eq
+ *                     - ne
+ *                     - in
+ *                 description:
+ *                   type: string
+ *                   title: description
+ *                   description: The create's description.
+ *                 attribute:
+ *                   type: string
+ *                   title: attribute
+ *                   description: The create's attribute.
+ *                 values:
+ *                   type: array
+ *                   description: The create's values.
+ *                   items:
+ *                     type: string
+ *                     title: values
+ *                     description: The value's values.
+ *           update:
+ *             type: array
+ *             description: The promotion's update.
+ *             items:
+ *               type: object
+ *               description: The update's details.
+ *               required:
+ *                 - id
+ *                 - operator
+ *                 - description
+ *                 - attribute
+ *                 - values
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   title: id
+ *                   description: The update's ID.
+ *                 operator:
+ *                   type: string
+ *                   enum:
+ *                     - gte
+ *                     - lte
+ *                     - gt
+ *                     - lt
+ *                     - eq
+ *                     - ne
+ *                     - in
+ *                 description:
+ *                   type: string
+ *                   title: description
+ *                   description: The update's description.
+ *                 attribute:
+ *                   type: string
+ *                   title: attribute
+ *                   description: The update's attribute.
+ *                 values:
+ *                   type: array
+ *                   description: The update's values.
+ *                   items:
+ *                     type: string
+ *                     title: values
+ *                     description: The value's values.
+ *           delete:
+ *             type: array
+ *             description: The promotion's delete.
+ *             items:
+ *               type: string
+ *               title: delete
+ *               description: The delete's details.
  * 
 */
 

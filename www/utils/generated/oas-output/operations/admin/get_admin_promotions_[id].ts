@@ -62,22 +62,28 @@
  *       schema:
  *         type: object
  *         description: SUMMARY
+ *         required:
+ *           - fields
  *         properties:
  *           fields:
  *             type: string
  *             title: fields
  *             description: The promotion's fields.
- *         required:
- *           - fields
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/promotions/{id}' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "fields": "{value}"
+ *       }'
  * tags:
  *   - Promotions
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -90,11 +96,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         $ref: "#/components/schemas/AdminGetPromotionsParams"
  * 
 */
 

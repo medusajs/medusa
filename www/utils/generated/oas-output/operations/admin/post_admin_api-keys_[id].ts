@@ -59,16 +59,30 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/UpdateApiKey"
+ *         type: object
+ *         description: SUMMARY
+ *         required:
+ *           - title
+ *         properties:
+ *           title:
+ *             type: string
+ *             title: title
+ *             description: The api key's title.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/api-keys/{id}' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "title": "{value}"
+ *       }'
  * tags:
  *   - Api Keys
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -81,18 +95,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - title
- *         properties:
- *           title:
- *             type: string
- *             title: title
- *             description: The api key's title.
  * 
 */
 

@@ -59,16 +59,30 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CustomerGroupUpdatableFields"
+ *         type: object
+ *         description: SUMMARY
+ *         required:
+ *           - name
+ *         properties:
+ *           name:
+ *             type: string
+ *             title: name
+ *             description: The customer group's name.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/customer-groups/{id}' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "name": "Wilber"
+ *       }'
  * tags:
  *   - Customer Groups
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -81,18 +95,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - name
- *         properties:
- *           name:
- *             type: string
- *             title: name
- *             description: The customer group's name.
  * 
 */
 

@@ -53,7 +53,16 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CreateInvite"
+ *         type: object
+ *         description: SUMMARY
+ *         required:
+ *           - email
+ *         properties:
+ *           email:
+ *             type: string
+ *             title: email
+ *             description: The invite's email.
+ *             format: email
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -62,11 +71,13 @@
  *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "email": "Nola57@hotmail.com"
+ *         "email": "Abdiel5@gmail.com"
  *       }'
  * tags:
  *   - Invites
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -79,19 +90,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - email
- *         properties:
- *           email:
- *             type: string
- *             title: email
- *             description: The invite's email.
- *             format: email
  * 
 */
 

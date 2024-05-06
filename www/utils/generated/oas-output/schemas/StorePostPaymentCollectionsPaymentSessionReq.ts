@@ -108,6 +108,10 @@
  *             title: email
  *             description: The customer's email.
  *             format: email
+ *           has_account:
+ *             type: boolean
+ *             title: has_account
+ *             description: The customer's has account.
  *           default_billing_address_id:
  *             type: string
  *             title: default_billing_address_id

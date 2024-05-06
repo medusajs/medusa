@@ -53,40 +53,8 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CreateCampaign"
- * x-codeSamples:
- *   - lang: Shell
- *     label: cURL
- *     source: |-
- *       curl -X POST '{backend_url}/admin/campaigns' \
- *       -H 'x-medusa-access-token: {api_token}' \
- *       -H 'Content-Type: application/json' \
- *       --data-raw '{
- *         "name": "Elwin",
- *         "campaign_identifier": "{value}",
- *         "starts_at": "2024-11-30T18:47:00.491Z",
- *         "ends_at": "2025-02-26T07:41:34.259Z"
- *       }'
- * tags:
- *   - Campaigns
- * responses:
- *   "400":
- *     $ref: "#/components/responses/400_error"
- *   "401":
- *     $ref: "#/components/responses/unauthorized"
- *   "404":
- *     $ref: "#/components/responses/not_found_error"
- *   "409":
- *     $ref: "#/components/responses/invalid_state_error"
- *   "422":
- *     $ref: "#/components/responses/invalid_request_error"
- *   "500":
- *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
  *         type: object
+ *         description: SUMMARY
  *         required:
  *           - name
  *           - campaign_identifier
@@ -120,7 +88,11 @@
  *               - type
  *               - limit
  *             properties:
- *               type: {}
+ *               type:
+ *                 type: string
+ *                 enum:
+ *                   - spend
+ *                   - usage
  *               limit:
  *                 type: number
  *                 title: limit
@@ -148,6 +120,47 @@
  *                   type: string
  *                   title: id
  *                   description: The promotion's ID.
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |-
+ *       curl -X POST '{backend_url}/admin/campaigns' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "name": "Rafael",
+ *         "campaign_identifier": "{value}",
+ *         "description": "{value}",
+ *         "currency": "NZD",
+ *         "budget": {
+ *           "type": "{value}",
+ *           "limit": 1649671080509440
+ *         },
+ *         "starts_at": "2024-12-08T08:39:28.574Z",
+ *         "ends_at": "2024-11-29T15:05:33.749Z",
+ *         "promotions": [
+ *           {
+ *             "id": "id_HXbttvFHpooW0"
+ *           }
+ *         ]
+ *       }'
+ * tags:
+ *   - Campaigns
+ * responses:
+ *   "200":
+ *     description: OK
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  * 
 */
 

@@ -53,38 +53,8 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CreatePromotion"
- * x-codeSamples:
- *   - lang: Shell
- *     label: cURL
- *     source: |-
- *       curl -X POST '{backend_url}/admin/promotions' \
- *       -H 'x-medusa-access-token: {api_token}' \
- *       -H 'Content-Type: application/json' \
- *       --data-raw '{
- *         "code": "{value}",
- *         "type": "{value}"
- *       }'
- * tags:
- *   - Promotions
- * responses:
- *   "400":
- *     $ref: "#/components/responses/400_error"
- *   "401":
- *     $ref: "#/components/responses/unauthorized"
- *   "404":
- *     $ref: "#/components/responses/not_found_error"
- *   "409":
- *     $ref: "#/components/responses/invalid_state_error"
- *   "422":
- *     $ref: "#/components/responses/invalid_request_error"
- *   "500":
- *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
  *         type: object
+ *         description: SUMMARY
  *         required:
  *           - code
  *           - is_automatic
@@ -102,7 +72,11 @@
  *             type: boolean
  *             title: is_automatic
  *             description: The promotion's is automatic.
- *           type: {}
+ *           type:
+ *             type: string
+ *             enum:
+ *               - standard
+ *               - buyget
  *           campaign_id:
  *             type: string
  *             title: campaign_id
@@ -143,7 +117,11 @@
  *                   - type
  *                   - limit
  *                 properties:
- *                   type: {}
+ *                   type:
+ *                     type: string
+ *                     enum:
+ *                       - spend
+ *                       - usage
  *                   limit:
  *                     type: number
  *                     title: limit
@@ -198,9 +176,22 @@
  *                 type: number
  *                 title: max_quantity
  *                 description: The application method's max quantity.
- *               type: {}
- *               target_type: {}
- *               allocation: {}
+ *               type:
+ *                 type: string
+ *                 enum:
+ *                   - fixed
+ *                   - percentage
+ *               target_type:
+ *                 type: string
+ *                 enum:
+ *                   - order
+ *                   - shipping_methods
+ *                   - items
+ *               allocation:
+ *                 type: string
+ *                 enum:
+ *                   - each
+ *                   - across
  *               target_rules:
  *                 type: array
  *                 description: The application method's target rules.
@@ -213,7 +204,16 @@
  *                     - attribute
  *                     - values
  *                   properties:
- *                     operator: {}
+ *                     operator:
+ *                       type: string
+ *                       enum:
+ *                         - gte
+ *                         - lte
+ *                         - gt
+ *                         - lt
+ *                         - eq
+ *                         - ne
+ *                         - in
  *                     description:
  *                       type: string
  *                       title: description
@@ -241,7 +241,16 @@
  *                     - attribute
  *                     - values
  *                   properties:
- *                     operator: {}
+ *                     operator:
+ *                       type: string
+ *                       enum:
+ *                         - gte
+ *                         - lte
+ *                         - gt
+ *                         - lt
+ *                         - eq
+ *                         - ne
+ *                         - in
  *                     description:
  *                       type: string
  *                       title: description
@@ -277,7 +286,16 @@
  *                 - attribute
  *                 - values
  *               properties:
- *                 operator: {}
+ *                 operator:
+ *                   type: string
+ *                   enum:
+ *                     - gte
+ *                     - lte
+ *                     - gt
+ *                     - lt
+ *                     - eq
+ *                     - ne
+ *                     - in
  *                 description:
  *                   type: string
  *                   title: description
@@ -293,6 +311,71 @@
  *                     type: string
  *                     title: values
  *                     description: The value's values.
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |-
+ *       curl -X POST '{backend_url}/admin/promotions' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "code": "{value}",
+ *         "is_automatic": false,
+ *         "type": "{value}",
+ *         "campaign_id": "{value}",
+ *         "campaign": {
+ *           "name": "Helene",
+ *           "campaign_identifier": "{value}",
+ *           "description": "{value}",
+ *           "currency": "MVR",
+ *           "budget": {
+ *             "type": "{value}",
+ *             "limit": 7501249997963264
+ *           },
+ *           "starts_at": "2024-08-12T10:26:20.012Z",
+ *           "ends_at": "2024-05-13T10:19:49.899Z",
+ *           "promotions": []
+ *         },
+ *         "application_method": {
+ *           "description": "{value}",
+ *           "value": 8358287623847936,
+ *           "max_quantity": 2469068038733824,
+ *           "type": "{value}",
+ *           "target_type": "{value}",
+ *           "allocation": "{value}",
+ *           "target_rules": [],
+ *           "buy_rules": [],
+ *           "apply_to_quantity": 5904452787634176,
+ *           "buy_rules_min_quantity": 7660936294825984
+ *         },
+ *         "rules": [
+ *           {
+ *             "operator": "{value}",
+ *             "description": "{value}",
+ *             "attribute": "{value}",
+ *             "values": [
+ *               "{value}"
+ *             ]
+ *           }
+ *         ]
+ *       }'
+ * tags:
+ *   - Promotions
+ * responses:
+ *   "200":
+ *     description: OK
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  * 
 */
 

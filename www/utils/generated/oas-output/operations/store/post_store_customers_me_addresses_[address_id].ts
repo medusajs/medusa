@@ -55,31 +55,8 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CustomerAddress"
- * x-codeSamples:
- *   - lang: Shell
- *     label: cURL
- *     source: curl -X POST '{backend_url}/store/customers/me/addresses/{address_id}'
- * tags:
- *   - Customers
- * responses:
- *   "400":
- *     $ref: "#/components/responses/400_error"
- *   "401":
- *     $ref: "#/components/responses/unauthorized"
- *   "404":
- *     $ref: "#/components/responses/not_found_error"
- *   "409":
- *     $ref: "#/components/responses/invalid_state_error"
- *   "422":
- *     $ref: "#/components/responses/invalid_request_error"
- *   "500":
- *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
  *         type: object
+ *         description: SUMMARY
  *         required:
  *           - metadata
  *           - first_name
@@ -152,6 +129,45 @@
  *             type: boolean
  *             title: is_default_billing
  *             description: The customer's is default billing.
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |-
+ *       curl -X POST '{backend_url}/store/customers/me/addresses/{address_id}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "metadata": {},
+ *         "first_name": "{value}",
+ *         "last_name": "{value}",
+ *         "phone": "{value}",
+ *         "company": "{value}",
+ *         "address_1": "{value}",
+ *         "address_2": "{value}",
+ *         "city": "{value}",
+ *         "country_code": "{value}",
+ *         "province": "{value}",
+ *         "postal_code": "{value}",
+ *         "address_name": "{value}",
+ *         "is_default_shipping": true,
+ *         "is_default_billing": false
+ *       }'
+ * tags:
+ *   - Customers
+ * responses:
+ *   "200":
+ *     description: OK
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  * 
 */
 

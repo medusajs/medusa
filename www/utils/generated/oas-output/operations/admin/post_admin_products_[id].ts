@@ -59,33 +59,8 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/UpdateProduct"
- * x-codeSamples:
- *   - lang: Shell
- *     label: cURL
- *     source: |-
- *       curl -X POST '{backend_url}/admin/products/{id}' \
- *       -H 'x-medusa-access-token: {api_token}'
- * tags:
- *   - Products
- * responses:
- *   "400":
- *     $ref: "#/components/responses/400_error"
- *   "401":
- *     $ref: "#/components/responses/unauthorized"
- *   "404":
- *     $ref: "#/components/responses/not_found_error"
- *   "409":
- *     $ref: "#/components/responses/invalid_state_error"
- *   "422":
- *     $ref: "#/components/responses/invalid_request_error"
- *   "500":
- *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
  *         type: object
+ *         description: SUMMARY
  *         required:
  *           - length
  *           - description
@@ -405,7 +380,120 @@
  *                   type: boolean
  *                   title: manage_inventory
  *                   description: The variant's manage inventory.
- *           status: {}
+ *           status:
+ *             type: string
+ *             enum:
+ *               - draft
+ *               - proposed
+ *               - published
+ *               - rejected
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |-
+ *       curl -X POST '{backend_url}/admin/products/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "length": 3282567029587968,
+ *         "description": "{value}",
+ *         "handle": "{value}",
+ *         "metadata": {},
+ *         "hs_code": "{value}",
+ *         "weight": 4215232060719104,
+ *         "height": 6855525188763648,
+ *         "width": 6565860296622080,
+ *         "origin_country": "{value}",
+ *         "mid_code": "{value}",
+ *         "material": "{value}",
+ *         "thumbnail": "{value}",
+ *         "collection_id": "{value}",
+ *         "tags": [
+ *           {
+ *             "id": "id_ufkiM27SGLcGKiI9fx7h",
+ *             "value": "{value}"
+ *           }
+ *         ],
+ *         "type_id": "{value}",
+ *         "subtitle": "{value}",
+ *         "images": [
+ *           {
+ *             "url": "{value}"
+ *           }
+ *         ],
+ *         "categories": [
+ *           {
+ *             "id": "id_Je6uOboEms3Pkb0s14SZ"
+ *           }
+ *         ],
+ *         "sales_channels": [
+ *           {
+ *             "id": "id_ttuXRM0VhnlxO0tg061"
+ *           }
+ *         ],
+ *         "title": "{value}",
+ *         "discountable": true,
+ *         "options": [
+ *           {
+ *             "id": "id_2B9lNIRdze",
+ *             "title": "{value}",
+ *             "values": [
+ *               "{value}"
+ *             ]
+ *           }
+ *         ],
+ *         "variants": [
+ *           {
+ *             "length": 7973681567367168,
+ *             "options": {},
+ *             "metadata": {},
+ *             "sku": "{value}",
+ *             "barcode": "{value}",
+ *             "hs_code": "{value}",
+ *             "weight": 815881462480896,
+ *             "height": 3071682140962816,
+ *             "width": 1867897194414080,
+ *             "origin_country": "{value}",
+ *             "mid_code": "{value}",
+ *             "material": "{value}",
+ *             "ean": "{value}",
+ *             "upc": "{value}",
+ *             "variant_rank": 6253314014445568,
+ *             "id": "id_QiUPVfomSLnRRU",
+ *             "title": "{value}",
+ *             "prices": [
+ *               {
+ *                 "id": "id_KIf1hFOhE2",
+ *                 "currency_code": "{value}",
+ *                 "amount": 7111166155292672,
+ *                 "min_quantity": 7445498468237312,
+ *                 "max_quantity": 7312473510117376
+ *               }
+ *             ],
+ *             "inventory_quantity": 3277737491955712,
+ *             "allow_backorder": false,
+ *             "manage_inventory": true
+ *           }
+ *         ],
+ *         "status": "{value}"
+ *       }'
+ * tags:
+ *   - Products
+ * responses:
+ *   "200":
+ *     description: OK
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  * 
 */
 
