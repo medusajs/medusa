@@ -11,6 +11,7 @@ import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import { addToCartStep, refreshCartShippingMethodsStep } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
+import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import {
   cartFieldsForRefreshSteps,
   productVariantsFields,
@@ -50,6 +51,8 @@ export const addToCartWorkflow = createWorkflow(
       },
       throw_if_key_not_found: true,
     })
+
+    validateVariantPricesStep({ variants })
 
     confirmVariantInventoryWorkflow.runAsStep({
       input: {

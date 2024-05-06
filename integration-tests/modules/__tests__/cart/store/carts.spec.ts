@@ -1480,6 +1480,8 @@ medusaIntegrationTestRunner({
         let shippingProfile
         let fulfillmentSet
         let shippingOption
+        let stockLocation
+        let inventoryItem
 
         beforeEach(async () => {
           await setupTaxStructure(taxModule)
@@ -1510,7 +1512,6 @@ medusaIntegrationTestRunner({
                 variants: [
                   {
                     title: "Test variant",
-                    inventory_quantity: 10,
                     prices: [
                       {
                         currency_code: "usd",
@@ -1528,13 +1529,32 @@ medusaIntegrationTestRunner({
             )
           ).data.product
 
-          const stockLocation = (
+          stockLocation = (
             await api.post(
               `/admin/stock-locations`,
               { name: "test location" },
               adminHeaders
             )
           ).data.stock_location
+
+          inventoryItem = (
+            await api.post(
+              `/admin/inventory-items`,
+              {
+                sku: "12345",
+              },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItem.id}/location-levels`,
+            {
+              location_id: stockLocation.id,
+              stocked_quantity: 10,
+            },
+            adminHeaders
+          )
 
           await api.post(
             `/admin/stock-locations/${stockLocation.id}/sales-channels`,
@@ -1563,6 +1583,14 @@ medusaIntegrationTestRunner({
               [Modules.STOCK_LOCATION]: { stock_location_id: stockLocation.id },
               [Modules.FULFILLMENT]: { fulfillment_set_id: fulfillmentSet.id },
             },
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.INVENTORY]: {
+                inventory_item_id: inventoryItem.id,
+              },
+            },
           ])
 
           shippingOption = (
@@ -1590,7 +1618,7 @@ medusaIntegrationTestRunner({
           ).data.shipping_option
         })
 
-        it("should create an order", async () => {
+        it("should create an order and create item reservations", async () => {
           const cartResponse = await api.post(`/store/carts`, {
             currency_code: "usd",
             email: "tony@stark-industries.com",
@@ -1602,8 +1630,7 @@ medusaIntegrationTestRunner({
               province: "ny",
               postal_code: "94016",
             },
-            // TODO: inventory isn't being managed on a product level
-            // sales_channel_id: salesChannel.id,
+            sales_channel_id: salesChannel.id,
             items: [{ quantity: 1, variant_id: product.variants[0].id }],
           })
 
@@ -1659,6 +1686,19 @@ medusaIntegrationTestRunner({
                 province: "ny",
                 postal_code: "94016",
               }),
+            })
+          )
+
+          const reservation = await api.get(`/admin/reservations`, adminHeaders)
+          const reservationItem = reservation.data.reservations[0]
+
+          expect(reservationItem).toEqual(
+            expect.objectContaining({
+              id: expect.stringContaining("resitem_"),
+              location_id: stockLocation.id,
+              inventory_item_id: inventoryItem.id,
+              quantity: cartResponse.data.cart.items[0].quantity,
+              line_item_id: cartResponse.data.cart.items[0].id,
             })
           )
         })

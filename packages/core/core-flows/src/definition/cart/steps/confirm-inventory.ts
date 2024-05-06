@@ -1,5 +1,5 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IInventoryService } from "@medusajs/types"
+import { IInventoryServiceNext } from "@medusajs/types"
 import { promiseAll } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { MedusaError } from "medusa-core-utils"
@@ -18,7 +18,7 @@ export const confirmInventoryStepId = "confirm-inventory-step"
 export const confirmInventoryStep = createStep(
   confirmInventoryStepId,
   async (data: StepInput, { container }) => {
-    const inventoryService = container.resolve<IInventoryService>(
+    const inventoryService = container.resolve<IInventoryServiceNext>(
       ModuleRegistrationName.INVENTORY
     )
 

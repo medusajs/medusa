@@ -1,5 +1,5 @@
 import { ConfirmVariantInventoryWorkflowInputDTO } from "@medusajs/types"
-import { MedusaError, deepFlatMap, isDefined } from "@medusajs/utils"
+import { MedusaError, deepFlatMap } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
@@ -8,13 +8,25 @@ import {
 import { confirmInventoryStep } from "../steps"
 import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 
+interface Output {
+  items: {
+    id?: string
+    inventory_item_id: string
+    required_quantity: number
+    allow_backorder: boolean
+    quantity: number
+    location_ids: string[]
+  }[]
+}
+
 export const confirmVariantInventoryWorkflowId = "confirm-item-inventory"
 export const confirmVariantInventoryWorkflow = createWorkflow(
   confirmVariantInventoryWorkflowId,
-  (input: WorkflowData<ConfirmVariantInventoryWorkflowInputDTO>) => {
+  (
+    input: WorkflowData<ConfirmVariantInventoryWorkflowInputDTO>
+  ): WorkflowData<Output> => {
     const confirmInventoryInput = transform({ input }, (data) => {
       const productVariantInventoryItems = new Map<string, any>()
-      const priceNotFound: string[] = []
       const stockLocationIds = new Set<string>()
       const allVariants = new Map<string, any>()
       let hasSalesChannelStockLocation = false
@@ -26,6 +38,10 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
         data.input,
         "variants.inventory_items.inventory.location_levels.stock_locations.sales_channels",
         ({ variants, inventory_items, stock_locations, sales_channels }) => {
+          if (!variants) {
+            return
+          }
+
           if (
             !hasSalesChannelStockLocation &&
             sales_channels?.id === salesChannelId
@@ -33,19 +49,19 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
             hasSalesChannelStockLocation = true
           }
 
-          if (!isDefined(variants.calculated_price)) {
-            priceNotFound.push(variants.id)
+          if (stock_locations) {
+            stockLocationIds.add(stock_locations.id)
           }
 
-          stockLocationIds.add(stock_locations.id)
-
-          const inventoryItemId = inventory_items.inventory_item_id
-          if (!productVariantInventoryItems.has(inventoryItemId)) {
-            productVariantInventoryItems.set(inventoryItemId, {
-              variant_id: inventory_items.variant_id,
-              inventory_item_id: inventoryItemId,
-              required_quantity: inventory_items.required_quantity,
-            })
+          if (inventory_items) {
+            const inventoryItemId = inventory_items.inventory_item_id
+            if (!productVariantInventoryItems.has(inventoryItemId)) {
+              productVariantInventoryItems.set(inventoryItemId, {
+                variant_id: inventory_items.variant_id,
+                inventory_item_id: inventoryItemId,
+                required_quantity: inventory_items.required_quantity,
+              })
+            }
           }
 
           if (!allVariants.has(variants.id)) {
@@ -72,13 +88,6 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
         )
       }
 
-      if (priceNotFound.length && !data.input.ignore_price_check) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Variants with IDs ${priceNotFound.join(", ")} do not have a price`
-        )
-      }
-
       const items = prepareConfirmInventoryInput({
         product_variant_inventory_items: Array.from(
           productVariantInventoryItems.values()
@@ -92,5 +101,7 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
     })
 
     confirmInventoryStep(confirmInventoryInput)
+
+    return confirmInventoryInput
   }
 )

@@ -124,8 +124,6 @@ export interface CompleteCartWorkflowInputDTO {
 }
 
 export interface ConfirmVariantInventoryWorkflowInputDTO {
-  ignore_price_check?: boolean
-
   sales_channel_id: string
   variants: {
     id: string
