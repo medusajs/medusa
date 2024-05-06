@@ -65,37 +65,8 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/UpdateProductVariant"
- * x-codeSamples:
- *   - lang: Shell
- *     label: cURL
- *     source: |-
- *       curl -X POST '{backend_url}/admin/products/{id}/variants/{variant_id}' \
- *       -H 'x-medusa-access-token: {api_token}' \
- *       -H 'Content-Type: application/json' \
- *       --data-raw '{
- *         "id": "id_fa9NxfjmFAz"
- *       }'
- * tags:
- *   - Products
- * responses:
- *   "400":
- *     $ref: "#/components/responses/400_error"
- *   "401":
- *     $ref: "#/components/responses/unauthorized"
- *   "404":
- *     $ref: "#/components/responses/not_found_error"
- *   "409":
- *     $ref: "#/components/responses/invalid_state_error"
- *   "422":
- *     $ref: "#/components/responses/invalid_request_error"
- *   "500":
- *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
  *         type: object
+ *         description: SUMMARY
  *         required:
  *           - length
  *           - options
@@ -232,6 +203,59 @@
  *             type: boolean
  *             title: manage_inventory
  *             description: The product's manage inventory.
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |-
+ *       curl -X POST '{backend_url}/admin/products/{id}/variants/{variant_id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "length": 553333433565184,
+ *         "options": {},
+ *         "metadata": {},
+ *         "sku": "{value}",
+ *         "barcode": "{value}",
+ *         "hs_code": "{value}",
+ *         "weight": 110229628911616,
+ *         "height": 4172081795170304,
+ *         "width": 2991320977113088,
+ *         "origin_country": "{value}",
+ *         "mid_code": "{value}",
+ *         "material": "{value}",
+ *         "ean": "{value}",
+ *         "upc": "{value}",
+ *         "variant_rank": 3522258324684800,
+ *         "id": "id_bPPvwOwWIa2ndex",
+ *         "title": "{value}",
+ *         "prices": [
+ *           {
+ *             "id": "id_gGmeMrUwBNt",
+ *             "currency_code": "{value}",
+ *             "amount": 4572898136162304,
+ *             "min_quantity": 6709305447284736,
+ *             "max_quantity": 2556752140697600
+ *           }
+ *         ],
+ *         "inventory_quantity": 7991114464231424,
+ *         "allow_backorder": false,
+ *         "manage_inventory": true
+ *       }'
+ * tags:
+ *   - Products
+ * responses:
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  * 
 */
 

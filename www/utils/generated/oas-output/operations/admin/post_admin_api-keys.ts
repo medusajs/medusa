@@ -53,7 +53,21 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CreateApiKey"
+ *         type: object
+ *         description: SUMMARY
+ *         required:
+ *           - title
+ *           - type
+ *         properties:
+ *           title:
+ *             type: string
+ *             title: title
+ *             description: The api key's title.
+ *           type:
+ *             type: string
+ *             enum:
+ *               - publishable
+ *               - secret
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -80,20 +94,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - title
- *           - type
- *         properties:
- *           title:
- *             type: string
- *             title: title
- *             description: The api key's title.
- *           type: {}
  * 
 */
 

@@ -53,44 +53,15 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CreateCustomer"
- * x-codeSamples:
- *   - lang: Shell
- *     label: cURL
- *     source: |-
- *       curl -X POST '{backend_url}/admin/customers' \
- *       -H 'x-medusa-access-token: {api_token}'
- * tags:
- *   - Customers
- * responses:
- *   "200":
- *     description: OK
- *     content:
- *       application/json:
- *         schema: {}
- *   "400":
- *     $ref: "#/components/responses/400_error"
- *   "401":
- *     $ref: "#/components/responses/unauthorized"
- *   "404":
- *     $ref: "#/components/responses/not_found_error"
- *   "409":
- *     $ref: "#/components/responses/invalid_state_error"
- *   "422":
- *     $ref: "#/components/responses/invalid_request_error"
- *   "500":
- *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
  *         type: object
+ *         description: SUMMARY
  *         required:
  *           - email
  *           - company_name
  *           - first_name
  *           - last_name
  *           - phone
+ *           - metadata
  *         properties:
  *           email:
  *             type: string
@@ -113,6 +84,46 @@
  *             type: string
  *             title: phone
  *             description: The customer's phone.
+ *           metadata:
+ *             type: object
+ *             description: The customer's metadata.
+ *             properties: {}
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |-
+ *       curl -X POST '{backend_url}/admin/customers' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "email": "Federico_Kirlin23@yahoo.com",
+ *         "company_name": "{value}",
+ *         "first_name": "{value}",
+ *         "last_name": "{value}",
+ *         "phone": "{value}",
+ *         "metadata": {}
+ *       }'
+ * tags:
+ *   - Customers
+ * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminCustomerResponse"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  * 
 */
 
