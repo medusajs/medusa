@@ -15,6 +15,7 @@ import {
 } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
+import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import { productVariantsFields } from "../utils/fields"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
@@ -67,6 +68,8 @@ export const createCartWorkflow = createWorkflow(
       },
       throw_if_key_not_found: true,
     })
+
+    validateVariantPricesStep({ variants })
 
     confirmVariantInventoryWorkflow.runAsStep({
       input: {
