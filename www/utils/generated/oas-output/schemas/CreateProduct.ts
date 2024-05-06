@@ -9,55 +9,31 @@
  *   title:
  *     type: string
  *     title: title
- *     description: The product's title.
+ *     description: The upload's title.
  *   subtitle:
  *     type: string
  *     title: subtitle
- *     description: The product's subtitle.
+ *     description: The upload's subtitle.
  *   description:
  *     type: string
  *     title: description
- *     description: The product's description.
+ *     description: The upload's description.
  *   is_giftcard:
  *     type: boolean
  *     title: is_giftcard
- *     description: The product's is giftcard.
+ *     description: The upload's is giftcard.
  *   discountable:
  *     type: boolean
  *     title: discountable
- *     description: The product's discountable.
- *   images:
- *     oneOf:
- *       - type: array
- *         description: The product's images.
- *         items:
- *           type: string
- *           title: images
- *           description: The image's images.
- *       - type: array
- *         description: The product's images.
- *         items:
- *           type: object
- *           description: The image's images.
- *           required:
- *             - url
- *           properties:
- *             id:
- *               type: string
- *               title: id
- *               description: The image's ID.
- *             url:
- *               type: string
- *               title: url
- *               description: The image's url.
+ *     description: The upload's discountable.
  *   thumbnail:
  *     type: string
  *     title: thumbnail
- *     description: The product's thumbnail.
+ *     description: The upload's thumbnail.
  *   handle:
  *     type: string
  *     title: handle
- *     description: The product's handle.
+ *     description: The upload's handle.
  *   status:
  *     type: string
  *     enum:
@@ -65,203 +41,76 @@
  *       - proposed
  *       - published
  *       - rejected
- *   type:
- *     $ref: "#/components/schemas/CreateProductType"
+ *   images:
+ *     type: array
+ *     description: The upload's images.
+ *     items:
+ *       $ref: "#/components/schemas/UpsertProductImage"
  *   type_id:
  *     type: string
  *     title: type_id
- *     description: The product's type id.
+ *     description: The upload's type id.
  *   collection_id:
  *     type: string
  *     title: collection_id
- *     description: The product's collection id.
+ *     description: The upload's collection id.
  *   tags:
  *     type: array
- *     description: The product's tags.
+ *     description: The upload's tags.
  *     items:
- *       type: object
- *       description: The tag's tags.
- *       x-schemaName: CreateProductTag
- *       required:
- *         - value
- *       properties:
- *         value:
- *           type: string
- *           title: value
- *           description: The tag's value.
- *   categories:
+ *       $ref: "#/components/schemas/UpsertProductTag"
+ *   category_ids:
  *     type: array
- *     description: The product's categories.
+ *     description: The upload's category ids.
  *     items:
- *       type: object
- *       description: The category's categories.
- *       required:
- *         - id
- *       properties:
- *         id:
- *           type: string
- *           title: id
- *           description: The category's ID.
+ *       type: string
+ *       title: category_ids
+ *       description: The category id's category ids.
  *   options:
  *     type: array
- *     description: The product's options.
+ *     description: The upload's options.
  *     items:
- *       type: object
- *       description: The option's options.
- *       x-schemaName: CreateProductOption
- *       required:
- *         - title
- *         - values
- *       properties:
- *         title:
- *           type: string
- *           title: title
- *           description: The option's title.
- *         values:
- *           oneOf:
- *             - type: array
- *               description: The option's values.
- *               items:
- *                 type: string
- *                 title: values
- *                 description: The value's values.
- *             - type: array
- *               description: The option's values.
- *               items:
- *                 type: object
- *                 description: The value's values.
- *                 required:
- *                   - value
- *                 properties:
- *                   value:
- *                     type: string
- *                     title: value
- *                     description: The value's details.
- *         product_id:
- *           type: string
- *           title: product_id
- *           description: The option's product id.
+ *       $ref: "#/components/schemas/CreateProductOption"
  *   variants:
  *     type: array
- *     description: The product's variants.
+ *     description: The upload's variants.
  *     items:
- *       type: object
- *       description: The variant's variants.
- *       x-schemaName: CreateProductVariant
- *       required:
- *         - title
- *       properties:
- *         product_id:
- *           type: string
- *           title: product_id
- *           description: The variant's product id.
- *         title:
- *           type: string
- *           title: title
- *           description: The variant's title.
- *         sku:
- *           type: string
- *           title: sku
- *           description: The variant's sku.
- *         barcode:
- *           type: string
- *           title: barcode
- *           description: The variant's barcode.
- *         ean:
- *           type: string
- *           title: ean
- *           description: The variant's ean.
- *         upc:
- *           type: string
- *           title: upc
- *           description: The variant's upc.
- *         allow_backorder:
- *           type: boolean
- *           title: allow_backorder
- *           description: The variant's allow backorder.
- *         inventory_quantity:
- *           type: number
- *           title: inventory_quantity
- *           description: The variant's inventory quantity.
- *         manage_inventory:
- *           type: boolean
- *           title: manage_inventory
- *           description: The variant's manage inventory.
- *         hs_code:
- *           type: string
- *           title: hs_code
- *           description: The variant's hs code.
- *         origin_country:
- *           type: string
- *           title: origin_country
- *           description: The variant's origin country.
- *         mid_code:
- *           type: string
- *           title: mid_code
- *           description: The variant's mid code.
- *         material:
- *           type: string
- *           title: material
- *           description: The variant's material.
- *         weight:
- *           type: number
- *           title: weight
- *           description: The variant's weight.
- *         length:
- *           type: number
- *           title: length
- *           description: The variant's length.
- *         height:
- *           type: number
- *           title: height
- *           description: The variant's height.
- *         width:
- *           type: number
- *           title: width
- *           description: The variant's width.
- *         options:
- *           type: object
- *           description: The variant's options.
- *           properties: {}
- *         metadata:
- *           type: object
- *           description: The variant's metadata.
- *           properties: {}
+ *       $ref: "#/components/schemas/CreateProductVariant"
  *   width:
  *     type: number
  *     title: width
- *     description: The product's width.
+ *     description: The upload's width.
  *   height:
  *     type: number
  *     title: height
- *     description: The product's height.
+ *     description: The upload's height.
  *   length:
  *     type: number
  *     title: length
- *     description: The product's length.
+ *     description: The upload's length.
  *   weight:
  *     type: number
  *     title: weight
- *     description: The product's weight.
+ *     description: The upload's weight.
  *   origin_country:
  *     type: string
  *     title: origin_country
- *     description: The product's origin country.
+ *     description: The upload's origin country.
  *   hs_code:
  *     type: string
  *     title: hs_code
- *     description: The product's hs code.
+ *     description: The upload's hs code.
  *   material:
  *     type: string
  *     title: material
- *     description: The product's material.
+ *     description: The upload's material.
  *   mid_code:
  *     type: string
  *     title: mid_code
- *     description: The product's mid code.
+ *     description: The upload's mid code.
  *   metadata:
  *     type: object
- *     description: The product's metadata.
+ *     description: The upload's metadata.
  *     properties: {}
  * 
 */

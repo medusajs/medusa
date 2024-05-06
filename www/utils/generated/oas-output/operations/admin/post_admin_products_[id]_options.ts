@@ -59,7 +59,23 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CreateProductOption"
+ *         type: object
+ *         description: SUMMARY
+ *         required:
+ *           - title
+ *           - values
+ *         properties:
+ *           title:
+ *             type: string
+ *             title: title
+ *             description: The product's title.
+ *           values:
+ *             type: array
+ *             description: The product's values.
+ *             items:
+ *               type: string
+ *               title: values
+ *               description: The value's values.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -68,7 +84,10 @@
  *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "title": "{value}"
+ *         "title": "{value}",
+ *         "values": [
+ *           "{value}"
+ *         ]
  *       }'
  * tags:
  *   - Products
@@ -85,26 +104,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - title
- *           - values
- *         properties:
- *           title:
- *             type: string
- *             title: title
- *             description: The product's title.
- *           values:
- *             type: array
- *             description: The product's values.
- *             items:
- *               type: string
- *               title: values
- *               description: The value's values.
  * 
 */
 

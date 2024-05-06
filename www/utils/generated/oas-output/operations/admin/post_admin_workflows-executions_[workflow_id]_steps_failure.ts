@@ -82,6 +82,7 @@
  *             enum:
  *               - invoke
  *               - compensate
+ *             type: string
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

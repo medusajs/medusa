@@ -59,37 +59,8 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CreateCustomerAddress"
- * x-codeSamples:
- *   - lang: Shell
- *     label: cURL
- *     source: |-
- *       curl -X POST '{backend_url}/admin/customers/{id}/addresses' \
- *       -H 'x-medusa-access-token: {api_token}' \
- *       -H 'Content-Type: application/json' \
- *       --data-raw '{
- *         "customer_id": "{value}"
- *       }'
- * tags:
- *   - Customers
- * responses:
- *   "400":
- *     $ref: "#/components/responses/400_error"
- *   "401":
- *     $ref: "#/components/responses/unauthorized"
- *   "404":
- *     $ref: "#/components/responses/not_found_error"
- *   "409":
- *     $ref: "#/components/responses/invalid_state_error"
- *   "422":
- *     $ref: "#/components/responses/invalid_request_error"
- *   "500":
- *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
  *         type: object
+ *         description: SUMMARY
  *         required:
  *           - address_name
  *           - is_default_shipping
@@ -162,6 +133,44 @@
  *             type: object
  *             description: The customer's metadata.
  *             properties: {}
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |-
+ *       curl -X POST '{backend_url}/admin/customers/{id}/addresses' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "address_name": "{value}",
+ *         "is_default_shipping": true,
+ *         "is_default_billing": true,
+ *         "company": "{value}",
+ *         "first_name": "{value}",
+ *         "last_name": "{value}",
+ *         "address_1": "{value}",
+ *         "address_2": "{value}",
+ *         "city": "{value}",
+ *         "country_code": "{value}",
+ *         "province": "{value}",
+ *         "postal_code": "{value}",
+ *         "phone": "{value}",
+ *         "metadata": {}
+ *       }'
+ * tags:
+ *   - Customers
+ * responses:
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  * 
 */
 

@@ -108,6 +108,10 @@
  *             title: email
  *             description: The customer's email.
  *             format: email
+ *           has_account:
+ *             type: boolean
+ *             title: has_account
+ *             description: The customer's has account.
  *           default_billing_address_id:
  *             type: string
  *             title: default_billing_address_id
@@ -132,10 +136,7 @@
  *             type: array
  *             description: The customer's addresses.
  *             items:
- *               type: object
- *               description: The address's addresses.
- *               x-schemaName: CustomerAddress
- *               properties: {}
+ *               $ref: "#/components/schemas/CustomerAddress"
  *           phone:
  *             type: string
  *             title: phone

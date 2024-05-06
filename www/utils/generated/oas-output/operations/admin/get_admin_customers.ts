@@ -63,7 +63,8 @@
  *     description: OK
  *     content:
  *       application/json:
- *         schema: {}
+ *         schema:
+ *           $ref: "#/components/schemas/AdminCustomerListResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
