@@ -74,7 +74,7 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
           ({ shipping_options }) => {
             const { calculated_price, ...options } = shipping_options ?? {}
 
-            if (!calculated_price) {
+            if (options?.id && !calculated_price) {
               optionsMissingPrices.push(options.id)
             }
 
