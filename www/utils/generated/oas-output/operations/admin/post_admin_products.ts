@@ -53,37 +53,8 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CreateProduct"
- * x-codeSamples:
- *   - lang: Shell
- *     label: cURL
- *     source: |-
- *       curl -X POST '{backend_url}/admin/products' \
- *       -H 'x-medusa-access-token: {api_token}' \
- *       -H 'Content-Type: application/json' \
- *       --data-raw '{
- *         "title": "{value}"
- *       }'
- * tags:
- *   - Products
- * responses:
- *   "400":
- *     $ref: "#/components/responses/400_error"
- *   "401":
- *     $ref: "#/components/responses/unauthorized"
- *   "404":
- *     $ref: "#/components/responses/not_found_error"
- *   "409":
- *     $ref: "#/components/responses/invalid_state_error"
- *   "422":
- *     $ref: "#/components/responses/invalid_request_error"
- *   "500":
- *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
  *         type: object
+ *         description: SUMMARY
  *         required:
  *           - title
  *           - subtitle
@@ -152,7 +123,13 @@
  *             type: string
  *             title: handle
  *             description: The product's handle.
- *           status: {}
+ *           status:
+ *             type: string
+ *             enum:
+ *               - draft
+ *               - proposed
+ *               - published
+ *               - rejected
  *           type_id:
  *             type: string
  *             title: type_id
@@ -394,6 +371,109 @@
  *             type: object
  *             description: The product's metadata.
  *             properties: {}
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |-
+ *       curl -X POST '{backend_url}/admin/products' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "title": "{value}",
+ *         "subtitle": "{value}",
+ *         "description": "{value}",
+ *         "is_giftcard": false,
+ *         "discountable": false,
+ *         "images": [
+ *           {
+ *             "url": "{value}"
+ *           }
+ *         ],
+ *         "thumbnail": "{value}",
+ *         "handle": "{value}",
+ *         "status": "{value}",
+ *         "type_id": "{value}",
+ *         "collection_id": "{value}",
+ *         "categories": [
+ *           {
+ *             "id": "id_Pb7xedYA7ZAv6g6j54ew"
+ *           }
+ *         ],
+ *         "tags": [
+ *           {
+ *             "id": "id_oDxag4mAGc8CJc",
+ *             "value": "{value}"
+ *           }
+ *         ],
+ *         "options": [
+ *           {
+ *             "title": "{value}",
+ *             "values": [
+ *               "{value}"
+ *             ]
+ *           }
+ *         ],
+ *         "variants": [
+ *           {
+ *             "title": "{value}",
+ *             "sku": "{value}",
+ *             "ean": "{value}",
+ *             "upc": "{value}",
+ *             "barcode": "{value}",
+ *             "hs_code": "{value}",
+ *             "mid_code": "{value}",
+ *             "inventory_quantity": 1351101225893888,
+ *             "allow_backorder": true,
+ *             "manage_inventory": true,
+ *             "variant_rank": 7155606282567680,
+ *             "weight": 4684377097240576,
+ *             "length": 8061605384290304,
+ *             "height": 977445643616256,
+ *             "width": 6708177689116672,
+ *             "origin_country": "{value}",
+ *             "material": "{value}",
+ *             "metadata": {},
+ *             "prices": [
+ *               {
+ *                 "currency_code": "{value}",
+ *                 "amount": 4139683418210304,
+ *                 "min_quantity": 8440994678702080,
+ *                 "max_quantity": 5266280927985664
+ *               }
+ *             ],
+ *             "options": {}
+ *           }
+ *         ],
+ *         "sales_channels": [
+ *           {
+ *             "id": "id_WJNcwOGY7glMp"
+ *           }
+ *         ],
+ *         "weight": 8634028928270336,
+ *         "length": 2270965595635712,
+ *         "height": 216881319378944,
+ *         "width": 7665967272296448,
+ *         "hs_code": "{value}",
+ *         "mid_code": "{value}",
+ *         "origin_country": "{value}",
+ *         "material": "{value}",
+ *         "metadata": {}
+ *       }'
+ * tags:
+ *   - Products
+ * responses:
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  * 
 */
 

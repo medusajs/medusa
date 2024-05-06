@@ -51,7 +51,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     }
 
     const shouldExpandParent =
-      familyOptions.includeAncestorsTree || fields.includes("parent_category")
+      familyOptions.includeAncestorsTree || populate.includes("parent_category") || fields.some(field => field.startsWith('parent_category'))
 
     if (shouldExpandParent) {
       populate.indexOf("parent_category") === -1 &&
@@ -59,8 +59,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     }
 
     const shouldExpandChildren =
-      familyOptions.includeDescendantsTree ||
-      fields.includes("category_children")
+      familyOptions.includeDescendantsTree || populate.includes("category_children") || fields.some(field => field.startsWith('category_children'))
 
     if (shouldExpandChildren) {
       populate.indexOf("category_children") === -1 &&

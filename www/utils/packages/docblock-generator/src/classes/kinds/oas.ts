@@ -1718,6 +1718,7 @@ class OasKindGenerator extends FunctionKindGenerator {
   updateSchema({
     oldSchema,
     newSchema,
+    level = 1,
   }: {
     /**
      * The old schema.
@@ -1727,7 +1728,16 @@ class OasKindGenerator extends FunctionKindGenerator {
      * The new schema.
      */
     newSchema?: OpenApiSchema | OpenAPIV3.ReferenceObject
+    /**
+     * The current level in the update schema. Used to avoid
+     * maximum call stack size exceeded error
+     */
+    level?: number
   }): OpenApiSchema | undefined {
+    if (level > this.MAX_LEVEL) {
+      return
+    }
+
     const oldSchemaObj = (
       oldSchema && "$ref" in oldSchema
         ? this.oasSchemaHelper.getSchemaByName(oldSchema.$ref)?.schema
@@ -1738,6 +1748,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         ? this.oasSchemaHelper.getSchemaByName(newSchema.$ref)?.schema
         : newSchema
     ) as OpenApiSchema | undefined
+
     if (!oldSchemaObj && newSchemaObj) {
       return newSchemaObj
     } else if (oldSchemaObj && !newSchemaObj) {
@@ -1784,6 +1795,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 newSchema: newSchemaObj!.properties![
                   propertyName
                 ] as OpenApiSchema,
+                level: level + 1,
               }) || propertySchema
           }
         )
@@ -1806,6 +1818,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         this.updateSchema({
           oldSchema: oldSchemaObj.items as OpenApiSchema,
           newSchema: newSchemaObj!.items as OpenApiSchema,
+          level: level + 1,
         }) || oldSchemaObj.items
     }
 

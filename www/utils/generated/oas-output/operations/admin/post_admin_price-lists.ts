@@ -85,10 +85,12 @@
  *             enum:
  *               - active
  *               - draft
+ *             type: string
  *           type:
  *             enum:
  *               - sale
  *               - override
+ *             type: string
  *           prices:
  *             type: array
  *             description: The price list's prices.

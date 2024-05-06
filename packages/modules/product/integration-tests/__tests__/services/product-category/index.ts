@@ -2,7 +2,7 @@ import { ProductCategoryService } from "@services"
 
 import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import {
   eletronicsCategoriesData,
@@ -199,13 +199,13 @@ moduleIntegrationTestRunner({
               mpath: "category-0.category-1.category-1-b.",
               parent_category_id: "category-1",
               category_children: [
-                {
+                expect.objectContaining({
                   id: "category-1-b-1",
                   handle: "category-1-b-1",
                   mpath: "category-0.category-1.category-1-b.category-1-b-1.",
                   parent_category_id: "category-1-b",
                   category_children: [],
-                },
+                }),
               ],
             },
           ])

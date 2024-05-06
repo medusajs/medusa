@@ -66,8 +66,6 @@
  * tags:
  *   - Inventory Items
  * responses:
- *   "200":
- *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -80,6 +78,61 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         type: object
+ *         description: SUMMARY
+ *         properties:
+ *           create:
+ *             type: array
+ *             description: The inventory item's create.
+ *             items:
+ *               type: object
+ *               description: The create's details.
+ *               required:
+ *                 - location_id
+ *                 - stocked_quantity
+ *                 - incoming_quantity
+ *               properties:
+ *                 location_id:
+ *                   type: string
+ *                   title: location_id
+ *                   description: The create's location id.
+ *                 stocked_quantity:
+ *                   type: number
+ *                   title: stocked_quantity
+ *                   description: The create's stocked quantity.
+ *                 incoming_quantity:
+ *                   type: number
+ *                   title: incoming_quantity
+ *                   description: The create's incoming quantity.
+ *           update:
+ *             type: array
+ *             description: The inventory item's update.
+ *             items:
+ *               type: object
+ *               description: The update's details.
+ *               required:
+ *                 - stocked_quantity
+ *                 - incoming_quantity
+ *               properties:
+ *                 stocked_quantity:
+ *                   type: number
+ *                   title: stocked_quantity
+ *                   description: The update's stocked quantity.
+ *                 incoming_quantity:
+ *                   type: number
+ *                   title: incoming_quantity
+ *                   description: The update's incoming quantity.
+ *           delete:
+ *             type: array
+ *             description: The inventory item's delete.
+ *             items:
+ *               type: string
+ *               title: delete
+ *               description: The delete's details.
  * 
 */
 

@@ -1,7 +1,7 @@
 /**
  * @schema CreateProductVariant
  * type: object
- * description: SUMMARY
+ * description: The variant's variants.
  * x-schemaName: CreateProductVariant
  * required:
  *   - title
@@ -9,78 +9,78 @@
  *   product_id:
  *     type: string
  *     title: product_id
- *     description: The product's product id.
+ *     description: The variant's product id.
  *   title:
  *     type: string
  *     title: title
- *     description: The product's title.
+ *     description: The variant's title.
  *   sku:
  *     type: string
  *     title: sku
- *     description: The product's sku.
+ *     description: The variant's sku.
  *   barcode:
  *     type: string
  *     title: barcode
- *     description: The product's barcode.
+ *     description: The variant's barcode.
  *   ean:
  *     type: string
  *     title: ean
- *     description: The product's ean.
+ *     description: The variant's ean.
  *   upc:
  *     type: string
  *     title: upc
- *     description: The product's upc.
+ *     description: The variant's upc.
  *   allow_backorder:
  *     type: boolean
  *     title: allow_backorder
- *     description: The product's allow backorder.
+ *     description: The variant's allow backorder.
  *   inventory_quantity:
  *     type: number
  *     title: inventory_quantity
- *     description: The product's inventory quantity.
+ *     description: The variant's inventory quantity.
  *   manage_inventory:
  *     type: boolean
  *     title: manage_inventory
- *     description: The product's manage inventory.
+ *     description: The variant's manage inventory.
  *   hs_code:
  *     type: string
  *     title: hs_code
- *     description: The product's hs code.
+ *     description: The variant's hs code.
  *   origin_country:
  *     type: string
  *     title: origin_country
- *     description: The product's origin country.
+ *     description: The variant's origin country.
  *   mid_code:
  *     type: string
  *     title: mid_code
- *     description: The product's mid code.
+ *     description: The variant's mid code.
  *   material:
  *     type: string
  *     title: material
- *     description: The product's material.
+ *     description: The variant's material.
  *   weight:
  *     type: number
  *     title: weight
- *     description: The product's weight.
+ *     description: The variant's weight.
  *   length:
  *     type: number
  *     title: length
- *     description: The product's length.
+ *     description: The variant's length.
  *   height:
  *     type: number
  *     title: height
- *     description: The product's height.
+ *     description: The variant's height.
  *   width:
  *     type: number
  *     title: width
- *     description: The product's width.
+ *     description: The variant's width.
  *   options:
  *     type: object
- *     description: The product's options.
+ *     description: The variant's options.
  *     properties: {}
  *   metadata:
  *     type: object
- *     description: The product's metadata.
+ *     description: The variant's metadata.
  *     properties: {}
  * 
 */
