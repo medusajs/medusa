@@ -1,4 +1,14 @@
 import { z } from "zod"
+import {
+  CreateProductOptionSchema,
+  CreateVariantSchema,
+} from "../common/schemas"
+
+export const ProductCreateVariantSchema = CreateVariantSchema.extend({
+  should_create: z.boolean(),
+  allow_backorder: z.enum(["true", "false"]).optional(),
+  manage_inventory: z.enum(["true", "false"]).optional(),
+})
 
 export const ProductCreateSchema = z.object({
   title: z.string(),
@@ -26,21 +36,8 @@ export const ProductCreateSchema = z.object({
   weight: z.string().optional(),
   mid_code: z.string().optional(),
   hs_code: z.string().optional(),
-  options: z.array(
-    z.object({
-      title: z.string(),
-      values: z.array(z.string()),
-    })
-  ),
-  variants: z.array(
-    z.object({
-      should_create: z.boolean(),
-      title: z.string(),
-      options: z.record(z.string(), z.string()),
-      variant_rank: z.number(),
-      prices: z.record(z.string(), z.string()).optional(),
-    })
-  ),
+  options: z.array(CreateProductOptionSchema),
+  variants: z.array(ProductCreateVariantSchema),
   images: z.array(z.string()).optional(),
   thumbnail: z.string().optional(),
 })

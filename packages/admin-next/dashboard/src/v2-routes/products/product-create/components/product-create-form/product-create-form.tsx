@@ -8,7 +8,6 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useCreateProduct } from "../../../../../hooks/api/products"
-import { VariantPricingForm } from "../../../common/variant-pricing-form"
 import {
   PRODUCT_CREATE_FORM_DEFAULTS,
   ProductCreateSchema,
@@ -16,6 +15,7 @@ import {
 import { ProductCreateSchemaType } from "../../types"
 import { normalizeProductFormValues } from "../../utils"
 import { ProductCreateDetailsForm } from "../product-create-details-form"
+import { ProductCreateVariantsForm } from "../product-create-variants-form"
 
 enum Tab {
   PRODUCT = "product",
@@ -141,7 +141,7 @@ export const ProductCreateForm = () => {
                 className="size-full overflow-y-auto"
                 value={Tab.PRICE}
               >
-                <VariantPricingForm form={form} />
+                <ProductCreateVariantsForm form={form} />
               </ProgressTabs.Content>
             </RouteFocusModal.Body>
           </ProgressTabs>
