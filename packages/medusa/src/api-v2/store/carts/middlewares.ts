@@ -116,17 +116,6 @@ export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/store/carts/:id/payment-collections",
-    middlewares: [
-      validateAndTransformBody(StoreUpdateCart),
-      validateAndTransformQuery(
-        StoreGetCartsCart,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
     matcher: "/store/carts/:id/shipping-methods",
     middlewares: [
       validateAndTransformBody(StoreAddCartShippingMethods),

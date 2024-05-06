@@ -1197,7 +1197,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /store/carts/:id/payment-collections", () => {
+      describe("POST /store/payment-collections", () => {
         it("should create a payment collection for the cart", async () => {
           const region = await regionModule.create({
             name: "US",
@@ -1209,21 +1209,91 @@ medusaIntegrationTestRunner({
             region_id: region.id,
           })
 
-          const response = await api.post(
-            `/store/carts/${cart.id}/payment-collections`
-          )
+          const response = await api.post(`/store/payment-collections`, {
+            region_id: region.id,
+            cart_id: cart.id,
+            amount: 0,
+            currency_code: cart.currency_code,
+          })
 
           expect(response.status).toEqual(200)
-          expect(response.data.cart).toEqual(
+          expect(response.data.payment_collection).toEqual(
             expect.objectContaining({
-              id: cart.id,
-              currency_code: "usd",
-              payment_collection: expect.objectContaining({
-                id: expect.any(String),
-                amount: 0,
-              }),
+              id: expect.any(String),
+              amount: 0,
             })
           )
+        })
+
+        it("should return an existing payment collection for the cart", async () => {
+          const region = await regionModule.create({
+            name: "US",
+            currency_code: "usd",
+          })
+
+          const cart = await cartModule.create({
+            currency_code: "usd",
+            region_id: region.id,
+          })
+
+          const firstCollection = (
+            await api.post(`/store/payment-collections`, {
+              region_id: region.id,
+              cart_id: cart.id,
+              amount: 0,
+              currency_code: cart.currency_code,
+            })
+          ).data.payment_collection
+
+          const response = await api.post(`/store/payment-collections`, {
+            region_id: region.id,
+            cart_id: cart.id,
+            amount: 0,
+            currency_code: cart.currency_code,
+          })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.payment_collection.id).toEqual(
+            firstCollection.id
+          )
+        })
+
+        it("should create a new payment collection for a new cart", async () => {
+          const region = await regionModule.create({
+            name: "US",
+            currency_code: "usd",
+          })
+
+          const firstCart = await cartModule.create({
+            currency_code: "usd",
+            region_id: region.id,
+          })
+
+          const secondCart = await cartModule.create({
+            currency_code: "usd",
+            region_id: region.id,
+          })
+
+          const firstCollection = (
+            await api.post(`/store/payment-collections`, {
+              region_id: region.id,
+              cart_id: firstCart.id,
+              amount: 0,
+              currency_code: firstCart.currency_code,
+            })
+          ).data.payment_collection
+
+          const secondCollection = (
+            await api.post(`/store/payment-collections`, {
+              region_id: region.id,
+              cart_id: secondCart.id,
+              amount: 0,
+              currency_code: secondCart.currency_code,
+            })
+          ).data.payment_collection
+
+          expect(firstCollection.id).toBeTruthy()
+          expect(firstCollection.id).not.toEqual(secondCollection.id)
         })
       })
 
@@ -1363,8 +1433,13 @@ medusaIntegrationTestRunner({
             rules: [
               {
                 operator: RuleOperator.EQ,
-                attribute: "shipping_address.country_code",
-                value: "us",
+                attribute: "is_return",
+                value: "false",
+              },
+              {
+                operator: RuleOperator.EQ,
+                attribute: "enabled_in_store",
+                value: "true",
               },
             ],
           })

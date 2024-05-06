@@ -46,6 +46,10 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
       variables: {
         id: input.sales_channel_id,
         "stock_locations.fulfillment_sets.service_zones.shipping_options": {
+          context: {
+            is_return: "false",
+            enabled_in_store: "true",
+          },
           filters: {
             address: {
               city: input.shipping_address?.city,
