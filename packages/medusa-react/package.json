@@ -35,7 +35,7 @@
   "author": "Zakaria S. El Asri",
   "devDependencies": {
     "@babel/core": "^7.16.0",
-    "@medusajs/medusa": "^1.20.5",
+    "@medusajs/medusa": "latest",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",
     "@storybook/addons": "^6.3.12",
@@ -62,7 +62,7 @@
     "tsup": "6.7.0"
   },
   "dependencies": {
-    "@medusajs/medusa-js": "*"
+    "@medusajs/medusa-js": "latest"
   },
   "msw": {
     "workerDirectory": "public"
