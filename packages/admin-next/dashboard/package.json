@@ -50,7 +50,7 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
-    "@medusajs/medusa": "latest",
+    "@medusajs/medusa": "workspace:^",
     "@medusajs/types": "workspace:^",
     "@medusajs/ui-preset": "workspace:^",
     "@medusajs/vite-plugin-extension": "workspace:^",

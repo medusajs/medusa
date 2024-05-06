@@ -9,8 +9,6 @@
       "packages/core/*",
       "packages/cli/*",
       "packages/cli/oas/*",
-      "packages/medusa-js",
-      "packages/medusa-react",
       "packages/*",
       "packages/admin-next/*",
       "packages/design-system/*",
