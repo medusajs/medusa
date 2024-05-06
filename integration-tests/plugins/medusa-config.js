@@ -42,16 +42,6 @@ module.exports = {
         ],
       },
     },
-    [Modules.STOCK_LOCATION]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/stock-location",
-    },
-    [Modules.INVENTORY]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/inventory",
-    },
     [Modules.PRICING]: {
       scope: "internal",
       resources: "shared",
