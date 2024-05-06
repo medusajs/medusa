@@ -46,6 +46,10 @@ export interface CreateReservationItemInput {
    */
   quantity: number
   /**
+   * Allow backorder of the item. If true, it won't check inventory levels before reserving it.
+   */
+  allow_backorder?: boolean
+  /**
    * The description of the reservation.
    */
   description?: string

@@ -4,11 +4,11 @@ import {
   stringToSelectRelationObject,
 } from "@medusajs/utils"
 import { pick } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { BaseEntity } from "../interfaces"
-import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
 import { featureFlagRouter } from "../loaders/feature-flags"
 import MedusaV2 from "../loaders/feature-flags/medusa-v2"
+import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
 
 export function pickByConfig<TModel extends BaseEntity>(
   obj: TModel | TModel[],

@@ -83,7 +83,7 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /store/carts", () => {
-        it.skip("should create a cart", async () => {
+        it("should create a cart", async () => {
           const region = await regionModule.create({
             name: "US",
             currency_code: "usd",
@@ -1485,8 +1485,8 @@ medusaIntegrationTestRunner({
 
           await remoteLinkService.create([
             {
-              [Modules.FULFILLMENT]: { fulfillment_set_id: fulfillmentSet.id },
               [Modules.STOCK_LOCATION]: { stock_location_id: stockLocation.id },
+              [Modules.FULFILLMENT]: { fulfillment_set_id: fulfillmentSet.id },
             },
           ])
 

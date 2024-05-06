@@ -1,16 +1,18 @@
 import {
+  DALUtils,
+  Searchable,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
+import {
   BeforeCreate,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import {
-  createPsqlIndexStatementHelper,
-  generateEntityId,
-  Searchable,
-} from "@medusajs/utils"
 
 import { StockLocationAddress } from "./stock-location-address"
 
@@ -21,6 +23,7 @@ const StockLocationDeletedAtIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export class StockLocation {
   @PrimaryKey({ columnType: "text" })
   id: string

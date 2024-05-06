@@ -122,6 +122,7 @@ moduleIntegrationTestRunner({
       const expectation = expect.objectContaining({
         id: expect.stringContaining("order_"),
         version: 1,
+        display_id: 1,
         summary: expect.objectContaining({
           // TODO: add all summary fields
         }),
@@ -203,6 +204,7 @@ moduleIntegrationTestRunner({
         const getOrder = await service.retrieve(createdOrder.id, {
           select: [
             "id",
+            "display_id",
             "version",
             "items.id",
             "summary",
