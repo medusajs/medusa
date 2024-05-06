@@ -1,7 +1,0 @@
-{{>header}}
-
-{{#if services}}
-{{#each services}}
-export * from './{{{name}}}{{{@root.postfixServices}}}';
-{{/each}}
-{{/if}}
