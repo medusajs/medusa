@@ -4,14 +4,14 @@ import {
   ProductCategoryTransformOptions,
   ProductTypes,
 } from "@medusajs/types"
-import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
+import {DALUtils, isDefined, MedusaError} from "@medusajs/utils"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductCategory } from "@models"
+import {SqlEntityManager} from "@mikro-orm/postgresql"
+import {ProductCategory} from "@models"
 
 export type ReorderConditions = {
   targetCategoryId: string
@@ -53,25 +53,21 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     const shouldExpandParent =
       familyOptions.includeAncestorsTree ||
       populate.includes("parent_category") ||
-      fields.some((field) => field.startsWith("parent_category"))
+      fields.some((field) => field.startsWith("parent_category."))
 
     if (shouldExpandParent) {
-      // Since the tree is manually built, we dont want to get the relations
-      const relationIndex = populate.indexOf("parent_category")
-      relationIndex !== -1 && populate.splice(relationIndex, 1)
-      familyOptions.includeAncestorsTree ??= true
+      populate.indexOf("parent_category") === -1 &&
+        populate.push("parent_category")
     }
 
     const shouldExpandChildren =
       familyOptions.includeDescendantsTree ||
       populate.includes("category_children") ||
-      fields.some((field) => field.startsWith("category_children"))
+      fields.some((field) => field.startsWith("category_children."))
 
     if (shouldExpandChildren) {
-      // Since the tree is manually built, we dont want to get the relations
-      const relationIndex = populate.indexOf("category_children")
-      relationIndex !== -1 && populate.splice(relationIndex, 1)
-      familyOptions.includeDescendantsTree ??= true
+      populate.indexOf("category_children") === -1 &&
+        populate.push("category_children")
     }
 
     Object.assign(findOptions_.options, {
@@ -93,7 +89,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     const productCategories = await manager.find(
       ProductCategory,
       findOptions_.where as MikroFilterQuery<ProductCategory>,
-      findOptions_.options as MikroOptions<ProductCategory>
+      { ...findOptions_.options } as MikroOptions<ProductCategory>
     )
 
     if (
@@ -123,6 +119,20 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     context: Context = {}
   ): Promise<ProductCategory[]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
+
+    // We dont want to get the relations as we will fetch all the categories and build the tree manually
+    let relationIndex =
+      findOptions.options?.populate?.indexOf("parent_category")
+    const shouldPopulateParent = relationIndex !== -1
+    if (shouldPopulateParent && include.ancestors) {
+      findOptions.options!.populate!.splice(relationIndex as number, 1)
+    }
+
+    relationIndex = findOptions.options?.populate?.indexOf("category_children")
+    const shouldPopulateChildren = relationIndex !== -1
+    if (shouldPopulateChildren && include.descendants) {
+      findOptions.options!.populate!.splice(relationIndex as number, 1)
+    }
 
     const mpaths: any[] = []
     const parentMpaths = new Set()
@@ -164,12 +174,12 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       findOptions.options as MikroOptions<ProductCategory>
     )
 
-    allCategories = await this.serialize(allCategories)
+    allCategories = JSON.parse(JSON.stringify(allCategories))
 
     const categoriesById = new Map(allCategories.map((cat) => [cat.id, cat]))
 
     allCategories.forEach((cat: any) => {
-      if (cat.parent_category_id) {
+      if (cat.parent_category_id && include.ancestors) {
         cat.parent_category = categoriesById.get(cat.parent_category_id)
       }
     })
@@ -181,17 +191,25 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
 
       if (include.descendants) {
         category.category_children = categories.map((child) => {
-          return populateChildren(categoriesById.get(child.id), level + 1)
+          return populateChildren(
+            categoriesById.get(child.id),
+            level + 1
+          )
         })
       }
 
       if (level === 0) {
+        if (!include.ancestors && !shouldPopulateParent) {
+          delete category.parent_category
+        }
+
         return category
       }
 
       if (include.ancestors) {
         delete category.category_children
       }
+
       if (include.descendants) {
         delete category.parent_category
       }
