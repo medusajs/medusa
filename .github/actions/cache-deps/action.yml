@@ -11,11 +11,11 @@ runs:
       with:
         path: |
           .yarn/cache
-        key: ${{ runner.os }}-yarn-${{inputs.extension}}-v8-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-yarn-${{inputs.extension}}-v8-${{ hashFiles('**/yarn.lock') }}-2
         restore-keys: |
-          ${{ runner.os }}-yarn-${{inputs.extension}}-v8
+          ${{ runner.os }}-yarn-${{inputs.extension}}-v8-2
       # We want to only bootstrap and install if no cache is found.
-    - run: yarn install --immutable
+    - run: yarn install --immutable --force
       shell: bash
 
     - run: yarn build
