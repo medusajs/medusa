@@ -7327,18 +7327,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/stock-location@npm:latest":
-  version: 1.11.5
-  resolution: "@medusajs/stock-location@npm:1.11.5"
-  dependencies:
-    "@medusajs/modules-sdk": ^1.12.8
-    "@medusajs/utils": ^1.11.5
-    awilix: ^8.0.0
-    typeorm: ^0.3.16
-  checksum: 812e5b5f82b4e41e39bddc6148de8b45815c00dfff64d66972b1e61258c98c1c5da037b17df910db06ac7409cd6ea81777b130d025034ec6f14aeb9fc45994bd
-  languageName: node
-  linkType: hard
-
 "@medusajs/store@workspace:^, @medusajs/store@workspace:packages/modules/store":
   version: 0.0.0-use.local
   resolution: "@medusajs/store@workspace:packages/modules/store"
@@ -25101,7 +25089,6 @@ __metadata:
     "@medusajs/currency": "workspace:^"
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
-    "@medusajs/inventory": latest
     "@medusajs/inventory-next": "workspace:^"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/modules-sdk": "workspace:^"
@@ -25109,7 +25096,6 @@ __metadata:
     "@medusajs/product": "workspace:^"
     "@medusajs/promotion": "workspace:^"
     "@medusajs/region": "workspace:^"
-    "@medusajs/stock-location": latest
     "@medusajs/store": "workspace:^"
     "@medusajs/tax": "workspace:^"
     "@medusajs/types": "workspace:^"
