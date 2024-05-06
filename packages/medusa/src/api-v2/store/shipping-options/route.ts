@@ -1,10 +1,17 @@
 import { listShippingOptionsForCartWorkflow } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ICartModuleService } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import { MedusaError } from "@medusajs/utils"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const { cart_id } = req.params
+  const { cart_id } = req.filterableFields as { cart_id: string }
+  if (!cart_id) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "You must provide the cart_id to list shipping options"
+    )
+  }
 
   const cartService = req.scope.resolve<ICartModuleService>(
     ModuleRegistrationName.CART
