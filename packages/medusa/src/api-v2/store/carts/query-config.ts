@@ -89,7 +89,6 @@ export const defaultStoreCartFields = [
   "*region.countries",
   "sales_channel_id",
 
-  // TODO: To be updated when payment sessions are introduces in the Rest API
   "payment_collection.id",
   "payment_collection.amount",
   "*payment_collection.payment_sessions",

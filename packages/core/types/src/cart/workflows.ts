@@ -1,5 +1,6 @@
 import { CustomerDTO } from "../customer"
 import { ShippingOptionDTO } from "../fulfillment"
+import { PaymentCollectionDTO } from "../payment"
 import { ProductDTO } from "../product"
 import { RegionDTO } from "../region"
 import { BigNumberInput } from "../totals"
@@ -150,4 +151,9 @@ export interface ConfirmVariantInventoryWorkflowInputDTO {
     variant_id?: string
     quantity: BigNumberInput
   }[]
+}
+
+export interface CartWorkflowDTO {
+  id: string
+  payment_collection: PaymentCollectionDTO
 }

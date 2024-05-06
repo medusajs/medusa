@@ -5,22 +5,12 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { createOrderFromCartStep } from "../steps"
+import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-payment-session"
+import { createOrderFromCartStep, validateCartPaymentsStep } from "../steps"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { completeCartFields } from "../utils/fields"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 
-/*
-  - [] Create Tax Lines
-  - [] Authorize Payment
-    - fail:
-      - [] Delete Tax lines
-  - [] Reserve Item from inventory (if enabled)
-    - fail:
-      - [] Delete reservations
-      - [] Cancel Payment
-  - [] Create order
-*/
 export const completeCartWorkflowId = "complete-cart"
 export const completeCartWorkflow = createWorkflow(
   completeCartWorkflowId,
@@ -32,17 +22,25 @@ export const completeCartWorkflow = createWorkflow(
       list: false,
     })
 
+    const paymentSession = validateCartPaymentsStep({ cart })
+
+    // Question: While running cart complete, we seem to assume that the payment collection is already created.
+    // The payment collection amount should already have the tax amount, why are we updating the tax lines here?
+    updateTaxLinesStep({ cart_or_cart_id: cart, force_tax_calculation: true })
+
+    authorizePaymentSessionStep({
+      id: paymentSession.id,
+      context: { cart_id: cart.id },
+    })
+
     const { variants, items, sales_channel_id } = transform(
       { cart },
       (data) => {
         const allItems: any[] = []
         const allVariants: any[] = []
-        data.cart.items.forEach((item) => {
-          allItems.push({
-            id: item.id,
-            quantity: item.quantity,
-          })
 
+        data.cart.items.forEach((item) => {
+          allItems.push({ id: item.id, quantity: item.quantity })
           allVariants.push(item.variant)
         })
 
@@ -62,8 +60,6 @@ export const completeCartWorkflow = createWorkflow(
         items,
       },
     })
-
-    updateTaxLinesStep({ cart_or_cart_id: cart, force_tax_calculation: true })
 
     const finalCart = useRemoteQueryStep({
       entry_point: "cart",
