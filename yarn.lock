@@ -5153,7 +5153,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/currency@workspace:^, @medusajs/currency@workspace:packages/modules/currency":
+"@medusajs/currency@workspace:packages/modules/currency":
   version: 0.0.0-use.local
   resolution: "@medusajs/currency@workspace:packages/modules/currency"
   dependencies:
@@ -19740,44 +19740,6 @@ __metadata:
     jest-environment-node: 26.6.2
     medusa-interfaces: "workspace:*"
     medusa-test-utils: "workspace:*"
-    pg: ^8.11.0
-    typeorm: ^0.3.16
-  languageName: unknown
-  linkType: soft
-
-"integration-tests-plugins@workspace:integration-tests/plugins":
-  version: 0.0.0-use.local
-  resolution: "integration-tests-plugins@workspace:integration-tests/plugins"
-  dependencies:
-    "@babel/cli": ^7.12.10
-    "@babel/core": ^7.12.10
-    "@babel/node": ^7.12.10
-    "@medusajs/api-key": "workspace:^"
-    "@medusajs/auth": "workspace:*"
-    "@medusajs/cache-inmemory": "workspace:*"
-    "@medusajs/currency": "workspace:^"
-    "@medusajs/customer": "workspace:^"
-    "@medusajs/event-bus-local": "workspace:*"
-    "@medusajs/inventory-next": "workspace:^"
-    "@medusajs/medusa": "workspace:*"
-    "@medusajs/modules-sdk": "workspace:^"
-    "@medusajs/pricing": "workspace:^"
-    "@medusajs/product": "workspace:^"
-    "@medusajs/promotion": "workspace:^"
-    "@medusajs/region": "workspace:^"
-    "@medusajs/store": "workspace:^"
-    "@medusajs/tax": "workspace:^"
-    "@medusajs/types": "workspace:^"
-    "@medusajs/user": "workspace:^"
-    "@medusajs/utils": "workspace:^"
-    "@medusajs/workflow-engine-inmemory": "workspace:*"
-    "@swc/core": ^1.4.8
-    "@swc/jest": ^0.2.36
-    babel-preset-medusa-package: "*"
-    faker: ^5.5.3
-    jest: ^26.6.3
-    jest-environment-node: 26.6.2
-    medusa-interfaces: "workspace:*"
     pg: ^8.11.0
     typeorm: ^0.3.16
   languageName: unknown
