@@ -4,16 +4,18 @@
   "workspaces": {
     "packages": [
       "packages/medusa",
-      "packages/modules/**",
-      "packages/modules/providers/**",
-      "packages/core/**",
-      "packages/cli/**",
+      "packages/modules/*",
+      "packages/modules/providers/*",
+      "packages/core/*",
+      "packages/cli/*",
+      "packages/cli/oas/oas-github-ci",
+      "packages/cli/oas/medusa-oas-cli",
       "packages/medusa-js",
       "packages/medusa-react",
       "packages/*",
-      "packages/admin-next/**",
-      "packages/design-system/**",
-      "packages/generated/**",
+      "packages/admin-next/*",
+      "packages/design-system/*",
+      "packages/generated/*",
       "integration-tests/**/*"
     ]
   },
