@@ -5336,7 +5336,7 @@ __metadata:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     dotenv: ^16.4.5
-    faker: ^6.6.6
+    faker: ^5.5.3
     jest: ^29.6.3
     knex: 2.4.2
     lodash: ^4.17.21
@@ -5853,7 +5853,7 @@ __metadata:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     dotenv: ^16.4.5
-    faker: ^6.6.6
+    faker: ^5.5.3
     jest: ^29.6.3
     knex: 2.4.2
     lodash: ^4.17.21
@@ -17826,13 +17826,6 @@ __metadata:
   version: 5.5.3
   resolution: "faker@npm:5.5.3"
   checksum: 55ee2fb6425df717253f237b4e952c94efe33da23a5826ca41c6ecb31ccfb49d06c5de64b82b6994ca9c76c05eab4dbf779cea047455fff6e62cc9d585c7d460
-  languageName: node
-  linkType: hard
-
-"faker@npm:^6.6.6":
-  version: 6.6.6
-  resolution: "faker@npm:6.6.6"
-  checksum: 21f6a57adc921ffb61e5ff767024a699a414047264ff4bbb080bd4994ec5a8061e1828aae9a4be812f6f356f1b6fd082bc2d54df7c37163b943a421a8f7f7079
   languageName: node
   linkType: hard
 
