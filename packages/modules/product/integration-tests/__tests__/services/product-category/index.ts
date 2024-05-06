@@ -132,7 +132,6 @@ moduleIntegrationTestRunner({
               handle: "category-0",
               mpath: "category-0.",
               parent_category_id: null,
-              parent_category: null,
               category_children: [
                 expect.objectContaining({
                   id: "category-1",
@@ -551,7 +550,6 @@ moduleIntegrationTestRunner({
               handle: "category-0",
               mpath: "category-0.",
               parent_category_id: null,
-              parent_category: null,
               category_children: [
                 expect.objectContaining({
                   id: "category-1",
@@ -803,7 +801,6 @@ moduleIntegrationTestRunner({
               handle: "category-0",
               mpath: "category-0.",
               parent_category_id: null,
-              parent_category: null,
               category_children: [
                 expect.objectContaining({
                   id: "category-1",
@@ -865,7 +862,6 @@ moduleIntegrationTestRunner({
               handle: "category-0",
               mpath: "category-0.",
               parent_category_id: null,
-              parent_category: null,
               category_children: [
                 expect.objectContaining({
                   id: "category-1",
