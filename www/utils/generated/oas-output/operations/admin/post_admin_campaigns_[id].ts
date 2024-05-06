@@ -95,6 +95,7 @@
  *                 enum:
  *                   - spend
  *                   - usage
+ *                 type: string
  *               limit:
  *                 type: number
  *                 title: limit
