@@ -1,4 +1,9 @@
 import {
+  AdminCollectionsRes,
+  AdminProductsRes,
+  AdminRegionsRes,
+} from "@medusajs/medusa"
+import {
   AdminApiKeyResponse,
   AdminCustomerGroupResponse,
   AdminProductCategoryResponse,
@@ -7,26 +12,18 @@ import {
   SalesChannelDTO,
   UserDTO,
 } from "@medusajs/types"
-import {
-  AdminCollectionsRes,
-  AdminProductsRes,
-  AdminRegionsRes,
-} from "@medusajs/medusa"
-import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
 import { Outlet, RouteObject } from "react-router-dom"
 
-import { AdminCustomersRes } from "@medusajs/client-types"
+import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout/main-layout"
-import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { SettingsLayout } from "../../components/layout/settings-layout"
+import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
 
-/**
- * Experimental V2 routes.
- *
- * These routes are only available if the `MEDUSA_V2` feature flag is enabled.
- */
-export const v2Routes: RouteObject[] = [
+import { RouteExtensions } from "./route-extensions"
+import { SettingsExtensions } from "./settings-extensions"
+
+export const RouteMap: RouteObject[] = [
   {
     path: "/login",
     lazy: () => import("../../v2-routes/login"),
@@ -185,7 +182,8 @@ export const v2Routes: RouteObject[] = [
                 lazy: () =>
                   import("../../v2-routes/promotions/promotion-detail"),
                 handle: {
-                  crumb: (data: AdminPromotionRes) => data.promotion?.code,
+                  // TODO: Re-add type when it's available again
+                  crumb: (data: any) => data.promotion?.code,
                 },
                 children: [
                   {
@@ -321,7 +319,8 @@ export const v2Routes: RouteObject[] = [
                 path: ":id",
                 lazy: () => import("../../v2-routes/customers/customer-detail"),
                 handle: {
-                  crumb: (data: AdminCustomersRes) => data.customer.email,
+                  // Re-add type when it's available again
+                  crumb: (data: any) => data.customer.email,
                 },
                 children: [
                   {
@@ -492,6 +491,7 @@ export const v2Routes: RouteObject[] = [
           },
         ],
       },
+      ...RouteExtensions,
     ],
   },
   {
@@ -977,6 +977,7 @@ export const v2Routes: RouteObject[] = [
           },
         ],
       },
+      ...SettingsExtensions,
     ],
   },
 ]

@@ -1,6 +1,7 @@
 import { stringify } from "qs"
 
-const baseUrl = "http://localhost:9000"
+const baseUrl =
+  import.meta.env.VITE_MEDUSA_ADMIN_BACKEND_URL || "http://localhost:9000"
 
 const commonHeaders: HeadersInit = {
   Accept: "application/json",
