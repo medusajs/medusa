@@ -10,21 +10,24 @@ import {
   Heading,
   StatusBadge,
   Text,
+  toast,
   Tooltip,
   usePrompt,
 } from "@medusajs/ui"
 import { format } from "date-fns"
-import { useAdminCancelFulfillment, useAdminStockLocation } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
+import { FulfillmentDTO, OrderDTO, OrderItemDTO } from "@medusajs/types"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
+import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 
 type OrderFulfillmentSectionProps = {
-  order: Order
+  order: OrderDTO
 }
 
 export const OrderFulfillmentSection = ({
@@ -36,7 +39,7 @@ export const OrderFulfillmentSection = ({
     <div className="flex flex-col gap-y-2">
       <UnfulfilledItemBreakdown order={order} />
       {fulfillments.map((f, index) => (
-        <Fulfillment key={f.id} index={index} order={order} fulfillment={f} />
+        <Fulfillment key={f.id} index={index} fulfillment={f} />
       ))}
     </div>
   )
@@ -46,7 +49,7 @@ const UnfulfilledItem = ({
   item,
   currencyCode,
 }: {
-  item: LineItem
+  item: OrderItemDTO
   currencyCode: string
 }) => {
   return (
@@ -142,11 +145,9 @@ const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
 
 const Fulfillment = ({
   fulfillment,
-  order,
   index,
 }: {
-  fulfillment: MedusaFulfillment
-  order: Order
+  fulfillment: FulfillmentDTO
   index: number
 }) => {
   const { t } = useTranslation()
@@ -154,7 +155,7 @@ const Fulfillment = ({
 
   const showLocation = !!fulfillment.location_id
 
-  const { stock_location, isError, error } = useAdminStockLocation(
+  const { stock_location, isError, error } = useStockLocation(
     fulfillment.location_id!,
     {
       enabled: showLocation,
@@ -175,11 +176,14 @@ const Fulfillment = ({
     statusTimestamp = fulfillment.shipped_at
   }
 
-  const { mutateAsync } = useAdminCancelFulfillment(order.id)
+  const { mutateAsync } = {} // useCancelFulfillment(order.id)
 
   const handleCancel = async () => {
     if (fulfillment.shipped_at) {
-      // TODO: When we have implemented Toasts we should show an error toast here
+      toast.warning(t("general.warning"), {
+        description: t("orders.fulfillment.toast.fulfillmentShipped"),
+        dismissLabel: t("actions.close"),
+      })
       return
     }
 
@@ -191,7 +195,19 @@ const Fulfillment = ({
     })
 
     if (res) {
-      await mutateAsync(fulfillment.id)
+      try {
+        await mutateAsync(fulfillment.id)
+
+        toast.success(t("general.success"), {
+          description: t("orders.fulfillment.toast.canceled"),
+          dismissLabel: t("actions.close"),
+        })
+      } catch (e) {
+        toast.error(t("general.error"), {
+          description: e.message,
+          dismissLabel: t("actions.close"),
+        })
+      }
     }
   }
 
