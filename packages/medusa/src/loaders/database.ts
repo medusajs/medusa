@@ -7,7 +7,6 @@ import {
   TreeRepository,
 } from "typeorm"
 import { ConfigModule } from "../types/global"
-import "../utils/naming-strategy"
 
 type Options = {
   configModule: ConfigModule
