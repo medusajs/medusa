@@ -175,8 +175,13 @@ function isMedusaModule(mod) {
 }
 
 function cleanAndMergeSchema(loadedSchema) {
-  console.log(loadedSchema)
-  const { schema: cleanedSchema, notFound } = cleanGraphQLSchema(loadedSchema)
+  const defaultMedusaSchema = `
+    scalar DateTime
+    scalar JSON
+  `
+  const { schema: cleanedSchema, notFound } = cleanGraphQLSchema(
+    defaultMedusaSchema + loadedSchema
+  )
   const mergedSchema = mergeTypeDefs(cleanedSchema)
   return { schema: makeExecutableSchema({ typeDefs: mergedSchema }), notFound }
 }
