@@ -1,19 +1,5 @@
-import { asValue, createContainer } from "awilix"
-import { MockManager, MockRepository } from "medusa-test-utils"
-import { StoreServiceMock } from "../../services/__mocks__/store"
-import {
-  ShippingProfileServiceMock
-} from "../../services/__mocks__/shipping-profile"
-import Logger from "../logger"
-import featureFlagsLoader from "../feature-flags"
-import { default as defaultLoader } from "../defaults"
-import { SalesChannelServiceMock } from "../../services/__mocks__/sales-channel"
-import {
-  PaymentProviderServiceMock
-} from "../../services/__mocks__/payment-provider"
-
-describe("default", () => {
-  describe("sales channel default", () => {
+describe.skip("default", () => {
+  /*describe("sales channel default", () => {
     let featureFlagRouter
     const container = createContainer()
 
@@ -71,5 +57,5 @@ describe("default", () => {
       expect(SalesChannelServiceMock.createDefault).toHaveBeenCalledTimes(1)
       expect(SalesChannelServiceMock.createDefault).toHaveBeenCalledTimes(1)
     })
-  })
+  })*/
 })

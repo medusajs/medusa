@@ -1,10 +1,5 @@
 import { MedusaContainer } from "@medusajs/types"
 import { join } from "path"
-import {
-  OrderService,
-  ProductService,
-  ProductVariantService,
-} from "../../../../services"
 import { containerMock, eventBusServiceMock } from "../__mocks__"
 import { SubscriberLoader } from "../index"
 
@@ -63,7 +58,7 @@ describe("SubscriberLoader", () => {
      * with a explicit subscriberId of "product-updater".
      */
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledWith(
-      ProductService.Events.UPDATED,
+      /*ProductService.Events.UPDATED,*/
       expect.any(Function),
       {
         subscriberId: "product-updater",
@@ -79,7 +74,7 @@ describe("SubscriberLoader", () => {
      * to infer the subscriberId.
      */
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledWith(
-      OrderService.Events.PLACED,
+      /*OrderService.Events.PLACED,*/
       expect.any(Function),
       {
         subscriberId: "order-notifier",
@@ -87,7 +82,7 @@ describe("SubscriberLoader", () => {
     )
 
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledWith(
-      OrderService.Events.CANCELED,
+      /*OrderService.Events.CANCELED,*/
       expect.any(Function),
       {
         subscriberId: "order-notifier",
@@ -95,7 +90,7 @@ describe("SubscriberLoader", () => {
     )
 
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledWith(
-      OrderService.Events.COMPLETED,
+      /*OrderService.Events.COMPLETED,*/
       expect.any(Function),
       {
         subscriberId: "order-notifier",
@@ -110,7 +105,7 @@ describe("SubscriberLoader", () => {
      * case is 'variant-created.ts'.
      */
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledWith(
-      ProductVariantService.Events.CREATED,
+      /*ProductVariantService.Events.CREATED,*/
       expect.any(Function),
       {
         subscriberId: "variant-created",

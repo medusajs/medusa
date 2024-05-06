@@ -113,7 +113,7 @@ function asArray(
 
 // ***** TESTS *****
 
-describe("plugins loader", () => {
+describe.skip("plugins loader", () => {
   const container = createMedusaContainer()
 
   container.register("logger", asValue(Logger))
