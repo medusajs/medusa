@@ -1492,6 +1492,7 @@ medusaIntegrationTestRunner({
 
         beforeEach(async () => {
           await setupTaxStructure(taxModule)
+
           region = await regionService.create({
             name: "Test region",
             countries: ["US"],
@@ -1630,8 +1631,6 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const providers = await paymentService.listPaymentProviders()
-
           paymentSession = await paymentService.createPaymentSession(
             paymentCollection.id,
             {
@@ -1656,18 +1655,22 @@ medusaIntegrationTestRunner({
                 province: "ny",
                 postal_code: "94016",
               },
-              // TODO: inventory isn't being managed on a product level
-              // sales_channel_id: salesChannel.id,
+              sales_channel_id: salesChannel.id,
               items: [{ quantity: 1, variant_id: product.variants[0].id }],
             })
           ).data.cart
 
-          const payColCart = (
-            await api.post(`/store/carts/${cart.id}/payment-collections`, {})
-          ).data.cart
+          const paymentCollection = (
+            await api.post(`/store/payment-collections`, {
+              cart_id: cart.id,
+              region_id: region.id,
+              currency_code: region.currency_code,
+              amount: cart.total,
+            })
+          ).data.payment_collection
 
           await api.post(
-            `/store/payment-collections/${payColCart.payment_collection.id}/payment-sessions`,
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
             { provider_id: "pp_system_default" }
           )
 
@@ -1746,6 +1749,7 @@ medusaIntegrationTestRunner({
             await api.post(`/store/carts`, {
               currency_code: "usd",
               email: "tony@stark-industries.com",
+              sales_channel_id: salesChannel.id,
               items: [{ quantity: 1, variant_id: product.variants[0].id }],
             })
           ).data.cart
@@ -1766,11 +1770,17 @@ medusaIntegrationTestRunner({
             await api.post(`/store/carts`, {
               currency_code: "usd",
               email: "tony@stark-industries.com",
+              sales_channel_id: salesChannel.id,
               items: [{ quantity: 1, variant_id: product.variants[0].id }],
             })
           ).data.cart
 
-          await api.post(`/store/carts/${cart.id}/payment-collections`, {})
+          await api.post(`/store/payment-collections`, {
+            cart_id: cart.id,
+            region_id: region.id,
+            currency_code: region.currency_code,
+            amount: cart.total,
+          })
 
           const error = await api
             .post(`/store/carts/${cart.id}/complete`, {})
@@ -1811,16 +1821,22 @@ medusaIntegrationTestRunner({
                 province: "ny",
                 postal_code: "94016",
               },
+              sales_channel_id: salesChannel.id,
               items: [{ quantity: 1, variant_id: product.variants[0].id }],
             })
           ).data.cart
 
-          const payColCart = (
-            await api.post(`/store/carts/${cart.id}/payment-collections`, {})
-          ).data.cart
+          const paymentCollection = (
+            await api.post(`/store/payment-collections`, {
+              cart_id: cart.id,
+              region_id: region.id,
+              currency_code: region.currency_code,
+              amount: cart.total,
+            })
+          ).data.payment_collection
 
           await api.post(
-            `/store/payment-collections/${payColCart.payment_collection.id}/payment-sessions`,
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
             { provider_id: "pp_system_default" }
           )
 

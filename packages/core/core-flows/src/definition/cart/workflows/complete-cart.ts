@@ -8,7 +8,6 @@ import { useRemoteQueryStep } from "../../../common"
 import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-payment-session"
 import { createOrderFromCartStep, validateCartPaymentsStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
-import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { completeCartFields } from "../utils/fields"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 
@@ -23,14 +22,12 @@ export const completeCartWorkflow = createWorkflow(
       list: false,
     })
 
-    const paymentSession = validateCartPaymentsStep({ cart })
-
-    // Question: While running cart complete, we seem to assume that the payment collection is already created.
-    // The payment collection amount should already have the tax amount, why are we updating the tax lines here?
-    updateTaxLinesStep({ cart_or_cart_id: cart, force_tax_calculation: true })
+    const paymentSessions = validateCartPaymentsStep({ cart })
 
     authorizePaymentSessionStep({
-      id: paymentSession.id,
+      // We choose the first payment session, as there will only be one active payment session
+      // This might change in the future.
+      id: paymentSessions[0].id,
       context: { cart_id: cart.id },
     })
 

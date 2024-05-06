@@ -39,7 +39,6 @@ export const validateCartPaymentsStep = createStep(
       )
     }
 
-    // TODO: Should we be able to authorize multiple payment sessions for a cart?
-    return new StepResponse(paymentsToProcess[0])
+    return new StepResponse(paymentsToProcess)
   }
 )
