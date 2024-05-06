@@ -1,8 +1,18 @@
-name: Staging Release and Publish
+name: Trigger Release and Publish
 
 on:
-  # TODO: Enabling manual workflow triggering while in pre-release mode. Remove when 1.8 is released
   workflow_dispatch:
+    inputs:
+      version:
+        type: choice
+        default: 'preview'
+        description: What tag do you want to release?
+        required: true
+        options: 
+        - preview
+        - next
+        - snapshot
+        - canary
     branches:
       - develop
     paths-ignore:
@@ -15,7 +25,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    name: Staging Release
+    name: Trigger Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -44,7 +54,7 @@ jobs:
         run: yarn build
 
       - name: Version packages
-        run: yarn version:next
+        run: yarn changeset version --snapshot ${{ github.event.inputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -52,4 +62,4 @@ jobs:
         run: yarn install --no-immutable
         
       - name: Publish packages under next tag
-        run: yarn release:next
+        run: yarn changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version }}
