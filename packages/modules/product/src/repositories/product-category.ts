@@ -4,11 +4,11 @@ import {
   ProductCategoryTransformOptions,
   ProductTypes,
 } from "@medusajs/types"
-import { DALUtils, MedusaError, isDefined } from "@medusajs/utils"
+import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductCategory } from "@models"
@@ -51,19 +51,27 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     }
 
     const shouldExpandParent =
-      familyOptions.includeAncestorsTree || populate.includes("parent_category") || fields.some(field => field.startsWith('parent_category'))
+      familyOptions.includeAncestorsTree ||
+      populate.includes("parent_category") ||
+      fields.some((field) => field.startsWith("parent_category"))
 
     if (shouldExpandParent) {
-      populate.indexOf("parent_category") === -1 &&
-        populate.push("parent_category")
+      // Since the tree is manually built, we dont want to get the relations
+      const relationIndex = populate.indexOf("parent_category")
+      relationIndex !== -1 && populate.splice(relationIndex, 1)
+      familyOptions.includeAncestorsTree ??= true
     }
 
     const shouldExpandChildren =
-      familyOptions.includeDescendantsTree || populate.includes("category_children") || fields.some(field => field.startsWith('category_children'))
+      familyOptions.includeDescendantsTree ||
+      populate.includes("category_children") ||
+      fields.some((field) => field.startsWith("category_children"))
 
     if (shouldExpandChildren) {
-      populate.indexOf("category_children") === -1 &&
-        populate.push("category_children")
+      // Since the tree is manually built, we dont want to get the relations
+      const relationIndex = populate.indexOf("category_children")
+      relationIndex !== -1 && populate.splice(relationIndex, 1)
+      familyOptions.includeDescendantsTree ??= true
     }
 
     Object.assign(findOptions_.options, {
@@ -156,7 +164,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       findOptions.options as MikroOptions<ProductCategory>
     )
 
-    allCategories = JSON.parse(JSON.stringify(allCategories))
+    allCategories = await this.serialize(allCategories)
 
     const categoriesById = new Map(allCategories.map((cat) => [cat.id, cat]))
 
@@ -205,7 +213,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     context: Context = {}
   ): Promise<[ProductCategory[], number]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
-    
+
     const findOptions_ = this.buildFindOptions(findOptions, transformOptions)
 
     const [productCategories, count] = await manager.findAndCount(
