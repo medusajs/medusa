@@ -4,10 +4,12 @@ import {
   Modules,
   RemoteLink,
 } from "@medusajs/modules-sdk"
+import PaymentModuleService from "@medusajs/payment/dist/services/payment-module"
 import {
   ICartModuleService,
   ICustomerModuleService,
   IFulfillmentModuleService,
+  IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IPromotionModuleService,
@@ -17,6 +19,7 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  MedusaError,
   PromotionRuleOperator,
   PromotionType,
   RuleOperator,
@@ -48,6 +51,7 @@ medusaIntegrationTestRunner({
       let fulfillmentModule: IFulfillmentModuleService
       let remoteLinkService
       let regionService: IRegionModuleService
+      let paymentService: IPaymentModuleService
 
       let defaultRegion
       let region
@@ -64,6 +68,7 @@ medusaIntegrationTestRunner({
         promotionModule = appContainer.resolve(ModuleRegistrationName.PROMOTION)
         taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
         regionService = appContainer.resolve(ModuleRegistrationName.REGION)
+        paymentService = appContainer.resolve(ModuleRegistrationName.PAYMENT)
         fulfillmentModule = appContainer.resolve(
           ModuleRegistrationName.FULFILLMENT
         )
@@ -1480,11 +1485,14 @@ medusaIntegrationTestRunner({
         let shippingProfile
         let fulfillmentSet
         let shippingOption
+        let paymentCollection
+        let paymentSession
         let stockLocation
         let inventoryItem
 
         beforeEach(async () => {
           await setupTaxStructure(taxModule)
+
           region = await regionService.create({
             name: "Test region",
             countries: ["US"],
@@ -1616,32 +1624,65 @@ medusaIntegrationTestRunner({
               adminHeaders
             )
           ).data.shipping_option
+
+          paymentCollection = await paymentService.createPaymentCollections({
+            region_id: region.id,
+            amount: 1000,
+            currency_code: "usd",
+          })
+
+          paymentSession = await paymentService.createPaymentSession(
+            paymentCollection.id,
+            {
+              provider_id: "pp_system_default",
+              amount: 1000,
+              currency_code: "usd",
+              data: {},
+            }
+          )
         })
 
         it("should create an order and create item reservations", async () => {
-          const cartResponse = await api.post(`/store/carts`, {
-            currency_code: "usd",
-            email: "tony@stark-industries.com",
-            shipping_address: {
-              address_1: "test address 1",
-              address_2: "test address 2",
-              city: "ny",
-              country_code: "us",
-              province: "ny",
-              postal_code: "94016",
-            },
-            sales_channel_id: salesChannel.id,
-            items: [{ quantity: 1, variant_id: product.variants[0].id }],
-          })
+          const cart = (
+            await api.post(`/store/carts`, {
+              currency_code: "usd",
+              email: "tony@stark-industries.com",
+              shipping_address: {
+                address_1: "test address 1",
+                address_2: "test address 2",
+                city: "ny",
+                country_code: "us",
+                province: "ny",
+                postal_code: "94016",
+              },
+              sales_channel_id: salesChannel.id,
+              items: [{ quantity: 1, variant_id: product.variants[0].id }],
+            })
+          ).data.cart
+
+          const paymentCollection = (
+            await api.post(`/store/payment-collections`, {
+              cart_id: cart.id,
+              region_id: region.id,
+              currency_code: region.currency_code,
+              amount: cart.total,
+            })
+          ).data.payment_collection
+
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" }
+          )
 
           const response = await api.post(
-            `/store/carts/${cartResponse.data.cart.id}/complete`,
+            `/store/carts/${cart.id}/complete`,
             {}
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.order).toEqual(
-            expect.objectContaining({
+          expect(response.data).toEqual({
+            type: "order",
+            order: expect.objectContaining({
               id: expect.any(String),
               total: 106,
               subtotal: 100,
@@ -1686,8 +1727,8 @@ medusaIntegrationTestRunner({
                 province: "ny",
                 postal_code: "94016",
               }),
-            })
-          )
+            }),
+          })
 
           const reservation = await api.get(`/admin/reservations`, adminHeaders)
           const reservationItem = reservation.data.reservations[0]
@@ -1697,10 +1738,123 @@ medusaIntegrationTestRunner({
               id: expect.stringContaining("resitem_"),
               location_id: stockLocation.id,
               inventory_item_id: inventoryItem.id,
-              quantity: cartResponse.data.cart.items[0].quantity,
-              line_item_id: cartResponse.data.cart.items[0].id,
+              quantity: cart.items[0].quantity,
+              line_item_id: cart.items[0].id,
             })
           )
+        })
+
+        it("should throw an error when payment collection isn't created", async () => {
+          const cart = (
+            await api.post(`/store/carts`, {
+              currency_code: "usd",
+              email: "tony@stark-industries.com",
+              sales_channel_id: salesChannel.id,
+              items: [{ quantity: 1, variant_id: product.variants[0].id }],
+            })
+          ).data.cart
+
+          const error = await api
+            .post(`/store/carts/${cart.id}/complete`, {})
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data).toEqual({
+            type: "invalid_data",
+            message: "Payment collection has not been initiated for cart",
+          })
+        })
+
+        it("should throw an error when payment collection isn't created", async () => {
+          const cart = (
+            await api.post(`/store/carts`, {
+              currency_code: "usd",
+              email: "tony@stark-industries.com",
+              sales_channel_id: salesChannel.id,
+              items: [{ quantity: 1, variant_id: product.variants[0].id }],
+            })
+          ).data.cart
+
+          await api.post(`/store/payment-collections`, {
+            cart_id: cart.id,
+            region_id: region.id,
+            currency_code: region.currency_code,
+            amount: cart.total,
+          })
+
+          const error = await api
+            .post(`/store/carts/${cart.id}/complete`, {})
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data).toEqual({
+            type: "invalid_data",
+            message: "Payment sessions are required to complete cart",
+          })
+        })
+
+        it("should return cart when payment authorization fails", async () => {
+          const authorizePaymentSessionSpy = jest.spyOn(
+            PaymentModuleService.prototype,
+            "authorizePaymentSession"
+          )
+
+          // Mock the authorizePaymentSession to throw error
+          authorizePaymentSessionSpy.mockImplementation(
+            (id, context, sharedContext) => {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `Throw a random error`
+              )
+            }
+          )
+
+          const cart = (
+            await api.post(`/store/carts`, {
+              currency_code: "usd",
+              email: "tony@stark-industries.com",
+              shipping_address: {
+                address_1: "test address 1",
+                address_2: "test address 2",
+                city: "ny",
+                country_code: "us",
+                province: "ny",
+                postal_code: "94016",
+              },
+              sales_channel_id: salesChannel.id,
+              items: [{ quantity: 1, variant_id: product.variants[0].id }],
+            })
+          ).data.cart
+
+          const paymentCollection = (
+            await api.post(`/store/payment-collections`, {
+              cart_id: cart.id,
+              region_id: region.id,
+              currency_code: region.currency_code,
+              amount: cart.total,
+            })
+          ).data.payment_collection
+
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" }
+          )
+
+          const response = await api.post(
+            `/store/carts/${cart.id}/complete`,
+            {}
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual({
+            type: "cart",
+            cart: expect.objectContaining({}),
+            error: {
+              message: "Payment authorization failed",
+              name: "Error",
+              type: "payment_authorization_error",
+            },
+          })
         })
       })
     })

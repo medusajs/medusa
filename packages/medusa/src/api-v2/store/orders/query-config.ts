@@ -50,6 +50,6 @@ export const defaultStoreRetrieveOrderFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultStoreRetrieveOrderFields,
+  defaults: defaultStoreRetrieveOrderFields,
   isList: false,
 }
