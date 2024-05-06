@@ -11,10 +11,6 @@ import { trackInstallation } from "medusa-telemetry"
 import { EOL } from "os"
 import path from "path"
 import { EntitySchema } from "typeorm"
-import {
-  AbstractCartCompletionStrategy,
-  AbstractNotificationService,
-} from "../interfaces"
 import { MiddlewareService } from "../services"
 import {
   ClassConstructor,
@@ -207,7 +203,7 @@ export function registerStrategies(
         break
       }*/
 
-      case AbstractCartCompletionStrategy.isCartCompletionStrategy(
+      /* case AbstractCartCompletionStrategy.isCartCompletionStrategy(
         module.prototype
       ): {
         if (!("cartCompletionStrategy" in registeredServices)) {
@@ -223,7 +219,7 @@ export function registerStrategies(
           )
         }
         break
-      }
+      }*/
 
       /* case AbstractBatchJobStrategy.isBatchJobStrategy(module.prototype): {
         container.registerAdd(
@@ -450,7 +446,7 @@ export async function registerServices(
             }
           ),
         })
-      } else if (
+      } /* else if (
         AbstractNotificationService.isNotificationService(loaded.prototype)
       ) {
         container.registerAdd(
@@ -471,7 +467,7 @@ export async function registerServices(
           ),
           [`noti_${loaded.identifier}`]: aliasTo(name),
         })
-      } /* else if (AbstractFileService.isFileService(loaded.prototype)) {
+      }*/ /* else if (AbstractFileService.isFileService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which file storage provider we need to use
         container.register({
@@ -497,7 +493,7 @@ export async function registerServices(
         })
 
         container.register(isSearchEngineInstalledResolutionKey, asValue(true))
-      } /*else if (AbstractTaxService.isTaxService(loaded.prototype)) {
+      } /* else if (AbstractTaxService.isTaxService(loaded.prototype)) {
         container.registerAdd(
           "taxProviders",
           asFunction((cradle) => new loaded(cradle, pluginDetails.options), {
