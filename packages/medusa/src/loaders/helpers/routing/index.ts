@@ -9,7 +9,7 @@ import {
   authenticateCustomer,
   errorHandler,
   requireCustomerAuthentication,
-} from "../../../api/middlewares"
+} from "../../../utils/middlewares"
 import { ConfigModule } from "../../../types/global"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import logger from "../../logger"
@@ -533,7 +533,7 @@ export class RoutesLoader {
             const childPath = join(dirPath, entry.name)
 
             if (entry.isDirectory()) {
-              return this.createRoutesMap({
+              return await this.createRoutesMap({
                 dirPath: childPath,
                 parentPath: parentPath ?? dirPath,
               })

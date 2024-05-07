@@ -4,7 +4,6 @@ import { useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 import adminSeeder from "../../../../helpers/admin-seeder"
-import productSeeder from "../../../../helpers/product-seeder"
 
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { MedusaV2Flag } from "@medusajs/utils"
@@ -68,7 +67,6 @@ describe.skip("/admin/products", () => {
 
   describe("POST /admin/products", () => {
     beforeEach(async () => {
-      await productSeeder(dbConnection)
       await adminSeeder(dbConnection)
       await createDefaultRuleTypes(medusaContainer)
 
