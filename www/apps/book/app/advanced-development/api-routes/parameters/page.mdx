@@ -8,9 +8,9 @@ In this chapter, you’ll learn about path, query, and request body parameters.
 
 ## Path Parameters
 
-To define a path parameter for an API route, create a directory as part of the route file’s path. The directory’s name is of the format `[param]`, where `param` is the name of the parameters.
+To create an API route that accepts a path parameter, create a directory within the route's path whose name is of the format `[param]`.
 
-For example, to create an API Route at the path `/message/{id}`, where `{id}` is an ID that can be passed to the route, create the file `src/api/store/hello-world/[id]/route.ts` with the following content:
+For example, to create an API Route at the path `/message/{id}`, where `{id}` is a path parameter, create the file `src/api/store/hello-world/[id]/route.ts` with the following content:
 
 export const singlePathHighlights = [
   ["11", "req.params.id", "Access the path parameter `id`"]
@@ -32,13 +32,13 @@ export const GET = (
 }
 ```
 
-You can access the path parameter using the `params` property of the `MedusaRequest` parameter. The `params` property is an object whose keys are the parameter names, and the values are each parameter’s value passed in the route’s path.
+The `MedusaRequest` object has a `params` property. `params` holds the path parameters in key-value pairs.
 
 ### Multiple Path Parameters
 
-Each directory in the route file’s path whose name is of the format `[param]` is considered a path parameter. However, every parameter name must be unique.
+To create an API route that accepts multiple path parameters, create within the file's path multiple directories whose names are of the format `[param]`.
 
-For example, you can create an API route at `src/api/store/hello-world/[id]/name/[name]/route.ts`:
+For example, create an API route at `src/api/store/hello-world/[id]/name/[name]/route.ts`:
 
 export const multiplePathHighlights = [
   ["11", "req.params.id", "Access the path parameter `id`"],
@@ -67,7 +67,7 @@ This API route expects two path parameters: `id` and `name`.
 
 ## Query Parameters
 
-You can access all query parameters in the `query` property of the `MedusaRequest` parameter.
+You can access all query parameters in the `query` property of the `MedusaRequest` object.
 
 For example:
 
@@ -95,11 +95,12 @@ export async function GET(
 
 ## Request Body Parameters
 
-By default, any request sent to your Medusa application with its `Content-Type` header set to `application/json` is parsed into an object and attached to the `MedusaRequest`'s `body` property.
+The Medusa application parses the body of any request having its `Content-Type` header set to `application/json`. The request body parameters are set in the `MedusaRequest`'s `body` property.
 
 For example:
 
 export const bodyHighlights = [
+  ["11", "HelloWorldReq", "Specify the type of the request body parameters."],
   ["15", "req.body.name", "Access the request body parameter `name`"],
 ]
 
@@ -123,18 +124,16 @@ export const POST = (
 }
 ```
 
-The `MedusaRequest` type accepts a type argument indicating the expected request body parameters.
-
 In this example, you use the `name` request body parameter to create the message in the returned response.
 
 To test it out, send the following request to your Medusa application:
 
 ```bash apiTesting testApiUrl="http://localhost:9000/store/hello-world" testApiMethod="POST" testBodyParams={{ "name": "John" }}
-curl -X POST http://localhost:9000/store/hello-world \ 
-  --header 'Content-Type: application/json' \
-  --data-raw '{
-    "name": "John"
-  }'
+curl -X POST 'http://localhost:9000/store/hello-world' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "name": "John"
+}'
 ```
 
 This returns the following JSON object:

@@ -12,7 +12,7 @@ Cross-Origin Resource Sharing (CORS) allows only configured origins to access yo
 
 ### CORS Configurations
 
-You can configure allowed origins for Store and Admin API Routes using the `store_cors` and `admin_cors` configurations in `medusa-config.js`. Each of these configurations accepts a URL pattern to identify allowed origins.
+You configure allowed origins for Store and Admin API Routes using the `store_cors` and `admin_cors` configurations in `medusa-config.js`. Each of these configurations accepts a URL pattern to identify allowed origins.
 
 For example:
 
@@ -63,7 +63,7 @@ This disables the CORS middleware on API Routes at the path `/store/custom`.
 
 ## CORS in Custom Routes
 
-If you create a route that doesn’t start with `/store` or `/admin`, you must apply the CORS middleware manually. Otherwise, all requests to your API route cause a CORS error.
+If you create a route that doesn’t start with `/store` or `/admin`, you must apply the CORS middleware manually. Otherwise, all requests to your API route lead to a CORS error.
 
 You can do that in the exported middlewares configurations in `src/api/middlewares.ts`.
 
