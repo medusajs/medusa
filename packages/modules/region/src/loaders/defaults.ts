@@ -1,7 +1,5 @@
-import { Logger } from "@medusajs/types"
-import { LoaderOptions, ModulesSdkTypes } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { DefaultsUtils } from "@medusajs/utils"
+import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
+import { ContainerRegistrationKeys, DefaultsUtils } from "@medusajs/utils"
 import { Country } from "@models"
 
 export default async ({ container }: LoaderOptions): Promise<void> => {
