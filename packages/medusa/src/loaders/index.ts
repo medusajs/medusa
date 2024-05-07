@@ -22,7 +22,6 @@ import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
 import databaseLoader, { dataSource } from "./database"
-import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import { registerProjectWorkflows } from "./helpers/register-workflows"
@@ -345,12 +344,6 @@ export default async ({
   })
   const apiAct = Logger.success(apiActivity, "API initialized") || {}
   track("API_INIT_COMPLETED", { duration: apiAct.duration })
-
-  const defaultsActivity = Logger.activity(`Initializing defaults${EOL}`)
-  track("DEFAULTS_INIT_STARTED")
-  await defaultsLoader({ container })
-  const dAct = Logger.success(defaultsActivity, "Defaults initialized") || {}
-  track("DEFAULTS_INIT_COMPLETED", { duration: dAct.duration })
 
   const searchActivity = Logger.activity(
     `Initializing search engine indexing${EOL}`

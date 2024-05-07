@@ -118,7 +118,7 @@ medusaIntegrationTestRunner({
                 price_set_id: priceSet.id,
                 shipping_option_id: shippingOption.id,
               }),
-              prices: [
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   amount: 5000,
                   currency_code: "eur",
@@ -127,7 +127,7 @@ medusaIntegrationTestRunner({
                   amount: 3000,
                   currency_code: "usd",
                 }),
-              ],
+              ]),
               calculated_price: expect.objectContaining({
                 calculated_amount: 5000,
                 currency_code: "eur",

@@ -3,7 +3,7 @@ import {
   promiseAll,
   upperCaseFirst,
 } from "@medusajs/utils"
-import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
+import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
 import { Express } from "express"
 import glob from "glob"
 import { OauthService } from "medusa-interfaces"
@@ -11,15 +11,6 @@ import { trackInstallation } from "medusa-telemetry"
 import { EOL } from "os"
 import path from "path"
 import { EntitySchema } from "typeorm"
-import {
-  AbstractBatchJobStrategy,
-  AbstractCartCompletionStrategy,
-  AbstractFileService,
-  AbstractNotificationService,
-  AbstractPriceSelectionStrategy,
-  AbstractTaxCalculationStrategy,
-  AbstractTaxService,
-} from "../interfaces"
 import { MiddlewareService } from "../services"
 import {
   ClassConstructor,
@@ -33,10 +24,6 @@ import {
 } from "../utils/format-registration-name"
 import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import ScheduledJobsLoader from "./helpers/jobs"
-import {
-  registerAbstractFulfillmentServiceFromClass,
-  registerPaymentProcessorFromClass,
-} from "./helpers/plugins"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
 import { RoutesLoader } from "./helpers/routing"
 import { SubscriberLoader } from "./helpers/subscribers"
@@ -198,7 +185,7 @@ export function registerStrategies(
     const module = require(file).default
 
     switch (true) {
-      case AbstractTaxCalculationStrategy.isTaxCalculationStrategy(
+      /* case AbstractTaxCalculationStrategy.isTaxCalculationStrategy(
         module.prototype
       ): {
         if (!("taxCalculationStrategy" in registeredServices)) {
@@ -214,9 +201,9 @@ export function registerStrategies(
           )
         }
         break
-      }
+      }*/
 
-      case AbstractCartCompletionStrategy.isCartCompletionStrategy(
+      /* case AbstractCartCompletionStrategy.isCartCompletionStrategy(
         module.prototype
       ): {
         if (!("cartCompletionStrategy" in registeredServices)) {
@@ -232,9 +219,9 @@ export function registerStrategies(
           )
         }
         break
-      }
+      }*/
 
-      case AbstractBatchJobStrategy.isBatchJobStrategy(module.prototype): {
+      /* case AbstractBatchJobStrategy.isBatchJobStrategy(module.prototype): {
         container.registerAdd(
           "batchJobStrategies",
           asFunction((cradle) => new module(cradle, pluginDetails.options))
@@ -249,9 +236,9 @@ export function registerStrategies(
           [`batchType_${module.batchType}`]: aliasTo(name),
         })
         break
-      }
+      }*/
 
-      case AbstractPriceSelectionStrategy.isPriceSelectionStrategy(
+      /* case AbstractPriceSelectionStrategy.isPriceSelectionStrategy(
         module.prototype
       ): {
         if (!("priceSelectionStrategy" in registeredServices)) {
@@ -268,7 +255,7 @@ export function registerStrategies(
           )
         }
         break
-      }
+      }*/
 
       default:
         logger.warn(
@@ -443,9 +430,6 @@ export async function registerServices(
 
       const context = { container, pluginDetails, registrationName: name }
 
-      registerPaymentProcessorFromClass(loaded, context)
-      registerAbstractFulfillmentServiceFromClass(loaded, context)
-
       if (OauthService.isOauthService(loaded.prototype)) {
         const appDetails = loaded.getAppDetails(pluginDetails.options)
 
@@ -462,7 +446,7 @@ export async function registerServices(
             }
           ),
         })
-      } else if (
+      } /* else if (
         AbstractNotificationService.isNotificationService(loaded.prototype)
       ) {
         container.registerAdd(
@@ -483,7 +467,7 @@ export async function registerServices(
           ),
           [`noti_${loaded.identifier}`]: aliasTo(name),
         })
-      } else if (AbstractFileService.isFileService(loaded.prototype)) {
+      }*/ /* else if (AbstractFileService.isFileService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which file storage provider we need to use
         container.register({
@@ -495,7 +479,7 @@ export async function registerServices(
           ),
           [`fileService`]: aliasTo(name),
         })
-      } else if (AbstractSearchService.isSearchService(loaded.prototype)) {
+      }*/ else if (AbstractSearchService.isSearchService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which search provider we need to use
         container.register({
@@ -509,7 +493,7 @@ export async function registerServices(
         })
 
         container.register(isSearchEngineInstalledResolutionKey, asValue(true))
-      } else if (AbstractTaxService.isTaxService(loaded.prototype)) {
+      } /* else if (AbstractTaxService.isTaxService(loaded.prototype)) {
         container.registerAdd(
           "taxProviders",
           asFunction((cradle) => new loaded(cradle, pluginDetails.options), {
@@ -526,7 +510,7 @@ export async function registerServices(
           ),
           [`tp_${loaded.identifier}`]: aliasTo(name),
         })
-      } else {
+      }*/ else {
         container.register({
           [name]: asFunction(
             (cradle) => new loaded(cradle, pluginDetails.options),

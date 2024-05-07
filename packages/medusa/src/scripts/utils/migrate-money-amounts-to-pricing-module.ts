@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { IPricingModuleService, MedusaContainer } from "@medusajs/types"
 import { MedusaError, promiseAll } from "@medusajs/utils"
 
@@ -82,3 +84,4 @@ export const migrateProductVariantPricing = async function (
     Logger.log(`Processed ${processedCount} of ${totalCount}`)
   }
 }
+*/
