@@ -1,11 +1,6 @@
 "use client"
 
-import {
-  SearchProvider as UiSearchProvider,
-  AiAssistantCommandIcon,
-  AiAssistantProvider,
-  searchFiltersV2,
-} from "docs-ui"
+import { SearchProvider as UiSearchProvider, searchFiltersV2 } from "docs-ui"
 import { config } from "../config"
 
 type SearchProviderProps = {
