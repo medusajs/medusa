@@ -8,9 +8,9 @@ In this chapter, you’ll learn about modules, their main service, and how to cr
 
 ## What is a Module?
 
-A module is a package of reusable functionalities that can be integrated into your Medusa application without affecting the overall system.
+A module is a package of reusable functionalities. It can be integrated into your Medusa application without affecting the overall system.
 
-All commerce and architectural customizations and development start with creating a module.
+Use modules to customize or develop commerce and architectural features in your Medusa application.
 
 ---
 
@@ -24,15 +24,15 @@ All commerce and architectural customizations and development start with creatin
 
 </Note>
 
-Modules are created in a sub-directory of `src/modules`. The directory name is the camel-case name of the module.
+Modules are created in a sub-directory of `src/modules`.
 
 For example, create the directory `src/modules/hello`.
 
 ### 1. Create a Service
 
-A module must defines a service. A service is a TypeScript or JavaScript class holding methods related to a business logic or commerce functionality.
+A module must define a service. A service is a TypeScript or JavaScript class holding methods related to a business logic or commerce functionality.
 
-For example, create the service `src/modules/hello/service.ts` with the following content:
+For example, create the file `src/modules/hello/service.ts` with the following content:
 
 ```ts title="src/modules/hello/service.ts"
 export default class HelloModuleService {
@@ -41,8 +41,6 @@ export default class HelloModuleService {
   }
 }
 ```
-
-When the module is loaded in the Medusa application, its main service is registered in the Medusa container.
 
 ### 2. Export Module Definition
 
@@ -58,9 +56,9 @@ export default {
 }
 ```
 
-### 3. Register Module in Configurations
+### 3. Add Module to Configurations
 
-The last step is to register the module in Medusa’s configurations.
+The last step is to add the module in Medusa’s configurations.
 
 In `medusa-config.js`, add the module to the `modules` object:
 
@@ -73,11 +71,13 @@ const modules = {
 }
 ```
 
-The key (`helloModuleService`) is the name of the module’s main service to be registered in the Medusa container. Its value is an object having the `resolve` property. `resolve` ’s value is either an `npm` package’s name or a path to the directory holding the module.
+Its key (`helloModuleService`) is the name of the module’s main service. It will be registered in the Medusa container with that name.
+
+Its value is an object having the `resolve` property, whose value is either a path to the directory holding the module or an `npm` package’s name.
 
 <Note title="Tip">
 
-When `resolve` points to a directory, it must point to the transpiled module (the directory the module is in after running the `build` command). Hence, the path in the example above points to the module in the `dist` directory.
+When you run the `build` or `dev` command, your customizations are transpiled from the `src` directory into the `dist` directory. So, you point to the module in the `dist` directory.
 
 </Note>
 
@@ -129,10 +129,10 @@ You’ll receive the following response:
 
 ## When to Use Modules
 
-Use a module when you're implementing custom business logic or extending existing ones.
-
-Some common use cases of when a module is useful:
+<Note title="Use modules when" type="success">
 
 - You're implementing a custom commerce feature. For example, you're implementing digital products.
 - You want to extend data models in other commerce modules, such as adding a field or a relation to the `Product` model.
 - You want to re-use your custom commerce functionalities across Medusa applications or use them in other environments, such as Edge functions and Next.js apps.
+
+</Note>

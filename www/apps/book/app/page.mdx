@@ -1,4 +1,4 @@
-import { CheckCircleSolid, BuildingStorefront, BuildingsSolid, ComputerDesktop } from "@medusajs/icons"
+import { CheckCircleSolid, BuildingStorefront, BuildingsSolid, ComputerDesktop, FlyingBox } from "@medusajs/icons"
 import { config } from "@/config"
 
 export const metadata = {
@@ -32,10 +32,8 @@ With these tools, you save time you would spend with other platforms on maintain
 Create your first Medusa store by running the following command:
 
 ```bash
-npx create-medusa-app@latest
+npx create-medusa-app@latest --v2
 ```
-
-This takes you on a journey to set up your store, learn about Medusa, and build your first customizations.
 
 ---
 
@@ -52,37 +50,43 @@ Medusa is for ambitious businesses and developers that are limited by traditiona
     title: "Use Case: D2C",
     text: "How Matt Sleeps built a unique D2C experience with Medusa",
     href: "https://medusajs.com/blog/matt-sleeps/",
-    startIcon: <CheckCircleSolid />
+    startIcon: <FlyingBox />,
+    isExternal: true
   },
   {
     title: "Use Case: OMS",
     text: "How Makro Pro Built an OMS with Medusa",
     href: "https://medusajs.com/blog/makro-pro/",
-    startIcon: <CheckCircleSolid />
+    startIcon: <CheckCircleSolid />,
+    isExternal: true
   },
   {
     title: "Use Case: Marketplace",
     text: "How Foraged built a custom marketplace with Medusa",
     href: "https://medusajs.com/blog/foraged/",
-    startIcon: <BuildingStorefront />
+    startIcon: <BuildingStorefront />,
+    isExternal: true
   },
   {
     title: "Use Case: POS",
     text: "How Tekla built a global webshop and a POS system with Medusa",
     href: "https://medusajs.com/blog/tekla-pos/",
-    startIcon: <ComputerDesktop />
+    startIcon: <ComputerDesktop />,
+    isExternal: true
   },
   {
     title: "Use Case: B2B",
     text: "How Visionary built B2B commerce with Medusa",
     href: "https://medusajs.com/blog/visionary/",
-    startIcon: <BuildingsSolid />
+    startIcon: <BuildingsSolid />,
+    isExternal: true
   },
   {
     title: "Use Case: Platform",
     text: "How Catalog built a B2B platform for SMBs with Medusa",
     href: "https://medusajs.com/blog/catalog/",
-    startIcon: <BuildingsSolid />
+    startIcon: <BuildingsSolid />,
+    isExternal: true
   }
 ]} itemsPerRow={2} />
 
@@ -92,4 +96,4 @@ Medusa is for ambitious businesses and developers that are limited by traditiona
 
 This book is for TypeScript or JavaScript developers looking to master Medusa and build their commerce applications. By following this book, you’ll learn about Medusa’s concept, from basic to advanced, with easy-to-follow examples to assist you along the way.
 
-By the end of this book, you’ll be a Medusa expert, leading teams using Medusa from the beginning till deployment.
+By the end of this book, you’ll be an expert Medusa developer, leading teams using Medusa from the beginning till deployment.
