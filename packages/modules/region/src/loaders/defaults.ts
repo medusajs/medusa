@@ -1,14 +1,13 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IRegionModuleService, LoaderOptions, Logger } from "@medusajs/types"
+import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 import { ContainerRegistrationKeys, DefaultsUtils } from "@medusajs/utils"
+import { Country } from "@models"
 
 export default async ({ container }: LoaderOptions): Promise<void> => {
   // TODO: Add default logger to the container when running tests
   const logger =
     container.resolve<Logger>(ContainerRegistrationKeys.LOGGER) ?? console
-  const regionService = container.resolve<IRegionModuleService>(
-    ModuleRegistrationName.REGION
-  )
+  const countryService_: ModulesSdkTypes.InternalModuleService<Country> =
+    container.resolve("countryService")
 
   try {
     const normalizedCountries = DefaultsUtils.defaultCountries.map((c) => ({
@@ -19,7 +18,7 @@ export default async ({ container }: LoaderOptions): Promise<void> => {
       display_name: c.name,
     }))
 
-    const resp = await regionService.upsert(normalizedCountries)
+    const resp = await countryService_.upsert(normalizedCountries)
     logger.info(`Loaded ${resp.length} countries`)
   } catch (error) {
     logger.warn(
