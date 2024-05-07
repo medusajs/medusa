@@ -8,7 +8,7 @@ export function OrderCreateFulfillment() {
   const { id } = useParams()
 
   const { order, isLoading, isError, error } = useOrder(id!, {
-    fields: "currency_code,*items,*items.variant",
+    fields: "currency_code,*items,*items.variant,*shipping_address",
   })
 
   if (isError) {

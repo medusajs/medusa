@@ -14,3 +14,19 @@ export function pick(obj: Record<string, any>, keys: string[]) {
 
   return ret
 }
+
+/**
+ * Remove properties that are `null` or `undefined` from the object.
+ * @param obj
+ */
+export function cleanNonValues(obj: Record<string, any>) {
+  const ret: Record<string, any> = {}
+
+  for (const key in obj) {
+    if (obj[key] !== null && typeof obj[key] !== "undefined") {
+      ret[key] = obj[key]
+    }
+  }
+
+  return ret
+}

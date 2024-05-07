@@ -17,6 +17,8 @@ import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { useCreateFulfillment } from "../../../../../hooks/api/fulfillment.tsx"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations.tsx"
+import { cleanNonValues, pick } from "../../../../../lib/common"
+import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers.tsx"
 
 type OrderCreateFulfillmentFormProps = {
   order: OrderDTO
@@ -30,6 +32,10 @@ export function OrderCreateFulfillmentForm({
 
   const { mutateAsync: createOrderFulfillment, isLoading: isMutating } =
     useCreateFulfillment()
+
+  const { fulfillment_providers } = useFulfillmentProviders({
+    region_id: order.region_id,
+  })
 
   const [fulfillableItems, setFulfillableItems] = useState(() =>
     order.items.filter((item) => getFulfillableQuantity(item) > 0)
@@ -52,9 +58,44 @@ export function OrderCreateFulfillmentForm({
     await createOrderFulfillment({
       location_id: data.location_id,
       // no_notification: !data.send_notification,
+      delivery_address: cleanNonValues(
+        pick(order.shipping_address, [
+          "first_name",
+          "last_name",
+          "phone",
+          "company",
+          "address_1",
+          "address_2",
+          "city",
+          "country_code",
+          "province",
+          "postal_code",
+          "metadata",
+        ])
+      ), // TODO: this should be pulled from order in the workflow
+      provider_id: fulfillment_providers[0]?.id, // TOOO: link Region <> Fulfillment Providers
       items: Object.entries(data.quantity)
         .filter(([, value]) => !!value)
-        .map(([item_id, quantity]) => ({ item_id, quantity })),
+        .map(([item_id, quantity]) => {
+          const item = order.items.find((i) => i.id === item_id)
+
+          return {
+            quantity,
+            line_item_id: item_id,
+            title: item.title,
+            barcode: item.variant.barcode || "",
+            sku: item.variant_sku || "",
+          }
+        }),
+      // TODO: should be optional
+      labels: [
+        {
+          tracking_number: "TODO",
+          tracking_url: "TODO",
+          label_url: "TODO",
+        },
+      ],
+      order: {}, // TODO ?
     })
 
     handleSuccess(`/orders/${order.id}`)
