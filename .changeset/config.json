@@ -9,7 +9,6 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "integration-tests-api",
-    "integration-tests-plugins",
     "integration-tests-modules",
     "@medusajs/dashboard",
     "@medusajs/admin-shared",
