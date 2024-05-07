@@ -1,9 +1,10 @@
-import { XCircle } from "@medusajs/icons"
+import { Buildings, XCircle } from "@medusajs/icons"
 import {
-  LineItem,
-  Fulfillment as MedusaFulfillment,
-  Order,
-} from "@medusajs/medusa"
+  FulfillmentDTO,
+  OrderDTO,
+  OrderLineItemDTO,
+  ProductVariantDTO,
+} from "@medusajs/types"
 import {
   Container,
   Copy,
@@ -17,8 +18,6 @@ import {
 import { format } from "date-fns"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
-import { FulfillmentDTO, OrderDTO, OrderItemDTO } from "@medusajs/types"
-
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -27,7 +26,7 @@ import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 
 type OrderFulfillmentSectionProps = {
-  order: OrderDTO
+  order: OrderDTO & { fulfillments: FulfillmentDTO[] }
 }
 
 export const OrderFulfillmentSection = ({
@@ -49,7 +48,7 @@ const UnfulfilledItem = ({
   item,
   currencyCode,
 }: {
-  item: OrderItemDTO
+  item: OrderLineItemDTO & { variant: ProductVariantDTO }
   currencyCode: string
 }) => {
   return (
@@ -87,7 +86,10 @@ const UnfulfilledItem = ({
         </div>
         <div className="flex items-center justify-end">
           <Text>
-            <span className="tabular-nums">{item.quantity}</span>x
+            <span className="tabular-nums">
+              {item.quantity - item.detail.fulfilled_quantity}
+            </span>
+            x
           </Text>
         </div>
         <div className="flex items-center justify-end">
@@ -100,19 +102,16 @@ const UnfulfilledItem = ({
   )
 }
 
-const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
+const UnfulfilledItemBreakdown = ({
+  order,
+}: {
+  order: OrderDTO & { fulfillments: FulfillmentDTO[] }
+}) => {
   const { t } = useTranslation()
 
-  const fulfillmentItems = order.fulfillments?.map((f) =>
-    f.items.map((i) => ({ id: i.item_id, quantity: i.quantity }))
-  )
-
   // Create an array of order items that haven't been fulfilled or at least not fully fulfilled
-  const unfulfilledItems = order.items.filter(
-    (i) =>
-      !fulfillmentItems?.some((fi) =>
-        fi.some((f) => f.id === i.id && f.quantity === i.quantity)
-      )
+  const unfulfilledItems = order.items!.filter(
+    (i) => i.detail.fulfilled_quantity < i.quantity
   )
 
   if (!unfulfilledItems.length) {
@@ -125,9 +124,21 @@ const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
         <Heading level="h2">{t("orders.fulfillment.unfulfilledItems")}</Heading>
         <div className="flex items-center gap-x-4">
           <StatusBadge color="red" className="text-nowrap">
-            {t("orders.fulfillment.awaitingFullfillmentBadge")}
+            {t("orders.fulfillment.awaitingFulfillmentBadge")}
           </StatusBadge>
-          <ActionMenu groups={[]} />
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("orders.fulfillment.fulfillItems"),
+                    icon: <Buildings />,
+                    to: `/orders/${order.id}/fulfillment`,
+                  },
+                ],
+              },
+            ]}
+          />
         </div>
       </div>
       <div>
@@ -145,9 +156,11 @@ const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
 
 const Fulfillment = ({
   fulfillment,
+  order,
   index,
 }: {
   fulfillment: FulfillmentDTO
+  order: OrderDTO
   index: number
 }) => {
   const { t } = useTranslation()
