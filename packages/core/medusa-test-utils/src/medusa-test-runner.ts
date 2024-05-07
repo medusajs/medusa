@@ -1,9 +1,9 @@
-import { getDatabaseURL } from "./database"
-import { initDb } from "./medusa-test-runner-utils/use-db"
-import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
-import { createDatabase, dropDatabase } from "pg-god"
-import {ContainerLike, MedusaContainer} from "@medusajs/types"
+import { ContainerLike, MedusaContainer } from "@medusajs/types"
 import { createMedusaContainer } from "@medusajs/utils"
+import { createDatabase, dropDatabase } from "pg-god"
+import { getDatabaseURL } from "./database"
+import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
+import { initDb } from "./medusa-test-runner-utils/use-db"
 
 const axios = require("axios").default
 
@@ -114,12 +114,16 @@ export function medusaIntegrationTestRunner({
   ) => {
     const config = originalConfigLoader(rootDirectory)
     config.projectConfig.database_url = dbConfig.clientUrl
-    config.projectConfig.database_driver_options = dbConfig.clientUrl.includes("localhost") ? {} : {
-      connection: {
-        ssl: { rejectUnauthorized: false },
-      },
-      idle_in_transaction_session_timeout: 20000,
-    }
+    config.projectConfig.database_driver_options = dbConfig.clientUrl.includes(
+      "localhost"
+    )
+      ? {}
+      : {
+          connection: {
+            ssl: { rejectUnauthorized: false },
+          },
+          idle_in_transaction_session_timeout: 20000,
+        }
     return config
   }
 
@@ -223,19 +227,6 @@ export function medusaIntegrationTestRunner({
 
     const container = options.getContainer()
     const copiedContainer = createMedusaContainer({}, container)
-
-    if (process.env.MEDUSA_FF_MEDUSA_V2 != "true") {
-      try {
-        const defaultLoader =
-          require("@medusajs/medusa/dist/loaders/defaults").default
-        await defaultLoader({
-          container: copiedContainer,
-        })
-      } catch (error) {
-        console.error("Error runner medusa loaders", error?.message)
-        throw error
-      }
-    }
 
     try {
       const medusaAppLoaderRunner =

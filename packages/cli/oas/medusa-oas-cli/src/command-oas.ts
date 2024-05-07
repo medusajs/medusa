@@ -54,7 +54,7 @@ export const commandOptions: Option[] = [
   ),
   new Option("-F, --force", "Ignore OAS validation and output OAS files."),
   new Option(
-    "--v2", 
+    "--v2",
     "Generate OAS files for V2 endpoints. This loads OAS from www/utils/generated/oas-output/operations directory"
   ),
   new Option(
@@ -151,7 +151,7 @@ async function getOASFromCodebase(
 ): Promise<OpenAPIObject> {
   /**
    * OAS output directory
-   * 
+   *
    * @privateRemark
    * This should be the only directory OAS is loaded from for Medusa V2.
    * For now, we only use it if the --v2 flag it passed to the CLI tool.
@@ -165,7 +165,7 @@ async function getOASFromCodebase(
       path.resolve(oasOutputPath, "schemas"),
       // We currently load error schemas from here. If we change
       // that in the future, we should change the path.
-      path.resolve(medusaPackagePath, "dist", "api/middlewares"),
+      path.resolve(medusaPackagePath, "dist", "utils/middlewares"),
     ] : [
       path.resolve(medusaTypesPath, "dist"),
       path.resolve(medusaUtilsPath, "dist"),

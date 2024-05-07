@@ -12,7 +12,10 @@
     "noEmit": true,
     "noUnusedLocals": true,
     "esModuleInterop": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@babel/types": ["../../../node_modules/@babel/types"]
+    }
   },
   "include": ["src"]
 }
