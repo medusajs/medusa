@@ -3,7 +3,8 @@ import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 
 import { client } from "../../lib/client"
-import { queryClient } from "../../lib/medusa.ts"
+import { queryClient } from "../../lib/medusa"
+import { ordersQueryKeys } from "./orders"
 
 const FULFILLMENTS_QUERY_KEY = "fulfillments" as const
 export const fulfillmentsQueryKeys = queryKeysFactory(FULFILLMENTS_QUERY_KEY)
@@ -15,6 +16,26 @@ export const useCreateFulfillment = (
     mutationFn: (payload: any) => client.fulfillments.create(payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: fulfillmentsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useCancelFulfillment = (
+  id: string,
+  options?: UseMutationOptions<any, Error, any>
+) => {
+  return useMutation({
+    mutationFn: () => client.fulfillments.cancel(id),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({ queryKey: fulfillmentsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

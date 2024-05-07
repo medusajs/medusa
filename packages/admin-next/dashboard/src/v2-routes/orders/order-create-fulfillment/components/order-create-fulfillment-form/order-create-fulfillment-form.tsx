@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { useForm, useWatch } from "react-hook-form"
-import { Alert, Button, Select } from "@medusajs/ui"
+import { Alert, Button, Select, toast } from "@medusajs/ui"
 import { OrderDTO } from "@medusajs/types"
 
 import {
@@ -55,50 +55,63 @@ export function OrderCreateFulfillmentForm({
   const { stock_locations = [] } = useStockLocations()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await createOrderFulfillment({
-      location_id: data.location_id,
-      // no_notification: !data.send_notification,
-      delivery_address: cleanNonValues(
-        pick(order.shipping_address, [
-          "first_name",
-          "last_name",
-          "phone",
-          "company",
-          "address_1",
-          "address_2",
-          "city",
-          "country_code",
-          "province",
-          "postal_code",
-          "metadata",
-        ])
-      ), // TODO: this should be pulled from order in the workflow
-      provider_id: fulfillment_providers[0]?.id, // TOOO: link Region <> Fulfillment Providers
-      items: Object.entries(data.quantity)
-        .filter(([, value]) => !!value)
-        .map(([item_id, quantity]) => {
-          const item = order.items.find((i) => i.id === item_id)
+    try {
+      await createOrderFulfillment({
+        location_id: data.location_id,
+        // no_notification: !data.send_notification,
+        delivery_address: cleanNonValues(
+          pick(order.shipping_address, [
+            "first_name",
+            "last_name",
+            "phone",
+            "company",
+            "address_1",
+            "address_2",
+            "city",
+            "country_code",
+            "province",
+            "postal_code",
+            "metadata",
+          ])
+        ), // TODO: this should be pulled from order in the workflow
+        provider_id: fulfillment_providers[0]?.id, // TOOO: link Region <> Fulfillment Providers
+        items: Object.entries(data.quantity)
+          .filter(([, value]) => !!value)
+          .map(([item_id, quantity]) => {
+            const item = order.items.find((i) => i.id === item_id)
 
-          return {
-            quantity,
-            line_item_id: item_id,
-            title: item.title,
-            barcode: item.variant.barcode || "",
-            sku: item.variant_sku || "",
-          }
-        }),
-      // TODO: should be optional
-      labels: [
-        {
-          tracking_number: "TODO",
-          tracking_url: "TODO",
-          label_url: "TODO",
-        },
-      ],
-      order: {}, // TODO ?
-    })
+            return {
+              quantity,
+              line_item_id: item_id,
+              title: item.title,
+              barcode: item.variant.barcode || "",
+              sku: item.variant_sku || "",
+            }
+          }),
+        // TODO: should be optional
+        labels: [
+          {
+            tracking_number: "TODO",
+            tracking_url: "TODO",
+            label_url: "TODO",
+          },
+        ],
+        order: {}, // TODO ?
+        order_id: order.id, // TEMP link for now
+      })
 
-    handleSuccess(`/orders/${order.id}`)
+      handleSuccess(`/orders/${order.id}`)
+
+      toast.success(t("general.success"), {
+        description: t("orders.fulfillment.toast.created"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   })
 
   useEffect(() => {

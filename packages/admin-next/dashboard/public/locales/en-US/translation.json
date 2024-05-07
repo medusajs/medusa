@@ -554,6 +554,7 @@
         "requiresAction": "Requires action"
       },
       "toast": {
+        "created": "Fulfillment created successfully",
         "canceled": "Fulfillment successfully canceled",
         "fulfillmentShipped": "Cannot cancel an already shipped fulfillment"
       },

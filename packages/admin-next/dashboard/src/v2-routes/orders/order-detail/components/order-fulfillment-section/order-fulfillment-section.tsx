@@ -24,6 +24,7 @@ import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
+import { useCancelFulfillment } from "../../../../../hooks/api/fulfillment"
 
 type OrderFulfillmentSectionProps = {
   order: OrderDTO & { fulfillments: FulfillmentDTO[] }
@@ -38,7 +39,7 @@ export const OrderFulfillmentSection = ({
     <div className="flex flex-col gap-y-2">
       <UnfulfilledItemBreakdown order={order} />
       {fulfillments.map((f, index) => (
-        <Fulfillment key={f.id} index={index} fulfillment={f} />
+        <Fulfillment key={f.id} index={index} fulfillment={f} order={order} />
       ))}
     </div>
   )
@@ -189,7 +190,7 @@ const Fulfillment = ({
     statusTimestamp = fulfillment.shipped_at
   }
 
-  const { mutateAsync } = {} // useCancelFulfillment(order.id)
+  const { mutateAsync } = useCancelFulfillment(fulfillment.id)
 
   const handleCancel = async () => {
     if (fulfillment.shipped_at) {
@@ -255,6 +256,7 @@ const Fulfillment = ({
                     label: t("actions.cancel"),
                     icon: <XCircle />,
                     onClick: handleCancel,
+                    disabled: !!fulfillment.canceled_at,
                   },
                 ],
               },
