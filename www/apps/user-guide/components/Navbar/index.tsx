@@ -14,6 +14,7 @@ const Navbar = () => {
       getNavbarItems({
         basePath: config.baseUrl,
         activePath: process.env.NEXT_PUBLIC_BASE_PATH || "/user-guide",
+        version: "v2",
       }),
     []
   )
