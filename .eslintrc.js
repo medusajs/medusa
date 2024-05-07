@@ -131,6 +131,10 @@ module.exports = {
           "./packages/modules/link-modules/tsconfig.spec.json",
           "./packages/modules/user/tsconfig.spec.json",
           "./packages/modules/locking-postgres/tsconfig.spec.json",
+          "./packages/modules/providers/file-local/tsconfig.spec.json",
+          "./packages/modules/providers/file-s3/tsconfig.spec.json",
+          "./packages/modules/providers/fulfillment-manual/tsconfig.spec.json",
+          "./packages/modules/providers/payment-stripe/tsconfig.spec.json",
         ],
       },
       rules: {

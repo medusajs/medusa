@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { IEventBusService, ISearchService } from "@medusajs/types"
 import { FlagRouter, defaultSearchIndexingProductRelations } from "@medusajs/utils"
 import { indexTypes } from "medusa-core-utils"
@@ -78,3 +80,4 @@ class SearchIndexingSubscriber {
 }
 
 export default SearchIndexingSubscriber
+*/

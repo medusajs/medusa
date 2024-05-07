@@ -7,14 +7,24 @@ interface ConfirmInventoryPreparationInput {
     inventory_item_id: string
     required_quantity: number
   }[]
-  items: { variant_id?: string; quantity: BigNumberInput }[]
-  variants: { id: string; manage_inventory?: boolean }[]
+  items: {
+    id?: string
+    variant_id?: string
+    quantity: BigNumberInput
+  }[]
+  variants: {
+    id: string
+    manage_inventory?: boolean
+    allow_backorder?: boolean
+  }[]
   location_ids: string[]
 }
 
 interface ConfirmInventoryItem {
+  id?: string
   inventory_item_id: string
   required_quantity: number
+  allow_backorder: boolean
   quantity: number
   location_ids: string[]
 }
@@ -31,7 +41,7 @@ export const prepareConfirmInventoryInput = ({
 
   const variantsMap = new Map<
     string,
-    { id: string; manage_inventory?: boolean }
+    ConfirmInventoryPreparationInput["variants"][0]
   >(variants.map((v) => [v.id, v]))
 
   const itemsToConfirm: ConfirmInventoryItem[] = []
@@ -55,8 +65,10 @@ export const prepareConfirmInventoryInput = ({
     }
 
     itemsToConfirm.push({
+      id: item.id,
       inventory_item_id: variantInventoryItem.inventory_item_id,
       required_quantity: variantInventoryItem.required_quantity,
+      allow_backorder: !!variant.allow_backorder,
       quantity: item.quantity as number, // TODO: update type to BigNumberInput
       location_ids: location_ids,
     })

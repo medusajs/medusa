@@ -400,6 +400,12 @@ export interface IPaymentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
 
+  retrievePaymentSession(
+    paymentSessionId: string,
+    config?: FindConfig<PaymentSessionDTO>,
+    sharedContext?: Context
+  ): Promise<PaymentSessionDTO>
+
   /* ********** PAYMENT SESSION ********** */
 
   /**

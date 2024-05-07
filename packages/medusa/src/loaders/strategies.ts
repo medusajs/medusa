@@ -5,7 +5,7 @@ import { aliasTo, asFunction } from "awilix"
 import formatRegistrationName from "../utils/format-registration-name"
 import { MedusaContainer } from "../types/global"
 import { isDefined } from "medusa-core-utils"
-import { AbstractBatchJobStrategy } from "../interfaces"
+/*import { AbstractBatchJobStrategy } from "../interfaces"*/
 
 type LoaderOptions = {
   container: MedusaContainer
@@ -49,25 +49,10 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
     const loaded = require(fn).default
     const name = formatRegistrationName(fn)
 
-    if (AbstractBatchJobStrategy.isBatchJobStrategy(loaded.prototype)) {
-      container.registerAdd(
-        "batchJobStrategies",
-        asFunction((cradle) => new loaded(cradle, configModule))
-      )
-
-      container.register({
-        [name]: asFunction(
-          (cradle) => new loaded(cradle, configModule)
-        ).singleton(),
-        [`batch_${loaded.identifier}`]: aliasTo(name),
-        [`batchType_${loaded.batchType}`]: aliasTo(name),
-      })
-    } else {
-      container.register({
-        [name]: asFunction(
-          (cradle) => new loaded(cradle, configModule)
-        ).singleton(),
-      })
-    }
+    container.register({
+      [name]: asFunction(
+        (cradle) => new loaded(cradle, configModule)
+      ).singleton(),
+    })
   })
 }

@@ -22,18 +22,18 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
-      - name: Install docs-util Dependencies
+      - name: Install www/utils Dependencies
         run: yarn
-        working-directory: docs-util
+        working-directory: www/utils
 
       - name: Build packages
         run: yarn build
-        working-directory: docs-util
+        working-directory: www/utils
       
       - name: Check Commit
         id: check-commit
         run: 'yarn check:release-commit ${{ github.sha }}'
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_OWNER: ${{ github.repository_owner }}
@@ -42,7 +42,7 @@ jobs:
       - name: Run docblock generator
         if: steps.check-commit.outputs.is_release_commit == 'true'
         run: "yarn start run:release"
-        working-directory: docs-util/packages/docblock-generator
+        working-directory: www/utils/packages/docblock-generator
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_OWNER: ${{ github.repository_owner }}
@@ -51,7 +51,7 @@ jobs:
       - name: Generate Changeset
         if: steps.check-commit.outputs.is_release_commit == 'true'
         run: "yarn generate:changeset"
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
 
       - name: Create Pull Request
         if: steps.check-commit.outputs.is_release_commit == 'true'
@@ -78,18 +78,18 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
-      - name: Install docs-util Dependencies
+      - name: Install www/utils Dependencies
         run: yarn
-        working-directory: docs-util
+        working-directory: www/utils
 
       - name: Build packages
         run: yarn build
-        working-directory: docs-util
+        working-directory: www/utils
       
       - name: Check Commit
         id: check-commit
         run: 'yarn check:release-commit ${{ github.sha }}'
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_OWNER: ${{ github.repository_owner }}
@@ -97,8 +97,8 @@ jobs:
 
       - name: Run docblock generator
         if: steps.check-commit.outputs.is_release_commit == 'true'
-        run: "yarn start run ../../../packages/medusa/src/api-v2 --type oas && yarn start clean:oas"
-        working-directory: docs-util/packages/docblock-generator
+        run: "yarn start run ../../../../packages/medusa/src/api-v2 --type oas && yarn start clean:oas"
+        working-directory: www/utils/packages/docblock-generator
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_OWNER: ${{ github.repository_owner }}
@@ -113,4 +113,4 @@ jobs:
           title: "chore(docs): Generated OAS"
           body: "This PR holds all generated OAS for the upcoming release."
           branch: "chore/generate-oas"
-          add-paths: docs-util/oas-output/**
+          add-paths: www/utils/generated/oas-output/**

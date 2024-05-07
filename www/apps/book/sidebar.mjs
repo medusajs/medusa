@@ -195,8 +195,24 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Example: Advanced Workflow",
             },
             {
+              path: "/advanced-development/workflows/access-workflow-errors",
+              title: "Access Workflow Errors",
+            },
+            {
+              path: "/advanced-development/workflows/retry-failed-steps",
+              title: "Retry Failed Steps",
+            },
+            {
               path: "/advanced-development/workflows/parallel-steps",
-              title: "Running Steps in Parallel",
+              title: "Run Steps in Parallel",
+            },
+            {
+              path: "/advanced-development/workflows/workflow-timeout",
+              title: "Workflow Timeout",
+            },
+            {
+              path: "/advanced-development/workflows/long-running-workflow",
+              title: "Long-Running Workflow",
             },
           ],
         },

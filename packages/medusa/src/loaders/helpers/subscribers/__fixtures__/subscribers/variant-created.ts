@@ -1,4 +1,3 @@
-import { ProductVariantService } from "../../../../../services"
 import {
   SubscriberArgs,
   SubscriberConfig,
@@ -14,5 +13,5 @@ export default async function ({
 }
 
 export const config: SubscriberConfig = {
-  event: ProductVariantService.Events.CREATED,
+  event: "variant.created",
 }

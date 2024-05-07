@@ -7,7 +7,7 @@ export const eventBusServiceMock = {
 export const containerMock = {
   // mock .resolve method so if its called with "eventBusService" it returns the mock
   resolve: jest.fn().mockImplementation((name: string) => {
-    if (name === "eventBusService") {
+    if (name === "eventBusModuleService") {
       return eventBusServiceMock
     } else {
       return {}

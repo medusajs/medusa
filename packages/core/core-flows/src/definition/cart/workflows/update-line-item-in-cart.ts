@@ -4,13 +4,16 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { MedusaError } from "medusa-core-utils"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import { updateLineItemsStep } from "../../line-item/steps"
-import { confirmInventoryStep, refreshCartShippingMethodsStep } from "../steps"
+import { refreshCartShippingMethodsStep } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
-import { cartFieldsForRefreshSteps } from "../utils/fields"
-import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
+import { validateVariantPricesStep } from "../steps/validate-variant-prices"
+import {
+  cartFieldsForRefreshSteps,
+  productVariantsFields,
+} from "../utils/fields"
+import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
 
 // TODO: The UpdateLineItemsWorkflow are missing the following steps:
@@ -35,32 +38,7 @@ export const updateLineItemInCartWorkflow = createWorkflow(
 
     const variants = useRemoteQueryStep({
       entry_point: "variants",
-      fields: [
-        "id",
-        "title",
-        "sku",
-        "barcode",
-        "manage_inventory",
-        "product.id",
-        "product.title",
-        "product.description",
-        "product.subtitle",
-        "product.thumbnail",
-        "product.type",
-        "product.collection",
-        "product.handle",
-
-        "calculated_price.calculated_amount",
-
-        "inventory_items.inventory_item_id",
-        "inventory_items.required_quantity",
-
-        "inventory_items.inventory.location_levels.stock_locations.id",
-        "inventory_items.inventory.location_levels.stock_locations.name",
-
-        "inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
-        "inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
-      ],
+      fields: productVariantsFields,
       variables: {
         id: variantIds,
         calculated_price: {
@@ -70,70 +48,19 @@ export const updateLineItemInCartWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    const confirmInventoryInput = transform({ input, variants }, (data) => {
-      const managedVariants = data.variants.filter((v) => v.manage_inventory)
-      if (!managedVariants.length) {
-        return { items: [] }
-      }
+    validateVariantPricesStep({ variants })
 
-      const productVariantInventoryItems: any[] = []
-
-      const stockLocations = data.variants
-        .map((v) => v.inventory_items)
-        .flat()
-        .map((ii) => {
-          productVariantInventoryItems.push({
-            variant_id: ii.variant_id,
-            inventory_item_id: ii.inventory_item_id,
-            required_quantity: ii.required_quantity,
-          })
-
-          return ii.inventory.location_levels
-        })
-        .flat()
-        .map((ll) => ll.stock_locations)
-        .flat()
-
-      const salesChannelId = data.input.cart.sales_channel_id
-      if (salesChannelId) {
-        const salesChannels = stockLocations
-          .map((sl) => sl.sales_channels)
-          .flat()
-          .filter((sc) => sc.id === salesChannelId)
-
-        if (!salesChannels.length) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Sales channel ${salesChannelId} is not associated with any stock locations.`
-          )
-        }
-      }
-
-      const priceNotFound: string[] = data.variants
-        .filter((v) => !v.calculated_price)
-        .map((v) => v.id)
-
-      if (priceNotFound.length) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Variants with IDs ${priceNotFound.join(", ")} do not have a price`
-        )
-      }
-
-      const items = prepareConfirmInventoryInput({
-        product_variant_inventory_items: productVariantInventoryItems,
-        location_ids: stockLocations.map((l) => l.id),
-        items: [data.input.item!],
-        variants: data.variants.map((v) => ({
-          id: v.id,
-          manage_inventory: v.manage_inventory,
-        })),
-      })
-
-      return { items }
+    const items = transform({ input }, (data) => {
+      return [data.input.item]
     })
 
-    confirmInventoryStep(confirmInventoryInput)
+    confirmVariantInventoryWorkflow.runAsStep({
+      input: {
+        sales_channel_id: input.cart.sales_channel_id as string,
+        variants,
+        items,
+      },
+    })
 
     const lineItemUpdate = transform({ input, variants }, (data) => {
       const variant = data.variants[0]

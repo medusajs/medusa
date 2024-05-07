@@ -30,6 +30,7 @@ export class Migration20240219102530 extends Migration {
       CREATE TABLE IF NOT EXISTS "order" (
           "id" TEXT NOT NULL,
           "region_id" TEXT NULL,
+          "display_id" SERIAL,
           "customer_id" TEXT NULL,
           "version" INTEGER NOT NULL DEFAULT 1,
           "sales_channel_id" TEXT NULL,
@@ -110,6 +111,11 @@ export class Migration20240219102530 extends Migration {
         ["fulfillment_status", "payment_status", "display_id"],
         "DROP NOT NULL"
       )}
+
+      CREATE INDEX IF NOT EXISTS "IDX_order_display_id" ON "order" (
+          display_id
+      ) 
+      WHERE deleted_at IS NOT NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_region_id" ON "order" (
           region_id

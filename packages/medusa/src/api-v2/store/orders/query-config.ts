@@ -40,8 +40,8 @@ export const defaultStoreRetrieveOrderFields = [
   "*items.tax_lines",
   "*items.adjustments",
   "*items.detail",
-  "*items.tax_lines",
-  "*items.adjustments",
+  "*items.variant",
+  "*items.variant.product",
   "*shipping_address",
   "*billing_address",
   "*shipping_methods",
@@ -50,6 +50,6 @@ export const defaultStoreRetrieveOrderFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultStoreRetrieveOrderFields,
+  defaults: defaultStoreRetrieveOrderFields,
   isList: false,
 }
