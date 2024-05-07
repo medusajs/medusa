@@ -9,7 +9,6 @@ import {
   usePrompt,
 } from "@medusajs/ui"
 import { format } from "date-fns"
-import { useAdminCancelOrder } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import {
@@ -25,7 +24,7 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useAdminCancelOrder(order.id)
+  const { mutateAsync } = { mutateAsync: () => {} } // cancel order
 
   const handleCancel = async () => {
     const res = await prompt({
@@ -54,7 +53,7 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
         <Text size="small" className="text-ui-fg-subtle">
           {t("orders.onDateFromSalesChannel", {
             date: format(new Date(order.created_at), "dd MMM, yyyy, HH:mm:ss"),
-            salesChannel: order.sales_channel.name,
+            salesChannel: order.sales_channel?.name,
           })}
         </Text>
       </div>
@@ -67,11 +66,11 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
           groups={[
             {
               actions: [
-                {
-                  label: t("actions.cancel"),
-                  onClick: handleCancel,
-                  icon: <XCircle />,
-                },
+                // {
+                //   label: t("actions.cancel"),
+                //   onClick: handleCancel,
+                //   icon: <XCircle />,
+                // },
               ],
             },
           ]}
@@ -83,6 +82,11 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
 
 const FulfillmentBadge = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
+
+  /**
+   * TODO: revisit when Order<>Fulfillment are linked
+   */
+  return null
 
   const { label, color } = getOrderFulfillmentStatus(
     t,
