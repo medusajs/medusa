@@ -58,23 +58,23 @@ export const navbarItemsV1: NavbarItem[] = [
   {
     type: "link",
     props: {
-      label: "Book",
+      label: "Learn Medusa v2",
       target: "_blank",
       rel: "noreferrer",
       href: `/v2`,
       badge: {
         variant: "blue",
-        children: "v2"
-      }
+        children: "New",
+      },
     },
-  }
+  },
 ]
 
 export const navbarItemsV2: NavbarItem[] = [
   {
     type: "link",
     props: {
-      label: "Book",
+      label: "Docs",
       target: "_blank",
       rel: "noreferrer",
       href: `/v2`,
@@ -101,8 +101,8 @@ export const navbarItemsV2: NavbarItem[] = [
       href: `/`,
       badge: {
         variant: "neutral",
-        children: "v1"
-      }
+        children: "v1",
+      },
     },
   },
   {
@@ -114,8 +114,8 @@ export const navbarItemsV2: NavbarItem[] = [
       href: `/user-guide`,
       badge: {
         variant: "neutral",
-        children: "v1"
-      }
+        children: "v1",
+      },
     },
   },
   {
@@ -201,7 +201,7 @@ export const legacyNavbarItems: NavbarItem[] = [
       rel: "noreferrer",
       href: `/ui`,
     },
-  }
+  },
 ]
 
 export const mobileSidebarItemsV1: SidebarItemType[] = [
@@ -240,7 +240,7 @@ export const mobileSidebarItemsV1: SidebarItemType[] = [
     path: `/v2`,
     loaded: true,
     isPathHref: true,
-    additionalElms: <Badge variant="blue">v2</Badge>
+    additionalElms: <Badge variant="blue">v2</Badge>,
   },
 ]
 
@@ -262,14 +262,14 @@ export const mobileSidebarItemsV2: SidebarItemType[] = [
     path: `/`,
     loaded: true,
     isPathHref: true,
-    additionalElms: <Badge variant="neutral">v1</Badge>
+    additionalElms: <Badge variant="neutral">v1</Badge>,
   },
   {
     title: "User Guide",
     path: `/user-guide`,
     loaded: true,
     isPathHref: true,
-    additionalElms: <Badge variant="neutral">v1</Badge>
+    additionalElms: <Badge variant="neutral">v1</Badge>,
   },
   {
     title: "Store API",
