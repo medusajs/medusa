@@ -1,8 +1,10 @@
-import { ProductOption } from "@medusajs/client-types"
-import { ProductTypes } from "@medusajs/types"
+import {
+  InternalModuleService,
+  IProductModuleService,
+  ProductTypes,
+} from "@medusajs/types"
 import { Collection } from "@mikro-orm/core"
-import { Product, ProductTag, ProductVariant } from "@models"
-import { ProductVariantService } from "@services"
+import { Product, ProductOption, ProductTag, ProductVariant } from "@models"
 import {
   createOptions,
   createProductAndTags,
@@ -13,7 +15,6 @@ import { buildProductVariantOnlyData } from "../../../__fixtures__/variant/data/
 
 import { Modules } from "@medusajs/modules-sdk"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { IProductModuleService } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
@@ -28,7 +29,7 @@ moduleIntegrationTestRunner({
       let variantTwo: ProductVariant
       let productOne: Product
       const productVariantTestOne = "test-1"
-      let service: ProductVariantService
+      let service: InternalModuleService<any>
 
       beforeEach(() => {
         service = medusaApp.modules["productService"].productVariantService_
