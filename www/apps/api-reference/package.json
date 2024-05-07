@@ -16,7 +16,7 @@
     "@mdx-js/loader": "^3.0.0",
     "@mdx-js/react": "^3.0.0",
     "@medusajs/icons": "^1.2.0",
-    "@medusajs/ui": "^2.4.1",
+    "@medusajs/ui": "^3.0.0",
     "@next/mdx": "14.2.3",
     "@readme/openapi-parser": "^2.5.0",
     "@types/mapbox__rehype-prism": "^0.8.0",
