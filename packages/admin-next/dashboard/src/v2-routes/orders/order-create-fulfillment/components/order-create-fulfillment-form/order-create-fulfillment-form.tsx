@@ -15,10 +15,10 @@ import { CreateFulfillmentSchema } from "./constants"
 import { Form } from "../../../../../components/common/form"
 import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
-import { useCreateFulfillment } from "../../../../../hooks/api/fulfillment.tsx"
-import { useStockLocations } from "../../../../../hooks/api/stock-locations.tsx"
+import { useCreateFulfillment } from "../../../../../hooks/api/fulfillment"
+import { useStockLocations } from "../../../../../hooks/api/stock-locations"
+import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
 import { cleanNonValues, pick } from "../../../../../lib/common"
-import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers.tsx"
 
 type OrderCreateFulfillmentFormProps = {
   order: OrderDTO

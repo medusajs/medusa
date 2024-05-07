@@ -248,6 +248,10 @@ async function migrateUpBackwardCompatibility(
       alter table fulfillment
           alter column location_id set not null;
 
+      alter table fulfillment
+          alter
+              column order_id type text using order_id::text;
+
       drop index if exists "IDX_d73e55964e0ff2db8f03807d52";
 
       drop index if exists "IDX_a52e234f729db789cf473297a5";
@@ -514,7 +518,7 @@ async function migrateUpModuleMigration(
   )
 
   this.addSql(
-    'create table if not exists "fulfillment" ("id" text not null, "location_id" text not null, "packed_at" timestamptz null, "shipped_at" timestamptz null, "delivered_at" timestamptz null, "canceled_at" timestamptz null, "data" jsonb null, "provider_id" text null, "shipping_option_id" text null, "metadata" jsonb null, "delivery_address_id" text null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_pkey" primary key ("id"));'
+    'create table if not exists "fulfillment" ("id" text not null, "location_id" text not null, "order_id" text, "packed_at" timestamptz null, "shipped_at" timestamptz null, "delivered_at" timestamptz null, "canceled_at" timestamptz null, "data" jsonb null, "provider_id" text null, "shipping_option_id" text null, "metadata" jsonb null, "delivery_address_id" text null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_pkey" primary key ("id"));'
   )
   this.addSql(
     'alter table if exists "fulfillment" add constraint "fulfillment_delivery_address_id_unique" unique ("delivery_address_id");'

@@ -268,9 +268,9 @@ const Fulfillment = ({
         </Text>
         <ul>
           {fulfillment.items.map((f_item) => (
-            <li key={f_item.item_id}>
+            <li key={f_item.line_item_id}>
               <Text size="small" leading="compact">
-                {f_item.item.quantity}x {f_item.item.title}
+                {f_item.quantity}x {f_item.title}
               </Text>
             </li>
           ))}
@@ -283,7 +283,7 @@ const Fulfillment = ({
           </Text>
           {stock_location ? (
             <Link
-              to={`/settings/locations/${stock_location.id}`}
+              to={`/settings/shipping/${stock_location.id}`}
               className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg"
             >
               <Text size="small" leading="compact">
