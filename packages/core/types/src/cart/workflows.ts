@@ -1,5 +1,6 @@
 import { CustomerDTO } from "../customer"
 import { ShippingOptionDTO } from "../fulfillment"
+import { PaymentCollectionDTO } from "../payment"
 import { ProductDTO } from "../product"
 import { RegionDTO } from "../region"
 import { BigNumberInput } from "../totals"
@@ -124,8 +125,6 @@ export interface CompleteCartWorkflowInputDTO {
 }
 
 export interface ConfirmVariantInventoryWorkflowInputDTO {
-  ignore_price_check?: boolean
-
   sales_channel_id: string
   variants: {
     id: string
@@ -150,4 +149,9 @@ export interface ConfirmVariantInventoryWorkflowInputDTO {
     variant_id?: string
     quantity: BigNumberInput
   }[]
+}
+
+export interface CartWorkflowDTO {
+  id: string
+  payment_collection: PaymentCollectionDTO
 }

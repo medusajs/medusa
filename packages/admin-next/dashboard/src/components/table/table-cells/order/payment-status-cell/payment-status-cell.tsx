@@ -10,6 +10,9 @@ type PaymentStatusCellProps = {
 export const PaymentStatusCell = ({ status }: PaymentStatusCellProps) => {
   const { t } = useTranslation()
 
+  // TODO: remove this when Order<>Payments are linked
+  return "-"
+
   const { label, color } = getOrderPaymentStatus(t, status)
 
   return <StatusCell color={color}>{label}</StatusCell>

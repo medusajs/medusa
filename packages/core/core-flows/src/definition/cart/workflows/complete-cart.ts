@@ -5,22 +5,12 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { createOrderFromCartStep } from "../steps"
-import { updateTaxLinesStep } from "../steps/update-tax-lines"
+import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-payment-session"
+import { createOrderFromCartStep, validateCartPaymentsStep } from "../steps"
+import { reserveInventoryStep } from "../steps/reserve-inventory"
 import { completeCartFields } from "../utils/fields"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 
-/*
-  - [] Create Tax Lines
-  - [] Authorize Payment
-    - fail:
-      - [] Delete Tax lines
-  - [] Reserve Item from inventory (if enabled)
-    - fail:
-      - [] Delete reservations
-      - [] Cancel Payment
-  - [] Create order
-*/
 export const completeCartWorkflowId = "complete-cart"
 export const completeCartWorkflow = createWorkflow(
   completeCartWorkflowId,
@@ -32,6 +22,15 @@ export const completeCartWorkflow = createWorkflow(
       list: false,
     })
 
+    const paymentSessions = validateCartPaymentsStep({ cart })
+
+    authorizePaymentSessionStep({
+      // We choose the first payment session, as there will only be one active payment session
+      // This might change in the future.
+      id: paymentSessions[0].id,
+      context: { cart_id: cart.id },
+    })
+
     const { variants, items, sales_channel_id } = transform(
       { cart },
       (data) => {
@@ -40,9 +39,9 @@ export const completeCartWorkflow = createWorkflow(
         data.cart.items.forEach((item) => {
           allItems.push({
             id: item.id,
+            variant_id: item.variant_id,
             quantity: item.quantity,
           })
-
           allVariants.push(item.variant)
         })
 
@@ -54,16 +53,15 @@ export const completeCartWorkflow = createWorkflow(
       }
     )
 
-    confirmVariantInventoryWorkflow.runAsStep({
+    const formatedInventoryItems = confirmVariantInventoryWorkflow.runAsStep({
       input: {
-        ignore_price_check: true,
         sales_channel_id,
         variants,
         items,
       },
     })
 
-    updateTaxLinesStep({ cart_or_cart_id: cart, force_tax_calculation: true })
+    reserveInventoryStep(formatedInventoryItems)
 
     const finalCart = useRemoteQueryStep({
       entry_point: "cart",

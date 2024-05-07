@@ -13,7 +13,6 @@ import { findOrCreateCustomerStep } from "../../definition/cart/steps/find-or-cr
 import { findSalesChannelStep } from "../../definition/cart/steps/find-sales-channel"
 import { getVariantPriceSetsStep } from "../../definition/cart/steps/get-variant-price-sets"
 import { getVariantsStep } from "../../definition/cart/steps/get-variants"
-import { validateVariantsExistStep } from "../../definition/cart/steps/validate-variants-existence"
 import { prepareConfirmInventoryInput } from "../../definition/cart/utils/prepare-confirm-inventory-input"
 import { prepareLineItemData } from "../../definition/cart/utils/prepare-line-item-data"
 import { createOrdersStep, updateOrderTaxLinesStep } from "../steps"
@@ -39,8 +38,8 @@ export const createOrdersWorkflow = createWorkflow(
       findOrCreateCustomerStep({
         customerId: input.customer_id,
         email: input.email,
-      }),
-      validateVariantsExistStep({ variantIds })
+      })
+      // validateVariantsExistStep({ variantIds })
     )
 
     const variants = getVariantsStep({
