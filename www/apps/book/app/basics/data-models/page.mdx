@@ -25,7 +25,7 @@ Data models are based on [MikroORM](https://mikro-orm.io/docs/quick-start). So, 
 
 </Note>
 
-A data model is a class created in a TypeScript or JavaScript file created in a module under its `models` directory.
+A data model is a class created in a TypeScript or JavaScript file under a module's `models` directory.
 
 For example, create the file `src/modules/hello/models/my-custom.ts` with the following content:
 
@@ -73,7 +73,7 @@ The `generateEntityId` utility method prefixes the `id` of a record with the str
 
 After creating the data model, you must create a migration that creates a table in your database for this data model.
 
-A migration is a class that implements an `up` and `down` method, where the `up` method reflects changes on the database, and the `down` method reverts the changes from the database.
+A migration is a class created in a TypeScript or JavaScript file under a module's `migrations` directory. It implements an `up` and `down` method, where the `up` method reflects changes on the database, and the `down` method reverts the changes from the database.
 
 <Details summaryContent="Generate with MikroORM">
   MikroORM provides a CLI tool that helps you generate migrations. To use it:
@@ -106,7 +106,7 @@ A migration is a class that implements an `up` and `down` method, where the `up`
 
   <Note title="Tip">
 
-  You can add this command as a script in `package.json` for easy usage in the future. Use this command whenever you want to generate a new migration in your module.
+  Add this command as a script in `package.json` for easy usage in the future. Use this command whenever you want to generate a new migration in your module.
 
   </Note>
 
@@ -116,7 +116,7 @@ A migration is a class that implements an `up` and `down` method, where the `up`
 
 For example:
 
-```ts
+```ts title="src/modules/migrations/Migration20240429090012.ts"
 import { Migration } from "@mikro-orm/migrations"
 
 export class Migration20240429090012 extends Migration {
@@ -142,7 +142,7 @@ The queries performed in each of the methods use PostgreSQL syntax.
 
 ### Add Migration to Module Definition
 
-After creating the migration, you must add it to your module's definition. Otherwise, the Medusa application won't run it.
+After creating the migration, you must add it to your module's definition.
 
 To add a module's migrations to its definitions, use the `ModulesSdkUtils` utility functions imported from `@medusajs/utils`. It has functions to create and define the migration scripts in your module definition.
 
@@ -213,7 +213,7 @@ If ran successfully, the `my_custom` table will be created in the database.
 
 ---
 
-## When to Use
+## When to Use Data Models
 
 <Note title="Use data models when" type="success">
 
