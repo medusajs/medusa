@@ -11,7 +11,7 @@ export const metadata = {
 
 <Note type="soon">
 
-Next.js starter doesn't support Medusa v2 yet.
+Next.js starter is currently in development and doesn't fully support Medusa v2 yet.
 
 </Note>
 
@@ -20,12 +20,15 @@ The Next.js Starter storefront provides rich commerce features and a sleek desig
 <Note type="check">
 
 - [Node.js v18+](https://nodejs.org/en/download)
+- At least one region in the Medusa application.
 
 </Note>
 
 ## Installation
 
-### Option 1: Medusa Application + Next.js Starter
+{/* TODO add when we support next.js starter in create-medusa-app v2 */}
+
+{/* ### Option 1: Medusa Application + Next.js Starter
 
 The `create-medusa-app` CLI tool accepts the `--with-nextjs-starter` option that installs the Next.js storefront along with the Medusa application:
 
@@ -33,26 +36,27 @@ The `create-medusa-app` CLI tool accepts the `--with-nextjs-starter` option that
 npx create-medusa-app@latest --with-nextjs-starter
 ```
 
-Refer to the [create-medusa-app reference](../create-medusa-app/page.mdx) for more details on prerequisites, steps, and troubleshooting.
+Refer to the [create-medusa-app reference](../create-medusa-app/page.mdx) for more details on prerequisites, steps, and troubleshooting. */}
 
-### Option 2: Next.js Starter Only
+{/* ### Option 2: Next.js Starter Only */}
 
-<Note type="check">
+{/* <Note type="check">
 
 - At least one region in the Medusa application.
 
-</Note>
+</Note> */}
 
-1. Create a new Next.js project using the [Next.js Starter's GitHub repository](https://github.com/medusajs/nextjs-starter-medusa):
+1. Clone the `v2` branch of the [Next.js Starter](https://github.com/medusajs/nextjs-starter-medusa):
 
 ```bash
-npx create-next-app -e https://github.com/medusajs/nextjs-starter-medusa my-medusa-storefront
+git clone https://github.com/medusajs/nextjs-starter-medusa -b v2 my-medusa-storefront
 ```
 
-2. Change to the `my-medusa-storefront` directory and rename the template environment variable:
+2. Change to the `my-medusa-storefront` directory, install the dependencies, and rename the template environment variable:
 
-```bash
+```bash npm2yarn
 cd my-medusa-storefront
+npm install
 mv .env.template .env.local
 ```
 
