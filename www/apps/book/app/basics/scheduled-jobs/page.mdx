@@ -6,9 +6,15 @@ export const metadata = {
 
 In this chapter, you’ll learn about scheduled jobs and how to use them.
 
+<Note type="soon">
+
+Scheduled jobs are coming soon.
+
+</Note>
+
 ## What is a Scheduled Job?
 
-A scheduled job is a function that is executed at a specified interval of time in the background of your Medusa application. It’s like a cron job that runs during the application's runtime.
+A scheduled job is a function executed at a specified interval of time in the background of your Medusa application. It’s like a cron job that runs during the application's runtime.
 
 For example, you can synchronize your inventory with an Enterprise Resource Planning (ERP) system once a day using a scheduled job.
 
@@ -44,7 +50,7 @@ export const config: ScheduledJobConfig = {
 
 A scheduled job file must export:
 
-- The function executed whenever it’s time to run the scheduled job.
+- The function to be executed whenever it’s time to run the scheduled job.
 - A configuration object defining the job. It has two properties:
     - `name`: a unique name for the job.
     - `schedule`: a [cron expression](https://crontab.guru/).
@@ -82,7 +88,7 @@ The first line indicates that the application is executing the scheduled job. Th
 
 ---
 
-## When to Use
+## When to Use Scheduled Jobs
 
 <Note title="Use scheduled jobs when" type="success">
 
@@ -93,7 +99,7 @@ The first line indicates that the application is executing the scheduled job. Th
 
 <Note title="Don't use scheduled jobs if" type="error">
 
-- You want the action to execute at a specified time interval while the Medusa application isn't running. Instead, use the operating system's equivalent of a cron job.
+- You want the action to execute at a specified time interval while the Medusa application **isn't** running. Instead, use the operating system's equivalent of a cron job.
 - You want to execute the action once. Use loaders instead.
 - You want to execute the action if an event occurs. Use subscribers instead.
 

@@ -6,19 +6,11 @@ export const metadata = {
 
 In this document, you’ll learn about how to load the database connection in your module.
 
-## Modules Database Connection
-
-By default, a module will use the same database connection of the Medusa application.
-
-To access those database credentials and ensure that MikroORM’s [entity](https://mikro-orm.io/docs/entity-manager) and [transaction](https://mikro-orm.io/docs/transactions) managers use those credentials when performing database operations, you must pass a database connection loader in your module’s definition.
-
-Medusa provides a utility connection loader factory that handles registering the database options and entity and transaction managers into the module’s container.
-
----
-
 ## How to Add a Database Connection Loader?
 
-In your module’s definition file, import the `ModulesSdkUtils` utility function from `@medusajs/utils`. Then, use its `mikroOrmConnectionLoaderFactory` function to create a connection loader and export it in the module’s definition.
+To ensure that your module's database operations use the Medusa application's database connection, export a database connection loader in your module's definition.
+
+Medusa provides a utility function that creates the database connection loader for you.
 
 For example:
 
