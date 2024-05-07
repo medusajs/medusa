@@ -1,4 +1,8 @@
 import {
+  AdminCampaignListResponse,
+  AdminCampaignResponse,
+} from "@medusajs/types"
+import {
   QueryKey,
   UseMutationOptions,
   UseQueryOptions,
@@ -9,25 +13,27 @@ import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { CreateCampaignReq, UpdateCampaignReq } from "../../types/api-payloads"
-import {
-  CampaignDeleteRes,
-  CampaignListRes,
-  CampaignRes,
-} from "../../types/api-responses"
+import { CampaignDeleteRes } from "../../types/api-responses"
 
 const REGIONS_QUERY_KEY = "campaigns" as const
-const campaignsQueryKeys = queryKeysFactory(REGIONS_QUERY_KEY)
+export const campaignsQueryKeys = queryKeysFactory(REGIONS_QUERY_KEY)
 
 export const useCampaign = (
   id: string,
+  query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<CampaignRes, Error, CampaignRes, QueryKey>,
+    UseQueryOptions<
+      AdminCampaignResponse,
+      Error,
+      AdminCampaignResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: campaignsQueryKeys.detail(id),
-    queryFn: async () => client.campaigns.retrieve(id),
+    queryFn: async () => client.campaigns.retrieve(id, query),
     ...options,
   })
 
@@ -37,7 +43,12 @@ export const useCampaign = (
 export const useCampaigns = (
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<CampaignListRes, Error, CampaignListRes, QueryKey>,
+    UseQueryOptions<
+      AdminCampaignListResponse,
+      Error,
+      AdminCampaignListResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -51,7 +62,7 @@ export const useCampaigns = (
 }
 
 export const useCreateCampaign = (
-  options?: UseMutationOptions<CampaignRes, Error, CreateCampaignReq>
+  options?: UseMutationOptions<AdminCampaignResponse, Error, CreateCampaignReq>
 ) => {
   return useMutation({
     mutationFn: (payload) => client.campaigns.create(payload),
@@ -65,7 +76,7 @@ export const useCreateCampaign = (
 
 export const useUpdateCampaign = (
   id: string,
-  options?: UseMutationOptions<CampaignRes, Error, UpdateCampaignReq>
+  options?: UseMutationOptions<AdminCampaignResponse, Error, UpdateCampaignReq>
 ) => {
   return useMutation({
     mutationFn: (payload) => client.campaigns.update(id, payload),

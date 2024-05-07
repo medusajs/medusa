@@ -2,14 +2,14 @@ import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/route-modal"
-import { useCustomer } from "../../../hooks/api/customers"
-import { EditCustomerForm } from "./components/edit-customer-form"
+import { useCampaign } from "../../../hooks/api/campaigns"
+import { EditCampaignForm } from "./components/edit-campaign-form"
 
-export const CustomerEdit = () => {
+export const CampaignEdit = () => {
   const { t } = useTranslation()
 
   const { id } = useParams()
-  const { customer, isLoading, isError, error } = useCustomer(id!)
+  const { campaign, isLoading, isError, error } = useCampaign(id!)
 
   if (isError) {
     throw error
@@ -18,9 +18,10 @@ export const CustomerEdit = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("customers.edit.header")}</Heading>
+        <Heading>{t("campaigns.edit.header")}</Heading>
       </RouteDrawer.Header>
-      {!isLoading && customer && <EditCustomerForm customer={customer} />}
+
+      {!isLoading && campaign && <EditCampaignForm campaign={campaign} />}
     </RouteDrawer>
   )
 }
