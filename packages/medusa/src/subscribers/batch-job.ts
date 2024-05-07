@@ -1,3 +1,4 @@
+/*
 import { EntityManager } from "typeorm"
 import {
   BatchJobService,
@@ -83,3 +84,4 @@ class BatchJobSubscriber {
 }
 
 export default BatchJobSubscriber
+*/
