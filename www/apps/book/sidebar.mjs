@@ -175,10 +175,6 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Compensation Function",
             },
             {
-              path: "/advanced-development/workflows/advanced-example",
-              title: "Example: Advanced Workflow",
-            },
-            {
               path: "/advanced-development/workflows/access-workflow-errors",
               title: "Access Workflow Errors",
             },
@@ -197,6 +193,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
             {
               path: "/advanced-development/workflows/long-running-workflow",
               title: "Long-Running Workflow",
+            },
+            {
+              path: "/advanced-development/workflows/advanced-example",
+              title: "Example: Advanced Workflow",
             },
           ],
         },
@@ -293,6 +293,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
     {
       path: "/deployment",
       title: "Deployment",
+    },
+    {
+      path: "/more-resources",
+      title: "More Resources",
     },
     {
       path: "/cheatsheet",
