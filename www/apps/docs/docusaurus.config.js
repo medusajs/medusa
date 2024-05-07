@@ -230,7 +230,7 @@ const config = {
         },
         {
           href: `https://docs.medusajs.com/v2`,
-          html: "<div class='flex gap-0.5'><span>Book</span><span class='text-compact-x-small-plus px-docs_0.25 py-0 rounded-docs_sm border border-solid text-center bg-medusa-tag-blue-bg text-medusa-tag-blue-text border-medusa-tag-blue-border'>v2</span></div>",
+          html: "<div class='flex gap-0.5'><span>Learn Medusa v2</span><span class='text-compact-x-small-plus px-docs_0.25 py-0 rounded-docs_sm border border-solid text-center bg-medusa-tag-blue-bg text-medusa-tag-blue-text border-medusa-tag-blue-border'>New</span></div>",
           target: "_blank",
           position: "left",
         },
