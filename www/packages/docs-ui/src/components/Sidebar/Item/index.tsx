@@ -16,6 +16,7 @@ export type SidebarItemProps = {
   expandItems?: boolean
   currentLevel?: number
   isSidebarTitle?: boolean
+  sidebarHasParent?: boolean
 } & React.AllHTMLAttributes<HTMLLIElement>
 
 export const SidebarItem = ({
@@ -24,6 +25,7 @@ export const SidebarItem = ({
   expandItems = false,
   className,
   currentLevel = 1,
+  sidebarHasParent = false,
 }: SidebarItemProps) => {
   const [showLoading, setShowLoading] = useState(false)
   const {
@@ -131,7 +133,11 @@ export const SidebarItem = ({
   return (
     <li
       className={clsx(
-        canHaveTitleStyling && !collapsed && "my-docs_1.5",
+        canHaveTitleStyling &&
+          !collapsed && [
+            !sidebarHasParent && "my-docs_1.5",
+            sidebarHasParent && "[&:not(:first-child)]:my-docs_1.5",
+          ],
         !canHaveTitleStyling &&
           !nested &&
           active &&

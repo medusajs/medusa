@@ -4,7 +4,7 @@ import { Inter, Roboto_Mono } from "next/font/google"
 import Navbar from "@/components/Navbar"
 import Providers from "@/providers"
 import "./globals.css"
-import { TightLayout } from "docs-ui"
+import { Bannerv2, TightLayout } from "docs-ui"
 import { config } from "@/config"
 import clsx from "clsx"
 import Feedback from "@/components/Feedback"
@@ -43,6 +43,7 @@ export default function RootLayout({
       NavbarComponent={Navbar}
       sidebarProps={{
         expandItems: true,
+        banner: <Bannerv2 />,
       }}
       showPagination={true}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}

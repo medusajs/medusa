@@ -59,7 +59,7 @@ export type SidebarContextType = {
   setDesktopSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
   staticSidebarItems?: boolean
   shouldHandleHashChange: boolean
-  sidebarRef: React.RefObject<HTMLUListElement>
+  sidebarRef: React.RefObject<HTMLDivElement>
   goBack: () => void
 } & SidebarStyleOptions
 
@@ -191,7 +191,7 @@ export const SidebarProvider = ({
   const [activePath, setActivePath] = useState<string | null>("")
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false)
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true)
-  const sidebarRef = useRef<HTMLUListElement>(null)
+  const sidebarRef = useRef<HTMLDivElement>(null)
 
   const pathname = usePathname()
   const router = useRouter()
