@@ -1,9 +1,5 @@
 export const filesMap = [
   {
-    "filePath": "/www/apps/resources/app/.DS_Store",
-    "pathname": "/"
-  },
-  {
     "filePath": "/www/apps/resources/app/admin-widget-injection-zones/page.mdx",
     "pathname": "/admin-widget-injection-zones"
   },
@@ -28,8 +24,12 @@ export const filesMap = [
     "pathname": "/architectural-modules"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/.DS_Store",
-    "pathname": "/commerce-modules"
+    "filePath": "/www/apps/resources/app/architectural-modules/workflow-engine/in-memory/page.mdx",
+    "pathname": "/architectural-modules/workflow-engine/in-memory"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/workflow-engine/redis/page.mdx",
+    "pathname": "/architectural-modules/workflow-engine/redis"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/api-key/examples/page.mdx",

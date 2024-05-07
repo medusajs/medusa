@@ -156,6 +156,10 @@ export const RouteMap: RouteObject[] = [
                 path: "",
                 lazy: () => import("../../v2-routes/orders/order-list"),
               },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/orders/order-detail"),
+              },
             ],
           },
           {
@@ -343,7 +347,7 @@ export const RouteMap: RouteObject[] = [
                     path: "create",
                     lazy: () =>
                       import(
-                        "../../v2-routes/reservations/reservation-list/create-reservation"
+                        "../../v2-routes/customer-groups/customer-group-create"
                       ),
                   },
                 ],

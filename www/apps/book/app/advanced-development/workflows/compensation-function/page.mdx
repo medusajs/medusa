@@ -8,13 +8,19 @@ In this chapter, you'll learn how to add a compensation function to a step.
 
 ## Compensation Function
 
-Errors can occur in a workflow. To avoid data inconsistency, you can pass a compensation function as a third parameter to the `createStep` function.
+Errors can occur in a workflow. To avoid data inconsistency, define a function to run when an error occurs in a step. This function is called the compensation function.
 
-The compensation function only runs if an error occurs throughout the Workflow. It’s useful to undo or roll back actions you’ve performed in a step.
+Each step can have a compensation function. The compensation function only runs if an error occurs throughout the Workflow. It’s useful to undo or roll back actions you’ve performed in a step.
 
 For example, change step one to add a compensation function and step two to throw an error:
 
-```ts title="src/workflows/hello-world.ts" highlights={[["10"], ["11"], ["12"]]}
+```ts title="src/workflows/hello-world.ts" highlights={[["16"], ["17"], ["18"]]}
+// other imports...
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/workflows-sdk"
+
 const step1 = createStep(
   "step-1",
   async () => {
@@ -31,7 +37,7 @@ const step1 = createStep(
 
 const step2 = createStep(
   "step-2",
-  async ({ name }: WorkflowInput) => {
+  async () => {
     throw new Error("Throwing an error...")
   }
 )
@@ -54,12 +60,11 @@ type WorkflowOutput = {
 }
 
 const myWorkflow = createWorkflow<
-  WorkflowInput,
+  {},
   WorkflowOutput
 >("hello-world", function (input) {
   const str1 = step1()
-  // to pass input
-  const str2 = step2(input)
+  step2()
 
   return {
     message: str1,
@@ -83,11 +88,7 @@ export async function GET(
   res: MedusaResponse
 ) {
   const { result } = await myWorkflow(req.scope)
-    .run({
-      input: {
-        name: req.query.name as string,
-      },
-    })
+    .run()
 
   res.send(result)
 }
