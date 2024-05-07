@@ -80,9 +80,7 @@
     "openapi:generate": "yarn ./packages/oas/oas-github-ci run ci --with-full-file --v2",
     "medusa-oas": "yarn ./packages/oas/medusa-oas-cli run medusa-oas --v2",
     "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",
-    "develop": "ts-node --transpile-only ./integration-tests/development/server.js",
-    "develop:create:db": "ts-node --transpile-only ./integration-tests/development/create-database.js",
-    "release:next": "changeset publish --no-git-tags --snapshot --tag next",
+    "release:next": "chgstangeset publish --no-git-tags --snapshot --tag next",
     "version:next": "changeset version --snapshot next",
     "release": "changeset publish",
     "version": "changeset version && yarn install --no-immutable"
