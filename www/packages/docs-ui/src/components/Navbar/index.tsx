@@ -57,7 +57,7 @@ export const Navbar = ({
           {items.map(({type, props}, index) => {
             switch(type) {
               case "divider":
-                return <NavbarDivider />
+                return <NavbarDivider key={index}  />
               default:
                 return <NavbarLink key={index} {...props} />
             }

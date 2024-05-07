@@ -4,7 +4,7 @@ import {
   SearchProvider as UiSearchProvider,
   AiAssistantCommandIcon,
   AiAssistantProvider,
-  searchFilters,
+  searchFiltersV2,
 } from "docs-ui"
 import { config } from "../config"
 
@@ -32,15 +32,15 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
             title: "Getting started? Try one of the following terms.",
             items: [
               "Install Medusa with create-medusa-app",
-              "What is a Service?",
               "What is an API route?",
+              "What is a Module?",
               "What is a Workflow?",
             ],
           },
           {
             title: "Developing with Medusa",
             items: [
-              "How to create a Service",
+              "How to create a Module",
               "How to create an API route",
               "How to create a data model",
               "How to create an admin widget",
@@ -48,11 +48,11 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           },
         ],
         checkInternalPattern: new RegExp(
-          `^${config.baseUrl}/([^(api|ui|resources)]/)*`
+          `^${config.baseUrl}/v2/([^(resources)])*`
         ),
-        filterOptions: searchFilters,
+        filterOptions: searchFiltersV2,
       }}
-      initialDefaultFilters={["docs"]}
+      initialDefaultFilters={["book"]}
       commands={[
         {
           name: "ai-assistant",

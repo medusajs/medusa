@@ -4,7 +4,7 @@ import {
   SearchProvider as UiSearchProvider,
   AiAssistantCommandIcon,
   AiAssistantProvider,
-  searchFilters,
+  searchFiltersV2,
 } from "docs-ui"
 import { config } from "../config"
 
@@ -39,11 +39,10 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
             ],
           },
         ],
-        checkInternalPattern: new RegExp(`^${config.baseUrl}/resources/.*`),
-        filterOptions: searchFilters,
+        checkInternalPattern: new RegExp(`^${config.baseUrl}/v2/resources/.*`),
+        filterOptions: searchFiltersV2,
       }}
-      // TODO change once we have a dedicated index
-      initialDefaultFilters={["docs"]}
+      initialDefaultFilters={["resources"]}
       commands={[
         {
           name: "ai-assistant",

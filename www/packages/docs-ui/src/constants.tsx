@@ -324,8 +324,19 @@ export const legacyMobileSidebarItems: SidebarItemType[] = [
   },
 ]
 
-// TODO add resources once we create index
-export const searchFilters: OptionType[] = [
+export const searchFiltersV2: OptionType[] = [
+  {
+    value: "book",
+    label: "Book",
+  },
+  {
+    value: "resources",
+    label: "Resources",
+  },
+  // TODO add more filters once V2 become the main docs
+]
+
+export const searchFiltersV1: OptionType[] = [
   {
     value: "admin",
     label: "Admin API",
