@@ -2,10 +2,7 @@ export const defaultPaymentCollectionFields = [
   "id",
   "currency_code",
   "amount",
-  "payment_sessions",
-  "payment_sessions.id",
-  "payment_sessions.amount",
-  "payment_sessions.provider_id",
+  "*payment_sessions",
 ]
 
 export const retrievePaymentCollectionTransformQueryConfig = {
