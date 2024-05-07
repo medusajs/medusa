@@ -35,11 +35,15 @@ export const highlights = [
 ]
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 module.exports = {
   // ...
   modules: {
     // ...
-    eventBus: {
+    [Modules.EVENT_BUS]: {
       resolve: "@medusajs/event-redis",
       options: { 
         redisUrl: process.env.EVENTS_REDIS_URL,
@@ -47,6 +51,14 @@ module.exports = {
     },
   },
 }
+```
+
+### Environment Variables
+
+Make sure to add the following environment variables:
+
+```bash
+EVENTS_REDIS_URL=<YOUR_REDIS_URL>
 ```
 
 ### Redis Event Bus Module Options
@@ -195,14 +207,6 @@ module.exports = {
     </Table.Row>
   </Table.Body>
 </Table>
-
-### Environment Variables
-
-Make sure to add the following environment variables:
-
-```bash
-EVENTS_REDIS_URL=<YOUR_REDIS_URL>
-```
 
 ---
 

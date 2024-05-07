@@ -4,8 +4,6 @@ export const metadata = {
 
 # {metadata.title}
 
-{/* TODO needs updating */}
-
 Thank you for your interest in contributing to the documentation! You will be helping the open source community and other developers interested in learning more about Medusa and using it.
 
 <Note title="Tip">
@@ -21,16 +19,13 @@ Medusa's documentation projects are all part of the documentation yarn workspace
 The workspace has the following two directories:
 
 - `apps`: this directory holds the different documentation websites and projects.
-  - `docs`: includes the codebase for the Medusa Book. It's built with [Next.js 14](https://nextjs.org/).
-  - `resources`: includes the codebase for the Medusa Resources documentation. It's built with [Next.js 14](https://nextjs.org/).
+  - `book`: includes the codebase for the Medusa Book. It's built with [Next.js 14](https://nextjs.org/).
+  - `resources`: includes the codebase for the Medusa Learning Resources documentation. It's built with [Next.js 14](https://nextjs.org/).
   - `api-reference`: includes the codebase for the API reference website. It's built with [Next.js 14](https://nextjs.org/).
   - `ui`: includes the codebase for the Medusa UI documentation website. It's built with [Next.js 14](https://nextjs.org/).
 - `packages`: this directory holds the shared packages and components necessary for the development of the projects in the `apps` directory.
   - `docs-ui` includes the shared React components between the different apps.
-  - `eslint-config-docs` includes the shared ESLint configuration between the different apps and packages.
   - `remark-rehype-plugins` includes Remark and Rehype plugins used by the documentation projects.
-  - `tailwind` includes the shared Tailwind CSS configuration between the different apps and packages.
-  - `tsconfig` includes the shared TypeScript configuration between the different apps and packages.
 
 ---
 
@@ -40,17 +35,15 @@ All documentation projects are built with Next.js. The content is writtin in MDX
 
 ### Medusa Book Content
 
-The content of the Medusa Book is placed under the `www/apps/docs/app` directory.
+The content of the Medusa Book is placed under the `www/apps/book/app` directory.
 
-### Medusa Resources Content
+### Medusa Learning Resources Content
 
 The content of the Medusa Resources documentation is placed under the `www/apps/resources/app` directory.
 
-{/* TODO check info */}
-
 <Note>
 
-Documentation pages under the `www/apps/docs/content/references` directory are generated automatically from the source code under the `packages/medusa` directory. So, you can't directly make changes to them. Instead, you'll have to make changes to the comments in the original source code.
+Documentation pages under the `www/apps/resources/references` directory are generated automatically from the source code under the `packages/medusa` directory. So, you can't directly make changes to them. Instead, you'll have to make changes to the comments in the original source code.
 
 </Note>
 
@@ -58,20 +51,20 @@ Documentation pages under the `www/apps/docs/content/references` directory are g
 
 The API reference's content is split into two types:
 
-1. Static content, which are the content related to getting started, expanding fields, and more. These are located in the [www/apps/api-reference/app/_mdx](https://github.com/medusajs/medusa/tree/develop/www/apps/api-reference/app/_mdx) directory. They are MDX files.
-2. OpenAPI specs that are shown to developers when checking the reference of an API Route. These are automatically generated from comments on API Routes. So, if you find issues in them or want to make improvements, you have to find the API Routes under the [`packages/medusa/src/api`](https://github.com/medusajs/medusa/tree/develop/packages/medusa/src/api) directory and make changes to its comments.
+1. Static content, which are the content related to getting started, expanding fields, and more. These are located in the `www/apps/api-reference/app/_mdx` directory. They are MDX files.
+2. OpenAPI specs that are shown to developers when checking the reference of an API Route. These are generated from OpenApi Spec comments, which are under the `www/utils/generated/oas-output` directory.
 
 ### Medusa UI Documentation
 
-The content of the Medusa UI documentation are located under the [www/apps/ui/src/content/docs](https://github.com/medusajs/medusa/tree/develop/www/apps/ui/src/content/docs) directory. They are MDX files.
+The content of the Medusa UI documentation are located under the `www/apps/ui/src/content/docs` directory. They are MDX files.
 
-The UI documentation also shows code examples, which you can find under the [www/apps/ui/src/examples](https://github.com/medusajs/medusa/tree/develop/www/apps/ui/src/examples) directory.
+The UI documentation also shows code examples, which are under the `www/apps/ui/src/examples` directory.
+
+The UI component props are generated from the source code and placed into the `www/apps/ui/src/specs` directory. To contribute to these props and their comments, check the comments in the source code under the `packages/design-system/ui` directory.
 
 ---
 
 ## Style Guide
-
-{/* TODO check link */}
 
 When you contribute to the documentation content, make sure to follow the [documentation style guide](https://www.notion.so/Style-Guide-Docs-fad86dd1c5f84b48b145e959f36628e0).
 
@@ -161,11 +154,9 @@ cd www/vale
 ./run-vale.sh ui src/content/docs error
 ```
 
-### VS Code Extension
+{/* TODO need to enable MDX v1 comments first. */}
 
-To facilitate writing documentation, you can optionally use the [Vale VS Code extension](https://github.com/errata-ai/vale-vscode). This will show you any errors in your documentation while writing it.
-
-### Linter Exceptions
+{/* ### Linter Exceptions
 
 If it's needed to break some style guide rules in a document, you can wrap the parts that the linter shouldn't scan with the following comments in the `md` or `mdx` files:
 
@@ -187,7 +178,7 @@ Medusa supports Node versions 14 and 16.
 <!-- vale docs.Numbers = YES -->
 ```
 
-If you use this in your PR, you must justify its usage.
+If you use this in your PR, you must justify its usage. */}
 
 ---
 
@@ -230,18 +221,14 @@ yarn install
 2\. Run the turbo command in the `www` directory:
 
 ```bash
-turbo run lint
+yarn lint
 ```
 
 This will fix any fixable errors, and show errors that require your action.
 
-### ESLint Exceptions
+{/* TODO need to enable MDX v1 comments first. */}
 
-:::note
-
-These exceptions only work in the main documentation website.
-
-:::
+{/* ### ESLint Exceptions
 
 If some code blocks have errors that can't or shouldn't be fixed, you can add the following command before the code block:
 
@@ -269,10 +256,4 @@ console.log("This block can use semicolons");
 ```js
 console.log("This block can't use semi colons")
 ```
-~~~
-
----
-
-## Need Additional Help
-
-If you need any additional help while contributing, you can join Medusa's [Discord server](https://discord.gg/medusajs) and ask Medusa’s core team as well as the community any questions.
+~~~ */}

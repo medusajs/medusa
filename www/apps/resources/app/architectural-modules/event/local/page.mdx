@@ -23,13 +23,15 @@ npm install @medusajs/event-local
 Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 module.exports = {
   // ...
   modules: {
     // ...
-    eventBus: {
-      resolve: "@medusajs/event-local",
-    },
+    [Modules.EVENT_BUS]: true,
   },
 }
 ```

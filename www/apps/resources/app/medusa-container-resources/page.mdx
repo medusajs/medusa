@@ -27,11 +27,6 @@ This documentation page includes the list of resources registered in the Medusa 
       Registration Name
 
       </Table.HeaderCell>
-      <Table.HeaderCell>
-
-      Lifetime
-
-      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -49,57 +44,6 @@ This documentation page includes the list of resources registered in the Medusa 
       <Table.Cell>
 
       `configModule`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Services
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Services that extend the `TransactionBaseService` class.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Each service is registered under its camel-case name. For example, the `ProductService` is registered as `productService`.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Core services by default have the `SINGLETON` lifetime. However, some have a different lifetime which is indicated in this table. Custom services, including services in plugins, by default have the `SCOPED` lifetime, unless defined differently within the custom service.
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Entity Manager
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of Typeorm’s Entity Manager.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `manager`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
 
       </Table.Cell>
     </Table.Row>
@@ -120,9 +64,22 @@ This documentation page includes the list of resources registered in the Medusa 
       `logger`
 
       </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
       <Table.Cell>
 
-      \-
+      Remote Query
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The remote query function.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `remoteQuery`
 
       </Table.Cell>
     </Table.Row>
@@ -130,25 +87,17 @@ This documentation page includes the list of resources registered in the Medusa 
     <Table.Row>
       <Table.Cell>
 
-      Single Payment Processor
+      Remote Link
 
       </Table.Cell>
       <Table.Cell>
 
-      An instance of every payment processor that extends the `AbstractPaymentService` or the `AbstractPaymentProcessor` classes.
+      The remote link function.
 
       </Table.Cell>
       <Table.Cell>
 
-      Every payment processor is registered under two names:
-
-      - Its camel-case name of the processor. For example, the `StripeProviderService` is registered as `stripeProviderService`.
-      - `pp_` followed by its identifier. For example, the `StripeProviderService` is registered as `pp_stripe`.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      By default, it's `SINGLETON` unless defined differently within the payment processor service.
+      `remoteLink`
 
       </Table.Cell>
     </Table.Row>
@@ -156,501 +105,18 @@ This documentation page includes the list of resources registered in the Medusa 
     <Table.Row>
       <Table.Cell>
 
-      All Payment Processors
+      Modules' main services
 
       </Table.Cell>
       <Table.Cell>
 
-      An array of all payment processor that extend the `AbstractPaymentService` or `AbstractPaymentProcessor` class.
+      The main service of every module added in `medusa-config.js`.
 
       </Table.Cell>
       <Table.Cell>
 
-      `paymentProviders`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `paymentProviders` is `TRANSIENT`, and each item in it is `SINGLETON`.
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Single Fulfillment Provider
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of every fulfillment provider that extends the `FulfillmentService` class.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Every fulfillment provider is registered under two names:
-
-      - Its camel-case name. For example, the `WebshipperFulfillmentService` is registered as `webshipperFulfillmentService`.
-      - `fp_` followed by its identifier. For example, the `WebshipperFulfillmentService` is registered as `fp_webshipper`.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      By default, it's `SINGLETON` unless defined differently within the fulfillment provider service.
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      All Fulfillment Providers
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An array of all fulfillment providers that extend the `FulfillmentService` class.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `fulfillmentProviders`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `fulfillmentProviders` is `TRANSIENT`, and each item in it is `SINGLETON`.
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Single Notification Provider
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of every notification provider that extends the `AbstractNotificationService` or the `BaseNotificationService` classes.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Every notification provider is registered under two names:
-
-      - Its camel-case name. For example, the `SendGridService` is registered as `sendGridService`.
-      - `noti_` followed by its identifier. For example, the `SendGridService` is registered as `noti_sendgrid`.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      By default, it's `SINGLETON` unless defined differently within the notification provider service.
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      All Notification Providers
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An array of all notification providers that extend the `AbstractNotificationService` or the `BaseNotificationService` classes.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `notificationProviders`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `notificationProviders` is `TRANSIENT`, and each item in it is `SINGLETON`.
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      File Service
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of the class that extends the `FileService` class, if any.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      The file service is registered under two names:
-
-      - Its camel-case name. For example, the `MinioService` is registered as `minioService`.
-      - `fileService`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      By default, it's `SINGLETON` unless defined differently within the file service.
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Search Service
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of the class that extends the `AbstractSearchService` or the `SearchService` classes, if any.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      The search service is registered under two names:
-
-      - Its camel-case name. For example, the `AlgoliaService` is registered as `algoliaService`.
-      - `searchService`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      By default, it's `SINGLETON` unless defined differently within the search service.
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Single Tax Provider
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of every tax provider that extends the `AbstractTaxService` class.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      The tax provider is registered under two names:
-
-      - Its camel-case name.
-      - `tp_` followed by its identifier.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      By default, it's `SINGLETON` unless defined differently within the tax provider service.
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      All Tax Providers
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An array of every tax provider that extends the `AbstractTaxService` class.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `taxProviders`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `taxProviders` is `TRANSIENT`, and each item in it is `SINGLETON`.
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Oauth Services
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of every service that extends the `OauthService` class.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Each Oauth Service is registered under its camel-case name followed by `Oauth`.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      By default, it's `SINGLETON` unless defined differently within the Oauth service.
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Feature Flag Router
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of the `FlagRouter`. This can be used to list feature flags, set a feature flag’s value, or check if they’re enabled.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `featureFlagRouter`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Redis
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of the Redis client. If Redis is not configured, a fake Redis client is registered.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `redisClient`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Single Entity
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of every entity.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Each entity is registered under its camel-case name followed by Model. For example, the `CustomerGroup` entity is stored under `customerGroupModel`.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      All Entities
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An array of all database entities that is passed to Typeorm when connecting to the database.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `db_entities`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Repositories
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of each repository.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Each repository is registered under its camel-case name. For example, `CustomerGroupRepository` is stored under `customerGroupRepository`.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Single Batch Job Strategy
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of every class extending the `AbstractBatchJobStrategy` class.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Each batch job strategy is registered under three names:
-
-      - Its camel-case name. For example, `ProductImportStrategy` is registered as `productImportStrategy`.
-      - `batch_` followed by its identifier. For example, the `ProductImportStrategy` is registered under `batch_product-import-strategy`.
-      - `batchType_` followed by its batch job type. For example, the `ProductImportStrategy` is registered under `batchType_product-import`.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      All Batch Job Strategies
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An array of all classes extending the `AbstractBatchJobStrategy` abstract class.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `batchJobStrategies`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Tax Calculation Strategy
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of the class implementing the `ITaxCalculationStrategy` interface.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `taxCalculationStrategy`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Cart Completion Strategy
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of the class extending the `AbstractCartCompletionStrategy` class.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `cartCompletionStrategy`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Price Selection Strategy
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of the class implementing the `IPriceSelectionStrategy` interface.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `priceSelectionStrategy`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
-    </Table.Row>
-
-    <Table.Row>
-      <Table.Cell>
-
-      Strategies
-
-      </Table.Cell>
-      <Table.Cell>
-
-      An instance of strategies that aren’t of the specific types mentioned above and that are under the `strategies` directory.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Its camel-case name.
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
+      - For custom modules, the registration name is the key of the module in the `modules` configuration.
+      - For Medusa's commerce modules, you can use the `ModuleRegistrationName` enum imported from `@medusajs/modules-sdk`.
 
       </Table.Cell>
     </Table.Row>

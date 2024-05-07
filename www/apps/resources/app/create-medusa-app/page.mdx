@@ -191,6 +191,40 @@ npx create-medusa-app@latest
 
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--verbose`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Shows detailed logs. Useful when you're reporting an issue with the tool.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--v2`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Installs Medusa v2, which is still not ready for production.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        `false`
+
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
 
@@ -215,7 +249,7 @@ If the database already has the necessary migrations and you don't need the comm
 To connect to a Supabase database, use the `--db-url` option with its value being the connection URL to your Supabase database. For example:
 
 ```bash
-npx create-medusa-app@latest --db-url postgresql://postgres:<password>@<host>.supabase.co:5432/postgres
+npx create-medusa-app@latest --db-url "postgres://postgres.<host>:<password>@aws-0-eu-central-1.pooler.supabase.com:5432/postgres"
 ```
 
 <Note>
