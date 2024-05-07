@@ -17,6 +17,7 @@ export type SidebarItemProps = {
   currentLevel?: number
   isSidebarTitle?: boolean
   sidebarHasParent?: boolean
+  isMobile?: boolean
 } & React.AllHTMLAttributes<HTMLLIElement>
 
 export const SidebarItem = ({
@@ -26,6 +27,7 @@ export const SidebarItem = ({
   className,
   currentLevel = 1,
   sidebarHasParent = false,
+  isMobile = false
 }: SidebarItemProps) => {
   const [showLoading, setShowLoading] = useState(false)
   const {
@@ -36,8 +38,8 @@ export const SidebarItem = ({
     sidebarRef,
   } = useSidebar()
   const active = useMemo(
-    () => isItemActive(item, nested),
-    [isItemActive, item, nested]
+    () => !isMobile && isItemActive(item, nested),
+    [isItemActive, item, nested, isMobile]
   )
   const collapsed = !expandItems && !isItemActive(item, true)
   const ref = useRef<HTMLLIElement>(null)

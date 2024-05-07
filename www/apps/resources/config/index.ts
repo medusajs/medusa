@@ -1,5 +1,5 @@
 import { DocsConfig } from "types"
-import { mobileSidebarItems } from "docs-ui"
+import { mobileSidebarItemsV2 } from "docs-ui"
 import { generatedSidebar } from "../generated/sidebar.mjs"
 
 export const config: DocsConfig = {
@@ -9,6 +9,6 @@ export const config: DocsConfig = {
   sidebar: {
     top: generatedSidebar,
     bottom: [],
-    mobile: mobileSidebarItems,
+    mobile: mobileSidebarItemsV2,
   },
 }

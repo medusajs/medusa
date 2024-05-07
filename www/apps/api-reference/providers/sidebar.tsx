@@ -1,7 +1,6 @@
 "use client"
 import {
   SidebarProvider as UiSidebarProvider,
-  mobileSidebarItems,
   usePageLoading,
   useScrollController,
 } from "docs-ui"

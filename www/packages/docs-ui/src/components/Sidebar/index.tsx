@@ -90,6 +90,7 @@ export const Sidebar = ({
                     key={index}
                     expandItems={expandItems}
                     sidebarHasParent={sidebarHasParent}
+                    isMobile={true}
                   />
                 ))}
               </div>

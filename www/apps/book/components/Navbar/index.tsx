@@ -13,7 +13,8 @@ const Navbar = () => {
     () =>
       getNavbarItems({
         basePath: config.baseUrl,
-        activePath: "/",
+        activePath: basePathUrl(""),
+        version: "v2"
       }),
     []
   )
