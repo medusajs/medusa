@@ -90,10 +90,12 @@
  *             enum:
  *               - active
  *               - draft
+ *             type: string
  *           type:
  *             enum:
  *               - sale
  *               - override
+ *             type: string
  *           rules:
  *             type: object
  *             description: The price list's rules.

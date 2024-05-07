@@ -19,6 +19,7 @@
     "is": "is",
     "timeline": "Timeline",
     "success": "Success",
+    "warning": "Warning",
     "error": "Error",
     "select": "Select",
     "selected": "Selected",
@@ -539,6 +540,10 @@
         "returned": "Returned",
         "canceled": "Canceled",
         "requiresAction": "Requires action"
+      },
+      "toast": {
+        "canceled": "Fulfillment successfully canceled",
+        "fulfillmentShipped": "Cannot cancel an already shipped fulfillment"
       },
       "trackingLabel": "Tracking",
       "shippingFromLabel": "Shipping from",

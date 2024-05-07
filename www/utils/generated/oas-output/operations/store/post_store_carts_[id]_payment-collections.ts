@@ -55,31 +55,8 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/UpdateCartData"
- * x-codeSamples:
- *   - lang: Shell
- *     label: cURL
- *     source: curl -X POST '{backend_url}/store/carts/{id}/payment-collections'
- * tags:
- *   - Carts
- * responses:
- *   "400":
- *     $ref: "#/components/responses/400_error"
- *   "401":
- *     $ref: "#/components/responses/unauthorized"
- *   "404":
- *     $ref: "#/components/responses/not_found_error"
- *   "409":
- *     $ref: "#/components/responses/invalid_state_error"
- *   "422":
- *     $ref: "#/components/responses/invalid_request_error"
- *   "500":
- *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
  *         type: object
+ *         description: SUMMARY
  *         required:
  *           - region_id
  *           - email
@@ -241,6 +218,36 @@
  *               type: string
  *               title: promo_codes
  *               description: The promo code's promo codes.
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |-
+ *       curl -X POST '{backend_url}/store/carts/{id}/payment-collections' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "region_id": "{value}",
+ *         "email": "Greyson3@gmail.com",
+ *         "sales_channel_id": "{value}",
+ *         "metadata": {},
+ *         "promo_codes": [
+ *           "{value}"
+ *         ]
+ *       }'
+ * tags:
+ *   - Carts
+ * responses:
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  * 
 */
 

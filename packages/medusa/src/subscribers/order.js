@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { promiseAll } from "@medusajs/utils"
 
 class OrderSubscriber {
@@ -62,3 +64,4 @@ class OrderSubscriber {
 }
 
 export default OrderSubscriber
+*/

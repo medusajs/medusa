@@ -1,4 +1,3 @@
-import { AbstractSearchService } from "@medusajs/utils"
 import { EventBusService } from "../services"
 import { Logger, MedusaContainer } from "../types/global"
 
@@ -22,15 +21,15 @@ export default async ({
 }: {
   container: MedusaContainer
 }): Promise<void> => {
-  const searchService =
-    container.resolve<AbstractSearchService>("searchService")
-  const logger = container.resolve<Logger>("logger")
-  if (searchService.isDefault) {
-    logger.warn(
-      "No search engine provider was found: make sure to include a search plugin to enable searching"
-    )
-    return
-  }
+  // const searchService =
+  //   container.resolve<AbstractSearchService>("searchService")
+  // const logger = container.resolve<Logger>("logger")
+  // if (searchService.isDefault) {
+  //   logger.warn(
+  //     "No search engine provider was found: make sure to include a search plugin to enable searching"
+  //   )
+  //   return
+  // }
 
   await loadProductsIntoSearchEngine(container)
 }

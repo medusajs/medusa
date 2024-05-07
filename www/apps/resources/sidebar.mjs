@@ -1619,6 +1619,20 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
         ],
       },
+      {
+        title: "Workflow Engine Modules",
+        hasTitleStyling: true,
+        children: [
+          {
+            path: "/architectural-modules/workflow-engine/in-memory",
+            title: "In-Memory",
+          },
+          {
+            path: "/architectural-modules/workflow-engine/redis",
+            title: "Redis",
+          },
+        ],
+      },
     ],
   },
   {

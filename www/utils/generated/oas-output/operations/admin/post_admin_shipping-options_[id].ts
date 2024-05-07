@@ -11,6 +11,46 @@
  *     required: true
  *     schema:
  *       type: string
+ *   - name: expand
+ *     in: query
+ *     description: Comma-separated relations that should be expanded in the returned data.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: expand
+ *       description: Comma-separated relations that should be expanded in the returned data.
+ *   - name: fields
+ *     in: query
+ *     description: Comma-separated fields that should be included in the returned data.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: fields
+ *       description: Comma-separated fields that should be included in the returned data.
+ *   - name: offset
+ *     in: query
+ *     description: The number of items to skip when retrieving a list.
+ *     required: false
+ *     schema:
+ *       type: number
+ *       title: offset
+ *       description: The number of items to skip when retrieving a list.
+ *   - name: limit
+ *     in: query
+ *     description: Limit the number of items returned in the list.
+ *     required: false
+ *     schema:
+ *       type: number
+ *       title: limit
+ *       description: Limit the number of items returned in the list.
+ *   - name: order
+ *     in: query
+ *     description: Field to sort items in the list by.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: order
+ *       description: Field to sort items in the list by.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -26,6 +66,7 @@
  *           - data
  *           - price_type
  *           - provider_id
+ *           - shipping_profile_id
  *           - type
  *           - prices
  *           - rules
@@ -38,7 +79,8 @@
  *             type: object
  *             description: The shipping option's data.
  *             properties: {}
- *           price_type: {}
+ *           price_type:
+ *             type: string
  *           provider_id:
  *             type: string
  *             title: provider_id
@@ -162,6 +204,10 @@
  *                             type: string
  *                             title: value
  *                             description: The value's details.
+ *           shipping_profile_id:
+ *             type: string
+ *             title: shipping_profile_id
+ *             description: The shipping option's shipping profile id.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -186,6 +232,10 @@
  * responses:
  *   "200":
  *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminShippingOptionRetrieveResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
