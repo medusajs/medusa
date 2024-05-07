@@ -23,6 +23,7 @@ export type AdminCancelFulfillmentType = z.infer<typeof AdminCancelFulfillment>
 export const AdminCancelFulfillment = z.object({})
 
 export type AdminCreateFulfillmentType = z.infer<typeof AdminCreateFulfillment>
+// TODO: revisit the data shape this endpoint accepts
 export const AdminCreateFulfillment = z.object({
   location_id: z.string(),
   provider_id: z.string(),
@@ -30,6 +31,7 @@ export const AdminCreateFulfillment = z.object({
   items: z.array(AdminCreateFulfillmentItem),
   labels: z.array(AdminCreateFulfillmentLabel),
   order: z.object({}),
+  order_id: z.string(),
   metadata: z.record(z.unknown()).optional().nullable(),
 })
 

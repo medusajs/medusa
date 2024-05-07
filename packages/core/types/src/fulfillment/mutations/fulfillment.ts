@@ -75,6 +75,9 @@ export interface CreateFulfillmentDTO {
    * The associated fulfillment order.
    */
   order: CreateFulfillmentOrderDTO
+
+  // TODO: revisit
+  order_id: string
 }
 
 /**
