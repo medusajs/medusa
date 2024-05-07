@@ -1,5 +1,3 @@
-import { PricedVariant } from "@medusajs/client-types"
-import { Order } from "@medusajs/medusa"
 import { Button } from "@medusajs/ui"
 import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import { useAdminVariants } from "medusa-react"
@@ -13,6 +11,9 @@ import { useDataTable } from "../../../../../hooks/use-data-table.tsx"
 import { useVariantTableColumns } from "./use-variant-table-columns"
 import { useVariantTableFilters } from "./use-variant-table-filters"
 import { useVariantTableQuery } from "./use-variant-table-query"
+
+type Order = any // TODO: Order
+type PricedVariant = any // TODO: Order
 
 const PAGE_SIZE = 50
 

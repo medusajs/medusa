@@ -14,11 +14,11 @@ A middleware is a function executed when a request is sent to an API Route.
 
 ## How to Create a Middleware?
 
-Middlewares are defined in the special file `src/api/middleware.ts`. The file must export an object of middleware configurations.
+Middlewares are defined in the special file `src/api/middlewares.ts`. The file must export an object of middleware configurations.
 
 For example:
 
-```ts title="src/api/middleware.ts"
+```ts title="src/api/middlewares.ts"
 import { MiddlewaresConfig } from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {
@@ -49,19 +49,16 @@ The `matcher` property can be a string or a regular expression.
 
 ### Test Middleware
 
-To test the middleware, start the application:
+To test the middleware:
+
+1. Start the application:
 
 ```bash npm2yarn
 npm run dev
 ```
 
-Then, send a request to any API route starting with `/store`, such as `localhost:9000/store/products`:
-
-```bash apiTesting testApiUrl="localhost:9000/store/products" testApiMethod="GET"
-curl localhost:9000/store/products
-```
-
-Once you send the request, you’ll see the following message in the terminal:
+2. Send a request to any API route starting with `/store`.
+3. See the following message in the terminal:
 
 ```bash
 Received a request!
@@ -69,13 +66,12 @@ Received a request!
 
 ---
 
-## When to Use
+## When to Use Middlewares
 
 <Note type="success" title="Use middlewares when">
 
-- You want to guard API routes by a custom condition.
+- You want to protect API routes by a custom condition.
 - You're modifying the request body.
-- You're registering custom resources in the Medusa container.
 
 </Note>
 
@@ -101,8 +97,6 @@ You must call the `next` function in the middleware. Otherwise, other middleware
 
 In addition to the `matcher` configuration, you can restrict which HTTP methods the middleware is applied to.
 
-The object in the `routes` array accepts the property `method` whose value is either a string or an array of strings. Each string is an allowed HTTP method. If no value is specified, the middlewares are applied to requests of all HTTP methods.
-
 For example:
 
 export const highlights = [["7", "", "Apply the middleware only on `POST` requests"]]
@@ -114,7 +108,7 @@ export const config: MiddlewaresConfig = {
   routes: [
     {
       matcher: "/store*",
-      method: "POST",
+      method: ["POST", "PUT"],
       middlewares: [
         (req, res, next) => {
           console.log("Received a request!")
@@ -127,4 +121,6 @@ export const config: MiddlewaresConfig = {
 }
 ```
 
-This applies the middleware only when a `POST` request is sent to an API route path starting with `/store`.
+The object in the `routes` array accepts the property `method` whose value is one or more HTTP methods to apply the middleware to.
+
+This applies the middleware only when a `POST` or `PUT` request is sent to an API route path starting with `/store`.

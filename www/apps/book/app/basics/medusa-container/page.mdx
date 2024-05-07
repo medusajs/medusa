@@ -8,7 +8,9 @@ In this chapter, you’ll learn about Medusa’s Medusa container and how to use
 
 ## What is the Medusa container?
 
-The Medusa container holds all registered resources in the Medusa application. You use it to resolve resources, such as services.
+The Medusa container holds all resources registered in the Medusa application. You have access to it in your customizations.
+
+You use the Medusa container to resolve resources, such as services.
 
 For example, in a custom API route you can resolve any service registered in the Medusa application using the `scope.resolve` method of the `MedusaRequest` parameter:
 
@@ -40,4 +42,4 @@ export const GET = async (
 }
 ```
 
-This route handler function resolves the `IProductModuleService` and uses it to return the full count of products in the Medusa application.
+You resolve the `IProductModuleService` and uses it to return the full count of products in the Medusa application.
