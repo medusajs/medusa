@@ -370,6 +370,7 @@ export const CreatePromotionForm = ({
                   return (
                     <Form.Item>
                       <Form.Label>{t("promotions.fields.type")}</Form.Label>
+
                       <Form.Control>
                         <RadioGroup
                           key={"template_id"}

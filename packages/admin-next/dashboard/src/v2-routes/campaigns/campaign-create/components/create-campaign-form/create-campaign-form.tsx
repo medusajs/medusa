@@ -278,61 +278,57 @@ export const CreateCampaignForm = () => {
               />
             </div>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
-              <Form.Field
-                control={form.control}
-                name="budget.type"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>
-                        {t("campaigns.budget.fields.type")}
-                      </Form.Label>
-
-                      <Form.Control>
-                        <RadioGroup
-                          className="flex-col gap-y-3"
-                          {...field}
-                          onValueChange={field.onChange}
-                        >
-                          <RadioGroup.ChoiceBox
-                            className={clx("basis-1/2", {
-                              "border-2 border-ui-border-interactive":
-                                "spend" === field.value,
-                            })}
-                            value={"spend"}
-                            label={t("campaigns.budget.type.spend.title")}
-                            description={t(
-                              "campaigns.budget.type.spend.description"
-                            )}
-                          />
-
-                          <RadioGroup.ChoiceBox
-                            className={clx("basis-1/2", {
-                              "border-2 border-ui-border-interactive":
-                                "usage" === field.value,
-                            })}
-                            value={"usage"}
-                            label={t("campaigns.budget.type.usage.title")}
-                            description={t(
-                              "campaigns.budget.type.usage.description"
-                            )}
-                          />
-                        </RadioGroup>
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-            </div>
-
             <div>
               <Heading>{t("campaigns.budget.create.header")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">
                 {t("campaigns.budget.create.hint")}
               </Text>
             </div>
+
+            <Form.Field
+              control={form.control}
+              name="budget.type"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("campaigns.budget.fields.type")}</Form.Label>
+
+                    <Form.Control>
+                      <RadioGroup
+                        className="flex gap-y-3"
+                        {...field}
+                        onValueChange={field.onChange}
+                      >
+                        <RadioGroup.ChoiceBox
+                          className={clx("basis-1/2", {
+                            "border-2 border-ui-border-interactive":
+                              "spend" === field.value,
+                          })}
+                          value={"spend"}
+                          label={t("campaigns.budget.type.spend.title")}
+                          description={t(
+                            "campaigns.budget.type.spend.description"
+                          )}
+                        />
+
+                        <RadioGroup.ChoiceBox
+                          className={clx("basis-1/2", {
+                            "border-2 border-ui-border-interactive":
+                              "usage" === field.value,
+                          })}
+                          value={"usage"}
+                          label={t("campaigns.budget.type.usage.title")}
+                          description={t(
+                            "campaigns.budget.type.usage.description"
+                          )}
+                        />
+                      </RadioGroup>
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <Form.Field
