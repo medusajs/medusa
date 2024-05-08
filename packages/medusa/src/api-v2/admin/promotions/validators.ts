@@ -155,7 +155,6 @@ export const AdminCreateCampaign = z.object({
   budget: CreateCampaignBudget.optional(),
   starts_at: z.coerce.date().optional(),
   ends_at: z.coerce.date().optional(),
-  promotions: z.array(z.object({ id: z.string() })).optional(),
 })
 
 export type AdminCreatePromotionType = z.infer<typeof AdminCreatePromotion>
