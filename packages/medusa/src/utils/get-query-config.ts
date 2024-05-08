@@ -5,10 +5,11 @@ import {
 } from "@medusajs/utils"
 import { pick } from "lodash"
 import { MedusaError, isDefined } from "medusa-core-utils"
+import { RequestQueryFields } from "@medusajs/types"
 import { BaseEntity } from "../interfaces"
 import { featureFlagRouter } from "../loaders/feature-flags"
 import MedusaV2 from "../loaders/feature-flags/medusa-v2"
-import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
+import { FindConfig, QueryConfig } from "../types/common"
 
 export function pickByConfig<TModel extends BaseEntity>(
   obj: TModel | TModel[],
