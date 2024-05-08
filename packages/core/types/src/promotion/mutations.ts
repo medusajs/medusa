@@ -67,7 +67,7 @@ export interface CreateCampaignDTO {
   /**
    * The campaign identifier of the campaign.
    */
-  campaign_identifier?: string
+  campaign_identifier: string
 
   /**
    * The start date of the campaign.

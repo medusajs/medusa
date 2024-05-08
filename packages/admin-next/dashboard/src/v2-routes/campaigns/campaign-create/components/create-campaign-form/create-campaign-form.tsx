@@ -27,7 +27,7 @@ const CreateCampaignSchema = zod.object({
   name: zod.string(),
   description: zod.string().optional(),
   currency: zod.string(),
-  campaign_identifier: zod.string().optional(),
+  campaign_identifier: zod.string(),
   starts_at: zod.date().optional(),
   ends_at: zod.date().optional(),
   budget: zod.object({
@@ -64,7 +64,7 @@ export const CreateCampaignForm = () => {
         name: data.name,
         description: data.description,
         currency: data.currency,
-        campaign_identifier: data.campaign_identifier || "",
+        campaign_identifier: data.campaign_identifier,
         starts_at: data.starts_at,
         ends_at: data.ends_at,
         budget: {
