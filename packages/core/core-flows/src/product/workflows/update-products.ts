@@ -57,6 +57,11 @@ export const updateProductsWorkflow = createWorkflow(
 
     const salesChannelLinks = transform({ input, updatedProducts }, (data) => {
       if ((data.input as UpdateProductsStepInputSelector).selector) {
+        if (
+          !(data.input as UpdateProductsStepInputSelector).update.sales_channels
+        ) {
+          return []
+        }
         return data.updatedProducts.map((p) => {
           return {
             product_id: p.id,
@@ -69,15 +74,15 @@ export const updateProductsWorkflow = createWorkflow(
       }
 
       return (data.input as UpdateProductsStepInputProducts).products
+        .filter((input) => input.sales_channels)
         .map((input) => {
           return {
             product_id: input.id as string,
-            sales_channel_ids:
-              input.sales_channels?.map((salesChannel) => salesChannel.id) ??
-              [],
+            sales_channel_ids: input.sales_channels!.map(
+              (salesChannel) => salesChannel.id
+            ),
           }
         })
-        .flat()
     })
 
     setProductsSalesChannelsStep(salesChannelLinks)
