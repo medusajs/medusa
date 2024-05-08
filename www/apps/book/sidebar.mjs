@@ -253,22 +253,14 @@ export const sidebar = sidebarAttachHrefCommonOptions(
         {
           path: "/architectural-concepts/cache-module",
           title: "Cache Module",
-          children: [
-            {
-              path: "/architectural-concepts/cache-module/create",
-              title: "Create Cache Module",
-            },
-          ],
         },
         {
           path: "/architectural-concepts/event-module",
           title: "Event Module",
-          children: [
-            {
-              path: "/architectural-concepts/event-module/create",
-              title: "Create Event Module",
-            },
-          ],
+        },
+        {
+          path: "/architectural-concepts/file-module",
+          title: "File Module",
         },
       ],
     },

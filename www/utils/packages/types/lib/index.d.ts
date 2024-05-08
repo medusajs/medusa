@@ -75,7 +75,9 @@ export type FormattingOptionType = {
   mdxImports?: string[]
   maxLevel?: number
   fileNameSeparator?: string
+  startSections?: string[]
   endSections?: string[]
+  shouldIncrementAfterStartSections?: boolean
 }
 
 export declare module "typedoc" {

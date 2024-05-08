@@ -48,11 +48,15 @@ const modules = {
         {
           resolve: "@medusajs/payment-stripe",
           options: {
-            credentials: {
-              usd: {
-                apiKey: process.env.STRIPE_USD_API_KEY,
-              },
-            },
+            config: {
+              stripe: {
+                credentials: {
+                  usd: {
+                    apiKey: process.env.STRIPE_USD_API_KEY,
+                  },
+                },
+              }
+            }
           },
         },
       ],

@@ -63,6 +63,7 @@ import getDeclarationChildrenHelper from "./resources/helpers/get-declaration-ch
 import ifShowSeparatorForTitleLevelHelper from "./resources/helpers/if-show-separator-for-title-level"
 import shouldExpandPropertiesHelper from "./resources/helpers/should-expand-properties"
 import shouldExpandDeclarationChildrenHelper from "./resources/helpers/should-expand-declaration-children"
+import startSectionsHelper from "./resources/helpers/start-sections"
 import { MarkdownTheme } from "./theme"
 
 const TEMPLATE_PATH = path.join(__dirname, "resources", "templates")
@@ -154,4 +155,5 @@ export function registerHelpers(theme: MarkdownTheme) {
   ifShowSeparatorForTitleLevelHelper(theme)
   shouldExpandPropertiesHelper(theme)
   shouldExpandDeclarationChildrenHelper(theme)
+  startSectionsHelper(theme)
 }
