@@ -1,3 +1,4 @@
+export * from "./add-or-remove-campaign-promotions"
 export * from "./add-rules-to-promotions"
 export * from "./create-campaigns"
 export * from "./create-promotions"
