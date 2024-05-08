@@ -12,7 +12,6 @@ import remarkDirective from "remark-directive"
 const mdxPluginOptions = {
   options: {
     rehypePlugins: [
-      // TODO add V2 to path if necessary
       [
         crossProjectLinksPlugin,
         {
@@ -23,13 +22,14 @@ const mdxPluginOptions = {
                 process.env.VERCEL_ENV !== "production"
                   ? process.env.NEXT_PUBLIC_DOCS_URL
                   : undefined,
+              path: "v2",
             },
             "user-guide": {
               url:
                 process.env.VERCEL_ENV !== "production"
                   ? process.env.NEXT_PUBLIC_USER_GUIDE_URL
                   : undefined,
-              path: "user-guide",
+              path: "v2/user-guide",
             },
             ui: {
               url:
