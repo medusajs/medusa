@@ -304,7 +304,7 @@ export const SidebarProvider = ({
     }
 
     setActivePath(backItem.path!)
-    setCurrentItems(currentItems.previousSidebar)
+    setCurrentItems(previousSidebar)
     router.replace(backItem.path!)
   }
 
@@ -398,7 +398,10 @@ export const SidebarProvider = ({
         bottom: [],
         mobile: items.mobile,
         parentItem: parentItem,
-        previousSidebar: currentItems,
+        previousSidebar:
+          currentItems?.previousSidebar?.parentItem?.path !== parentItem.path
+            ? currentItems
+            : undefined,
       })
     }
   }, [getCurrentSidebar, activePath])
