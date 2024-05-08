@@ -19,7 +19,9 @@ export const CampaignSpend = ({ campaign }: CampaignSpendProps) => {
           </div>
         </div>
 
-        <Heading level="h2">{t("campaigns.fields.total_spend")}</Heading>
+        <Heading level="h3" className="font-normal text-ui-fg-subtle">
+          {t("campaigns.fields.total_spend")}
+        </Heading>
       </div>
 
       <div>
@@ -32,7 +34,8 @@ export const CampaignSpend = ({ campaign }: CampaignSpendProps) => {
             i18nKey="campaigns.totalSpend"
             values={{
               amount: campaign?.budget?.used || 0,
-              currency: campaign.currency,
+              currency:
+                campaign?.budget?.type === "spend" ? campaign.currency : "",
             }}
             components={[
               <span

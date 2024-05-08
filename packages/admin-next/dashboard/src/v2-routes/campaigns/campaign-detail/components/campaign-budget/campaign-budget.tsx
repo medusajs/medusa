@@ -21,7 +21,10 @@ export const CampaignBudget = ({ campaign }: CampaignBudgetProps) => {
             </div>
           </div>
 
-          <Heading className="ml-10 mt-[1.5px]" level="h2">
+          <Heading
+            className="ml-10 mt-[1.5px] font-normal text-ui-fg-subtle"
+            level="h3"
+          >
             {t("campaigns.fields.budget_limit")}
           </Heading>
         </div>
@@ -51,7 +54,8 @@ export const CampaignBudget = ({ campaign }: CampaignBudgetProps) => {
             i18nKey="campaigns.totalSpend"
             values={{
               amount: campaign?.budget?.limit || 0,
-              currency: campaign.currency,
+              currency:
+                campaign?.budget?.type === "spend" ? campaign.currency : "",
             }}
             components={[
               <span

@@ -1036,6 +1036,11 @@
   "campaigns": {
     "domain": "Campaigns",
     "details": "Campaign details",
+    "status": {
+      "active": "active",
+      "expired": "expired",
+      "scheduled": "scheduled"
+    },
     "delete": {
       "title": "Are you sure?",
       "description": "You are about to delete the campaign '{{name}}'. This action cannot be undone.",
