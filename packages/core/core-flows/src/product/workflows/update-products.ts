@@ -5,7 +5,11 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { updateProductsStep } from "../steps/update-products"
-import { setProductsSalesChannelsStep } from "../../sales-channel/steps/set-products-sales-channels"
+import { getProductSalesChannelLinkStep } from "../steps/get-product-sales-channel-link"
+import {
+  associateProductsWithSalesChannelsStep,
+  detachProductsFromSalesChannelsStep,
+} from "../../sales-channel"
 
 type UpdateProductsStepInputSelector = {
   selector: ProductTypes.FilterableProductProps
@@ -55,6 +59,33 @@ export const updateProductsWorkflow = createWorkflow(
 
     const updatedProducts = updateProductsStep(toUpdateInput as any) // TODO: type
 
+    const updatedProductIds = transform({ updatedProducts, input }, (data) => {
+      if (
+        !(data.input as UpdateProductsStepInputSelector).update.sales_channels
+      ) {
+        return []
+      }
+
+      let productIds = data.updatedProducts.map((p) => p.id)
+
+      ;(data.input as UpdateProductsStepInputProducts).products?.forEach(
+        (p) => {
+          if (!p.sales_channels) {
+            // these products don't update sales channels so we don't want to their previous channels
+            productIds = productIds.filter((id) => id !== p.id)
+          }
+        }
+      )
+
+      return productIds
+    })
+
+    const currentLinks = getProductSalesChannelLinkStep({
+      ids: updatedProductIds,
+    })
+
+    detachProductsFromSalesChannelsStep({ links: currentLinks })
+
     const salesChannelLinks = transform({ input, updatedProducts }, (data) => {
       if ((data.input as UpdateProductsStepInputSelector).selector) {
         if (
@@ -62,30 +93,30 @@ export const updateProductsWorkflow = createWorkflow(
         ) {
           return []
         }
-        return data.updatedProducts.map((p) => {
-          return {
-            product_id: p.id,
-            sales_channel_ids: (
-              (data.input as UpdateProductsStepInputSelector).update
-                .sales_channels || []
-            ).map((channel) => channel.id),
-          }
-        })
+        return data.updatedProducts
+          .map((p) => {
+            return (
+              data.input as UpdateProductsStepInputSelector
+            ).update.sales_channels!.map((channel) => ({
+              sales_channel_id: channel.id,
+              product_id: p.id,
+            }))
+          })
+          .flat()
       }
 
       return (data.input as UpdateProductsStepInputProducts).products
         .filter((input) => input.sales_channels)
         .map((input) => {
-          return {
+          return input.sales_channels!.map((salesChannel) => ({
+            sales_channel_id: salesChannel.id,
             product_id: input.id as string,
-            sales_channel_ids: input.sales_channels!.map(
-              (salesChannel) => salesChannel.id
-            ),
-          }
+          }))
         })
+        .flat()
     })
 
-    setProductsSalesChannelsStep(salesChannelLinks)
+    associateProductsWithSalesChannelsStep({ links: salesChannelLinks })
 
     return updatedProducts
   }
