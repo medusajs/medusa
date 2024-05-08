@@ -8,13 +8,17 @@ In this chapter, you'll learn how to add a compensation function to a step.
 
 ## Compensation Function
 
-Errors can occur in a workflow. To avoid data inconsistency, you can pass a compensation function as a third parameter to the `createStep` function.
+Errors can occur in a workflow. To avoid data inconsistency, define a function to run when an error occurs in a step. This function is called the compensation function.
 
-The compensation function only runs if an error occurs throughout the Workflow. It’s useful to undo or roll back actions you’ve performed in a step.
+For example:
 
-For example, change step one to add a compensation function and step two to throw an error:
+```ts title="src/workflows/hello-world.ts" highlights={[["16"], ["17"], ["18"]]}
+// other imports...
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/workflows-sdk"
 
-```ts title="src/workflows/hello-world.ts" highlights={[["10"], ["11"], ["12"]]}
 const step1 = createStep(
   "step-1",
   async () => {
@@ -28,18 +32,25 @@ const step1 = createStep(
     console.log("Oops! Rolling back my changes...")
   }
 )
+```
 
+Each step can have a compensation function. The compensation function only runs if an error occurs throughout the Workflow. It’s useful to undo or roll back actions you’ve performed in a step.
+
+### Test Compensation Function
+
+1. Add another step that throws an error:
+
+```ts title="src/workflows/hello-world.ts"
+// ...
 const step2 = createStep(
   "step-2",
-  async ({ name }: WorkflowInput) => {
+  async () => {
     throw new Error("Throwing an error...")
   }
 )
 ```
 
-### Test Compensation Function
-
-1. Use the steps in a workflow. For example:
+2. Use the steps in a workflow. For example:
 
 ```ts title="src/workflows/hello-world.ts"
 import {
@@ -54,12 +65,11 @@ type WorkflowOutput = {
 }
 
 const myWorkflow = createWorkflow<
-  WorkflowInput,
+  {},
   WorkflowOutput
 >("hello-world", function (input) {
   const str1 = step1()
-  // to pass input
-  const str2 = step2(input)
+  step2()
 
   return {
     message: str1,
@@ -69,7 +79,7 @@ const myWorkflow = createWorkflow<
 export default myWorkflow
 ```
 
-2. Execute the workflow from a resource, such as an API route:
+3. Execute the workflow from a resource, such as an API route:
 
 ```ts title="src/api/store/workflow/route.ts"
 import type {
@@ -83,23 +93,19 @@ export async function GET(
   res: MedusaResponse
 ) {
   const { result } = await myWorkflow(req.scope)
-    .run({
-      input: {
-        name: req.query.name as string,
-      },
-    })
+    .run()
 
   res.send(result)
 }
 ```
 
-3. Run the Medusa application:
+4. Run the Medusa application:
 
 ```bash npm2yarn
 npm run dev
 ```
 
-4. Send a `GET` request to `/store/workflow`:
+5. Send a `GET` request to `/store/workflow`:
 
 ```bash apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/workflows"
 curl http://localhost:9000/store/workflow

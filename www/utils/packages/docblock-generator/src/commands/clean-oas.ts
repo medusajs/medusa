@@ -58,6 +58,8 @@ export default async function () {
       Object.values((schema.oneOf || schema.allOf || schema.anyOf)!).forEach(
         testAndFindReferenceSchema
       )
+    } else if (schema.type === "array") {
+      testAndFindReferenceSchema(schema.items)
     }
   }
 

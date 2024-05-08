@@ -256,13 +256,17 @@ export default async ({
 
   await waitOn({
     resources: ["http://localhost:9000/health"],
-  }).then(async () =>
+  }).then(async () => {
+    if (v2) {
+      return
+    }
+
     open(
       inviteToken
         ? `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
         : "http://localhost:7001"
     )
-  )
+  })
 }
 
 async function askForProjectName(directoryPath?: string): Promise<string> {

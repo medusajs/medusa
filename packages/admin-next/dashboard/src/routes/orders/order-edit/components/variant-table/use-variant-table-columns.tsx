@@ -7,7 +7,8 @@ import {
   ProductHeader,
 } from "../../../../../components/table/table-cells/product/product-cell"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
-import { PricedVariant } from "@medusajs/client-types"
+
+type PricedVariant = any // TODO: PricedVariant
 
 const columnHelper = createColumnHelper<PricedVariant>()
 

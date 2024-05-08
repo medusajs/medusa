@@ -135,37 +135,6 @@ export type QueryConfig<TEntity extends BaseEntity> = {
 /**
  * @interface
  *
- * Request parameters used to configure and paginate retrieved data.
- */
-export type RequestQueryFields = {
-  /**
-   * Comma-separated relations that should be expanded in the returned data.
-   * @deprecated Use `fields` instead and the relations will be inferred
-   */
-  expand?: string
-  /**
-   * Comma-separated fields that should be included in the returned data.
-   * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-   * without prefix it will replace the entire default fields.
-   */
-  fields?: string
-  /**
-   * The number of items to skip when retrieving a list.
-   */
-  offset?: number
-  /**
-   * Limit the number of items returned in the list.
-   */
-  limit?: number
-  /**
-   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-   */
-  order?: string
-}
-
-/**
- * @interface
- *
  * Pagination fields returned in the response of an API route.
  */
 export type PaginatedResponse = {

@@ -8,6 +8,7 @@ import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import { updateLineItemsStep } from "../../line-item/steps"
 import { refreshCartShippingMethodsStep } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
+import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import {
   cartFieldsForRefreshSteps,
   productVariantsFields,
@@ -46,6 +47,8 @@ export const updateLineItemInCartWorkflow = createWorkflow(
       },
       throw_if_key_not_found: true,
     })
+
+    validateVariantPricesStep({ variants })
 
     const items = transform({ input }, (data) => {
       return [data.input.item]

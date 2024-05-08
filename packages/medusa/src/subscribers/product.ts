@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { IEventBusService, ISearchService } from "@medusajs/types"
 import { defaultSearchIndexingProductRelations, FlagRouter } from "@medusajs/utils"
 import { indexTypes } from "medusa-core-utils"
@@ -25,10 +27,10 @@ class ProductSearchSubscriber {
     this.productService_ = container.productService
     this.featureFlagRouter_ = container.featureFlagRouter
 
-    /**
+    /!**
      * Do not subscribe to any event in case no search engine have been installed.
      * If some events need to be subscribed out of the search engine reason, they can be subscribed above this comment
-     */
+     *!/
 
     try {
       container[isSearchEngineInstalledResolutionKey]
@@ -117,3 +119,4 @@ class ProductSearchSubscriber {
 }
 
 export default ProductSearchSubscriber
+*/

@@ -4,11 +4,11 @@ import {
   ProductCategoryTransformOptions,
   ProductTypes,
 } from "@medusajs/types"
-import { DALUtils, MedusaError, isDefined } from "@medusajs/utils"
+import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductCategory } from "@models"
@@ -51,7 +51,9 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     }
 
     const shouldExpandParent =
-      familyOptions.includeAncestorsTree || fields.includes("parent_category")
+      familyOptions.includeAncestorsTree ||
+      populate.includes("parent_category") ||
+      fields.some((field) => field.startsWith("parent_category."))
 
     if (shouldExpandParent) {
       populate.indexOf("parent_category") === -1 &&
@@ -60,7 +62,8 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
 
     const shouldExpandChildren =
       familyOptions.includeDescendantsTree ||
-      fields.includes("category_children")
+      populate.includes("category_children") ||
+      fields.some((field) => field.startsWith("category_children."))
 
     if (shouldExpandChildren) {
       populate.indexOf("category_children") === -1 &&
@@ -86,7 +89,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     const productCategories = await manager.find(
       ProductCategory,
       findOptions_.where as MikroFilterQuery<ProductCategory>,
-      findOptions_.options as MikroOptions<ProductCategory>
+      { ...findOptions_.options } as MikroOptions<ProductCategory>
     )
 
     if (
@@ -116,6 +119,20 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     context: Context = {}
   ): Promise<ProductCategory[]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
+
+    // We dont want to get the relations as we will fetch all the categories and build the tree manually
+    let relationIndex =
+      findOptions.options?.populate?.indexOf("parent_category")
+    const shouldPopulateParent = relationIndex !== -1
+    if (shouldPopulateParent && include.ancestors) {
+      findOptions.options!.populate!.splice(relationIndex as number, 1)
+    }
+
+    relationIndex = findOptions.options?.populate?.indexOf("category_children")
+    const shouldPopulateChildren = relationIndex !== -1
+    if (shouldPopulateChildren && include.descendants) {
+      findOptions.options!.populate!.splice(relationIndex as number, 1)
+    }
 
     const mpaths: any[] = []
     const parentMpaths = new Set()
@@ -162,7 +179,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     const categoriesById = new Map(allCategories.map((cat) => [cat.id, cat]))
 
     allCategories.forEach((cat: any) => {
-      if (cat.parent_category_id) {
+      if (cat.parent_category_id && include.ancestors) {
         cat.parent_category = categoriesById.get(cat.parent_category_id)
       }
     })
@@ -179,12 +196,17 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       }
 
       if (level === 0) {
+        if (!include.ancestors && !shouldPopulateParent) {
+          delete category.parent_category
+        }
+
         return category
       }
 
       if (include.ancestors) {
         delete category.category_children
       }
+
       if (include.descendants) {
         delete category.parent_category
       }
@@ -206,7 +228,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     context: Context = {}
   ): Promise<[ProductCategory[], number]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
-    
+
     const findOptions_ = this.buildFindOptions(findOptions, transformOptions)
 
     const [productCategories, count] = await manager.findAndCount(

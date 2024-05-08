@@ -1,3 +1,5 @@
+// TODO: we need to discuss this
+/*
 import { EntityManager } from "typeorm"
 import { CartService, EventBusService } from "../services"
 
@@ -47,3 +49,4 @@ class CartSubscriber {
 }
 
 export default CartSubscriber
+*/

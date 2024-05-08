@@ -6844,6 +6844,28 @@ export const generatedSidebar = [
             "children": []
           }
         ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "title": "Workflow Engine Modules",
+        "hasTitleStyling": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/architectural-modules/workflow-engine/in-memory",
+            "title": "In-Memory",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/architectural-modules/workflow-engine/redis",
+            "title": "Redis",
+            "children": []
+          }
+        ]
       }
     ]
   },

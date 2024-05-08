@@ -50,7 +50,7 @@ async function deleteCustomerGroup(id: string) {
 
 async function batchAddCustomers(
   id: string,
-  payload: { customer_ids: { id: string }[] }
+  payload: { customer_ids: string[] }
 ) {
   return postRequest<AdminCustomerGroupResponse>(
     `/admin/customer-groups/${id}/customers`,

@@ -64,8 +64,6 @@
  * tags:
  *   - Price Lists
  * responses:
- *   "200":
- *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -78,6 +76,101 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         type: object
+ *         description: SUMMARY
+ *         properties:
+ *           create:
+ *             type: array
+ *             description: The price list's create.
+ *             items:
+ *               type: object
+ *               description: The create's details.
+ *               required:
+ *                 - currency_code
+ *                 - amount
+ *                 - variant_id
+ *                 - min_quantity
+ *                 - max_quantity
+ *                 - rules
+ *               properties:
+ *                 currency_code:
+ *                   type: string
+ *                   title: currency_code
+ *                   description: The create's currency code.
+ *                 amount:
+ *                   type: number
+ *                   title: amount
+ *                   description: The create's amount.
+ *                 variant_id:
+ *                   type: string
+ *                   title: variant_id
+ *                   description: The create's variant id.
+ *                 min_quantity:
+ *                   type: number
+ *                   title: min_quantity
+ *                   description: The create's min quantity.
+ *                 max_quantity:
+ *                   type: number
+ *                   title: max_quantity
+ *                   description: The create's max quantity.
+ *                 rules:
+ *                   type: object
+ *                   description: The create's rules.
+ *                   properties: {}
+ *           update:
+ *             type: array
+ *             description: The price list's update.
+ *             items:
+ *               type: object
+ *               description: The update's details.
+ *               required:
+ *                 - id
+ *                 - currency_code
+ *                 - amount
+ *                 - variant_id
+ *                 - min_quantity
+ *                 - max_quantity
+ *                 - rules
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   title: id
+ *                   description: The update's ID.
+ *                 currency_code:
+ *                   type: string
+ *                   title: currency_code
+ *                   description: The update's currency code.
+ *                 amount:
+ *                   type: number
+ *                   title: amount
+ *                   description: The update's amount.
+ *                 variant_id:
+ *                   type: string
+ *                   title: variant_id
+ *                   description: The update's variant id.
+ *                 min_quantity:
+ *                   type: number
+ *                   title: min_quantity
+ *                   description: The update's min quantity.
+ *                 max_quantity:
+ *                   type: number
+ *                   title: max_quantity
+ *                   description: The update's max quantity.
+ *                 rules:
+ *                   type: object
+ *                   description: The update's rules.
+ *                   properties: {}
+ *           delete:
+ *             type: array
+ *             description: The price list's delete.
+ *             items:
+ *               type: string
+ *               title: delete
+ *               description: The delete's details.
  * 
 */
 

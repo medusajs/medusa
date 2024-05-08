@@ -1,14 +1,13 @@
-import { CommonTypes } from "@medusajs/types"
+import { CommonTypes, RequestQueryFields } from "@medusajs/types"
 import { Request } from "express"
 import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
-import { Customer, User } from "../models"
-import { FindConfig, RequestQueryFields } from "./common"
+import { FindConfig } from "./common"
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
-      user?: (User | Customer) & { customer_id?: string; userId?: string }
+      user?: { customer_id?: string; userId?: string }
       scope: MedusaContainer
       validatedQuery: RequestQueryFields & Record<string, unknown>
       validatedBody: unknown

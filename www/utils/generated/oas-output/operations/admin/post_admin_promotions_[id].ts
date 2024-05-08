@@ -74,6 +74,7 @@
  *             enum:
  *               - standard
  *               - buyget
+ *             type: string
  *           campaign_id:
  *             type: string
  *             title: campaign_id
@@ -115,6 +116,7 @@
  *                     enum:
  *                       - spend
  *                       - usage
+ *                     type: string
  *                   limit:
  *                     type: number
  *                     title: limit
@@ -163,15 +165,18 @@
  *                 enum:
  *                   - fixed
  *                   - percentage
+ *                 type: string
  *               target_type:
  *                 enum:
  *                   - order
  *                   - shipping_methods
  *                   - items
+ *                 type: string
  *               allocation:
  *                 enum:
  *                   - each
  *                   - across
+ *                 type: string
  *               target_rules:
  *                 type: array
  *                 description: The application method's target rules.
@@ -193,6 +198,7 @@
  *                         - eq
  *                         - ne
  *                         - in
+ *                       type: string
  *                     description:
  *                       type: string
  *                       title: description
@@ -229,6 +235,7 @@
  *                         - eq
  *                         - ne
  *                         - in
+ *                       type: string
  *                     description:
  *                       type: string
  *                       title: description
@@ -284,6 +291,7 @@
  *                     - eq
  *                     - ne
  *                     - in
+ *                   type: string
  *                 description:
  *                   type: string
  *                   title: description
