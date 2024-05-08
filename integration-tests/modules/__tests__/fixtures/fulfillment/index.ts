@@ -49,6 +49,7 @@ export function generateCreateFulfillmentData(
       },
     ],
     order: data.order ?? {},
+    order_id: data.order_id,
   }
 }
 

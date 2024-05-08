@@ -140,6 +140,7 @@ medusaIntegrationTestRunner({
         const data = generateCreateFulfillmentData({
           provider_id: providerId,
           shipping_option_id: shippingOption.id,
+          order_id: "order_123",
         })
 
         const response = await api
