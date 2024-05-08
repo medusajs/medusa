@@ -1,6 +1,11 @@
+import { CellContext } from "@tanstack/react-table"
 import { useContext, useEffect, useMemo } from "react"
 import { DataGridContext } from "./context"
-import { CellCoords, DataGridCellContainerProps } from "./types"
+import {
+  CellCoords,
+  DataGridCellContainerProps,
+  DataGridCellContext,
+} from "./types"
 import { generateCellId, isCellMatch } from "./utils"
 
 const useDataGridContext = () => {
@@ -15,25 +20,32 @@ const useDataGridContext = () => {
   return context
 }
 
-type UseDataGridCellProps = {
-  row: number
-  col: number
+type UseDataGridCellProps<TData, TValue> = {
+  field: string
+  context: CellContext<TData, TValue>
 }
 
-function Noop() {}
+export const useDataGridCell = <TData, TValue>({
+  field,
+  context,
+}: UseDataGridCellProps<TData, TValue>) => {
+  const { row, columnIndex } = context as DataGridCellContext<TData, TValue>
 
-export const useDataGridCell = ({ row, col }: UseDataGridCellProps) => {
-  const coords: CellCoords = useMemo(() => ({ row, col }), [row, col])
+  const coords: CellCoords = useMemo(
+    () => ({ row: row.index, col: columnIndex }),
+    [row, columnIndex]
+  )
   const id = generateCellId(coords)
 
   const {
+    register,
     control,
     anchor,
     onRegisterCell,
     onUnregisterCell,
-    onClickOverlay,
     getMouseOverHandler,
     getMouseDownHandler,
+    getOnChangeHandler,
   } = useDataGridContext()
 
   useEffect(() => {
@@ -51,20 +63,23 @@ export const useDataGridCell = ({ row, col }: UseDataGridCellProps) => {
       onMouseOver: getMouseOverHandler(coords),
     },
     overlay: {
-      onClick: Noop,
+      onClick: () => {},
     },
   }
 
   const attributes = {
-    "data-row": row,
-    "data-col": col,
+    "data-row": coords.row,
+    "data-col": coords.col,
     "data-cell-id": id,
+    "data-field": field,
   }
 
   return {
     id,
+    register,
     control,
     attributes,
     container,
+    onChange: getOnChangeHandler(field),
   }
 }

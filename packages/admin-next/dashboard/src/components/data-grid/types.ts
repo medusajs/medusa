@@ -1,5 +1,5 @@
 import { CellContext } from "@tanstack/react-table"
-import { MouseEvent } from "react"
+import { MouseEvent, ReactNode } from "react"
 
 export type CellCoords = {
   row: number
@@ -26,6 +26,7 @@ export interface DataGridCellContext<TData = unknown, TValue = any>
 
 export interface DataGridCellContainerProps {
   isAnchor: boolean
+  placeholder?: ReactNode
   wrapper: {
     onMouseDown: (e: MouseEvent<HTMLElement>) => void
     onMouseOver: ((e: MouseEvent<HTMLElement>) => void) | undefined
@@ -34,3 +35,5 @@ export interface DataGridCellContainerProps {
     onClick: () => void
   }
 }
+
+export type DataGridColumnType = "string" | "number" | "boolean"

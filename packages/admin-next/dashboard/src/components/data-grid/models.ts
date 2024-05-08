@@ -89,20 +89,20 @@ export class SortedSet<T> {
 
 export type PasteCommandArgs = {
   selection: Record<string, boolean>
-  next: string[][]
-  prev: string[][]
-  setter: (selection: Record<string, boolean>, values: string[][]) => void
+  next: string[]
+  prev: string[]
+  setter: (selection: Record<string, boolean>, values: string[]) => void
 }
 
 export class DeleteCommand implements Command {
   private _selection: Record<string, boolean>
 
-  private _prev: string[][]
-  private _next: string[][]
+  private _prev: string[]
+  private _next: string[]
 
   private _setter: (
     selection: Record<string, boolean>,
-    values: string[][]
+    values: string[]
   ) => void
 
   constructor({ selection, prev, next, setter }: PasteCommandArgs) {
@@ -126,12 +126,12 @@ export class DeleteCommand implements Command {
 export class PasteCommand implements Command {
   private _selection: Record<string, boolean>
 
-  private _prev: string[][]
-  private _next: string[][]
+  private _prev: string[]
+  private _next: string[]
 
   private _setter: (
     selection: Record<string, boolean>,
-    values: string[][]
+    values: string[]
   ) => void
 
   constructor({ selection, prev, next, setter }: PasteCommandArgs) {

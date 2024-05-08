@@ -124,6 +124,17 @@ export const ProductCreateVariantsSection = ({
         options: permutation,
         should_create: false,
         variant_rank: newVariants.length,
+        prices: {},
+        allow_backorder: false,
+        manage_inventory: true,
+        barcode: "",
+        sku: "",
+        upc: "",
+        ean: "",
+        hs_code: "",
+        mid_code: "",
+        material: "",
+        origin_country: "",
       })
     })
 
@@ -172,6 +183,13 @@ export const ProductCreateVariantsSection = ({
         options: permutation,
         should_create: false,
         variant_rank: newVariants.length,
+        allow_backorder: false,
+        manage_inventory: true,
+        prices: {},
+        barcode: "",
+        sku: "",
+        upc: "",
+        ean: "",
       })
     })
 

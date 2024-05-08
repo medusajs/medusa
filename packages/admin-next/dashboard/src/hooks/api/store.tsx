@@ -8,22 +8,23 @@ import {
 
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
+import { queryKeysFactory } from "../../lib/query-key-factory"
 import { UpdateStoreReq } from "../../types/api-payloads"
 import { StoreRes } from "../../types/api-responses"
-import { queryKeysFactory } from "../../lib/query-key-factory"
 
 const STORE_QUERY_KEY = "store" as const
 const storeQueryKeys = queryKeysFactory(STORE_QUERY_KEY)
 
 export const useStore = (
+  query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<StoreRes, Error, StoreRes, QueryKey>,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.stores.retrieve(),
-    queryKey: storeQueryKeys.details(),
+    queryFn: () => client.stores.retrieve(query),
+    queryKey: storeQueryKeys.detail("default_store", query),
     ...options,
   })
 

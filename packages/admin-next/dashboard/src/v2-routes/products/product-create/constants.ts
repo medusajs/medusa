@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { optionalInt } from "../../../lib/validation"
 import {
   CreateProductOptionSchema,
   CreateVariantSchema,
@@ -6,8 +7,6 @@ import {
 
 export const ProductCreateVariantSchema = CreateVariantSchema.extend({
   should_create: z.boolean(),
-  allow_backorder: z.enum(["true", "false"]).optional(),
-  manage_inventory: z.enum(["true", "false"]).optional(),
 })
 
 export const ProductCreateSchema = z.object({
@@ -30,10 +29,10 @@ export const ProductCreateSchema = z.object({
     .optional(),
   origin_country: z.string().optional(),
   material: z.string().optional(),
-  width: z.string().optional(),
-  length: z.string().optional(),
-  height: z.string().optional(),
-  weight: z.string().optional(),
+  width: optionalInt,
+  length: optionalInt,
+  height: optionalInt,
+  weight: optionalInt,
   mid_code: z.string().optional(),
   hs_code: z.string().optional(),
   options: z.array(CreateProductOptionSchema),

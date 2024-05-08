@@ -31,6 +31,7 @@ export const ProductCreateAttributeSection = ({
                 <Form.Control>
                   <CountrySelect {...field} />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
@@ -47,6 +48,7 @@ export const ProductCreateAttributeSection = ({
                 <Form.Control>
                   <Input {...field} />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
@@ -65,6 +67,7 @@ export const ProductCreateAttributeSection = ({
                 <Form.Control>
                   <Input {...field} type="number" min={0} />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
@@ -81,6 +84,7 @@ export const ProductCreateAttributeSection = ({
                 <Form.Control>
                   <Input {...field} type="number" min={0} />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
@@ -97,6 +101,7 @@ export const ProductCreateAttributeSection = ({
                 <Form.Control>
                   <Input {...field} type="number" min={0} />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
@@ -113,6 +118,7 @@ export const ProductCreateAttributeSection = ({
                 <Form.Control>
                   <Input {...field} type="number" min={0} />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
@@ -129,6 +135,7 @@ export const ProductCreateAttributeSection = ({
                 <Form.Control>
                   <Input {...field} />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
@@ -145,6 +152,7 @@ export const ProductCreateAttributeSection = ({
                 <Form.Control>
                   <Input {...field} />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}

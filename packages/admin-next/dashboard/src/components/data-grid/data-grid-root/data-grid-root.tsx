@@ -19,12 +19,20 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { FieldValues, UseFormReturn } from "react-hook-form"
+import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form"
 import { useCommandHistory } from "../../../hooks/use-command-history"
 import { DataGridContext } from "../context"
-import { SortedSet } from "../models"
+import { PasteCommand, SortedSet, UpdateCommand } from "../models"
 import { CellCoords } from "../types"
-import { generateCellId, isCellMatch } from "../utils"
+import {
+  convertArrayToPrimitive,
+  generateCellId,
+  getColumnName,
+  getColumnType,
+  getFieldsInRange,
+  getRange,
+  isCellMatch,
+} from "../utils"
 
 interface DataGridRootProps<
   TData,
@@ -37,7 +45,16 @@ interface DataGridRootProps<
 }
 
 const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
+const VERTICAL_KEYS = ["ArrowUp", "ArrowDown"]
+
 const ROW_HEIGHT = 40
+
+/**
+ * TODO:
+ * - Fix bug where the virtualizers will fail to scroll to the next/prev cell due to the element measurement not being part of the virtualizers memoized array of measurements.
+ * - Show field errors in the grid, and in topbar, possibly also an option to only show
+ * - Extend the commands to also support modifying the anchor and rangeEnd, to restore the previous focus after undo/redo.
+ */
 
 export const DataGridRoot = <
   TData,
@@ -59,12 +76,18 @@ export const DataGridRoot = <
   const [cells, setCells] = useState<Record<string, boolean>>({})
 
   const [anchor, setAnchor] = useState<CellCoords | null>(null)
+  const [rangeEnd, setRangeEnd] = useState<CellCoords | null>(null)
+  const [dragEnd, setDragEnd] = useState<CellCoords | null>(null)
 
-  const [selection, setSelection] = useState<CellCoords[]>([])
-  const [dragSelection, setDragSelection] = useState<CellCoords[]>([])
+  const [selection, setSelection] = useState<Record<string, boolean>>({})
+  const [dragSelection, setDragSelection] = useState<Record<string, boolean>>(
+    {}
+  )
 
   const [isSelecting, setIsSelecting] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
+
+  const [isEditing, setIsEditing] = useState(false)
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
@@ -84,6 +107,10 @@ export const DataGridRoot = <
     onColumnVisibilityChange: setColumnVisibility,
     getSubRows,
     getCoreRowModel: getCoreRowModel(),
+    defaultColumn: {
+      size: 200,
+      maxSize: 400,
+    },
   })
 
   const { flatRows } = grid.getRowModel()
@@ -92,19 +119,32 @@ export const DataGridRoot = <
     count: flatRows.length,
     estimateSize: () => ROW_HEIGHT,
     getScrollElement: () => containerRef.current,
-    measureElement:
-      typeof window !== "undefined" &&
-      navigator.userAgent.indexOf("Firefox") === -1
-        ? (element) => element?.getBoundingClientRect().height
-        : undefined,
     overscan: 5,
   })
 
-  const onClickOverlay = useCallback((coords: CellCoords) => {
-    setIsSelecting(true)
-    setAnchor(coords)
-    setSelection([coords])
-  }, [])
+  const virtualRows = rowVirtualizer.getVirtualItems()
+
+  const visibleColumns = grid.getVisibleLeafColumns()
+
+  const columnVirtualizer = useVirtualizer({
+    count: visibleColumns.length,
+    estimateSize: (index) => visibleColumns[index].getSize(),
+    getScrollElement: () => containerRef.current,
+    horizontal: true,
+    overscan: 3,
+  })
+
+  const virtualColumns = columnVirtualizer.getVirtualItems()
+
+  let virtualPaddingLeft: number | undefined
+  let virtualPaddingRight: number | undefined
+
+  if (columnVirtualizer && virtualColumns?.length) {
+    virtualPaddingLeft = virtualColumns[0]?.start ?? 0
+    virtualPaddingRight =
+      columnVirtualizer.getTotalSize() -
+      (virtualColumns[virtualColumns.length - 1]?.end ?? 0)
+  }
 
   const onRegisterCell = useCallback(
     (coordinates: CellCoords) => {
@@ -139,107 +179,355 @@ export const DataGridRoot = <
     [cols, rows]
   )
 
-  const handleArrowKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (!anchor) {
+  /**
+   * Moves the anchor to the specified point. Also attempts to blur
+   * the active element to reset the focus.
+   */
+  const moveAnchor = useCallback((point: CellCoords | null) => {
+    const activeElement = document.activeElement
+
+    if (activeElement instanceof HTMLElement) {
+      activeElement.blur()
+    }
+
+    setAnchor(point)
+  }, [])
+
+  /**
+   * Clears the start and end of current range.
+   */
+  const clearRange = useCallback(
+    (point?: CellCoords | null) => {
+      const keys = Object.keys(selection)
+      const anchorKey = anchor ? generateCellId(anchor) : null
+      const newKey = point ? generateCellId(point) : null
+
+      const isAnchorOnlySelected = keys.length === 1 && anchorKey === keys[0]
+      const isAnchorNewPoint = anchorKey && newKey && anchorKey === newKey
+
+      const shouldIgnoreAnchor = isAnchorOnlySelected && isAnchorNewPoint
+
+      if (!shouldIgnoreAnchor) {
+        moveAnchor(null)
+        setSelection({})
+        setRangeEnd(null)
+      }
+
+      setDragSelection({})
+    },
+    [anchor, selection, moveAnchor]
+  )
+
+  const setSingleRange = useCallback(
+    (coordinates: CellCoords | null) => {
+      clearRange(coordinates)
+
+      moveAnchor(coordinates)
+      setRangeEnd(coordinates)
+    },
+    [clearRange, moveAnchor]
+  )
+
+  const getSelectionValues = useCallback(
+    (selection: Record<string, boolean>): string[] => {
+      const ids = Object.keys(selection)
+
+      if (!ids.length) {
+        return []
+      }
+
+      const fields = getFieldsInRange(selection, containerRef.current)
+
+      return fields.map((field) => {
+        if (!field) {
+          return ""
+        }
+
+        const value = getValues(field as Path<TFieldValues>)
+
+        // Return the value as a string
+        return `${value}`
+      })
+    },
+    [getValues]
+  )
+
+  const setSelectionValues = useCallback(
+    (selection: Record<string, boolean>, values: string[]) => {
+      const ids = Object.keys(selection)
+
+      if (!ids.length) {
         return
       }
 
-      e.preventDefault()
+      const type = getColumnType(ids[0], visibleColumns)
+      const convertedValues = convertArrayToPrimitive(values, type)
+      const fields = getFieldsInRange(selection, containerRef.current)
 
-      const { row, col } = anchor
+      fields.forEach((field, index) => {
+        if (!field) {
+          return
+        }
+
+        const valueIndex = index % values.length
+        const value = convertedValues[valueIndex] as PathValue<
+          TFieldValues,
+          Path<TFieldValues>
+        >
+
+        console.log("Setting value: ", value, "for field: ", field)
+        setValue(field as Path<TFieldValues>, value)
+      })
+    },
+    [setValue, visibleColumns]
+  )
+
+  /**
+   * BUG: Sometimes the virtualizers will fail to scroll to the next/prev cell,
+   * due to the element measurement not being part of the virtualizers memoized
+   * array of measurements.
+   *
+   * Need to investigate why this is happening. A potential fix would be to
+   * roll our own scroll management.
+   */
+  const handleKeyboardNavigation = useCallback(
+    (e: KeyboardEvent) => {
+      const direction = VERTICAL_KEYS.includes(e.key)
+        ? "vertical"
+        : "horizontal"
+
+      /**
+       * If the user performs a horizontal navigation, we want to
+       * use the anchor as the basis for the navigation.
+       *
+       * If the user performs a vertical navigation, the bases depends
+       * on the type of interaction. If the user is holding shift, we want
+       * to use the rangeEnd as the basis. If the user is not holding shift,
+       * we want to use the anchor as the basis.
+       */
+      const basis =
+        direction === "horizontal" ? anchor : e.shiftKey ? rangeEnd : anchor
+
+      const virtualizer =
+        direction === "horizontal" ? columnVirtualizer : rowVirtualizer
+
+      const colsOrRows = direction === "horizontal" ? cols : rows
+
+      const updater =
+        direction === "horizontal"
+          ? setSingleRange
+          : e.shiftKey
+          ? setRangeEnd
+          : setSingleRange
+
+      if (!basis) {
+        return
+      }
+
+      const { row, col } = basis
+
+      const handleNavigation = (index: number | null) => {
+        if (index === null) {
+          return
+        }
+
+        e.preventDefault()
+
+        virtualizer.scrollToIndex(index, {
+          align: "center",
+          behavior: "auto",
+        })
+
+        const newRange =
+          direction === "horizontal" ? { row, col: index } : { row: index, col }
+        updater(newRange)
+      }
 
       switch (e.key) {
+        case "ArrowLeft":
         case "ArrowUp": {
-          const previousRow = rows.getPrev(row)
-
-          if (previousRow === null) {
-            return
-          }
-
-          rowVirtualizer.scrollToIndex(previousRow, {
-            align: "center",
-            behavior: "auto",
-          })
-          setAnchor({ row: previousRow, col })
-
+          const index =
+            e.metaKey || e.ctrlKey
+              ? colsOrRows.getFirst()
+              : colsOrRows.getPrev(direction === "horizontal" ? col : row)
+          handleNavigation(index)
           break
         }
+        case "ArrowRight":
         case "ArrowDown": {
-          const nextRow = rows.getNext(row)
-
-          if (nextRow === null) {
-            return
-          }
-
-          rowVirtualizer.scrollToIndex(nextRow, {
-            align: "center",
-            behavior: "auto",
-          })
-          setAnchor({ row: nextRow, col })
-
-          break
-        }
-        case "ArrowLeft": {
-          const previousCol = cols.getPrev(col)
-
-          if (previousCol === null) {
-            return
-          }
-
-          setAnchor({ row, col: previousCol })
-
-          break
-        }
-        case "ArrowRight": {
-          const nextCol = cols.getNext(col)
-
-          if (nextCol === null) {
-            return
-          }
-
-          setAnchor({ row, col: nextCol })
-
+          const index =
+            e.metaKey || e.ctrlKey
+              ? colsOrRows.getLast()
+              : colsOrRows.getNext(direction === "horizontal" ? col : row)
+          handleNavigation(index)
           break
         }
       }
     },
-    [anchor, cols, rows, rowVirtualizer]
+    [
+      anchor,
+      rangeEnd,
+      cols,
+      rows,
+      columnVirtualizer,
+      rowVirtualizer,
+      setSingleRange,
+      setRangeEnd,
+    ]
+  )
+
+  const handleUndo = useCallback(
+    (e: KeyboardEvent) => {
+      e.preventDefault()
+
+      if (e.shiftKey) {
+        redo()
+        return
+      }
+
+      undo()
+    },
+    [redo, undo]
   )
 
   const handleKeyDownEvent = useCallback(
     (e: KeyboardEvent) => {
       if (ARROW_KEYS.includes(e.key)) {
-        handleArrowKeyDown(e)
+        handleKeyboardNavigation(e)
+      }
+
+      if (e.key === "z" && (e.metaKey || e.ctrlKey)) {
+        handleUndo(e)
       }
     },
-    [handleArrowKeyDown]
+    [handleKeyboardNavigation, handleUndo]
   )
 
-  const handleMouseUpEvent = useCallback(() => {
-    console.log("Mouse up, End selection")
+  const handleDragEnd = useCallback(() => {
+    if (!isDragging) {
+      return
+    }
+
+    if (!anchor || !dragEnd || !Object.keys(dragSelection).length) {
+      return
+    }
+
+    const anchorId = generateCellId(anchor)
+    const anchorValue = getSelectionValues({ [anchorId]: true })
+
+    const { [anchorId]: _, ...selection } = dragSelection
+
+    const prev = getSelectionValues(selection)
+    const next = Array.from({ length: prev.length }, () => anchorValue[0])
+
+    const command = new PasteCommand({
+      selection,
+      prev,
+      next,
+      setter: setSelectionValues,
+    })
+
+    execute(command)
+
     setIsDragging(false)
+    setDragEnd(null)
+    setDragSelection({})
+
+    // Select the dragged cells.
+    setSelection(dragSelection)
+  }, [
+    isDragging,
+    anchor,
+    dragEnd,
+    dragSelection,
+    getSelectionValues,
+    setSelectionValues,
+    execute,
+  ])
+
+  const handleMouseUpEvent = useCallback(() => {
+    handleDragEnd()
     setIsSelecting(false)
-  }, [])
+  }, [handleDragEnd])
+
+  const handleCopyEvent = useCallback(
+    (e: ClipboardEvent) => {
+      if (!selection) {
+        return
+      }
+
+      e.preventDefault()
+
+      const values = getSelectionValues(selection)
+
+      const text = values.map((value) => value ?? "").join("\t")
+
+      e.clipboardData?.setData("text/plain", text)
+    },
+    [selection, getSelectionValues]
+  )
+
+  const handlePasteEvent = useCallback(
+    (e: ClipboardEvent) => {
+      e.preventDefault()
+
+      const text = e.clipboardData?.getData("text/plain")
+
+      if (!text) {
+        return
+      }
+
+      const next = text.split("\t")
+      const prev = getSelectionValues(selection)
+
+      const command = new PasteCommand({
+        selection,
+        next,
+        prev,
+        setter: setSelectionValues,
+      })
+
+      execute(command)
+    },
+    [selection, getSelectionValues, setSelectionValues, execute]
+  )
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDownEvent)
     window.addEventListener("mouseup", handleMouseUpEvent)
 
+    window.addEventListener("copy", handleCopyEvent)
+    window.addEventListener("paste", handlePasteEvent)
+
     return () => {
       window.removeEventListener("keydown", handleKeyDownEvent)
       window.removeEventListener("mouseup", handleMouseUpEvent)
-    }
-  }, [handleKeyDownEvent, handleMouseUpEvent])
 
-  const getMouseDownHandler = useCallback((coords: CellCoords) => {
-    return (_e: MouseEvent<HTMLElement>) => {
-      setIsSelecting(true)
-
-      setAnchor(coords)
-      setSelection([coords])
+      window.removeEventListener("copy", handleCopyEvent)
+      window.removeEventListener("paste", handlePasteEvent)
     }
-  }, [])
+  }, [
+    handleKeyDownEvent,
+    handleMouseUpEvent,
+    handleCopyEvent,
+    handlePasteEvent,
+  ])
+
+  const getMouseDownHandler = useCallback(
+    (coords: CellCoords) => {
+      return (e: MouseEvent<HTMLElement>) => {
+        if (e.shiftKey) {
+          setRangeEnd(coords)
+          return
+        }
+
+        setIsSelecting(true)
+        clearRange(coords)
+        setAnchor(coords)
+      }
+    },
+    [clearRange]
+  )
 
   const getMouseOverHandler = useCallback(
     (coords: CellCoords) => {
@@ -248,158 +536,128 @@ export const DataGridRoot = <
       }
 
       return (_e: MouseEvent<HTMLElement>) => {
-        const { row, col } = coords
-
         /**
          * If the column is not the same as the anchor col,
          * we don't want to select the cell.
          */
-        if (anchor?.col !== col) {
+        if (anchor?.col !== coords.col) {
           return
-        }
-
-        /**
-         * 1 means the row is below the anchor row.
-         * -1 means the row is above the anchor row.
-         */
-        const direction = row > anchor.row ? 1 : -1
-
-        /**
-         * The last cell in the current selection.
-         */
-        const last = selection[selection.length - 1] ?? anchor
-
-        /**
-         * Check if the row is a neighbour of the last selected row.
-         */
-        const isNeighbour = Math.abs(row - last.row) === 1
-
-        /**
-         * If the current cell is a neighbour, we can simply update
-         * the selection based on the direction.
-         */
-        if (isNeighbour) {
-          if (isSelecting) {
-            setSelection((prev) => {
-              return prev
-                .filter((cell) => {
-                  if (direction === 1) {
-                    return (
-                      (cell.row <= row && cell.row >= anchor.row) ||
-                      cell.row === anchor.row
-                    )
-                  }
-
-                  if (direction === -1) {
-                    return (
-                      (cell.row >= row && cell.row <= anchor.row) ||
-                      cell.row === anchor.row
-                    )
-                  }
-
-                  return cell.row === anchor.row
-                })
-                .concat({ row, col })
-            })
-
-            return
-          }
-
-          if (isDragging) {
-            if (anchor.row === row) {
-              return
-            }
-
-            setDragSelection((prev) => {
-              return prev
-                .filter((cell) => {
-                  if (direction === 1) {
-                    return (
-                      (cell.row <= row && cell.row >= anchor.row) ||
-                      cell.row === anchor.row
-                    )
-                  }
-
-                  if (direction === -1) {
-                    return (
-                      (cell.row >= row && cell.row <= anchor.row) ||
-                      cell.row === anchor.row
-                    )
-                  }
-
-                  return cell.row === anchor.row
-                })
-                .concat({ row, col })
-            })
-
-            return
-          }
-
-          return
-        }
-
-        /**
-         * If the current cell is not a neighbour, we instead
-         * need to calculate all the valid cells between the
-         * anchor and the current cell.
-         */
-        let cells: CellCoords[] = []
-
-        function selectCell(i: number, column: number) {
-          const possibleCell = containerRef.current?.querySelector(
-            `[data-row="${i}"][data-column="${column}"]`
-          )
-
-          if (!possibleCell) {
-            return
-          }
-
-          cells.push({ row: i, col: column })
-        }
-
-        if (direction === 1) {
-          for (let i = anchor.row; i <= row; i++) {
-            selectCell(i, col)
-          }
-        }
-
-        if (direction === -1) {
-          for (let i = anchor.row; i >= row; i--) {
-            selectCell(i, col)
-          }
         }
 
         if (isSelecting) {
-          setSelection(cells)
-          return
+          setRangeEnd(coords)
+        } else {
+          setDragEnd(coords)
         }
-
-        if (isDragging) {
-          cells = cells.filter((cell) => cell.row !== anchor.row)
-
-          setDragSelection(cells)
-          return
-        }
-
-        return
       }
     },
-    [anchor, isDragging, isSelecting, selection]
+    [anchor, isDragging, isSelecting]
   )
+
+  const onInputFocus = useCallback(() => {
+    setIsEditing(true)
+  }, [])
+
+  const onInputBlur = useCallback(() => {
+    setIsEditing(false)
+  }, [])
+
+  const onDragToFillStart = useCallback((_e: MouseEvent<HTMLElement>) => {
+    setIsDragging(true)
+  }, [])
+
+  const getOnChangeHandler = useCallback(
+    // Using `any` here as the generic type of Path<TFieldValues> will
+    // not be inferred correctly.
+    (field: any) => {
+      return (next: any, prev: any) => {
+        const command = new UpdateCommand({
+          next,
+          prev,
+          setter: (value) => {
+            setValue(field, value)
+          },
+        })
+
+        execute(command)
+      }
+    },
+    [setValue, execute]
+  )
+
+  /** Effects */
+
+  /**
+   * If anchor and rangeEnd are set, then select all cells between them.
+   */
+  useEffect(() => {
+    if (!anchor || !rangeEnd) {
+      return
+    }
+
+    const range = getRange(anchor, rangeEnd)
+
+    setSelection(range)
+  }, [anchor, rangeEnd])
+
+  /**
+   * If anchor and dragEnd are set, then select all cells between them.
+   */
+  useEffect(() => {
+    if (!anchor || !dragEnd) {
+      return
+    }
+
+    const range = getRange(anchor, dragEnd)
+
+    setDragSelection(range)
+  }, [anchor, dragEnd])
+
+  /**
+   * Auto corrective effect for ensuring that the anchor is always
+   * part of the selected cells.
+   */
+  useEffect(() => {
+    if (!anchor) {
+      return
+    }
+
+    setSelection((prev) => ({
+      ...prev,
+      [generateCellId(anchor)]: true,
+    }))
+  }, [anchor])
+
+  /**
+   * Auto corrective effect for ensuring we always
+   * have a range end.
+   */
+  useEffect(() => {
+    if (!anchor) {
+      return
+    }
+
+    if (rangeEnd) {
+      return
+    }
+
+    setRangeEnd(anchor)
+  }, [anchor, rangeEnd])
 
   return (
     <DataGridContext.Provider
       value={{
+        register,
         control,
         anchor,
         onRegisterCell,
         onUnregisterCell,
-        onClickOverlay,
         getMouseDownHandler,
         getMouseOverHandler,
+        getOnChangeHandler,
       }}
     >
-      <div className="bg-ui-bg-subtle size-full overflow-hidden">
+      <div className="bg-ui-bg-subtle flex size-full flex-col overflow-hidden">
         <div className="bg-ui-bg-base flex items-center justify-between border-b p-4">
           <DropdownMenu>
             <DropdownMenu.Trigger asChild>
@@ -423,7 +681,7 @@ export const DataGridRoot = <
                     onCheckedChange={(value) => column.toggleVisibility(value)}
                     onSelect={(e) => e.preventDefault()}
                   >
-                    {column.id}
+                    {getColumnName(column)}
                   </DropdownMenu.CheckboxItem>
                 )
               })}
@@ -432,21 +690,25 @@ export const DataGridRoot = <
         </div>
         <div
           ref={containerRef}
-          style={{
-            overflow: "auto",
-            position: "relative",
-            height: "100%",
-            userSelect: isSelecting || isDragging ? "none" : "auto",
-          }}
+          className="relative h-full select-none overflow-auto"
         >
           <table className="text-ui-fg-subtle grid">
             <thead className="txt-compact-small-plus bg-ui-bg-subtle sticky top-0 z-[1] grid">
               {grid.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id} className="flex h-10 w-full">
-                  {headerGroup.headers.map((header) => {
+                  {virtualPaddingLeft ? (
+                    // Empty columns to fill the virtual padding
+                    <th
+                      style={{ display: "flex", width: virtualPaddingLeft }}
+                    />
+                  ) : null}
+                  {virtualColumns.map((vc) => {
+                    const header = headerGroup.headers[vc.index]
+
                     return (
                       <th
                         key={header.id}
+                        data-column-index={vc.index}
                         style={{
                           width: header.getSize(),
                         }}
@@ -461,6 +723,12 @@ export const DataGridRoot = <
                       </th>
                     )
                   })}
+                  {virtualPaddingRight ? (
+                    // Empty columns to fill the virtual padding
+                    <th
+                      style={{ display: "flex", width: virtualPaddingRight }}
+                    />
+                  ) : null}
                 </tr>
               ))}
             </thead>
@@ -470,29 +738,41 @@ export const DataGridRoot = <
                 height: `${rowVirtualizer.getTotalSize()}px`,
               }}
             >
-              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+              {virtualRows.map((virtualRow) => {
                 const row = flatRows[virtualRow.index] as Row<TData>
+                const visibleCells = row.getVisibleCells()
 
                 return (
                   <tr
-                    data-index={virtualRow.index}
-                    ref={(node) => rowVirtualizer.measureElement(node)}
                     key={row.id}
                     style={{
                       transform: `translateY(${virtualRow.start}px)`,
                     }}
                     className="bg-ui-bg-subtle txt-compact-small absolute flex h-10 w-full"
                   >
-                    {row.getVisibleCells().map((cell, index) => {
+                    {virtualPaddingLeft ? (
+                      // Empty column to fill the virtual padding
+                      <td
+                        style={{ display: "flex", width: virtualPaddingLeft }}
+                      />
+                    ) : null}
+                    {virtualColumns.map((vc) => {
+                      const cell = visibleCells[vc.index]
+                      const column = cell.column
+
+                      const columnIndex = visibleColumns.findIndex(
+                        (c) => c.id === column.id
+                      )
+
                       const coords: CellCoords = {
                         row: virtualRow.index,
-                        col: index,
+                        col: columnIndex,
                       }
 
                       const isAnchor = isCellMatch(coords, anchor)
-                      const isSelected = selection.some((cell) =>
-                        isCellMatch(coords, cell)
-                      )
+                      const isSelected = selection[generateCellId(coords)]
+                      const isDragSelected =
+                        dragSelection[generateCellId(coords)]
 
                       return (
                         <td
@@ -501,16 +781,15 @@ export const DataGridRoot = <
                             width: cell.column.getSize(),
                           }}
                           data-row-index={virtualRow.index}
-                          data-column-index={index}
+                          data-column-index={columnIndex}
                           className={clx(
                             "bg-ui-bg-base relative flex items-center border-b border-r p-0 outline-none",
                             "after:transition-fg after:border-ui-fg-interactive after:pointer-events-none after:invisible after:absolute after:-bottom-px after:-left-px after:-right-px after:-top-px after:box-border after:border-[2px] after:content-['']",
                             {
                               "after:visible": isAnchor,
-                            },
-                            {
                               "bg-ui-bg-highlight focus-within:bg-ui-bg-base":
                                 isSelected || isAnchor,
+                              "bg-ui-bg-subtle": isDragSelected && !isAnchor,
                             }
                           )}
                           tabIndex={-1}
@@ -518,15 +797,24 @@ export const DataGridRoot = <
                           <div className="relative h-full w-full">
                             {flexRender(cell.column.columnDef.cell, {
                               ...cell.getContext(),
-                              columnIndex: index,
+                              columnIndex,
                             } as CellContext<TData, any>)}
                             {isAnchor && (
-                              <div className="bg-ui-fg-interactive absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize" />
+                              <div
+                                onMouseDown={onDragToFillStart}
+                                className="bg-ui-fg-interactive absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize"
+                              />
                             )}
                           </div>
                         </td>
                       )
                     })}
+                    {virtualPaddingRight ? (
+                      // Empty column to fill the virtual padding
+                      <td
+                        style={{ display: "flex", width: virtualPaddingRight }}
+                      />
+                    ) : null}
                   </tr>
                 )
               })}
