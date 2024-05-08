@@ -528,7 +528,7 @@ export default class PromotionModuleService<
 
       promotionsData.push({
         ...promotionData,
-        campaign: campaignId,
+        campaign_id: campaignId,
       })
     }
 
@@ -536,6 +536,7 @@ export default class PromotionModuleService<
       promotionsData,
       sharedContext
     )
+    const promotionsToAdd: PromotionTypes.AddPromotionsToCampaignDTO[] = []
 
     for (const promotion of createdPromotions) {
       const applMethodData = promotionCodeApplicationMethodDataMap.get(
@@ -617,8 +618,28 @@ export default class PromotionModuleService<
         sharedContext
       )
 
-    if (campaignsData.length) {
-      await this.createCampaigns(campaignsData, sharedContext)
+    const createdCampaigns = await this.createCampaigns(
+      campaignsData,
+      sharedContext
+    )
+
+    for (const campaignData of campaignsData) {
+      const promotions = campaignData.promotions
+      const campaign = createdCampaigns.find(
+        (c) => c.campaign_identifier === campaignData.campaign_identifier
+      )
+
+      if (!campaign || !promotions) {
+        continue
+      }
+
+      await this.addPromotionsToCampaign(
+        {
+          id: campaign.id,
+          promotion_ids: promotions.map((p) => p.id),
+        },
+        sharedContext
+      )
     }
 
     for (const applicationMethod of createdApplicationMethods) {
@@ -704,7 +725,7 @@ export default class PromotionModuleService<
       ...promotionData
     } of data) {
       if (campaignId) {
-        promotionsData.push({ ...promotionData, campaign: campaignId })
+        promotionsData.push({ ...promotionData, campaign_id: campaignId })
       } else {
         promotionsData.push(promotionData)
       }

@@ -539,7 +539,7 @@ moduleIntegrationTestRunner({
               },
             ])
 
-            await service.updateCampaigns({
+            const updated = await service.updateCampaigns({
               id: "campaign-id-2",
               budget: { used: 1000 },
             })
