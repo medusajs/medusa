@@ -98,6 +98,7 @@ module.exports = {
           "./packages/core/orchestration/tsconfig.json",
           "./packages/core/workflows-sdk/tsconfig.spec.json",
           "./packages/core/modules-sdk/tsconfig.spec.json",
+          "./packages/core/js-sdk/tsconfig.spec.json",
           "./packages/core/types/tsconfig.spec.json",
           "./packages/core/utils/tsconfig.spec.json",
           "./packages/core/medusa-test-utils/tsconfig.spec.json",
