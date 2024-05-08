@@ -968,6 +968,10 @@
         "new": {
           "title": "New Campaign",
           "description": "Would you like to create a new campaign with this promotion?"
+        },
+        "none": {
+          "title": "Without Campaign",
+          "description": "Proceed without associating promotion with campaign"
         }
       },
       "status": {
