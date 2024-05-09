@@ -6,8 +6,8 @@ export interface CreateCampaignDTO {
   description?: string
   currency?: string
   campaign_identifier: string
-  starts_at: Date
-  ends_at: Date
+  starts_at?: Date
+  ends_at?: Date
   promotions?: (PromotionDTO | Promotion)[]
 }
 

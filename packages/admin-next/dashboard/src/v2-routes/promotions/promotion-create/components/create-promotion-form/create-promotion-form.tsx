@@ -76,7 +76,7 @@ export const CreatePromotionForm = ({
     defaultValues: {
       campaign_id: undefined,
       template_id: templates[0].id!,
-      existing: "true",
+      campaign_choice: "none",
       is_automatic: "false",
       code: "",
       type: "standard",
@@ -131,7 +131,7 @@ export const CreatePromotionForm = ({
   const handleSubmit = form.handleSubmit(
     async (data) => {
       const {
-        existing,
+        campaign_choice,
         is_automatic,
         template_id,
         application_method,
@@ -153,7 +153,10 @@ export const CreatePromotionForm = ({
 
       for (const rule of [...targetRulesData, ...buyRulesData]) {
         if (disguisedRuleAttributes.includes(rule.attribute)) {
-          attr[rule.attribute] = rule.values
+          attr[rule.attribute] =
+            rule.field_type === "number"
+              ? parseInt(rule.values as string)
+              : rule.values
         }
       }
 
@@ -367,6 +370,7 @@ export const CreatePromotionForm = ({
                   return (
                     <Form.Item>
                       <Form.Label>{t("promotions.fields.type")}</Form.Label>
+
                       <Form.Control>
                         <RadioGroup
                           key={"template_id"}
@@ -418,6 +422,7 @@ export const CreatePromotionForm = ({
                   return (
                     <Form.Item>
                       <Form.Label>Method</Form.Label>
+
                       <Form.Control>
                         <RadioGroup
                           className="flex gap-y-3"
