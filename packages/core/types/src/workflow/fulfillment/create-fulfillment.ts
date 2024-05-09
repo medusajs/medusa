@@ -180,4 +180,7 @@ export type CreateFulfillmentWorkflowInput = {
    * The associated fulfillment order.
    */
   order: CreateFulfillmentOrderWorkflowDTO
+
+  // TODO: revisit
+  order_id: string
 }
