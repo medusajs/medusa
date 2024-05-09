@@ -45,13 +45,6 @@ const FulfillmentLocationIdIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
-// TODO: add this index
-// const FulfillmentOrderIdIndex = createPsqlIndexStatementHelper({
-//   tableName: "fulfillment",
-//   columns: "order_id",
-//   where: "deleted_at IS NULL",
-// })
-
 const FulfillmentShippingOptionIdIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment",
   columns: "shipping_option_id",
@@ -69,10 +62,6 @@ export default class Fulfillment {
   @Property({ columnType: "text" })
   @FulfillmentLocationIdIndex.MikroORMIndex()
   location_id: string
-
-  @Property({ columnType: "text", nullable: true })
-  // @FulfillmentOrderIdIndex.MikroORMIndex() // TODO --> add this index
-  order_id: string | null = null
 
   @Property({
     columnType: "timestamptz",
