@@ -1,0 +1,3 @@
+'type: docs':
+- changed-files:
+  - any-glob-to-any-file: www/**
