@@ -6,7 +6,7 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type UpdateProductsStepInput =
+export type UpdateProductsStepInput =
   | {
       selector: ProductTypes.FilterableProductProps
       update: ProductTypes.UpdateProductDTO

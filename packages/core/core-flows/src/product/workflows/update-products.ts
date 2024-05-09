@@ -57,7 +57,9 @@ export const updateProductsWorkflow = createWorkflow(
       }
     })
 
-    const updatedProducts = updateProductsStep(toUpdateInput as any) // TODO: type
+    const updatedProducts = updateProductsStep(
+      toUpdateInput as UpdateProductsStepInput
+    )
 
     const updatedProductIds = transform({ updatedProducts, input }, (data) => {
       if (
