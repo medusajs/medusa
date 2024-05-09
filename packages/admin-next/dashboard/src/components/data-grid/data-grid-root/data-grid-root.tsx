@@ -51,9 +51,11 @@ const ROW_HEIGHT = 40
 
 /**
  * TODO:
- * - Fix bug where the virtualizers will fail to scroll to the next/prev cell due to the element measurement not being part of the virtualizers memoized array of measurements.
- * - Show field errors in the grid, and in topbar, possibly also an option to only show
- * - Extend the commands to also support modifying the anchor and rangeEnd, to restore the previous focus after undo/redo.
+ * - [Critical] Fix bug where the virtualizers will fail to scroll to the next/prev cell due to the element measurement not being part of the virtualizers memoized array of measurements.
+ * - [Critical] Fix performing commands on cells that aren't currently rendered by the virtualizer.
+ * - [Critical] Prevent action handlers from firing while editing a cell.
+ * - [Important] Show field errors in the grid, and in topbar, possibly also an option to only show
+ * - [Minor] Extend the commands to also support modifying the anchor and rangeEnd, to restore the previous focus after undo/redo.
  */
 
 export const DataGridRoot = <
