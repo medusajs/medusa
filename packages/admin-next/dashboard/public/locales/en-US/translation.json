@@ -653,8 +653,8 @@
     }
   },
   "shipping": {
-    "title": "Location & Shipping",
-    "domain": "Location & Shipping",
+    "title": "Locations & Shipping",
+    "domain": "Locations & Shipping",
     "description": "Choose where you ship and how much you charge for shipping at checkout. Define shipping options specific for your locations.",
     "createLocation": "Create location",
     "createLocationDetailsHint": "Specify the details of the location.",
