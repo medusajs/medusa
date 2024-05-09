@@ -10,10 +10,9 @@ type PageHeadingProps = {
 
 const PageHeading = ({ className }: PageHeadingProps) => {
   const { area } = useArea()
-  const { version } = useVersion()
+  const { version, isVersioningEnabled } = useVersion()
 
-  const versionText =
-    process.env.NEXT_PUBLIC_VERSIONING === "true" ? ` V${version}` : ""
+  const versionText = isVersioningEnabled ? ` V${version}` : ""
 
   return (
     <h1 className={className}>

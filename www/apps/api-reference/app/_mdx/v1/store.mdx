@@ -1,15 +1,13 @@
+
 import { Feedback, CodeTabs, CodeTab } from "docs-ui"
 import SectionContainer from "@/components/Section/Container"
 import formatReportLink from "@/utils/format-report-link"
-import VersionNote from "@/components/VersionNote"
 
 <SectionContainer noTopPadding={true}>
 
-<VersionNote />
+This API reference includes Medusa's Store APIs, which are REST APIs exposed by the Medusa backend. They are typically used to create a storefront for your commerce store, such as a webshop or a commerce mobile app.
 
-This API reference includes Medusa's Admin APIs, which are REST APIs exposed by the Medusa backend. They are typically used to perform admin functionalities or create an admin dashboard to access and manipulate your commerce store's data.
-
-All API Routes are prefixed with `/admin`. So, during development, the API Routes will be available under the path `http://localhost:9000/admin`. For production, replace `http://localhost:9000` with your Medusa backend URL.
+All API Routes are prefixed with `/store`. So, during development, the API Routes will be available under the path `http://localhost:9000/store`. For production, replace `http://localhost:9000` with your Medusa backend URL.
 
 There are different ways you can send requests to these API Routes, including:
 
@@ -22,11 +20,11 @@ Aside from this API reference, check out the [Commerce Modules](https://docs.med
 <Feedback
   event="survey_api-ref"
   extraData={{
-    area: "admin",
+    area: "store",
     section: "introduction"
   }}
-  reportLink={formatReportLink("admin", "Introduction")}
-  pathName="/api/admin"
+  reportLink={formatReportLink("store", "Introduction")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -35,116 +33,7 @@ Aside from this API reference, check out the [Commerce Modules](https://docs.med
 
 ## Authentication
 
-There are three ways to send authenticated requests to the Medusa server: Using a user's API token, using a JWT token or using a Cookie Session ID.
-
-### API Token
-
-Use a user's API Token to send authenticated requests.
-
-#### How to Add API Token to a User
-
-You can use the Update User API Route to add or update the user's API token:
-
-<CodeTabs group="clients">
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    import Medusa from "@medusajs/medusa-js"
-    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.users.update(userId, {
-      api_token
-    })
-    .then(({ user }) => {
-      console.log(user.api_token)
-    })
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { useAdminUpdateUser } from "medusa-react"
-
-    const UpdateUser = () => {
-      const updateUser = useAdminUpdateUser(userId)
-      // ...
-
-      const handleUpdateUser = () => {
-        updateUser.mutate({
-          api_token
-        })
-      }
-
-      // ...
-    }
-
-    export default UpdateUser
-    ```
-
-  </CodeTab>
-  <CodeTab label="cURL" value="curl">
-    
-    ```bash
-    curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \\
-    -H 'Cookie: connect.sid={sid}' \\
-    -H 'Content-Type: application/json' \\
-    --data-raw '{
-        "api_token": "{api_token}"
-    }'
-    ```
-
-  </CodeTab>
-</CodeTabs>
-
-
-#### How to Use the API Token
-
-
-The API token can be used by providing it in `x-medusa-access-token` header:
-
-```bash
-x-medusa-access-token: {api_token}
-```
-
-You can also pass it to client libraries:
-
-<CodeTabs group="clients">
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    const medusa = new Medusa({ 
-      baseUrl: MEDUSA_BACKEND_URL,
-      maxRetries: 3,
-      apiKey: '{api_token}'
-    })
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    <MedusaProvider
-      apiKey='{api_token}'
-      //...
-    >
-      {/* ... */}
-    </MedusaProvider>
-    ```
-
-  </CodeTab>
-</CodeTabs>
-
-<Feedback
-  event="survey_api-ref"
-  extraData={{
-    area: "admin",
-    section: "authentication-api-key"
-  }}
-  className="mb-3"
-  reportLink={formatReportLink("admin", "Authentication - API Token")}
-  pathName="/api/admin"
-/>
+There are two ways to send authenticated requests to the Medusa server: Using a JWT token or using a Cookie Session ID.
 
 ### JWT Token
 
@@ -152,15 +41,16 @@ Use a JWT token to send authenticated requests. Authentication state is managed 
 
 #### How to Obtain the JWT Token
 
-JWT tokens are obtained by sending a request to the [User Login (JWT) API Route](#auth_posttoken) passing it the user's email and password in the request body. For example:
+JWT tokens are obtained by sending a request to the [Customer Login (JWT) API Route](#auth_authtoken) passing it the customer's email and password in the request body. For example:
 
 ```bash
-curl -X POST 'https://medusa-url.com/admin/auth/token' \
+curl -X POST 'https://medusa-url.com/store/auth/token' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "email": "user@example.com",
   "password": "supersecret"
 }'
+
 ```
 
 If authenticated successfully, an object is returned in the response with the property `access_token` being the JWT token.
@@ -179,12 +69,12 @@ Authorization: Bearer {jwt_token}
 
 Use a cookie session to send authenticated requests.
 
-### How to Obtain the Cookie Session
+#### How to Obtain the Cookie Session
 
 
 If you're sending requests through a browser, using Medusa's JS and Medusa React clients, or using
 tools like Postman, the cookie session should be automatically set when
-the admin user is logged in.
+the customer is logged in.
 
 
 If you're sending requests using cURL, you must set the Session ID in
@@ -192,17 +82,16 @@ the cookie manually.
 
 
 To do that, send a request to [authenticate the
-user](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
+customer](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
 
 
 ```bash
-curl -v -X POST 'https://medusa-url.com/admin/auth' \
+curl -v -X POST 'https://medusa-url.com/store/auth' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "email": "user@example.com",
   "password": "supersecret"
 }'
-
 ```
 
 
@@ -220,10 +109,9 @@ it as a cookie in subsequent requests as the following:
 
 
 ```bash
-curl 'https://medusa-url.com/admin/products' \
+curl 'https://medusa-url.com/store/customers/me/orders' \
 -H 'Cookie: connect.sid={sid}'
 ```
-
 
 Where `{sid}` is the value of `connect.sid` that you copied.
 
@@ -239,11 +127,91 @@ fetch(`<BACKEND_URL>/admin/products`, {
 <Feedback
   event="survey_api-ref"
   extraData={{
-    area: "admin",
+    area: "store",
     section: "authentication-cookie"
   }}
-  reportLink={formatReportLink("admin", "Authentication - Cookie Session ID")}
-  pathName="/api/admin"
+  reportLink={formatReportLink("store", "Authentication - Cookie Session ID")}
+  pathName="/api/store"
+/>
+
+</SectionContainer>
+
+<SectionContainer noTopPadding={true}>
+
+## Publishable API Key
+
+Publishable API Keys allow you to send a request with a pre-defined scope. You can associate the
+publishable API key with one or more resources, such as sales channels, then include the publishable
+API key in the header of your requests.
+
+The Medusa backend will infer the scope of the current
+request based on the publishable API key. At the moment, publishable API keys only work with sales channels.
+
+It's highly recommended to create a publishable API key and pass it in the header of all your requests to the 
+store APIs.
+
+You can learn more about publishable API keys and how to use them in [this documentation](https://docs.medusajs.com/development/publishable-api-keys/).
+
+### How to Create a Publishable API Key
+
+You can create a publishable API key either using the [admin REST APIs](https://docs.medusajs.com/development/publishable-api-keys/admin/manage-publishable-api-keys),
+or using the [Medusa Admin](https://docs.medusajs.com/user-guide/settings/publishable-api-keys).
+
+### How to Use a Publishable API Key
+
+You can pass the publishable API key in the header `x-publishable-api-key` in all your requests to the store APIs:
+
+```bash
+x-publishable-api-key: {your_publishable_api_key}
+```
+
+If you're using Medusa's JS or Medusa React clients, you can pass the publishable API key when you first
+initialize either clients. Then, the publishable API key will be automatically included in all your requests:
+
+<CodeTabs group="clients">
+  <CodeTab label="Medusa JS Client" value="js-client">
+    
+    ```ts
+    const medusa = new Medusa({
+      maxRetries: 3,
+      baseUrl: "https://api.example.com",
+      publishableApiKey,
+    })
+    ```
+
+  </CodeTab>
+  <CodeTab label="Medusa React" value="medusa-react">
+    
+    ```tsx
+    import { MedusaProvider } from "medusa-react"
+
+    // define query client...
+
+    const App = () => {
+      return (
+        <MedusaProvider
+          queryClientProviderProps={{ client: queryClient }}
+          baseUrl="http://localhost:9000"
+          // ...
+          publishableApiKey={publishableApiKey}
+        >
+          <MyStorefront />
+        </MedusaProvider>
+      )
+    }
+    ```
+
+  </CodeTab>
+</CodeTabs>
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "publishable-api-key"
+  }}
+  reportLink={formatReportLink("store", "Publishable API Key")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -311,11 +279,11 @@ const App = () => {
 <Feedback
   event="survey_api-ref"
   extraData={{
-    area: "admin",
+    area: "store",
     section: "http-compression"
   }}
-  reportLink={formatReportLink("admin", "Authentication - Cookie Session ID")}
-  pathName="/api/admin"
+  reportLink={formatReportLink("store", "HTTP Compression")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -323,6 +291,7 @@ const App = () => {
 <SectionContainer noTopPadding={true}>
 
 ## Expanding Relations
+
 
 Many API Routes accept an `expand` that unpacks an
 entity's relations and return them in the response.
@@ -339,15 +308,14 @@ that are expanded by default in the request.
 ### Expanding One Relation
 
 
-For example, when you retrieve products, retrieve their collection
-by passing to the `expand` query parameter the value `collection`:
+For example, when you retrieve a list of products, retrieve their collections by
+passing to the `expand` query parameter the value `collection`:
 
 <CodeTabs group="clients">
   <CodeTab label="cURL" value="curl">
     
     ```bash
-    curl "http://localhost:9000/admin/products?expand=collection" \
-        -H 'x-medusa-access-token: {api_token}'
+    curl "http://localhost:9000/store/products?expand=collection"
     ```
 
   </CodeTab>
@@ -356,8 +324,7 @@ by passing to the `expand` query parameter the value `collection`:
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.products.list({
+    medusa.products.list({
       expand: "collection"
     })
     .then(({ products, limit, offset, count }) => {
@@ -369,16 +336,16 @@ by passing to the `expand` query parameter the value `collection`:
   <CodeTab label="Medusa React" value="medusa-react">
     
     ```tsx
-    import { useAdminProducts } from "medusa-react"
+    import { useProducts } from "medusa-react"
 
     const Products = () => {
-      const { products, isLoading } = useAdminProducts({
+      const { products, isLoading } = useProducts({
         expand: "collection"
       })
 
       return (
         <div>
-          {/** ... **/}
+          {/* ... */}
         </div>
       )
     }
@@ -389,23 +356,20 @@ by passing to the `expand` query parameter the value `collection`:
   </CodeTab>
 </CodeTabs>
 
-
 ### Expanding Multiple Relations
-
 
 Expand more than one relation by separating the relations in the
 `expand` query parameter with a comma.
 
 
-For example, to retrieve both the variants and the collection of products,
+For example, to retrieve both the variants and the collection of the products,
 pass to the `expand` query parameter the value `variants,collection`:
 
 <CodeTabs group="clients">
   <CodeTab label="cURL" value="curl">
     
     ```bash
-    curl "http://localhost:9000/admin/products?expand=variants,collection" \
-        -H 'x-medusa-access-token: {api_token}'
+    curl "http://localhost:9000/store/products?expand=variants,collection"
     ```
 
   </CodeTab>
@@ -414,8 +378,7 @@ pass to the `expand` query parameter the value `variants,collection`:
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.products.list({
+    medusa.products.list({
       expand: "variants,collection"
     })
     .then(({ products, limit, offset, count }) => {
@@ -427,16 +390,16 @@ pass to the `expand` query parameter the value `variants,collection`:
   <CodeTab label="Medusa React" value="medusa-react">
     
     ```tsx
-    import { useAdminProducts } from "medusa-react"
+    import { useProducts } from "medusa-react"
 
     const Products = () => {
-      const { products, isLoading } = useAdminProducts({
+      const { products, isLoading } = useProducts({
         expand: "variants,collection"
       })
 
       return (
         <div>
-          {/** ... **/}
+          {/* ... */}
         </div>
       )
     }
@@ -460,8 +423,7 @@ pass to the `expand` query parameter `variants.options`:
   <CodeTab label="cURL" value="curl">
     
     ```bash
-    curl "http://localhost:9000/admin/products?expand=variants.options" \
-        -H 'x-medusa-access-token: {api_token}'
+    curl "http://localhost:9000/store/products?expand=variants.options"
     ```
 
   </CodeTab>
@@ -470,8 +432,7 @@ pass to the `expand` query parameter `variants.options`:
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.products.list({
+    medusa.products.list({
       expand: "variants.options"
     })
     .then(({ products, limit, offset, count }) => {
@@ -483,16 +444,16 @@ pass to the `expand` query parameter `variants.options`:
   <CodeTab label="Medusa React" value="medusa-react">
     
     ```tsx
-    import { useAdminProducts } from "medusa-react"
+    import { useProducts } from "medusa-react"
 
     const Products = () => {
-      const { products, isLoading } = useAdminProducts({
+      const { products, isLoading } = useProducts({
         expand: "variants.options"
       })
 
       return (
         <div>
-          {/** ... **/}
+          {/* ... */}
         </div>
       )
     }
@@ -510,15 +471,13 @@ pass to the `expand` query parameter `variants.options`:
 Some requests expand relations by default. You can prevent that by passing
 an empty expand value to retrieve an entity without any extra relations.
 
-
 For example:
 
 <CodeTabs group="clients">
   <CodeTab label="cURL" value="curl">
     
     ```bash
-    curl "http://localhost:9000/admin/products?expand" \
-        -H 'x-medusa-access-token: {api_token}'
+    curl "http://localhost:9000/store/products?expand"
     ```
 
   </CodeTab>
@@ -527,8 +486,7 @@ For example:
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.products.list({
+    medusa.products.list({
       expand: ""
     })
     .then(({ products, limit, offset, count }) => {
@@ -540,16 +498,16 @@ For example:
   <CodeTab label="Medusa React" value="medusa-react">
     
     ```tsx
-    import { useAdminProducts } from "medusa-react"
+    import { useProducts } from "medusa-react"
 
     const Products = () => {
-      const { products, isLoading } = useAdminProducts({
+      const { products, isLoading } = useProducts({
         expand: ""
       })
 
       return (
         <div>
-          {/** ... **/}
+          {/* ... */}
         </div>
       )
     }
@@ -561,17 +519,17 @@ For example:
 </CodeTabs>
 
 
-This would retrieve each product with only its properties, without any
+This would retrieve the products with only their properties, without any
 relations like `collection`.
 
 <Feedback
   event="survey_api-ref"
   extraData={{
-    area: "admin",
+    area: "store",
     section: "expand"
   }}
-  reportLink={formatReportLink("admin", "Expanding Fields")}
-  pathName="/api/admin"
+  reportLink={formatReportLink("store", "Expanding Fields")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -606,8 +564,7 @@ parameter:
   <CodeTab label="cURL" value="curl">
     
     ```bash
-    curl "http://localhost:9000/admin/products?fields=title" \
-        -H 'x-medusa-access-token: {api_token}'
+    curl "http://localhost:9000/store/products?fields=title"
     ```
 
   </CodeTab>
@@ -616,8 +573,7 @@ parameter:
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.products.list({
+    medusa.products.list({
       fields: "title"
     })
     .then(({ products, limit, offset, count }) => {
@@ -629,16 +585,16 @@ parameter:
   <CodeTab label="Medusa React" value="medusa-react">
     
     ```tsx
-    import { useAdminProducts } from "medusa-react"
+    import { useProducts } from "medusa-react"
 
     const Products = () => {
-      const { products, isLoading } = useAdminProducts({
+      const { products, isLoading } = useProducts({
         fields: "title"
       })
 
       return (
         <div>
-          {/** ... **/}
+          {/* ... */}
         </div>
       )
     }
@@ -661,8 +617,7 @@ value to the `expand` query parameter. For example:
   <CodeTab label="cURL" value="curl">
     
     ```bash
-    curl "http://localhost:9000/admin/products?fields=title&expand" \
-        -H 'x-medusa-access-token: {api_token}'
+    curl "http://localhost:9000/store/products?fields=title&expand"
     ```
 
   </CodeTab>
@@ -671,8 +626,7 @@ value to the `expand` query parameter. For example:
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.products.list({
+    medusa.products.list({
       fields: "title",
       expand: ""
     })
@@ -685,17 +639,17 @@ value to the `expand` query parameter. For example:
   <CodeTab label="Medusa React" value="medusa-react">
     
     ```tsx
-    import { useAdminProducts } from "medusa-react"
+    import { useProducts } from "medusa-react"
 
     const Products = () => {
-      const { products, isLoading } = useAdminProducts({
+      const { products, isLoading } = useProducts({
         fields: "title",
         expand: ""
       })
 
       return (
         <div>
-          {/** ... **/}
+          {/* ... */}
         </div>
       )
     }
@@ -714,14 +668,13 @@ You can pass more than one field by seperating the field names in the
 `fields` query parameter with a comma.
 
 
-For example, to select the `title` and `handle` of products:
+For example, to select the `title` and `handle` of the products:
 
 <CodeTabs group="clients">
   <CodeTab label="cURL" value="curl">
     
     ```bash
-    curl "http://localhost:9000/admin/products?fields=title,handle" \
-        -H 'x-medusa-access-token: {api_token}'
+    curl "http://localhost:9000/store/products?fields=title,handle"
     ```
 
   </CodeTab>
@@ -730,8 +683,7 @@ For example, to select the `title` and `handle` of products:
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.products.list({
+    medusa.products.list({
       fields: "title,handle"
     })
     .then(({ products, limit, offset, count }) => {
@@ -743,16 +695,16 @@ For example, to select the `title` and `handle` of products:
   <CodeTab label="Medusa React" value="medusa-react">
     
     ```tsx
-    import { useAdminProducts } from "medusa-react"
+    import { useProducts } from "medusa-react"
 
     const Products = () => {
-      const { products, isLoading } = useAdminProducts({
+      const { products, isLoading } = useProducts({
         fields: "title,handle"
       })
 
       return (
         <div>
-          {/** ... **/}
+          {/* ... */}
         </div>
       )
     }
@@ -774,8 +726,7 @@ entity. For example:
   <CodeTab label="cURL" value="curl">
     
     ```bash
-    curl "http://localhost:9000/admin/products?fields" \
-        -H 'x-medusa-access-token: {api_token}'
+    curl "http://localhost:9000/store/products?fields"
     ```
 
   </CodeTab>
@@ -784,8 +735,7 @@ entity. For example:
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.products.list({
+    medusa.products.list({
       fields: ""
     })
     .then(({ products, limit, offset, count }) => {
@@ -797,16 +747,16 @@ entity. For example:
   <CodeTab label="Medusa React" value="medusa-react">
     
     ```tsx
-    import { useAdminProducts } from "medusa-react"
+    import { useProducts } from "medusa-react"
 
     const Products = () => {
-      const { products, isLoading } = useAdminProducts({
+      const { products, isLoading } = useProducts({
         fields: ""
       })
 
       return (
         <div>
-          {/** ... **/}
+          {/* ... */}
         </div>
       )
     }
@@ -825,8 +775,7 @@ relations aren't retrieved as well. For example:
   <CodeTab label="cURL" value="curl">
     
     ```bash
-    curl "http://localhost:9000/admin/products?fields&expand" \
-        -H 'x-medusa-access-token: {api_token}'
+    curl "http://localhost:9000/store/products?fields"
     ```
 
   </CodeTab>
@@ -835,8 +784,7 @@ relations aren't retrieved as well. For example:
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.products.list({
+    medusa.products.list({
       fields: "",
       expand: ""
     })
@@ -849,17 +797,17 @@ relations aren't retrieved as well. For example:
   <CodeTab label="Medusa React" value="medusa-react">
     
     ```tsx
-    import { useAdminProducts } from "medusa-react"
+    import { useProducts } from "medusa-react"
 
     const Products = () => {
-      const { products, isLoading } = useAdminProducts({
+      const { products, isLoading } = useProducts({
         fields: "",
         expand: ""
       })
 
       return (
         <div>
-          {/** ... **/}
+          {/* ... */}
         </div>
       )
     }
@@ -873,11 +821,11 @@ relations aren't retrieved as well. For example:
 <Feedback
   event="survey_api-ref"
   extraData={{
-    area: "admin",
+    area: "store",
     section: "select-fields"
   }}
-  reportLink={formatReportLink("admin", "Selecting Fields")}
-  pathName="/api/admin"
+  reportLink={formatReportLink("store", "Selecting Fields")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -888,8 +836,8 @@ relations aren't retrieved as well. For example:
 
 
 This section covers how to pass some common data types as query parameters.
-This is useful if you're sending requests to the API routes and not using
-the JS Client. For example, when using cURL or Postman.
+This is useful if you're sending requests to the API Routes and not using
+our JS Client. For example, when using cURL or Postman.
 
 
 ### Strings
@@ -902,8 +850,7 @@ For example:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?title=Shirt" \
--H 'x-medusa-access-token: {api_token}'
+curl "http://localhost:9000/store/products?title=Shirt"
 ```
 
 
@@ -916,17 +863,14 @@ For example, if the string has spaces, you can encode the space with `+` or
 
 
 ```bash
-curl "http://localhost:9000/admin/products?title=Blue%20Shirt" \
--H 'x-medusa-access-token: {api_token}'
+curl "http://localhost:9000/store/products?title=Blue%20Shirt"
 ```
 
 
 You can use tools like [this one](https://www.urlencoder.org/) to learn how
 a value can be encoded.
 
-
 ### Integers
-
 
 You can pass an integer value in the form of `<parameter_name>=<value>`.
 
@@ -935,8 +879,7 @@ For example:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?offset=1" \
--H 'x-medusa-access-token: {api_token}'
+curl "http://localhost:9000/store/products?offset=1"
 ```
 
 
@@ -950,8 +893,7 @@ For example:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?is_giftcard=true" \
--H 'x-medusa-access-token: {api_token}'
+curl "http://localhost:9000/store/products?is_giftcard=true"
 ```
 
 
@@ -966,8 +908,7 @@ For example:
 
 
 ```bash
-curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17" \
--H 'x-medusa-access-token: {api_token}'
+curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17"
 ```
 
 
@@ -979,8 +920,7 @@ For example:
 
 
 ```bash
-curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17T07:22:30Z" \
--H 'x-medusa-access-token: {api_token}'
+curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17T07:22:30Z"
 ```
 
 
@@ -996,8 +936,7 @@ For example:
 
 
 ```bash
-curl -g "http://localhost:9000/admin/products?sales_channel_id[]=sc_01GPGVB42PZ7N3YQEP2WDM7PC7&sales_channel_id[]=sc_234PGVB42PZ7N3YQEP2WDM7PC7" \
--H 'x-medusa-access-token: {api_token}'
+curl -g "http://localhost:9000/store/products?sales_channel_id[]=sc_01GPGVB42PZ7N3YQEP2WDM7PC7&sales_channel_id[]=sc_234PGVB42PZ7N3YQEP2WDM7PC7"
 ```
 
 
@@ -1017,18 +956,17 @@ For example:
 
 
 ```bash
-curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_at[gt]=2022-09-17" \
--H 'x-medusa-access-token: {api_token}'
+curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17&created_at[gt]=2022-09-17"
 ```
 
 <Feedback
   event="survey_api-ref"
   extraData={{
-    area: "admin",
+    area: "store",
     section: "query-parameters"
   }}
-  reportLink={formatReportLink("admin", "Query Parameter Types")}
-  pathName="/api/admin"
+  reportLink={formatReportLink("store", "Query Parameter Types")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -1037,26 +975,32 @@ curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_
 
 ## Pagination
 
+
 ### Query Parameters
 
 
-In listing API Routes, such as list customers or list products, you can control the pagination using the query parameters `limit` and `offset`.
+In listing API Routes, such as list customers or list products, you can
+control the pagination using the query parameters `limit` and `offset`.
 
 
-`limit` is used to specify the maximum number of items that can be return in the response. `offset` is used to specify how many items to skip before returning the resulting entities.
+`limit` is used to specify the maximum number of items that can be return in
+the response. `offset` is used to specify how many items to skip before
+returning the resulting entities.
 
 
-You can use the `offset` query parameter to change between pages. For example, if the limit is `50`, at page 1 the offset should be 0; at page 2 the offset should be 50, and so on.
+You can use the `offset` query parameter to change between pages. For
+example, if the limit is `50`, at page `1` the offset should be `0`; at page `2` the
+offset should be `50`, and so on.
 
 
-For example, to limit the number of products returned in the List Products API Route:
+For example, to limit the number of products returned in the List Products
+API Route:
 
 <CodeTabs group="clients">
   <CodeTab label="cURL" value="curl">
     
     ```bash
-    curl "http://localhost:9000/admin/products?limit=5" \
-        -H 'x-medusa-access-token: {api_token}'
+    curl "http://localhost:9000/store/products?limit=5"
     ```
 
   </CodeTab>
@@ -1065,8 +1009,7 @@ For example, to limit the number of products returned in the List Products API R
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.products.list({
+    medusa.products.list({
       limit: 5
     })
     .then(({ products, limit, offset, count }) => {
@@ -1078,16 +1021,16 @@ For example, to limit the number of products returned in the List Products API R
   <CodeTab label="Medusa React" value="medusa-react">
     
     ```tsx
-    import { useAdminProducts } from "medusa-react"
+    import { useProducts } from "medusa-react"
 
     const Products = () => {
-      const { products, isLoading } = useAdminProducts({
+      const { products, isLoading } = useProducts({
         limit: 5
       })
 
       return (
         <div>
-          {/** ... **/}
+          {/* ... */}
         </div>
       )
     }
@@ -1127,8 +1070,7 @@ sort products by their `created_at` attribute by setting `order` to
   <CodeTab label="cURL" value="curl">
     
     ```bash
-    curl "http://localhost:9000/admin/products?order=created_at" \
-        -H 'x-medusa-access-token: {api_token}'
+    curl "http://localhost:9000/store/products?order=created_at"
     ```
 
   </CodeTab>
@@ -1137,8 +1079,7 @@ sort products by their `created_at` attribute by setting `order` to
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.products.list({
+    medusa.products.list({
       order: "created_at"
     })
     .then(({ products, limit, offset, count }) => {
@@ -1150,16 +1091,16 @@ sort products by their `created_at` attribute by setting `order` to
   <CodeTab label="Medusa React" value="medusa-react">
     
     ```tsx
-    import { useAdminProducts } from "medusa-react"
+    import { useProducts } from "medusa-react"
 
     const Products = () => {
-      const { products, isLoading } = useAdminProducts({
+      const { products, isLoading } = useProducts({
         order: "created_at"
       })
 
       return (
         <div>
-          {/** ... **/}
+          {/* ... */}
         </div>
       )
     }
@@ -1178,8 +1119,7 @@ descending, pass a dash (`-`) before the attribute name. For example:
   <CodeTab label="cURL" value="curl">
     
     ```bash
-    curl "http://localhost:9000/admin/products?order=-created_at" \
-        -H 'x-medusa-access-token: {api_token}'
+    curl "http://localhost:9000/store/products?order=-created_at"
     ```
 
   </CodeTab>
@@ -1188,8 +1128,7 @@ descending, pass a dash (`-`) before the attribute name. For example:
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    // must be previously logged in or use api token
-    medusa.admin.products.list({
+    medusa.products.list({
       order: "-created_at"
     })
     .then(({ products, limit, offset, count }) => {
@@ -1201,16 +1140,16 @@ descending, pass a dash (`-`) before the attribute name. For example:
   <CodeTab label="Medusa React" value="medusa-react">
     
     ```tsx
-    import { useAdminProducts } from "medusa-react"
+    import { useProducts } from "medusa-react"
 
     const Products = () => {
-      const { products, isLoading } = useAdminProducts({
+      const { products, isLoading } = useProducts({
         order: "-created_at"
       })
 
       return (
         <div>
-          {/** ... **/}
+          {/* ... */}
         </div>
       )
     }
@@ -1228,11 +1167,11 @@ order.
 <Feedback
   event="survey_api-ref"
   extraData={{
-    area: "admin",
+    area: "store",
     section: "pagination"
   }}
-  reportLink={formatReportLink("admin", "Pagination")}
-  pathName="/api/admin"
+  reportLink={formatReportLink("store", "Pagination")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
