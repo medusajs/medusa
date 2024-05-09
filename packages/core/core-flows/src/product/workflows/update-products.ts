@@ -5,11 +5,11 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { updateProductsStep } from "../steps/update-products"
-import { getProductSalesChannelLinkStep } from "../steps/get-product-sales-channel-link"
 import {
   associateProductsWithSalesChannelsStep,
   detachProductsFromSalesChannelsStep,
 } from "../../sales-channel"
+import { useRemoteQueryStep } from "../../common"
 
 type UpdateProductsStepInputSelector = {
   selector: ProductTypes.FilterableProductProps
@@ -80,8 +80,10 @@ export const updateProductsWorkflow = createWorkflow(
       return productIds
     })
 
-    const currentLinks = getProductSalesChannelLinkStep({
-      ids: updatedProductIds,
+    const currentLinks = useRemoteQueryStep({
+      entry_point: "product_sales_channel",
+      fields: ["product_id", "sales_channel_id"],
+      variables: { product_id: updatedProductIds },
     })
 
     detachProductsFromSalesChannelsStep({ links: currentLinks })
