@@ -2,6 +2,7 @@ import {
   AdminCampaignListResponse,
   AdminCampaignResponse,
   CreateCampaignDTO,
+  LinkMethodRequest,
   UpdateCampaignDTO,
 } from "@medusajs/types"
 import { CampaignDeleteRes } from "../../types/api-responses"
@@ -27,10 +28,21 @@ async function deleteCampaign(id: string) {
   return deleteRequest<CampaignDeleteRes>(`/admin/campaigns/${id}`)
 }
 
+async function addOrRemoveCampaignPromotions(
+  id: string,
+  payload: LinkMethodRequest
+) {
+  return postRequest<AdminCampaignResponse>(
+    `/admin/campaigns/${id}/promotions`,
+    payload
+  )
+}
+
 export const campaigns = {
   retrieve: retrieveCampaign,
   list: listCampaigns,
   create: createCampaign,
   update: updateCampaign,
   delete: deleteCampaign,
+  addOrRemovePromotions: addOrRemoveCampaignPromotions,
 }
