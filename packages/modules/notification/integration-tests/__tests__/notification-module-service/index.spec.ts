@@ -1,0 +1,50 @@
+import { Modules } from "@medusajs/modules-sdk"
+import { INotificationModuleService } from "@medusajs/types"
+import {
+  moduleIntegrationTestRunner,
+  SuiteOptions,
+} from "medusa-test-utils/dist"
+import { resolve } from "path"
+
+let moduleOptions = {
+  providers: [
+    {
+      resolve: resolve(
+        process.cwd() +
+          "/integration-tests/__fixtures__/providers/default-provider"
+      ),
+      options: {
+        config: {
+          "test-provider": {
+            name: "Test provider",
+            channels: ["email"],
+          },
+        },
+      },
+    },
+  ],
+}
+
+moduleIntegrationTestRunner({
+  moduleName: Modules.NOTIFICATION,
+  moduleOptions,
+  testSuite: ({ service }: SuiteOptions<INotificationModuleService>) =>
+    describe("Notification Module Service", () => {
+      it("sends a notification and stores it in the database", async () => {
+        const notification = {
+          to: "admin@medusa.com",
+          template: "some-template",
+          channel: "email",
+          data: {},
+        }
+
+        const result = await service.create(notification)
+        expect(result).toEqual(
+          expect.objectContaining({
+            provider_id: "test-provider",
+            external_id: "external_id",
+          })
+        )
+      })
+    }),
+})

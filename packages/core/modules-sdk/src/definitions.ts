@@ -36,6 +36,7 @@ export enum Modules {
   STORE = "store",
   CURRENCY = "currency",
   FILE = "file",
+  NOTIFICATION = "notification",
 }
 
 export enum ModuleRegistrationName {
@@ -61,6 +62,7 @@ export enum ModuleRegistrationName {
   STORE = "storeModuleService",
   CURRENCY = "currencyModuleService",
   FILE = "fileModuleService",
+  NOTIFICATION = "notificationModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -87,6 +89,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.STORE]: "@medusajs/store",
   [Modules.CURRENCY]: "@medusajs/currency",
   [Modules.FILE]: "@medusajs/file",
+  [Modules.NOTIFICATION]: "@medusajs/notification",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
@@ -370,6 +373,19 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.FILE,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.FILE),
+      isRequired: false,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.NOTIFICATION]: {
+      key: Modules.NOTIFICATION,
+      registrationName: ModuleRegistrationName.NOTIFICATION,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.NOTIFICATION),
       isRequired: false,
       isQueryable: true,
       dependencies: ["logger"],
