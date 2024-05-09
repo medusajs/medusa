@@ -1,8 +1,6 @@
 name: "Add Docs PR Label"
 on:
   pull_request:
-    paths:
-      - 'www/**'
 
 jobs:
   labeler:
