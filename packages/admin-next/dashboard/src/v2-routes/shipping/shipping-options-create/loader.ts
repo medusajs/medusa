@@ -6,7 +6,10 @@ import { StockLocationRes } from "../../../types/api-responses"
 import { stockLocationsQueryKeys } from "../../../hooks/api/stock-locations"
 
 const fulfillmentSetCreateQuery = (id: string) => ({
-  queryKey: stockLocationsQueryKeys.list(), // Use the list cache key for now
+  queryKey: stockLocationsQueryKeys.detail(id, {
+    fields:
+      "*fulfillment_sets,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options",
+  }),
   queryFn: async () =>
     client.stockLocations.retrieve(id, {
       fields:

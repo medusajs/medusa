@@ -199,7 +199,7 @@ function ServiceZoneOptions({
             {t("shipping.serviceZone.shippingOptions")}
           </span>
           <Button
-            className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent"
+            className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent active:bg-transparent"
             variant="transparent"
             onClick={() =>
               navigate(
@@ -231,7 +231,7 @@ function ServiceZoneOptions({
             {t("shipping.serviceZone.returnOptions")}
           </span>
           <Button
-            className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent"
+            className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent active:bg-transparent"
             variant="transparent"
             onClick={() =>
               navigate(

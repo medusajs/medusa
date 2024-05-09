@@ -16,10 +16,11 @@ import {
   IconButton,
   Input,
   Text,
+  toast,
 } from "@medusajs/ui"
 import { FulfillmentSetDTO, RegionCountryDTO, RegionDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
-import { Map, XMark, XMarkMini } from "@medusajs/icons"
+import { XMarkMini } from "@medusajs/icons"
 
 import {
   RouteFocusModal,
@@ -87,13 +88,20 @@ export function CreateServiceZoneForm({
     useCreateServiceZone(locationId, fulfillmentSet.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await createServiceZone({
-      name: data.name,
-      geo_zones: data.countries.map((iso2) => ({
-        country_code: iso2,
-        type: "country",
-      })),
-    })
+    try {
+      await createServiceZone({
+        name: data.name,
+        geo_zones: data.countries.map((iso2) => ({
+          country_code: iso2,
+          type: "country",
+        })),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("general.close"),
+      })
+    }
 
     handleSuccess()
   })
