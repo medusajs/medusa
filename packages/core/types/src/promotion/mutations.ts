@@ -7,12 +7,12 @@ export interface CreateCampaignBudgetDTO {
   /**
    * The type of the campaign budget.
    */
-  type: CampaignBudgetTypeValues
+  type?: CampaignBudgetTypeValues
 
   /**
    * The limit of the campaign budget.
    */
-  limit: number | null
+  limit?: number
 
   /**
    * How much is used of the campaign budget.
@@ -37,7 +37,7 @@ export interface UpdateCampaignBudgetDTO {
   /**
    * The limit of the campaign budget.
    */
-  limit?: number | null
+  limit?: number
 
   /**
    * How much is used of the campaign budget.
@@ -72,12 +72,12 @@ export interface CreateCampaignDTO {
   /**
    * The start date of the campaign.
    */
-  starts_at: Date
+  starts_at?: Date
 
   /**
    * The end date of the campaign.
    */
-  ends_at: Date
+  ends_at?: Date
 
   /**
    * The associated campaign budget.

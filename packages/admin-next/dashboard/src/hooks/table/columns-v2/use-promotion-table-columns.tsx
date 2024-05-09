@@ -27,12 +27,6 @@ export const usePromotionTableColumns = () => {
       }),
 
       columnHelper.display({
-        id: "campaign",
-        header: () => <TextHeader text={t("promotions.fields.campaign")} />,
-        cell: ({ row }) => <TextCell text={row.original.campaign?.name} />,
-      }),
-
-      columnHelper.display({
         id: "method",
         header: () => <TextHeader text={t("promotions.fields.method")} />,
         cell: ({ row }) => {
