@@ -116,9 +116,8 @@ export const useAddOrRemoveCampaignPromotions = (
     mutationFn: (payload) =>
       client.campaigns.addOrRemovePromotions(id, payload),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.detail(id) })
-      queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.list() })
+      queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
