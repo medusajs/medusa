@@ -304,7 +304,7 @@ async function loadResources(
       const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
         moduleName: moduleResolution.definition.key,
         moduleModels: potentialModels,
-        migrationsPath: normalizerPath + "/migrations",
+        migrationsPath: normalizerPath + "/dist/migrations",
       })
       finalLoaders.push(connectionLoader)
     }
