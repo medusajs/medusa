@@ -37,6 +37,7 @@ export enum Modules {
   CURRENCY = "currency",
   FILE = "file",
   LOCKING = "locking",
+  NOTIFICATION = "notification",
 }
 
 export enum ModuleRegistrationName {
@@ -63,6 +64,7 @@ export enum ModuleRegistrationName {
   CURRENCY = "currencyModuleService",
   FILE = "fileModuleService",
   LOCKING = "lockingModuleService",
+  NOTIFICATION = "notificationModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -90,6 +92,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.CURRENCY]: "@medusajs/currency",
   [Modules.FILE]: "@medusajs/file",
   [Modules.LOCKING]: "@medusajs/locking-postgres",
+  [Modules.NOTIFICATION]: "@medusajs/notification",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
@@ -388,6 +391,19 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       label: upperCaseFirst(ModuleRegistrationName.LOCKING),
       isRequired: false,
       isQueryable: false,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.NOTIFICATION]: {
+      key: Modules.NOTIFICATION,
+      registrationName: ModuleRegistrationName.NOTIFICATION,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.NOTIFICATION),
+      isRequired: false,
+      isQueryable: true,
       dependencies: ["logger"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,

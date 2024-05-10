@@ -1,0 +1,495 @@
+
+import { Feedback, CodeTabs, CodeTab } from "docs-ui"
+import SectionContainer from "@/components/Section/Container"
+import formatReportLink from "@/utils/format-report-link"
+
+<SectionContainer noTopPadding={true}>
+
+<Note type="warning" title="Production Warning">
+
+Medusa v2.0 is in development and not suitable for production
+environments. As such, the API reference is incomplete and subject to
+change, so please use it with caution.
+
+</Note>
+
+This API reference includes Medusa's Store APIs, which are REST APIs exposed by the Medusa application. They are used to create a storefront for your commerce store, such as a webshop or a commerce mobile app.
+
+All API Routes are prefixed with `/store`. So, during development, the API Routes will be available under the path `http://localhost:9000/store`. For production, replace `http://localhost:9000` with your Medusa application URL.
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "introduction"
+  }}
+  reportLink={formatReportLink("store", "Introduction")}
+  pathName="/api/store"
+/>
+
+</SectionContainer>
+
+<SectionContainer noTopPadding={true}>
+
+## Authentication
+
+There are two ways to send authenticated requests to the Medusa application: Using a JWT token or using a Cookie Session ID.
+
+### Bearer Authorization with JWT Tokens
+
+Use a JWT token in a request's bearer authorization header to send authenticated requests. Authentication state is managed by the client, which is ideal for Jamstack applications and mobile applications.
+
+#### How to Obtain the JWT Token
+
+{/* TODO add correct link to auth route */}
+
+JWT tokens are obtained by sending a request to the authentication route passing it the customer's email and password in the request body.
+
+For example:
+
+```bash
+curl -X POST '{backend_url}/auth/store/emailpass' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "email": "user@example.com",
+  "password": "supersecret"
+}'
+```
+
+<Note>
+
+{/* TODO add link to implementing login with google guide. */}
+
+Alternatively, you can use the `google` provider instead of `emailpass`.
+
+</Note>
+
+If authenticated successfully, an object is returned in the response with the property `token` being the JWT token.
+
+#### How to Use the JWT Token
+
+Pass the JWT token in the authorization bearer header:
+
+
+```bash
+Authorization: Bearer {jwt_token}
+```
+
+---
+
+### Cookie Session ID
+
+When you authenticate a customer and create a cookie session ID for them, the cookie session ID is passed automatically when sending the request from the browser, or with tools like Postman.
+
+### How to Obtain the Cookie Session
+
+To obtain a cookie session ID, you must have a [JWT token for bearer authentication](#bearer-authorization-with-jwt-tokens).
+
+{/* TODO add a link to the session authentication route. */}
+
+Then, send a request to the session authentication API route. To view the cookie session ID, pass the `-v` option to the `curl` command:
+
+```bash
+curl -v -X POST '{backend_url}/auth/session' \
+--header 'Authorization: Bearer {jwt_token}'
+```
+
+
+The headers will be logged in the terminal as well as the response. You
+should find in the headers a Cookie header similar to this:
+
+
+```bash
+Set-Cookie: connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
+```
+
+#### How to Use the Cookie Session ID in cURL
+
+Copy the value after `connect.sid` (without the `;` at the end) and pass
+it as a cookie in subsequent requests as the following:
+
+
+```bash
+curl '{backend_url}/store/products' \
+-H 'Cookie: connect.sid={sid}'
+```
+
+
+Where `{sid}` is the value of `connect.sid` that you copied.
+
+#### Including Credentials in the Fetch API
+
+If you're sending requests using JavaScript's Fetch API, you must pass the `credentials` option 
+with the value `include` to all the requests you're sending. For example:
+
+```js
+fetch(`<BACKEND_URL>/store/products`, {
+  credentials: "include",
+})
+```
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "authentication-cookie"
+  }}
+  reportLink={formatReportLink("store", "Authentication - Cookie Session ID")}
+  pathName="/api/store"
+/>
+
+</SectionContainer>
+
+<SectionContainer noTopPadding={true}>
+
+## Publishable API Key
+
+Publishable API Keys allow you to send a request with a pre-defined scope. You can associate the
+publishable API key with one or more resources, such as sales channels, then include the publishable
+API key in the header of your requests.
+
+The Medusa application will infer the scope of the current
+request based on the publishable API key. At the moment, publishable API keys only work with sales channels.
+
+It's highly recommended to create a publishable API key and pass it in the header of all your requests to the 
+store APIs.
+
+{/* TODO add link to the v2 guide */}
+
+{/* You can learn more about publishable API keys and how to use them in [this documentation](https://docs.medusajs.com/development/publishable-api-keys/). */}
+
+### How to Create a Publishable API Key
+
+{/* TODO add v2 links */}
+
+Create a publishable API key either using the admin REST APIs, or using the Medusa Admin.
+
+### How to Use a Publishable API Key
+
+You can pass the publishable API key in the header `x-publishable-api-key` in all your requests to the store APIs:
+
+```bash
+x-publishable-api-key: {your_publishable_api_key}
+```
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "publishable-api-key"
+  }}
+  reportLink={formatReportLink("store", "Publishable API Key")}
+  pathName="/api/store"
+/>
+
+</SectionContainer>
+
+<SectionContainer noTopPadding={true}>
+
+## HTTP Compression
+
+If you've enabled HTTP Compression in your Medusa configurations, and you 
+want to disable it for some requests, you can pass the `x-no-compression`
+header in your requests:
+
+```bash
+x-no-compression: true
+```
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "http-compression"
+  }}
+  reportLink={formatReportLink("store", "HTTP Compression")}
+  pathName="/api/store"
+/>
+
+</SectionContainer>
+
+<SectionContainer noTopPadding={true}>
+
+## Select Fields and Relations
+
+Many API Routes accept a `fields` query that allows you to select which fields and relations should be returned in a record.
+
+
+<Note type="warning">
+
+When you pass the `fields` query, only specified fields and relations, along with the `id`, are retrieved in the result.
+
+</Note>
+
+### Select Multiple Fields
+
+Separate the fields and relations you want to select with a comma.
+
+For example:
+
+```bash
+curl 'localhost:9000/store/products?fields=title,handle' \
+-H 'Authorization: Bearer {jwt_token}'
+```
+
+This returns only the `title` and `handle` fields of a product.
+
+### Select Relations
+
+To select a relation, pass to `fields` the relation name prefixed by `.*`. For example:
+
+```bash
+curl 'localhost:9000/store/products?fields=variants.*' \
+-H 'Authorization: Bearer {jwt_token}'
+```
+
+This returns the variants of each product.
+
+### Select Fields in a Relation
+
+The `.*` suffix selects all fields of the relation's data model.
+
+To select a specific field, change the `*` to the field's name.
+
+To specify multiple fields, pass each of the fields with the `<relation>.<field>` format, separated by a comma.
+
+For example:
+
+```bash
+curl 'localhost:9000/store/products?fields=variants.title,variants.sku' \
+-H 'Authorization: Bearer {jwt_token}'
+```
+
+This returns the variants of each product, but the variants only have their `id`, `title`, and `sku` fields. The `id` is always included.
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "select-fields"
+  }}
+  reportLink={formatReportLink("store", "Selecting Fields")}
+  pathName="/api/store"
+/>
+
+</SectionContainer>
+
+<SectionContainer noTopPadding={true}>
+
+## Query Parameter Types
+
+
+This section covers how to pass some common data types as query parameters.
+This is useful if you're sending requests to the API Routes and not using
+our JS Client. For example, when using cURL or Postman.
+
+
+### Strings
+
+
+You can pass a string value in the form of `<parameter_name>=<value>`.
+
+
+For example:
+
+
+```bash
+curl "http://localhost:9000/store/products?title=Shirt"
+```
+
+
+If the string has any characters other than letters and numbers, you must
+encode them.
+
+
+For example, if the string has spaces, you can encode the space with `+` or
+`%20`:
+
+
+```bash
+curl "http://localhost:9000/store/products?title=Blue%20Shirt"
+```
+
+
+You can use tools like [this one](https://www.urlencoder.org/) to learn how
+a value can be encoded.
+
+### Integers
+
+You can pass an integer value in the form of `<parameter_name>=<value>`.
+
+
+For example:
+
+
+```bash
+curl "http://localhost:9000/store/products?offset=1"
+```
+
+
+### Boolean
+
+
+You can pass a boolean value in the form of `<parameter_name>=<value>`.
+
+
+For example:
+
+
+```bash
+curl "http://localhost:9000/store/products?is_giftcard=true"
+```
+
+
+### Date and DateTime
+
+
+You can pass a date value in the form `<parameter_name>=<value>`. The date
+must be in the format `YYYY-MM-DD`.
+
+
+For example:
+
+
+```bash
+curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17"
+```
+
+
+You can also pass the time using the format `YYYY-MM-DDTHH:MM:SSZ`. Please
+note that the `T` and `Z` here are fixed.
+
+
+For example:
+
+
+```bash
+curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17T07:22:30Z"
+```
+
+
+### Array
+
+
+Each array value must be passed as a separate query parameter in the form
+`<parameter_name>[]=<value>`. You can also specify the index of each
+parameter in the brackets `<parameter_name>[0]=<value>`.
+
+
+For example:
+
+
+```bash
+curl -g "http://localhost:9000/store/products?sales_channel_id[]=sc_01GPGVB42PZ7N3YQEP2WDM7PC7&sales_channel_id[]=sc_234PGVB42PZ7N3YQEP2WDM7PC7"
+```
+
+
+Note that the `-g` parameter passed to `curl` disables errors being thrown
+for using the brackets. Read more
+[here](https://curl.se/docs/manpage.html#-g).
+
+
+### Object
+
+
+Object parameters must be passed as separate query parameters in the form
+`<parameter_name>[<key>]=<value>`.
+
+
+For example:
+
+
+```bash
+curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17&created_at[gt]=2022-09-17"
+```
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "query-parameters"
+  }}
+  reportLink={formatReportLink("store", "Query Parameter Types")}
+  pathName="/api/store"
+/>
+
+</SectionContainer>
+
+<SectionContainer noTopPadding={true}>
+
+## Pagination
+
+
+### Query Parameters
+
+
+In listing API Routes, such as list products, you can control the pagination using the query parameters `limit` and `offset`.
+
+
+`limit` is used to specify the maximum number of items to be returned in the response. `offset` is used to specify how many items to skip before returning the resulting records.
+
+
+Use the `offset` query parameter to change between pages. For example, if the limit is `50`, at page `1` the offset should be `0`; at page `2` the offset should be `50`, and so on.
+
+
+For example:
+
+```bash
+curl "http://localhost:9000/store/products?limit=5" \
+-H 'Authorization: Bearer {jwt_token}'
+```
+
+
+### Response Fields
+
+
+In the response of listing API Routes, aside from the records retrieved,
+there are three pagination-related fields returned:
+
+
+- `limit`: the maximum number of items that can be returned in the response.
+- `offset`: the number of items that were skipped before the records in the result.
+- `count`: the total number of available items of this data model. It can be used to determine how many pages are there.
+
+
+For example, if the `count` is `100` and the `limit` is `50`, divide the
+`count` by the `limit` to get the number of pages: `100/50 = 2 pages`.
+
+
+### Sort Order
+
+
+The `order` field (available on API Routes that support pagination) allows you to
+sort the retrieved items by a field of that item.
+
+For example, pass the query parameter `order=created_at` to sort products by their `created_at` field:
+
+```bash
+curl "http://localhost:9000/store/products?order=created_at" \
+-H 'Authorization: Bearer {jwt_token}'
+```
+
+By default, the sort direction is ascending. To change it to
+descending, pass a dash (`-`) before the field name.
+
+For example:
+
+```bash
+curl "http://localhost:9000/store/products?order=-created_at" \
+-H 'Authorization: Bearer {jwt_token}'
+```
+
+
+This sorts the products by their `created_at` field in the descending order.
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "pagination"
+  }}
+  reportLink={formatReportLink("store", "Pagination")}
+  pathName="/api/store"
+/>
+
+</SectionContainer>

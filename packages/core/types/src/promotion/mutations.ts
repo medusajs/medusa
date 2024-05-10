@@ -1,4 +1,4 @@
-import { CampaignBudgetTypeValues, PromotionDTO } from "./common"
+import { CampaignBudgetTypeValues } from "./common"
 
 /**
  * The campaign budget to be created.
@@ -7,12 +7,12 @@ export interface CreateCampaignBudgetDTO {
   /**
    * The type of the campaign budget.
    */
-  type: CampaignBudgetTypeValues
+  type?: CampaignBudgetTypeValues
 
   /**
    * The limit of the campaign budget.
    */
-  limit: number | null
+  limit?: number
 
   /**
    * How much is used of the campaign budget.
@@ -37,7 +37,7 @@ export interface UpdateCampaignBudgetDTO {
   /**
    * The limit of the campaign budget.
    */
-  limit?: number | null
+  limit?: number
 
   /**
    * How much is used of the campaign budget.
@@ -72,22 +72,17 @@ export interface CreateCampaignDTO {
   /**
    * The start date of the campaign.
    */
-  starts_at: Date
+  starts_at?: Date
 
   /**
    * The end date of the campaign.
    */
-  ends_at: Date
+  ends_at?: Date
 
   /**
    * The associated campaign budget.
    */
   budget?: CreateCampaignBudgetDTO
-
-  /**
-   * The promotions of the campaign.
-   */
-  promotions?: Pick<PromotionDTO, "id">[]
 }
 
 /**
@@ -133,9 +128,28 @@ export interface UpdateCampaignDTO {
    * The budget of the campaign.
    */
   budget?: Omit<UpdateCampaignBudgetDTO, "id">
+}
+
+export interface AddPromotionsToCampaignDTO {
+  /**
+   * The ID of the campaign.
+   */
+  id: string
 
   /**
-   * The promotions of the campaign.
+   * Ids of promotions to add
    */
-  promotions?: Pick<PromotionDTO, "id">[]
+  promotion_ids: string[]
+}
+
+export interface RemovePromotionsFromCampaignDTO {
+  /**
+   * The ID of the campaign.
+   */
+  id: string
+
+  /**
+   * Ids of promotions to add
+   */
+  promotion_ids: string[]
 }

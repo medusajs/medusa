@@ -1,13 +1,13 @@
 import { uploadFilesWorkflow } from "@medusajs/core-flows"
-import { CreateProductDTO } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
 import { MedusaError } from "@medusajs/utils"
+import { AdminGetUploadParamsType } from "./validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateProductDTO>,
+  req: AuthenticatedMedusaRequest<AdminGetUploadParamsType>,
   res: MedusaResponse
 ) => {
   const input = req.files as Express.Multer.File[]

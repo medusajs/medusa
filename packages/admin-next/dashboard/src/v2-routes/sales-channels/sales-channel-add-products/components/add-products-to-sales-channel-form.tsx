@@ -156,7 +156,7 @@ export const AddProductsToSalesChannelForm = ({
             </Button>
           </div>
         </RouteFocusModal.Header>
-        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
+        <RouteFocusModal.Body className="flex size-full flex-col overflow-y-auto">
           <DataTable
             table={table}
             count={count}

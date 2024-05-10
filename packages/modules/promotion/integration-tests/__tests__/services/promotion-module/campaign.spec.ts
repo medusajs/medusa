@@ -152,43 +152,6 @@ moduleIntegrationTestRunner({
             })
           )
         })
-
-        it("should create a basic campaign with promotions successfully", async () => {
-          await createPromotions(MikroOrmWrapper.forkManager())
-
-          const startsAt = new Date("01/01/2024")
-          const endsAt = new Date("01/01/2025")
-          const [createdCampaign] = await service.createCampaigns([
-            {
-              name: "test",
-              campaign_identifier: "test",
-              starts_at: startsAt,
-              ends_at: endsAt,
-              promotions: [{ id: "promotion-id-1" }, { id: "promotion-id-2" }],
-            },
-          ])
-
-          const campaign = await service.retrieveCampaign(createdCampaign.id, {
-            relations: ["promotions"],
-          })
-
-          expect(campaign).toEqual(
-            expect.objectContaining({
-              name: "test",
-              campaign_identifier: "test",
-              starts_at: startsAt,
-              ends_at: endsAt,
-              promotions: [
-                expect.objectContaining({
-                  id: "promotion-id-1",
-                }),
-                expect.objectContaining({
-                  id: "promotion-id-2",
-                }),
-              ],
-            })
-          )
-        })
       })
 
       describe("updateCampaigns", () => {
@@ -248,66 +211,6 @@ moduleIntegrationTestRunner({
                 limit: 100,
                 used: 100,
               }),
-            })
-          )
-        })
-
-        it("should update promotions of a campaign successfully", async () => {
-          await createCampaigns(MikroOrmWrapper.forkManager())
-          await createPromotions(MikroOrmWrapper.forkManager())
-
-          const [updatedCampaign] = await service.updateCampaigns([
-            {
-              id: "campaign-id-1",
-              description: "test description 1",
-              currency: "EUR",
-              campaign_identifier: "new",
-              starts_at: new Date("01/01/2024"),
-              ends_at: new Date("01/01/2025"),
-              promotions: [{ id: "promotion-id-1" }, { id: "promotion-id-2" }],
-            },
-          ])
-
-          expect(updatedCampaign).toEqual(
-            expect.objectContaining({
-              description: "test description 1",
-              currency: "EUR",
-              campaign_identifier: "new",
-              starts_at: new Date("01/01/2024"),
-              ends_at: new Date("01/01/2025"),
-              promotions: [
-                expect.objectContaining({
-                  id: "promotion-id-1",
-                }),
-                expect.objectContaining({
-                  id: "promotion-id-2",
-                }),
-              ],
-            })
-          )
-        })
-
-        it("should remove promotions of the campaign successfully", async () => {
-          await createCampaigns(MikroOrmWrapper.forkManager())
-          await createPromotions(MikroOrmWrapper.forkManager())
-
-          await service.updateCampaigns({
-            id: "campaign-id-1",
-            promotions: [{ id: "promotion-id-1" }, { id: "promotion-id-2" }],
-          })
-
-          const updatedCampaign = await service.updateCampaigns({
-            id: "campaign-id-1",
-            promotions: [{ id: "promotion-id-1" }],
-          })
-
-          expect(updatedCampaign).toEqual(
-            expect.objectContaining({
-              promotions: [
-                expect.objectContaining({
-                  id: "promotion-id-1",
-                }),
-              ],
             })
           )
         })
@@ -436,6 +339,77 @@ moduleIntegrationTestRunner({
 
           campaigns = await service.listCampaigns({ id: [createdCampaign.id] })
           expect(campaigns).toHaveLength(1)
+        })
+      })
+
+      describe("addPromotionsToCampaign", () => {
+        beforeEach(async () => {
+          await createCampaigns(MikroOrmWrapper.forkManager())
+          await createPromotions(MikroOrmWrapper.forkManager())
+
+          await service.addPromotionsToCampaign({
+            id,
+            promotion_ids: ["promotion-id-1"],
+          })
+        })
+
+        const id = "campaign-id-1"
+
+        it("should add promotions to a campaign", async () => {
+          await service.addPromotionsToCampaign({
+            id,
+            promotion_ids: ["promotion-id-2"],
+          })
+
+          const campaign = await service.retrieveCampaign(id, {
+            relations: ["promotions"],
+          })
+
+          expect(campaign.promotions).toHaveLength(2)
+          expect(campaign).toEqual(
+            expect.objectContaining({
+              id,
+              promotions: expect.arrayContaining([
+                expect.objectContaining({ id: "promotion-id-1" }),
+                expect.objectContaining({ id: "promotion-id-2" }),
+              ]),
+            })
+          )
+        })
+      })
+
+      describe("removePromotionsFromCampaign", () => {
+        beforeEach(async () => {
+          await createCampaigns(MikroOrmWrapper.forkManager())
+          await createPromotions(MikroOrmWrapper.forkManager())
+
+          await service.addPromotionsToCampaign({
+            id,
+            promotion_ids: ["promotion-id-1", "promotion-id-2"],
+          })
+        })
+
+        const id = "campaign-id-1"
+
+        it("should remove promotions to a campaign", async () => {
+          await service.removePromotionsFromCampaign({
+            id,
+            promotion_ids: ["promotion-id-1"],
+          })
+
+          const campaign = await service.retrieveCampaign(id, {
+            relations: ["promotions"],
+          })
+
+          expect(campaign.promotions).toHaveLength(1)
+          expect(campaign).toEqual(
+            expect.objectContaining({
+              id,
+              promotions: expect.arrayContaining([
+                expect.objectContaining({ id: "promotion-id-2" }),
+              ]),
+            })
+          )
         })
       })
     })
