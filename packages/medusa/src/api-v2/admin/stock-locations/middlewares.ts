@@ -1,5 +1,5 @@
 import { MiddlewareRoute } from "../../../types/middlewares"
-import { authenticate } from "../../../utils/authenticate-middleware"
+import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
