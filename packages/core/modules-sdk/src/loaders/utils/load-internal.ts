@@ -5,6 +5,7 @@ import {
   MedusaContainer,
   MODULE_RESOURCE_TYPE,
   ModuleExports,
+  ModuleLoaderFunction,
   ModuleResolution,
 } from "@medusajs/types"
 import {
@@ -22,7 +23,7 @@ type ModuleResource = {
   services: Function[]
   models: Function[]
   repositories: Function[]
-  loaders: Function[]
+  loaders: ModuleLoaderFunction[]
   moduleService: Constructor<any>
 }
 
@@ -73,6 +74,7 @@ export async function loadInternalModule(
 
   if (resolution.resolutionPath) {
     moduleResources = await loadResources(
+      loadedModule?.loaders ?? [],
       resolution.resolutionPath as string,
       resolution,
       logger
@@ -185,7 +187,7 @@ export async function loadModuleMigrations(
       const migrationScriptOptions = {
         moduleName: resolution.definition.key,
         models: models,
-        pathToMigrations: normalizerPath + "/migrations",
+        pathToMigrations: normalizerPath + "/dist/migrations",
       }
 
       runMigrations ??= ModulesSdkUtils.buildMigrationScript(
@@ -231,6 +233,7 @@ async function importAllFromDir(path: string) {
 }
 
 async function loadResources(
+  loadedModuleLoaders: ModuleLoaderFunction[],
   modulePath: string,
   moduleResolution: ModuleResolution,
   logger: Logger
@@ -256,14 +259,7 @@ async function loadResources(
 
     const potentialServices = [
       ...new Set(
-        Object.entries(services)
-          .map(([key, value]) => {
-            const service = predicate([key, value])
-            if (service) {
-              return service.name !== moduleService.name ? service : void 0
-            }
-          })
-          .filter(filterPredicate)
+        Object.entries(services).map(predicate).filter(filterPredicate)
       ),
     ]
 
@@ -277,26 +273,24 @@ async function loadResources(
       ),
     ]
 
-    const toObjectReducer = (acc, curr) => {
-      acc[curr.name] = curr
-      return acc
-    }
-
-    const defaultContainerLoader = ModulesSdkUtils.moduleContainerLoaderFactory(
-      {
-        moduleModels: potentialModels.reduce(toObjectReducer, {}),
-        moduleRepositories: potentialRepositories.reduce(toObjectReducer, {}),
-        moduleServices: potentialServices.reduce(toObjectReducer, {}),
-      }
-    )
-
-    let potentialLoaders = [
-      defaultContainerLoader,
+    const potentialLoaders = [
       ...new Set(
         Object.entries(loaders).map(predicate).filter(filterPredicate)
       ),
     ]
 
+    const toObjectReducer = (acc, curr) => {
+      acc[curr.name] = curr
+      return acc
+    }
+
+    const finalLoaders = [
+      ModulesSdkUtils.moduleContainerLoaderFactory({
+        moduleModels: potentialModels.reduce(toObjectReducer, {}),
+        moduleRepositories: potentialRepositories.reduce(toObjectReducer, {}),
+        moduleServices: potentialServices.reduce(toObjectReducer, {}),
+      }),
+    ]
     /*
      * If no connectionLoader function is provided, create a default connection loader.
      * TODO: Validate naming convention
@@ -312,14 +306,21 @@ async function loadResources(
         moduleModels: potentialModels,
         migrationsPath: normalizerPath + "/migrations",
       })
-      potentialLoaders = [connectionLoader, ...potentialLoaders]
+      finalLoaders.push(connectionLoader)
     }
+
+    // We need to keep the loader in the order they have been exported to ensure that if they are correctly ordered by the user then they must keep it
+    finalLoaders.push(
+      ...loadedModuleLoaders.filter(
+        (loader) => loader.name !== connectionLoaderName
+      )
+    )
 
     return {
       services: potentialServices,
       models: potentialModels,
       repositories: potentialRepositories,
-      loaders: potentialLoaders,
+      loaders: finalLoaders,
       moduleService,
     }
   } catch (e) {

@@ -47,13 +47,13 @@ export function moduleContainerLoaderFactory({
   moduleRepositories?: Record<string, any>
   customRepositoryLoader?: (options: RepositoryLoaderOptions) => void
 }): ({ container, options }: LoaderOptions) => Promise<void> {
-  return async ({
+  return async function containerLoader({
     container,
     options,
   }: LoaderOptions<
     | ModuleServiceInitializeOptions
     | ModuleServiceInitializeCustomDataLayerOptions
-  >) => {
+  >) {
     const customRepositories = (
       options as ModuleServiceInitializeCustomDataLayerOptions
     )?.repositories

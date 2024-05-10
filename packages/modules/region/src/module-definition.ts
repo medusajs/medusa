@@ -3,15 +3,14 @@ import { RegionModuleService } from "./services"
 
 import { Modules } from "@medusajs/modules-sdk"
 import { ModulesSdkUtils } from "@medusajs/utils"
-import * as RegionModels from "@models"
 import loadDefaults from "./loaders/defaults"
-import * as ModuleModels from "@medusajs/fulfillment/dist/models"
+import * as ModuleModels from "@models"
 import * as ModuleRepositories from "@repositories"
 import * as ModuleServices from "@services"
 
 const migrationScriptOptions = {
   moduleName: Modules.REGION,
-  models: RegionModels,
+  models: ModuleModels,
   pathToMigrations: __dirname + "/migrations",
 }
 

@@ -2,7 +2,6 @@ import { ModuleExports } from "@medusajs/types"
 import * as ModuleServices from "@services"
 import { CurrencyModuleService } from "@services"
 import { Modules } from "@medusajs/modules-sdk"
-import * as Models from "@models"
 import * as ModuleModels from "@models"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import * as ModuleRepositories from "@repositories"
@@ -10,7 +9,7 @@ import initialDataLoader from "./loaders/initial-data"
 
 const migrationScriptOptions = {
   moduleName: Modules.CURRENCY,
-  models: Models,
+  models: ModuleModels,
   pathToMigrations: __dirname + "/migrations",
 }
 
@@ -30,7 +29,7 @@ const containerLoader = ModulesSdkUtils.moduleContainerLoaderFactory({
 
 const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
   moduleName: Modules.CURRENCY,
-  moduleModels: Object.values(Models),
+  moduleModels: Object.values(ModuleModels),
   migrationsPath: __dirname + "/migrations",
 })
 
