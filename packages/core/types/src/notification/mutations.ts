@@ -36,9 +36,13 @@ export interface CreateNotificationDTO {
   /**
    * The ID of the customer this notification is for, if applicable.
    */
-  customer_id?: string | null
+  receiver_id?: string | null
   /**
    * The original notification, in case this is a retried notification.
    */
   original_notification_id?: string | null
+  /**
+   * An idempotency key that ensures the same notification is not sent multiple times.
+   */
+  idempotency_key?: string | null
 }

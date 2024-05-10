@@ -143,8 +143,8 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "customer_id": {
-          "name": "customer_id",
+        "receiver_id": {
+          "name": "receiver_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -154,6 +154,15 @@
         },
         "original_notification_id": {
           "name": "original_notification_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "idempotency_key": {
+          "name": "idempotency_key",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -194,6 +203,22 @@
       "name": "notification",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_notification_receiver_id",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_notification_receiver_id\" ON \"notification\" (receiver_id)"
+        },
+        {
+          "keyName": "IDX_notification_idempotency_key",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_notification_idempotency_key\" ON \"notification\" (idempotency_key)"
+        },
         {
           "keyName": "IDX_notification_provider_id",
           "columnNames": [],

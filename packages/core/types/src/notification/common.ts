@@ -42,7 +42,7 @@ export interface NotificationDTO {
   /**
    * The ID of the customer this notification is for, if applicable.
    */
-  customer_id?: string | null
+  receiver_id?: string | null
   /**
    * The original notification, in case this is a retried notification.
    */
@@ -130,7 +130,7 @@ export interface FilterableNotificationProps
   /**
    * Filter based on the customer ID.
    */
-  customer_id?: string | string[] | OperatorMap<string | string[]>
+  receiver_id?: string | string[] | OperatorMap<string | string[]>
   /**
    * Filters a notification based on when it was sent and created in the database
    */

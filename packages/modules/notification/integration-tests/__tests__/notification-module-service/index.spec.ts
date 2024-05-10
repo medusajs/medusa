@@ -46,5 +46,26 @@ moduleIntegrationTestRunner({
           })
         )
       })
+
+      it("ensures the same notification is not sent twice", async () => {
+        const notification = {
+          to: "admin@medusa.com",
+          template: "some-template",
+          channel: "email",
+          data: {},
+          idempotency_key: "idempotency-key",
+        }
+
+        const result = await service.create(notification)
+        expect(result).toEqual(
+          expect.objectContaining({
+            provider_id: "test-provider",
+            external_id: "external_id",
+          })
+        )
+
+        const secondResult = await service.create(notification)
+        expect(secondResult).toBe(undefined)
+      })
     }),
 })

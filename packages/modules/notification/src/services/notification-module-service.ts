@@ -101,8 +101,28 @@ export default class NotificationModuleService<
       return []
     }
 
+    // TODO: At this point we should probably take a lock with the idempotency keys so we don't have race conditions.
+    // Also, we should probably rely on Redis for this instead of the database.
+    const idempotencyKeys = data
+      .map((entry) => entry.idempotency_key)
+      .filter(Boolean)
+    const alreadySentNotifications = await this.notificationService_.list(
+      {
+        idempotency_key: idempotencyKeys,
+      },
+      { take: null },
+      sharedContext
+    )
+    const existsMap = new Map(
+      alreadySentNotifications.map((n) => [n.idempotency_key, true])
+    )
+
+    const notificationsToProcess = data.filter(
+      (entry) => !existsMap.has(entry.idempotency_key)
+    )
+
     const notificationsToCreate = await promiseAll(
-      data.map(async (entry) => {
+      notificationsToProcess.map(async (entry) => {
         const provider =
           await this.notificationProviderService_.getProviderForChannel(
             entry.channel

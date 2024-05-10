@@ -18,9 +18,21 @@ const NotificationProviderIdIndex = createPsqlIndexStatementHelper({
   columns: "provider_id",
 })
 
+const NotificationIdempotencyKeyIndex = createPsqlIndexStatementHelper({
+  tableName: "notification",
+  columns: "idempotency_key",
+})
+
+const NotificationReceiverIdIndex = createPsqlIndexStatementHelper({
+  tableName: "notification",
+  columns: "receiver_id",
+})
+
 // We don't need to support soft deletes here as this information is mainly used for auditing purposes.
 // Instead, we probably want to have a TTL for each entry, so we don't bloat the DB (and also for GDPR reasons if TTL < 30 days).
 @NotificationProviderIdIndex.MikroORMIndex()
+@NotificationIdempotencyKeyIndex.MikroORMIndex()
+@NotificationReceiverIdIndex.MikroORMIndex()
 @Entity({ tableName: "notification" })
 // Since there is a native `Notification` type, we have to call this something else here and in a couple of other places.
 export default class NotificationModel {
@@ -54,13 +66,16 @@ export default class NotificationModel {
   @Property({ columnType: "text", nullable: true })
   resource_type?: string | null
 
-  // The ID of the customer this notification is for, if applicable.
+  // The ID of the receiver of the notification, if applicable. This can be a customer, user, a company, or anything else.
   @Property({ columnType: "text", nullable: true })
-  customer_id?: string | null
+  receiver_id?: string | null
 
   // The original notification, in case this is a retried notification.
   @Property({ columnType: "text", nullable: true })
   original_notification_id?: string | null
+
+  @Property({ columnType: "text", nullable: true })
+  idempotency_key?: string | null
 
   // The ID of the notification in the external system, if applicable
   @Property({ columnType: "text", nullable: true })
