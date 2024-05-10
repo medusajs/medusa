@@ -212,7 +212,7 @@ async function importAllFromDir(path: string) {
 
   await readdir(path).then((files) => {
     files.forEach((file) => {
-      if (file !== "index.js" && !file.endsWith(".js")) {
+      if (file !== "index.js" && file.endsWith(".js")) {
         const filePath = join(path, file)
         const stats = statSync(filePath)
 
@@ -244,7 +244,10 @@ async function loadResources(
     let normalizedPath = modulePath.replace("dist/", "").replace("index.js", "")
     normalizedPath = resolve(normalizedPath)
 
-    const defaultOnFail = () => []
+    const defaultOnFail = (err) => {
+      console.log(err)
+      return []
+    }
 
     const [moduleService, services, models, repositories] = await Promise.all([
       import(modulePath).then((moduleExports) => moduleExports.default.service),
