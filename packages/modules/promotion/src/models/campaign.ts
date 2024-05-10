@@ -70,9 +70,7 @@ export default class Campaign {
   })
   budget: CampaignBudget | null = null
 
-  @OneToMany(() => Promotion, (promotion) => promotion.campaign, {
-    orphanRemoval: true,
-  })
+  @OneToMany(() => Promotion, (promotion) => promotion.campaign)
   promotions = new Collection<Promotion>(this)
 
   @Property({

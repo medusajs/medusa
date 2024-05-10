@@ -1,7 +1,9 @@
-import * as QueryConfig from "./query-config"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
+import { createBatchBody } from "../../utils/validators"
+import * as QueryConfig from "./query-config"
 import {
   AdminCreatePromotion,
   AdminCreatePromotionRule,
@@ -13,8 +15,6 @@ import {
   AdminUpdatePromotion,
   AdminUpdatePromotionRule,
 } from "./validators"
-import { validateAndTransformBody } from "../../utils/validate-body"
-import { createBatchBody } from "../../utils/validators"
 
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
