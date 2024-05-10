@@ -6,7 +6,7 @@ describe("BaseEntity", () => {
     @Entity()
     class Entity1 extends MikroOrmBaseEntity {
       constructor() {
-        super({ prefix_id: "ent" })
+        super({ prefix_id: "prod" })
       }
     }
 
@@ -19,7 +19,7 @@ describe("BaseEntity", () => {
     const manager = orm.em.fork()
     const entity1 = manager.create(Entity1, {})
 
-    expect(entity1.id).toMatch(/ent_[0-9]/)
+    expect(entity1.id).toMatch(/prod_[0-9]/)
 
     await orm.close()
   })
