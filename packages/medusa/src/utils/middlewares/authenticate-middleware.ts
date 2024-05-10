@@ -7,7 +7,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaRequest,
   MedusaResponse,
-} from "../types/routing"
+} from "../../types/routing"
 
 const SESSION_AUTH = "session"
 const BEARER_AUTH = "bearer"
