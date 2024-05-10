@@ -22,4 +22,5 @@ export enum Modules {
   STORE = "store",
   CURRENCY = "currency",
   FILE = "file",
+  NOTIFICATION = "notification",
 }

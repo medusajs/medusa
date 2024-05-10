@@ -1,3 +1,4 @@
+import { CampaignBudgetTypeValues } from "../../../promotion"
 import { PaginatedResponse } from "../../common"
 
 /**
@@ -13,8 +14,8 @@ export interface CampaignResponse {
   ends_at: string
   budget: {
     id: string
-    type: string
-    limit: number | null
+    type: CampaignBudgetTypeValues
+    limit: number
     used: number
   }
 }
