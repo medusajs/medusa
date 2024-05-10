@@ -5473,6 +5473,31 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/notification-logger@workspace:packages/modules/providers/notification-logger":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/notification-logger@workspace:packages/modules/providers/notification-logger"
+  dependencies:
+    "@medusajs/utils": ^1.11.7
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    rimraf: ^5.0.1
+    typescript: ^4.9.5
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid"
+  dependencies:
+    "@medusajs/utils": ^1.11.7
+    "@sendgrid/mail": ^8.1.3
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    rimraf: ^5.0.1
+    typescript: ^4.9.5
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/notification@workspace:packages/modules/notification":
   version: 0.0.0-use.local
   resolution: "@medusajs/notification@workspace:packages/modules/notification"
@@ -8715,6 +8740,35 @@ __metadata:
     argparse: ~1.0.9
     string-argv: ~0.3.1
   checksum: 0e64533d7e25044f2e12eefe9cd81b4a69cfa315aed9c402a36128e4212c7f10b7ce99de588696824c6723f6465751b0302ec8f08f84e2da2c18d9e9a3accece
+  languageName: node
+  linkType: hard
+
+"@sendgrid/client@npm:^8.1.3":
+  version: 8.1.3
+  resolution: "@sendgrid/client@npm:8.1.3"
+  dependencies:
+    "@sendgrid/helpers": ^8.0.0
+    axios: ^1.6.8
+  checksum: 1977e9e541d1277a0d8a29eff7f63d4580d2fc2c5e7d9d2adbaee46a471350b1967d6f03dac6adab63522f1775ee5a9e8eddb5502039d3ac8ae98acfedf190cf
+  languageName: node
+  linkType: hard
+
+"@sendgrid/helpers@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@sendgrid/helpers@npm:8.0.0"
+  dependencies:
+    deepmerge: ^4.2.2
+  checksum: e7f341099c63915eb095102f8c7ec220a8f2fb66a0cd836ab91e7424005e7c5fd27b65e3a5ed43654f5b2b3608fa7d14ebba924ff86e5d0bdfeaf0248f836a50
+  languageName: node
+  linkType: hard
+
+"@sendgrid/mail@npm:^8.1.3":
+  version: 8.1.3
+  resolution: "@sendgrid/mail@npm:8.1.3"
+  dependencies:
+    "@sendgrid/client": ^8.1.3
+    "@sendgrid/helpers": ^8.0.0
+  checksum: 180d4609710dd22e60ecfcfcc7aaf37d8936872c3b7f9413b86d32e55e9d20f21842c4d81fff35d0906ca3750262a6df95b6c96eae5c48fe6c260d8214bd54b8
   languageName: node
   linkType: hard
 

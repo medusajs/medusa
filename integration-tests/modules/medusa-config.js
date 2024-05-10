@@ -104,5 +104,23 @@ module.exports = {
         providers: [customFulfillmentProvider],
       },
     },
+    [Modules.NOTIFICATION]: {
+      /** @type {import('@medusajs/types').LoggerNotificationServiceOptions} */
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/notification-logger",
+            options: {
+              config: {
+                "logger-notification-provider": {
+                  name: "Logger Notification Provider",
+                  channels: ["log", "email"],
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
   },
 }
