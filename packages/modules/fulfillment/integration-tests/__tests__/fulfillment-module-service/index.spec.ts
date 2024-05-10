@@ -10,8 +10,6 @@ import { createFullDataStructure } from "../../__fixtures__"
 import { FulfillmentProviderService } from "@services"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
 
-jest.setTimeout(100000)
-
 let moduleOptions = {
   providers: [
     {

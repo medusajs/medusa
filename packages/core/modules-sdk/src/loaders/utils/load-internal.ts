@@ -244,22 +244,27 @@ async function loadResources(
     let normalizedPath = modulePath.replace("dist/", "").replace("index.js", "")
     normalizedPath = resolve(normalizedPath)
 
-    const defaultOnFail = () => ([])
+    const defaultOnFail = () => []
 
-    const [moduleService, services, models, repositories] =
-      await Promise.all([
-        import(modulePath).then(
-          (moduleExports) => moduleExports.default.service
-        ),
-        importAllFromDir(resolve(normalizedPath, "dist", "services")).catch(defaultOnFail),
-        importAllFromDir(resolve(normalizedPath, "dist", "models")).catch(defaultOnFail),
-        importAllFromDir(resolve(normalizedPath, "dist", "repositories")).catch(defaultOnFail),
-      ])
+    const [moduleService, services, models, repositories] = await Promise.all([
+      import(modulePath).then((moduleExports) => moduleExports.default.service),
+      importAllFromDir(resolve(normalizedPath, "dist", "services")).catch(
+        defaultOnFail
+      ),
+      importAllFromDir(resolve(normalizedPath, "dist", "models")).catch(
+        defaultOnFail
+      ),
+      importAllFromDir(resolve(normalizedPath, "dist", "repositories")).catch(
+        defaultOnFail
+      ),
+    ])
 
     const cleanupResources = (resources) => {
-      return Object.values(resources).filter((resource): resource is Function => {
-        return typeof resource === "function"
-      })
+      return Object.values(resources).filter(
+        (resource): resource is Function => {
+          return typeof resource === "function"
+        }
+      )
     }
 
     const potentialServices = [...new Set(cleanupResources(services))]
@@ -333,7 +338,7 @@ function prepareLoaders({
   repositories,
   services,
   moduleResolution,
-  migrationPath
+  migrationPath,
 }) {
   const finalLoaders: ModuleLoaderFunction[] = []
 
@@ -347,7 +352,7 @@ function prepareLoaders({
    * TODO: Validate naming convention
    */
   const connectionLoaderName = "connectionLoader"
-  const containerLoader =  'containerLoader'
+  const containerLoader = "containerLoader"
 
   const hasConnectionLoader = loadedModuleLoaders.some(
     (l) => l.name === connectionLoaderName
@@ -357,7 +362,7 @@ function prepareLoaders({
     const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
       moduleName: moduleResolution.definition.key,
       moduleModels: models,
-      migrationsPath: migrationPath //normalizedPath + "/dist/migrations",
+      migrationsPath: migrationPath, //normalizedPath + "/dist/migrations",
     })
     finalLoaders.push(connectionLoader)
   }
@@ -375,14 +380,19 @@ function prepareLoaders({
     finalLoaders.push(containerLoader)
   }
 
-  // We need to keep the loader in the order they have been exported to ensure that if they are correctly ordered by the user then they must keep it
   finalLoaders.push(
-    ...loadedModuleLoaders.filter(loader => {
-      if (loader.name !== connectionLoaderName && loader.name !== containerLoader) {
+    ...loadedModuleLoaders.filter((loader) => {
+      if (
+        loader.name !== connectionLoaderName &&
+        loader.name !== containerLoader
+      ) {
         return true
       }
 
-      return (loader.name === containerLoader && hasContainerLoader) || (loader.name === connectionLoaderName && hasConnectionLoader)
+      return (
+        (loader.name === containerLoader && hasContainerLoader) ||
+        (loader.name === connectionLoaderName && hasConnectionLoader)
+      )
     })
   )
 
