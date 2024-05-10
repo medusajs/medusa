@@ -103,7 +103,7 @@
     "ulid": "^2.3.0",
     "uuid": "^9.0.0",
     "winston": "^3.8.2",
-    "zod": "^3.22.4"
+    "zod": "3.22.4"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e"
 }
