@@ -8,7 +8,8 @@ import getOasOutputBasePath from "../../utils/get-oas-output-base-path.js"
 import { parse } from "yaml"
 import formatOas from "../../utils/format-oas.js"
 import pluralize from "pluralize"
-import { wordsToPascal } from "utils"
+import { capitalize, wordsToPascal } from "utils"
+import { OasArea } from "../kinds/oas.js"
 
 export type ParsedSchema = {
   schema: OpenApiSchema
@@ -200,7 +201,10 @@ class OasSchemaHelper {
    * @returns The normalized name.
    */
   normalizeSchemaName(name: string): string {
-    return name.replace("DTO", "").replace(this.schemaRefPrefix, "")
+    return name
+      .replace("DTO", "")
+      .replace(this.schemaRefPrefix, "")
+      .replace(/Type$/, "")
   }
 
   /**
@@ -256,10 +260,11 @@ class OasSchemaHelper {
    * associated with a tag.
    *
    * @param tagName - The name of the tag.
-   * @returns The possible name of the associated schema.
+   * @returns The possible names of the associated schema.
    */
-  tagNameToSchemaName(tagName: string): string {
-    return wordsToPascal(pluralize.singular(tagName))
+  tagNameToSchemaName(tagName: string, area: OasArea): string[] {
+    const mainSchemaName = wordsToPascal(pluralize.singular(tagName))
+    return [mainSchemaName, `${capitalize(area)}Create${mainSchemaName}`]
   }
 }
 
