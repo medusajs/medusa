@@ -1,4 +1,4 @@
-import { Entity, MikroORM } from "@mikro-orm/core"
+import { Entity, MikroORM, OnInit, Property } from "@mikro-orm/core"
 import { BaseEntity } from "../base-entity"
 
 describe("BaseEntity", () => {
@@ -67,6 +67,63 @@ describe("BaseEntity", () => {
     expect(product.id).toMatch(/pro_[0-9]/)
     expect(productCategory.id).toMatch(/prc_[0-9]/)
     expect(productOptionValue.id).toMatch(/pov_[0-9]/)
+
+    await orm.close()
+  })
+
+  it("should handle the id generation even with custom onInit or beforeCreate", async () => {
+    @Entity()
+    class ProductModel extends BaseEntity {
+      @Property()
+      custom_prop: string
+
+      @OnInit()
+      onInit() {
+        this.custom_prop = "custom"
+      }
+    }
+
+    @Entity()
+    class ProductCategoryEntity extends BaseEntity {
+      @Property()
+      custom_prop: string
+
+      @OnInit()
+      onInit() {
+        this.custom_prop = "custom"
+      }
+    }
+
+    @Entity()
+    class ProductOptionValue extends BaseEntity {
+      @Property()
+      custom_prop: string
+
+      @OnInit()
+      onInit() {
+        this.custom_prop = "custom"
+      }
+    }
+
+    const orm = await MikroORM.init({
+      entities: [ProductModel, ProductCategoryEntity, ProductOptionValue],
+      dbName: "test",
+      type: "postgresql",
+    })
+
+    const manager = orm.em.fork()
+
+    const product = manager.create(ProductModel, {})
+    const productCategory = manager.create(ProductCategoryEntity, {})
+    const productOptionValue = manager.create(ProductOptionValue, {})
+
+    expect(product.id).toMatch(/pro_[0-9]/)
+    expect(productCategory.id).toMatch(/prc_[0-9]/)
+    expect(productOptionValue.id).toMatch(/pov_[0-9]/)
+
+    expect(product.custom_prop).toBe("custom")
+    expect(productCategory.custom_prop).toBe("custom")
+    expect(productOptionValue.custom_prop).toBe("custom")
 
     await orm.close()
   })

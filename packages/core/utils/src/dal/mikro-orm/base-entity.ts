@@ -22,7 +22,7 @@ export class BaseEntity {
 
   @OnInit()
   @BeforeCreate()
-  onInit() {
+  onInitOrBeforeCreate_() {
     this.id ??= this.generateEntityId(this.__prefix_id__)
   }
 
