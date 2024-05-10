@@ -54,6 +54,11 @@ export interface PromotionDTO {
   /**
    * The associated campaign.
    */
+  campaign_id?: string | null
+
+  /**
+   * The associated campaign.
+   */
   campaign?: CampaignDTO
 }
 
