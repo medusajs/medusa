@@ -7,4 +7,5 @@ const loaders = [loadProviders]
 
 export const moduleDefinition: ModuleExports = {
   service,
+  loaders,
 }

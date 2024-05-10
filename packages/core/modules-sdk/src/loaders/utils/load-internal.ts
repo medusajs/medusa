@@ -244,8 +244,7 @@ async function loadResources(
     let normalizedPath = modulePath.replace("dist/", "").replace("index.js", "")
     normalizedPath = resolve(normalizedPath)
 
-    const defaultOnFail = (err) => {
-      console.log(err)
+    const defaultOnFail = () => {
       return []
     }
 
