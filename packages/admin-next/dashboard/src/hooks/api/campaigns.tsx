@@ -1,6 +1,7 @@
 import {
   AdminCampaignListResponse,
   AdminCampaignResponse,
+  LinkMethodRequest,
 } from "@medusajs/types"
 import {
   QueryKey,
@@ -14,6 +15,7 @@ import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { CreateCampaignReq, UpdateCampaignReq } from "../../types/api-payloads"
 import { CampaignDeleteRes } from "../../types/api-responses"
+import { promotionsQueryKeys } from "./promotions"
 
 const REGIONS_QUERY_KEY = "campaigns" as const
 export const campaignsQueryKeys = queryKeysFactory(REGIONS_QUERY_KEY)
@@ -82,7 +84,7 @@ export const useUpdateCampaign = (
     mutationFn: (payload) => client.campaigns.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.lists() })
-      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.details() })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -98,8 +100,24 @@ export const useDeleteCampaign = (
     mutationFn: () => client.campaigns.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.lists() })
-      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.details() })
 
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useAddOrRemoveCampaignPromotions = (
+  id: string,
+  options?: UseMutationOptions<AdminCampaignResponse, Error, LinkMethodRequest>
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      client.campaigns.addOrRemovePromotions(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.details() })
+      queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
