@@ -69,7 +69,17 @@ export async function loadInternalModule(
     return { error }
   }
 
-  if (!loadedModule?.service) {
+  let moduleResources = {} as ModuleResource
+
+  if (resolution.resolutionPath) {
+    moduleResources = await loadResources(
+      resolution.resolutionPath as string,
+      resolution,
+      logger
+    )
+  }
+
+  if (!loadedModule?.service && !moduleResources.moduleService) {
     container.register({
       [registrationName]: asValue(undefined),
     })
@@ -82,9 +92,11 @@ export async function loadInternalModule(
   }
 
   if (migrationOnly) {
+    const moduleService_ = moduleResources.moduleService ?? loadedModule.service
+
     // Partially loaded module, only register the service __joinerConfig function to be able to resolve it later
     const moduleService = {
-      __joinerConfig: loadedModule.service.prototype.__joinerConfig,
+      __joinerConfig: moduleService_.prototype.__joinerConfig,
     }
     container.register({
       [registrationName]: asValue(moduleService),
@@ -113,17 +125,8 @@ export async function loadInternalModule(
     )
   }
 
-  let moduleResources = {} as ModuleResource
-
-  if (resolution.resolutionPath) {
-    moduleResources = await loadResources(
-      resolution.resolutionPath as string,
-      resolution
-    )
-  }
-
   const loaders = moduleResources.loaders ?? loadedModule?.loaders ?? []
-  await runLoaders(loaders, {
+  const error = await runLoaders(loaders, {
     container,
     localContainer,
     logger,
@@ -131,6 +134,10 @@ export async function loadInternalModule(
     loaderOnly,
     registrationName,
   })
+
+  if (error) {
+    return error
+  }
 
   const moduleService = moduleResources.moduleService ?? loadedModule.service
 
@@ -225,85 +232,102 @@ async function importAllFromDir(path: string) {
 
 async function loadResources(
   modulePath: string,
-  moduleResolution: ModuleResolution
+  moduleResolution: ModuleResolution,
+  logger: Logger
 ): Promise<ModuleResource> {
-  const normalizerPath = modulePath.replace("dist/", "").replace("index.js", "")
-  const [moduleService, services, models, repositories, loaders] =
-    await Promise.all([
-      import(modulePath).then((moduleExports) => moduleExports.default.service),
-      importAllFromDir(resolve(normalizerPath, "dist", "services")),
-      importAllFromDir(resolve(normalizerPath, "dist", "models")),
-      importAllFromDir(resolve(normalizerPath, "dist", "repositories")),
-      importAllFromDir(resolve(normalizerPath, "dist", "loaders")),
-    ])
+  try {
+    let normalizerPath = modulePath.replace("dist/", "").replace("index.js", "")
+    normalizerPath = resolve(normalizerPath)
 
-  const predicate = ([, value]: any) =>
-    typeof value === "function" ? value : void 0
-  const filterPredicate = (s: Function): s is Function => !!s
+    const [moduleService, services, models, repositories, loaders] =
+      await Promise.all([
+        import(modulePath).then(
+          (moduleExports) => moduleExports.default.service
+        ),
+        importAllFromDir(resolve(normalizerPath, "dist", "services")),
+        importAllFromDir(resolve(normalizerPath, "dist", "models")),
+        importAllFromDir(resolve(normalizerPath, "dist", "repositories")),
+        importAllFromDir(resolve(normalizerPath, "dist", "loaders")),
+      ])
 
-  const potentialServices = [
-    ...new Set(
-      Object.entries(services)
-        .map(([key, value]) => {
-          const service = predicate([key, value])
-          if (service) {
-            return service.name !== moduleService.name ? service : void 0
-          }
-        })
-        .filter(filterPredicate)
-    ),
-  ]
+    const predicate = ([, value]: any) =>
+      typeof value === "function" ? value : void 0
+    const filterPredicate = (s: Function): s is Function => !!s
 
-  const potentialModels = [
-    ...new Set(Object.entries(models).map(predicate).filter(filterPredicate)),
-  ]
+    const potentialServices = [
+      ...new Set(
+        Object.entries(services)
+          .map(([key, value]) => {
+            const service = predicate([key, value])
+            if (service) {
+              return service.name !== moduleService.name ? service : void 0
+            }
+          })
+          .filter(filterPredicate)
+      ),
+    ]
 
-  const potentialRepositories = [
-    ...new Set(
-      Object.entries(repositories).map(predicate).filter(filterPredicate)
-    ),
-  ]
+    const potentialModels = [
+      ...new Set(Object.entries(models).map(predicate).filter(filterPredicate)),
+    ]
 
-  const toObjectReducer = (acc, curr) => {
-    acc[curr.name] = curr
-    return acc
-  }
+    const potentialRepositories = [
+      ...new Set(
+        Object.entries(repositories).map(predicate).filter(filterPredicate)
+      ),
+    ]
 
-  const defaultContainerLoader = ModulesSdkUtils.moduleContainerLoaderFactory({
-    moduleModels: potentialModels.reduce(toObjectReducer, {}),
-    moduleRepositories: potentialRepositories.reduce(toObjectReducer, {}),
-    moduleServices: potentialServices.reduce(toObjectReducer, {}),
-  })
+    const toObjectReducer = (acc, curr) => {
+      acc[curr.name] = curr
+      return acc
+    }
 
-  let potentialLoaders = [
-    defaultContainerLoader,
-    ...new Set(Object.entries(loaders).map(predicate).filter(filterPredicate)),
-  ]
+    const defaultContainerLoader = ModulesSdkUtils.moduleContainerLoaderFactory(
+      {
+        moduleModels: potentialModels.reduce(toObjectReducer, {}),
+        moduleRepositories: potentialRepositories.reduce(toObjectReducer, {}),
+        moduleServices: potentialServices.reduce(toObjectReducer, {}),
+      }
+    )
 
-  /*
-   * If no connectionLoader function is provided, create a default connection loader.
-   * TODO: Validate naming convention
-   */
-  const connectionLoaderName = "connectionLoader"
+    let potentialLoaders = [
+      defaultContainerLoader,
+      ...new Set(
+        Object.entries(loaders).map(predicate).filter(filterPredicate)
+      ),
+    ]
 
-  const hasConnectionLoader = potentialLoaders.some(
-    (l) => l.name === connectionLoaderName
-  )
-  if (!hasConnectionLoader) {
-    const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
-      moduleName: moduleResolution.definition.key,
-      moduleModels: potentialModels,
-      migrationsPath: normalizerPath + "/migrations",
-    })
-    potentialLoaders = [connectionLoader, ...potentialLoaders]
-  }
+    /*
+     * If no connectionLoader function is provided, create a default connection loader.
+     * TODO: Validate naming convention
+     */
+    const connectionLoaderName = "connectionLoader"
 
-  return {
-    services: potentialServices,
-    models: potentialModels,
-    repositories: potentialRepositories,
-    loaders: potentialLoaders,
-    moduleService,
+    const hasConnectionLoader = potentialLoaders.some(
+      (l) => l.name === connectionLoaderName
+    )
+    if (!hasConnectionLoader) {
+      const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
+        moduleName: moduleResolution.definition.key,
+        moduleModels: potentialModels,
+        migrationsPath: normalizerPath + "/migrations",
+      })
+      potentialLoaders = [connectionLoader, ...potentialLoaders]
+    }
+
+    return {
+      services: potentialServices,
+      models: potentialModels,
+      repositories: potentialRepositories,
+      loaders: potentialLoaders,
+      moduleService,
+    }
+  } catch (e) {
+    logger.warn(
+      `Unable to load resources for module ${modulePath} automagically. ${e.message}`
+    )
+
+    return {} as ModuleResource
   }
 }
 
