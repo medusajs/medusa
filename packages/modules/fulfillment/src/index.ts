@@ -9,6 +9,4 @@ export const initialize = initializeFactory({
   moduleName: Modules.FULFILLMENT,
   moduleDefinition,
 })
-export const runMigrations = moduleDefinition.runMigrations
-export const revertMigration = moduleDefinition.revertMigration
 export default moduleDefinition

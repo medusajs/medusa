@@ -122,7 +122,7 @@ export type LoaderOptions<TOptions = Record<string, unknown>> = {
 }
 
 export type ModuleLoaderFunction = (
-  options: LoaderOptions,
+  options: LoaderOptions<any>,
   moduleDeclaration?: InternalModuleDeclaration
 ) => Promise<void>
 
