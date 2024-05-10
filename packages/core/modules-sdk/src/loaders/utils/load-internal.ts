@@ -162,7 +162,35 @@ export async function loadModuleMigrations(
     loadedModule =
       moduleExports ?? (await import(resolution.resolutionPath as string))
 
-    return [loadedModule.runMigrations, loadedModule.revertMigration]
+    let runMigrations = loadedModule.runMigrations
+    let revertMigration = loadedModule.revertMigration
+
+    // Generate migration scripts if they are not present
+    if (!runMigrations || !revertMigration) {
+      const normalizerPath = (resolution.resolutionPath as string)
+        .replace("dist/", "")
+        .replace("index.js", "")
+
+      const models = await importAllFromDir(
+        resolve(normalizerPath, "dist", "models")
+      )
+
+      const migrationScriptOptions = {
+        moduleName: resolution.definition.key,
+        models: models,
+        pathToMigrations: normalizerPath + "/migrations",
+      }
+
+      runMigrations ??= ModulesSdkUtils.buildMigrationScript(
+        migrationScriptOptions
+      )
+
+      revertMigration ??= ModulesSdkUtils.buildRevertMigrationScript(
+        migrationScriptOptions
+      )
+    }
+
+    return [runMigrations, revertMigration]
   } catch {
     return [undefined, undefined]
   }
