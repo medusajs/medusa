@@ -5,7 +5,7 @@ import { AddCampaignPromotionsForm } from "./components"
 
 export const AddCampaignPromotions = () => {
   const { id } = useParams()
-  const { campaign, isPending: isLoading, isError, error } = useCampaign(id!)
+  const { campaign, isError, error } = useCampaign(id!)
 
   if (isError) {
     throw error
@@ -13,9 +13,7 @@ export const AddCampaignPromotions = () => {
 
   return (
     <RouteFocusModal>
-      {!isLoading && campaign && (
-        <AddCampaignPromotionsForm campaign={campaign} />
-      )}
+      {campaign && <AddCampaignPromotionsForm campaign={campaign} />}
     </RouteFocusModal>
   )
 }

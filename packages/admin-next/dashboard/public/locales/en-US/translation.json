@@ -1093,7 +1093,7 @@
       },
       "alreadyAdded": "This promotion has already been added to the campaign.",
       "toast": {
-        "success": "Successfully added promotion(s) to campaign"
+        "success": "Successfully added {{count}} promotion(s) to campaign"
       }
     },
     "deleteCampaignWarning": "You are about to delete the campaign {{name}}. This action cannot be undone.",

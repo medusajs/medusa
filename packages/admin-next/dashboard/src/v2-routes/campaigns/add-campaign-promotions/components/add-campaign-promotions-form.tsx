@@ -100,7 +100,9 @@ export const AddCampaignPromotionsForm = ({
       {
         onSuccess: () => {
           toast.success(t("general.success"), {
-            description: t("campaigns.promotions.toast.success"),
+            description: t("campaigns.promotions.toast.success", {
+              count: values.promotion_ids.length,
+            }),
             dismissLabel: t("actions.close"),
           })
           handleSuccess()
@@ -113,10 +115,6 @@ export const AddCampaignPromotionsForm = ({
       }
     )
   })
-
-  if (isError) {
-    throw error
-  }
 
   return (
     <RouteFocusModal.Form form={form}>

@@ -84,7 +84,7 @@ export const useUpdateCampaign = (
     mutationFn: (payload) => client.campaigns.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.lists() })
-      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.details() })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -100,7 +100,7 @@ export const useDeleteCampaign = (
     mutationFn: () => client.campaigns.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.lists() })
-      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.details() })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -116,7 +116,7 @@ export const useAddOrRemoveCampaignPromotions = (
     mutationFn: (payload) =>
       client.campaigns.addOrRemovePromotions(id, payload),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.details() })
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)
     },
