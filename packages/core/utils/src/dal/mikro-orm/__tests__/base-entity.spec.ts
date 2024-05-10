@@ -1,10 +1,10 @@
 import { Entity, MikroORM } from "@mikro-orm/core"
-import { MikroOrmBaseEntity } from "../base-entity"
+import { BaseEntity } from "../base-entity"
 
 describe("BaseEntity", () => {
   it("should handle the id generation using the provided prefix", async () => {
     @Entity()
-    class Entity1 extends MikroOrmBaseEntity {
+    class Entity1 extends BaseEntity {
       constructor() {
         super({ prefix_id: "prod" })
       }
@@ -26,7 +26,7 @@ describe("BaseEntity", () => {
 
   it("should handle the id generation without a provided prefix using the first three letter of the entity lower cased", async () => {
     @Entity()
-    class Entity1 extends MikroOrmBaseEntity {}
+    class Entity1 extends BaseEntity {}
 
     const orm = await MikroORM.init({
       entities: [Entity1],
@@ -44,13 +44,13 @@ describe("BaseEntity", () => {
 
   it("should handle the id generation without a provided prefix inferring it based on the words composing the entity name excluding model and entity as part of the name", async () => {
     @Entity()
-    class ProductModel extends MikroOrmBaseEntity {}
+    class ProductModel extends BaseEntity {}
 
     @Entity()
-    class ProductCategoryEntity extends MikroOrmBaseEntity {}
+    class ProductCategoryEntity extends BaseEntity {}
 
     @Entity()
-    class ProductOptionValue extends MikroOrmBaseEntity {}
+    class ProductOptionValue extends BaseEntity {}
 
     const orm = await MikroORM.init({
       entities: [ProductModel, ProductCategoryEntity, ProductOptionValue],

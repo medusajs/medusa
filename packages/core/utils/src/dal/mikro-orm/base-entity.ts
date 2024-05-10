@@ -8,10 +8,8 @@ import {
 import { generateEntityId } from "../../common"
 
 @Entity({ abstract: true })
-export class MikroOrmBaseEntity {
-  [OptionalProps]?:
-    | MikroOrmBaseEntity["id"]
-    | MikroOrmBaseEntity["__prefix_id__"]
+export class BaseEntity {
+  [OptionalProps]?: BaseEntity["id"] | BaseEntity["__prefix_id__"]
 
   private __prefix_id__?: string
 
