@@ -1,6 +1,6 @@
 import { promiseAll, wrapHandler } from "@medusajs/utils"
 import cors from "cors"
-import { Router, json, text, urlencoded, type Express } from "express"
+import { type Express, json, Router, text, urlencoded } from "express"
 import { readdir } from "fs/promises"
 import { parseCorsOrigins } from "medusa-core-utils"
 import { extname, join, sep } from "path"
@@ -18,8 +18,8 @@ import {
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
   MiddlewareRoute,
-  MiddlewareVerb,
   MiddlewaresConfig,
+  MiddlewareVerb,
   ParserConfigArgs,
   RouteConfig,
   RouteDescriptor,
@@ -665,7 +665,10 @@ export class RoutesLoader {
         /**
          * Require the admin to be authenticated
          */
-        this.router.use(descriptor.route, authenticate())
+        this.router.use(
+          descriptor.route,
+          authenticate("admin", ["bearer", "session"])
+        )
       }
 
       for (const route of routes) {
