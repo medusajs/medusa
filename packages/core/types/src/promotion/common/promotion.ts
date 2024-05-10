@@ -133,7 +133,7 @@ export interface UpdatePromotionDTO {
   /**
    * The associated campaign's ID.
    */
-  campaign_id?: string
+  campaign_id?: string | null
 }
 
 /**

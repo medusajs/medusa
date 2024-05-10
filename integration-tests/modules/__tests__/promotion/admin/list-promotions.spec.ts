@@ -113,7 +113,7 @@ medusaIntegrationTestRunner({
         ])
 
         const response = await api.get(
-          `/admin/promotions?fields=code,created_at,application_method.id&expand=application_method`,
+          `/admin/promotions?fields=code,created_at,application_method.id`,
           adminHeaders
         )
 

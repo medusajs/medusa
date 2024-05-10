@@ -16,7 +16,12 @@ import {
   UpdatePromotionDTO,
   UpdatePromotionRuleDTO,
 } from "./common"
-import { CreateCampaignDTO, UpdateCampaignDTO } from "./mutations"
+import {
+  AddPromotionsToCampaignDTO,
+  CreateCampaignDTO,
+  RemovePromotionsFromCampaignDTO,
+  UpdateCampaignDTO,
+} from "./mutations"
 
 /**
  * The main service interface for the Promotion Module.
@@ -967,4 +972,14 @@ export interface IPromotionModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
+
+  addPromotionsToCampaign(
+    data: AddPromotionsToCampaignDTO,
+    sharedContext?: Context
+  ): Promise<{ ids: string[] }>
+
+  removePromotionsFromCampaign(
+    data: RemovePromotionsFromCampaignDTO,
+    sharedContext?: Context
+  ): Promise<{ ids: string[] }>
 }
