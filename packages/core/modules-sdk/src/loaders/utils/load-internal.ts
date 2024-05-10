@@ -25,6 +25,7 @@ type ModuleResource = {
   repositories: Function[]
   loaders: ModuleLoaderFunction[]
   moduleService: Constructor<any>
+  normalizedPath: string
 }
 
 export async function loadInternalModule(
@@ -77,7 +78,6 @@ export async function loadInternalModule(
   if (resolution.resolutionPath) {
     moduleResources = await loadResources(
       loadedModule?.loaders ?? [],
-      resolution.resolutionPath as string,
       resolution,
       logger
     )
@@ -178,18 +178,16 @@ export async function loadModuleMigrations(
 
     // Generate migration scripts if they are not present
     if (!runMigrations || !revertMigration) {
-      const normalizedPath = (resolution.resolutionPath as string)
-        .replace("dist/", "")
-        .replace("index.js", "")
-
-      const models = await importAllFromDir(
-        resolve(normalizedPath, "dist", "models")
+      const moduleResources = await loadResources(
+        loadedModule?.loaders ?? [],
+        resolution,
+        console as unknown as Logger
       )
 
       const migrationScriptOptions = {
         moduleName: resolution.definition.key,
-        models: models,
-        pathToMigrations: normalizedPath + "/dist/migrations",
+        models: moduleResources.models,
+        pathToMigrations: moduleResources.normalizedPath + "/dist/migrations",
       }
 
       runMigrations ??= ModulesSdkUtils.buildMigrationScript(
@@ -236,14 +234,14 @@ async function importAllFromDir(path: string) {
 
 async function loadResources(
   loadedModuleLoaders: ModuleLoaderFunction[],
-  modulePath: string,
   moduleResolution: ModuleResolution,
   logger: Logger
 ): Promise<ModuleResource> {
-  try {
-    let normalizedPath = modulePath.replace("dist/", "").replace("index.js", "")
-    normalizedPath = resolve(normalizedPath)
+  const modulePath = moduleResolution.resolutionPath as string
+  let normalizedPath = modulePath.replace("dist/", "").replace("index.js", "")
+  normalizedPath = resolve(normalizedPath)
 
+  try {
     const defaultOnFail = () => {
       return []
     }
@@ -288,6 +286,7 @@ async function loadResources(
       repositories: potentialRepositories,
       loaders: finalLoaders,
       moduleService,
+      normalizedPath
     }
   } catch (e) {
     logger.warn(
