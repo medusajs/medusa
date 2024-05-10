@@ -116,7 +116,7 @@ describe("modules loader", () => {
 
     await moduleLoader({ container, moduleResolutions, logger })
 
-    expect(logger.warn).toHaveBeenLastCalledWith(
+    expect(logger.warn).toHaveBeenCalledWith(
       `Could not resolve module: TestService. Error: Loaders for module TestService failed: loader${EOL}`
     )
   })

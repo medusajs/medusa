@@ -244,15 +244,17 @@ async function loadResources(
     let normalizerPath = modulePath.replace("dist/", "").replace("index.js", "")
     normalizerPath = resolve(normalizerPath)
 
+    const defaultOnFail = () => ([])
+
     const [moduleService, services, models, repositories, loaders] =
       await Promise.all([
         import(modulePath).then(
           (moduleExports) => moduleExports.default.service
         ),
-        importAllFromDir(resolve(normalizerPath, "dist", "services")),
-        importAllFromDir(resolve(normalizerPath, "dist", "models")),
-        importAllFromDir(resolve(normalizerPath, "dist", "repositories")),
-        importAllFromDir(resolve(normalizerPath, "dist", "loaders")),
+        importAllFromDir(resolve(normalizerPath, "dist", "services")).catch(defaultOnFail),
+        importAllFromDir(resolve(normalizerPath, "dist", "models")).catch(defaultOnFail),
+        importAllFromDir(resolve(normalizerPath, "dist", "repositories")).catch(defaultOnFail),
+        importAllFromDir(resolve(normalizerPath, "dist", "loaders")).catch(defaultOnFail),
       ])
 
     const predicate = ([, value]: any) =>
@@ -302,7 +304,7 @@ async function loadResources(
     const hasConnectionLoader = potentialLoaders.some(
       (l) => l.name === connectionLoaderName
     )
-    if (!hasConnectionLoader) {
+    if (!hasConnectionLoader && potentialModels.length > 0) {
       const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
         moduleName: moduleResolution.definition.key,
         moduleModels: potentialModels,
