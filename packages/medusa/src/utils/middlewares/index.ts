@@ -1,3 +1,4 @@
+export { default as authenticateLegacy } from "./authenticate"
 export { authenticate } from "./authenticate-middleware"
 export { default as authenticateCustomer } from "./authenticate-customer"
 export { default as wrapHandler } from "./await-middleware"

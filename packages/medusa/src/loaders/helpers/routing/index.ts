@@ -5,8 +5,8 @@ import { readdir } from "fs/promises"
 import { parseCorsOrigins } from "medusa-core-utils"
 import { extname, join, sep } from "path"
 import {
-  authenticate,
   authenticateCustomer,
+  authenticateLegacy,
   errorHandler,
   requireCustomerAuthentication,
 } from "../../../utils/middlewares"
@@ -665,10 +665,7 @@ export class RoutesLoader {
         /**
          * Require the admin to be authenticated
          */
-        this.router.use(
-          descriptor.route,
-          authenticate("admin", ["bearer", "session"])
-        )
+        this.router.use(descriptor.route, authenticateLegacy())
       }
 
       for (const route of routes) {
