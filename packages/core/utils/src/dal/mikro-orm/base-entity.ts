@@ -31,9 +31,11 @@ export class MikroOrmBaseEntity {
   private generateEntityId(prefixId?: string): string {
     let ensuredPrefixId: string = prefixId as string
 
-    if (!ensuredPrefixId) {
-      ensuredPrefixId = Object.getPrototypeOf(this).constructor.name
+    if (ensuredPrefixId) {
+      return generateEntityId(undefined, ensuredPrefixId)
     }
+
+    ensuredPrefixId = Object.getPrototypeOf(this).constructor.name
 
     /*
      * Split the class name (camel case) into words and exclude model and entity from the words
@@ -49,23 +51,21 @@ export class MikroOrmBaseEntity {
      * if the class name (camel case) contains more than two words, the prefix id is the first letter of each word
      */
     if (wordsLength === 1) {
-      ensuredPrefixId = words[0].substring(0, 3).toLowerCase()
+      ensuredPrefixId = words[0].substring(0, 3)
     } else if (wordsLength === 2) {
       ensuredPrefixId = words
         .map((word, index) => {
           return word.substring(0, 2 - index)
         })
         .join("")
-        .toLowerCase()
     } else {
       ensuredPrefixId = words
         .map((word) => {
           return word[0]
         })
         .join("")
-        .toLowerCase()
     }
 
-    return generateEntityId(undefined, ensuredPrefixId)
+    return generateEntityId(undefined, ensuredPrefixId.toLowerCase())
   }
 }
