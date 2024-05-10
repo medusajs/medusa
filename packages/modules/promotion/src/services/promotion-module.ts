@@ -629,15 +629,12 @@ export default class PromotionModuleService<
         (c) => c.campaign_identifier === campaignData.campaign_identifier
       )
 
-      if (!campaign || !promotions) {
+      if (!campaign || !promotions || !promotions.length) {
         continue
       }
 
       await this.addPromotionsToCampaign(
-        {
-          id: campaign.id,
-          promotion_ids: promotions.map((p) => p.id),
-        },
+        { id: campaign.id, promotion_ids: promotions.map((p) => p.id) },
         sharedContext
       )
     }

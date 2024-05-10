@@ -31,7 +31,7 @@ export const removeCampaignPromotionsStep = createStep(
     )
 
     if (promotionIdsToAdd.length) {
-      promotionModule.addPromotionsToCampaign({
+      await promotionModule.addPromotionsToCampaign({
         id: campaignId,
         promotion_ids: promotionIdsToAdd,
       })
