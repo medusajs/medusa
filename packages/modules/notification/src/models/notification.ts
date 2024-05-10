@@ -103,7 +103,7 @@ export default class NotificationModel {
   @BeforeCreate()
   @OnInit()
   onCreate() {
-    this.id = generateEntityId(this.id, "not")
+    this.id = generateEntityId(this.id, "noti")
     this.provider_id ??= this.provider_id ?? this.provider?.id
   }
 }

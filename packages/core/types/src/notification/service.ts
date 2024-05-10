@@ -68,14 +68,14 @@ export interface INotificationModuleService extends IModuleService {
    *
    * ```ts
    * const notification =
-   *   await notificationModuleService.retrieve("not_123")
+   *   await notificationModuleService.retrieve("noti_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
    * const notification = await notificationModuleService.retrieve(
-   *   "not_123",
+   *   "noti_123",
    *   {
    *     relations: ["provider"],
    *   }
@@ -103,7 +103,7 @@ export interface INotificationModuleService extends IModuleService {
    *
    * ```ts
    * const notifications = await notificationModuleService.list({
-   *   id: ["not_123", "not_321"],
+   *   id: ["noti_123", "noti_321"],
    * })
    * ```
    *
@@ -112,7 +112,7 @@ export interface INotificationModuleService extends IModuleService {
    * ```ts
    * const notifications = await notificationModuleService.list(
    *   {
-   *     id: ["not_123", "not_321"],
+   *     id: ["noti_123", "noti_321"],
    *   },
    *   {
    *     relations: ["provider"],
@@ -125,7 +125,7 @@ export interface INotificationModuleService extends IModuleService {
    * ```ts
    * const notifications = await notificationModuleService.list(
    *   {
-   *     id: ["not_123", "not_321"],
+   *     id: ["noti_123", "noti_321"],
    *   },
    *   {
    *     relations: ["provider"],
@@ -157,7 +157,7 @@ export interface INotificationModuleService extends IModuleService {
    * ```ts
    * const [notifications, count] =
    *   await notificationModuleService.listAndCount({
-   *     id: ["not_123", "not_321"],
+   *     id: ["noti_123", "noti_321"],
    *   })
    * ```
    *
@@ -167,7 +167,7 @@ export interface INotificationModuleService extends IModuleService {
    * const [notifications, count] =
    *   await notificationModuleService.listAndCount(
    *     {
-   *       id: ["not_123", "not_321"],
+   *       id: ["noti_123", "noti_321"],
    *     },
    *     {
    *       relations: ["provider"],
@@ -181,7 +181,7 @@ export interface INotificationModuleService extends IModuleService {
    * const [notifications, count] =
    *   await notificationModuleService.listAndCount(
    *     {
-   *       id: ["not_123", "not_321"],
+   *       id: ["noti_123", "noti_321"],
    *     },
    *     {
    *       relations: ["provider"],

@@ -86,6 +86,8 @@ async function syncDatabaseProviders({
     }
   })
 
+  validateProviders(normalizedProviders)
+
   try {
     const providersInDb = await providerService.list({})
     const providersToDisable = providersInDb.filter(
@@ -113,4 +115,18 @@ async function syncDatabaseProviders({
   } catch (error) {
     logger.error(`Error syncing the notification providers: ${error.message}`)
   }
+}
+
+function validateProviders(providers: { channels: string[] }[]) {
+  const hasForChannel = {}
+  providers.forEach((provider) => {
+    provider.channels.forEach((channel) => {
+      if (hasForChannel[channel]) {
+        throw new Error(
+          `Multiple providers are configured for the same channel: ${channel}`
+        )
+      }
+      hasForChannel[channel] = true
+    })
+  })
 }

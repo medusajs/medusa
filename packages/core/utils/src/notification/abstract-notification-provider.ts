@@ -6,6 +6,10 @@ export class AbstractNotificationProviderService
   async send(
     notification: NotificationTypes.ProviderSendNotificationDTO
   ): Promise<NotificationTypes.ProviderSendNotificationResultsDTO> {
-    throw Error("send must be overridden by the child class")
+    throw Error(
+      `send is not implemented in ${
+        Object.getPrototypeOf(this).constructor.name
+      }`
+    )
   }
 }
