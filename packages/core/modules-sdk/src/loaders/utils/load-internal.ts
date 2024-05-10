@@ -178,18 +178,18 @@ export async function loadModuleMigrations(
 
     // Generate migration scripts if they are not present
     if (!runMigrations || !revertMigration) {
-      const normalizerPath = (resolution.resolutionPath as string)
+      const normalizedPath = (resolution.resolutionPath as string)
         .replace("dist/", "")
         .replace("index.js", "")
 
       const models = await importAllFromDir(
-        resolve(normalizerPath, "dist", "models")
+        resolve(normalizedPath, "dist", "models")
       )
 
       const migrationScriptOptions = {
         moduleName: resolution.definition.key,
         models: models,
-        pathToMigrations: normalizerPath + "/dist/migrations",
+        pathToMigrations: normalizedPath + "/dist/migrations",
       }
 
       runMigrations ??= ModulesSdkUtils.buildMigrationScript(
@@ -212,7 +212,7 @@ async function importAllFromDir(path: string) {
 
   await readdir(path).then((files) => {
     files.forEach((file) => {
-      if (file !== "index.js" && !file.endsWith(".d.ts")) {
+      if (file !== "index.js" && !file.endsWith(".js")) {
         const filePath = join(path, file)
         const stats = statSync(filePath)
 
@@ -241,84 +241,39 @@ async function loadResources(
   logger: Logger
 ): Promise<ModuleResource> {
   try {
-    let normalizerPath = modulePath.replace("dist/", "").replace("index.js", "")
-    normalizerPath = resolve(normalizerPath)
+    let normalizedPath = modulePath.replace("dist/", "").replace("index.js", "")
+    normalizedPath = resolve(normalizedPath)
 
     const defaultOnFail = () => ([])
 
-    const [moduleService, services, models, repositories, loaders] =
+    const [moduleService, services, models, repositories] =
       await Promise.all([
         import(modulePath).then(
           (moduleExports) => moduleExports.default.service
         ),
-        importAllFromDir(resolve(normalizerPath, "dist", "services")).catch(defaultOnFail),
-        importAllFromDir(resolve(normalizerPath, "dist", "models")).catch(defaultOnFail),
-        importAllFromDir(resolve(normalizerPath, "dist", "repositories")).catch(defaultOnFail),
-        importAllFromDir(resolve(normalizerPath, "dist", "loaders")).catch(defaultOnFail),
+        importAllFromDir(resolve(normalizedPath, "dist", "services")).catch(defaultOnFail),
+        importAllFromDir(resolve(normalizedPath, "dist", "models")).catch(defaultOnFail),
+        importAllFromDir(resolve(normalizedPath, "dist", "repositories")).catch(defaultOnFail),
       ])
 
-    const predicate = ([, value]: any) =>
-      typeof value === "function" ? value : void 0
-    const filterPredicate = (s: Function): s is Function => !!s
-
-    const potentialServices = [
-      ...new Set(
-        Object.entries(services).map(predicate).filter(filterPredicate)
-      ),
-    ]
-
-    const potentialModels = [
-      ...new Set(Object.entries(models).map(predicate).filter(filterPredicate)),
-    ]
-
-    const potentialRepositories = [
-      ...new Set(
-        Object.entries(repositories).map(predicate).filter(filterPredicate)
-      ),
-    ]
-
-    const potentialLoaders = [
-      ...new Set(
-        Object.entries(loaders).map(predicate).filter(filterPredicate)
-      ),
-    ]
-
-    const toObjectReducer = (acc, curr) => {
-      acc[curr.name] = curr
-      return acc
-    }
-
-    const finalLoaders = [
-      ModulesSdkUtils.moduleContainerLoaderFactory({
-        moduleModels: potentialModels.reduce(toObjectReducer, {}),
-        moduleRepositories: potentialRepositories.reduce(toObjectReducer, {}),
-        moduleServices: potentialServices.reduce(toObjectReducer, {}),
-      }),
-    ]
-    /*
-     * If no connectionLoader function is provided, create a default connection loader.
-     * TODO: Validate naming convention
-     */
-    const connectionLoaderName = "connectionLoader"
-
-    const hasConnectionLoader = potentialLoaders.some(
-      (l) => l.name === connectionLoaderName
-    )
-    if (!hasConnectionLoader && potentialModels.length > 0) {
-      const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
-        moduleName: moduleResolution.definition.key,
-        moduleModels: potentialModels,
-        migrationsPath: normalizerPath + "/dist/migrations",
+    const cleanupResources = (resources) => {
+      return Object.values(resources).filter((resource): resource is Function => {
+        return typeof resource === "function"
       })
-      finalLoaders.push(connectionLoader)
     }
 
-    // We need to keep the loader in the order they have been exported to ensure that if they are correctly ordered by the user then they must keep it
-    finalLoaders.push(
-      ...loadedModuleLoaders.filter(
-        (loader) => loader.name !== connectionLoaderName
-      )
-    )
+    const potentialServices = [...new Set(cleanupResources(services))]
+    const potentialModels = [...new Set(cleanupResources(models))]
+    const potentialRepositories = [...new Set(cleanupResources(repositories))]
+
+    const finalLoaders = prepareLoaders({
+      loadedModuleLoaders,
+      models: potentialModels,
+      repositories: potentialRepositories,
+      services: potentialServices,
+      moduleResolution,
+      migrationPath: normalizedPath + "/dist/migrations",
+    })
 
     return {
       services: potentialServices,
@@ -370,4 +325,66 @@ async function runLoaders(
       ),
     }
   }
+}
+
+function prepareLoaders({
+  loadedModuleLoaders,
+  models,
+  repositories,
+  services,
+  moduleResolution,
+  migrationPath
+}) {
+  const finalLoaders: ModuleLoaderFunction[] = []
+
+  const toObjectReducer = (acc, curr) => {
+    acc[curr.name] = curr
+    return acc
+  }
+
+  /*
+   * If no connectionLoader function is provided, create a default connection loader.
+   * TODO: Validate naming convention
+   */
+  const connectionLoaderName = "connectionLoader"
+  const containerLoader =  'containerLoader'
+
+  const hasConnectionLoader = loadedModuleLoaders.some(
+    (l) => l.name === connectionLoaderName
+  )
+
+  if (!hasConnectionLoader && models.length > 0) {
+    const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
+      moduleName: moduleResolution.definition.key,
+      moduleModels: models,
+      migrationsPath: migrationPath //normalizedPath + "/dist/migrations",
+    })
+    finalLoaders.push(connectionLoader)
+  }
+
+  const hasContainerLoader = loadedModuleLoaders.some(
+    (l) => l.name === containerLoader
+  )
+
+  if (!hasContainerLoader) {
+    const containerLoader = ModulesSdkUtils.moduleContainerLoaderFactory({
+      moduleModels: models.reduce(toObjectReducer, {}),
+      moduleRepositories: repositories.reduce(toObjectReducer, {}),
+      moduleServices: services.reduce(toObjectReducer, {}),
+    })
+    finalLoaders.push(containerLoader)
+  }
+
+  // We need to keep the loader in the order they have been exported to ensure that if they are correctly ordered by the user then they must keep it
+  finalLoaders.push(
+    ...loadedModuleLoaders.filter(loader => {
+      if (loader.name !== connectionLoaderName && loader.name !== containerLoader) {
+        return true
+      }
+
+      return (loader.name === containerLoader && hasContainerLoader) || (loader.name === connectionLoaderName && hasConnectionLoader)
+    })
+  )
+
+  return finalLoaders
 }
