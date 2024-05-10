@@ -27,13 +27,11 @@ export class BaseEntity {
   }
 
   private generateEntityId(prefixId?: string): string {
-    let ensuredPrefixId: string = prefixId as string
-
-    if (ensuredPrefixId) {
-      return generateEntityId(undefined, ensuredPrefixId)
+    if (prefixId) {
+      return generateEntityId(undefined, prefixId)
     }
 
-    ensuredPrefixId = Object.getPrototypeOf(this).constructor.name
+    let ensuredPrefixId = Object.getPrototypeOf(this).constructor.name as string
 
     /*
      * Split the class name (camel case) into words and exclude model and entity from the words
@@ -64,6 +62,7 @@ export class BaseEntity {
         .join("")
     }
 
-    return generateEntityId(undefined, ensuredPrefixId.toLowerCase())
+    this.__prefix_id__ = ensuredPrefixId.toLowerCase()
+    return generateEntityId(undefined, this.__prefix_id__)
   }
 }
