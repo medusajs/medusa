@@ -1,4 +1,4 @@
-import { Modules } from "@medusajs/modules-sdk"
+import { initializeFactory, Modules } from "@medusajs/modules-sdk"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import * as models from "@models"
 import { moduleDefinition } from "./module-definition"
@@ -18,5 +18,9 @@ export const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
   migrationScriptOptions
 )
 
-export * from "./initialize"
+export const initialize = initializeFactory({
+  moduleName: Modules.WORKFLOW_ENGINE,
+  moduleDefinition,
+})
+
 export * from "./loaders"

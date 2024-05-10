@@ -1,11 +1,12 @@
 import * as Models from "@models"
+import * as ModuleModels from "@models"
 
+import * as ModuleServices from "@services"
 import { UserModuleService } from "@services"
 import { ModuleExports } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
 import { ModulesSdkUtils } from "@medusajs/utils"
-import loadConnection from "./loaders/connection"
-import loadContainer from "./loaders/container"
+import * as ModuleRepositories from "@repositories"
 
 const migrationScriptOptions = {
   moduleName: Modules.USER,
@@ -20,8 +21,20 @@ export const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
   migrationScriptOptions
 )
 
+const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
+  moduleName: Modules.USER,
+  moduleModels: Object.values(ModuleModels),
+  migrationsPath: __dirname + "/migrations",
+})
+
+const containerLoader = ModulesSdkUtils.moduleContainerLoaderFactory({
+  moduleModels: ModuleModels,
+  moduleRepositories: ModuleRepositories,
+  moduleServices: ModuleServices,
+})
+
 const service = UserModuleService
-const loaders = [loadContainer, loadConnection] as any
+const loaders = [connectionLoader, containerLoader] as any
 
 export const moduleDefinition: ModuleExports = {
   service,

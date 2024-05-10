@@ -1,4 +1,4 @@
-import { Modules } from "@medusajs/modules-sdk"
+import { initializeFactory, Modules } from "@medusajs/modules-sdk"
 import { ModulesSdkUtils } from "@medusajs/utils"
 
 import * as SalesChannelModels from "@models"
@@ -20,8 +20,11 @@ export const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
   migrationScriptOptions
 )
 
-export * from "./initialize"
+export const initialize = initializeFactory({
+  moduleName: Modules.SALES_CHANNEL,
+  moduleDefinition,
+})
+
 export * from "./types"
-export * from "./loaders"
 export * from "./models"
 export * from "./services"

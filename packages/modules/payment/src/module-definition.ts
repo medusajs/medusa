@@ -1,9 +1,7 @@
 import { ModuleExports } from "@medusajs/types"
 
+import * as ModuleServices from "@services"
 import { PaymentModuleService } from "@services"
-
-import loadConnection from "./loaders/connection"
-import loadContainer from "./loaders/container"
 import loadProviders from "./loaders/providers"
 import loadDefaults from "./loaders/defaults"
 
@@ -11,6 +9,8 @@ import { Modules } from "@medusajs/modules-sdk"
 import { ModulesSdkUtils } from "@medusajs/utils"
 
 import * as PaymentModels from "@models"
+import * as ModuleModels from "@models"
+import * as ModuleRepositories from "@repositories"
 
 const migrationScriptOptions = {
   moduleName: Modules.PAYMENT,
@@ -25,10 +25,22 @@ export const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
   migrationScriptOptions
 )
 
+const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
+  moduleName: Modules.PAYMENT,
+  moduleModels: Object.values(ModuleModels),
+  migrationsPath: __dirname + "/migrations",
+})
+
+const containerLoader = ModulesSdkUtils.moduleContainerLoaderFactory({
+  moduleModels: ModuleModels,
+  moduleRepositories: ModuleRepositories,
+  moduleServices: ModuleServices,
+})
+
 const service = PaymentModuleService
 const loaders = [
-  loadContainer,
-  loadConnection,
+  connectionLoader,
+  containerLoader,
   loadProviders,
   loadDefaults,
 ] as any

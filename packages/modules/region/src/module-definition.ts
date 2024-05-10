@@ -4,9 +4,10 @@ import { RegionModuleService } from "./services"
 import { Modules } from "@medusajs/modules-sdk"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import * as RegionModels from "@models"
-import loadConnection from "./loaders/connection"
-import loadContainer from "./loaders/container"
 import loadDefaults from "./loaders/defaults"
+import * as ModuleModels from "@medusajs/fulfillment/dist/models"
+import * as ModuleRepositories from "@repositories"
+import * as ModuleServices from "@services"
 
 const migrationScriptOptions = {
   moduleName: Modules.REGION,
@@ -21,8 +22,20 @@ export const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
   migrationScriptOptions
 )
 
+const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
+  moduleName: Modules.REGION,
+  moduleModels: Object.values(ModuleModels),
+  migrationsPath: __dirname + "/migrations",
+})
+
+const containerLoader = ModulesSdkUtils.moduleContainerLoaderFactory({
+  moduleModels: ModuleModels,
+  moduleRepositories: ModuleRepositories,
+  moduleServices: ModuleServices,
+})
+
 const service = RegionModuleService
-const loaders = [loadContainer, loadConnection, loadDefaults] as any
+const loaders = [connectionLoader, containerLoader, loadDefaults] as any
 
 export const moduleDefinition: ModuleExports = {
   service,

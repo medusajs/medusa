@@ -3,12 +3,16 @@ import {
   revertMigration,
   runMigrations,
 } from "./module-definition"
+import { initializeFactory, Modules } from "@medusajs/modules-sdk"
 
 export default moduleDefinition
 export { revertMigration, runMigrations }
 
-export * from "./initialize"
-// TODO: remove export from models and services
+export const initialize = initializeFactory({
+  moduleName: Modules.PRODUCT,
+  moduleDefinition,
+})
+
 export * from "./models"
 export * from "./services"
 export * from "./types"
