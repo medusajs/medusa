@@ -50,6 +50,8 @@ export async function loadInternalModule(
     const modulePath = resolution.resolutionPath as string
 
     if (resolution.moduleExports) {
+      // TODO:
+      // If we want to benefit from the auto load mechanism, even if the module exports is provided, we need to ask for the module path
       loadedModule = resolution.moduleExports
     } else {
       loadedModule = await import(modulePath)
