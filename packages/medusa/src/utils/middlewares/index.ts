@@ -1,4 +1,4 @@
-export { default as authenticate } from "./authenticate"
+export { authenticate } from "./authenticate-middleware"
 export { default as authenticateCustomer } from "./authenticate-customer"
 export { default as wrapHandler } from "./await-middleware"
 export { default as errorHandler } from "./error-handler"
