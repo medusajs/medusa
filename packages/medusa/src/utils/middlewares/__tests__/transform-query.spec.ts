@@ -24,7 +24,7 @@ describe("transformQuery", () => {
       offset: number
       limit: number
       inputOrder: string | undefined
-      transformedOrder: Record<string, "ASC" | "DESC">
+      transformedOrder?: Record<string, "ASC" | "DESC">
       relations?: string[]
     }) => {
       expect(mockRequest.validatedQuery).toEqual({
@@ -115,9 +115,6 @@ describe("transformQuery", () => {
       limit: 20,
       offset: 0,
       inputOrder: undefined,
-      transformedOrder: {
-        created_at: "DESC",
-      },
     })
 
     //////////////////////////////
