@@ -1458,3 +1458,10 @@ export interface FilterableOrderItemProps
   version?: string | string[] | OperatorMap<string>
   item_id?: string | string[] | OperatorMap<string>
 }
+
+export interface FilterableOrderReturnReasonProps {
+  id?: string | string[]
+  value?: string | string[]
+  label?: string
+  description?: string
+}

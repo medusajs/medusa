@@ -9,7 +9,7 @@ moduleIntegrationTestRunner({
   testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
     describe("Order Module Service - Returns", () => {
       it("should create return reasons", async function () {
-        const reason = await service.createReturnReason({
+        const reason = await service.createReturnReasons({
           value: "test",
           label: "label test",
           description: "description test",
@@ -22,25 +22,23 @@ moduleIntegrationTestRunner({
           description: "description test",
           return_reason_children: [],
           metadata: null,
-          created_at: expect.any(Date),
-          updated_at: expect.any(Date),
           deleted_at: null,
         })
       })
 
       it("should create return reasons with parent", async function () {
-        const reason = await service.createReturnReason({
+        const reason = await service.createReturnReasons({
           value: "test",
           label: "label test",
           description: "description test",
         })
 
-        const reason2 = await service.createReturnReason({
+        const reason2 = await service.createReturnReasons({
           value: "test 2.0",
           label: "child",
           parent_return_reason_id: reason.id,
         })
-        const reason3 = await service.createReturnReason({
+        const reason3 = await service.createReturnReasons({
           value: "test 3.0",
           label: "child 3",
           parent_return_reason_id: reason.id,
