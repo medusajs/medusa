@@ -19,9 +19,11 @@ import {
   OrderLineItemAdjustmentDTO,
   OrderLineItemDTO,
   OrderLineItemTaxLineDTO,
+  OrderReturnReasonDTO,
   OrderShippingMethodAdjustmentDTO,
   OrderShippingMethodDTO,
   OrderShippingMethodTaxLineDTO,
+  OrderTransactionDTO,
 } from "./common"
 import {
   CancelOrderChangeDTO,
@@ -35,9 +37,11 @@ import {
   CreateOrderLineItemForOrderDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderReturnDTO,
+  CreateOrderReturnReasonDTO,
   CreateOrderShippingMethodAdjustmentDTO,
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodTaxLineDTO,
+  CreateOrderTransactionDTO,
   DeclineOrderChangeDTO,
   RegisterOrderFulfillmentDTO,
   RegisterOrderShipmentDTO,
@@ -1388,6 +1392,36 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
 
   revertLastVersion(orderId: string, sharedContext?: Context): Promise<void>
+
+  addTransaction(
+    transactionData: CreateOrderTransactionDTO,
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO>
+
+  addTransaction(
+    transactionData: CreateOrderTransactionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO>
+
+  deleteTransaction(
+    transactionIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  createReturnReason(
+    returnReasonData: CreateOrderReturnReasonDTO,
+    sharedContext?: Context
+  ): Promise<OrderReturnReasonDTO>
+
+  createReturnReason(
+    returnReasonData: CreateOrderReturnReasonDTO[],
+    sharedContext?: Context
+  ): Promise<OrderReturnReasonDTO>
+
+  deleteReturnReason(
+    returnReasonIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   // Bundled flows
   registerFulfillment(

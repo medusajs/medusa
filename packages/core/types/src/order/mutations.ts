@@ -401,3 +401,22 @@ export interface CreateOrderReturnDTO {
 }
 
 /** ORDER bundled action flows */
+
+export interface CreateOrderTransactionDTO {
+  order_id: string
+  description?: string
+  reference_type?: string
+  reference_id?: string
+  internal_note?: string
+  created_by?: string
+  amount: BigNumberInput
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CreateOrderReturnReasonDTO {
+  value: string
+  label: string
+  description?: string
+  parent_return_reason_id?: string
+  metadata?: Record<string, unknown> | null
+}

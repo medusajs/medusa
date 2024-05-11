@@ -37,6 +37,7 @@ import {
   OrderItem,
   OrderShippingMethod,
   OrderSummary,
+  ReturnReason,
   ShippingMethod,
   ShippingMethodAdjustment,
   ShippingMethodTaxLine,
@@ -75,6 +76,7 @@ type InjectedDependencies = {
   orderItemService: ModulesSdkTypes.InternalModuleService<any>
   orderSummaryService: ModulesSdkTypes.InternalModuleService<any>
   orderShippingMethodService: ModulesSdkTypes.InternalModuleService<any>
+  returnReasonService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 const generateMethodForModels = [
@@ -91,6 +93,7 @@ const generateMethodForModels = [
   OrderItem,
   OrderSummary,
   OrderShippingMethod,
+  ReturnReason,
 ]
 
 export default class OrderModuleService<
@@ -107,7 +110,8 @@ export default class OrderModuleService<
     TOrderChangeAction extends OrderChangeAction = OrderChangeAction,
     TOrderItem extends OrderItem = OrderItem,
     TOrderSummary extends OrderSummary = OrderSummary,
-    TOrderShippingMethod extends OrderShippingMethod = OrderShippingMethod
+    TOrderShippingMethod extends OrderShippingMethod = OrderShippingMethod,
+    TReturnReason extends ReturnReason = ReturnReason
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -128,6 +132,7 @@ export default class OrderModuleService<
       OrderItem: { dto: OrderTypes.OrderItemDTO }
       OrderSummary: { dto: OrderTypes.OrderSummaryDTO }
       OrderShippingMethod: { dto: OrderShippingMethod }
+      ReturnReason: { dto: OrderTypes.OrderReturnReasonDTO }
     }
   >(Order, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IOrderModuleService
@@ -147,6 +152,7 @@ export default class OrderModuleService<
   protected orderItemService_: ModulesSdkTypes.InternalModuleService<TOrderItem>
   protected orderSummaryService_: ModulesSdkTypes.InternalModuleService<TOrderSummary>
   protected orderShippingMethodService_: ModulesSdkTypes.InternalModuleService<TOrderShippingMethod>
+  protected returnReasonService_: ModulesSdkTypes.InternalModuleService<TReturnReason>
 
   constructor(
     {
@@ -165,6 +171,7 @@ export default class OrderModuleService<
       orderItemService,
       orderSummaryService,
       orderShippingMethodService,
+      returnReasonService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -186,6 +193,7 @@ export default class OrderModuleService<
     this.orderItemService_ = orderItemService
     this.orderSummaryService_ = orderSummaryService
     this.orderShippingMethodService_ = orderShippingMethodService
+    this.returnReasonService_ = returnReasonService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -2260,5 +2268,89 @@ export default class OrderModuleService<
     )
 
     await this.confirmOrderChange(change[0].id, sharedContext)
+  }
+
+  public async addTransaction(
+    transactionData: OrderTypes.CreateOrderTransactionDTO,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderTransactionDTO>
+
+  public async addTransaction(
+    transactionData: OrderTypes.CreateOrderTransactionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderTransactionDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  public async addTransaction(
+    transactionData:
+      | OrderTypes.CreateOrderTransactionDTO
+      | OrderTypes.CreateOrderTransactionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderTransactionDTO> {
+    const data = Array.isArray(transactionData)
+      ? transactionData
+      : [transactionData]
+
+    const created = await this.transactionService_.create(data, sharedContext)
+
+    return await this.baseRepository_.serialize<OrderTypes.OrderTransactionDTO>(
+      !Array.isArray(transactionData) ? created[0] : created,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async deleteTransaction(
+    transactionIds: string[],
+    sharedContext?: Context | undefined
+  ): Promise<void> {
+    return await this.transactionService_.delete(
+      { id: transactionIds },
+      sharedContext
+    )
+  }
+
+  public async createReturnReason(
+    transactionData: OrderTypes.CreateOrderReturnReasonDTO,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderReturnReasonDTO>
+
+  public async createReturnReason(
+    transactionData: OrderTypes.CreateOrderReturnReasonDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderReturnReasonDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  public async createReturnReason(
+    returnReasonData:
+      | OrderTypes.CreateOrderReturnReasonDTO
+      | OrderTypes.CreateOrderReturnReasonDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderReturnReasonDTO> {
+    const data = Array.isArray(returnReasonData)
+      ? returnReasonData
+      : [returnReasonData]
+
+    const created = await this.returnReasonService_.create(data, sharedContext)
+
+    return await this.baseRepository_.serialize<OrderTypes.OrderReturnReasonDTO>(
+      !Array.isArray(returnReasonData) ? created[0] : created,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async deleteReturnReason(
+    returnReasonIds: string[],
+    sharedContext?: Context | undefined
+  ): Promise<void> {
+    return await this.returnReasonService_.delete(
+      { id: returnReasonIds },
+      sharedContext
+    )
   }
 }
