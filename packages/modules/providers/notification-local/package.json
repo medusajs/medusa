@@ -1,12 +1,12 @@
 {
-  "name": "@medusajs/notification-logger",
+  "name": "@medusajs/notification-local",
   "version": "0.0.1",
-  "description": "Logger notification provider for Medusa, useful for testing purposes and log audits",
+  "description": "Local (logging) notification provider for Medusa, useful for testing purposes and log audits",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/modules/providers/notification-logger"
+    "directory": "packages/modules/providers/notification-local"
   },
   "files": [
     "dist"
@@ -34,6 +34,6 @@
   },
   "keywords": [
     "medusa-provider",
-    "medusa-provider-logger"
+    "medusa-provider-local"
   ]
 }

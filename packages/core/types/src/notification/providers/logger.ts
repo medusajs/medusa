@@ -1,1 +1,1 @@
-export interface LoggerNotificationServiceOptions {}
+export interface LocalNotificationServiceOptions {}

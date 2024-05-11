@@ -1,7 +1,7 @@
 import {
   Logger,
   NotificationTypes,
-  LoggerNotificationServiceOptions,
+  LocalNotificationServiceOptions,
 } from "@medusajs/types"
 import {
   AbstractNotificationProviderService,
@@ -12,15 +12,15 @@ type InjectedDependencies = {
   logger: Logger
 }
 
-interface LoggerServiceConfig {}
+interface LocalServiceConfig {}
 
-export class LoggerNotificationService extends AbstractNotificationProviderService {
-  protected config_: LoggerServiceConfig
+export class LocalNotificationService extends AbstractNotificationProviderService {
+  protected config_: LocalServiceConfig
   protected logger_: Logger
 
   constructor(
     { logger }: InjectedDependencies,
-    options: LoggerNotificationServiceOptions
+    options: LocalNotificationServiceOptions
   ) {
     super()
     this.config_ = options

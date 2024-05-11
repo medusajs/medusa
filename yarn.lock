@@ -5473,9 +5473,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/notification-logger@workspace:packages/modules/providers/notification-logger":
+"@medusajs/notification-local@workspace:packages/modules/providers/notification-local":
   version: 0.0.0-use.local
-  resolution: "@medusajs/notification-logger@workspace:packages/modules/providers/notification-logger"
+  resolution: "@medusajs/notification-local@workspace:packages/modules/providers/notification-local"
   dependencies:
     "@medusajs/utils": ^1.11.7
     cross-env: ^5.2.1

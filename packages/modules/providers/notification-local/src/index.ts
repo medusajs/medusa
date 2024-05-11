@@ -1,7 +1,7 @@
 import { ModuleProviderExports } from "@medusajs/types"
-import { LoggerNotificationService } from "./services/logger"
+import { LocalNotificationService } from "./services/local"
 
-const services = [LoggerNotificationService]
+const services = [LocalNotificationService]
 
 const providerExport: ModuleProviderExports = {
   services,

@@ -105,15 +105,15 @@ module.exports = {
       },
     },
     [Modules.NOTIFICATION]: {
-      /** @type {import('@medusajs/types').LoggerNotificationServiceOptions} */
+      /** @type {import('@medusajs/types').LocalNotificationServiceOptions} */
       options: {
         providers: [
           {
-            resolve: "@medusajs/notification-logger",
+            resolve: "@medusajs/notification-local",
             options: {
               config: {
-                "logger-notification-provider": {
-                  name: "Logger Notification Provider",
+                "local-notification-provider": {
+                  name: "Local Notification Provider",
                   channels: ["log", "email"],
                 },
               },

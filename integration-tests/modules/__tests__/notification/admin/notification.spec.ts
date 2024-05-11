@@ -45,7 +45,7 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             to: "test@medusajs.com",
-            provider_id: "logger-notification-provider",
+            provider_id: "local-notification-provider",
           })
         )
 

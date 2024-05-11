@@ -1,11 +1,11 @@
-import { LoggerNotificationService } from "../../src/services/logger"
+import { LocalNotificationService } from "../../src/services/local"
 jest.setTimeout(100000)
 
-describe("Logger notification provider", () => {
-  let loggerService: LoggerNotificationService
+describe("Local notification provider", () => {
+  let localService: LocalNotificationService
 
   beforeAll(() => {
-    loggerService = new LoggerNotificationService(
+    localService = new LocalNotificationService(
       {
         logger: console as any,
       },
@@ -19,7 +19,7 @@ describe("Logger notification provider", () => {
 
   it("sends logs to the console output with the notification details", async () => {
     const logSpy = jest.spyOn(console, "info")
-    await loggerService.send({
+    await localService.send({
       to: "test@medusajs.com",
       channel: "email",
       template: "some-template",
