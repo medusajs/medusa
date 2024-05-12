@@ -9,7 +9,7 @@ export const deleteReturnReasonStep = createStep(
   deleteReturnReasonStepId,
   async (ids: DeleteReturnReasonStepInput, { container }) => {
     const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.CUSTOMER
+      ModuleRegistrationName.ORDER
     )
 
     await service.softDeleteReturnReasons(ids)
@@ -22,7 +22,7 @@ export const deleteReturnReasonStep = createStep(
     }
 
     const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.CUSTOMER
+      ModuleRegistrationName.ORDER
     )
 
     await service.restoreReturnReasons(prevReturnReasons)

@@ -20,7 +20,7 @@ export const updateReturnReasonsStep = createStep(
   updateReturnReasonStepId,
   async (data: UpdateReturnReasonStepInput, { container }) => {
     const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.CUSTOMER
+      ModuleRegistrationName.ORDER
     )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
@@ -44,7 +44,7 @@ export const updateReturnReasonsStep = createStep(
     }
 
     const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.CUSTOMER
+      ModuleRegistrationName.ORDER
     )
 
     await promiseAll(

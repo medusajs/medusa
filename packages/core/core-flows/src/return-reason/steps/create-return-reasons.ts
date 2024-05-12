@@ -10,7 +10,7 @@ export const createReturnReasonsStep = createStep(
   createReturnReasonsStepId,
   async (data: CreateOrderReturnReasonDTO[], { container }) => {
     const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.CUSTOMER
+      ModuleRegistrationName.ORDER
     )
 
     const createdReturnReasons = await service.createReturnReasons(data)
@@ -28,7 +28,7 @@ export const createReturnReasonsStep = createStep(
     }
 
     const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.CUSTOMER
+      ModuleRegistrationName.ORDER
     )
 
     await service.deleteReturnReasons(createdReturnReasonIds)
