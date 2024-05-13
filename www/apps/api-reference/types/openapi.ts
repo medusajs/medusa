@@ -88,6 +88,7 @@ export type SchemaObject = (ArraySchemaObject | NonArraySchemaObject) & {
   isRequired?: boolean
   "x-featureFlag"?: string
   "x-expandable"?: string
+  "x-schemaName"?: string
 }
 
 export type PropertiesObject = {
@@ -113,4 +114,8 @@ export type ExpandedDocument = Document & {
   expandedTags?: {
     [k: string]: PathsObject
   }
+}
+
+export type TagObject = OpenAPIV3.TagObject & {
+  "x-associatedSchema"?: OpenAPIV3.ReferenceObject
 }
