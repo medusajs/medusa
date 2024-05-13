@@ -6,7 +6,6 @@ import { EOL } from "os"
 import path from "path"
 
 import Logger from "../loaders/logger"
-import { resolveAdminCLI } from "./utils/resolve-admin-cli"
 
 const defaultConfig = {
   padding: 5,
@@ -72,21 +71,6 @@ export default async function ({ port, directory }) {
     console.log("Error ", err)
     process.exit(1)
   })
-
-  const { cli, binExists } = resolveAdminCLI()
-
-  if (binExists) {
-    const adminChild = fork(cli, [`develop`], {
-      cwd: directory,
-      env: process.env,
-      stdio: ["pipe", process.stdout, process.stderr, "ipc"],
-    })
-
-    adminChild.on("error", function (err) {
-      console.log("Error ", err)
-      adminChild.kill("SIGINT") // Only kill admin in case of error
-    })
-  }
 
   chokidar
     .watch(`${directory}/src`, {

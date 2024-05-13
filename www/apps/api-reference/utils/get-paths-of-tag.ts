@@ -34,7 +34,7 @@ export default async function getPathsOfTag(
       return {
         ...fileContent,
         operationPath: `/${file
-          .replaceAll("_", "/")
+          .replaceAll(/(?<!\{[^}]*)_(?![^{]*\})/g, "/")
           .replace(/\.[A-Za-z]+$/, "")}`,
       }
     })

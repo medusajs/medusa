@@ -4,6 +4,7 @@ import React from "react"
 import { useColorMode } from "@/providers"
 import Link from "next/link"
 import clsx from "clsx"
+import Image from "next/image"
 
 export type NavbarLogoProps = {
   light: string
@@ -22,7 +23,7 @@ export const NavbarLogo = ({
 
   return (
     <Link href={`/`} className={clsx("flex-1", className)}>
-      <img
+      <Image
         src={colorMode === "light" ? light : dark || light}
         alt="Medusa Logo"
         height={20}

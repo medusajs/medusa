@@ -106,7 +106,10 @@ class Formatter {
 
     this.eslintConfig = (
       await import(
-        path.relative(dirname(), path.join(this.cwd, ".eslintrc.js"))
+        path.relative(
+          dirname(import.meta.url),
+          path.join(this.cwd, ".eslintrc.js")
+        )
       )
     ).default as Linter.Config
 

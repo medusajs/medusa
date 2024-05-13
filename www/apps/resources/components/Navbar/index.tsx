@@ -12,7 +12,8 @@ const Navbar = () => {
     () =>
       getNavbarItems({
         basePath: config.baseUrl,
-        activePath: process.env.NEXT_PUBLIC_BASE_PATH || "/resources",
+        activePath: basePathUrl(""),
+        version: "v2",
       }),
     []
   )
