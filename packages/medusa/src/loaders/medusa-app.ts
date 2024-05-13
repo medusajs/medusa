@@ -9,6 +9,7 @@ import {
 } from "@medusajs/modules-sdk"
 import {
   CommonTypes,
+  InternalModuleDeclaration,
   LoadedModule,
   MedusaContainer,
   ModuleDefinition,
@@ -39,15 +40,18 @@ export function mergeDefaultModules(
     configModules[defaultModule.key] ??= defaultModule.defaultModuleDeclaration
   }
 
-  for (const [key, value] of Object.entries(configModules)) {
+  for (const [key, value] of Object.entries(
+    configModules as Record<string, InternalModuleDeclaration>
+  )) {
     const def = {} as ModuleDefinition
     def.key ??= key
     def.registrationName ??= key
     def.label ??= upperCaseFirst(key)
 
-    if (isObject(value)) {
+    const orignalDef = value?.definition
+    if (isObject(orignalDef)) {
       value.definition = {
-        ...value.definition,
+        ...orignalDef,
         ...def,
       }
     }
