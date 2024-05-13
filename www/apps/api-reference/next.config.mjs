@@ -4,26 +4,27 @@ import bundleAnalyzer from "@next/bundle-analyzer"
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async rewrites() {
-    return {
-      fallback: [
-        {
-          source: "/ui",
-          destination: `${process.env.NEXT_PUBLIC_UI_URL}/ui`,
-        },
-        {
-          source: "/ui/:path*",
-          destination: `${process.env.NEXT_PUBLIC_UI_URL}/ui/:path*`,
-        },
-        {
-          source: "/:path*",
-          destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/:path*`,
-        },
-        process.env.NEXT_PUBLIC_VERSIONING === "true" ? {
-          source: "/v2/:path*",
-          destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/v2/:path*`,
-        } : {}
-      ],
+    const rewriteFallbacks = [
+      {
+        source: "/ui",
+        destination: `${process.env.NEXT_PUBLIC_UI_URL}/ui`,
+      },
+      {
+        source: "/ui/:path*",
+        destination: `${process.env.NEXT_PUBLIC_UI_URL}/ui/:path*`,
+      },
+      {
+        source: "/:path*",
+        destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/:path*`,
+      }
+    ]
+    if (process.env.NEXT_PUBLIC_VERSIONING === "true") {
+      rewriteFallbacks.push({
+        source: "/v2/:path*",
+        destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/v2/:path*`,
+      })
     }
+    return rewriteFallbacks
   },
   webpack: (config) => {
     config.ignoreWarnings = [{ module: /node_modules\/keyv\/src\/index\.js/ }]
