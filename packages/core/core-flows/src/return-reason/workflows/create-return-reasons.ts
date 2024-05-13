@@ -13,6 +13,6 @@ export const createReturnReasonsWorkflow = createWorkflow(
   (
     input: WorkflowData<WorkflowInput>
   ): WorkflowData<OrderReturnReasonDTO[]> => {
-    return createReturnReasonsStep(input.customersData)
+    return createReturnReasonsStep(input.data)
   }
 )
