@@ -8,6 +8,7 @@ import {
   Select,
   Text,
 } from "@medusajs/ui"
+import { useEffect } from "react"
 import { useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../components/common/form"
@@ -27,6 +28,10 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
     control: form.control,
     name: `${fieldScope}currency`,
   })
+
+  useEffect(() => {
+    form.setValue(`${fieldScope}budget.limit`, undefined)
+  }, [watchValueType])
 
   return (
     <div className="flex w-full max-w-[720px] flex-col gap-y-8">
@@ -243,6 +248,7 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
                     />
                   ) : (
                     <Input
+                      type="number"
                       key="usage"
                       min={0}
                       {...field}
