@@ -1,4 +1,4 @@
-import { normalizeHandle } from "../normalize-handle"
+import { toHandle } from "../to-handle"
 
 describe("normalizeHandle", function () {
   it("should generate URL friendly handles", function () {
@@ -38,7 +38,7 @@ describe("normalizeHandle", function () {
     ]
 
     expectations.forEach((expectation) => {
-      expect(normalizeHandle(expectation.input)).toEqual(expectation.output)
+      expect(toHandle(expectation.input)).toEqual(expectation.output)
     })
   })
 })

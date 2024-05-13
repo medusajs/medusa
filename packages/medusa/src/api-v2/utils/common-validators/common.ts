@@ -36,11 +36,3 @@ export const OptionalBooleanValidator = z.preprocess(
   (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
   z.boolean().optional()
 )
-
-/**
- * Validates entity handle to have URL-safe characters
- */
-export const HandleValidator = z
-  .string()
-  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
-  .optional()

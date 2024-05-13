@@ -1,4 +1,3 @@
-import { HandleValidator } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -30,13 +29,13 @@ export const AdminGetCollectionsParams = createFindParams({
 export type AdminCreateCollectionType = z.infer<typeof AdminCreateCollection>
 export const AdminCreateCollection = z.object({
   title: z.string(),
-  handle: HandleValidator,
+  handle: z.string().optional(),
   metadata: z.record(z.unknown()).optional(),
 })
 
 export type AdminUpdateCollectionType = z.infer<typeof AdminUpdateCollection>
 export const AdminUpdateCollection = z.object({
   title: z.string().optional(),
-  handle: HandleValidator,
+  handle: z.string().optional(),
   metadata: z.record(z.unknown()).optional(),
 })

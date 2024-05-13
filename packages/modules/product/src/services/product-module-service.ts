@@ -32,6 +32,7 @@ import {
   ProductStatus,
   promiseAll,
   removeUndefined,
+  isValidHandle,
 } from "@medusajs/utils"
 import {
   ProductCategoryEventData,
@@ -1315,9 +1316,13 @@ export default class ProductModuleService<
       sharedContext
     )) as ProductTypes.CreateProductDTO
 
-    if (!productData.handle && productData.title) {
-      productData.handle = kebabCase(productData.title)
-    }
+    /**
+     * We are already computing handle from title in model. Do we
+     * need here again?
+     */
+    // if (!productData.handle && productData.title) {
+    //   productData.handle = kebabCase(productData.title)
+    // }
 
     if (!productData.status) {
       productData.status = ProductStatus.DRAFT
@@ -1337,6 +1342,13 @@ export default class ProductModuleService<
     const productData = { ...product }
     if (productData.is_giftcard) {
       productData.discountable = false
+    }
+
+    if (productData.handle && !isValidHandle(productData.handle)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Invalid product handle. It must contain URL safe characters"
+      )
     }
 
     if (productData.tags?.length && productData.tags.some((t) => !t.id)) {

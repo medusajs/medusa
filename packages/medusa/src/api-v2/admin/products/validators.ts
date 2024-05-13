@@ -1,9 +1,6 @@
 import { ProductStatus } from "@medusajs/utils"
 import { z } from "zod"
-import {
-  GetProductsParams,
-  HandleValidator,
-} from "../../utils/common-validators"
+import { GetProductsParams } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -180,7 +177,7 @@ export const AdminCreateProduct = z
     discountable: z.boolean().optional().default(true),
     images: z.array(z.object({ url: z.string() })).optional(),
     thumbnail: z.string().optional(),
-    handle: HandleValidator,
+    handle: z.string().optional(),
     status: statusEnum.optional().default(ProductStatus.DRAFT),
     type_id: z.string().nullable().optional(),
     collection_id: z.string().nullable().optional(),
