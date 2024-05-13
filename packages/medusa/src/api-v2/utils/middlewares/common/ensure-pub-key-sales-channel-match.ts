@@ -23,28 +23,27 @@ export async function ensurePublishableKeyAndSalesChannelMatch(
   const pubKey = req.get("x-publishable-api-key")
 
   if (pubKey) {
-    const scopes = req.publishableApiKeyScopes
+    const pubKeySalesChannels =
+      req.publishableApiKeyScopes?.sales_channel_ids ?? []
     const channelId = req.validatedBody?.sales_channel_id
 
     req.errors = req.errors ?? []
 
-    if (
-      scopes.sales_channel_ids.length &&
-      channelId &&
-      !scopes.sales_channel_ids.includes(channelId)
-    ) {
-      req.errors.push(
-        `Sales channel ID in payload ${channelId} is not associated with the Publishable API Key in the header.`
-      )
-    }
-
-    if (scopes.sales_channel_ids.length && !channelId) {
-      if (scopes.sales_channel_ids.length > 1) {
+    if (pubKeySalesChannels.length) {
+      if (channelId && !pubKeySalesChannels.includes(channelId)) {
         req.errors.push(
-          `Cannot assign sales channel to cart. The Publishable API Key in the header has multiple associated sales channels. Please provide a sales channel ID in the request body.`
+          `Sales channel ID in payload ${channelId} is not associated with the Publishable API Key in the header.`
         )
-      } else {
-        req.validatedBody.sales_channel_id = scopes.sales_channel_ids[0]
+      }
+
+      if (!channelId) {
+        if (pubKeySalesChannels.length > 1) {
+          req.errors.push(
+            `Cannot assign sales channel to cart. The Publishable API Key in the header has multiple associated sales channels. Please provide a sales channel ID in the request body.`
+          )
+        } else {
+          req.validatedBody.sales_channel_id = pubKeySalesChannels[0]
+        }
       }
     }
   }
