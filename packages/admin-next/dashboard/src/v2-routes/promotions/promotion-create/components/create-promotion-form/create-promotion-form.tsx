@@ -700,9 +700,7 @@ export const CreatePromotionForm = ({
                             <Input
                               {...form.register(
                                 "application_method.max_quantity",
-                                {
-                                  valueAsNumber: true,
-                                }
+                                { valueAsNumber: true }
                               )}
                               type="number"
                               min={1}

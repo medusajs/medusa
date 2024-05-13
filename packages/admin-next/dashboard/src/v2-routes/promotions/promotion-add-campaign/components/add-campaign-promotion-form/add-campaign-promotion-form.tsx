@@ -1,17 +1,15 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { CampaignDTO, PromotionDTO } from "@medusajs/types"
 import { Button, clx, RadioGroup, Select } from "@medusajs/ui"
-import { useForm, useWatch } from "react-hook-form"
+import { useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { CampaignDetails } from "./campaign-details"
 
+import { useEffect } from "react"
 import { Form } from "../../../../../components/common/form"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/route-modal"
-import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
+import { RouteDrawer } from "../../../../../components/route-modal"
+import { defaultCampaignValues } from "../../../../campaigns/campaign-create/components/create-campaign-form/create-campaign-form"
+import { CreateCampaignFormFields } from "../../../../campaigns/common/components/create-campaign-form-fields"
 
 type EditPromotionFormProps = {
   promotion: PromotionDTO
@@ -35,6 +33,20 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
     name: "campaign_choice",
   })
 
+  useEffect(() => {
+    if (watchCampaignChoice !== "existing") {
+      form.setValue("campaign_id", undefined)
+    }
+
+    if (watchCampaignChoice !== "new") {
+      form.setValue("campaign", undefined)
+    }
+
+    if (watchCampaignChoice === "new") {
+      form.setValue("campaign", defaultCampaignValues)
+    }
+  }, [watchCampaignChoice])
+
   const selectedCampaign = campaigns.find((c) => c.id === watchCampaignId)
 
   return (
@@ -46,9 +58,10 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
           return (
             <Form.Item>
               <Form.Label>Method</Form.Label>
+
               <Form.Control>
                 <RadioGroup
-                  className="flex-col gap-y-3"
+                  className="flex gap-y-3"
                   {...field}
                   value={field.value}
                   onValueChange={field.onChange}
@@ -57,8 +70,8 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
                     value={"none"}
                     label={t("promotions.form.campaign.none.title")}
                     description={t("promotions.form.campaign.none.description")}
-                    className={clx("", {
-                      "border-2 border-ui-border-interactive":
+                    className={clx("border", {
+                      "border border-ui-border-interactive":
                         "none" === field.value,
                     })}
                   />
@@ -69,8 +82,8 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
                     description={t(
                       "promotions.form.campaign.existing.description"
                     )}
-                    className={clx("", {
-                      "border-2 border-ui-border-interactive":
+                    className={clx("border", {
+                      "border border-ui-border-interactive":
                         "existing" === field.value,
                     })}
                   />
@@ -79,11 +92,10 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
                     value={"new"}
                     label={t("promotions.form.campaign.new.title")}
                     description={t("promotions.form.campaign.new.description")}
-                    className={clx("", {
-                      "border-2 border-ui-border-interactive":
+                    className={clx("border", {
+                      "border border-ui-border-interactive":
                         "new" === field.value,
                     })}
-                    disabled
                   />
                 </RadioGroup>
               </Form.Control>
@@ -127,6 +139,10 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
         />
       )}
 
+      {watchCampaignChoice === "new" && (
+        <CreateCampaignFormFields form={form} fieldScope="campaign." />
+      )}
+
       <CampaignDetails campaign={selectedCampaign} />
     </div>
   )
@@ -148,14 +164,7 @@ export const AddCampaignPromotionForm = ({
     resolver: zodResolver(EditPromotionSchema),
   })
 
-  const watchCampaignId = useWatch({
-    control: form.control,
-    name: "campaign_id",
-  })
-
-  const selectedCampaign = campaigns.find((c) => c.id === watchCampaignId)
   const { mutateAsync, isPending } = useUpdatePromotion(promotion.id)
-
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       { campaign_id: data.campaign_id },
