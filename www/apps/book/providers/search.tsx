@@ -1,11 +1,6 @@
 "use client"
 
-import {
-  SearchProvider as UiSearchProvider,
-  AiAssistantCommandIcon,
-  AiAssistantProvider,
-  searchFilters,
-} from "docs-ui"
+import { SearchProvider as UiSearchProvider, searchFiltersV2 } from "docs-ui"
 import { config } from "../config"
 
 type SearchProviderProps = {
@@ -32,15 +27,15 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
             title: "Getting started? Try one of the following terms.",
             items: [
               "Install Medusa with create-medusa-app",
-              "What is a Service?",
               "What is an API route?",
+              "What is a Module?",
               "What is a Workflow?",
             ],
           },
           {
             title: "Developing with Medusa",
             items: [
-              "How to create a Service",
+              "How to create a Module",
               "How to create an API route",
               "How to create a data model",
               "How to create an admin widget",
@@ -48,32 +43,11 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           },
         ],
         checkInternalPattern: new RegExp(
-          `^${config.baseUrl}/([^(api|ui|resources)]/)*`
+          `^${config.baseUrl}/v2/([^(resources)])*`
         ),
-        filterOptions: searchFilters,
+        filterOptions: searchFiltersV2,
       }}
-      initialDefaultFilters={["docs"]}
-      commands={[
-        {
-          name: "ai-assistant",
-          icon: <AiAssistantCommandIcon />,
-          component: (
-            <AiAssistantProvider
-              apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
-              websiteId={process.env.NEXT_PUBLIC_AI_WEBSITE_ID || "temp"}
-              recaptchaSiteKey={
-                process.env.NEXT_PUBLIC_AI_API_ASSISTANT_RECAPTCHA_SITE_KEY ||
-                "temp"
-              }
-            />
-          ),
-          title: "AI Assistant",
-          badge: {
-            variant: "purple",
-            children: "Beta",
-          },
-        },
-      ]}
+      initialDefaultFilters={["book"]}
     >
       {children}
     </UiSearchProvider>

@@ -5,7 +5,7 @@ import {
   SearchProvider as UiSearchProvider,
   AiAssistantCommandIcon,
   AiAssistantProvider,
-  searchFilters,
+  searchFiltersV1,
 } from "docs-ui"
 import { config } from "../config"
 
@@ -53,7 +53,7 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
         checkInternalPattern: new RegExp(
           `^${config.baseUrl}/api/(admin|store)`
         ),
-        filterOptions: searchFilters,
+        filterOptions: searchFiltersV1,
       }}
       commands={[
         {

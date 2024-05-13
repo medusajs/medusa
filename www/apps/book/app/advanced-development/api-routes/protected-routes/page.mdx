@@ -118,36 +118,43 @@ In the route handler, you resolve the `UserService`, and then use it to retrieve
 
 ## Protect Custom API Routes
 
-To protect custom API Routes that don’t start with `/store/me` or `/admin`, apply one of the following middlewares exported by the `@medusajs/medusa` package on your routes:
-
-- `authenticate`: only authenticated admin users can access the API Route.
-- `authenticateCustomer`: customer authentication isn’t required, but if a customer is logged in, it attaches their ID to the `MedusaRequest` object's `user.customer_id`.
-- `requireCustomerAuthentication`: only authenticated customers can access the API Route.
+To protect custom API Routes that don’t start with `/store/me` or `/admin`, use the `authenticate` middleware imported from `@medusajs/medusa`.
 
 For example:
 
 export const highlights = [
   ["11", "authenticate", "Only authenticated admin users can access routes starting with `/custom/admin`"],
-  ["15", "requireCustomerAuthentication", "Only authenticated customers can access routes starting with `/custom/customers`"]
+  ["17", "authenticate", "Only authenticated customers can access routes starting with `/custom/customers`"]
 ]
 
 ```ts title="src/api/middlewares.ts" highlights={highlights}
-import {
+// TODO update import
+import { 
   authenticate,
-  requireCustomerAuthentication,
-  type MiddlewaresConfig,
-} from "@medusajs/medusa"
+} from "@medusajs/medusa/dist/utils/authenticate-middleware"
 
 export const config: MiddlewaresConfig = {
   routes: [
     {
       matcher: "/custom/admin*",
-      middlewares: [authenticate()],
+      middlewares: [
+        authenticate("admin", ["session", "bearer", "api-key"]),
+      ],
     },
     {
       matcher: "/custom/customer*",
-      middlewares: [requireCustomerAuthentication()],
+      middlewares: [
+        authenticate("store", ["session", "bearer"]),
+      ],
     },
   ],
 }
 ```
+
+The `authenticate` middleware function accepts three parameters:
+
+1. The scope of authentication. Use `admin` for authenticating admin users, and `store` for authenticating customers.
+2. An array of the types of authentication methods allowed. Both `admin` and `store` scopes support `session` and `bearer`. The `admin` scope also supports the `api-key` authentication method.
+3. An optional object of options having the following properties:
+    1. `allowUnauthenticated`: (default: `false`) A boolean indicating whether authentication is required. For example, you may have an API route where you want to access the logged-in customer if available, but guest customers can still access it too. In that case, enable the `allowUnauthenticated` option.
+    2. `allowUnregistered`: (default: `false`) A boolean indicating whether new users can be authenticated.
