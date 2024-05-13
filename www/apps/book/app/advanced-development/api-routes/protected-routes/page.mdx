@@ -130,7 +130,7 @@ export const highlights = [
 ```ts title="src/api/middlewares.ts" highlights={highlights}
 // TODO update import
 import { 
-  authenticate
+  authenticate,
 } from "@medusajs/medusa/dist/utils/authenticate-middleware"
 
 export const config: MiddlewaresConfig = {
@@ -138,13 +138,13 @@ export const config: MiddlewaresConfig = {
     {
       matcher: "/custom/admin*",
       middlewares: [
-        authenticate("admin", ["session", "bearer", "api-key"])
+        authenticate("admin", ["session", "bearer", "api-key"]),
       ],
     },
     {
       matcher: "/custom/customer*",
       middlewares: [
-        authenticate("store", ["session", "bearer"])
+        authenticate("store", ["session", "bearer"]),
       ],
     },
   ],

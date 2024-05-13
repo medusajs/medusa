@@ -98,14 +98,14 @@ const updateProduct = createStep(
 
           return {
             ...variant,
-            options: variantOptions
+            options: variantOptions,
           }
         }),
         options: options.map((option) => ({
           ...option,
-          values: option.values.map((value) => value.value)
+          values: option.values.map((value) => value.value),
         })),
-        type_id: type.id
+        type_id: type.id,
       }
     )
   }
