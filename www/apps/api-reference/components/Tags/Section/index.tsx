@@ -25,7 +25,6 @@ import { usePathname } from "next/navigation"
 import formatReportLink from "@/utils/format-report-link"
 import { SchemaObject, TagObject } from "@/types/openapi"
 import useSWR from "swr"
-import { useVersion } from "@/providers/version"
 import { TagSectionSchemaProps } from "./Schema"
 
 export type TagSectionProps = {
@@ -54,13 +53,12 @@ const TagSection = ({ tag }: TagSectionProps) => {
   const { area } = useArea()
   const pathname = usePathname()
   const { scrollableElement } = useScrollController()
-  const { version } = useVersion()
   const { data } = useSWR<{
     schema: SchemaObject
   }>(
     tag["x-associatedSchema"]
       ? getLinkWithBasePath(
-          `/schema?name=${tag["x-associatedSchema"].$ref}&area=${area}&version=${version}`,
+          `/schema?name=${tag["x-associatedSchema"].$ref}&area=${area}`,
           process.env.NEXT_PUBLIC_BASE_PATH
         )
       : null,

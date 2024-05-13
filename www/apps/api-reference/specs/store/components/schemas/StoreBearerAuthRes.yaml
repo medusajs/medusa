@@ -1,6 +1,0 @@
-type: object
-description: The access token details.
-properties:
-  access_token:
-    description: Access token that can be used to send authenticated requests.
-    type: string

@@ -1,7 +1,0 @@
-type: object
-required:
-  - title
-properties:
-  title:
-    description: The title of the Product Option
-    type: string

@@ -1,45 +1,29 @@
 get:
-  operationId: GetCollectionsCollection
+  operationId: GetCollectionsId
   summary: Get a Collection
   description: >-
-    Retrieve a Product Collection by its ID. The products associated with it are
-    expanded and returned as well.
+    Retrieve a collection by its ID. You can expand the collection's relations
+    or select the fields that should be returned.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The collection's ID.
       required: true
-      description: The ID of the Product Collection
       schema:
         type: string
-  x-codegen:
-    method: retrieve
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_collections_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_collections_{id}/get.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_collections_{id}/get.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
-    - Product Collections
+    - Collections
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminCollectionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -52,51 +36,34 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-post:
-  operationId: PostCollectionsCollection
-  summary: Update a Collection
-  description: Update a Product Collection's details.
-  x-authenticated: true
-  parameters:
-    - in: path
-      name: id
-      required: true
-      description: The ID of the Collection.
-      schema:
-        type: string
   requestBody:
     content:
       application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostCollectionsCollectionReq.yaml
-  x-codegen:
-    method: update
+        schema: {}
+post:
+  operationId: PostCollectionsId
+  summary: Update a Collection
+  description: Update a collection's details.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The collection's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_collections_{id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_collections_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_collections_{id}/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
-    - Product Collections
+    - Collections
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminCollectionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -109,46 +76,34 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
 delete:
-  operationId: DeleteCollectionsCollection
+  operationId: DeleteCollectionsId
   summary: Delete a Collection
-  description: Delete a Product Collection. This does not delete associated products.
+  description: Delete a collection.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The collection's ID.
       required: true
-      description: The ID of the Collection.
       schema:
         type: string
-  x-codegen:
-    method: delete
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_collections_{id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_collections_{id}/delete.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_collections_{id}/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
-    - Product Collections
+    - Collections
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminCollectionsDeleteRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -161,3 +116,7 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

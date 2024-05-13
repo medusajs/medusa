@@ -3,156 +3,21 @@ get:
   summary: List Sales Channels
   description: >-
     Retrieve a list of sales channels. The sales channels can be filtered by
-    fields such as `q` or `name`. The sales channels can also be sorted or
-    paginated.
+    fields such as `id`. The sales channels can also be sorted or paginated.
   x-authenticated: true
-  parameters:
-    - in: query
-      name: id
-      description: Filter by a sales channel ID.
-      schema:
-        type: string
-    - in: query
-      name: name
-      description: Filter by name.
-      schema:
-        type: string
-    - in: query
-      name: description
-      description: Filter by description.
-      schema:
-        type: string
-    - in: query
-      name: q
-      description: term used to search sales channels' names and descriptions.
-      schema:
-        type: string
-    - in: query
-      name: order
-      description: A sales-channel field to sort-order the retrieved sales channels by.
-      schema:
-        type: string
-    - in: query
-      name: created_at
-      description: Filter by a creation date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: updated_at
-      description: Filter by an update date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: deleted_at
-      description: Filter by a deletion date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: offset
-      description: The number of sales channels to skip when retrieving the sales channels.
-      schema:
-        type: integer
-        default: 0
-    - in: query
-      name: limit
-      description: Limit the number of sales channels returned.
-      schema:
-        type: integer
-        default: 20
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned sales
-        channels.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned sales
-        channels.
-      schema:
-        type: string
-  x-codegen:
-    method: list
-    queryParams: AdminGetSalesChannelsParams
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_sales-channels/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_sales-channels/get.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_sales-channels/get.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Sales Channels
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminSalesChannelsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -165,44 +30,28 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-post:
-  operationId: PostSalesChannels
-  summary: Create a Sales Channel
-  description: Create a Sales Channel.
-  x-authenticated: true
   requestBody:
     content:
       application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostSalesChannelsReq.yaml
-  x-codegen:
-    method: create
+        schema: {}
+post:
+  operationId: PostSalesChannels
+  summary: Create Sales Channel
+  description: Create a sales channel.
+  x-authenticated: true
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_sales-channels/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_sales-channels/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_sales-channels/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Sales Channels
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminSalesChannelsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -215,3 +64,7 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
