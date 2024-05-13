@@ -771,6 +771,13 @@ export const RouteMap: RouteObject[] = [
                                         "../../v2-routes/shipping/shipping-option-edit"
                                       ),
                                   },
+                                  {
+                                    path: "edit-pricing",
+                                    lazy: () =>
+                                      import(
+                                        "../../v2-routes/shipping/shipping-options-edit-pricing"
+                                      ),
+                                  },
                                 ],
                               },
                             ],

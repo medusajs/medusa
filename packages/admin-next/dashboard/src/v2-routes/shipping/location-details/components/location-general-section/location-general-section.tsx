@@ -156,7 +156,7 @@ function ShippingOption({
               {
                 label: t("shipping.serviceZone.editPrices"),
                 icon: <CurrencyDollar />,
-                disabled: true,
+                to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${option.service_zone_id}/shipping-option/${option.id}/edit-pricing`,
               },
               {
                 label: t("actions.delete"),
