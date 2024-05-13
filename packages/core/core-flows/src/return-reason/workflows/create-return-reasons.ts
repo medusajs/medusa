@@ -5,7 +5,7 @@ import {
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { createReturnReasonsStep } from "../steps"
 
-type WorkflowInput = { customersData: CreateOrderReturnReasonDTO[] }
+type WorkflowInput = { data: CreateOrderReturnReasonDTO[] }
 
 export const createReturnReasonsWorkflowId = "create-return-reasons"
 export const createReturnReasonsWorkflow = createWorkflow(
