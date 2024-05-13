@@ -17,11 +17,13 @@ medusaIntegrationTestRunner({
       })
 
       it("Should migrate database and initialize Product module using connection string from environment variable ", async function () {
-        const { modules } = await MedusaApp({
+        const { modules, runMigrations } = await MedusaApp({
           modulesConfig: {
             [Modules.PRODUCT]: true,
           },
         })
+
+        await runMigrations()
 
         const product = modules[
           Modules.PRODUCT
