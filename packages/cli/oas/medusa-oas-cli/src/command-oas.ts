@@ -161,7 +161,7 @@ async function getOASFromCodebase(
 async function getPublicOas(
   apiType: ApiType,
 ) {
-  const url = `https://docs.medusajs.com/api/download/${apiType}`
+  const url = `https://docs.medusajs.com/v2/api/download/${apiType}`
   return await OpenAPIParser.parse(url) as OpenAPIObject
 }
 
