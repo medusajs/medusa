@@ -17,10 +17,10 @@ export function mikroOrmConnectionLoaderFactory({
   moduleModels: any[]
   migrationsPath?: string
 }): any {
-  return async (
+  return async function connectionLoader(
     { options, container, logger }: LoaderOptions,
     moduleDeclaration?: InternalModuleDeclaration
-  ): Promise<void> => {
+  ): Promise<void> {
     await mikroOrmConnectionLoader({
       moduleName,
       entities: moduleModels,

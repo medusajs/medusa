@@ -59,7 +59,7 @@ export type SidebarContextType = {
   setDesktopSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
   staticSidebarItems?: boolean
   shouldHandleHashChange: boolean
-  sidebarRef: React.RefObject<HTMLUListElement>
+  sidebarRef: React.RefObject<HTMLDivElement>
   goBack: () => void
 } & SidebarStyleOptions
 
@@ -145,7 +145,14 @@ export const reducer = (
           if (i.path && parent?.path && i.path === parent?.path) {
             return {
               ...i,
-              children: [...(i.children || []), ...items],
+              children:
+                indexPosition !== undefined
+                  ? [
+                      ...(i.children?.slice(0, indexPosition) || []),
+                      ...items,
+                      ...(i.children?.slice(indexPosition) || []),
+                    ]
+                  : [...(i.children || []), ...items],
               loaded: parent.changeLoaded ? true : i.loaded,
             }
           }
@@ -191,7 +198,7 @@ export const SidebarProvider = ({
   const [activePath, setActivePath] = useState<string | null>("")
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false)
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true)
-  const sidebarRef = useRef<HTMLUListElement>(null)
+  const sidebarRef = useRef<HTMLDivElement>(null)
 
   const pathname = usePathname()
   const router = useRouter()
@@ -304,7 +311,7 @@ export const SidebarProvider = ({
     }
 
     setActivePath(backItem.path!)
-    setCurrentItems(currentItems.previousSidebar)
+    setCurrentItems(previousSidebar)
     router.replace(backItem.path!)
   }
 
@@ -398,7 +405,10 @@ export const SidebarProvider = ({
         bottom: [],
         mobile: items.mobile,
         parentItem: parentItem,
-        previousSidebar: currentItems,
+        previousSidebar:
+          currentItems?.previousSidebar?.parentItem?.path !== parentItem.path
+            ? currentItems
+            : undefined,
       })
     }
   }, [getCurrentSidebar, activePath])

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
-import { useRemovePromotionsFromCampaign } from "../../../../../hooks/api/campaigns"
+import { useAddOrRemoveCampaignPromotions } from "../../../../../hooks/api/campaigns"
 import { usePromotions } from "../../../../../hooks/api/promotions"
 import { usePromotionTableColumns } from "../../../../../hooks/table/columns-v2/use-promotion-table-columns"
 import { usePromotionTableFilters } from "../../../../../hooks/table/filters/use-promotion-table-filters"
@@ -27,15 +27,13 @@ export const CampaignPromotionSection = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { t } = useTranslation()
   const prompt = usePrompt()
-
+  const columns = useColumns()
+  const filters = usePromotionTableFilters()
   const { searchParams, raw } = usePromotionTableQuery({ pageSize: PAGE_SIZE })
   const { promotions, count, isLoading, isError, error } = usePromotions({
     ...searchParams,
-    // TODO: This should be scoped by currency_code
+    campaign_id: campaign.id,
   })
-
-  const columns = useColumns()
-  const filters = usePromotionTableFilters()
 
   const { table } = useDataTable({
     data: promotions ?? [],
@@ -49,16 +47,14 @@ export const CampaignPromotionSection = ({
       state: rowSelection,
       updater: setRowSelection,
     },
-    meta: {
-      campaignId: campaign.id,
-    },
+    meta: { campaignId: campaign.id },
   })
 
   if (isError) {
     throw error
   }
 
-  const { mutateAsync } = useRemovePromotionsFromCampaign(campaign.id)
+  const { mutateAsync } = useAddOrRemoveCampaignPromotions(campaign.id)
 
   const handleRemove = async () => {
     const keys = Object.keys(rowSelection)
@@ -77,14 +73,8 @@ export const CampaignPromotionSection = ({
     }
 
     await mutateAsync(
-      {
-        remove: keys,
-      },
-      {
-        onSuccess: () => {
-          setRowSelection({})
-        },
-      }
+      { remove: keys },
+      { onSuccess: () => setRowSelection({}) }
     )
   }
 
@@ -138,7 +128,7 @@ const PromotionActions = ({
   campaignId: string
 }) => {
   const { t } = useTranslation()
-  const { mutateAsync } = useRemovePromotionsFromCampaign(campaignId)
+  const { mutateAsync } = useAddOrRemoveCampaignPromotions(campaignId)
 
   const prompt = usePrompt()
 

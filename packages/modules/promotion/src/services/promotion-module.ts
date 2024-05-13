@@ -528,7 +528,7 @@ export default class PromotionModuleService<
 
       promotionsData.push({
         ...promotionData,
-        campaign: campaignId,
+        campaign_id: campaignId,
       })
     }
 
@@ -536,6 +536,7 @@ export default class PromotionModuleService<
       promotionsData,
       sharedContext
     )
+    const promotionsToAdd: PromotionTypes.AddPromotionsToCampaignDTO[] = []
 
     for (const promotion of createdPromotions) {
       const applMethodData = promotionCodeApplicationMethodDataMap.get(
@@ -617,8 +618,25 @@ export default class PromotionModuleService<
         sharedContext
       )
 
-    if (campaignsData.length) {
-      await this.createCampaigns(campaignsData, sharedContext)
+    const createdCampaigns = await this.createCampaigns(
+      campaignsData,
+      sharedContext
+    )
+
+    for (const campaignData of campaignsData) {
+      const promotions = campaignData.promotions
+      const campaign = createdCampaigns.find(
+        (c) => c.campaign_identifier === campaignData.campaign_identifier
+      )
+
+      if (!campaign || !promotions || !promotions.length) {
+        continue
+      }
+
+      await this.addPromotionsToCampaign(
+        { id: campaign.id, promotion_ids: promotions.map((p) => p.id) },
+        sharedContext
+      )
     }
 
     for (const applicationMethod of createdApplicationMethods) {
@@ -704,7 +722,7 @@ export default class PromotionModuleService<
       ...promotionData
     } of data) {
       if (campaignId) {
-        promotionsData.push({ ...promotionData, campaign: campaignId })
+        promotionsData.push({ ...promotionData, campaign_id: campaignId })
       } else {
         promotionsData.push(promotionData)
       }
@@ -1110,19 +1128,7 @@ export default class PromotionModuleService<
     >()
 
     for (const createCampaignData of data) {
-      const {
-        budget: campaignBudgetData,
-        promotions,
-        ...campaignData
-      } = createCampaignData
-
-      const promotionsToAdd = promotions
-        ? await this.list(
-            { id: promotions.map((p) => p.id) },
-            { take: null },
-            sharedContext
-          )
-        : []
+      const { budget: campaignBudgetData, ...campaignData } = createCampaignData
 
       if (campaignBudgetData) {
         campaignIdentifierBudgetMap.set(
@@ -1133,7 +1139,6 @@ export default class PromotionModuleService<
 
       campaignsData.push({
         ...campaignData,
-        promotions: promotionsToAdd,
       })
     }
 
@@ -1243,5 +1248,105 @@ export default class PromotionModuleService<
     }
 
     return updatedCampaigns
+  }
+
+  @InjectManager("baseRepository_")
+  async addPromotionsToCampaign(
+    data: PromotionTypes.AddPromotionsToCampaignDTO,
+    sharedContext?: Context
+  ): Promise<{ ids: string[] }> {
+    const ids = await this.addPromotionsToCampaign_(data, sharedContext)
+
+    return { ids }
+  }
+
+  // TODO:
+  // - introduce currency_code to promotion
+  // - allow promotions to be queried by currency code
+  // - when the above is present, validate adding promotion to campaign based on currency code
+  @InjectTransactionManager("baseRepository_")
+  protected async addPromotionsToCampaign_(
+    data: PromotionTypes.AddPromotionsToCampaignDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const { id, promotion_ids: promotionIds = [] } = data
+
+    const campaign = await this.campaignService_.retrieve(id, {}, sharedContext)
+    const promotionsToAdd = await this.promotionService_.list(
+      { id: promotionIds, campaign_id: null },
+      { take: null },
+      sharedContext
+    )
+
+    const diff = arrayDifference(
+      promotionsToAdd.map((p) => p.id),
+      promotionIds
+    )
+
+    if (diff.length > 0) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Cannot add promotions (${diff.join(
+          ","
+        )}) to campaign. These promotions are either already part of a campaign or not found.`
+      )
+    }
+
+    await this.promotionService_.update(
+      promotionsToAdd.map((promotion) => ({
+        id: promotion.id,
+        campaign_id: campaign.id,
+      })),
+      sharedContext
+    )
+
+    return promotionsToAdd.map((promo) => promo.id)
+  }
+
+  @InjectManager("baseRepository_")
+  async removePromotionsFromCampaign(
+    data: PromotionTypes.AddPromotionsToCampaignDTO,
+    sharedContext?: Context
+  ): Promise<{ ids: string[] }> {
+    const ids = await this.removePromotionsFromCampaign_(data, sharedContext)
+
+    return { ids }
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async removePromotionsFromCampaign_(
+    data: PromotionTypes.AddPromotionsToCampaignDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const { id, promotion_ids: promotionIds = [] } = data
+
+    await this.campaignService_.retrieve(id, {}, sharedContext)
+    const promotionsToRemove = await this.promotionService_.list(
+      { id: promotionIds },
+      { take: null },
+      sharedContext
+    )
+
+    const diff = arrayDifference(
+      promotionsToRemove.map((p) => p.id),
+      promotionIds
+    )
+
+    if (diff.length > 0) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Promotions with ids (${diff.join(",")}) not found.`
+      )
+    }
+
+    await this.promotionService_.update(
+      promotionsToRemove.map((promotion) => ({
+        id: promotion.id,
+        campaign_id: null,
+      })),
+      sharedContext
+    )
+
+    return promotionsToRemove.map((promo) => promo.id)
   }
 }
