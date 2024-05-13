@@ -104,5 +104,23 @@ module.exports = {
         providers: [customFulfillmentProvider],
       },
     },
+    [Modules.NOTIFICATION]: {
+      /** @type {import('@medusajs/types').LocalNotificationServiceOptions} */
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/notification-local",
+            options: {
+              config: {
+                "local-notification-provider": {
+                  name: "Local Notification Provider",
+                  channels: ["log", "email"],
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
   },
 }

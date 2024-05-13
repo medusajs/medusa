@@ -1,6 +1,6 @@
 import { CampaignBudgetType } from "@medusajs/utils"
-import { createFindParams, createSelectParams } from "../../utils/validators"
 import { z } from "zod"
+import { createFindParams, createSelectParams } from "../../utils/validators"
 
 export const AdminGetCampaignParams = createSelectParams()
 
@@ -37,8 +37,8 @@ export const AdminCreateCampaign = z.object({
   description: z.string().optional(),
   currency: z.string().optional(),
   budget: CreateCampaignBudget.optional(),
-  starts_at: z.coerce.date(),
-  ends_at: z.coerce.date(),
+  starts_at: z.coerce.date().optional(),
+  ends_at: z.coerce.date().optional(),
   promotions: z.array(z.object({ id: z.string() })).optional(),
 })
 

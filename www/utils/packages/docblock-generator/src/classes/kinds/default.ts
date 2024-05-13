@@ -474,7 +474,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
           }
 
           if (
-            symbolType.symbol.valueDeclaration &&
+            symbolType.symbol?.valueDeclaration &&
             "heritageClauses" in symbolType.symbol.valueDeclaration
           ) {
             return this.isEntity({

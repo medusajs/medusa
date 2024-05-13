@@ -6,9 +6,9 @@ import {
   CampaignBudgetType,
   PromotionType,
 } from "@medusajs/utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createPromotions } from "../../../__fixtures__/promotion"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -918,6 +918,7 @@ moduleIntegrationTestRunner({
             {
               id: "promotion-id-1",
               code: "PROMOTION_1",
+              campaign_id: null,
               campaign: null,
               is_automatic: false,
               type: "standard",
@@ -929,6 +930,7 @@ moduleIntegrationTestRunner({
             {
               id: "promotion-id-2",
               code: "PROMOTION_2",
+              campaign_id: null,
               campaign: null,
               is_automatic: false,
               type: "standard",

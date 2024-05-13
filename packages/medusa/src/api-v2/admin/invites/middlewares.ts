@@ -9,7 +9,7 @@ import {
 } from "./validators"
 
 import { MiddlewareRoute } from "../../../types/middlewares"
-import { authenticate } from "../../../utils/authenticate-middleware"
+import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import { validateAndTransformBody } from "../../utils/validate-body"
 

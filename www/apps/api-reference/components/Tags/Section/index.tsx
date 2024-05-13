@@ -1,10 +1,15 @@
 "use client"
 
 import getSectionId from "@/utils/get-section-id"
-import type { OpenAPIV3 } from "openapi-types"
 import { useInView } from "react-intersection-observer"
 import { useEffect, useMemo, useState } from "react"
-import { isElmWindow, useScrollController, useSidebar } from "docs-ui"
+import {
+  getLinkWithBasePath,
+  isElmWindow,
+  swrFetcher,
+  useScrollController,
+  useSidebar,
+} from "docs-ui"
 import dynamic from "next/dynamic"
 import type { SectionProps } from "../../Section"
 import type { MDXContentClientProps } from "../../MDXContent/Client"
@@ -12,20 +17,28 @@ import TagPaths from "../Paths"
 import DividedLayout from "@/layouts/Divided"
 import LoadingProvider from "@/providers/loading"
 import SectionContainer from "../../Section/Container"
-import { useArea } from "../../../providers/area"
+import { useArea } from "@/providers/area"
 import SectionDivider from "../../Section/Divider"
 import clsx from "clsx"
 import { Feedback, Loading, Link } from "docs-ui"
 import { usePathname } from "next/navigation"
-import formatReportLink from "../../../utils/format-report-link"
+import formatReportLink from "@/utils/format-report-link"
+import { SchemaObject, TagObject } from "@/types/openapi"
+import useSWR from "swr"
+import { useVersion } from "@/providers/version"
+import { TagSectionSchemaProps } from "./Schema"
 
 export type TagSectionProps = {
-  tag: OpenAPIV3.TagObject
+  tag: TagObject
 } & React.HTMLAttributes<HTMLDivElement>
 
 const Section = dynamic<SectionProps>(
   async () => import("../../Section")
 ) as React.FC<SectionProps>
+
+const TagSectionSchema = dynamic<TagSectionSchemaProps>(
+  async () => import("./Schema")
+) as React.FC<TagSectionSchemaProps>
 
 const MDXContentClient = dynamic<MDXContentClientProps>(
   async () => import("../../MDXContent/Client"),
@@ -41,6 +54,23 @@ const TagSection = ({ tag }: TagSectionProps) => {
   const { area } = useArea()
   const pathname = usePathname()
   const { scrollableElement } = useScrollController()
+  const { version } = useVersion()
+  const { data } = useSWR<{
+    schema: SchemaObject
+  }>(
+    tag["x-associatedSchema"]
+      ? getLinkWithBasePath(
+          `/schema?name=${tag["x-associatedSchema"].$ref}&area=${area}&version=${version}`,
+          process.env.NEXT_PUBLIC_BASE_PATH
+        )
+      : null,
+    swrFetcher,
+    {
+      errorRetryInterval: 2000,
+    }
+  )
+  const associatedSchema = data?.schema
+
   const root = useMemo(() => {
     return isElmWindow(scrollableElement) ? document.body : scrollableElement
   }, [scrollableElement])
@@ -118,6 +148,9 @@ const TagSection = ({ tag }: TagSectionProps) => {
         }
         codeContent={<></>}
       />
+      {associatedSchema && (
+        <TagSectionSchema schema={associatedSchema} tagName={tag.name} />
+      )}
       {loadPaths && (
         <LoadingProvider initialLoading={true}>
           <TagPaths tag={tag} />

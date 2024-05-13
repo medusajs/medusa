@@ -1,5 +1,6 @@
 import { BaseFilterable } from "../../dal"
 import { CampaignBudgetDTO } from "./campaign-budget"
+import { PromotionDTO } from "./promotion"
 
 /**
  * The campaign details.
@@ -44,6 +45,11 @@ export interface CampaignDTO {
    * The associated campaign budget.
    */
   budget?: CampaignBudgetDTO
+
+  /**
+   * The associated promotions.
+   */
+  promotions?: PromotionDTO[]
 }
 
 /**

@@ -79,9 +79,9 @@ The `CustomProductData` data model has a `product_id` field to reference the pro
 
 When you add a new data model, make sure to:
 
-- Create a migration for it.
-- Add it to the second parameter of the main service's factory function.
-- Add it to the container and connection loaders.
+- [Create a migration for it.](../../../basics/data-models/page.mdx#create-a-migration)
+- [Add it to the second parameter of the main service's factory function.](../service-factory/page.mdx#abstractModuleServiceFactory-parameters)
+- Add it to the [container](../container/page.mdx) and [connection](../connection-loader/page.mdx) loaders.
 
 </Note>
 
@@ -120,8 +120,8 @@ class HelloModuleService extends ModulesSdkUtils
           {
             name: ["my_custom"],
             args: {
-              entity: MyCustom.name
-            }
+              entity: MyCustom.name,
+            },
           },
           {
             name: ["custom_product_data"],
@@ -157,23 +157,23 @@ This creates a relationship to the `Product` data model of the Product Module us
     name: "serviceName",
     type: "`string`",
     optional: false,
-    description: "The name of the module (as added in `medusa-config.js`)."
+    description: "The name of your module (as added in `medusa-config.js`)."
   },
   {
     name: "primaryKeys",
     type: "`string[]`",
     optional: false,
-    description: "The primary key field names used in the module's data models.",
+    description: "The primary key field names used in your module's data models.",
   },
   {
     name: "alias",
     type: "`object[]`",
-    description: "The alias definitions for each data model in the module. This allows other modules to reference your module's data models in relationships.",
+    description: "The alias definitions for each data model in your module. This allows other modules to reference your module's data models in relationships.",
     children: [
       {
         name: "name",
         type: "`string[]`",
-        description: "The alias names used later when fetching or referencing the data in the model."
+        description: "The alias names of a data model used later when fetching or referencing the data model."
       },
       {
         name: "args",
@@ -197,19 +197,19 @@ This creates a relationship to the `Product` data model of the Product Module us
   {
     name: "relationships",
     type: "`object[]`",
-    description: "The module's relationships to other modules.",
+    description: "Your module's relationships to other modules.",
     children: [
       {
         name: "serviceName",
         type: "`string`",
         optional: false,
-        description: "The name of the module (as added in `medusa-config.js`) that this relationship is referencing. If you’re referencing a Medusa commerce module, use the `Modules` enum imported from `@medusajs/modules-sdk`."
+        description: "The name of the module (as added in `medusa-config.js`) that this relationship is referencing. When referencing a Medusa commerce module, use the `Modules` enum imported from `@medusajs/modules-sdk`."
       },
       {
         name: "alias",
         type: "`string`",
         optional: false,
-        description: "The alias of the data model you’re referencing in the other module. You can find it in the `__joinerConfig` method of the other module."
+        description: "The alias of the data model you’re referencing in the other module. You can find it in the `__joinerConfig` method of the other module's service."
       },
       {
         name: "primaryKey",

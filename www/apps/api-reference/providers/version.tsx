@@ -1,13 +1,12 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useMemo } from "react"
 import { Version } from "../types/openapi"
 import { usePathname } from "next/navigation"
-import { useIsBrowser } from "docs-ui"
 
 type VersionContextType = {
   version: Version
-  changeVersion: (value: Version) => void
+  isVersioningEnabled: boolean
 }
 
 const VersionContext = createContext<VersionContextType | null>(null)
@@ -18,44 +17,18 @@ type VersionProviderProps = {
 
 const VersionProvider = ({ children }: VersionProviderProps) => {
   const pathname = usePathname()
-  const [version, setVersion] = useState<Version>("1")
-  const isBrowser = useIsBrowser()
 
-  const changeVersion = (version: Version) => {
-    if (!isBrowser || process.env.NEXT_PUBLIC_VERSIONING !== "true") {
-      return
-    }
-    localStorage.setItem("api-version", version)
-
-    location.href = `${location.href.substring(
-      0,
-      location.href.indexOf(location.pathname)
-    )}${pathname}`
-  }
-
-  useEffect(() => {
-    if (!isBrowser || process.env.NEXT_PUBLIC_VERSIONING !== "true") {
-      return
-    }
-    // try to load from localstorage
-    const versionInLocalStorage = localStorage.getItem("api-version") as Version
-    if (versionInLocalStorage) {
-      setVersion(versionInLocalStorage)
-    }
-  }, [isBrowser])
-
-  useEffect(() => {
-    if (!isBrowser || process.env.NEXT_PUBLIC_VERSIONING !== "true") {
-      return
-    }
-    const versionInLocalStorage = localStorage.getItem("api-version") as Version
-    if (version !== versionInLocalStorage) {
-      localStorage.setItem("api-version", version)
-    }
-  }, [version, isBrowser])
+  const version = useMemo(() => {
+    return pathname.includes("v2") ? "2" : "1"
+  }, [pathname])
 
   return (
-    <VersionContext.Provider value={{ version, changeVersion }}>
+    <VersionContext.Provider
+      value={{
+        version,
+        isVersioningEnabled: process.env.NEXT_PUBLIC_VERSIONING === "true",
+      }}
+    >
       {children}
     </VersionContext.Provider>
   )

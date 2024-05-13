@@ -64,10 +64,9 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
         { path: tagSlugName },
         false
       )
-      if (!parentItem?.children?.length) {
-        const items: SidebarItemType[] = getTagChildSidebarItems(paths)
-
-        addItems(items, {
+      const pathItems: SidebarItemType[] = getTagChildSidebarItems(paths)
+      if ((parentItem?.children?.length || 0) < pathItems.length) {
+        addItems(pathItems, {
           section: SidebarItemSections.BOTTOM,
           parent: {
             path: tagSlugName,

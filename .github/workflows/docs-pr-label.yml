@@ -1,0 +1,13 @@
+name: "Add Docs PR Label"
+on:
+  pull_request:
+
+jobs:
+  labeler:
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+    - id: label-the-PR
+      uses: actions/labeler@v5

@@ -19,11 +19,13 @@ import OasExamplesGenerator from "../examples/oas.js"
 import pluralize from "pluralize"
 import getOasOutputBasePath from "../../utils/get-oas-output-base-path.js"
 import parseOas, { ExistingOas } from "../../utils/parse-oas.js"
-import OasSchemaHelper from "../helpers/oas-schema.js"
+import OasSchemaHelper, { ParsedSchema } from "../helpers/oas-schema.js"
 import formatOas from "../../utils/format-oas.js"
 import { DEFAULT_OAS_RESPONSES } from "../../constants.js"
 import { capitalize, kebabToTitle, wordsToKebab } from "utils"
 import SchemaFactory from "../helpers/schema-factory.js"
+import isZodObject from "../../utils/is-zod-object.js"
+import getCorrectZodTypeName from "../../utils/get-correct-zod-type-name.js"
 
 export const API_ROUTE_PARAM_REGEX = /\[(.+?)\]/g
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
@@ -1094,11 +1096,16 @@ class OasKindGenerator extends FunctionKindGenerator {
       const requestTypeArguments = this.checker.getTypeArguments(requestType)
 
       if (requestTypeArguments.length === 1) {
+        const zodObjectTypeName = getCorrectZodTypeName({
+          typeReferenceNode: node.parameters[0].type,
+          itemType: requestTypeArguments[0],
+        })
         requestSchema = this.typeToSchema({
           itemType: requestTypeArguments[0],
           descriptionOptions: {
             parentName: tagName,
           },
+          zodObjectTypeName: zodObjectTypeName,
         })
       }
     }
@@ -1167,6 +1174,10 @@ class OasKindGenerator extends FunctionKindGenerator {
           descriptionOptions: {
             parentName: tagName,
           },
+          zodObjectTypeName: getCorrectZodTypeName({
+            typeReferenceNode: node.parameters[1].type,
+            itemType: responseTypeArguments[0],
+          }),
         })
       }
     }
@@ -1187,6 +1198,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     descriptionOptions,
     allowedChildren,
     disallowedChildren,
+    zodObjectTypeName,
   }: {
     /**
      * The TypeScript type.
@@ -1214,6 +1226,12 @@ class OasKindGenerator extends FunctionKindGenerator {
      * only children not included in this array are added to the schema.
      */
     disallowedChildren?: string[]
+    /**
+     * By default, the type name is generated from itemType, which
+     * doesn't work for types created by Zod. This allows to correct the
+     * generated type name.
+     */
+    zodObjectTypeName?: string
   }): OpenApiSchema {
     if (level > this.MAX_LEVEL) {
       return {}
@@ -1227,7 +1245,8 @@ class OasKindGenerator extends FunctionKindGenerator {
       : title
         ? this.getSchemaDescription({ typeStr: title, nodeType: itemType })
         : this.defaultSummary
-    const typeAsString = this.checker.typeToString(itemType)
+    const typeAsString =
+      zodObjectTypeName || this.checker.typeToString(itemType)
 
     const schemaFromFactory = this.schemaFactory.tryGetSchema(
       itemType.symbol?.getName() ||
@@ -1433,6 +1452,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         (itemType as ts.Type).flags === ts.TypeFlags.Object:
         const properties: Record<string, OpenApiSchema> = {}
         const requiredProperties: string[] = []
+
         if (level + 1 <= this.MAX_LEVEL) {
           itemType.getProperties().forEach((property) => {
             if (
@@ -1461,7 +1481,9 @@ class OasKindGenerator extends FunctionKindGenerator {
           type: "object",
           description,
           "x-schemaName":
-            itemType.isClassOrInterface() || itemType.isTypeParameter()
+            itemType.isClassOrInterface() ||
+            itemType.isTypeParameter() ||
+            (isZodObject(itemType) && zodObjectTypeName)
               ? this.oasSchemaHelper.normalizeSchemaName(typeAsString)
               : undefined,
           required:
@@ -1871,32 +1893,43 @@ class OasKindGenerator extends FunctionKindGenerator {
     const areaYaml = parse(
       readFileSync(areaYamlPath, "utf-8")
     ) as OpenApiDocument
-    let addedTags = false
+    let modifiedTags = false
 
     areaYaml.tags = [...(areaYaml.tags || [])]
 
     this.tags.get(area)?.forEach((tag) => {
       const existingTag = areaYaml.tags!.find((baseTag) => baseTag.name === tag)
+      // try to retrieve associated schema
+      let schema: ParsedSchema | undefined
+      this.oasSchemaHelper.tagNameToSchemaName(tag, area).some((schemaName) => {
+        schema = this.oasSchemaHelper.getSchemaByName(schemaName)
+
+        if (schema) {
+          return true
+        }
+      })
+      const associatedSchema = schema?.schema?.["x-schemaName"]
+        ? {
+            $ref: this.oasSchemaHelper.constructSchemaReference(
+              schema.schema["x-schemaName"]
+            ),
+          }
+        : undefined
       if (!existingTag) {
-        // try to retrieve associated schema
-        const schema = this.oasSchemaHelper.getSchemaByName(
-          this.oasSchemaHelper.tagNameToSchemaName(tag)
-        )
         areaYaml.tags!.push({
           name: tag,
-          "x-associatedSchema": schema?.schema?.["x-schemaName"]
-            ? {
-                $ref: this.oasSchemaHelper.constructSchemaReference(
-                  schema.schema["x-schemaName"]
-                ),
-              }
-            : undefined,
+          "x-associatedSchema": associatedSchema,
         })
-        addedTags = true
+        modifiedTags = true
+      } else if (
+        existingTag["x-associatedSchema"]?.$ref !== associatedSchema?.$ref
+      ) {
+        existingTag["x-associatedSchema"] = associatedSchema
+        modifiedTags = true
       }
     })
 
-    if (addedTags) {
+    if (modifiedTags) {
       // sort alphabetically
       areaYaml.tags.sort((tagA, tagB) => {
         return tagA.name.localeCompare(tagB.name)

@@ -1,17 +1,17 @@
 import { createPromotionsWorkflow } from "@medusajs/core-flows"
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../types/routing"
-import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
+import { refetchPromotion } from "./helpers"
+import {
   AdminCreatePromotionType,
   AdminGetPromotionsParamsType,
 } from "./validators"
-import { refetchPromotion } from "./helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetPromotionsParamsType>,

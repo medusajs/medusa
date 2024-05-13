@@ -30,13 +30,18 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
     name: "campaign_id",
   })
 
+  const watchCampaignChoice = useWatch({
+    control: form.control,
+    name: "campaign_choice",
+  })
+
   const selectedCampaign = campaigns.find((c) => c.id === watchCampaignId)
 
   return (
     <div className="flex h-full flex-col gap-y-8">
       <Form.Field
         control={form.control}
-        name="existing"
+        name="campaign_choice"
         render={({ field }) => {
           return (
             <Form.Item>
@@ -49,23 +54,34 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
                   onValueChange={field.onChange}
                 >
                   <RadioGroup.ChoiceBox
-                    value={"true"}
+                    value={"none"}
+                    label={t("promotions.form.campaign.none.title")}
+                    description={t("promotions.form.campaign.none.description")}
+                    className={clx("", {
+                      "border-2 border-ui-border-interactive":
+                        "none" === field.value,
+                    })}
+                  />
+
+                  <RadioGroup.ChoiceBox
+                    value={"existing"}
                     label={t("promotions.form.campaign.existing.title")}
                     description={t(
                       "promotions.form.campaign.existing.description"
                     )}
                     className={clx("", {
                       "border-2 border-ui-border-interactive":
-                        "true" === field.value,
+                        "existing" === field.value,
                     })}
                   />
+
                   <RadioGroup.ChoiceBox
-                    value={"false"}
+                    value={"new"}
                     label={t("promotions.form.campaign.new.title")}
                     description={t("promotions.form.campaign.new.description")}
                     className={clx("", {
                       "border-2 border-ui-border-interactive":
-                        "false" === field.value,
+                        "new" === field.value,
                     })}
                     disabled
                   />
@@ -78,36 +94,38 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
         }}
       />
 
-      <Form.Field
-        control={form.control}
-        name="campaign_id"
-        render={({ field: { onChange, ref, ...field } }) => {
-          return (
-            <Form.Item>
-              <Form.Label>
-                {t("promotions.form.campaign.existing.title")}
-              </Form.Label>
+      {watchCampaignChoice === "existing" && (
+        <Form.Field
+          control={form.control}
+          name="campaign_id"
+          render={({ field: { onChange, ref, ...field } }) => {
+            return (
+              <Form.Item>
+                <Form.Label>
+                  {t("promotions.form.campaign.existing.title")}
+                </Form.Label>
 
-              <Form.Control>
-                <Select onValueChange={onChange} {...field}>
-                  <Select.Trigger ref={ref}>
-                    <Select.Value />
-                  </Select.Trigger>
+                <Form.Control>
+                  <Select onValueChange={onChange} {...field}>
+                    <Select.Trigger ref={ref}>
+                      <Select.Value />
+                    </Select.Trigger>
 
-                  <Select.Content>
-                    {campaigns.map((c) => (
-                      <Select.Item key={c.id} value={c.id}>
-                        {c.name?.toUpperCase()}
-                      </Select.Item>
-                    ))}
-                  </Select.Content>
-                </Select>
-              </Form.Control>
-              <Form.ErrorMessage />
-            </Form.Item>
-          )
-        }}
-      />
+                    <Select.Content>
+                      {campaigns.map((c) => (
+                        <Select.Item key={c.id} value={c.id}>
+                          {c.name?.toUpperCase()}
+                        </Select.Item>
+                      ))}
+                    </Select.Content>
+                  </Select>
+                </Form.Control>
+                <Form.ErrorMessage />
+              </Form.Item>
+            )
+          }}
+        />
+      )}
 
       <CampaignDetails campaign={selectedCampaign} />
     </div>
