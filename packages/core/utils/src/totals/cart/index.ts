@@ -68,9 +68,6 @@ export function decorateCartTotals(
   })
 
   const extraTotals = {}
-  for (const key of Object.values(optionalFields)) {
-    extraTotals[key] = MathBN.convert(0)
-  }
 
   let subtotal = MathBN.convert(0)
 
@@ -133,7 +130,10 @@ export function decorateCartTotals(
     )
 
     for (const key of Object.values(optionalFields)) {
-      extraTotals[key] = MathBN.add(extraTotals[key], itemTotals[key] ?? 0)
+      if (key in itemTotals) {
+        extraTotals[key] ??= MathBN.convert(0)
+        extraTotals[key] = MathBN.add(extraTotals[key], itemTotals[key] ?? 0)
+      }
     }
 
     return itemTotals
@@ -233,7 +233,7 @@ export function decorateCartTotals(
     cart.original_item_subtotal = new BigNumber(itemsOriginalSubtotal)
     cart.original_item_tax_total = new BigNumber(itemsOriginalTaxTotal)
 
-    for (const key of Object.values(optionalFields)) {
+    for (const key of Object.keys(extraTotals)) {
       cart[key] = new BigNumber(extraTotals[key])
     }
   }
