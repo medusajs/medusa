@@ -22,6 +22,7 @@ const Navbar = () => {
       getNavbarItems({
         basePath: config.baseUrl,
         activePath: pathname,
+        version: process.env.NEXT_PUBLIC_SHOW_V2 ? "v1" : "legacy",
       }),
     [pathname]
   )
