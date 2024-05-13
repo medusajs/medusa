@@ -96,22 +96,33 @@ const nextConfig = {
     return {
       fallback: [
         {
-          source: "/resources",
-          destination: `${process.env.NEXT_PUBLIC_RESOURCES_URL}/resources`,
+          source: "/v2/resources",
+          destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/v2/resources`,
+          basePath: false,
         },
         {
-          source: "/resources/:path*",
-          destination: `${process.env.NEXT_PUBLIC_RESOURCES_URL}/resources/:path*`,
+          source: "/v2/resources/:path*",
+          destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/v2/resources/:path*`,
+          basePath: false,
         },
         // TODO comment out once we have the user guide published
         // {
         //   source: "/user-guide",
         //   destination: `${process.env.NEXT_PUBLIC_USER_GUIDE_URL}/user-guide`,
+        //   basePath: false,
         // },
         // {
         //   source: "/user-guide/:path*",
         //   destination: `${process.env.NEXT_PUBLIC_USER_GUIDE_URL}/user-guide/:path*`,
+        //   basePath: false,
         // },
+        {
+          source: "/:path*",
+          destination: `${
+            process.env.NEXT_PUBLIC_DOCS_URL || "https://localhost:3001"
+          }/:path*`,
+          basePath: false,
+        },
       ],
     }
   },
