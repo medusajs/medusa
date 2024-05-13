@@ -33,7 +33,7 @@ type KeysOfUnion<T> = T extends T ? keyof T : never
 export type StepFunction<
   TInput,
   TOutput = unknown
-> = (KeysOfUnion<TInput> extends []
+> = ((KeysOfUnion<TInput> extends []
   ? // Function that doesn't expect any input
     {
       (): WorkflowData<TOutput> & StepFunctionReturnConfig<TOutput>
@@ -43,7 +43,11 @@ export type StepFunction<
       (input: WorkflowData<TInput> | TInput): WorkflowData<TOutput> &
         StepFunctionReturnConfig<TOutput>
     }) &
-  WorkflowDataProperties<TOutput>
+  WorkflowDataProperties<TOutput>) & {
+  run: (
+    ...args: Parameters<ExportedWorkflow<TInput, TOutput>["run"]>
+  ) => ReturnType<ExportedWorkflow<TInput, TOutput>["run"]>
+}
 
 export type WorkflowDataProperties<T = unknown> = {
   __type: string

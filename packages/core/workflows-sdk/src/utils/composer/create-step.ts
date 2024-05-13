@@ -4,17 +4,20 @@ import {
   WorkflowStepHandler,
   WorkflowStepHandlerArguments,
 } from "@medusajs/orchestration"
-import { OrchestrationUtils, deepCopy, isString } from "@medusajs/utils"
+import { deepCopy, isString, OrchestrationUtils } from "@medusajs/utils"
 import { ulid } from "ulid"
-import { StepResponse, resolveValue } from "./helpers"
+import { resolveValue, StepResponse } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
+  ReturnWorkflow,
   StepExecutionContext,
   StepFunction,
   StepFunctionResult,
   WorkflowData,
 } from "./type"
+import { createWorkflow } from "./create-workflow"
+import { FlowRunOptions, WorkflowResult } from "../../helper"
 
 /**
  * The type of invocation function passed to a step.
@@ -407,6 +410,21 @@ export function createStep<
 
   returnFn.__type = OrchestrationUtils.SymbolWorkflowStepBind
   returnFn.__step__ = stepName
+
+  let stepAsWorkflow: ReturnWorkflow<any, any, {}> | null = null
+
+  returnFn.run = async (
+    args?: FlowRunOptions<TInvokeInput>
+  ): Promise<WorkflowResult<TInvokeResultOutput>> => {
+    stepAsWorkflow ??= createWorkflow(
+      stepName,
+      function (input: WorkflowData<TInvokeInput>) {
+        return returnFn(input)
+      }
+    )
+
+    return await stepAsWorkflow().run(args as FlowRunOptions<TInvokeInput>)
+  }
 
   return returnFn
 }
