@@ -1,7 +1,7 @@
 import AreaProvider from "@/providers/area"
-import AdminDescription from "../../_mdx/admin.mdx"
-import StoreDescription from "../../_mdx/store.mdx"
-import ClientLibraries from "../../_mdx/client-libraries.mdx"
+import AdminContentV1 from "../../_mdx/v1/admin.mdx"
+import StoreContentV1 from "../../_mdx/v1/store.mdx"
+import ClientLibrariesV1 from "../../_mdx/v1/client-libraries.mdx"
 import Section from "@/components/Section"
 import Tags from "@/components/Tags"
 import type { Area } from "@/types/openapi"
@@ -25,11 +25,11 @@ const ReferencePage = async ({ params: { area } }: ReferencePageProps) => {
           mainContent={
             <Section>
               <PageHeading className="!text-h2 hidden lg:block" />
-              {area.includes("admin") && <AdminDescription />}
-              {area.includes("store") && <StoreDescription />}
+              {area.includes("admin") && <AdminContentV1 />}
+              {area.includes("store") && <StoreContentV1 />}
             </Section>
           }
-          codeContent={<ClientLibraries />}
+          codeContent={<ClientLibrariesV1 />}
           className="flex-col-reverse"
         />
         <Tags />

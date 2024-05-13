@@ -48,7 +48,7 @@ export default async function (
       ...options,
     })
 
-    oasGenerator.run()
+    await oasGenerator.run()
   }
 
   console.log(`Finished generating docs for ${filteredFiles.length} files.`)

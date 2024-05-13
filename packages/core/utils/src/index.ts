@@ -24,5 +24,6 @@ export * from "./user"
 export * from "./api-key"
 export * from "./link"
 export * from "./file"
+export * from "./notification"
 
 export const MedusaModuleType = Symbol.for("MedusaModule")

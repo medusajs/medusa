@@ -1,8 +1,9 @@
 import { ValidatorOptions } from "class-validator"
 import { NextFunction, Request, Response } from "express"
 import { omit } from "lodash"
+import { RequestQueryFields } from "@medusajs/types"
 import { BaseEntity } from "../../interfaces"
-import { FindConfig, QueryConfig, RequestQueryFields } from "../../types/common"
+import { FindConfig, QueryConfig } from "../../types/common"
 import { ClassConstructor } from "../../types/global"
 import { removeUndefinedProperties } from "../../utils"
 import {

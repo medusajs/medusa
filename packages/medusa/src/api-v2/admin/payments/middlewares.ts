@@ -1,5 +1,5 @@
 import { MiddlewareRoute } from "../../../types/middlewares"
-import { authenticate } from "../../../utils/authenticate-middleware"
+import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { unlessPath } from "../../utils/unless-path"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"

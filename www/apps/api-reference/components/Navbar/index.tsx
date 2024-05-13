@@ -11,11 +11,13 @@ import { useMemo } from "react"
 import { config } from "../../config"
 import { usePathname } from "next/navigation"
 import VersionSwitcher from "../VersionSwitcher"
+import { useVersion } from "../../providers/version"
 
 const Navbar = () => {
   const { setMobileSidebarOpen, mobileSidebarOpen } = useSidebar()
   const pathname = usePathname()
   const { isLoading } = usePageLoading()
+  const { isVersioningEnabled } = useVersion()
 
   const navbarItems = useMemo(
     () =>
@@ -39,9 +41,7 @@ const Navbar = () => {
         mobileSidebarOpen,
       }}
       additionalActionsBefore={
-        <>
-          {process.env.NEXT_PUBLIC_VERSIONING === "true" && <VersionSwitcher />}
-        </>
+        <>{isVersioningEnabled && <VersionSwitcher />}</>
       }
       additionalActionsAfter={<FeedbackModal />}
       isLoading={isLoading}

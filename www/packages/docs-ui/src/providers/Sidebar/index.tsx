@@ -145,7 +145,14 @@ export const reducer = (
           if (i.path && parent?.path && i.path === parent?.path) {
             return {
               ...i,
-              children: [...(i.children || []), ...items],
+              children:
+                indexPosition !== undefined
+                  ? [
+                      ...(i.children?.slice(0, indexPosition) || []),
+                      ...items,
+                      ...(i.children?.slice(indexPosition) || []),
+                    ]
+                  : [...(i.children || []), ...items],
               loaded: parent.changeLoaded ? true : i.loaded,
             }
           }
