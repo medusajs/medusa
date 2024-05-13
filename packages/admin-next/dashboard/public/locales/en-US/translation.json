@@ -62,6 +62,7 @@
   },
   "actions": {
     "save": "Save",
+    "select": "Select",
     "saveAsDraft": "Save as draft",
     "publish": "Publish",
     "create": "Create",
@@ -714,10 +715,12 @@
       "edit": {
         "title": "Edit Service Zone"
       },
+      "editAreasTitle": "Manage {{zone}} areas",
       "deleteWarning": "Are you sure you want to delete \"{{name}}\". This will also delete all assocciated shipping options.",
       "toast": {
         "delete": "Zone \"{{name}}\" deleted successfully."
       },
+      "manageAreas": "Manage areas",
       "editPrices": "Edit prices",
       "editOption": "Edit option",
       "optionsLength_one": "shipping option",

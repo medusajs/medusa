@@ -385,15 +385,15 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
             groups={[
               {
                 actions: [
-                  // {
-                  //   label: t("shipping.serviceZone.addOption"),
-                  //   icon: <Plus />,
-                  //   to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create`,
-                  // },
                   {
                     label: t("actions.edit"),
                     icon: <PencilSquare />,
                     to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit`,
+                  },
+                  {
+                    label: t("shipping.serviceZone.manageAreas"),
+                    icon: <Map />,
+                    to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit-areas`,
                   },
                   {
                     label: t("actions.delete"),

@@ -738,6 +738,13 @@ export const RouteMap: RouteObject[] = [
                               ),
                           },
                           {
+                            path: "edit-areas",
+                            lazy: () =>
+                              import(
+                                "../../v2-routes/shipping/service-zone-areas-edit"
+                              ),
+                          },
+                          {
                             path: "shipping-option",
                             children: [
                               {
