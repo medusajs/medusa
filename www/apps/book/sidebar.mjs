@@ -103,10 +103,6 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Module's Container",
             },
             {
-              path: "/advanced-development/modules/connection-loader",
-              title: "Database Connection Loader",
-            },
-            {
               path: "/advanced-development/modules/service-factory",
               title: "Service Factory",
             },

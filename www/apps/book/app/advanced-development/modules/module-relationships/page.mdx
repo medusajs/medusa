@@ -40,18 +40,16 @@ The Medusa application resolves these relationships while maintaining isolation 
 
 Consider you’re creating a data model that adds custom fields associated with a product:
 
-```ts title="src/modules/hello/models/custom-product-data.ts" highlights={[["19"]]}
-import { generateEntityId } from "@medusajs/utils"
+```ts title="src/modules/hello/models/custom-product-data.ts" highlights={[["17"]]}
+import { BaseEntity } from "@medusajs/utils"
 import { 
-  BeforeCreate, 
   Entity, 
-  OnInit, 
   PrimaryKey, 
   Property,
 } from "@mikro-orm/core"
 
 @Entity()
-export class CustomProductData {
+export class CustomProductData extends BaseEntity {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -60,16 +58,6 @@ export class CustomProductData {
 
   @Property({ columnType: "text", nullable: true })
   product_id?: string
-
-  @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "cpd")
-  }
-
-  @OnInit()
-  OnInit() {
-    this.id = generateEntityId(this.id, "cpd")
-  }
 }
 ```
 
@@ -81,7 +69,6 @@ When you add a new data model, make sure to:
 
 - [Create a migration for it.](../../../basics/data-models/page.mdx#create-a-migration)
 - [Add it to the second parameter of the main service's factory function.](../service-factory/page.mdx#abstractModuleServiceFactory-parameters)
-- Add it to the [container](../container/page.mdx) and [connection](../connection-loader/page.mdx) loaders.
 
 </Note>
 

@@ -14,63 +14,12 @@ So, resources in the module, such as services or loaders, can only resolve other
 
 ---
 
-## The Container Loader
+## Resources Registered in the Module's Container
 
-Medusa provides a utility function that creates a container loader. This loader takes care of registering resources in your container.
+Some resources registered in the module's container are:
 
-For example:
-
-export const highlights = [
-  ["11", "moduleContainerLoaderFactory", "Create the container loader."],
-  ["25", "", "Export the container loader."]
-]
-
-```ts title="src/modules/hello/index.ts" highlights={highlights}
-// other imports...
-import HelloModuleService from "./service"
-import { MyCustom } from "./models/my-custom"
-import { 
-  ModulesSdkUtils, 
-  MikroOrmBaseRepository,
-} from "@medusajs/utils"
-
-// ...
-
-const containerLoader = ModulesSdkUtils.moduleContainerLoaderFactory({
-  moduleModels: {
-    MyCustom,
-  },
-  moduleRepositories: {
-    BaseRepository: MikroOrmBaseRepository,
-  },
-  moduleServices: {
-    HelloModuleService,
-  },
-})
-
-export default {
-  // ...
-  loaders: [containerLoader],
-}
-```
-
-You create the container loader using the utility function `moduleContainerLoaderFactory` and export it in the module's definition.
-
-### moduleContainerLoaderFactory Parameters
-
-The `moduleContainerLoaderFactory` function accepts as a parameter an object with the following properties:
-
-- `moduleModels`: An object where each key is a data model's name, and its value the data model class.
-- `moduleRepositories`: An object of the module's repositories. You import here the `MikroOrmBaseRepository` from `@medusajs/utils` and use it as the value of `BaseRepository`.
-- `moduleServices`: An object where each key is the service's registration name, and its value is the service class.
-
-### Resources Registered by the Container Loader
-
-The container loader registers in the module's container:
-
-- The services passed in the `moduleServices` property.
-- The repositories provided in the `moduleRepositories`.
-- A generated service for each data model provided in `moduleModels`.
+- The module's main service.
+- A generated service for each data model in your module. The registration name is the camel-case data model name suffixed by `Service`. For example, `myCustomService`.
 
 ![Example of registered resources in the container](https://res.cloudinary.com/dza7lstvk/image/upload/v1714400573/Medusa%20Book/modules-container_mkcbaq.jpg)
 
@@ -84,7 +33,7 @@ A service's constructor accepts as a first parameter an object used to resolve r
 
 For example:
 
-```ts
+```ts highlights={[["5"], ["12"]]}
 import { ModulesSdkTypes } from "@medusajs/types"
 import { MyCustom } from "./models/my-custom"
 
@@ -109,11 +58,10 @@ A loader function in a module accepts as a parameter an object having the proper
 
 For example:
 
-```ts
+```ts highlights={[["8"]]}
 import {
   LoaderOptions,
 } from "@medusajs/modules-sdk"
-
 
 export default function helloWorldLoader({
   container,
