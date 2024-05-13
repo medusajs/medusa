@@ -1,6 +1,6 @@
 import multer from "multer"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/authenticate-middleware"
+import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import { retrieveUploadConfig } from "./query-config"
 import { AdminGetUploadParams } from "./validators"

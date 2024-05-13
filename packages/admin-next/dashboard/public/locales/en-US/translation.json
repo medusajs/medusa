@@ -1089,6 +1089,16 @@
         }
       }
     },
+    "promotions": {
+      "remove": {
+        "title": "Remove promotion from campaign",
+        "description": "You are about to remove {{count}} promotion(s) from the campaign. This action cannot be undone."
+      },
+      "alreadyAdded": "This promotion has already been added to the campaign.",
+      "toast": {
+        "success": "Successfully added {{count}} promotion(s) to campaign"
+      }
+    },
     "deleteCampaignWarning": "You are about to delete the campaign {{name}}. This action cannot be undone.",
     "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>"
   },
