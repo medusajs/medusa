@@ -64,6 +64,7 @@ moduleIntegrationTestRunner({
                 type: "fixed",
                 target_type: "order",
                 value: "100",
+                currency_code: "usd",
               },
             },
           ])
@@ -100,6 +101,7 @@ moduleIntegrationTestRunner({
                 type: ApplicationMethodType.PERCENTAGE,
                 target_type: ApplicationMethodTargetType.ORDER,
                 value: "1000",
+                currency_code: "usd",
               },
             })
             .catch((e) => e)
@@ -225,6 +227,7 @@ moduleIntegrationTestRunner({
                   type: "fixed",
                   target_type: "items",
                   value: "100",
+                  currency_code: "usd",
                 },
               },
             ])
@@ -246,6 +249,7 @@ moduleIntegrationTestRunner({
                   allocation: "each",
                   target_type: "shipping_methods",
                   value: "100",
+                  currency_code: "usd",
                 },
               },
             ])
@@ -266,6 +270,7 @@ moduleIntegrationTestRunner({
                   type: "fixed",
                   target_type: "order",
                   value: "100",
+                  currency_code: "usd",
                   target_rules: [
                     {
                       attribute: "product_id",
@@ -469,6 +474,7 @@ moduleIntegrationTestRunner({
                 target_type: "items",
                 allocation: "across",
                 value: "100",
+                currency_code: "usd",
                 buy_rules: [
                   {
                     attribute: "product_collection",
@@ -495,6 +501,7 @@ moduleIntegrationTestRunner({
                 target_type: "items",
                 allocation: "across",
                 value: "100",
+                currency_code: "usd",
               },
             })
             .catch((e) => e)
@@ -515,6 +522,7 @@ moduleIntegrationTestRunner({
                 allocation: "across",
                 value: "100",
                 buy_rules_min_quantity: 1,
+                currency_code: "usd",
                 buy_rules: [
                   {
                     attribute: "product_collection.id",
@@ -549,6 +557,7 @@ moduleIntegrationTestRunner({
                 allocation: "across",
                 value: "100",
                 apply_to_quantity: 1,
+                currency_code: "usd",
                 buy_rules: [
                   {
                     attribute: "product_collection.id",
@@ -583,6 +592,7 @@ moduleIntegrationTestRunner({
               value: "100",
               apply_to_quantity: 1,
               buy_rules_min_quantity: 1,
+              currency_code: "usd",
               buy_rules: [
                 {
                   attribute: "product_collection.id",
@@ -676,6 +686,7 @@ moduleIntegrationTestRunner({
                 target_type: "items",
                 allocation: "across",
                 value: "100",
+                currency_code: "usd",
               },
             },
           ])
@@ -711,6 +722,7 @@ moduleIntegrationTestRunner({
                 allocation: "each",
                 value: "100",
                 max_quantity: 500,
+                currency_code: "usd",
               },
             },
           ])
@@ -748,6 +760,7 @@ moduleIntegrationTestRunner({
                 target_type: "order",
                 allocation: "across",
                 value: "100",
+                currency_code: "usd",
               },
             },
           ])
@@ -900,6 +913,7 @@ moduleIntegrationTestRunner({
                 type: ApplicationMethodType.FIXED,
                 value: "200",
                 target_type: "items",
+                currency_code: "usd",
               },
             } as any,
             {
@@ -1037,6 +1051,7 @@ moduleIntegrationTestRunner({
                 allocation: "each",
                 value: "100",
                 max_quantity: 500,
+                currency_code: "usd",
               },
             },
           ])
@@ -1105,6 +1120,7 @@ moduleIntegrationTestRunner({
                 allocation: "each",
                 value: "100",
                 max_quantity: 500,
+                currency_code: "usd",
               },
             },
           ])
@@ -1181,6 +1197,7 @@ moduleIntegrationTestRunner({
                 max_quantity: 500,
                 apply_to_quantity: 1,
                 buy_rules_min_quantity: 1,
+                currency_code: "usd",
                 target_rules: [
                   {
                     attribute: "product.id",
@@ -1276,6 +1293,7 @@ moduleIntegrationTestRunner({
                 allocation: "each",
                 value: "100",
                 max_quantity: 500,
+                currency_code: "usd",
               },
             },
           ])
@@ -1342,6 +1360,7 @@ moduleIntegrationTestRunner({
                 allocation: "each",
                 value: "100",
                 max_quantity: 500,
+                currency_code: "usd",
                 target_rules: [
                   {
                     attribute: "customer_group_id",
@@ -1421,6 +1440,7 @@ moduleIntegrationTestRunner({
                 max_quantity: 500,
                 apply_to_quantity: 1,
                 buy_rules_min_quantity: 1,
+                currency_code: "usd",
                 target_rules: [
                   {
                     attribute: "product.id",

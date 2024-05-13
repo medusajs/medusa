@@ -56,6 +56,7 @@ moduleIntegrationTestRunner({
               code: "PROMOTION_TEST",
               type: PromotionType.STANDARD,
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "items",
                 allocation: "each",
@@ -99,6 +100,7 @@ moduleIntegrationTestRunner({
               code: "PROMOTION_TEST",
               type: PromotionType.STANDARD,
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "items",
                 allocation: "each",
@@ -152,6 +154,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "each",
@@ -229,6 +232,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "each",
@@ -257,6 +261,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "each",
@@ -349,6 +354,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "each",
@@ -377,6 +383,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "each",
@@ -460,6 +467,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-1",
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "each",
@@ -523,6 +531,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-2",
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "each",
@@ -585,11 +594,13 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "each",
                   value: 10,
                   max_quantity: 1,
+                  currency_code: "usd",
                   target_rules: [
                     {
                       attribute: "product_category.id",
@@ -662,6 +673,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "each",
@@ -690,6 +702,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "each",
@@ -782,6 +795,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "each",
@@ -810,6 +824,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "each",
@@ -893,6 +908,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-1",
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "each",
@@ -951,6 +967,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-2",
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "each",
@@ -1015,6 +1032,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "across",
@@ -1092,6 +1110,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "across",
@@ -1168,6 +1187,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "across",
@@ -1195,6 +1215,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "across",
@@ -1286,6 +1307,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "across",
@@ -1313,6 +1335,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "across",
@@ -1395,6 +1418,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-1",
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "across",
@@ -1452,6 +1476,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-2",
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "items",
                   allocation: "across",
@@ -1513,6 +1538,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "across",
@@ -1590,6 +1616,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "across",
@@ -1666,6 +1693,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "across",
@@ -1693,6 +1721,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "across",
@@ -1784,6 +1813,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "across",
@@ -1811,6 +1841,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "across",
@@ -1905,6 +1936,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-1",
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "across",
@@ -1962,6 +1994,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-2",
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "items",
                   allocation: "across",
@@ -2025,6 +2058,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2102,6 +2136,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2179,6 +2214,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2246,6 +2282,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2274,6 +2311,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2359,6 +2397,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2387,6 +2426,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2469,6 +2509,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-1",
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2523,6 +2564,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-2",
                 application_method: {
+                  currency_code: "usd",
                   type: "fixed",
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2581,6 +2623,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2658,6 +2701,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2735,6 +2779,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2802,6 +2847,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2830,6 +2876,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2921,6 +2968,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -2949,6 +2997,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -3043,6 +3092,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-1",
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -3097,6 +3147,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-2",
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "each",
@@ -3157,6 +3208,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.FIXED,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3233,6 +3285,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.FIXED,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3308,6 +3361,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.FIXED,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3335,6 +3389,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.FIXED,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3425,6 +3480,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.FIXED,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3452,6 +3508,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.FIXED,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3533,6 +3590,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-1",
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.FIXED,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3586,6 +3644,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-2",
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.FIXED,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3643,6 +3702,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3719,6 +3779,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3794,6 +3855,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3821,6 +3883,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3911,6 +3974,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -3938,6 +4002,7 @@ moduleIntegrationTestRunner({
                   },
                 ],
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -4020,6 +4085,7 @@ moduleIntegrationTestRunner({
                 campaign_id: "campaign-id-1",
                 application_method: {
                   type: ApplicationMethodType.PERCENTAGE,
+                  currency_code: "usd",
                   target_type: "shipping_methods",
                   allocation: "across",
                   value: 100,
@@ -4072,6 +4138,7 @@ moduleIntegrationTestRunner({
                 ],
                 campaign_id: "campaign-id-2",
                 application_method: {
+                  currency_code: "usd",
                   type: ApplicationMethodType.PERCENTAGE,
                   target_type: "shipping_methods",
                   allocation: "across",
@@ -4130,6 +4197,7 @@ moduleIntegrationTestRunner({
                 },
               ],
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "order",
                 value: 200,
@@ -4200,6 +4268,7 @@ moduleIntegrationTestRunner({
                 },
               ],
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "order",
                 value: 200,
@@ -4269,6 +4338,7 @@ moduleIntegrationTestRunner({
                 },
               ],
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "order",
                 value: 30,
@@ -4289,6 +4359,7 @@ moduleIntegrationTestRunner({
                 },
               ],
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "order",
                 value: 50,
@@ -4373,6 +4444,7 @@ moduleIntegrationTestRunner({
                 },
               ],
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "order",
                 value: 500,
@@ -4393,6 +4465,7 @@ moduleIntegrationTestRunner({
                 },
               ],
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "order",
                 value: 50,
@@ -4474,6 +4547,7 @@ moduleIntegrationTestRunner({
                 },
               ],
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "items",
                 allocation: "each",
@@ -4569,6 +4643,7 @@ moduleIntegrationTestRunner({
                 },
               ],
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "shipping_methods",
                 allocation: "across",
@@ -4700,6 +4775,7 @@ moduleIntegrationTestRunner({
                 },
               ],
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "items",
                 allocation: "each",
@@ -4795,6 +4871,7 @@ moduleIntegrationTestRunner({
                 },
               ],
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "items",
                 allocation: "each",
@@ -4883,6 +4960,7 @@ moduleIntegrationTestRunner({
                 },
               ],
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "items",
                 allocation: "each",
@@ -4984,6 +5062,7 @@ moduleIntegrationTestRunner({
                 },
               ],
               application_method: {
+                currency_code: "usd",
                 type: "fixed",
                 target_type: "items",
                 allocation: "each",

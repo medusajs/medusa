@@ -3,13 +3,13 @@ import {
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
   BigNumberRawValue,
-  DAL,
 } from "@medusajs/types"
 import {
   BigNumber,
   DALUtils,
   MikroOrmBigNumberProperty,
   PromotionUtils,
+  createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
 import {
@@ -22,26 +22,22 @@ import {
   ManyToMany,
   OnInit,
   OneToOne,
-  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import Promotion from "./promotion"
 import PromotionRule from "./promotion-rule"
 
-type OptionalFields =
-  | "value"
-  | "max_quantity"
-  | "apply_to_quantity"
-  | "buy_rules_min_quantity"
-  | "allocation"
-  | DAL.SoftDeletableEntityDateColumns
+const tableName = "promotion_application_method"
+const CurrencyCodeIndex = createPsqlIndexStatementHelper({
+  tableName,
+  columns: "currency_code",
+  where: "deleted_at IS NOT NULL",
+})
 
-@Entity({ tableName: "promotion_application_method" })
+@Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ApplicationMethod {
-  [OptionalProps]?: OptionalFields
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -50,6 +46,10 @@ export default class ApplicationMethod {
 
   @Property({ columnType: "jsonb", nullable: true })
   raw_value: BigNumberRawValue | null = null
+
+  @Property({ columnType: "text" })
+  @CurrencyCodeIndex.MikroORMIndex()
+  currency_code: string
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
   max_quantity?: number | null = null

@@ -475,6 +475,11 @@ export default class PromotionModuleService<
     const promotionsData: CreatePromotionDTO[] = []
     const applicationMethodsData: CreateApplicationMethodDTO[] = []
     const campaignsData: CreateCampaignDTO[] = []
+    const existingCampaigns = await this.campaignService_.list(
+      { id: data.map((d) => d.campaign_id).filter((id) => isString(id)) },
+      {},
+      sharedContext
+    )
 
     const promotionCodeApplicationMethodDataMap = new Map<
       string,
