@@ -1592,6 +1592,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     hasTitleStyling: true,
     children: [
       {
+        path: "/architectural-modules/cache",
         title: "Cache Modules",
         hasTitleStyling: true,
         children: [
@@ -1603,9 +1604,19 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             path: "/architectural-modules/cache/redis",
             title: "Redis",
           },
+          {
+            title: "Guides",
+            children: [
+              {
+                path: "/architectural-modules/cache/create",
+                title: "Create Cache Module",
+              },
+            ],
+          },
         ],
       },
       {
+        path: "/architectural-modules/event",
         title: "Event Modules",
         hasTitleStyling: true,
         children: [
@@ -1616,6 +1627,35 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             path: "/architectural-modules/event/redis",
             title: "Redis",
+          },
+          {
+            title: "Guides",
+            children: [
+              {
+                path: "/architectural-modules/event/create",
+                title: "Create Event Module",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "/architectural-modules/file",
+        title: "File Provider Modules",
+        hasTitleStyling: true,
+        children: [
+          {
+            path: "/architectural-modules/file/local",
+            title: "Local",
+          },
+          {
+            title: "Guides",
+            children: [
+              {
+                path: "/references/file-provider-module",
+                title: "Create File Module",
+              },
+            ],
           },
         ],
       },

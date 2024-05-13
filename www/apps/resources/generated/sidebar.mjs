@@ -6804,6 +6804,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "path": "/architectural-modules/cache",
         "title": "Cache Modules",
         "hasTitleStyling": true,
         "children": [
@@ -6820,12 +6821,27 @@ export const generatedSidebar = [
             "path": "/architectural-modules/cache/redis",
             "title": "Redis",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/architectural-modules/cache/create",
+                "title": "Create Cache Module",
+                "children": []
+              }
+            ]
           }
         ]
       },
       {
         "loaded": true,
         "isPathHref": true,
+        "path": "/architectural-modules/event",
         "title": "Event Modules",
         "hasTitleStyling": true,
         "children": [
@@ -6842,6 +6858,50 @@ export const generatedSidebar = [
             "path": "/architectural-modules/event/redis",
             "title": "Redis",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/architectural-modules/event/create",
+                "title": "Create Event Module",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/architectural-modules/file",
+        "title": "File Provider Modules",
+        "hasTitleStyling": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/architectural-modules/file/local",
+            "title": "Local",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/file-provider-module",
+                "title": "Create File Module",
+                "children": []
+              }
+            ]
           }
         ]
       },

@@ -4,20 +4,44 @@ export const filesMap = [
     "pathname": "/admin-widget-injection-zones"
   },
   {
+    "filePath": "/www/apps/resources/app/architectural-modules/cache/create/page.mdx",
+    "pathname": "/architectural-modules/cache/create"
+  },
+  {
     "filePath": "/www/apps/resources/app/architectural-modules/cache/in-memory/page.mdx",
     "pathname": "/architectural-modules/cache/in-memory"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/cache/page.mdx",
+    "pathname": "/architectural-modules/cache"
   },
   {
     "filePath": "/www/apps/resources/app/architectural-modules/cache/redis/page.mdx",
     "pathname": "/architectural-modules/cache/redis"
   },
   {
+    "filePath": "/www/apps/resources/app/architectural-modules/event/create/page.mdx",
+    "pathname": "/architectural-modules/event/create"
+  },
+  {
     "filePath": "/www/apps/resources/app/architectural-modules/event/local/page.mdx",
     "pathname": "/architectural-modules/event/local"
   },
   {
+    "filePath": "/www/apps/resources/app/architectural-modules/event/page.mdx",
+    "pathname": "/architectural-modules/event"
+  },
+  {
     "filePath": "/www/apps/resources/app/architectural-modules/event/redis/page.mdx",
     "pathname": "/architectural-modules/event/redis"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/file/local/page.mdx",
+    "pathname": "/architectural-modules/file/local"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/file/page.mdx",
+    "pathname": "/architectural-modules/file"
   },
   {
     "filePath": "/www/apps/resources/app/architectural-modules/page.mdx",
@@ -2004,12 +2028,8 @@ export const filesMap = [
     "pathname": "/references/customer_models/classes/customer_models.CustomerGroupCustomer"
   },
   {
-    "filePath": "/www/apps/resources/references/file/classes/file.AbstractFileService/page.mdx",
-    "pathname": "/references/file/classes/file.AbstractFileService"
-  },
-  {
-    "filePath": "/www/apps/resources/references/file/interfaces/file.IFileService/page.mdx",
-    "pathname": "/references/file/interfaces/file.IFileService"
+    "filePath": "/www/apps/resources/references/file/classes/file.AbstractFileProviderService/page.mdx",
+    "pathname": "/references/file/classes/file.AbstractFileProviderService"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.cancelFulfillment/page.mdx",
