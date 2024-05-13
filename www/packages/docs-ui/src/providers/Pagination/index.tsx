@@ -14,6 +14,7 @@ import { SidebarItemType } from "types"
 export type Page = {
   title: string
   description?: string
+  parentTitle?: string
   link: string
 }
 
@@ -26,10 +27,14 @@ export const PaginationContext = createContext<PaginationContextType | null>(
   null
 )
 
+type SidebarItemWithParent = SidebarItemType & {
+  parent?: SidebarItemType
+}
+
 type SearchItemsResult = {
   foundActive: boolean
-  prevItem?: SidebarItemType
-  nextItem?: SidebarItemType
+  prevItem?: SidebarItemWithParent
+  nextItem?: SidebarItemWithParent
 }
 
 export type PaginationProviderProps = {
@@ -66,14 +71,20 @@ export const PaginationProvider = ({ children }: PaginationProviderProps) => {
   const getPrevItem = (
     items: SidebarItemType[],
     index: number
-  ): SidebarItemType | undefined => {
-    let foundItem: SidebarItemType | undefined
+  ): SidebarItemWithParent | undefined => {
+    let foundItem: SidebarItemWithParent | undefined
     items
       .slice(0, index)
       .reverse()
       .some((item) => {
         if (item.children?.length) {
-          foundItem = getPrevItem(item.children, item.children.length)
+          const childItem = getPrevItem(item.children, item.children.length)
+          if (childItem) {
+            foundItem = {
+              ...childItem,
+              parent: item,
+            }
+          }
         } else if (item.path) {
           foundItem = item
         }
@@ -87,13 +98,19 @@ export const PaginationProvider = ({ children }: PaginationProviderProps) => {
   const getNextItem = (
     items: SidebarItemType[],
     index: number
-  ): SidebarItemType | undefined => {
-    let foundItem: SidebarItemType | undefined
+  ): SidebarItemWithParent | undefined => {
+    let foundItem: SidebarItemWithParent | undefined
     items.slice(index + 1).some((item) => {
       if (item.path) {
         foundItem = item
       } else if (item.children?.length) {
-        foundItem = getNextItem(item.children, -1)
+        const childItem = getNextItem(item.children, -1)
+        if (childItem) {
+          foundItem = {
+            ...childItem,
+            parent: item,
+          }
+        }
       }
 
       return foundItem !== undefined
@@ -157,6 +174,7 @@ export const PaginationProvider = ({ children }: PaginationProviderProps) => {
           ? {
               title: result.prevItem.title,
               link: result.prevItem.path || "",
+              parentTitle: result.prevItem.parent?.title,
             }
           : undefined
       )
@@ -165,6 +183,7 @@ export const PaginationProvider = ({ children }: PaginationProviderProps) => {
           ? {
               title: result.nextItem.title,
               link: result.nextItem.path || "",
+              parentTitle: result.nextItem.parent?.title,
             }
           : undefined
       )
