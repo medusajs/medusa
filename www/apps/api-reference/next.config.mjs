@@ -18,6 +18,10 @@ const nextConfig = {
           source: "/:path*",
           destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/:path*`,
         },
+        process.env.NEXT_PUBLIC_VERSIONING ? {
+          source: "/v2/:path*",
+          destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/v2/:path*`,
+        } : {}
       ],
     }
   },
