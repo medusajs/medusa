@@ -1,13 +1,8 @@
 import { createDefaultsWorkflow } from "@medusajs/core-flows"
-import {
-  InternalModuleDeclaration,
-  ModulesDefinition,
-} from "@medusajs/modules-sdk"
-import { ConfigModule, MODULE_RESOURCE_TYPE } from "@medusajs/types"
+import { ConfigModule } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaV2Flag,
-  isString,
   promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -27,7 +22,7 @@ import featureFlagsLoader from "./feature-flags"
 import { registerProjectWorkflows } from "./helpers/register-workflows"
 import medusaProjectApisLoader from "./load-medusa-project-apis"
 import Logger from "./logger"
-import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
+import loadMedusaApp from "./medusa-app"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
 import pgConnectionLoader from "./pg-connection"
@@ -43,45 +38,6 @@ type Options = {
   directory: string
   expressApp: Express
   isTest: boolean
-}
-
-async function loadLegacyModulesEntities(configModules, container) {
-  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
-
-  for (const [moduleName, moduleConfig] of Object.entries(configModules)) {
-    const definition = ModulesDefinition[moduleName]
-
-    if (!definition?.isLegacy) {
-      continue
-    }
-
-    const modulePath = isString(moduleConfig)
-      ? moduleConfig
-      : (moduleConfig as InternalModuleDeclaration).resolve ??
-        (definition.defaultPackage as string)
-
-    const resources = isString(moduleConfig)
-      ? (definition.defaultModuleDeclaration as InternalModuleDeclaration)
-          .resources
-      : (moduleConfig as InternalModuleDeclaration).resources ??
-        (definition.defaultModuleDeclaration as InternalModuleDeclaration)
-          .resources
-
-    if (resources === MODULE_RESOURCE_TYPE.SHARED) {
-      if (!modulePath) {
-        logger.warn(`Unable to load module entities for ${moduleName}`)
-        continue
-      }
-
-      const module = await import(modulePath as string)
-
-      if (module.default?.models) {
-        module.default.models.map((model) =>
-          container.registerAdd("db_entities", asValue(model))
-        )
-      }
-    }
-  }
 }
 
 async function loadMedusaV2({
@@ -252,9 +208,6 @@ export default async ({
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
 
   const pgConnection = await pgConnectionLoader({ container, configModule })
-
-  const configModules = mergeDefaultModules(configModule.modules)
-  await loadLegacyModulesEntities(configModules, container)
 
   const dbActivity = Logger.activity(`Initializing database${EOL}`)
   track("DATABASE_INIT_STARTED")
