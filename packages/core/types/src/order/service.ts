@@ -45,6 +45,7 @@ import {
   CreateOrderShippingMethodTaxLineDTO,
   CreateOrderTransactionDTO,
   DeclineOrderChangeDTO,
+  ReceiveOrderReturnDTO,
   RegisterOrderFulfillmentDTO,
   RegisterOrderShipmentDTO,
   UpdateOrderAddressDTO,
@@ -1518,6 +1519,11 @@ export interface IOrderModuleService extends IModuleService {
 
   createReturn(
     returnData: CreateOrderReturnDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  receiveReturn(
+    returnData: ReceiveOrderReturnDTO,
     sharedContext?: Context
   ): Promise<void>
 }
