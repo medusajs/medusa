@@ -2,11 +2,12 @@
 
 import React from "react"
 import { useEffect, useMemo, useState } from "react"
-import { useRequestRunner } from "../../../hooks"
-import { CodeBlock } from ".."
-import { Card } from "../../Card"
-import { Button, InputText } from "../../.."
-import { ApiMethod, ApiDataOptions, ApiTestingOptions } from "types"
+import { useRequestRunner } from "../../hooks"
+import { CodeBlock } from "../CodeBlock"
+import { Card } from "../Card"
+import { Button } from "../.."
+import { ApiMethod, ApiTestingOptions } from "types"
+import { ApiRunnerParamInputs } from "./ParamInputs"
 
 type ApiRunnerProps = {
   apiMethod: ApiMethod
@@ -72,69 +73,46 @@ export const ApiRunner = ({
     }
   }, [isRunning, ran])
 
-  const getParamsElms = ({
-    data,
-    title,
-    nameInApiOptions,
-  }: {
-    data: ApiDataOptions
-    title: string
-    nameInApiOptions: "pathData" | "bodyData" | "queryData"
-  }) => (
-    <div className="flex flex-col gap-docs_0.5">
-      <span className="text-compact-medium-plus text-medusa-fg-base">
-        {title}
-      </span>
-      <div className="flex gap-docs_0.5">
-        {Object.keys(data).map((pathParam, index) => (
-          <InputText
-            name={pathParam}
-            onChange={(e) =>
-              setApiTestingOptions((prev) => ({
-                ...prev,
-                [nameInApiOptions]: {
-                  ...prev[nameInApiOptions],
-                  [pathParam]: e.target.value,
-                },
-              }))
-            }
-            key={index}
-            placeholder={pathParam}
-            value={
-              typeof data[pathParam] === "string"
-                ? (data[pathParam] as string)
-                : typeof data[pathParam] === "number"
-                ? (data[pathParam] as number)
-                : `${data[pathParam]}`
-            }
-          />
-        ))}
-      </div>
-    </div>
-  )
-
   return (
     <>
       {manualTestTrigger && (
         <Card className="font-base mb-docs_1" contentClassName="gap-docs_0.5">
-          {apiTestingOptions.pathData &&
-            getParamsElms({
-              data: apiTestingOptions.pathData,
-              title: "Path Parameters",
-              nameInApiOptions: "pathData",
-            })}
-          {apiTestingOptions.bodyData &&
-            getParamsElms({
-              data: apiTestingOptions.bodyData,
-              title: "Request Body Parameters",
-              nameInApiOptions: "bodyData",
-            })}
-          {apiTestingOptions.queryData &&
-            getParamsElms({
-              data: apiTestingOptions.queryData,
-              title: "Request Query Parameters",
-              nameInApiOptions: "queryData",
-            })}
+          {apiTestingOptions.pathData && (
+            <ApiRunnerParamInputs
+              data={apiTestingOptions.pathData}
+              title="Path Parameters"
+              baseObjPath="pathData"
+              setValue={
+                setApiTestingOptions as React.Dispatch<
+                  React.SetStateAction<unknown>
+                >
+              }
+            />
+          )}
+          {apiTestingOptions.bodyData && (
+            <ApiRunnerParamInputs
+              data={apiTestingOptions.bodyData}
+              title="Request Body Parameters"
+              baseObjPath="bodyData"
+              setValue={
+                setApiTestingOptions as React.Dispatch<
+                  React.SetStateAction<unknown>
+                >
+              }
+            />
+          )}
+          {apiTestingOptions.queryData && (
+            <ApiRunnerParamInputs
+              data={apiTestingOptions.queryData}
+              title="Request Query Parameters"
+              baseObjPath="queryData"
+              setValue={
+                setApiTestingOptions as React.Dispatch<
+                  React.SetStateAction<unknown>
+                >
+              }
+            />
+          )}
           <Button
             onClick={() => {
               setIsRunning(true)
