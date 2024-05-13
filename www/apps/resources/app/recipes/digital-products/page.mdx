@@ -168,8 +168,8 @@ To represent a digital product, it's recommended to create a data model that has
   Then, create the file `src/modules/digital-product/models/product-media.ts` with the following content:
   
   ```ts title="src/modules/digital-product/models/product-media.ts"
-  import { BeforeCreate, Entity, Enum, PrimaryKey, Property } from "@mikro-orm/core"
-  import { createPsqlIndexStatementHelper, generateEntityId } from "@medusajs/utils"
+  import { Entity, Enum, PrimaryKey, Property } from "@mikro-orm/core"
+  import { createPsqlIndexStatementHelper, BaseEntity } from "@medusajs/utils"
   import { MediaType } from "../../../types/digital-product/product-media"
   
   const VariantIdIndex = createPsqlIndexStatementHelper({
@@ -179,7 +179,7 @@ To represent a digital product, it's recommended to create a data model that has
   }).MikroORMIndex
   
   @Entity({ tableName: "product_media" })
-  export class ProductMedia {
+  export class ProductMedia extends BaseEntity {
     @PrimaryKey({ columnType: "text" })
     id: string
   
@@ -198,16 +198,6 @@ To represent a digital product, it's recommended to create a data model that has
     @VariantIdIndex()
     @Property({ columnType: "text" })
     variant_id: string
-  
-    @BeforeCreate()
-    onCreate() {
-      this.id = generateEntityId(this.id, "promed")
-    }
-  
-    @BeforeCreate()
-    onInit() {
-      this.id = generateEntityId(this.id, "promed")
-    }
   }
   ```
   
@@ -239,50 +229,6 @@ To represent a digital product, it's recommended to create a data model that has
   
   }
   ```
-  
-  Next, change the content of `src/modules/digital-product/index.ts` to the following:
-  
-  ```ts title="src/modules/digital-product/index.ts"
-  import { ModulesSdkUtils } from "@medusajs/utils"
-  import { ProductMedia } from "./models/product-media"
-  import DigitalProductModuleService from "./service"
-  
-  const moduleName = "digital-products"
-  const pathToMigrations = __dirname + "/migrations"
-  const models = {
-    ProductMedia
-  }
-  
-  // assemble object to pass to utility functions
-  const migrationScriptOptions = {
-    // the module's name
-    moduleName,
-    // the data models of the modules
-    models,
-    // the path to the migrations directory
-    pathToMigrations,
-  }
-  
-  // create and export the script that runs migrations
-  export const runMigrations = ModulesSdkUtils
-    .buildMigrationScript(
-      migrationScriptOptions
-    )
-  
-  // create and export the script that reverts migrations
-  export const revertMigration = ModulesSdkUtils
-    .buildRevertMigrationScript(
-      migrationScriptOptions
-    )
-  
-  export default {
-    service: DigitalProductModuleService,
-    runMigrations,
-    revertMigration
-  }
-  ```
-  
-  This ensures the Medusa application picks up and runs your module’s migrations.
   
   To run the migrations, run the `build` command, then the `migrations run` command:
   
@@ -360,72 +306,6 @@ Medusa facilitates implementing data-management features by providing a service 
 
   ```
   
-  Next, change the content of `src/modules/digital-product/index.ts` to the following:
-  
-  ```ts title="src/modules/digital-product/index.ts"
-  import { 
-    ModulesSdkUtils, 
-    MikroOrmBaseRepository
-  } from "@medusajs/utils"
-  import { ProductMedia } from "./models/product-media"
-  import DigitalProductModuleService from "./service"
-  
-  const moduleName = "digital-products"
-  const pathToMigrations = __dirname + "/migrations"
-  const models = {
-    ProductMedia
-  }
-  
-  // assemble object to pass to utility functions
-  const migrationScriptOptions = {
-    // the module's name
-    moduleName,
-    // the data models of the modules
-    models,
-    // the path to the migrations directory
-    pathToMigrations,
-  }
-  
-  // create and export the script that runs migrations
-  export const runMigrations = ModulesSdkUtils
-    .buildMigrationScript(
-      migrationScriptOptions
-    )
-  
-  // create and export the script that reverts migrations
-  export const revertMigration = ModulesSdkUtils
-    .buildRevertMigrationScript(
-      migrationScriptOptions
-    )
-  
-  const containerLoader = ModulesSdkUtils
-    .moduleContainerLoaderFactory({
-      moduleModels: models,
-      moduleRepositories: {
-        BaseRepository: MikroOrmBaseRepository,
-      },
-      moduleServices: {
-        DigitalProductModuleService,
-      },
-    })
-  
-  const connectionLoader = ModulesSdkUtils
-    .mikroOrmConnectionLoaderFactory({
-      moduleName,
-      moduleModels: Object.values(models),
-      migrationsPath: pathToMigrations,
-    })
-  
-  export default {
-    service: DigitalProductModuleService,
-    runMigrations,
-    revertMigration,
-    loaders: [containerLoader, connectionLoader]
-  }
-  ```
-  
-  This adds the container and connection loaders to your module so that you can use the service factory.
-  
   Then, change the content of `src/modules/digital-product/service.ts` to the following:
   
   ```ts title="src/modules/digital-product/service.ts"
@@ -498,7 +378,7 @@ Medusa facilitates implementing data-management features by providing a service 
   
   The `DigitalProductModuleService` now extends the generated service returned by the service factory. The generated service already has basic features implemented, such as listing, retrieving, and deleting records.
   
-  You implement in your service the `create` and `update` methods, which aren’t generated automatically. In them, use the `productMediaService` generated for the `ProductMedia` data model by the container loader. It has methods to perform database operations on the data model.
+  You implement in your service the `create` and `update` methods, which aren’t generated automatically. In them, use the `productMediaService` generated for the `ProductMedia` data model in your module's container. It has methods to perform database operations on the data model.
 
 </Details>
 
