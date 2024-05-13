@@ -90,41 +90,12 @@ export const navbarItemsV2: NavbarItem[] = [
     },
   },
   {
-    type: "divider",
-  },
-  {
-    type: "link",
-    props: {
-      label: "Docs",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/`,
-      badge: {
-        variant: "neutral",
-        children: "v1",
-      },
-    },
-  },
-  {
-    type: "link",
-    props: {
-      label: "User Guide",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/user-guide`,
-      badge: {
-        variant: "neutral",
-        children: "v1",
-      },
-    },
-  },
-  {
     type: "link",
     props: {
       label: "Store API",
       target: "_blank",
       rel: "noreferrer",
-      href: `/api/store`,
+      href: `/v2/api/store`,
     },
   },
   {
@@ -133,7 +104,7 @@ export const navbarItemsV2: NavbarItem[] = [
       label: "Admin API",
       target: "_blank",
       rel: "noreferrer",
-      href: `/api/admin`,
+      href: `/v2/api/admin`,
     },
   },
   {
@@ -143,6 +114,22 @@ export const navbarItemsV2: NavbarItem[] = [
       target: "_blank",
       rel: "noreferrer",
       href: `/ui`,
+    },
+  },
+  {
+    type: "divider",
+  },
+  {
+    type: "link",
+    props: {
+      label: "Medusa V1",
+      target: "_blank",
+      rel: "noreferrer",
+      href: `/`,
+      badge: {
+        variant: "neutral",
+        children: "v1",
+      },
     },
   },
 ]
@@ -236,7 +223,7 @@ export const mobileSidebarItemsV1: SidebarItemType[] = [
     isPathHref: true,
   },
   {
-    title: "Book",
+    title: "Learn Medusa V2",
     path: `/v2`,
     loaded: true,
     isPathHref: true,
@@ -246,7 +233,7 @@ export const mobileSidebarItemsV1: SidebarItemType[] = [
 
 export const mobileSidebarItemsV2: SidebarItemType[] = [
   {
-    title: "Book",
+    title: "Docs",
     path: `/v2`,
     loaded: true,
     isPathHref: true,
@@ -258,28 +245,14 @@ export const mobileSidebarItemsV2: SidebarItemType[] = [
     isPathHref: true,
   },
   {
-    title: "Docs",
-    path: `/`,
-    loaded: true,
-    isPathHref: true,
-    additionalElms: <Badge variant="neutral">v1</Badge>,
-  },
-  {
-    title: "User Guide",
-    path: `/user-guide`,
-    loaded: true,
-    isPathHref: true,
-    additionalElms: <Badge variant="neutral">v1</Badge>,
-  },
-  {
     title: "Store API",
-    path: `/api/store`,
+    path: `/v2/api/store`,
     loaded: true,
     isPathHref: true,
   },
   {
     title: "Admin API",
-    path: `/api/admin`,
+    path: `/v2/api/admin`,
     loaded: true,
     isPathHref: true,
   },
@@ -288,6 +261,13 @@ export const mobileSidebarItemsV2: SidebarItemType[] = [
     path: `/ui`,
     loaded: true,
     isPathHref: true,
+  },
+  {
+    title: "Docs",
+    path: `/`,
+    loaded: true,
+    isPathHref: true,
+    additionalElms: <Badge variant="neutral">v1</Badge>,
   },
 ]
 
@@ -327,13 +307,21 @@ export const legacyMobileSidebarItems: SidebarItemType[] = [
 export const searchFiltersV2: OptionType[] = [
   {
     value: "book",
-    label: "Book",
+    label: "Docs V2",
   },
   {
     value: "resources",
-    label: "Resources",
+    label: "Learning Resources",
   },
-  // TODO add more filters once V2 become the main docs
+  {
+    value: "admin-v2",
+    label: "Admin API",
+  },
+  {
+    value: "store-v2",
+    label: "Store API",
+  },
+  // TODO add more filters
 ]
 
 export const searchFiltersV1: OptionType[] = [

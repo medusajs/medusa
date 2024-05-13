@@ -45,7 +45,7 @@ const withMDX = mdx({
                 process.env.VERCEL_ENV !== "production"
                   ? process.env.NEXT_PUBLIC_API_URL
                   : undefined,
-              path: "api",
+              path: "v2/api",
             },
           },
         },
@@ -96,12 +96,16 @@ const nextConfig = {
       fallback: [
         {
           source: "/v2/resources",
-          destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/v2/resources`,
+          destination: `${
+            process.env.NEXT_PUBLIC_RESOURCES_URL || "https://localhost:3001"
+          }/v2/resources`,
           basePath: false,
         },
         {
           source: "/v2/resources/:path*",
-          destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/v2/resources/:path*`,
+          destination: `${
+            process.env.NEXT_PUBLIC_RESOURCES_URL || "https://localhost:3001"
+          }/v2/resources/:path*`,
           basePath: false,
         },
         // TODO comment out once we have the user guide published
@@ -118,7 +122,7 @@ const nextConfig = {
         {
           source: "/:path*",
           destination: `${
-            process.env.NEXT_PUBLIC_DOCS_URL || "https://localhost:3001"
+            process.env.NEXT_PUBLIC_DOCS_V1_URL || "https://localhost:3000"
           }/:path*`,
           basePath: false,
         },

@@ -7,11 +7,12 @@ import { useBaseSpecs } from "@/providers/base-specs"
 import dynamic from "next/dynamic"
 import type { TagSectionProps } from "./Section"
 import { useArea } from "@/providers/area"
-import { swrFetcher, useSidebar, getLinkWithBasePath } from "docs-ui"
+import { swrFetcher, useSidebar } from "docs-ui"
 import getSectionId from "@/utils/get-section-id"
 import { ExpandedDocument } from "@/types/openapi"
 import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
 import { SidebarItemSections } from "types"
+import basePathUrl from "../../utils/base-path-url"
 
 const TagSection = dynamic<TagSectionProps>(
   async () => import("./Section")
@@ -35,10 +36,7 @@ const Tags = () => {
 
   const { data } = useSWR<ExpandedDocument>(
     loadData && !baseSpecs
-      ? getLinkWithBasePath(
-          `/base-specs?area=${area}&expand=${expand}`,
-          process.env.NEXT_PUBLIC_BASE_PATH
-        )
+      ? basePathUrl(`/api/base-specs?area=${area}&expand=${expand}`)
       : null,
     swrFetcher,
     {
