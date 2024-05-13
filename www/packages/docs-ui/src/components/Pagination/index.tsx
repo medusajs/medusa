@@ -13,6 +13,7 @@ export const Pagination = () => {
       {previousPage && (
         <Card
           title={previousPage.title}
+          text={previousPage.parentTitle}
           startIcon={<ChevronLeft />}
           showLinkIcon={false}
           href={previousPage.link}
@@ -22,6 +23,7 @@ export const Pagination = () => {
       {nextPage && (
         <Card
           title={nextPage.title}
+          text={nextPage.parentTitle}
           endIcon={<ChevronRight />}
           showLinkIcon={false}
           href={nextPage.link}

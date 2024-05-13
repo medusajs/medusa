@@ -14,7 +14,6 @@ const withMDX = mdx({
   extension: /\.mdx?$/,
   options: {
     rehypePlugins: [
-      // TODO add V2 to path if necessary
       [
         crossProjectLinksPlugin,
         {
@@ -25,13 +24,14 @@ const withMDX = mdx({
                 process.env.VERCEL_ENV !== "production"
                   ? process.env.NEXT_PUBLIC_RESOURCES_URL
                   : undefined,
-              path: "resources",
+              path: "v2/resources",
             },
             "user-guide": {
               url:
                 process.env.VERCEL_ENV !== "production"
                   ? process.env.NEXT_PUBLIC_USER_GUIDE_URL
                   : undefined,
+              path: "v2/user-guide",
             },
             ui: {
               url:
@@ -90,31 +90,7 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 
   transpilePackages: ["docs-ui"],
-  // TODO uncomment if we decide on baes path
-  // basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2",
-  async rewrites() {
-    return {
-      fallback: [
-        {
-          source: "/resources",
-          destination: `${process.env.NEXT_PUBLIC_RESOURCES_URL}/resources`,
-        },
-        {
-          source: "/resources/:path*",
-          destination: `${process.env.NEXT_PUBLIC_RESOURCES_URL}/resources/:path*`,
-        },
-        // TODO comment out once we have the user guide published
-        // {
-        //   source: "/user-guide",
-        //   destination: `${process.env.NEXT_PUBLIC_USER_GUIDE_URL}/user-guide`,
-        // },
-        // {
-        //   source: "/user-guide/:path*",
-        //   destination: `${process.env.NEXT_PUBLIC_USER_GUIDE_URL}/user-guide/:path*`,
-        // },
-      ],
-    }
-  },
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2",
 }
 
 export default withMDX(nextConfig)
