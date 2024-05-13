@@ -9,17 +9,26 @@ export const metadata = {
 
 # {metadata.title}
 
+<Note type="soon">
+
+Next.js starter is currently in development and doesn't fully support Medusa v2 yet.
+
+</Note>
+
 The Next.js Starter storefront provides rich commerce features and a sleek design. Developers and businesses can use it as-is or as a starting point to build a storefront for their Medusa application.
 
 <Note type="check">
 
 - [Node.js v18+](https://nodejs.org/en/download)
+- At least one region in the Medusa application.
 
 </Note>
 
 ## Installation
 
-### Option 1: Medusa Application + Next.js Starter
+{/* TODO add when we support next.js starter in create-medusa-app v2 */}
+
+{/* ### Option 1: Medusa Application + Next.js Starter
 
 The `create-medusa-app` CLI tool accepts the `--with-nextjs-starter` option that installs the Next.js storefront along with the Medusa application:
 
@@ -27,26 +36,27 @@ The `create-medusa-app` CLI tool accepts the `--with-nextjs-starter` option that
 npx create-medusa-app@latest --with-nextjs-starter
 ```
 
-Refer to the [create-medusa-app reference](../create-medusa-app/page.mdx) for more details on prerequisites, steps, and troubleshooting.
+Refer to the [create-medusa-app reference](../create-medusa-app/page.mdx) for more details on prerequisites, steps, and troubleshooting. */}
 
-### Option 2: Next.js Starter Only
+{/* ### Option 2: Next.js Starter Only */}
 
-<Note type="check">
+{/* <Note type="check">
 
 - At least one region in the Medusa application.
 
-</Note>
+</Note> */}
 
-1. Create a new Next.js project using the [Next.js Starter's GitHub repository](https://github.com/medusajs/nextjs-starter-medusa):
+1. Clone the `v2` branch of the [Next.js Starter](https://github.com/medusajs/nextjs-starter-medusa):
 
 ```bash
-npx create-next-app -e https://github.com/medusajs/nextjs-starter-medusa my-medusa-storefront
+git clone https://github.com/medusajs/nextjs-starter-medusa -b v2 my-medusa-storefront
 ```
 
-2. Change to the `my-medusa-storefront` directory and rename the template environment variable:
+2. Change to the `my-medusa-storefront` directory, install the dependencies, and rename the template environment variable:
 
-```bash
+```bash npm2yarn
 cd my-medusa-storefront
+npm install
 mv .env.template .env.local
 ```
 
@@ -85,11 +95,13 @@ The Next.js Starter storefront is compatible with Medusa's Stripe and PayPal plu
 
 ### Stripe Integration
 
-<Note type="check">
+{/* TODO add links to stripe module once supported. */}
+
+{/* <Note type="check">
 
 - [Stripe plugin](../plugins/payment/stripe/page.mdx) installed in the Medusa application.
 
-</Note>
+</Note> */}
 
 In your Next.js Starter project, set the following environment variables for the Stripe integration:
 
@@ -103,11 +115,13 @@ Then, restart the Next.js Starter storefront. You can now use Stripe during chec
 
 ### PayPal Integration
 
-<Note type="check">
+{/* TODO add links to paypal module once supported. */}
+
+{/* <Note type="check">
 
 - [PayPal plugin](../plugins/payment/paypal/page.mdx) installed in the Medusa application.
 
-</Note>
+</Note> */}
 
 In your Next.js Starter project, set the following environment variables for the PayPal integration:
 
@@ -141,11 +155,13 @@ Then, restart your Next.js storefront. You'll see a "Search" link in the navigat
 
 ### Configure MeiliSearch
 
-<Note type="check">
+{/* TODO add link to meilisearch plugin/module once available. */}
+
+{/* <Note type="check">
 
 - [MeiliSearch plugin](../plugins/search/meilisearch/page.mdx) installed in the Medusa application.
 
-</Note>
+</Note> */}
 
 In your Next.js Starter storefront, set the following environment variables for the MeiliSearch integration:
 
@@ -186,11 +202,13 @@ To make sure the Next.js Starter storefront properly displays the products in th
 
 ### Configure Algolia
 
-<Note type="check">
+{/* TODO add links to algolia plugin/module once available. */}
+
+{/* <Note type="check">
 
 - [Algolia plugin](../plugins/search/algolia/page.mdx) installed in the Medusa application.
 
-</Note>
+</Note> */}
 
 In your Next.js Starter's directory, install the `algoliasearch` package:
 

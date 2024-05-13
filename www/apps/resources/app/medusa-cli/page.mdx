@@ -8,9 +8,16 @@ export const metadata = {
 
 The Medusa CLI tool provides commands that facilitate your development.
 
+<Note type="soon">
+
+Medusa's CLI tool doesn't fully support Medusa v2 yet.
+
+</Note>
+
 <Note type="check">
 
 - [Node.js v16+](https://nodejs.org/en/download)
+- [Git CLI tool](https://git-scm.com/downloads)
 
 </Note>
 
@@ -203,6 +210,18 @@ medusa new [<dir_name> [<starter_url>]]
       <Table.Cell>
 
       The database host to use for database setup.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--v2`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Installs Medusa v2, which is still not ready for production.
       
       </Table.Cell>
     </Table.Row>

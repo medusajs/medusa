@@ -28,9 +28,7 @@ const nextConfig = {
 
   transpilePackages: ["docs-ui"],
 
-  // TODO uncomment if we decide on baes path
-  // basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2/resources",
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/resources",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2/resources",
   async rewrites() {
     return {
       fallback: [

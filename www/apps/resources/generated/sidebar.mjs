@@ -5549,264 +5549,6 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
-    "path": "/plugins",
-    "title": "Plugins",
-    "isChildSidebar": true,
-    "hasTitleStyling": true,
-    "children": [
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "title": "Analytics",
-        "hasTitleStyling": true,
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/analytics/segment",
-            "title": "Segment",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "title": "CMS",
-        "hasTitleStyling": true,
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/cms/contentful",
-            "title": "Contentful",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/cms/strapi",
-            "title": "Strapi",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "title": "ERP",
-        "hasTitleStyling": true,
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/erp/brightpearl",
-            "title": "Brightpearl",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "title": "Fulfillment",
-        "hasTitleStyling": true,
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/fulfillment/manual",
-            "title": "Manual Fulfillment",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/fulfillment/webshipper",
-            "title": "Webshipper",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "title": "Notifications",
-        "hasTitleStyling": true,
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/notifications/mailchimp",
-            "title": "Mailchimp",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/notifications/sendgrid",
-            "title": "SendGrid",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/notifications/twilio-sms",
-            "title": "Twilio SMS",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/notifications/slack",
-            "title": "Slack",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "title": "Payment",
-        "hasTitleStyling": true,
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/payment/klarna",
-            "title": "Klarna",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/payment/paypal",
-            "title": "PayPal",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/payment/stripe",
-            "title": "Stripe",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "title": "Search",
-        "hasTitleStyling": true,
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/search/algolia",
-            "title": "Algolia",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/search/meilisearch",
-            "title": "MeiliSearch",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "title": "Source",
-        "hasTitleStyling": true,
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/source/shopify",
-            "title": "Shopify",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "title": "Storage",
-        "hasTitleStyling": true,
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/storage/local",
-            "title": "Local File Storage",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/storage/minio",
-            "title": "MinIO",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/storage/s3",
-            "title": "S3",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/storage/spaces",
-            "title": "Spaces",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "title": "Other",
-        "hasTitleStyling": true,
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/other/discount-generator",
-            "title": "Discount Generator",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/other/ip-lookup",
-            "title": "IP Lookup",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/other/restock-notifications",
-            "title": "Restock Notifications",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/plugins/other/wishlist",
-            "title": "Wishlist",
-            "children": []
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "loaded": true,
-    "isPathHref": true,
     "title": "SDKs and Tools",
     "hasTitleStyling": true,
     "children": [
@@ -6804,6 +6546,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "path": "/architectural-modules/cache",
         "title": "Cache Modules",
         "hasTitleStyling": true,
         "children": [
@@ -6820,12 +6563,27 @@ export const generatedSidebar = [
             "path": "/architectural-modules/cache/redis",
             "title": "Redis",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/architectural-modules/cache/create",
+                "title": "Create Cache Module",
+                "children": []
+              }
+            ]
           }
         ]
       },
       {
         "loaded": true,
         "isPathHref": true,
+        "path": "/architectural-modules/event",
         "title": "Event Modules",
         "hasTitleStyling": true,
         "children": [
@@ -6842,6 +6600,50 @@ export const generatedSidebar = [
             "path": "/architectural-modules/event/redis",
             "title": "Redis",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/architectural-modules/event/create",
+                "title": "Create Event Module",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/architectural-modules/file",
+        "title": "File Provider Modules",
+        "hasTitleStyling": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/architectural-modules/file/local",
+            "title": "Local",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/file-provider-module",
+                "title": "Create File Module",
+                "children": []
+              }
+            ]
           }
         ]
       },
@@ -6872,98 +6674,6 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
-    "title": "Recipes",
-    "hasTitleStyling": true,
-    "children": [
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/ecommerce",
-        "title": "Ecommerce",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/marketplace",
-        "title": "Marketplace",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/subscriptions",
-        "title": "Subscriptions",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/integrate-ecommerce-stack",
-        "title": "Integrate Ecommerce Stack",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/commerce-automation",
-        "title": "Commerce Automation",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/oms",
-        "title": "Order Management System",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/pos",
-        "title": "POS",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/digital-products",
-        "title": "Digital Products",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/personalized-products",
-        "title": "Personalized Products",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/b2b",
-        "title": "B2B",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/multi-region-store",
-        "title": "Multi-Region Store",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/omnichannel",
-        "title": "Omnichannel Store",
-        "children": []
-      }
-    ]
-  },
-  {
-    "loaded": true,
-    "isPathHref": true,
     "title": "Configurations",
     "hasTitleStyling": true,
     "children": [
@@ -6972,13 +6682,6 @@ export const generatedSidebar = [
         "isPathHref": true,
         "path": "/references/medusa-config",
         "title": "Medusa Application",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/configurations/medusa-admin",
-        "title": "Medusa Admin",
         "children": []
       }
     ]
@@ -6992,6 +6695,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "path": "/upgrade-guides",
         "title": "Upgrade Guides",
         "children": []
       },
@@ -7146,20 +6850,6 @@ export const generatedSidebar = [
                 "path": "/troubleshooting/database-errors",
                 "title": "Database Errors",
                 "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/troubleshooting/transaction-promise-all",
-                "title": "Transactions and Promise.all",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/troubleshooting/payment-provider-missing",
-                "title": "Payment Provider Missing",
-                "children": []
               }
             ]
           },
@@ -7211,28 +6901,6 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/troubleshooting/admin-custom-hooks-error",
                 "title": "Custom Hooks Error",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/troubleshooting/admin-webpack-build-error",
-                "title": "Webpack Build Error",
-                "children": []
-              }
-            ]
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "title": "Plugin",
-            "hasTitleStyling": true,
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/troubleshooting/s3-plugin-acl-error",
-                "title": "S3 Plugin ACL Error",
                 "children": []
               }
             ]
@@ -7321,53 +6989,6 @@ export const generatedSidebar = [
             ]
           }
         ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "title": "Integration Services",
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/references/notification-service",
-            "title": "Notification Service",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/references/file-service",
-            "title": "File Service",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/references/search-service",
-            "title": "Search Service",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "title": "Modules",
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "title": "Cache Service",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "title": "Event Bus Service",
-            "children": []
-          }
-        ]
       }
     ]
   },
@@ -7387,13 +7008,6 @@ export const generatedSidebar = [
             "isPathHref": true,
             "path": "/contribution-guidelines/docs",
             "title": "Docs",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/contribution-guidelines/admin-translations",
-            "title": "Admin Translations",
             "children": []
           }
         ]

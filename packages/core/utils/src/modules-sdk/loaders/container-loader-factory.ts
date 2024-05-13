@@ -10,7 +10,10 @@ import {
 import { asClass } from "awilix"
 import { internalModuleServiceFactory } from "../internal-module-service-factory"
 import { lowerCaseFirst } from "../../common"
-import { mikroOrmBaseRepositoryFactory } from "../../dal"
+import {
+  MikroOrmBaseRepository,
+  mikroOrmBaseRepositoryFactory,
+} from "../../dal"
 
 type RepositoryLoaderOptions = {
   moduleModels: Record<string, any>
@@ -44,13 +47,13 @@ export function moduleContainerLoaderFactory({
   moduleRepositories?: Record<string, any>
   customRepositoryLoader?: (options: RepositoryLoaderOptions) => void
 }): ({ container, options }: LoaderOptions) => Promise<void> {
-  return async ({
+  return async function containerLoader({
     container,
     options,
   }: LoaderOptions<
     | ModuleServiceInitializeOptions
     | ModuleServiceInitializeCustomDataLayerOptions
-  >) => {
+  >) {
     const customRepositories = (
       options as ModuleServiceInitializeCustomDataLayerOptions
     )?.repositories
@@ -85,9 +88,9 @@ export function loadModuleServices({
   container,
 }: ServiceLoaderOptions) {
   const moduleServicesMap = new Map(
-    Object.entries(moduleServices).map(([key, repository]) => [
+    Object.entries(moduleServices).map(([key, service]) => [
       lowerCaseFirst(key),
-      repository,
+      service,
     ])
   )
 
@@ -157,6 +160,10 @@ export function loadModuleRepositories({
   })
 
   const allRepositories = [...customRepositoriesMap, ...moduleRepositoriesMap]
+
+  container.register({
+    ["baseRepository"]: asClass(MikroOrmBaseRepository).singleton(),
+  })
 
   allRepositories.forEach(([key, repository]) => {
     let finalRepository = customRepositoriesMap.get(key)
