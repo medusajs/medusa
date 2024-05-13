@@ -122,7 +122,7 @@ export type LoaderOptions<TOptions = Record<string, unknown>> = {
 }
 
 export type ModuleLoaderFunction = (
-  options: LoaderOptions,
+  options: LoaderOptions<any>,
   moduleDeclaration?: InternalModuleDeclaration
 ) => Promise<void>
 
@@ -226,14 +226,6 @@ export declare type ModuleJoinerRelationship = JoinerRelationship & {
 export type ModuleExports = {
   service: Constructor<any>
   loaders?: ModuleLoaderFunction[]
-  /**
-   * @deprecated property will be removed in future versions
-   */
-  migrations?: any[]
-  /**
-   * @deprecated property will be removed in future versions
-   */
-  models?: Constructor<any>[]
   runMigrations?(
     options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration
