@@ -29,13 +29,19 @@ export const AdminGetCollectionsParams = createFindParams({
 export type AdminCreateCollectionType = z.infer<typeof AdminCreateCollection>
 export const AdminCreateCollection = z.object({
   title: z.string(),
-  handle: z.string().optional(),
+  handle: z
+    .string()
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+    .optional(),
   metadata: z.record(z.unknown()).optional(),
 })
 
 export type AdminUpdateCollectionType = z.infer<typeof AdminUpdateCollection>
 export const AdminUpdateCollection = z.object({
   title: z.string().optional(),
-  handle: z.string().optional(),
+  handle: z
+    .string()
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+    .optional(),
   metadata: z.record(z.unknown()).optional(),
 })
