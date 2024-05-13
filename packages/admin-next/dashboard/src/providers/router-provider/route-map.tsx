@@ -210,6 +210,45 @@ export const RouteMap: RouteObject[] = [
             ],
           },
           {
+            path: "/campaigns",
+            handle: { crumb: () => "Campaigns" },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../v2-routes/campaigns/campaign-list"),
+                children: [],
+              },
+              {
+                path: "create",
+                lazy: () => import("../../v2-routes/campaigns/campaign-create"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../v2-routes/campaigns/campaign-detail"),
+                handle: { crumb: (data: any) => data.campaign.name },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../v2-routes/campaigns/campaign-edit"),
+                  },
+                  {
+                    path: "edit-budget",
+                    lazy: () =>
+                      import("../../v2-routes/campaigns/campaign-budget-edit"),
+                  },
+                  {
+                    path: "add-promotions",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/campaigns/add-campaign-promotions"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
             path: "/collections",
             handle: {
               crumb: () => "Collections",

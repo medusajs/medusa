@@ -6,9 +6,9 @@ export const metadata = {
 
 In this chapter, you’ll learn how to install and use the Next.js Starter storefront.
 
-<Note title="Demo">
+<Note type="soon">
 
-Check out the demo [here](https://next.medusajs.com/).
+The Next.js starter is currently in development to fully support Medusa v2.
 
 </Note>
 
@@ -21,16 +21,17 @@ Check out the demo [here](https://next.medusajs.com/).
 
 </Note>
 
-1. Create a Next.js project using the [Next.js Starter’s repository URL](https://github.com/medusajs/nextjs-starter-medusa):
+1. Clone the `feat/v2` branch of the [Next.js Starter](https://github.com/medusajs/nextjs-starter-medusa):
 
 ```bash
-npx create-next-app -e https://github.com/medusajs/nextjs-starter-medusa my-medusa-storefront
+git clone https://github.com/medusajs/nextjs-starter-medusa -b feat/v2 my-medusa-storefront
 ```
 
-2. Change to the `my-medusa-storefront` directory and rename the template environment variable:
+2. Change to the `my-medusa-storefront` directory, install the dependencies, and rename the template environment variable:
 
-```bash
+```bash npm2yarn
 cd my-medusa-storefront
+npm install
 mv .env.template .env.local
 ```
 

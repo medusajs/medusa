@@ -1,7 +1,7 @@
-import { CommonTypes } from "@medusajs/types"
+import { CommonTypes, RequestQueryFields } from "@medusajs/types"
 import { Request } from "express"
 import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
-import { FindConfig, RequestQueryFields } from "./common"
+import { FindConfig } from "./common"
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

@@ -18,7 +18,7 @@ The Medusa core application provides a set of admin and store API routes out-of-
 
 An API Route is created in a TypeScript or JavaScript file under the `/src/api` directory of your Medusa application. The file’s name must be `route.ts` or `route.js`. 
 
-Each route file holds API Route handler functions for each HTTP method (`GET`, `POST`, `DELETE`, etc…).
+Each route file exports API Route handler functions for at least one HTTP method (`GET`, `POST`, `DELETE`, etc…).
 
 For example, to create a `GET` API Route at `/store/hello-world`, create the file `src/api/store/hello-world/route.ts` with the following content:
 
@@ -54,7 +54,7 @@ curl http://localhost:9000/store/hello-world
 
 ---
 
-## When to Use
+## When to Use API Routes
 
 <Note title="Use API routes when" type="success">
 

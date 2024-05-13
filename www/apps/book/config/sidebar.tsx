@@ -1,4 +1,4 @@
-import { Badge, mobileSidebarItems } from "docs-ui"
+import { Badge, mobileSidebarItemsV2 } from "docs-ui"
 import type { SidebarConfig, SidebarItemType } from "@/types"
 import { sidebar } from "../sidebar.mjs"
 
@@ -20,5 +20,5 @@ const normalizeSidebarItems = (items: SidebarItemType[]) =>
 export const sidebarConfig: SidebarConfig = {
   top: normalizeSidebarItems(sidebar),
   bottom: [],
-  mobile: mobileSidebarItems,
+  mobile: mobileSidebarItemsV2,
 }

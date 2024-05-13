@@ -1,11 +1,13 @@
 "use client"
 
 import { Toggle } from "docs-ui"
-import { useVersion } from "../../providers/version"
 import clsx from "clsx"
+import { usePathname } from "next/navigation"
+import { useVersion } from "../../providers/version"
 
 const VersionSwitcher = () => {
-  const { version, changeVersion } = useVersion()
+  const pathname = usePathname()
+  const { version } = useVersion()
 
   return (
     <div className="flex gap-0.5 justify-center items-center">
@@ -19,7 +21,14 @@ const VersionSwitcher = () => {
       </span>
       <Toggle
         checked={version === "2"}
-        onCheckedChange={(checked) => changeVersion(checked ? "2" : "1")}
+        onCheckedChange={(checked) => {
+          let newPath = pathname.replace("/v2", "")
+          if (checked) {
+            newPath += `/v2`
+          }
+
+          location.href = location.href.replace(pathname, newPath)
+        }}
       />
       <span
         className={clsx(

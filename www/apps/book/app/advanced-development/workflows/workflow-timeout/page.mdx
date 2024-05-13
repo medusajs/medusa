@@ -12,6 +12,12 @@ By default, a workflow doesn’t have a timeout. It continues execution until it
 
 You can configure a workflow’s timeout to indicate how long the workflow can run. Once the specified time is passed and the workflow is still running, the workflow is considered failed and an error is thrown.
 
+<Note>
+
+Timeout doesn't stop the execution of a running step. The timeout only affects the status of the workflow and its result.
+
+</Note>
+
 For example:
 
 ```ts title="src/workflows/hello-world.ts" highlights={[["22"]]}
@@ -62,6 +68,12 @@ A workflow’s timeout error is returned in the `errors` property of the workflo
 ## Configure Step Timeout
 
 Alternatively, you can configure timeout for a step rather than the entire workflow.
+
+<Note>
+
+As mentioned in the previous section, the timeout doesn't stop the execution of the step. It only affects the step's status and output.
+
+</Note>
 
 For example:
 

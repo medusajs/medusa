@@ -45,13 +45,17 @@ export default class Promotion {
   })
   code: string
 
-  @Searchable()
   @ManyToOne(() => Campaign, {
+    columnType: "text",
     fieldName: "campaign_id",
     nullable: true,
-    cascade: ["soft-remove"] as any,
+    mapToPk: true,
+    onDelete: "set null",
   })
-  campaign: Campaign | null = null
+  campaign_id: string | null = null
+
+  @ManyToOne(() => Campaign, { persist: false })
+  campaign: Campaign | null
 
   @Property({ columnType: "boolean", default: false })
   is_automatic: boolean = false

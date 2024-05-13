@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useMemo } from "react"
+import React, { useMemo, useRef } from "react"
 import { useSidebar } from "@/providers"
 import clsx from "clsx"
 import { Loading } from "@/components"
@@ -12,11 +12,13 @@ import { CSSTransition, SwitchTransition } from "react-transition-group"
 export type SidebarProps = {
   className?: string
   expandItems?: boolean
+  banner?: React.ReactNode
 }
 
 export const Sidebar = ({
   className = "",
   expandItems = false,
+  banner,
 }: SidebarProps) => {
   const {
     items,
@@ -30,6 +32,11 @@ export const Sidebar = ({
   const sidebarItems = useMemo(
     () => currentItems || items,
     [items, currentItems]
+  )
+
+  const sidebarHasParent = useMemo(
+    () => sidebarItems.parentItem !== undefined,
+    [sidebarItems]
   )
 
   return (
@@ -47,69 +54,76 @@ export const Sidebar = ({
         animationFillMode: "forwards",
       }}
     >
-      <SwitchTransition>
-        <CSSTransition
-          key={sidebarItems.parentItem?.title || "home"}
-          nodeRef={sidebarRef}
-          classNames={{
-            enter: "animate-fadeInLeft animate-fast",
-            exit: "animate-fadeOutLeft animate-fast",
-          }}
-          timeout={200}
-        >
-          <ul
-            className={clsx(
-              "sticky top-0 h-screen max-h-screen w-full list-none overflow-auto p-0",
-              "px-docs_1.5 pb-[57px] pt-docs_1.5"
-            )}
-            id="sidebar"
-            ref={sidebarRef}
+      <ul
+        className={clsx(
+          "sticky top-0 h-screen max-h-screen w-full list-none p-0",
+          "px-docs_1.5 pb-[57px] pt-docs_1.5",
+          "flex flex-col"
+        )}
+        id="sidebar"
+      >
+        {banner && <div className="mb-docs_1">{banner}</div>}
+        {sidebarItems.parentItem && (
+          <div className={clsx("mb-docs_1", !banner && "mt-docs_1.5")}>
+            <SidebarBack />
+            <SidebarTitle item={sidebarItems.parentItem} />
+          </div>
+        )}
+        <SwitchTransition>
+          <CSSTransition
+            key={sidebarItems.parentItem?.title || "home"}
+            nodeRef={sidebarRef}
+            classNames={{
+              enter: "animate-fadeInLeft animate-fast",
+              exit: "animate-fadeOutLeft animate-fast",
+            }}
+            timeout={200}
           >
-            {sidebarItems.parentItem && (
-              <>
-                <SidebarBack />
-                <SidebarTitle item={sidebarItems.parentItem} />
-              </>
-            )}
-            <div className="mb-docs_1.5 lg:hidden">
-              {!sidebarItems.mobile.length && !staticSidebarItems && (
-                <Loading className="px-0" />
-              )}
-              {sidebarItems.mobile.map((item, index) => (
-                <SidebarItem
-                  item={item}
-                  key={index}
-                  expandItems={expandItems}
-                />
-              ))}
+            <div className="overflow-auto" ref={sidebarRef}>
+              <div className={clsx("mb-docs_1.5 lg:hidden")}>
+                {!sidebarItems.mobile.length && !staticSidebarItems && (
+                  <Loading className="px-0" />
+                )}
+                {sidebarItems.mobile.map((item, index) => (
+                  <SidebarItem
+                    item={item}
+                    key={index}
+                    expandItems={expandItems}
+                    sidebarHasParent={sidebarHasParent}
+                    isMobile={true}
+                  />
+                ))}
+              </div>
+              <div className={clsx("mb-docs_1.5")}>
+                {!sidebarItems.top.length && !staticSidebarItems && (
+                  <Loading className="px-0" />
+                )}
+                {sidebarItems.top.map((item, index) => (
+                  <SidebarItem
+                    item={item}
+                    key={index}
+                    expandItems={expandItems}
+                    sidebarHasParent={sidebarHasParent}
+                  />
+                ))}
+              </div>
+              <div className="mb-docs_1.5">
+                {!sidebarItems.bottom.length && !staticSidebarItems && (
+                  <Loading className="px-0" />
+                )}
+                {sidebarItems.bottom.map((item, index) => (
+                  <SidebarItem
+                    item={item}
+                    key={index}
+                    expandItems={expandItems}
+                    sidebarHasParent={sidebarHasParent}
+                  />
+                ))}
+              </div>
             </div>
-            <div className="mb-docs_1.5">
-              {!sidebarItems.top.length && !staticSidebarItems && (
-                <Loading className="px-0" />
-              )}
-              {sidebarItems.top.map((item, index) => (
-                <SidebarItem
-                  item={item}
-                  key={index}
-                  expandItems={expandItems}
-                />
-              ))}
-            </div>
-            <div className="mb-docs_1.5">
-              {!sidebarItems.bottom.length && !staticSidebarItems && (
-                <Loading className="px-0" />
-              )}
-              {sidebarItems.bottom.map((item, index) => (
-                <SidebarItem
-                  item={item}
-                  key={index}
-                  expandItems={expandItems}
-                />
-              ))}
-            </div>
-          </ul>
-        </CSSTransition>
-      </SwitchTransition>
+          </CSSTransition>
+        </SwitchTransition>
+      </ul>
     </aside>
   )
 }

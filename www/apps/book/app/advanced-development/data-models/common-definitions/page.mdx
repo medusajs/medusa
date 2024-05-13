@@ -19,13 +19,13 @@ Refer to MikroORM's documentation for more details related to your use case.
 
 ## Relations Between Data Models
 
-You can build relations between data models in the same module.
+You can build relations between data models in the same module using foreign keys.
 
-Refer to [MikroORM's relations definition](https://mikro-orm.io/docs/relationships)
+Refer to [MikroORM's relations definitions](https://mikro-orm.io/docs/relationships) for more details.
 
 <Note>
 
-For building relationships between data models in different module, refer to the [Module Relationships chapter](../../modules/module-relationships/page.mdx) instead.
+For building relationships between data models in different modules, refer to the [Module Relationships chapter](../../modules/module-relationships/page.mdx) instead.
 
 </Note>
 
@@ -61,7 +61,7 @@ const VariantIdIndex = createPsqlIndexStatementHelper({
   columns: "variant_id",
 }).MikroORMIndex
 
-@Entity({ tableName: "product_media" })
+@Entity()
 export default class ProductMedia {
   @PrimaryKey({ columnType: "text" })
   id: string
@@ -90,6 +90,11 @@ export default class ProductMedia {
 
   @BeforeCreate()
   onCreate() {
+    this.id = generateEntityId(this.id, "promed")
+  }
+
+  @OnInit()
+  OnInit() {
     this.id = generateEntityId(this.id, "promed")
   }
 }

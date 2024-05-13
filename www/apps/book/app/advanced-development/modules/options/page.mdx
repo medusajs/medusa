@@ -6,15 +6,13 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you’ll learn about passing options to your Module from the Medusa application’s configurations and using them in the Module’s resources.
+In this chapter, you’ll learn about passing options to your module from the Medusa application’s configurations and using them in the module’s resources.
 
 ## What are Module Options?
 
 A module can receive options to customize or configure its functionality.
 
 For example, if you’re creating a module that integrates a third-party service, you’ll want to receive the integration credentials in the options rather than adding them directly in your code.
-
-A module can receive options when they’re added to the Medusa application’s configuration.
 
 ---
 
@@ -42,86 +40,47 @@ The `options` property’s value is an object. You can pass any properties you w
 
 ## Access Module Options in Main Service
 
-The module’s main service receives the module’s declaration as a second parameter. The module declaration is an object having an `options` property. Use it to access the options passed from the Module’s configurations.
+The module’s main service receives the module options as a second parameter.
 
 For example:
 
-<CodeTabs groupId="service-type">
-  <CodeTab label="Using Service Factory" value="service-factory">
+```ts title="src/modules/hello/service.ts" highlights={[["15"], ["21"], ["25"], ["26"], ["27"]]}
+// ...
 
-  ```ts highlights={[["24"], ["28"], ["29"], ["30"]]}
-  // other imports...
-  import { InternalModuleDeclaration } from "@medusajs/types"
+// recommended to define type in another file
+type HelloModuleOptions = {
+  capitalize?: boolean
+}
 
+class HelloModuleService extends ModulesSdkUtils
+  .abstractModuleServiceFactory<
   // ...
-
-  // recommended to define type in another file
-  type HelloModuleOptions = {
-    capitalize?: boolean
-  }
-
-  class HelloModuleService extends ModulesSdkUtils
-    .abstractModuleServiceFactory<
+  >(
+  // ...
+  ) {
     // ...
-    >(
-    // ...
-    ) {
-      // ...
-      protected options_: HelloModuleOptions
-      
-      constructor(
-        {
-          // ...
-        }: InjectedDependencies,
-        protected readonly moduleDeclaration: InternalModuleDeclaration
-      ) {
-        //...
-        
-        this.options_ = moduleDeclaration.options || {
-          capitalize: false,
-        }
-      }
-    }
-  ```
-
-  </CodeTab>
-  <CodeTab label="Without Service Factory" value="no-service-factory">
-
-  ```ts highlights={[["9"], ["13"], ["14"], ["16"], ["17"], ["18"]]}
-  import { InternalModuleDeclaration } from "@medusajs/types"
-
-  // recommended to define type in another file
-  type HelloModuleOptions = {
-    capitalize?: boolean
-  }
-
-  export default class HelloModuleService {
     protected options_: HelloModuleOptions
-
+    
     constructor(
-      {}, 
-      protected readonly moduleDeclaration:
-        InternalModuleDeclaration
+      {
+        // ...
+      }: InjectedDependencies,
+      protected readonly moduleOptions: HelloModuleOptions
     ) {
-      this.options_ = moduleDeclaration.options || {
+      //...
+      
+      this.options_ = moduleOptions || {
         capitalize: false,
       }
     }
-
-    getMessage() {
-      return "Hello, world!"
-    }
   }
-  ```
-
-  </CodeTab>
-</CodeTabs>
+```
 
 ---
 
 ## Access Module Options in Loader
 
-The object that a module’s loaders receive as a parameter has an `options` property. Use it to access the options passed from the Module’s configurations.
+The object that a module’s loaders receive as a parameter has an `options` property holding the module's options.
 
 For example:
 

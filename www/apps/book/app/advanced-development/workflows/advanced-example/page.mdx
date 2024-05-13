@@ -43,7 +43,7 @@ export const updateProductHighlights = [
   ["13", "resolve", "Resolve the `ProductService` from the Medusa container."],
   ["16", "previousProductData", "Retrieve the `previousProductData` to pass it to the compensation function."],
   ["19", "", "Update the product."],
-  ["33", "", "Revert the product’s data using the `previousProductData` passed from the step to the compensation function."]
+  ["39", "", "Revert the product’s data using the `previousProductData` passed from the step to the compensation function."]
 ]
 
 ```ts title="src/workflows/update-product-erp/steps/update-product.ts" highlights={updateProductHighlights}
@@ -65,7 +65,7 @@ const updateProduct = createStep(
     const previousProductData =
       await productModuleService.retrieve(id)
 
-    const product = await productModuleService.update([input])
+    const product = await productModuleService.update(id, input)
 
     return new StepResponse(product, {
       // pass to compensation function
@@ -77,15 +77,37 @@ const updateProduct = createStep(
     const productModuleService: IProductModuleService =
       context.container.resolve(ModuleRegistrationName.PRODUCT)
 
-    const { type, ...previousData } = previousProductData
+    const { 
+      id, 
+      type, 
+      options, 
+      variants, 
+      ...previousData
+    } = previousProductData
 
-    await productModuleService.update([
+    await productModuleService.update(
+      id,
       {
         ...previousData,
-      },
-    ])
+        variants: variants.map((variant) => {
+          const variantOptions = {}
 
-    await productModuleService.updateTypes(type)
+          variant.options.forEach((option) => {
+            variantOptions[option.option.title] = option.value
+          })
+
+          return {
+            ...variant,
+            options: variantOptions,
+          }
+        }),
+        options: options.map((option) => ({
+          ...option,
+          values: option.values.map((value) => value.value),
+        })),
+        type_id: type.id,
+      }
+    )
   }
 )
 
@@ -102,25 +124,25 @@ You also pass a compensation function as a second parameter to `createStep`. The
 
 In the compensation function, you revert the product’s data using the `previousProductData` passed from the step to the compensation function.
 
-<Note title="Tip">
-
-The compensation functions of each step ensure data consistency across Medusa and external services and systems when errors occur.
-
-</Note>
-
 ---
 
 ## 3. Create Step 2: Update ERP
 
-The second step in the workflow receives the same input. It updates the product’s details in the ERP system using the `ErpService`.
+The second step in the workflow receives the same input. It updates the product’s details in the ERP system.
+
+<Note>
+
+The `ErpModuleService` used is assumed to be created in a module.
+
+</Note>
 
 Create the file `src/workflows/update-product-erp/steps/update-erp.ts` with the following content:
 
 export const updateErpHighlights = [
-  ["12", "resolve", "Resolve the `ErpService` from the Medusa container."],
+  ["12", "resolve", "Resolve the `erpModuleService` from the Medusa container."],
   ["17", "previousErpData", "Retrieve the `previousErpData` to pass it to the compensation function."],
   ["21", "updateProductErpData", "Update the product’s ERP data and return the data from the ERP system."],
-  ["34", "updateProductErpData", "Revert the product's data in the ERP system to its previous state using the `previousErpData`."]
+  ["37", "updateProductErpData", "Revert the product's data in the ERP system to its previous state using the `previousErpData`."]
 ]
 
 ```ts title="src/workflows/update-product-erp/steps/update-erp.ts" highlights={updateErpHighlights}
@@ -129,22 +151,25 @@ import {
   StepResponse,
 } from "@medusajs/workflows-sdk"
 import { UpdateProductAndErpWorkflowInput } from ".."
-import ErpService from "../../../services/erp"
+import ErpModuleService from "../../../modules/erp/service"
 
 const updateErp = createStep(
   "update-erp",
   async (input: UpdateProductAndErpWorkflowInput, context) => {
-    const erpService: ErpService =
-      context.container.resolve("erpService")
+    const erpModuleService: ErpModuleService =
+      context.container.resolve("erpModuleService")
 
     const { id, ...updatedData } = input
 
     // get previous ERP data
     const previousErpData =
-      await erpService.retrieveProductErpDetails(id)
+      await erpModuleService.retrieveProductErpDetails(id)
 
     const updatedErpData =
-      await erpService.updateProductErpData(id, updatedData)
+      await erpModuleService.updateProductErpData(
+        id, 
+        updatedData
+      )
 
     return new StepResponse(updatedErpData, {
       // pass to compensation function
@@ -154,7 +179,7 @@ const updateErp = createStep(
   },
   // compensation function
   async ({ previousErpData, productId }, context) => {
-    const erpService: ErpService =
+    const erpService: ErpModuleService =
       context.container.resolve("erpService")
 
     await erpService.updateProductErpData(
@@ -169,7 +194,7 @@ export default updateErp
 
 In the step:
 
-- You resolve the `ErpService` from the Medusa container.
+- You resolve the `erpModuleService` from the Medusa container.
 - You retrieve the `previousErpData` to pass it to the compensation function.
 - You update the product’s ERP data and return the data from the ERP system.
 
@@ -228,8 +253,13 @@ import updateProductAndErpWorkflow, {
   UpdateProductAndErpWorkflowInput,
 } from "../../../../../workflows/update-product-erp"
 
+type ProductErpReq = Omit<
+  UpdateProductAndErpWorkflowInput, 
+  "id"
+>
+
 export const POST = async (
-  req: MedusaRequest,
+  req: MedusaRequest<ProductErpReq>,
   res: MedusaResponse
 ) => {
   // skipping validation for simplicity

@@ -34,10 +34,9 @@ This chapter provides a cheat sheet for Medusa's resources on when to use or not
       <Table.Cell>Modules</Table.Cell>
       <Table.Cell>
       
-      - You're implementing custom commerce functionalities to be reused across Medusa applications.
-      - You're implementing custom architectural business logic.
-      - You're adding extending another module's data model to add fields to it, such as the `Product` model.
-      - You're completely replacing an existing commerce module to change how a certain functionality is implemented in the Medusa application.
+      - You're implementing a custom commerce feature. For example, you're implementing digital products.
+      - You want to extend data models in other commerce modules, such as adding a field or a relation to the Product model.
+      - You want to re-use your custom commerce functionalities across Medusa applications or use them in other environments, such as Edge functions and Next.js apps.
       
       </Table.Cell>
       <Table.Cell>
@@ -65,7 +64,6 @@ This chapter provides a cheat sheet for Medusa's resources on when to use or not
       
       - You're performing an action at application start-up.
       - You're establishing a one-time connection with an external system.
-      - You're registering a custom resource in the container.
       
       </Table.Cell>
       <Table.Cell>
@@ -97,7 +95,7 @@ This chapter provides a cheat sheet for Medusa's resources on when to use or not
       </Table.Cell>
       <Table.Cell>
       
-      - You want the action to execute at a specified time interval while the Medusa application isn't running. Instead, use the operating system's equivalent of a cron job.
+      - You want the action to execute at a specified time interval while the Medusa application **isn't** running. Instead, use the operating system's equivalent of a cron job.
       - You want to execute the action once. Use loaders instead.
       - You want to execute the action if an event occurs. Use subscribers instead.
 
@@ -122,49 +120,13 @@ This chapter provides a cheat sheet for Medusa's resources on when to use or not
       <Table.Cell>Middlewares</Table.Cell>
       <Table.Cell>
       
-      - You want to guard API routes by a custom condition.
+      - You want to protect API routes by a custom condition.
       - You're modifying the request body.
-      - You're registering custom resources in the Medusa container.
       
       </Table.Cell>
       <Table.Cell>
       
       \-
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>Batch Jobs</Table.Cell>
-      <Table.Cell>
-      
-      - You’re implementing an asynchronous job that’s triggered manually.
-      - You're tracking the status of the asynchronous job.
-      - You're keeping track of all batch job executions, which are stored in the database.
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      - You want to trigger the asynchronous job automatically. Instead, use scheduled jobs. You can also create the batch job in a scheduled job.
-      - You want the task to be performed and finished before consecutive tasks. Instead, use a service.
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>Plugins</Table.Cell>
-      <Table.Cell>
-      
-      - You're integrating a third-party service into your Medusa application.
-      - You're creating reusable Medusa application customizations.
-      - You're providing features that are specific to a Medusa application, such as a migration tool from another platform to Medusa.
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      - You want to run the plugin in isolation.
-      - You want to link custom data models to those in Medusa's commerce modules.
-      - You want to make architectural changes.
-
-      For all of the cases above, use a Module.
 
       </Table.Cell>
     </Table.Row>

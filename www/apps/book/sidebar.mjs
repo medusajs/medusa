@@ -93,10 +93,6 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               path: "/advanced-development/api-routes/protected-routes",
               title: "Protected Routes",
             },
-            {
-              path: "/advanced-development/api-routes/request-body-parsers",
-              title: "Request Body Parsers",
-            },
           ],
         },
         {
@@ -119,28 +115,16 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Database Operations",
             },
             {
-              path: "/advanced-development/modules/example-crud-module-service",
-              title: "Example: CRUD Service",
-            },
-            {
               path: "/advanced-development/modules/options",
               title: "Module Options",
-            },
-            {
-              path: "/advanced-development/modules/queryable-modules",
-              title: "Queryable Modules",
-            },
-            {
-              path: "/advanced-development/modules/remote-query",
-              title: "Remote Query",
             },
             {
               path: "/advanced-development/modules/module-relationships",
               title: "Module Relationships",
             },
             {
-              path: "/advanced-development/modules/example-module-relationship",
-              title: "Example: Relationship",
+              path: "/advanced-development/modules/remote-query",
+              title: "Remote Query",
             },
             {
               path: "/advanced-development/modules/link-modules",
@@ -191,10 +175,6 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Compensation Function",
             },
             {
-              path: "/advanced-development/workflows/advanced-example",
-              title: "Example: Advanced Workflow",
-            },
-            {
               path: "/advanced-development/workflows/access-workflow-errors",
               title: "Access Workflow Errors",
             },
@@ -213,6 +193,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
             {
               path: "/advanced-development/workflows/long-running-workflow",
               title: "Long-Running Workflow",
+            },
+            {
+              path: "/advanced-development/workflows/advanced-example",
+              title: "Example: Advanced Workflow",
             },
           ],
         },
@@ -309,6 +293,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
     {
       path: "/deployment",
       title: "Deployment",
+    },
+    {
+      path: "/more-resources",
+      title: "More Resources",
     },
     {
       path: "/cheatsheet",
