@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "@medusajs/icons": "^1.2.0",
-    "@medusajs/ui": "^2.4.1",
+    "@medusajs/ui": "^3.0.0",
     "@octokit/request": "^8.1.1",
     "@react-hook/resize-observer": "^1.2.6",
     "@segment/analytics-next": "^1.55.0",
