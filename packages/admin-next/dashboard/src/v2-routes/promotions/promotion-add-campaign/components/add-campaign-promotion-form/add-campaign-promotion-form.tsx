@@ -34,6 +34,8 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
   })
 
   useEffect(() => {
+    const formData = form.getValues()
+
     if (watchCampaignChoice !== "existing") {
       form.setValue("campaign_id", undefined)
     }
@@ -43,7 +45,9 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
     }
 
     if (watchCampaignChoice === "new") {
-      form.setValue("campaign", defaultCampaignValues)
+      if (!formData.campaign) {
+        form.setValue("campaign", defaultCampaignValues)
+      }
     }
   }, [watchCampaignChoice])
 
