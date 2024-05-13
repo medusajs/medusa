@@ -15,7 +15,7 @@ import { CreateCampaignFormFields } from "../../../common/components/create-camp
 export const CreateCampaignSchema = zod.object({
   name: zod.string().min(1),
   description: zod.string().optional(),
-  currency: zod.string(),
+  currency: zod.string().min(1),
   campaign_identifier: zod.string().min(1),
   starts_at: zod.date().optional(),
   ends_at: zod.date().optional(),
@@ -26,10 +26,10 @@ export const CreateCampaignSchema = zod.object({
 })
 
 export const defaultCampaignValues = {
-  name: undefined,
-  description: undefined,
-  currency: undefined,
-  campaign_identifier: undefined,
+  name: "",
+  description: "",
+  currency: "",
+  campaign_identifier: "",
   starts_at: undefined,
   ends_at: undefined,
   budget: {
