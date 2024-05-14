@@ -495,11 +495,30 @@ export default class PaymentModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async capturePayment(
     data: CreateCaptureDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PaymentDTO> {
+    const payment = (await this.capturePayment_(data, sharedContext)) as Payment
+
+    await this.maybeUpdatePaymentCollection_(
+      payment.payment_collection_id,
+      sharedContext
+    )
+
+    return await this.retrievePayment(
+      payment.id,
+      { relations: ["captures"] },
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  private async capturePayment_(
+    data: CreateCaptureDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
     const payment = await this.paymentService_.retrieve(
       data.payment_id,
       {
@@ -580,6 +599,16 @@ export default class PaymentModuleService<
       sharedContext
     )
 
+    return payment
+  }
+
+  @InjectManager("baseRepository_")
+  async refundPayment(
+    data: CreateRefundDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentDTO> {
+    const payment = await this.refundPayment_(data, sharedContext)
+
     await this.maybeUpdatePaymentCollection_(
       payment.payment_collection_id,
       sharedContext
@@ -587,16 +616,16 @@ export default class PaymentModuleService<
 
     return await this.retrievePayment(
       payment.id,
-      { relations: ["captures"] },
+      { relations: ["refunds"] },
       sharedContext
     )
   }
 
   @InjectTransactionManager("baseRepository_")
-  async refundPayment(
+  private async refundPayment_(
     data: CreateRefundDTO,
     @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO> {
+  ) {
     const payment = await this.paymentService_.retrieve(
       data.payment_id,
       {
@@ -652,16 +681,7 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    await this.maybeUpdatePaymentCollection_(
-      payment.payment_collection_id,
-      sharedContext
-    )
-
-    return await this.retrievePayment(
-      payment.id,
-      { relations: ["refunds"] },
-      sharedContext
-    )
+    return payment
   }
 
   @InjectTransactionManager("baseRepository_")

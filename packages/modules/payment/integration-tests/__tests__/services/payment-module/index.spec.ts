@@ -67,6 +67,7 @@ moduleIntegrationTestRunner({
               currency_code: "usd",
               amount: 200,
               authorized_amount: 200,
+              captured_amount: 200,
               status: "authorized",
               region_id: "reg_123",
               deleted_at: null,
