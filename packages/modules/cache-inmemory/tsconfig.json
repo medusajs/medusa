@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es5",
-      "es6",
-      "es2019"
-    ],
-    "target": "es5",
+    "lib": ["es2021"],
+    "target": "es2021",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
