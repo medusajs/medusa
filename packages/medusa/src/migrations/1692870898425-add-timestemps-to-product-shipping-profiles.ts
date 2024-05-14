@@ -1,7 +1,4 @@
-import { MedusaV2Flag } from "@medusajs/utils"
 import { MigrationInterface, QueryRunner } from "typeorm"
-
-export const featureFlag = MedusaV2Flag.key
 
 export class AddTimestempsToProductShippingProfiles1692870898425
   implements MigrationInterface

@@ -8,7 +8,6 @@ import { MedusaError, isDefined } from "medusa-core-utils"
 import { RequestQueryFields } from "@medusajs/types"
 import { BaseEntity } from "../interfaces"
 import { featureFlagRouter } from "../loaders/feature-flags"
-import MedusaV2 from "../loaders/feature-flags/medusa-v2"
 import { FindConfig, QueryConfig } from "../types/common"
 
 export function pickByConfig<TModel extends BaseEntity>(
@@ -31,8 +30,6 @@ export function prepareListQuery<
   T extends RequestQueryFields,
   TEntity extends BaseEntity
 >(validated: T, queryConfig: QueryConfig<TEntity> = {}) {
-  const isMedusaV2 = featureFlagRouter.isFeatureEnabled(MedusaV2.key)
-
   // TODO: this function will be simplified a lot once we drop support for the old api
   const { order, fields, limit = 50, expand, offset = 0 } = validated
   let {
@@ -189,10 +186,6 @@ export function prepareListQuery<
         MedusaError.Types.INVALID_DATA,
         `Order field ${orderField} is not valid`
       )
-    }
-  } else {
-    if (!isMedusaV2) {
-      orderBy["created_at"] = "DESC"
     }
   }
 
