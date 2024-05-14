@@ -189,10 +189,6 @@ export interface ProductVariantDTO {
    */
   upc?: string | null
   /**
-   * The inventory quantiy of the product variant.
-   */
-  inventory_quantity: number
-  /**
    * Whether the product variant can be ordered when it's out of stock.
    */
   allow_backorder?: boolean
@@ -1210,10 +1206,6 @@ export interface CreateProductVariantDTO {
    */
   allow_backorder?: boolean
   /**
-   * The inventory quantiy of the product variant.
-   */
-  inventory_quantity?: number
-  /**
    *  Whether the product variant's inventory should be managed by the core system.
    */
   manage_inventory?: boolean
@@ -1310,10 +1302,6 @@ export interface UpdateProductVariantDTO {
    * Whether the product variant can be ordered when it's out of stock.
    */
   allow_backorder?: boolean
-  /**
-   * The inventory quantiy of the product variant.
-   */
-  inventory_quantity?: number
   /**
    * Whether the product variant's inventory should be managed by the core system.
    */
