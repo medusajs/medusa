@@ -66,9 +66,8 @@ moduleIntegrationTestRunner({
               id: expect.any(String),
               currency_code: "usd",
               amount: 200,
-              // TODO
-              // authorized_amount: 200,
-              // status: "authorized",
+              authorized_amount: 200,
+              status: "authorized",
               region_id: "reg_123",
               deleted_at: null,
               completed_at: expect.any(Date),
@@ -635,8 +634,6 @@ moduleIntegrationTestRunner({
                     amount: 100,
                   }),
                 ],
-                // captured_amount: 100,
-                // refunded_amount: 100,
               })
             )
           })
