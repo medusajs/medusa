@@ -186,7 +186,7 @@ export const createReturnOrderWorkflow = createWorkflow(
       variables: returnShippingOptionsVariables,
       list: false,
       throw_if_key_not_found: true,
-    })
+    }).config({ name: "return-shipping-option" })
 
     const shippingMethodData = transform(
       {
@@ -209,7 +209,7 @@ export const createReturnOrderWorkflow = createWorkflow(
       fields: ["*"],
       variables: { id: input.order_id },
       list: false,
-    })
+    }).config({ name: "fresh-order" })
 
     updateOrderTaxLinesStep({
       order_id: input.order_id,
