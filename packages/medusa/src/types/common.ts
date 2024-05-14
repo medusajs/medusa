@@ -10,7 +10,6 @@ import {
 
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
-import { BaseEntity } from "../interfaces"
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
@@ -89,7 +88,7 @@ export interface CustomFindOptions<TModel, InKeys extends keyof TModel> {
   take?: number
 }
 
-export type QueryConfig<TEntity extends BaseEntity> = {
+export type QueryConfig<TEntity> = {
   /**
    * Default fields and relations to return
    */
