@@ -101,8 +101,6 @@ class HelloModuleService extends ModulesSdkUtils
   
     __joinerConfig(): ModuleJoinerConfig {
       return {
-        serviceName: "helloModuleService",
-        primaryKeys: ["id"],
         alias: [
           {
             name: ["my_custom"],
@@ -140,18 +138,6 @@ This creates a relationship to the `Product` data model of the Product Module us
 #### `__joinerConfig` Return Type
 
 <TypeList types={[
-  {
-    name: "serviceName",
-    type: "`string`",
-    optional: false,
-    description: "The name of your module (as added in `medusa-config.js`)."
-  },
-  {
-    name: "primaryKeys",
-    type: "`string[]`",
-    optional: false,
-    description: "The primary key field names used in your module's data models.",
-  },
   {
     name: "alias",
     type: "`object[]`",
@@ -227,8 +213,6 @@ const modules = {
   helloModuleService: {
     // ...
     definition: {
-      key: "helloModuleService",
-      registrationName: "helloModuleService",
       isQueryable: true,
     },
   },
@@ -237,28 +221,6 @@ const modules = {
 ```
 
 Enabling the `isQueryable` property is required to use relationships in a module.
-
-The `definition` property’s value is an object that accepts the following properties, among others:
-
-<TypeList types={[
-  {
-    name: "key",
-    type: "`string`",
-    optional: false,
-    description: "The module's key in the `modules` object."
-  },
-  {
-    name: "registrationName",
-    type: "`string`",
-    optional: false,
-    description: "The name that the main service is registered under in the Medusa container. It’s recommended to be the same as `key`'s value.",
-  },
-  {
-    name: "isQueryable",
-    type: "`boolean`",
-    description: "Whether the module is queryable. This must be enabled to allow a module to have relationships."
-  }
-]} sectionTitle="Adjust Module Configuration" />
 
 ---
 
