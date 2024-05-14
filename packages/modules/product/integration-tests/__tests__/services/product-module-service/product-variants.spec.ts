@@ -44,7 +44,6 @@ moduleIntegrationTestRunner({
         variantOne = await service.createVariants({
           id: "test-1",
           title: "variant 1",
-          inventory_quantity: 10,
           product_id: productOne.id,
           options: { size: "large" },
         })
@@ -52,7 +51,6 @@ moduleIntegrationTestRunner({
         variantTwo = await service.createVariants({
           id: "test-2",
           title: "variant",
-          inventory_quantity: 10,
           product_id: productTwo.id,
         })
       })

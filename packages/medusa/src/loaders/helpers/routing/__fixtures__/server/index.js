@@ -12,11 +12,7 @@ import querystring from "querystring"
 import supertest from "supertest"
 import apiLoader from "../../../../api"
 import featureFlagLoader, { featureFlagRouter } from "../../../../feature-flags"
-import modelsLoader from "../../../../models"
 import passportLoader from "../../../../passport"
-import repositoriesLoader from "../../../../repositories"
-import servicesLoader from "../../../../services"
-import strategiesLoader from "../../../../strategies"
 
 import RoutesLoader from "../.."
 import { config } from "../mocks"
@@ -88,10 +84,6 @@ export const createServer = async (rootDir) => {
   })
 
   featureFlagLoader(config)
-  modelsLoader({ container, isTest: true })
-  repositoriesLoader({ container, isTest: true })
-  servicesLoader({ container, configModule: config })
-  strategiesLoader({ container, configModule: config })
   await passportLoader({ app: app, container, configModule: config })
   await moduleLoader({ container, moduleResolutions })
 

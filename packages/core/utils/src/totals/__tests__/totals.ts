@@ -634,4 +634,94 @@ describe("Total calculation", function () {
       original_shipping_total: 27.5,
     })
   })
+
+  it("should calculate order with items + taxes + adjustments", function () {
+    const cart = {
+      items: [
+        {
+          unit_price: 50,
+          quantity: 2,
+          fulfilled_quantity: 2,
+          shipped_quantity: 2,
+          return_requested_quantity: 2,
+          return_received_quantity: 1,
+          return_dismissed_quantity: 1,
+          written_off_quantity: 0,
+          tax_lines: [
+            {
+              rate: 10,
+            },
+          ],
+          adjustments: [
+            {
+              amount: 20,
+            },
+          ],
+        },
+      ],
+    }
+
+    const serialized = JSON.parse(JSON.stringify(decorateCartTotals(cart)))
+
+    expect(serialized).toEqual({
+      items: [
+        {
+          unit_price: 50,
+          quantity: 2,
+          fulfilled_quantity: 2,
+          shipped_quantity: 2,
+          return_requested_quantity: 2,
+          return_received_quantity: 1,
+          return_dismissed_quantity: 1,
+          written_off_quantity: 0,
+          tax_lines: [
+            {
+              rate: 10,
+              total: 8,
+              subtotal: 10,
+            },
+          ],
+          adjustments: [
+            {
+              amount: 20,
+              subtotal: 20,
+              total: 22,
+            },
+          ],
+          subtotal: 100,
+          total: 88,
+          original_total: 110,
+          discount_total: 20,
+          discount_tax_total: 2,
+          tax_total: 8,
+          original_tax_total: 10,
+          fulfilled_total: 88,
+          shipped_total: 88,
+          return_requested_total: 88,
+          return_received_total: 44,
+          return_dismissed_total: 44,
+          write_off_total: 0,
+        },
+      ],
+      total: 88,
+      subtotal: 100,
+      tax_total: 8,
+      discount_total: 20,
+      discount_tax_total: 2,
+      original_total: 90,
+      original_tax_total: 10,
+      item_total: 88,
+      item_subtotal: 100,
+      item_tax_total: 8,
+      original_item_total: 110,
+      original_item_subtotal: 100,
+      original_item_tax_total: 10,
+      fulfilled_total: 88,
+      shipped_total: 88,
+      return_requested_total: 88,
+      return_received_total: 44,
+      return_dismissed_total: 44,
+      write_off_total: 0,
+    })
+  })
 })

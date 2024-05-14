@@ -4,7 +4,7 @@ The Product Module gives you access Products, Variants, Categories, and more thr
 
 [Product Module documentation](https://docs.medusajs.com/modules/product/serverless-module) | [Medusa Website](https://medusajs.com/) | [Medusa Repository](https://github.com/medusajs/medusa)
 
-> The Product Module is currently in beta. The beta version comes with limited functionality, primarily centered around retrieving products. In the official version, the product module will be fully-fledged and on par with the product functionality in our core package. 
+> The Product Module is currently in beta. The beta version comes with limited functionality, primarily centered around retrieving products. In the official version, the product module will be fully-fledged and on par with the product functionality in our core package.
 
 ---
 
@@ -120,14 +120,12 @@ const variantsData = [
     title: "variant title",
     sku: "sku 1",
     product: { id: productsData[0].id },
-    inventory_quantity: 10,
   },
   {
     id: "test-2",
     title: "variant title",
     sku: "sku 2",
     product: { id: productsData[1].id },
-    inventory_quantity: 10,
   },
 ]
 

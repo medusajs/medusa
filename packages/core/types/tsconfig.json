@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "lib": ["es2020"],
-    "target": "es2020",
+    "lib": ["es2021"],
+    "target": "es2021",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declarationMap": true,
