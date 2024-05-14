@@ -5393,17 +5393,13 @@ __metadata:
     awilix: ^8.0.0
     body-parser: ^1.19.0
     boxen: ^5.0.1
-    bullmq: ^5.4.2
     chokidar: ^3.4.2
-    class-transformer: ^0.5.1
-    class-validator: ^0.14.0
     compression: ^1.7.4
     connect-redis: ^5.0.0
     cookie-parser: ^1.4.6
     core-js: ^3.6.5
     cors: ^2.8.5
     cross-env: ^5.2.1
-    cross-spawn: ^7.0.3
     dotenv: ^16.4.5
     express: ^4.18.2
     express-session: ^1.17.3
@@ -5411,7 +5407,6 @@ __metadata:
     glob: ^7.1.6
     ioredis: ^5.2.5
     ioredis-mock: 8.4.0
-    iso8601-duration: ^1.3.0
     jest: ^25.5.4
     jsonwebtoken: ^9.0.0
     lodash: ^4.17.21
@@ -5422,30 +5417,23 @@ __metadata:
     morgan: ^1.9.1
     multer: ^1.4.5-lts.1
     node-schedule: ^2.1.1
-    papaparse: 5.3.2
     passport: ^0.6.0
     passport-custom: ^1.1.1
     passport-jwt: ^4.0.1
     passport-local: ^1.0.0
     pg: ^8.11.2
     qs: ^6.11.2
-    randomatic: ^3.1.1
     reflect-metadata: ^0.1.13
     regenerator-runtime: ^0.13.11
     request-ip: ^3.3.0
     rimraf: ^5.0.1
-    scrypt-kdf: ^2.0.1
     supertest: ^4.0.2
     ts-jest: ^25.5.1
-    typeorm: ^0.3.16
     typescript: ^4.4.4
-    ulid: ^2.3.0
     uuid: ^9.0.0
-    winston: ^3.8.2
     zod: 3.22.4
   peerDependencies:
     medusa-interfaces: ^1.3.7
-    typeorm: ^0.3.16
   bin:
     medusa: ./cli.js
   languageName: unknown
@@ -11562,7 +11550,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/validator@npm:^13.11.8, @types/validator@npm:^13.7.17":
+"@types/validator@npm:^13.7.17":
   version: 13.11.9
   resolution: "@types/validator@npm:13.11.9"
   checksum: 856ebfcfe25d6c91a90235e0eb27302a737832530898195bbfb265da52ae7fe6d68f684942574f8818d3c262cae7a1de99f145dac73fc57217933af1bfc199cb
@@ -14112,13 +14100,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"class-transformer@npm:^0.5.1":
-  version: 0.5.1
-  resolution: "class-transformer@npm:0.5.1"
-  checksum: 19809914e51c6db42c036166839906420bb60367df14e15f49c45c8c1231bf25ae661ebe94736ee29cc688b77101ef851a8acca299375cc52fc141b64acde18a
-  languageName: node
-  linkType: hard
-
 "class-utils@npm:^0.3.5":
   version: 0.3.6
   resolution: "class-utils@npm:0.3.6"
@@ -14128,17 +14109,6 @@ __metadata:
     isobject: ^3.0.0
     static-extend: ^0.1.1
   checksum: d44f4afc7a3e48dba4c2d3fada5f781a1adeeff371b875c3b578bc33815c6c29d5d06483c2abfd43a32d35b104b27b67bfa39c2e8a422fa858068bd756cfbd42
-  languageName: node
-  linkType: hard
-
-"class-validator@npm:^0.14.0":
-  version: 0.14.1
-  resolution: "class-validator@npm:0.14.1"
-  dependencies:
-    "@types/validator": ^13.11.8
-    libphonenumber-js: ^1.10.53
-    validator: ^13.9.0
-  checksum: 946e914e47548b5081449c720ea6a4877bac63dc960e14fca4b990b56e64efe3802d12f07ec22d6420c290245b72ea2d646939239f2a3b597794e6c4c2a4f2ae
   languageName: node
   linkType: hard
 
@@ -20358,13 +20328,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iso8601-duration@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "iso8601-duration@npm:1.3.0"
-  checksum: a848f4c3caca38c7a3a7ee6708f0da8ab00499b1ba4b06de95ccccecc4d1c45f60b0725b1bbd6cc36f47b59b1fb18e020b36c06368e1f908a05271076df11e05
-  languageName: node
-  linkType: hard
-
 "isobject@npm:^2.0.0":
   version: 2.1.0
   resolution: "isobject@npm:2.1.0"
@@ -22694,13 +22657,6 @@ __metadata:
     prelude-ls: ~1.1.2
     type-check: ~0.3.2
   checksum: e440df9de4233da0b389cd55bd61f0f6aaff766400bebbccd1231b81801f6dbc1d816c676ebe8d70566394b749fa624b1ed1c68070e9c94999f0bdecc64cb676
-  languageName: node
-  linkType: hard
-
-"libphonenumber-js@npm:^1.10.53":
-  version: 1.11.0
-  resolution: "libphonenumber-js@npm:1.11.0"
-  checksum: c9230aa2353372dbe277768a4a2b74a10d241d6013d8133ea4260fab201e7ac2fb1751460f1d8660fff7a493eeaf208d9844ebea70d997cea70bd9a3fd78041d
   languageName: node
   linkType: hard
 
@@ -25277,13 +25233,6 @@ __metadata:
   version: 0.2.9
   resolution: "pako@npm:0.2.9"
   checksum: 79c1806ebcf325b60ae599e4d7227c2e346d7b829dc20f5cf24cef07c934079dc3a61c5b3c8278a2f7a190c4a613e343ea11e5302dbe252efd11712df4b6b041
-  languageName: node
-  linkType: hard
-
-"papaparse@npm:5.3.2":
-  version: 5.3.2
-  resolution: "papaparse@npm:5.3.2"
-  checksum: fdc50cae03fdf94fa2b78da86fe18fa53ca36753ccd6619ca7f738df097cdd2cbf572a9c048a72c05118db7cf0ccb25d574f39a720c5e1a8d8c6903b0fd30765
   languageName: node
   linkType: hard
 

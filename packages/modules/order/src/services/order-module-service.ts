@@ -2238,8 +2238,8 @@ export default class OrderModuleService<
       return {
         action: ChangeActionType.RETURN_ITEM,
         internal_note: item.internal_note,
-        reference: data.reference,
-        reference_id: shippingMethodId,
+        reference: data.reference ?? "fulfillment",
+        reference_id: data.reference_id ?? shippingMethodId,
         details: {
           reference_id: item.id,
           quantity: item.quantity,
@@ -2251,8 +2251,8 @@ export default class OrderModuleService<
     if (shippingMethodId) {
       actions.push({
         action: ChangeActionType.SHIPPING_ADD,
-        reference: data.reference,
-        reference_id: shippingMethodId,
+        reference: data.reference ?? "fulfillment",
+        reference_id: data.reference_id ?? shippingMethodId,
         amount: calculatedAmount.total,
       })
     }
@@ -2543,5 +2543,38 @@ export default class OrderModuleService<
     }
 
     return await this.returnReasonService_.update(toUpdate, sharedContext)
+  }
+
+  public async receiveReturn(
+    data: OrderTypes.ReceiveOrderReturnDTO,
+    sharedContext?: Context
+  ): Promise<void> {
+    const items = data.items.map((item) => {
+      return {
+        action: ChangeActionType.RECEIVE_RETURN_ITEM,
+        internal_note: item.internal_note,
+        reference: data.reference,
+        reference_id: data.reference_id,
+        details: {
+          reference_id: item.id,
+          quantity: item.quantity,
+          metadata: item.metadata,
+        },
+      }
+    })
+
+    const change = await this.createOrderChange_(
+      {
+        order_id: data.order_id,
+        description: data.description,
+        internal_note: data.internal_note,
+        created_by: data.created_by,
+        metadata: data.metadata,
+        actions: items,
+      },
+      sharedContext
+    )
+
+    await this.confirmOrderChange(change[0].id, sharedContext)
   }
 }

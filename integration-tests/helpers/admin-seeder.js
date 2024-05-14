@@ -9,9 +9,6 @@ module.exports = async (dataSource, data = {}) => {
   const user = await manager.insert("user", {
     id: "admin_user",
     email: "admin@medusa.js",
-    api_token: "test_token",
-    role: "admin",
-    password_hash,
     ...data,
   })
 

@@ -7,9 +7,9 @@ import { Region } from "@medusajs/medusa"
 import { AxiosInstance } from "axios"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -49,7 +49,7 @@ describe.skip("POST /admin/products/:id", () => {
 
   beforeEach(async () => {
     const manager = dbConnection.manager
-    await adminSeeder(dbConnection)
+    await createAdminUser(dbConnection, adminHeaders, appContainer)
     await createDefaultRuleTypes(appContainer)
 
     await manager.insert(Region, {

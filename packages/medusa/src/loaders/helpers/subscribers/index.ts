@@ -4,9 +4,9 @@ import { kebabCase } from "@medusajs/utils"
 import { readdir } from "fs/promises"
 import { extname, join, sep } from "path"
 
-import { EventBusService } from "../../../services"
 import { SubscriberArgs, SubscriberConfig } from "../../../types/subscribers"
 import logger from "../../logger"
+import { IEventBusModuleService } from "@medusajs/types"
 
 type SubscriberHandler<T> = (args: SubscriberArgs<T>) => Promise<void>
 
@@ -185,7 +185,7 @@ export class SubscriberLoader {
     config: SubscriberConfig
     handler: SubscriberHandler<T>
   }) {
-    const eventBusService: EventBusService = this.container_.resolve(
+    const eventBusService: IEventBusModuleService = this.container_.resolve(
       ModuleRegistrationName.EVENT_BUS
     )
 

@@ -119,7 +119,6 @@ moduleIntegrationTestRunner({
               {
                 id: "variant-1",
                 title: "variant 1",
-                inventory_quantity: 10,
               },
             ],
           })
@@ -145,12 +144,10 @@ moduleIntegrationTestRunner({
               {
                 id: "variant-2",
                 title: "variant 2",
-                inventory_quantity: 10,
               },
               {
                 id: "variant-3",
                 title: "variant 3",
-                inventory_quantity: 10,
                 options: {
                   size: "small",
                   color: "red",
@@ -258,7 +255,6 @@ moduleIntegrationTestRunner({
                   sku: createdVariant.sku,
                   allow_backorder: false,
                   manage_inventory: true,
-                  inventory_quantity: 100,
                   variant_rank: 0,
                   options: expect.arrayContaining([
                     expect.objectContaining({
@@ -615,7 +611,6 @@ moduleIntegrationTestRunner({
                   sku: data.variants[0].sku,
                   allow_backorder: false,
                   manage_inventory: true,
-                  inventory_quantity: 100,
                   variant_rank: 0,
                   options: expect.arrayContaining([
                     expect.objectContaining({
