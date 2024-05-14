@@ -33,6 +33,7 @@ import {
   promiseAll,
   removeUndefined,
   isValidHandle,
+  toHandle,
 } from "@medusajs/utils"
 import {
   ProductCategoryEventData,
@@ -1317,7 +1318,7 @@ export default class ProductModuleService<
     )) as ProductTypes.CreateProductDTO
 
     if (!productData.handle && productData.title) {
-      productData.handle = kebabCase(productData.title)
+      productData.handle = toHandle(productData.title)
     }
 
     if (!productData.status) {
