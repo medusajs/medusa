@@ -1,5 +1,5 @@
 import { MiddlewareRoute } from "../../types/middlewares"
-import { authenticate } from "../../utils/authenticate-middleware"
+import { authenticate } from "../../utils/middlewares/authenticate-middleware"
 
 export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {

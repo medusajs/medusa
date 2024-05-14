@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es2020"
-    ],
-    "target": "es2020",
+    "lib": ["es2021"],
+    "target": "es2021",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
@@ -23,26 +21,14 @@
     "baseUrl": ".",
     "resolveJsonModule": true,
     "paths": {
-      "@models": [
-        "./src/models"
-      ],
-      "@services": [
-        "./src/services"
-      ],
-      "@repositories": [
-        "./src/repositories"
-      ],
-      "@types": [
-        "./src/types"
-      ], 
-      "@utils": [
-        "./src/utils"
-      ]
+      "@models": ["./src/models"],
+      "@services": ["./src/services"],
+      "@repositories": ["./src/repositories"],
+      "@types": ["./src/types"],
+      "@utils": ["./src/utils"]
     }
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
   "exclude": [
     "dist",
     "./src/**/__tests__",

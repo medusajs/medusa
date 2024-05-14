@@ -1,5 +1,10 @@
 import { BigNumberInput } from "../totals"
-import { OrderItemDTO, OrderLineItemDTO } from "./common"
+import {
+  OrderItemDTO,
+  OrderLineItemDTO,
+  OrderReturnReasonDTO,
+  OrderTransactionDTO,
+} from "./common"
 
 /** ADDRESS START */
 export interface UpsertOrderAddressDTO {
@@ -310,10 +315,13 @@ export interface UpdateOrderChangeActionDTO {
 
 export interface CreateOrderTransactionDTO {
   order_id: string
+  description?: string
+  reference_type?: string
+  reference_id?: string
+  internal_note?: string
+  created_by?: string
   amount: BigNumberInput
   currency_code: string
-  reference?: string
-  reference_id?: string
   metadata?: Record<string, unknown> | null
 }
 
@@ -321,9 +329,16 @@ export interface UpdateOrderTransactionDTO {
   id: string
   amount?: BigNumberInput
   currency_code?: string
+  description?: string
+  internal_note?: string
   reference?: string
   reference_id?: string
   metadata?: Record<string, unknown> | null
+}
+
+export interface UpdateOrderTransactionWithSelectorDTO {
+  selector: Partial<OrderTransactionDTO>
+  data: Partial<UpdateOrderTransactionDTO>
 }
 
 /** ORDER TRANSACTION END */
@@ -388,6 +403,7 @@ export interface CreateOrderReturnDTO {
   order_id: string
   description?: string
   reference?: string
+  reference_id?: string
   internal_note?: string
   created_by?: string
   shipping_method: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
@@ -400,4 +416,48 @@ export interface CreateOrderReturnDTO {
   metadata?: Record<string, unknown> | null
 }
 
+export interface ReceiveOrderReturnDTO {
+  order_id: string
+  description?: string
+  internal_note?: string
+  reference?: string
+  reference_id?: string
+  created_by?: string
+  items: {
+    id: string
+    quantity: BigNumberInput
+    internal_note?: string
+    metadata?: Record<string, unknown> | null
+  }[]
+  metadata?: Record<string, unknown> | null
+}
+
 /** ORDER bundled action flows */
+
+export interface CreateOrderReturnReasonDTO {
+  value: string
+  label: string
+  description?: string
+  parent_return_reason_id?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface UpdateOrderReturnReasonDTO {
+  id?: string
+  label?: string
+  value?: string
+  description?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface ReturnReasonUpdatableFields {
+  value?: string
+  label?: string
+  description?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface UpdateOrderReturnReasonWithSelectorDTO {
+  selector: Partial<OrderReturnReasonDTO>
+  data: Partial<UpdateOrderReturnReasonDTO>
+}

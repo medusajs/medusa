@@ -97,17 +97,6 @@ class ProductVariant {
   @Property({ columnType: "text", nullable: true })
   upc?: string | null
 
-  // TODO: replace with BigNumber
-  // Note: Upon serialization, this turns to a string. This is on purpose, because you would loose
-  // precision if you cast numeric to JS number, as JS number is a float.
-  // Ref: https://github.com/mikro-orm/mikro-orm/issues/2295
-  @Property({
-    columnType: "numeric",
-    default: 100,
-    serializer: optionalNumericSerializer,
-  })
-  inventory_quantity?: number = 100
-
   @Property({ columnType: "boolean", default: false })
   allow_backorder?: boolean = false
 

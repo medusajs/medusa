@@ -28,7 +28,10 @@ import {
 } from "@medusajs/types"
 import { ContainerRegistrationKeys, RuleOperator } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import adminSeeder from "../../../../helpers/admin-seeder"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(200000)
 
@@ -84,7 +87,7 @@ medusaIntegrationTestRunner({
       })
 
       beforeEach(async () => {
-        await adminSeeder(dbConnection)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
 
         // Here, so we don't have to create a region for each test
         defaultRegion = await regionModuleService.create({

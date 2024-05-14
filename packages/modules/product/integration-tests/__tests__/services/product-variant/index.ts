@@ -48,14 +48,12 @@ moduleIntegrationTestRunner({
           variantOne = testManager.create(ProductVariant, {
             id: productVariantTestOne,
             title: "variant 1",
-            inventory_quantity: 10,
             product: productOne,
           })
 
           variantTwo = testManager.create(ProductVariant, {
             id: "test-2",
             title: "variant",
-            inventory_quantity: 10,
             product: productOne,
           })
 
@@ -71,7 +69,6 @@ moduleIntegrationTestRunner({
             expect.objectContaining({
               id: variantOne.id,
               title: "variant 1",
-              inventory_quantity: "10",
             }),
           ])
         })
@@ -230,7 +227,6 @@ moduleIntegrationTestRunner({
               id: expect.any(String),
               title: data.title,
               sku: data.sku,
-              inventory_quantity: 100,
               allow_backorder: false,
               manage_inventory: true,
               variant_rank: 0,
@@ -261,7 +257,6 @@ moduleIntegrationTestRunner({
           variantOne = testManager.create(ProductVariant, {
             id: productVariantTestOne,
             title: "variant 1",
-            inventory_quantity: 10,
             product: productOne,
           })
 

@@ -34,11 +34,19 @@ export enum MODULE_RESOURCE_TYPE {
   ISOLATED = "isolated",
 }
 
+export type CustomModuleDefinition = {
+  key?: string
+  registrationName?: string
+  label?: string
+  isQueryable?: boolean // If the module is queryable via Remote Joiner
+  dependencies?: string[]
+}
+
 export type InternalModuleDeclaration = {
   scope: MODULE_SCOPE.INTERNAL
   resources: MODULE_RESOURCE_TYPE
   dependencies?: string[]
-  definition?: Partial<ModuleDefinition> // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
+  definition?: CustomModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   resolve?: string | ModuleExports
   options?: Record<string, unknown>
   /**
@@ -54,7 +62,7 @@ export type InternalModuleDeclaration = {
 
 export type ExternalModuleDeclaration = {
   scope: MODULE_SCOPE.EXTERNAL
-  definition?: Partial<ModuleDefinition> // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
+  definition?: CustomModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   server?: {
     type: "http"
     url: string
@@ -87,7 +95,6 @@ export type ModuleDefinition = {
   label: string
   isRequired?: boolean
   isQueryable?: boolean // If the module is queryable via Remote Joiner
-  isLegacy?: boolean // If the module is a legacy module TODO: Remove once all the legacy modules are migrated
   dependencies?: string[]
   defaultModuleDeclaration:
     | InternalModuleDeclaration
@@ -122,7 +129,7 @@ export type LoaderOptions<TOptions = Record<string, unknown>> = {
 }
 
 export type ModuleLoaderFunction = (
-  options: LoaderOptions,
+  options: LoaderOptions<any>,
   moduleDeclaration?: InternalModuleDeclaration
 ) => Promise<void>
 
@@ -226,14 +233,6 @@ export declare type ModuleJoinerRelationship = JoinerRelationship & {
 export type ModuleExports = {
   service: Constructor<any>
   loaders?: ModuleLoaderFunction[]
-  /**
-   * @deprecated property will be removed in future versions
-   */
-  migrations?: any[]
-  /**
-   * @deprecated property will be removed in future versions
-   */
-  models?: Constructor<any>[]
   runMigrations?(
     options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration

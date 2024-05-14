@@ -1275,16 +1275,6 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "inventory_quantity": {
-          "name": "inventory_quantity",
-          "type": "numeric",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "100",
-          "mappedType": "decimal"
-        },
         "allow_backorder": {
           "name": "allow_backorder",
           "type": "boolean",
