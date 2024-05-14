@@ -7,9 +7,12 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
 import { simpleProductCollectionFactory } from "../../../../factories/simple-product-collection-factory"
-import adminSeeder from "../../../../helpers/admin-seeder"
 import batchJobSeeder from "../../../../helpers/batch-job-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 const setupServer = require("../../../../environment-helpers/setup-server")
 const userSeeder = require("../../../../helpers/user-seeder")
@@ -98,7 +101,7 @@ describe.skip("Product import batch job", () => {
     const container = getContainer()
     await createDefaultRuleTypes(container)
     await batchJobSeeder(dbConnection)
-    await adminSeeder(dbConnection)
+    await createAdminUser(dbConnection, adminHeaders, container)
     await userSeeder(dbConnection)
     await simpleProductCollectionFactory(dbConnection, [
       {
