@@ -10,7 +10,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "order",
     variables: {
-      filters: req.filterableFields,
+      filters: {
+        ...req.filterableFields,
+        is_draft_order: false,
+      },
       ...req.remoteQueryConfig.pagination,
     },
     fields: req.remoteQueryConfig.fields,
