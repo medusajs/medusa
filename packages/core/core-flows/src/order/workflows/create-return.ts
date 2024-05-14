@@ -10,45 +10,55 @@ import {
   WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
-import { arrayDifference, isDefined, MedusaError } from "@medusajs/utils"
+import {
+  arrayDifference,
+  ContainerRegistrationKeys,
+  isDefined,
+  MedusaError,
+} from "@medusajs/utils"
 import { updateOrderTaxLinesStep } from "../steps"
 import { createReturnStep } from "../steps/create-return"
 
-function throwIfOrderIsCancelled(order: OrderDTO) {
-  return transform({ order }, (data) => {
-    // TODO find out how canceled at
-    if (false /*order.cancelled_at*/) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Order with id ${order.id} has been cancelled.`
-      )
-    }
-  })
+function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
+  // TODO find out how canceled at
+  if (false /*order.cancelled_at*/) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Order with id ${order.id} has been cancelled.`
+    )
+  }
 }
 
-function throwIfItemsDoesNotExistsInOrder(
-  order: OrderDTO,
+function throwIfItemsDoesNotExistsInOrder({
+  order,
+  inputItems,
+}: {
+  order: OrderDTO
   inputItems: OrderWorkflow.CreateOrderReturnWorkflowInput["items"]
-) {
-  return transform({ order, inputItems }, (data) => {
-    const orderItemIds = data.order.items?.map((i) => i.id) ?? []
-    const inputItemIds = data.inputItems.map((i) => i.id)
-    const diff = arrayDifference(inputItemIds, orderItemIds)
+}) {
+  const orderItemIds = order.items?.map((i) => i.id) ?? []
+  const inputItemIds = inputItems.map((i) => i.id)
+  const diff = arrayDifference(inputItemIds, orderItemIds)
 
-    if (diff.length) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Items with ids ${diff.join(", ")} does not exist in order with id ${
-          order.id
-        }.`
-      )
-    }
-  })
+  if (diff.length) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Items with ids ${diff.join(", ")} does not exist in order with id ${
+        order.id
+      }.`
+    )
+  }
 }
 
 function validateReturnReasons(
-  order_id: string,
-  inputItems: OrderWorkflow.CreateOrderReturnWorkflowInput["items"]
+  {
+    order_id,
+    inputItems,
+  }: {
+    order_id: string
+    inputItems: OrderWorkflow.CreateOrderReturnWorkflowInput["items"]
+  },
+  { container }
 ) {
   const reasonIds = inputItems.map((i) => i.reason_id).filter(Boolean)
 
@@ -56,73 +66,72 @@ function validateReturnReasons(
     return
   }
 
-  const returnReasons = useRemoteQueryStep({
+  const remoteQuery = container.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+  const returnReasons = remoteQuery({
     entry_point: "return_reasons",
     fields: ["*", "return_reason_children.*"],
     variables: { id: [inputItems.map((item) => item.reason_id)] },
   })
 
-  return transform({ returnReasons }, (data) => {
-    const reasons = data.returnReasons.map((r) => r.id)
-    const hasUnusableReasons = reasons.filter(
-      (reason) => reason.return_reason_children.length === 0
+  const reasons = returnReasons.map((r) => r.id)
+  const hasUnusableReasons = reasons.filter(
+    (reason) => reason.return_reason_children.length === 0
+  )
+  const hasUnExistingReasons = arrayDifference(reasonIds, reasons)
+
+  if (hasUnExistingReasons.length) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Return reason with id ${hasUnExistingReasons.join(
+        ", "
+      )} does not exists.`
     )
-    const hasUnExistingReasons = arrayDifference(reasonIds, reasons)
+  }
 
-    if (hasUnExistingReasons.length) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Return reason with id ${hasUnExistingReasons.join(
-          ", "
-        )} does not exists.`
-      )
-    }
-
-    if (hasUnusableReasons.length()) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Cannot apply return reason category with id ${hasUnusableReasons.join(
-          ", "
-        )} to order with id ${order_id}.`
-      )
-    }
-  })
+  if (hasUnusableReasons.length()) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Cannot apply return reason category with id ${hasUnusableReasons.join(
+        ", "
+      )} to order with id ${order_id}.`
+    )
+  }
 }
 
-function prepareShippingMethodData(
-  orderId: string,
-  inputShippingOption: OrderWorkflow.CreateOrderReturnWorkflowInput["return_shipping"],
+function prepareShippingMethodData({
+  orderId,
+  inputShippingOption,
+  returnShippingOption,
+}: {
+  orderId: string
+  inputShippingOption: OrderWorkflow.CreateOrderReturnWorkflowInput["return_shipping"]
   returnShippingOption: ShippingOptionDTO & {
     calculated_price: { calculated_amount: number }
   }
-) {
-  return transform({ inputShippingOption, returnShippingOption }, (data) => {
-    const obj: CreateOrderShippingMethodDTO = {
-      name: returnShippingOption.name,
-      order_id: orderId,
-      shipping_option_id: returnShippingOption.id,
-      amount: 0,
-      data: {},
-      // Computed later in the flow
-      tax_lines: [],
-      adjustments: [],
-    }
+}) {
+  const obj: CreateOrderShippingMethodDTO = {
+    name: returnShippingOption.name,
+    order_id: orderId,
+    shipping_option_id: returnShippingOption.id,
+    amount: 0,
+    data: {},
+    // Computed later in the flow
+    tax_lines: [],
+    adjustments: [],
+  }
 
-    if (
-      isDefined(inputShippingOption.price) &&
-      inputShippingOption.price >= 0
-    ) {
-      obj.amount = inputShippingOption.price
+  if (isDefined(inputShippingOption.price) && inputShippingOption.price >= 0) {
+    obj.amount = inputShippingOption.price
+  } else {
+    if (returnShippingOption.price_type === "calculated") {
+      // TODO: retrieve calculated price and assign to amount
     } else {
-      if (returnShippingOption.price_type === "calculated") {
-        // TODO: retrieve calculated price and assign to amount
-      } else {
-        obj.amount = returnShippingOption.calculated_price.calculated_amount
-      }
+      obj.amount = returnShippingOption.calculated_price.calculated_amount
     }
+  }
 
-    return obj
-  })
+  return obj
 }
 
 export const createReturnOrderWorkflowId = "create-return-order"
@@ -139,9 +148,15 @@ export const createReturnOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    throwIfOrderIsCancelled(order)
-    throwIfItemsDoesNotExistsInOrder(order, input.items)
-    validateReturnReasons(input.order_id, input.items)
+    transform({ order }, throwIfOrderIsCancelled)
+    transform(
+      { order, inputItems: input.items },
+      throwIfItemsDoesNotExistsInOrder
+    )
+    transform(
+      { order_id: input.order_id, inputItems: input.items },
+      validateReturnReasons
+    )
 
     const returnShippingOptionsVariables = transform(
       { input, order },
@@ -173,10 +188,13 @@ export const createReturnOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    const shippingMethodData = prepareShippingMethodData(
-      input.order_id,
-      input.return_shipping,
-      returnShippingOption
+    const shippingMethodData = transform(
+      {
+        orderId: input.order_id,
+        inputShippingOption: input.return_shipping,
+        returnShippingOption,
+      },
+      prepareShippingMethodData
     )
 
     createReturnStep({

@@ -4,10 +4,16 @@ import {
   IFulfillmentModuleService,
   IOrderModuleService,
   IRegionModuleService,
+  OrderDTO,
+  OrderWorkflow,
+  RegionDTO,
   ShippingOptionDTO,
 } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
-import { createShippingOptionsWorkflow } from "@medusajs/core-flows"
+import {
+  createReturnOrderWorkflow,
+  createShippingOptionsWorkflow,
+} from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -77,9 +83,9 @@ async function createShippingOptionFixture({ container, fulfillmentService }) {
       ],
       rules: [
         {
-          attribute: "total",
+          attribute: "is_return",
           operator: RuleOperator.EQ,
-          value: "100",
+          value: '"true"',
         },
       ],
     }
@@ -114,7 +120,76 @@ async function createShippingOptionFixture({ container, fulfillmentService }) {
   const remoteQuery = container.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const [createdShippingOption] = await remoteQuery(remoteQueryObject)
-  return createdShippingOption
+  return {
+    shippingOption: createdShippingOption,
+    region,
+  }
+}
+
+async function createOrderFixture({ container, orderService }) {
+  return await orderService.create({
+    region_id: "test_region_idclear",
+    email: "foo@bar.com",
+    items: [
+      {
+        title: "Custom Item 2",
+        quantity: 1,
+        unit_price: 50,
+        adjustments: [
+          {
+            code: "VIP_25 ETH",
+            amount: "0.000000000000000005",
+            description: "VIP discount",
+            promotion_id: "prom_123",
+            provider_id: "coupon_kings",
+          },
+        ],
+      },
+    ],
+    sales_channel_id: "test",
+    shipping_address: {
+      first_name: "Test",
+      last_name: "Test",
+      address_1: "Test",
+      city: "Test",
+      country_code: "US",
+      postal_code: "12345",
+      phone: "12345",
+    },
+    billing_address: {
+      first_name: "Test",
+      last_name: "Test",
+      address_1: "Test",
+      city: "Test",
+      country_code: "US",
+      postal_code: "12345",
+    },
+    shipping_methods: [
+      {
+        name: "Test shipping method",
+        amount: 10,
+        data: {},
+        tax_lines: [
+          {
+            description: "shipping Tax 1",
+            tax_rate_id: "tax_usa_shipping",
+            code: "code",
+            rate: 10,
+          },
+        ],
+        adjustments: [
+          {
+            code: "VIP_10",
+            amount: 1,
+            description: "VIP discount",
+            promotion_id: "prom_123",
+          },
+        ],
+      },
+    ],
+    currency_code: "usd",
+    customer_id: "joe",
+  })
 }
 
 medusaIntegrationTestRunner({
@@ -132,12 +207,45 @@ medusaIntegrationTestRunner({
 
     describe("Create return order workflow", () => {
       let shippingOption: ShippingOptionDTO
+      let region: RegionDTO
+      let order: OrderDTO
 
       beforeEach(async () => {
-        shippingOption = await createShippingOptionFixture({
+        const fixtures = await createShippingOptionFixture({
           container,
           fulfillmentService,
         })
+
+        shippingOption = fixtures.shippingOption
+        region = fixtures.region
+
+        order = await createOrderFixture({ container, orderService })
+      })
+
+      it("should create a return order", async () => {
+        const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
+          {
+            order_id: "TODO",
+            return_shipping: {
+              option_id: shippingOption.id,
+            },
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+              },
+            ],
+            region: region,
+          }
+
+        const { result, errors } = await createReturnOrderWorkflow(
+          container
+        ).run({
+          input: createReturnOrderData,
+          throwOnError: false,
+        })
+
+        console.log(errors)
       })
     })
   },

@@ -1,5 +1,5 @@
-import {RegionDTO} from "../../region"
-import {BigNumberInput} from "../../totals"
+import { RegionDTO } from "../../region"
+import { BigNumberInput } from "../../totals"
 
 interface CreateOrderReturnItem {
   id: string
@@ -11,7 +11,7 @@ interface CreateOrderReturnItem {
 
 export interface CreateOrderReturnWorkflowInput {
   order_id: string
-  created_by: string // The id of the authenticated user
+  created_by?: string // The id of the authenticated user
   items: CreateOrderReturnItem[]
   return_shipping: {
     option_id: string
