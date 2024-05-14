@@ -19,6 +19,7 @@ import {
   generateEntityId,
   ProductUtils,
   Searchable,
+  toHandle,
 } from "@medusajs/utils"
 import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"
@@ -214,9 +215,9 @@ class Product {
     this.type_id ??= this.type?.id ?? null
     this.collection_id ??= this.collection?.id ?? null
 
-    // if (!this.handle && this.title) {
-    //   this.handle = toHandle(this.title)
-    // }
+    if (!this.handle && this.title) {
+      this.handle = toHandle(this.title)
+    }
   }
 }
 
