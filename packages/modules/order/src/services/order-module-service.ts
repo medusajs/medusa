@@ -2214,7 +2214,7 @@ export default class OrderModuleService<
     if (!isString(data.shipping_method)) {
       const methods = await this.createShippingMethods(
         data.order_id,
-        data.shipping_method as any,
+        [{ order_id: data.order_id, ...data.shipping_method }],
         sharedContext
       )
       shippingMethodId = methods[0].id

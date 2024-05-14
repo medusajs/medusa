@@ -4,7 +4,6 @@ import {
   IFulfillmentModuleService,
   IOrderModuleService,
   IRegionModuleService,
-  OrderDTO,
   OrderWorkflow,
   RegionDTO,
   ShippingOptionDTO,
@@ -126,8 +125,8 @@ async function createShippingOptionFixture({ container, fulfillmentService }) {
   }
 }
 
-async function createOrderFixture({ container, orderService }) {
-  return await orderService.create({
+async function createOrderFixture({ orderService }) {
+  const order = await orderService.create({
     region_id: "test_region_idclear",
     email: "foo@bar.com",
     items: [
@@ -190,6 +189,8 @@ async function createOrderFixture({ container, orderService }) {
     currency_code: "usd",
     customer_id: "joe",
   })
+
+  return order
 }
 
 medusaIntegrationTestRunner({
@@ -208,7 +209,6 @@ medusaIntegrationTestRunner({
     describe("Create return order workflow", () => {
       let shippingOption: ShippingOptionDTO
       let region: RegionDTO
-      let order: OrderDTO
 
       beforeEach(async () => {
         const fixtures = await createShippingOptionFixture({
@@ -218,14 +218,17 @@ medusaIntegrationTestRunner({
 
         shippingOption = fixtures.shippingOption
         region = fixtures.region
-
-        order = await createOrderFixture({ container, orderService })
       })
 
       it("should create a return order", async () => {
+        const order = await createOrderFixture({ orderService }).catch(
+          (err) => {
+            console.log(err)
+          }
+        )
         const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
           {
-            order_id: "TODO",
+            order_id: order.id,
             return_shipping: {
               option_id: shippingOption.id,
             },

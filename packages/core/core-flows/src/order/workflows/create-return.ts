@@ -171,9 +171,7 @@ export const createReturnOrderWorkflow = createWorkflow(
         }
 
         if (data.input.region) {
-          variables.calculated_price["filters"] = {
-            region_id: data.input.region.id,
-          }
+          variables.calculated_price.context["region_id"] = data.input.region.id
         }
 
         return variables
