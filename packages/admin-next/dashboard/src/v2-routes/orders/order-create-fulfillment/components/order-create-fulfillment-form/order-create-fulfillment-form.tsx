@@ -58,6 +58,9 @@ export function OrderCreateFulfillmentForm({
     try {
       await createOrderFulfillment({
         location_id: data.location_id,
+        /**
+         * TODO: send notification flag
+         */
         // no_notification: !data.send_notification,
         delivery_address: cleanNonValues(
           pick(order.shipping_address, [
@@ -74,7 +77,7 @@ export function OrderCreateFulfillmentForm({
             "metadata",
           ])
         ), // TODO: this should be pulled from order in the workflow
-        provider_id: fulfillment_providers[0]?.id, // TOOO: link Region <> Fulfillment Providers
+        provider_id: fulfillment_providers[0]?.id,
         items: Object.entries(data.quantity)
           .filter(([, value]) => !!value)
           .map(([item_id, quantity]) => {
@@ -88,7 +91,7 @@ export function OrderCreateFulfillmentForm({
               sku: item.variant_sku || "",
             }
           }),
-        // TODO: should be optional
+        // TODO: should be optional in the enpoint?
         labels: [
           {
             tracking_number: "TODO",

@@ -31,6 +31,10 @@ export function OrderCreateFulfillmentItem({
 }: OrderEditItemProps) {
   const { t } = useTranslation()
 
+  /**
+   * TODO: Fetch inventory and stock location levels for the variant
+   */
+
   const { variant } = {} // useAdminVariantsInventory(item.variant_id as string)
 
   const hasInventoryItem = !!variant?.inventory.length
