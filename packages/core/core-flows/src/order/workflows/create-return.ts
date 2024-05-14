@@ -32,7 +32,7 @@ function throwIfItemsDoesNotExistsInOrder(
 ) {
   return transform({ order, inputItems }, (data) => {
     const orderItemIds = data.order.items?.map((i) => i.id) ?? []
-    const inputItemIds = data.inputItems.map((i) => i.item_id)
+    const inputItemIds = data.inputItems.map((i) => i.id)
     const diff = arrayDifference(inputItemIds, orderItemIds)
 
     if (diff.length) {
@@ -92,17 +92,16 @@ function validateReturnReasons(
 function prepareShippingMethodData(
   orderId: string,
   inputShippingOption: OrderWorkflow.CreateOrderReturnWorkflowInput["return_shipping"],
-  returnShippingOption: ShippingOptionDTO
+  returnShippingOption: ShippingOptionDTO & {
+    calculated_price: { calculated_amount: number }
+  }
 ) {
   return transform({ inputShippingOption, returnShippingOption }, (data) => {
     const obj: CreateOrderShippingMethodDTO = {
       name: returnShippingOption.name,
       order_id: orderId,
       shipping_option_id: returnShippingOption.id,
-      amount:
-        returnShippingOption.price_type === "flat"
-          ? 0 // TODO: find that returnShippingOption.amount
-          : 0,
+      amount: 0,
       data: {},
       // Computed later in the flow
       tax_lines: [],
@@ -115,10 +114,11 @@ function prepareShippingMethodData(
     ) {
       obj.amount = inputShippingOption.price
     } else {
-    }
-
-    if (returnShippingOption.price_type === "calculated") {
-      // TODO: retrieve calculated price and assign to amount
+      if (returnShippingOption.price_type === "calculated") {
+        // TODO: retrieve calculated price and assign to amount
+      } else {
+        obj.amount = returnShippingOption.calculated_price.calculated_amount
+      }
     }
 
     return obj
@@ -131,7 +131,7 @@ export const createReturnWorkflow = createWorkflow(
   (
     input: WorkflowData<OrderWorkflow.CreateOrderReturnWorkflowInput>
   ): WorkflowData<OrderDTO> => {
-    const order = useRemoteQueryStep({
+    const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["*"],
       variables: { id: input.order_id },
@@ -143,12 +143,32 @@ export const createReturnWorkflow = createWorkflow(
     throwIfItemsDoesNotExistsInOrder(order, input.items)
     validateReturnReasons(input.order_id, input.items)
 
-    const returnhippingOption = useRemoteQueryStep({
+    const returnShippingOptionsVariables = transform(
+      { input, order },
+      (data) => {
+        const variables = {
+          id: data.input.return_shipping.option_id,
+          calculated_price: {
+            context: {
+              currency_code: data.order.currency_code,
+            },
+          },
+        }
+
+        if (data.input.region) {
+          variables.calculated_price["filters"] = {
+            region_id: data.input.region.id,
+          }
+        }
+
+        return variables
+      }
+    )
+
+    const returnShippingOption = useRemoteQueryStep({
       entry_point: "shipping_options",
-      fields: ["*"],
-      variables: {
-        id: input.return_shipping.option_id,
-      },
+      fields: ["*", "calculated_price.calculated_amount"],
+      variables: returnShippingOptionsVariables,
       list: false,
       throw_if_key_not_found: true,
     })
@@ -156,13 +176,13 @@ export const createReturnWorkflow = createWorkflow(
     const shippingMethodData = prepareShippingMethodData(
       input.order_id,
       input.return_shipping,
-      returnhippingOption
+      returnShippingOption
     )
 
     createReturnStep({
       order_id: input.order_id,
       items: input.items,
-      return_shipping: shippingMethodData,
+      shipping_method: shippingMethodData,
       created_by: input.created_by,
     })
 

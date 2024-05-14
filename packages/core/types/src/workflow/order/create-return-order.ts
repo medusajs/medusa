@@ -1,8 +1,8 @@
-import { RegionDTO } from "../../region"
-import { BigNumberInput } from "../../totals"
+import {RegionDTO} from "../../region"
+import {BigNumberInput} from "../../totals"
 
 interface CreateOrderReturnItem {
-  item_id: string
+  id: string
   quantity: BigNumberInput
   internal_note?: string
   reason_id?: string
