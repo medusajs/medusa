@@ -13,7 +13,7 @@ export interface Templates {
   /** Template to be sent to the customer when they place a new order. */
   order_placed_template?: Template
   order_canceled_template?: Template
-  order_shipped_template?: Template
+  order_shipment_created_template?: Template
   order_return_requested_template?: Template
   order_items_returned_template?: Template
   claim_shipment_created_template?: Template
@@ -31,7 +31,7 @@ export interface Templates {
 
 export interface PluginOptions {
   api_key: string
-  from: string
+  from: {name?: string, email: string } | string
   templates: Templates;
   /** BCC email address to send to when an order is placed. */
   orderPlacedBcc?: EmailData|EmailData[]
