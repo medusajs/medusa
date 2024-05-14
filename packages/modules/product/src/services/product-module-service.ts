@@ -1167,9 +1167,10 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
     const normalizedInput = await promiseAll(
-      data.map(
-        async (d) => await this.normalizeCreateProductInput(d, sharedContext)
-      )
+      data.map(async (d) => {
+        await this.normalizeCreateProductInput(d, sharedContext)
+        this.validateProductPayload(d)
+      })
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1225,9 +1226,10 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
     const normalizedInput = await promiseAll(
-      data.map(
-        async (d) => await this.normalizeUpdateProductInput(d, sharedContext)
-      )
+      data.map(async (d) => {
+        await this.normalizeUpdateProductInput(d, sharedContext)
+        this.validateProductPayload(d)
+      })
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1312,7 +1314,7 @@ export default class ProductModuleService<
    * Validates the manually provided handle value of the product
    * to be URL-safe
    */
-  protected validateProductHandle(
+  protected validateProductPayload(
     productData: UpdateProductInput | ProductTypes.CreateProductDTO
   ) {
     if (productData.handle && !isValidHandle(productData.handle)) {
@@ -1355,8 +1357,6 @@ export default class ProductModuleService<
     if (productData.is_giftcard) {
       productData.discountable = false
     }
-
-    this.validateProductHandle(product)
 
     if (productData.tags?.length && productData.tags.some((t) => !t.id)) {
       const dbTags = await this.productTagService_.list(
