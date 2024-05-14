@@ -20,6 +20,7 @@ import {
   arrayDifference,
   deduplicate,
   isDefined,
+  isPresent,
   isString,
 } from "@medusajs/utils"
 import {
@@ -477,7 +478,7 @@ export default class PromotionModuleService<
     const campaignsData: CreateCampaignDTO[] = []
     const existingCampaigns = await this.campaignService_.list(
       { id: data.map((d) => d.campaign_id).filter((id) => isString(id)) },
-      {},
+      { relations: ["budget"] },
       sharedContext
     )
 
@@ -509,12 +510,10 @@ export default class PromotionModuleService<
       campaign_id: campaignId,
       ...promotionData
     } of data) {
-      if (applicationMethodData) {
-        promotionCodeApplicationMethodDataMap.set(
-          promotionData.code,
-          applicationMethodData
-        )
-      }
+      promotionCodeApplicationMethodDataMap.set(
+        promotionData.code,
+        applicationMethodData
+      )
 
       if (rulesData) {
         promotionCodeRulesDataMap.set(promotionData.code, rulesData)
@@ -524,6 +523,37 @@ export default class PromotionModuleService<
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Provide either the 'campaign' or 'campaign_id' parameter; both cannot be used simultaneously.`
+        )
+      }
+
+      if (!campaignData && !campaignId) {
+        promotionsData.push({ ...promotionData })
+
+        continue
+      }
+
+      const existingCampaign = existingCampaigns.find(
+        (c) => c.id === campaignId
+      )
+
+      if (campaignId && !existingCampaign) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Could not find campaign with id - ${campaignId}`
+        )
+      }
+
+      const campaignCurrency =
+        campaignData?.currency ||
+        existingCampaigns.find((c) => c.id === campaignId)?.currency
+
+      if (
+        !campaignCurrency ||
+        campaignCurrency !== applicationMethodData?.currency_code
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Currency between promotion and campaigns should match`
         )
       }
 
@@ -541,7 +571,6 @@ export default class PromotionModuleService<
       promotionsData,
       sharedContext
     )
-    const promotionsToAdd: PromotionTypes.AddPromotionsToCampaignDTO[] = []
 
     for (const promotion of createdPromotions) {
       const applMethodData = promotionCodeApplicationMethodDataMap.get(
@@ -713,6 +742,10 @@ export default class PromotionModuleService<
       { id: promotionIds },
       { relations: ["application_method"] }
     )
+    const existingCampaigns = await this.campaignService_.list(
+      { id: data.map((d) => d.campaign_id).filter((d) => isPresent(d)) },
+      { relations: ["budget"] }
+    )
 
     const existingPromotionsMap = new Map<string, Promotion>(
       existingPromotions.map((promotion) => [promotion.id, promotion])
@@ -726,20 +759,36 @@ export default class PromotionModuleService<
       campaign_id: campaignId,
       ...promotionData
     } of data) {
+      const existingCampaign = existingCampaigns.find(
+        (c) => c.id === campaignId
+      )
+      const existingPromotion = existingPromotionsMap.get(promotionData.id)!
+      const existingApplicationMethod = existingPromotion?.application_method
+      const promotionCurrencyCode =
+        existingApplicationMethod?.currency_code ||
+        applicationMethodData?.currency_code
+
+      if (campaignId && !existingCampaign) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Could not find campaign with id ${campaignId}`
+        )
+      }
+
+      if (campaignId && existingCampaign?.currency !== promotionCurrencyCode) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Currency code doesn't match for campaign (${campaignId}) and promotion (${existingPromotion.id})`
+        )
+      }
+
       if (campaignId) {
         promotionsData.push({ ...promotionData, campaign_id: campaignId })
       } else {
         promotionsData.push(promotionData)
       }
 
-      if (!applicationMethodData) {
-        continue
-      }
-
-      const existingPromotion = existingPromotionsMap.get(promotionData.id)
-      const existingApplicationMethod = existingPromotion?.application_method
-
-      if (!existingApplicationMethod) {
+      if (!applicationMethodData || !existingApplicationMethod) {
         continue
       }
 
@@ -918,9 +967,11 @@ export default class PromotionModuleService<
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PromotionTypes.PromotionRuleDTO[]> {
-    const promotion = await this.promotionService_.retrieve(promotionId, {
-      relations: ["application_method"],
-    })
+    const promotion = await this.promotionService_.retrieve(
+      promotionId,
+      { relations: ["application_method"] },
+      sharedContext
+    )
 
     const applicationMethod = promotion.application_method
 
@@ -1279,7 +1330,7 @@ export default class PromotionModuleService<
     const campaign = await this.campaignService_.retrieve(id, {}, sharedContext)
     const promotionsToAdd = await this.promotionService_.list(
       { id: promotionIds, campaign_id: null },
-      { take: null },
+      { take: null, relations: ["application_method"] },
       sharedContext
     )
 
@@ -1294,6 +1345,18 @@ export default class PromotionModuleService<
         `Cannot add promotions (${diff.join(
           ","
         )}) to campaign. These promotions are either already part of a campaign or not found.`
+      )
+    }
+
+    const promotionsWithInvalidCurrency = promotionsToAdd.filter(
+      (promotion) =>
+        promotion.application_method?.currency_code !== campaign.currency
+    )
+
+    if (promotionsWithInvalidCurrency.length > 0) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot add promotions to campaign where currency_code don't match.`
       )
     }
 

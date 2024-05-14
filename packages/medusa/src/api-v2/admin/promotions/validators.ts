@@ -93,12 +93,12 @@ export const AdminCreateApplicationMethod = z
   .object({
     description: z.string().optional(),
     value: z.number(),
+    currency_code: z.string(),
     max_quantity: z.number().optional(),
     type: z.nativeEnum(ApplicationMethodType),
     target_type: z.nativeEnum(ApplicationMethodTargetType),
     allocation: z.nativeEnum(ApplicationMethodAllocation).optional(),
     target_rules: z.array(AdminCreatePromotionRule).optional(),
-
     buy_rules: z.array(AdminCreatePromotionRule).optional(),
     apply_to_quantity: z.number().optional(),
     buy_rules_min_quantity: z.number().optional(),

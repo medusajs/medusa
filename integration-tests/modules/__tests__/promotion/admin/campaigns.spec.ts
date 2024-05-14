@@ -88,6 +88,7 @@ medusaIntegrationTestRunner({
             value: 100,
             max_quantity: 100,
             target_rules: [],
+            currency_code: "USD",
           },
           rules: [],
         }

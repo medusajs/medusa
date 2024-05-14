@@ -41,11 +41,11 @@ export default class ApplicationMethod {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @MikroOrmBigNumberProperty({ nullable: true })
-  value: BigNumber | number | null = null
+  @MikroOrmBigNumberProperty()
+  value: BigNumber | number | null
 
-  @Property({ columnType: "jsonb", nullable: true })
-  raw_value: BigNumberRawValue | null = null
+  @Property({ columnType: "jsonb" })
+  raw_value: BigNumberRawValue | null
 
   @Property({ columnType: "text" })
   @CurrencyCodeIndex.MikroORMIndex()

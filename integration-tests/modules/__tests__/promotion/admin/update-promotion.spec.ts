@@ -1,8 +1,8 @@
-import { IPromotionModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IPromotionModuleService } from "@medusajs/types"
 import { PromotionType } from "@medusajs/utils"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -55,6 +55,7 @@ medusaIntegrationTestRunner({
             allocation: "each",
             value: "100",
             max_quantity: 100,
+            currency_code: "USD",
           },
         })
 
@@ -88,6 +89,7 @@ medusaIntegrationTestRunner({
             allocation: "each",
             value: "100",
             max_quantity: 100,
+            currency_code: "USD",
           },
         })
 
@@ -125,6 +127,7 @@ medusaIntegrationTestRunner({
             value: "100",
             apply_to_quantity: 1,
             buy_rules_min_quantity: 1,
+            currency_code: "USD",
             buy_rules: [
               {
                 attribute: "product_collection.id",
