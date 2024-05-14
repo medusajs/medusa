@@ -98,12 +98,10 @@ export function EditServiceZoneAreasForm({
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
       await editServiceZone({
-        geo_zones: data.countries
-          .sort((a, b) => a.localeCompare(b))
-          .map((iso2) => ({
-            country_code: iso2,
-            type: "country",
-          })),
+        geo_zones: data.countries.map((iso2) => ({
+          country_code: iso2,
+          type: "country",
+        })),
       })
     } catch (e) {
       toast.error(t("general.error"), {

@@ -313,6 +313,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
       .filter((g) => g.type === "country")
       .map((g) => g.country_code)
       .map((code) => staticCountries.find((c) => c.iso_2 === code))
+      .sort((c1, c2) => c1.name.localeCompare(c2.name))
   }, zone.geo_zones)
 
   const [shippingOptionsCount, returnOptionsCount] = useMemo(() => {
