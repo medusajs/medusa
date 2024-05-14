@@ -55,8 +55,7 @@ class HelloModuleService extends ModulesSdkUtils
       data: CreateMyCustomDTO
     ): Promise<MyCustomDTO> {
       const myCustom = await this.myCustomService_.create(
-        data, 
-        context
+        data
       )
 
       return myCustom
