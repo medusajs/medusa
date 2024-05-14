@@ -125,9 +125,9 @@ function prepareShippingMethodData(
   })
 }
 
-export const createReturnWorkflowId = "create-return"
-export const createReturnWorkflow = createWorkflow(
-  createReturnWorkflowId,
+export const createReturnOrderWorkflowId = "create-return-order"
+export const createReturnOrderWorkflow = createWorkflow(
+  createReturnOrderWorkflowId,
   (
     input: WorkflowData<OrderWorkflow.CreateOrderReturnWorkflowInput>
   ): WorkflowData<OrderDTO> => {
