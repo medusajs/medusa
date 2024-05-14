@@ -38,6 +38,55 @@ function throwIfItemsDoesNotExistsInOrder(
   })
 }
 
+function validateReturnReasons(
+  order_id: string,
+  inputItems: CreateOrderReturnDTO["items"]
+) {
+  const returnReasons = useRemoteQueryStep({
+    entry_point: "return_reasons",
+    fields: ["*", "return_reason_children.*"],
+    variables: { id: [inputItems.map((item) => item.reason_id)] },
+  })
+
+  return transform({ returnReasons }, (data) => {
+    const reasons = data.returnReasons.map((r) => r.id)
+    const hasUnusableReasons = reasons.filter(
+      (reason) => reason.return_reason_children.length === 0
+    )
+    const hasUnexistingReasons = arrayDifference(
+      inputItems.map((i) => i.reason_id),
+      reasons
+    )
+
+    if (hasUnexistingReasons.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Return reason with id ${hasUnexistingReasons.join(
+          ", "
+        )} does not exists.`
+      )
+    }
+
+    if (hasUnusableReasons.length()) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot apply return reason category with id ${hasUnusableReasons.join(
+          ", "
+        )} to order with id ${order_id}.`
+      )
+    }
+  })
+}
+
+function createReturnItems(
+  order_id: string,
+  items: CreateOrderReturnDTO["items"]
+) {
+  return transform({ order_id, items }, (data) => {
+    // create return line items
+  })
+}
+
 export const createReturnsWorkflowId = "create-returns"
 export const createReturnsWorkflow = createWorkflow(
   createReturnsWorkflowId,
@@ -51,10 +100,11 @@ export const createReturnsWorkflow = createWorkflow(
 
     throwIfOrderIsCancelled(order)
     throwIfItemsDoesNotExistsInOrder(order, input.items)
+    validateReturnReasons(input.order_id, input.items)
 
     // Create return line items
+
     // validate refundable amount if provided, otherwise compute it ourselves, check if it done by the order module service
-    // retrieve and validate return reasons from the items
     // create return actions
     // if option id then create shipping method, check that
     // create shipping tax lines

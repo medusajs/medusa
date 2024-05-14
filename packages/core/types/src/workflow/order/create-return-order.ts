@@ -7,6 +7,7 @@ interface CreateOrderReturnItem {
 
 export interface CreateOrderReturnWorkflowInput {
   order_id: string
+  created_by: string // The id of the authenticated user
   items: CreateOrderReturnItem[]
   return_shipping: {
     option_id: string
