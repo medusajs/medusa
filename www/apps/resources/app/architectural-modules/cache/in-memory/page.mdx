@@ -25,11 +25,15 @@ npm install @medusajs/cache-inmemory
 Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 module.exports = {
   // ...
   modules: {
     // ...
-    cacheService: {
+    [Modules.CACHE]: {
       resolve: "@medusajs/cache-inmemory",
       options: {
         // optional options
