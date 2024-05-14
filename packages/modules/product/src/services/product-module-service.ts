@@ -1308,6 +1308,21 @@ export default class ProductModuleService<
     return productData
   }
 
+  /**
+   * Validates the manually provided handle value of the product
+   * to be URL-safe
+   */
+  protected validateProductHandle(
+    productData: UpdateProductInput | ProductTypes.CreateProductDTO
+  ) {
+    if (productData.handle && !isValidHandle(productData.handle)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Invalid product handle. It must contain URL safe characters"
+      )
+    }
+  }
+
   protected async normalizeCreateProductInput(
     product: ProductTypes.CreateProductDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -1341,12 +1356,7 @@ export default class ProductModuleService<
       productData.discountable = false
     }
 
-    if (productData.handle && !isValidHandle(productData.handle)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Invalid product handle. It must contain URL safe characters"
-      )
-    }
+    this.validateProductHandle(product)
 
     if (productData.tags?.length && productData.tags.some((t) => !t.id)) {
       const dbTags = await this.productTagService_.list(
