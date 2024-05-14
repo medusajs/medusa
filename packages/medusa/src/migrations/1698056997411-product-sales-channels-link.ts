@@ -1,7 +1,4 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
-import { MedusaV2Flag } from "@medusajs/utils"
-
-export const featureFlag = MedusaV2Flag.key
 
 export class ProductSalesChannelsLink1698056997411
   implements MigrationInterface
