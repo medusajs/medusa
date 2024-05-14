@@ -1316,13 +1316,9 @@ export default class ProductModuleService<
       sharedContext
     )) as ProductTypes.CreateProductDTO
 
-    /**
-     * We are already computing handle from title in model. Do we
-     * need here again?
-     */
-    // if (!productData.handle && productData.title) {
-    //   productData.handle = kebabCase(productData.title)
-    // }
+    if (!productData.handle && productData.title) {
+      productData.handle = kebabCase(productData.title)
+    }
 
     if (!productData.status) {
       productData.status = ProductStatus.DRAFT
