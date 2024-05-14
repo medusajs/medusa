@@ -96,14 +96,14 @@ describe("Order Exchange - Actions", function () {
 
     const sumToJSON = JSON.parse(JSON.stringify(changes.summary))
     expect(sumToJSON).toEqual({
-      transactionTotal: 0,
-      originalOrderTotal: 270,
-      currentOrderTotal: 312.5,
-      temporaryDifference: 62.5,
-      futureDifference: 0,
-      futureTemporaryDifference: 0,
-      pendingDifference: 312.5,
-      differenceSum: 42.5,
+      transaction_total: 0,
+      original_order_total: 270,
+      current_order_total: 312.5,
+      temporary_difference: 62.5,
+      future_difference: 0,
+      future_temporary_difference: 0,
+      pending_difference: 312.5,
+      difference_sum: 42.5,
     })
 
     const toJson = JSON.parse(JSON.stringify(changes.order.items))
