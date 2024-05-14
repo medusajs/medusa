@@ -11,8 +11,11 @@ type Options = {
   configModule: ConfigModule
 }
 
-export default async ({ app, configModule }: Options): Promise<{
-  app: Express,
+export default async ({
+  app,
+  configModule,
+}: Options): Promise<{
+  app: Express
   shutdown: () => Promise<void>
 }> => {
   let sameSite: string | boolean = false
@@ -46,7 +49,7 @@ export default async ({ app, configModule }: Options): Promise<{
   if (configModule?.projectConfig?.redis_url) {
     const RedisStore = createStore(session)
     redisClient = new Redis(
-      configModule.projectConfig.redis_url, 
+      configModule.projectConfig.redis_url,
       configModule.projectConfig.redis_options ?? {}
     )
     sessionOpts.store = new RedisStore({
