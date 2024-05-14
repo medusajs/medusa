@@ -60,8 +60,6 @@ export function remoteQueryFetchData(container: MedusaContainer) {
     }
     const expandRelations = Object.keys(expand.expands ?? {})
 
-    // filter out links from relations because TypeORM will throw if the relation doesn't exist
-
     options.relations = options.relations.filter(
       (relation) => !expandRelations.some((ex) => relation.startsWith(ex))
     )
