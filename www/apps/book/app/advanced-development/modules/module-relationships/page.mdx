@@ -101,6 +101,7 @@ class HelloModuleService extends ModulesSdkUtils
   
     __joinerConfig(): ModuleJoinerConfig {
       return {
+        serviceName: "helloModuleService",
         alias: [
           {
             name: ["my_custom"],
@@ -138,6 +139,12 @@ This creates a relationship to the `Product` data model of the Product Module us
 #### `__joinerConfig` Return Type
 
 <TypeList types={[
+  {
+    name: "serviceName",
+    type: "`string`",
+    optional: false,
+    description: "The name of your module (as added in `medusa-config.js`)."
+  },
   {
     name: "alias",
     type: "`object[]`",
