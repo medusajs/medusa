@@ -24,7 +24,9 @@ const nextConfig = {
         destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/v2/:path*`,
       })
     }
-    return rewriteFallbacks
+    return {
+      fallback: rewriteFallbacks
+    }
   },
   webpack: (config) => {
     config.ignoreWarnings = [{ module: /node_modules\/keyv\/src\/index\.js/ }]
