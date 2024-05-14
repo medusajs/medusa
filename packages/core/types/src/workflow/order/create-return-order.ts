@@ -1,8 +1,9 @@
 import { RegionDTO } from "../../region"
+import { BigNumberInput } from "../../totals"
 
 interface CreateOrderReturnItem {
   item_id: string
-  quantity: number
+  quantity: BigNumberInput
   internal_note?: string
   reason_id?: string
   metadata?: Record<string, any>

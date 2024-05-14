@@ -92,19 +92,19 @@ function validateReturnReasons(
 function prepareShippingMethodData(
   orderId: string,
   inputShippingOption: OrderWorkflow.CreateOrderReturnWorkflowInput["return_shipping"],
-  returnhippingOption: ShippingOptionDTO
+  returnShippingOption: ShippingOptionDTO
 ) {
-  return transform({ inputShippingOption, returnhippingOption }, (data) => {
+  return transform({ inputShippingOption, returnShippingOption }, (data) => {
     const obj: CreateOrderShippingMethodDTO = {
-      name: returnhippingOption.name,
+      name: returnShippingOption.name,
       order_id: orderId,
-      shipping_option_id: returnhippingOption.id,
+      shipping_option_id: returnShippingOption.id,
       amount:
-        returnhippingOption.price_type === "flat_rate"
-          ? returnhippingOption.amount
+        returnShippingOption.price_type === "flat"
+          ? 0 // TODO: find that returnShippingOption.amount
           : 0,
-      // TODO
       data: {},
+      // Computed later in the flow
       tax_lines: [],
       adjustments: [],
     }
@@ -113,24 +113,15 @@ function prepareShippingMethodData(
       isDefined(inputShippingOption.price) &&
       inputShippingOption.price >= 0
     ) {
-      obj.price = inputShippingOption.price
+      obj.amount = inputShippingOption.price
     } else {
     }
 
-    if (returnhippingOption.price_type === "calculated") {
+    if (returnShippingOption.price_type === "calculated") {
       // TODO: retrieve calculated price and assign to amount
     }
 
     return obj
-  })
-}
-
-function createReturnItems(
-  order_id: string,
-  items: OrderWorkflow.CreateOrderReturnWorkflowInput["items"]
-) {
-  return transform({ order_id, items }, (data) => {
-    // create return line items
   })
 }
 
@@ -168,7 +159,7 @@ export const createReturnWorkflow = createWorkflow(
       returnhippingOption
     )
 
-    const orderReturn = createReturnStep({
+    createReturnStep({
       order_id: input.order_id,
       items: input.items,
       return_shipping: shippingMethodData,
