@@ -8,6 +8,7 @@ import { scheduleJob } from "node-schedule"
 
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
+import { openAdmin } from "./utils/open-admin"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
@@ -26,10 +27,11 @@ export default async function ({ port, directory }) {
 
       const serverActivity = Logger.activity(`Creating server`)
       const server = GracefulShutdownServer.create(
-        app.listen(port, (err) => {
+        app.listen(port, async (err) => {
           if (err) {
             return
           }
+          await openAdmin(port, directory)
           Logger.success(serverActivity, `Server is ready on port: ${port}`)
           track("CLI_START_COMPLETED")
         })

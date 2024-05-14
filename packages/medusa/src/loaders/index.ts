@@ -19,6 +19,7 @@ import requestIp from "request-ip"
 import { Connection } from "typeorm"
 import { v4 } from "uuid"
 import { MedusaContainer } from "../types/global"
+import adminLoader from "./admin"
 import apiLoader from "./api"
 import loadConfig from "./config"
 import databaseLoader, { dataSource } from "./database"
@@ -135,6 +136,8 @@ async function loadMedusaV2({
       }
       next()
     })
+
+    await adminLoader({ app: expressApp, configModule })
 
     // TODO: Add Subscribers loader
 
