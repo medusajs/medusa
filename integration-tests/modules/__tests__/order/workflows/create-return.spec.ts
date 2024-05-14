@@ -6,6 +6,7 @@ import {
   IOrderModuleService,
   IRegionModuleService,
   ServiceZoneDTO,
+  ShippingOptionDTO,
   ShippingProfileDTO,
 } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
@@ -19,6 +20,7 @@ import {
 jest.setTimeout(100000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
+const providerId = "manual_test-provider"
 
 medusaIntegrationTestRunner({
   env,
@@ -37,6 +39,7 @@ medusaIntegrationTestRunner({
       let fulfillmentSet: FulfillmentSetDTO
       let serviceZone: ServiceZoneDTO
       let shippingProfile: ShippingProfileDTO
+      let shippingOption: ShippingOptionDTO
 
       beforeEach(async () => {
         shippingProfile = await fulfillmentService.createShippingProfiles({
@@ -59,9 +62,7 @@ medusaIntegrationTestRunner({
             },
           ],
         })
-      })
 
-      it("should create shipping options and prices", async () => {
         const regionService = container.resolve(
           ModuleRegistrationName.REGION
         ) as IRegionModuleService
@@ -80,7 +81,7 @@ medusaIntegrationTestRunner({
             price_type: "flat",
             service_zone_id: serviceZone.id,
             shipping_profile_id: shippingProfile.id,
-            provider_id,
+            provider_id: providerId,
             type: {
               code: "manual-type",
               label: "Manual Type",
@@ -109,10 +110,6 @@ medusaIntegrationTestRunner({
           input: [shippingOptionData],
         })
 
-        const remoteQuery = container.resolve(
-          ContainerRegistrationKeys.REMOTE_QUERY
-        )
-
         const remoteQueryObject = remoteQueryObjectFromString({
           entryPoint: "shipping_option",
           variables: {
@@ -136,136 +133,12 @@ medusaIntegrationTestRunner({
           ],
         })
 
-        const [createdShippingOption] = await remoteQuery(remoteQueryObject)
-
-        const prices = createdShippingOption.prices
-        delete createdShippingOption.prices
-
-        expect(createdShippingOption).toEqual(
-          expect.objectContaining({
-            id: result[0].id,
-            name: shippingOptionData.name,
-            price_type: shippingOptionData.price_type,
-            service_zone_id: serviceZone.id,
-            shipping_profile_id: shippingProfile.id,
-            provider_id: provider_id,
-            data: null,
-            metadata: null,
-            type: expect.objectContaining({
-              id: expect.any(String),
-              code: shippingOptionData.type.code,
-              label: shippingOptionData.type.label,
-              description: shippingOptionData.type.description,
-            }),
-            shipping_option_type_id: expect.any(String),
-          })
-        )
-
-        expect(prices).toHaveLength(2)
-        expect(prices).toContainEqual(
-          expect.objectContaining({
-            currency_code: "usd",
-            amount: 10,
-          })
-        )
-        expect(prices).toContainEqual(
-          expect.objectContaining({
-            currency_code: "eur",
-            amount: 100,
-            rules_count: 1,
-          })
-        )
-      })
-
-      it("should revert the shipping options and prices", async () => {
-        const regionService = container.resolve(
-          ModuleRegistrationName.REGION
-        ) as IRegionModuleService
-
-        const [region] = await regionService.create([
-          {
-            name: "Test region",
-            currency_code: "eur",
-            countries: ["fr"],
-          },
-        ])
-
-        const shippingOptionData: FulfillmentWorkflow.CreateShippingOptionsWorkflowInput =
-          {
-            name: "Test shipping option",
-            price_type: "flat",
-            service_zone_id: serviceZone.id,
-            shipping_profile_id: shippingProfile.id,
-            provider_id,
-            type: {
-              code: "manual-type",
-              label: "Manual Type",
-              description: "Manual Type Description",
-            },
-            prices: [
-              {
-                currency_code: "usd",
-                amount: 10,
-              },
-              {
-                region_id: region.id,
-                amount: 100,
-              },
-            ],
-            rules: [
-              {
-                attribute: "total",
-                operator: RuleOperator.EQ,
-                value: "100",
-              },
-            ],
-          }
-
-        const workflow = createShippingOptionsWorkflow(container)
-
-        workflow.addAction(
-          "throw",
-          {
-            invoke: async function failStep() {
-              throw new Error(`Failed to create shipping options`)
-            },
-          },
-          {
-            noCompensation: true,
-          }
-        )
-
-        const { errors } = await workflow.run({
-          input: [shippingOptionData],
-          throwOnError: false,
-        })
-
-        expect(errors).toHaveLength(1)
-        expect(errors[0].error.message).toEqual(
-          `Failed to create shipping options`
-        )
-
         const remoteQuery = container.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
 
-        const remoteQueryObject = remoteQueryObjectFromString({
-          entryPoint: "shipping_option",
-          fields: ["id"],
-        })
-
-        const createdShippingOptions = await remoteQuery(remoteQueryObject)
-
-        expect(createdShippingOptions).toHaveLength(0)
-
-        const priceSetsRemoteQueryObject = remoteQueryObjectFromString({
-          entryPoint: "price_sets",
-          fields: ["id"],
-        })
-
-        const createdPriceSets = await remoteQuery(priceSetsRemoteQueryObject)
-
-        expect(createdPriceSets).toHaveLength(0)
+        const [createdShippingOption] = await remoteQuery(remoteQueryObject)
+        shippingOption = createdShippingOption
       })
     })
   },
