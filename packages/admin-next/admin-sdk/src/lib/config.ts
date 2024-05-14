@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react"
 import path from "path"
 import { Config } from "tailwindcss"
 import type { InlineConfig } from "vite"
+import { nodePolyfills } from "vite-plugin-node-polyfills"
 import { BundlerOptions } from "../types"
 
 export async function getViteConfig(
@@ -53,7 +54,7 @@ export async function getViteConfig(
         ],
       },
     },
-    plugins: [react(), inject()],
+    plugins: [react(), inject(), nodePolyfills()],
   }
 }
 

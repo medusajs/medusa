@@ -19,4 +19,5 @@ export default defineConfig({
     "medusa-admin:routes/links",
   ],
   tsconfig: "tsconfig.build.json",
+  clean: true,
 })
