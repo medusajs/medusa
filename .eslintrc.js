@@ -83,7 +83,6 @@ module.exports = {
           "./packages/medusa/tsconfig.json",
 
           "./packages/admin-next/dashboard/tsconfig.json",
-          "./packages/admin-next/app/tsconfig.json",
           "./packages/admin-next/admin-sdk/tsconfig.json",
           "./packages/admin-next/admin-vite-plugin/tsconfig.json",
 

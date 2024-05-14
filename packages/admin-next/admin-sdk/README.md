@@ -1,1 +1,1 @@
-# cli
+# `@medusajs/admin-sdk`

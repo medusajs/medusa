@@ -5036,26 +5036,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/app@workspace:packages/admin-next/app":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/app@workspace:packages/admin-next/app"
-  dependencies:
-    "@medusajs/ui": 3.0.0
-    "@medusajs/ui-preset": 1.1.3
-    "@types/react": ^18.3.1
-    "@types/react-dom": ^18.3.0
-    "@vitejs/plugin-react": ^4.2.1
-    autoprefixer: ^10.4.19
-    postcss: ^8.4.38
-    react: ^18.3.1
-    react-dom: ^18.3.1
-    react-router-dom: ^6.23.0
-    tailwindcss: ^3.4.3
-    tsup: ^8.0.2
-    vite: ^5.2.11
-  languageName: unknown
-  linkType: soft
-
 "@medusajs/auth@workspace:*, @medusajs/auth@workspace:packages/modules/auth":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"
@@ -8573,13 +8553,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.16.0":
-  version: 1.16.0
-  resolution: "@remix-run/router@npm:1.16.0"
-  checksum: 234e66b4d7266aff6d111a43f5560f00ffdc91de0b5cd447f1fdf1de1a8b3a6ac326eb52302356e23b095e71a8f4da914e40239af5f121de2ec2994f101b8db0
-  languageName: node
-  linkType: hard
-
 "@rollup/plugin-alias@npm:^3.1.1":
   version: 3.1.9
   resolution: "@rollup/plugin-alias@npm:3.1.9"
@@ -11613,7 +11586,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.0.0, @types/react-dom@npm:^18.2.0, @types/react-dom@npm:^18.2.25, @types/react-dom@npm:^18.2.6, @types/react-dom@npm:^18.3.0":
+"@types/react-dom@npm:^18.0.0, @types/react-dom@npm:^18.2.0, @types/react-dom@npm:^18.2.25, @types/react-dom@npm:^18.2.6":
   version: 18.3.0
   resolution: "@types/react-dom@npm:18.3.0"
   dependencies:
@@ -11622,7 +11595,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:>=16, @types/react@npm:^18.2.0, @types/react@npm:^18.2.14, @types/react@npm:^18.2.79, @types/react@npm:^18.3.1":
+"@types/react@npm:*, @types/react@npm:>=16, @types/react@npm:^18.2.0, @types/react@npm:^18.2.14, @types/react@npm:^18.2.79":
   version: 18.3.1
   resolution: "@types/react@npm:18.3.1"
   dependencies:
@@ -27820,7 +27793,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^18.2.0, react-dom@npm:^18.3.1":
+"react-dom@npm:^18.2.0":
   version: 18.3.1
   resolution: "react-dom@npm:18.3.1"
   dependencies:
@@ -27999,19 +27972,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.23.0":
-  version: 6.23.0
-  resolution: "react-router-dom@npm:6.23.0"
-  dependencies:
-    "@remix-run/router": 1.16.0
-    react-router: 6.23.0
-  peerDependencies:
-    react: ">=16.8"
-    react-dom: ">=16.8"
-  checksum: c249f3ca44a9e73cb931665563273c7d69709e9dbc9532f145cb6d9a3b3874f18c0752e2d949090b6d139d915ae14a3cbdfedb351c731a8202e20bbcfc800fd4
-  languageName: node
-  linkType: hard
-
 "react-router@npm:6.20.1":
   version: 6.20.1
   resolution: "react-router@npm:6.20.1"
@@ -28020,17 +27980,6 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 5249f42048633fef42361e08b6fb879e6a575415ac3068a0805ae5464fec998a3149ca262cc1939ae8f4607ee24caa6ec0623c0fef702f1d323faba4a5f87d53
-  languageName: node
-  linkType: hard
-
-"react-router@npm:6.23.0":
-  version: 6.23.0
-  resolution: "react-router@npm:6.23.0"
-  dependencies:
-    "@remix-run/router": 1.16.0
-  peerDependencies:
-    react: ">=16.8"
-  checksum: 567eb764d0814a9af2ea83c7d0bcf8a0a49d7070b4a7fffbbe8a4e4a376ca4e6adaa762b47760b110993eb2773fc617da7e26ab564d59cfd768130671a1b990e
   languageName: node
   linkType: hard
 
@@ -28073,7 +28022,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.2.0, react@npm:^18.3.1":
+"react@npm:^18.2.0":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
   dependencies:

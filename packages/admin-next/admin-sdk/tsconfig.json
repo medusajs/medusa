@@ -16,5 +16,6 @@
     "esModuleInterop": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["tsup.config.ts", "node_modules", "dist"]
 }
