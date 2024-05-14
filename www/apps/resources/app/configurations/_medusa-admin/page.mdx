@@ -1,0 +1,400 @@
+import { Table, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa Admin Configurations`,
+}
+
+# {metadata.title}
+
+You can configure the Medusa Admin plugin to change its PORT, the Medusa server's URL, and more. You can also extend the Webpack configurations.
+
+## Plugin Options
+
+The plugin accepts the following options:
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      serve: true,
+      autoRebuild: true,
+      backend: "https://example.com",
+      path: "/app",
+      outDir: "build",
+      develop: {
+        open: true,
+        port: 7001,
+        logLevel: "error",
+        stats: "normal",
+        allowedHosts: "auto",
+        webSocketURL: undefined,
+      },
+    },
+  },
+]
+```
+
+<TypeList types={[
+  {
+    name: "serve",
+    type: "boolean",
+    optional: true,
+    defaultValue: "true",
+    description: "Whether to serve the admin dashboard when the Medusa backend starts. If set to `false`, you can serve the admin dashboard using the [dev command](#develop-command-options).",
+    expandable: false,
+    children: []
+  },
+  {
+    name: "autoRebuild",
+    type: "boolean",
+    optional: true,
+    defaultValue: "false",
+    description: "Whether the admin UI should be rebuilt if there are any changes or if a missing build is detected when the backend starts. If not set, you must [manually build the admin dashboard](#build-command-options).",
+    expandable: false,
+    children: []
+  },
+  {
+    name: "backend",
+    type: "string",
+    optional: true,
+    defaultValue: "",
+    description: "The URL of the Medusa backend. Its value is only used if the `serve` option is set to `false`.",
+    expandable: false,
+    children: []
+  },
+  {
+    name: "path",
+    type: "string",
+    optional: true,
+    defaultValue: "/app",
+    description: "The path the admin server should run on when running the Medusa backend in production. It must be prefixed with a slash `/`, but it can't end with a `/`, which throws an error. It also can't be one of the reserved paths: \"admin\" and \"store\".",
+    expandable: false,
+    children: []
+  },
+  {
+    name: "outDir",
+    type: "string",
+    optional: true,
+    defaultValue: "",
+    description: "The directory to output the admin build to. By default, the plugin builds the admin to the `build` directory in the root of the Medusa backend directory.",
+    expandable: false,
+    children: []
+  },
+  {
+    name: "develop",
+    type: "object",
+    optional: true,
+    defaultValue: "",
+    description: "Options for the admin development server.",
+    expandable: false,
+    children: [
+      {
+        name: "open",
+        type: "boolean",
+        optional: true,
+        defaultValue: "true",
+        description: "Whether the browser should be opened when the admin development server starts.",
+        expandable: false,
+        children: []
+      },
+      {
+        name: "port",
+        type: "number",
+        optional: true,
+        defaultValue: "7001",
+        description: "The port the admin dashboard runs on.",
+        expandable: false,
+        children: []
+      },
+      {
+        name: "logLevel",
+        type: "\"error\" \\| \"none\" \\| \"warn\" \\| \"info\" \\| \"log\" \\| \"verbose\"",
+        optional: true,
+        defaultValue: "error",
+        description: "The log level of the admin development server.",
+        expandable: false,
+        children: []
+      },
+      {
+        name: "stats",
+        type: "\"normal\" \\| \"debug\"",
+        optional: true,
+        defaultValue: "normal",
+        description: "The verbosity of the admin development server.",
+        expandable: false,
+        children: []
+      },
+      {
+        name: "allowedHosts",
+        type: "\"auto\" \\| \"all\" \\| string[]",
+        optional: true,
+        defaultValue: "auto",
+        description: "The development server's allowed hosts.",
+        expandable: false,
+        children: []
+      },
+      {
+        name: "webSocketURL",
+        type: "string \\| object \\| undefined",
+        optional: true,
+        defaultValue: "",
+        description: "The URL to a web socket server",
+        expandable: false,
+        children: [
+          {
+            name: "hostname",
+            type: "string",
+            optional: true,
+            defaultValue: "",
+            description: "The web socket's hostname.",
+            expandable: false,
+            children: []
+          },
+          {
+            name: "password",
+            type: "string",
+            optional: true,
+            defaultValue: "",
+            description: "The web socket's password.",
+            expandable: false,
+            children: []
+          },
+          {
+            name: "path name",
+            type: "string",
+            optional: true,
+            defaultValue: "",
+            description: "The web socket's path name.",
+            expandable: false,
+            children: []
+          },
+          {
+            name: "port",
+            type: "string",
+            optional: true,
+            defaultValue: "",
+            description: "The web socket's port.",
+            expandable: false,
+            children: []
+          },
+          {
+            name: "username",
+            type: "string",
+            optional: true,
+            defaultValue: "",
+            description: "The web socket's username.",
+            expandable: false,
+            children: []
+          },
+        ]
+      },
+    ]
+  }
+]} sectionTitle="Plugin Options" />
+  
+---
+
+## Admin CLI Commands
+
+The `medusa-admin` CLI tool is installed in your Medusa application. It's used within the `package.json`'s scripts to build admin assets.
+
+### build
+
+The `build` command in the admin CLI allows you to manually build the admin dashboard. For example:
+
+```json title="package.json"
+{
+  "scripts": {
+    // other scripts...
+    "build:admin": "medusa-admin build"
+  }
+}
+```
+
+#### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--deployment`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Build admin assets for deployment. When this option is added, plugin options are not loaded from `medusa-config.js` anymore, and
+      the backend URL is loaded from the `MEDUSA_ADMIN_BACKEND_URL` environment variable.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### develop
+
+The `develop` command in the admin CLI allows you to run the admin dashboard in development separately from the Medusa application. For example:
+
+```json title="package.json"
+{
+  "scripts": {
+    // other scripts...
+    "dev:admin": "medusa-admin develop"
+  }
+}
+```
+
+#### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--backend <url>`, `-b <url>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The URL of the Medusa backend.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The value of the environment variable `MEDUSA_ADMIN_BACKEND_URL`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--port <url>`, `-p <url>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The port to run the admin on.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `7001`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Change the Medusa Application URL
+
+### In Development
+
+To change the Medusa application's URL that the admin sends request to, disable the `serve` plugin option and set the `backend` option to the new URL.
+
+However, this requires you to also set-up the [develop command](#develop-command-options) as the admin will no longer start with the Medusa application.
+
+For example:
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      serve: false,
+      backend: "http://localhost:9001",
+      // other options...
+    },
+  },
+]
+```
+
+### In Production
+
+<Note>
+
+This assumes that you've deployed the admin separately and you're passing the `--deployment` option to the [build command](#build-command-options).
+
+</Note>
+
+To change the backend's URL that the admin sends request to, set the environment variable `MEDUSA_ADMIN_BACKEND_URL` to the backend's URL.
+
+For example:
+
+```bash
+MEDUSA_ADMIN_BACKEND_URL=https://example.com
+```
+
+---
+
+## Custom Environment Variables
+
+To set environment variables that you want to access in your admin dashboard's customizations (such as in [widgets](!docs!/advanced-development/admin/widgets) or [UI routes](!docs!/advanced-development/admin/ui-routes)), your environment variables must be prefixed with `MEDUSA_ADMIN_`. Otherwise, it won't be loaded within the admin.
+
+For example:
+
+```bash
+MEDUSA_ADMIN_CUSTOM_API_KEY=123...
+```
+
+---
+
+## Custom Webpack Configurations
+
+<Note type="warning">
+
+This is an advanced feature and requires knowledge of configuring webpack. If configured wrongly, it may lead to the admin application breaking.
+
+</Note>
+
+<Note>
+
+Plugins can't include webpack customizations.
+
+</Note>
+
+The Medusa Admin uses [Webpack](https://webpack.js.org/) to define the configurations for both the Medusa Admin plugin and your customizations.
+
+You can extend the default webpack configurations defined in the admin plugin to add your custom configurations, such as to support styling your extensions with CSS Modules.
+
+To do that, create the file `src/admin/webpack.config.js` that uses the `withCustomWebpackConfig` method imported from `@medusajs/admin` to export the extended configurations:
+
+```js title="src/admin/webpack.config.js"
+import { withCustomWebpackConfig } from "@medusajs/admin"
+
+export default withCustomWebpackConfig((config, webpack) => {
+  config.plugins.push(
+    new webpack.DefinePlugin({
+    "process.env": {
+      NODE_ENV: JSON.stringify("production"),
+      API_URL: 
+        JSON.stringify("https://api.medusa-commerce.com"),
+    },
+    })
+  )
+  
+  return config
+})
+```
+
+The method `withCustomWebpackConfig` accepts a callback function that must return an object of [webpack configuration](https://webpack.js.org/configuration/). The callback function accepts two parameters:
+
+1. The first parameter is an object that holds the default webpack configuration. Add your configurations to this object, then return it. Not returning the default configurations breaks the application.
+2. The second parameter is the webpack instance.

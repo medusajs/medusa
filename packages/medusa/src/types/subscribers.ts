@@ -10,7 +10,17 @@ export type SubscriberConfig = {
 }
 
 export type SubscriberArgs<T = unknown> = {
-  data: T
+  data:
+    | T
+    | {
+        metadata: {
+          service: string
+          action: string
+          object: string
+          eventGroupId?: string
+        }
+        data: T
+      }
   eventName: string
   container: MedusaContainer
   pluginOptions: Record<string, unknown>

@@ -15,8 +15,8 @@ import {
   VirtualOrder,
 } from "@types"
 
-type InternalOrderSummary = OrderSummaryCalculated & {
-  futureTemporarySum: BigNumberInput
+interface InternalOrderSummary extends OrderSummaryCalculated {
+  future_temporary_sum: BigNumberInput
 }
 
 export class OrderChangeProcessing {
@@ -56,15 +56,15 @@ export class OrderChangeProcessing {
     transformPropertiesToBigNumber(this.order.metadata)
 
     this.summary = {
-      futureDifference: 0,
-      futureTemporaryDifference: 0,
-      temporaryDifference: 0,
-      pendingDifference: 0,
-      futureTemporarySum: 0,
-      differenceSum: 0,
-      currentOrderTotal: this.order.total ?? 0,
-      originalOrderTotal: this.order.total ?? 0,
-      transactionTotal,
+      future_difference: 0,
+      future_temporary_difference: 0,
+      temporary_difference: 0,
+      pending_difference: 0,
+      future_temporary_sum: 0,
+      difference_sum: 0,
+      current_order_total: this.order.total ?? 0,
+      original_order_total: this.order.total ?? 0,
+      transaction_total: transactionTotal,
     }
   }
 
@@ -114,26 +114,29 @@ export class OrderChangeProcessing {
 
       if (type.awaitRequired && !this.isEventDone(action)) {
         if (action.evaluationOnly) {
-          summary.futureTemporarySum = MathBN.add(
-            summary.futureTemporarySum,
+          summary.future_temporary_sum = MathBN.add(
+            summary.future_temporary_sum,
             amount
           )
         } else {
-          summary.temporaryDifference = MathBN.add(
-            summary.temporaryDifference,
+          summary.temporary_difference = MathBN.add(
+            summary.temporary_difference,
             amount
           )
         }
       }
 
       if (action.evaluationOnly) {
-        summary.futureDifference = MathBN.add(summary.futureDifference, amount)
+        summary.future_difference = MathBN.add(
+          summary.future_difference,
+          amount
+        )
       } else {
         if (!this.isEventDone(action) && !action.group_id) {
-          summary.differenceSum = MathBN.add(summary.differenceSum, amount)
+          summary.difference_sum = MathBN.add(summary.difference_sum, amount)
         }
-        summary.currentOrderTotal = MathBN.add(
-          summary.currentOrderTotal,
+        summary.current_order_total = MathBN.add(
+          summary.current_order_total,
           amount
         )
       }
@@ -141,25 +144,25 @@ export class OrderChangeProcessing {
 
     const groupSum = MathBN.add(...Object.values(this.groupTotal))
 
-    summary.differenceSum = MathBN.add(summary.differenceSum, groupSum)
+    summary.difference_sum = MathBN.add(summary.difference_sum, groupSum)
 
-    summary.transactionTotal = MathBN.sum(
+    summary.transaction_total = MathBN.sum(
       ...this.transactions.map((tr) => tr.amount)
     )
 
-    summary.futureTemporaryDifference = MathBN.sub(
-      summary.futureDifference,
-      summary.futureTemporarySum
+    summary.future_temporary_difference = MathBN.sub(
+      summary.future_difference,
+      summary.future_temporary_sum
     )
 
-    summary.temporaryDifference = MathBN.sub(
-      summary.differenceSum,
-      summary.temporaryDifference
+    summary.temporary_difference = MathBN.sub(
+      summary.difference_sum,
+      summary.temporary_difference
     )
 
-    summary.pendingDifference = MathBN.sub(
-      summary.currentOrderTotal,
-      summary.transactionTotal
+    summary.pending_difference = MathBN.sub(
+      summary.current_order_total,
+      summary.transaction_total
     )
   }
 
@@ -345,45 +348,17 @@ export class OrderChangeProcessing {
   public getSummary(): OrderSummaryDTO {
     const summary = this.summary
     const orderSummary = {
-      transactionTotal: new BigNumber(summary.transactionTotal),
-      originalOrderTotal: new BigNumber(summary.originalOrderTotal),
-      currentOrderTotal: new BigNumber(summary.currentOrderTotal),
-      temporaryDifference: new BigNumber(summary.temporaryDifference),
-      futureDifference: new BigNumber(summary.futureDifference),
-      futureTemporaryDifference: new BigNumber(
-        summary.futureTemporaryDifference
+      transaction_total: new BigNumber(summary.transaction_total),
+      original_order_total: new BigNumber(summary.original_order_total),
+      current_order_total: new BigNumber(summary.current_order_total),
+      temporary_difference: new BigNumber(summary.temporary_difference),
+      future_difference: new BigNumber(summary.future_difference),
+      future_temporary_difference: new BigNumber(
+        summary.future_temporary_difference
       ),
-      pendingDifference: new BigNumber(summary.pendingDifference),
-      differenceSum: new BigNumber(summary.differenceSum),
+      pending_difference: new BigNumber(summary.pending_difference),
+      difference_sum: new BigNumber(summary.difference_sum),
     } as unknown as OrderSummaryDTO
-
-    /*
-    {
-      total: summary.currentOrderTotal
-      
-      subtotal: number
-      total_tax: number
-
-      ordered_total: summary.originalOrderTotal
-      fulfilled_total: number
-      returned_total: number
-      return_request_total: number
-      write_off_total: number
-      projected_total: number
-
-      net_total: number
-      net_subtotal: number
-      net_total_tax: number
-
-      future_total: number
-      future_subtotal: number
-      future_total_tax: number
-      future_projected_total: number
-
-      balance: summary.pendingDifference
-      future_balance: number
-    }
-    */
 
     return orderSummary
   }

@@ -11,9 +11,9 @@ export const SidebarTitle = ({ item }: SidebarTitleProps) => {
   return (
     <Link
       className={clsx(
-        "flex items-center justify-between gap-docs_0.5 rounded-docs_sm px-docs_0.5 py-[6px] hover:no-underline",
+        "flex items-center justify-between gap-docs_0.5 rounded-docs_sm px-docs_0.5 pb-[6px] hover:no-underline",
         "border border-transparent",
-        "text-medusa-fg-subtle text-medium-plus"
+        "text-medusa-fg-subtle text-large-plus"
       )}
       href={item.isPathHref && item.path ? item.path : `#${item.path}`}
       replace={!item.isPathHref}

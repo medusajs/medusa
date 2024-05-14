@@ -36,14 +36,14 @@ export enum EVENT_STATUS {
 }
 
 export interface OrderSummaryCalculated {
-  currentOrderTotal: BigNumberInput
-  originalOrderTotal: BigNumberInput
-  transactionTotal: BigNumberInput
-  futureDifference: BigNumberInput
-  pendingDifference: BigNumberInput
-  futureTemporaryDifference: BigNumberInput
-  temporaryDifference: BigNumberInput
-  differenceSum: BigNumberInput
+  current_order_total: BigNumberInput
+  original_order_total: BigNumberInput
+  transaction_total: BigNumberInput
+  future_difference: BigNumberInput
+  pending_difference: BigNumberInput
+  future_temporary_difference: BigNumberInput
+  temporary_difference: BigNumberInput
+  difference_sum: BigNumberInput
 }
 
 export interface OrderTransaction {

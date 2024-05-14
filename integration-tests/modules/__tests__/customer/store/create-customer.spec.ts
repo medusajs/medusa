@@ -1,9 +1,12 @@
 import { IAuthModuleService, ICustomerModuleService } from "@medusajs/types"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import adminSeeder from "../../../../helpers/admin-seeder"
 import jwt from "jsonwebtoken"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -24,7 +27,7 @@ medusaIntegrationTestRunner({
       })
 
       beforeEach(async () => {
-        await adminSeeder(dbConnection)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
       })
 
       it("should create a customer", async () => {

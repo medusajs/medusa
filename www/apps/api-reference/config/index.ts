@@ -1,5 +1,5 @@
 import { DocsConfig } from "types"
-import { mobileSidebarItems } from "docs-ui"
+import { mobileSidebarItemsV1, legacyMobileSidebarItems } from "docs-ui"
 
 export const config: DocsConfig = {
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
@@ -13,6 +13,6 @@ export const config: DocsConfig = {
       },
     ],
     bottom: [],
-    mobile: mobileSidebarItems,
+    mobile: process.env.NEXT_PUBLIC_SHOW_V2 ? mobileSidebarItemsV1 : legacyMobileSidebarItems,
   },
 }

@@ -7,11 +7,9 @@ const execa = require("execa")
 
 const isDryRun = process.argv.indexOf("--dry-run") !== -1
 const withFullFile = process.argv.indexOf("--with-full-file") !== -1
-const v2 = process.argv.indexOf("--v2") !== -1
 const basePath = path.resolve(__dirname, `../`)
 const repoRootPath = path.resolve(basePath, `../../../../`)
-const docsApiPath = v2 ? path.resolve(repoRootPath, "www/apps/api-reference/specs-v2") : 
-  path.resolve(repoRootPath, "www/apps/api-reference/specs")
+const docsApiPath = path.resolve(repoRootPath, "www/apps/api-reference/specs")
 
 const run = async () => {
   const oasOutDir = isDryRun ? await getTmpDirectory() : docsApiPath
@@ -25,9 +23,6 @@ const run = async () => {
 
 const generateOASSource = async (outDir, apiType) => {
   const commandParams = ["oas", `--type=${apiType}`, `--out-dir=${outDir}`, "--local"]
-  if (v2) {
-    commandParams.push(`--v2`)
-  }
   const { all: logs } = await execa(
     "medusa-oas",
     commandParams,

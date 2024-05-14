@@ -55,6 +55,13 @@ async function loadModule(
   loaderOnly?: boolean
 ): Promise<{ error?: Error } | void> {
   const modDefinition = resolution.definition
+
+  if (!modDefinition.key) {
+    throw new Error(`Module definition is missing property "key"`)
+  }
+
+  modDefinition.registrationName ??= modDefinition.key
+
   const registrationName = modDefinition.registrationName
 
   const { scope, resources } = resolution.moduleDeclaration ?? ({} as any)

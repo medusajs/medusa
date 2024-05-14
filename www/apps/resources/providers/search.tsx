@@ -1,11 +1,6 @@
 "use client"
 
-import {
-  SearchProvider as UiSearchProvider,
-  AiAssistantCommandIcon,
-  AiAssistantProvider,
-  searchFilters,
-} from "docs-ui"
+import { SearchProvider as UiSearchProvider, searchFiltersV2 } from "docs-ui"
 import { config } from "../config"
 
 type SearchProviderProps = {
@@ -39,32 +34,10 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
             ],
           },
         ],
-        checkInternalPattern: new RegExp(`^${config.baseUrl}/resources/.*`),
-        filterOptions: searchFilters,
+        checkInternalPattern: new RegExp(`^${config.baseUrl}/v2/resources/.*`),
+        filterOptions: searchFiltersV2,
       }}
-      // TODO change once we have a dedicated index
-      initialDefaultFilters={["docs"]}
-      commands={[
-        {
-          name: "ai-assistant",
-          icon: <AiAssistantCommandIcon />,
-          component: (
-            <AiAssistantProvider
-              apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
-              websiteId={process.env.NEXT_PUBLIC_AI_WEBSITE_ID || "temp"}
-              recaptchaSiteKey={
-                process.env.NEXT_PUBLIC_AI_API_ASSISTANT_RECAPTCHA_SITE_KEY ||
-                "temp"
-              }
-            />
-          ),
-          title: "AI Assistant",
-          badge: {
-            variant: "purple",
-            children: "Beta",
-          },
-        },
-      ]}
+      initialDefaultFilters={["resources"]}
     >
       {children}
     </UiSearchProvider>

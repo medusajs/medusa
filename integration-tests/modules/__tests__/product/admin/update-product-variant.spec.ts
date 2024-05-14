@@ -1,16 +1,17 @@
-import {initDb, useDb} from "../../../../environment-helpers/use-db"
-import {simpleProductFactory, simpleRegionFactory,} from "../../../../factories"
-
-import {AxiosInstance} from "axios"
-import adminSeeder from "../../../../helpers/admin-seeder"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import {
-  createDefaultRuleTypes
-} from "../../../helpers/create-default-rule-types"
-import {createVariantPriceSet} from "../../../helpers/create-variant-price-set"
-import {getContainer} from "../../../../environment-helpers/use-container"
+  simpleProductFactory,
+  simpleRegionFactory,
+} from "../../../../factories"
+
+import { AxiosInstance } from "axios"
+import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
+import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import path from "path"
-import {startBootstrapApp} from "../../../../environment-helpers/bootstrap-app"
-import {useApi} from "../../../../environment-helpers/use-api"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { useApi } from "../../../../environment-helpers/use-api"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -49,7 +50,7 @@ describe.skip("POST /admin/products/:id/variants/:id", () => {
   })
 
   beforeEach(async () => {
-    await adminSeeder(dbConnection)
+    await createAdminUser(dbConnection, adminHeaders, appContainer)
     await createDefaultRuleTypes(appContainer)
 
     await simpleRegionFactory(dbConnection, {
