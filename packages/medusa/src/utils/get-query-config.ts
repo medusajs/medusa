@@ -6,11 +6,9 @@ import {
 import { pick } from "lodash"
 import { MedusaError, isDefined } from "medusa-core-utils"
 import { RequestQueryFields } from "@medusajs/types"
-import { BaseEntity } from "../interfaces"
-import { featureFlagRouter } from "../loaders/feature-flags"
 import { FindConfig, QueryConfig } from "../types/common"
 
-export function pickByConfig<TModel extends BaseEntity>(
+export function pickByConfig<TModel>(
   obj: TModel | TModel[],
   config: FindConfig<TModel>
 ): Partial<TModel> | Partial<TModel>[] {
@@ -26,10 +24,10 @@ export function pickByConfig<TModel extends BaseEntity>(
   return obj
 }
 
-export function prepareListQuery<
-  T extends RequestQueryFields,
-  TEntity extends BaseEntity
->(validated: T, queryConfig: QueryConfig<TEntity> = {}) {
+export function prepareListQuery<T extends RequestQueryFields, TEntity>(
+  validated: T,
+  queryConfig: QueryConfig<TEntity> = {}
+) {
   // TODO: this function will be simplified a lot once we drop support for the old api
   const { order, fields, limit = 50, expand, offset = 0 } = validated
   let {
@@ -215,10 +213,10 @@ export function prepareListQuery<
   }
 }
 
-export function prepareRetrieveQuery<
-  T extends RequestQueryFields,
-  TEntity extends BaseEntity
->(validated: T, queryConfig?: QueryConfig<TEntity>) {
+export function prepareRetrieveQuery<T extends RequestQueryFields, TEntity>(
+  validated: T,
+  queryConfig?: QueryConfig<TEntity>
+) {
   const { listConfig, remoteQueryConfig } = prepareListQuery(
     validated,
     queryConfig

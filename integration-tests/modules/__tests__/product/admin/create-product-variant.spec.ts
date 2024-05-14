@@ -4,9 +4,9 @@ import {
   simpleProductFactory,
   simpleRegionFactory,
 } from "../../../../factories"
-import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -33,7 +33,7 @@ medusaIntegrationTestRunner({
       })
 
       beforeEach(async () => {
-        await adminSeeder(dbConnection)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
         await createDefaultRuleTypes(appContainer)
 
         await simpleRegionFactory(dbConnection, {

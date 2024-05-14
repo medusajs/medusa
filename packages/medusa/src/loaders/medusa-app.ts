@@ -16,7 +16,6 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  FlagRouter,
   isObject,
   upperCaseFirst,
 } from "@medusajs/utils"
