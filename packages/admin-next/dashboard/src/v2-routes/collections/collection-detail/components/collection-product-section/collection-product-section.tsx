@@ -3,7 +3,7 @@ import { ProductCollectionDTO } from "@medusajs/types"
 import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
-import { useAdminRemoveProductsFromCollection } from "medusa-react"
+import { adminProductKeys } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -14,6 +14,8 @@ import { useProductTableFilters } from "../../../../../hooks/table/filters/use-p
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { ExtendedProductDTO } from "../../../../../types/api-responses"
+import { useUpdateCollectionProducts } from "../../../../../hooks/api/collections"
+import { queryClient } from "../../../../../lib/medusa"
 
 type CollectionProductSectionProps = {
   collection: ProductCollectionDTO
@@ -55,8 +57,8 @@ export const CollectionProductSection = ({
   })
 
   const prompt = usePrompt()
-  // Not implemented in 2.0
-  // const { mutateAsync } = useAdminRemoveProductsFromCollection(collection.id)
+
+  const { mutateAsync } = useUpdateCollectionProducts(collection.id)
 
   const handleRemove = async (selection: Record<string, boolean>) => {
     const ids = Object.keys(selection)
@@ -74,16 +76,16 @@ export const CollectionProductSection = ({
       return
     }
 
-    // await mutateAsync(
-    //   {
-    //     product_ids: ids,
-    //   },
-    //   {
-    //     onSuccess: () => {
-    //       queryClient.invalidateQueries(adminProductKeys.lists())
-    //     },
-    //   }
-    // )
+    try {
+      await mutateAsync({
+        remove: ids,
+      })
+      console.log("HEREE")
+
+      queryClient.invalidateQueries(adminProductKeys.lists())
+    } catch (e) {
+      // TODO: toast
+    }
   }
 
   if (isError) {
@@ -141,7 +143,7 @@ const ProductActions = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { mutateAsync } = useAdminRemoveProductsFromCollection(collectionId)
+  const { mutateAsync } = useUpdateCollectionProducts(collectionId)
 
   const handleRemove = async () => {
     const res = await prompt({
@@ -156,10 +158,15 @@ const ProductActions = ({
     if (!res) {
       return
     }
+    try {
+      await mutateAsync({
+        remove: [product.id],
+      })
 
-    await mutateAsync({
-      product_ids: [product.id],
-    })
+      queryClient.invalidateQueries(adminProductKeys.lists())
+    } catch (e) {
+      // TODO: toast
+    }
   }
 
   return (

@@ -98,11 +98,10 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
       label: t("products.domain"),
       to: "/products",
       items: [
-        // TODO: Enable when domin is introduced
-        // {
-        //   label: t("collections.domain"),
-        //   to: "/collections",
-        // },
+        {
+          label: t("collections.domain"),
+          to: "/collections",
+        },
         {
           label: t("categories.domain"),
           to: "/categories",
