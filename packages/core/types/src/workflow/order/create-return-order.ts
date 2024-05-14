@@ -1,8 +1,11 @@
+import { RegionDTO } from "../../region"
+
 interface CreateOrderReturnItem {
   item_id: string
   quantity: number
-  note?: string
+  internal_note?: string
   reason_id?: string
+  metadata?: Record<string, any>
 }
 
 export interface CreateOrderReturnWorkflowInput {
@@ -17,4 +20,5 @@ export interface CreateOrderReturnWorkflowInput {
   receive_now?: boolean
   refund?: boolean
   location_id?: string
+  region?: RegionDTO
 }

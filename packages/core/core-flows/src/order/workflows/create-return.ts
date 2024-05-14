@@ -11,6 +11,8 @@ import {
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import { arrayDifference, isDefined, MedusaError } from "@medusajs/utils"
+import { updateOrderTaxLinesStep } from "../steps"
+import { createReturnStep } from "../steps/create-return"
 
 function throwIfOrderIsCancelled(order: OrderDTO) {
   return transform({ order }, (data) => {
@@ -90,16 +92,16 @@ function validateReturnReasons(
 function prepareShippingMethodData(
   orderId: string,
   inputShippingOption: OrderWorkflow.CreateOrderReturnWorkflowInput["return_shipping"],
-  returnShippingOption: ShippingOptionDTO
+  returnhippingOption: ShippingOptionDTO
 ) {
-  return transform({ inputShippingOption, returnShippingOption }, (data) => {
+  return transform({ inputShippingOption, returnhippingOption }, (data) => {
     const obj: CreateOrderShippingMethodDTO = {
-      name: returnShippingOption.name,
+      name: returnhippingOption.name,
       order_id: orderId,
-      shipping_option_id: returnShippingOption.id,
+      shipping_option_id: returnhippingOption.id,
       amount:
-        returnShippingOption.price_type === "flat_rate"
-          ? returnShippingOption.amount
+        returnhippingOption.price_type === "flat_rate"
+          ? returnhippingOption.amount
           : 0,
       // TODO
       data: {},
@@ -115,7 +117,7 @@ function prepareShippingMethodData(
     } else {
     }
 
-    if (returnShippingOption.price_type === "calculated") {
+    if (returnhippingOption.price_type === "calculated") {
       // TODO: retrieve calculated price and assign to amount
     }
 
@@ -132,9 +134,9 @@ function createReturnItems(
   })
 }
 
-export const createReturnsWorkflowId = "create-returns"
-export const createReturnsWorkflow = createWorkflow(
-  createReturnsWorkflowId,
+export const createReturnWorkflowId = "create-return"
+export const createReturnWorkflow = createWorkflow(
+  createReturnWorkflowId,
   (
     input: WorkflowData<OrderWorkflow.CreateOrderReturnWorkflowInput>
   ): WorkflowData<OrderDTO> => {
@@ -150,7 +152,7 @@ export const createReturnsWorkflow = createWorkflow(
     throwIfItemsDoesNotExistsInOrder(order, input.items)
     validateReturnReasons(input.order_id, input.items)
 
-    const returnShippingOption = useRemoteQueryStep({
+    const returnhippingOption = useRemoteQueryStep({
       entry_point: "shipping_options",
       fields: ["*"],
       variables: {
@@ -163,15 +165,31 @@ export const createReturnsWorkflow = createWorkflow(
     const shippingMethodData = prepareShippingMethodData(
       input.order_id,
       input.return_shipping,
-      returnShippingOption
+      returnhippingOption
     )
 
-    // Create return line items
+    const orderReturn = createReturnStep({
+      order_id: input.order_id,
+      items: input.items,
+      return_shipping: shippingMethodData,
+      created_by: input.created_by,
+    })
 
-    // validate refundable amount if provided, otherwise compute it ourselves, check if it done by the order module service
-    // create return actions
-    // if option id then create shipping method, check that
-    // create shipping tax lines
-    // if option id then create fulfillment
+    const freshOrder = useRemoteQueryStep({
+      entry_point: "orders",
+      fields: ["*"],
+      variables: { id: input.order_id },
+      list: false,
+    })
+
+    updateOrderTaxLinesStep({
+      order_id: input.order_id,
+      items: freshOrder.items, // TODO validate
+      shipping_methods: [freshOrder.shipping_methods[0]], // TODO validate
+    })
+
+    // Create fulfillment
+
+    return freshOrder
   }
 )
