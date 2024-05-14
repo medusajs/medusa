@@ -96,7 +96,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
   {
     [Modules.EVENT_BUS]: {
       key: Modules.EVENT_BUS,
-      isLegacy: true,
       registrationName: ModuleRegistrationName.EVENT_BUS,
       defaultPackage: MODULE_PACKAGE_NAMES[Modules.EVENT_BUS],
       label: upperCaseFirst(ModuleRegistrationName.EVENT_BUS),
@@ -109,7 +108,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
     },
     [Modules.STOCK_LOCATION]: {
       key: Modules.STOCK_LOCATION,
-      isLegacy: true,
       registrationName: ModuleRegistrationName.STOCK_LOCATION,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.STOCK_LOCATION),
@@ -123,7 +121,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
     },
     [Modules.INVENTORY]: {
       key: Modules.INVENTORY,
-      isLegacy: true,
       registrationName: ModuleRegistrationName.INVENTORY,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.INVENTORY),
@@ -137,7 +134,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
     },
     [Modules.CACHE]: {
       key: Modules.CACHE,
-      isLegacy: true,
       registrationName: ModuleRegistrationName.CACHE,
       defaultPackage: MODULE_PACKAGE_NAMES[Modules.CACHE],
       label: upperCaseFirst(ModuleRegistrationName.CACHE),
