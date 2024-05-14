@@ -125,7 +125,11 @@ async function createShippingOptionFixture({ container, fulfillmentService }) {
   }
 }
 
-async function createOrderFixture({ orderService }) {
+async function createOrderFixture({
+  orderService,
+}: {
+  orderService: IOrderModuleService
+}) {
   const order = await orderService.create({
     region_id: "test_region_idclear",
     email: "foo@bar.com",
@@ -143,6 +147,12 @@ async function createOrderFixture({ orderService }) {
             provider_id: "coupon_kings",
           },
         ],
+      },
+    ],
+    transactions: [
+      {
+        amount: 69,
+        currency_code: "usd",
       },
     ],
     sales_channel_id: "test",
@@ -221,11 +231,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should create a return order", async () => {
-        const order = await createOrderFixture({ orderService }).catch(
-          (err) => {
-            console.log(err)
-          }
-        )
+        const order = await createOrderFixture({ orderService })
         const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
           {
             order_id: order.id,

@@ -20,7 +20,7 @@ import { updateOrderTaxLinesStep } from "../steps"
 import { createReturnStep } from "../steps/create-return"
 
 function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
-  // TODO find out how canceled at
+  // TODO: need work, check cancelled
   if (false /*order.cancelled_at*/) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
@@ -142,7 +142,7 @@ export const createReturnOrderWorkflow = createWorkflow(
   ): WorkflowData<OrderDTO> => {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["*"],
+      fields: ["total"],
       variables: { id: input.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -157,6 +157,8 @@ export const createReturnOrderWorkflow = createWorkflow(
       { order_id: input.order_id, inputItems: input.items },
       validateReturnReasons
     )
+
+    // validate that the refund prop input is less than order.item_total (item total)
 
     const returnShippingOptionsVariables = transform(
       { input, order },
@@ -180,7 +182,12 @@ export const createReturnOrderWorkflow = createWorkflow(
 
     const returnShippingOption = useRemoteQueryStep({
       entry_point: "shipping_options",
-      fields: ["*", "calculated_price.calculated_amount"],
+      fields: [
+        "id",
+        "price_type",
+        "name",
+        "calculated_price.calculated_amount",
+      ],
       variables: returnShippingOptionsVariables,
       list: false,
       throw_if_key_not_found: true,
@@ -204,15 +211,14 @@ export const createReturnOrderWorkflow = createWorkflow(
 
     const freshOrder = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["*"],
+      fields: ["items.*"],
       variables: { id: input.order_id },
       list: false,
     }).config({ name: "fresh-order" })
 
     updateOrderTaxLinesStep({
       order_id: input.order_id,
-      items: freshOrder.items, // TODO validate
-      shipping_methods: [freshOrder.shipping_methods[0]], // TODO validate
+      shipping_methods: [shippingMethodData as any], // The types does not seems correct in that step and expect too many things compared to the actual needs
     })
 
     // Create fulfillment
