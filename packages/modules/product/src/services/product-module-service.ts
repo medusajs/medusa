@@ -1168,9 +1168,12 @@ export default class ProductModuleService<
   ): Promise<TProduct[]> {
     const normalizedInput = await promiseAll(
       data.map(async (d) => {
-        await this.normalizeCreateProductInput(d, sharedContext)
-        this.validateProductPayload(d)
-        return d
+        const normalized = await this.normalizeCreateProductInput(
+          d,
+          sharedContext
+        )
+        this.validateProductPayload(normalized)
+        return normalized
       })
     )
 
@@ -1228,9 +1231,12 @@ export default class ProductModuleService<
   ): Promise<TProduct[]> {
     const normalizedInput = await promiseAll(
       data.map(async (d) => {
-        await this.normalizeUpdateProductInput(d, sharedContext)
-        this.validateProductPayload(d)
-        return d
+        const normalized = await this.normalizeUpdateProductInput(
+          d,
+          sharedContext
+        )
+        this.validateProductPayload(normalized)
+        return normalized
       })
     )
 
