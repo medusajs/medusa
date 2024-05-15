@@ -164,19 +164,21 @@ export const CreatePromotionForm = ({
             : rule.values
       }
 
-      const buildRulesData = (rules: {
-        operator: string,
-        attribute: string,
-        values: any[] | any,
-        disguised?: boolean
-      }[]) => {
+      const buildRulesData = (
+        rules: {
+          operator: string
+          attribute: string
+          values: any[] | any
+          disguised?: boolean
+        }[]
+      ) => {
         return rules
           .filter((r) => !r.disguised)
           .map((rule) => ({
             operator: rule.operator as PromotionRuleOperatorValues,
             attribute: rule.attribute,
             values: rule.values,
-          })),
+          }))
       }
 
       createPromotion({
