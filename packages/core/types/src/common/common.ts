@@ -110,6 +110,11 @@ export interface FindConfig<Entity> {
    * Enable ORM specific defined filters
    */
   filters?: Record<string, any>
+
+  /**
+   * Enable ORM specific defined options
+   */
+  options?: Record<string, any>
 }
 
 /**
