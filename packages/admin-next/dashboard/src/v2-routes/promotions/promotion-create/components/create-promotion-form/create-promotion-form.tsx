@@ -28,6 +28,7 @@ import {
 } from "../../../../../components/route-modal"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { defaultCampaignValues } from "../../../../campaigns/campaign-create/components/create-campaign-form"
 import { RulesFormField } from "../../../common/edit-rules/components/edit-rules-form"
 import { AddCampaignPromotionFields } from "../../../promotion-add-campaign/components/add-campaign-promotion-form"
 import { Tab } from "./constants"
@@ -89,6 +90,7 @@ export const CreatePromotionForm = ({
         target_rules: generateRuleAttributes(targetRules),
         buy_rules: generateRuleAttributes(buyRules),
       },
+      campaign: undefined,
     },
     resolver: zodResolver(CreatePromotionSchema),
   })
@@ -295,6 +297,29 @@ export const CreatePromotionForm = ({
 
     return "not-started"
   }, [detailsValidated])
+
+  const watchCampaignChoice = useWatch({
+    control: form.control,
+    name: "campaign_choice",
+  })
+
+  useEffect(() => {
+    const formData = form.getValues()
+
+    if (watchCampaignChoice !== "existing") {
+      form.setValue("campaign_id", undefined)
+    }
+
+    if (watchCampaignChoice !== "new") {
+      form.setValue("campaign", undefined)
+    }
+
+    if (watchCampaignChoice === "new") {
+      if (!formData.campaign || !formData.campaign?.budget?.type) {
+        form.setValue("campaign", defaultCampaignValues)
+      }
+    }
+  }, [watchCampaignChoice])
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -700,9 +725,7 @@ export const CreatePromotionForm = ({
                             <Input
                               {...form.register(
                                 "application_method.max_quantity",
-                                {
-                                  valueAsNumber: true,
-                                }
+                                { valueAsNumber: true }
                               )}
                               type="number"
                               min={1}
