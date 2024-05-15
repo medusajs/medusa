@@ -20,7 +20,7 @@ export interface CreateApplicationMethodDTO {
 }
 
 export interface UpdateApplicationMethodDTO {
-  id: string
+  id?: string
   type?: ApplicationMethodTypeValues
   target_type?: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
