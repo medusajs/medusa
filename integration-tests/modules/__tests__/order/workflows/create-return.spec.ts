@@ -269,8 +269,8 @@ medusaIntegrationTestRunner({
       let location: StockLocationDTO
 
       beforeEach(async () => {
-        const fixtures = await prepareDataFixtures({
-          container: getContainer(),
+        const fixtures = Add orderawait prepareDataFixtures({
+          container,
         })
 
         shippingOption = fixtures.shippingOption
