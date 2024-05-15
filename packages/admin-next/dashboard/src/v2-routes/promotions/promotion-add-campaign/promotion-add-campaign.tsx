@@ -11,12 +11,13 @@ export const PromotionAddCampaign = () => {
   const { id } = useParams()
   const { t } = useTranslation()
   const { promotion, isPending, isError, error } = usePromotion(id!)
+
   const {
     campaigns,
     isPending: areCampaignsLoading,
     isError: isCampaignError,
     error: campaignError,
-  } = useCampaigns()
+  } = useCampaigns({ currency: promotion?.application_method?.currency_code })
 
   if (isError || isCampaignError) {
     throw error || campaignError

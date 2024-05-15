@@ -28,6 +28,7 @@ export const CreatePromotionSchema = z.object({
   application_method: z.object({
     allocation: z.enum(["each", "across"]),
     value: z.number().min(0),
+    currency_code: z.string(),
     max_quantity: z.number().optional(),
     target_rules: RuleSchema,
     buy_rules: RuleSchema.min(2).optional(),

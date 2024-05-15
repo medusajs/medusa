@@ -83,6 +83,7 @@ moduleIntegrationTestRunner({
             .createCampaigns([
               {
                 name: "test",
+                currency: "USD",
               } as any,
             ])
             .catch((e) => e)
@@ -99,6 +100,7 @@ moduleIntegrationTestRunner({
             {
               name: "test",
               campaign_identifier: "test",
+              currency: "USD",
               starts_at: startsAt,
               ends_at: endsAt,
             },
@@ -110,6 +112,7 @@ moduleIntegrationTestRunner({
             expect.objectContaining({
               name: "test",
               campaign_identifier: "test",
+              currency: "USD",
               starts_at: startsAt,
               ends_at: endsAt,
             })
@@ -124,6 +127,7 @@ moduleIntegrationTestRunner({
             {
               name: "test",
               campaign_identifier: "test",
+              currency: "USD",
               starts_at: startsAt,
               ends_at: endsAt,
               budget: {
@@ -142,6 +146,7 @@ moduleIntegrationTestRunner({
             expect.objectContaining({
               name: "test",
               campaign_identifier: "test",
+              currency: "USD",
               starts_at: startsAt,
               ends_at: endsAt,
               budget: expect.objectContaining({
@@ -278,6 +283,7 @@ moduleIntegrationTestRunner({
             {
               name: "test",
               campaign_identifier: "test",
+              currency: "USD",
               starts_at: new Date("01/01/2024"),
               ends_at: new Date("01/01/2025"),
             },
@@ -302,6 +308,7 @@ moduleIntegrationTestRunner({
             {
               name: "test",
               campaign_identifier: "test",
+              currency: "USD",
               starts_at: new Date("01/01/2024"),
               ends_at: new Date("01/01/2025"),
             },
@@ -323,6 +330,7 @@ moduleIntegrationTestRunner({
             {
               name: "test",
               campaign_identifier: "test",
+              currency: "USD",
               starts_at: new Date("01/01/2024"),
               ends_at: new Date("01/01/2025"),
             },

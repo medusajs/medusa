@@ -1,16 +1,33 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { XMarkMini } from "@medusajs/icons"
-import { PromotionDTO, PromotionRuleDTO } from "@medusajs/types"
+import {
+  PromotionDTO,
+  PromotionRuleDTO,
+  RuleAttributeOptionsResponse,
+  RuleOperatorOptionsResponse,
+  StoreDTO,
+} from "@medusajs/types"
 import { Badge, Button, Heading, Input, Select, Text } from "@medusajs/ui"
 import i18n from "i18next"
 import { Fragment, useState } from "react"
-import { useFieldArray, useForm } from "react-hook-form"
+import {
+  FieldValues,
+  Path,
+  RefCallBack,
+  useFieldArray,
+  UseFieldArrayAppend,
+  UseFieldArrayRemove,
+  UseFieldArrayUpdate,
+  useForm,
+  UseFormReturn,
+} from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../../components/common/form"
 import { Combobox } from "../../../../../../components/inputs/combobox"
 import { RouteDrawer } from "../../../../../../components/route-modal"
 import { usePromotionRuleValues } from "../../../../../../hooks/api/promotions"
+import { useStore } from "../../../../../../hooks/api/store"
 import { RuleTypeValues } from "../../edit-rules"
 import { getDisguisedRules } from "./utils"
 
@@ -47,6 +64,33 @@ const EditRules = zod.object({
   ),
 })
 
+type RuleValueFormFieldType = {
+  identifier: string
+  scope:
+    | "application_method.buy_rules"
+    | "rules"
+    | "application_method.target_rules"
+  valuesFields: any
+  valuesRef: RefCallBack
+  fieldRule: any
+  attributes: RuleAttributeOptionsResponse[]
+  ruleType: "rules" | "target-rules" | "buy-rules"
+}
+
+const buildFilters = (attribute?: string, store?: StoreDTO) => {
+  if (!attribute || !store) {
+    return {}
+  }
+
+  if (attribute === "currency_code") {
+    return {
+      value: store.supported_currency_codes,
+    }
+  }
+
+  return {}
+}
+
 const RuleValueFormField = ({
   identifier,
   scope,
@@ -55,15 +99,19 @@ const RuleValueFormField = ({
   fieldRule,
   attributes,
   ruleType,
-}) => {
+}: RuleValueFormFieldType) => {
   const attribute = attributes?.find(
     (attr) => attr.value === fieldRule.attribute
   )
+
+  const { store, isLoading: isStoreLoading } = useStore()
   const { values: options = [] } = usePromotionRuleValues(
     ruleType,
-    attribute?.id,
+    attribute?.id!,
+    buildFilters(attribute?.id, store),
     {
-      enabled: !!attribute?.id && !attribute.disguised,
+      enabled:
+        !!attribute?.id && fieldRule.field_type === "select" && !isStoreLoading,
     }
   )
 
@@ -101,6 +149,35 @@ const RuleValueFormField = ({
               <Form.ErrorMessage />
             </Form.Item>
           )
+        } else if (
+          fieldRule.field_type === "select" ||
+          fieldRule.operator === "eq"
+        ) {
+          return (
+            <Form.Item className="basis-1/2">
+              <Form.Control>
+                <Select {...field} onValueChange={onChange}>
+                  <Select.Trigger ref={ref} className="bg-ui-bg-base">
+                    <Select.Value placeholder="Select Operator" />
+                  </Select.Trigger>
+
+                  <Select.Content>
+                    {options?.map((option, i) => (
+                      <Select.Item
+                        key={`${identifier}-value-option-${i}`}
+                        value={option.value}
+                      >
+                        <span className="text-ui-fg-subtle">
+                          {option.label}
+                        </span>
+                      </Select.Item>
+                    ))}
+                  </Select.Content>
+                </Select>
+              </Form.Control>
+              <Form.ErrorMessage />
+            </Form.Item>
+          )
         } else {
           return (
             <Form.Item className="basis-1/2">
@@ -123,7 +200,24 @@ const RuleValueFormField = ({
   )
 }
 
-export const RulesFormField = ({
+type RulesFormFieldType<TSchema extends FieldValues> = {
+  form: UseFormReturn<TSchema>
+  ruleType: "rules" | "target-rules" | "buy-rules"
+  fields: any[]
+  attributes: RuleAttributeOptionsResponse[]
+  operators: RuleOperatorOptionsResponse[]
+  removeRule: UseFieldArrayRemove
+  updateRule: UseFieldArrayUpdate<TSchema>
+  appendRule: UseFieldArrayAppend<TSchema>
+  setRulesToRemove?: any
+  rulesToRemove?: any
+  scope?:
+    | "application_method.buy_rules"
+    | "rules"
+    | "application_method.target_rules"
+}
+
+export const RulesFormField = <TSchema extends FieldValues>({
   form,
   ruleType,
   fields,
@@ -135,7 +229,7 @@ export const RulesFormField = ({
   setRulesToRemove,
   rulesToRemove,
   scope = "rules",
-}) => {
+}: RulesFormFieldType<TSchema>) => {
   const { t } = useTranslation()
 
   return (
@@ -148,16 +242,16 @@ export const RulesFormField = ({
         {t(`promotions.fields.conditions.${ruleType}.description`)}
       </Text>
 
-      {fields.map((fieldRule, index) => {
+      {fields.map((fieldRule: any, index) => {
         const identifier = fieldRule.id
         const { ref: attributeRef, ...attributeFields } = form.register(
-          `${scope}.${index}.attribute`
+          `${scope}.${index}.attribute` as Path<TSchema>
         )
         const { ref: operatorRef, ...operatorFields } = form.register(
-          `${scope}.${index}.operator`
+          `${scope}.${index}.operator` as Path<TSchema>
         )
         const { ref: valuesRef, ...valuesFields } = form.register(
-          `${scope}.${index}.values`
+          `${scope}.${index}.values` as Path<TSchema>
         )
 
         return (
@@ -169,7 +263,7 @@ export const RulesFormField = ({
                   {...attributeFields}
                   render={({ field: { onChange, ref, ...field } }) => {
                     const existingAttributes =
-                      fields?.map((field) => field.attribute) || []
+                      fields?.map((field: any) => field.attribute) || []
                     const attributeOptions =
                       attributes?.filter((attr) => {
                         if (attr.value === fieldRule.attribute) {
@@ -321,7 +415,7 @@ export const RulesFormField = ({
               operator: "",
               values: [],
               required: false,
-            })
+            } as any)
           }}
         >
           {t("promotions.fields.addCondition")}
@@ -333,11 +427,11 @@ export const RulesFormField = ({
           className="text-ui-fg-muted hover:text-ui-fg-subtle ml-2 inline-block"
           onClick={() => {
             const indicesToRemove = fields
-              .map((field, index) => (field.required ? null : index))
+              .map((field: any, index) => (field.required ? null : index))
               .filter((f) => f !== null)
 
             setRulesToRemove &&
-              setRulesToRemove(fields.filter((f) => !f.required))
+              setRulesToRemove(fields.filter((field: any) => !field.required))
             removeRule(indicesToRemove)
           }}
         >
@@ -372,7 +466,7 @@ export const EditRulesForm = ({
         field_type: rule.field_type,
         attribute: rule.attribute!,
         operator: rule.operator!,
-        values: rule?.values?.map((v: { value: string }) => v.value!),
+        values: rule?.values?.map((v: any) => v.value!),
       })),
     },
     resolver: zodResolver(EditRules),

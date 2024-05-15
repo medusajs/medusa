@@ -39,7 +39,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "text"
         },
         "campaign_identifier": {
@@ -437,7 +437,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "decimal"
         },
         "raw_value": {
@@ -446,7 +446,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "json"
         },
         "currency_code": {

@@ -1360,7 +1360,7 @@ export default class PromotionModuleService<
       )
     }
 
-    await this.promotionService_.update(
+    const updated = await this.promotionService_.update(
       promotionsToAdd.map((promotion) => ({
         id: promotion.id,
         campaign_id: campaign.id,

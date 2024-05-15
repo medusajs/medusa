@@ -35,7 +35,7 @@ export const AdminCreateCampaign = z.object({
   name: z.string(),
   campaign_identifier: z.string(),
   description: z.string().optional(),
-  currency: z.string().optional(),
+  currency: z.string(),
   budget: CreateCampaignBudget.optional(),
   starts_at: z.coerce.date().optional(),
   ends_at: z.coerce.date().optional(),

@@ -56,6 +56,7 @@ medusaIntegrationTestRunner({
             campaign: {
               name: "test",
               campaign_identifier: "test-1",
+              currency: "USD",
               budget: {
                 type: "usage",
                 limit: 100,
@@ -97,6 +98,7 @@ medusaIntegrationTestRunner({
             campaign: expect.objectContaining({
               name: "test",
               campaign_identifier: "test-1",
+              currency: "USD",
               budget: expect.objectContaining({
                 type: "usage",
                 limit: 100,
@@ -225,6 +227,7 @@ medusaIntegrationTestRunner({
             campaign: {
               name: "test",
               campaign_identifier: "test-1",
+              currency: "USD",
               budget: {
                 type: "usage",
                 limit: 100,

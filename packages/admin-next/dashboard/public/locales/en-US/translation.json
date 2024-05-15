@@ -913,6 +913,9 @@
   },
   "promotions": {
     "domain": "Promotions",
+    "sections": {
+      "details": "Promotion Details"
+    },
     "fields": {
       "method": "Method",
       "type": "Type",
@@ -922,6 +925,9 @@
       "allocation": "Allocation",
       "addCondition": "Add condition",
       "clearAll": "Clear all",
+      "amount": {
+        "tooltip": "Select the currency code to enable setting the amount"
+      },
       "conditions": {
         "rules": {
           "title": "Who can use this code?",
@@ -955,6 +961,9 @@
     },
     "addToCampaign": {
       "title": "Add Promotion To Campaign"
+    },
+    "campaign_currency": {
+      "tooltip": "Currency is carried over from the promotion. Change it on the promotions tab."
     },
     "form": {
       "required": "Required",

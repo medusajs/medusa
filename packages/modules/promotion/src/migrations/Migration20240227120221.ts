@@ -113,5 +113,39 @@ export class Migration20240227120221 extends Migration {
     this.addSql(
       'alter table if exists "promotion_rule_value" add constraint "promotion_rule_value_promotion_rule_id_foreign" foreign key ("promotion_rule_id") references "promotion_rule" ("id") on update cascade on delete cascade;'
     )
+
+    this.addSql(
+      'alter table if exists "promotion" drop constraint if exists "promotion_campaign_id_foreign";'
+    )
+
+    this.addSql(
+      'alter table if exists "promotion" add constraint "promotion_campaign_id_foreign" foreign key ("campaign_id") references "promotion_campaign" ("id") on update cascade on delete set null;'
+    )
+
+    this.addSql(
+      'alter table if exists "promotion_application_method" add column if not exists "currency_code" text not null;'
+    )
+    this.addSql(
+      'CREATE INDEX IF NOT EXISTS "IDX_promotion_application_method_currency_code" ON "promotion_application_method" (currency_code) WHERE deleted_at IS NOT NULL;'
+    )
+    this.addSql(
+      'alter table "promotion_campaign" alter column "currency" type text using ("currency"::text);'
+    )
+    this.addSql(
+      'alter table "promotion_campaign" alter column "currency" set not null;'
+    )
+
+    this.addSql(
+      'alter table "promotion_application_method" alter column "value" type numeric using ("value"::numeric);'
+    )
+    this.addSql(
+      'alter table "promotion_application_method" alter column "value" set not null;'
+    )
+    this.addSql(
+      'alter table "promotion_application_method" alter column "raw_value" type jsonb using ("raw_value"::jsonb);'
+    )
+    this.addSql(
+      'alter table "promotion_application_method" alter column "raw_value" set not null;'
+    )
   }
 }

@@ -10,6 +10,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateCampaign } from "../../../../../hooks/api/campaigns"
+import { useStore } from "../../../../../hooks/api/store"
 import { currencies } from "../../../../../lib/currencies"
 
 type EditCampaignFormProps = {
@@ -28,6 +29,7 @@ const EditCampaignSchema = zod.object({
 export const EditCampaignForm = ({ campaign }: EditCampaignFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const { store } = useStore()
 
   const form = useForm<zod.infer<typeof EditCampaignSchema>>({
     defaultValues: {
@@ -148,14 +150,20 @@ export const EditCampaignForm = ({ campaign }: EditCampaignFormProps) => {
                         </Select.Trigger>
 
                         <Select.Content>
-                          {Object.values(currencies).map((currency) => (
-                            <Select.Item
-                              value={currency.code}
-                              key={currency.code}
-                            >
-                              {currency.name}
-                            </Select.Item>
-                          ))}
+                          {Object.values(currencies)
+                            .filter((currency) =>
+                              store?.supported_currency_codes?.includes(
+                                currency.code.toLocaleLowerCase()
+                              )
+                            )
+                            .map((currency) => (
+                              <Select.Item
+                                value={currency.code}
+                                key={currency.code}
+                              >
+                                {currency.name}
+                              </Select.Item>
+                            ))}
                         </Select.Content>
                       </Select>
                     </Form.Control>

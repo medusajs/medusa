@@ -12,10 +12,12 @@ import { useEffect } from "react"
 import { useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../components/common/form"
+import { useStore } from "../../../../../hooks/api/store"
 import { currencies, getCurrencySymbol } from "../../../../../lib/currencies"
 
 export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
   const { t } = useTranslation()
+  const { store } = useStore()
 
   const watchValueType = useWatch({
     control: form.control,
@@ -32,6 +34,19 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
   useEffect(() => {
     form.setValue(`${fieldScope}budget.limit`, undefined)
   }, [watchValueType])
+
+  const watchCurrencyCode = useWatch({
+    control: form.control,
+    name: "application_method.currency_code",
+  })
+
+  if (watchCurrencyCode) {
+    const formCampaignCurrency = form.getValues().campaign?.currency
+
+    if (formCampaignCurrency !== watchCurrencyCode) {
+      form.setValue("campaign.currency", watchCurrencyCode)
+    }
+  }
 
   return (
     <div className="flex w-full max-w-[720px] flex-col gap-y-8">
@@ -104,19 +119,40 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
           render={({ field: { onChange, ref, ...field } }) => {
             return (
               <Form.Item>
-                <Form.Label>{t("fields.currency")}</Form.Label>
+                <Form.Label
+                  tooltip={
+                    fieldScope.length
+                      ? t("promotions.campaign_currency.tooltip")
+                      : undefined
+                  }
+                >
+                  {t("fields.currency")}
+                </Form.Label>
                 <Form.Control>
-                  <Select {...field} onValueChange={onChange}>
+                  <Select
+                    {...field}
+                    onValueChange={onChange}
+                    disabled={!!fieldScope.length}
+                  >
                     <Select.Trigger ref={ref}>
                       <Select.Value />
                     </Select.Trigger>
 
                     <Select.Content>
-                      {Object.values(currencies).map((currency) => (
-                        <Select.Item value={currency.code} key={currency.code}>
-                          {currency.name}
-                        </Select.Item>
-                      ))}
+                      {Object.values(currencies)
+                        .filter((currency) =>
+                          store?.supported_currency_codes?.includes(
+                            currency.code.toLocaleLowerCase()
+                          )
+                        )
+                        .map((currency) => (
+                          <Select.Item
+                            value={currency.code.toLowerCase()}
+                            key={currency.code}
+                          >
+                            {currency.name}
+                          </Select.Item>
+                        ))}
                     </Select.Content>
                   </Select>
                 </Form.Control>
@@ -197,8 +233,8 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
                   onValueChange={field.onChange}
                 >
                   <RadioGroup.ChoiceBox
-                    className={clx("basis-1/2", {
-                      "border-2 border-ui-border-interactive":
+                    className={clx("basis-1/2 border", {
+                      "border border-ui-border-interactive":
                         "spend" === field.value,
                     })}
                     value={"spend"}
@@ -207,8 +243,8 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
                   />
 
                   <RadioGroup.ChoiceBox
-                    className={clx("basis-1/2", {
-                      "border-2 border-ui-border-interactive":
+                    className={clx("basis-1/2 border", {
+                      "border border-ui-border-interactive":
                         "usage" === field.value,
                     })}
                     value={"usage"}
@@ -230,7 +266,15 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
           render={({ field: { onChange, value, ...field } }) => {
             return (
               <Form.Item className="basis-1/2">
-                <Form.Label>{t("campaigns.budget.fields.limit")}</Form.Label>
+                <Form.Label
+                  tooltip={
+                    currencyValue
+                      ? undefined
+                      : t("promotions.fields.amount.tooltip")
+                  }
+                >
+                  {t("campaigns.budget.fields.limit")}
+                </Form.Label>
 
                 <Form.Control>
                   {isTypeSpend ? (
@@ -245,13 +289,14 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
                       }
                       {...field}
                       value={value}
+                      disabled={!currencyValue}
                     />
                   ) : (
                     <Input
                       type="number"
                       key="usage"
-                      min={0}
                       {...field}
+                      min={0}
                       value={value}
                       onChange={(e) => {
                         onChange(

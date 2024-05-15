@@ -30,6 +30,11 @@ export const AdminGetPromotionsParams = createFindParams({
       q: z.string().optional(),
       code: z.union([z.string(), z.array(z.string())]).optional(),
       campaign_id: z.union([z.string(), z.array(z.string())]).optional(),
+      application_method: z
+        .object({
+          currency_code: z.union([z.string(), z.array(z.string())]).optional(),
+        })
+        .optional(),
       created_at: createOperatorMap().optional(),
       updated_at: createOperatorMap().optional(),
       deleted_at: createOperatorMap().optional(),
@@ -58,6 +63,7 @@ export const AdminGetPromotionsRuleValueParams = createFindParams({
 }).merge(
   z.object({
     q: z.string().optional(),
+    value: z.union([z.string(), z.array(z.string())]).optional(),
   })
 )
 
@@ -151,7 +157,7 @@ export const AdminCreateCampaign = z.object({
   name: z.string(),
   campaign_identifier: z.string(),
   description: z.string().optional(),
-  currency: z.string().optional(),
+  currency: z.string(),
   budget: CreateCampaignBudget.optional(),
   starts_at: z.coerce.date().optional(),
   ends_at: z.coerce.date().optional(),

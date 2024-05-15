@@ -4,6 +4,7 @@ import {
   Button,
   clx,
   CurrencyInput,
+  Heading,
   Input,
   ProgressTabs,
   RadioGroup,
@@ -16,10 +17,12 @@ import { z } from "zod"
 
 import {
   CampaignResponse,
+  PromotionRuleOperatorValues,
   PromotionRuleResponse,
   RuleAttributeOptionsResponse,
   RuleOperatorOptionsResponse,
 } from "@medusajs/types"
+import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
 import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
@@ -146,44 +149,45 @@ export const CreatePromotionForm = ({
         ...applicationMethodData
       } = application_method
 
-      const disguisedRuleAttributes = [
+      const disguisedRules = [
         ...targetRules.filter((r) => !!r.disguised),
         ...buyRules.filter((r) => !!r.disguised),
-      ].map((r) => r.attribute)
+        ...rules.filter((r) => !!r.disguised),
+      ]
 
       const attr: Record<any, any> = {}
 
-      for (const rule of [...targetRulesData, ...buyRulesData]) {
-        if (disguisedRuleAttributes.includes(rule.attribute)) {
-          attr[rule.attribute] =
-            rule.field_type === "number"
-              ? parseInt(rule.values as string)
-              : rule.values
-        }
+      for (const rule of disguisedRules) {
+        attr[rule.attribute] =
+          rule.field_type === "number"
+            ? parseInt(rule.values as string)
+            : rule.values
       }
 
       createPromotion({
         ...promotionData,
-        rules: rules.map((rule) => ({
-          operator: rule.operator,
-          attribute: rule.attribute,
-          values: rule.values,
-        })),
+        rules: rules
+          .filter((r) => !r.disguised)
+          .map((rule) => ({
+            operator: rule.operator,
+            attribute: rule.attribute,
+            values: rule.values,
+          })),
         application_method: {
           ...applicationMethodData,
           ...attr,
           target_rules: targetRulesData
-            .filter((r) => !disguisedRuleAttributes.includes(r.attribute))
+            .filter((r) => !r.disguised)
             .map((rule) => ({
-              operator: rule.operator,
-              attribute: rule.attribute,
+              operator: rule.operator as PromotionRuleOperatorValues,
+              attribute: rule.attribute!,
               values: rule.values,
             })),
           buy_rules: buyRulesData
-            .filter((r) => !disguisedRuleAttributes.includes(r.attribute))
+            .filter((r) => !r.disguised)
             .map((rule) => ({
-              operator: rule.operator,
-              attribute: rule.attribute,
+              operator: rule.operator as PromotionRuleOperatorValues,
+              attribute: rule.attribute!,
               values: rule.values,
             })),
         },
@@ -316,10 +320,35 @@ export const CreatePromotionForm = ({
 
     if (watchCampaignChoice === "new") {
       if (!formData.campaign || !formData.campaign?.budget?.type) {
-        form.setValue("campaign", defaultCampaignValues)
+        form.setValue("campaign", {
+          ...defaultCampaignValues,
+          currency: formData.application_method.currency_code,
+        })
       }
     }
   }, [watchCampaignChoice])
+
+  const watchRules = useWatch({
+    control: form.control,
+    name: "rules",
+  })
+
+  const watchCurrencyRule = watchRules.find(
+    (rule) => rule.attribute === "currency_code"
+  )
+
+  if (watchCurrencyRule) {
+    const formData = form.getValues()
+    const currencyCode = formData.application_method.currency_code
+    const ruleValue = watchCurrencyRule.values
+
+    if (!Array.isArray(ruleValue) && currencyCode !== ruleValue) {
+      form.setValue(
+        "application_method.currency_code",
+        watchCurrencyRule.values as string
+      )
+    }
+  }
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -410,8 +439,8 @@ export const CreatePromotionForm = ({
                                 value={template.id}
                                 label={template.title}
                                 description={template.description}
-                                className={clx("", {
-                                  "border-ui-border-interactive border-2":
+                                className={clx("border", {
+                                  "border border-ui-border-interactive":
                                     template.id === field.value,
                                 })}
                               />
@@ -430,6 +459,8 @@ export const CreatePromotionForm = ({
               value={Tab.PROMOTION}
               className="flex flex-1 flex-col gap-10"
             >
+              <Heading level="h2">{t(`promotions.sections.details`)}</Heading>
+
               {form.formState.errors.root && (
                 <Alert
                   variant="error"
@@ -461,19 +492,20 @@ export const CreatePromotionForm = ({
                             description={t(
                               "promotions.form.method.code.description"
                             )}
-                            className={clx("basis-1/2", {
-                              "border-ui-border-interactive border-2":
+                            className={clx("basis-1/2 border", {
+                              "border border-ui-border-interactive":
                                 "false" === field.value,
                             })}
                           />
+
                           <RadioGroup.ChoiceBox
                             value={"true"}
                             label={t("promotions.form.method.automatic.title")}
                             description={t(
                               "promotions.form.method.automatic.description"
                             )}
-                            className={clx("basis-1/2", {
-                              "border-ui-border-interactive border-2":
+                            className={clx("basis-1/2 border", {
+                              "border border-ui-border-interactive":
                                 "true" === field.value,
                             })}
                           />
@@ -519,6 +551,65 @@ export const CreatePromotionForm = ({
 
               <Form.Field
                 control={form.control}
+                name="type"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>{t("promotions.fields.type")}</Form.Label>
+                      <Form.Control>
+                        <RadioGroup
+                          className="flex gap-y-3"
+                          {...field}
+                          onValueChange={field.onChange}
+                        >
+                          <RadioGroup.ChoiceBox
+                            value={"standard"}
+                            label={t("promotions.form.type.standard.title")}
+                            description={t(
+                              "promotions.form.type.standard.description"
+                            )}
+                            className={clx("basis-1/2 border", {
+                              "border border-ui-border-interactive":
+                                "standard" === field.value,
+                            })}
+                          />
+
+                          <RadioGroup.ChoiceBox
+                            value={"buyget"}
+                            label={t("promotions.form.type.buyget.title")}
+                            description={t(
+                              "promotions.form.type.buyget.description"
+                            )}
+                            className={clx("basis-1/2 border", {
+                              "border border-ui-border-interactive":
+                                "buyget" === field.value,
+                            })}
+                          />
+                        </RadioGroup>
+                      </Form.Control>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+
+              <Divider />
+
+              <RulesFormField
+                form={form}
+                ruleType={"rules"}
+                attributes={ruleAttributes}
+                operators={operators}
+                fields={ruleFields}
+                appendRule={appendRule}
+                removeRule={removeRule}
+                updateRule={updateRule}
+              />
+
+              <Divider />
+
+              <Form.Field
+                control={form.control}
                 name="application_method.type"
                 render={({ field }) => {
                   return (
@@ -538,8 +629,8 @@ export const CreatePromotionForm = ({
                             description={t(
                               "promotions.form.value_type.fixed.description"
                             )}
-                            className={clx("basis-1/2", {
-                              "border-ui-border-interactive border-2":
+                            className={clx("basis-1/2 border", {
+                              "border border-ui-border-interactive":
                                 "fixed" === field.value,
                             })}
                           />
@@ -552,8 +643,8 @@ export const CreatePromotionForm = ({
                             description={t(
                               "promotions.form.value_type.percentage.description"
                             )}
-                            className={clx("basis-1/2", {
-                              "border-ui-border-interactive border-2":
+                            className={clx("basis-1/2 border", {
+                              "border border-ui-border-interactive":
                                 "percentage" === field.value,
                             })}
                           />
@@ -570,24 +661,39 @@ export const CreatePromotionForm = ({
                   control={form.control}
                   name="application_method.value"
                   render={({ field: { onChange, value, ...field } }) => {
+                    const currencyCode =
+                      form.getValues().application_method.currency_code
+
                     return (
                       <Form.Item className="basis-1/2">
-                        <Form.Label>
+                        <Form.Label
+                          tooltip={
+                            currencyCode
+                              ? undefined
+                              : t("promotions.fields.amount.tooltip")
+                          }
+                        >
                           {isFixedValueType
                             ? t("fields.amount")
                             : t("fields.percentage")}
                         </Form.Label>
+
                         <Form.Control>
                           {isFixedValueType ? (
                             <CurrencyInput
+                              {...field}
                               min={0}
                               onValueChange={(value) => {
                                 onChange(value ? parseInt(value) : "")
                               }}
-                              code={"USD"}
-                              symbol={getCurrencySymbol("USD")}
-                              {...field}
+                              code={currencyCode}
+                              symbol={
+                                currencyCode
+                                  ? getCurrencySymbol(currencyCode)
+                                  : ""
+                              }
                               value={value}
+                              disabled={!currencyCode}
                             />
                           ) : (
                             <PercentageInput
@@ -614,50 +720,6 @@ export const CreatePromotionForm = ({
                 />
               </div>
 
-              <Form.Field
-                control={form.control}
-                name="type"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>{t("promotions.fields.type")}</Form.Label>
-                      <Form.Control>
-                        <RadioGroup
-                          className="flex gap-y-3"
-                          {...field}
-                          onValueChange={field.onChange}
-                        >
-                          <RadioGroup.ChoiceBox
-                            value={"standard"}
-                            label={t("promotions.form.type.standard.title")}
-                            description={t(
-                              "promotions.form.type.standard.description"
-                            )}
-                            className={clx("basis-1/2", {
-                              "border-ui-border-interactive border-2":
-                                "standard" === field.value,
-                            })}
-                          />
-
-                          <RadioGroup.ChoiceBox
-                            value={"buyget"}
-                            label={t("promotions.form.type.buyget.title")}
-                            description={t(
-                              "promotions.form.type.buyget.description"
-                            )}
-                            className={clx("basis-1/2", {
-                              "border-ui-border-interactive border-2":
-                                "buyget" === field.value,
-                            })}
-                          />
-                        </RadioGroup>
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-
               {isTypeStandard && (
                 <Form.Field
                   control={form.control}
@@ -681,8 +743,8 @@ export const CreatePromotionForm = ({
                               description={t(
                                 "promotions.form.allocation.each.description"
                               )}
-                              className={clx("basis-1/2", {
-                                "border-ui-border-interactive border-2":
+                              className={clx("basis-1/2 border", {
+                                "border border-ui-border-interactive":
                                   "each" === field.value,
                               })}
                             />
@@ -695,8 +757,8 @@ export const CreatePromotionForm = ({
                               description={t(
                                 "promotions.form.allocation.across.description"
                               )}
-                              className={clx("basis-1/2", {
-                                "border-ui-border-interactive border-2":
+                              className={clx("basis-1/2 border", {
+                                "border border-ui-border-interactive":
                                   "across" === field.value,
                               })}
                             />
@@ -751,16 +813,7 @@ export const CreatePromotionForm = ({
                 </div>
               )}
 
-              <RulesFormField
-                form={form}
-                ruleType={"rules"}
-                attributes={ruleAttributes}
-                operators={operators}
-                fields={ruleFields}
-                appendRule={appendRule}
-                removeRule={removeRule}
-                updateRule={updateRule}
-              />
+              <Divider />
 
               <RulesFormField
                 form={form}
@@ -773,6 +826,8 @@ export const CreatePromotionForm = ({
                 updateRule={updateTargetRule}
                 scope="application_method.target_rules"
               />
+
+              <Divider />
 
               {!isTypeStandard && (
                 <RulesFormField

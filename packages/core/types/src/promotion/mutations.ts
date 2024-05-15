@@ -62,7 +62,7 @@ export interface CreateCampaignDTO {
   /**
    * The currency of the campaign.
    */
-  currency?: string
+  currency: string
 
   /**
    * The campaign identifier of the campaign.

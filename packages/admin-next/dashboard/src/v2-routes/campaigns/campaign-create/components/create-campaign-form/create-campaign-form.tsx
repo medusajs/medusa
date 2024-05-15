@@ -20,7 +20,7 @@ export const CreateCampaignSchema = zod.object({
   starts_at: zod.date().optional(),
   ends_at: zod.date().optional(),
   budget: zod.object({
-    limit: zod.number().min(0),
+    limit: zod.number().min(0).optional(),
     type: zod.enum(["spend", "usage"]),
   }),
 })
@@ -30,11 +30,8 @@ export const defaultCampaignValues = {
   description: "",
   currency: "",
   campaign_identifier: "",
-  starts_at: undefined,
-  ends_at: undefined,
   budget: {
     type: "spend" as CampaignBudgetTypeValues,
-    limit: undefined,
   },
 }
 
