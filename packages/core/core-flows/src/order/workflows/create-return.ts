@@ -279,10 +279,19 @@ export const createReturnOrderWorkflow = createWorkflow(
 
     // TODO call the createReturn from the fulfillment provider
 
-    createRemoteLinkStep({
-      [Modules.ORDER]: { order_id: input.order_id },
-      [Modules.FULFILLMENT]: { fulfillment_id: fulfillment.id },
-    })
+    const link = transform(
+      { order_id: input.order_id, fulfillment },
+      (data) => {
+        return [
+          {
+            [Modules.ORDER]: { order_id: data.order_id },
+            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
+          },
+        ]
+      }
+    )
+
+    createRemoteLinkStep(link)
 
     const freshOrder = useRemoteQueryStep({
       entry_point: "orders",

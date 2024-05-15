@@ -41,9 +41,11 @@ export async function resolveValue(input, transactionContext) {
     }
 
     if (Array.isArray(inputTOUnwrap)) {
-      return await promiseAll(
+      const res = await promiseAll(
         inputTOUnwrap.map((i) => resolveValue(i, transactionContext))
       )
+
+      return res
     }
 
     if (typeof inputTOUnwrap !== "object") {
@@ -57,7 +59,7 @@ export async function resolveValue(input, transactionContext) {
       )
 
       if (typeof parentRef[key] === "object") {
-        await unwrapInput(parentRef[key], parentRef[key])
+        parentRef[key] = await unwrapInput(parentRef[key], parentRef[key])
       }
     }
 
