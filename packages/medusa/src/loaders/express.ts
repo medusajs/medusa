@@ -4,15 +4,18 @@ import { Express } from "express"
 import session from "express-session"
 import morgan from "morgan"
 import Redis from "ioredis"
-import { ConfigModule } from "../types/global"
+import { ConfigModule } from "@medusajs/types"
 
 type Options = {
   app: Express
   configModule: ConfigModule
 }
 
-export default async ({ app, configModule }: Options): Promise<{
-  app: Express,
+export default async ({
+  app,
+  configModule,
+}: Options): Promise<{
+  app: Express
   shutdown: () => Promise<void>
 }> => {
   let sameSite: string | boolean = false
@@ -46,7 +49,7 @@ export default async ({ app, configModule }: Options): Promise<{
   if (configModule?.projectConfig?.redis_url) {
     const RedisStore = createStore(session)
     redisClient = new Redis(
-      configModule.projectConfig.redis_url, 
+      configModule.projectConfig.redis_url,
       configModule.projectConfig.redis_options ?? {}
     )
     sessionOpts.store = new RedisStore({

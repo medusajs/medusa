@@ -43,6 +43,15 @@ export function decorateCartTotals(
 ): CartLikeWithTotals {
   transformPropertiesToBigNumber(cartLike)
 
+  const optionalFields = {
+    fulfilled_quantity: "fulfilled_total",
+    shipped_quantity: "shipped_total",
+    return_requested_quantity: "return_requested_total",
+    return_received_quantity: "return_received_total",
+    return_dismissed_quantity: "return_dismissed_total",
+    written_off_quantity: "write_off_total",
+  }
+
   const items = (cartLike.items ?? []) as unknown as GetItemTotalInput[]
   const shippingMethods = (cartLike.shipping_methods ??
     []) as unknown as GetShippingMethodTotalInput[]
@@ -51,11 +60,14 @@ export function decorateCartTotals(
 
   const itemsTotals = getLineItemsTotals(items, {
     includeTax,
+    extraQuantityFields: optionalFields,
   })
 
   const shippingMethodsTotals = getShippingMethodsTotals(shippingMethods, {
     includeTax,
   })
+
+  const extraTotals = {}
 
   let subtotal = MathBN.convert(0)
 
@@ -116,6 +128,13 @@ export function decorateCartTotals(
       itemsOriginalTaxTotal,
       itemOriginalTaxTotal
     )
+
+    for (const key of Object.values(optionalFields)) {
+      if (key in itemTotals) {
+        extraTotals[key] ??= MathBN.convert(0)
+        extraTotals[key] = MathBN.add(extraTotals[key], itemTotals[key] ?? 0)
+      }
+    }
 
     return itemTotals
   })
@@ -213,6 +232,10 @@ export function decorateCartTotals(
     cart.original_item_total = new BigNumber(itemsOriginalTotal)
     cart.original_item_subtotal = new BigNumber(itemsOriginalSubtotal)
     cart.original_item_tax_total = new BigNumber(itemsOriginalTaxTotal)
+
+    for (const key of Object.keys(extraTotals)) {
+      cart[key] = new BigNumber(extraTotals[key])
+    }
   }
 
   if (cart.shipping_methods) {

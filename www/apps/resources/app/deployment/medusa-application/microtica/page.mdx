@@ -4,6 +4,12 @@ export const metadata = {
 
 # {metadata.title}
 
+<Note type="soon">
+
+The following deployment guide doesn't support Medusa v2 yet.
+
+</Note>
+
 <Note>
 
 This guide was submitted through a community contribution.
@@ -53,7 +59,7 @@ If you're using the Medusa Admin plugin, you have two options to deploy it: eith
 To deploy the admin with the Medusa application:
 
 1. Your chosen plan must offer at least 2GB of RAM.
-2. Enable the [autoRebuild option](../../../configurations/medusa-admin/page.mdx#Plugin_Options-autoRebuild-1-1) of the admin plugin:
+2. Enable the autoRebuild option of the admin plugin:
 
 ```js title="medusa-config.js" highlights={[["7"]]}
 const plugins = [
@@ -73,7 +79,7 @@ Alternatively, you can use a GitHub action to build the admin as explained [here
 
 #### Deploying Separately
 
-To deploy the admin separately, disable the admin plugin's [serve option](../../../configurations/medusa-admin/page.mdx#Plugin_Options-serve-1-0):
+To deploy the admin separately, disable the admin plugin's serve option:
 
 ```js title="medusa-config.js" highlights={[["10"]]}
 const plugins = [

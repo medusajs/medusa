@@ -2,14 +2,11 @@ import { asValue, createContainer } from "awilix"
 import getMigrations, {
   getModuleSharedResources,
   revertIsolatedModulesMigration,
-  runIsolatedModulesMigration,
 } from "./utils/get-migrations"
 
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
-  MedusaV2Flag,
-  promiseAll,
 } from "@medusajs/utils"
 import configModuleLoader from "../loaders/config"
 import databaseLoader from "../loaders/database"
@@ -76,30 +73,22 @@ const main = async function ({ directory }) {
   const featureFlagRouter = featureFlagLoader(configModule)
 
   if (args[0] === "run") {
-    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-      const container = createMedusaContainer()
-      const pgConnection = await pgConnectionLoader({ configModule, container })
-      container.register({
-        [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
-        [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
-        [ContainerRegistrationKeys.PG_CONNECTION]: asValue(pgConnection),
-        featureFlagRouter: asValue(featureFlagRouter),
-      })
-      await migrateMedusaApp(
-        { configModule, container },
-        { registerInContainer: false }
-      )
-    } else {
-      const dataSource = await getDataSource(directory)
-      await dataSource.runMigrations()
-      await dataSource.destroy()
-      await runIsolatedModulesMigration(configModule)
-
-      await runLinkMigrations(directory)
-    }
-    process.exit()
+    const container = createMedusaContainer()
+    const pgConnection = await pgConnectionLoader({ configModule, container })
+    container.register({
+      [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
+      [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
+      [ContainerRegistrationKeys.PG_CONNECTION]: asValue(pgConnection),
+      [ContainerRegistrationKeys.FEATURE_FLAG_ROUTER]:
+        asValue(featureFlagRouter),
+    })
+    await migrateMedusaApp(
+      { configModule, container },
+      { registerInContainer: false }
+    )
 
     Logger.info("Migrations completed.")
+    process.exit()
   } else if (args[0] === "revert") {
     const dataSource = await getDataSource(directory)
     await dataSource.undoLastMigration({ transaction: "all" })

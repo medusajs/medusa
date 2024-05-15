@@ -3,7 +3,6 @@ export const defaultAdminProductsVariantFields = [
   "product_id",
   "title",
   "sku",
-  "inventory_quantity",
   "allow_backorder",
   "manage_inventory",
   "hs_code",

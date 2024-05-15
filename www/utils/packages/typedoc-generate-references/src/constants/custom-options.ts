@@ -16,8 +16,8 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "entities",
   }),
   file: getOptions({
-    entryPointPath: "packages/medusa/src/interfaces/file-service.ts",
-    tsConfigName: "medusa.json",
+    entryPointPath: "packages/core/utils/src/file/abstract-file-provider.ts",
+    tsConfigName: "utils.json",
     name: "file",
     parentIgnore: true,
   }),
