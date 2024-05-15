@@ -20,3 +20,10 @@ export const useEmailPassLogin = (
     ...options,
   })
 }
+
+export const useLogout = (options?: UseMutationOptions<void, Error>) => {
+  return useMutation({
+    mutationFn: () => client.auth.logout(),
+    ...options,
+  })
+}

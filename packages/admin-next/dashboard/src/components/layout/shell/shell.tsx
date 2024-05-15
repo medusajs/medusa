@@ -19,6 +19,7 @@ import {
   UIMatch,
   useLocation,
   useMatches,
+  useNavigate,
 } from "react-router-dom"
 
 import { Skeleton } from "../../common/skeleton"
@@ -27,6 +28,8 @@ import { useMe } from "../../../hooks/api/users"
 import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { useTheme } from "../../../providers/theme-provider"
+import { useLogout } from "../../../hooks/api/auth"
+import { queryClient } from "../../../lib/medusa"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   return (
@@ -200,20 +203,20 @@ const ThemeToggle = () => {
 }
 
 const Logout = () => {
-  // const navigate = useNavigate()
-  // const { mutateAsync: logoutMutation } = useAdminDeleteSession()
+  const navigate = useNavigate()
+  const { mutateAsync: logoutMutation } = useLogout()
 
   const handleLayout = async () => {
-    // await logoutMutation(undefined, {
-    //   onSuccess: () => {
-    //     /**
-    //      * When the user logs out, we want to clear the query cache
-    //      */
-    //     queryClient.clear()
-    //     navigate("/login")
-    //   },
-    // })
-    // noop
+    await logoutMutation(undefined, {
+      onSuccess: () => {
+        /**
+         * When the user logs out, we want to clear the query cache
+         */
+        queryClient.clear()
+        console.log("Hello world")
+        navigate("/login")
+      },
+    })
   }
 
   return (

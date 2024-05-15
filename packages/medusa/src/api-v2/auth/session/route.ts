@@ -17,5 +17,5 @@ export const DELETE = async (
   res: MedusaResponse
 ) => {
   req.session.destroy()
-  res.sendStatus(200)
+  res.json({ success: true })
 }
