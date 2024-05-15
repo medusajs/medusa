@@ -10,7 +10,6 @@ import {
   errorHandler,
   requireCustomerAuthentication,
 } from "../../../utils/middlewares"
-import { ConfigModule } from "../../../types/global"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import logger from "../../logger"
 import {
@@ -25,6 +24,7 @@ import {
   RouteDescriptor,
   RouteVerb,
 } from "./types"
+import { ConfigModule } from "@medusajs/types"
 
 const log = ({
   activityId,

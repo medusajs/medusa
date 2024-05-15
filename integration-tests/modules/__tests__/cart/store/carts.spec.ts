@@ -1897,6 +1897,23 @@ medusaIntegrationTestRunner({
               line_item_id: cart.items[0].id,
             })
           )
+
+          const fullOrder = await api.get(
+            `/admin/orders/${response.data.order.id}`,
+            adminHeaders
+          )
+          const fullOrderDetail = fullOrder.data.order
+
+          expect(fullOrderDetail).toEqual(
+            expect.objectContaining({
+              payment_collections: [
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 106,
+                }),
+              ],
+            })
+          )
         })
 
         it("should throw an error when payment collection isn't created", async () => {

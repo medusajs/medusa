@@ -1,5 +1,4 @@
-import { CommonTypes, RequestQueryFields } from "@medusajs/types"
-import { Request } from "express"
+import { RequestQueryFields } from "@medusajs/types"
 import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
 import { FindConfig } from "./common"
 
@@ -57,8 +56,6 @@ declare global {
   }
 }
 
-export type ExtendedRequest<TEntity> = Request & { resource: TEntity }
-
 export type ClassConstructor<T> = {
   new (...args: unknown[]): T
 }
@@ -82,5 +79,3 @@ export type Logger = {
 }
 
 export type Constructor<T> = new (...args: any[]) => T
-
-export type ConfigModule = CommonTypes.ConfigModule
