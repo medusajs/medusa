@@ -107,8 +107,6 @@ export default async ({
     featureFlagRouter
   )
 
-  console.log("Entry points loaded: ")
-
   await medusaProjectApisLoader({
     rootDirectory,
     container,

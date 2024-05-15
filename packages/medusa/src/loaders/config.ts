@@ -22,6 +22,7 @@ const buildAuthConfig = (projectConfig: ConfigModule["projectConfig"]) => {
   const auth = projectConfig.auth ?? {}
 
   auth.jwtExpiresIn = auth?.jwtExpiresIn ?? "1d"
+  auth.cors = auth.cors ?? ""
 
   auth.jwtSecret = auth?.jwtSecret ?? process.env.JWT_SECRET
 
@@ -51,25 +52,19 @@ const buildAuthConfig = (projectConfig: ConfigModule["projectConfig"]) => {
   return auth
 }
 
-export default (rootDirectory: string): ConfigModule => {
-  const { configModule, error } = getConfigFile<ConfigModule>(
-    rootDirectory,
-    `medusa-config`
-  )
-
-  if (error) {
-    handleConfigError(error)
-  }
-
-  if (!configModule?.projectConfig?.redis_url) {
+const normalizeProjectConfig = (
+  projectConfig: ConfigModule["projectConfig"]
+) => {
+  if (!projectConfig?.redis_url) {
     console.log(
       `[medusa-config] ⚠️ redis_url not found. A fake redis instance will be used.`
     )
   }
 
-  configModule.projectConfig.auth = buildAuthConfig(configModule.projectConfig)
+  projectConfig.auth = buildAuthConfig(projectConfig)
 
-  let worker_mode = configModule?.projectConfig?.worker_mode
+  let worker_mode = projectConfig?.worker_mode
+
   if (!isDefined(worker_mode)) {
     const env = process.env.MEDUSA_WORKER_MODE
     if (isDefined(env)) {
@@ -81,14 +76,29 @@ export default (rootDirectory: string): ConfigModule => {
     }
   }
 
+  projectConfig.admin_cors = projectConfig.admin_cors ?? ""
+  projectConfig.store_cors = projectConfig.store_cors ?? ""
+
   return {
-    projectConfig: {
-      // Question: Should we just introduce the breaking change now, or do we want to stay backward compatible?
-      jwt_secret: configModule.projectConfig.auth.jwtSecret,
-      cookie_secret: configModule.projectConfig.auth.cookieSecret,
-      ...configModule?.projectConfig,
-      worker_mode,
-    },
+    ...projectConfig,
+    worker_mode,
+  }
+}
+
+export default (rootDirectory: string): ConfigModule => {
+  const { configModule, error } = getConfigFile<ConfigModule>(
+    rootDirectory,
+    `medusa-config`
+  )
+
+  if (error) {
+    handleConfigError(error)
+  }
+
+  const projectConfig = normalizeProjectConfig(configModule.projectConfig)
+
+  return {
+    projectConfig,
     modules: configModule.modules ?? {},
     featureFlags: configModule?.featureFlags ?? {},
     plugins: configModule?.plugins ?? [],

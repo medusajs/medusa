@@ -13,6 +13,9 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   force_modules_migration: true,
+  env: {
+    MEDUSA_FF_MEDUSA_V2: true,
+  },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let container
 
@@ -58,7 +61,7 @@ medusaIntegrationTestRunner({
       )
     })
 
-    it.only("should test the entire authentication lifecycle", async () => {
+    it("should test the entire authentication lifecycle", async () => {
       // sign in
       const response = await api.post("/auth/admin/emailpass", {
         email: "admin@medusa.js",
@@ -91,15 +94,15 @@ medusaIntegrationTestRunner({
       expect(authedRequest.status).toEqual(200)
 
       // sign out
-      const signOutRequest = await api.delete("/auth/admin", cookieHeader)
+      const signOutRequest = await api.delete("/auth/session", cookieHeader)
       expect(signOutRequest.status).toEqual(200)
 
       // attempt to perform authenticated request
-      const unAuthedRequest = await api.get(
-        "/admin/products?limit=1",
-        cookieHeader
-      )
-      expect(unAuthedRequest.status).toEqual(401)
+      const unAuthedRequest = await api
+        .get("/admin/products?limit=1", cookieHeader)
+        .catch((e) => e)
+
+      expect(unAuthedRequest.response.status).toEqual(401)
     })
   },
 })

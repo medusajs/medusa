@@ -125,7 +125,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  store_cors?: string
+  store_cors: string
   /**
    * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
    *
@@ -174,7 +174,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  admin_cors?: string
+  admin_cors: string
   /**
    * @deprecated - use `auth.cors` instead
    * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
@@ -224,7 +224,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  auth_cors?: string
+  auth_cors: string
   /**
    * @deprecated - use `auth.cookieSecret` instead
    * A random string used to create cookie tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
@@ -627,7 +627,7 @@ export type ProjectConfigOptions = {
     /**
      * Specify the accepted URLs or patterns for API Routes starting with `/auth`. It can either be one accepted origin, or a comma-separated list of accepted origins.
      */
-    cors?: string
+    cors: string
   }
 }
 

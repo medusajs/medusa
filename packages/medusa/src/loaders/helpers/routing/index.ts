@@ -610,7 +610,7 @@ export class RoutesLoader {
           descriptor.route,
           cors({
             origin: parseCorsOrigins(
-              this.configModule.projectConfig.admin_cors || ""
+              this.configModule.projectConfig.admin_cors
             ),
             credentials: true,
           })
@@ -624,9 +624,7 @@ export class RoutesLoader {
         this.router.use(
           descriptor.route,
           cors({
-            origin: parseCorsOrigins(
-              this.configModule.projectConfig.auth.cors || ""
-            ),
+            origin: parseCorsOrigins(this.configModule.projectConfig.auth.cors),
             credentials: true,
           })
         )
@@ -640,7 +638,7 @@ export class RoutesLoader {
           descriptor.route,
           cors({
             origin: parseCorsOrigins(
-              this.configModule.projectConfig.store_cors || ""
+              this.configModule.projectConfig.store_cors
             ),
             credentials: true,
           })
