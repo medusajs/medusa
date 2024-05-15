@@ -389,12 +389,21 @@ async function MedusaApp_({
         }
       }
 
-      await MedusaModule.migrateUp(
-        moduleResolution.definition.key,
-        moduleResolution.resolutionPath as string,
-        moduleResolution.options,
-        moduleResolution.moduleExports
-      )
+      if (!revert) {
+        await MedusaModule.migrateUp(
+          moduleResolution.definition.key,
+          moduleResolution.resolutionPath as string,
+          moduleResolution.options,
+          moduleResolution.moduleExports
+        )
+      } else {
+        await MedusaModule.migrateDown(
+          moduleResolution.definition.key,
+          moduleResolution.resolutionPath as string,
+          moduleResolution.options,
+          moduleResolution.moduleExports
+        )
+      }
     }
 
     const linkModuleOpt = { ...(linkModuleOptions ?? {}) }
