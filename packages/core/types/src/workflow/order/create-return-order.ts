@@ -19,7 +19,8 @@ export interface CreateOrderReturnWorkflowInput {
   }
   note?: string
   receive_now?: boolean
-  refund?: boolean
-  location_id?: string
+  refund_amount?: number
+  location_id: string
+  provider_id: string
   region?: RegionDTO
 }

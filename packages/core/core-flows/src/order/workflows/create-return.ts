@@ -1,23 +1,28 @@
 import {
   CreateOrderShippingMethodDTO,
+  FulfillmentWorkflow,
   OrderDTO,
   OrderWorkflow,
   ShippingOptionDTO,
 } from "@medusajs/types"
 import {
   createWorkflow,
+  parallelize,
   transform,
   WorkflowData,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import {
   arrayDifference,
   ContainerRegistrationKeys,
   isDefined,
+  MathBN,
   MedusaError,
+  Modules,
 } from "@medusajs/utils"
 import { updateOrderTaxLinesStep } from "../steps"
 import { createReturnStep } from "../steps/create-return"
+import { createFulfillmentWorkflow } from "../../fulfillment"
 
 function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
   // TODO: need work, check cancelled
@@ -134,6 +139,59 @@ function prepareShippingMethodData({
   return obj
 }
 
+function validateCustomRefundAmount({
+  order,
+  refundAmount,
+}: {
+  order: OrderDTO
+  refundAmount?: number
+}) {
+  // validate that the refund prop input is less than order.item_total (item total)
+  // TODO: Probably this amount should be retrieved from the payments linked to the order
+  if (refundAmount && MathBN.gt(refundAmount, order.item_total)) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Refund amount cannot be greater than order total.`
+    )
+  }
+}
+
+function prepareFulfillmentData({
+  order,
+  input,
+}: {
+  order: OrderDTO
+  input: OrderWorkflow.CreateOrderReturnWorkflowInput
+}) {
+  const inputItems = input.items
+  const orderItemsMap = new Map<string, Required<OrderDTO>["items"][0]>(
+    order.items!.map((i) => [i.id, i])
+  )
+  const fulfillmentItems = inputItems.map((i) => {
+    const orderItem = orderItemsMap.get(i.id)!
+    return {
+      line_item_id: i.id,
+      quantity: i.quantity,
+      return_quantity: i.quantity,
+      title: orderItem.variant_title ?? orderItem.title,
+      sku: orderItem.variant_sku || "",
+      barcode: orderItem.variant_barcode || "",
+    } as FulfillmentWorkflow.CreateFulfillmentItemWorkflowDTO
+  })
+
+  return {
+    input: {
+      location_id: input.location_id,
+      provider_id: input.provider_id,
+      shipping_option_id: input.return_shipping.option_id,
+      items: fulfillmentItems,
+      labels: [] as FulfillmentWorkflow.CreateFulfillmentLabelWorkflowDTO[],
+      delivery_address: order.shipping_address ?? ({} as any), // TODO: use the location address instead
+      order: {} as FulfillmentWorkflow.CreateFulfillmentOrderWorkflowDTO, // TODO see what todo here, is that even necessary?
+    },
+  }
+}
+
 export const createReturnOrderWorkflowId = "create-return-order"
 export const createReturnOrderWorkflow = createWorkflow(
   createReturnOrderWorkflowId,
@@ -148,17 +206,21 @@ export const createReturnOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    transform({ order }, throwIfOrderIsCancelled)
-    transform(
-      { order, inputItems: input.items },
-      throwIfItemsDoesNotExistsInOrder
+    parallelize(
+      transform({ order }, throwIfOrderIsCancelled),
+      transform(
+        { order, inputItems: input.items },
+        throwIfItemsDoesNotExistsInOrder
+      ),
+      transform(
+        { order_id: input.order_id, inputItems: input.items },
+        validateReturnReasons
+      ),
+      transform(
+        { order, refundAmount: input.refund_amount },
+        validateCustomRefundAmount
+      )
     )
-    transform(
-      { order_id: input.order_id, inputItems: input.items },
-      validateReturnReasons
-    )
-
-    // validate that the refund prop input is less than order.item_total (item total)
 
     const returnShippingOptionsVariables = transform(
       { input, order },
@@ -209,19 +271,28 @@ export const createReturnOrderWorkflow = createWorkflow(
       created_by: input.created_by,
     })
 
-    const freshOrder = useRemoteQueryStep({
-      entry_point: "orders",
-      fields: ["items.*"],
-      variables: { id: input.order_id },
-      list: false,
-    }).config({ name: "fresh-order" })
-
     updateOrderTaxLinesStep({
       order_id: input.order_id,
       shipping_methods: [shippingMethodData as any], // The types does not seems correct in that step and expect too many things compared to the actual needs
     })
 
-    // Create fulfillment
+    const fulfillmentData = transform({ order, input }, prepareFulfillmentData)
+
+    const fulfillment = createFulfillmentWorkflow.runAsStep(fulfillmentData)
+
+    // TODO call the createReturn from the fulfillment provider
+
+    createRemoteLinkStep({
+      [Modules.ORDER]: { order_id: input.order_id },
+      [Modules.FULFILLMENT]: { fulfillment_id: fulfillment.id },
+    })
+
+    const freshOrder = useRemoteQueryStep({
+      entry_point: "orders",
+      fields: ["*"],
+      variables: { id: input.order_id },
+      list: false,
+    }).config({ name: "fresh-order" })
 
     return freshOrder
   }
