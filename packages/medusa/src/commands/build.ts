@@ -118,7 +118,7 @@ export default async function ({ directory }: BuildArgs) {
   )
 
   if (error) {
-    console.log(`Failed to load medusa-confg.js`)
+    console.log(`Failed to load medusa-config.js`)
     process.exit(1)
   }
 
