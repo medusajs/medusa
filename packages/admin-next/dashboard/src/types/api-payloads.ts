@@ -19,7 +19,6 @@ import {
   CreateShippingProfileDTO,
   CreateStockLocationInput,
   InventoryNext,
-  ShippingOptionDTO,
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
   UpdateCustomerDTO,
@@ -102,7 +101,7 @@ export type DeletePriceListPricesReq = { ids: string[] }
 
 // Promotion
 export type CreatePromotionReq = CreatePromotionDTO
-export type UpdatePromotionReq = UpdatePromotionDTO
+export type UpdatePromotionReq = Omit<UpdatePromotionDTO, "id">
 export type BatchAddPromotionRulesReq = { rules: CreatePromotionRuleDTO[] }
 export type BatchRemovePromotionRulesReq = { rule_ids: string[] }
 export type BatchUpdatePromotionRulesReq = { rules: UpdatePromotionRuleDTO[] }

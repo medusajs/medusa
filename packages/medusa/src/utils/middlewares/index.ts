@@ -1,7 +1,5 @@
 export { default as authenticateLegacy } from "./authenticate"
 export { authenticate } from "./authenticate-middleware"
 export { default as authenticateCustomer } from "./authenticate-customer"
-export { default as wrapHandler } from "./await-middleware"
 export { default as errorHandler } from "./error-handler"
-export { isFeatureFlagEnabled } from "./feature-flag-enabled"
 export { default as requireCustomerAuthentication } from "./require-customer-authentication"

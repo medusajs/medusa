@@ -22,7 +22,7 @@ import {
   toPascalCase,
 } from "@medusajs/utils"
 import * as linkDefinitions from "../definitions"
-import { getMigration } from "../migration"
+import { getMigration, getRevertMigration } from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
 import {
   composeLinkName,
@@ -164,12 +164,13 @@ export const initialize = async (
   return allLinks
 }
 
-export async function runMigrations(
+async function applyMigrationUpOrDown(
   {
     options,
     logger,
   }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
-  modulesDefinition?: ModuleJoinerConfig[]
+  modulesDefinition?: ModuleJoinerConfig[],
+  revert = false
 ) {
   const modulesLoadedKeys = MedusaModule.getLoadedModules().map(
     (mod) => Object.keys(mod)[0]
@@ -215,7 +216,29 @@ export async function runMigrations(
       continue
     }
 
-    const migrate = getMigration(definition, serviceKey, primary, foreign)
+    const migrate = revert
+      ? getRevertMigration(definition, serviceKey, primary, foreign)
+      : getMigration(definition, serviceKey, primary, foreign)
     await migrate({ options, logger })
   }
+}
+
+export async function runMigrations(
+  {
+    options,
+    logger,
+  }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
+  modulesDefinition?: ModuleJoinerConfig[]
+) {
+  await applyMigrationUpOrDown({ options, logger }, modulesDefinition)
+}
+
+export async function revertMigrations(
+  {
+    options,
+    logger,
+  }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
+  modulesDefinition?: ModuleJoinerConfig[]
+) {
+  await applyMigrationUpOrDown({ options, logger }, modulesDefinition, true)
 }
