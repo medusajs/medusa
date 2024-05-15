@@ -12,6 +12,17 @@
   "main": "dist/app.js",
   "module": "dist/app.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/app.mjs",
+      "require": "./dist/app.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./css": {
+      "import": "./dist/app.css",
+      "require": "./dist/app.css"
+    }
+  },
   "files": [
     "dist",
     "package.json"
