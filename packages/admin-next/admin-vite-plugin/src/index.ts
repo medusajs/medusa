@@ -18,7 +18,7 @@ import { InjectionZone, injectionZones } from "@medusajs/admin-shared"
 
 const traverse = (_traverse as any).default as typeof _traverse
 
-const VIRTUAL_PREFIX = "/@virtual/medusajs-vite-plugin-extension/"
+const VIRTUAL_PREFIX = "/@virtual/medusajs-admin-vite-plugin/"
 const IMPORT_PREFIX = "medusa-admin:"
 
 const WIDGET_MODULE = `${IMPORT_PREFIX}widgets/`
@@ -321,7 +321,7 @@ export default function inject(args?: InjectArgs): PluginOption {
   async function generateWidgetEntrypoint(zone: InjectionZone) {
     const files = (
       await Promise.all(
-        Array.from(_sources).map((source) =>
+        Array.from(_sources).map(async (source) =>
           traverseDirectory(`${source}/widgets`)
         )
       )
@@ -463,7 +463,7 @@ export default function inject(args?: InjectArgs): PluginOption {
   async function generateRouteEntrypoint(get: "page" | "link") {
     const files = (
       await Promise.all(
-        Array.from(_sources).map((source) =>
+        Array.from(_sources).map(async (source) =>
           traverseDirectory(`${source}/routes`, "page", { min: 1 })
         )
       )
@@ -496,11 +496,11 @@ export default function inject(args?: InjectArgs): PluginOption {
 
     const exportString = `export default {
       ${get}s: [${validatedRoutes
-      .map((file, index) =>
-        get === "page"
+      .map((file, index) => {
+        return get === "page"
           ? `{ path: "${createPath(file)}", file: "${file}" }`
           : `{ path: "${createPath(file)}", ...routeConfig${index}.link }`
-      )
+      })
       .join(", ")}],
     }`
 
@@ -610,7 +610,7 @@ export default function inject(args?: InjectArgs): PluginOption {
   async function generateSettingEntrypoint(get: "page" | "card") {
     const files = (
       await Promise.all(
-        Array.from(_sources).map((source) =>
+        Array.from(_sources).map(async (source) =>
           traverseDirectory(`${source}/settings`, "page", { min: 1, max: 1 })
         )
       )
@@ -643,11 +643,11 @@ export default function inject(args?: InjectArgs): PluginOption {
 
     const exportString = `export default {
       ${get}s: [${validatedSettings
-      .map((file, index) =>
-        get === "page"
+      .map((file, index) => {
+        return get === "page"
           ? `{ path: "${createPath(file)}", file: "${file}" }`
           : `{ path: "${createPath(file)}", ...settingConfig${index}.card }`
-      )
+      })
       .join(", ")}],
     }`
 
@@ -701,7 +701,7 @@ export default function inject(args?: InjectArgs): PluginOption {
       const module = server.moduleGraph.getModuleById(moduleId)
 
       if (module) {
-        server.reloadModule(module)
+        await server.reloadModule(module)
       }
     }
   }
@@ -719,7 +719,7 @@ export default function inject(args?: InjectArgs): PluginOption {
       const module = server.moduleGraph.getModuleById(fullModuleId)
 
       if (module) {
-        server.reloadModule(module)
+        await server.reloadModule(module)
       }
     }
   }
@@ -737,7 +737,7 @@ export default function inject(args?: InjectArgs): PluginOption {
       const module = server.moduleGraph.getModuleById(fullModuleId)
 
       if (module) {
-        server.reloadModule(module)
+        await server.reloadModule(module)
       }
     }
   }
@@ -754,7 +754,7 @@ export default function inject(args?: InjectArgs): PluginOption {
 
       if (module) {
         _extensionGraph.delete(file)
-        server.reloadModule(module)
+        await server.reloadModule(module)
       }
     }
   }
@@ -775,7 +775,7 @@ export default function inject(args?: InjectArgs): PluginOption {
   }
 
   return {
-    name: "@medusajs/vite-plugin-extension",
+    name: "@medusajs/admin-vite-plugin",
     configureServer(s) {
       server = s
       logger = s.config.logger
@@ -835,8 +835,8 @@ export default function inject(args?: InjectArgs): PluginOption {
         return
       })
 
-      watcher.on("unlink", (file) => {
-        handleExtensionUnlink(file)
+      watcher.on("unlink", async (file) => {
+        await handleExtensionUnlink(file)
         return
       })
     },
@@ -876,9 +876,9 @@ export default function inject(args?: InjectArgs): PluginOption {
 
       return null
     },
-    closeBundle() {
+    async closeBundle() {
       if (watcher) {
-        watcher.close()
+        await watcher.close()
       }
     },
   }

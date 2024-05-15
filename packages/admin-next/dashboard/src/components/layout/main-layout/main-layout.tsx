@@ -13,12 +13,11 @@ import { Avatar, Text } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import { useTranslation } from "react-i18next"
 
+import { ComponentType } from "react"
 import { useStore } from "../../../hooks/api/store"
 import { Skeleton } from "../../common/skeleton"
 import { NavItem, NavItemProps } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
-
-import extensions from "medusa-admin:routes/links"
 
 export const MainLayout = () => {
   return (
@@ -164,6 +163,10 @@ const CoreRouteSection = () => {
       })}
     </nav>
   )
+}
+
+const extensions = {
+  links: null as { path: string; label: string; icon?: ComponentType }[] | null,
 }
 
 const ExtensionRouteSection = () => {

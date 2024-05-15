@@ -2,7 +2,7 @@ import { format, formatDistance, sub } from "date-fns"
 import { enUS } from "date-fns/locale"
 import { useTranslation } from "react-i18next"
 
-import { languages } from "../i18n/config"
+import { languages } from "../i18n/languages"
 
 export const useDate = () => {
   const { i18n } = useTranslation()
