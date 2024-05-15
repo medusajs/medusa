@@ -6,37 +6,7 @@ import {
   Logger,
 } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import { promisify } from "util"
-import LocalEventBusService from "@medusajs/event-bus-local/dist/services/event-bus-local"
-
-export const sleep = promisify(setTimeout)
-
-const waitAllSubscribersExecution = (
-  eventName: string,
-  eventBus: IEventBusModuleService
-) => {
-  const subscriberPromises: Promise<any>[] = []
-
-  ;(eventBus as any).eventEmitter_.listeners(eventName).forEach((listner) => {
-    ;(eventBus as any).eventEmitter_.removeListener("order.created", listner)
-
-    let ok, nok
-    const promise = new Promise((resolve, reject) => {
-      ok = resolve
-      nok = reject
-    })
-    subscriberPromises.push(promise)
-
-    const newListener = async (...args2) => {
-      return await listner.apply(eventBus, args2).then(ok).catch(nok)
-    }
-
-    ;(eventBus as any).eventEmitter_.on("order.created", newListener)
-  })
-
-  return Promise.all(subscriberPromises)
-}
+import { medusaIntegrationTestRunner, TestEventUtils } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
@@ -44,13 +14,6 @@ const env = { MEDUSA_FF_MEDUSA_V2: true }
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ getContainer }) => {
-    beforeAll(async () => {
-      const container = getContainer()
-      const eventBus = container.resolve(
-        ModuleRegistrationName.EVENT_BUS
-      ) as LocalEventBusService
-    })
-
     describe("Notifications", () => {
       let service: INotificationModuleService
       let logger: Logger
@@ -61,7 +24,7 @@ medusaIntegrationTestRunner({
       })
 
       afterEach(() => {
-        jest.clearAllMocks()
+        jest.restoreAllMocks()
       })
 
       describe("Notifications module", () => {
@@ -88,15 +51,40 @@ medusaIntegrationTestRunner({
             })
           )
 
-          delete fromDB.original_notification_id
-          delete fromDB.external_id
-          delete fromDB.receiver_id
-          delete (fromDB as any).idempotency_key
-          delete (fromDB as any).provider
+          expect(result).toEqual(
+            expect.objectContaining({
+              to: "test@medusajs.com",
+              channel: "email",
+              data: {
+                username: "john-doe",
+              },
+              id: expect.any(String),
+              provider_id: "local-notification-provider",
+              resource_id: "order-id",
+              resource_type: "order",
+              template: "order-created",
+              trigger_type: "order-created",
+            })
+          )
 
-          expect(result).toEqual(fromDB)
+          expect(fromDB).toEqual(
+            expect.objectContaining({
+              to: "test@medusajs.com",
+              channel: "email",
+              data: {
+                username: "john-doe",
+              },
+              id: expect.any(String),
+              provider_id: "local-notification-provider",
+              resource_id: "order-id",
+              resource_type: "order",
+              template: "order-created",
+              trigger_type: "order-created",
+            })
+          )
+
           expect(logSpy).toHaveBeenCalledWith(
-            'Attempting to send a notification to: test@medusajs.com on the channel: email with template: order-created and data: {"username":"john-doe"}'
+            `Attempting to send a notification to: 'test@medusajs.com' on the channel: 'email' with template: 'order-created' and data: '{\"username\":\"john-doe\"}'`
           )
         })
 
@@ -164,14 +152,17 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe.only("Configurable notification subscriber", () => {
+      describe("Configurable notification subscriber", () => {
         let eventBus: IEventBusModuleService
         beforeAll(async () => {
           eventBus = getContainer().resolve(ModuleRegistrationName.EVENT_BUS)
         })
 
         it("should successfully sent a notification when an order is created (based on configuration)", async () => {
-          const promise = waitAllSubscribersExecution("order.created", eventBus)
+          const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+            "order.created",
+            eventBus
+          )
           const logSpy = jest.spyOn(logger, "info")
 
           await eventBus.emit("order.created", {
@@ -182,13 +173,12 @@ medusaIntegrationTestRunner({
               },
             },
           })
-
-          await promise
+          await subscriberExecution
 
           const notifications = await service.list()
 
           expect(logSpy).toHaveBeenLastCalledWith(
-            'Attempting to send a notification to: test@medusajs.com on the channel: email with template: order-created-template and data: {"order_id":"1234"}'
+            `Attempting to send a notification to: 'test@medusajs.com' on the channel: 'email' with template: 'order-created-template' and data: '{\"order_id\":\"1234\"}'`
           )
           expect(notifications).toHaveLength(1)
           expect(notifications[0]).toEqual(

@@ -3,7 +3,6 @@ import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 
 import { MockEventBusService } from "."
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
@@ -79,7 +78,7 @@ export function moduleIntegrationTestRunner({
   const moduleOptions_: InitModulesOptions = {
     injectedDependencies: {
       [ContainerRegistrationKeys.PG_CONNECTION]: connection,
-      [ModuleRegistrationName.EVENT_BUS]: new MockEventBusService(),
+      ["eventBusModuleService"]: new MockEventBusService(),
       [ContainerRegistrationKeys.LOGGER]: console,
       ...injectedDependencies,
     },
