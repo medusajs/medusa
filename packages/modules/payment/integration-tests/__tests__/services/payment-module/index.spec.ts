@@ -685,7 +685,7 @@ moduleIntegrationTestRunner({
         })
 
         describe("concurrency", () => {
-          it.only("should authorize, capture and refund multiple payment sessions", async () => {
+          it("should authorize, capture and refund multiple payment sessions", async () => {
             const collection = await service.createPaymentCollections({
               amount: 500,
               region_id: "test-region",
