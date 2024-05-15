@@ -373,7 +373,7 @@ medusaIntegrationTestRunner({
             region_id: "test_region_idclear",
             customer_id: "joe",
             version: 2,
-            sales_channel_id: "test",
+            sales_channel_id: "test", // TODO: What about order with a sales channel but a shipping option link to a stock from another channel?
             status: "pending",
             is_draft_order: false,
             email: "foo@bar.com",

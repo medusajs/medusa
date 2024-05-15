@@ -198,10 +198,17 @@ export const createReturnOrderWorkflow = createWorkflow(
   createReturnOrderWorkflowId,
   (
     input: WorkflowData<OrderWorkflow.CreateOrderReturnWorkflowInput>
-  ): WorkflowData<OrderDTO> => {
+  ): WorkflowData<void> => {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "currency_code", "total", "item_total", "items.*"],
+      fields: [
+        "id",
+        "region_id",
+        "currency_code",
+        "total",
+        "item_total",
+        "items.*",
+      ],
       variables: { id: input.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -233,8 +240,8 @@ export const createReturnOrderWorkflow = createWorkflow(
           },
         }
 
-        if (data.input.region) {
-          variables.calculated_price.context["region_id"] = data.input.region.id
+        if (order.region_id) {
+          variables.calculated_price.context["region_id"] = order.region_id
         }
 
         return variables

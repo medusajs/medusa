@@ -1,5 +1,4 @@
-import { RegionDTO } from "../../region"
-import { BigNumberInput } from "../../totals"
+import {BigNumberInput} from "../../totals"
 
 interface CreateOrderReturnItem {
   id: string
@@ -22,5 +21,4 @@ export interface CreateOrderReturnWorkflowInput {
   refund_amount?: number
   location_id: string
   provider_id: string
-  region?: RegionDTO
 }
