@@ -1170,6 +1170,7 @@ export default class ProductModuleService<
       data.map(async (d) => {
         await this.normalizeCreateProductInput(d, sharedContext)
         this.validateProductPayload(d)
+        return d
       })
     )
 
@@ -1229,6 +1230,7 @@ export default class ProductModuleService<
       data.map(async (d) => {
         await this.normalizeUpdateProductInput(d, sharedContext)
         this.validateProductPayload(d)
+        return d
       })
     )
 
