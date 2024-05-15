@@ -3,8 +3,8 @@ import { AwilixContainer } from "awilix"
 import { Express } from "express"
 import path from "path"
 import qs from "qs"
-import { ConfigModule } from "../types/global"
 import { RoutesLoader } from "./helpers/routing"
+import { ConfigModule } from "@medusajs/types"
 
 type Options = {
   app: Express

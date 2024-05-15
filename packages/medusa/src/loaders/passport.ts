@@ -1,9 +1,9 @@
+import { ConfigModule } from "@medusajs/types"
 import { Express } from "express"
 import passport from "passport"
 import { Strategy as CustomStrategy } from "passport-custom"
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt"
 /* import { AuthService } from "../services"*/
-import { ConfigModule } from "../types/global"
 
 export default async ({
   app,
