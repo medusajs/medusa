@@ -39,6 +39,7 @@ import {
   PaymentCollectionStatus,
   promiseAll,
 } from "@medusajs/utils"
+import { IsolationLevel } from "@mikro-orm/core"
 import {
   Capture,
   Payment,
@@ -405,6 +406,9 @@ export default class PaymentModuleService<
     context: Record<string, unknown>,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentDTO> {
+    sharedContext ??= {}
+    sharedContext.isolationLevel = IsolationLevel.SERIALIZABLE
+
     const session = await this.paymentSessionService_.retrieve(
       id,
       {
