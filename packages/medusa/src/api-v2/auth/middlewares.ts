@@ -17,4 +17,9 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/auth/:scope/:auth_provider",
     middlewares: [],
   },
+  {
+    method: ["DELETE"],
+    matcher: "/auth/:scope",
+    middlewares: [authenticate(/.*/, ["bearer", "session"])],
+  },
 ]

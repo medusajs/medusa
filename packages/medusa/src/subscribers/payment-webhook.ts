@@ -1,11 +1,10 @@
-import { PaymentWebhookEvents } from "@medusajs/utils"
-
 import {
   IEventBusService,
   IPaymentModuleService,
   ProviderWebhookPayload,
   Subscriber,
 } from "@medusajs/types"
+import { PaymentWebhookEvents } from "@medusajs/utils"
 
 type SerializedBuffer = {
   data: ArrayBuffer

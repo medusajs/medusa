@@ -176,6 +176,7 @@ export type ProjectConfigOptions = {
    */
   admin_cors?: string
   /**
+   * @deprecated - use `auth.cors` instead
    * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
    *
    * `auth_cors` is a string used to specify the accepted URLs or patterns for API Routes starting with `/auth`. It can either be one accepted origin, or a comma-separated list of accepted origins.
@@ -225,6 +226,7 @@ export type ProjectConfigOptions = {
    */
   auth_cors?: string
   /**
+   * @deprecated - use `auth.cookieSecret` instead
    * A random string used to create cookie tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
    *
    * In a development environment, if this option is not set, the default secret is `supersecret` However, in production, if this configuration is not set, an error is thrown and
@@ -245,6 +247,7 @@ export type ProjectConfigOptions = {
   cookie_secret?: string
 
   /**
+   * @deprecated - use `auth.jwtSecret` instead
    * A random string used to create authentication tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
    *
    * In a development environment, if this option is not set the default secret is `supersecret` However, in production, if this configuration is not set an error, an
@@ -590,6 +593,42 @@ export type ProjectConfigOptions = {
    * ```
    */
   worker_mode?: "shared" | "worker" | "server"
+
+  /**
+   * Configure the application's authentication settings
+   *
+   * @example
+   * ```js title="medusa-config.js"
+   * module.exports = {
+   *   projectConfig: {
+   *     auth: {
+   *       jwtSecret: "some-super-secret",
+   *       jwtExpiresIn: "2d",
+   *     }
+   *     // ...
+   *   },
+   *   // ...
+   * }
+   * ```
+   */
+  auth: {
+    /**
+     * The secret to sign the JWT token, usually a randomly generated string. If not provided, the default value is `supersecret`.
+     */
+    jwtSecret: string
+    /**
+     * The expiration time for the JWT token. If not provided, the default value is `24h`.
+     */
+    jwtExpiresIn: string
+    /**
+     * The secret to sign the cookie session, usually a randomly generated string. If not provided, the default value is `supersecret`.
+     */
+    cookieSecret: string
+    /**
+     * Specify the accepted URLs or patterns for API Routes starting with `/auth`. It can either be one accepted origin, or a comma-separated list of accepted origins.
+     */
+    cors?: string
+  }
 }
 
 /**

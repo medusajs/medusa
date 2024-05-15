@@ -1,5 +1,10 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ApiKeyDTO, AuthUserDTO, IApiKeyModuleService } from "@medusajs/types"
+import {
+  ApiKeyDTO,
+  AuthUserDTO,
+  ConfigModule,
+  IApiKeyModuleService,
+} from "@medusajs/types"
 import { stringEqualsOrRegexMatch } from "@medusajs/utils"
 import { NextFunction, RequestHandler } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken"
@@ -55,10 +60,11 @@ export const authenticate = (
     )
 
     if (!authUser) {
-      const { jwt_secret } = req.scope.resolve("configModule").projectConfig
+      const { auth } =
+        req.scope.resolve<ConfigModule>("configModule").projectConfig
       authUser = getAuthUserFromJwtToken(
         req.headers.authorization,
-        jwt_secret,
+        auth.jwtSecret,
         authTypes,
         authScope
       )

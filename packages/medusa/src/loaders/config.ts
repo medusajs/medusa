@@ -1,6 +1,6 @@
+import { ConfigModule } from "@medusajs/types"
 import { getConfigFile, isDefined } from "medusa-core-utils"
 import logger from "./logger"
-import { ConfigModule } from "@medusajs/types"
 
 const isProduction = ["production", "prod"].includes(process.env.NODE_ENV || "")
 
@@ -16,6 +16,39 @@ export const handleConfigError = (error: Error): void => {
     logger.error(error.stack)
   }
   process.exit(1)
+}
+
+const buildAuthConfig = (projectConfig: ConfigModule["projectConfig"]) => {
+  const auth = projectConfig.auth ?? {}
+
+  auth.jwtExpiresIn = auth?.jwtExpiresIn ?? "1d"
+
+  auth.jwtSecret = auth?.jwtSecret ?? process.env.JWT_SECRET
+
+  if (!auth.jwtSecret) {
+    errorHandler(
+      `[medusa-config] ⚠️ auth.jwtSecret not found.${
+        isProduction ? "" : "Using default 'supersecret'."
+      }`
+    )
+
+    auth.jwtSecret = "supersecret"
+  }
+
+  auth.cookieSecret =
+    projectConfig.auth?.cookieSecret ?? process.env.COOKIE_SECRET
+
+  if (!auth.cookieSecret) {
+    errorHandler(
+      `[medusa-config] ⚠️ auth.cookieSecret not found.${
+        isProduction ? "" : " Using default 'supersecret'."
+      }`
+    )
+
+    auth.cookieSecret = "supersecret"
+  }
+
+  return auth
 }
 
 export default (rootDirectory: string): ConfigModule => {
@@ -34,29 +67,7 @@ export default (rootDirectory: string): ConfigModule => {
     )
   }
 
-  const jwt_secret =
-    configModule?.projectConfig?.jwt_secret ?? process.env.JWT_SECRET
-  if (!jwt_secret) {
-    errorHandler(
-      `[medusa-config] ⚠️ jwt_secret not found.${
-        isProduction
-          ? ""
-          : " fallback to either cookie_secret or default 'supersecret'."
-      }`
-    )
-  }
-
-  const cookie_secret =
-    configModule?.projectConfig?.cookie_secret ?? process.env.COOKIE_SECRET
-  if (!cookie_secret) {
-    errorHandler(
-      `[medusa-config] ⚠️ cookie_secret not found.${
-        isProduction
-          ? ""
-          : " fallback to either cookie_secret or default 'supersecret'."
-      }`
-    )
-  }
+  configModule.projectConfig.auth = buildAuthConfig(configModule.projectConfig)
 
   let worker_mode = configModule?.projectConfig?.worker_mode
   if (!isDefined(worker_mode)) {
@@ -72,8 +83,9 @@ export default (rootDirectory: string): ConfigModule => {
 
   return {
     projectConfig: {
-      jwt_secret: jwt_secret ?? "supersecret",
-      cookie_secret: cookie_secret ?? "supersecret",
+      // Question: Should we just introduce the breaking change now, or do we want to stay backward compatible?
+      jwt_secret: configModule.projectConfig.auth.jwtSecret,
+      cookie_secret: configModule.projectConfig.auth.cookieSecret,
       ...configModule?.projectConfig,
       worker_mode,
     },

@@ -1,12 +1,14 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { MedusaContainer, Subscriber } from "@medusajs/types"
+import {
+  IEventBusModuleService,
+  MedusaContainer,
+  Subscriber,
+} from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
 import { readdir } from "fs/promises"
 import { extname, join, sep } from "path"
-
 import { SubscriberArgs, SubscriberConfig } from "../../../types/subscribers"
 import logger from "../../logger"
-import { IEventBusModuleService } from "@medusajs/types"
 
 type SubscriberHandler<T> = (args: SubscriberArgs<T>) => Promise<void>
 

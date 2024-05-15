@@ -12,7 +12,7 @@ const adminHeaders = {
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  env: { MEDUSA_FF_MEDUSA_V2: true },
+  force_modules_migration: true,
   testSuite: ({ dbConnection, getContainer, api }) => {
     let container
 
@@ -58,21 +58,48 @@ medusaIntegrationTestRunner({
       )
     })
 
-    // TODO: Remove in V2, as this is no longer supported
-    it("creates admin JWT token correctly", async () => {
-      breaking(async () => {
-        const response = await api
-          .post("/admin/auth/token", {
-            email: "admin@medusa.js",
-            password: "secret_password",
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-
-        expect(response.status).toEqual(200)
-        expect(response.data.access_token).toEqual(expect.any(String))
+    it.only("should test the entire authentication lifecycle", async () => {
+      // sign in
+      const response = await api.post("/auth/admin/emailpass", {
+        email: "admin@medusa.js",
+        password: "secret_password",
       })
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toEqual({ token: expect.any(String) })
+
+      const headers = {
+        headers: { ["authorization"]: `Bearer ${response.data.token}` },
+      }
+
+      // convert token to session
+      const cookieRequest = await api.post("/auth/session", {}, headers)
+      expect(cookieRequest.status).toEqual(200)
+
+      // extract cookie
+      const [cookie] = cookieRequest.headers["set-cookie"][0].split(";")
+
+      const cookieHeader = {
+        headers: { Cookie: cookie },
+      }
+
+      // perform cookie authenticated request
+      const authedRequest = await api.get(
+        "/admin/products?limit=1",
+        cookieHeader
+      )
+      expect(authedRequest.status).toEqual(200)
+
+      // sign out
+      const signOutRequest = await api.delete("/auth/admin", cookieHeader)
+      expect(signOutRequest.status).toEqual(200)
+
+      // attempt to perform authenticated request
+      const unAuthedRequest = await api.get(
+        "/admin/products?limit=1",
+        cookieHeader
+      )
+      expect(unAuthedRequest.status).toEqual(401)
     })
   },
 })
