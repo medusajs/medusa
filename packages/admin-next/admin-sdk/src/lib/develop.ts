@@ -10,7 +10,9 @@ export async function develop(options: BundlerOptions) {
 
   try {
     const viteConfig = await getViteConfig(options)
-    const server = await vite.createServer(viteConfig)
+    const server = await vite.createServer(
+      vite.mergeConfig(viteConfig, { logLevel: "info", mode: "development" })
+    )
 
     router.use(server.middlewares)
   } catch (error) {

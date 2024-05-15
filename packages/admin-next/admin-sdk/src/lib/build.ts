@@ -7,7 +7,9 @@ export async function build(options: BundlerOptions) {
   const viteConfig = await getViteConfig(options)
 
   try {
-    await vite.build(viteConfig)
+    await vite.build(
+      vite.mergeConfig(viteConfig, { mode: "production", logLevel: "silent" })
+    )
   } catch (error) {
     console.error(error)
     throw new Error("Failed to build admin panel")

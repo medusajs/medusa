@@ -29,7 +29,12 @@ export async function getViteConfig(
     },
     define: {
       __BASE__: JSON.stringify(options.path),
-      __BACKEND_URL__: JSON.stringify("http://localhost:9000"),
+      /**
+       * TODO: Accept backend url from config to support hosting the admin elsewhere.
+       * The empty string should be the default value, as that ensures that requests
+       * are made to the server that serves the admin dashboard.
+       */
+      __BACKEND_URL__: JSON.stringify(""),
     },
     server: {
       open: true,
@@ -54,6 +59,12 @@ export async function getViteConfig(
         ],
       },
     },
+    /**
+     * TODO: Remove polyfills, they are currently only required for the
+     * `axios` dependency in the dashboard. Once we have the new SDK,
+     * we should remove this, and leave it up to the user to include
+     * polyfills if they need them.
+     */
     plugins: [react(), inject(), nodePolyfills()],
   }
 }

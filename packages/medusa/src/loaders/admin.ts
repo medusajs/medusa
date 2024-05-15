@@ -29,7 +29,6 @@ export default async function adminLoader({ app, configModule }: Options) {
     return initDevelopmentServer(app, adminOptions)
   }
 
-  await buildProductionBuild(adminOptions)
   return serveProductionBuild(app, adminOptions)
 }
 
@@ -49,10 +48,4 @@ async function serveProductionBuild(app: Express, options: IntializedOptions) {
   app.use(options.path, adminRoute)
 
   return app
-}
-
-async function buildProductionBuild(options: IntializedOptions) {
-  const { build } = await import("@medusajs/admin-sdk")
-
-  await build(options)
 }
