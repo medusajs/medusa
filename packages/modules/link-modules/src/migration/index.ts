@@ -84,3 +84,44 @@ export function getMigration(
     await orm.close()
   }
 }
+
+export function getRevertMigration(
+  joinerConfig: ModuleJoinerConfig,
+  serviceName: string,
+  primary: JoinerRelationship,
+  foreign: JoinerRelationship
+) {
+  return async function revertMigrations(
+    {
+      options,
+      logger,
+    }: Pick<
+      LoaderOptions<ModuleServiceInitializeOptions>,
+      "options" | "logger"
+    > = {} as any
+  ) {
+    logger ??= console as unknown as Logger
+
+    const dbData = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
+    const entity = generateEntity(joinerConfig, primary, foreign)
+    const pathToMigrations = __dirname + "/../migrations"
+
+    const orm = await DALUtils.mikroOrmCreateConnection(
+      dbData,
+      [entity],
+      pathToMigrations
+    )
+
+    try {
+      const migrator = orm.getMigrator()
+      await migrator.down()
+      logger.info(`Link module "${serviceName}" migration executed`)
+    } catch (error) {
+      logger.error(
+        `Link module "${serviceName}" migration failed to run - Error: ${error}`
+      )
+    }
+
+    await orm.close()
+  }
+}

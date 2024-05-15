@@ -1,41 +1,16 @@
-import { asValue, createContainer } from "awilix"
-import getMigrations, {
-  getModuleSharedResources,
-  revertIsolatedModulesMigration,
-} from "./utils/get-migrations"
+import { asValue } from "awilix"
+import { revertIsolatedModulesMigration } from "./utils/get-migrations"
 
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
 } from "@medusajs/utils"
 import configModuleLoader from "../loaders/config"
-import databaseLoader from "../loaders/database"
 import featureFlagLoader from "../loaders/feature-flags"
 import Logger from "../loaders/logger"
-import { migrateMedusaApp, loadMedusaApp } from "../loaders/medusa-app"
+import { loadMedusaApp, migrateMedusaApp } from "../loaders/medusa-app"
 import pgConnectionLoader from "../loaders/pg-connection"
-
-const getDataSource = async (directory) => {
-  const configModule = configModuleLoader(directory)
-  const featureFlagRouter = featureFlagLoader(configModule)
-  const { coreMigrations } = getMigrations(directory, featureFlagRouter)
-  const { migrations: moduleMigrations } = getModuleSharedResources(
-    configModule,
-    featureFlagRouter
-  )
-
-  const container = createContainer()
-  container.register("db_entities", asValue([]))
-
-  return await databaseLoader({
-    container,
-    configModule,
-    customOptions: {
-      migrations: coreMigrations.concat(moduleMigrations),
-      logging: "all",
-    },
-  })
-}
+import { MedusaAppMigrateDown } from "@medusajs/modules-sdk"
 
 const runLinkMigrations = async (directory) => {
   const configModule = configModuleLoader(directory)
@@ -72,16 +47,16 @@ const main = async function ({ directory }) {
   const configModule = configModuleLoader(directory)
   const featureFlagRouter = featureFlagLoader(configModule)
 
+  const container = createMedusaContainer()
+  const pgConnection = await pgConnectionLoader({ configModule, container })
+  container.register({
+    [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
+    [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
+    [ContainerRegistrationKeys.PG_CONNECTION]: asValue(pgConnection),
+    [ContainerRegistrationKeys.FEATURE_FLAG_ROUTER]: asValue(featureFlagRouter),
+  })
+
   if (args[0] === "run") {
-    const container = createMedusaContainer()
-    const pgConnection = await pgConnectionLoader({ configModule, container })
-    container.register({
-      [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
-      [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
-      [ContainerRegistrationKeys.PG_CONNECTION]: asValue(pgConnection),
-      [ContainerRegistrationKeys.FEATURE_FLAG_ROUTER]:
-        asValue(featureFlagRouter),
-    })
     await migrateMedusaApp(
       { configModule, container },
       { registerInContainer: false }
@@ -90,17 +65,15 @@ const main = async function ({ directory }) {
     Logger.info("Migrations completed.")
     process.exit()
   } else if (args[0] === "revert") {
-    const dataSource = await getDataSource(directory)
-    await dataSource.undoLastMigration({ transaction: "all" })
-    await dataSource.destroy()
+    await MedusaAppMigrateDown(
+      { configModule, container },
+      { registerInContainer: false }
+    )
     await revertIsolatedModulesMigration(configModule)
     Logger.info("Migrations reverted.")
   } else if (args[0] === "show") {
-    const dataSource = await getDataSource(directory)
-    const unapplied = await dataSource.showMigrations()
-    Logger.info(unapplied)
-    await dataSource.destroy()
-    process.exit(unapplied ? 1 : 0)
+    Logger.info("not supported")
+    process.exit(0)
   }
 }
 
