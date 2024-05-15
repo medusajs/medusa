@@ -389,15 +389,15 @@ async function MedusaApp_({
         }
       }
 
-      if (!revert) {
-        await MedusaModule.migrateUp(
+      if (revert) {
+        await MedusaModule.migrateDown(
           moduleResolution.definition.key,
           moduleResolution.resolutionPath as string,
           moduleResolution.options,
           moduleResolution.moduleExports
         )
       } else {
-        await MedusaModule.migrateDown(
+        await MedusaModule.migrateUp(
           moduleResolution.definition.key,
           moduleResolution.resolutionPath as string,
           moduleResolution.options,
@@ -411,15 +411,15 @@ async function MedusaApp_({
       ...(sharedResourcesConfig?.database ?? {}),
     }
 
-    if (!revert) {
-      linkModuleMigration &&
-        (await linkModuleMigration({
+    if (revert) {
+      revertLinkModuleMigration &&
+        (await revertLinkModuleMigration({
           options: linkModuleOpt,
           injectedDependencies,
         }))
     } else {
-      revertLinkModuleMigration &&
-        (await revertLinkModuleMigration({
+      linkModuleMigration &&
+        (await linkModuleMigration({
           options: linkModuleOpt,
           injectedDependencies,
         }))

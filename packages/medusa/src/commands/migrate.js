@@ -8,9 +8,12 @@ import {
 import configModuleLoader from "../loaders/config"
 import featureFlagLoader from "../loaders/feature-flags"
 import Logger from "../loaders/logger"
-import { loadMedusaApp, migrateMedusaApp } from "../loaders/medusa-app"
+import {
+  loadMedusaApp,
+  migrateMedusaApp,
+  revertMedusaApp,
+} from "../loaders/medusa-app"
 import pgConnectionLoader from "../loaders/pg-connection"
-import { MedusaAppMigrateDown } from "@medusajs/modules-sdk"
 
 const runLinkMigrations = async (directory) => {
   const configModule = configModuleLoader(directory)
@@ -57,18 +60,12 @@ const main = async function ({ directory }) {
   })
 
   if (args[0] === "run") {
-    await migrateMedusaApp(
-      { configModule, container },
-      { registerInContainer: false }
-    )
+    await migrateMedusaApp({ configModule, container })
 
     Logger.info("Migrations completed.")
     process.exit()
   } else if (args[0] === "revert") {
-    await MedusaAppMigrateDown(
-      { configModule, container },
-      { registerInContainer: false }
-    )
+    await revertMedusaApp({ configModule, container })
     await revertIsolatedModulesMigration(configModule)
     Logger.info("Migrations reverted.")
   } else if (args[0] === "show") {
