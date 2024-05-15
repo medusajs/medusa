@@ -8,8 +8,35 @@ import {
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { promisify } from "util"
+import LocalEventBusService from "@medusajs/event-bus-local/dist/services/event-bus-local"
 
 export const sleep = promisify(setTimeout)
+
+const waitAllSubscribersExecution = (
+  eventName: string,
+  eventBus: IEventBusModuleService
+) => {
+  const subscriberPromises: Promise<any>[] = []
+
+  ;(eventBus as any).eventEmitter_.listeners(eventName).forEach((listner) => {
+    ;(eventBus as any).eventEmitter_.removeListener("order.created", listner)
+
+    let ok, nok
+    const promise = new Promise((resolve, reject) => {
+      ok = resolve
+      nok = reject
+    })
+    subscriberPromises.push(promise)
+
+    const newListener = async (...args2) => {
+      return await listner.apply(eventBus, args2).then(ok).catch(nok)
+    }
+
+    ;(eventBus as any).eventEmitter_.on("order.created", newListener)
+  })
+
+  return Promise.all(subscriberPromises)
+}
 
 jest.setTimeout(50000)
 
@@ -17,6 +44,13 @@ const env = { MEDUSA_FF_MEDUSA_V2: true }
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ getContainer }) => {
+    beforeAll(async () => {
+      const container = getContainer()
+      const eventBus = container.resolve(
+        ModuleRegistrationName.EVENT_BUS
+      ) as LocalEventBusService
+    })
+
     describe("Notifications", () => {
       let service: INotificationModuleService
       let logger: Logger
@@ -27,7 +61,7 @@ medusaIntegrationTestRunner({
       })
 
       afterEach(() => {
-        jest.restoreAllMocks()
+        jest.clearAllMocks()
       })
 
       describe("Notifications module", () => {
@@ -136,9 +170,11 @@ medusaIntegrationTestRunner({
           eventBus = getContainer().resolve(ModuleRegistrationName.EVENT_BUS)
         })
 
-        it("should successfully sent a notification when an order is creaed (based on configuration)", async () => {
+        it("should successfully sent a notification when an order is created (based on configuration)", async () => {
+          const promise = waitAllSubscribersExecution("order.created", eventBus)
           const logSpy = jest.spyOn(logger, "info")
-          eventBus.emit("order.created", {
+
+          await eventBus.emit("order.created", {
             data: {
               order: {
                 id: "1234",
@@ -147,8 +183,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          // TODO: Obviously a random sleep isn't great here, opening the PR to see if others have any ideas on how we can wait for the subscriber.
-          await sleep(100)
+          await promise
 
           const notifications = await service.list()
 
