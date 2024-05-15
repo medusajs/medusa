@@ -4,11 +4,12 @@ import glob from "glob"
 import { trackInstallation } from "medusa-telemetry"
 import { EOL } from "os"
 import path from "path"
-import { ConfigModule, Logger, MedusaContainer } from "../types/global"
+import { Logger, MedusaContainer } from "../types/global"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
 import { RoutesLoader } from "./helpers/routing"
 import { SubscriberLoader } from "./helpers/subscribers"
 import logger from "./logger"
+import { ConfigModule } from "@medusajs/types"
 
 type Options = {
   rootDirectory: string
