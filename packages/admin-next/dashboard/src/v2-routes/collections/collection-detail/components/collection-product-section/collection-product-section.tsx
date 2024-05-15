@@ -3,12 +3,14 @@ import { ProductCollectionDTO } from "@medusajs/types"
 import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
-import { adminProductKeys } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
-import { useProducts } from "../../../../../hooks/api/products"
+import {
+  productsQueryKeys,
+  useProducts,
+} from "../../../../../hooks/api/products"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
@@ -81,7 +83,7 @@ export const CollectionProductSection = ({
         remove: ids,
       })
 
-      queryClient.invalidateQueries(adminProductKeys.lists())
+      queryClient.invalidateQueries(productsQueryKeys.lists())
     } catch (e) {
       toast.error(t("general.error"), {
         description: e.message,
@@ -165,7 +167,7 @@ const ProductActions = ({
         remove: [product.id],
       })
 
-      queryClient.invalidateQueries(adminProductKeys.lists())
+      queryClient.invalidateQueries(productsQueryKeys.lists())
     } catch (e) {
       toast.error(t("general.error"), {
         description: e.message,

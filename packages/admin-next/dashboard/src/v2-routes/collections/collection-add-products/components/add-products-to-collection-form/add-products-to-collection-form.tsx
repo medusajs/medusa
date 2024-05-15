@@ -28,8 +28,10 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
-import { useProducts } from "../../../../../hooks/api/products"
-import { adminProductKeys } from "medusa-react"
+import {
+  productsQueryKeys,
+  useProducts,
+} from "../../../../../hooks/api/products"
 import { useHandleTableScroll } from "../../../../../hooks/use-handle-table-scroll.tsx"
 import { Query } from "../../../../../components/filtering/query"
 import { OrderBy } from "../../../../../components/filtering/order-by"
@@ -142,7 +144,7 @@ export const AddProductsToCollectionForm = ({
        * Invalidate the products list query to refetch products and
        * determine if they are added to the collection or not.
        */
-      queryClient.invalidateQueries(adminProductKeys.lists())
+      queryClient.invalidateQueries(productsQueryKeys.lists())
       handleSuccess()
     } catch (e) {
       toast.error(t("general.error"), {
