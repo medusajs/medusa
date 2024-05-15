@@ -4,8 +4,8 @@ import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
 import { createRequireFromPath } from "medusa-core-utils"
 import path from "path"
-import { MEDUSA_PROJECT_NAME } from "../plugins"
 
+export const MEDUSA_PROJECT_NAME = "project-plugin"
 function createPluginId(name: string): string {
   return name
 }

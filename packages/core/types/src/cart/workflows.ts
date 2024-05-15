@@ -1,5 +1,6 @@
 import { CustomerDTO } from "../customer"
 import { ShippingOptionDTO } from "../fulfillment"
+import { PaymentCollectionDTO } from "../payment"
 import { ProductDTO } from "../product"
 import { RegionDTO } from "../region"
 import { BigNumberInput } from "../totals"
@@ -121,4 +122,36 @@ export interface PricedShippingOptionDTO extends ShippingOptionDTO {
 
 export interface CompleteCartWorkflowInputDTO {
   id: string
+}
+
+export interface ConfirmVariantInventoryWorkflowInputDTO {
+  sales_channel_id: string
+  variants: {
+    id: string
+    manage_inventory: boolean
+    inventory_items: {
+      inventory_item_id: string
+      variant_id: string
+      required_quantity: BigNumberInput
+      inventory: {
+        location_levels: {
+          stock_locations: {
+            id: string
+            sales_channels: {
+              id: string
+            }[]
+          }[]
+        }
+      }[]
+    }[]
+  }[]
+  items: {
+    variant_id?: string
+    quantity: BigNumberInput
+  }[]
+}
+
+export interface CartWorkflowDTO {
+  id: string
+  payment_collection: PaymentCollectionDTO
 }

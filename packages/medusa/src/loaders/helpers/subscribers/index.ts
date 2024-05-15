@@ -4,9 +4,9 @@ import { kebabCase } from "@medusajs/utils"
 import { readdir } from "fs/promises"
 import { extname, join, sep } from "path"
 
-import { EventBusService } from "../../../services"
 import { SubscriberArgs, SubscriberConfig } from "../../../types/subscribers"
 import logger from "../../logger"
+import { IEventBusModuleService } from "@medusajs/types"
 
 type SubscriberHandler<T> = (args: SubscriberArgs<T>) => Promise<void>
 
@@ -16,7 +16,6 @@ type SubscriberModule<T> = {
 }
 
 export class SubscriberLoader {
-  protected isV2_: boolean
   protected container_: MedusaContainer
   protected pluginOptions_: Record<string, unknown>
   protected activityId_: string
@@ -34,14 +33,12 @@ export class SubscriberLoader {
     rootDir: string,
     container: MedusaContainer,
     options: Record<string, unknown> = {},
-    activityId: string,
-    isV2: boolean = false
+    activityId: string
   ) {
     this.rootDir_ = rootDir
     this.pluginOptions_ = options
     this.container_ = container
     this.activityId_ = activityId
-    this.isV2_ = isV2
   }
 
   private validateSubscriber(
@@ -163,7 +160,10 @@ export class SubscriberLoader {
     /**
      * If the handler is not anonymous, use the name
      */
-    if (handlerName && !handlerName.startsWith("default")) {
+    if (
+      handlerName &&
+      !(handlerName.startsWith("default") || handlerName.startsWith("_default"))
+    ) {
       return kebabCase(handlerName)
     }
 
@@ -185,13 +185,11 @@ export class SubscriberLoader {
     config: SubscriberConfig
     handler: SubscriberHandler<T>
   }) {
-    const resName = this.isV2_
-      ? ModuleRegistrationName.EVENT_BUS
-      : "eventBusService"
-    const eventBusService: EventBusService = this.container_.resolve(resName)
+    const eventBusService: IEventBusModuleService = this.container_.resolve(
+      ModuleRegistrationName.EVENT_BUS
+    )
 
     const { event } = config
-
     const events = Array.isArray(event) ? event : [event]
 
     const subscriber = async (data: T, eventName: string) => {
@@ -206,10 +204,12 @@ export class SubscriberLoader {
     const subscriberId = this.inferIdentifier(fileName, config, handler)
 
     for (const e of events) {
-      eventBusService.subscribe(e, subscriber as Subscriber, {
+      const obj = {
         ...(config.context ?? {}),
         subscriberId,
-      })
+      }
+
+      eventBusService.subscribe(e, subscriber as Subscriber, obj)
     }
   }
 

@@ -30,6 +30,7 @@ export class Migration20240219102530 extends Migration {
       CREATE TABLE IF NOT EXISTS "order" (
           "id" TEXT NOT NULL,
           "region_id" TEXT NULL,
+          "display_id" SERIAL,
           "customer_id" TEXT NULL,
           "version" INTEGER NOT NULL DEFAULT 1,
           "sales_channel_id" TEXT NULL,
@@ -110,6 +111,11 @@ export class Migration20240219102530 extends Migration {
         ["fulfillment_status", "payment_status", "display_id"],
         "DROP NOT NULL"
       )}
+
+      CREATE INDEX IF NOT EXISTS "IDX_order_display_id" ON "order" (
+          display_id
+      ) 
+      WHERE deleted_at IS NOT NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_region_id" ON "order" (
           region_id
@@ -460,6 +466,28 @@ export class Migration20240219102530 extends Migration {
       CREATE INDEX IF NOT EXISTS "IDX_order_transaction_reference_id" ON "order_transaction" (
           reference_id
       );
+      
+      CREATE TABLE IF NOT EXISTS "return_reason"
+      (
+          id character varying NOT NULL,
+          value character varying NOT NULL,
+          label character varying NOT NULL,
+          description character varying, 
+          metadata JSONB NULL,
+          parent_return_reason_id character varying,
+          created_at timestamp with time zone NOT NULL DEFAULT now(),
+          updated_at timestamp with time zone NOT NULL DEFAULT now(),
+          deleted_at timestamp with time zone,
+          CONSTRAINT "return_reason_pkey" PRIMARY KEY (id),
+          CONSTRAINT "return_reason_parent_return_reason_id_foreign" FOREIGN KEY (parent_return_reason_id)
+              REFERENCES "return_reason" (id) MATCH SIMPLE
+              ON UPDATE NO ACTION
+              ON DELETE NO ACTION
+      );
+
+      CREATE UNIQUE INDEX IF NOT EXISTS "IDX_return_reason_value" ON "return_reason" USING btree (value ASC NULLS LAST)
+      WHERE deleted_at IS NOT NULL;
+
 
       ALTER TABLE if exists "order"
       ADD CONSTRAINT "order_shipping_address_id_foreign" FOREIGN KEY ("shipping_address_id") REFERENCES "order_address" ("id") ON

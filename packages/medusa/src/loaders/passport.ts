@@ -1,11 +1,9 @@
+import { ConfigModule } from "@medusajs/types"
 import { Express } from "express"
 import passport from "passport"
 import { Strategy as CustomStrategy } from "passport-custom"
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt"
-import { Strategy as LocalStrategy } from "passport-local"
-import { AuthService } from "../services"
-import { ConfigModule } from "../types/global"
-import { MedusaRequest } from "../types/routing"
+/* import { AuthService } from "../services"*/
 
 export default async ({
   app,
@@ -15,7 +13,7 @@ export default async ({
   configModule: ConfigModule
 }): Promise<void> => {
   // For good old email password authentication
-  passport.use(
+  /* passport.use(
     new LocalStrategy(
       {
         usernameField: "email",
@@ -39,7 +37,7 @@ export default async ({
         }
       }
     )
-  )
+  )*/
 
   // After a user has authenticated a JWT will be placed on a cookie, all
   // calls will be authenticated based on the JWT
@@ -71,7 +69,7 @@ export default async ({
   )
 
   // Alternatively use API token to authenticate to the admin api
-  passport.use(
+  /* passport.use(
     "admin-api-token",
     new CustomStrategy(async (req, done) => {
       // extract the token from the header
@@ -91,7 +89,7 @@ export default async ({
         done(null, false)
       }
     })
-  )
+  )*/
 
   // Admin bearer JWT token authentication strategy, best suited for web SPAs or mobile apps
   passport.use(

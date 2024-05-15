@@ -1,0 +1,182 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Redis Workflow Engine Module`,
+}
+
+# {metadata.title}
+
+The Redis Workflow Engine Module uses Redis to track workflow executions and handle their subscribers. In production, it's recommended to use this module.
+
+---
+
+## Install the Redis Workflow Engine Module
+
+<Note type="check">
+
+- [Redis installed and Redis server running](https://redis.io/docs/getting-started/installation/).
+
+</Note>
+
+To install Redis Workflow Engine Module, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install @medusajs/workflow-engine-redis
+```
+
+Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
+
+export const highlights = [
+  ["8", "redisUrl", "The Redis connection URL."]
+]
+
+```js title="medusa-config.js" highlights={highlights}
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = {
+  // ...
+  modules: {
+    // ...
+    [Modules.WORKFLOW_ENGINE]: {
+      resolve: "@medusajs/workflow-engine-redis",
+      options: {
+        redis: {
+          url: process.emv.WE_REDIS_URL,
+        },
+      },
+    },
+  },
+}
+```
+
+### Environment Variables
+
+Make sure to add the following environment variables:
+
+```bash
+WE_REDIS_URL=<YOUR_REDIS_URL>
+```
+
+### Redis Workflow Engine Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `url`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Redis connection URL.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No. If not provided, you must provide the `pubsub` option.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `options`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of Redis options. Refer to the [Redis API Reference](https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `queueName`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The name of the queue used to keep track of retries and timeouts.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `medusa-workflows`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `pubsub`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A connection object having the following properties:
+
+      - `url`: A required string indicating the Redis connection URL.
+      - `options`: An optional object of Redis options. Refer to the [Redis API Reference](https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No. If not provided, you must provide the `url` option.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Test the Module
+
+To test the module, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+You'll see the following message in the terminal's logs:
+
+```bash noCopy noReport
+Connection to Redis in module 'workflow-engine-redis' established
+```

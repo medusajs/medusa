@@ -5,6 +5,10 @@ import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   cart: CartDTO
+  shippingOptionsContext: {
+    enabled_in_store?: "true" | "false"
+    is_return?: "true" | "false"
+  }
   option_ids: string[]
 }
 
@@ -13,7 +17,7 @@ export const validateCartShippingOptionsStepId =
 export const validateCartShippingOptionsStep = createStep(
   validateCartShippingOptionsStepId,
   async (data: StepInput, { container }) => {
-    const { option_ids: optionIds = [], cart } = data
+    const { option_ids: optionIds = [], cart, shippingOptionsContext } = data
 
     if (!optionIds.length) {
       return new StepResponse(void 0)
@@ -27,7 +31,7 @@ export const validateCartShippingOptionsStep = createStep(
       await fulfillmentModule.listShippingOptionsForContext(
         {
           id: optionIds,
-          context: { ...cart },
+          context: shippingOptionsContext,
           address: {
             country_code: cart.shipping_address?.country_code,
             province_code: cart.shipping_address?.province,

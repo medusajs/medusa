@@ -1,5 +1,6 @@
 export const defaultAdminOrderFields = [
   "id",
+  "display_id",
   "status",
   "version",
   "summary",
@@ -10,6 +11,7 @@ export const defaultAdminOrderFields = [
 
 export const defaultAdminRetrieveOrderFields = [
   "id",
+  "display_id",
   "status",
   "version",
   "summary",
@@ -37,14 +39,15 @@ export const defaultAdminRetrieveOrderFields = [
   "*items",
   "*items.tax_lines",
   "*items.adjustments",
+  "*items.variant",
+  "*items.variant.product",
   "*items.detail",
-  "*items.tax_lines",
-  "*items.adjustments",
   "*shipping_address",
   "*billing_address",
   "*shipping_methods",
   "*shipping_methods.tax_lines",
   "*shipping_methods.adjustments",
+  "*payment_collections",
 ]
 
 export const retrieveTransformQueryConfig = {

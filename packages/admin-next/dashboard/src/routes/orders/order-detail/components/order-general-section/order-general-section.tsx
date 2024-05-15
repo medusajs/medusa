@@ -99,6 +99,11 @@ const FulfillmentBadge = ({ order }: { order: Order }) => {
 const PaymentBadge = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
 
+  /**
+   * TODO: revisit when Order<>Payment are linked
+   */
+  return null
+
   const { label, color } = getOrderPaymentStatus(t, order.payment_status)
 
   return (

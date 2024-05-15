@@ -24,17 +24,20 @@ export type AdminGetPromotionsParamsType = z.infer<
 export const AdminGetPromotionsParams = createFindParams({
   limit: 50,
   offset: 0,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    code: z.union([z.string(), z.array(z.string())]).optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-    $and: z.lazy(() => AdminGetPromotionsParams.array()).optional(),
-    $or: z.lazy(() => AdminGetPromotionsParams.array()).optional(),
-  })
-)
+})
+  .merge(
+    z.object({
+      q: z.string().optional(),
+      code: z.union([z.string(), z.array(z.string())]).optional(),
+      campaign_id: z.union([z.string(), z.array(z.string())]).optional(),
+      created_at: createOperatorMap().optional(),
+      updated_at: createOperatorMap().optional(),
+      deleted_at: createOperatorMap().optional(),
+      $and: z.lazy(() => AdminGetPromotionsParams.array()).optional(),
+      $or: z.lazy(() => AdminGetPromotionsParams.array()).optional(),
+    })
+  )
+  .strict()
 
 export type AdminGetPromotionRuleParamsType = z.infer<
   typeof AdminGetPromotionRuleParams
@@ -152,7 +155,6 @@ export const AdminCreateCampaign = z.object({
   budget: CreateCampaignBudget.optional(),
   starts_at: z.coerce.date().optional(),
   ends_at: z.coerce.date().optional(),
-  promotions: z.array(z.object({ id: z.string() })).optional(),
 })
 
 export type AdminCreatePromotionType = z.infer<typeof AdminCreatePromotion>
@@ -161,7 +163,7 @@ export const AdminCreatePromotion = z
     code: z.string(),
     is_automatic: z.boolean().optional(),
     type: z.nativeEnum(PromotionType),
-    campaign_id: z.string().optional(),
+    campaign_id: z.string().optional().nullable(),
     campaign: AdminCreateCampaign.optional(),
     application_method: AdminCreateApplicationMethod,
     rules: z.array(AdminCreatePromotionRule).optional(),
@@ -179,7 +181,7 @@ export const AdminUpdatePromotion = z
     code: z.string().optional(),
     is_automatic: z.boolean().optional(),
     type: z.nativeEnum(PromotionType).optional(),
-    campaign_id: z.string().optional(),
+    campaign_id: z.string().optional().nullable(),
     campaign: AdminCreateCampaign.optional(),
     application_method: AdminUpdateApplicationMethod.optional(),
     rules: z.array(AdminCreatePromotionRule).optional(),

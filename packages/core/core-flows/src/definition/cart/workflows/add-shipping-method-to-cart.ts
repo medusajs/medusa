@@ -40,6 +40,7 @@ export const addShippingMethodToWorkflow = createWorkflow(
     validateCartShippingOptionsStep({
       option_ids: optionIds,
       cart,
+      shippingOptionsContext: { is_return: "false", enabled_in_store: "true" },
     })
 
     const shippingOptions = useRemoteQueryStep({

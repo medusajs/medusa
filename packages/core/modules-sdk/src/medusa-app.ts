@@ -149,7 +149,7 @@ async function initializeLinks({
   moduleExports,
 }) {
   try {
-    const { initialize, runMigrations } =
+    const { initialize, runMigrations, revertMigrations } =
       moduleExports ?? (await import(LinkModulePackage))
 
     const linkResolution = await initialize(
@@ -158,7 +158,12 @@ async function initializeLinks({
       injectedDependencies
     )
 
-    return { remoteLink: new RemoteLink(), linkResolution, runMigrations }
+    return {
+      remoteLink: new RemoteLink(),
+      linkResolution,
+      runMigrations,
+      revertMigrations,
+    }
   } catch (err) {
     console.warn("Error initializing link modules.", err)
 
@@ -175,7 +180,13 @@ function isMedusaModule(mod) {
 }
 
 function cleanAndMergeSchema(loadedSchema) {
-  const { schema: cleanedSchema, notFound } = cleanGraphQLSchema(loadedSchema)
+  const defaultMedusaSchema = `
+    scalar DateTime
+    scalar JSON
+  `
+  const { schema: cleanedSchema, notFound } = cleanGraphQLSchema(
+    defaultMedusaSchema + loadedSchema
+  )
   const mergedSchema = mergeTypeDefs(cleanedSchema)
   return { schema: makeExecutableSchema({ typeDefs: mergedSchema }), notFound }
 }
@@ -203,6 +214,7 @@ export type MedusaAppOutput = {
   entitiesMap?: Record<string, any>
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
+  revertMigrations: RunMigrationFn
   onApplicationShutdown: () => Promise<void>
   onApplicationPrepareShutdown: () => Promise<void>
 }
@@ -327,6 +339,9 @@ async function MedusaApp_({
       runMigrations: async () => {
         throw new Error("Migrations not allowed in loaderOnly mode")
       },
+      revertMigrations: async () => {
+        throw new Error("Revert migrations not allowed in loaderOnly mode")
+      },
     }
   }
 
@@ -336,13 +351,16 @@ async function MedusaApp_({
       allowUnregistered: true,
     })
 
-  const { remoteLink, runMigrations: linkModuleMigration } =
-    await initializeLinks({
-      config: linkModuleOptions,
-      linkModules,
-      injectedDependencies,
-      moduleExports: isMedusaModule(linkModule) ? linkModule : undefined,
-    })
+  const {
+    remoteLink,
+    runMigrations: linkModuleMigration,
+    revertMigrations: revertLinkModuleMigration,
+  } = await initializeLinks({
+    config: linkModuleOptions,
+    linkModules,
+    injectedDependencies,
+    moduleExports: isMedusaModule(linkModule) ? linkModule : undefined,
+  })
 
   const loadedSchema = getLoadedSchema()
   const { schema, notFound } = cleanAndMergeSchema(loadedSchema)
@@ -360,9 +378,7 @@ async function MedusaApp_({
     return await remoteQuery.query(query, variables, options)
   }
 
-  const runMigrations: RunMigrationFn = async (
-    linkModuleOptions
-  ): Promise<void> => {
+  const applyMigration = async (linkModuleOptions, revert = false) => {
     for (const moduleName of Object.keys(allModules)) {
       const moduleResolution = MedusaModule.getModuleResolutions(moduleName)
 
@@ -373,12 +389,21 @@ async function MedusaApp_({
         }
       }
 
-      await MedusaModule.migrateUp(
-        moduleResolution.definition.key,
-        moduleResolution.resolutionPath as string,
-        moduleResolution.options,
-        moduleResolution.moduleExports
-      )
+      if (!revert) {
+        await MedusaModule.migrateUp(
+          moduleResolution.definition.key,
+          moduleResolution.resolutionPath as string,
+          moduleResolution.options,
+          moduleResolution.moduleExports
+        )
+      } else {
+        await MedusaModule.migrateDown(
+          moduleResolution.definition.key,
+          moduleResolution.resolutionPath as string,
+          moduleResolution.options,
+          moduleResolution.moduleExports
+        )
+      }
     }
 
     const linkModuleOpt = { ...(linkModuleOptions ?? {}) }
@@ -386,11 +411,31 @@ async function MedusaApp_({
       ...(sharedResourcesConfig?.database ?? {}),
     }
 
-    linkModuleMigration &&
-      (await linkModuleMigration({
-        options: linkModuleOpt,
-        injectedDependencies,
-      }))
+    if (!revert) {
+      linkModuleMigration &&
+        (await linkModuleMigration({
+          options: linkModuleOpt,
+          injectedDependencies,
+        }))
+    } else {
+      revertLinkModuleMigration &&
+        (await revertLinkModuleMigration({
+          options: linkModuleOpt,
+          injectedDependencies,
+        }))
+    }
+  }
+
+  const runMigrations: RunMigrationFn = async (
+    linkModuleOptions
+  ): Promise<void> => {
+    await applyMigration(linkModuleOptions)
+  }
+
+  const revertMigrations: RunMigrationFn = async (
+    linkModuleOptions
+  ): Promise<void> => {
+    await applyMigration(linkModuleOptions, true)
   }
 
   return {
@@ -402,6 +447,7 @@ async function MedusaApp_({
     entitiesMap: schema.getTypeMap(),
     notFound,
     runMigrations,
+    revertMigrations,
   }
 }
 
@@ -426,4 +472,17 @@ export async function MedusaAppMigrateUp(
   })
 
   await runMigrations().finally(MedusaModule.clearInstances)
+}
+
+export async function MedusaAppMigrateDown(
+  options: MedusaAppOptions = {}
+): Promise<void> {
+  const migrationOnly = true
+
+  const { revertMigrations } = await MedusaApp_({
+    ...options,
+    migrationOnly,
+  })
+
+  await revertMigrations().finally(MedusaModule.clearInstances)
 }

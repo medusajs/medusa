@@ -8,11 +8,9 @@ In this chapter, you'll learn about how to add new API routes for each HTTP meth
 
 ## Handlers of HTTP Methods
 
-You can define a handler function for each HTTP method in a route file. The function’s name is the name of the HTTP method it handles.
+You can export handler functions for more than one HTTP method in a route file. An API route is created for every HTTP method you export a function for.
 
 Allowed HTTP methods are: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`, `OPTIONS`, and `HEAD`.
-
-Creating a route handler function for any of the above HTTP methods exposes a new API route for that method.
 
 For example, create the file `src/api/store/hello-world/route.ts` with the following content:
 

@@ -1,8 +1,10 @@
-import { ProductOption } from "@medusajs/client-types"
-import { ProductTypes } from "@medusajs/types"
+import {
+  InternalModuleService,
+  IProductModuleService,
+  ProductTypes,
+} from "@medusajs/types"
 import { Collection } from "@mikro-orm/core"
-import { Product, ProductTag, ProductVariant } from "@models"
-import { ProductVariantService } from "@services"
+import { Product, ProductOption, ProductTag, ProductVariant } from "@models"
 import {
   createOptions,
   createProductAndTags,
@@ -13,7 +15,6 @@ import { buildProductVariantOnlyData } from "../../../__fixtures__/variant/data/
 
 import { Modules } from "@medusajs/modules-sdk"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { IProductModuleService } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
@@ -28,7 +29,7 @@ moduleIntegrationTestRunner({
       let variantTwo: ProductVariant
       let productOne: Product
       const productVariantTestOne = "test-1"
-      let service: ProductVariantService
+      let service: InternalModuleService<any>
 
       beforeEach(() => {
         service = medusaApp.modules["productService"].productVariantService_
@@ -47,14 +48,12 @@ moduleIntegrationTestRunner({
           variantOne = testManager.create(ProductVariant, {
             id: productVariantTestOne,
             title: "variant 1",
-            inventory_quantity: 10,
             product: productOne,
           })
 
           variantTwo = testManager.create(ProductVariant, {
             id: "test-2",
             title: "variant",
-            inventory_quantity: 10,
             product: productOne,
           })
 
@@ -70,7 +69,6 @@ moduleIntegrationTestRunner({
             expect.objectContaining({
               id: variantOne.id,
               title: "variant 1",
-              inventory_quantity: "10",
             }),
           ])
         })
@@ -229,7 +227,6 @@ moduleIntegrationTestRunner({
               id: expect.any(String),
               title: data.title,
               sku: data.sku,
-              inventory_quantity: 100,
               allow_backorder: false,
               manage_inventory: true,
               variant_rank: 0,
@@ -260,7 +257,6 @@ moduleIntegrationTestRunner({
           variantOne = testManager.create(ProductVariant, {
             id: productVariantTestOne,
             title: "variant 1",
-            inventory_quantity: 10,
             product: productOne,
           })
 

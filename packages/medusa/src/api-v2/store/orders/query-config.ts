@@ -15,6 +15,7 @@ export const defaultStoreRetrieveOrderFields = [
   "status",
   "version",
   "summary",
+  "currency_code",
   "total",
   "subtotal",
   "tax_total",
@@ -40,16 +41,22 @@ export const defaultStoreRetrieveOrderFields = [
   "*items.tax_lines",
   "*items.adjustments",
   "*items.detail",
-  "*items.tax_lines",
-  "*items.adjustments",
+  "*items.variant",
+  "*items.variant.product",
   "*shipping_address",
   "*billing_address",
   "*shipping_methods",
   "*shipping_methods.tax_lines",
   "*shipping_methods.adjustments",
+  "*payment_collections",
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultStoreRetrieveOrderFields,
+  defaults: defaultStoreRetrieveOrderFields,
+  isList: false,
+}
+
+export const listTransformQueryConfig = {
+  defaults: defaultStoreOrderFields,
   isList: false,
 }

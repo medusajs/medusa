@@ -79,7 +79,7 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<ProductDTO>
 
   /**
-   * This method is used to retrieve a paginated list of price sets based on optional filters and configuration.
+   * This method is used to retrieve a paginated list of products based on optional filters and configuration.
    *
    * @param {FilterableProductProps} filters - The filters to apply on the retrieved products.
    * @param {FindConfig<ProductDTO>} config -

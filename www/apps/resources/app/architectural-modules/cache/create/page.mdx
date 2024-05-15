@@ -1,0 +1,165 @@
+export const metadata = {
+  title: `How to Create a Cache Module`,
+}
+
+# {metadata.title}
+
+In this guide, you’ll learn how to create a Cache Module.
+
+## 1. Create Module Directory
+
+Start by creating a new directory for your module. For example, `src/modules/my-cache`.
+
+---
+
+## 2. Create the Cache Service
+
+Create the file `src/modules/my-cache/service.ts` that holds the implementation of the cache service.
+
+The Cache Module's main service must implement the `ICacheService` interface imported from `@medusajs/types`:
+
+```ts title="src/modules/my-cache/service.ts"
+import { ICacheService } from "@medusajs/types"
+
+class MyCacheService implements ICacheService {
+  get<T>(key: string): Promise<T> {
+    throw new Error("Method not implemented.")
+  }
+  set(key: string, data: unknown, ttl?: number): Promise<void> {
+    throw new Error("Method not implemented.")
+  }
+  invalidate(key: string): Promise<void> {
+    throw new Error("Method not implemented.")
+  }
+}
+
+export default MyCacheService
+```
+
+The service implements the required methods based on the desired caching mechanism.
+
+### Implement get Method
+
+The `get` method retrieves the value of a cached item based on its key.
+
+The method accepts a string as a first parameter, which is the key in the cache. It either returns the cached item or `null` if it doesn’t exist.
+
+For example, to implement this method using Memcached:
+
+```ts title="src/modules/my-cache/service.ts"
+class MyCacheService implements ICacheService {
+  // ...
+  async get<T>(cacheKey: string): Promise<T | null> {
+    return new Promise((res, rej) => {
+      this.memcached.get(cacheKey, (err, data) => {
+        if (err) {
+          res(null)
+        } else {
+          if (data) {
+            res(JSON.parse(data))
+          } else {
+            res(null)
+          }
+        }
+      })
+    })
+  }
+}
+```
+
+### Implement set Method
+
+The `set` method is used to set an item in the cache. It accepts three parameters:
+
+1. The first parameter is a string indicating the key of the data being added to the cache. This key can be used later to get or invalidate the cached item.
+2. The second parameter is the data to be added to the cache. The data can be of any type.
+3. The third parameter is optional. It’s a number indicating how long (in seconds) the data should be kept in the cache.
+
+For example, to implement this method using Memcached:
+
+```ts title="src/modules/my-cache/service.ts"
+class MyCacheService implements ICacheService {
+  protected TTL = 60
+  // ...
+  async set(
+    key: string,
+    data: Record<string, unknown>,
+    ttl: number = this.TTL // or any value
+  ): Promise<void> {
+    return new Promise((res, rej) =>
+      this.memcached.set(
+        key, JSON.stringify(data), ttl, (err) => {
+        if (err) {
+          rej(err)
+        } else {
+          res()
+        }
+      })
+    )
+  }
+}
+```
+
+### Implement invalidate Method
+
+The `invalidate` method removes an item from the cache using its key.
+
+By default, items are removed from the cache when their time-to-live (ttl) expires. The `invalidate` method can be used to remove the item beforehand.
+
+The method accepts a string as a first parameter, which is the key of the item to invalidate and remove from the cache.
+
+For example, to implement this method using Memcached:
+
+```ts title="src/modules/my-cache/service.ts"
+class MyCacheService implements ICacheService {
+  // ...
+  async invalidate(key: string): Promise<void> {
+    return new Promise((res, rej) => {
+      this.memcached.del(key, (err) => {
+        if (err) {
+          rej(err)
+        } else {
+          res()
+        }
+      })
+    })
+  }
+}
+```
+
+---
+
+## 3. Create Module Definition File
+
+Create the file `src/modules/my-cache/index.ts` with the following content:
+
+```ts title="src/modules/my-cache/index.ts"
+import MyCacheService from "./service"
+
+export default {
+  service: MyCacheService,
+}
+```
+
+This exports the module's definition, indicating that the `MyCacheService` is the main service of the module.
+
+---
+
+## 4. Use Module
+
+To use your Cache Module, add it to the `modules` object exported as part of the configurations in `medusa-config.js`. A Cache Module is added under the `cacheService` key.
+
+For example:
+
+```js title="medusa-config.js"
+const modules = {
+  // other modules...
+  cacheService: {
+    resolve: "./dist/modules/my-cache/index.ts",
+    options: {
+      // any necessary options
+      ttl: 30,
+    },
+  },
+}
+```

@@ -9,6 +9,7 @@ import {
   FulfillmentProviderDTO,
   InventoryNext,
   InviteDTO,
+  OrderDTO,
   PaymentProviderDTO,
   PriceListDTO,
   ProductCategoryDTO,
@@ -98,6 +99,10 @@ export type CurrencyListRes = { currencies: CurrencyDTO[] } & ListRes
 export type InviteRes = { invite: InviteDTO }
 export type InviteListRes = { invites: InviteDTO[] } & ListRes
 export type InviteDeleteRes = DeleteRes
+
+// Orders
+export type OrderRes = { order: OrderDTO }
+export type OrderListRes = { orders: OrderDTO[] } & ListRes
 
 // Products
 export type ExtendedProductDTO = ProductDTO & {

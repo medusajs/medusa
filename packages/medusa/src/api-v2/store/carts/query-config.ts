@@ -56,11 +56,11 @@ export const defaultStoreCartFields = [
   "shipping_methods.tax_lines.code",
   "shipping_methods.tax_lines.rate",
   "shipping_methods.tax_lines.provider_id",
-  "shipping_methods.shipping_option_id",
   "shipping_methods.amount",
   "shipping_methods.adjustments.id",
   "shipping_methods.adjustments.code",
   "shipping_methods.adjustments.amount",
+  "shipping_methods.shipping_option_id",
   "shipping_address.id",
   "shipping_address.first_name",
   "shipping_address.last_name",
@@ -86,18 +86,15 @@ export const defaultStoreCartFields = [
   "region.name",
   "region.currency_code",
   "region.automatic_taxes",
+  "*region.countries",
   "sales_channel_id",
 
-  // TODO: To be updated when payment sessions are introduces in the Rest API
   "payment_collection.id",
   "payment_collection.amount",
-  "payment_collection.payment_sessions",
+  "*payment_collection.payment_sessions",
 ]
-
-const allowedFields = [...defaultStoreCartFields]
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCartFields,
-  allowed: allowedFields,
   isList: false,
 }

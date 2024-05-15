@@ -1,4 +1,3 @@
-import { ProductService } from "../../../../../services"
 import {
   SubscriberArgs,
   SubscriberConfig,
@@ -14,7 +13,7 @@ export default async function productUpdater({
 }
 
 export const config: SubscriberConfig = {
-  event: ProductService.Events.UPDATED,
+  event: "product.updated",
   context: {
     subscriberId: "product-updater",
   },

@@ -8,9 +8,11 @@ import {
   FilterableOrderLineItemProps,
   FilterableOrderLineItemTaxLineProps,
   FilterableOrderProps,
+  FilterableOrderReturnReasonProps,
   FilterableOrderShippingMethodAdjustmentProps,
   FilterableOrderShippingMethodProps,
   FilterableOrderShippingMethodTaxLineProps,
+  FilterableOrderTransactionProps,
   OrderAddressDTO,
   OrderChangeActionDTO,
   OrderChangeDTO,
@@ -19,9 +21,11 @@ import {
   OrderLineItemAdjustmentDTO,
   OrderLineItemDTO,
   OrderLineItemTaxLineDTO,
+  OrderReturnReasonDTO,
   OrderShippingMethodAdjustmentDTO,
   OrderShippingMethodDTO,
   OrderShippingMethodTaxLineDTO,
+  OrderTransactionDTO,
 } from "./common"
 import {
   CancelOrderChangeDTO,
@@ -35,10 +39,13 @@ import {
   CreateOrderLineItemForOrderDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderReturnDTO,
+  CreateOrderReturnReasonDTO,
   CreateOrderShippingMethodAdjustmentDTO,
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodTaxLineDTO,
+  CreateOrderTransactionDTO,
   DeclineOrderChangeDTO,
+  ReceiveOrderReturnDTO,
   RegisterOrderFulfillmentDTO,
   RegisterOrderShipmentDTO,
   UpdateOrderAddressDTO,
@@ -48,8 +55,12 @@ import {
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderLineItemWithSelectorDTO,
+  UpdateOrderReturnReasonDTO,
+  UpdateOrderReturnReasonWithSelectorDTO,
   UpdateOrderShippingMethodAdjustmentDTO,
   UpdateOrderShippingMethodTaxLineDTO,
+  UpdateOrderTransactionDTO,
+  UpdateOrderTransactionWithSelectorDTO,
   UpsertOrderLineItemAdjustmentDTO,
 } from "./mutations"
 
@@ -1389,6 +1400,112 @@ export interface IOrderModuleService extends IModuleService {
 
   revertLastVersion(orderId: string, sharedContext?: Context): Promise<void>
 
+  retrieveTransaction(
+    id: string,
+    config?: FindConfig<OrderTransactionDTO>,
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO>
+
+  listTransactions(
+    filters: FilterableOrderTransactionProps,
+    config?: FindConfig<OrderTransactionDTO>,
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO[]>
+
+  addTransactions(
+    data: CreateOrderTransactionDTO,
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO>
+
+  addTransactions(
+    data: CreateOrderTransactionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO[]>
+
+  updateTransactions(
+    data: UpdateOrderTransactionWithSelectorDTO[]
+  ): Promise<OrderTransactionDTO[]>
+  updateTransactions(
+    selector: Partial<FilterableOrderTransactionProps>,
+    data: Partial<UpdateOrderTransactionDTO>,
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO[]>
+  updateTransactions(
+    id: string,
+    data: Partial<UpdateOrderTransactionDTO>,
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO>
+
+  deleteTransactions(
+    returnReasonIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  softDeleteTransactions<TReturnableLinkableKeys extends string = string>(
+    storeIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreTransactions<TReturnableLinkableKeys extends string = string>(
+    storeIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  retrieveReturnReason(
+    reasonId: string,
+    config?: FindConfig<OrderReturnReasonDTO>,
+    sharedContext?: Context
+  ): Promise<OrderReturnReasonDTO>
+
+  listReturnReasons(
+    filters: FilterableOrderReturnReasonProps,
+    config?: FindConfig<OrderReturnReasonDTO>,
+    sharedContext?: Context
+  ): Promise<OrderReturnReasonDTO[]>
+
+  createReturnReasons(
+    returnReasonData: CreateOrderReturnReasonDTO,
+    sharedContext?: Context
+  ): Promise<OrderReturnReasonDTO>
+
+  createReturnReasons(
+    returnReasonData: CreateOrderReturnReasonDTO[],
+    sharedContext?: Context
+  ): Promise<OrderReturnReasonDTO[]>
+
+  updateReturnReasons(
+    data: UpdateOrderReturnReasonWithSelectorDTO[]
+  ): Promise<OrderReturnReasonDTO[]>
+  updateReturnReasons(
+    selector: Partial<FilterableOrderReturnReasonProps>,
+    data: Partial<UpdateOrderReturnReasonDTO>,
+    sharedContext?: Context
+  ): Promise<OrderReturnReasonDTO[]>
+  updateReturnReasons(
+    id: string,
+    data: Partial<UpdateOrderReturnReasonDTO>,
+    sharedContext?: Context
+  ): Promise<OrderReturnReasonDTO>
+
+  deleteReturnReasons(
+    returnReasonIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  softDeleteReturnReasons<TReturnableLinkableKeys extends string = string>(
+    storeIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreReturnReasons<TReturnableLinkableKeys extends string = string>(
+    storeIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
   // Bundled flows
   registerFulfillment(
     data: RegisterOrderFulfillmentDTO,
@@ -1402,6 +1519,11 @@ export interface IOrderModuleService extends IModuleService {
 
   createReturn(
     returnData: CreateOrderReturnDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  receiveReturn(
+    returnData: ReceiveOrderReturnDTO,
     sharedContext?: Context
   ): Promise<void>
 }

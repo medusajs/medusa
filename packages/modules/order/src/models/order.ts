@@ -28,6 +28,12 @@ type OptionalOrderProps =
   | "billing_address"
   | DAL.EntityDateColumns
 
+const DisplayIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "display_id",
+  where: "deleted_at IS NOT NULL",
+})
+
 const RegionIdIndex = createPsqlIndexStatementHelper({
   tableName: "order",
   columns: "region_id",
@@ -82,6 +88,10 @@ export default class Order {
 
   @PrimaryKey({ columnType: "text" })
   id: string
+
+  @Property({ autoincrement: true, primary: false })
+  @DisplayIdIndex.MikroORMIndex()
+  display_id: number
 
   @Property({
     columnType: "text",

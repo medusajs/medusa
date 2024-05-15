@@ -6,13 +6,13 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you’ll learn about creating relationships in queryable modules.
+In this document, you’ll learn about creating relationships between modules.
 
-## What is a Relationship in a Queryable Module?
+## What is a Module Relationship?
 
-A queryable module can have a relationship to another queryable module in the form of a reference.
+A module can have a relationship to another module in the form of a reference.
 
-The Medusa application resolves these relationships while maintaining isolation between the modules and allowing you to retrieve data across them using the remote query.
+The Medusa application resolves these relationships while maintaining isolation between the modules and allowing you to retrieve data across them.
 
 <Note title="Use module relationships when" type="success">
 
@@ -31,15 +31,16 @@ The Medusa application resolves these relationships while maintaining isolation 
 
 ## How to Create a Module Relationship?
 
-<Note title="Tip">
+<Note title="Steps Summary">
 
-The next chapter provides a detailed example of implementing a relationship between two modules. This section gives the general steps to creating the relationship.
+1. Define a `__joinerConfig` method in the module's main service.
+2. Configure module to be queryable.
 
 </Note>
 
 Consider you’re creating a data model that adds custom fields associated with a product:
 
-```ts title="src/modules/hello/models/another-custom.ts" highlights={[["13"]]}
+```ts title="src/modules/hello/models/custom-product-data.ts" highlights={[["19"]]}
 import { generateEntityId } from "@medusajs/utils"
 import { 
   BeforeCreate, 
@@ -74,89 +75,203 @@ export class CustomProductData {
 
 The `CustomProductData` data model has a `product_id` field to reference the product it adds custom fields for.
 
-To create a relationship to the `product` data model in the Product Module, add the following to the joiner configuration of your module:
+<Note title="Tip">
+
+When you add a new data model, make sure to:
+
+- [Create a migration for it.](../../../basics/data-models/page.mdx#create-a-migration)
+- [Add it to the second parameter of the main service's factory function.](../service-factory/page.mdx#abstractModuleServiceFactory-parameters)
+- Add it to the [container](../container/page.mdx) and [connection](../connection-loader/page.mdx) loaders.
+
+</Note>
+
+### 1. Define `__joinerConfig` Method
+
+To create a relationship to the `product` data model of the Product Module, create a public `__joinerConfig` method in your main module's service:
 
 export const relationshipsHighlight = [
-  ["10", "serviceName", "The name of the module that this relationship is referencing."],
-  ["11", "alias", "The alias of the data model you’re referencing in the other module."],
-  ["12", "primaryKey", "The name of the field you’re referencing in the other module’s data model."],
-  ["13", "foreignKey", "The name of the field in your data models referencing the other module’s model."],
+  ["39", "serviceName", "The name of the module that this relationship is referencing."],
+  ["40", "alias", "The alias of the data model you’re referencing in the other module."],
+  ["41", "primaryKey", "The name of the field you’re referencing in the other module’s data model."],
+  ["42", "foreignKey", "The name of the field in your data models referencing the other module’s model."],
 ]
 
-```ts title="src/modules/hello/joiner-config.ts" highlights={relationshipsHighlight}
+```ts title="src/modules/hello/service.ts" highlights={relationshipsHighlight}
 // other imports...
+import { MyCustom } from "./models/custom-product-data"
+import { CustomProductData } from "./models/custom-product-data"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
-import { CustomProductData } from "./models/custom-product-data"
 
-const joinerConfig: ModuleJoinerConfig = {
-  // ...
-  relationships: [
-    {
-      serviceName: Modules.PRODUCT,
-      alias: "product",
-      primaryKey: "id",
-      foreignKey: "product_id",
-    },
-  ],
+class HelloModuleService extends ModulesSdkUtils
+  .abstractModuleServiceFactory<
+    // ...
+  >(
+    // ...
+  ) {
+  
+    // ...
+  
+    __joinerConfig(): ModuleJoinerConfig {
+      return {
+        serviceName: "helloModuleService",
+        primaryKeys: ["id"],
+        alias: [
+          {
+            name: ["my_custom"],
+            args: {
+              entity: MyCustom.name,
+            },
+          },
+          {
+            name: ["custom_product_data"],
+            args: {
+              entity: CustomProductData.name,
+              // Only needed if data model isn't main data model
+              // of service
+              methodSuffix: "CustomProductDatas",
+            },
+          },
+        ],
+        relationships: [
+          {
+            serviceName: Modules.PRODUCT,
+            alias: "product",
+            primaryKey: "id",
+            foreignKey: "product_id",
+          },
+        ],
+      }
+    }
+    
+    // ...
 }
-
-export default joinerConfig
 ```
 
-You pass a new property `relationships` to the `joinerConfig`. This property’s value is an array of relationship definitions from your module to other modules.
+This creates a relationship to the `Product` data model of the Product Module using the alias `product`. The `product_id` fields in your data models are considered references to the `id` field of the `Product` data model.
 
-Each relationship definition object accepts the following properties:
+#### `__joinerConfig` Return Type
 
 <TypeList types={[
   {
     name: "serviceName",
     type: "`string`",
     optional: false,
-    description: "The name of the module (as added in `medusa-config.js`) that this relationship is referencing. If you’re referencing a Medusa commerce module, use the `Modules` enum imported from `@medusajs/modules-sdk`."
+    description: "The name of your module (as added in `medusa-config.js`)."
+  },
+  {
+    name: "primaryKeys",
+    type: "`string[]`",
+    optional: false,
+    description: "The primary key field names used in your module's data models.",
   },
   {
     name: "alias",
-    type: "`string`",
-    optional: false,
-    description: "The alias of the data model you’re referencing in the other module. The alias is defined in the joiner configuration of that module, similar to your module."
+    type: "`object[]`",
+    description: "The alias definitions for each data model in your module. This allows other modules to reference your module's data models in relationships.",
+    children: [
+      {
+        name: "name",
+        type: "`string[]`",
+        description: "The alias names of a data model used later when fetching or referencing the data model."
+      },
+      {
+        name: "args",
+        type: "`object`",
+        description: "The alias's arguments.",
+        children: [
+          {
+            name: "entity",
+            type: "string",
+            description: "The name of the data model this alias is defined for."
+          },
+          {
+            name: "methodSuffix",
+            type: "string",
+            description: "The plural name of the data model. This is only required if the data model isn't the main data model of the module's service."
+          }
+        ]
+      }
+    ]
   },
   {
-    name: "primaryKey",
-    type: "`string`",
-    optional: false,
-    description: "The name of the field you’re referencing in the other module’s data model."
-  },
-  {
-    name: "foreignKey",
-    type: "`string`",
-    optional: false,
-    description: "The name of the field in your data models referencing the other module’s model."
+    name: "relationships",
+    type: "`object[]`",
+    description: "Your module's relationships to other modules.",
+    children: [
+      {
+        name: "serviceName",
+        type: "`string`",
+        optional: false,
+        description: "The name of the module (as added in `medusa-config.js`) that this relationship is referencing. When referencing a Medusa commerce module, use the `Modules` enum imported from `@medusajs/modules-sdk`."
+      },
+      {
+        name: "alias",
+        type: "`string`",
+        optional: false,
+        description: "The alias of the data model you’re referencing in the other module. You can find it in the `__joinerConfig` method of the other module's service."
+      },
+      {
+        name: "primaryKey",
+        type: "`string`",
+        optional: false,
+        description: "The name of the field you’re referencing in the other module’s data model."
+      },
+      {
+        name: "foreignKey",
+        type: "`string`",
+        optional: false,
+        description: "The name of the field in your data models that references the other module’s data model."
+      }
+    ]
   }
-]} />
+]} sectionTitle="Define __joinerConfig Method" />
 
-So, the above example creates a relationship to the `Product` data model of the Product Module, which has the alias `product`. `product_id` fields in your module’s data models are considered references to the `id` field of the `Product` data model in the Product Module.
+### 2. Adjust Module Configuration
 
----
+To use relationships in a module, adjust its configuration object passed to the `modules` object in `medusa-config.js`:
 
-## Query Data Across Relationships
+export const configHighlights = [
+  ["7", "isQueryable", "Enable this property to use relationships in a module."]
+]
 
-The remote query allows you to query data across modules using their relationship without the actual dependency between the modules.
-
-To do that, specify within the `fields` retrieved in the query the referenced data model’s fields. For example:
-
-```ts highlights={[["3", '"product.title"', "Retrieve the referenced product's title."]]}
-const query = remoteQueryObjectFromString({
-  entryPoint: "another_custom",
-  fields: ["id", "custom_field", "product.title"],
-})
-
-const result = await remoteQuery(query)
+```js title="medusa-config.js" highlights={configHighlights}
+const modules = {
+  helloModuleService: {
+    // ...
+    definition: {
+      key: "helloModuleService",
+      registrationName: "helloModuleService",
+      isQueryable: true,
+    },
+  },
+  // ...
+}
 ```
 
-Use `alias`'s value in the relationship definition to reference the other module’s data model. To specify its fields, use dot notation.
+Enabling the `isQueryable` property is required to use relationships in a module.
 
-So, in the example above, the referenced product’s title is retrieved along with the ID under the `product` property of each record object in the result.
+The `definition` property’s value is an object that accepts the following properties, among others:
+
+<TypeList types={[
+  {
+    name: "key",
+    type: "`string`",
+    optional: false,
+    description: "The module's key in the `modules` object."
+  },
+  {
+    name: "registrationName",
+    type: "`string`",
+    optional: false,
+    description: "The name that the main service is registered under in the Medusa container. It’s recommended to be the same as `key`'s value.",
+  },
+  {
+    name: "isQueryable",
+    type: "`boolean`",
+    description: "Whether the module is queryable. This must be enabled to allow a module to have relationships."
+  }
+]} sectionTitle="Adjust Module Configuration" />
 
 ---
 
@@ -164,76 +279,39 @@ So, in the example above, the referenced product’s title is retrieved along wi
 
 If the data model you’re referencing isn’t the main data model of the main module service, pass to the relationship definition the `args` property:
 
-```ts title="src/modules/hello/joiner-config.ts" highlights={[["10", "methodSuffix", "The suffix of the referenced data model's methods."]]}
-const joinerConfig: ModuleJoinerConfig = {
-  // ...
-  relationships: [
-    {
-      serviceName: Modules.PRODUCT,
-      primaryKey: "id",
-      foreignKey: "variant_id",
-      alias: "variant",
-      args: {
-        methodSuffix: "Variants",
-      },
-    },
-  ],
-}
+```ts title="src/modules/hello/service.ts" highlights={[["20", "methodSuffix", "The suffix of the referenced data model's methods."]]}
+class HelloModuleService extends ModulesSdkUtils
+  .abstractModuleServiceFactory<
+    // ...
+  >(
+    // ...
+  ) {
+  
+    // ...
+  
+    __joinerConfig(): ModuleJoinerConfig {
+      return {
+        // ...
+        relationships: [
+          {
+            serviceName: Modules.PRODUCT,
+            primaryKey: "id",
+            foreignKey: "variant_id",
+            alias: "variant",
+            args: {
+              methodSuffix: "Variants",
+            },
+          },
+        ],
+      }
+    }
+  }
 ```
 
 The `args` property’s value is an object accepting a `methodSuffix` property. The `methodSuffix` property’s value is the plural name of the data model.
 
 ---
 
-## Inverse Relationship
+## Querying Module Relationships
 
-If you’re creating a relationship between two custom modules, you can define the relationship on the referenced side using the `extends` property of the joiner configuration.
-
-For example:
-
-<CodeTabs groupId="inverse-relation">
-  <CodeTab label="Hello Module" value="hello-module">
-
-  ```ts title="src/modules/hello/joiner-config.ts"
-  // Hello module
-  const joinerConfig: ModuleJoinerConfig = {
-    // ...
-    relationships: [
-      {
-        serviceName: "anotherHelloModuleService",
-        alias: "another_custom",
-        primaryKey: "id",
-        foreignKey: "another_custom_id",
-      },
-    ],
-  }
-  ```
-
-  </CodeTab>
-  <CodeTab label="Another Hello Module" value="another-hello-module">
-
-  ```ts title="src/modules/another-hello/joiner-config.ts" highlights={[["6", "serviceName", "The name of the module this relationship was originally created in."], ["7", "relationship", "The relationship object as defined in the referencing module."]]}
-  // Another hello module
-  const joinerConfig: ModuleJoinerConfig = {
-    // ...
-    extends: [
-      {
-        serviceName: "helloModuleService",
-        relationship: {
-          serviceName: "anotherHelloModuleService",
-          alias: "another_custom",
-          primaryKey: "id",
-          foreignKey: "another_custom_id",
-        },
-      },
-    ],
-  }
-  ```
-
-  </CodeTab>
-</CodeTabs>
-
-The `extends` property’s value is an array of objects having the following properties:
-
-1. `serviceName`: The name of the module this relationship was originally created in.
-2. `relationship`: The relationship object as defined in the referencing module.
+The next chapter explains how to query data across module relationships.

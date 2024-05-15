@@ -12,7 +12,7 @@ In this chapter, you’ll learn about workflows and how to define and execute th
 
 A workflow is a series of queries and actions that complete a task.
 
-You construct a Workflow similar to how you create a JavaScript function, but unlike regular functions, a Medusa Workflow creates an internal representation of your steps. This makes it possible to keep track of your Workflow’s progress, automatically retry failing steps, and, if necessary, roll back steps.
+You construct a workflow similar to how you create a JavaScript function, but unlike regular functions, a workflow creates an internal representation of your steps. This makes it possible to keep track of your Workflow’s progress, automatically retry failing steps, and roll back steps.
 
 ---
 
@@ -20,7 +20,7 @@ You construct a Workflow similar to how you create a JavaScript function, but un
 
 ### 1. Create the Steps
 
-A workflow is made of a series of steps. A step is created using the `createStep` utility function.
+A workflow is made of a series of steps. A step is created using the `createStep` utility function imported from `@medusajs/workflows-sdk`.
 
 Create the file `src/workflows/hello-world.ts` with the following content:
 
@@ -89,13 +89,13 @@ This creates a `hello-world` workflow. When you create a workflow, it’s constr
 
 ### 3. Execute the Workflow
 
-You can execute a workflow from different places within Medusa.
+You can execute a workflow from different resources within Medusa.
 
-- Use API Routes to execute the workflow in response to an API request or a webhook.
-- Use Subscribers to execute a workflow when an event is triggered.
-- Use Scheduled Jobs to execute a workflow on a regular schedule.
+- Use API routes to execute the workflow in response to an API request or a webhook.
+- Use subscribers to execute a workflow when an event is triggered.
+- Use scheduled jobs to execute a workflow on a regular schedule.
 
-To execute the workflow, invoke it passing the Medusa container as a parameter, then use its run method:
+To execute the workflow, invoke it passing the Medusa container as a parameter. Then, use its `run` method:
 
 <CodeTabs group="resource-types">
   <CodeTab label="API Route" value="api-route">
@@ -195,7 +195,7 @@ npm run dev
 
 Then, send a `GET` request to `/store/workflow`:
 
-```bash apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/workflows"
+```bash apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/workflow"
 curl http://localhost:9000/store/workflow
 ```
 
@@ -209,7 +209,7 @@ You’ll receive the following response:
 
 ---
 
-## When to Use
+## When to Use Workflows
 
 <Note title="Use workflows when" type="success">
 
@@ -223,7 +223,7 @@ You’ll receive the following response:
 
 ## Resolve Resources
 
-Each step in the workflow receives as a second parameter a `context` object. The object holds a `container` property which is the Medusa container. You can use it to resolve other resources, such as services, of your Medusa application.
+Each step in the workflow receives as a second parameter a `context` object. The object holds a `container` property which is the Medusa container. Use it to resolve other resources, such as services, of your Medusa application.
 
 For example:
 

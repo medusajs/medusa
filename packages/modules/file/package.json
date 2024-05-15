@@ -36,7 +36,7 @@
   "devDependencies": {
     "@mikro-orm/cli": "5.9.7",
     "cross-env": "^5.2.1",
-    "faker": "^6.6.6",
+    "faker": "^5.5.3",
     "jest": "^29.6.3",
     "medusa-test-utils": "^1.1.43",
     "pg-god": "^1.0.12",

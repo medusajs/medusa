@@ -12,7 +12,7 @@ import {
 } from "./utils/circular-patch-utils"
 import { getTmpDirectory, isFile } from "./utils/fs-utils"
 import { readJson } from "./utils/json-utils"
-import { jsonFileToYamlFile, readYaml, writeYaml, writeYamlFromJson } from "./utils/yaml-utils"
+import { readYaml, writeYaml, writeYamlFromJson } from "./utils/yaml-utils"
 import yargs from "yargs"
 
 /**

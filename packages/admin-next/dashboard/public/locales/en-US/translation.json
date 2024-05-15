@@ -19,6 +19,7 @@
     "is": "is",
     "timeline": "Timeline",
     "success": "Success",
+    "warning": "Warning",
     "error": "Error",
     "select": "Select",
     "selected": "Selected",
@@ -540,6 +541,10 @@
         "canceled": "Canceled",
         "requiresAction": "Requires action"
       },
+      "toast": {
+        "canceled": "Fulfillment successfully canceled",
+        "fulfillmentShipped": "Cannot cancel an already shipped fulfillment"
+      },
       "trackingLabel": "Tracking",
       "shippingFromLabel": "Shipping from",
       "itemsLabel": "Items"
@@ -706,7 +711,7 @@
         "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone. ",
         "zoneName": "Zone name"
       },
-      "edit":{
+      "edit": {
         "title": "Edit Service Zone"
       },
       "deleteWarning": "Are you sure you want to delete \"{{name}}\". This will also delete all assocciated shipping options.",
@@ -756,7 +761,7 @@
         "provider": "Fulfillment provider"
       }
     },
-    "returnOptions" : {
+    "returnOptions": {
       "create": {
         "title": "Create a return option for {{zone}}"
       }
@@ -963,6 +968,10 @@
         "new": {
           "title": "New Campaign",
           "description": "Would you like to create a new campaign with this promotion?"
+        },
+        "none": {
+          "title": "Without Campaign",
+          "description": "Proceed without associating promotion with campaign"
         }
       },
       "status": {
@@ -1027,21 +1036,68 @@
   "campaigns": {
     "domain": "Campaigns",
     "details": "Campaign details",
+    "status": {
+      "active": "active",
+      "expired": "expired",
+      "scheduled": "scheduled"
+    },
+    "delete": {
+      "title": "Are you sure?",
+      "description": "You are about to delete the campaign '{{name}}'. This action cannot be undone.",
+      "successToast": "Campaign '{{name}}' was successfully created."
+    },
+    "edit": {
+      "header": "Edit Campaign",
+      "successToast": "Campaign '{{name}}' was successfully updated."
+    },
+    "create": {
+      "hint": "Create a promotional campaign",
+      "header": "Create Campaign",
+      "successToast": "Campaign '{{name}}' was successfully created."
+    },
     "fields": {
       "name": "Name",
       "identifier": "Identifier",
       "start_date": "Start date",
-      "end_date": "End date"
+      "end_date": "End date",
+      "total_spend": "Total spend",
+      "budget_limit": "Budget limit"
     },
     "budget": {
+      "create": {
+        "hint": "Create a budget for the campaign",
+        "header": "Campaign Budget"
+      },
       "details": "Campaign budget",
       "fields": {
         "type": "Type",
         "currency": "Currency",
         "limit": "Limit",
         "used": "Used"
+      },
+      "type": {
+        "spend": {
+          "title": "Spend",
+          "description": "Limit usage based on a currency value"
+        },
+        "usage": {
+          "title": "Usage",
+          "description": "Limit usage based on how many times its used"
+        }
       }
-    }
+    },
+    "promotions": {
+      "remove": {
+        "title": "Remove promotion from campaign",
+        "description": "You are about to remove {{count}} promotion(s) from the campaign. This action cannot be undone."
+      },
+      "alreadyAdded": "This promotion has already been added to the campaign.",
+      "toast": {
+        "success": "Successfully added {{count}} promotion(s) to campaign"
+      }
+    },
+    "deleteCampaignWarning": "You are about to delete the campaign {{name}}. This action cannot be undone.",
+    "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>"
   },
   "pricing": {
     "domain": "Pricing",

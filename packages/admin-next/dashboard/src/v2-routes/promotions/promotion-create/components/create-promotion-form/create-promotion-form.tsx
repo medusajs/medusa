@@ -28,6 +28,7 @@ import {
 } from "../../../../../components/route-modal"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { defaultCampaignValues } from "../../../../campaigns/campaign-create/components/create-campaign-form"
 import { RulesFormField } from "../../../common/edit-rules/components/edit-rules-form"
 import { AddCampaignPromotionFields } from "../../../promotion-add-campaign/components/add-campaign-promotion-form"
 import { Tab } from "./constants"
@@ -76,7 +77,7 @@ export const CreatePromotionForm = ({
     defaultValues: {
       campaign_id: undefined,
       template_id: templates[0].id!,
-      existing: "true",
+      campaign_choice: "none",
       is_automatic: "false",
       code: "",
       type: "standard",
@@ -89,6 +90,7 @@ export const CreatePromotionForm = ({
         target_rules: generateRuleAttributes(targetRules),
         buy_rules: generateRuleAttributes(buyRules),
       },
+      campaign: undefined,
     },
     resolver: zodResolver(CreatePromotionSchema),
   })
@@ -131,7 +133,7 @@ export const CreatePromotionForm = ({
   const handleSubmit = form.handleSubmit(
     async (data) => {
       const {
-        existing,
+        campaign_choice,
         is_automatic,
         template_id,
         application_method,
@@ -153,7 +155,10 @@ export const CreatePromotionForm = ({
 
       for (const rule of [...targetRulesData, ...buyRulesData]) {
         if (disguisedRuleAttributes.includes(rule.attribute)) {
-          attr[rule.attribute] = rule.values
+          attr[rule.attribute] =
+            rule.field_type === "number"
+              ? parseInt(rule.values as string)
+              : rule.values
         }
       }
 
@@ -293,6 +298,29 @@ export const CreatePromotionForm = ({
     return "not-started"
   }, [detailsValidated])
 
+  const watchCampaignChoice = useWatch({
+    control: form.control,
+    name: "campaign_choice",
+  })
+
+  useEffect(() => {
+    const formData = form.getValues()
+
+    if (watchCampaignChoice !== "existing") {
+      form.setValue("campaign_id", undefined)
+    }
+
+    if (watchCampaignChoice !== "new") {
+      form.setValue("campaign", undefined)
+    }
+
+    if (watchCampaignChoice === "new") {
+      if (!formData.campaign || !formData.campaign?.budget?.type) {
+        form.setValue("campaign", defaultCampaignValues)
+      }
+    }
+  }, [watchCampaignChoice])
+
   return (
     <RouteFocusModal.Form form={form}>
       <form
@@ -367,6 +395,7 @@ export const CreatePromotionForm = ({
                   return (
                     <Form.Item>
                       <Form.Label>{t("promotions.fields.type")}</Form.Label>
+
                       <Form.Control>
                         <RadioGroup
                           key={"template_id"}
@@ -418,6 +447,7 @@ export const CreatePromotionForm = ({
                   return (
                     <Form.Item>
                       <Form.Label>Method</Form.Label>
+
                       <Form.Control>
                         <RadioGroup
                           className="flex gap-y-3"
@@ -695,9 +725,7 @@ export const CreatePromotionForm = ({
                             <Input
                               {...form.register(
                                 "application_method.max_quantity",
-                                {
-                                  valueAsNumber: true,
-                                }
+                                { valueAsNumber: true }
                               )}
                               type="number"
                               min={1}

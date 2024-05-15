@@ -3,9 +3,6 @@ import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app
 import { useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
-import adminSeeder from "../../../../helpers/admin-seeder"
-import productSeeder from "../../../../helpers/product-seeder"
-
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { MedusaV2Flag } from "@medusajs/utils"
 import { AxiosInstance } from "axios"
@@ -15,6 +12,7 @@ import {
   simpleSalesChannelFactory,
 } from "../../../../factories"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -68,8 +66,7 @@ describe.skip("/admin/products", () => {
 
   describe("POST /admin/products", () => {
     beforeEach(async () => {
-      await productSeeder(dbConnection)
-      await adminSeeder(dbConnection)
+      await createAdminUser(dbConnection, adminHeaders, medusaContainer)
       await createDefaultRuleTypes(medusaContainer)
 
       await simpleSalesChannelFactory(dbConnection, {
@@ -444,7 +441,7 @@ describe.skip("/admin/products", () => {
 
     beforeEach(async () => {
       await productSeeder(dbConnection)
-      await adminSeeder(dbConnection)
+      await createAdminUser(dbConnection, adminHeaders, medusaContainer)
       await createDefaultRuleTypes(medusaContainer)
 
       await simpleSalesChannelFactory(dbConnection, {

@@ -9,7 +9,6 @@ import { MedusaError, upperCaseFirst } from "../../common"
 
 export const dbErrorMapper = (err: Error) => {
   if (err instanceof NotFoundError) {
-    console.log(err)
     throw new MedusaError(MedusaError.Types.NOT_FOUND, err.message)
   }
 

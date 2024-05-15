@@ -12,6 +12,11 @@ export const FulfillmentStatusCell = ({
 }: FulfillmentStatusCellProps) => {
   const { t } = useTranslation()
 
+  if (!status) {
+    // TODO: remove this once fulfillment<>order link is added
+    return "-"
+  }
+
   const { label, color } = getOrderFulfillmentStatus(t, status)
 
   return <StatusCell color={color}>{label}</StatusCell>

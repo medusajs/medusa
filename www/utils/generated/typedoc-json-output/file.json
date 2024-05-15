@@ -1,0 +1,356 @@
+{
+	"id": 0,
+	"name": "file",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 1,
+			"name": "AbstractFileProviderService",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 2,
+					"name": "identifier",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isStatic": true
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4,
+							"name": "new AbstractFileProviderService",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 1,
+								"name": "AbstractFileProviderService",
+								"package": "@medusajs/utils"
+							}
+						}
+					]
+				},
+				{
+					"id": 5,
+					"name": "getIdentifier",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 6,
+							"name": "getIdentifier",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "any"
+							}
+						}
+					]
+				},
+				{
+					"id": 7,
+					"name": "upload",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 8,
+							"name": "upload",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 9,
+									"name": "file",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/file/provider.ts",
+											"qualifiedName": "ProviderUploadFileDTO"
+										},
+										"name": "ProviderUploadFileDTO",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/file/provider.ts",
+											"qualifiedName": "ProviderFileResultDTO"
+										},
+										"name": "ProviderFileResultDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IFileProvider.upload"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IFileProvider.upload"
+					}
+				},
+				{
+					"id": 10,
+					"name": "delete",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 11,
+							"name": "delete",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 12,
+									"name": "file",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/file/provider.ts",
+											"qualifiedName": "ProviderDeleteFileDTO"
+										},
+										"name": "ProviderDeleteFileDTO",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IFileProvider.delete"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IFileProvider.delete"
+					}
+				},
+				{
+					"id": 13,
+					"name": "getPresignedDownloadUrl",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 14,
+							"name": "getPresignedDownloadUrl",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 15,
+									"name": "fileData",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/file/provider.ts",
+											"qualifiedName": "ProviderGetFileDTO"
+										},
+										"name": "ProviderGetFileDTO",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IFileProvider.getPresignedDownloadUrl"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IFileProvider.getPresignedDownloadUrl"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						2
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						5,
+						7,
+						10,
+						13
+					]
+				}
+			],
+			"implementedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../../packages/core/types/src/file/provider.ts",
+						"qualifiedName": "IFileProvider"
+					},
+					"name": "IFileProvider",
+					"package": "@medusajs/types"
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				1
+			]
+		}
+	],
+	"packageName": "@medusajs/utils",
+	"symbolIdMap": {
+		"0": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": ""
+		},
+		"1": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "AbstractFileProviderService"
+		},
+		"2": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "AbstractFileProviderService.identifier"
+		},
+		"5": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "AbstractFileProviderService.getIdentifier"
+		},
+		"6": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "AbstractFileProviderService.getIdentifier"
+		},
+		"7": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "AbstractFileProviderService.upload"
+		},
+		"8": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "AbstractFileProviderService.upload"
+		},
+		"9": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "file"
+		},
+		"10": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "AbstractFileProviderService.delete"
+		},
+		"11": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "AbstractFileProviderService.delete"
+		},
+		"12": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "file"
+		},
+		"13": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "AbstractFileProviderService.getPresignedDownloadUrl"
+		},
+		"14": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "AbstractFileProviderService.getPresignedDownloadUrl"
+		},
+		"15": {
+			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
+			"qualifiedName": "fileData"
+		}
+	}
+}

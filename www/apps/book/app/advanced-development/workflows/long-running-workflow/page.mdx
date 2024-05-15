@@ -1,0 +1,156 @@
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Long-Running Workflows`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn what a long-running workflow is and how to configure it.
+
+## What is a Long-Running Workflow?
+
+By default, when you execute a workflow, you wait until the workflow finishes execution. Once you receive the workflow’s output, the rest of the code is executed.
+
+A long-running workflow is a workflow that continues its execution in the background. You don’t receive its output immediately. Instead, you subscribe to the workflow execution to listen to status changes and receive its result once the execution is finished.
+
+---
+
+## Configure Long-Running Workflows
+
+A workflow is considered long-running if at least one step has its `async` configuration set to `true`.
+
+For example, consider the following workflow and steps:
+
+```ts title="src/workflows/hello-world.ts" highlights={[["13"]]}
+import { 
+  createStep,  
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
+
+const step1 = createStep("step-1", async () => {
+  // ...
+})
+
+const step2 = createStep(
+  {
+    name: "step-2",
+    async: true,
+  },
+  async () => {
+    // ...
+  }
+)
+
+const step3 = createStep("step-3", async () => {
+  // ...
+})
+
+type WorkflowOutput = {
+  message: string
+}
+
+const myWorkflow = createWorkflow<
+  {},
+  WorkflowOutput
+>({
+  name: "hello-world",
+}, function () {
+  step1()
+  step2()
+  step3()
+})
+
+export default myWorkflow
+
+```
+
+The second step has in its configuration object `async` set to true. This indicates that this step is an asynchronous step.
+
+So, when you execute the `hello-world` workflow, it continues its execution in the background once it reaches the second step.
+
+---
+
+## Access Long-Running Workflow Status and Result
+
+<Note type="check">
+
+- [A workflow engine module installed](!resources!/architectural-modules/workflow-engine/in-memory).
+
+</Note>
+
+To access the status and result of a long-running workflow, use the workflow engine registered in the Medusa Container. The workflow engine provides methods to access and subscribe to workflow executions.
+
+For example:
+
+export const highlights = [
+  ["18", "", "Resolve the workflow engine from the Medusa container."],
+  ["24", "subscribe", "Subscribe to status changes of the workflow execution."],
+]
+
+```ts title="src/api/store/workflows/route.ts" highlights={highlights}
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/medusa"
+import myWorkflow from "../../../workflows/hello-world"
+import { 
+  IWorkflowEngineService,
+} from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { transaction, result } = await myWorkflow(req.scope)
+    .run()
+
+  const workflowEngine = req.scope.resolve<
+    IWorkflowEngineService
+  >(
+    ModuleRegistrationName.WORKFLOW_ENGINE
+  )
+
+  await workflowEngine.subscribe({
+    workflowId: "hello-world",
+    transactionId: transaction.transactionId,
+    subscriber: (data) => {
+      if (data.eventType === "onFinish") {
+        console.log("Finished execution", data.result)
+      } else if (data.eventType === "onStepFailure") {
+        console.log("Workflow failed", data.step)
+      }
+    },
+  })
+
+  res.send(result)
+}
+```
+
+In the above example, you execute the long-running workflow `hello-world`. You then resolve the workflow engine from the Medusa container and use its `subscribe` method to listen to changes in the workflow execution’s status.
+
+The `subscribe` method accepts an object having three properties:
+
+<TypeList
+  types={[
+    {
+      name: "workflowId",
+      type: "`string`",
+      description: "The name of the workflow."
+    },
+    {
+      name: "transactionId",
+      type: "`string`",
+      description: "The ID of the workflow exection's transaction. The transaction's details are returned in the response of the workflow execution."
+    },
+    {
+      name: "subscriber",
+      type: "`string`",
+      description: "The function executed when the workflow execution's status changes.  The function receives a data object. It has an `eventType` property, which you use to check the status of the workflow execution."
+    }
+  ]}
+  sectionTitle="Access Long-Running Workflow Status and Result"
+/>
+
+Once the workflow execution finishes, the subscriber function is executed with the `eventType` of the received parameter set to `onFinish`. The workflow’s output is set in the `result` property of the parameter.

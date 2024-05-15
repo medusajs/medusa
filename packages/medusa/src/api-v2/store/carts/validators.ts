@@ -89,3 +89,8 @@ export const StoreCompleteCart = z
   })
   .strict()
 export type StoreCompleteCartType = z.infer<typeof StoreCompleteCart>
+
+export type StoreCreateCartPaymentCollectionType = z.infer<
+  typeof StoreCreateCartPaymentCollection
+>
+export const StoreCreateCartPaymentCollection = z.object({}).strict()

@@ -1,9 +1,11 @@
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/authenticate-middleware"
+import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
+import { ensurePublishableKeyAndSalesChannelMatch } from "../../utils/middlewares/common/ensure-pub-key-sales-channel-match"
+import { maybeAttachPublishableKeyScopes } from "../../utils/middlewares/common/maybe-attach-pub-key-scopes"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as OrderQueryConfig from "../orders/query-config"
-import { StoreGetOrder } from "../orders/validators"
+import { StoreGetOrderParams } from "../orders/validators"
 import * as QueryConfig from "./query-config"
 import {
   StoreAddCartLineItem,
@@ -47,6 +49,8 @@ export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
         StoreGetCartsCart,
         QueryConfig.retrieveTransformQueryConfig
       ),
+      maybeAttachPublishableKeyScopes,
+      ensurePublishableKeyAndSalesChannelMatch,
     ],
   },
   {
@@ -116,17 +120,6 @@ export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/store/carts/:id/payment-collections",
-    middlewares: [
-      validateAndTransformBody(StoreUpdateCart),
-      validateAndTransformQuery(
-        StoreGetCartsCart,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
     matcher: "/store/carts/:id/shipping-methods",
     middlewares: [
       validateAndTransformBody(StoreAddCartShippingMethods),
@@ -153,7 +146,7 @@ export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       validateAndTransformBody(StoreCompleteCart),
       validateAndTransformQuery(
-        StoreGetOrder,
+        StoreGetOrderParams,
         OrderQueryConfig.retrieveTransformQueryConfig
       ),
     ],

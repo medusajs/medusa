@@ -2,7 +2,6 @@ import {
   Buildings,
   ChevronDownMini,
   CurrencyDollar,
-  Envelope,
   MinusMini,
   ReceiptPercent,
   ShoppingCart,
@@ -87,10 +86,11 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
       label: t("orders.domain"),
       to: "/orders",
       items: [
-        {
-          label: t("draftOrders.domain"),
-          to: "/draft-orders",
-        },
+        // TODO: Enable when domin is introduced
+        // {
+        //   label: t("draftOrders.domain"),
+        //   to: "/draft-orders",
+        // },
       ],
     },
     {
@@ -98,18 +98,20 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
       label: t("products.domain"),
       to: "/products",
       items: [
-        {
-          label: t("collections.domain"),
-          to: "/collections",
-        },
+        // TODO: Enable when domin is introduced
+        // {
+        //   label: t("collections.domain"),
+        //   to: "/collections",
+        // },
         {
           label: t("categories.domain"),
           to: "/categories",
         },
-        {
-          label: t("giftCards.domain"),
-          to: "/gift-cards",
-        },
+        // TODO: Enable when domin is introduced
+        // {
+        //   label: t("giftCards.domain"),
+        //   to: "/gift-cards",
+        // },
       ],
     },
     {
@@ -138,6 +140,12 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
       icon: <ReceiptPercent />,
       label: t("promotions.domain"),
       to: "/promotions",
+      items: [
+        {
+          label: t("campaigns.domain"),
+          to: "/campaigns",
+        },
+      ],
     },
     {
       icon: <CurrencyDollar />,

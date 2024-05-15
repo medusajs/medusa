@@ -5,7 +5,7 @@ export const getOrderPaymentStatus = (
   t: TFunction<"translation">,
   status: PaymentStatus
 ) => {
-  const [label, color] = {
+  const [label, color] = ({
     not_paid: [t("orders.payment.status.notPaid"), "red"],
     awaiting: [t("orders.payment.status.awaiting"), "orange"],
     captured: [t("orders.payment.status.captured"), "green"],
@@ -16,7 +16,9 @@ export const getOrderPaymentStatus = (
     ],
     canceled: [t("orders.payment.status.canceled"), "red"],
     requires_action: [t("orders.payment.status.requiresAction"), "orange"],
-  }[status] as [string, "red" | "orange" | "green"]
+  }[status] ||
+    // TODO: remove this when Order<>Payment are linked
+    "not_paid") as [string, "red" | "orange" | "green"]
 
   return { label, color }
 }

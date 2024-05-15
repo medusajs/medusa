@@ -1,0 +1,39 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `In-Memory Workflow Engine Module`,
+}
+
+# {metadata.title}
+
+The In-Memory Workflow Engine Module uses a plain JavaScript Map object to store the workflow executions.
+
+This module is helpful for development or when you’re testing out Medusa, but it’s not recommended to be used in production.
+
+For production, it’s recommended to use modules like [Redis Workflow Engine Module](../redis/page.mdx).
+
+---
+
+## Install the In-Memory Workflow Engine Module
+
+To install the In-Memory Workflow Engine Module, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install @medusajs/workflow-engine-inmemory
+```
+
+Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = {
+  // ...
+  modules: {
+    // ...
+    [Modules.WORKFLOW_ENGINE]: true,
+  },
+}
+```

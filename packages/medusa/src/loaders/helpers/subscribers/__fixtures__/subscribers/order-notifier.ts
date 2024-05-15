@@ -1,4 +1,3 @@
-import { OrderService } from "../../../../../services"
 import {
   SubscriberArgs,
   SubscriberConfig,
@@ -14,9 +13,5 @@ export default async function orderNotifier({
 }
 
 export const config: SubscriberConfig = {
-  event: [
-    OrderService.Events.PLACED,
-    OrderService.Events.CANCELED,
-    OrderService.Events.COMPLETED,
-  ],
+  event: ["order.placed", "order.canceled", "order.completed"],
 }

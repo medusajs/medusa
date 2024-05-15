@@ -1,24 +1,18 @@
 import { z } from "zod"
-import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
 import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
+import { OptionalBooleanValidator } from "../../utils/common-validators"
 
 export type StoreProductCategoryParamsType = z.infer<
   typeof StoreProductCategoryParams
 >
 export const StoreProductCategoryParams = createSelectParams().merge(
   z.object({
-    include_ancestors_tree: z.preprocess(
-      (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
-      z.boolean().optional()
-    ),
-    include_descendants_tree: z.preprocess(
-      (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
-      z.boolean().optional()
-    ),
+    include_ancestors_tree: OptionalBooleanValidator,
+    include_descendants_tree: OptionalBooleanValidator,
   })
 )
 
@@ -35,14 +29,8 @@ export const StoreProductCategoriesParams = createFindParams({
     description: z.union([z.string(), z.array(z.string())]).optional(),
     handle: z.union([z.string(), z.array(z.string())]).optional(),
     parent_category_id: z.union([z.string(), z.array(z.string())]).optional(),
-    include_ancestors_tree: z.preprocess(
-      (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
-      z.boolean().optional()
-    ),
-    include_descendants_tree: z.preprocess(
-      (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
-      z.boolean().optional()
-    ),
+    include_ancestors_tree: OptionalBooleanValidator,
+    include_descendants_tree: OptionalBooleanValidator,
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),

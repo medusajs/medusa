@@ -32,6 +32,8 @@ import {
   ProductStatus,
   promiseAll,
   removeUndefined,
+  isValidHandle,
+  toHandle,
 } from "@medusajs/utils"
 import {
   ProductCategoryEventData,
@@ -1165,9 +1167,14 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
     const normalizedInput = await promiseAll(
-      data.map(
-        async (d) => await this.normalizeCreateProductInput(d, sharedContext)
-      )
+      data.map(async (d) => {
+        const normalized = await this.normalizeCreateProductInput(
+          d,
+          sharedContext
+        )
+        this.validateProductPayload(normalized)
+        return normalized
+      })
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1223,9 +1230,14 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
     const normalizedInput = await promiseAll(
-      data.map(
-        async (d) => await this.normalizeUpdateProductInput(d, sharedContext)
-      )
+      data.map(async (d) => {
+        const normalized = await this.normalizeUpdateProductInput(
+          d,
+          sharedContext
+        )
+        this.validateProductPayload(normalized)
+        return normalized
+      })
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1306,6 +1318,21 @@ export default class ProductModuleService<
     return productData
   }
 
+  /**
+   * Validates the manually provided handle value of the product
+   * to be URL-safe
+   */
+  protected validateProductPayload(
+    productData: UpdateProductInput | ProductTypes.CreateProductDTO
+  ) {
+    if (productData.handle && !isValidHandle(productData.handle)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Invalid product handle. It must contain URL safe characters"
+      )
+    }
+  }
+
   protected async normalizeCreateProductInput(
     product: ProductTypes.CreateProductDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -1316,7 +1343,7 @@ export default class ProductModuleService<
     )) as ProductTypes.CreateProductDTO
 
     if (!productData.handle && productData.title) {
-      productData.handle = kebabCase(productData.title)
+      productData.handle = toHandle(productData.title)
     }
 
     if (!productData.status) {

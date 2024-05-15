@@ -10,19 +10,13 @@ In this chapter, you’ll learn about loaders and how to use them.
 
 A loader is a function executed when the Medusa application starts.
 
-A loader can be created either within a module or in the `src/loaders` directory.
-
-<Note>
-
-This guide explains the first approach. This second approach will be explained in later chapters.
-
-</Note>
+A module can define loaders to execute on application start-up.
 
 ---
 
 ## How to Create a Loader?
 
-A loader is created in a TypeScript or JavaScript file under the `loaders` directory of a module. The file must export the loader function.
+A loader is created in a TypeScript or JavaScript file under a module's `loaders` directory.
 
 For example, create the file `src/modules/hello/loaders/hello-world.ts` with the following content:
 
@@ -36,7 +30,7 @@ export default function helloWorldLoader() {
 
 ### Export Loader in Module Definition
 
-You must export your loaders in the module definition. Otherwise, your Medusa application won't run them.
+You must export your loaders in the module definition.
 
 To do that, import the loader in `src/modules/hello/index.ts` and export it in the module's definition:
 
@@ -52,7 +46,7 @@ export default {
 }
 ```
 
-The value of the `loaders` property of the module definition is an array of loader functions.
+The value of the `loaders` property is an array of loader functions.
 
 ### Test Loader
 
@@ -70,13 +64,12 @@ Among the messages logged in the terminal, you’ll see the following message:
 
 ---
 
-## When to Use
+## When to Use Loaders
 
 <Note title="Use loaders when" type="success">
 
 - You're performing an action at application start-up.
 - You're establishing a one-time connection with an external system.
-- You're registering a custom resource in the container.
 
 </Note>
 

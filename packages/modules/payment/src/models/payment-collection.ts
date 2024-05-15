@@ -43,6 +43,24 @@ export default class PaymentCollection {
   @Property({ columnType: "jsonb" })
   raw_amount: BigNumberRawValue
 
+  @MikroOrmBigNumberProperty({ nullable: true })
+  authorized_amount: BigNumber | number | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_authorized_amount: BigNumberRawValue | null = null
+
+  @MikroOrmBigNumberProperty({ nullable: true })
+  captured_amount: BigNumber | number | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_captured_amount: BigNumberRawValue | null = null
+
+  @MikroOrmBigNumberProperty({ nullable: true })
+  refunded_amount: BigNumber | number | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_refunded_amount: BigNumberRawValue | null = null
+
   @Property({ columnType: "text", index: "IDX_payment_collection_region_id" })
   region_id: string
 

@@ -4,12 +4,12 @@ import glob from "glob"
 import { trackInstallation } from "medusa-telemetry"
 import { EOL } from "os"
 import path from "path"
-import { ConfigModule, Logger, MedusaContainer } from "../types/global"
-import ScheduledJobsLoader from "./helpers/jobs"
+import { Logger, MedusaContainer } from "../types/global"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
 import { RoutesLoader } from "./helpers/routing"
 import { SubscriberLoader } from "./helpers/subscribers"
 import logger from "./logger"
+import { ConfigModule } from "@medusajs/types"
 
 type Options = {
   rootDirectory: string
@@ -65,7 +65,8 @@ export default async ({
   if (configModule.projectConfig.redis_url) {
     await Promise.all(
       resolved.map(async (pluginDetails) => {
-        await registerScheduledJobs(pluginDetails, container)
+        // await registerScheduledJobs(pluginDetails, container)
+        // TODO: Decide how scheduled jobs will be loaded and handled
       })
     )
   } else {
@@ -99,17 +100,6 @@ async function runLoaders(
       }
     })
   )
-}
-
-async function registerScheduledJobs(
-  pluginDetails: PluginDetails,
-  container: MedusaContainer
-): Promise<void> {
-  await new ScheduledJobsLoader(
-    path.join(pluginDetails.resolve, "jobs"),
-    container,
-    pluginDetails.options
-  ).load()
 }
 
 /**
@@ -169,7 +159,6 @@ async function registerSubscribers(
     path.join(pluginDetails.resolve, "subscribers"),
     container,
     pluginDetails.options,
-    activityId,
-    true
+    activityId
   ).load()
 }

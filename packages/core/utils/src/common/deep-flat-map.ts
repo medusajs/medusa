@@ -83,6 +83,11 @@ export function deepFlatMap(
       }
     } else {
       if (Array.isArray(element[currentKey])) {
+        if (element[currentKey].length === 0) {
+          callback({ ...context })
+          continue
+        }
+
         element[currentKey].forEach((item) => {
           stack.push({
             element: item,

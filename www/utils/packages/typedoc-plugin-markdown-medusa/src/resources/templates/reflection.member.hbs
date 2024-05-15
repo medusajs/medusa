@@ -1,0 +1,17 @@
+{{> header}}
+
+{{> title}}
+
+{{#with model}}
+
+{{incrementCurrentTitleLevel}}
+
+{{{ startSections }}}
+
+{{> member showSources=false}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/with}}
+
+{{{ endSections }}}

@@ -135,7 +135,7 @@ export const useAddCustomersToGroup = (
   options?: UseMutationOptions<
     AdminCustomerGroupResponse,
     Error,
-    { customer_ids: { id: string }[] }
+    { customer_ids: string[] }
   >
 ) => {
   return useMutation({

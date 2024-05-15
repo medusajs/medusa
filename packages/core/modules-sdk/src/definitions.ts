@@ -36,6 +36,7 @@ export enum Modules {
   STORE = "store",
   CURRENCY = "currency",
   FILE = "file",
+  NOTIFICATION = "notification",
 }
 
 export enum ModuleRegistrationName {
@@ -61,6 +62,7 @@ export enum ModuleRegistrationName {
   STORE = "storeModuleService",
   CURRENCY = "currencyModuleService",
   FILE = "fileModuleService",
+  NOTIFICATION = "notificationModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -87,13 +89,13 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.STORE]: "@medusajs/store",
   [Modules.CURRENCY]: "@medusajs/currency",
   [Modules.FILE]: "@medusajs/file",
+  [Modules.NOTIFICATION]: "@medusajs/notification",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
   {
     [Modules.EVENT_BUS]: {
       key: Modules.EVENT_BUS,
-      isLegacy: true,
       registrationName: ModuleRegistrationName.EVENT_BUS,
       defaultPackage: MODULE_PACKAGE_NAMES[Modules.EVENT_BUS],
       label: upperCaseFirst(ModuleRegistrationName.EVENT_BUS),
@@ -106,7 +108,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
     },
     [Modules.STOCK_LOCATION]: {
       key: Modules.STOCK_LOCATION,
-      isLegacy: true,
       registrationName: ModuleRegistrationName.STOCK_LOCATION,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.STOCK_LOCATION),
@@ -120,7 +121,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
     },
     [Modules.INVENTORY]: {
       key: Modules.INVENTORY,
-      isLegacy: true,
       registrationName: ModuleRegistrationName.INVENTORY,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.INVENTORY),
@@ -134,7 +134,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
     },
     [Modules.CACHE]: {
       key: Modules.CACHE,
-      isLegacy: true,
       registrationName: ModuleRegistrationName.CACHE,
       defaultPackage: MODULE_PACKAGE_NAMES[Modules.CACHE],
       label: upperCaseFirst(ModuleRegistrationName.CACHE),
@@ -370,6 +369,19 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.FILE,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.FILE),
+      isRequired: false,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.NOTIFICATION]: {
+      key: Modules.NOTIFICATION,
+      registrationName: ModuleRegistrationName.NOTIFICATION,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.NOTIFICATION),
       isRequired: false,
       isQueryable: true,
       dependencies: ["logger"],

@@ -48,9 +48,11 @@ export default class MySoftDeletable {
 
 ---
 
-## Managing Soft-Deletable Models
+## Manage Soft-Deletable Models
 
 Services extending the service factory have methods to soft delete and restore records for all models specified during its creation.
+
+### Soft Delete a Record
 
 For example, to soft delete a `MySoftDeletable` record:
 
@@ -61,6 +63,25 @@ await helloModuleService.softDelete([
 ```
 
 The method receives an array of IDs of records to delete.
+
+### Retrieve Soft-Deleted Records
+
+The `retrieve`, `list`, and `listAndCount` methods accept as a second parameter a configuration object.
+
+To retrieve soft-deleted records, set `withDeleted` to `true` in the configuration object passed as a second parameter.
+
+For example:
+
+```ts
+const deletedRecords = await helloModuleService
+  .listMySoftDeletables({
+    // ...
+  }, {
+    withDeleted: true,
+  })
+```
+
+### Restore a Soft-Deleted Record
 
 To restore a `MySoftDeletable` record:
 

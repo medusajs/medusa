@@ -1,16 +1,15 @@
 import { promiseAll, wrapHandler } from "@medusajs/utils"
 import cors from "cors"
-import { Router, json, text, urlencoded, type Express } from "express"
+import { type Express, json, Router, text, urlencoded } from "express"
 import { readdir } from "fs/promises"
 import { parseCorsOrigins } from "medusa-core-utils"
 import { extname, join, sep } from "path"
 import {
-  authenticate,
   authenticateCustomer,
+  authenticateLegacy,
   errorHandler,
   requireCustomerAuthentication,
-} from "../../../api/middlewares"
-import { ConfigModule } from "../../../types/global"
+} from "../../../utils/middlewares"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import logger from "../../logger"
 import {
@@ -18,13 +17,14 @@ import {
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
   MiddlewareRoute,
-  MiddlewareVerb,
   MiddlewaresConfig,
+  MiddlewareVerb,
   ParserConfigArgs,
   RouteConfig,
   RouteDescriptor,
   RouteVerb,
 } from "./types"
+import { ConfigModule } from "@medusajs/types"
 
 const log = ({
   activityId,
@@ -533,7 +533,7 @@ export class RoutesLoader {
             const childPath = join(dirPath, entry.name)
 
             if (entry.isDirectory()) {
-              return this.createRoutesMap({
+              return await this.createRoutesMap({
                 dirPath: childPath,
                 parentPath: parentPath ?? dirPath,
               })
@@ -665,7 +665,7 @@ export class RoutesLoader {
         /**
          * Require the admin to be authenticated
          */
-        this.router.use(descriptor.route, authenticate())
+        this.router.use(descriptor.route, authenticateLegacy())
       }
 
       for (const route of routes) {

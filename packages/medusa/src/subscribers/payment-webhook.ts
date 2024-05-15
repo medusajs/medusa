@@ -6,7 +6,6 @@ import {
   ProviderWebhookPayload,
   Subscriber,
 } from "@medusajs/types"
-import { EventBusService } from "../services"
 
 type SerializedBuffer = {
   data: ArrayBuffer
@@ -15,7 +14,7 @@ type SerializedBuffer = {
 
 type InjectedDependencies = {
   paymentModuleService: IPaymentModuleService
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
 }
 
 class PaymentWebhookSubscriber {

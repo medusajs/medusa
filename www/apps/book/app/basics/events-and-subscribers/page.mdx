@@ -39,12 +39,14 @@ export const config: SubscriberConfig = {
 
 A subscriber file must export:
 
-- The subscriber function which is an asynchronous function executed whenever the associated event is triggered.
+- The subscriber function that is an asynchronous function executed whenever the associated event is triggered.
 - A configuration object defining the event this subscriber is listening to.
 
 The above subscriber listens to the `ProductService.Events.CREATED` (`product-created`) event. Whenever the event is emitted, it logs in the terminal `A product is created`.
 
-### Test Subscriber
+{/* TODO add when we have the admin dashboard to use with V2 for easy testing. */}
+
+{/* ### Test Subscriber
 
 To test the subscriber, start the Medusa application:
 
@@ -59,11 +61,11 @@ info:    Processing product.created which has 1 subscribers
 A product is created
 ```
 
-The first message indicates that the `product.created` event was emitted, and the second one is the message logged from the subscriber.
+The first message indicates that the `product.created` event was emitted, and the second one is the message logged from the subscriber. */}
 
 ---
 
-## When to Use
+## When to Use Subscribers
 
 <Note title="Use subscribers when" type="success">
 

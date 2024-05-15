@@ -28,7 +28,10 @@ import {
 } from "@medusajs/types"
 import { ContainerRegistrationKeys, RuleOperator } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import adminSeeder from "../../../../helpers/admin-seeder"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(200000)
 
@@ -84,7 +87,7 @@ medusaIntegrationTestRunner({
       })
 
       beforeEach(async () => {
-        await adminSeeder(dbConnection)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
 
         // Here, so we don't have to create a region for each test
         defaultRegion = await regionModuleService.create({
@@ -415,10 +418,12 @@ medusaIntegrationTestRunner({
 
           expect(errors).toEqual([
             {
-              action: "confirm-inventory-step",
+              action: "confirm-item-inventory-as-step",
               handlerType: "invoke",
               error: expect.objectContaining({
-                message: "Some variant does not have the required inventory",
+                message: expect.stringContaining(
+                  "Some variant does not have the required inventory"
+                ),
               }),
             },
           ])
@@ -707,10 +712,12 @@ medusaIntegrationTestRunner({
 
           expect(errors).toEqual([
             {
-              action: "confirm-inventory-step",
+              action: "validate-variant-prices",
               handlerType: "invoke",
               error: expect.objectContaining({
-                message: `Variants with IDs ${product.variants[0].id} do not have a price`,
+                message: expect.stringContaining(
+                  `Variants with IDs ${product.variants[0].id} do not have a price`
+                ),
               }),
             },
           ])
@@ -1450,8 +1457,13 @@ medusaIntegrationTestRunner({
             rules: [
               {
                 operator: RuleOperator.EQ,
-                attribute: "shipping_address.province",
-                value: "ny",
+                attribute: "is_return",
+                value: "false",
+              },
+              {
+                operator: RuleOperator.EQ,
+                attribute: "enabled_in_store",
+                value: "true",
               },
             ],
           })

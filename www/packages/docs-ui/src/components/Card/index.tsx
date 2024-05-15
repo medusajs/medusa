@@ -13,6 +13,7 @@ export type CardProps = {
   contentClassName?: string
   children?: React.ReactNode
   showLinkIcon?: boolean
+  isExternal?: boolean
 }
 
 export const Card = ({
@@ -25,6 +26,7 @@ export const Card = ({
   contentClassName,
   children,
   showLinkIcon = true,
+  isExternal = false,
 }: CardProps) => {
   return (
     <div
@@ -60,6 +62,7 @@ export const Card = ({
             <Link
               href={href}
               className="absolute left-0 top-0 h-full w-full rounded"
+              target={isExternal ? "_blank" : undefined}
             />
           </>
         )}

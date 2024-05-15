@@ -105,7 +105,7 @@ export const AddCustomersForm = ({
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       {
-        customer_ids: data.customer_ids.map((id) => ({ id })),
+        customer_ids: data.customer_ids,
       },
       {
         onSuccess: () => {
