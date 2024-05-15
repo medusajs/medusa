@@ -7,7 +7,6 @@ import {
 } from "@medusajs/types"
 import {
   createWorkflow,
-  parallelize,
   transform,
   WorkflowData,
 } from "@medusajs/workflows-sdk"
@@ -206,20 +205,18 @@ export const createReturnOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    parallelize(
-      transform({ order }, throwIfOrderIsCancelled),
-      transform(
-        { order, inputItems: input.items },
-        throwIfItemsDoesNotExistsInOrder
-      ),
-      transform(
-        { order_id: input.order_id, inputItems: input.items },
-        validateReturnReasons
-      ),
-      transform(
-        { order, refundAmount: input.refund_amount },
-        validateCustomRefundAmount
-      )
+    transform({ order }, throwIfOrderIsCancelled)
+    transform(
+      { order, inputItems: input.items },
+      throwIfItemsDoesNotExistsInOrder
+    )
+    transform(
+      { order_id: input.order_id, inputItems: input.items },
+      validateReturnReasons
+    )
+    transform(
+      { order, refundAmount: input.refund_amount },
+      validateCustomRefundAmount
     )
 
     const returnShippingOptionsVariables = transform(

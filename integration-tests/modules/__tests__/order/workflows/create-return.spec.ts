@@ -1,12 +1,12 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FulfillmentWorkflow,
-  IFulfillmentModuleService,
-  IOrderModuleService,
   IRegionModuleService,
+  IStockLocationServiceNext,
   OrderWorkflow,
   RegionDTO,
   ShippingOptionDTO,
+  StockLocationDTO,
 } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 import {
@@ -19,12 +19,24 @@ import {
   RuleOperator,
 } from "@medusajs/utils"
 
-jest.setTimeout(100000)
+jest.setTimeout(500000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const providerId = "manual_test-provider"
 
-async function createShippingOptionFixture({ container, fulfillmentService }) {
+async function prepareDataFixtures({ container }) {
+  const fulfillmentService = container.resolve(
+    ModuleRegistrationName.FULFILLMENT
+  )
+  const salesChannelService = container.resolve(
+    ModuleRegistrationName.SALES_CHANNEL
+  )
+  const stockLocationModule: IStockLocationServiceNext = container.resolve(
+    ModuleRegistrationName.STOCK_LOCATION
+  )
+  const productModule = container.resolve(ModuleRegistrationName.PRODUCT)
+  const inventoryModule = container.resolve(ModuleRegistrationName.INVENTORY)
+
   const shippingProfile = await fulfillmentService.createShippingProfiles({
     name: "test",
     type: "default",
@@ -55,6 +67,45 @@ async function createShippingOptionFixture({ container, fulfillmentService }) {
       name: "Test region",
       currency_code: "eur",
       countries: ["fr"],
+    },
+  ])
+
+  const salesChannel = await salesChannelService.create({
+    name: "Webshop",
+  })
+
+  const location: StockLocationDTO = await stockLocationModule.create({
+    name: "Warehouse",
+    address: {
+      address_1: "Test",
+      city: "Test",
+      country_code: "US",
+      postal_code: "12345",
+      phone: "12345",
+    },
+  })
+
+  const [product] = await productModule.create([
+    {
+      title: "Test product",
+      variants: [
+        {
+          title: "Test variant",
+        },
+      ],
+    },
+  ])
+
+  const inventoryItem = await inventoryModule.create({
+    sku: "inv-1234",
+  })
+
+  await inventoryModule.createInventoryLevels([
+    {
+      inventory_item_id: inventoryItem.id,
+      location_id: location.id,
+      stocked_quantity: 2,
+      reserved_quantity: 0,
     },
   ])
 
@@ -122,14 +173,14 @@ async function createShippingOptionFixture({ container, fulfillmentService }) {
   return {
     shippingOption: createdShippingOption,
     region,
+    salesChannel,
+    location,
+    product,
   }
 }
 
-async function createOrderFixture({
-  orderService,
-}: {
-  orderService: IOrderModuleService
-}) {
+async function createOrderFixture({ container }) {
+  const orderService = container.resolve(ModuleRegistrationName.ORDER)
   const order = await orderService.create({
     region_id: "test_region_idclear",
     email: "foo@bar.com",
@@ -206,35 +257,34 @@ async function createOrderFixture({
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ getContainer }) => {
-    let orderService: IOrderModuleService
-    let fulfillmentService: IFulfillmentModuleService
     let container
 
     beforeAll(() => {
       container = getContainer()
-      orderService = container.resolve(ModuleRegistrationName.ORDER)
-      fulfillmentService = container.resolve(ModuleRegistrationName.FULFILLMENT)
     })
 
     describe("Create return order workflow", () => {
       let shippingOption: ShippingOptionDTO
       let region: RegionDTO
+      let location: StockLocationDTO
 
       beforeEach(async () => {
-        const fixtures = await createShippingOptionFixture({
-          container,
-          fulfillmentService,
+        const fixtures = await prepareDataFixtures({
+          container: getContainer(),
         })
 
         shippingOption = fixtures.shippingOption
         region = fixtures.region
+        location = fixtures.location
       })
 
       it("should create a return order", async () => {
-        const order = await createOrderFixture({ orderService })
+        const order = await createOrderFixture({ container })
         const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
           {
             order_id: order.id,
+            location_id: location.id,
+            provider_id: providerId,
             return_shipping: {
               option_id: shippingOption.id,
             },
