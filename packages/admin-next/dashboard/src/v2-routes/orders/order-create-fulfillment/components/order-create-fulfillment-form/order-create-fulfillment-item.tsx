@@ -13,6 +13,7 @@ import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useProductVariant } from "../../../../../hooks/api/products.tsx"
 
 type OrderEditItemProps = {
   item: LineItem
@@ -31,11 +32,13 @@ export function OrderCreateFulfillmentItem({
 }: OrderEditItemProps) {
   const { t } = useTranslation()
 
-  /**
-   * TODO: Fetch inventory and stock location levels for the variant
-   */
-
-  const { variant } = {} // useAdminVariantsInventory(item.variant_id as string)
+  const { variant } = useProductVariant(
+    item.variant.product_id,
+    item.variant_id,
+    {
+      fields: "*inventory,*inventory.location_levels",
+    }
+  )
 
   const hasInventoryItem = !!variant?.inventory.length
 
