@@ -1,6 +1,5 @@
 const path = require("path")
 
-const { getConfigFile } = require("medusa-core-utils")
 const { asValue } = require("awilix")
 const {
   isObject,
@@ -33,44 +32,19 @@ module.exports = {
       require("@medusajs/medusa/dist/loaders/feature-flags").default
 
     const featureFlagRouter = featureFlagsLoader(configModule)
-    const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
-    const entities = modelsLoader({}, { register: false })
-
-    // get migrations with enabled featureflags
-    const migrationDir = path.resolve(
-      path.join(
-        cwd,
-        `../../`,
-        `node_modules`,
-        `@medusajs`,
-        `medusa`,
-        `dist`,
-        `migrations`,
-        `*.js`
-      )
-    )
 
     const {
-      getEnabledMigrations,
       getModuleSharedResources,
     } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
     const { migrations: moduleMigrations, models: moduleModels } =
       getModuleSharedResources(configModule, featureFlagRouter)
 
-    const enabledMigrations = getEnabledMigrations([migrationDir], (flag) =>
-      featureFlagRouter.isFeatureEnabled(flag)
-    )
-
-    const enabledEntities = entities.filter(
-      (e) => typeof e.isFeatureEnabled === "undefined" || e.isFeatureEnabled()
-    )
-
     const dbDataSource = new DataSource({
       type: "postgres",
       url: dbUrl || configModule.projectConfig.database_url,
-      entities: enabledEntities.concat(moduleModels),
-      migrations: enabledMigrations.concat(moduleMigrations),
+      entities: moduleModels,
+      migrations: moduleMigrations,
       extra: database_extra ?? {},
       //name: "integration-tests",
       schema: dbSchema,

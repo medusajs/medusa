@@ -137,11 +137,9 @@ function getInternalModuleResolution(
   // If user added a module and it's overridable, we resolve that instead
   const isStr = isString(moduleConfig)
   if (isStr || (isObj && moduleConfig.resolve)) {
-    resolutionPath = !moduleExports
-      ? resolveCwd(isStr ? moduleConfig : (moduleConfig.resolve as string))
-      : // Explicitly assign an empty string, later, we will check if the value is exactly false.
-        // This allows to continue the module loading while using the module exports instead of re importing the module itself during the process.
-        ""
+    resolutionPath = resolveCwd(
+      isStr ? moduleConfig : (moduleConfig.resolve as string)
+    )
   }
 
   const moduleDeclaration = isObj ? moduleConfig : {}

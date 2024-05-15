@@ -1,6 +1,6 @@
+import { ConfigModule } from "@medusajs/types"
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 import { asValue, AwilixContainer } from "awilix"
-import { ConfigModule } from "../types/global"
 
 type Options = {
   configModule: ConfigModule

@@ -8,7 +8,7 @@ import {
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
 } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type UpdateCustomerGroupStepInput = {
   selector: FilterableCustomerGroupProps
@@ -51,6 +51,7 @@ export const updateCustomerGroupsStep = createStep(
       prevCustomerGroups.map((c) =>
         service.updateCustomerGroups(c.id, {
           name: c.name,
+          metadata: c.metadata,
         })
       )
     )

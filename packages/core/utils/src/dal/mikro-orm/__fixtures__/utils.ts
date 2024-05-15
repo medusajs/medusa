@@ -5,6 +5,7 @@ import {
   OneToMany,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import { Searchable } from "../decorators/searchable"
 
@@ -49,7 +50,7 @@ class RecursiveEntity2 {
   @ManyToOne(() => RecursiveEntity1, {
     cascade: ["soft-remove"] as any,
   })
-  entity1: RecursiveEntity1
+  entity1: Rel<RecursiveEntity1>
 }
 
 // No circular dependency
@@ -77,7 +78,7 @@ class Entity2 {
   constructor(props: {
     id: string
     deleted_at: Date | null
-    entity1: Entity1
+    entity1: Rel<Entity1>
   }) {
     this.id = props.id
     this.deleted_at = props.deleted_at
@@ -124,8 +125,8 @@ class DeepRecursiveEntity2 {
   constructor(props: {
     id: string
     deleted_at: Date | null
-    entity1: DeepRecursiveEntity1
-    entity3: DeepRecursiveEntity3
+    entity1: Rel<DeepRecursiveEntity1>
+    entity3: Rel<DeepRecursiveEntity3>
   }) {
     this.id = props.id
     this.deleted_at = props.deleted_at
@@ -144,7 +145,7 @@ class DeepRecursiveEntity2 {
   @ManyToOne(() => DeepRecursiveEntity3, {
     cascade: ["soft-remove"] as any,
   })
-  entity3: DeepRecursiveEntity3
+  entity3: Rel<DeepRecursiveEntity3>
 }
 
 @Entity()
@@ -152,7 +153,7 @@ class DeepRecursiveEntity3 {
   constructor(props: {
     id: string
     deleted_at: Date | null
-    entity1: DeepRecursiveEntity1
+    entity1: Rel<DeepRecursiveEntity1>
   }) {
     this.id = props.id
     this.deleted_at = props.deleted_at
@@ -168,7 +169,7 @@ class DeepRecursiveEntity3 {
   @ManyToOne(() => DeepRecursiveEntity1, {
     cascade: ["soft-remove"] as any,
   })
-  entity1: DeepRecursiveEntity1
+  entity1: Rel<DeepRecursiveEntity1>
 }
 
 @Entity()
@@ -176,7 +177,7 @@ class DeepRecursiveEntity4 {
   constructor(props: {
     id: string
     deleted_at: Date | null
-    entity1: DeepRecursiveEntity1
+    entity1: Rel<DeepRecursiveEntity1>
   }) {
     this.id = props.id
     this.deleted_at = props.deleted_at
@@ -190,7 +191,7 @@ class DeepRecursiveEntity4 {
   deleted_at: Date | null
 
   @ManyToOne(() => DeepRecursiveEntity1)
-  entity1: DeepRecursiveEntity1
+  entity1: Rel<DeepRecursiveEntity1>
 }
 
 // Internal circular dependency
@@ -226,7 +227,7 @@ class InternalCircularDependencyEntity1 {
   children = new Collection<InternalCircularDependencyEntity1>(this)
 
   @ManyToOne(() => InternalCircularDependencyEntity1)
-  parent: InternalCircularDependencyEntity1
+  parent: Rel<InternalCircularDependencyEntity1>
 }
 
 // With un decorated prop
@@ -257,7 +258,7 @@ class Entity2WithUnDecoratedProp {
   constructor(props: {
     id: string
     deleted_at: Date | null
-    entity1: Entity1WithUnDecoratedProp
+    entity1: Rel<Entity1WithUnDecoratedProp>
   }) {
     this.id = props.id
     this.deleted_at = props.deleted_at
@@ -277,7 +278,7 @@ class Entity2WithUnDecoratedProp {
   entity1_id: string
 
   @ManyToOne(() => Entity1WithUnDecoratedProp, { persist: false })
-  entity1: Entity1WithUnDecoratedProp
+  entity1: Rel<Entity1WithUnDecoratedProp>
 }
 
 // Searchable fields
@@ -331,21 +332,21 @@ class SearchableEntity2 {
   entity1_id: string
 
   @ManyToOne(() => SearchableEntity1, { persist: false })
-  entity1: SearchableEntity1
+  entity1: Rel<SearchableEntity1>
 }
 
 export {
-  RecursiveEntity1,
-  RecursiveEntity2,
-  Entity1,
-  Entity2,
   DeepRecursiveEntity1,
   DeepRecursiveEntity2,
   DeepRecursiveEntity3,
   DeepRecursiveEntity4,
-  InternalCircularDependencyEntity1,
+  Entity1,
   Entity1WithUnDecoratedProp,
+  Entity2,
   Entity2WithUnDecoratedProp,
+  InternalCircularDependencyEntity1,
+  RecursiveEntity1,
+  RecursiveEntity2,
   SearchableEntity1,
   SearchableEntity2,
 }
