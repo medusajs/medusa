@@ -613,19 +613,111 @@ export type ProjectConfigOptions = {
    */
   auth: {
     /**
-     * The secret to sign the JWT token, usually a randomly generated string. If not provided, the default value is `supersecret`.
+     * A random string used to create authentication tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
+     *
+     * In a development environment, if this option is not set the default secret is `supersecret` However, in production, if this configuration is not set an error, an
+     * error is thrown and the backend crashes.
+     *
+     * @example
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     auth: {
+     *       cookieSecret: "supersecret"
+     *     }
+     *   },
+     *   // ...
+     * }
+     * ```
      */
-    jwtSecret: string
+    jwtSecret?: string
     /**
      * The expiration time for the JWT token. If not provided, the default value is `24h`.
+     *
+     * @example
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     auth: {
+     *       jwtExpiresIn: "2d"
+     *     }
+     *   },
+     *   // ...
+     * }
+     * ```
      */
-    jwtExpiresIn: string
+    jwtExpiresIn?: string
     /**
-     * The secret to sign the cookie session, usually a randomly generated string. If not provided, the default value is `supersecret`.
+     * A random string used to create cookie tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
+     *
+     * In a development environment, if this option is not set, the default secret is `supersecret` However, in production, if this configuration is not set, an error is thrown and
+     * the backend crashes.
+     *
+     * @example
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     auth: {
+     *      cookieSecret: "supersecret"
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * }
+     * ```
      */
-    cookieSecret: string
+    cookieSecret?: string
     /**
-     * Specify the accepted URLs or patterns for API Routes starting with `/auth`. It can either be one accepted origin, or a comma-separated list of accepted origins.
+     * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
+     *
+     * `cors` is a string used to specify the accepted URLs or patterns for API Routes starting with `/auth`. It can either be one accepted origin, or a comma-separated list of accepted origins.
+     *
+     * Every origin in that list must either be:
+     *
+     * 1. A URL. For example, `http://localhost:7001`. The URL must not end with a backslash;
+     * 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
+     *
+     * @example
+     * Some example values of common use cases:
+     *
+     * ```bash
+     * # Allow different ports locally starting with 700
+     * AUTH_CORS=/http:\/\/localhost:700\d+$/
+     *
+     * # Allow any origin ending with vercel.app. For example, admin.vercel.app
+     * AUTH_CORS=/vercel\.app$/
+     *
+     * # Allow all HTTP requests
+     * AUTH_CORS=/http:\/\/.+/
+     * ```
+     *
+     * Then, set the configuration in `medusa-config.js`:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     auth: {
+     *       cors: process.env.AUTH_CORS
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * }
+     * ```
+     *
+     * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     auth: {
+     *       cors: "/http:\\/\\/localhost:700\\d+$/",
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * }
+     * ```
      */
     cors: string
   }
