@@ -23,7 +23,7 @@
   "license": "MIT",
   "devDependencies": {
     "@medusajs/types": "^1.11.16",
-    "@swc/core": "^1.4.8",
+    "@swc/core": "^1.5.7",
     "@swc/jest": "^0.2.36",
     "@types/express": "^4.17.17",
     "@types/ioredis": "^4.28.10",
