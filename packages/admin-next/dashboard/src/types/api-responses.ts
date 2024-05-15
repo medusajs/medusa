@@ -18,6 +18,7 @@ import {
   ProductTypeDTO,
   ProductVariantDTO,
   PromotionDTO,
+  PromotionRuleDTO,
   RegionDTO,
   SalesChannelDTO,
   ShippingOptionDTO,
@@ -52,7 +53,7 @@ export type PromotionListRes = { promotions: PromotionDTO[] } & ListRes
 export type PromotionRuleAttributesListRes = { attributes: Record<any, any>[] }
 export type PromotionRuleOperatorsListRes = { operators: Record<any, any>[] }
 export type PromotionRuleValuesListRes = { values: Record<any, any>[] }
-export type PromotionRulesListRes = { rules: Record<any, any>[] }
+export type PromotionRulesListRes = { rules: PromotionRuleDTO[] }
 export type PromotionDeleteRes = DeleteRes
 
 // Users

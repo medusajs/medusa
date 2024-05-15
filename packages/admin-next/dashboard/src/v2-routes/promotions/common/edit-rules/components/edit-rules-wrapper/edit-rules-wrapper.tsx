@@ -1,4 +1,8 @@
-import { PromotionDTO, PromotionRuleDTO } from "@medusajs/types"
+import {
+  CreatePromotionRuleDTO,
+  PromotionDTO,
+  PromotionRuleDTO,
+} from "@medusajs/types"
 import { useRouteModal } from "../../../../../../components/route-modal"
 import {
   usePromotionAddRules,
@@ -58,11 +62,10 @@ export const EditRulesWrapper = ({
   const { mutateAsync: updatePromotionRules, isPending } =
     usePromotionUpdateRules(promotion.id, ruleType)
 
-  const handleSubmit = (rulesToRemove?: any[]) => {
-    return async function (data) {
+  const handleSubmit = (rulesToRemove?: { id: string }[]) => {
+    return async function (data: { rules: PromotionRuleDTO[] }) {
       const applicationMethodData: Record<any, any> = {}
       const { rules: allRules = [] } = data
-
       const disguisedRulesData = allRules.filter((rule) =>
         disguisedRules.map((rule) => rule.id).includes(rule.id!)
       )
@@ -77,7 +80,7 @@ export const EditRulesWrapper = ({
 
         applicationMethodData[rule.id!] =
           currentAttribute?.field_type === "number"
-            ? parseInt(rule.values as string)
+            ? parseInt(rule.values as unknown as string)
             : rule.values
       }
 
@@ -87,13 +90,17 @@ export const EditRulesWrapper = ({
         (rule) => !disguisedRules.map((rule) => rule.id).includes(rule.id!)
       )
 
-      const rulesToCreate = rulesData.filter((rule) => !("id" in rule))
+      const rulesToCreate: CreatePromotionRuleDTO[] = rulesData.filter(
+        (rule) => !("id" in rule)
+      )
       const rulesToUpdate = rulesData.filter(
-        (rule) => typeof rule.id === "string"
+        (rule: { id: string }) => typeof rule.id === "string"
       )
 
       if (Object.keys(applicationMethodData).length) {
-        await updatePromotion({ application_method: applicationMethodData })
+        await updatePromotion({
+          application_method: applicationMethodData,
+        } as any)
       }
 
       rulesToCreate.length &&
@@ -114,13 +121,13 @@ export const EditRulesWrapper = ({
 
       rulesToUpdate.length &&
         (await updatePromotionRules({
-          rules: rulesToUpdate.map((rule) => {
+          rules: rulesToUpdate.map((rule: PromotionRuleDTO) => {
             return {
               id: rule.id!,
               attribute: rule.attribute,
               operator: rule.operator,
-              values: rule.values,
-            } as any
+              values: rule.values as unknown as string | string[],
+            }
           }),
         }))
 

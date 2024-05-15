@@ -81,7 +81,7 @@ async function removePromotionRules(
   )
 }
 
-async function listPromotionRules(id: string, ruleType: string) {
+async function listPromotionRules(id: string | null, ruleType: string) {
   return getRequest<PromotionRuleAttributesListRes>(
     `/admin/promotions/${id}/${ruleType}`
   )
