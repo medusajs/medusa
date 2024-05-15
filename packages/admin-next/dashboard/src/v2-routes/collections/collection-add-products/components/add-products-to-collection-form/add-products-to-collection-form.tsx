@@ -1,5 +1,13 @@
 import { ProductCollectionDTO, ProductDTO } from "@medusajs/types"
-import { Button, Checkbox, clx, Hint, Table, Tooltip } from "@medusajs/ui"
+import {
+  Button,
+  Checkbox,
+  clx,
+  Hint,
+  Table,
+  toast,
+  Tooltip,
+} from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -137,7 +145,10 @@ export const AddProductsToCollectionForm = ({
       queryClient.invalidateQueries(adminProductKeys.lists())
       handleSuccess()
     } catch (e) {
-      // TODO: toast
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
     }
   })
 

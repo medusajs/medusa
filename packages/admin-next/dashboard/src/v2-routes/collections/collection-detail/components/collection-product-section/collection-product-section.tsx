@@ -1,6 +1,6 @@
 import { PencilSquare, Plus, Trash } from "@medusajs/icons"
 import { ProductCollectionDTO } from "@medusajs/types"
-import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { adminProductKeys } from "medusa-react"
@@ -80,11 +80,13 @@ export const CollectionProductSection = ({
       await mutateAsync({
         remove: ids,
       })
-      console.log("HEREE")
 
       queryClient.invalidateQueries(adminProductKeys.lists())
     } catch (e) {
-      // TODO: toast
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
     }
   }
 
@@ -165,7 +167,10 @@ const ProductActions = ({
 
       queryClient.invalidateQueries(adminProductKeys.lists())
     } catch (e) {
-      // TODO: toast
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
     }
   }
 
