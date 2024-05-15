@@ -22,6 +22,23 @@ export function getDisguisedRules(
     (attr) => attr.id === "buy_rules_min_quantity"
   )
 
+  const currencyCodeRule = requiredAttributes.find(
+    (attr) => attr.id === "currency_code"
+  )
+
+  if (ruleType === RuleType.RULES) {
+    return [
+      {
+        id: "currency_code",
+        attribute: "currency_code",
+        operator: "eq",
+        required: currencyCodeRule?.required,
+        field_type: currencyCodeRule?.field_type,
+        values: promotion?.application_method?.currency_code?.toLowerCase(),
+      },
+    ]
+  }
+
   if (ruleType === RuleType.TARGET_RULES) {
     return [
       {
@@ -30,7 +47,7 @@ export function getDisguisedRules(
         operator: "eq",
         required: applyToQuantityRule?.required,
         field_type: applyToQuantityRule?.field_type,
-        values: [{ value: promotion?.application_method?.apply_to_quantity }],
+        values: promotion?.application_method?.apply_to_quantity,
       },
     ]
   }

@@ -155,7 +155,11 @@ export const usePromotionRuleValues = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryKey: promotionsQueryKeys.listRuleValues(ruleType, ruleValue, query),
+    queryKey: promotionsQueryKeys.listRuleValues(
+      ruleType,
+      ruleValue,
+      query || {}
+    ),
     queryFn: async () =>
       client.promotions.listRuleValues(ruleType, ruleValue, query),
     ...options,

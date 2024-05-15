@@ -75,7 +75,7 @@ export const AdminCreatePromotionRule = z
     operator: z.nativeEnum(PromotionRuleOperator),
     description: z.string().optional(),
     attribute: z.string(),
-    values: z.array(z.string()),
+    values: z.union([z.string(), z.array(z.string())]),
   })
   .strict()
 
@@ -88,7 +88,7 @@ export const AdminUpdatePromotionRule = z
     operator: z.nativeEnum(PromotionRuleOperator).optional(),
     description: z.string().optional(),
     attribute: z.string().optional(),
-    values: z.array(z.string()).optional(),
+    values: z.union([z.string(), z.array(z.string())]),
   })
   .strict()
 
@@ -119,6 +119,7 @@ export const AdminUpdateApplicationMethod = z
     description: z.string().optional(),
     value: z.string().optional(),
     max_quantity: z.number().optional(),
+    currency_code: z.string().optional(),
     type: z.nativeEnum(ApplicationMethodType).optional(),
     target_type: z.nativeEnum(ApplicationMethodTargetType).optional(),
     allocation: z.nativeEnum(ApplicationMethodAllocation).optional(),

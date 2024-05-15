@@ -6,7 +6,7 @@ export const ruleQueryConfigurations = {
   },
   currency_code: {
     entryPoint: "currency",
-    labelAttr: "code",
+    labelAttr: "name",
     valueAttr: "code",
   },
   customer_group: {

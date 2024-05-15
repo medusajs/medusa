@@ -24,6 +24,7 @@ const ruleAttributes = [
     field_type: "select",
     required: true,
     disguised: true,
+    hydrate: true,
   },
   {
     id: "customer_group",

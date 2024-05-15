@@ -32,7 +32,7 @@ import {
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/currencies"
 import { defaultCampaignValues } from "../../../../campaigns/campaign-create/components/create-campaign-form"
-import { RulesFormField } from "../../../common/edit-rules/components/edit-rules-form"
+import { RulesFormField } from "../../../common/edit-rules/components/rules-form-field"
 import { AddCampaignPromotionFields } from "../../../promotion-add-campaign/components/add-campaign-promotion-form"
 import { Tab } from "./constants"
 import { CreatePromotionSchema } from "./form-schema"
@@ -150,8 +150,8 @@ export const CreatePromotionForm = ({
       } = application_method
 
       const disguisedRules = [
-        ...targetRules.filter((r) => !!r.disguised),
-        ...buyRules.filter((r) => !!r.disguised),
+        ...targetRulesData.filter((r) => !!r.disguised),
+        ...buyRulesData.filter((r) => !!r.disguised),
         ...rules.filter((r) => !!r.disguised),
       ]
 
@@ -668,7 +668,7 @@ export const CreatePromotionForm = ({
                       <Form.Item className="basis-1/2">
                         <Form.Label
                           tooltip={
-                            currencyCode
+                            currencyCode || !isFixedValueType
                               ? undefined
                               : t("promotions.fields.amount.tooltip")
                           }
