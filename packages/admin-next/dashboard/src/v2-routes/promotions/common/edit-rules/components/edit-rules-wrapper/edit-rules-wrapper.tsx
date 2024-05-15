@@ -71,8 +71,12 @@ export const EditRulesWrapper = ({
       // database, they are currently all under application_method. If more of these are coming
       // up, abstract this away.
       for (const rule of disguisedRulesData) {
+        const currentAttribute = attributes?.find(
+          (attr) => attr.value === rule.attribute
+        )
+
         applicationMethodData[rule.id!] =
-          rule.field_type === "number"
+          currentAttribute?.field_type === "number"
             ? parseInt(rule.values as string)
             : rule.values
       }
@@ -115,7 +119,7 @@ export const EditRulesWrapper = ({
               id: rule.id!,
               attribute: rule.attribute,
               operator: rule.operator,
-              values: rule.operator === "eq" ? rule.values[0] : rule.values,
+              values: rule.values,
             } as any
           }),
         }))

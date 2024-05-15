@@ -168,7 +168,7 @@ export interface UpdateApplicationMethodDTO {
   /**
    * The ID of the application method.
    */
-  id: string
+  id?: string
 
   /**
    * The type of the application method indicating how

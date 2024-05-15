@@ -155,41 +155,38 @@ export const CreatePromotionForm = ({
         ...rules.filter((r) => !!r.disguised),
       ]
 
-      const attr: Record<any, any> = {}
+      const applicationMethodRuleData: Record<any, any> = {}
 
       for (const rule of disguisedRules) {
-        attr[rule.attribute] =
+        applicationMethodRuleData[rule.attribute] =
           rule.field_type === "number"
             ? parseInt(rule.values as string)
             : rule.values
       }
 
-      createPromotion({
-        ...promotionData,
-        rules: rules
+      const buildRulesData = (rules: {
+        operator: string,
+        attribute: string,
+        values: any[] | any,
+        disguised?: boolean
+      }[]) => {
+        return rules
           .filter((r) => !r.disguised)
           .map((rule) => ({
-            operator: rule.operator,
+            operator: rule.operator as PromotionRuleOperatorValues,
             attribute: rule.attribute,
             values: rule.values,
           })),
+      }
+
+      createPromotion({
+        ...promotionData,
+        rules: buildRulesData(rules),
         application_method: {
           ...applicationMethodData,
-          ...attr,
-          target_rules: targetRulesData
-            .filter((r) => !r.disguised)
-            .map((rule) => ({
-              operator: rule.operator as PromotionRuleOperatorValues,
-              attribute: rule.attribute!,
-              values: rule.values,
-            })),
-          buy_rules: buyRulesData
-            .filter((r) => !r.disguised)
-            .map((rule) => ({
-              operator: rule.operator as PromotionRuleOperatorValues,
-              attribute: rule.attribute!,
-              values: rule.values,
-            })),
+          ...applicationMethodRuleData,
+          target_rules: buildRulesData(targetRulesData),
+          buy_rules: buildRulesData(buyRulesData),
         },
         is_automatic: is_automatic === "true",
       }).then(() => handleSuccess())

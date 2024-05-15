@@ -71,7 +71,7 @@ export const RuleValueFormField = ({
       key={`${identifier}.${scope}.${valuesField.name}-${fieldRule.attribute}`}
       {...valuesField}
       render={({ field: { onChange, ref, ...field } }) => {
-        if (fieldRule.field_type === "number") {
+        if (attribute?.field_type === "number") {
           return (
             <Form.Item className="basis-1/2">
               <Form.Control>
@@ -87,7 +87,7 @@ export const RuleValueFormField = ({
               <Form.ErrorMessage />
             </Form.Item>
           )
-        } else if (fieldRule.field_type === "text") {
+        } else if (attribute?.field_type === "text") {
           return (
             <Form.Item className="basis-1/2">
               <Form.Control>

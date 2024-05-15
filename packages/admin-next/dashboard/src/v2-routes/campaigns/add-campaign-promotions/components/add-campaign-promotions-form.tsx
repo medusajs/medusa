@@ -67,12 +67,7 @@ export const AddCampaignPromotionsForm = ({
     promotions,
     count,
     isPending: isLoading,
-    isError,
-    error,
-  } = usePromotions(
-    { ...searchParams, campaign_id: "null" },
-    { placeholderData: keepPreviousData }
-  )
+  } = usePromotions({ ...searchParams }, { placeholderData: keepPreviousData })
 
   const columns = useColumns()
   const filters = usePromotionTableFilters()
@@ -91,7 +86,7 @@ export const AddCampaignPromotionsForm = ({
       state: rowSelection,
       updater,
     },
-    meta: { campaignId: campaign.id },
+    meta: { campaignId: campaign.id, currencyCode: campaign.currency },
   })
 
   const handleSubmit = form.handleSubmit(async (values) => {
@@ -177,30 +172,59 @@ const useColumns = () => {
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()
               }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
+              onCheckedChange={(value) => table.toggleAllRowsSelected(!!value)}
             />
           )
         },
         cell: ({ row, table }) => {
-          const { campaignId } = table.options.meta as {
+          const { campaignId, currencyCode } = table.options.meta as {
             campaignId: string
+            currencyCode: string
           }
 
           const isAdded = row.original.campaign_id === campaignId
+          const isAddedToADiffCampaign =
+            !!row.original.campaign_id &&
+            row.original.campaign_id !== campaignId
+          const currencyMismatch =
+            row.original.application_method?.currency_code !== currencyCode
           const isSelected = row.getIsSelected() || isAdded
+          const isIndeterminate = currencyMismatch || isAddedToADiffCampaign
 
           const Component = (
             <Checkbox
-              checked={isSelected}
-              disabled={isAdded}
+              checked={isIndeterminate ? "indeterminate" : isSelected}
+              disabled={isAdded || isAddedToADiffCampaign || currencyMismatch}
               onCheckedChange={(value) => row.toggleSelected(!!value)}
               onClick={(e) => {
                 e.stopPropagation()
               }}
             />
           )
+
+          if (isAddedToADiffCampaign) {
+            return (
+              <Tooltip
+                content={t("campaigns.promotions.alreadyAddedDiffCampaign", {
+                  name: row.original?.campaign?.name!,
+                })}
+                side="right"
+              >
+                {Component}
+              </Tooltip>
+            )
+          }
+
+          if (currencyMismatch) {
+            return (
+              <Tooltip
+                content={t("campaigns.promotions.currencyMismatch")}
+                side="right"
+              >
+                {Component}
+              </Tooltip>
+            )
+          }
 
           if (isAdded) {
             return (

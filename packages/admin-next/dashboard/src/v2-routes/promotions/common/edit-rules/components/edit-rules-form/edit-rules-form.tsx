@@ -65,12 +65,11 @@ export const EditRulesForm = ({
       rules: [...disguisedRules, ...rules].map((rule) => ({
         id: rule.id,
         required: requiredAttributeValues.includes(rule.attribute),
-        field_type: rule.field_type,
         attribute: rule.attribute!,
         operator: rule.operator!,
         values: Array.isArray(rule?.values)
           ? rule?.values?.map((v: any) => v.value!)
-          : rule.values,
+          : rule.values!,
       })),
     },
     resolver: zodResolver(EditRules),

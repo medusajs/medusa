@@ -158,7 +158,7 @@ export const EditCampaignForm = ({ campaign }: EditCampaignFormProps) => {
                             )
                             .map((currency) => (
                               <Select.Item
-                                value={currency.code}
+                                value={currency.code.toLowerCase()}
                                 key={currency.code}
                               >
                                 {currency.name}

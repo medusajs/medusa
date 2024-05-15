@@ -30,7 +30,6 @@ export const CampaignGeneralSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
-
   const { mutateAsync } = useDeleteCampaign(campaign.id)
 
   const handleDelete = async () => {
@@ -132,7 +131,7 @@ export const CampaignGeneralSection = ({
         <div>
           <Badge size="xsmall">{campaign.currency}</Badge>
           <Text className="inline pl-3" size="small" leading="compact">
-            {currencies[campaign.currency]?.name}
+            {currencies[campaign.currency?.toUpperCase()]?.name}
           </Text>
         </div>
       </div>

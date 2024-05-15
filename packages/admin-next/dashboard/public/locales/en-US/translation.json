@@ -1070,7 +1070,10 @@
       "start_date": "Start date",
       "end_date": "End date",
       "total_spend": "Total spend",
-      "budget_limit": "Budget limit"
+      "budget_limit": "Budget limit",
+      "campaign_id": {
+        "hint": "A list of campaigns with the same currency code as the promotion"
+      }
     },
     "budget": {
       "create": {
@@ -1101,6 +1104,8 @@
         "description": "You are about to remove {{count}} promotion(s) from the campaign. This action cannot be undone."
       },
       "alreadyAdded": "This promotion has already been added to the campaign.",
+      "alreadyAddedDiffCampaign": "This promotion has already been added to a different campaign ({{name}}).",
+      "currencyMismatch": "Currency of the promotion and campaign doesn't match",
       "toast": {
         "success": "Successfully added {{count}} promotion(s) to campaign"
       }

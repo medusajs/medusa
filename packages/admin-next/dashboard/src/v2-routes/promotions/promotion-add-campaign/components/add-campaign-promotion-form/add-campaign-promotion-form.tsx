@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CampaignResponse, PromotionDTO } from "@medusajs/types"
-import { Button, clx, RadioGroup, Select } from "@medusajs/ui"
+import { Button, clx, RadioGroup, Select, Text } from "@medusajs/ui"
 import { useEffect } from "react"
 import { useForm, useWatch } from "react-hook-form"
-import { useTranslation } from "react-i18next"
+import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import {
@@ -133,6 +133,18 @@ export const AddCampaignPromotionFields = ({
                     </Select.Content>
                   </Select>
                 </Form.Control>
+
+                <Text
+                  size="small"
+                  leading="compact"
+                  className="text-ui-fg-subtle"
+                >
+                  <Trans
+                    t={t}
+                    i18nKey="campaigns.fields.campaign_id.hint"
+                    components={[<br key="break" />]}
+                  />
+                </Text>
                 <Form.ErrorMessage />
               </Form.Item>
             )
