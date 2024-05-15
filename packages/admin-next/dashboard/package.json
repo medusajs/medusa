@@ -6,6 +6,7 @@
     "generate:static": "node ./scripts/generate-countries.js && prettier --write ./src/lib/countries.ts && node ./scripts/generate-currencies.js && prettier --write ./src/lib/currencies.ts",
     "dev": "vite",
     "build": "tsup && node ./scripts/generate-types.js",
+    "build:preview": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },

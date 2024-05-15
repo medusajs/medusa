@@ -5608,7 +5608,6 @@ __metadata:
     morgan: ^1.9.1
     multer: ^1.4.5-lts.1
     node-schedule: ^2.1.1
-    open: 8.4.0
     passport: ^0.6.0
     passport-custom: ^1.1.1
     passport-jwt: ^4.0.1
@@ -25670,17 +25669,6 @@ __metadata:
   dependencies:
     mimic-fn: ^4.0.0
   checksum: 4eef7c6abfef697dd4479345a4100c382d73c149d2d56170a54a07418c50816937ad09500e1ed1e79d235989d073a9bade8557122aee24f0576ecde0f392bb6c
-  languageName: node
-  linkType: hard
-
-"open@npm:8.4.0":
-  version: 8.4.0
-  resolution: "open@npm:8.4.0"
-  dependencies:
-    define-lazy-prop: ^2.0.0
-    is-docker: ^2.1.1
-    is-wsl: ^2.2.0
-  checksum: 585596580226cbeb7262f36b5acc7eed05211dc26980020a2527f829336b8b07fd79cdc4240f4d995b5615f635e0a59ebb0261c4419fef91edd5d4604c463f18
   languageName: node
   linkType: hard
 
