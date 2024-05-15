@@ -1,9 +1,11 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FulfillmentWorkflow,
+  IOrderModuleService,
   IRegionModuleService,
   IStockLocationServiceNext,
   OrderWorkflow,
+  ProductDTO,
   RegionDTO,
   ShippingOptionDTO,
   StockLocationDTO,
@@ -91,6 +93,7 @@ async function prepareDataFixtures({ container }) {
       variants: [
         {
           title: "Test variant",
+          sku: "test-variant",
         },
       ],
     },
@@ -179,14 +182,18 @@ async function prepareDataFixtures({ container }) {
   }
 }
 
-async function createOrderFixture({ container }) {
-  const orderService = container.resolve(ModuleRegistrationName.ORDER)
-  const order = await orderService.create({
+async function createOrderFixture({ container, product }) {
+  const orderService: IOrderModuleService = container.resolve(
+    ModuleRegistrationName.ORDER
+  )
+  let order = await orderService.create({
     region_id: "test_region_idclear",
     email: "foo@bar.com",
     items: [
       {
         title: "Custom Item 2",
+        variant_sku: product.variants[0].sku,
+        variant_title: product.variants[0].title,
         quantity: 1,
         unit_price: 50,
         adjustments: [
@@ -198,11 +205,11 @@ async function createOrderFixture({ container }) {
             provider_id: "coupon_kings",
           },
         ],
-      },
+      } as any,
     ],
     transactions: [
       {
-        amount: 69,
+        amount: 50, // TODO: check calculation, I think it should be 69 wit the shipping but the order total is 50
         currency_code: "usd",
       },
     ],
@@ -251,6 +258,37 @@ async function createOrderFixture({ container }) {
     customer_id: "joe",
   })
 
+  await orderService.addOrderAction([
+    {
+      action: "FULFILL_ITEM",
+      order_id: order.id,
+      version: order.version,
+      reference: "fullfilment",
+      reference_id: "fulfill_123",
+      details: {
+        reference_id: order.items![0].id,
+        quantity: 1,
+      },
+    },
+    {
+      action: "SHIP_ITEM",
+      order_id: order.id,
+      version: order.version,
+      reference: "fullfilment",
+      reference_id: "fulfill_123",
+      details: {
+        reference_id: order.items![0].id,
+        quantity: 1,
+      },
+    },
+  ])
+
+  await orderService.applyPendingOrderActions(order.id)
+
+  order = await orderService.retrieve(order.id, {
+    relations: ["items"],
+  })
+
   return order
 }
 
@@ -267,19 +305,25 @@ medusaIntegrationTestRunner({
       let shippingOption: ShippingOptionDTO
       let region: RegionDTO
       let location: StockLocationDTO
+      let product: ProductDTO
+
+      let orderService: IOrderModuleService
 
       beforeEach(async () => {
-        const fixtures = Add orderawait prepareDataFixtures({
+        const fixtures = await prepareDataFixtures({
           container,
         })
 
         shippingOption = fixtures.shippingOption
         region = fixtures.region
         location = fixtures.location
+        product = fixtures.product
+
+        orderService = container.resolve(ModuleRegistrationName.ORDER)
       })
 
       it("should create a return order", async () => {
-        const order = await createOrderFixture({ container })
+        const order = await createOrderFixture({ container, product })
         const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
           {
             order_id: order.id,

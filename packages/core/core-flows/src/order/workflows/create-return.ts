@@ -37,7 +37,7 @@ function throwIfItemsDoesNotExistsInOrder({
   order,
   inputItems,
 }: {
-  order: OrderDTO
+  order: Pick<OrderDTO, "id" | "items">
   inputItems: OrderWorkflow.CreateOrderReturnWorkflowInput["items"]
 }) {
   const orderItemIds = order.items?.map((i) => i.id) ?? []
@@ -74,7 +74,7 @@ function validateReturnReasons(
 
   const returnReasons = remoteQuery({
     entry_point: "return_reasons",
-    fields: ["*", "return_reason_children.*"],
+    fields: ["return_reason_children.*"],
     variables: { id: [inputItems.map((item) => item.reason_id)] },
   })
 
@@ -142,7 +142,7 @@ function validateCustomRefundAmount({
   order,
   refundAmount,
 }: {
-  order: OrderDTO
+  order: Pick<OrderDTO, "item_total">
   refundAmount?: number
 }) {
   // validate that the refund prop input is less than order.item_total (item total)
@@ -199,7 +199,7 @@ export const createReturnOrderWorkflow = createWorkflow(
   ): WorkflowData<OrderDTO> => {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["total"],
+      fields: ["id", "currency_code", "item_total", "items.*"],
       variables: { id: input.order_id },
       list: false,
       throw_if_key_not_found: true,
