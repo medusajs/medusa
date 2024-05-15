@@ -178,14 +178,16 @@ function prepareFulfillmentData({
     } as FulfillmentWorkflow.CreateFulfillmentItemWorkflowDTO
   })
 
+  // TODO: should we get the stock location from location id and grab the address?
+
   return {
     input: {
-      location_id: input.location_id,
+      location_id: input.location_id, // TODO: Do we ask the user to provider this, or do we grab the stock location from the fulfillment set of the service zone link to the shipping option id
       provider_id: input.provider_id,
       shipping_option_id: input.return_shipping.option_id,
       items: fulfillmentItems,
       labels: [] as FulfillmentWorkflow.CreateFulfillmentLabelWorkflowDTO[],
-      delivery_address: order.shipping_address ?? ({} as any), // TODO: use the location address instead
+      delivery_address: order.shipping_address ?? ({} as any),
       order: {} as FulfillmentWorkflow.CreateFulfillmentOrderWorkflowDTO, // TODO see what todo here, is that even necessary?
     },
   }
@@ -199,7 +201,7 @@ export const createReturnOrderWorkflow = createWorkflow(
   ): WorkflowData<OrderDTO> => {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "currency_code", "item_total", "items.*"],
+      fields: ["id", "currency_code", "total", "item_total", "items.*"],
       variables: { id: input.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -292,14 +294,5 @@ export const createReturnOrderWorkflow = createWorkflow(
     )
 
     createRemoteLinkStep(link)
-
-    const freshOrder = useRemoteQueryStep({
-      entry_point: "orders",
-      fields: ["*"],
-      variables: { id: input.order_id },
-      list: false,
-    }).config({ name: "fresh-order" })
-
-    return freshOrder
   }
 )

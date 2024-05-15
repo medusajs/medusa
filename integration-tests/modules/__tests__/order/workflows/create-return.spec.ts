@@ -114,7 +114,7 @@ async function prepareDataFixtures({ container }) {
 
   const shippingOptionData: FulfillmentWorkflow.CreateShippingOptionsWorkflowInput =
     {
-      name: "Test shipping option",
+      name: "Return shipping option",
       price_type: "flat",
       service_zone_id: serviceZone.id,
       shipping_profile_id: shippingProfile.id,
@@ -209,7 +209,7 @@ async function createOrderFixture({ container, product }) {
     ],
     transactions: [
       {
-        amount: 50, // TODO: check calculation, I think it should be 69 wit the shipping but the order total is 50
+        amount: 50, // TODO: check calculation, I think it should be 60 wit the shipping but the order total is 50
         currency_code: "usd",
       },
     ],
@@ -341,14 +341,96 @@ medusaIntegrationTestRunner({
             region: region,
           }
 
-        const { result, errors } = await createReturnOrderWorkflow(
-          container
-        ).run({
+        await createReturnOrderWorkflow(container).run({
           input: createReturnOrderData,
           throwOnError: false,
         })
 
-        console.log(errors)
+        const remoteQuery = container.resolve(
+          ContainerRegistrationKeys.REMOTE_QUERY
+        )
+        const remoteQueryObject = remoteQueryObjectFromString({
+          entryPoint: "order",
+          variables: {
+            id: order.id,
+          },
+          fields: [
+            "*",
+            "items.*",
+            "shipping_methods.*",
+            "total",
+            "item_total",
+            "fulfillments.*",
+          ],
+        })
+
+        const [returnOrder] = await remoteQuery(remoteQueryObject)
+
+        expect(returnOrder).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            display_id: 1,
+            region_id: "test_region_idclear",
+            customer_id: "joe",
+            version: 2,
+            sales_channel_id: "test",
+            status: "pending",
+            is_draft_order: false,
+            email: "foo@bar.com",
+            currency_code: "usd",
+            shipping_address_id: expect.any(String),
+            billing_address_id: expect.any(String),
+            items: [
+              expect.objectContaining({
+                id: order.items![0].id,
+                title: "Custom Item 2",
+                variant_sku: product.variants[0].sku,
+                variant_title: product.variants[0].title,
+                requires_shipping: true,
+                is_discountable: true,
+                is_tax_inclusive: false,
+                compare_at_unit_price: null,
+                unit_price: 50,
+                quantity: 1,
+                detail: expect.objectContaining({
+                  id: expect.any(String),
+                  order_id: expect.any(String),
+                  version: 2,
+                  item_id: expect.any(String),
+                  quantity: 1,
+                  fulfilled_quantity: 1,
+                  shipped_quantity: 1,
+                  return_requested_quantity: 1,
+                  return_received_quantity: 0,
+                  return_dismissed_quantity: 0,
+                  written_off_quantity: 0,
+                }),
+              }),
+            ],
+            shipping_methods: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                name: "Test shipping method",
+                description: null,
+                is_tax_inclusive: false,
+                shipping_option_id: null,
+                amount: 10,
+                order_id: expect.any(String),
+              }),
+              expect.objectContaining({
+                id: expect.any(String),
+                name: shippingOption.name,
+                description: null,
+                is_tax_inclusive: false,
+                shipping_option_id: shippingOption.id,
+                amount: 10,
+                order_id: expect.any(String),
+              }),
+            ]),
+            // TODO FIX
+            // fulfillments: [null],
+          })
+        )
       })
     })
   },
