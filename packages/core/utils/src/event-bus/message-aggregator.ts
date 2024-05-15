@@ -14,15 +14,13 @@ export class MessageAggregator implements IMessageAggregator {
     this.messages = []
   }
 
-  save(msg: Message | Message[]): void {
-    if (!msg || (Array.isArray(msg) && msg.length === 0)) {
-      return
-    }
+  save(message: Message | Message[]): void {
+    if (!message || (Array.isArray(message) && message.length === 0)) return
 
-    if (Array.isArray(msg)) {
-      this.messages.push(...msg)
+    if (Array.isArray(message)) {
+      this.messages.push(...message)
     } else {
-      this.messages.push(msg)
+      this.messages.push(message)
     }
   }
 
@@ -30,53 +28,45 @@ export class MessageAggregator implements IMessageAggregator {
     messageData:
       | EventBusTypes.MessageFormat<T>
       | EventBusTypes.MessageFormat<T>[],
-    options?: Record<string, unknown>
-  ): void {
+    options?: EventBusTypes.Option
+  ) {
     this.save(buildEventMessages(messageData, options))
   }
 
   getMessages(format?: MessageAggregatorFormat): {
     [group: string]: Message[]
   } {
-    const { groupBy, sortBy } = format ?? {}
+    const { groupBy, sortBy } = format || {}
+    const messagesCopy = sortBy ? [...this.messages] : this.messages
 
     if (sortBy) {
-      this.messages.sort((a, b) => this.compareMessages(a, b, sortBy))
+      messagesCopy.sort((a, b) => this.compareMessages(a, b, sortBy!))
     }
 
     let messages: { [group: string]: Message[] } = { default: this.messages }
 
     if (groupBy) {
-      const groupedMessages = this.messages.reduce<{
-        [key: string]: Message[]
-      }>((acc, msg) => {
+      messages = messagesCopy.reduce((acc, msg) => {
         const key = groupBy
           .map((field) => this.getValueFromPath(msg, field))
           .join("-")
-        if (!acc[key]) {
-          acc[key] = []
-        }
-        acc[key].push(msg)
-        return acc
-      }, {})
 
-      messages = groupedMessages
+        acc[key] = acc[key] || []
+        acc[key].push(msg)
+
+        return acc
+      }, {} as { [group: string]: Message[] })
     }
 
     return messages
   }
 
-  clearMessages(): void {
+  clearMessages() {
     this.messages = []
   }
 
-  private getValueFromPath(obj: any, path: string): any {
-    const keys = path.split(".")
-    for (const key of keys) {
-      obj = obj[key]
-      if (obj === undefined) break
-    }
-    return obj
+  private getValueFromPath(obj: any, path: string) {
+    return path.split(".").reduce((o, key) => (o ? o[key] : undefined), obj)
   }
 
   private compareMessages(
@@ -84,39 +74,30 @@ export class MessageAggregator implements IMessageAggregator {
     b: Message,
     sortBy: MessageAggregatorFormat["sortBy"]
   ): number {
-    for (const key of Object.keys(sortBy!)) {
-      const orderCriteria = sortBy![key]
+    if (!sortBy) return 0
+
+    for (const key of Object.keys(sortBy)) {
+      const orderCriteria = sortBy[key]
       const valueA = this.getValueFromPath(a, key)
       const valueB = this.getValueFromPath(b, key)
 
-      // User defined order
       if (Array.isArray(orderCriteria)) {
         const indexA = orderCriteria.indexOf(valueA)
         const indexB = orderCriteria.indexOf(valueB)
 
-        if (indexA === indexB) {
-          continue
-        } else if (indexA === -1) {
-          return 1
-        } else if (indexB === -1) {
-          return -1
-        } else {
-          return indexA - indexB
-        }
-      } else {
-        // Ascending or descending order
-        let orderMultiplier = 1
-        if (orderCriteria === "desc" || orderCriteria === -1) {
-          orderMultiplier = -1
-        }
+        if (indexA === indexB) continue
+        else if (indexA === -1) return 1
+        else if (indexB === -1) return -1
 
-        if (valueA === valueB) {
-          continue
-        } else if (valueA < valueB) {
-          return -1 * orderMultiplier
-        } else {
-          return 1 * orderMultiplier
-        }
+        return indexA - indexB
+      } else {
+        const orderMultiplier =
+          orderCriteria === "desc" || orderCriteria === -1 ? -1 : 1
+
+        if (valueA === valueB) continue
+        else if (valueA < valueB) return -1 * orderMultiplier
+
+        return 1 * orderMultiplier
       }
     }
     return 0

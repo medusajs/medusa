@@ -7,6 +7,7 @@ describe("MessageAggregator", function () {
 
   it("should group messages by any given group of keys", function () {
     const aggregator = new MessageAggregator()
+
     aggregator.save({
       eventName: "ProductVariant.created",
       body: {
@@ -77,11 +78,9 @@ describe("MessageAggregator", function () {
     }
 
     const messages = aggregator.getMessages(format)
-
-    expect(Object.keys(messages)).toHaveLength(4)
-
     const allGroups = Object.values(messages)
 
+    expect(Object.keys(messages)).toHaveLength(4)
     expect(allGroups[0]).toEqual([
       {
         eventName: "ProductType.detached",
@@ -96,7 +95,6 @@ describe("MessageAggregator", function () {
         },
       },
     ])
-
     expect(allGroups[1]).toEqual([
       {
         eventName: "ProductVariant.updated",
@@ -111,7 +109,6 @@ describe("MessageAggregator", function () {
         },
       },
     ])
-
     expect(allGroups[2]).toEqual([
       {
         eventName: "ProductVariant.created",
@@ -138,7 +135,6 @@ describe("MessageAggregator", function () {
         },
       },
     ])
-
     expect(allGroups[3]).toEqual([
       {
         eventName: "Product.created",
