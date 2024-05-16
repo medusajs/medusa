@@ -100,54 +100,6 @@ export const filesMap = [
     "pathname": "/_plugins/storage/spaces"
   },
   {
-    "filePath": "/www/apps/resources/app/_recipes/b2b/page.mdx",
-    "pathname": "/_recipes/b2b"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/commerce-automation/page.mdx",
-    "pathname": "/_recipes/commerce-automation"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/digital-products/page.mdx",
-    "pathname": "/_recipes/digital-products"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/ecommerce/page.mdx",
-    "pathname": "/_recipes/ecommerce"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/integrate-ecommerce-stack/page.mdx",
-    "pathname": "/_recipes/integrate-ecommerce-stack"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/marketplace/page.mdx",
-    "pathname": "/_recipes/marketplace"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/multi-region-store/page.mdx",
-    "pathname": "/_recipes/multi-region-store"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/omnichannel/page.mdx",
-    "pathname": "/_recipes/omnichannel"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/oms/page.mdx",
-    "pathname": "/_recipes/oms"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/personalized-products/page.mdx",
-    "pathname": "/_recipes/personalized-products"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/pos/page.mdx",
-    "pathname": "/_recipes/pos"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/subscriptions/page.mdx",
-    "pathname": "/_recipes/subscriptions"
-  },
-  {
     "filePath": "/www/apps/resources/app/admin-widget-injection-zones/page.mdx",
     "pathname": "/admin-widget-injection-zones"
   },
@@ -810,6 +762,54 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/page.mdx",
     "pathname": "/"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/b2b/page.mdx",
+    "pathname": "/recipes/b2b"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/commerce-automation/page.mdx",
+    "pathname": "/recipes/commerce-automation"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/digital-products/page.mdx",
+    "pathname": "/recipes/digital-products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/ecommerce/page.mdx",
+    "pathname": "/recipes/ecommerce"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/integrate-ecommerce-stack/page.mdx",
+    "pathname": "/recipes/integrate-ecommerce-stack"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/marketplace/page.mdx",
+    "pathname": "/recipes/marketplace"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/multi-region-store/page.mdx",
+    "pathname": "/recipes/multi-region-store"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/omnichannel/page.mdx",
+    "pathname": "/recipes/omnichannel"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/oms/page.mdx",
+    "pathname": "/recipes/oms"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/personalized-products/page.mdx",
+    "pathname": "/recipes/personalized-products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/pos/page.mdx",
+    "pathname": "/recipes/pos"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/subscriptions/page.mdx",
+    "pathname": "/recipes/subscriptions"
   },
   {
     "filePath": "/www/apps/resources/app/references/[...slug]/page.tsx",
