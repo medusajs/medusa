@@ -18,7 +18,7 @@ export const NavbarLink = ({
   label,
   className,
   isActive,
-  badge
+  badge,
 }: NavbarLinkProps) => {
   return (
     <Link
@@ -32,10 +32,9 @@ export const NavbarLink = ({
       )}
     >
       {label}
-      {badge && <Badge {...badge} className={clsx(
-        badge.className,
-        "ml-docs_0.5"
-      )} />}
+      {badge && (
+        <Badge {...badge} className={clsx(badge.className, "ml-docs_0.5")} />
+      )}
     </Link>
   )
 }

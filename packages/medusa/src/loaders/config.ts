@@ -99,6 +99,7 @@ export default (rootDirectory: string): ConfigModule => {
 
   return {
     projectConfig,
+    admin: configModule?.admin ?? {},
     modules: configModule.modules ?? {},
     featureFlags: configModule?.featureFlags ?? {},
     plugins: configModule?.plugins ?? [],

@@ -1,40 +1,26 @@
 post:
-  operationId: PostInvitesInviteAccept
-  summary: Accept an Invite
-  description: >-
-    Accept an Invite. This will also delete the invite and create a new user
-    that can log in and perform admin functionalities. The user will have the
-    email associated with the invite, and the password provided in the request
-    body.
+  operationId: PostInvitesAccept
+  summary: Create Invite
+  description: Create a invite.
+  x-authenticated: true
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostInvitesInviteAcceptReq.yaml
-  x-codegen:
-    method: accept
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_invites_accept/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_invites_accept/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_invites_accept/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Invites
   responses:
-    '200':
-      description: OK
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

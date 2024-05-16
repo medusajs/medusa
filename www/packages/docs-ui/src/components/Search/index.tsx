@@ -86,7 +86,7 @@ export const Search = ({
         indexName={algolia.mainIndexName}
         searchClient={searchClient}
         future={{
-          preserveSharedStateOnUnmount: true
+          preserveSharedStateOnUnmount: true,
         }}
       >
         <div className={clsx("bg-medusa-bg-base flex")}>

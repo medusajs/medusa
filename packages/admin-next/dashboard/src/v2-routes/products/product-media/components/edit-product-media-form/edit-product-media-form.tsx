@@ -9,15 +9,15 @@ import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
 import { Link } from "react-router-dom"
+import {
+  FileType,
+  FileUpload,
+} from "../../../../../components/common/file-upload"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import {
-  FileType,
-  FileUpload,
-} from "../../../../../components/common/file-upload"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 
 type ProductMediaViewProps = {
@@ -400,8 +400,10 @@ const getDefaultValues = (images: Image[] | null, thumbnail: string | null) => {
     })) || []
 
   if (thumbnail && !media.some((mediaItem) => mediaItem.url === thumbnail)) {
+    const id = Math.random().toString(36).substring(7)
+
     media.unshift({
-      id: crypto.randomUUID(),
+      id: id,
       url: thumbnail,
       isThumbnail: true,
       file: null,

@@ -17,6 +17,9 @@ process.env.LOG_LEVEL = "error"
 
 module.exports = {
   plugins: [],
+  admin: {
+    disable: true,
+  },
   projectConfig: {
     auth: {},
     redis_url: redisUrl,

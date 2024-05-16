@@ -1,37 +1,22 @@
 post:
-  operationId: PostCartsCartLineItemsItem
-  summary: Update a Line Item
-  description: Update a line item's quantity.
+  operationId: PostCartsIdLineItemsLine_id
+  summary: Add Line Items to Cart
+  description: Add a list of line items to a cart.
+  x-authenticated: false
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The cart's ID.
       required: true
-      description: The ID of the Cart.
       schema:
         type: string
-    - in: path
-      name: line_id
+    - name: line_id
+      in: path
+      description: The cart's line id.
       required: true
-      description: The ID of the Line Item.
       schema:
         type: string
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/StorePostCartsCartLineItemsItemReq.yaml
-  x-codegen:
-    method: updateLineItem
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/store_carts_{id}_line-items_{line_id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_carts_{id}_line-items_{line_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -39,14 +24,10 @@ post:
   tags:
     - Carts
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/StoreCartsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -55,37 +36,31 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
 delete:
-  operationId: DeleteCartsCartLineItemsItem
-  summary: Delete a Line Item
+  operationId: DeleteCartsIdLineItemsLine_id
+  summary: Remove Line Items from Cart
   description: >-
-    Delete a Line Item from a Cart. The payment sessions will be updated and the
-    totals will be recalculated.
+    Remove a list of line items from a cart. This doesn't delete the Line Item,
+    only the association between the Line Item and the cart.
+  x-authenticated: false
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The cart's ID.
       required: true
-      description: The ID of the Cart.
       schema:
         type: string
-    - in: path
-      name: line_id
+    - name: line_id
+      in: path
+      description: The cart's line id.
       required: true
-      description: The ID of the Line Item.
       schema:
         type: string
-  x-codegen:
-    method: deleteLineItem
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/store_carts_{id}_line-items_{line_id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_carts_{id}_line-items_{line_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:
@@ -93,14 +68,10 @@ delete:
   tags:
     - Carts
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/StoreCartsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -109,3 +80,7 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

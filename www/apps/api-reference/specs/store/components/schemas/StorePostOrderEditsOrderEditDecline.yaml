@@ -1,6 +1,0 @@
-type: object
-description: The details of the order edit's decline.
-properties:
-  declined_reason:
-    type: string
-    description: The reason for declining the Order Edit.
