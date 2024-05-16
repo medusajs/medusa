@@ -8,13 +8,15 @@ import { NavbarSearchModalOpener } from "./SearchModalOpener"
 import { NavbarMobileMenuButtonProps } from "./MobileMenu/Button"
 import { NavbarDivider } from "./NavbarDivider"
 
-export type NavbarItem = {
-  type: "link"
-  props: NavbarLinkProps
-} | {
-  type: "divider"
-  props?: {}
-}
+export type NavbarItem =
+  | {
+      type: "link"
+      props: NavbarLinkProps
+    }
+  | {
+      type: "divider"
+      props?: Record<string, unknown>
+    }
 
 export type NavbarProps = {
   logo: NavbarLogoProps
@@ -54,10 +56,10 @@ export const Navbar = ({
       >
         <div className="hidden w-full items-center gap-docs_0.5 lg:flex lg:w-auto lg:gap-docs_1.5">
           <NavbarLogo {...logo} />
-          {items.map(({type, props}, index) => {
-            switch(type) {
+          {items.map(({ type, props }, index) => {
+            switch (type) {
               case "divider":
-                return <NavbarDivider key={index}  />
+                return <NavbarDivider key={index} />
               default:
                 return <NavbarLink key={index} {...props} />
             }

@@ -1,43 +1,29 @@
 get:
-  operationId: GetRegionsRegion
+  operationId: GetRegionsId
   summary: Get a Region
-  description: Retrieve a Region's details.
+  description: >-
+    Retrieve a region by its ID. You can expand the region's relations or select
+    the fields that should be returned.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The region's ID.
       required: true
-      description: The ID of the Region.
       schema:
         type: string
-  x-codegen:
-    method: retrieve
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_regions_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_regions_{id}/get.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_regions_{id}/get.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Regions
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminRegionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -50,51 +36,34 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-post:
-  operationId: PostRegionsRegion
-  summary: Update a Region
-  description: Update a Region's details.
-  x-authenticated: true
-  parameters:
-    - in: path
-      name: id
-      required: true
-      description: The ID of the Region.
-      schema:
-        type: string
   requestBody:
     content:
       application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostRegionsRegionReq.yaml
-  x-codegen:
-    method: update
+        schema: {}
+post:
+  operationId: PostRegionsId
+  summary: Update a Region
+  description: Update a region's details.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The region's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_regions_{id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_regions_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_regions_{id}/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Regions
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminRegionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -107,48 +76,34 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
 delete:
-  operationId: DeleteRegionsRegion
+  operationId: DeleteRegionsId
   summary: Delete a Region
-  description: >-
-    Delete a Region. Associated resources, such as providers or currencies are
-    not deleted. Associated tax rates are deleted.
+  description: Delete a region.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The region's ID.
       required: true
-      description: The ID of the Region.
       schema:
         type: string
-  x-codegen:
-    method: delete
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_regions_{id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_regions_{id}/delete.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_regions_{id}/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Regions
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminRegionsDeleteRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -161,3 +116,7 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

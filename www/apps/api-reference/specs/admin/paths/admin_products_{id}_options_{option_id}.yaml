@@ -1,55 +1,35 @@
-post:
-  operationId: PostProductsProductOptionsOption
-  summary: Update a Product Option
-  description: Update a Product Option's details.
+get:
+  operationId: GetProductsIdOptionsOption_id
+  summary: List Options
+  description: >-
+    Retrieve a list of options in a product. The options can be filtered by
+    fields like FILTER FIELDS. The options can also be paginated.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product's ID.
       required: true
-      description: The ID of the Product.
       schema:
         type: string
-    - in: path
-      name: option_id
+    - name: option_id
+      in: path
+      description: The product's option id.
       required: true
-      description: The ID of the Product Option.
       schema:
         type: string
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostProductsProductOptionsOption.yaml
-  x-codegen:
-    method: updateOption
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_products_{id}_options_{option_id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_products_{id}_options_{option_id}/post.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_products_{id}_options_{option_id}/post.sh
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_products_{id}_options_{option_id}/get.sh
   tags:
     - Products
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminProductsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -62,56 +42,89 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-delete:
-  operationId: DeleteProductsProductOptionsOption
-  summary: Delete a Product Option
-  description: >-
-    Delete a Product Option. If there are product variants that use this product
-    option, they must be deleted before deleting the product option.
+  requestBody:
+    content:
+      application/json:
+        schema: {}
+post:
+  operationId: PostProductsIdOptionsOption_id
+  summary: Add Options to Product
+  description: Add a list of options to a product.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product's ID.
       required: true
-      description: The ID of the Product.
       schema:
         type: string
-    - in: path
-      name: option_id
+    - name: option_id
+      in: path
+      description: The product's option id.
       required: true
-      description: The ID of the Product Option.
       schema:
         type: string
-  x-codegen:
-    method: deleteOption
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
+    - lang: Shell
+      label: cURL
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_products_{id}_options_{option_id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_products_{id}_options_{option_id}/delete.tsx
+        $ref: ../code_samples/Shell/admin_products_{id}_options_{option_id}/post.sh
+  tags:
+    - Products
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
+delete:
+  operationId: DeleteProductsIdOptionsOption_id
+  summary: Remove Options from Product
+  description: >-
+    Remove a list of options from a product. This doesn't delete the Option,
+    only the association between the Option and the product.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The product's ID.
+      required: true
+      schema:
+        type: string
+    - name: option_id
+      in: path
+      description: The product's option id.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/admin_products_{id}_options_{option_id}/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Products
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminProductsDeleteOptionRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -124,3 +137,7 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

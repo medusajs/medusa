@@ -1,147 +1,34 @@
-get:
-  operationId: GetInventoryItemsInventoryItemLocationLevels
-  summary: List Inventory Level
-  description: >-
-    Retrieve a list of inventory levels of an inventory item. The inventory
-    levels can be filtered by fields such as `location_id`.
+post:
+  operationId: PostInventoryItemsIdLocationLevels
+  summary: Add Location Levels to Inventory Item
+  description: Add a list of location levels to a inventory item.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The inventory item's ID.
       required: true
-      description: The ID of the Inventory Item the locations are associated with.
       schema:
         type: string
-    - in: query
-      name: location_id
-      style: form
-      explode: false
-      description: Filter by location IDs.
-      schema:
-        type: array
-        items:
-          type: string
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned
-        inventory levels.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned inventory
-        levels.
-      schema:
-        type: string
-  x-codegen:
-    method: listLocationLevels
-    queryParams: AdminGetInventoryItemsItemLocationLevelsParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_inventory-items_{id}_location-levels/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_inventory-items_{id}_location-levels/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: >-
-          ../code_samples/Shell/admin_inventory-items_{id}_location-levels/get.sh
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
-  tags:
-    - Inventory Items
-  responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminInventoryItemsLocationLevelsRes.yaml
-    '400':
-      $ref: ../components/responses/400_error.yaml
-    '401':
-      $ref: ../components/responses/unauthorized.yaml
-    '404':
-      $ref: ../components/responses/not_found_error.yaml
-    '409':
-      $ref: ../components/responses/invalid_state_error.yaml
-    '422':
-      $ref: ../components/responses/invalid_request_error.yaml
-    '500':
-      $ref: ../components/responses/500_error.yaml
-post:
-  operationId: PostInventoryItemsInventoryItemLocationLevels
-  summary: Create a Location Level
-  description: Create a Location Level for a given Inventory Item.
-  x-authenticated: true
-  parameters:
-    - in: path
-      name: id
-      required: true
-      description: The ID of the Inventory Item.
-      schema:
-        type: string
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned
-        inventory item.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned inventory
-        item.
-      schema:
-        type: string
   requestBody:
     content:
       application/json:
         schema:
           $ref: >-
             ../components/schemas/AdminPostInventoryItemsItemLocationLevelsReq.yaml
-  x-codegen:
-    method: createLocationLevel
-    queryParams: AdminPostInventoryItemsItemLocationLevelsParams
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_inventory-items_{id}_location-levels/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: >-
-          ../code_samples/tsx/admin_inventory-items_{id}_location-levels/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/admin_inventory-items_{id}_location-levels/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Inventory Items
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminInventoryItemsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
