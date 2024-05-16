@@ -274,9 +274,10 @@ export const CodeBlock = ({
               <div
                 className={clsx(
                   "absolute hidden md:flex md:justify-end",
-                  "xs:rounded xs:absolute xs:right-0 xs:top-0 xs:w-[calc(10%+24px)] xs:h-full xs:bg-transparent",
-                  tokens.length === 1 && "md:right-[6px] md:top-0",
-                  tokens.length > 1 && "md:right-docs_1 md:top-docs_1"
+                  "xs:rounded xs:absolute xs:right-0 xs:top-0 xs:w-[17%]",
+                  "xs:h-full xs:bg-code-fade xs:top-0",
+                  tokens.length === 1 && "md:right-[6px]",
+                  tokens.length > 1 && "md:right-docs_1 md:pt-docs_1"
                 )}
               >
                 {canShowApiTesting && (
