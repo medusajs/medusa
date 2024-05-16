@@ -417,6 +417,7 @@
     "groups": {
       "label": "Customer groups",
       "remove": "Are you sure you want to remove the customer from \"{{name}}\" customer group?",
+      "removeMany": "Are you sure you want to customer from following customer groups: {{groups}}?",
       "alreadyAddedTooltip": "The customer is already in this customer group."
     },
     "edit": {

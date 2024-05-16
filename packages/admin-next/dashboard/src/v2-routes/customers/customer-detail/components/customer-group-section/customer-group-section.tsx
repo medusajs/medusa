@@ -2,10 +2,17 @@ import {
   AdminCustomerGroupResponse,
   AdminCustomerResponse,
 } from "@medusajs/types"
-import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
-import { createColumnHelper } from "@tanstack/react-table"
+import {
+  Button,
+  Checkbox,
+  Container,
+  Heading,
+  toast,
+  usePrompt,
+} from "@medusajs/ui"
+import { createColumnHelper, RowSelectionState } from "@tanstack/react-table"
 import { t } from "i18next"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -13,6 +20,7 @@ import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import {
+  customerGroupsQueryKeys,
   useCustomerGroups,
   useRemoveCustomersFromGroup,
 } from "../../../../../hooks/api/customer-groups"
@@ -21,6 +29,8 @@ import { useCustomerGroupTableFilters } from "../../../../../hooks/table/filters
 import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { Link } from "react-router-dom"
+import { client } from "../../../../../lib/client"
+import { queryClient } from "../../../../../lib/medusa.ts"
 
 type CustomerGroupSectionProps = {
   customer: AdminCustomerResponse["customer"]
@@ -31,9 +41,13 @@ const PAGE_SIZE = 10
 export const CustomerGroupSection = ({
   customer,
 }: CustomerGroupSectionProps) => {
+  const prompt = usePrompt()
+
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { raw, searchParams } = useCustomerGroupTableQuery({
     pageSize: PAGE_SIZE,
   })
+
   const { customer_groups, count, isLoading, isError, error } =
     useCustomerGroups(
       {
@@ -57,10 +71,52 @@ export const CustomerGroupSection = ({
     enablePagination: true,
     enableRowSelection: true,
     pageSize: PAGE_SIZE,
+    rowSelection: {
+      state: rowSelection,
+      updater: setRowSelection,
+    },
   })
 
-  if (isError) {
-    throw error
+  const handleRemove = async () => {
+    const customerGroupIds = Object.keys(rowSelection)
+
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("customers.groups.removeMany", {
+        groups: customer_groups
+          .filter((g) => customerGroupIds.includes(g.id))
+          .map((g) => g.name)
+          .join(","),
+      }),
+      confirmText: t("actions.remove"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    try {
+      /**
+       * TODO: use this for now until add customer groups to customers batch is implemented
+       */
+      const promises = customerGroupIds.map((id) =>
+        client.customerGroups.removeCustomers(id, {
+          customer_ids: [customer.id],
+        })
+      )
+
+      await Promise.all(promises)
+
+      await queryClient.invalidateQueries({
+        queryKey: customerGroupsQueryKeys.lists(),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("general.close"),
+      })
+    }
   }
 
   if (isError) {
@@ -88,6 +144,13 @@ export const CustomerGroupSection = ({
         search
         pagination
         orderBy={["name", "created_at", "updated_at"]}
+        commands={[
+          {
+            action: handleRemove,
+            label: t("actions.remove"),
+            shortcut: "r",
+          },
+        ]}
         queryObject={raw}
       />
     </Container>
@@ -160,6 +223,34 @@ const useColumns = (customerId: string) => {
 
   return useMemo(
     () => [
+      columnHelper.display({
+        id: "select",
+        header: ({ table }) => {
+          return (
+            <Checkbox
+              checked={
+                table.getIsSomePageRowsSelected()
+                  ? "indeterminate"
+                  : table.getIsAllPageRowsSelected()
+              }
+              onCheckedChange={(value) =>
+                table.toggleAllPageRowsSelected(!!value)
+              }
+            />
+          )
+        },
+        cell: ({ row }) => {
+          return (
+            <Checkbox
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            />
+          )
+        },
+      }),
       ...columns,
       columnHelper.display({
         id: "actions",
