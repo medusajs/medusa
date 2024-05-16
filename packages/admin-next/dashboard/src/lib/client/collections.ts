@@ -1,5 +1,6 @@
 import {
   CreateProductCollectionReq,
+  UpdateProductCollectionProductsReq,
   UpdateProductCollectionReq,
 } from "../../types/api-payloads"
 import {
@@ -31,6 +32,16 @@ async function createProductCollection(payload: CreateProductCollectionReq) {
   return postRequest<ProductCollectionRes>(`/admin/collections`, payload)
 }
 
+async function updateProductCollectionProducts(
+  id: string,
+  payload: UpdateProductCollectionProductsReq
+) {
+  return postRequest<ProductCollectionRes>(
+    `/admin/collections/${id}/products`,
+    payload
+  )
+}
+
 async function deleteProductCollection(id: string) {
   return deleteRequest<ProductCollectionDeleteRes>(`/admin/collections/${id}`)
 }
@@ -39,6 +50,7 @@ export const collections = {
   list: listProductCollections,
   retrieve: retrieveProductCollection,
   update: updateProductCollection,
+  updateProducts: updateProductCollectionProducts,
   create: createProductCollection,
   delete: deleteProductCollection,
 }
