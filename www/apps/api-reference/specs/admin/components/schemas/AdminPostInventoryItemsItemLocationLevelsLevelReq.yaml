@@ -1,8 +1,12 @@
 type: object
+description: SUMMARY
+x-schemaName: AdminPostInventoryItemsItemLocationLevelsLevelReq
 properties:
-  stocked_quantity:
-    description: the total stock quantity of an inventory item at the given location ID
-    type: number
   incoming_quantity:
-    description: the incoming stock quantity of an inventory item at the given location ID
     type: number
+    title: incoming_quantity
+    description: The inventory item's incoming quantity.
+  stocked_quantity:
+    type: number
+    title: stocked_quantity
+    description: The inventory item's stocked quantity.

@@ -1,8 +1,9 @@
 import { DocsConfig } from "types"
-import { mobileSidebarItemsV1, legacyMobileSidebarItems } from "docs-ui"
+import { mobileSidebarItemsV2 } from "docs-ui"
 
 export const config: DocsConfig = {
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   // sidebar is auto generated
   sidebar: {
     top: [
@@ -13,6 +14,6 @@ export const config: DocsConfig = {
       },
     ],
     bottom: [],
-    mobile: process.env.NEXT_PUBLIC_SHOW_V2 ? mobileSidebarItemsV1 : legacyMobileSidebarItems,
+    mobile: mobileSidebarItemsV2,
   },
 }

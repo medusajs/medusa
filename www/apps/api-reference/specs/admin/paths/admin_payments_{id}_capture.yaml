@@ -1,43 +1,32 @@
 post:
-  operationId: PostPaymentsPaymentCapture
-  summary: Capture a Payment
-  description: Capture a Payment.
+  operationId: PostPaymentsIdCapture
+  summary: Add Captures to Payment
+  description: Add a list of captures to a payment.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The payment's ID.
       required: true
-      description: The ID of the Payment.
       schema:
         type: string
-  x-codegen:
-    method: capturePayment
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_payments_{id}_capture/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_payments_{id}_capture/post.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_payments_{id}_capture/post.sh
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostPaymentsCapturesReq.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_payments_{id}_capture/post.sh
   tags:
     - Payments
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminPaymentRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

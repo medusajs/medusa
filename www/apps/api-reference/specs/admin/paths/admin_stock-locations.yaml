@@ -1,215 +1,28 @@
-get:
-  operationId: GetStockLocations
-  summary: List Stock Locations
-  description: >-
-    Retrieve a list of stock locations. The stock locations can be filtered by
-    fields such as `name` or `created_at`. The stock locations can also be
-    sorted or paginated.
+post:
+  operationId: PostStockLocations
+  summary: Create Stock Location
+  description: Create a stock location.
   x-authenticated: true
-  parameters:
-    - in: query
-      name: id
-      description: Filter by ID.
-      schema:
-        type: string
-    - in: query
-      name: name
-      description: Filter by name.
-      schema:
-        type: string
-    - in: query
-      name: order
-      description: A stock-location field to sort-order the retrieved stock locations by.
-      schema:
-        type: string
-    - in: query
-      name: created_at
-      description: Filter by a creation date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: updated_at
-      description: Filter by an update date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: deleted_at
-      description: Filter by a deletion date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: offset
-      description: >-
-        The number of stock locations to skip when retrieving the stock
-        locations.
-      schema:
-        type: integer
-        default: 0
-    - in: query
-      name: limit
-      description: Limit the number of stock locations returned.
-      schema:
-        type: integer
-        default: 20
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned stock
-        locations.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned stock
-        locations.
-      schema:
-        type: string
-  x-codegen:
-    method: list
-    queryParams: AdminGetStockLocationsParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_stock-locations/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_stock-locations/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_stock-locations/get.sh
+  parameters: []
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
-  tags:
-    - Stock Locations
-  responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminStockLocationsListRes.yaml
-    '400':
-      $ref: ../components/responses/400_error.yaml
-    '401':
-      $ref: ../components/responses/unauthorized.yaml
-    '404':
-      $ref: ../components/responses/not_found_error.yaml
-    '409':
-      $ref: ../components/responses/invalid_state_error.yaml
-    '422':
-      $ref: ../components/responses/invalid_request_error.yaml
-    '500':
-      $ref: ../components/responses/500_error.yaml
-post:
-  operationId: PostStockLocations
-  summary: Create a Stock Location
-  description: Create a Stock Location.
-  x-authenticated: true
-  parameters:
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned stock
-        location.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned stock
-        location.
-      schema:
-        type: string
   requestBody:
     content:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostStockLocationsReq.yaml
-  x-codegen:
-    method: create
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_stock-locations/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_stock-locations/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_stock-locations/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Stock Locations
   responses:
     '200':
       description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminStockLocationsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -1,115 +1,34 @@
 post:
-  operationId: PostCustomerGroupsGroupCustomersBatch
-  summary: Add Customers to Group
+  operationId: PostCustomerGroupsIdCustomersBatch
+  summary: Add Customers to Customer Group
   description: Add a list of customers to a customer group.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The customer group's ID.
       required: true
-      description: The ID of the customer group.
       schema:
         type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
           $ref: >-
             ../components/schemas/AdminPostCustomerGroupsGroupCustomersBatchReq.yaml
-  x-codegen:
-    method: addCustomers
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_customer-groups_{id}_customers_batch/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: >-
-          ../code_samples/tsx/admin_customer-groups_{id}_customers_batch/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/admin_customer-groups_{id}_customers_batch/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Customer Groups
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminCustomerGroupsRes.yaml
-    '400':
-      $ref: ../components/responses/400_error.yaml
-    '401':
-      $ref: ../components/responses/unauthorized.yaml
-    '404':
-      $ref: ../components/responses/not_found_error.yaml
-    '409':
-      $ref: ../components/responses/invalid_state_error.yaml
-    '422':
-      $ref: ../components/responses/invalid_request_error.yaml
-    '500':
-      $ref: ../components/responses/500_error.yaml
-delete:
-  operationId: DeleteCustomerGroupsGroupCustomerBatch
-  summary: Remove Customers from Group
-  description: >-
-    Remove a list of customers from a customer group. This doesn't delete the
-    customer, only the association between the customer and the customer group.
-  x-authenticated: true
-  parameters:
-    - in: path
-      name: id
-      required: true
-      description: The ID of the customer group.
-      schema:
-        type: string
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: >-
-            ../components/schemas/AdminDeleteCustomerGroupsGroupCustomerBatchReq.yaml
-  x-codegen:
-    method: removeCustomers
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_customer-groups_{id}_customers_batch/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: >-
-          ../code_samples/tsx/admin_customer-groups_{id}_customers_batch/delete.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: >-
-          ../code_samples/Shell/admin_customer-groups_{id}_customers_batch/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
-  tags:
-    - Customer Groups
-  responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminCustomerGroupsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
