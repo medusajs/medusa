@@ -43,6 +43,10 @@ export async function installNextjsStarter({
 
   let nextjsDirectory = `${directoryName}-storefront`
 
+  if (directoryName === ".") {
+    nextjsDirectory = nextjsDirectory.slice(2, nextjsDirectory.length)
+  }
+
   if (
     fs.existsSync(nextjsDirectory) &&
     fs.lstatSync(nextjsDirectory).isDirectory()

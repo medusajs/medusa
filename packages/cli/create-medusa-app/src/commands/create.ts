@@ -41,6 +41,10 @@ export type CreateOptions = {
   browser?: boolean
   migrations?: boolean
   directoryPath?: string
+  projectName?: string
+  adminEmail?: string
+  postgresPassword?: string
+  postgresUsername?: string
   withNextjsStarter?: boolean
   verbose?: boolean
   v2?: boolean
@@ -55,6 +59,10 @@ export default async ({
   browser,
   migrations,
   directoryPath,
+  projectName,
+  adminEmail,
+  postgresPassword,
+  postgresUsername,
   withNextjsStarter = false,
   verbose = false,
   v2 = false,
@@ -78,6 +86,14 @@ export default async ({
   let printedMessage = false
   let nextjsDirectory = ""
 
+  if (!projectName) {
+    projectName = await askForProjectName(directoryPath)
+  }
+
+  if (!adminEmail && !skipDb && migrations) {
+    adminEmail = await askForAdminEmail(seed, boilerplate)
+  }
+
   processManager.onTerminated(async () => {
     spinner.stop()
     // prevent an error from occurring if
@@ -96,19 +112,19 @@ export default async ({
     return
   })
 
-  const projectName = await askForProjectName(directoryPath)
   const projectPath = getProjectPath(projectName, directoryPath)
-  const adminEmail =
-    !skipDb && migrations ? await askForAdminEmail(seed, boilerplate) : ""
   const installNextjs = withNextjsStarter || (await askForNextjsStarter())
 
   let { client, dbConnectionString } = !skipDb
     ? await getDbClientAndCredentials({
         dbName,
         dbUrl,
+        postgresUsername,
+        postgresPassword,
         verbose,
       })
     : { client: null, dbConnectionString: "" }
+
   isDbInitialized = true
 
   track("CMA_OPTIONS", {
@@ -182,7 +198,7 @@ export default async ({
       directory: projectPath,
       dbConnectionString,
       admin: {
-        email: adminEmail,
+        email: adminEmail || "",
       },
       seed,
       boilerplate,
@@ -324,7 +340,17 @@ function showSuccessMessage(
     message: boxen(
       chalk.green(
         // eslint-disable-next-line prettier/prettier
-        `Change to the \`${projectName}\` directory to explore your Medusa project.${EOL}${EOL}Start your Medusa app again with the following command:${EOL}${EOL}npx @medusajs/medusa-cli develop${EOL}${EOL}${inviteToken ? `After you start the Medusa app, you can set a password for your admin user with the URL ${getInviteUrl(inviteToken)}${EOL}${EOL}` : ""}${nextjsDirectory?.length ? `The Next.js Starter storefront was installed in the \`${nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}npm run dev${EOL}${EOL}` : ""}Check out the Medusa documentation to start your development:${EOL}${EOL}https://docs.medusajs.com/${EOL}${EOL}Star us on GitHub if you like what we're building:${EOL}${EOL}https://github.com/medusajs/medusa/stargazers`
+        `Change to the \`${projectName}\` directory to explore your Medusa project.${EOL}${EOL}Start your Medusa app again with the following command:${EOL}${EOL}npx @medusajs/medusa-cli develop${EOL}${EOL}${
+          inviteToken
+            ? `After you start the Medusa app, you can set a password for your admin user with the URL ${getInviteUrl(
+                inviteToken
+              )}${EOL}${EOL}`
+            : ""
+        }${
+          nextjsDirectory?.length
+            ? `The Next.js Starter storefront was installed in the \`${nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}npm run dev${EOL}${EOL}`
+            : ""
+        }Check out the Medusa documentation to start your development:${EOL}${EOL}https://docs.medusajs.com/${EOL}${EOL}Star us on GitHub if you like what we're building:${EOL}${EOL}https://github.com/medusajs/medusa/stargazers`
       ),
       {
         titleAlignment: "center",

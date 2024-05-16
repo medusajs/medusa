@@ -34,6 +34,22 @@ program
     "Specify the directory path to install the project in."
   )
   .option(
+    "--projectName <string>",
+    "Specify the project name."
+  )
+  .option(
+    "--adminEmail <string>",
+    "Specify the admin email."
+  )
+  .option(
+    "--postgresUsername <string>",
+    "Specify the postgres username."
+  )
+  .option(
+    "--postgresPassword <string>",
+    "Specify the postgres password."
+  )
+  .option(
     "--with-nextjs-starter",
     "Install the Next.js starter along with the Medusa backend",
     false
