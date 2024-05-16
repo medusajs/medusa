@@ -21,18 +21,18 @@ import {
 import { ProductCategoryService, ProductService } from "@services"
 
 import {
-  arrayDifference,
   InjectManager,
   InjectTransactionManager,
-  isString,
-  kebabCase,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   ProductStatus,
+  arrayDifference,
+  isString,
+  isValidHandle,
+  kebabCase,
   promiseAll,
   removeUndefined,
-  isValidHandle,
   toHandle,
 } from "@medusajs/utils"
 import {

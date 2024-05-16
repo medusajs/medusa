@@ -1,9 +1,12 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { Product, ProductCollection } from "@models"
-import { MockEventBusService } from "medusa-test-utils"
+import {
+  MockEventBusService,
+  SuiteOptions,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
 import { createCollections } from "../../../__fixtures__/product"
-import { Modules } from "@medusajs/modules-sdk"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -346,6 +349,40 @@ moduleIntegrationTestRunner({
                   id: productTwo.id,
                 }),
               ]),
+            })
+          )
+        })
+
+        it.only("should add products to a collection successfully", async () => {
+          // Add products to collection
+          await service.upsertCollections([
+            {
+              id: collectionId,
+              product_ids: [productOne.id],
+            },
+          ])
+
+          // Remove products from collection
+          await service.upsertCollections([
+            {
+              id: collectionId,
+              product_ids: [],
+            },
+          ])
+
+          // Check if products are removed
+          const productCollection = await service.retrieveCollection(
+            collectionId,
+            {
+              select: ["products.id"],
+              relations: ["products"],
+            }
+          )
+
+          expect(productCollection.products).toHaveLength(0)
+          expect(productCollection).toEqual(
+            expect.objectContaining({
+              products: [],
             })
           )
         })
