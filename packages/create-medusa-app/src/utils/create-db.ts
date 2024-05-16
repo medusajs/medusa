@@ -54,17 +54,19 @@ export async function runCreateDb({
 
 async function getForDbName({
   dbName,
+  postgresUsername,
+  postgresPassword,
   verbose = false,
 }: {
   dbName: string
+  postgresUsername: string,
+  postgresPassword: string,
   verbose?: boolean
 }): Promise<{
   client: pg.Client
   dbConnectionString: string
 }> {
   let client!: pg.Client
-  let postgresUsername = "postgres"
-  let postgresPassword = ""
 
   try {
     client = await postgresClient({
@@ -164,7 +166,10 @@ async function getForDbUrl({
 export async function getDbClientAndCredentials({
   dbName = "",
   dbUrl = "",
+  postgresUsername = "",
+  postgresPassword = "",
   verbose = false,
+
 }): Promise<{
   client: pg.Client
   dbConnectionString: string
@@ -173,6 +178,8 @@ export async function getDbClientAndCredentials({
   if (dbName) {
     return await getForDbName({
       dbName,
+      postgresUsername,
+      postgresPassword,
       verbose,
     })
   } else {
