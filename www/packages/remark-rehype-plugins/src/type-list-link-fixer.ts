@@ -1,12 +1,18 @@
 import path from "path"
 import { Transformer } from "unified"
 import {
+  ExpressionJsVar,
   TypeListLinkFixerOptions,
-  UnistNode,
   UnistNodeWithData,
   UnistTree,
 } from "./types/index.js"
 import { FixLinkOptions, fixLinkUtil } from "./index.js"
+import getAttribute from "./utils/get-attribute.js"
+import { estreeToJs } from "./utils/estree-to-js.js"
+import {
+  isExpressionJsVarLiteral,
+  isExpressionJsVarObj,
+} from "./utils/expression-is-utils.js"
 
 const LINK_REGEX = /\[(.*?)\]\((?<link>.*?)\)/gm
 
@@ -32,24 +38,34 @@ function matchLinks(
 }
 
 function traverseTypes(
-  types: Record<string, unknown>[],
+  types: ExpressionJsVar[] | ExpressionJsVar,
   linkOptions: Omit<FixLinkOptions, "linkedPath">
 ) {
-  return types.map((typeItem) => {
-    typeItem.type = matchLinks(typeItem.type as string, linkOptions)
-    typeItem.description = matchLinks(
-      typeItem.description as string,
+  if (Array.isArray(types)) {
+    types.forEach((item) => traverseTypes(item, linkOptions))
+  } else if (isExpressionJsVarLiteral(types)) {
+    types.original.value = matchLinks(
+      types.original.value as string,
       linkOptions
     )
-    if (typeItem.children) {
-      typeItem.children = traverseTypes(
-        typeItem.children as Record<string, unknown>[],
+    types.original.raw = JSON.stringify(types.original.value)
+  } else {
+    Object.values(types).forEach((value) => {
+      if (Array.isArray(value) || isExpressionJsVarObj(value)) {
+        return traverseTypes(value, linkOptions)
+      }
+
+      if (!isExpressionJsVarLiteral(value)) {
+        return
+      }
+
+      value.original.value = matchLinks(
+        value.original.value as string,
         linkOptions
       )
-    }
-
-    return typeItem
-  })
+      value.original.raw = JSON.stringify(value.original.value)
+    })
+  }
 }
 
 export function typeListLinkFixerPlugin(
@@ -76,22 +92,17 @@ export function typeListLinkFixerPlugin(
       ""
     )
     const appsPath = basePath || path.join(file.cwd, "app")
-    visit(tree as UnistTree, "mdxJsxFlowElement", (node: UnistNode) => {
+    visit(tree as UnistTree, "mdxJsxFlowElement", (node: UnistNodeWithData) => {
       if (node.name !== "TypeList") {
         return
       }
 
-      const typesAttributeIndex = node.attributes?.findIndex(
-        (attribute) => attribute.name === "types"
-      )
-      if (typesAttributeIndex === undefined || typesAttributeIndex === -1) {
-        return
-      }
-      const typesAttribute = node.attributes![typesAttributeIndex]
+      const typesAttribute = getAttribute(node, "types")
 
       if (
         !typesAttribute ||
-        !(typesAttribute.value as Record<string, unknown>)?.value
+        typeof typesAttribute.value === "string" ||
+        !typesAttribute.value.data?.estree
       ) {
         return
       }
@@ -101,56 +112,15 @@ export function typeListLinkFixerPlugin(
         appsPath,
       }
 
-      let newItems: Record<string, unknown>[]
+      // let newItems: Record<string, unknown>[]
 
-      try {
-        newItems = traverseTypes(
-          JSON.parse(
-            (typesAttribute.value as Record<string, unknown>).value as string
-          ) as Record<string, unknown>[],
-          linkOptions
-        )
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log(
-          `[type-list-link-fixer-plugin]: An error occurred while parsing items for page ${file.history[0]}: ${e}`
-        )
+      const typesJsVar = estreeToJs(typesAttribute.value.data.estree)
+
+      if (!typesJsVar) {
         return
       }
 
-      ;(
-        node.attributes![typesAttributeIndex].value as Record<string, unknown>
-      ).value = JSON.stringify(newItems)
-
-      if (
-        (node as UnistNodeWithData).attributes![typesAttributeIndex].value?.data
-          ?.estree?.body?.length
-      ) {
-        const oldItems = (node as UnistNodeWithData).attributes[
-          typesAttributeIndex
-        ].value.data!.estree!.body![0].expression!.elements!
-
-        ;(node as UnistNodeWithData).attributes[
-          typesAttributeIndex
-        ].value.data!.estree!.body![0].expression!.elements = newItems.map(
-          (newItem, index) => {
-            oldItems[index].properties = oldItems[index].properties.map(
-              (property) => {
-                if (Object.hasOwn(newItem, property.key.value)) {
-                  property.value.value = newItem[property.key.value]
-                  property.value.raw = JSON.stringify(
-                    newItem[property.key.value]
-                  )
-                }
-
-                return property
-              }
-            )
-
-            return oldItems[index]
-          }
-        )
-      }
+      traverseTypes(typesJsVar, linkOptions)
     })
   }
 }

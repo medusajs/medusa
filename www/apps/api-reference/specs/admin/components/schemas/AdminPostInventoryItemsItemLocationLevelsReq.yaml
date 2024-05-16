@@ -1,15 +1,19 @@
 type: object
-description: The details of the location level to create.
+description: SUMMARY
+x-schemaName: AdminPostInventoryItemsItemLocationLevelsReq
 required:
   - location_id
   - stocked_quantity
 properties:
   location_id:
-    description: the ID of the stock location
     type: string
+    title: location_id
+    description: The inventory item's location id.
   stocked_quantity:
-    description: the stock quantity of the inventory item at this location
     type: number
+    title: stocked_quantity
+    description: The inventory item's stocked quantity.
   incoming_quantity:
-    description: the incoming stock quantity of the inventory item at this location
     type: number
+    title: incoming_quantity
+    description: The inventory item's incoming quantity.

@@ -1,91 +1,56 @@
 type: object
-description: The details of the inventory item to create.
-required:
-  - variant_id
+description: SUMMARY
+x-schemaName: AdminPostInventoryItemsReq
 properties:
-  variant_id:
-    description: The ID of the variant to create the inventory item for.
-    type: string
   sku:
-    description: The unique SKU of the associated Product Variant.
     type: string
-  ean:
-    description: The EAN number of the item.
-    type: string
-  upc:
-    description: The UPC number of the item.
-    type: string
-  barcode:
-    description: A generic GTIN field for the Product Variant.
-    type: string
+    title: sku
+    description: The inventory item's sku.
   hs_code:
-    description: >-
-      The Harmonized System code of the Inventory Item. May be used by
-      Fulfillment Providers to pass customs information to shipping carriers.
     type: string
-  inventory_quantity:
-    description: The amount of stock kept of the associated Product Variant.
-    type: integer
-    default: 0
-  allow_backorder:
-    description: Whether the associated Product Variant can be purchased when out of stock.
-    type: boolean
-  manage_inventory:
-    description: >-
-      Whether Medusa should keep track of the inventory for the associated
-      Product Variant.
-    type: boolean
-    default: true
+    title: hs_code
+    description: The inventory item's hs code.
   weight:
-    description: >-
-      The weight of the Inventory Item. May be used in shipping rate
-      calculations.
     type: number
+    title: weight
+    description: The inventory item's weight.
   length:
-    description: >-
-      The length of the Inventory Item. May be used in shipping rate
-      calculations.
     type: number
+    title: length
+    description: The inventory item's length.
   height:
-    description: >-
-      The height of the Inventory Item. May be used in shipping rate
-      calculations.
     type: number
+    title: height
+    description: The inventory item's height.
   width:
-    description: >-
-      The width of the Inventory Item. May be used in shipping rate
-      calculations.
     type: number
+    title: width
+    description: The inventory item's width.
   origin_country:
-    description: >-
-      The country in which the Inventory Item was produced. May be used by
-      Fulfillment Providers to pass customs information to shipping carriers.
     type: string
+    title: origin_country
+    description: The inventory item's origin country.
   mid_code:
-    description: >-
-      The Manufacturers Identification code that identifies the manufacturer of
-      the Inventory Item. May be used by Fulfillment Providers to pass customs
-      information to shipping carriers.
     type: string
+    title: mid_code
+    description: The inventory item's mid code.
   material:
-    description: >-
-      The material and composition that the Inventory Item is made of, May be
-      used by Fulfillment Providers to pass customs information to shipping
-      carriers.
     type: string
+    title: material
+    description: The inventory item's material.
   title:
+    type: string
+    title: title
     description: The inventory item's title.
-    type: string
   description:
+    type: string
+    title: description
     description: The inventory item's description.
-    type: string
   thumbnail:
-    description: The inventory item's thumbnail.
     type: string
+    title: thumbnail
+    description: The inventory item's thumbnail.
   metadata:
-    description: An optional set of key-value pairs with additional information.
     type: object
-    externalDocs:
-      description: Learn about the metadata attribute, and how to delete and update it.
-      url: >-
-        https://docs.medusajs.com/development/entities/overview#metadata-attribute
+    description: The inventory item's metadata.
+    properties: {}

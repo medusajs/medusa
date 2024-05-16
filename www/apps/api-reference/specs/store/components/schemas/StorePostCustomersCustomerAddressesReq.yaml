@@ -1,7 +1,0 @@
-type: object
-required:
-  - address
-properties:
-  address:
-    description: The Address to add to the Customer's saved addresses.
-    $ref: ./AddressCreatePayload.yaml

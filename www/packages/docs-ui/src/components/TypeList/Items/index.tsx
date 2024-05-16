@@ -42,7 +42,9 @@ const TypeListItem = ({
 }: TypeListItemProps) => {
   const isBrowser = useIsBrowser()
   const pathname = usePathname()
-  const { config: { baseUrl, basePath } } = useSiteConfig()
+  const {
+    config: { baseUrl, basePath },
+  } = useSiteConfig()
   const siteUrl = `${baseUrl}${basePath}`
 
   const groupName = useMemo(() => {

@@ -17,9 +17,9 @@ import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
-  kebabCase,
   ProductUtils,
   Searchable,
+  toHandle,
 } from "@medusajs/utils"
 import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"
@@ -216,7 +216,7 @@ class Product {
     this.collection_id ??= this.collection?.id ?? null
 
     if (!this.handle && this.title) {
-      this.handle = kebabCase(this.title)
+      this.handle = toHandle(this.title)
     }
   }
 }

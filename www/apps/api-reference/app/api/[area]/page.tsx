@@ -1,14 +1,13 @@
 import AreaProvider from "@/providers/area"
-import AdminContentV1 from "../../_mdx/v1/admin.mdx"
-import StoreContentV1 from "../../_mdx/v1/store.mdx"
-import ClientLibrariesV1 from "../../_mdx/v1/client-libraries.mdx"
+import AdminContentV2 from "../../_mdx/admin.mdx"
+import StoreContentV2 from "../../_mdx/store.mdx"
+import ClientLibrariesV2 from "../../_mdx/client-libraries.mdx"
 import Section from "@/components/Section"
 import Tags from "@/components/Tags"
 import type { Area } from "@/types/openapi"
 import DividedLayout from "@/layouts/Divided"
 import { capitalize } from "docs-ui"
-import PageTitleProvider from "../../../providers/page-title"
-import PageHeading from "../../../components/PageHeading"
+import PageTitleProvider from "@/providers/page-title"
 
 type ReferencePageProps = {
   params: {
@@ -20,16 +19,20 @@ const ReferencePage = async ({ params: { area } }: ReferencePageProps) => {
   return (
     <AreaProvider area={area}>
       <PageTitleProvider>
-        <PageHeading className="!text-h2 block lg:hidden" />
+        <h1 className="!text-h2 block lg:hidden">
+          Medusa V2 {capitalize(area)} API Reference
+        </h1>
         <DividedLayout
           mainContent={
             <Section>
-              <PageHeading className="!text-h2 hidden lg:block" />
-              {area.includes("admin") && <AdminContentV1 />}
-              {area.includes("store") && <StoreContentV1 />}
+              <h1 className="!text-h2 hidden lg:block">
+                Medusa V2 {capitalize(area)} API Reference
+              </h1>
+              {area.includes("admin") && <AdminContentV2 />}
+              {area.includes("store") && <StoreContentV2 />}
             </Section>
           }
-          codeContent={<ClientLibrariesV1 />}
+          codeContent={<ClientLibrariesV2 />}
           className="flex-col-reverse"
         />
         <Tags />

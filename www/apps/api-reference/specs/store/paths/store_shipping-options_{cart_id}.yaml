@@ -1,29 +1,18 @@
 get:
-  operationId: GetShippingOptionsCartId
-  summary: List for Cart
-  description: Retrieve a list of Shipping Options available for a cart.
-  externalDocs:
-    description: How to implement shipping step in checkout
-    url: >-
-      https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-checkout-flow#shipping-step
+  operationId: GetShippingOptionsCart_id
+  summary: Get a Shipping Option
+  description: >-
+    Retrieve a shipping option by its ID. You can expand the shipping option's
+    relations or select the fields that should be returned.
+  x-authenticated: false
   parameters:
-    - in: path
-      name: cart_id
+    - name: cart_id
+      in: path
+      description: The shipping option's cart id.
       required: true
-      description: The ID of the Cart.
       schema:
         type: string
-  x-codegen:
-    method: listCartOptions
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/store_shipping-options_{cart_id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_shipping-options_{cart_id}/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -31,14 +20,10 @@ get:
   tags:
     - Shipping Options
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/StoreCartShippingOptionsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -47,3 +32,7 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

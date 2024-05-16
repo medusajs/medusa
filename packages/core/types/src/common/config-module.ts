@@ -3,8 +3,42 @@ import {
   InternalModuleDeclaration,
 } from "../modules-sdk"
 
-import { RedisOptions } from "ioredis"
-import { LoggerOptions } from "typeorm"
+import type { RedisOptions } from "ioredis"
+import type { LoggerOptions } from "typeorm"
+import type { InlineConfig } from "vite"
+
+/**
+ * @interface
+ *
+ * Admin dashboard configurations.
+ */
+export type AdminOptions = {
+  /**
+   * Whether to disable the admin dashboard. If set to `true`, the admin dashboard is disabled,
+   * in both development and production environments. The default value is `false`.
+   */
+  disable?: boolean
+  /**
+   * The path to the admin dashboard. The default value is `/app`.
+   *
+   * The value cannot be one of the reserved paths:
+   * - `/admin`
+   * - `/store`
+   * - `/auth`
+   * - `/`
+   */
+  path?: `/${string}`
+  /**
+   * The directory where the admin build is output. This is where the build process will place the generated files.
+   * The default value is `./build`.
+   */
+  outDir?: string
+  /**
+   * Configure the Vite configuration for the admin dashboard. This function receives the default Vite configuration
+   * and returns the modified configuration. The default value is `undefined`.
+   */
+  vite?: (config: InlineConfig) => InlineConfig
+}
 
 /**
  * @interface
@@ -631,6 +665,11 @@ export type ConfigModule = {
    * This property holds essential configurations related to the Medusa backend, such as database and CORS configurations.
    */
   projectConfig: ProjectConfigOptions
+
+  /**
+   * Admin dashboard configurations.
+   */
+  admin?: AdminOptions
 
   /**
    * On your Medusa backend, you can use [Plugins](https://docs.medusajs.com/development/plugins/overview) to add custom features or integrate third-party services.

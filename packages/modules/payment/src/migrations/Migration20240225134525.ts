@@ -18,6 +18,16 @@ export class Migration20240225134525 extends Migration {
         ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "completed_at" TIMESTAMPTZ NULL;
         ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
         ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
+
+        ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "authorized_amount" NUMERIC NULL;
+        ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "raw_authorized_amount" JSONB NULL;
+
+        ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "captured_amount" NUMERIC NULL;
+        ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "raw_captured_amount" JSONB NULL;
+
+        ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "refunded_amount" NUMERIC NULL;
+        ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "raw_refunded_amount" JSONB NULL;
+
         ALTER TABLE "payment_collection" DROP CONSTRAINT "FK_payment_collection_region_id";
         
         ALTER TABLE IF EXISTS "payment_provider" ADD COLUMN IF NOT EXISTS "is_enabled" BOOLEAN NOT NULL DEFAULT TRUE;
@@ -119,6 +129,12 @@ export class Migration20240225134525 extends Migration {
           "currency_code"     TEXT NOT NULL,
           "amount"            NUMERIC NOT NULL,
           "raw_amount"        JSONB NOT NULL,
+          "authorized_amount"            NUMERIC NULL,
+          "raw_authorized_amount"        JSONB NULL,
+          "captured_amount"            NUMERIC NULL,
+          "raw_captured_amount"        JSONB NULL,
+          "refunded_amount"            NUMERIC NULL,
+          "raw_refunded_amount"        JSONB NULL,
           "region_id"         TEXT NOT NULL,
           "created_at"        TIMESTAMPTZ NOT NULL DEFAULT NOW(),
           "updated_at"        TIMESTAMPTZ NOT NULL DEFAULT NOW(),

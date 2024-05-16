@@ -12,6 +12,7 @@ export const findOneOrAnyRegionStep = createStep(
     )
 
     if (!data.regionId) {
+      // TODO: Pick up the default store region if none is provided
       const regions = await service.list({})
 
       if (!regions?.length) {

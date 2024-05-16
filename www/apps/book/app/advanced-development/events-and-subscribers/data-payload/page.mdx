@@ -21,7 +21,6 @@ export const highlights = [
 
 ```ts title="src/subscribers/product-created.ts" highlights={highlights}
 import {
-  ProductService,
   SubscriberArgs,
   type SubscriberConfig,
 } from "@medusajs/medusa"
@@ -33,11 +32,11 @@ export default async function productCreateHandler({
 }
 
 export const config: SubscriberConfig = {
-  event: ProductService.Events.CREATED,
+  event: "product.created",
 }
 ```
 
-This logs the product ID received in the `ProductService.Events.CREATED` (`product-created`) event’s data payload to the console.
+This logs the product ID received in the `product.created` event’s data payload to the console.
 
 ## List of Events with Data Payload
 
