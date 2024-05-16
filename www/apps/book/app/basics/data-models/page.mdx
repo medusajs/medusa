@@ -60,8 +60,7 @@ A migration is a class created in a TypeScript or JavaScript file under a module
 
   1. Create the file `src/modules/hello/mikro-orm.config.dev.ts` with the following content:
 
-  ```ts
-  import "dotenv/config"
+  ```ts highlights={[["8", "hello", "The module's name."]]}
   import path from "path"
   import { TSMigrationGenerator } from "@medusajs/utils"
   import { MyCustom } from "./models/my-custom"
