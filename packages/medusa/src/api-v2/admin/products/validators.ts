@@ -131,7 +131,6 @@ export const AdminCreateProductVariant = z.object({
   barcode: z.string().optional(),
   hs_code: z.string().optional(),
   mid_code: z.string().optional(),
-  inventory_quantity: z.number().optional().default(0),
   allow_backorder: z.boolean().optional().default(false),
   manage_inventory: z.boolean().optional().default(true),
   variant_rank: z.number().optional(),
@@ -153,7 +152,6 @@ export const AdminUpdateProductVariant = AdminCreateProductVariant.extend({
   id: z.string().optional(),
   title: z.string().optional(),
   prices: z.array(AdminUpdateVariantPrice).optional(),
-  inventory_quantity: z.number().optional(),
   allow_backorder: z.boolean().optional(),
   manage_inventory: z.boolean().optional(),
 }).strict()

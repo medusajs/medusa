@@ -1,8 +1,11 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IAuthModuleService, ICustomerModuleService } from "@medusajs/types"
 import Scrypt from "scrypt-kdf"
-import adminSeeder from "../../../../helpers/admin-seeder"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -23,7 +26,7 @@ medusaIntegrationTestRunner({
       })
 
       beforeEach(async () => {
-        await adminSeeder(dbConnection)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
       })
 
       const password = "supersecret"

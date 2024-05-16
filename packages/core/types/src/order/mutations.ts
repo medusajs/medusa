@@ -403,9 +403,26 @@ export interface CreateOrderReturnDTO {
   order_id: string
   description?: string
   reference?: string
+  reference_id?: string
   internal_note?: string
   created_by?: string
   shipping_method: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
+  items: {
+    id: string
+    quantity: BigNumberInput
+    internal_note?: string
+    metadata?: Record<string, unknown> | null
+  }[]
+  metadata?: Record<string, unknown> | null
+}
+
+export interface ReceiveOrderReturnDTO {
+  order_id: string
+  description?: string
+  internal_note?: string
+  reference?: string
+  reference_id?: string
+  created_by?: string
   items: {
     id: string
     quantity: BigNumberInput

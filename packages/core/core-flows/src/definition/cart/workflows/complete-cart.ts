@@ -5,6 +5,7 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
+import { linkOrderAndPaymentCollectionsStep } from "../../../order/steps"
 import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-payment-session"
 import { createOrderFromCartStep, validateCartPaymentsStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
@@ -70,6 +71,19 @@ export const completeCartWorkflow = createWorkflow(
       list: false,
     }).config({ name: "final-cart" })
 
-    return createOrderFromCartStep({ cart: finalCart })
+    const order = createOrderFromCartStep({ cart: finalCart })
+
+    const linkOrderPaymentCollection = transform({ order, cart }, (data) => ({
+      links: [
+        {
+          order_id: data.order.id,
+          payment_collection_id: data.cart.payment_collection.id,
+        },
+      ],
+    }))
+
+    linkOrderAndPaymentCollectionsStep(linkOrderPaymentCollection)
+
+    return order
   }
 )

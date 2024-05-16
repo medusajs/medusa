@@ -2,7 +2,7 @@ import { UserDTO } from "@medusajs/types"
 import { Button, Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
-import { languages } from "../../../../../i18n/config"
+import { languages } from "../../../../../i18n/languages"
 
 type ProfileGeneralSectionProps = {
   user: UserDTO

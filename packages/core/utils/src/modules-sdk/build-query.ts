@@ -66,6 +66,10 @@ export function buildQuery<T = any, TDto = any>(
     }
   }
 
+  if (config.options) {
+    Object.assign(findOptions, config.options)
+  }
+
   return { where, options: findOptions }
 }
 

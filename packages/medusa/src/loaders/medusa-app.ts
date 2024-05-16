@@ -1,9 +1,10 @@
 import {
-  MODULE_PACKAGE_NAMES,
   MedusaApp,
+  MedusaAppMigrateDown,
   MedusaAppMigrateUp,
   MedusaAppOutput,
   MedusaModule,
+  MODULE_PACKAGE_NAMES,
   Modules,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
@@ -16,7 +17,6 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  FlagRouter,
   isObject,
   upperCaseFirst,
 } from "@medusajs/utils"
@@ -59,19 +59,18 @@ export function mergeDefaultModules(
   return configModules
 }
 
-export async function migrateMedusaApp(
-  {
-    configModule,
-    container,
-  }: {
-    configModule: {
-      modules?: CommonTypes.ConfigModule["modules"]
-      projectConfig: CommonTypes.ConfigModule["projectConfig"]
-    }
-    container: MedusaContainer
-  },
-  config = { registerInContainer: true }
-): Promise<void> {
+async function runMedusaAppMigrations({
+  configModule,
+  container,
+  revert = false,
+}: {
+  configModule: {
+    modules?: CommonTypes.ConfigModule["modules"]
+    projectConfig: CommonTypes.ConfigModule["projectConfig"]
+  }
+  container: MedusaContainer
+  revert?: boolean
+}): Promise<void> {
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
@@ -93,12 +92,55 @@ export async function migrateMedusaApp(
   }
   const configModules = mergeDefaultModules(configModule.modules)
 
-  await MedusaAppMigrateUp({
-    modulesConfig: configModules,
-    remoteFetchData: remoteQueryFetchData(container),
-    sharedContainer: container,
-    sharedResourcesConfig,
-    injectedDependencies,
+  if (revert) {
+    await MedusaAppMigrateDown({
+      modulesConfig: configModules,
+      remoteFetchData: remoteQueryFetchData(container),
+      sharedContainer: container,
+      sharedResourcesConfig,
+      injectedDependencies,
+    })
+  } else {
+    await MedusaAppMigrateUp({
+      modulesConfig: configModules,
+      remoteFetchData: remoteQueryFetchData(container),
+      sharedContainer: container,
+      sharedResourcesConfig,
+      injectedDependencies,
+    })
+  }
+}
+
+export async function migrateMedusaApp({
+  configModule,
+  container,
+}: {
+  configModule: {
+    modules?: CommonTypes.ConfigModule["modules"]
+    projectConfig: CommonTypes.ConfigModule["projectConfig"]
+  }
+  container: MedusaContainer
+}): Promise<void> {
+  await runMedusaAppMigrations({
+    configModule,
+    container,
+  })
+}
+
+export async function revertMedusaApp({
+  configModule,
+  container,
+}: {
+  configModule: {
+    modules?: CommonTypes.ConfigModule["modules"]
+    projectConfig: CommonTypes.ConfigModule["projectConfig"]
+  }
+  container: MedusaContainer
+}): Promise<void> {
+  await runMedusaAppMigrations({
+    configModule,
+    container,
+    revert: true,
   })
 }
 

@@ -4,7 +4,7 @@ import {
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
-import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
+import { OptionalBooleanValidator } from "../../utils/common-validators"
 
 export type AdminGetInventoryItemParamsType = z.infer<
   typeof AdminGetInventoryItemParams
@@ -27,12 +27,7 @@ export const AdminGetInventoryItemsParams = createFindParams({
     mid_code: z.union([z.string(), z.array(z.string())]).optional(),
     hs_code: z.union([z.string(), z.array(z.string())]).optional(),
     material: z.union([z.string(), z.array(z.string())]).optional(),
-    requires_shipping: z
-      .preprocess(
-        (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
-        z.boolean().optional()
-      )
-      .optional(),
+    requires_shipping: OptionalBooleanValidator,
     weight: createOperatorMap(z.number(), parseFloat).optional(),
     length: createOperatorMap(z.number(), parseFloat).optional(),
     height: createOperatorMap(z.number(), parseFloat).optional(),

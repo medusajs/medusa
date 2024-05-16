@@ -1,23 +1,20 @@
 post:
-  operationId: PostCartsCartTaxes
-  summary: Calculate Cart Taxes
-  description: >-
-    Calculate the taxes for a cart. This is useful if the `automatic_taxes`
-    field of the cart's region is set to `false`. If the cart's region uses a
-    tax provider other than Medusa's system provider, this may lead to sending
-    requests to third-party services.
-  externalDocs:
-    description: How to calculate taxes manually during checkout
-    url: https://docs.medusajs.com/modules/taxes/storefront/manual-calculation
+  operationId: PostCartsIdTaxes
+  summary: Add Taxes to Cart
+  description: Add a list of taxes to a cart.
+  x-authenticated: false
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The cart's ID.
       required: true
-      description: The Cart ID.
       schema:
         type: string
-  x-codegen:
-    method: calculateTaxes
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StorePostCartsCartTaxesReq.yaml
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -26,14 +23,10 @@ post:
   tags:
     - Carts
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/StoreCartsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':

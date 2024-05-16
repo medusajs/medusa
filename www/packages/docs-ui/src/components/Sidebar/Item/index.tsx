@@ -27,7 +27,7 @@ export const SidebarItem = ({
   className,
   currentLevel = 1,
   sidebarHasParent = false,
-  isMobile = false
+  isMobile = false,
 }: SidebarItemProps) => {
   const [showLoading, setShowLoading] = useState(false)
   const {

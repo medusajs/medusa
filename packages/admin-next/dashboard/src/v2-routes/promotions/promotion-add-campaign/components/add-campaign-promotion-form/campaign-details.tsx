@@ -1,10 +1,10 @@
-import { CampaignDTO } from "@medusajs/types"
+import { CampaignResponse } from "@medusajs/types"
 import { Heading, Text } from "@medusajs/ui"
 import { Fragment } from "react"
 import { useTranslation } from "react-i18next"
 
 type CampaignDetailsProps = {
-  campaign?: CampaignDTO
+  campaign?: CampaignResponse
 }
 
 export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {

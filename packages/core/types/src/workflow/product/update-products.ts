@@ -40,7 +40,6 @@ export interface UpdateProductVariantInputDTO {
   upc?: string
   barcode?: string
   hs_code?: string
-  inventory_quantity?: number
   allow_backorder?: boolean
   manage_inventory?: boolean
   weight?: number
