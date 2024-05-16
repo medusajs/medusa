@@ -929,9 +929,6 @@ export default class ProductModuleService<
       updatedCollections.map(async (collection, i) => {
         const input = normalizedInput.find((c) => c.id === collection.id)
         const productsToUpdate = (input as any)?.products
-        if (!productsToUpdate) {
-          return { ...collection, products: [] }
-        }
 
         await this.productService_.update(
           {
@@ -941,7 +938,7 @@ export default class ProductModuleService<
           sharedContext
         )
 
-        if (productsToUpdate.length > 0) {
+        if (productsToUpdate?.length > 0) {
           await this.productService_.update(
             productsToUpdate.map((p) => ({
               id: p.id,
@@ -951,7 +948,7 @@ export default class ProductModuleService<
           )
         }
 
-        return { ...collection, products: productsToUpdate }
+        return { ...collection, products: productsToUpdate || [] }
       })
     )
 
