@@ -4,13 +4,14 @@ import {
   OrderDTO,
   OrderWorkflow,
   ShippingOptionDTO,
+  WithCalculatedPrice,
 } from "@medusajs/types"
 import {
   createWorkflow,
   transform,
   WorkflowData,
 } from "@medusajs/workflows-sdk"
-import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
+import { createLinkStep, useRemoteQueryStep } from "../../common"
 import {
   arrayDifference,
   ContainerRegistrationKeys,
@@ -24,8 +25,8 @@ import { createReturnStep } from "../steps/create-return"
 import { createFulfillmentWorkflow } from "../../fulfillment"
 
 function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
-  // TODO: need work, check cancelled
-  if (false /*order.cancelled_at*/) {
+  // TODO: need work, check canceled
+  if (false /*order.canceled_at*/) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `Order with id ${order.id} has been cancelled.`
@@ -56,10 +57,10 @@ function throwIfItemsDoesNotExistsInOrder({
 
 function validateReturnReasons(
   {
-    order_id,
+    orderId,
     inputItems,
   }: {
-    order_id: string
+    orderId: string
     inputItems: OrderWorkflow.CreateOrderReturnWorkflowInput["items"]
   },
   { container }
@@ -79,26 +80,27 @@ function validateReturnReasons(
   })
 
   const reasons = returnReasons.map((r) => r.id)
-  const hasUnusableReasons = reasons.filter(
-    (reason) => reason.return_reason_children.length === 0
+  const hasInvalidReasons = reasons.filter(
+    // We do not allow for root reason to be applied
+    (reason) => reason.return_reason_children.length > 0
   )
-  const hasUnExistingReasons = arrayDifference(reasonIds, reasons)
+  const hasNonExistingReasons = arrayDifference(reasonIds, reasons)
 
-  if (hasUnExistingReasons.length) {
+  if (hasNonExistingReasons.length) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `Return reason with id ${hasUnExistingReasons.join(
+      `Return reason with id ${hasNonExistingReasons.join(
         ", "
       )} does not exists.`
     )
   }
 
-  if (hasUnusableReasons.length()) {
+  if (hasInvalidReasons.length()) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `Cannot apply return reason category with id ${hasUnusableReasons.join(
+      `Cannot apply return reason category with id ${hasInvalidReasons.join(
         ", "
-      )} to order with id ${order_id}.`
+      )} to order with id ${orderId}.`
     )
   }
 }
@@ -110,9 +112,7 @@ function prepareShippingMethodData({
 }: {
   orderId: string
   inputShippingOption: OrderWorkflow.CreateOrderReturnWorkflowInput["return_shipping"]
-  returnShippingOption: ShippingOptionDTO & {
-    calculated_price: { calculated_amount: number }
-  }
+  returnShippingOption: ShippingOptionDTO & WithCalculatedPrice
 }) {
   const obj: CreateOrderShippingMethodDTO = {
     name: returnShippingOption.name,
@@ -158,9 +158,15 @@ function validateCustomRefundAmount({
 function prepareFulfillmentData({
   order,
   input,
+  returnShippingOption,
 }: {
   order: OrderDTO
   input: OrderWorkflow.CreateOrderReturnWorkflowInput
+  returnShippingOption: {
+    id: string
+    provider_id: string
+    service_zone: { fulfillment_set: { location?: { id: string } } }
+  }
 }) {
   const inputItems = input.items
   const orderItemsMap = new Map<string, Required<OrderDTO>["items"][0]>(
@@ -178,12 +184,22 @@ function prepareFulfillmentData({
     } as FulfillmentWorkflow.CreateFulfillmentItemWorkflowDTO
   })
 
-  // TODO: should we get the stock location from location id and grab the address?
+  let locationId: string | undefined = input.location_id
+  if (!locationId) {
+    locationId = returnShippingOption.service_zone.fulfillment_set.location?.id
+  }
+
+  if (!locationId) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `No location id provided and no stock location found in the fulfillment set of the shipping option with id ${returnShippingOption.id}.`
+    )
+  }
 
   return {
     input: {
-      location_id: input.location_id, // TODO: Do we ask the user to provider this, or do we grab the stock location from the fulfillment set of the service zone link to the shipping option id
-      provider_id: input.provider_id,
+      location_id: locationId,
+      provider_id: returnShippingOption.provider_id,
       shipping_option_id: input.return_shipping.option_id,
       items: fulfillmentItems,
       labels: [] as FulfillmentWorkflow.CreateFulfillmentLabelWorkflowDTO[],
@@ -220,7 +236,7 @@ export const createReturnOrderWorkflow = createWorkflow(
       throwIfItemsDoesNotExistsInOrder
     )
     transform(
-      { order_id: input.order_id, inputItems: input.items },
+      { orderId: input.order_id, inputItems: input.items },
       validateReturnReasons
     )
     transform(
@@ -254,7 +270,9 @@ export const createReturnOrderWorkflow = createWorkflow(
         "id",
         "price_type",
         "name",
+        "provider_id",
         "calculated_price.calculated_amount",
+        "service_zone.fulfillment_set.location.id",
       ],
       variables: returnShippingOptionsVariables,
       list: false,
@@ -282,7 +300,10 @@ export const createReturnOrderWorkflow = createWorkflow(
       shipping_methods: [shippingMethodData as any], // The types does not seems correct in that step and expect too many things compared to the actual needs
     })
 
-    const fulfillmentData = transform({ order, input }, prepareFulfillmentData)
+    const fulfillmentData = transform(
+      { order, input, returnShippingOption },
+      prepareFulfillmentData
+    )
 
     const fulfillment = createFulfillmentWorkflow.runAsStep(fulfillmentData)
 
@@ -300,6 +321,6 @@ export const createReturnOrderWorkflow = createWorkflow(
       }
     )
 
-    createRemoteLinkStep(link)
+    createLinkStep(link)
   }
 )

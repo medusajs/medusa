@@ -41,11 +41,9 @@ export async function resolveValue(input, transactionContext) {
     }
 
     if (Array.isArray(inputTOUnwrap)) {
-      const res = await promiseAll(
+      return await promiseAll(
         inputTOUnwrap.map((i) => resolveValue(i, transactionContext))
       )
-
-      return res
     }
 
     if (typeof inputTOUnwrap !== "object") {

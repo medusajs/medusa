@@ -1,4 +1,4 @@
-import {BigNumberInput} from "../../totals"
+import { BigNumberInput } from "../../totals"
 
 interface CreateOrderReturnItem {
   id: string
@@ -19,6 +19,8 @@ export interface CreateOrderReturnWorkflowInput {
   note?: string
   receive_now?: boolean
   refund_amount?: number
-  location_id: string
-  provider_id: string
+  /**
+   * Default fallback to the shipping option location id
+   */
+  location_id?: string
 }

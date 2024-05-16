@@ -5,9 +5,9 @@ import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 type CreateRemoteLinksStepInput = LinkDefinition[]
 
-export const createRemoteLinkStepId = "create-remote-links"
-export const createRemoteLinkStep = createStep(
-  createRemoteLinkStepId,
+export const createLinksStepId = "create-links"
+export const createLinkStep = createStep(
+  createLinksStepId,
   async (data: CreateRemoteLinksStepInput, { container }) => {
     const link = container.resolve<RemoteLink>(
       ContainerRegistrationKeys.REMOTE_LINK

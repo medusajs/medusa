@@ -29,14 +29,18 @@ export const OrderFulfillment: ModuleJoinerConfig = {
       serviceName: Modules.FULFILLMENT,
       primaryKey: "id",
       foreignKey: "fulfillment_id",
-      alias: "fulfillment",
+      alias: "fulfillments",
+      args: {
+        // TODO: We are not suppose to know the module implementation here, wait for later to think about inferring it
+        methodSuffix: "Fulfillments",
+      },
     },
   ],
   extends: [
     {
       serviceName: Modules.ORDER,
       fieldAlias: {
-        fulfillments: "fulfillment_link.fulfillment",
+        fulfillments: "fulfillment_link.fulfillments",
       },
       relationship: {
         serviceName: LINKS.OrderFulfillment,

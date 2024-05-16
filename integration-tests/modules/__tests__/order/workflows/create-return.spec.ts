@@ -1,4 +1,4 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   FulfillmentWorkflow,
   IOrderModuleService,
@@ -109,6 +109,35 @@ async function prepareDataFixtures({ container }) {
       location_id: location.id,
       stocked_quantity: 2,
       reserved_quantity: 0,
+    },
+  ])
+
+  const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
+
+  await remoteLink.create([
+    {
+      [Modules.STOCK_LOCATION]: {
+        stock_location_id: location.id,
+      },
+      [Modules.FULFILLMENT]: {
+        fulfillment_set_id: fulfillmentSet.id,
+      },
+    },
+    {
+      [Modules.SALES_CHANNEL]: {
+        sales_channel_id: salesChannel.id,
+      },
+      [Modules.STOCK_LOCATION]: {
+        stock_location_id: location.id,
+      },
+    },
+    {
+      [Modules.PRODUCT]: {
+        variant_id: product.variants[0].id,
+      },
+      [Modules.INVENTORY]: {
+        inventory_item_id: inventoryItem.id,
+      },
     },
   ])
 
@@ -327,8 +356,6 @@ medusaIntegrationTestRunner({
         const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
           {
             order_id: order.id,
-            location_id: location.id,
-            provider_id: providerId,
             return_shipping: {
               option_id: shippingOption.id,
             },
@@ -338,7 +365,6 @@ medusaIntegrationTestRunner({
                 quantity: 1,
               },
             ],
-            region: region,
           }
 
         await createReturnOrderWorkflow(container).run({
@@ -427,8 +453,18 @@ medusaIntegrationTestRunner({
                 order_id: expect.any(String),
               }),
             ]),
-            // TODO FIX
-            // fulfillments: [null],
+            fulfillments: [
+              expect.objectContaining({
+                id: expect.any(String),
+                location_id: location.id,
+                provider_id: providerId,
+                shipping_option_id: shippingOption.id,
+                // TODO: Validate the address once we are fixed on it
+                /*delivery_address: {
+                  id: "fuladdr_01HY0RTAP0P1EEAFK7BXJ0BKBN",
+                },*/
+              }),
+            ],
           })
         )
       })
