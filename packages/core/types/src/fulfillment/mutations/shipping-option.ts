@@ -120,6 +120,14 @@ export interface UpdateShippingOptionDTO {
         id: string
       }
   )[]
+
+  /**
+   * The shipping option pricing
+   */
+  prices: (
+    | { currency_code: string; amount: number; id?: string }
+    | { region_id: string; amount: number; id?: string }
+  )[]
 }
 
 /**
