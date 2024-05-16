@@ -113,7 +113,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       label: upperCaseFirst(ModuleRegistrationName.STOCK_LOCATION),
       isRequired: false,
       isQueryable: true,
-      dependencies: ["eventBusService"],
+      dependencies: [ModuleRegistrationName.EVENT_BUS],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -126,7 +126,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       label: upperCaseFirst(ModuleRegistrationName.INVENTORY),
       isRequired: false,
       isQueryable: true,
-      dependencies: ["eventBusService"],
+      dependencies: [ModuleRegistrationName.EVENT_BUS],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -228,7 +228,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       label: upperCaseFirst(ModuleRegistrationName.FULFILLMENT),
       isRequired: false,
       isQueryable: true,
-      dependencies: ["logger", "eventBusService"],
+      dependencies: ["logger", ModuleRegistrationName.EVENT_BUS],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -306,7 +306,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       label: upperCaseFirst(ModuleRegistrationName.ORDER),
       isRequired: false,
       isQueryable: true,
-      dependencies: ["logger", "eventBusService"],
+      dependencies: ["logger", ModuleRegistrationName.EVENT_BUS],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -319,7 +319,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       label: upperCaseFirst(ModuleRegistrationName.TAX),
       isRequired: false,
       isQueryable: true,
-      dependencies: ["logger", "eventBusService"],
+      dependencies: ["logger", ModuleRegistrationName.EVENT_BUS],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,

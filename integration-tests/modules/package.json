@@ -31,7 +31,6 @@
     "@medusajs/utils": "workspace:^",
     "@medusajs/workflow-engine-inmemory": "workspace:*",
     "faker": "^5.5.3",
-    "medusa-interfaces": "workspace:*",
     "medusa-test-utils": "workspace:*",
     "pg": "^8.11.0",
     "typeorm": "^0.3.16"
