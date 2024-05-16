@@ -98,9 +98,9 @@ function validateReturnReasons(
   if (hasInvalidReasons.length()) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `Cannot apply return reason category with id ${hasInvalidReasons.join(
+      `Cannot apply return reason with id ${hasInvalidReasons.join(
         ", "
-      )} to order with id ${orderId}.`
+      )} to order with id ${orderId}. Return reason has nested reasons.`
     )
   }
 }
