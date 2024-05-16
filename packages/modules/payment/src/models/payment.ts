@@ -131,13 +131,6 @@ export default class Payment {
   })
   payment_session: PaymentSession
 
-  /** COMPUTED PROPERTIES START **/
-
-  captured_amount: number // sum of the associated captures
-  refunded_amount: number // sum of the associated refunds
-
-  /** COMPUTED PROPERTIES END **/
-
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "pay")

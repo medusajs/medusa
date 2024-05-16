@@ -1,46 +1,62 @@
-post:
-  operationId: PostCustomersCustomerAddressesAddress
-  summary: Update a Shipping Address
-  description: Update the logged-in customer's saved Shipping Address's details.
-  x-authenticated: true
+get:
+  operationId: GetCustomersMeAddressesAddress_id
+  summary: List Addresses
+  description: >-
+    Retrieve a list of addresses in a customer. The addresses can be filtered by
+    fields like FILTER FIELDS. The addresses can also be paginated.
+  x-authenticated: false
   parameters:
-    - in: path
-      name: address_id
+    - name: address_id
+      in: path
+      description: The customer's address id.
       required: true
-      description: The ID of the Address.
       schema:
         type: string
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_customers_me_addresses_{address_id}/get.sh
+  tags:
+    - Customers
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
   requestBody:
     content:
       application/json:
-        schema:
-          $ref: >-
-            ../components/schemas/StorePostCustomersCustomerAddressesAddressReq.yaml
-  x-codegen:
-    method: updateAddress
+        schema: {}
+post:
+  operationId: PostCustomersMeAddressesAddress_id
+  summary: Add Addresses to Customer
+  description: Add a list of addresses to a customer.
+  x-authenticated: false
+  parameters:
+    - name: address_id
+      in: path
+      description: The customer's address id.
+      required: true
+      schema:
+        type: string
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/store_customers_me_addresses_{address_id}/post.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/store_customers_me_addresses_{address_id}/post.sh
-  security:
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Customers
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/StoreCustomersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -53,43 +69,33 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
 delete:
-  operationId: DeleteCustomersCustomerAddressesAddress
-  summary: Delete an Address
-  description: Delete an Address from the Customer's saved addresses.
-  x-authenticated: true
+  operationId: DeleteCustomersMeAddressesAddress_id
+  summary: Remove Addresses from Customer
+  description: >-
+    Remove a list of addresses from a customer. This doesn't delete the Address,
+    only the association between the Address and the customer.
+  x-authenticated: false
   parameters:
-    - in: path
-      name: address_id
+    - name: address_id
+      in: path
+      description: The customer's address id.
       required: true
-      description: The id of the Address to remove.
       schema:
         type: string
-  x-codegen:
-    method: deleteAddress
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/store_customers_me_addresses_{address_id}/delete.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/store_customers_me_addresses_{address_id}/delete.sh
-  security:
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Customers
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/StoreCustomersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -102,3 +108,7 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

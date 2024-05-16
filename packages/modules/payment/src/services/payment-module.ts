@@ -36,8 +36,10 @@ import {
   MedusaError,
   ModulesSdkUtils,
   PaymentActions,
+  PaymentCollectionStatus,
   promiseAll,
 } from "@medusajs/utils"
+import { IsolationLevel } from "@mikro-orm/core"
 import {
   Capture,
   Payment,
@@ -404,6 +406,9 @@ export default class PaymentModuleService<
     context: Record<string, unknown>,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentDTO> {
+    sharedContext ??= {}
+    sharedContext.isolationLevel = IsolationLevel.SERIALIZABLE
+
     const session = await this.paymentSessionService_.retrieve(
       id,
       {
@@ -456,7 +461,10 @@ export default class PaymentModuleService<
       )
     }
 
-    // TODO: update status on payment collection if authorized_amount === amount - depends on the BigNumber PR
+    await this.maybeUpdatePaymentCollection_(
+      session.payment_collection_id,
+      sharedContext
+    )
 
     const payment = await this.paymentService_.create(
       {
@@ -491,11 +499,30 @@ export default class PaymentModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async capturePayment(
     data: CreateCaptureDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PaymentDTO> {
+    const payment = (await this.capturePayment_(data, sharedContext)) as Payment
+
+    await this.maybeUpdatePaymentCollection_(
+      payment.payment_collection_id,
+      sharedContext
+    )
+
+    return await this.retrievePayment(
+      payment.id,
+      { relations: ["captures"] },
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  private async capturePayment_(
+    data: CreateCaptureDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
     const payment = await this.paymentService_.retrieve(
       data.payment_id,
       {
@@ -503,6 +530,7 @@ export default class PaymentModuleService<
           "id",
           "data",
           "provider_id",
+          "payment_collection_id",
           "amount",
           "raw_amount",
           "canceled_at",
@@ -561,38 +589,58 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    await this.paymentService_.update(
-      { id: payment.id, data: paymentData },
-      sharedContext
-    )
-
     // When the entire authorized amount has been captured, we mark it fully capture by setting the captured_at field
+    let capturedAt: Date | null = null
     const totalCaptured = MathBN.convert(
       MathBN.add(capturedAmount, newCaptureAmount)
     )
     if (MathBN.gte(totalCaptured, authorizedAmount)) {
-      await this.paymentService_.update(
-        { id: payment.id, captured_at: new Date() },
-        sharedContext
-      )
+      capturedAt = new Date()
     }
+
+    await this.paymentService_.update(
+      { id: payment.id, data: paymentData, captured_at: capturedAt },
+      sharedContext
+    )
+
+    return payment
+  }
+
+  @InjectManager("baseRepository_")
+  async refundPayment(
+    data: CreateRefundDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentDTO> {
+    const payment = await this.refundPayment_(data, sharedContext)
+
+    await this.maybeUpdatePaymentCollection_(
+      payment.payment_collection_id,
+      sharedContext
+    )
 
     return await this.retrievePayment(
       payment.id,
-      { relations: ["captures"] },
+      { relations: ["refunds"] },
       sharedContext
     )
   }
 
   @InjectTransactionManager("baseRepository_")
-  async refundPayment(
+  private async refundPayment_(
     data: CreateRefundDTO,
     @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO> {
+  ) {
     const payment = await this.paymentService_.retrieve(
       data.payment_id,
       {
-        select: ["id", "data", "provider_id", "amount", "raw_amount"],
+        select: [
+          "id",
+          "data",
+          "provider_id",
+          "payment_collection_id",
+          "amount",
+          "raw_amount",
+        ],
         relations: ["captures.raw_amount"],
       },
       sharedContext
@@ -637,11 +685,7 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    return await this.retrievePayment(
-      payment.id,
-      { relations: ["refunds"] },
-      sharedContext
-    )
+    return payment
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -755,5 +799,75 @@ export default class PaymentModuleService<
       }),
       count,
     ]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  private async maybeUpdatePaymentCollection_(
+    paymentCollectionId: string,
+    sharedContext?: Context
+  ) {
+    const paymentCollection = await this.paymentCollectionService_.retrieve(
+      paymentCollectionId,
+      {
+        select: ["amount", "raw_amount", "status"],
+        relations: [
+          "payment_sessions.amount",
+          "payment_sessions.raw_amount",
+          "payments.captures.amount",
+          "payments.captures.raw_amount",
+          "payments.refunds.amount",
+          "payments.refunds.raw_amount",
+        ],
+      },
+      sharedContext
+    )
+
+    const paymentSessions = paymentCollection.payment_sessions
+    const captures = paymentCollection.payments
+      .map((pay) => [...pay.captures])
+      .flat()
+    const refunds = paymentCollection.payments
+      .map((pay) => [...pay.refunds])
+      .flat()
+
+    let authorizedAmount = MathBN.convert(0)
+    let capturedAmount = MathBN.convert(0)
+    let refundedAmount = MathBN.convert(0)
+
+    for (const ps of paymentSessions) {
+      if (ps.status === PaymentSessionStatus.AUTHORIZED) {
+        authorizedAmount = MathBN.add(authorizedAmount, ps.amount)
+      }
+    }
+
+    for (const capture of captures) {
+      capturedAmount = MathBN.add(capturedAmount, capture.amount)
+    }
+
+    for (const refund of refunds) {
+      refundedAmount = MathBN.add(refundedAmount, refund.amount)
+    }
+
+    let status =
+      paymentSessions.length === 0
+        ? PaymentCollectionStatus.NOT_PAID
+        : PaymentCollectionStatus.AWAITING
+
+    if (MathBN.gt(authorizedAmount, 0)) {
+      status = MathBN.gte(authorizedAmount, paymentCollection.amount)
+        ? PaymentCollectionStatus.AUTHORIZED
+        : PaymentCollectionStatus.PARTIALLY_AUTHORIZED
+    }
+
+    await this.paymentCollectionService_.update(
+      {
+        id: paymentCollectionId,
+        status,
+        authorized_amount: authorizedAmount,
+        captured_amount: capturedAmount,
+        refunded_amount: refundedAmount,
+      },
+      sharedContext
+    )
   }
 }

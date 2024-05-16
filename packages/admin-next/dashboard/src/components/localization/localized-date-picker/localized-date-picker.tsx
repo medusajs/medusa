@@ -1,7 +1,7 @@
 import { DatePicker } from "@medusajs/ui"
 import { ComponentPropsWithoutRef } from "react"
 import { useTranslation } from "react-i18next"
-import { languages } from "../../../i18n/config"
+import { languages } from "../../../i18n/languages"
 
 type LocalizedDatePickerProps = Omit<
   ComponentPropsWithoutRef<typeof DatePicker>,
@@ -14,8 +14,9 @@ export const LocalizedDatePicker = ({
 }: LocalizedDatePickerProps) => {
   const { i18n, t } = useTranslation()
 
-  const locale = languages.find((lang) => lang.code === i18n.language)
-    ?.date_locale
+  const locale = languages.find(
+    (lang) => lang.code === i18n.language
+  )?.date_locale
 
   const translations = {
     cancel: t("actions.cancel"),

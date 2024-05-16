@@ -1,9 +1,0 @@
-type: object
-description: The details of the product option to create.
-required:
-  - title
-properties:
-  title:
-    description: The title the Product Option.
-    type: string
-    example: Size

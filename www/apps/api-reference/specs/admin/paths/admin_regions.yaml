@@ -2,132 +2,22 @@ get:
   operationId: GetRegions
   summary: List Regions
   description: >-
-    Retrieve a list of Regions. The regions can be filtered by fields such as
-    `created_at`. The regions can also be paginated.
+    Retrieve a list of regions. The regions can be filtered by fields such as
+    `id`. The regions can also be sorted or paginated.
   x-authenticated: true
-  parameters:
-    - in: query
-      name: q
-      description: Term used to search regions' name.
-      schema:
-        type: string
-    - in: query
-      name: order
-      description: A field to sort-order the retrieved regions by.
-      schema:
-        type: string
-    - in: query
-      name: limit
-      schema:
-        type: integer
-        default: 50
-      required: false
-      description: Limit the number of regions returned.
-    - in: query
-      name: offset
-      schema:
-        type: integer
-        default: 0
-      required: false
-      description: The number of regions to skip when retrieving the regions.
-    - in: query
-      name: created_at
-      required: false
-      description: Filter by a creation date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: updated_at
-      required: false
-      description: Filter by an update date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: deleted_at
-      required: false
-      description: Filter by a deletion date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-  x-codegen:
-    method: list
-    queryParams: AdminGetRegionsParams
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_regions/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_regions/get.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_regions/get.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Regions
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminRegionsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -140,44 +30,28 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-post:
-  operationId: PostRegions
-  summary: Create a Region
-  description: Create a Region.
-  x-authenticated: true
   requestBody:
     content:
       application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostRegionsReq.yaml
-  x-codegen:
-    method: create
+        schema: {}
+post:
+  operationId: PostRegions
+  summary: Create Region
+  description: Create a region.
+  x-authenticated: true
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_regions/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_regions/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_regions/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Regions
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminRegionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -190,3 +64,7 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

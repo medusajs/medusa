@@ -1,6 +1,6 @@
 import { getConfigFile, isDefined } from "medusa-core-utils"
-import { ConfigModule } from "../types/global"
 import logger from "./logger"
+import { ConfigModule } from "@medusajs/types"
 
 const isProduction = ["production", "prod"].includes(process.env.NODE_ENV || "")
 
@@ -77,6 +77,7 @@ export default (rootDirectory: string): ConfigModule => {
       ...configModule?.projectConfig,
       worker_mode,
     },
+    admin: configModule?.admin ?? {},
     modules: configModule.modules ?? {},
     featureFlags: configModule?.featureFlags ?? {},
     plugins: configModule?.plugins ?? [],
