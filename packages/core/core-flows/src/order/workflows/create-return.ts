@@ -209,6 +209,34 @@ function prepareFulfillmentData({
   }
 }
 
+function prepareReturnShippingOptionQueryVariables({
+  order,
+  input,
+}: {
+  order: {
+    currency_code: string
+    region_id?: string
+  }
+  input: {
+    return_shipping: OrderWorkflow.CreateOrderReturnWorkflowInput["return_shipping"]
+  }
+}) {
+  const variables = {
+    id: input.return_shipping.option_id,
+    calculated_price: {
+      context: {
+        currency_code: order.currency_code,
+      },
+    },
+  }
+
+  if (order.region_id) {
+    variables.calculated_price.context["region_id"] = order.region_id
+  }
+
+  return variables
+}
+
 export const createReturnOrderWorkflowId = "create-return-order"
 export const createReturnOrderWorkflow = createWorkflow(
   createReturnOrderWorkflowId,
@@ -246,22 +274,7 @@ export const createReturnOrderWorkflow = createWorkflow(
 
     const returnShippingOptionsVariables = transform(
       { input, order },
-      (data) => {
-        const variables = {
-          id: data.input.return_shipping.option_id,
-          calculated_price: {
-            context: {
-              currency_code: data.order.currency_code,
-            },
-          },
-        }
-
-        if (order.region_id) {
-          variables.calculated_price.context["region_id"] = order.region_id
-        }
-
-        return variables
-      }
+      prepareReturnShippingOptionQueryVariables
     )
 
     const returnShippingOption = useRemoteQueryStep({
