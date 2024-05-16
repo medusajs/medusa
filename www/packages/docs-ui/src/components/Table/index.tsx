@@ -10,7 +10,8 @@ const Root = ({ className, ...props }: RootProps) => {
       className={clsx(
         className,
         "table-fixed mb-docs_1",
-        "[&_pre_span]:!max-w-full [&_pre_span]:!break-words [&_pre_span]:!whitespace-break-spaces"
+        "[&_pre_span]:!max-w-full [&_pre_span]:!break-words [&_pre_span]:!whitespace-break-spaces",
+        "[&_pre>div]:mt-docs_1"
       )}
       {...props}
     />
