@@ -112,6 +112,7 @@ export type HttpCompressionOptions = {
  */
 export type ProjectConfigOptions = {
   /**
+   * @deprecated - use `http.storeCors` instead
    * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
    *
    * `store_cors` is a string used to specify the accepted URLs or patterns for store API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.
@@ -159,8 +160,9 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  store_cors: string
+  store_cors?: string
   /**
+   * @deprecated - use `http.adminCors` instead
    * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
    *
    * `admin_cors` is a string used to specify the accepted URLs or patterns for admin API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.
@@ -208,7 +210,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  admin_cors: string
+  admin_cors?: string
   /**
    * @deprecated - use `auth.cors` instead
    * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
@@ -258,7 +260,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  auth_cors: string
+  auth_cors?: string
   /**
    * @deprecated - use `auth.cookieSecret` instead
    * A random string used to create cookie tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
@@ -565,6 +567,7 @@ export type ProjectConfigOptions = {
   session_options?: SessionOptions
 
   /**
+   * @deprecated - use `http.compression` instead
    * Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
    * However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
    *
@@ -629,15 +632,15 @@ export type ProjectConfigOptions = {
   worker_mode?: "shared" | "worker" | "server"
 
   /**
-   * Configure the application's authentication settings
+   * Configure the application's http-specific settings
    *
    * @example
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     auth: {
-   *       jwtSecret: "some-super-secret",
-   *       jwtExpiresIn: "2d",
+   *     http: {
+   *       cookieSecret: "some-super-secret",
+   *       compression: { ... },
    *     }
    *     // ...
    *   },
@@ -645,9 +648,9 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  auth: {
+  http: {
     /**
-     * A random string used to create authentication tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
+     * A random string used to create authentication tokens in the http layer. Although this configuration option is not required, it’s highly recommended to set it for better security.
      *
      * In a development environment, if this option is not set the default secret is `supersecret` However, in production, if this configuration is not set an error, an
      * error is thrown and the backend crashes.
@@ -656,7 +659,7 @@ export type ProjectConfigOptions = {
      * ```js title="medusa-config.js"
      * module.exports = {
      *   projectConfig: {
-     *     auth: {
+     *     http: {
      *       cookieSecret: "supersecret"
      *     }
      *   },
@@ -672,7 +675,7 @@ export type ProjectConfigOptions = {
      * ```js title="medusa-config.js"
      * module.exports = {
      *   projectConfig: {
-     *     auth: {
+     *     http: {
      *       jwtExpiresIn: "2d"
      *     }
      *   },
@@ -682,7 +685,7 @@ export type ProjectConfigOptions = {
      */
     jwtExpiresIn?: string
     /**
-     * A random string used to create cookie tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
+     * A random string used to create cookie tokens in the http layer. Although this configuration option is not required, it’s highly recommended to set it for better security.
      *
      * In a development environment, if this option is not set, the default secret is `supersecret` However, in production, if this configuration is not set, an error is thrown and
      * the backend crashes.
@@ -691,7 +694,7 @@ export type ProjectConfigOptions = {
      * ```js title="medusa-config.js"
      * module.exports = {
      *   projectConfig: {
-     *     auth: {
+     *     http: {
      *      cookieSecret: "supersecret"
      *     }
      *     // ...
@@ -730,8 +733,8 @@ export type ProjectConfigOptions = {
      * ```js title="medusa-config.js"
      * module.exports = {
      *   projectConfig: {
-     *     auth: {
-     *       cors: process.env.AUTH_CORS
+     *     http: {
+     *       authCors: process.env.AUTH_CORS
      *     }
      *     // ...
      *   },
@@ -744,8 +747,8 @@ export type ProjectConfigOptions = {
      * ```js title="medusa-config.js"
      * module.exports = {
      *   projectConfig: {
-     *     auth: {
-     *       cors: "/http:\\/\\/localhost:700\\d+$/",
+     *     http: {
+     *       authCors: "/http:\\/\\/localhost:700\\d+$/",
      *     }
      *     // ...
      *   },
@@ -753,7 +756,141 @@ export type ProjectConfigOptions = {
      * }
      * ```
      */
-    cors: string
+    authCors: string
+    /**
+     *
+     * Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
+     * However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
+     *
+     * Its value is an object that has the following properties:
+     *
+     * If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`.
+     *
+     * @example
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     http: {
+     *       compression: {
+     *         enabled: true,
+     *         level: 6,
+     *         memLevel: 8,
+     *         threshold: 1024,
+     *       }
+     *     },
+     *     // ...
+     *   },
+     *   // ...
+     * }
+     * ```
+     */
+    compression?: HttpCompressionOptions
+    /**
+     * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
+     *
+     * `store_cors` is a string used to specify the accepted URLs or patterns for store API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.
+     *
+     * Every origin in that list must either be:
+     *
+     * 1. A URL. For example, `http://localhost:8000`. The URL must not end with a backslash;
+     * 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
+     *
+     * @example
+     * Some example values of common use cases:
+     *
+     * ```bash
+     * # Allow different ports locally starting with 800
+     * STORE_CORS=/http:\/\/localhost:800\d+$/
+     *
+     * # Allow any origin ending with vercel.app. For example, storefront.vercel.app
+     * STORE_CORS=/vercel\.app$/
+     *
+     * # Allow all HTTP requests
+     * STORE_CORS=/http:\/\/.+/
+     * ```
+     *
+     * Then, set the configuration in `medusa-config.js`:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     http: {
+     *       storeCors: process.env.STORE_CORS,
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * }
+     * ```
+     *
+     * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     http: {
+     *       storeCors: "/vercel\\.app$/",
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * }
+     * ```
+     */
+    storeCors: string
+    /**
+     * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
+     *
+     * `admin_cors` is a string used to specify the accepted URLs or patterns for admin API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.
+     *
+     * Every origin in that list must either be:
+     *
+     * 1. A URL. For example, `http://localhost:7001`. The URL must not end with a backslash;
+     * 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
+     *
+     * @example
+     * Some example values of common use cases:
+     *
+     * ```bash
+     * # Allow different ports locally starting with 700
+     * ADMIN_CORS=/http:\/\/localhost:700\d+$/
+     *
+     * # Allow any origin ending with vercel.app. For example, admin.vercel.app
+     * ADMIN_CORS=/vercel\.app$/
+     *
+     * # Allow all HTTP requests
+     * ADMIN_CORS=/http:\/\/.+/
+     * ```
+     *
+     * Then, set the configuration in `medusa-config.js`:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     http: {
+     *       adminCors: process.env.ADMIN_CORS,
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * }
+     * ```
+     *
+     * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     http: {
+     *       adminCors: process.env.ADMIN_CORS,
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * }
+     * ```
+     */
+    adminCors: string
   }
 }
 

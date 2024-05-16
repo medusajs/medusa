@@ -21,14 +21,15 @@ module.exports = {
     disable: true,
   },
   projectConfig: {
-    auth: {},
     redis_url: redisUrl,
     database_url: DB_URL,
     database_type: "postgres",
-    jwt_secret: "test",
-    cookie_secret: "test",
-    http_compression: {
-      enabled: enableResponseCompression,
+    http: {
+      compression: {
+        enabled: enableResponseCompression,
+      },
+      jwtSecret: "test",
+      cookieSecret: "test",
     },
   },
   featureFlags: {

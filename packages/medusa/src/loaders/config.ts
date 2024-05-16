@@ -18,38 +18,40 @@ export const handleConfigError = (error: Error): void => {
   process.exit(1)
 }
 
-const buildAuthConfig = (projectConfig: ConfigModule["projectConfig"]) => {
-  const auth = projectConfig.auth ?? {}
+const buildHttpConfig = (projectConfig: ConfigModule["projectConfig"]) => {
+  const http = projectConfig.http ?? {}
 
-  auth.jwtExpiresIn = auth?.jwtExpiresIn ?? "1d"
-  auth.cors = auth.cors ?? ""
+  http.jwtExpiresIn = http?.jwtExpiresIn ?? "1d"
+  http.authCors = http.authCors ?? ""
+  http.storeCors = http.storeCors ?? ""
+  http.adminCors = http.adminCors ?? ""
 
-  auth.jwtSecret = auth?.jwtSecret ?? process.env.JWT_SECRET
+  http.jwtSecret = http?.jwtSecret ?? process.env.JWT_SECRET
 
-  if (!auth.jwtSecret) {
+  if (!http.jwtSecret) {
     errorHandler(
-      `[medusa-config] ⚠️ auth.jwtSecret not found.${
+      `[medusa-config] ⚠️ http.jwtSecret not found.${
         isProduction ? "" : "Using default 'supersecret'."
       }`
     )
 
-    auth.jwtSecret = "supersecret"
+    http.jwtSecret = "supersecret"
   }
 
-  auth.cookieSecret =
-    projectConfig.auth?.cookieSecret ?? process.env.COOKIE_SECRET
+  http.cookieSecret =
+    projectConfig.http?.cookieSecret ?? process.env.COOKIE_SECRET
 
-  if (!auth.cookieSecret) {
+  if (!http.cookieSecret) {
     errorHandler(
-      `[medusa-config] ⚠️ auth.cookieSecret not found.${
+      `[medusa-config] ⚠️ http.cookieSecret not found.${
         isProduction ? "" : " Using default 'supersecret'."
       }`
     )
 
-    auth.cookieSecret = "supersecret"
+    http.cookieSecret = "supersecret"
   }
 
-  return auth
+  return http
 }
 
 const normalizeProjectConfig = (
@@ -61,7 +63,7 @@ const normalizeProjectConfig = (
     )
   }
 
-  projectConfig.auth = buildAuthConfig(projectConfig)
+  projectConfig.http = buildHttpConfig(projectConfig)
 
   let worker_mode = projectConfig?.worker_mode
 
@@ -76,8 +78,9 @@ const normalizeProjectConfig = (
     }
   }
 
-  projectConfig.admin_cors = projectConfig.admin_cors ?? ""
-  projectConfig.store_cors = projectConfig.store_cors ?? ""
+  // Backward compatibility
+  projectConfig.admin_cors = projectConfig.http.adminCors
+  projectConfig.store_cors = projectConfig.http.storeCors
 
   return {
     ...projectConfig,

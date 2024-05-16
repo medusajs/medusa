@@ -28,14 +28,14 @@ export default async ({
     sameSite = "none"
   }
 
-  const { auth, session_options } = configModule.projectConfig
+  const { http, session_options } = configModule.projectConfig
   const sessionOpts = {
     name: session_options?.name ?? "connect.sid",
     resave: session_options?.resave ?? true,
     rolling: session_options?.rolling ?? false,
     saveUninitialized: session_options?.saveUninitialized ?? true,
     proxy: true,
-    secret: session_options?.secret ?? auth?.cookieSecret,
+    secret: session_options?.secret ?? http?.cookieSecret,
     cookie: {
       sameSite,
       secure,

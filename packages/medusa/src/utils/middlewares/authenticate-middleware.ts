@@ -60,11 +60,11 @@ export const authenticate = (
     )
 
     if (!authUser) {
-      const { auth } =
+      const { http } =
         req.scope.resolve<ConfigModule>("configModule").projectConfig
       authUser = getAuthUserFromJwtToken(
         req.headers.authorization,
-        auth.jwtSecret!,
+        http.jwtSecret!,
         authTypes,
         authScope
       )

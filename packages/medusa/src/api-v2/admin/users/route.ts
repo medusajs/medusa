@@ -68,12 +68,12 @@ export const POST = async (
     req.remoteQueryConfig.fields
   )
 
-  const { auth } = req.scope.resolve(
+  const { http } = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   ).projectConfig
 
-  const token = jwt.sign(user, auth.jwtSecret, {
-    expiresIn: auth.jwtExpiresIn,
+  const token = jwt.sign(user, http.jwtSecret, {
+    expiresIn: http.jwtExpiresIn,
   })
 
   res.status(200).json({ user, token })
