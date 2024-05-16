@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.0.0
+  version: 2.0.0
   title: Medusa Storefront API
   license:
     name: MIT
@@ -9,17 +9,6 @@ servers:
   - url: http://localhost:9000
   - url: https://api.medusa-commerce.com
 tags:
-  - name: Auth
-    description: >
-      Authentication API Routes allow you to manage a customer's session, such
-      as login or log out.
-
-      You can send authenticated requests for a customer either using the Cookie
-      header or using the JWT Token.
-    externalDocs:
-      description: How to implement customer profiles in your storefront
-      url: >-
-        https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles
   - name: Carts
     description: >
       A cart is a virtual shopping bag that customers can use to add items they
@@ -30,6 +19,7 @@ tags:
       description: How to implement cart functionality in your storefront
       url: >-
         https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart
+  - name: Currencies
   - name: Customers
     description: >
       A customer can register and manage their information such as addresses,
@@ -38,81 +28,10 @@ tags:
       description: How to implement customer profiles in your storefront
       url: >-
         https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles
-  - name: Gift Cards
-    description: >
-      Customers can use gift cards during checkout to deduct the gift card's
-      balance from the checkout total.
-
-      The Gift Card API Routes allow retrieving a gift card's details by its
-      code. A gift card can be applied to a cart using the Carts API Routes.
-    externalDocs:
-      description: How to use gift cards in a storefront
-      url: https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards
-  - name: Orders
-    description: >
-      Orders are purchases made by customers, typically through a storefront.
-
-      Orders are placed and created using the Carts API Routes. The Orders API
-      Routes allow retrieving and claiming orders.
-    externalDocs:
-      description: How to retrieve order details in a storefront
-      url: >-
-        https://docs.medusajs.com/modules/orders/storefront/retrieve-order-details
-  - name: Order Edits
-    description: >
-      Order edits are changes made to items in an order such as adding, updating
-      their quantity, or deleting them. Order edits are created by the admin.
-
-      A customer can review order edit requests created by an admin and confirm
-      or decline them.
-    externalDocs:
-      description: How to handle order edits in a storefront
-      url: https://docs.medusajs.com/modules/orders/storefront/handle-order-edits
   - name: Payment Collections
     description: >
       A payment collection is useful for managing additional payments, such as
       for Order Edits, or installment payments.
-  - name: Products
-    description: >
-      Products are saleable items in a store. This also includes [saleable gift
-      cards](https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards)
-      in a store.
-
-      Using these API Routes, you can filter products by categories,
-      collections, sales channels, and more.
-    externalDocs:
-      description: How to show products in a storefront
-      url: https://docs.medusajs.com/modules/products/storefront/show-products
-  - name: Product Variants
-    description: >
-      Product variants are the actual salable item in your store. Each variant
-      is a combination of the different option values available on the product.
-  - name: Product Categories
-    description: >
-      Products can be categoriezed into categories. A product can be associated
-      more than one category.
-
-      Using these API Routes, you can list or retrieve a category's details and
-      products.
-    externalDocs:
-      description: How to use product categories in a storefront
-      url: https://docs.medusajs.com/modules/products/storefront/use-categories
-  - name: Product Collections
-    description: >
-      A product collection is used to organize products for different purposes
-      such as marketing or discount purposes. For example, you can create a
-      Summer Collection.
-
-      Using these API Routes, you can list or retrieve a collection's details
-      and products.
-  - name: Product Tags
-    description: |
-      Product tags are string values that can be used to filter products by.
-      Products can have more than one tag, and products can share tags.
-  - name: Product Types
-    description: |
-      Product types are string values that can be used to filter products by.
-      Products can have more than one tag, and products can share types.
   - name: Regions
     description: >
       Regions are different countries or geographical regions that the commerce
@@ -124,16 +43,6 @@ tags:
       description: How to use regions in a storefront
       url: >-
         https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions
-  - name: Returns
-    description: |
-      A return can be created by a customer to return items in an order.
-    externalDocs:
-      description: How to create a return in a storefront
-      url: https://docs.medusajs.com/modules/orders/storefront/create-return
-  - name: Return Reasons
-    description: >
-      Return reasons are key-value pairs that are used to specify why an order
-      return is being created.
   - name: Shipping Options
     description: >
       A shipping option is used to define the available shipping methods during
@@ -142,51 +51,25 @@ tags:
       description: Shipping Option architecture
       url: >-
         https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-option
-  - name: Swaps
-    description: >
-      A swap is created by a customer or an admin to exchange an item with a new
-      one.
-
-      Creating a swap implicitely includes creating a return for the item being
-      exchanged.
-    externalDocs:
-      description: How to create a swap in a storefront
-      url: https://docs.medusajs.com/modules/orders/storefront/create-swap
 paths:
-  /store/auth:
-    $ref: paths/store_auth.yaml
-  /store/auth/token:
-    $ref: paths/store_auth_token.yaml
-  /store/auth/{email}:
-    $ref: paths/store_auth_{email}.yaml
   /store/carts:
     $ref: paths/store_carts.yaml
   /store/carts/{id}:
     $ref: paths/store_carts_{id}.yaml
-  /store/carts/{id}/complete:
-    $ref: paths/store_carts_{id}_complete.yaml
-  /store/carts/{id}/discounts/{code}:
-    $ref: paths/store_carts_{id}_discounts_{code}.yaml
   /store/carts/{id}/line-items:
     $ref: paths/store_carts_{id}_line-items.yaml
   /store/carts/{id}/line-items/{line_id}:
     $ref: paths/store_carts_{id}_line-items_{line_id}.yaml
-  /store/carts/{id}/payment-session:
-    $ref: paths/store_carts_{id}_payment-session.yaml
-  /store/carts/{id}/payment-sessions:
-    $ref: paths/store_carts_{id}_payment-sessions.yaml
-  /store/carts/{id}/payment-sessions/{provider_id}:
-    $ref: paths/store_carts_{id}_payment-sessions_{provider_id}.yaml
-  /store/carts/{id}/payment-sessions/{provider_id}/refresh:
-    $ref: paths/store_carts_{id}_payment-sessions_{provider_id}_refresh.yaml
-  /store/carts/{id}/shipping-methods:
-    $ref: paths/store_carts_{id}_shipping-methods.yaml
+  /store/carts/{id}/payment-collections:
+    $ref: paths/store_carts_{id}_payment-collections.yaml
+  /store/carts/{id}/promotions:
+    $ref: paths/store_carts_{id}_promotions.yaml
   /store/carts/{id}/taxes:
     $ref: paths/store_carts_{id}_taxes.yaml
-  /store/collections:
-    $ref: paths/store_collections.yaml
-  /store/collections/{id}:
-    $ref: paths/store_collections_{id}.yaml
+  /store/currencies:
+    $ref: paths/store_currencies.yaml
+  /store/currencies/{code}:
+    $ref: paths/store_currencies_{code}.yaml
   /store/customers:
     $ref: paths/store_customers.yaml
   /store/customers/me:
@@ -195,80 +78,16 @@ paths:
     $ref: paths/store_customers_me_addresses.yaml
   /store/customers/me/addresses/{address_id}:
     $ref: paths/store_customers_me_addresses_{address_id}.yaml
-  /store/customers/me/orders:
-    $ref: paths/store_customers_me_orders.yaml
-  /store/customers/me/payment-methods:
-    $ref: paths/store_customers_me_payment-methods.yaml
-  /store/customers/password-reset:
-    $ref: paths/store_customers_password-reset.yaml
-  /store/customers/password-token:
-    $ref: paths/store_customers_password-token.yaml
-  /store/gift-cards/{code}:
-    $ref: paths/store_gift-cards_{code}.yaml
-  /store/order-edits/{id}:
-    $ref: paths/store_order-edits_{id}.yaml
-  /store/order-edits/{id}/complete:
-    $ref: paths/store_order-edits_{id}_complete.yaml
-  /store/order-edits/{id}/decline:
-    $ref: paths/store_order-edits_{id}_decline.yaml
-  /store/orders:
-    $ref: paths/store_orders.yaml
-  /store/orders/batch/customer/token:
-    $ref: paths/store_orders_batch_customer_token.yaml
-  /store/orders/cart/{cart_id}:
-    $ref: paths/store_orders_cart_{cart_id}.yaml
-  /store/orders/customer/confirm:
-    $ref: paths/store_orders_customer_confirm.yaml
-  /store/orders/{id}:
-    $ref: paths/store_orders_{id}.yaml
-  /store/payment-collections/{id}:
-    $ref: paths/store_payment-collections_{id}.yaml
-  /store/payment-collections/{id}/sessions:
-    $ref: paths/store_payment-collections_{id}_sessions.yaml
-  /store/payment-collections/{id}/sessions/batch:
-    $ref: paths/store_payment-collections_{id}_sessions_batch.yaml
-  /store/payment-collections/{id}/sessions/batch/authorize:
-    $ref: paths/store_payment-collections_{id}_sessions_batch_authorize.yaml
-  /store/payment-collections/{id}/sessions/{session_id}:
-    $ref: paths/store_payment-collections_{id}_sessions_{session_id}.yaml
-  /store/payment-collections/{id}/sessions/{session_id}/authorize:
-    $ref: paths/store_payment-collections_{id}_sessions_{session_id}_authorize.yaml
-  /store/product-categories:
-    $ref: paths/store_product-categories.yaml
-  /store/product-categories/{id}:
-    $ref: paths/store_product-categories_{id}.yaml
-  /store/product-tags:
-    $ref: paths/store_product-tags.yaml
-  /store/product-types:
-    $ref: paths/store_product-types.yaml
-  /store/products:
-    $ref: paths/store_products.yaml
-  /store/products/search:
-    $ref: paths/store_products_search.yaml
-  /store/products/{id}:
-    $ref: paths/store_products_{id}.yaml
+  /store/payment-collections/{id}/payment-sessions:
+    $ref: paths/store_payment-collections_{id}_payment-sessions.yaml
   /store/regions:
     $ref: paths/store_regions.yaml
   /store/regions/{id}:
     $ref: paths/store_regions_{id}.yaml
-  /store/return-reasons:
-    $ref: paths/store_return-reasons.yaml
-  /store/return-reasons/{id}:
-    $ref: paths/store_return-reasons_{id}.yaml
-  /store/returns:
-    $ref: paths/store_returns.yaml
-  /store/shipping-options:
-    $ref: paths/store_shipping-options.yaml
+  /store/regions/{id}/payment-providers:
+    $ref: paths/store_regions_{id}_payment-providers.yaml
   /store/shipping-options/{cart_id}:
     $ref: paths/store_shipping-options_{cart_id}.yaml
-  /store/swaps:
-    $ref: paths/store_swaps.yaml
-  /store/swaps/{cart_id}:
-    $ref: paths/store_swaps_{cart_id}.yaml
-  /store/variants:
-    $ref: paths/store_variants.yaml
-  /store/variants/{id}:
-    $ref: paths/store_variants_{id}.yaml
 components:
   securitySchemes:
     jwt_token:

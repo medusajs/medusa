@@ -11,7 +11,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateUser } from "../../../../../hooks/api/users"
-import { languages } from "../../../../../i18n/config"
+import { languages } from "../../../../../i18n/languages"
 
 type EditProfileProps = {
   user: Partial<Omit<UserDTO, "password_hash">>

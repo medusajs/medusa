@@ -28,6 +28,7 @@
     "rimraf": "^5.0.1",
     "typeorm": "^0.3.16",
     "typescript": "^5.1.6",
+    "vite": "^5.2.11",
     "winston": "^3.8.2"
   },
   "scripts": {

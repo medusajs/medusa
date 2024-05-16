@@ -46,7 +46,7 @@ const withMDX = mdx({
                 process.env.VERCEL_ENV !== "production"
                   ? process.env.NEXT_PUBLIC_API_URL
                   : undefined,
-              path: "api",
+              path: "v2/api",
             },
           },
         },

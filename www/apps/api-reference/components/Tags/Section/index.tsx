@@ -4,7 +4,6 @@ import getSectionId from "@/utils/get-section-id"
 import { useInView } from "react-intersection-observer"
 import { useEffect, useMemo, useState } from "react"
 import {
-  getLinkWithBasePath,
   isElmWindow,
   swrFetcher,
   useScrollController,
@@ -25,8 +24,8 @@ import { usePathname } from "next/navigation"
 import formatReportLink from "@/utils/format-report-link"
 import { SchemaObject, TagObject } from "@/types/openapi"
 import useSWR from "swr"
-import { useVersion } from "@/providers/version"
 import { TagSectionSchemaProps } from "./Schema"
+import basePathUrl from "../../../utils/base-path-url"
 
 export type TagSectionProps = {
   tag: TagObject
@@ -54,14 +53,12 @@ const TagSection = ({ tag }: TagSectionProps) => {
   const { area } = useArea()
   const pathname = usePathname()
   const { scrollableElement } = useScrollController()
-  const { version } = useVersion()
   const { data } = useSWR<{
     schema: SchemaObject
   }>(
     tag["x-associatedSchema"]
-      ? getLinkWithBasePath(
-          `/schema?name=${tag["x-associatedSchema"].$ref}&area=${area}&version=${version}`,
-          process.env.NEXT_PUBLIC_BASE_PATH
+      ? basePathUrl(
+          `/api/schema?name=${tag["x-associatedSchema"].$ref}&area=${area}`
         )
       : null,
     swrFetcher,

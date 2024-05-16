@@ -5,7 +5,9 @@ import {
 
 import { RouteMap } from "./route-map"
 
-const router = createBrowserRouter(RouteMap)
+const router = createBrowserRouter(RouteMap, {
+  basename: __BASE__ || "/",
+})
 
 export const RouterProvider = () => {
   return <Provider router={router} />

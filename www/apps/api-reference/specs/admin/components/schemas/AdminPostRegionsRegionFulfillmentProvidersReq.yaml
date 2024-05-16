@@ -1,8 +1,0 @@
-type: object
-description: The details of the fulfillment provider to add to the region.
-required:
-  - provider_id
-properties:
-  provider_id:
-    description: The ID of the Fulfillment Provider.
-    type: string

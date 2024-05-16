@@ -31,6 +31,9 @@ const customFulfillmentProvider = {
 }
 
 module.exports = {
+  admin: {
+    disable: true,
+  },
   plugins: [],
   projectConfig: {
     database_url: DB_URL,

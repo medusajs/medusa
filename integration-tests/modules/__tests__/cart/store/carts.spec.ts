@@ -1910,6 +1910,7 @@ medusaIntegrationTestRunner({
                 expect.objectContaining({
                   currency_code: "usd",
                   amount: 106,
+                  status: "authorized",
                 }),
               ],
             })

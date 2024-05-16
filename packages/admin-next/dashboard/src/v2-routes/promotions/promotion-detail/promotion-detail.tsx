@@ -7,9 +7,6 @@ import { PromotionConditionsSection } from "./components/promotion-conditions-se
 import { PromotionGeneralSection } from "./components/promotion-general-section"
 import { promotionLoader } from "./loader"
 
-import after from "medusa-admin:widgets/promotion/details/after"
-import before from "medusa-admin:widgets/promotion/details/before"
-
 export const PromotionDetail = () => {
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof promotionLoader>
@@ -27,14 +24,6 @@ export const PromotionDetail = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
-
       <div className="flex flex-col gap-x-4 xl:flex-row xl:items-start">
         <div className="flex w-full flex-col gap-y-2">
           <PromotionGeneralSection promotion={promotion} />
@@ -56,14 +45,6 @@ export const PromotionDetail = () => {
           <div className="flex w-full flex-col gap-y-2 xl:hidden">
             <CampaignSection campaign={promotion.campaign!} />
           </div>
-
-          {after.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component />
-              </div>
-            )
-          })}
 
           <JsonViewSection data={promotion as any} />
         </div>

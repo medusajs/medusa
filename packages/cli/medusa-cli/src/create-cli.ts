@@ -117,7 +117,7 @@ function buildLocalCommands(cli, isLocalProject) {
           .option(`v2`, {
             type: `boolean`,
             describe: `Install Medusa with the V2 feature flag enabled. WARNING: Medusa V2 is still in development and shouldn't be used in production.`,
-            default: false
+            default: false,
           }),
       desc: `Create a new Medusa project.`,
       handler: handlerP(newStarter),
@@ -234,6 +234,19 @@ function buildLocalCommands(cli, isLocalProject) {
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
           // kills it so this is fine.
+          return new Promise((resolve) => {})
+        })
+      ),
+    })
+    .command({
+      command: `build`,
+      desc: `Build your project.`,
+      builder: (_) => _,
+      handler: handlerP(
+        getCommandHandler(`build`, (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          cmd(args)
+
           return new Promise((resolve) => {})
         })
       ),

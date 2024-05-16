@@ -1,163 +1,29 @@
 get:
-  operationId: GetProductsProductVariants
-  summary: List a Product's Variants
-  description: >
-    Retrieve a list of Product Variants associated with a Product. The variants
-    can be paginated.
+  operationId: GetProductsIdVariants
+  summary: List Variants
+  description: >-
+    Retrieve a list of variants in a product. The variants can be filtered by
+    fields like FILTER FIELDS. The variants can also be paginated.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The product's ID.
       required: true
-      description: ID of the product.
       schema:
         type: string
-    - in: query
-      name: id
-      description: IDs to filter product variants by.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned product
-        variants.
-      schema:
-        type: string
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned
-        product variants.
-      schema:
-        type: string
-    - in: query
-      name: offset
-      description: >-
-        The number of product variants to skip when retrieving the product
-        variants.
-      schema:
-        type: integer
-        default: 0
-    - in: query
-      name: limit
-      description: Limit the number of product variants returned.
-      schema:
-        type: integer
-        default: 100
-    - in: query
-      name: q
-      description: Search term to search product variants' title, sku, and products' title.
-      schema:
-        type: string
-    - in: query
-      name: order
-      description: >-
-        The field to sort the data by. By default, the sort order is ascending.
-        To change the order to descending, prefix the field name with `-`.
-      schema:
-        type: string
-    - in: query
-      name: manage_inventory
-      description: Filter product variants by whether their inventory is managed or not.
-      schema:
-        type: boolean
-    - in: query
-      name: allow_backorder
-      description: >-
-        Filter product variants by whether they are allowed to be backordered or
-        not.
-      schema:
-        type: boolean
-    - in: query
-      name: inventory_quantity
-      description: Filter by available inventory quantity
-      schema:
-        oneOf:
-          - type: number
-            description: a specific number to filter by.
-          - type: object
-            description: filter using less and greater than comparisons.
-            properties:
-              lt:
-                type: number
-                description: filter by inventory quantity less than this number
-              gt:
-                type: number
-                description: filter by inventory quantity greater than this number
-              lte:
-                type: number
-                description: filter by inventory quantity less than or equal to this number
-              gte:
-                type: number
-                description: >-
-                  filter by inventory quantity greater than or equal to this
-                  number
-    - in: query
-      name: created_at
-      description: Filter by a creation date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: updated_at
-      description: Filter by an update date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-  x-codegen:
-    method: listVariants
-    queryParams: AdminGetProductsVariantsParams
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_products_{id}_variants/get.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Products
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminProductsListVariantsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -170,53 +36,34 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-post:
-  operationId: PostProductsProductVariants
-  summary: Create a Product Variant
-  description: >-
-    Create a Product Variant associated with a Product. Each product variant
-    must have a unique combination of Product Option values.
-  x-authenticated: true
-  parameters:
-    - in: path
-      name: id
-      required: true
-      description: The ID of the Product.
-      schema:
-        type: string
   requestBody:
     content:
       application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostProductsProductVariantsReq.yaml
-  x-codegen:
-    method: createVariant
+        schema: {}
+post:
+  operationId: PostProductsIdVariants
+  summary: Add Variants to Product
+  description: Add a list of variants to a product.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The product's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_products_{id}_variants/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_products_{id}_variants/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_products_{id}_variants/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Products
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminProductsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -229,3 +76,7 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
