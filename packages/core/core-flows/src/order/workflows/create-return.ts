@@ -192,7 +192,7 @@ function prepareFulfillmentData({
   if (!locationId) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `No location id provided and no stock location found in the fulfillment set of the shipping option with id ${returnShippingOption.id}.`
+      `Cannot create return without stock location, either provide a location or you should link the shipping option ${returnShippingOption.id} to a stock location.`
     )
   }
 
