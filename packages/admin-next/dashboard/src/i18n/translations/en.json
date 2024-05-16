@@ -415,6 +415,7 @@
       "successToast": "Customer {{email}} was successfully created."
     },
     "groups": {
+      "label": "Customer groups",
       "remove": "Are you sure you want to remove the customer from \"{{name}}\" customer group?",
       "alreadyAddedTooltip": "The customer is already in this customer group."
     },
@@ -432,7 +433,9 @@
       "guest": "Guest",
       "registered": "Registered",
       "groups": "Groups"
-    }
+    },
+    "registered": "Registered",
+    "guest": "Guest"
   },
   "customerGroups": {
     "domain": "Customer Groups",
