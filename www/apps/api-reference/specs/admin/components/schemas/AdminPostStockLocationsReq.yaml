@@ -1,27 +1,20 @@
 type: object
-description: The details of the stock location to create.
+description: SUMMARY
+x-schemaName: AdminPostStockLocationsReq
 required:
   - name
 properties:
   name:
-    description: the name of the stock location
     type: string
+    title: name
+    description: The stock location's name.
+  address:
+    $ref: ./StockLocationAddress.yaml
   address_id:
-    description: >-
-      the ID of an existing stock location address to associate with the stock
-      location. Only required if `address` is not provided.
     type: string
+    title: address_id
+    description: The stock location's address id.
   metadata:
     type: object
-    description: An optional key-value map with additional details
-    example:
-      car: white
-    externalDocs:
-      description: Learn about the metadata attribute, and how to delete and update it.
-      url: >-
-        https://docs.medusajs.com/development/entities/overview#metadata-attribute
-  address:
-    description: >-
-      A new stock location address to create and associate with the stock
-      location. Only required if `address_id` is not provided.
-    $ref: ./StockLocationAddressInput.yaml
+    description: The stock location's metadata.
+    properties: {}

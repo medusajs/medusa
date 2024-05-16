@@ -1,27 +1,18 @@
 type: object
+description: SUMMARY
+x-schemaName: AdminUpdateUserRequest
+required:
+  - avatar_url
 properties:
   first_name:
-    description: The first name of the User.
     type: string
+    title: first_name
+    description: The user's first name.
   last_name:
-    description: The last name of the User.
     type: string
-  role:
-    description: >-
-      The role assigned to the user. These roles don't provide any different
-      privileges.
+    title: last_name
+    description: The user's last name.
+  avatar_url:
     type: string
-    enum:
-      - admin
-      - member
-      - developer
-  api_token:
-    description: The API token of the User.
-    type: string
-  metadata:
-    description: An optional set of key-value pairs with additional information.
-    type: object
-    externalDocs:
-      description: Learn about the metadata attribute, and how to delete and update it.
-      url: >-
-        https://docs.medusajs.com/development/entities/overview#metadata-attribute
+    title: avatar_url
+    description: The user's avatar url.

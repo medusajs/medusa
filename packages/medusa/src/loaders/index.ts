@@ -7,6 +7,7 @@ import { createMedusaContainer } from "medusa-core-utils"
 import requestIp from "request-ip"
 import { v4 } from "uuid"
 import { MedusaContainer } from "../types/global"
+import adminLoader from "./admin"
 import apiLoader from "./api"
 import loadConfig from "./config"
 import expressLoader from "./express"
@@ -53,6 +54,8 @@ async function loadEntrypoints(
     }
     next()
   })
+
+  await adminLoader({ app: expressApp, configModule })
 
   // subscribersLoader({ container })
 

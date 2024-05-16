@@ -1,73 +1,42 @@
 post:
-  operationId: PostInventoryItemsInventoryItemLocationLevelsLocationLevel
-  summary: Update a Location Level
-  description: Update a Location Level's details for a given Inventory Item.
+  operationId: PostInventoryItemsIdLocationLevelsLocation_id
+  summary: Add Location Levels to Inventory Item
+  description: Add a list of location levels to a inventory item.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The inventory item's ID.
       required: true
-      description: The ID of the Inventory Item that the location is associated with.
       schema:
         type: string
-    - in: path
-      name: location_id
+    - name: location_id
+      in: path
+      description: The inventory item's location id.
       required: true
-      description: The ID of the Location to update.
       schema:
         type: string
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned
-        location level.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned location
-        level.
-      schema:
-        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
           $ref: >-
             ../components/schemas/AdminPostInventoryItemsItemLocationLevelsLevelReq.yaml
-  x-codegen:
-    method: updateLocationLevel
-    queryParams: AdminPostInventoryItemsItemLocationLevelsLevelParams
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_inventory-items_{id}_location-levels_{location_id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: >-
-          ../code_samples/tsx/admin_inventory-items_{id}_location-levels_{location_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/admin_inventory-items_{id}_location-levels_{location_id}/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Inventory Items
   responses:
     '200':
       description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminInventoryItemsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -81,54 +50,39 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
 delete:
-  operationId: DeleteInventoryItemsInventoryIteLocationLevelsLocation
-  summary: Delete a Location Level
-  description: Delete a location level of an Inventory Item.
+  operationId: DeleteInventoryItemsIdLocationLevelsLocation_id
+  summary: Remove Location Levels from Inventory Item
+  description: >-
+    Remove a list of location levels from a inventory item. This doesn't delete
+    the Location Level, only the association between the Location Level and the
+    inventory item.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The inventory item's ID.
       required: true
-      description: The ID of the Inventory Item.
       schema:
         type: string
-    - in: path
-      name: location_id
+    - name: location_id
+      in: path
+      description: The inventory item's location id.
       required: true
-      description: The ID of the location.
       schema:
         type: string
-  x-codegen:
-    method: deleteLocationLevel
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_inventory-items_{id}_location-levels_{location_id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: >-
-          ../code_samples/tsx/admin_inventory-items_{id}_location-levels_{location_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: >-
           ../code_samples/Shell/admin_inventory-items_{id}_location-levels_{location_id}/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Inventory Items
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminInventoryItemsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -141,3 +95,7 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

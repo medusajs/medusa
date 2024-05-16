@@ -3,164 +3,21 @@ get:
   summary: List Customer Groups
   description: >-
     Retrieve a list of customer groups. The customer groups can be filtered by
-    fields such as `name` or `id. The customer groups can also be sorted or
-    paginated.
+    fields such as `id`. The customer groups can also be sorted or paginated.
   x-authenticated: true
-  parameters:
-    - in: query
-      name: q
-      description: term to search customer groups by name.
-      schema:
-        type: string
-    - in: query
-      name: offset
-      description: >-
-        The number of customer groups to skip when retrieving the customer
-        groups.
-      schema:
-        type: integer
-        default: 0
-    - in: query
-      name: order
-      description: A field to sort order the retrieved customer groups by.
-      schema:
-        type: string
-    - in: query
-      name: discount_condition_id
-      description: Filter by discount condition ID.
-      schema:
-        type: string
-    - in: query
-      name: id
-      style: form
-      explode: false
-      description: Filter by the customer group ID
-      schema:
-        oneOf:
-          - type: string
-            description: customer group ID
-          - type: array
-            description: an array of customer group IDs
-            items:
-              type: string
-          - type: object
-            properties:
-              lt:
-                type: string
-                description: filter by IDs less than this ID
-              gt:
-                type: string
-                description: filter by IDs greater than this ID
-              lte:
-                type: string
-                description: filter by IDs less than or equal to this ID
-              gte:
-                type: string
-                description: filter by IDs greater than or equal to this ID
-    - in: query
-      name: name
-      style: form
-      explode: false
-      description: Filter by the customer group name
-      schema:
-        type: array
-        description: an array of customer group names
-        items:
-          type: string
-          description: customer group name
-    - in: query
-      name: created_at
-      description: Filter by a creation date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: updated_at
-      description: Filter by an update date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: limit
-      description: The number of customer groups to return.
-      schema:
-        type: integer
-        default: 10
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned
-        customer groups.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned customer
-        groups.
-      schema:
-        type: string
-  x-codegen:
-    method: list
-    queryParams: AdminGetCustomerGroupsParams
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_customer-groups/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_customer-groups/get.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_customer-groups/get.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Customer Groups
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminCustomerGroupsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -173,44 +30,28 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-post:
-  operationId: PostCustomerGroups
-  summary: Create a Customer Group
-  description: Create a Customer Group.
-  x-authenticated: true
   requestBody:
     content:
       application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostCustomerGroupsReq.yaml
-  x-codegen:
-    method: create
+        schema: {}
+post:
+  operationId: PostCustomerGroups
+  summary: Create Customer Group
+  description: Create a customer group.
+  x-authenticated: true
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_customer-groups/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_customer-groups/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_customer-groups/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Customer Groups
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminCustomerGroupsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -223,3 +64,7 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

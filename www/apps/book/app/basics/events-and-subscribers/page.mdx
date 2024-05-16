@@ -21,10 +21,7 @@ The subscriber is created in a TypeScript or JavaScript file under the `src/subs
 For example, create the file `src/subscribers/product-created.ts` with the following content:
 
 ```ts title="src/subscribers/product-created.ts"
-import {
-  ProductService,
-  type SubscriberConfig,
-} from "@medusajs/medusa"
+import { type SubscriberConfig } from "@medusajs/medusa"
 
 // subscriber function
 export default async function productCreateHandler() {
@@ -33,7 +30,7 @@ export default async function productCreateHandler() {
 
 // subscriber config
 export const config: SubscriberConfig = {
-  event: ProductService.Events.CREATED,
+  event: "product.created",
 }
 ```
 
@@ -42,7 +39,7 @@ A subscriber file must export:
 - The subscriber function that is an asynchronous function executed whenever the associated event is triggered.
 - A configuration object defining the event this subscriber is listening to.
 
-The above subscriber listens to the `ProductService.Events.CREATED` (`product-created`) event. Whenever the event is emitted, it logs in the terminal `A product is created`.
+The above subscriber listens to the `product.created` event. Whenever the event is emitted, it logs in the terminal `A product is created`.
 
 {/* TODO add when we have the admin dashboard to use with V2 for easy testing. */}
 
@@ -91,7 +88,6 @@ export const highlights = [
 
 ```ts title="src/subscribers/product-created.ts" highlights={highlights}
 import {
-  ProductService,
   SubscriberArgs,
   type SubscriberConfig,
 } from "@medusajs/medusa"
@@ -111,7 +107,7 @@ export default async function productCreateHandler({
 }
 
 export const config: SubscriberConfig = {
-  event: ProductService.Events.CREATED,
+  event: `product.created`,
 }
 ```
 

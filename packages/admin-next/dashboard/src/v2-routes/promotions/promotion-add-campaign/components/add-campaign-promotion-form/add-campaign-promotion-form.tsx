@@ -1,29 +1,38 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CampaignDTO, PromotionDTO } from "@medusajs/types"
+import { CampaignResponse, PromotionDTO } from "@medusajs/types"
 import { Button, clx, RadioGroup, Select } from "@medusajs/ui"
+import { useEffect } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { CampaignDetails } from "./campaign-details"
-
 import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
+import { CreateCampaignFormFields } from "../../../../campaigns/common/components/create-campaign-form-fields"
+import { CampaignDetails } from "./campaign-details"
 
 type EditPromotionFormProps = {
   promotion: PromotionDTO
-  campaigns: CampaignDTO[]
+  campaigns: CampaignResponse[]
 }
 
 const EditPromotionSchema = zod.object({
-  campaign_id: zod.string().optional(),
-  existing: zod.string().toLowerCase(),
+  campaign_id: zod.string().optional().nullable(),
+  campaign_choice: zod.enum(["none", "existing"]).optional(),
 })
 
-export const AddCampaignPromotionFields = ({ form, campaigns }) => {
+export const AddCampaignPromotionFields = ({
+  form,
+  campaigns,
+  withNewCampaign = true,
+}: {
+  form: any
+  campaigns: CampaignResponse[]
+  withNewCampaign?: boolean
+}) => {
   const { t } = useTranslation()
   const watchCampaignId = useWatch({
     control: form.control,
@@ -46,9 +55,10 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
           return (
             <Form.Item>
               <Form.Label>Method</Form.Label>
+
               <Form.Control>
                 <RadioGroup
-                  className="flex-col gap-y-3"
+                  className="flex gap-y-3"
                   {...field}
                   value={field.value}
                   onValueChange={field.onChange}
@@ -57,8 +67,8 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
                     value={"none"}
                     label={t("promotions.form.campaign.none.title")}
                     description={t("promotions.form.campaign.none.description")}
-                    className={clx("", {
-                      "border-2 border-ui-border-interactive":
+                    className={clx("border", {
+                      "border border-ui-border-interactive":
                         "none" === field.value,
                     })}
                   />
@@ -69,22 +79,25 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
                     description={t(
                       "promotions.form.campaign.existing.description"
                     )}
-                    className={clx("", {
-                      "border-2 border-ui-border-interactive":
+                    className={clx("border", {
+                      "border border-ui-border-interactive":
                         "existing" === field.value,
                     })}
                   />
 
-                  <RadioGroup.ChoiceBox
-                    value={"new"}
-                    label={t("promotions.form.campaign.new.title")}
-                    description={t("promotions.form.campaign.new.description")}
-                    className={clx("", {
-                      "border-2 border-ui-border-interactive":
-                        "new" === field.value,
-                    })}
-                    disabled
-                  />
+                  {withNewCampaign && (
+                    <RadioGroup.ChoiceBox
+                      value={"new"}
+                      label={t("promotions.form.campaign.new.title")}
+                      description={t(
+                        "promotions.form.campaign.new.description"
+                      )}
+                      className={clx("border", {
+                        "border border-ui-border-interactive":
+                          "new" === field.value,
+                      })}
+                    />
+                  )}
                 </RadioGroup>
               </Form.Control>
 
@@ -127,6 +140,10 @@ export const AddCampaignPromotionFields = ({ form, campaigns }) => {
         />
       )}
 
+      {watchCampaignChoice === "new" && (
+        <CreateCampaignFormFields form={form} fieldScope="campaign." />
+      )}
+
       <CampaignDetails campaign={selectedCampaign} />
     </div>
   )
@@ -143,19 +160,12 @@ export const AddCampaignPromotionForm = ({
   const form = useForm<zod.infer<typeof EditPromotionSchema>>({
     defaultValues: {
       campaign_id: campaign?.id,
-      existing: "true",
+      campaign_choice: campaign?.id ? "existing" : "none",
     },
     resolver: zodResolver(EditPromotionSchema),
   })
 
-  const watchCampaignId = useWatch({
-    control: form.control,
-    name: "campaign_id",
-  })
-
-  const selectedCampaign = campaigns.find((c) => c.id === watchCampaignId)
   const { mutateAsync, isPending } = useUpdatePromotion(promotion.id)
-
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       { campaign_id: data.campaign_id },
@@ -163,11 +173,30 @@ export const AddCampaignPromotionForm = ({
     )
   })
 
+  const watchCampaignChoice = useWatch({
+    control: form.control,
+    name: "campaign_choice",
+  })
+
+  useEffect(() => {
+    if (watchCampaignChoice === "none") {
+      form.setValue("campaign_id", null)
+    }
+
+    if (watchCampaignChoice === "existing") {
+      form.setValue("campaign_id", campaign?.id)
+    }
+  }, [watchCampaignChoice])
+
   return (
     <RouteDrawer.Form form={form}>
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteDrawer.Body>
-          <AddCampaignPromotionFields form={form} campaigns={campaigns} />
+          <AddCampaignPromotionFields
+            form={form}
+            campaigns={campaigns}
+            withNewCampaign={false}
+          />
         </RouteDrawer.Body>
 
         <RouteDrawer.Footer>

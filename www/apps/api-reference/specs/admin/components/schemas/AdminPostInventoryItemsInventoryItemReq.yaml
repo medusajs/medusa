@@ -1,57 +1,56 @@
 type: object
-description: The attributes to update in an inventory item.
+description: SUMMARY
+x-schemaName: AdminPostInventoryItemsInventoryItemReq
 properties:
-  hs_code:
-    description: >-
-      The Harmonized System code of the Inventory Item. May be used by
-      Fulfillment Providers to pass customs information to shipping carriers.
+  sku:
     type: string
+    title: sku
+    description: The inventory item's sku.
   origin_country:
-    description: >-
-      The country in which the Inventory Item was produced. May be used by
-      Fulfillment Providers to pass customs information to shipping carriers.
     type: string
+    title: origin_country
+    description: The inventory item's origin country.
+  hs_code:
+    type: string
+    title: hs_code
+    description: The inventory item's hs code.
   mid_code:
-    description: >-
-      The Manufacturers Identification code that identifies the manufacturer of
-      the Inventory Item. May be used by Fulfillment Providers to pass customs
-      information to shipping carriers.
     type: string
+    title: mid_code
+    description: The inventory item's mid code.
   material:
-    description: >-
-      The material and composition that the Inventory Item is made of, May be
-      used by Fulfillment Providers to pass customs information to shipping
-      carriers.
     type: string
+    title: material
+    description: The inventory item's material.
   weight:
-    description: >-
-      The weight of the Inventory Item. May be used in shipping rate
-      calculations.
     type: number
+    title: weight
+    description: The inventory item's weight.
   height:
-    description: >-
-      The height of the Inventory Item. May be used in shipping rate
-      calculations.
     type: number
-  width:
-    description: >-
-      The width of the Inventory Item. May be used in shipping rate
-      calculations.
-    type: number
+    title: height
+    description: The inventory item's height.
   length:
-    description: >-
-      The length of the Inventory Item. May be used in shipping rate
-      calculations.
     type: number
+    title: length
+    description: The inventory item's length.
+  width:
+    type: number
+    title: width
+    description: The inventory item's width.
   title:
+    type: string
+    title: title
     description: The inventory item's title.
-    type: string
   description:
+    type: string
+    title: description
     description: The inventory item's description.
-    type: string
   thumbnail:
-    description: The inventory item's thumbnail.
     type: string
+    title: thumbnail
+    description: The inventory item's thumbnail.
   requires_shipping:
-    description: Whether the item requires shipping.
     type: boolean
+    title: requires_shipping
+    description: The inventory item's requires shipping.

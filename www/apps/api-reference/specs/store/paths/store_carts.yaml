@@ -1,33 +1,10 @@
 post:
-  operationId: PostCart
-  summary: Create a Cart
-  description: >
-    Create a Cart. Although optional, specifying the cart's region and sales
-    channel can affect the cart's pricing and
-
-    the products that can be added to the cart respectively. So, make sure to
-    set those early on and change them if necessary, such as when the customer
-    changes their region.
-
-
-    If a customer is logged in, make sure to pass its ID or email within the
-    cart's details so that the cart is attached to the customer.
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/StorePostCartReq.yaml
-  x-codegen:
-    method: create
+  operationId: PostCarts
+  summary: Create Cart
+  description: Create a cart.
+  x-authenticated: false
+  parameters: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/store_carts/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_carts/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -35,14 +12,10 @@ post:
   tags:
     - Carts
   responses:
-    '200':
-      description: Successfully created a new Cart
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/StoreCartsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -51,3 +24,7 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

@@ -24,7 +24,7 @@ export async function GET() {
     const defaultIndexData = {
       version: ["current"],
       lang: "en",
-      _tags: ["api", area],
+      _tags: ["api", `${area}-v2`],
     }
     // find and parse static headers from pages
     const dom = await JSDOM.fromURL(getUrl(area))
