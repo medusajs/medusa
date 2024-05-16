@@ -367,6 +367,13 @@ export const RouteMap: RouteObject[] = [
                     lazy: () =>
                       import("../../v2-routes/customers/customer-edit"),
                   },
+                  {
+                    path: "add-customer-groups",
+                    lazy: () =>
+                      import(
+                        "../../v2-routes/customers/customers-add-customer-group"
+                      ),
+                  },
                 ],
               },
             ],

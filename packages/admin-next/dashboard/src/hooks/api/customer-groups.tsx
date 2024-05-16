@@ -18,7 +18,9 @@ import { EditCustomerGroupSchema } from "../../v2-routes/customer-groups/custome
 import { customersQueryKeys } from "./customers"
 
 const CUSTOMER_GROUPS_QUERY_KEY = "customer_groups" as const
-const customerGroupsQueryKeys = queryKeysFactory(CUSTOMER_GROUPS_QUERY_KEY)
+export const customerGroupsQueryKeys = queryKeysFactory(
+  CUSTOMER_GROUPS_QUERY_KEY
+)
 
 export const useCustomerGroup = (
   id: string,
@@ -162,7 +164,7 @@ export const useRemoveCustomersFromGroup = (
   options?: UseMutationOptions<
     AdminCustomerGroupResponse,
     Error,
-    { customer_ids: { id: string }[] }
+    { customer_ids: string[] }
   >
 ) => {
   return useMutation({

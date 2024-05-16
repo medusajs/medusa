@@ -414,6 +414,10 @@
       "hint": "Create a new customer to manage their details.",
       "successToast": "Customer {{email}} was successfully created."
     },
+    "groups": {
+      "remove": "Are you sure you want to remove the customer from \"{{name}}\" customer group?",
+      "alreadyAddedTooltip": "The customer is already in this customer group."
+    },
     "edit": {
       "header": "Edit Customer",
       "emailDisabledTooltip": "The email address cannot be changed for registered customers.",
