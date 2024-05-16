@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from "react"
 import clsx from "clsx"
-import { HighlightProps, Highlight, themes } from "prism-react-renderer"
+import { Highlight, HighlightProps, themes, Token } from "prism-react-renderer"
 import { ApiRunner, CopyButton, Tooltip, Link } from "@/components"
 import { useColorMode } from "@/providers"
 import { ExclamationCircle, PlaySolid, SquareTwoStack } from "@medusajs/icons"
@@ -10,7 +10,8 @@ import { CodeBlockHeader, CodeBlockHeaderMeta } from "./Header"
 import { CodeBlockLine } from "./Line"
 import { ApiAuthType, ApiDataOptions, ApiMethod } from "types"
 import { CSSTransition } from "react-transition-group"
-import { GITHUB_ISSUES_PREFIX } from "../.."
+import { GITHUB_ISSUES_PREFIX, useCollapsibleCodeLines } from "../.."
+import { HighlightProps as CollapsibleHighlightProps } from "@/hooks"
 
 export type Highlight = {
   line: number
@@ -32,6 +33,8 @@ export type CodeBlockMetaFields = {
   noCopy?: boolean
   noReport?: boolean
   noLineNumbers?: boolean
+  collapsibleLines?: string
+  expandButtonLabel?: string
 } & CodeBlockHeaderMeta
 
 export type CodeBlockStyle = "loud" | "subtle"
@@ -59,6 +62,8 @@ export const CodeBlock = ({
   noReport = false,
   noLineNumbers = false,
   children,
+  collapsibleLines,
+  expandButtonLabel,
   ...rest
 }: CodeBlockProps) => {
   if (!source && typeof children === "string") {
@@ -147,6 +152,39 @@ export const CodeBlock = ({
       tooltipText: highlight.length >= 3 ? highlight[2] : undefined,
     }))
 
+  const getLines = (
+    tokens: Token[][],
+    highlightProps: CollapsibleHighlightProps,
+    lineNumberOffset = 0
+  ) =>
+    tokens.map((line, i) => {
+      const highlightedLines = transformedHighlights.filter(
+        (highlight) => highlight.line - 1 === i
+      )
+
+      return (
+        <CodeBlockLine
+          line={line}
+          lineNumber={i + lineNumberOffset}
+          highlights={highlightedLines}
+          showLineNumber={!noLineNumbers && tokens.length > 1}
+          key={i}
+          bgColorClassName={bgColor}
+          lineNumberColorClassName={lineNumbersColor}
+          {...highlightProps}
+        />
+      )
+    })
+
+  const { getCollapsedLinesElm, getNonCollapsedLinesElm } =
+    useCollapsibleCodeLines({
+      collapsibleLinesStr: collapsibleLines,
+      getLines,
+      collapsibleLinesProps: {
+        expandButtonLabel,
+      },
+    })
+
   return (
     <>
       {title && (
@@ -200,7 +238,7 @@ export const CodeBlock = ({
           language={lang.toLowerCase()}
           {...rest}
         >
-          {({ className: preClassName, style, tokens, ...rest }) => (
+          {({ className: preClassName, style, tokens, ...highlightRest }) => (
             <>
               <pre
                 style={{ ...style, fontStretch: "100%" }}
@@ -217,23 +255,19 @@ export const CodeBlock = ({
                     tokens.length <= 1 && "!py-docs_0.25 px-[6px]"
                   )}
                 >
-                  {tokens.map((line, i) => {
-                    const highlightedLines = transformedHighlights.filter(
-                      (highlight) => highlight.line - 1 === i
-                    )
-
-                    return (
-                      <CodeBlockLine
-                        line={line}
-                        lineNumber={i}
-                        highlights={highlightedLines}
-                        showLineNumber={!noLineNumbers && tokens.length > 1}
-                        key={i}
-                        bgColorClassName={bgColor}
-                        lineNumberColorClassName={lineNumbersColor}
-                        {...rest}
-                      />
-                    )
+                  {getCollapsedLinesElm({
+                    tokens,
+                    type: "start",
+                    highlightProps: highlightRest,
+                  })}
+                  {getNonCollapsedLinesElm({
+                    tokens,
+                    highlightProps: highlightRest,
+                  })}
+                  {getCollapsedLinesElm({
+                    tokens,
+                    type: "end",
+                    highlightProps: highlightRest,
                   })}
                 </code>
               </pre>

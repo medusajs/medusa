@@ -257,6 +257,12 @@ module.exports = {
         "code-fade": `linear-gradient(90deg, ${theme(
           "colors.medusa.code.bg.base.transparent"
         )}, ${theme("colors.medusa.code.bg.base.DEFAULT")} 24px)`,
+        "code-fade-ver-top": `linear-gradient(${theme(
+          "colors.medusa.code.bg.base.DEFAULT"
+        )} 70%, ${theme("colors.medusa.code.bg.base.transparent")})`,
+        "code-fade-ver-bottom": `linear-gradient(to top, ${theme(
+          "colors.medusa.code.bg.base.DEFAULT"
+        )} 70%, ${theme("colors.medusa.code.bg.base.transparent")})`,
         fade: "linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))",
         "fade-dark":
           "linear-gradient(to top, rgba(27, 27, 31, 1), rgba(27, 27, 31, 0))",
