@@ -19,9 +19,8 @@ on:
       - "docs/**"
       - "www/**"
       - ".github/**"
-  # TODO: Reenable when flow has been tested with dispatches    
-  # schedule:
-  #   - cron: "0 */3 * * *"
+  schedule:
+    - cron: "0 */3 * * *"
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
