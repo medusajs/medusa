@@ -52,13 +52,13 @@ git checkout package.json; npm install --force
 You can prevent the automatic dependencies scan and instead specify a list of
 packages you want to link by using the `--packages` option:
 
-`medusa-dev --packages @medusajs/medusa medusa-interfaces`
+`medusa-dev --packages @medusajs/medusa`
 
 #### `--scan-once`
 
 With this flag, the tool will do an initial scan and copy and then quit. This is
 useful for setting up automated testing/builds of Medusa projects from the latest
-code. 
+code.
 
 #### `--quiet`
 
