@@ -78,7 +78,7 @@ export function moduleIntegrationTestRunner({
   const moduleOptions_: InitModulesOptions = {
     injectedDependencies: {
       [ContainerRegistrationKeys.PG_CONNECTION]: connection,
-      eventBusService: new MockEventBusService(),
+      ["eventBusModuleService"]: new MockEventBusService(),
       [ContainerRegistrationKeys.LOGGER]: console,
       ...injectedDependencies,
     },
