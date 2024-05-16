@@ -187,7 +187,7 @@ export async function loadModuleMigrations(
       const migrationScriptOptions = {
         moduleName: resolution.definition.key,
         models: moduleResources.models,
-        pathToMigrations: moduleResources.normalizedPath + "/dist/migrations",
+        pathToMigrations: moduleResources.normalizedPath + "/migrations",
       }
 
       runMigrations ??= ModulesSdkUtils.buildMigrationScript(
@@ -238,7 +238,7 @@ async function loadResources(
   logger: Logger
 ): Promise<ModuleResource> {
   const modulePath = moduleResolution.resolutionPath as string
-  let normalizedPath = modulePath.replace("dist/", "").replace("index.js", "")
+  let normalizedPath = modulePath.replace("index.js", "")
   normalizedPath = resolve(normalizedPath)
 
   try {
@@ -248,13 +248,11 @@ async function loadResources(
 
     const [moduleService, services, models, repositories] = await Promise.all([
       import(modulePath).then((moduleExports) => moduleExports.default.service),
-      importAllFromDir(resolve(normalizedPath, "dist", "services")).catch(
+      importAllFromDir(resolve(normalizedPath, "services")).catch(
         defaultOnFail
       ),
-      importAllFromDir(resolve(normalizedPath, "dist", "models")).catch(
-        defaultOnFail
-      ),
-      importAllFromDir(resolve(normalizedPath, "dist", "repositories")).catch(
+      importAllFromDir(resolve(normalizedPath, "models")).catch(defaultOnFail),
+      importAllFromDir(resolve(normalizedPath, "repositories")).catch(
         defaultOnFail
       ),
     ])
@@ -277,7 +275,7 @@ async function loadResources(
       repositories: potentialRepositories,
       services: potentialServices,
       moduleResolution,
-      migrationPath: normalizedPath + "/dist/migrations",
+      migrationPath: normalizedPath + "/migrations",
     })
 
     return {
@@ -286,7 +284,7 @@ async function loadResources(
       repositories: potentialRepositories,
       loaders: finalLoaders,
       moduleService,
-      normalizedPath
+      normalizedPath,
     }
   } catch (e) {
     logger.warn(
@@ -363,7 +361,7 @@ function prepareLoaders({
     const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
       moduleName: moduleResolution.definition.key,
       moduleModels: models,
-      migrationsPath: migrationPath, //normalizedPath + "/dist/migrations",
+      migrationsPath: migrationPath,
     })
     finalLoaders.push(connectionLoader)
   }
