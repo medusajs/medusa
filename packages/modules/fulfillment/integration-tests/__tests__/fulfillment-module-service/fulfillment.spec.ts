@@ -137,6 +137,63 @@ moduleIntegrationTestRunner({
               })
             )
           })
+
+          it("should create a return fulfillment", async () => {
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+            })
+            const serviceZone = await service.createServiceZones({
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+            })
+
+            const shippingOption = await service.createShippingOptions(
+              generateCreateShippingOptionsData({
+                provider_id: providerId,
+                service_zone_id: serviceZone.id,
+                shipping_profile_id: shippingProfile.id,
+              })
+            )
+
+            const fulfillment = await service.createReturnFulfillment(
+              generateCreateFulfillmentData({
+                provider_id: providerId,
+                shipping_option_id: shippingOption.id,
+              })
+            )
+
+            expect(fulfillment).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                packed_at: null,
+                shipped_at: null,
+                delivered_at: null,
+                canceled_at: null,
+                data: null,
+                provider_id: providerId,
+                shipping_option_id: shippingOption.id,
+                metadata: null,
+                delivery_address: expect.objectContaining({
+                  id: expect.any(String),
+                }),
+                items: [
+                  expect.objectContaining({
+                    id: expect.any(String),
+                  }),
+                ],
+                labels: [
+                  expect.objectContaining({
+                    id: expect.any(String),
+                  }),
+                ],
+              })
+            )
+          })
         })
 
         describe("on cancel", () => {

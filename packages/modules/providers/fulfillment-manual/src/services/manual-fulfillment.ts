@@ -29,16 +29,20 @@ export class ManualFulfillmentService extends AbstractFulfillmentProviderService
     return data
   }
 
-  async validateOption(data: Record<string, unknown>): Promise<boolean> {
+  async validateOption(data: Record<string, any>): Promise<boolean> {
     return true
   }
 
-  async createFulfillment(): Promise<Record<string, unknown>> {
+  async createFulfillment(): Promise<Record<string, any>> {
     // No data is being sent anywhere
     return {}
   }
 
-  async cancelFulfillment(fulfillment: Record<string, unknown>): Promise<any> {
+  async cancelFulfillment(): Promise<any> {
+    return {}
+  }
+
+  async createReturnFulfillment(): Promise<any> {
     return {}
   }
 }
