@@ -7,11 +7,11 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
-import { validateVariantPricesStep } from "../../definition"
 import { findOneOrAnyRegionStep } from "../../definition/cart/steps/find-one-or-any-region"
 import { findOrCreateCustomerStep } from "../../definition/cart/steps/find-or-create-customer"
 import { findSalesChannelStep } from "../../definition/cart/steps/find-sales-channel"
 import { getVariantPriceSetsStep } from "../../definition/cart/steps/get-variant-price-sets"
+import { validateVariantPricesStep } from "../../definition/cart/steps/validate-variant-prices"
 import { prepareConfirmInventoryInput } from "../../definition/cart/utils/prepare-confirm-inventory-input"
 import { prepareLineItemData } from "../../definition/cart/utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "../../definition/cart/workflows/confirm-variant-inventory"
