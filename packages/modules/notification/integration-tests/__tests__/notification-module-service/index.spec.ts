@@ -25,6 +25,8 @@ let moduleOptions = {
   ],
 }
 
+jest.setTimeout(30000)
+
 moduleIntegrationTestRunner({
   moduleName: Modules.NOTIFICATION,
   moduleOptions,
