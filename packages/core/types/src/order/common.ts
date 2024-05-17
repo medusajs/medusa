@@ -2,6 +2,19 @@ import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 import { BigNumberRawValue, BigNumberValue } from "../totals"
 
+export type ChangeActionType =
+  | "CANCEL"
+  | "CANCEL_RETURN"
+  | "FULFILL_ITEM"
+  | "ITEM_ADD"
+  | "ITEM_REMOVE"
+  | "RECEIVE_DAMAGED_RETURN_ITEM"
+  | "RECEIVE_RETURN_ITEM"
+  | "RETURN_ITEM"
+  | "SHIPPING_ADD"
+  | "SHIP_ITEM"
+  | "WRITE_OFF_ITEM"
+
 export type OrderSummaryDTO = {
   total: BigNumberValue
   subtotal: BigNumberValue
@@ -1187,7 +1200,7 @@ export interface OrderChangeActionDTO {
   /**
    * The action of the order change action
    */
-  action: string
+  action: ChangeActionType
   /**
    * The details of the order change action
    */
@@ -1251,6 +1264,95 @@ export interface OrderTransactionDTO {
   created_at: Date | string
   /**
    * When the transaction was updated
+   */
+  updated_at: Date | string
+}
+
+export interface OrderTransactionDTO {
+  /**
+   * The ID of the transaction
+   */
+  id: string
+  /**
+   * The ID of the associated order
+   */
+  order_id: string
+  /**
+   * The associated order
+   *
+   * @expandable
+   */
+  order: OrderDTO
+  /**
+   * The amount of the transaction
+   */
+  amount: BigNumberValue
+  /**
+   * The raw amount of the transaction
+   */
+  raw_amount: BigNumberRawValue
+  /**
+   * The currency code of the transaction
+   */
+  currency_code: string
+  /**
+   * The reference of the transaction
+   */
+  reference: string
+  /**
+   * The ID of the reference
+   */
+  reference_id: string
+  /**
+   * The metadata of the transaction
+   */
+  metadata: Record<string, unknown> | null
+  /**
+   * When the transaction was created
+   */
+  created_at: Date | string
+  /**
+   * When the transaction was updated
+   */
+  updated_at: Date | string
+}
+
+export interface OrderReturnReasonDTO {
+  /**
+   * The ID of the return reason
+   */
+  id: string
+  /**
+   * The unique value of the return reason
+   */
+  value: string
+  /**
+   * The label of the return reason
+   */
+  label: string
+  /**
+   * The description of the return reason
+   */
+  description?: string
+  /**
+   * The parent return reason ID
+   */
+  parent_return_reason_id?: string
+
+  parent_return_reason?: OrderReturnReasonDTO
+
+  return_reason_children?: OrderReturnReasonDTO[]
+
+  /**
+   * The metadata of the return reason
+   */
+  metadata: Record<string, unknown> | null
+  /**
+   * When the return reason was created
+   */
+  created_at: Date | string
+  /**
+   * When the return reason was updated
    */
   updated_at: Date | string
 }
@@ -1368,4 +1470,11 @@ export interface FilterableOrderItemProps
   order_id?: string | string[] | OperatorMap<string>
   version?: string | string[] | OperatorMap<string>
   item_id?: string | string[] | OperatorMap<string>
+}
+
+export interface FilterableOrderReturnReasonProps {
+  id?: string | string[]
+  value?: string | string[]
+  label?: string
+  description?: string
 }

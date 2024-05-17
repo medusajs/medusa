@@ -1,5 +1,4 @@
 import { z } from "zod"
-import { optionalBooleanMapper } from "../../../utils/validators/is-boolean"
 
 export const AddressPayload = z
   .object({
@@ -24,6 +23,13 @@ export const BigNumberInput = z.union([
     value: z.string(),
     precision: z.number(),
   }),
+])
+
+const optionalBooleanMapper = new Map([
+  ["undefined", undefined],
+  ["null", null],
+  ["true", true],
+  ["false", false],
 ])
 
 export const OptionalBooleanValidator = z.preprocess(

@@ -570,9 +570,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/customer_models/classes/customer_models.CustomerGroupCustomer/page.mdx"
   },
   {
-    "origSlug": "/references/file/classes/file.AbstractFileService",
-    "newSlug": "/references/file-service",
-    "filePath": "/www/apps/resources/references/file/classes/file.AbstractFileService/page.mdx"
+    "origSlug": "/references/file/classes/file.AbstractFileProviderService",
+    "newSlug": "/references/file-provider-module",
+    "filePath": "/www/apps/resources/references/file/classes/file.AbstractFileProviderService/page.mdx"
   },
   {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.cancelFulfillment",

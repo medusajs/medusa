@@ -6,7 +6,7 @@ export const StockLocationModule = {
     label: "StockLocationService",
     isRequired: false,
     isQueryable: true,
-    dependencies: ["eventBusService"],
+    dependencies: ["eventBusModuleService"],
     defaultModuleDeclaration: {
       scope: "internal",
       resources: "shared",

@@ -6,7 +6,6 @@ import {
   ProviderWebhookPayload,
   Subscriber,
 } from "@medusajs/types"
-import { EventBusService } from "../services"
 
 type SerializedBuffer = {
   data: ArrayBuffer
@@ -15,18 +14,21 @@ type SerializedBuffer = {
 
 type InjectedDependencies = {
   paymentModuleService: IPaymentModuleService
-  eventBusService: EventBusService
+  eventBusModuleService: IEventBusService
 }
 
 class PaymentWebhookSubscriber {
-  private readonly eventBusService_: IEventBusService
+  private readonly eventBusModuleService_: IEventBusService
   private readonly paymentModuleService_: IPaymentModuleService
 
-  constructor({ eventBusService, paymentModuleService }: InjectedDependencies) {
-    this.eventBusService_ = eventBusService
+  constructor({
+    eventBusModuleService,
+    paymentModuleService,
+  }: InjectedDependencies) {
+    this.eventBusModuleService_ = eventBusModuleService
     this.paymentModuleService_ = paymentModuleService
 
-    this.eventBusService_.subscribe(
+    this.eventBusModuleService_.subscribe(
       PaymentWebhookEvents.WebhookReceived,
       this.processEvent as Subscriber
     )

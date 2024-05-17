@@ -5,9 +5,12 @@ import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleSalesChannelFactory } from "../../../../factories"
-import adminSeeder from "../../../../helpers/admin-seeder"
 import productSeeder from "../../../../helpers/product-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 const setupServer = require("../../../../environment-helpers/setup-server")
 const userSeeder = require("../../../../helpers/user-seeder")
@@ -64,7 +67,7 @@ describe.skip("Batch job of product-export type", () => {
     const container = getContainer()
     await createDefaultRuleTypes(container)
     await productSeeder(dbConnection)
-    await adminSeeder(dbConnection)
+    await createAdminUser(dbConnection, adminHeaders, container)
     await userSeeder(dbConnection)
 
     await simpleSalesChannelFactory(dbConnection, {

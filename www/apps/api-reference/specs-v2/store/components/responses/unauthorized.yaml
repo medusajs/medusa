@@ -1,7 +1,0 @@
-description: User is not authorized. Must log in first
-content:
-  text/plain:
-    schema:
-      type: string
-      default: Unauthorized
-      example: Unauthorized

@@ -99,7 +99,7 @@ export async function mikroOrmCreateConnection(
 
   const { MikroORM } = await import("@mikro-orm/postgresql")
   return await MikroORM.init({
-    discovery: { disableDynamicFileAccess: true },
+    discovery: { disableDynamicFileAccess: true, warnWhenNoEntities: false,  },
     entities,
     debug: database.debug ?? process.env.NODE_ENV?.startsWith("dev") ?? false,
     baseDir: process.cwd(),

@@ -40,10 +40,10 @@ export const CreateProductOptionForm = ({
 
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(values, {
-      onSuccess: ({ option }) => {
+      onSuccess: () => {
         toast.success(t("general.success"), {
           description: t("products.options.create.successToast", {
-            title: option.title,
+            title: values.title,
           }),
           dismissLabel: t("general.close"),
         })

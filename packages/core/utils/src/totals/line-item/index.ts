@@ -6,6 +6,7 @@ import { calculateTaxTotal } from "../tax"
 
 interface GetLineItemsTotalsContext {
   includeTax?: boolean
+  extraQuantityFields?: Record<string, string>
 }
 
 export interface GetItemTotalInput {
@@ -15,6 +16,13 @@ export interface GetItemTotalInput {
   is_tax_inclusive?: boolean
   tax_lines?: Pick<TaxLineDTO, "rate">[]
   adjustments?: Pick<AdjustmentLineDTO, "amount">[]
+
+  fulfilled_quantity?: BigNumber
+  shipped_quantity?: BigNumber
+  return_requested_quantity?: BigNumber
+  return_received_quantity?: BigNumber
+  return_dismissed_quantity?: BigNumber
+  written_off_quantity?: BigNumber
 }
 
 export interface GetItemTotalOutput {
@@ -31,6 +39,13 @@ export interface GetItemTotalOutput {
 
   tax_total: BigNumber
   original_tax_total: BigNumber
+
+  fulfilled_total?: BigNumber
+  shipped_total?: BigNumber
+  return_requested_total?: BigNumber
+  return_received_total?: BigNumber
+  return_dismissed_total?: BigNumber
+  write_off_total?: BigNumber
 }
 
 export function getLineItemsTotals(
@@ -43,6 +58,7 @@ export function getLineItemsTotals(
   for (const item of items) {
     itemsTotals[item.id ?? index] = getLineItemTotals(item, {
       includeTax: context.includeTax || item.is_tax_inclusive,
+      extraQuantityFields: context.extraQuantityFields,
     })
     index++
   }
@@ -120,6 +136,18 @@ function getLineItemTotals(
     const originalTotal = MathBN.add(subtotal, totals.original_tax_total)
     totals.total = new BigNumber(newTotal)
     totals.original_total = new BigNumber(originalTotal)
+  }
+
+  const totalPerUnit = MathBN.div(totals.total, item.quantity)
+  const optionalFields = {
+    ...(context.extraQuantityFields ?? {}),
+  }
+
+  for (const field in optionalFields) {
+    if (field in item) {
+      const totalField = optionalFields[field]
+      totals[totalField] = new BigNumber(MathBN.mult(totalPerUnit, item[field]))
+    }
   }
 
   return totals

@@ -68,18 +68,22 @@ export const LINKS = {
     Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),
-
-  // Internal services
-  ProductShippingProfile: composeLinkName(
-    Modules.PRODUCT,
-    "variant_id",
-    "shippingProfileService",
-    "profile_id"
-  ),
   ProductSalesChannel: composeLinkName(
     Modules.PRODUCT,
     "product_id",
     Modules.SALES_CHANNEL,
     "sales_channel_id"
+  ),
+  OrderPaymentCollection: composeLinkName(
+    Modules.ORDER,
+    "order_id",
+    Modules.PAYMENT,
+    "payment_collection_id"
+  ),
+  OrderFulfillment: composeLinkName(
+    Modules.ORDER,
+    "order_id",
+    Modules.FULFILLMENT,
+    "fulfillment_id"
   ),
 }

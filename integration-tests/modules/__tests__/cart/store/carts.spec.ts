@@ -6,6 +6,7 @@ import {
 } from "@medusajs/modules-sdk"
 import PaymentModuleService from "@medusajs/payment/dist/services/payment-module"
 import {
+  IApiKeyModuleService,
   ICartModuleService,
   ICustomerModuleService,
   IFulfillmentModuleService,
@@ -47,6 +48,7 @@ medusaIntegrationTestRunner({
       let pricingModule: IPricingModuleService
       let remoteLink: RemoteLink
       let promotionModule: IPromotionModuleService
+      let apiKeyModule: IApiKeyModuleService
       let taxModule: ITaxModuleService
       let fulfillmentModule: IFulfillmentModuleService
       let remoteLinkService
@@ -64,6 +66,7 @@ medusaIntegrationTestRunner({
         customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
         productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
         pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
+        apiKeyModule = appContainer.resolve(ModuleRegistrationName.API_KEY)
         remoteLink = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
         promotionModule = appContainer.resolve(ModuleRegistrationName.PROMOTION)
         taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
@@ -342,6 +345,158 @@ medusaIntegrationTestRunner({
                 id: customer.id,
                 email: customer.email,
               }),
+            })
+          )
+        })
+
+        it("throws if publishable key is not associated with sales channel", async () => {
+          const salesChannel = await scModule.create({
+            name: "Retail Store",
+          })
+
+          const salesChannel2 = await scModule.create({
+            name: "Webshop",
+          })
+
+          const pubKey = await apiKeyModule.create({
+            title: "Test key",
+            type: "publishable",
+            created_by: "test",
+          })
+
+          await api.post(
+            `/admin/api-keys/${pubKey.id}/sales-channels`,
+            {
+              add: [salesChannel2.id],
+            },
+            adminHeaders
+          )
+
+          const errorRes = await api
+            .post(
+              "/store/carts",
+              {
+                sales_channel_id: salesChannel.id,
+              },
+              {
+                headers: { "x-publishable-api-key": pubKey.token },
+              }
+            )
+            .catch((e) => e)
+
+          expect(errorRes.response.status).toEqual(400)
+          expect(errorRes.response.data).toEqual({
+            errors: expect.arrayContaining([
+              `Sales channel ID in payload ${salesChannel.id} is not associated with the Publishable API Key in the header.`,
+            ]),
+            message:
+              "Provided request body contains errors. Please check the data and retry the request",
+          })
+        })
+
+        it("throws if publishable key has multiple associated sales channels", async () => {
+          const salesChannel = await scModule.create({
+            name: "Retail Store",
+          })
+
+          const salesChannel2 = await scModule.create({
+            name: "Webshop",
+          })
+
+          const pubKey = await apiKeyModule.create({
+            title: "Test key",
+            type: "publishable",
+            created_by: "test",
+          })
+
+          await api.post(
+            `/admin/api-keys/${pubKey.id}/sales-channels`,
+            {
+              add: [salesChannel.id, salesChannel2.id],
+            },
+            adminHeaders
+          )
+
+          const errorRes = await api
+            .post(
+              "/store/carts",
+              {},
+              {
+                headers: { "x-publishable-api-key": pubKey.token },
+              }
+            )
+            .catch((e) => e)
+
+          expect(errorRes.response.status).toEqual(400)
+          expect(errorRes.response.data).toEqual({
+            errors: expect.arrayContaining([
+              `Cannot assign sales channel to cart. The Publishable API Key in the header has multiple associated sales channels. Please provide a sales channel ID in the request body.`,
+            ]),
+            message:
+              "Provided request body contains errors. Please check the data and retry the request",
+          })
+        })
+
+        it("should create cart with sales channel if pub key does not have any scopes defined", async () => {
+          const salesChannel = await scModule.create({
+            name: "Retail Store",
+          })
+
+          const pubKey = await apiKeyModule.create({
+            title: "Test key",
+            type: "publishable",
+            created_by: "test",
+          })
+
+          const successRes = await api.post(
+            "/store/carts",
+            {
+              sales_channel_id: salesChannel.id,
+            },
+            {
+              headers: { "x-publishable-api-key": pubKey.token },
+            }
+          )
+
+          expect(successRes.status).toEqual(200)
+          expect(successRes.data.cart).toEqual(
+            expect.objectContaining({
+              sales_channel_id: salesChannel.id,
+            })
+          )
+        })
+
+        it("should create cart with sales channel associated with pub key", async () => {
+          const salesChannel = await scModule.create({
+            name: "Retail Store",
+          })
+
+          const pubKey = await apiKeyModule.create({
+            title: "Test key",
+            type: "publishable",
+            created_by: "test",
+          })
+
+          await api.post(
+            `/admin/api-keys/${pubKey.id}/sales-channels`,
+            {
+              add: [salesChannel.id],
+            },
+            adminHeaders
+          )
+
+          const successRes = await api.post(
+            "/store/carts",
+            {},
+            {
+              headers: { "x-publishable-api-key": pubKey.token },
+            }
+          )
+
+          expect(successRes.status).toEqual(200)
+          expect(successRes.data.cart).toEqual(
+            expect.objectContaining({
+              sales_channel_id: salesChannel.id,
             })
           )
         })
@@ -1740,6 +1895,24 @@ medusaIntegrationTestRunner({
               inventory_item_id: inventoryItem.id,
               quantity: cart.items[0].quantity,
               line_item_id: cart.items[0].id,
+            })
+          )
+
+          const fullOrder = await api.get(
+            `/admin/orders/${response.data.order.id}`,
+            adminHeaders
+          )
+          const fullOrderDetail = fullOrder.data.order
+
+          expect(fullOrderDetail).toEqual(
+            expect.objectContaining({
+              payment_collections: [
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 106,
+                  status: "authorized",
+                }),
+              ],
             })
           )
         })

@@ -1,23 +1,195 @@
 export const filesMap = [
   {
+    "filePath": "/www/apps/resources/app/_plugins/analytics/segment/page.mdx",
+    "pathname": "/_plugins/analytics/segment"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/cms/contentful/page.mdx",
+    "pathname": "/_plugins/cms/contentful"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/cms/strapi/page.mdx",
+    "pathname": "/_plugins/cms/strapi"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/erp/brightpearl/page.mdx",
+    "pathname": "/_plugins/erp/brightpearl"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/fulfillment/manual/page.mdx",
+    "pathname": "/_plugins/fulfillment/manual"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/fulfillment/webshipper/page.mdx",
+    "pathname": "/_plugins/fulfillment/webshipper"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/notifications/mailchimp/page.mdx",
+    "pathname": "/_plugins/notifications/mailchimp"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/notifications/sendgrid/page.mdx",
+    "pathname": "/_plugins/notifications/sendgrid"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/notifications/slack/page.mdx",
+    "pathname": "/_plugins/notifications/slack"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/notifications/twilio-sms/page.mdx",
+    "pathname": "/_plugins/notifications/twilio-sms"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/other/discount-generator/page.mdx",
+    "pathname": "/_plugins/other/discount-generator"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/other/ip-lookup/page.mdx",
+    "pathname": "/_plugins/other/ip-lookup"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/other/restock-notifications/page.mdx",
+    "pathname": "/_plugins/other/restock-notifications"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/other/wishlist/page.mdx",
+    "pathname": "/_plugins/other/wishlist"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/page.mdx",
+    "pathname": "/_plugins"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/payment/klarna/page.mdx",
+    "pathname": "/_plugins/payment/klarna"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/payment/paypal/page.mdx",
+    "pathname": "/_plugins/payment/paypal"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/payment/stripe/page.mdx",
+    "pathname": "/_plugins/payment/stripe"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/search/algolia/page.mdx",
+    "pathname": "/_plugins/search/algolia"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/search/meilisearch/page.mdx",
+    "pathname": "/_plugins/search/meilisearch"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/source/shopify/page.mdx",
+    "pathname": "/_plugins/source/shopify"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/storage/local/page.mdx",
+    "pathname": "/_plugins/storage/local"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/storage/minio/page.mdx",
+    "pathname": "/_plugins/storage/minio"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/storage/s3/page.mdx",
+    "pathname": "/_plugins/storage/s3"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_plugins/storage/spaces/page.mdx",
+    "pathname": "/_plugins/storage/spaces"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_recipes/b2b/page.mdx",
+    "pathname": "/_recipes/b2b"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_recipes/commerce-automation/page.mdx",
+    "pathname": "/_recipes/commerce-automation"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_recipes/digital-products/page.mdx",
+    "pathname": "/_recipes/digital-products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_recipes/ecommerce/page.mdx",
+    "pathname": "/_recipes/ecommerce"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_recipes/integrate-ecommerce-stack/page.mdx",
+    "pathname": "/_recipes/integrate-ecommerce-stack"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_recipes/marketplace/page.mdx",
+    "pathname": "/_recipes/marketplace"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_recipes/multi-region-store/page.mdx",
+    "pathname": "/_recipes/multi-region-store"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_recipes/omnichannel/page.mdx",
+    "pathname": "/_recipes/omnichannel"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_recipes/oms/page.mdx",
+    "pathname": "/_recipes/oms"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_recipes/personalized-products/page.mdx",
+    "pathname": "/_recipes/personalized-products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_recipes/pos/page.mdx",
+    "pathname": "/_recipes/pos"
+  },
+  {
+    "filePath": "/www/apps/resources/app/_recipes/subscriptions/page.mdx",
+    "pathname": "/_recipes/subscriptions"
+  },
+  {
     "filePath": "/www/apps/resources/app/admin-widget-injection-zones/page.mdx",
     "pathname": "/admin-widget-injection-zones"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/cache/create/page.mdx",
+    "pathname": "/architectural-modules/cache/create"
   },
   {
     "filePath": "/www/apps/resources/app/architectural-modules/cache/in-memory/page.mdx",
     "pathname": "/architectural-modules/cache/in-memory"
   },
   {
+    "filePath": "/www/apps/resources/app/architectural-modules/cache/page.mdx",
+    "pathname": "/architectural-modules/cache"
+  },
+  {
     "filePath": "/www/apps/resources/app/architectural-modules/cache/redis/page.mdx",
     "pathname": "/architectural-modules/cache/redis"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/event/create/page.mdx",
+    "pathname": "/architectural-modules/event/create"
   },
   {
     "filePath": "/www/apps/resources/app/architectural-modules/event/local/page.mdx",
     "pathname": "/architectural-modules/event/local"
   },
   {
+    "filePath": "/www/apps/resources/app/architectural-modules/event/page.mdx",
+    "pathname": "/architectural-modules/event"
+  },
+  {
     "filePath": "/www/apps/resources/app/architectural-modules/event/redis/page.mdx",
     "pathname": "/architectural-modules/event/redis"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/file/local/page.mdx",
+    "pathname": "/architectural-modules/file/local"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/file/page.mdx",
+    "pathname": "/architectural-modules/file"
   },
   {
     "filePath": "/www/apps/resources/app/architectural-modules/page.mdx",
@@ -30,6 +202,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/architectural-modules/workflow-engine/redis/page.mdx",
     "pathname": "/architectural-modules/workflow-engine/redis"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/api-key/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/api-key/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/api-key/events/page.mdx",
+    "pathname": "/commerce-modules/api-key/events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/api-key/examples/page.mdx",
@@ -56,6 +236,14 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth/auth-providers"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/auth/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/events/page.mdx",
+    "pathname": "/commerce-modules/auth/events"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/examples/page.mdx",
     "pathname": "/commerce-modules/auth/examples"
   },
@@ -80,6 +268,14 @@ export const filesMap = [
     "pathname": "/commerce-modules/cart/concepts"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/cart/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/cart/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/cart/events/page.mdx",
+    "pathname": "/commerce-modules/cart/events"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/examples/page.mdx",
     "pathname": "/commerce-modules/cart/examples"
   },
@@ -100,6 +296,14 @@ export const filesMap = [
     "pathname": "/commerce-modules/cart/tax-lines"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/currency/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/currency/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/currency/events/page.mdx",
+    "pathname": "/commerce-modules/currency/events"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/currency/examples/page.mdx",
     "pathname": "/commerce-modules/currency/examples"
   },
@@ -110,6 +314,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/customer-accounts/page.mdx",
     "pathname": "/commerce-modules/customer/customer-accounts"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/customer/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/customer/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/customer/events/page.mdx",
+    "pathname": "/commerce-modules/customer/events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/examples/page.mdx",
@@ -126,6 +338,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/concepts/page.mdx",
     "pathname": "/commerce-modules/fulfillment/concepts"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/fulfillment/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/events/page.mdx",
+    "pathname": "/commerce-modules/fulfillment/events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/fulfillment-provider/page.mdx",
@@ -156,6 +376,14 @@ export const filesMap = [
     "pathname": "/commerce-modules/inventory/concepts"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/inventory/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/inventory/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/inventory/events/page.mdx",
+    "pathname": "/commerce-modules/inventory/events"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/inventory/examples/page.mdx",
     "pathname": "/commerce-modules/inventory/examples"
   },
@@ -174,6 +402,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/concepts/page.mdx",
     "pathname": "/commerce-modules/order/concepts"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/order/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/events/page.mdx",
+    "pathname": "/commerce-modules/order/events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/order-change/page.mdx",
@@ -210,6 +446,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/page.mdx",
     "pathname": "/commerce-modules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/payment/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/payment/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/payment/events/page.mdx",
+    "pathname": "/commerce-modules/payment/events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/payment/examples/page.mdx",
@@ -260,6 +504,14 @@ export const filesMap = [
     "pathname": "/commerce-modules/pricing/concepts"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/pricing/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/pricing/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/pricing/events/page.mdx",
+    "pathname": "/commerce-modules/pricing/events"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/pricing/examples/page.mdx",
     "pathname": "/commerce-modules/pricing/examples"
   },
@@ -274,6 +526,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/pricing/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/pricing/relations-to-other-modules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/product/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/product/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/product/events/page.mdx",
+    "pathname": "/commerce-modules/product/events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/product/examples/page.mdx",
@@ -296,6 +556,14 @@ export const filesMap = [
     "pathname": "/commerce-modules/promotion/concepts"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/promotion/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/promotion/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/promotion/events/page.mdx",
+    "pathname": "/commerce-modules/promotion/events"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/promotion/examples/page.mdx",
     "pathname": "/commerce-modules/promotion/examples"
   },
@@ -308,6 +576,14 @@ export const filesMap = [
     "pathname": "/commerce-modules/promotion/relations-to-other-modules"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/region/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/region/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/region/events/page.mdx",
+    "pathname": "/commerce-modules/region/events"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/region/examples/page.mdx",
     "pathname": "/commerce-modules/region/examples"
   },
@@ -318,6 +594,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/region/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/region/relations-to-other-modules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/sales-channel/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/sales-channel/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/sales-channel/events/page.mdx",
+    "pathname": "/commerce-modules/sales-channel/events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/sales-channel/examples/page.mdx",
@@ -340,6 +624,14 @@ export const filesMap = [
     "pathname": "/commerce-modules/stock-location/concepts"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/stock-location/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/stock-location/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/stock-location/events/page.mdx",
+    "pathname": "/commerce-modules/stock-location/events"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/stock-location/examples/page.mdx",
     "pathname": "/commerce-modules/stock-location/examples"
   },
@@ -352,12 +644,28 @@ export const filesMap = [
     "pathname": "/commerce-modules/stock-location/relations-to-other-modules"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/store/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/store/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/store/events/page.mdx",
+    "pathname": "/commerce-modules/store/events"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/store/examples/page.mdx",
     "pathname": "/commerce-modules/store/examples"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/store/page.mdx",
     "pathname": "/commerce-modules/store"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/tax/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/tax/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/tax/events/page.mdx",
+    "pathname": "/commerce-modules/tax/events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/tax/examples/page.mdx",
@@ -384,6 +692,14 @@ export const filesMap = [
     "pathname": "/commerce-modules/tax/tax-region"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/user/events/_events-table/page.mdx",
+    "pathname": "/commerce-modules/user/events/_events-table"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/user/events/page.mdx",
+    "pathname": "/commerce-modules/user/events"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/user/examples/page.mdx",
     "pathname": "/commerce-modules/user/examples"
   },
@@ -400,12 +716,12 @@ export const filesMap = [
     "pathname": "/commerce-modules/user/user-creation-flows"
   },
   {
-    "filePath": "/www/apps/resources/app/configurations/medusa-admin/page.mdx",
-    "pathname": "/configurations/medusa-admin"
+    "filePath": "/www/apps/resources/app/configurations/_medusa-admin/page.mdx",
+    "pathname": "/configurations/_medusa-admin"
   },
   {
-    "filePath": "/www/apps/resources/app/contribution-guidelines/admin-translations/page.mdx",
-    "pathname": "/contribution-guidelines/admin-translations"
+    "filePath": "/www/apps/resources/app/contribution-guidelines/_admin-translations/page.mdx",
+    "pathname": "/contribution-guidelines/_admin-translations"
   },
   {
     "filePath": "/www/apps/resources/app/contribution-guidelines/docs/page.mdx",
@@ -496,156 +812,12 @@ export const filesMap = [
     "pathname": "/"
   },
   {
-    "filePath": "/www/apps/resources/app/plugins/analytics/segment/page.mdx",
-    "pathname": "/plugins/analytics/segment"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/cms/contentful/page.mdx",
-    "pathname": "/plugins/cms/contentful"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/cms/strapi/page.mdx",
-    "pathname": "/plugins/cms/strapi"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/erp/brightpearl/page.mdx",
-    "pathname": "/plugins/erp/brightpearl"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/fulfillment/manual/page.mdx",
-    "pathname": "/plugins/fulfillment/manual"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/fulfillment/webshipper/page.mdx",
-    "pathname": "/plugins/fulfillment/webshipper"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/notifications/mailchimp/page.mdx",
-    "pathname": "/plugins/notifications/mailchimp"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/notifications/sendgrid/page.mdx",
-    "pathname": "/plugins/notifications/sendgrid"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/notifications/slack/page.mdx",
-    "pathname": "/plugins/notifications/slack"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/notifications/twilio-sms/page.mdx",
-    "pathname": "/plugins/notifications/twilio-sms"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/other/discount-generator/page.mdx",
-    "pathname": "/plugins/other/discount-generator"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/other/ip-lookup/page.mdx",
-    "pathname": "/plugins/other/ip-lookup"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/other/restock-notifications/page.mdx",
-    "pathname": "/plugins/other/restock-notifications"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/other/wishlist/page.mdx",
-    "pathname": "/plugins/other/wishlist"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/page.mdx",
-    "pathname": "/plugins"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/payment/klarna/page.mdx",
-    "pathname": "/plugins/payment/klarna"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/payment/paypal/page.mdx",
-    "pathname": "/plugins/payment/paypal"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/payment/stripe/page.mdx",
-    "pathname": "/plugins/payment/stripe"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/search/algolia/page.mdx",
-    "pathname": "/plugins/search/algolia"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/search/meilisearch/page.mdx",
-    "pathname": "/plugins/search/meilisearch"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/source/shopify/page.mdx",
-    "pathname": "/plugins/source/shopify"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/storage/local/page.mdx",
-    "pathname": "/plugins/storage/local"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/storage/minio/page.mdx",
-    "pathname": "/plugins/storage/minio"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/storage/s3/page.mdx",
-    "pathname": "/plugins/storage/s3"
-  },
-  {
-    "filePath": "/www/apps/resources/app/plugins/storage/spaces/page.mdx",
-    "pathname": "/plugins/storage/spaces"
-  },
-  {
-    "filePath": "/www/apps/resources/app/recipes/b2b/page.mdx",
-    "pathname": "/recipes/b2b"
-  },
-  {
-    "filePath": "/www/apps/resources/app/recipes/commerce-automation/page.mdx",
-    "pathname": "/recipes/commerce-automation"
-  },
-  {
-    "filePath": "/www/apps/resources/app/recipes/digital-products/page.mdx",
-    "pathname": "/recipes/digital-products"
-  },
-  {
-    "filePath": "/www/apps/resources/app/recipes/ecommerce/page.mdx",
-    "pathname": "/recipes/ecommerce"
-  },
-  {
-    "filePath": "/www/apps/resources/app/recipes/integrate-ecommerce-stack/page.mdx",
-    "pathname": "/recipes/integrate-ecommerce-stack"
-  },
-  {
-    "filePath": "/www/apps/resources/app/recipes/marketplace/page.mdx",
-    "pathname": "/recipes/marketplace"
-  },
-  {
-    "filePath": "/www/apps/resources/app/recipes/multi-region-store/page.mdx",
-    "pathname": "/recipes/multi-region-store"
-  },
-  {
-    "filePath": "/www/apps/resources/app/recipes/omnichannel/page.mdx",
-    "pathname": "/recipes/omnichannel"
-  },
-  {
-    "filePath": "/www/apps/resources/app/recipes/oms/page.mdx",
-    "pathname": "/recipes/oms"
-  },
-  {
-    "filePath": "/www/apps/resources/app/recipes/personalized-products/page.mdx",
-    "pathname": "/recipes/personalized-products"
-  },
-  {
-    "filePath": "/www/apps/resources/app/recipes/pos/page.mdx",
-    "pathname": "/recipes/pos"
-  },
-  {
-    "filePath": "/www/apps/resources/app/recipes/subscriptions/page.mdx",
-    "pathname": "/recipes/subscriptions"
-  },
-  {
     "filePath": "/www/apps/resources/app/references/[...slug]/page.tsx",
     "pathname": "/references/[...slug]"
+  },
+  {
+    "filePath": "/www/apps/resources/app/troubleshooting/_s3-plugin-acl-error/page.mdx",
+    "pathname": "/troubleshooting/_s3-plugin-acl-error"
   },
   {
     "filePath": "/www/apps/resources/app/troubleshooting/_sections/cli-installation-errors/permission-errors.mdx",
@@ -724,6 +896,10 @@ export const filesMap = [
     "pathname": "/troubleshooting/_sections/other"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/_transaction-promise-all/page.mdx",
+    "pathname": "/troubleshooting/_transaction-promise-all"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/admin-sign-in/page.mdx",
     "pathname": "/troubleshooting/admin-sign-in"
   },
@@ -764,16 +940,8 @@ export const filesMap = [
     "pathname": "/troubleshooting"
   },
   {
-    "filePath": "/www/apps/resources/app/troubleshooting/payment-provider-missing/page.mdx",
-    "pathname": "/troubleshooting/payment-provider-missing"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/s3-plugin-acl-error/page.mdx",
-    "pathname": "/troubleshooting/s3-plugin-acl-error"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/transaction-promise-all/page.mdx",
-    "pathname": "/troubleshooting/transaction-promise-all"
+    "filePath": "/www/apps/resources/app/upgrade-guides/page.mdx",
+    "pathname": "/upgrade-guides"
   },
   {
     "filePath": "/www/apps/resources/app/usage/page.mdx",
@@ -2004,12 +2172,8 @@ export const filesMap = [
     "pathname": "/references/customer_models/classes/customer_models.CustomerGroupCustomer"
   },
   {
-    "filePath": "/www/apps/resources/references/file/classes/file.AbstractFileService/page.mdx",
-    "pathname": "/references/file/classes/file.AbstractFileService"
-  },
-  {
-    "filePath": "/www/apps/resources/references/file/interfaces/file.IFileService/page.mdx",
-    "pathname": "/references/file/interfaces/file.IFileService"
+    "filePath": "/www/apps/resources/references/file/classes/file.AbstractFileProviderService/page.mdx",
+    "pathname": "/references/file/classes/file.AbstractFileProviderService"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.cancelFulfillment/page.mdx",

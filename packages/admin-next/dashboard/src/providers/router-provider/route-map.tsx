@@ -15,9 +15,9 @@ import {
 import { Outlet, RouteObject } from "react-router-dom"
 
 import { ProtectedRoute } from "../../components/authentication/protected-route"
-import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
+import { ErrorBoundary } from "../../components/utilities/error-boundary"
 import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
 
 import { RouteExtensions } from "./route-extensions"
@@ -745,6 +745,13 @@ export const RouteMap: RouteObject[] = [
                               ),
                           },
                           {
+                            path: "edit-areas",
+                            lazy: () =>
+                              import(
+                                "../../v2-routes/shipping/service-zone-areas-edit"
+                              ),
+                          },
+                          {
                             path: "shipping-option",
                             children: [
                               {
@@ -762,6 +769,13 @@ export const RouteMap: RouteObject[] = [
                                     lazy: () =>
                                       import(
                                         "../../v2-routes/shipping/shipping-option-edit"
+                                      ),
+                                  },
+                                  {
+                                    path: "edit-pricing",
+                                    lazy: () =>
+                                      import(
+                                        "../../v2-routes/shipping/shipping-options-edit-pricing"
                                       ),
                                   },
                                 ],

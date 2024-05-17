@@ -65,6 +65,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/api-key/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -133,6 +137,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/auth/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -197,6 +205,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/cart/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -239,6 +251,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/currency_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/currency/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -295,6 +311,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/customer_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/customer/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -364,6 +384,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/fulfillment/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -424,6 +448,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                       "/references/inventory_next_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/inventory/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -500,6 +528,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/order_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/order/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -585,6 +617,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/payment/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -645,6 +681,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/pricing/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -696,6 +736,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/product_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/product/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -757,6 +801,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/promotion/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -808,6 +856,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/region_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/region/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -865,6 +917,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                       "/references/sales_channel_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/sales-channel/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -924,6 +980,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/stock-location/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -966,6 +1026,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/store_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/store/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -1035,6 +1099,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/tax/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -1091,171 +1159,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/user/events",
+                title: "Events Reference",
+              },
             ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    path: "/plugins",
-    title: "Plugins",
-    isChildSidebar: true,
-    hasTitleStyling: true,
-    children: [
-      {
-        title: "Analytics",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/analytics/segment",
-            title: "Segment",
-          },
-        ],
-      },
-      {
-        title: "CMS",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/cms/contentful",
-            title: "Contentful",
-          },
-          {
-            path: "/plugins/cms/strapi",
-            title: "Strapi",
-          },
-        ],
-      },
-      {
-        title: "ERP",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/erp/brightpearl",
-            title: "Brightpearl",
-          },
-        ],
-      },
-      {
-        title: "Fulfillment",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/fulfillment/manual",
-            title: "Manual Fulfillment",
-          },
-          {
-            path: "/plugins/fulfillment/webshipper",
-            title: "Webshipper",
-          },
-        ],
-      },
-      {
-        title: "Notifications",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/notifications/mailchimp",
-            title: "Mailchimp",
-          },
-          {
-            path: "/plugins/notifications/sendgrid",
-            title: "SendGrid",
-          },
-          {
-            path: "/plugins/notifications/twilio-sms",
-            title: "Twilio SMS",
-          },
-          {
-            path: "/plugins/notifications/slack",
-            title: "Slack",
-          },
-        ],
-      },
-      {
-        title: "Payment",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/payment/klarna",
-            title: "Klarna",
-          },
-          {
-            path: "/plugins/payment/paypal",
-            title: "PayPal",
-          },
-          {
-            path: "/plugins/payment/stripe",
-            title: "Stripe",
-          },
-        ],
-      },
-      {
-        title: "Search",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/search/algolia",
-            title: "Algolia",
-          },
-          {
-            path: "/plugins/search/meilisearch",
-            title: "MeiliSearch",
-          },
-        ],
-      },
-      {
-        title: "Source",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/source/shopify",
-            title: "Shopify",
-          },
-        ],
-      },
-      {
-        title: "Storage",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/storage/local",
-            title: "Local File Storage",
-          },
-          {
-            path: "/plugins/storage/minio",
-            title: "MinIO",
-          },
-          {
-            path: "/plugins/storage/s3",
-            title: "S3",
-          },
-          {
-            path: "/plugins/storage/spaces",
-            title: "Spaces",
-          },
-        ],
-      },
-      {
-        title: "Other",
-        hasTitleStyling: true,
-        children: [
-          {
-            path: "/plugins/other/discount-generator",
-            title: "Discount Generator",
-          },
-          {
-            path: "/plugins/other/ip-lookup",
-            title: "IP Lookup",
-          },
-          {
-            path: "/plugins/other/restock-notifications",
-            title: "Restock Notifications",
-          },
-          {
-            path: "/plugins/other/wishlist",
-            title: "Wishlist",
           },
         ],
       },
@@ -1592,6 +1500,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     hasTitleStyling: true,
     children: [
       {
+        path: "/architectural-modules/cache",
         title: "Cache Modules",
         hasTitleStyling: true,
         children: [
@@ -1603,9 +1512,19 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             path: "/architectural-modules/cache/redis",
             title: "Redis",
           },
+          {
+            title: "Guides",
+            children: [
+              {
+                path: "/architectural-modules/cache/create",
+                title: "Create Cache Module",
+              },
+            ],
+          },
         ],
       },
       {
+        path: "/architectural-modules/event",
         title: "Event Modules",
         hasTitleStyling: true,
         children: [
@@ -1616,6 +1535,35 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             path: "/architectural-modules/event/redis",
             title: "Redis",
+          },
+          {
+            title: "Guides",
+            children: [
+              {
+                path: "/architectural-modules/event/create",
+                title: "Create Event Module",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "/architectural-modules/file",
+        title: "File Provider Modules",
+        hasTitleStyling: true,
+        children: [
+          {
+            path: "/architectural-modules/file/local",
+            title: "Local",
+          },
+          {
+            title: "Guides",
+            children: [
+              {
+                path: "/references/file-provider-module",
+                title: "Create File Module",
+              },
+            ],
           },
         ],
       },
@@ -1636,60 +1584,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
-    title: "Recipes",
-    hasTitleStyling: true,
-    children: [
-      {
-        path: "/recipes/ecommerce",
-        title: "Ecommerce",
-      },
-      {
-        path: "/recipes/marketplace",
-        title: "Marketplace",
-      },
-      {
-        path: "/recipes/subscriptions",
-        title: "Subscriptions",
-      },
-      {
-        path: "/recipes/integrate-ecommerce-stack",
-        title: "Integrate Ecommerce Stack",
-      },
-      {
-        path: "/recipes/commerce-automation",
-        title: "Commerce Automation",
-      },
-      {
-        path: "/recipes/oms",
-        title: "Order Management System",
-      },
-      {
-        path: "/recipes/pos",
-        title: "POS",
-      },
-      {
-        path: "/recipes/digital-products",
-        title: "Digital Products",
-      },
-      {
-        path: "/recipes/personalized-products",
-        title: "Personalized Products",
-      },
-      {
-        path: "/recipes/b2b",
-        title: "B2B",
-      },
-      {
-        path: "/recipes/multi-region-store",
-        title: "Multi-Region Store",
-      },
-      {
-        path: "/recipes/omnichannel",
-        title: "Omnichannel Store",
-      },
-    ],
-  },
-  {
     title: "Configurations",
     hasTitleStyling: true,
     children: [
@@ -1697,10 +1591,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         path: "/references/medusa-config",
         title: "Medusa Application",
       },
-      {
-        path: "/configurations/medusa-admin",
-        title: "Medusa Admin",
-      },
+      // {
+      //   path: "/configurations/medusa-admin",
+      //   title: "Medusa Admin",
+      // },
     ],
   },
   {
@@ -1708,6 +1602,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     hasTitleStyling: true,
     children: [
       {
+        path: "/upgrade-guides",
         title: "Upgrade Guides",
       },
       {
@@ -1806,14 +1701,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 path: "/troubleshooting/database-errors",
                 title: "Database Errors",
               },
-              {
-                path: "/troubleshooting/transaction-promise-all",
-                title: "Transactions and Promise.all",
-              },
-              {
-                path: "/troubleshooting/payment-provider-missing",
-                title: "Payment Provider Missing",
-              },
             ],
           },
           {
@@ -1847,20 +1734,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               {
                 path: "/troubleshooting/admin-custom-hooks-error",
                 title: "Custom Hooks Error",
-              },
-              {
-                path: "/troubleshooting/admin-webpack-build-error",
-                title: "Webpack Build Error",
-              },
-            ],
-          },
-          {
-            title: "Plugin",
-            hasTitleStyling: true,
-            children: [
-              {
-                path: "/troubleshooting/s3-plugin-acl-error",
-                title: "S3 Plugin ACL Error",
               },
             ],
           },
@@ -1902,34 +1775,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
         ],
       },
-      {
-        title: "Integration Services",
-        children: [
-          {
-            path: "/references/notification-service",
-            title: "Notification Service",
-          },
-          {
-            path: "/references/file-service",
-            title: "File Service",
-          },
-          {
-            path: "/references/search-service",
-            title: "Search Service",
-          },
-        ],
-      },
-      {
-        title: "Modules",
-        children: [
-          {
-            title: "Cache Service",
-          },
-          {
-            title: "Event Bus Service",
-          },
-        ],
-      },
     ],
   },
   {
@@ -1943,10 +1788,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             path: "/contribution-guidelines/docs",
             title: "Docs",
           },
-          {
-            path: "/contribution-guidelines/admin-translations",
-            title: "Admin Translations",
-          },
+          // {
+          //   path: "/contribution-guidelines/admin-translations",
+          //   title: "Admin Translations",
+          // },
         ],
       },
       {

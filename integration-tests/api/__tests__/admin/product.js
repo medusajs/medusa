@@ -73,7 +73,7 @@ const getProductFixture = (overrides) => ({
 })
 
 medusaIntegrationTestRunner({
-  env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
+  env: { MEDUSA_FF_PRODUCT_CATEGORIES: true, MEDUSA_FF_MEDUSA_V2: true },
   testSuite: ({ dbConnection, getContainer, api }) => {
     let baseProduct
     let proposedProduct

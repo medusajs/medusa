@@ -3,8 +3,8 @@ import { AwilixContainer } from "awilix"
 import { Express } from "express"
 import path from "path"
 import qs from "qs"
-import { ConfigModule } from "../types/global"
 import { RoutesLoader } from "./helpers/routing"
+import { ConfigModule } from "@medusajs/types"
 
 type Options = {
   app: Express
@@ -13,12 +13,7 @@ type Options = {
   featureFlagRouter?: FlagRouter
 }
 
-export default async ({
-  app,
-  container,
-  configModule,
-  featureFlagRouter,
-}: Options) => {
+export default async ({ app, configModule }: Options) => {
   // This is a workaround for the issue described here: https://github.com/expressjs/express/issues/3454
   // We parse the url and get the qs to be parsed and override the query prop from the request
   app.use(function (req, res, next) {

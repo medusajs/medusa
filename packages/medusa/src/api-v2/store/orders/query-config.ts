@@ -48,6 +48,7 @@ export const defaultStoreRetrieveOrderFields = [
   "*shipping_methods",
   "*shipping_methods.tax_lines",
   "*shipping_methods.adjustments",
+  "*payment_collections",
 ]
 
 export const retrieveTransformQueryConfig = {

@@ -1,43 +1,29 @@
 get:
-  operationId: GetUsersUser
+  operationId: GetUsersId
   summary: Get a User
-  description: Retrieve an admin user's details.
+  description: >-
+    Retrieve a user by its ID. You can expand the user's relations or select the
+    fields that should be returned.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The user's ID.
       required: true
-      description: The ID of the User.
       schema:
         type: string
-  x-codegen:
-    method: retrieve
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_users_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_users_{id}/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_users_{id}/get.sh
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_users_{id}/get.sh
   tags:
     - Users
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminUserRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -50,51 +36,39 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
 post:
-  operationId: PostUsersUser
+  operationId: PostUsersId
   summary: Update a User
-  description: Update an admin user's details.
+  description: Update a user's details.
+  x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The user's ID.
       required: true
-      description: The ID of the User.
       schema:
         type: string
-  x-authenticated: true
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
           $ref: ../components/schemas/AdminUpdateUserRequest.yaml
-  x-codegen:
-    method: update
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_users_{id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_users_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_users_{id}/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Users
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminUserRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -108,47 +82,29 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
 delete:
-  operationId: DeleteUsersUser
+  operationId: DeleteUsersId
   summary: Delete a User
-  description: >-
-    Delete a User. Once deleted, the user will not be able to authenticate or
-    perform admin functionalities.
+  description: Delete a user.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The user's ID.
       required: true
-      description: The ID of the User.
       schema:
         type: string
-  x-codegen:
-    method: delete
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_users_{id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_users_{id}/delete.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_users_{id}/delete.sh
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_users_{id}/delete.sh
   tags:
     - Users
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminDeleteUserRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -161,3 +117,7 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
