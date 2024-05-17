@@ -26,7 +26,7 @@ import { UpsertStockLocationInput } from "@medusajs/types"
 import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
-  eventBusService: IEventBusService
+  eventBusModuleService: IEventBusService
   baseRepository: DAL.RepositoryService
   stockLocationService: ModulesSdkTypes.InternalModuleService<any>
   stockLocationAddressService: ModulesSdkTypes.InternalModuleService<any>
@@ -52,14 +52,14 @@ export default class StockLocationModuleService<
   >(StockLocation, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IStockLocationServiceNext
 {
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusModuleService_: IEventBusService
   protected baseRepository_: DAL.RepositoryService
   protected readonly stockLocationService_: ModulesSdkTypes.InternalModuleService<TEntity>
   protected readonly stockLocationAddressService_: ModulesSdkTypes.InternalModuleService<TStockLocationAddress>
 
   constructor(
     {
-      eventBusService,
+      eventBusModuleService,
       baseRepository,
       stockLocationService,
       stockLocationAddressService,
@@ -72,7 +72,7 @@ export default class StockLocationModuleService<
     this.baseRepository_ = baseRepository
     this.stockLocationService_ = stockLocationService
     this.stockLocationAddressService_ = stockLocationAddressService
-    this.eventBusService_ = eventBusService
+    this.eventBusModuleService_ = eventBusModuleService
   }
 
   __joinerConfig(): ModuleJoinerConfig {

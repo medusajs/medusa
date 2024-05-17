@@ -571,13 +571,8 @@ export function abstractModuleServiceFactory<
         // TODO: Should use ModuleRegistrationName.EVENT_BUS but it would require to move it to the utils package to prevent circular dependencies
         (key) => key === "eventBusModuleService"
       )
-      const hasEventBusService = Object.keys(this.__container__).find(
-        (key) => key === "eventBusService"
-      )
 
-      this.eventBusModuleService_ = hasEventBusService
-        ? this.__container__.eventBusService
-        : hasEventBusModuleService
+      this.eventBusModuleService_ = hasEventBusModuleService
         ? this.__container__.eventBusModuleService
         : undefined
     }

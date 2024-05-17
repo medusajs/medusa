@@ -110,7 +110,7 @@ export const useProductVariants = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => client.products.listVariants(productId, query),
-    queryKey: variantsQueryKeys.list(query),
+    queryKey: variantsQueryKeys.list({ productId, ...query }),
     ...options,
   })
 

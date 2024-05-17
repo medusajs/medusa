@@ -6,12 +6,12 @@ import {
   OrderShippingMethodDTO,
   OrderWorkflowDTO,
   ShippingTaxLineDTO,
-  TaxCalculationContext,
   TaxableItemDTO,
   TaxableShippingDTO,
+  TaxCalculationContext,
 } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   order: OrderWorkflowDTO
@@ -104,8 +104,8 @@ export const getOrderItemTaxLinesStep = createStep(
   async (data: StepInput, { container }) => {
     const {
       order,
-      items,
-      shipping_methods: shippingMethods,
+      items = [],
+      shipping_methods: shippingMethods = [],
       force_tax_calculation: forceTaxCalculation = false,
     } = data
     const taxService = container.resolve<ITaxModuleService>(
@@ -123,15 +123,19 @@ export const getOrderItemTaxLinesStep = createStep(
       return new StepResponse(stepResponseData)
     }
 
-    stepResponseData.lineItemTaxLines = (await taxService.getTaxLines(
-      normalizeLineItemsForTax(order, items),
-      taxContext
-    )) as ItemTaxLineDTO[]
+    if (items.length) {
+      stepResponseData.lineItemTaxLines = (await taxService.getTaxLines(
+        normalizeLineItemsForTax(order, items),
+        taxContext
+      )) as ItemTaxLineDTO[]
+    }
 
-    stepResponseData.shippingMethodsTaxLines = (await taxService.getTaxLines(
-      normalizeLineItemsForShipping(order, shippingMethods),
-      taxContext
-    )) as ShippingTaxLineDTO[]
+    if (shippingMethods.length) {
+      stepResponseData.shippingMethodsTaxLines = (await taxService.getTaxLines(
+        normalizeLineItemsForShipping(order, shippingMethods),
+        taxContext
+      )) as ShippingTaxLineDTO[]
+    }
 
     return new StepResponse(stepResponseData)
   }

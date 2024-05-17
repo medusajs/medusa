@@ -14,7 +14,7 @@ export type DeleteEntityInput = {
 }
 export type RestoreEntityInput = DeleteEntityInput
 
-type LinkDefinition = {
+export type LinkDefinition = {
   [moduleName: string]: {
     [fieldName: string]: string
   }

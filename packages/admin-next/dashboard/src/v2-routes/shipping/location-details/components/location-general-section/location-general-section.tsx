@@ -156,7 +156,7 @@ function ShippingOption({
               {
                 label: t("shipping.serviceZone.editPrices"),
                 icon: <CurrencyDollar />,
-                disabled: true,
+                to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${option.service_zone_id}/shipping-option/${option.id}/edit-pricing`,
               },
               {
                 label: t("actions.delete"),
@@ -199,7 +199,7 @@ function ServiceZoneOptions({
             {t("shipping.serviceZone.shippingOptions")}
           </span>
           <Button
-            className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent"
+            className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent active:bg-transparent"
             variant="transparent"
             onClick={() =>
               navigate(
@@ -231,7 +231,7 @@ function ServiceZoneOptions({
             {t("shipping.serviceZone.returnOptions")}
           </span>
           <Button
-            className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent"
+            className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent active:bg-transparent"
             variant="transparent"
             onClick={() =>
               navigate(
@@ -313,6 +313,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
       .filter((g) => g.type === "country")
       .map((g) => g.country_code)
       .map((code) => staticCountries.find((c) => c.iso_2 === code))
+      .sort((c1, c2) => c1.name.localeCompare(c2.name))
   }, zone.geo_zones)
 
   const [shippingOptionsCount, returnOptionsCount] = useMemo(() => {
@@ -385,15 +386,15 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
             groups={[
               {
                 actions: [
-                  // {
-                  //   label: t("shipping.serviceZone.addOption"),
-                  //   icon: <Plus />,
-                  //   to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create`,
-                  // },
                   {
                     label: t("actions.edit"),
                     icon: <PencilSquare />,
                     to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit`,
+                  },
+                  {
+                    label: t("shipping.serviceZone.manageAreas"),
+                    icon: <Map />,
+                    to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit-areas`,
                   },
                   {
                     label: t("actions.delete"),

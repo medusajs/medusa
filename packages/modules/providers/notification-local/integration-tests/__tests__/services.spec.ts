@@ -30,7 +30,7 @@ describe("Local notification provider", () => {
 
     expect(logSpy).toHaveBeenCalled()
     expect(logSpy).toHaveBeenCalledWith(
-      'Attempting to send a notification to: test@medusajs.com on the channel: email with template: some-template and data: {"username":"john-doe"}'
+      `Attempting to send a notification to: 'test@medusajs.com' on the channel: 'email' with template: 'some-template' and data: '{\"username\":\"john-doe\"}'`
     )
   })
 })
