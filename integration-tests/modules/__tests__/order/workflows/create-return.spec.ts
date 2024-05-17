@@ -312,6 +312,15 @@ async function createOrderFixture({ container, product }) {
     },
   ])
 
+  const returnReason = await orderService.createReturnReasons({
+    value: "Test reason",
+  })
+
+  await orderService.createReturnReasons({
+    value: "Test child reason",
+    parent_id: returnReason.id,
+  })
+
   await orderService.applyPendingOrderActions(order.id)
 
   order = await orderService.retrieve(order.id, {
@@ -353,6 +362,11 @@ medusaIntegrationTestRunner({
 
       it("should create a return order", async () => {
         const order = await createOrderFixture({ container, product })
+        const reasons = await orderService.listReturnReasons({})
+        const testReason = reasons.find(
+          (r) => r.value.toLowerCase() === "test reason"
+        )!
+
         const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
           {
             order_id: order.id,
@@ -363,6 +377,7 @@ medusaIntegrationTestRunner({
               {
                 id: order.items![0].id,
                 quantity: 1,
+                reason_id: testReason.id,
               },
             ],
           }
@@ -467,6 +482,73 @@ medusaIntegrationTestRunner({
             ],
           })
         )
+      })
+
+      it("should fail when location is not linked", async () => {
+        const order = await createOrderFixture({ container, product })
+        const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
+          {
+            order_id: order.id,
+            return_shipping: {
+              option_id: shippingOption.id,
+            },
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+              },
+            ],
+          }
+
+        // Remove the location link
+        const remoteLink = container.resolve(
+          ContainerRegistrationKeys.REMOTE_LINK
+        )
+        await remoteLink.remove([
+          {
+            [Modules.STOCK_LOCATION]: {
+              stock_location_id: location.id,
+            },
+          },
+        ])
+
+        const { errors } = await createReturnOrderWorkflow(container).run({
+          input: createReturnOrderData,
+          throwOnError: false,
+        })
+
+        // Expect an error to be thrown when running the workflow
+        await expect(errors).toHaveLength(1)
+      })
+
+      it("should fail when a reason with children is provided", async () => {
+        const order = await createOrderFixture({ container, product })
+        const reasons = await orderService.listReturnReasons({})
+        const testReason = reasons.find(
+          (r) => r.value.toLowerCase() === "test reason"
+        )!
+
+        const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
+          {
+            order_id: order.id,
+            return_shipping: {
+              option_id: shippingOption.id,
+            },
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+                reason_id: testReason.id,
+              },
+            ],
+          }
+
+        const { errors } = await createReturnOrderWorkflow(container).run({
+          input: createReturnOrderData,
+          throwOnError: false,
+        })
+
+        expect(errors).toHaveLength(1)
       })
     })
   },
