@@ -213,7 +213,6 @@ const Logout = () => {
          * When the user logs out, we want to clear the query cache
          */
         queryClient.clear()
-        console.log("Hello world")
         navigate("/login")
       },
     })
