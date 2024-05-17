@@ -928,8 +928,8 @@ export default class ProductModuleService<
 
     const collections: TProductCollection[] = []
 
-    const updateSelectorAndData = updatedCollections
-      .map((collectionData) => {
+    const updateSelectorAndData = updatedCollections.flatMap(
+      (collectionData) => {
         const input = normalizedInput.find((c) => c.id === collectionData.id)
         const productsToUpdate = (input as any)?.products
 
@@ -968,8 +968,8 @@ export default class ProductModuleService<
         })
 
         return result
-      })
-      .flat()
+      }
+    )
 
     await this.productService_.update(updateSelectorAndData, sharedContext)
     return collections
