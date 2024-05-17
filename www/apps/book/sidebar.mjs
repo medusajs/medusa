@@ -128,7 +128,7 @@ export const sidebar = sidebarAttachHrefCommonOptions(
             },
             {
               path: "/advanced-development/modules/remote-link",
-              title: "Remote Links",
+              title: "Remote Link",
             },
           ],
         },
