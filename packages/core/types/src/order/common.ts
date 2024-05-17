@@ -2,6 +2,19 @@ import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 import { BigNumberRawValue, BigNumberValue } from "../totals"
 
+export type ChangeActionType =
+  | "CANCEL"
+  | "CANCEL_RETURN"
+  | "FULFILL_ITEM"
+  | "ITEM_ADD"
+  | "ITEM_REMOVE"
+  | "RECEIVE_DAMAGED_RETURN_ITEM"
+  | "RECEIVE_RETURN_ITEM"
+  | "RETURN_ITEM"
+  | "SHIPPING_ADD"
+  | "SHIP_ITEM"
+  | "WRITE_OFF_ITEM"
+
 export type OrderSummaryDTO = {
   total: BigNumberValue
   subtotal: BigNumberValue
@@ -1187,7 +1200,7 @@ export interface OrderChangeActionDTO {
   /**
    * The action of the order change action
    */
-  action: string
+  action: ChangeActionType
   /**
    * The details of the order change action
    */
