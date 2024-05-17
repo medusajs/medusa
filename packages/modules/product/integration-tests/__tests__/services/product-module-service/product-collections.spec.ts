@@ -365,6 +365,73 @@ moduleIntegrationTestRunner({
             "ProductCollection with id: does-not-exist was not found"
           )
         })
+
+        it("should dissociate existing products when new products are synced", async () => {
+          await service.upsertCollections([
+            {
+              id: collectionId,
+              product_ids: [productOne.id, productTwo.id],
+            },
+          ])
+
+          /**
+           * Another upsert should remove the first productOne
+           */
+          await service.upsertCollections([
+            {
+              id: collectionId,
+              product_ids: [productTwo.id],
+            },
+          ])
+
+          const productCollection = await service.retrieveCollection(
+            collectionId,
+            {
+              select: ["products.id"],
+              relations: ["products"],
+            }
+          )
+
+          expect(productCollection.products).toHaveLength(1)
+          expect(productCollection).toEqual(
+            expect.objectContaining({
+              products: expect.arrayContaining([
+                expect.objectContaining({
+                  id: productTwo.id,
+                }),
+              ]),
+            })
+          )
+        })
+
+        it("should dissociate all existing products", async () => {
+          await service.upsertCollections([
+            {
+              id: collectionId,
+              product_ids: [productOne.id, productTwo.id],
+            },
+          ])
+
+          /**
+           * Another upsert should remove the first productOne
+           */
+          await service.upsertCollections([
+            {
+              id: collectionId,
+              product_ids: [],
+            },
+          ])
+
+          const productCollection = await service.retrieveCollection(
+            collectionId,
+            {
+              select: ["products.id"],
+              relations: ["products"],
+            }
+          )
+
+          expect(productCollection.products).toHaveLength(0)
+        })
       })
 
       describe("createCollections", () => {
