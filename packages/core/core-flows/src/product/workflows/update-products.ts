@@ -1,8 +1,8 @@
 import { ProductTypes } from "@medusajs/types"
 import {
-  WorkflowData,
   createWorkflow,
   transform,
+  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { updateProductsStep } from "../steps/update-products"
 import {
@@ -10,6 +10,7 @@ import {
   detachProductsFromSalesChannelsStep,
 } from "../../sales-channel"
 import { useRemoteQueryStep } from "../../common"
+import { arrayDifference } from "@medusajs/utils"
 
 type UpdateProductsStepInputSelector = {
   selector: ProductTypes.FilterableProductProps
@@ -30,6 +31,79 @@ type UpdateProductsStepInput =
 
 type WorkflowInput = UpdateProductsStepInput
 
+function prepareUpdateProductInput({
+  input,
+}: {
+  input: WorkflowInput
+}): UpdateProductsStepInput {
+  if ("products" in input) {
+    return {
+      products: input.products.map((p) => ({
+        ...p,
+        sales_channels: undefined,
+      })),
+    }
+  }
+
+  return {
+    selector: input.selector,
+    update: {
+      ...input.update,
+      sales_channels: undefined,
+    },
+  }
+}
+
+function updateProductIds({
+  updatedProducts,
+  input,
+}: {
+  updatedProducts: ProductTypes.ProductDTO[]
+  input: WorkflowInput
+}) {
+  if ("products" in input) {
+    let productIds = updatedProducts.map((p) => p.id)
+    const discardedProductIds: string[] = input.products
+      .filter((p) => !p.sales_channels)
+      .map((p) => p.id as string)
+    return arrayDifference(productIds, discardedProductIds)
+  }
+
+  return !input.update.sales_channels ? [] : null
+}
+
+function prepareSalesChannelLinks({
+  input,
+  updatedProducts,
+}: {
+  updatedProducts: ProductTypes.ProductDTO[]
+  input: WorkflowInput
+}): { sales_channel_id: string; product_id: string }[] {
+  if ("products" in input) {
+    const links = input.products
+      .filter((p) => p.sales_channels)
+      .flatMap((p) =>
+        p.sales_channels!.map((sc) => ({
+          sales_channel_id: sc.id,
+          product_id: p.id as string,
+        }))
+      )
+    return links
+  }
+
+  if (input.selector && input.update.sales_channels?.length) {
+    const links = updatedProducts.flatMap((p) =>
+      input.update.sales_channels!.map((channel) => ({
+        sales_channel_id: channel.id,
+        product_id: p.id,
+      }))
+    )
+    return links
+  }
+
+  return []
+}
+
 export const updateProductsWorkflowId = "update-products"
 export const updateProductsWorkflow = createWorkflow(
   updateProductsWorkflowId,
@@ -38,49 +112,12 @@ export const updateProductsWorkflow = createWorkflow(
   ): WorkflowData<ProductTypes.ProductDTO[]> => {
     // TODO: Delete price sets for removed variants
 
-    const toUpdateInput = transform({ input }, (data) => {
-      if ((data.input as UpdateProductsStepInputProducts).products) {
-        return (data.input as UpdateProductsStepInputProducts).products.map(
-          (p) => ({
-            ...p,
-            sales_channels: undefined,
-          })
-        )
-      } else {
-        return {
-          selector: (data.input as UpdateProductsStepInputSelector).selector,
-          update: {
-            ...(data.input as UpdateProductsStepInputSelector).update,
-            sales_channels: undefined,
-          },
-        }
-      }
-    })
-
-    const updatedProducts = updateProductsStep(
-      toUpdateInput as UpdateProductsStepInput
+    const toUpdateInput = transform({ input }, prepareUpdateProductInput)
+    const updatedProducts = updateProductsStep(toUpdateInput)
+    const updatedProductIds = transform(
+      { updatedProducts, input },
+      updateProductIds
     )
-
-    const updatedProductIds = transform({ updatedProducts, input }, (data) => {
-      if (
-        !(data.input as UpdateProductsStepInputSelector).update.sales_channels
-      ) {
-        return []
-      }
-
-      let productIds = data.updatedProducts.map((p) => p.id)
-
-      ;(data.input as UpdateProductsStepInputProducts).products?.forEach(
-        (p) => {
-          if (!p.sales_channels) {
-            // these products don't update sales channels so we don't want to their previous channels
-            productIds = productIds.filter((id) => id !== p.id)
-          }
-        }
-      )
-
-      return productIds
-    })
 
     const currentLinks = useRemoteQueryStep({
       entry_point: "product_sales_channel",
@@ -90,35 +127,10 @@ export const updateProductsWorkflow = createWorkflow(
 
     detachProductsFromSalesChannelsStep({ links: currentLinks })
 
-    const salesChannelLinks = transform({ input, updatedProducts }, (data) => {
-      if ((data.input as UpdateProductsStepInputSelector).selector) {
-        if (
-          !(data.input as UpdateProductsStepInputSelector).update.sales_channels
-        ) {
-          return []
-        }
-        return data.updatedProducts
-          .map((p) => {
-            return (
-              data.input as UpdateProductsStepInputSelector
-            ).update.sales_channels!.map((channel) => ({
-              sales_channel_id: channel.id,
-              product_id: p.id,
-            }))
-          })
-          .flat()
-      }
-
-      return (data.input as UpdateProductsStepInputProducts).products
-        .filter((input) => input.sales_channels)
-        .map((input) => {
-          return input.sales_channels!.map((salesChannel) => ({
-            sales_channel_id: salesChannel.id,
-            product_id: input.id as string,
-          }))
-        })
-        .flat()
-    })
+    const salesChannelLinks = transform(
+      { input, updatedProducts },
+      prepareSalesChannelLinks
+    )
 
     associateProductsWithSalesChannelsStep({ links: salesChannelLinks })
 
