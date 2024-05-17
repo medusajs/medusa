@@ -78,10 +78,6 @@ const normalizeProjectConfig = (
     }
   }
 
-  // Backward compatibility
-  projectConfig.admin_cors = projectConfig.http.adminCors
-  projectConfig.store_cors = projectConfig.http.storeCors
-
   return {
     ...projectConfig,
     worker_mode,

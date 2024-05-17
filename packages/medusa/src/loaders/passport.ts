@@ -41,7 +41,7 @@ export default async ({
 
   // After a user has authenticated a JWT will be placed on a cookie, all
   // calls will be authenticated based on the JWT
-  const { auth } = configModule.projectConfig
+  const { http } = configModule.projectConfig
   passport.use(
     "admin-session",
     new CustomStrategy(async (req, done) => {
@@ -97,7 +97,7 @@ export default async ({
     new JWTStrategy(
       {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: auth.jwtSecret,
+        secretOrKey: http.jwtSecret,
       },
       (token, done) => {
         if (token.domain !== "admin") {
@@ -121,7 +121,7 @@ export default async ({
     new JWTStrategy(
       {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: auth.jwtSecret,
+        secretOrKey: http.jwtSecret,
       },
       (token, done) => {
         if (token.domain !== "store") {
