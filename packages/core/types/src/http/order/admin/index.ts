@@ -233,9 +233,6 @@ interface OrderTransaction {
   updated_at: Date | string
 }
 
-/**
- * @experimental
- */
 export interface OrderResponse {
   id: string
   version: number
@@ -299,16 +296,10 @@ export interface OrderResponse {
   raw_original_shipping_tax_total?: BigNumberRawValue
 }
 
-/**
- * @experimental
- */
-export interface AdminOrderListResponse extends PaginatedResponse {
+export type AdminOrderListResponse = PaginatedResponse<{
   orders: OrderResponse[]
-}
+}>
 
-/**
- * @experimental
- */
 export interface AdminOrderResponse {
   order: OrderResponse
 }

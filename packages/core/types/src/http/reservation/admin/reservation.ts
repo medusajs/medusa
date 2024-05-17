@@ -1,8 +1,5 @@
-import { PaginatedResponse } from "../../../common"
+import { PaginatedResponse } from "../../common"
 
-/**
- * @experimental
- */
 interface ReservationResponse {
   id: string
   line_item_id: string | null
@@ -19,16 +16,10 @@ interface ReservationResponse {
   updated_at?: Date | string
 }
 
-/**
- * @experimental
- */
 export interface AdminReservationResponse {
   reservation: ReservationResponse
 }
 
-/**
- * @experimental
- */
-export interface AdminReservationListResponse extends PaginatedResponse {
+export type AdminReservationListResponse = PaginatedResponse<{
   reservations: ReservationResponse[]
-}
+}>
