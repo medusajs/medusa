@@ -1,3 +1,5 @@
+export * from "./archive-orders"
+export * from "./complete-orders"
 export * from "./create-orders"
 export * from "./get-item-tax-lines"
 export * from "./link-order-payment-collection"

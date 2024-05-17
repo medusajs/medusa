@@ -1,8 +1,14 @@
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
+import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
-import { AdminGetOrdersOrderParams, AdminGetOrdersParams } from "./validators"
+import {
+  AdminArchiveOrder,
+  AdminCompleteOrder,
+  AdminGetOrdersOrderParams,
+  AdminGetOrdersParams,
+} from "./validators"
 
 export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -34,7 +40,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/orders/:id/archive",
     middlewares: [
-      // validateAndTransformBody(),
+      validateAndTransformBody(AdminArchiveOrder),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
@@ -56,7 +62,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/orders/:id/complete",
     middlewares: [
-      // validateAndTransformBody(),
+      validateAndTransformBody(AdminCompleteOrder),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
