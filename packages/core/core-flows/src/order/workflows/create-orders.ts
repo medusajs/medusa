@@ -1,5 +1,5 @@
 import { CreateOrderDTO, OrderDTO } from "@medusajs/types"
-import { MathBN, MedusaError } from "@medusajs/utils"
+import { MathBN } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
@@ -12,39 +12,11 @@ import { findOrCreateCustomerStep } from "../../definition/cart/steps/find-or-cr
 import { findSalesChannelStep } from "../../definition/cart/steps/find-sales-channel"
 import { getVariantPriceSetsStep } from "../../definition/cart/steps/get-variant-price-sets"
 import { validateVariantPricesStep } from "../../definition/cart/steps/validate-variant-prices"
-import { prepareConfirmInventoryInput } from "../../definition/cart/utils/prepare-confirm-inventory-input"
 import { prepareLineItemData } from "../../definition/cart/utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "../../definition/cart/workflows/confirm-variant-inventory"
 import { createOrdersStep, updateOrderTaxLinesStep } from "../steps"
 import { productVariantsFields } from "../utils/fields"
 import { prepareCustomLineItemData } from "../utils/prepare-custom-line-item-data"
-
-function transformInventoryInput(data) {
-  if (!data.input.items) {
-    return { items: [] }
-  }
-
-  if (!data.salesChannelLocations.length) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Sales channel ${data.input.sales_channel_id} is not associated with any stock locations.`
-    )
-  }
-
-  const items = prepareConfirmInventoryInput({
-    product_variant_inventory_items: data.productVariantInventoryItems,
-    location_ids: data.salesChannelLocations[0].stock_locations.map(
-      (l) => l.id
-    ),
-    items: data.input.items!,
-    variants: data.variants.map((v) => ({
-      id: v.id,
-      manage_inventory: v.manage_inventory,
-    })),
-  })
-
-  return { items }
-}
 
 function prepareLineItems(data) {
   const items = (data.input.items ?? []).map((item) => {
