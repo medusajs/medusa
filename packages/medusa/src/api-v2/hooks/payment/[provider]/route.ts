@@ -16,7 +16,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       payload: { data: req.body, rawData: req.rawBody, headers: req.headers },
     }
 
-    const eventBus = req.scope.resolve("eventBusService")
+    const eventBus = req.scope.resolve(ModuleRegistrationName.EVENT_BUS)
 
     // we delay the processing of the event to avoid a conflict caused by a race condition
     await eventBus.emit(PaymentWebhookEvents.WebhookReceived, event, {
