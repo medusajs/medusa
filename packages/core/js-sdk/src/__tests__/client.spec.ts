@@ -49,6 +49,13 @@ const server = setupServer(
   http.delete(`${baseUrl}/delete/123`, async ({ request, params, cookies }) => {
     return HttpResponse.json({ test: "test" })
   }),
+  http.get(`${baseUrl}/jwt`, ({ request, params, cookies }) => {
+    if (request.headers.get("authorization") === "Bearer token-123") {
+      return HttpResponse.json({
+        test: "test",
+      })
+    }
+  }),
   http.all("*", ({ request, params, cookies }) => {
     return new HttpResponse(null, {
       status: 404,
@@ -140,6 +147,36 @@ describe("Client", () => {
         method: "DELETE",
       })
       expect(resp).toEqual({ test: "test" })
+    })
+  })
+
+  describe("Authrized requests", () => {
+    it("should set the token in memory by default", async () => {
+      const token = "token-123" // Eg. from a response after a successful authentication
+      client.setToken(token)
+
+      const resp = await client.fetch<any>("jwt")
+      expect(resp).toEqual({ test: "test" })
+    })
+
+    it("should set the token in local storage if in browser", async () => {
+      // We are mimicking a browser environment here
+      global.window = {
+        localStorage: { setItem: jest.fn(), getItem: () => token } as any,
+      } as any
+
+      const token = "token-123" // Eg. from a response after a successful authentication
+      client.setToken(token)
+
+      const resp = await client.fetch<any>("jwt")
+      expect(resp).toEqual({ test: "test" })
+      expect(global.window.localStorage.setItem).toHaveBeenCalledWith(
+        "medusa_auth_token",
+        token
+      )
+
+      // Cleaning up after this specific test
+      global.window = undefined as any
     })
   })
 })
