@@ -5,12 +5,14 @@ import {
   WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { updateProductsStep } from "../steps/update-products"
+
 import {
-  associateProductsWithSalesChannelsStep,
-  detachProductsFromSalesChannelsStep,
-} from "../../sales-channel"
-import { useRemoteQueryStep } from "../../common"
+  createLinkStep,
+  removeRemoteLinkStep,
+  useRemoteQueryStep,
+} from "../../common"
 import { arrayDifference } from "@medusajs/utils"
+import { DeleteEntityInput, Modules } from "@medusajs/modules-sdk"
 
 type UpdateProductsStepInputSelector = {
   selector: ProductTypes.FilterableProductProps
@@ -69,7 +71,7 @@ function updateProductIds({
     return arrayDifference(productIds, discardedProductIds)
   }
 
-  return !input.update.sales_channels ? [] : null
+  return !input.update.sales_channels ? [] : undefined
 }
 
 function prepareSalesChannelLinks({
@@ -78,30 +80,54 @@ function prepareSalesChannelLinks({
 }: {
   updatedProducts: ProductTypes.ProductDTO[]
   input: WorkflowInput
-}): { sales_channel_id: string; product_id: string }[] {
+}): Record<string, Record<string, any>>[] {
   if ("products" in input) {
-    const links = input.products
+    return input.products
       .filter((p) => p.sales_channels)
       .flatMap((p) =>
         p.sales_channels!.map((sc) => ({
-          sales_channel_id: sc.id,
-          product_id: p.id as string,
+          [Modules.PRODUCT]: {
+            product_id: p.id,
+          },
+          [Modules.SALES_CHANNEL]: {
+            sales_channel_id: sc.id,
+          },
         }))
       )
-    return links
   }
 
   if (input.selector && input.update.sales_channels?.length) {
-    const links = updatedProducts.flatMap((p) =>
+    return updatedProducts.flatMap((p) =>
       input.update.sales_channels!.map((channel) => ({
-        sales_channel_id: channel.id,
-        product_id: p.id,
+        [Modules.PRODUCT]: {
+          product_id: p.id,
+        },
+        [Modules.SALES_CHANNEL]: {
+          sales_channel_id: channel.id,
+        },
       }))
     )
-    return links
   }
 
   return []
+}
+
+function prepareToDeleteLinks({
+  currentLinks,
+}: {
+  currentLinks: {
+    product_id: string
+    sales_channel_id: string
+  }[]
+}) {
+  return currentLinks.map(({ product_id, sales_channel_id }) => ({
+    [Modules.PRODUCT]: {
+      product_id,
+    },
+    [Modules.SALES_CHANNEL]: {
+      sales_channel_id,
+    },
+  }))
 }
 
 export const updateProductsWorkflowId = "update-products"
@@ -125,14 +151,16 @@ export const updateProductsWorkflow = createWorkflow(
       variables: { product_id: updatedProductIds },
     })
 
-    detachProductsFromSalesChannelsStep({ links: currentLinks })
+    const toDeleteLinks = transform({ currentLinks }, prepareToDeleteLinks)
+
+    removeRemoteLinkStep(toDeleteLinks as DeleteEntityInput[])
 
     const salesChannelLinks = transform(
       { input, updatedProducts },
       prepareSalesChannelLinks
     )
 
-    associateProductsWithSalesChannelsStep({ links: salesChannelLinks })
+    createLinkStep(salesChannelLinks)
 
     return updatedProducts
   }
