@@ -5261,7 +5261,7 @@ __metadata:
     "@hookform/resolvers": 3.3.2
     "@medusajs/admin-vite-plugin": 0.0.1
     "@medusajs/icons": 1.2.1
-    "@medusajs/js-sdk": 0.0.2-snapshot-20240516152256
+    "@medusajs/js-sdk": 0.0.1
     "@medusajs/types": 1.11.16
     "@medusajs/ui": 3.0.0
     "@medusajs/ui-preset": 1.1.3
@@ -5508,17 +5508,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/js-sdk@npm:0.0.2-snapshot-20240516152256":
-  version: 0.0.2-snapshot-20240516152256
-  resolution: "@medusajs/js-sdk@npm:0.0.2-snapshot-20240516152256"
-  dependencies:
-    "@medusajs/types": 1.12.0-snapshot-20240516152256
-    qs: ^6.12.1
-  checksum: 3cb66c5f51c1c902c3d31998379184325a96404913a0c7b7d444383e365b3710dbf052fe9fd799cb63aa3677bf225605a9a152d1fa499dc894a9cf0284590105
-  languageName: node
-  linkType: hard
-
-"@medusajs/js-sdk@workspace:packages/core/js-sdk":
+"@medusajs/js-sdk@0.0.1, @medusajs/js-sdk@workspace:packages/core/js-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/js-sdk@workspace:packages/core/js-sdk"
   dependencies:
@@ -6178,13 +6168,6 @@ __metadata:
     winston: ^3.8.2
   languageName: unknown
   linkType: soft
-
-"@medusajs/types@npm:1.12.0-snapshot-20240516152256":
-  version: 1.12.0-snapshot-20240516152256
-  resolution: "@medusajs/types@npm:1.12.0-snapshot-20240516152256"
-  checksum: bbfefebb846294c343471cf5bb2aae02df406372168619c70f7ec68be2b0d2427c004f760603f599daabed2dfad51ce83273bf5b07437c1643608245c7dc6a8e
-  languageName: node
-  linkType: hard
 
 "@medusajs/ui-preset@1.1.3, @medusajs/ui-preset@^1.1.3, @medusajs/ui-preset@workspace:packages/design-system/ui-preset":
   version: 0.0.0-use.local

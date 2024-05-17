@@ -122,7 +122,7 @@ export class Client {
       `${JSON.stringify(sanitizeHeaders(defaultHeaders), null, 2)}\n`
     )
 
-    return (input: FetchInput, init?: FetchArgs) => {
+    return async (input: FetchInput, init?: FetchArgs) => {
       // We always want to fetch the up-to-date JWT token before firing off a request.
       const headers = new Headers(defaultHeaders)
       const customHeaders = {
@@ -152,7 +152,7 @@ export class Client {
       )
 
       // Any non-request errors (eg. invalid JSON in the response) will be thrown as-is.
-      return fetch(
+      return await fetch(
         normalizedInput,
         normalizeRequest(init, headers, this.config)
       ).then((resp) => {
@@ -222,16 +222,18 @@ export class Client {
   }
 
   protected getTokenStorageInfo_ = () => {
+    const hasLocal = hasStorage("localStorage")
+    const hasSession = hasStorage("sessionStorage")
+
     const storageMethod =
-      this.config.auth?.jwtTokenStorageMethod ||
-      (hasStorage("localStorage") ? "local" : "memory")
+      this.config.auth?.jwtTokenStorageMethod || (hasLocal ? "local" : "memory")
     const storageKey =
       this.config.auth?.jwtTokenStorageKey || this.DEFAULT_JWT_STORAGE_KEY
 
-    if (!hasStorage("localStorage") && storageMethod === "local") {
+    if (!hasLocal && storageMethod === "local") {
       throw new Error("Local JWT storage is only available in the browser")
     }
-    if (!hasStorage("sessionStorage") && storageMethod === "session") {
+    if (!hasSession && storageMethod === "session") {
       throw new Error("Session JWT storage is only available in the browser")
     }
 

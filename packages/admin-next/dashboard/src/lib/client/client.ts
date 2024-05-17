@@ -26,7 +26,6 @@ import { users } from "./users"
 import { orders } from "./orders"
 import { workflowExecutions } from "./workflow-executions"
 import { shippingProfiles } from "./shipping-profiles"
-import { MEDUSA_BACKEND_URL } from "../medusa"
 
 export const client = {
   apiKeys: apiKeys,
@@ -59,7 +58,7 @@ export const client = {
 }
 
 export const sdk = new Medusa({
-  baseUrl: MEDUSA_BACKEND_URL,
+  baseUrl: __BACKEND_URL__ || "http://localhost:9000",
   auth: {
     type: "session",
   },
