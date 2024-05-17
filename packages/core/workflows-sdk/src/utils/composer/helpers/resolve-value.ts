@@ -57,7 +57,7 @@ export async function resolveValue(input, transactionContext) {
       )
 
       if (typeof parentRef[key] === "object") {
-        await unwrapInput(parentRef[key], parentRef[key])
+        parentRef[key] = await unwrapInput(parentRef[key], parentRef[key])
       }
     }
 

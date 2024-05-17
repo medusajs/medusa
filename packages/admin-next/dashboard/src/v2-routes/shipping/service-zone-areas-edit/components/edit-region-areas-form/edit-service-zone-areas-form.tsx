@@ -14,11 +14,10 @@ import {
   Checkbox,
   Heading,
   IconButton,
-  Input,
   Text,
   toast,
 } from "@medusajs/ui"
-import { FulfillmentSetDTO, RegionCountryDTO, RegionDTO } from "@medusajs/types"
+import { RegionCountryDTO, RegionDTO, ServiceZoneDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { XMarkMini } from "@medusajs/icons"
 
@@ -26,9 +25,11 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { Form } from "../../../../../components/common/form"
 import { SplitView } from "../../../../../components/layout/split-view"
-import { useCreateServiceZone } from "../../../../../hooks/api/stock-locations"
+import {
+  useCreateServiceZone,
+  useUpdateServiceZone,
+} from "../../../../../hooks/api/stock-locations"
 import { useEffect, useMemo, useState } from "react"
 import { useCountryTableQuery } from "../../../../regions/common/hooks/use-country-table-query"
 import { useCountries } from "../../../../regions/common/hooks/use-countries"
@@ -51,46 +52,52 @@ const ConditionsFooter = ({ onSave }: { onSave: () => void }) => {
         </Button>
       </SplitView.Close>
       <Button size="small" type="button" onClick={onSave}>
-        {t("actions.save")}
+        {t("actions.select")}
       </Button>
     </div>
   )
 }
 
-const CreateServiceZoneSchema = zod.object({
-  name: zod.string().min(1),
+const EditeServiceZoneSchema = zod.object({
   countries: zod.array(zod.string().length(2)).min(1),
 })
 
-type CreateServiceZoneFormProps = {
-  fulfillmentSet: FulfillmentSetDTO
+type EditServiceZoneAreasFormProps = {
+  fulfillmentSetId: string
   locationId: string
+  zone: ServiceZoneDTO
 }
 
-export function CreateServiceZoneForm({
-  fulfillmentSet,
+export function EditServiceZoneAreasForm({
+  fulfillmentSetId,
   locationId,
-}: CreateServiceZoneFormProps) {
+  zone,
+}: EditServiceZoneAreasFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [open, setOpen] = useState(false)
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>(
+    zone.geo_zones
+      .map((z) => z.country_code)
+      .reduce((acc, v) => {
+        acc[v] = true
+        return acc
+      }, {})
+  )
 
-  const form = useForm<zod.infer<typeof CreateServiceZoneSchema>>({
+  const form = useForm<zod.infer<typeof EditeServiceZoneSchema>>({
     defaultValues: {
-      name: "",
-      countries: [],
+      countries: zone.geo_zones.map((z) => z.country_code),
     },
-    resolver: zodResolver(CreateServiceZoneSchema),
+    resolver: zodResolver(EditeServiceZoneSchema),
   })
 
-  const { mutateAsync: createServiceZone, isPending: isLoading } =
-    useCreateServiceZone(locationId, fulfillmentSet.id)
+  const { mutateAsync: editServiceZone, isPending: isLoading } =
+    useUpdateServiceZone(fulfillmentSetId, zone.id, locationId)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      await createServiceZone({
-        name: data.name,
+      await editServiceZone({
         geo_zones: data.countries.map((iso2) => ({
           country_code: iso2,
           type: "country",
@@ -210,43 +217,13 @@ export function CreateServiceZoneForm({
           <SplitView open={open} onOpenChange={handleOpenChange}>
             <SplitView.Content className="mx-auto max-w-[720px]">
               <div className="container w-fit px-1 py-8">
-                <Heading className="mb-12 mt-8 text-2xl">
-                  {t("shipping.fulfillmentSet.create.title", {
-                    fulfillmentSet: fulfillmentSet.name,
+                <Heading className="mt-8 text-2xl">
+                  {t("shipping.serviceZone.editAreasTitle", {
+                    zone: zone.name,
                   })}
                 </Heading>
-
-                <div className="flex max-w-[340px] flex-col gap-y-6">
-                  <Form.Field
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label>
-                            {t("shipping.serviceZone.create.zoneName")}
-                          </Form.Label>
-                          <Form.Control>
-                            <Input placeholder={t("fields.name")} {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                </div>
               </div>
 
-              <Alert>
-                <Text weight="plus">
-                  {t("shipping.serviceZone.create.subtitle")}
-                </Text>
-                <Text className="text-ui-fg-subtle mt-2">
-                  {t("shipping.serviceZone.create.description")}
-                </Text>
-              </Alert>
-
-              {/*AREAS*/}
               <div className="container flex items-center justify-between py-8 pr-1">
                 <div>
                   <Text weight="plus">
