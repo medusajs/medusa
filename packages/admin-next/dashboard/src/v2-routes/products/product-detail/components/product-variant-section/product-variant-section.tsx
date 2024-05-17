@@ -1,7 +1,8 @@
 import { PencilSquare, Plus } from "@medusajs/icons"
-import { Product } from "@medusajs/medusa"
 import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { ProductDTO } from "@medusajs/types"
+import { keepPreviousData } from "@tanstack/react-query"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
@@ -12,7 +13,7 @@ import { useProductVariantTableQuery } from "./use-variant-table-query"
 import { useProductVariants } from "../../../../../hooks/api/products"
 
 type ProductVariantSectionProps = {
-  product: Product
+  product: ProductDTO
 }
 
 const PAGE_SIZE = 10
@@ -31,7 +32,7 @@ export const ProductVariantSection = ({
       ...searchParams,
     },
     {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
