@@ -34,6 +34,7 @@ import {
   removeUndefined,
   isValidHandle,
   toHandle,
+  isPresent,
 } from "@medusajs/utils"
 import {
   ProductCategoryEventData,
@@ -925,34 +926,53 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    const collectionWithProducts = await promiseAll(
-      updatedCollections.map(async (collection, i) => {
-        const input = normalizedInput.find((c) => c.id === collection.id)
+    const collections: TProductCollection[] = []
+
+    const updateSelectorAndData = updatedCollections
+      .map((collectionData) => {
+        const input = normalizedInput.find((c) => c.id === collectionData.id)
         const productsToUpdate = (input as any)?.products
 
-        await this.productService_.update(
-          {
-            selector: { collection_id: collection.id },
-            data: { collection_id: null },
-          },
-          sharedContext
-        )
+        const dissociateSelector = {
+          collection_id: collectionData.id,
+        }
+        const associateSelector = {}
 
-        if (productsToUpdate?.length > 0) {
-          await this.productService_.update(
-            productsToUpdate.map((p) => ({
-              id: p.id,
-              collection_id: collection.id,
-            })),
-            sharedContext
-          )
+        if (!!productsToUpdate?.length) {
+          const productIds = productsToUpdate.map((p) => p.id)
+          dissociateSelector["id"] = { $nin: productIds }
+          associateSelector["id"] = { $in: productIds }
         }
 
-        return { ...collection, products: productsToUpdate || [] }
-      })
-    )
+        const result: Record<string, any>[] = [
+          {
+            selector: dissociateSelector,
+            data: {
+              collection_id: null,
+            },
+          },
+        ]
 
-    return collectionWithProducts
+        if (isPresent(associateSelector)) {
+          result.push({
+            selector: associateSelector,
+            data: {
+              collection_id: collectionData.id,
+            },
+          })
+        }
+
+        collections.push({
+          ...collectionData,
+          products: productsToUpdate ?? [],
+        })
+
+        return result
+      })
+      .flat()
+
+    await this.productService_.update(updateSelectorAndData, sharedContext)
+    return collections
   }
 
   @InjectManager("baseRepository_")
