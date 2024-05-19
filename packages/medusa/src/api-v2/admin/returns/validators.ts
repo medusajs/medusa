@@ -37,12 +37,27 @@ export const AdminGetOrdersParams = createFindParams({
 
 export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
 
-export const AdminArchiveOrder = z.object({
-  order_id: z.string(),
+const ReturnShippingSchema = z.object({
+  option_id: z.string(),
+  price: z.number().optional(),
 })
-export type AdminArchiveOrderType = z.infer<typeof AdminArchiveOrder>
 
-export const AdminCompleteOrder = z.object({
-  order_id: z.string(),
+const ItemSchema = z.object({
+  id: z.string(),
+  quantity: z.number().min(1),
+  reason_id: z.string().optional(),
+  note: z.string().optional(),
 })
-export type AdminCompleteOrderType = z.infer<typeof AdminArchiveOrder>
+
+export const AdminPostReturnsReqSchema = z.object({
+  order_id: z.string(),
+  items: z.array(ItemSchema),
+  return_shipping: ReturnShippingSchema,
+  note: z.string().optional(),
+  receive_now: z.boolean().optional(),
+  refund_amount: z.number().optional(),
+  location_id: z.string().optional(),
+})
+export type AdminPostReturnsReqSchemaType = z.infer<
+  typeof AdminPostReturnsReqSchema
+>

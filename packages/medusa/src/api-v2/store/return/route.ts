@@ -1,10 +1,22 @@
-import { CreateOrderReturnDTO } from "@medusajs/types"
+import { createReturnOrderWorkflow } from "@medusajs/core-flows"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import { StorePostReturnsReqSchemaType } from "./validators"
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const input = [req.validatedBody as CreateOrderReturnDTO]
+export const POST = async (
+  req: MedusaRequest<StorePostReturnsReqSchemaType>,
+  res: MedusaResponse
+) => {
+  const input = req.validatedBody as StorePostReturnsReqSchemaType
 
-  // TODO: create return workflow
+  const workflow = createReturnOrderWorkflow(req.scope)
+  const { result, errors } = await workflow.run({
+    input,
+    throwOnError: false,
+  })
 
-  res.status(200).json({ return: {} })
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
+
+  res.status(200).json({ return: result })
 }

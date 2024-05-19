@@ -5,7 +5,7 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+} from "../../../../../types/routing"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -18,7 +18,6 @@ export const GET = async (
     variables: {
       filters: {
         ...req.filterableFields,
-        is_draft_order: false,
       },
       ...req.remoteQueryConfig.pagination,
     },

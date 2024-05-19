@@ -789,6 +789,14 @@ export interface OrderItemDTO {
   updated_at: Date
 }
 
+type OrderStatus =
+  | "pending"
+  | "completed"
+  | "draft"
+  | "archived"
+  | "canceled"
+  | "requires_action"
+
 export interface OrderDTO {
   /**
    * The ID of the order.
@@ -798,6 +806,10 @@ export interface OrderDTO {
    * The version of the order.
    */
   version: number
+  /**
+   * The status of the order.
+   */
+  status: OrderStatus
   /**
    * The ID of the region the order belongs to.
    */

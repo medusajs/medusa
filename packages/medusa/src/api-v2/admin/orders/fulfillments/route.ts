@@ -4,24 +4,6 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 
-export const GET = async (
-  req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
-) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const variables = { id: req.params.id }
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order",
-    variables,
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [order] = await remoteQuery(queryObject)
-  res.status(200).json({ order })
-}
-
 export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
@@ -30,7 +12,7 @@ export const POST = async (
 
   const variables = { id: req.params.id }
 
-  // TODO: update order
+  // TODO: Workflow fulfill items, create fulfillments and adjust inventory - v1.x - packages/medusa/src/api/routes/admin/orders/create-fulfillment.ts
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "order",

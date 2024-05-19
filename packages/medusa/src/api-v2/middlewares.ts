@@ -21,6 +21,7 @@ import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
 import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
 import { adminReservationRoutesMiddlewares } from "./admin/reservations/middlewares"
+import { adminReturnReasonRoutesMiddlewares } from "./admin/return-reasons/middlewares"
 import { adminSalesChannelRoutesMiddlewares } from "./admin/sales-channels/middlewares"
 import { adminShippingOptionRoutesMiddlewares } from "./admin/shipping-options/middlewares"
 import { adminShippingProfilesMiddlewares } from "./admin/shipping-profiles/middlewares"
@@ -37,13 +38,14 @@ import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
 import { storeCollectionRoutesMiddlewares } from "./store/collections/middlewares"
 import { storeCurrencyRoutesMiddlewares } from "./store/currencies/middlewares"
 import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
-import { storeProductRoutesMiddlewares } from "./store/products/middlewares"
-import { storeProductCategoryRoutesMiddlewares } from "./store/product-categories/middlewares"
-import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
-import { storePaymentProvidersMiddlewares } from "./store/payment-providers/middlewares"
-import { storePaymentCollectionsMiddlewares } from "./store/payment-collections/middlewares"
-import { storeShippingOptionRoutesMiddlewares } from "./store/shipping-options/middlewares"
 import { storeOrderRoutesMiddlewares } from "./store/orders/middlewares"
+import { storePaymentCollectionsMiddlewares } from "./store/payment-collections/middlewares"
+import { storePaymentProvidersMiddlewares } from "./store/payment-providers/middlewares"
+import { storeProductCategoryRoutesMiddlewares } from "./store/product-categories/middlewares"
+import { storeProductRoutesMiddlewares } from "./store/products/middlewares"
+import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
+import { storeReturnReasonRoutesMiddlewares } from "./store/return-reasons/middlewares"
+import { storeShippingOptionRoutesMiddlewares } from "./store/shipping-options/middlewares"
 
 export const config: MiddlewaresConfig = {
   routes: [
@@ -94,5 +96,7 @@ export const config: MiddlewaresConfig = {
     ...adminFulfillmentsRoutesMiddlewares,
     ...adminFulfillmentProvidersRoutesMiddlewares,
     ...storeProductRoutesMiddlewares,
+    ...storeReturnReasonRoutesMiddlewares,
+    ...adminReturnReasonRoutesMiddlewares,
   ],
 }
