@@ -8,6 +8,11 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [authenticate(/.*/, "bearer")],
   },
   {
+    method: ["DELETE"],
+    matcher: "/auth/session",
+    middlewares: [authenticate(/.*/, ["session"])],
+  },
+  {
     method: ["POST"],
     matcher: "/auth/:scope/:auth_provider/callback",
     middlewares: [],

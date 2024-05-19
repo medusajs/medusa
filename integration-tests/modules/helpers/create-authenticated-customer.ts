@@ -7,7 +7,7 @@ export const createAuthenticatedCustomer = async (
   appContainer: MedusaContainer,
   customerData: Partial<CreateCustomerDTO> = {}
 ) => {
-  const { jwt_secret } = appContainer.resolve("configModule").projectConfig
+  const { http } = appContainer.resolve("configModule").projectConfig
   const authService = appContainer.resolve(ModuleRegistrationName.AUTH)
   const customerModuleService = appContainer.resolve(
     ModuleRegistrationName.CUSTOMER
@@ -27,7 +27,7 @@ export const createAuthenticatedCustomer = async (
     app_metadata: { customer_id: customer.id },
   })
 
-  const token = jwt.sign(authUser, jwt_secret)
+  const token = jwt.sign(authUser, http.jwtSecret)
 
   return { customer, authUser, jwt: token }
 }

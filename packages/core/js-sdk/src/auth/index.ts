@@ -30,4 +30,12 @@ export class Auth {
       this.client.setToken(token)
     }
   }
+
+  logout = async () => {
+    await this.client.fetch("/auth/session", {
+      method: "DELETE",
+    })
+
+    this.client.clearToken()
+  }
 }

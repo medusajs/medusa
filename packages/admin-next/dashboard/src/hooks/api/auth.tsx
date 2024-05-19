@@ -14,3 +14,10 @@ export const useEmailPassLogin = (
     ...options,
   })
 }
+
+export const useLogout = (options?: UseMutationOptions<void, Error>) => {
+  return useMutation({
+    mutationFn: () => sdk.auth.logout(),
+    ...options,
+  })
+}
