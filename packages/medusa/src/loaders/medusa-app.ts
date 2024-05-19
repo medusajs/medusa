@@ -3,9 +3,6 @@ import {
   MedusaAppMigrateDown,
   MedusaAppMigrateUp,
   MedusaAppOutput,
-  MedusaModule,
-  MODULE_PACKAGE_NAMES,
-  Modules,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
 import {
@@ -187,29 +184,6 @@ export const loadMedusaApp = async (
     sharedResourcesConfig,
     injectedDependencies,
   })
-
-  // TODO: Remove this and make it more dynamic on ensuring all modules are loaded.
-  const requiredModuleKeys = [Modules.PRODUCT, Modules.PRICING]
-
-  const missingPackages: string[] = []
-
-  for (const requiredModuleKey of requiredModuleKeys) {
-    const isModuleInstalled = MedusaModule.isInstalled(requiredModuleKey)
-
-    if (!isModuleInstalled) {
-      missingPackages.push(
-        MODULE_PACKAGE_NAMES[requiredModuleKey] || requiredModuleKey
-      )
-    }
-  }
-
-  if (missingPackages.length) {
-    throw new Error(
-      `Medusa requires the following packages/module registration: (${missingPackages.join(
-        ", "
-      )})`
-    )
-  }
 
   if (!config.registerInContainer) {
     return medusaApp

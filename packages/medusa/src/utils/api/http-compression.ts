@@ -1,13 +1,8 @@
-import { Request, Response, NextFunction } from "express"
+import { HttpCompressionOptions, ProjectConfigOptions } from "@medusajs/types"
 import compression from "compression"
-import { Logger } from "@medusajs/types"
-import {
-  ProjectConfigOptions,
-  HttpCompressionOptions,
-} from "@medusajs/types"
+import { Request, Response } from "express"
 
 export function shouldCompressResponse(req: Request, res: Response) {
-  const logger: Logger = req.scope.resolve("logger")
   const { projectConfig } = req.scope.resolve("configModule")
   const { enabled } = compressionOptions(projectConfig)
 
@@ -27,9 +22,10 @@ export function shouldCompressResponse(req: Request, res: Response) {
 export function compressionOptions(
   config: ProjectConfigOptions
 ): HttpCompressionOptions {
-  const responseCompressionOptions = config.http_compression ?? {}
+  const responseCompressionOptions = config.http.compression ?? {}
 
-  responseCompressionOptions.enabled = responseCompressionOptions.enabled ?? false
+  responseCompressionOptions.enabled =
+    responseCompressionOptions.enabled ?? false
   responseCompressionOptions.level = responseCompressionOptions.level ?? 6
   responseCompressionOptions.memLevel = responseCompressionOptions.memLevel ?? 8
   responseCompressionOptions.threshold =

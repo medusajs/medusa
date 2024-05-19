@@ -53,19 +53,28 @@ export const POST = async (
       userData: req.validatedBody,
       authUserId: req.auth.auth_user_id,
     },
+    throwOnError: false,
   }
 
-  const { result } = await createUserAccountWorkflow(req.scope).run(input)
+  const { errors } = await createUserAccountWorkflow(req.scope).run(input)
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
+
   const user = await refetchUser(
     req.auth.auth_user_id,
     req.scope,
     req.remoteQueryConfig.fields
   )
 
-  const { jwt_secret } = req.scope.resolve(
+  const { http } = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   ).projectConfig
-  const token = jwt.sign(user, jwt_secret)
+
+  const token = jwt.sign(user, http.jwtSecret, {
+    expiresIn: http.jwtExpiresIn,
+  })
 
   res.status(200).json({ user, token })
 }

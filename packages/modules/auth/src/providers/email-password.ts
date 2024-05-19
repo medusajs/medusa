@@ -8,6 +8,8 @@ import {
 import { AuthUserService } from "@services"
 import Scrypt from "scrypt-kdf"
 
+const EXPIRATION = "1d"
+
 class EmailPasswordProvider extends AbstractAuthModuleProvider {
   public static PROVIDER = "emailpass"
   public static DISPLAY_NAME = "Email/Password Authentication"
