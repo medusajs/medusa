@@ -33,7 +33,6 @@ export const OrderFulfillment: ModuleJoinerConfig = {
       args: {
         methodSuffix: "Fulfillments",
       },
-      isList: true,
     },
   ],
   extends: [
@@ -47,6 +46,7 @@ export const OrderFulfillment: ModuleJoinerConfig = {
         primaryKey: "order_id",
         foreignKey: "id",
         alias: "fulfillment_link",
+        isList: true,
       },
     },
     {
