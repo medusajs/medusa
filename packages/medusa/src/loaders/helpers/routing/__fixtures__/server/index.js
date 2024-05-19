@@ -124,7 +124,7 @@ export const createServer = async (rootDir) => {
             user_id: opts.adminSession.userId || opts.adminSession.jwt?.userId,
             domain: "admin",
           },
-          config.projectConfig.auth.jwtSecret
+          config.projectConfig.http.jwtSecret
         )
 
         headers.Authorization = `Bearer ${token}`
@@ -137,7 +137,7 @@ export const createServer = async (rootDir) => {
               opts.clientSession.jwt?.customer_id,
             domain: "store",
           },
-          config.projectConfig.auth.jwtSecret
+          config.projectConfig.http.jwtSecret
         )
 
         headers.Authorization = `Bearer ${token}`
