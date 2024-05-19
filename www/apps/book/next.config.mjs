@@ -45,7 +45,7 @@ const withMDX = mdx({
                 process.env.VERCEL_ENV !== "production"
                   ? process.env.NEXT_PUBLIC_API_URL
                   : undefined,
-              path: "api",
+              path: "v2/api",
             },
           },
         },
@@ -91,6 +91,44 @@ const nextConfig = {
 
   transpilePackages: ["docs-ui"],
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2",
+  async rewrites() {
+    return {
+      fallback: [
+        {
+          source: "/v2/resources",
+          destination: `${
+            process.env.NEXT_PUBLIC_RESOURCES_URL || "https://localhost:3001"
+          }/v2/resources`,
+          basePath: false,
+        },
+        {
+          source: "/v2/resources/:path*",
+          destination: `${
+            process.env.NEXT_PUBLIC_RESOURCES_URL || "https://localhost:3001"
+          }/v2/resources/:path*`,
+          basePath: false,
+        },
+        // TODO comment out once we have the user guide published
+        // {
+        //   source: "/user-guide",
+        //   destination: `${process.env.NEXT_PUBLIC_USER_GUIDE_URL}/user-guide`,
+        //   basePath: false,
+        // },
+        // {
+        //   source: "/user-guide/:path*",
+        //   destination: `${process.env.NEXT_PUBLIC_USER_GUIDE_URL}/user-guide/:path*`,
+        //   basePath: false,
+        // },
+        {
+          source: "/:path*",
+          destination: `${
+            process.env.NEXT_PUBLIC_DOCS_V1_URL || "https://localhost:3000"
+          }/:path*`,
+          basePath: false,
+        },
+      ],
+    }
+  },
 }
 
 export default withMDX(nextConfig)

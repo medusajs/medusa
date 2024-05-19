@@ -1,6 +1,6 @@
 ---
 "@medusajs/notification-sendgrid": patch
-"@medusajs/notification-logger": patch
+"@medusajs/notification-local": patch
 "@medusajs/types": patch
 ---
 

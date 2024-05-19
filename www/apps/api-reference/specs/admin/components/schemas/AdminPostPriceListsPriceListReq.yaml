@@ -1,85 +1,64 @@
 type: object
-description: The details of the price list to create.
+description: SUMMARY
+x-schemaName: AdminPostPriceListsPriceListReq
 required:
-  - name
-  - description
-  - type
   - prices
 properties:
-  name:
-    description: The name of the Price List.
+  title:
     type: string
+    title: title
+    description: The price list's title.
   description:
-    description: The description of the Price List.
     type: string
+    title: description
+    description: The price list's description.
   starts_at:
-    description: The date with timezone that the Price List starts being valid.
     type: string
-    format: date
+    title: starts_at
+    description: The price list's starts at.
   ends_at:
-    description: The date with timezone that the Price List ends being valid.
     type: string
-    format: date
-  type:
-    description: The type of the Price List.
-    type: string
-    enum:
-      - sale
-      - override
-  status:
-    description: >-
-      The status of the Price List. If the status is set to `draft`, the prices
-      created in the price list will not be available of the customer.
-    type: string
-    enum:
-      - active
-      - draft
+    title: ends_at
+    description: The price list's ends at.
+  status: {}
+  type: {}
   prices:
-    description: The prices of the Price List.
     type: array
+    description: The price list's prices.
     items:
       type: object
+      description: The price's prices.
+      x-schemaName: AdminPriceListPricesCreateReq
       required:
+        - currency_code
         - amount
         - variant_id
       properties:
-        region_id:
-          description: >-
-            The ID of the Region for which the price is used. This is only
-            required if `currecny_code` is not provided.
-          type: string
         currency_code:
-          description: >-
-            The 3 character ISO currency code for which the price will be used.
-            This is only required if `region_id` is not provided.
           type: string
-          externalDocs:
-            url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
-            description: See a list of codes.
+          title: currency_code
+          description: The price's currency code.
         amount:
-          description: The amount to charge for the Product Variant.
-          type: integer
+          type: number
+          title: amount
+          description: The price's amount.
         variant_id:
-          description: The ID of the Variant for which the price is used.
           type: string
+          title: variant_id
+          description: The price's variant id.
         min_quantity:
-          description: The minimum quantity for which the price will be used.
-          type: integer
+          type: number
+          title: min_quantity
+          description: The price's min quantity.
         max_quantity:
-          description: The maximum quantity for which the price will be used.
-          type: integer
-  customer_groups:
-    type: array
-    description: An array of customer groups that the Price List applies to.
-    items:
-      type: object
-      required:
-        - id
-      properties:
-        id:
-          description: The ID of a customer group
-          type: string
-  includes_tax:
-    description: Tax included in prices of price list
-    x-featureFlag: tax_inclusive_pricing
-    type: boolean
+          type: number
+          title: max_quantity
+          description: The price's max quantity.
+        rules:
+          type: object
+          description: The price's rules.
+          properties: {}
+  rules:
+    type: object
+    description: The price list's rules.
+    properties: {}

@@ -1,25 +1,18 @@
 get:
-  operationId: GetCartsCart
+  operationId: GetCartsId
   summary: Get a Cart
-  description: Retrieve a Cart's details. This includes recalculating its totals.
+  description: >-
+    Retrieve a cart by its ID. You can expand the cart's relations or select the
+    fields that should be returned.
+  x-authenticated: false
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The cart's ID.
       required: true
-      description: The ID of the Cart.
       schema:
         type: string
-  x-codegen:
-    method: retrieve
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/store_carts_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_carts_{id}/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -27,14 +20,10 @@ get:
   tags:
     - Carts
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/StoreCartsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -43,36 +32,23 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-post:
-  operationId: PostCartsCart
-  summary: Update a Cart
-  description: >-
-    Update a Cart's details. If the cart has payment sessions and the region was
-    not changed, the payment sessions are updated. The cart's totals are also
-    recalculated.
-  parameters:
-    - in: path
-      name: id
-      required: true
-      description: The ID of the Cart.
-      schema:
-        type: string
   requestBody:
     content:
       application/json:
-        schema:
-          $ref: ../components/schemas/StorePostCartsCartReq.yaml
-  x-codegen:
-    method: update
+        schema: {}
+post:
+  operationId: PostCartsId
+  summary: Update a Cart
+  description: Update a cart's details.
+  x-authenticated: false
+  parameters:
+    - name: id
+      in: path
+      description: The cart's ID.
+      required: true
+      schema:
+        type: string
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/store_carts_{id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_carts_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -80,14 +56,10 @@ post:
   tags:
     - Carts
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/StoreCartsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -96,3 +68,7 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

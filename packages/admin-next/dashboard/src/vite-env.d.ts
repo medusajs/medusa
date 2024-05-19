@@ -8,3 +8,6 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+declare const __BACKEND_URL__: string | undefined
+declare const __BASE__: string

@@ -367,6 +367,11 @@ medusaIntegrationTestRunner({
             },
           ])
 
+          const region = await regionModuleService.create({
+            name: "US",
+            currency_code: "usd",
+          })
+
           const priceSet = await pricingModule.create({
             prices: [
               {
@@ -405,6 +410,7 @@ medusaIntegrationTestRunner({
 
           const { errors } = await createCartWorkflow(appContainer).run({
             input: {
+              region_id: region.id,
               sales_channel_id: salesChannel.id,
               items: [
                 {

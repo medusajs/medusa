@@ -1,19 +1,23 @@
 import { PencilSquare, Plus, Trash } from "@medusajs/icons"
 import { ProductCollectionDTO } from "@medusajs/types"
-import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
-import { useAdminRemoveProductsFromCollection } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
-import { useProducts } from "../../../../../hooks/api/products"
+import {
+  productsQueryKeys,
+  useProducts,
+} from "../../../../../hooks/api/products"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { ExtendedProductDTO } from "../../../../../types/api-responses"
+import { useUpdateCollectionProducts } from "../../../../../hooks/api/collections"
+import { queryClient } from "../../../../../lib/medusa"
 
 type CollectionProductSectionProps = {
   collection: ProductCollectionDTO
@@ -55,8 +59,8 @@ export const CollectionProductSection = ({
   })
 
   const prompt = usePrompt()
-  // Not implemented in 2.0
-  // const { mutateAsync } = useAdminRemoveProductsFromCollection(collection.id)
+
+  const { mutateAsync } = useUpdateCollectionProducts(collection.id)
 
   const handleRemove = async (selection: Record<string, boolean>) => {
     const ids = Object.keys(selection)
@@ -74,16 +78,18 @@ export const CollectionProductSection = ({
       return
     }
 
-    // await mutateAsync(
-    //   {
-    //     product_ids: ids,
-    //   },
-    //   {
-    //     onSuccess: () => {
-    //       queryClient.invalidateQueries(adminProductKeys.lists())
-    //     },
-    //   }
-    // )
+    try {
+      await mutateAsync({
+        remove: ids,
+      })
+
+      queryClient.invalidateQueries(productsQueryKeys.lists())
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   if (isError) {
@@ -141,7 +147,7 @@ const ProductActions = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { mutateAsync } = useAdminRemoveProductsFromCollection(collectionId)
+  const { mutateAsync } = useUpdateCollectionProducts(collectionId)
 
   const handleRemove = async () => {
     const res = await prompt({
@@ -156,10 +162,18 @@ const ProductActions = ({
     if (!res) {
       return
     }
+    try {
+      await mutateAsync({
+        remove: [product.id],
+      })
 
-    await mutateAsync({
-      product_ids: [product.id],
-    })
+      queryClient.invalidateQueries(productsQueryKeys.lists())
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (

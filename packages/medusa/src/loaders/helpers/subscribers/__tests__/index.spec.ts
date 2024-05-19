@@ -20,8 +20,7 @@ describe("SubscriberLoader", () => {
     const paths = await new SubscriberLoader(
       rootDir,
       containerMock as unknown as MedusaContainer,
-      pluginOptions,
-      "id-load-subscribers"
+      pluginOptions
     ).load()
 
     if (paths) {
@@ -82,7 +81,7 @@ describe("SubscriberLoader", () => {
     )
 
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledWith(
-      "order.canceled",
+      "order.cancelled",
       expect.any(Function),
       {
         subscriberId: "order-notifier",

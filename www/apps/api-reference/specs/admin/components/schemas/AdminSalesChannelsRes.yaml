@@ -1,8 +1,0 @@
-type: object
-description: The sales channel's details.
-required:
-  - sales_channel
-properties:
-  sales_channel:
-    description: Sales Channel's details.
-    $ref: ./SalesChannel.yaml

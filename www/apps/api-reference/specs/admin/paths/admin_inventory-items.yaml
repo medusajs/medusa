@@ -3,150 +3,21 @@ get:
   summary: List Inventory Items
   description: >-
     Retrieve a list of inventory items. The inventory items can be filtered by
-    fields such as `q` or `location_id`. The inventory items can also be
-    paginated.
+    fields such as `id`. The inventory items can also be sorted or paginated.
   x-authenticated: true
-  parameters:
-    - in: query
-      name: offset
-      description: >-
-        The number of inventory items to skip when retrieving the inventory
-        items.
-      schema:
-        type: integer
-        default: 0
-    - in: query
-      name: limit
-      description: Limit the number of inventory items returned.
-      schema:
-        type: integer
-        default: 20
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in each returned
-        inventory item.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned inventory
-        item.
-      schema:
-        type: string
-    - in: query
-      name: q
-      description: term to search inventory item's sku, title, and description.
-      schema:
-        type: string
-    - in: query
-      name: order
-      description: Field to sort-order inventory items by.
-      schema:
-        type: string
-    - in: query
-      name: location_id
-      style: form
-      explode: false
-      description: Filter by location IDs.
-      schema:
-        type: array
-        items:
-          type: string
-    - in: query
-      name: id
-      style: form
-      explode: false
-      description: Filter by the inventory ID
-      schema:
-        oneOf:
-          - type: string
-            description: inventory ID
-          - type: array
-            description: an array of inventory IDs
-            items:
-              type: string
-    - in: query
-      name: sku
-      description: Filter by SKU
-      schema:
-        type: string
-    - in: query
-      name: origin_country
-      description: Filter by origin country
-      schema:
-        type: string
-    - in: query
-      name: mid_code
-      description: Filter by MID code
-      schema:
-        type: string
-    - in: query
-      name: material
-      description: Filter by material
-      schema:
-        type: string
-    - in: query
-      name: hs_code
-      description: Filter by HS Code
-      schema:
-        type: string
-    - in: query
-      name: weight
-      description: Filter by weight
-      schema:
-        type: string
-    - in: query
-      name: length
-      description: Filter by length
-      schema:
-        type: string
-    - in: query
-      name: height
-      description: Filter by height
-      schema:
-        type: string
-    - in: query
-      name: width
-      description: Filter by width
-      schema:
-        type: string
-    - in: query
-      name: requires_shipping
-      description: Filter by whether the item requires shipping
-      schema:
-        type: string
-  x-codegen:
-    method: list
-    queryParams: AdminGetInventoryItemsParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_inventory-items/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_inventory-items/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_inventory-items/get.sh
+  parameters: []
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_inventory-items/get.sh
   tags:
     - Inventory Items
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: >-
-              ../components/schemas/AdminInventoryItemsListWithVariantsAndLocationLevelsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -159,60 +30,33 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
 post:
   operationId: PostInventoryItems
-  summary: Create an Inventory Item
-  description: Create an Inventory Item for a product variant.
+  summary: Create Inventory Item
+  description: Create a inventory item.
   x-authenticated: true
-  parameters:
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned
-        inventory item.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned inventory
-        item.
-      schema:
-        type: string
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostInventoryItemsReq.yaml
-  x-codegen:
-    method: create
-    queryParams: AdminPostInventoryItemsParams
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_inventory-items/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_inventory-items/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_inventory-items/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Inventory Items
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminInventoryItemsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

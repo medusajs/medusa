@@ -1,16 +1,20 @@
 type: object
-description: The customers to add to the customer group.
+description: SUMMARY
+x-schemaName: AdminPostCustomerGroupsGroupCustomersBatchReq
 required:
   - customer_ids
 properties:
   customer_ids:
-    description: The ids of the customers to add
     type: array
+    description: The customer group's customer ids.
     items:
       type: object
+      description: The customer id's customer ids.
+      x-schemaName: CustomerGroupsBatchCustomer
       required:
         - id
       properties:
         id:
-          description: ID of the customer
           type: string
+          title: id
+          description: The customer id's ID.

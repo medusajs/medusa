@@ -1,44 +1,29 @@
 get:
-  operationId: GetPaymentsPayment
-  summary: Get Payment details
-  description: Retrieve a Payment's details.
+  operationId: GetPaymentsId
+  summary: Get a Payment
+  description: >-
+    Retrieve a payment by its ID. You can expand the payment's relations or
+    select the fields that should be returned.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The payment's ID.
       required: true
-      description: The ID of the Payment.
       schema:
         type: string
-  x-codegen:
-    method: retrieve
-    queryParams: GetPaymentsParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_payments_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_payments_{id}/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_payments_{id}/get.sh
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_payments_{id}/get.sh
   tags:
     - Payments
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminPaymentRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -51,3 +36,7 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

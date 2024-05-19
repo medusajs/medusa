@@ -1,0 +1,123 @@
+import { Table } from "docs-ui"
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Event Name</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Data Payload</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `payment.deleted`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Triggered when a payment is deleted.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      ```ts noCopy noReport
+      {
+        // the ID of the deleted payment
+        id,
+      }
+      ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `payment-collection.deleted`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Triggered when a payment collection is deleted.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      ```ts noCopy noReport
+      {
+        // the ID of the deleted payment collection
+        id,
+      }
+      ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `payment-session.deleted`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Triggered when a payment session is deleted.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      ```ts noCopy noReport
+      {
+        // the ID of the deleted payment session
+        id,
+      }
+      ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `capture.deleted`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Triggered when a capture is deleted.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      ```ts noCopy noReport
+      {
+        // the ID of the deleted capture
+        id,
+      }
+      ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `refund.deleted`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Triggered when a refund is deleted.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      ```ts noCopy noReport
+      {
+        // the ID of the deleted refund
+        id,
+      }
+      ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

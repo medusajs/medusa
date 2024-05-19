@@ -1,7 +1,7 @@
 import path from "path"
 import { promises as fs } from "fs"
 import type { OpenAPIV3 } from "openapi-types"
-import type { Operation, Document, Version } from "@/types/openapi"
+import type { Operation, Document } from "@/types/openapi"
 import readSpecDocument from "./read-spec-document"
 import getSectionId from "./get-section-id"
 import OpenAPIParser from "@readme/openapi-parser"
@@ -12,15 +12,10 @@ type ParsedPathItemObject = OpenAPIV3.PathItemObject<Operation> & {
 
 export default async function getPathsOfTag(
   tagName: string,
-  area: string,
-  version: Version = "1"
+  area: string
 ): Promise<Document> {
   // get path files
-  const basePath = path.join(
-    process.cwd(),
-    version === "1" ? "specs" : "specs-v2",
-    `${area}/paths`
-  )
+  const basePath = path.join(process.cwd(), "specs", `${area}/paths`)
 
   const files = await fs.readdir(basePath)
 

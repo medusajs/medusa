@@ -1,5 +1,5 @@
+import Medusa from "@medusajs/js-sdk"
 import { apiKeys } from "./api-keys"
-import { auth } from "./auth"
 import { campaigns } from "./campaigns"
 import { categories } from "./categories"
 import { collections } from "./collections"
@@ -29,7 +29,6 @@ import { workflowExecutions } from "./workflow-executions"
 import { shippingProfiles } from "./shipping-profiles"
 
 export const client = {
-  auth: auth,
   apiKeys: apiKeys,
   campaigns: campaigns,
   categories: categories,
@@ -59,3 +58,10 @@ export const client = {
   stockLocations: stockLocations,
   workflowExecutions: workflowExecutions,
 }
+
+export const sdk = new Medusa({
+  baseUrl: __BACKEND_URL__ || "http://localhost:9000",
+  auth: {
+    type: "session",
+  },
+})
