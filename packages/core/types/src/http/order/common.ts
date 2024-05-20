@@ -213,6 +213,7 @@ export interface BaseOrder {
   sales_channel_id: string | null
   email: string | null
   currency_code: string
+  display_id?: string
   shipping_address?: BaseOrderAddress
   billing_address?: BaseOrderAddress
   items: BaseOrderLineItem[] | null

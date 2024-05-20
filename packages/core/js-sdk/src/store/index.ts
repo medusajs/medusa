@@ -48,7 +48,7 @@ export class Store {
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<
-        PaginatedResponse<{ collections: HttpTypes.StoreCollection }>
+        PaginatedResponse<{ collections: HttpTypes.StoreCollection[] }>
       >(`/store/collections`, {
         query,
         headers,
@@ -75,7 +75,9 @@ export class Store {
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<
-        PaginatedResponse<{ categories: HttpTypes.StoreProductCategory }>
+        PaginatedResponse<{
+          product_categories: HttpTypes.StoreProductCategory[]
+        }>
       >(`/store/product-categories`, {
         query,
         headers,
@@ -86,13 +88,12 @@ export class Store {
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{ category: HttpTypes.StoreProductCategory }>(
-        `/store/product-categories/${id}`,
-        {
-          query,
-          headers,
-        }
-      )
+      return this.client.fetch<{
+        product_category: HttpTypes.StoreProductCategory
+      }>(`/store/product-categories/${id}`, {
+        query,
+        headers,
+      })
     },
   }
 
@@ -102,7 +103,7 @@ export class Store {
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<
-        PaginatedResponse<{ products: HttpTypes.StoreProduct }>
+        PaginatedResponse<{ products: HttpTypes.StoreProduct[] }>
       >(`/store/products`, {
         query,
         headers,
@@ -251,7 +252,11 @@ export class Store {
   }
 
   public fulfillment = {
-    listCartOptions: async (query?: FindParams, headers?: ClientHeaders) => {
+    // TODO: Finalize typings for list options
+    listCartOptions: async (
+      query?: FindParams & { cart_id: string },
+      headers?: ClientHeaders
+    ) => {
       return this.client.fetch<any>(`/store/shipping-options`, {
         headers,
         query,
