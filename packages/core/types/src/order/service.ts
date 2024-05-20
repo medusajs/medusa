@@ -1506,6 +1506,12 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
+  archive(orderId: string[], sharedContext?: Context): Promise<OrderDTO[]>
+  archive(orderId: string, sharedContext?: Context): Promise<OrderDTO>
+
+  completeOrder(orderId: string[], sharedContext?: Context): Promise<OrderDTO[]>
+  completeOrder(orderId: string, sharedContext?: Context): Promise<OrderDTO>
+
   // Bundled flows
   registerFulfillment(
     data: RegisterOrderFulfillmentDTO,

@@ -11,3 +11,11 @@ export const POST = async (
 
   res.status(200).json({ user: req.auth })
 }
+
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  req.session.destroy()
+  res.json({ success: true })
+}

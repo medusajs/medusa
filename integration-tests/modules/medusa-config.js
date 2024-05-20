@@ -38,8 +38,10 @@ module.exports = {
   projectConfig: {
     database_url: DB_URL,
     database_type: "postgres",
-    jwt_secret: "test",
-    cookie_secret: "test",
+    http: {
+      jwtSecret: "test",
+      cookieSecret: "test",
+    },
   },
   featureFlags: {
     medusa_v2: enableMedusaV2,

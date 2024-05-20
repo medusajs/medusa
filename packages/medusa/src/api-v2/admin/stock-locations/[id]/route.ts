@@ -1,18 +1,21 @@
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 
 import {
   deleteStockLocationsWorkflow,
   updateStockLocationsWorkflow,
 } from "@medusajs/core-flows"
 import { MedusaError } from "@medusajs/utils"
+import { refetchStockLocation } from "../helpers"
 import {
   AdminGetStockLocationParamsType,
   AdminUpdateStockLocationType,
 } from "../validators"
-import { refetchStockLocation } from "../helpers"
 
 export const POST = async (
-  req: MedusaRequest<AdminUpdateStockLocationType>,
+  req: AuthenticatedMedusaRequest<AdminUpdateStockLocationType>,
   res: MedusaResponse
 ) => {
   const { id } = req.params
@@ -35,7 +38,7 @@ export const POST = async (
 }
 
 export const GET = async (
-  req: MedusaRequest<AdminGetStockLocationParamsType>,
+  req: AuthenticatedMedusaRequest<AdminGetStockLocationParamsType>,
   res: MedusaResponse
 ) => {
   const { id } = req.params
@@ -56,7 +59,10 @@ export const GET = async (
   res.status(200).json({ stock_location: stockLocation })
 }
 
-export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const { id } = req.params
 
   const { errors } = await deleteStockLocationsWorkflow(req.scope).run({
