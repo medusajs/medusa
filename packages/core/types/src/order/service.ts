@@ -1415,7 +1415,7 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderTransactionDTO[]>
 
   deleteTransactions(
-    returnReasonIds: string[],
+    transactionIds: string | object | string[] | object[],
     sharedContext?: Context
   ): Promise<void>
 

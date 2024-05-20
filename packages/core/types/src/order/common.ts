@@ -1270,10 +1270,6 @@ export interface OrderTransactionDTO {
    */
   reference_id: string
   /**
-   * The metadata of the transaction
-   */
-  metadata: Record<string, unknown> | null
-  /**
    * When the transaction was created
    */
   created_at: Date | string

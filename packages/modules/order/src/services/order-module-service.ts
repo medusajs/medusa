@@ -139,8 +139,8 @@ export default class OrderModuleService<
       OrderItem: { dto: OrderTypes.OrderItemDTO }
       OrderShippingMethod: { dto: OrderShippingMethod }
       ReturnReason: { dto: OrderTypes.OrderReturnReasonDTO }
-      Transaction: { dto: OrderTypes.OrderTransactionDTO }
       OrderSummary: { dto: OrderTypes.OrderSummaryDTO }
+      Transaction: { dto: OrderTypes.OrderTransactionDTO }
     }
   >(Order, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IOrderModuleService
@@ -2278,28 +2278,18 @@ export default class OrderModuleService<
     await this.confirmOrderChange(change[0].id, sharedContext)
   }
 
-  @InjectManager("baseRepository_")
-  // @ts-ignore
-  public async listTransactions(
-    filters?: any,
-    config?: FindConfig<any> | undefined,
-    sharedContext?: Context | undefined
-  ): Promise<OrderTypes.OrderTransactionDTO[]> {
-    return await super.listTransactions(filters, config, sharedContext)
-  }
-
-  public async addTransactions(
+  async addTransactions(
     transactionData: OrderTypes.CreateOrderTransactionDTO,
     sharedContext?: Context
   ): Promise<OrderTypes.OrderTransactionDTO>
 
-  public async addTransactions(
+  async addTransactions(
     transactionData: OrderTypes.CreateOrderTransactionDTO[],
     sharedContext?: Context
   ): Promise<OrderTypes.OrderTransactionDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
-  public async addTransactions(
+  @InjectManager("baseRepository_")
+  async addTransactions(
     transactionData:
       | OrderTypes.CreateOrderTransactionDTO
       | OrderTypes.CreateOrderTransactionDTO[],
@@ -2344,8 +2334,8 @@ export default class OrderModuleService<
 
   @InjectManager("baseRepository_")
   // @ts-ignore
-  public async deleteTransactions(
-    transactionIds: any,
+  async deleteTransactions(
+    transactionIds: string | object | string[] | object[],
     sharedContext?: Context
   ): Promise<void> {
     const data = Array.isArray(transactionIds)
@@ -2371,12 +2361,10 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   // @ts-ignore
-  public async softDeleteTransactions<
-    TReturnableLinkableKeys extends string = string
-  >(
-    transactionIds: string[],
+  async softDeleteTransactions<TReturnableLinkableKeys extends string>(
+    transactionIds: string | object | string[] | object[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void> {
@@ -2390,8 +2378,9 @@ export default class OrderModuleService<
       sharedContext
     )
 
-    const returned = await this.transactionService_.softDelete(
+    const returned = await super.softDeleteTransactions(
       transactionIds,
+      config,
       sharedContext
     )
 
@@ -2401,17 +2390,17 @@ export default class OrderModuleService<
       sharedContext
     )
 
-    return returned as any
+    return returned
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   // @ts-ignore
-  public async restoreTransactions<TReturnableLinkableKeys extends string>(
-    transactionIds: string[],
+  async restoreTransactions<TReturnableLinkableKeys extends string>(
+    transactionIds: string | object | string[] | object[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void> {
-    const transactions = await this.transactionService_.list(
+    const transactions = await super.listTransactions(
       {
         id: transactionIds,
       },
@@ -2422,8 +2411,9 @@ export default class OrderModuleService<
       sharedContext
     )
 
-    const returned = await this.transactionService_.restore(
-      transactionIds,
+    const returned = await super.restoreTransactions(
+      transactionIds as string[],
+      config,
       sharedContext
     )
 
@@ -2433,7 +2423,7 @@ export default class OrderModuleService<
       sharedContext
     )
 
-    return returned as any
+    return returned
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -2482,18 +2472,18 @@ export default class OrderModuleService<
     await this.orderSummaryService_.update(summaries, sharedContext)
   }
 
-  public async createReturnReasons(
+  async createReturnReasons(
     transactionData: OrderTypes.CreateOrderReturnReasonDTO,
     sharedContext?: Context
   ): Promise<OrderTypes.OrderReturnReasonDTO>
 
-  public async createReturnReasons(
+  async createReturnReasons(
     transactionData: OrderTypes.CreateOrderReturnReasonDTO[],
     sharedContext?: Context
   ): Promise<OrderTypes.OrderReturnReasonDTO[]>
 
   @InjectTransactionManager("baseRepository_")
-  public async createReturnReasons(
+  async createReturnReasons(
     returnReasonData:
       | OrderTypes.CreateOrderReturnReasonDTO
       | OrderTypes.CreateOrderReturnReasonDTO[],
@@ -2621,7 +2611,7 @@ export default class OrderModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  public async receiveReturn(
+  async receiveReturn(
     data: OrderTypes.ReceiveOrderReturnDTO,
     sharedContext?: Context
   ): Promise<void> {
