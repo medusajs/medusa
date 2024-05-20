@@ -7,22 +7,21 @@ import {
   WithCalculatedPrice,
 } from "@medusajs/types"
 import {
-  createWorkflow,
-  transform,
-  WorkflowData,
-} from "@medusajs/workflows-sdk"
-import { createLinkStep, useRemoteQueryStep } from "../../common"
-import {
-  arrayDifference,
   ContainerRegistrationKeys,
-  isDefined,
   MathBN,
   MedusaError,
-  Modules,
+  arrayDifference,
+  isDefined,
 } from "@medusajs/utils"
+import {
+  WorkflowData,
+  createWorkflow,
+  transform,
+} from "@medusajs/workflows-sdk"
+import { useRemoteQueryStep } from "../../common"
+import { createFulfillmentWorkflow } from "../../fulfillment"
 import { updateOrderTaxLinesStep } from "../steps"
 import { createReturnStep } from "../steps/create-return"
-import { createFulfillmentWorkflow } from "../../fulfillment"
 
 function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
   // TODO: need work, check canceled
@@ -204,8 +203,7 @@ function prepareFulfillmentData({
       items: fulfillmentItems,
       labels: [] as FulfillmentWorkflow.CreateFulfillmentLabelWorkflowDTO[],
       delivery_address: order.shipping_address ?? ({} as any), // TODO: should it be the stock location address?
-      order: {} as FulfillmentWorkflow.CreateFulfillmentOrderWorkflowDTO, // TODO see what todo here, is that even necessary?
-      order_id: input.order_id,
+      order: order,
     },
   }
 }

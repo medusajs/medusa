@@ -2,7 +2,7 @@ import { remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../types/routing"
+} from "../../../../../types/routing"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
@@ -12,7 +12,7 @@ export const POST = async (
 
   const variables = { id: req.params.id }
 
-  // TODO: Workflow to cancel fulfillment + adjust inventory
+  // TODO: Workflow fulfill items, create fulfillments - v1.x - packages/medusa/src/api/routes/admin/orders/create-fulfillment.ts
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "order",

@@ -5,8 +5,8 @@ import {
   IFulfillmentProvider,
 } from "@medusajs/types"
 import { ModulesSdkUtils, promiseAll } from "@medusajs/utils"
-import { MedusaError } from "medusa-core-utils"
 import { FulfillmentProvider } from "@models"
+import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
   fulfillmentProviderRepository: DAL.RepositoryService
@@ -87,7 +87,7 @@ export default class FulfillmentProviderService extends ModulesSdkUtils.internal
     providerId: string,
     data: object,
     items: object[],
-    order: object,
+    order: object | undefined,
     fulfillment: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
     const provider = this.retrieveProviderRegistration(providerId)
