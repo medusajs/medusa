@@ -243,26 +243,8 @@ export const sidebar = sidebarAttachHrefCommonOptions(
       ],
     },
     {
-      path: "/architectural-concepts",
-      title: "Architectural Concepts",
-      children: [
-        {
-          path: "/architectural-concepts/architectural-modules",
-          title: "Architectural Modules",
-        },
-        {
-          path: "/architectural-concepts/cache-module",
-          title: "Cache Module",
-        },
-        {
-          path: "/architectural-concepts/event-module",
-          title: "Event Module",
-        },
-        {
-          path: "/architectural-concepts/file-module",
-          title: "File Module",
-        },
-      ],
+      path: "/architectural-concepts/architectural-modules",
+      title: "Architectural Modules",
     },
     {
       path: "/debugging-and-testing",
