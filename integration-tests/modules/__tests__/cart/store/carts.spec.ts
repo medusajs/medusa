@@ -1,3 +1,4 @@
+import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import {
   LinkModuleUtils,
   ModuleRegistrationName,
@@ -57,6 +58,7 @@ medusaIntegrationTestRunner({
 
       let defaultRegion
       let region
+      let store
 
       beforeAll(async () => {
         appContainer = getContainer()
@@ -88,6 +90,8 @@ medusaIntegrationTestRunner({
           name: "Default Region",
           currency_code: "dkk",
         })
+
+        await createDefaultsWorkflow(appContainer).run()
       })
 
       describe("POST /store/carts", () => {

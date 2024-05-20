@@ -2,6 +2,7 @@ import {
   addShippingMethodToWorkflow,
   addToCartWorkflow,
   createCartWorkflow,
+  createDefaultsWorkflow,
   createPaymentCollectionForCartWorkflow,
   deleteLineItemsStepId,
   deleteLineItemsWorkflow,
@@ -94,6 +95,7 @@ medusaIntegrationTestRunner({
           name: "Default Region",
           currency_code: "dkk",
         })
+        await createDefaultsWorkflow(appContainer).run()
       })
 
       describe("CreateCartWorkflow", () => {

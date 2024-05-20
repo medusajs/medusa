@@ -1,5 +1,9 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { CreateStoreDTO, IStoreModuleService } from "@medusajs/types"
+import {
+  CreateStoreDTO,
+  IRegionModuleService,
+  IStoreModuleService,
+} from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { createStoresWorkflow } from "../../store"
 
@@ -11,24 +15,34 @@ export const createDefaultStoreStepId = "create-default-store"
 export const createDefaultStoreStep = createStep(
   createDefaultStoreStepId,
   async (data: CreateDefaultStoreStepInput, { container }) => {
-    const storeService = container.resolve(ModuleRegistrationName.STORE)
+    const storeService = container.resolve<IStoreModuleService>(
+      ModuleRegistrationName.STORE
+    )
+    const regionService = container.resolve<IRegionModuleService>(
+      ModuleRegistrationName.REGION
+    )
 
     let shouldDelete = false
     let [store] = await storeService.list({}, { take: 1 })
 
     if (!store) {
-      store = await createStoresWorkflow(container).run({
+      let [region] = await regionService.list({}, { take: 1 })
+
+      const { result } = await createStoresWorkflow(container).run({
         input: {
           stores: [
             {
               // TODO: Revisit for a more sophisticated approach
               ...data.store,
-              supported_currency_codes: ["usd"],
-              default_currency_code: "usd",
+              supported_currency_codes: [region?.currency_code ?? "usd"],
+              default_currency_code: region?.currency_code ?? "usd",
+              default_region_id: region?.id,
             },
           ],
         },
       })
+
+      store = result[0]
 
       shouldDelete = true
     }

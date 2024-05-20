@@ -86,6 +86,7 @@ module.exports = {
     [Modules.PRODUCT]: true,
     [Modules.PRICING]: true,
     [Modules.PROMOTION]: true,
+    [Modules.REGION]: true,
     [Modules.CUSTOMER]: true,
     [Modules.SALES_CHANNEL]: true,
     [Modules.CART]: true,
