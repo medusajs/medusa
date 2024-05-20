@@ -319,22 +319,8 @@ export const createReturnOrderWorkflow = createWorkflow(
       prepareFulfillmentData
     )
 
-    const fulfillment = createFulfillmentWorkflow.runAsStep(fulfillmentData)
+    createFulfillmentWorkflow.runAsStep(fulfillmentData)
 
     // TODO call the createReturn from the fulfillment provider
-
-    const link = transform(
-      { order_id: input.order_id, fulfillment },
-      (data) => {
-        return [
-          {
-            [Modules.ORDER]: { order_id: data.order_id },
-            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
-          },
-        ]
-      }
-    )
-
-    createLinkStep(link)
   }
 )

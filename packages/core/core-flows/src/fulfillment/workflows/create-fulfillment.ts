@@ -5,7 +5,8 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { createFulfillmentStep } from "../steps"
-import { linkOrderFulfillmentStep } from "../steps/link-order-fulfillment"
+import { Modules } from "@medusajs/utils"
+import { createLinkStep } from "../../common"
 
 export const createFulfillmentWorkflowId = "create-fulfillment-workflow"
 export const createFulfillmentWorkflow = createWorkflow(
@@ -15,14 +16,19 @@ export const createFulfillmentWorkflow = createWorkflow(
   ): WorkflowData<FulfillmentDTO> => {
     const fulfillment = createFulfillmentStep(input)
 
-    const linksToCreate = transform({ fulfillment, input }, (data) => [
-      {
-        order_id: data.input.order_id,
-        fulfillment_id: data.fulfillment.id,
-      },
-    ])
+    const link = transform(
+      { order_id: input.order_id, fulfillment },
+      (data) => {
+        return [
+          {
+            [Modules.ORDER]: { order_id: data.order_id },
+            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
+          },
+        ]
+      }
+    )
 
-    linkOrderFulfillmentStep({ links: linksToCreate })
+    createLinkStep(link)
 
     return fulfillment
   }
