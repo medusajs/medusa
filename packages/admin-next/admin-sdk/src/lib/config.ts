@@ -17,6 +17,8 @@ export async function getViteConfig(
 
   const root = path.resolve(__dirname, "./")
 
+  const backendUrl = options.backend ?? ""
+
   return {
     root: path.resolve(__dirname, "./"),
     base: options.path,
@@ -29,12 +31,7 @@ export async function getViteConfig(
     },
     define: {
       __BASE__: JSON.stringify(options.path),
-      /**
-       * TODO: Accept backend url from config to support hosting the admin elsewhere.
-       * The empty string should be the default value, as that ensures that requests
-       * are made to the server that serves the admin dashboard.
-       */
-      __BACKEND_URL__: JSON.stringify(""),
+      __BACKEND_URL__: JSON.stringify(backendUrl),
     },
     server: {
       open: true,
