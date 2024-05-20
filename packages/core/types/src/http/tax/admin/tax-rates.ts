@@ -1,9 +1,6 @@
-import { PaginatedResponse } from "../../../common"
+import { PaginatedResponse } from "../../common"
 import { TaxRegionResponse } from "./tax-regions"
 
-/**
- * @experimental
- */
 export interface TaxRateResponse {
   id: string
   rate: number | null
@@ -24,16 +21,10 @@ export interface TaxRateResponse {
   }[]
 }
 
-/**
- * @experimental
- */
 export interface AdminTaxRateResponse {
   tax_rate: TaxRateResponse
 }
 
-/**
- * @experimental
- */
-export interface AdminTaxRateListResponse extends PaginatedResponse {
+export type AdminTaxRateListResponse = PaginatedResponse<{
   tax_rates: TaxRateResponse[]
-}
+}>

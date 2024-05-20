@@ -1,6 +1,3 @@
-/**
- * @experimental
- */
 export interface AdminFulfillmentProviderResponse {
   id: string
   name: string
