@@ -9,13 +9,14 @@ import { customers } from "./customers"
 import { fulfillmentProviders } from "./fulfillment-providers"
 import { inventoryItems } from "./inventory"
 import { invites } from "./invites"
-import { orders } from "./orders"
 import { payments } from "./payments"
 import { priceLists } from "./price-lists"
 import { productTypes } from "./product-types"
 import { products } from "./products"
 import { promotions } from "./promotions"
 import { regions } from "./regions"
+import { orders } from "./orders"
+import { fulfillments } from "./fulfillments"
 import { reservations } from "./reservations"
 import { salesChannels } from "./sales-channels"
 import { shippingOptions } from "./shipping-options"
@@ -49,6 +50,7 @@ export const client = {
   invites: invites,
   inventoryItems: inventoryItems,
   reservations: reservations,
+  fulfillments: fulfillments,
   fulfillmentProviders: fulfillmentProviders,
   products: products,
   productTypes: productTypes,

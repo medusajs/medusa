@@ -159,6 +159,13 @@ export const RouteMap: RouteObject[] = [
               {
                 path: ":id",
                 lazy: () => import("../../v2-routes/orders/order-detail"),
+                children: [
+                  {
+                    path: "fulfillment",
+                    lazy: () =>
+                      import("../../v2-routes/orders/order-create-fulfillment"),
+                  },
+                ],
               },
             ],
           },

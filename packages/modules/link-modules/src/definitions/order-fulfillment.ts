@@ -7,7 +7,7 @@ export const OrderFulfillment: ModuleJoinerConfig = {
   isLink: true,
   databaseConfig: {
     tableName: "order_fulfillment",
-    idPrefix: "orderful",
+    idPrefix: "ordful",
   },
   alias: [
     {

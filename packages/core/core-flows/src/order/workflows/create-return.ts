@@ -205,6 +205,7 @@ function prepareFulfillmentData({
       labels: [] as FulfillmentWorkflow.CreateFulfillmentLabelWorkflowDTO[],
       delivery_address: order.shipping_address ?? ({} as any), // TODO: should it be the stock location address?
       order: {} as FulfillmentWorkflow.CreateFulfillmentOrderWorkflowDTO, // TODO see what todo here, is that even necessary?
+      order_id: input.order_id,
     },
   }
 }
@@ -318,22 +319,8 @@ export const createReturnOrderWorkflow = createWorkflow(
       prepareFulfillmentData
     )
 
-    const fulfillment = createFulfillmentWorkflow.runAsStep(fulfillmentData)
+    createFulfillmentWorkflow.runAsStep(fulfillmentData)
 
     // TODO call the createReturn from the fulfillment provider
-
-    const link = transform(
-      { order_id: input.order_id, fulfillment },
-      (data) => {
-        return [
-          {
-            [Modules.ORDER]: { order_id: data.order_id },
-            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
-          },
-        ]
-      }
-    )
-
-    createLinkStep(link)
   }
 )
