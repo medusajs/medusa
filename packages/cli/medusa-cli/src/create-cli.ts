@@ -324,27 +324,6 @@ function buildLocalCommands(cli, isLocalProject) {
     .command({
       command: `script [file]`,
       desc: `Run a function defined in a file.`,
-      builder: (_) =>
-        _.option(`e`, {
-          alias: `email`,
-          type: `string`,
-          describe: `User's email.`,
-        })
-          .option(`p`, {
-            alias: `password`,
-            type: `string`,
-            describe: `User's password.`,
-          })
-          .option(`i`, {
-            alias: `id`,
-            type: `string`,
-            describe: `User's id.`,
-          })
-          .option(`invite`, {
-            type: `boolean`,
-            describe: `If flag is set, an invitation will be created instead of a new user and the invite token will be returned.`,
-            default: false,
-          }),
       handler: handlerP(
         getCommandHandler(`script`, (args, cmd) => {
           cmd(args)
