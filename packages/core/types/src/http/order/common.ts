@@ -1,7 +1,4 @@
-import { BigNumberRawValue } from "../../../totals"
-import { PaginatedResponse } from "../../common"
-
-interface OrderSummary {
+interface BaseOrderSummary {
   total: number
   subtotal: number
   total_tax: number
@@ -24,7 +21,7 @@ interface OrderSummary {
   refunded_total: number
 }
 
-interface OrderAdjustmentLine {
+interface BaseOrderAdjustmentLine {
   id: string
   code?: string
   amount: number
@@ -36,17 +33,17 @@ interface OrderAdjustmentLine {
   updated_at: Date | string
 }
 
-interface OrderShippingMethodAdjustment extends OrderAdjustmentLine {
-  shipping_method: OrderShippingMethod
+interface BaseOrderShippingMethodAdjustment extends BaseOrderAdjustmentLine {
+  shipping_method: BaseOrderShippingMethod
   shipping_method_id: string
 }
 
-interface OrderLineItemAdjustment extends OrderAdjustmentLine {
-  item: OrderLineItem
+interface BaseOrderLineItemAdjustment extends BaseOrderAdjustmentLine {
+  item: BaseOrderLineItem
   item_id: string
 }
 
-interface OrderTaxLine {
+interface BaseOrderTaxLine {
   id: string
   description?: string
   tax_rate_id?: string
@@ -57,25 +54,21 @@ interface OrderTaxLine {
   updated_at: Date | string
 }
 
-interface OrderShippingMethodTaxLine extends OrderTaxLine {
-  shipping_method: OrderShippingMethod
+interface BaseOrderShippingMethodTaxLine extends BaseOrderTaxLine {
+  shipping_method: BaseOrderShippingMethod
   shipping_method_id: string
   total: number
   subtotal: number
-  raw_total?: BigNumberRawValue
-  raw_subtotal?: BigNumberRawValue
 }
 
-interface OrderLineItemTaxLine extends OrderTaxLine {
-  item: OrderLineItem
+interface BaseOrderLineItemTaxLine extends BaseOrderTaxLine {
+  item: BaseOrderLineItem
   item_id: string
   total: number
   subtotal: number
-  raw_total?: BigNumberRawValue
-  raw_subtotal?: BigNumberRawValue
 }
 
-interface OrderAddress {
+interface BaseOrderAddress {
   id: string
   customer_id?: string
   first_name?: string
@@ -93,24 +86,23 @@ interface OrderAddress {
   updated_at: Date | string
 }
 
-interface OrderShippingMethod {
+interface BaseOrderShippingMethod {
   id: string
   order_id: string
   name: string
   description?: string
   amount: number
-  raw_amount?: BigNumberRawValue
   is_tax_inclusive: boolean
   shipping_option_id: string | null
   data: Record<string, unknown> | null
   metadata: Record<string, unknown> | null
-  tax_lines?: OrderShippingMethodTaxLine[]
-  adjustments?: OrderShippingMethodAdjustment[]
+  tax_lines?: BaseOrderShippingMethodTaxLine[]
+  adjustments?: BaseOrderShippingMethodAdjustment[]
   created_at: Date | string
   updated_at: Date | string
 }
 
-interface OrderLineItem {
+interface BaseOrderLineItem {
   id: string
   title: string
   subtitle: string | null
@@ -131,14 +123,11 @@ interface OrderLineItem {
   is_discountable: boolean
   is_tax_inclusive: boolean
   compare_at_unit_price?: number
-  raw_compare_at_unit_price?: BigNumberRawValue
   unit_price: number
-  raw_unit_price?: BigNumberRawValue
   quantity: number
-  raw_quantity?: BigNumberRawValue
-  tax_lines?: OrderLineItemTaxLine[]
-  adjustments?: OrderLineItemAdjustment[]
-  detail: OrderItemDetail
+  tax_lines?: BaseOrderLineItemTaxLine[]
+  adjustments?: BaseOrderLineItemAdjustment[]
+  detail: BaseOrderItemDetail
   created_at: Date
   updated_at: Date
   metadata: Record<string, unknown> | null
@@ -153,23 +142,12 @@ interface OrderLineItem {
   tax_total: number
   discount_total: number
   discount_tax_total: number
-  raw_original_total?: BigNumberRawValue
-  raw_original_subtotal?: BigNumberRawValue
-  raw_original_tax_total?: BigNumberRawValue
-  raw_item_total?: BigNumberRawValue
-  raw_item_subtotal?: BigNumberRawValue
-  raw_item_tax_total?: BigNumberRawValue
-  raw_total?: BigNumberRawValue
-  raw_subtotal?: BigNumberRawValue
-  raw_tax_total?: BigNumberRawValue
-  raw_discount_total?: BigNumberRawValue
-  raw_discount_tax_total?: BigNumberRawValue
 }
 
-interface OrderItemDetail {
+interface BaseOrderItemDetail {
   id: string
   item_id: string
-  item: OrderLineItem
+  item: BaseOrderLineItem
   quantity: number
   fulfilled_quantity: number
   shipped_quantity: number
@@ -177,22 +155,15 @@ interface OrderItemDetail {
   return_received_quantity: number
   return_dismissed_quantity: number
   written_off_quantity: number
-  raw_quantity?: BigNumberRawValue
-  raw_fulfilled_quantity?: BigNumberRawValue
-  raw_shipped_quantity?: BigNumberRawValue
-  raw_return_requested_quantity?: BigNumberRawValue
-  raw_return_received_quantity?: BigNumberRawValue
-  raw_return_dismissed_quantity?: BigNumberRawValue
-  raw_written_off_quantity?: BigNumberRawValue
   metadata: Record<string, unknown> | null
   created_at: Date
   updated_at: Date
 }
 
-interface OrderChange {
+interface BaseOrderChange {
   id: string
   order_id: string
-  actions: OrderChangeAction[]
+  actions: BaseOrderChangeAction[]
   status: string
   requested_by: string | null
   requested_at: Date | string | null
@@ -208,10 +179,10 @@ interface OrderChange {
   updated_at: Date | string
 }
 
-interface OrderChangeAction {
+interface BaseOrderChangeAction {
   id: string
   order_change_id: string | null
-  order_change: OrderChange | null
+  order_change: BaseOrderChange | null
   order_id: string | null
   reference: string
   reference_id: string
@@ -222,11 +193,10 @@ interface OrderChangeAction {
   updated_at: Date | string
 }
 
-interface OrderTransaction {
+interface BaseOrderTransaction {
   id: string
   order_id: string
   amount: number
-  raw_amount?: BigNumberRawValue
   currency_code: string
   reference: string
   reference_id: string
@@ -235,7 +205,7 @@ interface OrderTransaction {
   updated_at: Date | string
 }
 
-export interface OrderResponse {
+export interface BaseOrder {
   id: string
   version: number
   region_id: string | null
@@ -243,12 +213,13 @@ export interface OrderResponse {
   sales_channel_id: string | null
   email: string | null
   currency_code: string
-  shipping_address?: OrderAddress
-  billing_address?: OrderAddress
-  items: OrderLineItem[] | null
-  shipping_methods: OrderShippingMethod[] | null
-  transactions?: OrderTransaction[]
-  summary: OrderSummary
+  display_id?: string
+  shipping_address?: BaseOrderAddress
+  billing_address?: BaseOrderAddress
+  items: BaseOrderLineItem[] | null
+  shipping_methods: BaseOrderShippingMethod[] | null
+  transactions?: BaseOrderTransaction[]
+  summary: BaseOrderSummary
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
@@ -274,34 +245,4 @@ export interface OrderResponse {
   original_shipping_total: number
   original_shipping_subtotal: number
   original_shipping_tax_total: number
-  raw_original_item_total?: BigNumberRawValue
-  raw_original_item_subtotal?: BigNumberRawValue
-  raw_original_item_tax_total?: BigNumberRawValue
-  raw_item_total?: BigNumberRawValue
-  raw_item_subtotal?: BigNumberRawValue
-  raw_item_tax_total?: BigNumberRawValue
-  raw_original_total?: BigNumberRawValue
-  raw_original_subtotal?: BigNumberRawValue
-  raw_original_tax_total?: BigNumberRawValue
-  raw_total?: BigNumberRawValue
-  raw_subtotal?: BigNumberRawValue
-  raw_tax_total?: BigNumberRawValue
-  raw_discount_total?: BigNumberRawValue
-  raw_discount_tax_total?: BigNumberRawValue
-  raw_gift_card_total?: BigNumberRawValue
-  raw_gift_card_tax_total?: BigNumberRawValue
-  raw_shipping_total?: BigNumberRawValue
-  raw_shipping_subtotal?: BigNumberRawValue
-  raw_shipping_tax_total?: BigNumberRawValue
-  raw_original_shipping_total?: BigNumberRawValue
-  raw_original_shipping_subtotal?: BigNumberRawValue
-  raw_original_shipping_tax_total?: BigNumberRawValue
-}
-
-export type AdminOrderListResponse = PaginatedResponse<{
-  orders: OrderResponse[]
-}>
-
-export interface AdminOrderResponse {
-  order: OrderResponse
 }
