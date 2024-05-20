@@ -205,6 +205,7 @@ function prepareFulfillmentData({
       labels: [] as FulfillmentWorkflow.CreateFulfillmentLabelWorkflowDTO[],
       delivery_address: order.shipping_address ?? ({} as any), // TODO: should it be the stock location address?
       order: {} as FulfillmentWorkflow.CreateFulfillmentOrderWorkflowDTO, // TODO see what todo here, is that even necessary?
+      order_id: input.order_id,
     },
   }
 }
