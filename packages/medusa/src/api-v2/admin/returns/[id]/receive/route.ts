@@ -7,18 +7,17 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 
-export const GET = async (
+export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order",
+    entryPoint: "return",
     variables: {
       filters: {
         ...req.filterableFields,
-        is_draft_order: false,
       },
       ...req.remoteQueryConfig.pagination,
     },
