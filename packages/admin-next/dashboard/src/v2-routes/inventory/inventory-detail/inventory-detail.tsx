@@ -23,7 +23,7 @@ export const InventoryDetail = () => {
   } = useInventoryItem(
     id!,
     {
-      fields: "*variants",
+      fields: "*variant",
     },
     {
       initialData,
