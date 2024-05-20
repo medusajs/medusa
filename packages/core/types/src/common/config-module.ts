@@ -858,6 +858,10 @@ export type ConfigModule = {
    * :::
    */
   featureFlags: Record<string, boolean | string>
+
+  directories?: {
+    srcDir?: string
+  }
 }
 
 export type PluginDetails = {

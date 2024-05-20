@@ -16,6 +16,11 @@ export async function registerProjectWorkflows({
   configModule,
 }) {
   const [resolved] =
-    getResolvedPlugins(rootDirectory, configModule, "dist", true) || []
+    getResolvedPlugins(
+      rootDirectory,
+      configModule,
+      configModule.directories?.srcDir ?? "dist",
+      true
+    ) || []
   await registerWorkflows(resolved)
 }
