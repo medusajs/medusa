@@ -38,6 +38,9 @@ export type OrderSummaryDTO = {
 
   balance: BigNumberValue
   future_balance: BigNumberValue
+
+  paid_total: BigNumberValue
+  refunded_total: BigNumberValue
 }
 
 export interface OrderAdjustmentLineDTO {

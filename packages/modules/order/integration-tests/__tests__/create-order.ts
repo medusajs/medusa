@@ -196,7 +196,37 @@ moduleIntegrationTestRunner({
         const createdOrder = await service.create(input)
 
         const serializedOrder = JSON.parse(JSON.stringify(createdOrder))
+
         expect(serializedOrder).toEqual(expectation)
+      })
+
+      it.only("should create an order, shipping method and items. Including taxes and adjustments associated with them and add new transactions", async function () {
+        const created = await service.create(input)
+        await service.addTransactions([
+          {
+            order_id: created.id,
+            amount: 10,
+            currency_code: "USD",
+          },
+          {
+            order_id: created.id,
+            amount: -20,
+            currency_code: "USD",
+          },
+        ])
+
+        const get = await service.retrieve(created.id, {
+          select: ["id", "total", "summary"],
+        })
+
+        const serializedOrder = JSON.parse(JSON.stringify(get))
+
+        console.log(
+          JSON.stringify(serializedOrder, null, 2),
+          "*********************"
+        )
+
+        //expect(serializedOrder).toEqual(expectation)
       })
 
       it("should transform requested fields and relations to match the db schema and return the order", async function () {

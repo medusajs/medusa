@@ -12,7 +12,7 @@ export const POST = async (
 
   const variables = { id: req.params.id }
 
-  // TODO: Workflow fulfill items, create fulfillments and adjust inventory - v1.x - packages/medusa/src/api/routes/admin/orders/create-fulfillment.ts
+  // TODO: Workflow fulfill items, create fulfillments - v1.x - packages/medusa/src/api/routes/admin/orders/create-fulfillment.ts
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "order",

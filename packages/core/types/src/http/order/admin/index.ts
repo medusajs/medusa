@@ -20,6 +20,8 @@ interface OrderSummary {
   future_projected_total: number
   balance: number
   future_balance: number
+  paid_total: number
+  refunded_total: number
 }
 
 interface OrderAdjustmentLine {

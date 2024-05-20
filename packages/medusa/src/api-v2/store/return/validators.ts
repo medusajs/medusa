@@ -32,7 +32,6 @@ export const StorePostReturnsReqSchema = z.object({
   return_shipping: ReturnShippingSchema,
   note: z.string().optional(),
   receive_now: z.boolean().optional(),
-  refund_amount: z.number().optional(),
   location_id: z.string().optional(),
 })
 export type StorePostReturnsReqSchemaType = z.infer<
