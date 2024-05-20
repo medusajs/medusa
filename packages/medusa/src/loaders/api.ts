@@ -1,19 +1,18 @@
-import { FlagRouter } from "@medusajs/utils"
-import { AwilixContainer } from "awilix"
+import { ContainerRegistrationKeys, FlagRouter } from "@medusajs/utils"
 import { Express } from "express"
 import path from "path"
 import qs from "qs"
 import { RoutesLoader } from "./helpers/routing"
-import { ConfigModule } from "@medusajs/types"
+import { MedusaContainer, PluginDetails } from "@medusajs/types"
+import glob from "glob"
 
 type Options = {
   app: Express
-  container: AwilixContainer
-  configModule: ConfigModule
-  featureFlagRouter?: FlagRouter
+  plugins: PluginDetails[]
+  container: MedusaContainer
 }
 
-export default async ({ app, configModule }: Options) => {
+export default async ({ app, container, plugins }: Options) => {
   // This is a workaround for the issue described here: https://github.com/expressjs/express/issues/3454
   // We parse the url and get the qs to be parsed and override the query prop from the request
   app.use(function (req, res, next) {
@@ -35,14 +34,27 @@ export default async ({ app, configModule }: Options) => {
      */
     await new RoutesLoader({
       app: app,
+      configModule: container.resolve(ContainerRegistrationKeys.CONFIG_MODULE),
       rootDir: path.join(__dirname, "../api-v2"),
-      configModule,
     }).load()
   } catch (err) {
     throw Error(
-      "An error occurred while registering Medusa Core API Routes. See error in logs for more details."
+      "An error occurred while registering Medusa Core API Routes. See error in logs for more details.",
+      { cause: err }
     )
   }
+
+  await Promise.all(
+    plugins.map(async (pluginDetails) => {
+      return new RoutesLoader({
+        app: app,
+        configModule: container.resolve(
+          ContainerRegistrationKeys.CONFIG_MODULE
+        ),
+        rootDir: pluginDetails.resolve,
+      }).load()
+    })
+  )
 
   return app
 }

@@ -7,6 +7,7 @@ import {
 } from "@medusajs/modules-sdk"
 import {
   CommonTypes,
+  ConfigModule,
   InternalModuleDeclaration,
   LoadedModule,
   MedusaContainer,
@@ -141,15 +142,10 @@ export async function revertMedusaApp({
   })
 }
 
-export const loadMedusaApp = async (
+export const loadModules = async (
   {
-    configModule,
     container,
   }: {
-    configModule: {
-      modules?: CommonTypes.ConfigModule["modules"]
-      projectConfig: CommonTypes.ConfigModule["projectConfig"]
-    }
     container: MedusaContainer
   },
   config = { registerInContainer: true }
@@ -162,6 +158,10 @@ export const loadMedusaApp = async (
       ContainerRegistrationKeys.LOGGER
     ),
   }
+
+  const configModule: ConfigModule = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
 
   const sharedResourcesConfig = {
     database: {
@@ -262,4 +262,4 @@ export async function runModulesLoader({
   })
 }
 
-export default loadMedusaApp
+export default loadModules

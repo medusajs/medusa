@@ -9,7 +9,7 @@ import configModuleLoader from "../loaders/config"
 import featureFlagLoader from "../loaders/feature-flags"
 import Logger from "../loaders/logger"
 import {
-  loadMedusaApp,
+  loadModules,
   migrateMedusaApp,
   revertMedusaApp,
 } from "../loaders/medusa-app"
@@ -27,7 +27,7 @@ const runLinkMigrations = async (directory) => {
 
   await pgConnectionLoader({ configModule, container })
 
-  const { runMigrations } = await loadMedusaApp(
+  const { runMigrations } = await loadModules(
     { configModule, container },
     { registerInContainer: false }
   )

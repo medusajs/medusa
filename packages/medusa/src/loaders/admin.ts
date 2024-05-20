@@ -1,9 +1,11 @@
 import { AdminOptions, ConfigModule } from "@medusajs/types"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { AwilixContainer } from "awilix"
 import { Express } from "express"
 
 type Options = {
   app: Express
-  configModule: ConfigModule
+  adminConfig: ConfigModule["admin"]
 }
 
 type IntializedOptions = Required<
@@ -11,17 +13,15 @@ type IntializedOptions = Required<
 > &
   AdminOptions
 
-export default async function adminLoader({ app, configModule }: Options) {
-  const { admin } = configModule
-
+export default async function adminLoader({ app, adminConfig }: Options) {
   const adminOptions: IntializedOptions = {
     disable: false,
     path: "/app",
     outDir: "./build",
-    ...admin,
+    ...adminConfig,
   }
 
-  if (admin?.disable) {
+  if (adminOptions?.disable) {
     return app
   }
 
