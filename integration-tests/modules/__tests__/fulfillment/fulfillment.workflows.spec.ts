@@ -69,6 +69,7 @@ medusaIntegrationTestRunner({
             const data = generateCreateFulfillmentData({
               provider_id: providerId,
               shipping_option_id: shippingOption.id,
+              order_id: "fake-order",
             })
             const { errors } = await workflow.run({
               input: data,

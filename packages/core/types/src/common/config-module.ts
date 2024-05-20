@@ -34,6 +34,10 @@ export type AdminOptions = {
    */
   outDir?: string
   /**
+   * The URL of your Medusa server. Defaults to an empty string, which means requests will hit the same server that serves the dashboard.
+   */
+  backendUrl?: string
+  /**
    * Configure the Vite configuration for the admin dashboard. This function receives the default Vite configuration
    * and returns the modified configuration. The default value is `undefined`.
    */
