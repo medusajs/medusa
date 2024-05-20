@@ -22,7 +22,6 @@ import { SubscriberLoader } from "./helpers/subscribers"
 type Options = {
   directory: string
   expressApp: Express
-  isTest: boolean
 }
 
 const isWorkerMode = (configModule) => {
