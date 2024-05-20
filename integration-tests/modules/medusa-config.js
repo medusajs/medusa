@@ -31,12 +31,17 @@ const customFulfillmentProvider = {
 }
 
 module.exports = {
+  admin: {
+    disable: true,
+  },
   plugins: [],
   projectConfig: {
     database_url: DB_URL,
     database_type: "postgres",
-    jwt_secret: "test",
-    cookie_secret: "test",
+    http: {
+      jwtSecret: "test",
+      cookieSecret: "test",
+    },
   },
   featureFlags: {
     medusa_v2: enableMedusaV2,

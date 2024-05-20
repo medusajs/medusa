@@ -1,8 +1,0 @@
-type: object
-description: Details on whether the email exists.
-required:
-  - exists
-properties:
-  exists:
-    description: Whether email exists or not.
-    type: boolean

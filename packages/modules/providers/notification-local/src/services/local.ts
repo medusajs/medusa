@@ -38,9 +38,9 @@ export class LocalNotificationService extends AbstractNotificationProviderServic
     }
 
     const message =
-      `Attempting to send a notification to: ${notification.to}` +
-      ` on the channel: ${notification.channel} with template: ${notification.template}` +
-      ` and data: ${JSON.stringify(notification.data)}`
+      `Attempting to send a notification to: '${notification.to}'` +
+      ` on the channel: '${notification.channel}' with template: '${notification.template}'` +
+      ` and data: '${JSON.stringify(notification.data)}'`
 
     this.logger_.info(message)
     return {}

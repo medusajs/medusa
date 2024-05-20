@@ -6,6 +6,7 @@ import {
   CampaignDTO,
   CurrencyDTO,
   CustomerGroupDTO,
+  FulfillmentDTO,
   FulfillmentProviderDTO,
   InventoryNext,
   InviteDTO,
@@ -73,6 +74,11 @@ export type StoreListRes = { stores: ExtendedStoreDTO[] } & ListRes
 export type RegionRes = { region: RegionDTO }
 export type RegionListRes = { regions: RegionDTO[] } & ListRes
 export type RegionDeleteRes = DeleteRes
+
+// Fulfillments
+export type FulfillmentRes = { fulfillment: FulfillmentDTO }
+export type FulfillmentListRes = { fulfillments: FulfillmentDTO[] } & ListRes
+export type FulfillmentDeleteRes = DeleteRes
 
 // Reservations
 export type ReservationRes = { reservation: InventoryNext.ReservationItemDTO }

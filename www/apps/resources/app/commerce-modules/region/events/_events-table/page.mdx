@@ -1,0 +1,57 @@
+import { Table } from "docs-ui"
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Event Name</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Data Payload</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `region.deleted`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Triggered when a region is deleted.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      ```ts noCopy noReport
+      {
+        // the ID of the deleted region
+        id,
+      }
+      ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `country.deleted`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Triggered when a country is deleted.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      ```ts noCopy noReport
+      {
+        // the ID of the deleted country
+        id,
+      }
+      ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

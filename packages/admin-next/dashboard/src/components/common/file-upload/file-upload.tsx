@@ -64,9 +64,11 @@ export const FileUpload = ({
 
     const fileList = Array.from(files)
     const fileObj = fileList.map((file) => {
+      const id = Math.random().toString(36).substring(7)
+
       const previewUrl = URL.createObjectURL(file)
       return {
-        id: crypto.randomUUID(),
+        id: id,
         url: previewUrl,
         file,
       }

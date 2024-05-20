@@ -1,34 +1,54 @@
 type: object
-description: The details of the tax rate to create.
+description: SUMMARY
+x-schemaName: AdminPostTaxRatesReq
 required:
-  - code
   - name
-  - region_id
+  - tax_region_id
 properties:
-  code:
-    type: string
-    description: The code of the tax rate.
-  name:
-    type: string
-    description: The name of the tax rate.
-  region_id:
-    type: string
-    description: The ID of the Region that the tax rate belongs to.
   rate:
     type: number
-    description: The numeric rate to charge.
-  products:
+    title: rate
+    description: The tax rate's rate.
+  code:
+    type: string
+    title: code
+    description: The tax rate's code.
+  rules:
     type: array
-    description: The IDs of the products associated with this tax rate.
+    description: The tax rate's rules.
     items:
-      type: string
-  shipping_options:
-    type: array
-    description: The IDs of the shipping options associated with this tax rate
-    items:
-      type: string
-  product_types:
-    type: array
-    description: The IDs of the types of products associated with this tax rate
-    items:
-      type: string
+      type: object
+      description: The rule's rules.
+      x-schemaName: CreateTaxRateRule
+      required:
+        - reference
+        - reference_id
+      properties:
+        reference:
+          type: string
+          title: reference
+          description: The rule's reference.
+        reference_id:
+          type: string
+          title: reference_id
+          description: The rule's reference id.
+  name:
+    type: string
+    title: name
+    description: The tax rate's name.
+  is_default:
+    type: boolean
+    title: is_default
+    description: The tax rate's is default.
+  is_combinable:
+    type: boolean
+    title: is_combinable
+    description: The tax rate's is combinable.
+  tax_region_id:
+    type: string
+    title: tax_region_id
+    description: The tax rate's tax region id.
+  metadata:
+    type: object
+    description: The tax rate's metadata.
+    properties: {}

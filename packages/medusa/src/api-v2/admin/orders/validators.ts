@@ -36,3 +36,13 @@ export const AdminGetOrdersParams = createFindParams({
 )
 
 export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
+
+export const AdminArchiveOrder = z.object({
+  order_id: z.string(),
+})
+export type AdminArchiveOrderType = z.infer<typeof AdminArchiveOrder>
+
+export const AdminCompleteOrder = z.object({
+  order_id: z.string(),
+})
+export type AdminCompleteOrderType = z.infer<typeof AdminArchiveOrder>

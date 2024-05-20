@@ -7,14 +7,7 @@
   "access": "public",
   "baseBranch": "develop",
   "updateInternalDependencies": "patch",
-  "ignore": [
-    "integration-tests-api",
-    "integration-tests-modules",
-    "@medusajs/dashboard",
-    "@medusajs/admin-shared",
-    "@medusajs/admin-bundler",
-    "@medusajs/vite-plugin-extension"
-  ],
+  "ignore": ["integration-tests-api", "integration-tests-modules"],
   "snapshot": {
     "useCalculatedVersion": true
   },

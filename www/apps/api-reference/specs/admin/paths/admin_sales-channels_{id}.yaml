@@ -1,43 +1,29 @@
 get:
-  operationId: GetSalesChannelsSalesChannel
+  operationId: GetSalesChannelsId
   summary: Get a Sales Channel
-  description: Retrieve a sales channel's details.
+  description: >-
+    Retrieve a sales channel by its ID. You can expand the sales channel's
+    relations or select the fields that should be returned.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The sales channel's ID.
       required: true
-      description: The ID of the Sales channel.
       schema:
         type: string
-  x-codegen:
-    method: retrieve
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_sales-channels_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_sales-channels_{id}/get.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_sales-channels_{id}/get.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Sales Channels
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminSalesChannelsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -50,51 +36,34 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-post:
-  operationId: PostSalesChannelsSalesChannel
-  summary: Update a Sales Channel
-  description: Update a Sales Channel's details.
-  x-authenticated: true
-  parameters:
-    - in: path
-      name: id
-      required: true
-      description: The ID of the Sales Channel.
-      schema:
-        type: string
   requestBody:
     content:
       application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostSalesChannelsSalesChannelReq.yaml
-  x-codegen:
-    method: update
+        schema: {}
+post:
+  operationId: PostSalesChannelsId
+  summary: Update a Sales Channel
+  description: Update a sales channel's details.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The sales channel's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_sales-channels_{id}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_sales-channels_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_sales-channels_{id}/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Sales Channels
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminSalesChannelsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -107,48 +76,34 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
 delete:
-  operationId: DeleteSalesChannelsSalesChannel
+  operationId: DeleteSalesChannelsId
   summary: Delete a Sales Channel
-  description: >-
-    Delete a sales channel. Associated products, stock locations, and other
-    resources are not deleted.
+  description: Delete a sales channel.
   x-authenticated: true
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The sales channel's ID.
       required: true
-      description: The ID of the Sales channel.
       schema:
         type: string
-  x-codegen:
-    method: delete
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_sales-channels_{id}/delete.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_sales-channels_{id}/delete.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_sales-channels_{id}/delete.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Sales Channels
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminSalesChannelsDeleteRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -161,3 +116,7 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

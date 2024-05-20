@@ -62,6 +62,7 @@
   },
   "actions": {
     "save": "Save",
+    "select": "Select",
     "saveAsDraft": "Save as draft",
     "publish": "Publish",
     "create": "Create",
@@ -528,8 +529,20 @@
       "unfulfilledItems": "Unfulfilled Items",
       "statusLabel": "Fulfillment status",
       "statusTitle": "Fulfillment Status",
-      "awaitingFullfillmentBadge": "Awaiting fulfillment",
+      "fulfillItems": "Fulfill items",
+      "awaitingFulfillmentBadge": "Awaiting fulfillment",
       "number": "Fulfillment #{{number}}",
+      "itemsToFulfill": "Items to fulfill",
+      "create": "Create Fulfillment",
+      "available": "Available",
+      "inStock": "In stock",
+      "itemsToFulfillDesc": "Choose items and quantities to fulfill",
+      "locationDescription": "Choose which location you want to fulfill items from.",
+      "error": {
+        "wrongQuantity": "Only one item is available for fulfillment",
+        "wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",
+        "noItems": "No items to fulfill."
+      },
       "status": {
         "notFulfilled": "Not fulfilled",
         "partiallyFulfilled": "Partially fulfilled",
@@ -542,6 +555,7 @@
         "requiresAction": "Requires action"
       },
       "toast": {
+        "created": "Fulfillment created successfully",
         "canceled": "Fulfillment successfully canceled",
         "fulfillmentShipped": "Cannot cancel an already shipped fulfillment"
       },
@@ -653,8 +667,8 @@
     }
   },
   "shipping": {
-    "title": "Location & Shipping",
-    "domain": "Location & Shipping",
+    "title": "Locations & Shipping",
+    "domain": "Locations & Shipping",
     "description": "Choose where you ship and how much you charge for shipping at checkout. Define shipping options specific for your locations.",
     "createLocation": "Create location",
     "createLocationDetailsHint": "Specify the details of the location.",
@@ -714,10 +728,12 @@
       "edit": {
         "title": "Edit Service Zone"
       },
+      "editAreasTitle": "Manage {{zone}} areas",
       "deleteWarning": "Are you sure you want to delete \"{{name}}\". This will also delete all assocciated shipping options.",
       "toast": {
         "delete": "Zone \"{{name}}\" deleted successfully."
       },
+      "manageAreas": "Manage areas",
       "editPrices": "Edit prices",
       "editOption": "Edit option",
       "optionsLength_one": "shipping option",
@@ -745,8 +761,8 @@
         "allocation": "Shipping amount",
         "fixed": "Fixed",
         "fixedDescription": "Shipping option's price is always the same amount.",
-        "enable": "Enable in store",
-        "enableDescription": "Enable or disable the shipping option visiblity in store",
+        "enable": "Show publicly",
+        "enableDescription": "When disabled, the shipping option can only be applied by admins.",
         "calculated": "Calculated",
         "calculatedDescription": "Shipping option's price is calculated by the fulfillment provider.",
         "profile": "Shipping profile"

@@ -40,7 +40,7 @@ export const OrderDetail = () => {
         <OrderGeneralSection order={order} />
         <OrderSummarySection order={order} />
         {/*<OrderPaymentSection order={order} />*/}
-        {/*<OrderFulfillmentSection order={order} />*/}
+        <OrderFulfillmentSection order={order} />
         <div className="flex flex-col gap-y-2 xl:hidden">
           <OrderCustomerSection order={order} />
           <OrderActivitySection order={order} />

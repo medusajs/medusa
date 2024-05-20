@@ -1,5 +1,5 @@
 import { ListShippingOptionsForCartWorkflowInputDTO } from "@medusajs/types"
-import { deepFlatMap, MedusaError } from "@medusajs/utils"
+import { deepFlatMap, isPresent, MedusaError } from "@medusajs/utils"
 import {
   createWorkflow,
   transform,
@@ -78,7 +78,10 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
           ({ shipping_options }) => {
             const { calculated_price, ...options } = shipping_options ?? {}
 
-            if (options?.id && !calculated_price) {
+            if (
+              options?.id &&
+              !isPresent(calculated_price?.calculated_amount)
+            ) {
               optionsMissingPrices.push(options.id)
             }
 

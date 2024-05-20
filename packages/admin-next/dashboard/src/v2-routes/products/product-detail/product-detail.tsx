@@ -9,12 +9,13 @@ import { ProductSalesChannelSection } from "./components/product-sales-channel-s
 import { ProductVariantSection } from "./components/product-variant-section"
 import { productLoader } from "./loader"
 
-import after from "medusa-admin:widgets/product/details/after"
-import before from "medusa-admin:widgets/product/details/before"
-import sideAfter from "medusa-admin:widgets/product/details/side/after"
-import sideBefore from "medusa-admin:widgets/product/details/side/before"
-import { ProductOrganizationSection } from "./components/product-organization-section"
+// import after from "medusa-admin:widgets/product/details/after"
+// import before from "medusa-admin:widgets/product/details/before"
+// import sideAfter from "medusa-admin:widgets/product/details/side/after"
+// import sideBefore from "medusa-admin:widgets/product/details/side/before"
+
 import { useProduct } from "../../../hooks/api/products"
+import { ProductOrganizationSection } from "./components/product-organization-section"
 
 // TODO: Use product domain translations only
 export const ProductDetail = () => {
@@ -37,50 +38,50 @@ export const ProductDetail = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => {
+      {/* {before.widgets.map((w, i) => {
         return (
           <div key={i}>
             <w.Component />
           </div>
         )
-      })}
+      })} */}
 
       <div className="flex flex-col gap-x-4 lg:flex-row lg:items-start">
-        <div className="w-full flex flex-col gap-y-2">
+        <div className="flex w-full flex-col gap-y-2">
           <ProductGeneralSection product={product} />
           <ProductMediaSection product={product} />
           <ProductOptionSection product={product} />
           <ProductVariantSection product={product} />
-          {after.widgets.map((w, i) => {
+          {/* {after.widgets.map((w, i) => {
             return (
               <div key={i}>
                 <w.Component />
               </div>
             )
-          })}
+          })} */}
 
           <div className="hidden lg:block">
             <JsonViewSection data={product} root="product" />
           </div>
         </div>
-        <div className="w-full lg:max-w-[400px] max-w-[100%] mt-2 lg:mt-0 flex flex-col gap-y-2">
-          {sideBefore.widgets.map((w, i) => {
+        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 lg:mt-0 lg:max-w-[400px]">
+          {/* {sideBefore.widgets.map((w, i) => {
             return (
               <div key={i}>
                 <w.Component />
               </div>
             )
-          })}
+          })} */}
           <ProductSalesChannelSection product={product} />
           <ProductOrganizationSection product={product} />
           <ProductAttributeSection product={product} />
-          {sideAfter.widgets.map((w, i) => {
+          {/* {sideAfter.widgets.map((w, i) => {
             return (
               <div key={i}>
                 <w.Component />
               </div>
             )
-          })}
+          })} */}
 
           <div className="lg:hidden">
             <JsonViewSection data={product} root="product" />
