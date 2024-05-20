@@ -1,5 +1,4 @@
-import { PropsWithChildren } from "react"
-import { CurrencyDTO, ProductVariantDTO, RegionDTO } from "@medusajs/types"
+import { CurrencyDTO, HttpTypes, ProductVariantDTO } from "@medusajs/types"
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { useEffect, useMemo, useState } from "react"
 import { UseFormReturn } from "react-hook-form"
@@ -104,7 +103,7 @@ const useColumns = ({
   regions = [],
 }: {
   currencies?: CurrencyDTO[]
-  regions?: RegionDTO[]
+  regions?: HttpTypes.AdminRegion[]
 }) => {
   const { t } = useTranslation()
 

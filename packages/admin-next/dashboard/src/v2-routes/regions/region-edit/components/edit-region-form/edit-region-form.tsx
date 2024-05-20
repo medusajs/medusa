@@ -1,4 +1,4 @@
-import { PaymentProviderDTO, RegionDTO } from "@medusajs/types"
+import { PaymentProviderDTO, HttpTypes } from "@medusajs/types"
 import { Button, Input, Select, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -15,7 +15,7 @@ import { CurrencyInfo } from "../../../../../lib/currencies"
 import { formatProvider } from "../../../../../lib/format-provider"
 
 type EditRegionFormProps = {
-  region: RegionDTO
+  region: HttpTypes.AdminRegion
   currencies: CurrencyInfo[]
   paymentProviders: PaymentProviderDTO[]
 }
