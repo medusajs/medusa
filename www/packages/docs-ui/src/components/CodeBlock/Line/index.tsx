@@ -4,6 +4,18 @@ import { RenderProps, Token } from "prism-react-renderer"
 import clsx from "clsx"
 import { MarkdownContent, Tooltip } from "@/components"
 
+type HighlightedTokens = {
+  start: number
+  end: number
+  highlight: Highlight
+}
+
+type TokensWithHighlights = {
+  tokens: Token[]
+  type: "default" | "highlighted"
+  highlight?: Highlight
+}
+
 type CodeBlockLineProps = {
   line: Token[]
   highlights?: Highlight[]
@@ -25,125 +37,161 @@ export const CodeBlockLine = ({
   lineNumberColorClassName,
 }: CodeBlockLineProps) => {
   const lineProps = getLineProps({ line, key: lineNumber })
+
   // collect highlighted tokens, if there are any
-  const highlightedTokens: {
-    start: number
-    end: number
-    highlight: Highlight
-  }[] = []
-
-  highlights.forEach((highlight) => {
-    if (!highlight.text) {
-      return
-    }
-    let startIndex: number | undefined = undefined
-    let currentPositionInHighlightedText = 0
-    let endIndex = 0
-    const found = line.some((token, tokenIndex) => {
-      if (token.empty || !token.content.length) {
-        startIndex = undefined
-        currentPositionInHighlightedText = 0
-        return false
+  const highlightedTokens: HighlightedTokens[] = useMemo(() => {
+    const highlightedTokensArr: HighlightedTokens[] = []
+    highlights.forEach((highlight) => {
+      if (!highlight.text) {
+        return
       }
-      const comparisonLength = Math.min(
-        token.content.length,
-        highlight.text!.substring(currentPositionInHighlightedText).length
-      )
-      const nextPositionInHighlightedText =
-        currentPositionInHighlightedText + comparisonLength
-
-      const canHighlight =
-        !highlightedTokens.length ||
-        !highlightedTokens.some(
-          (token) => tokenIndex >= token.start && tokenIndex <= token.end
+      let startIndex: number | undefined = undefined
+      let currentPositionInHighlightedText = 0
+      let endIndex = 0
+      const found = line.some((token, tokenIndex) => {
+        if (token.empty || !token.content.length) {
+          startIndex = undefined
+          currentPositionInHighlightedText = 0
+          return false
+        }
+        const startNotSet = startIndex === undefined
+        // trim the start of the script if the start
+        // of the highlight hasn't been found yet
+        const tokenContent = startNotSet
+          ? token.content.trimStart()
+          : token.content
+        if (!tokenContent.length && startNotSet) {
+          return false
+        }
+        const comparisonLength = Math.min(
+          tokenContent.length,
+          highlight.text!.substring(currentPositionInHighlightedText).length
         )
+        const nextPositionInHighlightedText =
+          currentPositionInHighlightedText + comparisonLength
 
-      if (
-        token.content.substring(0, comparisonLength) ===
+        const canHighlight =
+          !highlightedTokensArr.length ||
+          !highlightedTokensArr.some(
+            (token) => tokenIndex >= token.start && tokenIndex <= token.end
+          )
+
+        const isMatching =
+          tokenContent.substring(0, comparisonLength) ===
           highlight.text?.substring(
             currentPositionInHighlightedText,
             nextPositionInHighlightedText
-          ) &&
-        canHighlight
-      ) {
-        if (startIndex === undefined) {
-          startIndex = tokenIndex
-        }
-        currentPositionInHighlightedText = nextPositionInHighlightedText
-      }
+          )
 
-      if (currentPositionInHighlightedText === highlight.text!.length) {
-        // matching text was found, break loop
-        endIndex = tokenIndex
-        return true
+        if (isMatching && canHighlight) {
+          if (startNotSet) {
+            startIndex = tokenIndex
+          }
+          currentPositionInHighlightedText = nextPositionInHighlightedText
+        }
+
+        if (currentPositionInHighlightedText === highlight.text!.length) {
+          // matching text was found, break loop
+          endIndex = tokenIndex
+          return true
+        }
+      })
+
+      if (found && startIndex !== undefined) {
+        highlightedTokensArr.push({
+          start: startIndex,
+          end: endIndex,
+          highlight,
+        })
       }
     })
 
-    if (found && startIndex !== undefined) {
-      highlightedTokens.push({
-        start: startIndex,
-        end: endIndex,
-        highlight,
-      })
-    }
-  })
+    // sort highlighted tokens by their start position
+    highlightedTokensArr.sort((tokensA, tokensB) => {
+      if (tokensA.start < tokensB.start) {
+        return -1
+      }
 
-  // sort highlighted tokens by their start position
-  highlightedTokens.sort((tokensA, tokensB) => {
-    if (tokensA.start < tokensB.start) {
-      return -1
-    }
+      return tokensA.start > tokensB.start ? 1 : 0
+    })
 
-    return tokensA.start > tokensB.start ? 1 : 0
-  })
+    return highlightedTokensArr
+  }, [highlights, line])
 
   // if there are highlighted tokens, split tokens in the
   // line by segments of not highlighted and highlighted token
   // if there are no highlighted tokens, the line is used as-is.
-  const transformedLine: {
-    tokens: Token[]
-    type: "default" | "highlighted"
-    highlight?: Highlight
-  }[] = highlightedTokens.length
-    ? []
-    : [
+  const transformedLine: TokensWithHighlights[] = useMemo(() => {
+    if (!highlightedTokens.length) {
+      return [
         {
           tokens: line,
           type: "default",
         },
       ]
-
-  let lastIndex = 0
-  // go through highlighted tokens to add the segments before/after to the
-  // transformedLines array
-  highlightedTokens.forEach((highlightedTokensItem, index) => {
-    if (lastIndex < highlightedTokensItem.start) {
-      transformedLine.push({
-        tokens: line.slice(lastIndex, highlightedTokensItem.start),
-        type: "default",
-      })
     }
-    transformedLine.push({
-      tokens: line.slice(
-        highlightedTokensItem.start,
-        highlightedTokensItem.end + 1
-      ),
-      type: "highlighted",
-      highlight: highlightedTokensItem.highlight,
+    const transformedLineArr: TokensWithHighlights[] = []
+
+    let lastIndex = 0
+    // go through highlighted tokens to add the segments before/after to the
+    // transformLineArr array
+    highlightedTokens.forEach((highlightedTokensItem, index) => {
+      if (lastIndex < highlightedTokensItem.start) {
+        transformedLineArr.push({
+          tokens: line.slice(lastIndex, highlightedTokensItem.start),
+          type: "default",
+        })
+      }
+      // check if the start text should be trimmed
+      const token = Object.assign({}, line[highlightedTokensItem.start])
+      if (
+        token.content.startsWith(" ") &&
+        !highlightedTokensItem.highlight.text?.startsWith(" ")
+      ) {
+        const originalLength = token.content.length
+        token.content = token.content.trimStart()
+        // push the spaces as a separate token
+        // so that they won't be highlighted.
+        transformedLineArr.push({
+          tokens: [
+            {
+              content: " ".repeat(originalLength - token.content.length),
+              types: ["plain"],
+            },
+          ],
+          type: "default",
+        })
+      }
+      transformedLineArr.push({
+        tokens: [
+          token,
+          ...line.slice(
+            highlightedTokensItem.start + 1,
+            highlightedTokensItem.end + 1
+          ),
+        ],
+        type: "highlighted",
+        highlight: highlightedTokensItem.highlight,
+      })
+      lastIndex = highlightedTokensItem.end + 1
+
+      // if this is the last item in `highlightedTokens` and
+      // its end index is less than the line's length, that means
+      // there are tokens at the end of the line that aren't highlighted
+      // and should be pushed as-is to the `transformLineArr` array.
+      if (
+        index === highlightedTokens.length - 1 &&
+        lastIndex < line.length - 1
+      ) {
+        transformedLineArr.push({
+          tokens: line.slice(lastIndex),
+          type: "default",
+        })
+      }
     })
-    lastIndex = highlightedTokensItem.end + 1
 
-    // if this is the last item in `highlightedTokens` and
-    // its end index is less than the line's length, that means
-    // there are tokens at the end of the line that aren't highlighted
-    // and should be pushed as-is to the `transformedLines` array.
-    if (index === highlightedTokens.length - 1 && lastIndex < line.length - 1) {
-      transformedLine.push({
-        tokens: line.slice(lastIndex),
-        type: "default",
-      })
-    }
-  })
+    return transformedLineArr
+  }, [highlightedTokens])
 
   const getTokensElm = ({
     tokens,
