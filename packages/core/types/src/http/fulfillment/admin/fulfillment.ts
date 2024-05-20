@@ -1,12 +1,9 @@
-import { DeleteResponse } from "../../../common"
+import { DeleteResponse } from "../../common"
 import { AdminFulfillmentAddressResponse } from "./fulfillment-address"
 import { AdminFulfillmentItemResponse } from "./fulfillment-item"
 import { AdminFulfillmentLabelResponse } from "./fulfillment-label"
 import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
 
-/**
- * @experimental
- */
 export interface AdminFulfillmentResponse {
   id: string
   location_id: string
@@ -27,8 +24,5 @@ export interface AdminFulfillmentResponse {
   deleted_at: Date | null
 }
 
-/**
- * @experimental
- */
 export interface AdminFulfillmentSetsDeleteResponse
   extends DeleteResponse<"fulfillment_set"> {}

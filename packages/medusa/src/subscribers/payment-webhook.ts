@@ -1,52 +1,36 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IPaymentModuleService, ProviderWebhookPayload } from "@medusajs/types"
 import { PaymentWebhookEvents } from "@medusajs/utils"
-
-import {
-  IEventBusService,
-  IPaymentModuleService,
-  ProviderWebhookPayload,
-  Subscriber,
-} from "@medusajs/types"
+import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
 
 type SerializedBuffer = {
   data: ArrayBuffer
   type: "Buffer"
 }
 
-type InjectedDependencies = {
-  paymentModuleService: IPaymentModuleService
-  eventBusModuleService: IEventBusService
-}
+export default async function paymentWebhookhandler({
+  data,
+  container,
+}: SubscriberArgs<ProviderWebhookPayload>) {
+  const paymentService: IPaymentModuleService = container.resolve(
+    ModuleRegistrationName.PAYMENT
+  )
 
-class PaymentWebhookSubscriber {
-  private readonly eventBusModuleService_: IEventBusService
-  private readonly paymentModuleService_: IPaymentModuleService
+  const input = "data" in data ? data.data : data
 
-  constructor({
-    eventBusModuleService,
-    paymentModuleService,
-  }: InjectedDependencies) {
-    this.eventBusModuleService_ = eventBusModuleService
-    this.paymentModuleService_ = paymentModuleService
-
-    this.eventBusModuleService_.subscribe(
-      PaymentWebhookEvents.WebhookReceived,
-      this.processEvent as Subscriber
+  if (
+    (input.payload.rawData as unknown as SerializedBuffer).type === "Buffer"
+  ) {
+    input.payload.rawData = Buffer.from(
+      (input.payload.rawData as unknown as SerializedBuffer).data
     )
   }
-
-  /**
-   * TODO: consider moving this to a workflow
-   */
-  processEvent = async (data: ProviderWebhookPayload): Promise<void> => {
-    if (
-      (data.payload.rawData as unknown as SerializedBuffer).type === "Buffer"
-    ) {
-      data.payload.rawData = Buffer.from(
-        (data.payload.rawData as unknown as SerializedBuffer).data
-      )
-    }
-    await this.paymentModuleService_.processEvent(data)
-  }
+  await paymentService.processEvent(input)
 }
 
-export default PaymentWebhookSubscriber
+export const config: SubscriberConfig = {
+  event: PaymentWebhookEvents.WebhookReceived,
+  context: {
+    subscriberId: "payment-webhook-handler",
+  },
+}

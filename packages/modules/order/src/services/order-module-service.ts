@@ -26,6 +26,7 @@ import {
   MedusaError,
   ModulesSdkUtils,
   OrderChangeStatus,
+  OrderStatus,
   promiseAll,
 } from "@medusajs/utils"
 import {
@@ -2545,6 +2546,7 @@ export default class OrderModuleService<
     return await this.returnReasonService_.update(toUpdate, sharedContext)
   }
 
+  @InjectTransactionManager("baseRepository_")
   public async receiveReturn(
     data: OrderTypes.ReceiveOrderReturnDTO,
     sharedContext?: Context
@@ -2576,5 +2578,112 @@ export default class OrderModuleService<
     )
 
     await this.confirmOrderChange(change[0].id, sharedContext)
+  }
+
+  async archive(
+    orderId: string,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO>
+
+  async archive(
+    orderId: string[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async archive(
+    orderId: string | string[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO | OrderTypes.OrderDTO[]> {
+    const orderIds = Array.isArray(orderId) ? orderId : [orderId]
+    const orders = await this.list(
+      {
+        id: orderIds,
+      },
+      {},
+      sharedContext
+    )
+
+    const notAllowed: string[] = []
+    for (const order of orders) {
+      if (
+        ![
+          OrderStatus.COMPLETED,
+          OrderStatus.CANCELED,
+          OrderStatus.DRAFT,
+        ].includes(order.status as any)
+      ) {
+        notAllowed.push(order.id)
+      }
+
+      order.status = OrderStatus.ARCHIVED
+    }
+
+    if (notAllowed.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Pending Order cannot be archived: ${notAllowed.join(", ")}.`
+      )
+    }
+
+    await this.orderService_.update(
+      {
+        id: orderIds,
+        status: OrderStatus.ARCHIVED,
+      },
+      sharedContext
+    )
+
+    return Array.isArray(orderId) ? orders : orders[0]
+  }
+
+  async completeOrder(
+    orderId: string,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO>
+  async completeOrder(
+    orderId: string[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async completeOrder(
+    orderId: string | string[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO | OrderTypes.OrderDTO[]> {
+    const orderIds = Array.isArray(orderId) ? orderId : [orderId]
+    const orders = await this.list(
+      {
+        id: orderIds,
+      },
+      {},
+      sharedContext
+    )
+
+    const notAllowed: string[] = []
+    for (const order of orders) {
+      if ([OrderStatus.CANCELED].includes(order.status as any)) {
+        notAllowed.push(order.id)
+      }
+
+      order.status = OrderStatus.COMPLETED
+    }
+
+    if (notAllowed.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Canceled Order cannot be completed: ${notAllowed.join(", ")}.`
+      )
+    }
+
+    await this.orderService_.update(
+      {
+        id: orderIds,
+        status: OrderStatus.COMPLETED,
+      },
+      sharedContext
+    )
+
+    return Array.isArray(orderId) ? orders : orders[0]
   }
 }

@@ -16,10 +16,11 @@ export const ReturnsParams = createFindParams().merge(
 
 const ReturnShippingSchema = z.object({
   option_id: z.string(),
+  price: z.number().optional(),
 })
 
 const ItemSchema = z.object({
-  item_id: z.string(),
+  id: z.string(),
   quantity: z.number().min(1),
   reason_id: z.string().optional(),
   note: z.string().optional(),
@@ -28,5 +29,12 @@ const ItemSchema = z.object({
 export const StorePostReturnsReqSchema = z.object({
   order_id: z.string(),
   items: z.array(ItemSchema),
-  return_shipping: ReturnShippingSchema.optional(),
+  return_shipping: ReturnShippingSchema,
+  note: z.string().optional(),
+  receive_now: z.boolean().optional(),
+  refund_amount: z.number().optional(),
+  location_id: z.string().optional(),
 })
+export type StorePostReturnsReqSchemaType = z.infer<
+  typeof StorePostReturnsReqSchema
+>

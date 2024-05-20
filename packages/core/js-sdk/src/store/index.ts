@@ -1,3 +1,4 @@
+import { StoreRegion } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -23,7 +24,7 @@ export class Store {
       queryParams?: Record<string, any>,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/regions/${id}`, {
+      return this.client.fetch<StoreRegion>(`/store/regions/${id}`, {
         query: queryParams,
         headers,
       })
