@@ -17,7 +17,7 @@ export async function getViteConfig(
 
   const root = path.resolve(__dirname, "./")
 
-  const backendUrl = options.backend ?? ""
+  const backendUrl = options.backendUrl ?? ""
 
   return {
     root: path.resolve(__dirname, "./"),
