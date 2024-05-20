@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import {
@@ -16,10 +16,12 @@ import {
 import { ProductCreateSchemaType } from "../../types"
 import { normalizeProductFormValues } from "../../utils"
 import { ProductCreateDetailsForm } from "../product-create-details-form"
+import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 
 enum Tab {
-  PRODUCT = "product",
-  PRICE = "price",
+  DETAILS = "details",
+  ORGANIZE = "organize",
+  VARIANTS = "variants",
 }
 
 type TabState = Record<Tab, ProgressStatus>
@@ -27,7 +29,12 @@ type TabState = Record<Tab, ProgressStatus>
 const SAVE_DRAFT_BUTTON = "save-draft-button"
 
 export const ProductCreateForm = () => {
-  const [tab, setTab] = useState<Tab>(Tab.PRODUCT)
+  const [tab, setTab] = useState<Tab>(Tab.DETAILS)
+  const [tabState, setTabState] = useState<Record<TabState>>({
+    [Tab.DETAILS]: "in-progress",
+    [Tab.ORGANIZE]: "not-started",
+    [Tab.VARIANTS]: "not-started",
+  })
 
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -52,9 +59,18 @@ export const ProductCreateForm = () => {
 
       const isDraftSubmission = submitter.dataset.name === SAVE_DRAFT_BUTTON
 
+      const payload = { ...values }
+
+      if (!payload.enable_variants) {
+        payload.variants = []
+        payload.options = []
+      }
+
+      delete payload.enable_variants
+
       await mutateAsync(
         normalizeProductFormValues({
-          ...values,
+          ...payload,
           status: (isDraftSubmission ? "draft" : "published") as any,
         }),
         {
@@ -75,10 +91,34 @@ export const ProductCreateForm = () => {
       console.log(err)
     }
   )
-  const tabState: TabState = {
-    [Tab.PRODUCT]: tab === Tab.PRODUCT ? "in-progress" : "completed",
-    [Tab.PRICE]: tab === Tab.PRICE ? "in-progress" : "not-started",
+
+  const onNext = (currentTab: Tab) => {
+    if (currentTab === Tab.DETAILS) {
+      setTab(Tab.ORGANIZE)
+    }
+
+    if (currentTab === Tab.ORGANIZE) {
+      setTab(Tab.VARIANTS)
+    }
   }
+
+  useEffect(() => {
+    const currentState = { ...tabState }
+    if (tab === Tab.ORGANIZE) {
+      currentState[Tab.DETAILS] = "completed"
+      currentState[Tab.ORGANIZE] = "in-progress"
+    }
+    if (tab === Tab.DETAILS) {
+      currentState[Tab.DETAILS] = "in-progress"
+    }
+    if (tab === Tab.VARIANTS) {
+      currentState[Tab.DETAILS] = "completed"
+      currentState[Tab.ORGANIZE] = "completed"
+      currentState[Tab.VARIANTS] = "in-progress"
+    }
+
+    setTabState({ ...currentState })
+  }, [tab])
 
   return (
     <RouteFocusModal>
@@ -94,14 +134,20 @@ export const ProductCreateForm = () => {
                 <div className="-my-2 w-full max-w-[400px] border-l">
                   <ProgressTabs.List className="grid w-full grid-cols-3">
                     <ProgressTabs.Trigger
-                      status={tabState.product}
-                      value={Tab.PRODUCT}
+                      status={tabState[Tab.DETAILS]}
+                      value={Tab.DETAILS}
                     >
                       {t("products.create.tabs.details")}
                     </ProgressTabs.Trigger>
                     <ProgressTabs.Trigger
-                      status={tabState.price}
-                      value={Tab.PRICE}
+                      status={tabState[Tab.ORGANIZE]}
+                      value={Tab.ORGANIZE}
+                    >
+                      {t("products.create.tabs.organize")}
+                    </ProgressTabs.Trigger>
+                    <ProgressTabs.Trigger
+                      status={tabState[Tab.VARIANTS]}
+                      value={Tab.VARIANTS}
                     >
                       {t("products.create.tabs.variants")}
                     </ProgressTabs.Trigger>
@@ -124,7 +170,7 @@ export const ProductCreateForm = () => {
                   </Button>
                   <PrimaryButton
                     tab={tab}
-                    next={() => setTab(Tab.PRICE)}
+                    next={onNext}
                     isLoading={isPending}
                   />
                 </div>
@@ -133,13 +179,19 @@ export const ProductCreateForm = () => {
             <RouteFocusModal.Body className="size-full overflow-hidden">
               <ProgressTabs.Content
                 className="size-full overflow-hidden"
-                value={Tab.PRODUCT}
+                value={Tab.DETAILS}
               >
                 <ProductCreateDetailsForm form={form} />
               </ProgressTabs.Content>
               <ProgressTabs.Content
+                className="size-full overflow-hidden"
+                value={Tab.ORGANIZE}
+              >
+                <ProductCreateOrganizeForm form={form} />
+              </ProgressTabs.Content>
+              <ProgressTabs.Content
                 className="size-full overflow-y-auto"
-                value={Tab.PRICE}
+                value={Tab.VARIANTS}
               >
                 <VariantPricingForm form={form} />
               </ProgressTabs.Content>
@@ -160,7 +212,7 @@ type PrimaryButtonProps = {
 const PrimaryButton = ({ tab, next, isLoading }: PrimaryButtonProps) => {
   const { t } = useTranslation()
 
-  if (tab === Tab.PRICE) {
+  if (tab === Tab.VARIANTS) {
     return (
       <Button
         data-name="publish-button"

@@ -163,14 +163,16 @@
   "products": {
     "domain": "Products",
     "create": {
-      "header": "Create Product",
-      "hint": "Create a new product to sell in your store.",
+      "header": "General",
       "tabs": {
         "details": "Details",
+        "organize": "Organize",
         "variants": "Variants"
       },
       "variants": {
         "header": "Variants",
+        "subHeadingTitle": "Yes, this is a product with variants",
+        "subHeadingDescription": "When unchecked, a product without variants will be created",
         "productVariants": {
           "label": "Product variants",
           "hint": "Variants left unchecked won't be created. This ranking will affect how the variants are ranked in your frontend.",
@@ -232,8 +234,7 @@
         "tooltip": "The handle is used to reference the product in your storefront. If not specified, the handle will be generated from the product title."
       },
       "description": {
-        "label": "Description",
-        "hint": "Give your product a short and clear description.<0/>120-160 characters is the recommended length for search engines."
+        "label": "Description"
       },
       "discountable": {
         "label": "Discountable",

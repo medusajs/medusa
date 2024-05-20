@@ -32,6 +32,7 @@ export const ProductCreateSchema = z.object({
       values: z.array(z.string()),
     })
   ),
+  enable_variants: z.boolean(),
   variants: z.array(
     z.object({
       should_create: z.boolean(),
@@ -57,6 +58,7 @@ export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
       values: [],
     },
   ],
+  enable_variants: false,
   variants: [],
   images: [],
   thumbnail: "",
