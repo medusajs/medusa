@@ -1,6 +1,3 @@
-/**
- * @experimental
- */
 export interface AdminFulfillmentItemResponse {
   id: string
   title: string

@@ -1,8 +1,5 @@
 import { PaginatedResponse } from "../../common"
 
-/**
- * @experimental
- */
 interface SalesChannelResponse {
   id: string
   name: string
@@ -11,16 +8,10 @@ interface SalesChannelResponse {
   metadata: Record<string, unknown> | null
 }
 
-/**
- * @experimental
- */
-export interface AdminSalesChannelListResponse extends PaginatedResponse {
+export type AdminSalesChannelListResponse = PaginatedResponse<{
   sales_channels: SalesChannelResponse[]
-}
+}>
 
-/**
- * @experimental
- */
 export interface AdminSalesChannelResponse {
   sales_channel: SalesChannelResponse
 }
