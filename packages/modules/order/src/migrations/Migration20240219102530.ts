@@ -465,11 +465,13 @@ export class Migration20240219102530 extends Migration {
 
       CREATE INDEX IF NOT EXISTS "IDX_order_transaction_currency_code" ON "order_transaction" (
           currency_code
-      );
+      )
+      WHERE deleted_at IS NOT NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_transaction_reference_id" ON "order_transaction" (
           reference_id
-      );
+      )
+      WHERE deleted_at IS NOT NULL;
       
       CREATE TABLE IF NOT EXISTS "return_reason"
       (

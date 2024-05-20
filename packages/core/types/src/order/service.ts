@@ -1399,7 +1399,7 @@ export interface IOrderModuleService extends IModuleService {
   revertLastVersion(orderId: string, sharedContext?: Context): Promise<void>
 
   listTransactions(
-    filters: FilterableOrderTransactionProps,
+    filters?: FilterableOrderTransactionProps,
     config?: FindConfig<OrderTransactionDTO>,
     sharedContext?: Context
   ): Promise<OrderTransactionDTO[]>

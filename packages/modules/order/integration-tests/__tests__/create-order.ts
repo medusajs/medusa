@@ -200,14 +200,15 @@ moduleIntegrationTestRunner({
         expect(serializedOrder).toEqual(expectation)
       })
 
-      it.only("should create an order, shipping method and items. Including taxes and adjustments associated with them and add new transactions", async function () {
-        const created = await service.create(input)
-        await service.addTransactions([
-          {
-            order_id: created.id,
-            amount: 10,
-            currency_code: "USD",
-          },
+      it("should create an order, shipping method and items. Including taxes and adjustments associated with them and add new transactions", async function () {
+        const inpCopy = JSON.parse(JSON.stringify(input))
+        inpCopy.transactions.push({
+          amount: 10,
+          currency_code: "USD",
+        })
+        const created = await service.create(inpCopy)
+
+        const refund = await service.addTransactions([
           {
             order_id: created.id,
             amount: -20,
@@ -215,18 +216,77 @@ moduleIntegrationTestRunner({
           },
         ])
 
-        const get = await service.retrieve(created.id, {
-          select: ["id", "total", "summary"],
-        })
-
-        const serializedOrder = JSON.parse(JSON.stringify(get))
-
-        console.log(
-          JSON.stringify(serializedOrder, null, 2),
-          "*********************"
+        const serializedOrder = JSON.parse(
+          JSON.stringify(
+            await service.retrieve(created.id, {
+              select: ["id", "summary"],
+            })
+          )
         )
 
-        //expect(serializedOrder).toEqual(expectation)
+        expect(serializedOrder.summary).toEqual(
+          expect.objectContaining({
+            paid_total: 68,
+            refunded_total: 20,
+          })
+        )
+
+        await service.softDeleteTransactions(refund[0].id)
+
+        const serializedOrder2 = JSON.parse(
+          JSON.stringify(
+            await service.retrieve(created.id, {
+              select: ["id", "summary"],
+            })
+          )
+        )
+
+        expect(serializedOrder2.summary).toEqual(
+          expect.objectContaining({
+            paid_total: 68,
+            refunded_total: 0,
+          })
+        )
+
+        await service.addTransactions([
+          {
+            order_id: created.id,
+            amount: -50,
+            currency_code: "USD",
+          },
+        ])
+
+        const serializedOrder3 = JSON.parse(
+          JSON.stringify(
+            await service.retrieve(created.id, {
+              select: ["id", "summary"],
+            })
+          )
+        )
+
+        expect(serializedOrder3.summary).toEqual(
+          expect.objectContaining({
+            paid_total: 68,
+            refunded_total: 50,
+          })
+        )
+
+        await service.restoreTransactions(refund[0].id)
+
+        const serializedOrder4 = JSON.parse(
+          JSON.stringify(
+            await service.retrieve(created.id, {
+              select: ["id", "summary"],
+            })
+          )
+        )
+
+        expect(serializedOrder4.summary).toEqual(
+          expect.objectContaining({
+            paid_total: 68,
+            refunded_total: 70,
+          })
+        )
       })
 
       it("should transform requested fields and relations to match the db schema and return the order", async function () {
