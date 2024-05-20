@@ -5,15 +5,10 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { client } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/medusa"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { CreateRegionReq, UpdateRegionReq } from "../../types/api-payloads"
-import {
-  RegionDeleteRes,
-  RegionListRes,
-  RegionRes,
-} from "../../types/api-responses"
+import { DeleteResponse, HttpTypes, PaginatedResponse } from "@medusajs/types"
 
 const REGIONS_QUERY_KEY = "regions" as const
 const regionsQueryKeys = queryKeysFactory(REGIONS_QUERY_KEY)
@@ -22,13 +17,18 @@ export const useRegion = (
   id: string,
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<RegionRes, Error, RegionRes, QueryKey>,
+    UseQueryOptions<
+      { region: HttpTypes.AdminRegion },
+      Error,
+      { region: HttpTypes.AdminRegion },
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: regionsQueryKeys.detail(id),
-    queryFn: async () => client.regions.retrieve(id, query),
+    queryFn: async () => sdk.admin.region.retrieve(id, query),
     ...options,
   })
 
@@ -38,12 +38,17 @@ export const useRegion = (
 export const useRegions = (
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<RegionListRes, Error, RegionListRes, QueryKey>,
+    UseQueryOptions<
+      PaginatedResponse<{ regions: HttpTypes.AdminRegion[] }>,
+      Error,
+      PaginatedResponse<{ regions: HttpTypes.AdminRegion[] }>,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.regions.list(query),
+    queryFn: () => sdk.admin.region.list(query),
     queryKey: regionsQueryKeys.list(query),
     ...options,
   })
@@ -52,10 +57,14 @@ export const useRegions = (
 }
 
 export const useCreateRegion = (
-  options?: UseMutationOptions<RegionRes, Error, CreateRegionReq>
+  options?: UseMutationOptions<
+    { region: HttpTypes.AdminRegion },
+    Error,
+    HttpTypes.AdminCreateRegion
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.regions.create(payload),
+    mutationFn: (payload) => sdk.admin.region.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)
@@ -66,10 +75,14 @@ export const useCreateRegion = (
 
 export const useUpdateRegion = (
   id: string,
-  options?: UseMutationOptions<RegionRes, Error, UpdateRegionReq>
+  options?: UseMutationOptions<
+    { region: HttpTypes.AdminRegion },
+    Error,
+    HttpTypes.AdminUpdateRegion
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.regions.update(id, payload),
+    mutationFn: (payload) => sdk.admin.region.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.detail(id) })
@@ -82,10 +95,10 @@ export const useUpdateRegion = (
 
 export const useDeleteRegion = (
   id: string,
-  options?: UseMutationOptions<RegionDeleteRes, Error, void>
+  options?: UseMutationOptions<DeleteResponse<"region">, Error, void>
 ) => {
   return useMutation({
-    mutationFn: () => client.regions.delete(id),
+    mutationFn: () => sdk.admin.region.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.detail(id) })

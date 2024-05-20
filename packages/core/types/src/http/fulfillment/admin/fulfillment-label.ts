@@ -1,6 +1,3 @@
-/**
- * @experimental
- */
 export interface AdminFulfillmentLabelResponse {
   id: string
   tracking_number: string

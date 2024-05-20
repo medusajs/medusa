@@ -197,7 +197,7 @@ export default async function () {
   console.log("Clean tags...")
 
   // check if any tags should be removed
-  const oasBasePath = path.join(oasOutputBasePath, "base-v2")
+  const oasBasePath = path.join(oasOutputBasePath, "base")
   readdirSync(oasBasePath, {
     recursive: true,
     encoding: "utf-8",

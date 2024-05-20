@@ -12,7 +12,6 @@ import {
   CreateProductCollectionDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
-  CreateRegionDTO,
   CreateSalesChannelDTO,
   CreateServiceZoneDTO,
   CreateShippingOptionDTO,
@@ -26,7 +25,6 @@ import {
   UpdateProductCollectionDTO,
   UpdatePromotionDTO,
   UpdatePromotionRuleDTO,
-  UpdateRegionDTO,
   UpdateSalesChannelDTO,
   UpdateServiceZoneDTO,
   UpdateShippingOptionDTO,
@@ -37,10 +35,6 @@ import {
 
 // Auth
 export type EmailPassReq = { email: string; password: string }
-
-// Regions
-export type CreateRegionReq = CreateRegionDTO
-export type UpdateRegionReq = UpdateRegionDTO
 
 // Stores
 export type UpdateStoreReq = UpdateStoreDTO

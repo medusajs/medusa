@@ -1,8 +1,5 @@
 import { ServiceZoneResponse } from "./service-zone"
 
-/**
- * @experimental
- */
 export interface FulfillmentSetResponse {
   id: string
   name: string
@@ -14,9 +11,6 @@ export interface FulfillmentSetResponse {
   deleted_at: Date | null
 }
 
-/**
- * @experimental
- */
 export interface AdminFulfillmentSetResponse {
   fulfillment_set: FulfillmentSetResponse
 }

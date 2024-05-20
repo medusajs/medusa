@@ -1,5 +1,4 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { RegionDTO } from "@medusajs/types"
 import { Button, Container, Heading, usePrompt, toast } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -14,6 +13,7 @@ import { useRegionTableColumns } from "../../../../../hooks/table/columns/use-re
 import { useRegionTableFilters } from "../../../../../hooks/table/filters/use-region-table-filters"
 import { useRegionTableQuery } from "../../../../../hooks/table/query/use-region-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { HttpTypes } from "@medusajs/types"
 
 const PAGE_SIZE = 20
 
@@ -41,7 +41,7 @@ export const RegionListTable = () => {
   const columns = useColumns()
 
   const { table } = useDataTable({
-    data: (regions ?? []) as RegionDTO[],
+    data: (regions ?? []) as HttpTypes.AdminRegion[],
     columns,
     count,
     enablePagination: true,
@@ -81,7 +81,7 @@ export const RegionListTable = () => {
   )
 }
 
-const RegionActions = ({ region }: { region: RegionDTO }) => {
+const RegionActions = ({ region }: { region: HttpTypes.AdminRegion }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 
@@ -143,7 +143,7 @@ const RegionActions = ({ region }: { region: RegionDTO }) => {
   )
 }
 
-const columnHelper = createColumnHelper<RegionDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminRegion>()
 
 const useColumns = () => {
   const base = useRegionTableColumns()

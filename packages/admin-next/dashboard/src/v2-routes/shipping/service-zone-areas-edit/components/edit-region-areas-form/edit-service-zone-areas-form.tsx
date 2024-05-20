@@ -17,7 +17,7 @@ import {
   Text,
   toast,
 } from "@medusajs/ui"
-import { RegionCountryDTO, RegionDTO, ServiceZoneDTO } from "@medusajs/types"
+import { ServiceZoneDTO, HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { XMarkMini } from "@medusajs/icons"
 
@@ -26,10 +26,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { SplitView } from "../../../../../components/layout/split-view"
-import {
-  useCreateServiceZone,
-  useUpdateServiceZone,
-} from "../../../../../hooks/api/stock-locations"
+import { useUpdateServiceZone } from "../../../../../hooks/api/stock-locations"
 import { useEffect, useMemo, useState } from "react"
 import { useCountryTableQuery } from "../../../../regions/common/hooks/use-country-table-query"
 import { useCountries } from "../../../../regions/common/hooks/use-countries"
@@ -130,7 +127,7 @@ export function EditServiceZoneAreasForm({
       iso_3: c.iso_3,
       num_code: c.num_code,
       region_id: null,
-      region: {} as RegionDTO,
+      region: {} as HttpTypes.AdminRegion,
     })),
     ...searchParams,
   })
@@ -299,7 +296,7 @@ export function EditServiceZoneAreasForm({
   )
 }
 
-const columnHelper = createColumnHelper<RegionCountryDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminRegionCountry>()
 
 const useColumns = () => {
   const base = useCountryTableColumns()
@@ -340,5 +337,5 @@ const useColumns = () => {
       ...base,
     ],
     [base]
-  ) as ColumnDef<RegionCountryDTO>[]
+  ) as ColumnDef<HttpTypes.AdminRegionCountry>[]
 }

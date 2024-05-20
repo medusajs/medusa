@@ -1,5 +1,4 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { RegionDTO } from "@medusajs/types"
 import { Badge, Container, Heading, Text, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
@@ -9,9 +8,10 @@ import { ListSummary } from "../../../../../components/common/list-summary"
 import { useDeleteRegion } from "../../../../../hooks/api/regions.tsx"
 import { currencies } from "../../../../../lib/currencies"
 import { formatProvider } from "../../../../../lib/format-provider"
+import { HttpTypes } from "@medusajs/types"
 
 type RegionGeneralSectionProps = {
-  region: RegionDTO
+  region: HttpTypes.AdminRegion
 }
 
 export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
@@ -54,7 +54,7 @@ export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
   )
 }
 
-const RegionActions = ({ region }: { region: RegionDTO }) => {
+const RegionActions = ({ region }: { region: HttpTypes.AdminRegion }) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { mutateAsync } = useDeleteRegion(region.id)

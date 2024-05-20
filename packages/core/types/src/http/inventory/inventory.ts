@@ -17,16 +17,11 @@ interface InventoryItemResponse {
   thumbnail?: string | null
   metadata?: Record<string, unknown> | null
 }
-/**
- * @experimental
- */
+
 export interface AdminInventoryItemResponse {
   inventory_item: InventoryItemResponse
 }
 
-/**
- * @experimental
- */
-export interface AdminInventoryItemListResponse extends PaginatedResponse {
+export type AdminInventoryItemListResponse = PaginatedResponse<{
   inventory_items: InventoryItemResponse[]
-}
+}>
