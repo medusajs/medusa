@@ -251,6 +251,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     const { queryParameters, requestSchema } = this.getRequestParameters({
       node,
       tagName,
+      methodName,
     })
 
     oas.parameters?.push(...queryParameters)
@@ -442,6 +443,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     const { queryParameters, requestSchema } = this.getRequestParameters({
       node,
       tagName,
+      methodName,
     })
 
     // update query parameters
@@ -1034,11 +1036,16 @@ class OasKindGenerator extends FunctionKindGenerator {
   getRequestParameters({
     node,
     tagName,
+    methodName,
   }: {
     /**
      * The node to retrieve its request parameters.
      */
     node: FunctionNode
+    /**
+     * The HTTP method name of the function.
+     */
+    methodName: string
     /**
      * The tag's name.
      */
@@ -1100,13 +1107,39 @@ class OasKindGenerator extends FunctionKindGenerator {
           typeReferenceNode: node.parameters[0].type,
           itemType: requestTypeArguments[0],
         })
-        requestSchema = this.typeToSchema({
+        const parameterSchema = this.typeToSchema({
           itemType: requestTypeArguments[0],
           descriptionOptions: {
             parentName: tagName,
           },
           zodObjectTypeName: zodObjectTypeName,
         })
+
+        // If function is a GET function, add the type parameter to the
+        // query parameters instead of request parameters.
+        if (methodName === "get") {
+          if (parameterSchema.type === "object" && parameterSchema.properties) {
+            Object.entries(parameterSchema.properties).forEach(
+              ([key, propertySchema]) => {
+                if ("$ref" in propertySchema) {
+                  return
+                }
+
+                parameters.push(
+                  this.getParameterObject({
+                    name: key,
+                    type: "query",
+                    description: propertySchema.description,
+                    required: parameterSchema.required?.includes(key) || false,
+                    schema: propertySchema,
+                  })
+                )
+              }
+            )
+          }
+        } else {
+          requestSchema = parameterSchema
+        }
       }
     }
 
@@ -1773,7 +1806,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     if (!oldSchemaObj && newSchemaObj) {
       return newSchemaObj
-    } else if (oldSchemaObj && !newSchemaObj) {
+    } else if (!newSchemaObj) {
       return undefined
     }
 
@@ -1887,7 +1920,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     // load base oas files
     const areaYamlPath = join(
       this.baseOutputPath,
-      "base-v2",
+      "base",
       `${area}.oas.base.yaml`
     )
     const areaYaml = parse(
