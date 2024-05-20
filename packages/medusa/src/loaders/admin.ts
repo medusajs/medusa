@@ -1,6 +1,4 @@
 import { AdminOptions, ConfigModule } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { AwilixContainer } from "awilix"
 import { Express } from "express"
 
 type Options = {

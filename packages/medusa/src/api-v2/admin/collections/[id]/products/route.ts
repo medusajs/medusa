@@ -14,7 +14,7 @@ export const POST = async (
   const { add = [], remove = [] } = req.validatedBody
 
   const workflow = batchLinkProductsToCollectionWorkflow(req.scope)
-  const { result, errors } = await workflow.run({
+  const { errors } = await workflow.run({
     input: {
       id,
       add,

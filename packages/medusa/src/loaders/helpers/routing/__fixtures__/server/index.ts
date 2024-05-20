@@ -11,11 +11,13 @@ import { MockManager } from "medusa-test-utils"
 import querystring from "querystring"
 import supertest from "supertest"
 import apiLoader from "../../../../api"
+import { getResolvedPlugins } from "../../../../helpers/resolve-plugins"
 import featureFlagLoader, { featureFlagRouter } from "../../../../feature-flags"
 import passportLoader from "../../../../passport"
 
 import RoutesLoader from "../.."
 import { config } from "../mocks"
+import { MedusaContainer } from "medusa-core-utils"
 
 function asArray(resolvers) {
   return {
@@ -42,7 +44,7 @@ export const createServer = async (rootDir) => {
     )[moduleKey]
   })
 
-  const container = createContainer()
+  const container = createContainer() as MedusaContainer
 
   container.registerAdd = function (name, registration) {
     const storeKey = name + "_STORE"
@@ -83,8 +85,10 @@ export const createServer = async (rootDir) => {
     next()
   })
 
+  const plugins = getResolvedPlugins(rootDir, config) || []
+
   featureFlagLoader(config)
-  await passportLoader({ app: app, container, configModule: config })
+  await passportLoader({ app: app, configModule: config })
   await moduleLoader({ container, moduleResolutions })
 
   app.use((req, res, next) => {
@@ -103,14 +107,13 @@ export const createServer = async (rootDir) => {
   await apiLoader({
     container,
     app: app,
-    configModule: config,
-    featureFlagRouter,
+    plugins,
   })
 
   const superRequest = supertest(app)
 
   return {
-    request: async (method, url, opts = {}) => {
+    request: async (method, url, opts: any = {}) => {
       const { payload, query, headers = {} } = opts
 
       const queryParams = query && querystring.stringify(query)
@@ -124,7 +127,7 @@ export const createServer = async (rootDir) => {
             user_id: opts.adminSession.userId || opts.adminSession.jwt?.userId,
             domain: "admin",
           },
-          config.projectConfig.http.jwtSecret
+          config.projectConfig.http.jwtSecret!
         )
 
         headers.Authorization = `Bearer ${token}`
@@ -137,7 +140,7 @@ export const createServer = async (rootDir) => {
               opts.clientSession.jwt?.customer_id,
             domain: "store",
           },
-          config.projectConfig.http.jwtSecret
+          config.projectConfig.http.jwtSecret!
         )
 
         headers.Authorization = `Bearer ${token}`

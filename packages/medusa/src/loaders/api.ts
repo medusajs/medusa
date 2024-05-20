@@ -1,10 +1,9 @@
-import { ContainerRegistrationKeys, FlagRouter } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { Express } from "express"
 import path from "path"
 import qs from "qs"
 import { RoutesLoader } from "./helpers/routing"
 import { MedusaContainer, PluginDetails } from "@medusajs/types"
-import glob from "glob"
 
 type Options = {
   app: Express

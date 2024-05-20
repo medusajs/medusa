@@ -28,7 +28,7 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const updateGroups = updateCustomerGroupsWorkflow(req.scope)
-  const { result, errors } = await updateGroups.run({
+  const { errors } = await updateGroups.run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody,

@@ -43,7 +43,7 @@ export const POST = async (
     },
   ]
 
-  const { result, errors } = await updateCampaigns.run({
+  const { errors } = await updateCampaigns.run({
     input: { campaignsData },
     throwOnError: false,
   })

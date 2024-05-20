@@ -1,5 +1,5 @@
-import { ConfigModule, PluginDetails, MedusaContainer } from "@medusajs/types"
-import { ContainerRegistrationKeys, isString } from "@medusajs/utils"
+import { ConfigModule, PluginDetails } from "@medusajs/types"
+import { isString } from "@medusajs/utils"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
 import { createRequireFromPath } from "medusa-core-utils"
@@ -108,7 +108,7 @@ export function getResolvedPlugins(
   rootDirectory: string,
   configModule: {
     plugins: ConfigModule["plugins"]
-    directories: ConfigModule["directories"]
+    directories?: ConfigModule["directories"]
   },
   isMedusaProject = false
 ): undefined | PluginDetails[] {
