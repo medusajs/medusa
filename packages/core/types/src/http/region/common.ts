@@ -1,18 +1,20 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
+import { AdminPaymentProvider } from "../payment"
 
 export interface BaseRegion {
-  id?: string
-  name?: string
-  currency_code?: string
+  id: string
+  name: string
+  currency_code: string
   automatic_taxes?: boolean
   countries?: BaseRegionCountry[]
+  payment_providers?: AdminPaymentProvider[]
   metadata?: Record<string, any> | null
   created_at?: string
   updated_at?: string
 }
 
 export interface BaseRegionCountry {
-  id?: string
+  id: string
   iso_2?: string
   iso_3?: string
   num_code?: number

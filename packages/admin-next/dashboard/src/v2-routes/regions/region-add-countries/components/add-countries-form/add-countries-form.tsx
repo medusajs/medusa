@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { Button, Checkbox, toast } from "@medusajs/ui"
-import { RegionCountryDTO, RegionDTO } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -22,9 +21,10 @@ import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
 import { useUpdateRegion } from "../../../../../hooks/api/regions"
+import { HttpTypes } from "@medusajs/types"
 
 type AddCountriesFormProps = {
-  region: RegionDTO
+  region: HttpTypes.AdminRegion
 }
 
 const AddCountriesSchema = zod.object({
@@ -71,7 +71,7 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
       iso_3: c.iso_3,
       num_code: c.num_code,
       region_id: null,
-      region: {} as RegionDTO,
+      region: {} as HttpTypes.AdminRegion,
     })),
     ...searchParams,
   })
@@ -102,7 +102,7 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
 
   const handleSubmit = form.handleSubmit(async (values) => {
     const payload = [
-      ...region.countries.map((c) => c.iso_2),
+      ...(region.countries?.map((c) => c.iso_2) ?? []),
       ...values.countries,
     ]
 
@@ -162,7 +162,7 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
   )
 }
 
-const columnHelper = createColumnHelper<RegionCountryDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminRegionCountry>()
 
 const useColumns = () => {
   const base = useCountryTableColumns()
@@ -203,5 +203,5 @@ const useColumns = () => {
       ...base,
     ],
     [base]
-  ) as ColumnDef<RegionCountryDTO>[]
+  ) as ColumnDef<HttpTypes.AdminRegionCountry>[]
 }
