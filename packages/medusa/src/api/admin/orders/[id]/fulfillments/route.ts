@@ -1,3 +1,4 @@
+import { createOrderFulfillmentWorkflow } from "@medusajs/core-flows"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -12,7 +13,16 @@ export const POST = async (
 
   const variables = { id: req.params.id }
 
-  // TODO: Workflow fulfill items, create fulfillments - v1.x - packages/medusa/src/api/routes/admin/orders/create-fulfillment.ts
+  const input = req.validatedBody
+
+  const { errors } = await createOrderFulfillmentWorkflow(req.scope).run({
+    input,
+    throwOnError: false,
+  })
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "order",

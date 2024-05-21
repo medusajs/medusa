@@ -8,12 +8,14 @@ import {
 import { MedusaError, OrderStatus, arrayDifference } from "@medusajs/utils"
 import {
   WorkflowData,
+  createStep,
   createWorkflow,
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { createLinkStep, useRemoteQueryStep } from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
+import { adjustInventoryLevelsStep } from "../../inventory"
 import {
   deleteReservationsStep,
   updateReservationsStep,
@@ -49,6 +51,23 @@ function throwIfItemsDoesNotExistsInOrder({
     )
   }
 }
+
+const validateOrder = createStep(
+  "validate-order",
+  (
+    {
+      order,
+      inputItems,
+    }: {
+      order: OrderDTO
+      inputItems: OrderWorkflow.CreateOrderFulfillmentWorkflowInput["items"]
+    },
+    context
+  ) => {
+    throwIfOrderIsCancelled({ order })
+    throwIfItemsDoesNotExistsInOrder({ order, inputItems })
+  }
+)
 
 function prepareRegisterOrderFulfillmentData({
   order,
@@ -125,11 +144,22 @@ function prepareFulfillmentData({
   }
 }
 
-function prepareReservations({ reservations, order, input }) {
+function prepareInventoryReservations({ reservations, order, input }) {
+  if (!reservations || !reservations.length) {
+    throw new Error(
+      `No stock reservation found for items ${input.items.map((i) => i.id)}`
+    )
+  }
+
   const reservationMap = reservations.reduce((acc, reservation) => {
     acc[reservation.line_item_id as string] = reservation
     return acc
-  })
+  }, {})
+
+  const inputItemsMap = input.items.reduce((acc, item) => {
+    acc[item.id] = item
+    return acc
+  }, {})
 
   const toDelete: string[] = []
   const toUpdate: {
@@ -137,10 +167,23 @@ function prepareReservations({ reservations, order, input }) {
     quantity: number // TODO: BigNumberInput
     location_id: string
   }[] = []
+  const inventoryAdjustment: {
+    inventory_item_id: string
+    location_id: string
+    adjustment: number // TODO: BigNumberInput
+  }[] = []
 
   for (const item of order.items) {
     const reservation = reservationMap[item.id]
-    const quantity = reservation.quantity - item.quantity
+    const inputQuantity = inputItemsMap[item.id]?.quantity ?? item.quantity
+
+    const quantity = reservation.quantity - inputQuantity
+
+    inventoryAdjustment.push({
+      inventory_item_id: reservation.inventory_item_id,
+      location_id: input.location_id ?? reservation.location_id,
+      adjustment: -item.quantity, // TODO: MathBN.mul(-1, item.quantity)
+    })
 
     if (quantity === 0) {
       toDelete.push(reservation.id)
@@ -156,6 +199,7 @@ function prepareReservations({ reservations, order, input }) {
   return {
     toDelete,
     toUpdate,
+    inventoryAdjustment,
   }
 }
 
@@ -181,11 +225,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    transform({ order }, throwIfOrderIsCancelled)
-    transform(
-      { order, inputItems: input.items },
-      throwIfItemsDoesNotExistsInOrder
-    )
+    validateOrder({ order, inputItems: input.items })
 
     const shippingOptionId = transform(order, (data) => {
       return data.shipping_methods?.[0]?.shipping_option_id
@@ -233,22 +273,29 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
     })
     const reservations = useRemoteQueryStep({
       entry_point: "reservations",
-      fields: ["id", "line_item_id", "quantity"],
+      fields: [
+        "id",
+        "line_item_id",
+        "quantity",
+        "inventory_item_id",
+        "location_id",
+      ],
       variables: {
-        line_item_id: lineItemIds,
+        filter: {
+          line_item_id: lineItemIds,
+        },
       },
-      list: false,
-      throw_if_key_not_found: true,
     }).config({ name: "get-reservations" })
 
-    const { toDelete, toUpdate } = transform(
+    const { toDelete, toUpdate, inventoryAdjustment } = transform(
       { order, reservations, input },
-      prepareReservations
+      prepareInventoryReservations
     )
 
     parallelize(
       updateReservationsStep(toUpdate),
-      deleteReservationsStep(toDelete)
+      deleteReservationsStep(toDelete),
+      adjustInventoryLevelsStep(inventoryAdjustment)
     )
 
     // trigger event OrderModuleService.Events.FULFILLMENT_CREATED
