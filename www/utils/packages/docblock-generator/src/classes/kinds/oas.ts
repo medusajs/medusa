@@ -462,7 +462,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       newSchema: requestSchema,
     })
 
-    if (!updatedRequestSchema && existingRequestBodySchema) {
+    if (!updatedRequestSchema) {
       // if there's no request schema, remove it from the OAS
       delete oas.requestBody
     } else {
@@ -1141,7 +1141,7 @@ class OasKindGenerator extends FunctionKindGenerator {
               }
             )
           }
-        } else {
+        } else if (methodName !== "delete") {
           requestSchema = parameterSchema
         }
       }
@@ -1525,7 +1525,10 @@ class OasKindGenerator extends FunctionKindGenerator {
               : undefined,
           required:
             requiredProperties.length > 0 ? requiredProperties : undefined,
-          properties,
+        }
+
+        if (Object.values(properties).length) {
+          objSchema.properties = properties
         }
 
         if (objSchema["x-schemaName"]) {
@@ -1833,7 +1836,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     if (oldSchemaObj!.type === "object") {
       if (!oldSchemaObj?.properties && newSchemaObj?.properties) {
         oldSchemaObj!.properties = newSchemaObj.properties
-      } else if (oldSchemaObj?.properties && !newSchemaObj?.properties) {
+      } else if (!newSchemaObj?.properties) {
         delete oldSchemaObj!.properties
       } else {
         // update existing properties

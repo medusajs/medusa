@@ -264,7 +264,11 @@ class OasSchemaHelper {
    */
   tagNameToSchemaName(tagName: string, area: OasArea): string[] {
     const mainSchemaName = wordsToPascal(pluralize.singular(tagName))
-    return [mainSchemaName, `${capitalize(area)}Create${mainSchemaName}`]
+    return [
+      mainSchemaName,
+      `${mainSchemaName}Response`,
+      `${capitalize(area)}Create${mainSchemaName}`,
+    ]
   }
 }
 
