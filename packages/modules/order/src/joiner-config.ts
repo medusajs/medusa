@@ -37,6 +37,7 @@ export const joinerConfig: ModuleJoinerConfig = {
       name: ["return_reason", "return_reasons"],
       args: {
         entity: ReturnReason.name,
+        methodSuffix: "ReturnReasons",
       },
     },
   ],
