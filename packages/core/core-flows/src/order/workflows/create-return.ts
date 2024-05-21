@@ -1,3 +1,4 @@
+import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateOrderShippingMethodDTO,
   FulfillmentWorkflow,
@@ -21,7 +22,7 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { createLinkStep, useRemoteQueryStep } from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
 import { updateOrderTaxLinesStep } from "../steps"
 import { createReturnStep } from "../steps/create-return"
@@ -338,7 +339,21 @@ export const createReturnOrderWorkflow = createWorkflow(
       prepareFulfillmentData
     )
 
-    createFulfillmentWorkflow.runAsStep(fulfillmentData)
+    const returnFulfillment =
+      createFulfillmentWorkflow.runAsStep(fulfillmentData)
+
+    const link = transform(
+      { order_id: input.order_id, fulfillment: returnFulfillment },
+      (data) => {
+        return [
+          {
+            [Modules.ORDER]: { order_id: data.order_id },
+            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
+          },
+        ]
+      }
+    )
+    createLinkStep(link)
 
     // TODO call the createReturn from the fulfillment provider
   }
