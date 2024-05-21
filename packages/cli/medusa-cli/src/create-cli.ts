@@ -119,10 +119,9 @@ function buildLocalCommands(cli, isLocalProject) {
             describe: `Install Medusa with the V2 feature flag enabled. WARNING: Medusa V2 is still in development and shouldn't be used in production.`,
             default: false,
           })
-          .option(`ci`, {
-            type: `boolean`,
+          .option(`branch`, {
+            type: `string`,
             describe: `Indicate that the installation is part of the CI Pipeline`,
-            default: false,
           }),
       desc: `Create a new Medusa project.`,
       handler: handlerP(newStarter),
