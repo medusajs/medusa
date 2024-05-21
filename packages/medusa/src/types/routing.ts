@@ -61,12 +61,12 @@ export interface MedusaRequest<Body = unknown>
 
 export interface AuthenticatedMedusaRequest<Body = never>
   extends MedusaRequest<Body> {
-  user: { customer_id?: string; userId?: string } // TODO: Remove this property when v2 is released
   auth: {
     actor_id: string
+    actor_type: "api-key" | "user" | "customer"
     auth_user_id: string
-    app_metadata: Record<string, any>
     scope: string
+    app_metadata: Record<string, any>
   }
 }
 

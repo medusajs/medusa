@@ -5,7 +5,6 @@ import {
   ConfigModule,
   IApiKeyModuleService,
 } from "@medusajs/types"
-import { stringEqualsOrRegexMatch } from "@medusajs/utils"
 import { NextFunction, RequestHandler } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import {
@@ -20,13 +19,19 @@ const API_KEY_AUTH = "api-key"
 
 type AuthType = typeof SESSION_AUTH | typeof BEARER_AUTH | typeof API_KEY_AUTH
 
+const ADMIN_SCOPE = "admin"
+const STORE_SCOPE = "store"
+const ALL_SCOPE = "*"
+
+type Scope = typeof ADMIN_SCOPE | typeof STORE_SCOPE | typeof ALL_SCOPE
+
 type MedusaSession = {
   auth_user: AuthUserDTO
   scope: string
 }
 
 export const authenticate = (
-  authScope: string | RegExp,
+  authScope: Scope | Scope[],
   authType: AuthType | AuthType[],
   options: { allowUnauthenticated?: boolean; allowUnregistered?: boolean } = {}
 ): RequestHandler => {
@@ -36,17 +41,22 @@ export const authenticate = (
     next: NextFunction
   ): Promise<void> => {
     const authTypes = Array.isArray(authType) ? authType : [authType]
+    const scopes = Array.isArray(authScope) ? authScope : [authScope]
 
     // We only allow authenticating using a secret API key on the admin
-    if (authTypes.includes(API_KEY_AUTH) && isAdminScope(authScope)) {
+    if (
+      authTypes.includes(API_KEY_AUTH) &&
+      scopes.length === 1 &&
+      scopes.includes(ADMIN_SCOPE)
+    ) {
       const apiKey = await getApiKeyInfo(req)
       if (apiKey) {
         ;(req as AuthenticatedMedusaRequest).auth = {
           actor_id: apiKey.id,
+          actor_type: "api-key",
           auth_user_id: "",
           app_metadata: {},
-          // TODO: Add more limited scope once we have support for it in the API key module
-          scope: "admin",
+          scope: ADMIN_SCOPE,
         }
 
         return next()
@@ -56,7 +66,7 @@ export const authenticate = (
     let authUser: AuthUserDTO | null = getAuthUserFromSession(
       req.session,
       authTypes,
-      authScope
+      scopes
     )
 
     if (!authUser) {
@@ -66,25 +76,15 @@ export const authenticate = (
         req.headers.authorization,
         http.jwtSecret!,
         authTypes,
-        authScope
+        scopes
       )
     }
 
-    const isMedusaScope = isAdminScope(authScope) || isStoreScope(authScope)
-
-    const isRegistered =
-      !isMedusaScope ||
-      (authUser?.app_metadata?.user_id &&
-        stringEqualsOrRegexMatch(authScope, "admin")) ||
-      (authUser?.app_metadata?.customer_id &&
-        stringEqualsOrRegexMatch(authScope, "store"))
-
-    if (
-      authUser &&
-      (isRegistered || (!isRegistered && options.allowUnregistered))
-    ) {
+    const actor = getActor(authUser, scopes)
+    if (authUser && (actor || options.allowUnregistered)) {
       ;(req as AuthenticatedMedusaRequest).auth = {
-        actor_id: getActorId(authUser, authScope) as string, // TODO: fix types for auth_users not in the medusa system
+        actor_id: actor?.id ?? "", // TODO: fix types for auth_users not in the medusa system
+        actor_type: actor?.type ?? "user",
         auth_user_id: authUser.id,
         app_metadata: authUser.app_metadata,
         scope: authUser.scope,
@@ -147,16 +147,13 @@ const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {
 const getAuthUserFromSession = (
   session: Partial<MedusaSession> = {},
   authTypes: AuthType[],
-  authScope: string | RegExp
+  scopes: Scope[]
 ): AuthUserDTO | null => {
   if (!authTypes.includes(SESSION_AUTH)) {
     return null
   }
 
-  if (
-    session.auth_user &&
-    stringEqualsOrRegexMatch(authScope, session.auth_user.scope)
-  ) {
+  if (session.auth_user && scopes.includes(session.auth_user.scope as Scope)) {
     return session.auth_user
   }
 
@@ -167,7 +164,7 @@ const getAuthUserFromJwtToken = (
   authHeader: string | undefined,
   jwtSecret: string,
   authTypes: AuthType[],
-  authScope: string | RegExp
+  scopes: Scope[]
 ): AuthUserDTO | null => {
   if (!authTypes.includes(BEARER_AUTH)) {
     return null
@@ -189,7 +186,7 @@ const getAuthUserFromJwtToken = (
       // verify token and set authUser
       try {
         const verified = jwt.verify(token, jwtSecret) as JwtPayload
-        if (stringEqualsOrRegexMatch(authScope, verified.scope)) {
+        if (scopes.includes(verified.scope)) {
           return verified as AuthUserDTO
         }
       } catch (err) {
@@ -201,25 +198,20 @@ const getAuthUserFromJwtToken = (
   return null
 }
 
-const getActorId = (
-  authUser: AuthUserDTO,
-  scope: string | RegExp
-): string | undefined => {
-  if (stringEqualsOrRegexMatch(scope, "admin")) {
-    return authUser.app_metadata.user_id as string
+const getActor = (
+  authUser: AuthUserDTO | null,
+  scopes: Scope[]
+): { id: string; type: "user" | "customer" } | undefined => {
+  if (!authUser) {
+    return
+  }
+  if (scopes.includes(ADMIN_SCOPE) || scopes.includes(ALL_SCOPE)) {
+    return { id: authUser.app_metadata.user_id as string, type: "user" }
   }
 
-  if (stringEqualsOrRegexMatch(scope, "store")) {
-    return authUser.app_metadata.customer_id as string
+  if (scopes.includes(STORE_SCOPE) || scopes.includes(ALL_SCOPE)) {
+    return { id: authUser.app_metadata.customer_id as string, type: "customer" }
   }
 
-  return undefined
-}
-
-const isAdminScope = (authScope: string | RegExp): boolean => {
-  return stringEqualsOrRegexMatch(authScope, "admin")
-}
-
-const isStoreScope = (authScope: string | RegExp): boolean => {
-  return stringEqualsOrRegexMatch(authScope, "store")
+  return
 }
