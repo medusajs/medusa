@@ -24,7 +24,6 @@ import glob from "glob"
 type Options = {
   directory: string
   expressApp: Express
-  isTest: boolean
 }
 
 const isWorkerMode = (configModule) => {
