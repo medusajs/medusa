@@ -121,7 +121,7 @@ function buildLocalCommands(cli, isLocalProject) {
           })
           .option(`branch`, {
             type: `string`,
-            describe: `Indicate that the installation is part of the CI Pipeline`,
+            describe: `The branch of the git repository to clone.`,
           }),
       desc: `Create a new Medusa project.`,
       handler: handlerP(newStarter),
