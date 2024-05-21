@@ -1,31 +1,31 @@
-import ts, { SyntaxKind } from "typescript"
-import FunctionKindGenerator, {
-  FunctionNode,
-  FunctionOrVariableNode,
-  VariableNode,
-} from "./function.js"
-import { GeneratorOptions, GetDocBlockOptions } from "./default.js"
+import { readFileSync, writeFileSync } from "fs"
+import { OpenAPIV3 } from "openapi-types"
 import { basename, join } from "path"
+import pluralize from "pluralize"
+import ts, { SyntaxKind } from "typescript"
+import { capitalize, kebabToTitle, wordsToKebab } from "utils"
+import { parse, stringify } from "yaml"
+import { DEFAULT_OAS_RESPONSES } from "../../constants.js"
 import {
   OpenApiDocument,
   OpenApiOperation,
   OpenApiSchema,
 } from "../../types/index.js"
-import { OpenAPIV3 } from "openapi-types"
-import { parse, stringify } from "yaml"
-import { GeneratorEvent } from "../helpers/generator-event-manager.js"
-import { readFileSync, writeFileSync } from "fs"
-import OasExamplesGenerator from "../examples/oas.js"
-import pluralize from "pluralize"
-import getOasOutputBasePath from "../../utils/get-oas-output-base-path.js"
-import parseOas, { ExistingOas } from "../../utils/parse-oas.js"
-import OasSchemaHelper, { ParsedSchema } from "../helpers/oas-schema.js"
 import formatOas from "../../utils/format-oas.js"
-import { DEFAULT_OAS_RESPONSES } from "../../constants.js"
-import { capitalize, kebabToTitle, wordsToKebab } from "utils"
-import SchemaFactory from "../helpers/schema-factory.js"
-import isZodObject from "../../utils/is-zod-object.js"
 import getCorrectZodTypeName from "../../utils/get-correct-zod-type-name.js"
+import getOasOutputBasePath from "../../utils/get-oas-output-base-path.js"
+import isZodObject from "../../utils/is-zod-object.js"
+import parseOas, { ExistingOas } from "../../utils/parse-oas.js"
+import OasExamplesGenerator from "../examples/oas.js"
+import { GeneratorEvent } from "../helpers/generator-event-manager.js"
+import OasSchemaHelper, { ParsedSchema } from "../helpers/oas-schema.js"
+import SchemaFactory from "../helpers/schema-factory.js"
+import { GeneratorOptions, GetDocBlockOptions } from "./default.js"
+import FunctionKindGenerator, {
+  FunctionNode,
+  FunctionOrVariableNode,
+  VariableNode,
+} from "./function.js"
 
 export const API_ROUTE_PARAM_REGEX = /\[(.+?)\]/g
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
@@ -632,11 +632,8 @@ class OasKindGenerator extends FunctionKindGenerator {
     normalized: string
   } {
     const filePath = node.getSourceFile().fileName
-    const oasPath = (
-      filePath.includes("/api-v2/")
-        ? filePath.substring(filePath.indexOf("/api-v2/"))
-        : filePath.substring(filePath.indexOf("/api/"))
-    )
+    const oasPath = filePath
+      .substring(filePath.indexOf("/api/"))
       .replace(/^\/api(-v2)?\//, "")
       .replace(`/${basename(filePath)}`, "")
     const normalizedOasPath = `/${oasPath.replaceAll(
@@ -1276,8 +1273,8 @@ class OasKindGenerator extends FunctionKindGenerator {
           descriptionOptions as SchemaDescriptionOptions
         )
       : title
-        ? this.getSchemaDescription({ typeStr: title, nodeType: itemType })
-        : this.defaultSummary
+      ? this.getSchemaDescription({ typeStr: title, nodeType: itemType })
+      : this.defaultSummary
     const typeAsString =
       zodObjectTypeName || this.checker.typeToString(itemType)
 
@@ -1318,8 +1315,8 @@ class OasKindGenerator extends FunctionKindGenerator {
             itemType.flags === ts.TypeFlags.StringLiteral
               ? "string"
               : itemType.flags === ts.TypeFlags.NumberLiteral
-                ? "number"
-                : "boolean",
+              ? "number"
+              : "boolean",
           title: title || typeAsString,
           description,
           format: this.getSchemaTypeFormat({
