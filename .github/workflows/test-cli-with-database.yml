@@ -52,7 +52,7 @@ jobs:
 
      - name: Create Medusa project
        run: |
-         medusa new cli-test --skip-db --v2
+         medusa new cli-test --skip-db --v2 --ci
        working-directory: ..
 
      - name: run medusa dev

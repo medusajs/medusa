@@ -169,7 +169,7 @@ const copy = async (starterPath, rootPath) => {
 }
 
 // Clones starter from URI.
-const clone = async (hostInfo, rootPath, v2 = false) => {
+const clone = async (hostInfo, rootPath, v2 = false, ci = false) => {
   let url
   // Let people use private repos accessed over SSH.
   if (hostInfo.getDefaultRepresentation() === `sshurl`) {
@@ -179,8 +179,8 @@ const clone = async (hostInfo, rootPath, v2 = false) => {
     url = hostInfo.https({ noCommittish: true, noGitPlus: true })
   }
 
-  const branch = v2 ? [`-b`, "feat/v2"] : 
-    hostInfo.committish ? [`-b`, hostInfo.committish] : []
+  const branch = v2 ? (ci ? [`-b`, "feat/v2-ci"] : [`-b`, "feat/v2"]) 
+      : (hostInfo.committish ? [`-b`, hostInfo.committish] : [])
 
   const createAct = reporter.activity(`Creating new project from git: ${url}`)
 
@@ -524,7 +524,8 @@ export const newStarter = async (args) => {
     dbPass,
     dbPort,
     dbHost,
-    v2
+    v2,
+    ci
   } = args
 
   const dbCredentials = removeUndefined({
@@ -600,7 +601,7 @@ medusa new ${rootPath} [url-to-starter]
 
   const hostedInfo = hostedGitInfo.fromUrl(starterPath)
   if (hostedInfo) {
-    await clone(hostedInfo, rootPath, v2)
+    await clone(hostedInfo, rootPath, v2, ci)
   } else {
     await copy(starterPath, rootPath)
   }
