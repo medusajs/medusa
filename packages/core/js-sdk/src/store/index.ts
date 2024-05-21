@@ -1,3 +1,10 @@
+import {
+  FindParams,
+  HttpTypes,
+  PaginatedResponse,
+  SelectParams,
+  DeleteResponse,
+} from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -10,65 +17,81 @@ export class Store {
 
   public region = {
     list: async (
-      queryParams?: Record<string, any>,
+      query?: FindParams & HttpTypes.StoreRegionFilters,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/regions`, {
-        query: queryParams,
+      return this.client.fetch<
+        PaginatedResponse<{ regions: HttpTypes.StoreRegion[] }>
+      >(`/store/regions`, {
+        query,
         headers,
       })
     },
     retrieve: async (
       id: string,
-      queryParams?: Record<string, any>,
+      query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/regions/${id}`, {
-        query: queryParams,
-        headers,
-      })
+      return this.client.fetch<{ region: HttpTypes.StoreRegion }>(
+        `/store/regions/${id}`,
+        {
+          query,
+          headers,
+        }
+      )
     },
   }
 
   public collection = {
     list: async (
-      queryParams?: Record<string, any>,
+      query?: FindParams & HttpTypes.StoreCollectionFilters,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/collections`, {
-        query: queryParams,
+      return this.client.fetch<
+        PaginatedResponse<{ collections: HttpTypes.StoreCollection[] }>
+      >(`/store/collections`, {
+        query,
         headers,
       })
     },
     retrieve: async (
       id: string,
-      queryParams?: Record<string, any>,
+      query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/collections/${id}`, {
-        query: queryParams,
-        headers,
-      })
+      return this.client.fetch<{ collection: HttpTypes.StoreCollection }>(
+        `/store/collections/${id}`,
+        {
+          query,
+          headers,
+        }
+      )
     },
   }
 
   public category = {
     list: async (
-      queryParams?: Record<string, any>,
+      query?: FindParams & HttpTypes.StoreProductCategoryFilters,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/product-categories`, {
-        query: queryParams,
+      return this.client.fetch<
+        PaginatedResponse<{
+          product_categories: HttpTypes.StoreProductCategory[]
+        }>
+      >(`/store/product-categories`, {
+        query,
         headers,
       })
     },
     retrieve: async (
       id: string,
-      queryParams?: Record<string, any>,
+      query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/product-categories/${id}`, {
-        query: queryParams,
+      return this.client.fetch<{
+        product_category: HttpTypes.StoreProductCategory
+      }>(`/store/product-categories/${id}`, {
+        query,
         headers,
       })
     },
@@ -76,87 +99,103 @@ export class Store {
 
   public product = {
     list: async (
-      queryParams?: Record<string, any>,
+      query?: FindParams & HttpTypes.StoreProductFilters,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/products`, {
-        query: queryParams,
+      return this.client.fetch<
+        PaginatedResponse<{ products: HttpTypes.StoreProduct[] }>
+      >(`/store/products`, {
+        query,
         headers,
       })
     },
     retrieve: async (
       id: string,
-      queryParams?: Record<string, any>,
+      query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/products/${id}`, {
-        query: queryParams,
-        headers,
-      })
-    },
-  }
-
-  public order = {
-    retrieve: async (
-      id: string,
-      queryParams?: Record<string, any>,
-      headers?: ClientHeaders
-    ) => {
-      return this.client.fetch<any>(`/store/orders/${id}`, {
-        query: queryParams,
-        headers,
-      })
+      return this.client.fetch<{ product: HttpTypes.StoreProduct }>(
+        `/store/products/${id}`,
+        {
+          query,
+          headers,
+        }
+      )
     },
   }
 
   public cart = {
-    create: async (body: any, headers?: ClientHeaders) => {
-      return this.client.fetch<any>(`/store/carts`, {
-        headers,
+    create: async (
+      body: HttpTypes.StoreCreateCart,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ cart: HttpTypes.StoreCart }>(`/store/carts`, {
         method: "POST",
+        headers,
         body,
+        query,
       })
     },
-    update: async (id: string, body: any, headers?: ClientHeaders) => {
-      return this.client.fetch<any>(`/store/carts/${id}`, {
-        headers,
-        method: "POST",
-        body,
-      })
+    update: async (
+      id: string,
+      body: HttpTypes.StoreUpdateCart,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ cart: HttpTypes.StoreCart }>(
+        `/store/carts/${id}`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
     },
     retrieve: async (
       id: string,
-      queryParams?: Record<string, any>,
+      query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/carts/${id}`, {
-        query: queryParams,
-        headers,
-      })
+      return this.client.fetch<{ cart: HttpTypes.StoreCart }>(
+        `/store/carts/${id}`,
+        {
+          headers,
+          query,
+        }
+      )
     },
     createLineItem: async (
       cartId: string,
-      body: any,
+      body: HttpTypes.StoreAddCartLineItem,
+      query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/carts/${cartId}/line-items`, {
-        headers,
-        method: "POST",
-        body,
-      })
+      return this.client.fetch<{ cart: HttpTypes.StoreCart }>(
+        `/store/carts/${cartId}/line-items`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
     },
     updateLineItem: async (
       cartId: string,
       lineItemId: string,
-      body: any,
+      body: HttpTypes.StoreUpdateCartLineItem,
+      query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(
+      return this.client.fetch<{ cart: HttpTypes.StoreCart }>(
         `/store/carts/${cartId}/line-items/${lineItemId}`,
         {
-          headers,
           method: "POST",
+          headers,
           body,
+          query,
         }
       )
     },
@@ -165,59 +204,83 @@ export class Store {
       lineItemId: string,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(
-        `/store/carts/${cartId}/line-items/${lineItemId}`,
-        {
-          headers,
-          method: "DELETE",
-        }
-      )
+      return this.client.fetch<
+        DeleteResponse<"line-item", HttpTypes.StoreCart>
+      >(`/store/carts/${cartId}/line-items/${lineItemId}`, {
+        method: "DELETE",
+        headers,
+      })
     },
     addShippingMethod: async (
       cartId: string,
-      body: any,
+      body: HttpTypes.StoreAddCartShippingMethods,
+      query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/carts/${cartId}/shipping-methods`, {
-        headers,
-        method: "POST",
-        body,
-      })
+      return this.client.fetch<{ cart: HttpTypes.StoreCart }>(
+        `/store/carts/${cartId}/shipping-methods`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
     },
-    complete: async (cartId: string, headers?: ClientHeaders) => {
-      return this.client.fetch<any>(`/store/carts/${cartId}/complete`, {
-        headers,
+    complete: async (
+      cartId: string,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<
+        | { type: "order"; order: HttpTypes.StoreOrder }
+        | {
+            type: "cart"
+            cart: HttpTypes.StoreCart
+            error: {
+              message: string
+              name: string
+              type: string
+            }
+          }
+      >(`/store/carts/${cartId}/complete`, {
         method: "POST",
+        headers,
+        query,
       })
     },
   }
 
   public fulfillment = {
+    // TODO: Finalize typings for list options
     listCartOptions: async (
-      queryParams?: Record<string, any>,
+      query?: FindParams & { cart_id: string },
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<any>(`/store/shipping-options`, {
-        query: queryParams,
         headers,
+        query,
       })
     },
   }
 
   public payment = {
     listPaymentProviders: async (
-      queryParams?: Record<string, any>,
+      query?: FindParams & HttpTypes.StorePaymentProviderFilters,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/payment-providers`, {
-        query: queryParams,
+      return this.client.fetch<{
+        payment_providers: HttpTypes.StorePaymentProvider[]
+      }>(`/store/payment-providers`, {
         headers,
+        query,
       })
     },
 
     initiatePaymentSession: async (
-      cart: any,
+      cart: HttpTypes.StoreCart,
       body: Record<string, any>,
+      query?: SelectParams,
       headers?: ClientHeaders
     ) => {
       let paymentCollectionId = (cart as any).payment_collection?.id
@@ -229,20 +292,38 @@ export class Store {
           amount: cart.total,
         }
         paymentCollectionId = (
-          await this.client.fetch<any>(`/store/payment-collections`, {
-            headers,
+          await this.client.fetch<{
+            payment_collection: HttpTypes.StorePaymentCollection
+          }>(`/store/payment-collections`, {
             method: "POST",
+            headers,
             body: collectionBody,
           })
         ).payment_collection.id
       }
 
-      return this.client.fetch<any>(
-        `/store/payment-collections/${paymentCollectionId}/payment-sessions`,
+      return this.client.fetch<{
+        payment_collection: HttpTypes.StorePaymentCollection
+      }>(`/store/payment-collections/${paymentCollectionId}/payment-sessions`, {
+        method: "POST",
+        headers,
+        body,
+        query,
+      })
+    },
+  }
+
+  public order = {
+    retrieve: async (
+      id: string,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ order: HttpTypes.StoreOrder }>(
+        `/store/orders/${id}`,
         {
           headers,
-          method: "POST",
-          body,
+          query,
         }
       )
     },

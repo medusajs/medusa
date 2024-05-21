@@ -1,2 +1,2 @@
-export * from "./paginated-response"
-export * from "./deleted-response"
+export * from "./request"
+export * from "./response"

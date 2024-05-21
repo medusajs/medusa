@@ -10,10 +10,10 @@ export type Config = {
   globalHeaders?: ClientHeaders
   publishableKey?: string
   apiKey?: string
-  jwtToken?: {
-    storageKey?: string
-    // TODO: Add support for cookie storage
-    storageMethod?: "local" | "session" | "memory"
+  auth?: {
+    type?: "jwt" | "session"
+    jwtTokenStorageKey?: string
+    jwtTokenStorageMethod?: "local" | "session" | "memory"
   }
   logger?: Logger
   debug?: boolean
@@ -21,7 +21,9 @@ export type Config = {
 
 export type FetchParams = Parameters<typeof fetch>
 
-export type ClientHeaders = Record<string, string>
+export type ClientHeaders =
+  // The `tags` header is specifically added for nextJS, as they follow a non-standard header format
+  Record<string, string | { tags: string[] }>
 
 export type FetchInput = FetchParams[0]
 

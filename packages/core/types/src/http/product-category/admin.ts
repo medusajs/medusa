@@ -1,16 +1,10 @@
-import { PaginatedResponse } from "../../common"
+import { PaginatedResponse } from "../common"
 import { ProductCategoryResponse } from "./common"
 
-/**
- * @experimental
- */
 export interface AdminProductCategoryResponse {
   product_category: ProductCategoryResponse
 }
 
-/**
- * @experimental
- */
-export interface AdminProductCategoryListResponse extends PaginatedResponse {
+export type AdminProductCategoryListResponse = PaginatedResponse<{
   product_categories: ProductCategoryResponse[]
-}
+}>

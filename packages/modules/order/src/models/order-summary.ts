@@ -36,6 +36,9 @@ type OrderSummaryTotals = {
 
   balance: BigNumber
   future_balance: BigNumber
+
+  paid_total: BigNumber
+  refunded_total: BigNumber
 }
 
 const OrderIdVersionIndex = createPsqlIndexStatementHelper({

@@ -59,8 +59,6 @@ import {
   UpdateOrderReturnReasonWithSelectorDTO,
   UpdateOrderShippingMethodAdjustmentDTO,
   UpdateOrderShippingMethodTaxLineDTO,
-  UpdateOrderTransactionDTO,
-  UpdateOrderTransactionWithSelectorDTO,
   UpsertOrderLineItemAdjustmentDTO,
 } from "./mutations"
 
@@ -1400,14 +1398,8 @@ export interface IOrderModuleService extends IModuleService {
 
   revertLastVersion(orderId: string, sharedContext?: Context): Promise<void>
 
-  retrieveTransaction(
-    id: string,
-    config?: FindConfig<OrderTransactionDTO>,
-    sharedContext?: Context
-  ): Promise<OrderTransactionDTO>
-
   listTransactions(
-    filters: FilterableOrderTransactionProps,
+    filters?: FilterableOrderTransactionProps,
     config?: FindConfig<OrderTransactionDTO>,
     sharedContext?: Context
   ): Promise<OrderTransactionDTO[]>
@@ -1422,33 +1414,19 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderTransactionDTO[]>
 
-  updateTransactions(
-    data: UpdateOrderTransactionWithSelectorDTO[]
-  ): Promise<OrderTransactionDTO[]>
-  updateTransactions(
-    selector: Partial<FilterableOrderTransactionProps>,
-    data: Partial<UpdateOrderTransactionDTO>,
-    sharedContext?: Context
-  ): Promise<OrderTransactionDTO[]>
-  updateTransactions(
-    id: string,
-    data: Partial<UpdateOrderTransactionDTO>,
-    sharedContext?: Context
-  ): Promise<OrderTransactionDTO>
-
   deleteTransactions(
-    returnReasonIds: string[],
+    transactionIds: string | object | string[] | object[],
     sharedContext?: Context
   ): Promise<void>
 
   softDeleteTransactions<TReturnableLinkableKeys extends string = string>(
-    storeIds: string[],
+    transactionIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
   restoreTransactions<TReturnableLinkableKeys extends string = string>(
-    storeIds: string[],
+    transactionIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
@@ -1505,6 +1483,12 @@ export interface IOrderModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
+
+  archive(orderId: string[], sharedContext?: Context): Promise<OrderDTO[]>
+  archive(orderId: string, sharedContext?: Context): Promise<OrderDTO>
+
+  completeOrder(orderId: string[], sharedContext?: Context): Promise<OrderDTO[]>
+  completeOrder(orderId: string, sharedContext?: Context): Promise<OrderDTO>
 
   // Bundled flows
   registerFulfillment(

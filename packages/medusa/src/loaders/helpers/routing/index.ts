@@ -1,30 +1,30 @@
+import { ConfigModule } from "@medusajs/types"
 import { promiseAll, wrapHandler } from "@medusajs/utils"
 import cors from "cors"
-import { type Express, json, Router, text, urlencoded } from "express"
+import { Router, json, text, urlencoded, type Express } from "express"
 import { readdir } from "fs/promises"
 import { parseCorsOrigins } from "medusa-core-utils"
 import { extname, join, sep } from "path"
+import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import {
   authenticateCustomer,
   authenticateLegacy,
   errorHandler,
   requireCustomerAuthentication,
 } from "../../../utils/middlewares"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import logger from "../../logger"
 import {
   AsyncRouteHandler,
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
   MiddlewareRoute,
-  MiddlewaresConfig,
   MiddlewareVerb,
+  MiddlewaresConfig,
   ParserConfigArgs,
   RouteConfig,
   RouteDescriptor,
   RouteVerb,
 } from "./types"
-import { ConfigModule } from "@medusajs/types"
 
 const log = ({
   activityId,
@@ -568,8 +568,6 @@ export class RoutesLoader {
     }
 
     if (mostSpecificConfig?.bodyParser) {
-      const sizeLimit = mostSpecificConfig?.bodyParser?.sizeLimit
-
       this.router[method.toLowerCase()](
         path,
         ...getBodyParserMiddleware(mostSpecificConfig?.bodyParser)
@@ -610,7 +608,7 @@ export class RoutesLoader {
           descriptor.route,
           cors({
             origin: parseCorsOrigins(
-              this.configModule.projectConfig.admin_cors || ""
+              this.configModule.projectConfig.http.adminCors
             ),
             credentials: true,
           })
@@ -625,7 +623,7 @@ export class RoutesLoader {
           descriptor.route,
           cors({
             origin: parseCorsOrigins(
-              this.configModule.projectConfig.auth_cors || ""
+              this.configModule.projectConfig.http.authCors
             ),
             credentials: true,
           })
@@ -640,7 +638,7 @@ export class RoutesLoader {
           descriptor.route,
           cors({
             origin: parseCorsOrigins(
-              this.configModule.projectConfig.store_cors || ""
+              this.configModule.projectConfig.http.storeCors
             ),
             credentials: true,
           })

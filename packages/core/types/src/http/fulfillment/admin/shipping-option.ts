@@ -7,9 +7,6 @@ import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
 import { AdminPriceSetPriceResponse } from "../../pricing"
 import { DeleteResponse, PaginatedResponse } from "../../common"
 
-/**
- * @experimental
- */
 interface AdminShippingOptionResponse {
   id: string
   name: string
@@ -31,22 +28,13 @@ interface AdminShippingOptionResponse {
   deleted_at: Date | null
 }
 
-/**
- * @experimental
- */
 export interface AdminShippingOptionRetrieveResponse {
   shipping_option: AdminShippingOptionResponse
 }
 
-/**
- * @experimental
- */
-export interface AdminShippingOptionListResponse extends PaginatedResponse {
+export type AdminShippingOptionListResponse = PaginatedResponse<{
   shipping_options: AdminShippingOptionResponse[]
-}
+}>
 
-/**
- * @experimental
- */
 export interface AdminShippingOptionDeleteResponse
   extends DeleteResponse<"shipping_option"> {}
