@@ -1,6 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { MapToConfig } from "@medusajs/utils"
+import { MapToConfig, pluralize } from "@medusajs/utils"
 import { LineItem, ReturnReason } from "@models"
 import Order from "./models/order"
 
@@ -37,6 +37,7 @@ export const joinerConfig: ModuleJoinerConfig = {
       name: ["return_reason", "return_reasons"],
       args: {
         entity: ReturnReason.name,
+        methodSuffix: pluralize(ReturnReason.name),
       },
     },
   ],

@@ -2367,7 +2367,7 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<[FulfillmentDTO[], number]>
 
   /**
-   * This method creates a fulfillment.
+   * This method creates a fulfillment and call the provider to create a fulfillment.
    *
    * @param {CreateFulfillmentDTO} data - The fulfillment to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
@@ -2401,6 +2401,45 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   })
    */
   createFulfillment(
+    data: CreateFulfillmentDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentDTO>
+
+  /**
+   * This method creates a fulfillment and call the provider to create a return.
+   *
+   * @param {CreateFulfillmentDTO} data - The fulfillment to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<FulfillmentDTO>} The created fulfillment.
+   *
+   * @example
+   * const fulfillment =
+   *   await fulfillmentModuleService.createReturnFulfillment({
+   *     location_id: "loc_123",
+   *     provider_id: "webshipper",
+   *     delivery_address: {
+   *       address_1: "4120 Auto Park Cir",
+   *       country_code: "us",
+   *     },
+   *     items: [
+   *       {
+   *         title: "Shirt",
+   *         sku: "SHIRT",
+   *         quantity: 1,
+   *         barcode: "ABCED",
+   *       },
+   *     ],
+   *     labels: [
+   *       {
+   *         tracking_number: "1234567",
+   *         tracking_url: "https://example.com/tracking",
+   *         label_url: "https://example.com/label",
+   *       },
+   *     ],
+   *     order: {},
+   *   })
+   */
+  createReturnFulfillment(
     data: CreateFulfillmentDTO,
     sharedContext?: Context
   ): Promise<FulfillmentDTO>

@@ -1,5 +1,5 @@
 export interface SelectParams {
-  fields?: string[]
+  fields?: string
 }
 
 export interface FindParams extends SelectParams {
