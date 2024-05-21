@@ -172,10 +172,10 @@
       "variants": {
         "header": "Variants",
         "subHeadingTitle": "Yes, this is a product with variants",
-        "subHeadingDescription": "When unchecked, a product without variants will be created",
+        "subHeadingDescription": "When unchecked we will create a default variant for you",
         "productVariants": {
           "label": "Product variants",
-          "hint": "Variants left unchecked won't be created. This ranking will affect how the variants are ranked in your frontend.",
+          "hint": "This ranking will affect how the variants are ranked in your frontend.",
           "alert": "Add options to create variants."
         },
         "productOptions": {

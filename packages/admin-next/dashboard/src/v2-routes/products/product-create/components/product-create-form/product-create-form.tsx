@@ -178,13 +178,13 @@ export const ProductCreateForm = () => {
             </RouteFocusModal.Header>
             <RouteFocusModal.Body className="size-full overflow-hidden">
               <ProgressTabs.Content
-                className="size-full overflow-hidden"
+                className="size-full overflow-y-auto"
                 value={Tab.DETAILS}
               >
                 <ProductCreateDetailsForm form={form} />
               </ProgressTabs.Content>
               <ProgressTabs.Content
-                className="size-full overflow-hidden"
+                className="size-full overflow-y-auto"
                 value={Tab.ORGANIZE}
               >
                 <ProductCreateOrganizeForm form={form} />

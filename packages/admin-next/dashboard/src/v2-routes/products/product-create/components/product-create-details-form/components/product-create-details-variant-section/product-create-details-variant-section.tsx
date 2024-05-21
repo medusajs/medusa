@@ -92,6 +92,9 @@ export const ProductCreateVariantsSection = ({
   })
 
   const handleOptionValueUpdate = (index: number, value: string[]) => {
+    const { isTouched: hasUserSelectedVariants } =
+      form.getFieldState("variants")
+
     const newOptions = [...watchedOptions]
     newOptions[index].values = value
 
@@ -129,7 +132,7 @@ export const ProductCreateVariantsSection = ({
       newVariants.push({
         title: getVariantName(permutation),
         options: permutation,
-        should_create: false,
+        should_create: hasUserSelectedVariants ? false : true,
         variant_rank: newVariants.length,
       })
     })
