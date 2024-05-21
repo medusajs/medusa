@@ -634,7 +634,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     const filePath = node.getSourceFile().fileName
     const oasPath = filePath
       .substring(filePath.indexOf("/api/"))
-      .replace(/^\/api(-v2)?\//, "")
+      .replace(/^\/api\//, "")
       .replace(`/${basename(filePath)}`, "")
     const normalizedOasPath = `/${oasPath.replaceAll(
       API_ROUTE_PARAM_REGEX,
