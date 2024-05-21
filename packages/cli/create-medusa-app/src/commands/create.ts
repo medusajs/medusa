@@ -34,7 +34,6 @@ const isEmail = isEmailImported.default
 export type CreateOptions = {
   repoUrl?: string
   seed?: boolean
-  // commander passed --no-boilerplate as boilerplate
   boilerplate?: boolean
   skipDb?: boolean
   dbUrl?: string
@@ -43,7 +42,6 @@ export type CreateOptions = {
   directoryPath?: string
   withNextjsStarter?: boolean
   verbose?: boolean
-  v2?: boolean
 }
 
 export default async ({
@@ -57,7 +55,6 @@ export default async ({
   directoryPath,
   withNextjsStarter = false,
   verbose = false,
-  v2 = false,
 }: CreateOptions) => {
   track("CREATE_CLI_CMA")
 
@@ -142,7 +139,6 @@ export default async ({
       abortController,
       spinner,
       verbose,
-      v2,
     })
   } catch {
     return
@@ -195,7 +191,6 @@ export default async ({
       nextjsDirectory,
       client,
       verbose,
-      v2,
     })
   } catch (e: any) {
     if (isAbortError(e)) {
@@ -257,14 +252,10 @@ export default async ({
   await waitOn({
     resources: ["http://localhost:9000/health"],
   }).then(async () => {
-    if (v2) {
-      return
-    }
-
     open(
       inviteToken
-        ? `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
-        : "http://localhost:7001"
+        ? `http://localhost:9000/app/invite?token=${inviteToken}&first_run=true`
+        : "http://localhost:9000/app"
     )
   })
 }

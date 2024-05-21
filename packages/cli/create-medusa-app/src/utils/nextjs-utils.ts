@@ -56,15 +56,24 @@ export async function installNextjsStarter({
   }
 
   try {
+    // TODO change back to use create-next-app once Next.js v2 changes land on the main branch
     await execute(
       [
-        `npx create-next-app -e ${NEXTJS_REPO} ${nextjsDirectory}`,
+        `git clone ${NEXTJS_REPO} -b v2 ${nextjsDirectory}`,
         {
           signal: abortController?.signal,
-          env: {
-            ...process.env,
-            npm_config_yes: "yes",
-          },
+          env: process.env,
+        },
+      ],
+      { verbose }
+    )
+    await execute(
+      [
+        `npm install`,
+        {
+          signal: abortController?.signal,
+          env: process.env,
+          cwd: nextjsDirectory
         },
       ],
       { verbose }
@@ -79,6 +88,11 @@ export async function installNextjsStarter({
       type: "error",
     })
   }
+
+  fs.rmSync(path.join(nextjsDirectory, ".git"), {
+    recursive: true,
+    force: true,
+  })
 
   fs.renameSync(
     path.join(nextjsDirectory, ".env.template"),
