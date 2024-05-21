@@ -47,9 +47,9 @@ export default class ApplicationMethod {
   @Property({ columnType: "jsonb" })
   raw_value: BigNumberRawValue | null
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", nullable: true })
   @CurrencyCodeIndex.MikroORMIndex()
-  currency_code: string
+  currency_code: string | null = null
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
   max_quantity?: number | null = null

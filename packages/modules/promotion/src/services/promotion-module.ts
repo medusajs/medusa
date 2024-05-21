@@ -1,4 +1,5 @@
 import {
+  CampaignBudgetTypeValues,
   Context,
   DAL,
   InternalModuleDeclaration,
@@ -544,11 +545,13 @@ export default class PromotionModuleService<
       }
 
       const campaignCurrency =
-        campaignData?.currency ||
-        existingCampaigns.find((c) => c.id === campaignId)?.currency
+        campaignData?.budget?.currency_code ||
+        existingCampaigns.find((c) => c.id === campaignId)?.budget
+          ?.currency_code
 
       if (
-        !campaignCurrency ||
+        (campaignData?.budget?.type === CampaignBudgetType.SPEND &&
+          !campaignCurrency) ||
         campaignCurrency !== applicationMethodData?.currency_code
       ) {
         throw new MedusaError(
@@ -775,7 +778,11 @@ export default class PromotionModuleService<
         )
       }
 
-      if (campaignId && existingCampaign?.currency !== promotionCurrencyCode) {
+      if (
+        campaignId &&
+        existingCampaign?.budget?.type === CampaignBudgetType.SPEND &&
+        existingCampaign.budget.currency_code !== promotionCurrencyCode
+      ) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Currency code doesn't match for campaign (${campaignId}) and promotion (${existingPromotion.id})`
@@ -1209,6 +1216,8 @@ export default class PromotionModuleService<
       )
 
       if (campaignBudgetData) {
+        this.validateCampaignBudgetData(campaignBudgetData)
+
         campaignBudgetsData.push({
           ...campaignBudgetData,
           campaign: createdCampaign.id,
@@ -1224,6 +1233,28 @@ export default class PromotionModuleService<
     }
 
     return createdCampaigns
+  }
+
+  protected validateCampaignBudgetData(data: {
+    type?: CampaignBudgetTypeValues
+    currency_code?: string
+  }) {
+    if (!data.type) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Campaign Budget type is a required field`
+      )
+    }
+
+    if (
+      data.type === CampaignBudgetType.SPEND &&
+      !isPresent(data.currency_code)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Campaign Budget type is a required field`
+      )
+    }
   }
 
   async updateCampaigns(
@@ -1263,7 +1294,8 @@ export default class PromotionModuleService<
   ) {
     const campaignIds = data.map((d) => d.id)
     const campaignsData: UpdateCampaignDTO[] = []
-    const campaignBudgetsData: UpdateCampaignBudgetDTO[] = []
+    const updateBudgetData: UpdateCampaignBudgetDTO[] = []
+    const createBudgetData: CreateCampaignBudgetDTO[] = []
 
     const existingCampaigns = await this.listCampaigns(
       { id: campaignIds },
@@ -1276,18 +1308,38 @@ export default class PromotionModuleService<
     )
 
     for (const updateCampaignData of data) {
-      const { budget: campaignBudgetData, ...campaignData } = updateCampaignData
-
-      const existingCampaign = existingCampaignsMap.get(campaignData.id)
-      const existingCampaignBudget = existingCampaign?.budget
+      const { budget: budgetData, ...campaignData } = updateCampaignData
+      const existingCampaign = existingCampaignsMap.get(campaignData.id)!
 
       campaignsData.push(campaignData)
 
-      if (existingCampaignBudget && campaignBudgetData) {
-        campaignBudgetsData.push({
-          id: existingCampaignBudget.id,
-          ...campaignBudgetData,
-        })
+      // Type & currency code of the budget is immutable, we don't allow for it to be updated.
+      // If an existing budget is present, we remove the type and currency from being updated
+      if (
+        (existingCampaign?.budget && budgetData?.type) ||
+        budgetData?.currency_code
+      ) {
+        delete budgetData?.type
+        delete budgetData?.currency_code
+
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Campaign budget attributes (type, currency_code) are immutable`
+        )
+      }
+
+      if (budgetData) {
+        if (existingCampaign?.budget) {
+          updateBudgetData.push({
+            id: existingCampaign.budget.id,
+            ...budgetData,
+          })
+        } else {
+          createBudgetData.push({
+            ...budgetData,
+            campaign: existingCampaign.id,
+          })
+        }
       }
     }
 
@@ -1296,11 +1348,12 @@ export default class PromotionModuleService<
       sharedContext
     )
 
-    if (campaignBudgetsData.length) {
-      await this.campaignBudgetService_.update(
-        campaignBudgetsData,
-        sharedContext
-      )
+    if (updateBudgetData.length) {
+      await this.campaignBudgetService_.update(updateBudgetData, sharedContext)
+    }
+
+    if (createBudgetData.length) {
+      await this.campaignBudgetService_.create(createBudgetData, sharedContext)
     }
 
     return updatedCampaigns
@@ -1350,7 +1403,9 @@ export default class PromotionModuleService<
 
     const promotionsWithInvalidCurrency = promotionsToAdd.filter(
       (promotion) =>
-        promotion.application_method?.currency_code !== campaign.currency
+        campaign.budget?.type === CampaignBudgetType.SPEND &&
+        promotion.application_method?.currency_code !==
+          campaign?.budget?.currency_code
     )
 
     if (promotionsWithInvalidCurrency.length > 0) {
@@ -1360,7 +1415,7 @@ export default class PromotionModuleService<
       )
     }
 
-    const updated = await this.promotionService_.update(
+    await this.promotionService_.update(
       promotionsToAdd.map((promotion) => ({
         id: promotion.id,
         campaign_id: campaign.id,

@@ -47,6 +47,9 @@ export default class CampaignBudget {
   })
   campaign: Campaign | null = null
 
+  @Property({ columnType: "text", nullable: true })
+  currency_code: string | null = null
+
   @MikroOrmBigNumberProperty({ nullable: true })
   limit: BigNumber | number | null = null
 

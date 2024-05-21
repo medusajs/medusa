@@ -33,15 +33,6 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "currency": {
-          "name": "currency",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "campaign_identifier": {
           "name": "campaign_identifier",
           "type": "text",
@@ -160,6 +151,15 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "text"
+        },
+        "currency_code": {
+          "name": "currency_code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "limit": {
@@ -455,7 +455,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "max_quantity": {

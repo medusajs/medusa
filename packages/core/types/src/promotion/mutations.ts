@@ -18,6 +18,11 @@ export interface CreateCampaignBudgetDTO {
    * How much is used of the campaign budget.
    */
   used?: number
+
+  /**
+   * The currency of the campaign.
+   */
+  currency_code?: string
 }
 
 /**
@@ -43,6 +48,11 @@ export interface UpdateCampaignBudgetDTO {
    * How much is used of the campaign budget.
    */
   used?: number
+
+  /**
+   * The currency of the campaign.
+   */
+  currency_code?: string
 }
 
 /**
@@ -58,11 +68,6 @@ export interface CreateCampaignDTO {
    * The description of the campaign.
    */
   description?: string
-
-  /**
-   * The currency of the campaign.
-   */
-  currency: string
 
   /**
    * The campaign identifier of the campaign.
@@ -103,11 +108,6 @@ export interface UpdateCampaignDTO {
    * The description of the campaign.
    */
   description?: string
-
-  /**
-   * The currency of the campaign.
-   */
-  currency?: string
 
   /**
    * The campaign identifier of the campaign.

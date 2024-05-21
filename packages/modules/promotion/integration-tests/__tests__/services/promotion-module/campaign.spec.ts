@@ -1,6 +1,7 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { CampaignBudgetType } from "../../../../../../core/utils/src/promotion/index"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createPromotions } from "../../../__fixtures__/promotion"
 
@@ -27,7 +28,7 @@ moduleIntegrationTestRunner({
               id: "campaign-id-1",
               name: "campaign 1",
               description: "test description",
-              currency: "USD",
+
               campaign_identifier: "test-1",
               starts_at: expect.any(Date),
               ends_at: expect.any(Date),
@@ -40,7 +41,7 @@ moduleIntegrationTestRunner({
               id: "campaign-id-2",
               name: "campaign 1",
               description: "test description",
-              currency: "USD",
+
               campaign_identifier: "test-2",
               starts_at: expect.any(Date),
               ends_at: expect.any(Date),
@@ -83,13 +84,32 @@ moduleIntegrationTestRunner({
             .createCampaigns([
               {
                 name: "test",
-                currency: "USD",
               } as any,
             ])
             .catch((e) => e)
 
           expect(error.message).toContain(
             "Value for Campaign.campaign_identifier is required, 'undefined' found"
+          )
+        })
+
+        it("should throw an error when required budget params are not met", async () => {
+          const error = await service
+            .createCampaigns([
+              {
+                name: "test",
+                campaign_identifier: "test",
+                budget: {
+                  limit: 1000,
+                  type: "spend",
+                  used: 10,
+                },
+              },
+            ])
+            .catch((e) => e)
+
+          expect(error.message).toContain(
+            "Campaign Budget type is a required field"
           )
         })
 
@@ -100,7 +120,6 @@ moduleIntegrationTestRunner({
             {
               name: "test",
               campaign_identifier: "test",
-              currency: "USD",
               starts_at: startsAt,
               ends_at: endsAt,
             },
@@ -112,7 +131,6 @@ moduleIntegrationTestRunner({
             expect.objectContaining({
               name: "test",
               campaign_identifier: "test",
-              currency: "USD",
               starts_at: startsAt,
               ends_at: endsAt,
             })
@@ -127,7 +145,6 @@ moduleIntegrationTestRunner({
             {
               name: "test",
               campaign_identifier: "test",
-              currency: "USD",
               starts_at: startsAt,
               ends_at: endsAt,
               budget: {
@@ -146,7 +163,6 @@ moduleIntegrationTestRunner({
             expect.objectContaining({
               name: "test",
               campaign_identifier: "test",
-              currency: "USD",
               starts_at: startsAt,
               ends_at: endsAt,
               budget: expect.objectContaining({
@@ -179,7 +195,6 @@ moduleIntegrationTestRunner({
             {
               id: "campaign-id-1",
               description: "test description 1",
-              currency: "EUR",
               campaign_identifier: "new",
               starts_at: new Date("01/01/2024"),
               ends_at: new Date("01/01/2025"),
@@ -189,7 +204,6 @@ moduleIntegrationTestRunner({
           expect(updatedCampaign).toEqual(
             expect.objectContaining({
               description: "test description 1",
-              currency: "EUR",
               campaign_identifier: "new",
               starts_at: new Date("01/01/2024"),
               ends_at: new Date("01/01/2025"),
@@ -204,6 +218,37 @@ moduleIntegrationTestRunner({
             {
               id: "campaign-id-1",
               budget: {
+                limit: 100,
+                used: 100,
+              },
+            },
+          ])
+
+          expect(updatedCampaign).toEqual(
+            expect.objectContaining({
+              budget: expect.objectContaining({
+                limit: 100,
+                used: 100,
+              }),
+            })
+          )
+        })
+
+        it("should create a campaign budget if not present successfully", async () => {
+          await createCampaigns(MikroOrmWrapper.forkManager(), [
+            {
+              id: "campaign-id-new",
+              name: "campaign 1",
+              description: "test description",
+              campaign_identifier: "test-1",
+            } as any,
+          ])
+
+          const [updatedCampaign] = await service.updateCampaigns([
+            {
+              id: "campaign-id-new",
+              budget: {
+                type: CampaignBudgetType.SPEND,
                 limit: 100,
                 used: 100,
               },
@@ -283,7 +328,6 @@ moduleIntegrationTestRunner({
             {
               name: "test",
               campaign_identifier: "test",
-              currency: "USD",
               starts_at: new Date("01/01/2024"),
               ends_at: new Date("01/01/2025"),
             },
@@ -308,7 +352,6 @@ moduleIntegrationTestRunner({
             {
               name: "test",
               campaign_identifier: "test",
-              currency: "USD",
               starts_at: new Date("01/01/2024"),
               ends_at: new Date("01/01/2025"),
             },
@@ -330,7 +373,6 @@ moduleIntegrationTestRunner({
             {
               name: "test",
               campaign_identifier: "test",
-              currency: "USD",
               starts_at: new Date("01/01/2024"),
               ends_at: new Date("01/01/2025"),
             },

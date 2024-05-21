@@ -3,7 +3,7 @@ import { Migration } from "@mikro-orm/migrations"
 export class Migration20240227120221 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'create table if not exists "promotion_campaign" ("id" text not null, "name" text not null, "description" text null, "currency" text null, "campaign_identifier" text not null, "starts_at" timestamptz null, "ends_at" timestamptz null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_campaign_pkey" primary key ("id"));'
+      'create table if not exists "promotion_campaign" ("id" text not null, "name" text not null, "description" text null, "campaign_identifier" text not null, "starts_at" timestamptz null, "ends_at" timestamptz null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_campaign_pkey" primary key ("id"));'
     )
     this.addSql(
       'alter table if exists "promotion_campaign" add constraint "IDX_campaign_identifier_unique" unique ("campaign_identifier");'
@@ -125,27 +125,25 @@ export class Migration20240227120221 extends Migration {
     this.addSql(
       'alter table if exists "promotion_application_method" add column if not exists "currency_code" text not null;'
     )
+
     this.addSql(
       'CREATE INDEX IF NOT EXISTS "IDX_promotion_application_method_currency_code" ON "promotion_application_method" (currency_code) WHERE deleted_at IS NOT NULL;'
-    )
-    this.addSql(
-      'alter table "promotion_campaign" alter column "currency" type text using ("currency"::text);'
-    )
-    this.addSql(
-      'alter table "promotion_campaign" alter column "currency" set not null;'
     )
 
     this.addSql(
       'alter table "promotion_application_method" alter column "value" type numeric using ("value"::numeric);'
     )
-    this.addSql(
-      'alter table "promotion_application_method" alter column "value" set not null;'
-    )
+
     this.addSql(
       'alter table "promotion_application_method" alter column "raw_value" type jsonb using ("raw_value"::jsonb);'
     )
+
     this.addSql(
       'alter table "promotion_application_method" alter column "raw_value" set not null;'
+    )
+
+    this.addSql(
+      'alter table if exists "promotion_campaign_budget" add column if not exists "currency_code" text null;'
     )
   }
 }

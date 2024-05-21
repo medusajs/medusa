@@ -40,9 +40,6 @@ export default class Campaign {
   description: string | null = null
 
   @Property({ columnType: "text" })
-  currency: string
-
-  @Property({ columnType: "text" })
   @Unique({
     name: "IDX_campaign_identifier_unique",
     properties: ["campaign_identifier"],
