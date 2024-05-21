@@ -9,6 +9,7 @@ import {
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import express from "express"
+import jwt from "jsonwebtoken"
 import { MockManager } from "medusa-test-utils"
 import querystring from "querystring"
 import supertest from "supertest"

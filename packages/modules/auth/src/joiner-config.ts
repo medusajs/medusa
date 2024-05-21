@@ -23,7 +23,7 @@ export const joinerConfig: ModuleJoinerConfig = {
   primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
   alias: {
-    name: ["auth_identity", "auth_identitys"],
+    name: ["auth_identity", "auth_identities"],
     args: {
       entity: AuthIdentity.name,
     },

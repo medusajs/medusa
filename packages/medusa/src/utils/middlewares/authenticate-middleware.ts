@@ -37,6 +37,7 @@ export const authenticate = (
   ): Promise<void> => {
     const authTypes = Array.isArray(authType) ? authType : [authType]
     const scopes = Array.isArray(authScope) ? authScope : [authScope]
+    const req_ = req as AuthenticatedMedusaRequest
 
     // We only allow authenticating using a secret API key on the admin
     const isExclusivelyAdmin =
@@ -44,7 +45,7 @@ export const authenticate = (
     if (authTypes.includes(API_KEY_AUTH) && isExclusivelyAdmin) {
       const apiKey = await getApiKeyInfo(req)
       if (apiKey) {
-        ;(req as AuthenticatedMedusaRequest).auth_context = {
+        req_.auth_context = {
           actor_id: apiKey.id,
           actor_type: "api-key",
           auth_identity_id: "",
@@ -75,22 +76,14 @@ export const authenticate = (
     }
 
     // If the entity is authenticated, and it is a registered user/customer we can continue
-    if (
-      authContext &&
-      !!authContext.actor_id &&
-      authContext.actor_type !== "unknown"
-    ) {
-      ;(req as AuthenticatedMedusaRequest).auth_context = authContext
+    if (!!authContext?.actor_id && authContext.actor_type !== "unknown") {
+      req_.auth_context = authContext
       return next()
     }
 
     // If the entity is authenticated, but there is no user/customer yet, we can continue (eg. in the case of a user invite) if allow unregistered is set
-    if (
-      authContext &&
-      authContext.auth_identity_id &&
-      options.allowUnregistered
-    ) {
-      ;(req as AuthenticatedMedusaRequest).auth_context = authContext
+    if (authContext?.auth_identity_id && options.allowUnregistered) {
+      req_.auth_context = authContext
       return next()
     }
 

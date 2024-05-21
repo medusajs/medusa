@@ -123,7 +123,7 @@ export interface IAuthModuleService extends IModuleService {
    * To retrieve a list of auth identitys using their IDs:
    *
    * ```ts
-   * const authIdentitys = await authModuleService.list({
+   * const authIdentities = await authModuleService.list({
    *   id: ["authusr_123", "authusr_321"],
    * })
    * ```
@@ -131,7 +131,7 @@ export interface IAuthModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const authIdentitys = await authModuleService.list(
+   * const authIdentities = await authModuleService.list(
    *   {
    *     id: ["authusr_123", "authusr_321"],
    *   },
@@ -161,7 +161,7 @@ export interface IAuthModuleService extends IModuleService {
    * To retrieve a list of auth identitys using their IDs:
    *
    * ```ts
-   * const [authIdentitys, count] =
+   * const [authIdentities, count] =
    *   await authModuleService.listAndCount({
    *     id: ["authusr_123", "authusr_321"],
    *   })
@@ -170,7 +170,7 @@ export interface IAuthModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const [authIdentitys, count] =
+   * const [authIdentities, count] =
    *   await authModuleService.listAndCount(
    *     {
    *       id: ["authusr_123", "authusr_321"],
@@ -196,7 +196,7 @@ export interface IAuthModuleService extends IModuleService {
    * @returns {Promise<AuthIdentityDTO[]>} The created auth identitys.
    *
    * @example
-   * const authIdentitys = await authModuleService.create([
+   * const authIdentities = await authModuleService.create([
    *   {
    *     provider: "emailpass",
    *     entity_id: "user@example.com",
@@ -241,7 +241,7 @@ export interface IAuthModuleService extends IModuleService {
    * @returns {Promise<AuthIdentityDTO[]>} The updated auths.
    *
    * @example
-   * const authIdentitys = await authModuleService.update([
+   * const authIdentities = await authModuleService.update([
    *   {
    *     id: "authusr_123",
    *     app_metadata: {

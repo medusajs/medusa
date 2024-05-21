@@ -73,13 +73,13 @@ export default class AuthModuleService<
     data: AuthTypes.CreateAuthIdentityDTO[] | AuthTypes.CreateAuthIdentityDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.AuthIdentityDTO | AuthTypes.AuthIdentityDTO[]> {
-    const authIdentitys = await this.authIdentityService_.create(
+    const authIdentities = await this.authIdentityService_.create(
       data,
       sharedContext
     )
 
     return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO[]>(
-      authIdentitys,
+      authIdentities,
       {
         populate: true,
       }

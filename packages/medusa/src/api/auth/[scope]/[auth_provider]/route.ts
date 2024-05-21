@@ -1,11 +1,17 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { AuthenticationInput, IAuthModuleService } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 import { generateJwtToken } from "../../../utils/auth/token"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { scope, auth_provider } = req.params
+  const actorType = scope === "admin" ? "user" : "customer"
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const service: IAuthModuleService = req.scope.resolve(
     ModuleRegistrationName.AUTH
@@ -20,9 +26,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     protocol: req.protocol,
   } as AuthenticationInput
 
-  const authResult = await service.authenticate(auth_provider, authData)
-
-  const { success, error, authIdentity, location } = authResult
+  const { success, error, authIdentity, location } = await service.authenticate(
+    auth_provider,
+    authData
+  )
 
   if (location) {
     res.redirect(location)
@@ -30,14 +37,24 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   }
 
   if (success) {
-    const { http } = req.scope.resolve("configModule").projectConfig
+    const { http } = req.scope.resolve(
+      ContainerRegistrationKeys.CONFIG_MODULE
+    ).projectConfig
+
+    const queryObject = remoteQueryObjectFromString({
+      entryPoint: "auth_identity",
+      fields: [`${actorType}.id`],
+      variables: { id: authIdentity.id },
+    })
+    const [actorData] = await remoteQuery(queryObject)
+    const entityId = actorData?.[actorType]?.id
 
     const { jwtSecret, jwtExpiresIn } = http
-    // TODO: Dynamically determine the actor information
+    // TODO: Clean up mapping between scope and actor type
     const token = generateJwtToken(
       {
-        actor_id: authIdentity.id,
-        actor_type: "user",
+        actor_id: entityId,
+        actor_type: actorType,
         auth_identity_id: authIdentity.id,
         app_metadata: {},
         scope,

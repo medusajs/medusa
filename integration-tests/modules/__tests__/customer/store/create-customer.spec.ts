@@ -7,6 +7,7 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 
@@ -17,13 +18,9 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("POST /store/customers", () => {
       let appContainer
-      let customerModuleService: ICustomerModuleService
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
       })
 
       beforeEach(async () => {
@@ -34,7 +31,9 @@ medusaIntegrationTestRunner({
         const authService: IAuthModuleService = appContainer.resolve(
           ModuleRegistrationName.AUTH
         )
-        const { http } = appContainer.resolve("configModule").projectConfig
+        const { http } = appContainer.resolve(
+          ContainerRegistrationKeys.CONFIG_MODULE
+        ).projectConfig
         const authIdentity = await authService.create({
           entity_id: "store_user",
           provider: "emailpass",
