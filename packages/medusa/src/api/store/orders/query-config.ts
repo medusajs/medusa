@@ -16,6 +16,7 @@ export const defaultStoreRetrieveOrderFields = [
   "version",
   "summary",
   "currency_code",
+  "display_id",
   "total",
   "subtotal",
   "tax_total",
