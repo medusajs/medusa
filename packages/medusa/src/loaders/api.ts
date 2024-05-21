@@ -1,10 +1,10 @@
+import { ConfigModule } from "@medusajs/types"
 import { FlagRouter } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import { Express } from "express"
 import path from "path"
 import qs from "qs"
 import { RoutesLoader } from "./helpers/routing"
-import { ConfigModule } from "@medusajs/types"
 
 type Options = {
   app: Express
@@ -35,7 +35,7 @@ export default async ({ app, configModule }: Options) => {
      */
     await new RoutesLoader({
       app: app,
-      rootDir: path.join(__dirname, "../api-v2"),
+      rootDir: path.join(__dirname, "../api"),
       configModule,
     }).load()
   } catch (err) {
