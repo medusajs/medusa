@@ -14,7 +14,6 @@ export type FactBoxOptions = {
 }
 
 const facts = [
-  "Plugins allow you to integrate third-party services for payment, fulfillment, notifications, and more.",
   "You can specify a product's availability in one or more sales channels.",
   "Payment and shipping options and providers can be configured per region.",
   "Tax-inclusive pricing allows you to set prices for products, shipping options, and more without having to worry about calculating taxes.",
@@ -24,13 +23,16 @@ const facts = [
   "Publishable-API Keys allow you to send requests to the backend within a scoped resource.",
   "You can create custom endpoints by creating a TypeScript file under the src/api directory.",
   "You can listen to events to perform asynchronous actions using Subscribers.",
-  "An entity represents a table in the database. You can create a table by creating a custom entity and migration.",
+  "A data model represents a table in the database. You can create a table by creating a custom data model and migration in a module.",
   "Medusa's store endpoint paths are prefixed by /store. The admin endpoints are prefixed by /admin.",
   "Medusa provides a JavaScript client and a React library that you can use to build a storefront or a custom admin.",
-  "Services are classes with methods related to an entity or functionality. You can create a custom service in a TypeScript file under src/services.",
+  "Modules hold your custom features and data models. You create them under the src/modules directory. Each module must have a service.",
+  "A service is a class with methods related to a functionality or a data model. You create a service in a module.",
   "Modules allow you to replace an entire functionality with your custom logic.",
   "The event bus module is responsible for triggering events and relaying them to subscribers.",
   "The cache module is responsible for caching data that requires heavy computation.",
+  "A workflow is a series of steps that are defined once and executed anywhere. Workflows are created under the src/workflows directory.",
+  "A workflow's steps can be retried or rolled back in case of an error."
 ]
 
 export const getFact = () => {
