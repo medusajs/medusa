@@ -1,6 +1,3 @@
-/**
- * @experimental
- */
 export interface RuleAttributeOptionsResponse {
   id: string
   value: string
@@ -10,9 +7,6 @@ export interface RuleAttributeOptionsResponse {
   disguised: boolean
 }
 
-/**
- * @experimental
- */
 export interface AdminRuleAttributeOptionsListResponse {
   attributes: RuleAttributeOptionsResponse[]
 }

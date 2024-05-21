@@ -90,7 +90,6 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
     }
   })
 
-  const allAllowedFields = new Set(allowedFields) // In case there is no allowedFields, allow all fields
   const notAllowedFields: string[] = []
 
   if (allowedFields.length) {

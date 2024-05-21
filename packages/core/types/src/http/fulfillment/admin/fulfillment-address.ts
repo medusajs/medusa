@@ -1,6 +1,3 @@
-/**
- * @experimental
- */
 export interface AdminFulfillmentAddressResponse {
   id: string
   fulfillment_id: string | null

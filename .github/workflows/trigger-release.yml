@@ -19,13 +19,14 @@ on:
       - "docs/**"
       - "www/**"
       - ".github/**"
-      
+  schedule:
+    - cron: "0 */3 * * *"
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    name: Trigger Release
+    name: Trigger Preview Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -50,16 +51,16 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
-      - name: Build all packages
-        run: yarn build
-
       - name: Version packages
-        run: yarn changeset version --snapshot ${{ github.event.inputs.version }}
+        run: yarn changeset version --snapshot ${{ github.event.inputs.version || 'preview' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Dependencies
         run: yarn install --no-immutable
+
+      - name: Build all packages
+        run: yarn build
         
       - name: Publish packages under next tag
-        run: yarn changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version }}
+        run: yarn changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'preview' }}

@@ -1,8 +1,5 @@
-import { PaginatedResponse } from "../../../common"
+import { PaginatedResponse } from "../../common"
 
-/**
- * @experimental
- */
 export interface CustomerGroupResponse {
   id: string
   name: string | null
@@ -12,9 +9,6 @@ export interface CustomerGroupResponse {
   updated_at: string
 }
 
-/**
- * @experimental
- */
 export interface CustomerAddressResponse {
   id: string
   address_name: string | null
@@ -36,9 +30,6 @@ export interface CustomerAddressResponse {
   updated_at: string
 }
 
-/**
- * @experimental
- */
 interface CustomerResponse {
   id: string
   email: string
@@ -58,30 +49,18 @@ interface CustomerResponse {
   updated_at?: Date | string
 }
 
-/**
- * @experimental
- */
 export interface AdminCustomerResponse {
   customer: CustomerResponse
 }
 
-/**
- * @experimental
- */
-export interface AdminCustomerListResponse extends PaginatedResponse {
+export type AdminCustomerListResponse = PaginatedResponse<{
   customers: CustomerResponse[]
-}
+}>
 
-/**
- * @experimental
- */
 export interface AdminCustomerGroupResponse {
   customer_group: CustomerGroupResponse
 }
 
-/**
- * @experimental
- */
-export interface AdminCustomerGroupListResponse extends PaginatedResponse {
+export type AdminCustomerGroupListResponse = PaginatedResponse<{
   customer_groups: CustomerGroupResponse[]
-}
+}>

@@ -29,7 +29,6 @@ export default async function adminLoader({
 
   // check if the projectSource exists
   if (fs.existsSync(projectSource)) {
-    console.log(`[DEBUG]: Found project source at ${projectSource}`)
     sources.push(projectSource)
   }
 
@@ -41,7 +40,7 @@ export default async function adminLoader({
     ...admin,
   }
 
-  if (admin?.disable) {
+  if (adminOptions?.disable) {
     return app
   }
 

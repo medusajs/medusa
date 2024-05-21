@@ -45,7 +45,7 @@ type StepStatus = {
   [key in Tab]: ProgressStatus
 }
 
-const CreateServiceZoneSchema = zod.object({
+const CreateShippingOptionSchema = zod.object({
   name: zod.string().min(1),
   price_type: zod.nativeEnum(ShippingAllocation),
   enabled_in_store: zod.boolean().optional(),
@@ -55,7 +55,7 @@ const CreateServiceZoneSchema = zod.object({
   currency_prices: zod.record(zod.string(), zod.string().optional()),
 })
 
-type CreateServiceZoneFormProps = {
+type CreateShippingOptionFormProps = {
   zone: ServiceZoneDTO
   isReturn?: boolean
 }
@@ -63,7 +63,7 @@ type CreateServiceZoneFormProps = {
 export function CreateShippingOptionsForm({
   zone,
   isReturn,
-}: CreateServiceZoneFormProps) {
+}: CreateShippingOptionFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [tab, setTab] = React.useState<Tab>(Tab.DETAILS)
@@ -77,7 +77,7 @@ export function CreateShippingOptionsForm({
     fields: "id,currency_code",
   })
 
-  const form = useForm<zod.infer<typeof CreateServiceZoneSchema>>({
+  const form = useForm<zod.infer<typeof CreateShippingOptionSchema>>({
     defaultValues: {
       name: "",
       price_type: ShippingAllocation.FlatRate,
@@ -87,7 +87,7 @@ export function CreateShippingOptionsForm({
       region_prices: {},
       currency_prices: {},
     },
-    resolver: zodResolver(CreateServiceZoneSchema),
+    resolver: zodResolver(CreateShippingOptionSchema),
   })
 
   const isCalculatedPriceType =

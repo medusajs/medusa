@@ -33,7 +33,20 @@ const CurrencyCodeIndex = createPsqlIndexStatementHelper({
   columns: "currency_code",
 })
 
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "order_transaction",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+const OrderIdVersionIndex = createPsqlIndexStatementHelper({
+  tableName: "order_transaction",
+  columns: ["order_id", "version"],
+  where: "deleted_at IS NOT NULL",
+})
+
 @Entity({ tableName: "order_transaction" })
+@OrderIdVersionIndex.MikroORMIndex()
 export default class Transaction {
   [OptionalProps]?: OptionalLineItemProps
 
@@ -54,6 +67,12 @@ export default class Transaction {
     persist: false,
   })
   order: Order
+
+  @Property({
+    columnType: "integer",
+    defaultRaw: "1",
+  })
+  version: number = 1
 
   @MikroOrmBigNumberProperty()
   amount: BigNumber | number
@@ -92,6 +111,10 @@ export default class Transaction {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  @DeletedAtIndex.MikroORMIndex()
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
