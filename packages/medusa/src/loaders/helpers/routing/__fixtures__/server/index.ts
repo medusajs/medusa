@@ -20,7 +20,6 @@ import passportLoader from "../../../../passport"
 
 import RoutesLoader from "../.."
 import { config } from "../mocks"
-import { MedusaContainer } from "medusa-core-utils"
 
 function asArray(resolvers) {
   return {
