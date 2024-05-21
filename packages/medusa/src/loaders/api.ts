@@ -37,8 +37,8 @@ export default async ({ app, container, plugins }: Options) => {
      */
     await new RoutesLoader({
       app: app,
+      rootDir: path.join(__dirname, "../api"),
       configModule,
-      rootDir: path.join(__dirname, "../api-v2"),
     }).load()
   } catch (err) {
     throw Error(
