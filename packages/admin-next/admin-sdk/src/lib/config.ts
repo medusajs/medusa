@@ -2,7 +2,6 @@ import path from "path"
 import { Config } from "tailwindcss"
 import type { InlineConfig } from "vite"
 import { nodePolyfills } from "vite-plugin-node-polyfills"
-import virtual from "vite-plugin-virtual"
 
 import { BundlerOptions } from "../types"
 
@@ -68,9 +67,6 @@ export async function getViteConfig(
       medusa({
         sources: options.sources,
         debug: true,
-      }),
-      virtual({
-        "virtual:config": { hello: "world" },
       }),
       /**
        * TODO: Remove polyfills, they are currently only required for the

@@ -5014,12 +5014,10 @@ __metadata:
     "@medusajs/dashboard": 0.0.1
     "@medusajs/types": ^1.11.16
     "@types/compression": ^1.7.5
-    "@types/connect-history-api-fallback": ^1.5.4
     "@vitejs/plugin-react": ^4.2.1
     autoprefixer: ^10.4.16
     commander: ^11.1.0
     compression: ^1.7.4
-    connect-history-api-fallback: ^2.0.0
     copyfiles: ^2.4.1
     deepmerge: ^4.3.1
     express: ^4.18.2
@@ -5030,7 +5028,6 @@ __metadata:
     typescript: ^5.3.3
     vite: ^5.2.11
     vite-plugin-node-polyfills: ^0.21.0
-    vite-plugin-virtual: ^0.3.0
   peerDependencies:
     express: ^4.18.2
     react-dom: ^18.0.0
@@ -11179,16 +11176,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/connect-history-api-fallback@npm:^1.5.4":
-  version: 1.5.4
-  resolution: "@types/connect-history-api-fallback@npm:1.5.4"
-  dependencies:
-    "@types/express-serve-static-core": "*"
-    "@types/node": "*"
-  checksum: 1b4035b627dcd714b05a22557f942e24a57ca48e7377dde0d2f86313fe685bc0a6566512a73257a55b5665b96c3041fb29228ac93331d8133011716215de8244
-  languageName: node
-  linkType: hard
-
 "@types/connect@npm:*":
   version: 3.4.38
   resolution: "@types/connect@npm:3.4.38"
@@ -11277,7 +11264,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-serve-static-core@npm:*, @types/express-serve-static-core@npm:^4.17.33":
+"@types/express-serve-static-core@npm:^4.17.33":
   version: 4.19.0
   resolution: "@types/express-serve-static-core@npm:4.19.0"
   dependencies:
@@ -15186,13 +15173,6 @@ __metadata:
     write-file-atomic: ^3.0.3
     xdg-basedir: ^5.0.1
   checksum: 6681a96038ab3e0397cbdf55e6e1624ac3dfa3afe955e219f683df060188a418bda043c9114a59a337e7aec9562b0a0c838ed7db24289e6d0c266bc8313b9580
-  languageName: node
-  linkType: hard
-
-"connect-history-api-fallback@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "connect-history-api-fallback@npm:2.0.0"
-  checksum: 90fa8b16ab76e9531646cc70b010b1dbd078153730c510d3142f6cf07479ae8a812c5a3c0e40a28528dd1681a62395d0cfdef67da9e914c4772ac85d69a3ed87
   languageName: node
   linkType: hard
 
@@ -33118,15 +33098,6 @@ __metadata:
   version: 1.0.3
   resolution: "vite-plugin-turbosnap@npm:1.0.3"
   checksum: fd4a283708e24b54442b5db05461f8302bc57094234fd5b0dae1a6f76bb79078c68a729e516f352d04b89fea7c459f8272921f788bd3cd20d1488c7e73d7238e
-  languageName: node
-  linkType: hard
-
-"vite-plugin-virtual@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "vite-plugin-virtual@npm:0.3.0"
-  peerDependencies:
-    vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
-  checksum: a9edbbefbca15878f69086d50ac45a05bcbd295f2e7f21eb03248ddec9df1516602dd700c3442f8fd9778598950383b0ef448ee6086465ade38e06d1005ad55b
   languageName: node
   linkType: hard
 
