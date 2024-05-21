@@ -7,10 +7,6 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
 import { refetchApiKey } from "../helpers"
 import { AdminUpdateApiKeyType } from "../validators"
 
@@ -31,7 +27,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateApiKeyType>,
   res: MedusaResponse
 ) => {
-  const { result, errors } = await updateApiKeysWorkflow(req.scope).run({
+  const { errors } = await updateApiKeysWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody,

@@ -1,4 +1,4 @@
-import { BaseFilterable, OperatorMap } from "../../dal"
+import { BaseFilterable } from "../../dal"
 import { BaseProduct } from "../product/common"
 
 export interface BaseProductCollection {

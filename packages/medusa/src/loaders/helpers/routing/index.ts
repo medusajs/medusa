@@ -568,8 +568,6 @@ export class RoutesLoader {
     }
 
     if (mostSpecificConfig?.bodyParser) {
-      const sizeLimit = mostSpecificConfig?.bodyParser?.sizeLimit
-
       this.router[method.toLowerCase()](
         path,
         ...getBodyParserMiddleware(mostSpecificConfig?.bodyParser)

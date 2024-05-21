@@ -3,7 +3,6 @@ import {
   FilterableStockLocationProps,
   StockLocationDTO,
   UpdateStockLocationInput,
-  UpdateStockLocationNextInput,
   UpsertStockLocationInput,
 } from "./common"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
