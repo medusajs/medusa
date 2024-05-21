@@ -196,6 +196,7 @@ export const CreatePromotionForm = ({
     async (error) => {
       // TODO: showcase error when something goes wrong
       // Wait for alert component and use it here
+      console.log("error - ", error)
     }
   )
 
@@ -274,6 +275,12 @@ export const CreatePromotionForm = ({
   })
 
   const isAllocationEach = watchAllocation === "each"
+
+  useEffect(() => {
+    if (watchAllocation === "across") {
+      form.setValue("application_method.max_quantity", null)
+    }
+  }, [watchAllocation])
 
   const watchType = useWatch({
     control: form.control,

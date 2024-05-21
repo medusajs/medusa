@@ -45,6 +45,11 @@ export interface UpdateCampaignBudgetDTO {
   limit?: number | null
 
   /**
+   * The limit of the campaign budget.
+   */
+  currency_code?: string | null
+
+  /**
    * How much is used of the campaign budget.
    */
   used?: number

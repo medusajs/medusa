@@ -100,7 +100,7 @@ export const AdminCreateApplicationMethod = z
     description: z.string().optional(),
     value: z.number(),
     currency_code: z.string(),
-    max_quantity: z.number().optional(),
+    max_quantity: z.number().optional().nullable(),
     type: z.nativeEnum(ApplicationMethodType),
     target_type: z.nativeEnum(ApplicationMethodTargetType),
     allocation: z.nativeEnum(ApplicationMethodAllocation).optional(),
@@ -118,7 +118,7 @@ export const AdminUpdateApplicationMethod = z
   .object({
     description: z.string().optional(),
     value: z.number().optional(),
-    max_quantity: z.number().optional(),
+    max_quantity: z.number().optional().nullable(),
     currency_code: z.string().optional(),
     type: z.nativeEnum(ApplicationMethodType).optional(),
     target_type: z.nativeEnum(ApplicationMethodTargetType).optional(),

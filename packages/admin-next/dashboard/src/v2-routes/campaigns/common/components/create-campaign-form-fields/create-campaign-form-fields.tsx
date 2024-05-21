@@ -42,6 +42,10 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
     if (watchValueType === "spend") {
       form.setValue(`campaign.budget.currency_code`, watchPromotionCurrencyCode)
     }
+
+    if (watchValueType === "usage") {
+      form.setValue(`campaign.budget.currency_code`, null)
+    }
   }, [watchValueType])
 
   if (watchPromotionCurrencyCode) {

@@ -1236,7 +1236,7 @@ export default class PromotionModuleService<
 
   protected validateCampaignBudgetData(data: {
     type?: CampaignBudgetTypeValues
-    currency_code?: string
+    currency_code?: string | null
   }) {
     if (!data.type) {
       throw new MedusaError(
