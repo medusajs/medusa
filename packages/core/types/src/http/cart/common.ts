@@ -1,10 +1,20 @@
 import { BigNumberValue } from "../../totals"
+import { BasePaymentCollection } from "../payment/common"
+import { BaseProduct, BaseProductVariant } from "../product/common"
+import { BaseRegion } from "../region/common"
 
 export interface BaseCart {
   /**
    * The ID of the cart.
    */
   id: string
+
+  /**
+   * The associated region.
+   *
+   * @expandable
+   */
+  region?: BaseRegion
 
   /**
    * The ID of the region the cart belongs to.
@@ -58,6 +68,13 @@ export interface BaseCart {
    * @expandable
    */
   shipping_methods?: BaseCartShippingMethod[]
+
+  /**
+   * The associated payment collection
+   *
+   * @expandable
+   */
+  payment_collection?: BasePaymentCollection
 
   /**
    * Holds custom data in key-value pairs.
@@ -406,6 +423,13 @@ export interface BaseCartLineItem extends BaseCartLineItemTotals {
   quantity: BigNumberValue
 
   /**
+   * The associated product with the line item.
+   *
+   * @expandable
+   */
+  product?: BaseProduct
+
+  /**
    * The ID of the associated product.
    */
   product_id?: string
@@ -439,6 +463,13 @@ export interface BaseCartLineItem extends BaseCartLineItemTotals {
    * The handle of the associated product.
    */
   product_handle?: string
+
+  /**
+   * The associated variant with the line item.
+   *
+   * @expandable
+   */
+  variant?: BaseProductVariant
 
   /**
    * The associated variant's ID of the line item.
