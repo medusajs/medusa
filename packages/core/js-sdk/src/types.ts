@@ -10,10 +10,10 @@ export type Config = {
   globalHeaders?: ClientHeaders
   publishableKey?: string
   apiKey?: string
-  jwtToken?: {
-    storageKey?: string
-    // TODO: Add support for cookie storage
-    storageMethod?: "local" | "session" | "memory"
+  auth?: {
+    type?: "jwt" | "session"
+    jwtTokenStorageKey?: string
+    jwtTokenStorageMethod?: "local" | "session" | "memory"
   }
   logger?: Logger
   debug?: boolean

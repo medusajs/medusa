@@ -5,8 +5,8 @@
     "outDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "ES2020",
+    "moduleResolution": "Node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
@@ -15,8 +15,7 @@
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
-    "skipLibCheck": true,
-    "downlevelIteration": true // to use ES5 specific tooling
+    "skipLibCheck": true
   },
   "include": ["./src/**/*"],
   "exclude": [
