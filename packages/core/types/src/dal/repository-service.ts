@@ -33,8 +33,6 @@ interface BaseRepositoryService<T = any> {
   ): Promise<TOutput>
 }
 
-type DtoBasedMutationMethods = "create" | "update"
-
 export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
   find(options?: FindOptions<T>, context?: Context): Promise<T[]>
 

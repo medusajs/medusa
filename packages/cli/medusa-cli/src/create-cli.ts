@@ -321,6 +321,19 @@ function buildLocalCommands(cli, isLocalProject) {
         })
       ),
     })
+    .command({
+      command: `exec [file] [args..]`,
+      desc: `Run a function defined in a file.`,
+      handler: handlerP(
+        getCommandHandler(`exec`, (args, cmd) => {
+          cmd(args)
+          // Return an empty promise to prevent handlerP from exiting early.
+          // The development server shouldn't ever exit until the user directly
+          // kills it so this is fine.
+          return new Promise((resolve) => {})
+        })
+      ),
+    })
 }
 
 function isLocalMedusaProject() {
