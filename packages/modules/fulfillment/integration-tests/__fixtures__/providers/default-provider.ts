@@ -14,6 +14,10 @@ export class FulfillmentProviderServiceFixtures extends AbstractFulfillmentProvi
   async getFulfillmentOptions(): Promise<any> {
     return {}
   }
+
+  async createReturnFulfillment(fulfillment): Promise<any> {
+    return {}
+  }
 }
 
 export const services = [FulfillmentProviderServiceFixtures]

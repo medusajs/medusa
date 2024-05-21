@@ -54,7 +54,7 @@ export const POST = async (
     } as any,
   ]
 
-  const { result, errors } = await updatePromotions.run({
+  const { errors } = await updatePromotions.run({
     input: { promotionsData },
     throwOnError: false,
   })

@@ -1,6 +1,4 @@
 import { BaseFilterable, OperatorMap } from "../dal"
-
-import { StringComparisonOperator } from "../common/common"
 import { FulfillmentSetDTO } from "../fulfillment"
 
 /**

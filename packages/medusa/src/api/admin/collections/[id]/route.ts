@@ -27,7 +27,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateCollectionType>,
   res: MedusaResponse
 ) => {
-  const { result, errors } = await updateCollectionsWorkflow(req.scope).run({
+  const { errors } = await updateCollectionsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody,

@@ -54,7 +54,7 @@ export const POST = async (
     ],
   }
 
-  const { result } = await workflow.run({ input })
+  await workflow.run({ input })
 
   const user = await refetchUser(
     req.params.id,

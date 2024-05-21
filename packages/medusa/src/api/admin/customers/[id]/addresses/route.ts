@@ -49,7 +49,7 @@ export const POST = async (
     },
   ]
 
-  const { result, errors } = await createAddresses.run({
+  const { errors } = await createAddresses.run({
     input: { addresses },
     throwOnError: false,
   })

@@ -42,7 +42,7 @@ export const POST = async (
   const productId = req.params.id
   const optionId = req.params.option_id
 
-  const { result, errors } = await updateProductOptionsWorkflow(req.scope).run({
+  const { errors } = await updateProductOptionsWorkflow(req.scope).run({
     input: {
       selector: { id: optionId, product_id: productId },
       update: req.validatedBody,
