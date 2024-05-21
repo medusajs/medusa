@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -70,25 +68,19 @@
           "mappedType": "json"
         }
       },
-      "name": "auth_user",
+      "name": "auth_identity",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_auth_user_provider_scope_entity_id",
-          "columnNames": [
-            "provider",
-            "scope",
-            "entity_id"
-          ],
+          "keyName": "IDX_auth_identity_provider_scope_entity_id",
+          "columnNames": ["provider", "scope", "entity_id"],
           "composite": true,
           "primary": false,
           "unique": true
         },
         {
-          "keyName": "auth_user_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "keyName": "auth_identity_pkey",
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true

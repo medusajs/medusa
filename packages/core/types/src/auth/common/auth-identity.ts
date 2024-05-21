@@ -3,11 +3,11 @@ import { BaseFilterable } from "../../dal"
 /**
  * @interface
  *
- * The auth user details.
+ * The auth identity details.
  */
-export type AuthUserDTO = {
+export type AuthIdentityDTO = {
   /**
-   * The ID of the auth user.
+   * The ID of the auth identity.
    */
   id: string
 
@@ -23,7 +23,7 @@ export type AuthUserDTO = {
   entity_id: string
 
   /**
-   * The scope of the auth user. For example,
+   * The scope of the auth identity. For example,
    * `admin` or `store`.
    */
   scope: string
@@ -47,11 +47,11 @@ export type AuthUserDTO = {
 /**
  * @interface
  *
- * The auth user to be created.
+ * The auth identity to be created.
  */
-export type CreateAuthUserDTO = {
+export type CreateAuthIdentityDTO = {
   /**
-   * The ID of the auth user.
+   * The ID of the auth identity.
    */
   id?: string
 
@@ -68,7 +68,7 @@ export type CreateAuthUserDTO = {
   entity_id: string
 
   /**
-   * The scope of the auth user. For example,
+   * The scope of the auth identity. For example,
    * `admin` or `store`.
    */
   scope: string
@@ -92,11 +92,11 @@ export type CreateAuthUserDTO = {
 /**
  * @interface
  *
- * The attributes to update in the auth user.
+ * The attributes to update in the auth identity.
  */
-export type UpdateAuthUserDTO = {
+export type UpdateAuthIdentityDTO = {
   /**
-   * The ID of the auth user.
+   * The ID of the auth identity.
    */
   id: string
 
@@ -117,17 +117,17 @@ export type UpdateAuthUserDTO = {
 }
 
 /**
- * The filters to apply on the retrieved auth user.
+ * The filters to apply on the retrieved auth identity.
  */
-export interface FilterableAuthUserProps
-  extends BaseFilterable<FilterableAuthUserProps> {
+export interface FilterableAuthIdentityProps
+  extends BaseFilterable<FilterableAuthIdentityProps> {
   /**
-   * The IDs to filter the auth user by.
+   * The IDs to filter the auth identity by.
    */
   id?: string[]
 
   /**
-   * Filter the auth users by the ID of their auth provider.
+   * Filter the auth identitys by the ID of their auth provider.
    */
   provider?: string[] | string
 }
