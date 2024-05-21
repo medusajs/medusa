@@ -53,7 +53,7 @@ medusaIntegrationTestRunner({
             target_type: "items",
             type: "fixed",
             allocation: "each",
-            value: "100",
+            value: 100,
             max_quantity: 100,
             currency_code: "USD",
           },
@@ -87,7 +87,7 @@ medusaIntegrationTestRunner({
             target_type: "items",
             type: "fixed",
             allocation: "each",
-            value: "100",
+            value: 100,
             max_quantity: 100,
             currency_code: "USD",
           },
@@ -98,7 +98,7 @@ medusaIntegrationTestRunner({
           {
             code: "TEST_TWO",
             application_method: {
-              value: "200",
+              value: 200,
             },
           },
           adminHeaders
@@ -124,7 +124,7 @@ medusaIntegrationTestRunner({
             type: "fixed",
             target_type: "items",
             allocation: "across",
-            value: "100",
+            value: 100,
             apply_to_quantity: 1,
             buy_rules_min_quantity: 1,
             currency_code: "USD",
@@ -150,7 +150,7 @@ medusaIntegrationTestRunner({
           {
             code: "TEST_TWO",
             application_method: {
-              value: "200",
+              value: 200,
               buy_rules_min_quantity: 6,
             },
           },
