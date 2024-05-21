@@ -28,7 +28,7 @@ export const PromotionAddCampaign = () => {
     isError: isCampaignError,
     error: campaignError,
   } = useCampaigns(campaignQuery)
-
+  console.log("campaigns --- ", campaigns)
   if (isError || isCampaignError) {
     throw error || campaignError
   }

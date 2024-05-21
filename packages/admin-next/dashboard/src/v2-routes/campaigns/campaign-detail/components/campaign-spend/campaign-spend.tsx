@@ -37,7 +37,9 @@ export const CampaignSpend = ({ campaign }: CampaignSpendProps) => {
             values={{
               amount: campaign?.budget?.used || 0,
               currency:
-                campaign?.budget?.type === "spend" ? campaign.currency : "",
+                campaign?.budget?.type === "spend"
+                  ? campaign?.budget?.currency_code
+                  : "",
             }}
             components={[
               <span

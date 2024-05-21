@@ -16,7 +16,6 @@ import { Trans, useTranslation } from "react-i18next"
 import { z } from "zod"
 
 import {
-  CampaignResponse,
   PromotionRuleOperatorValues,
   PromotionRuleResponse,
   RuleAttributeOptionsResponse,
@@ -29,6 +28,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useCampaigns } from "../../../../../hooks/api/campaigns"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/currencies"
 import { defaultCampaignValues } from "../../../../campaigns/campaign-create/components/create-campaign-form"
@@ -46,7 +46,6 @@ type CreatePromotionFormProps = {
   rules: PromotionRuleResponse[]
   targetRules: PromotionRuleResponse[]
   buyRules: PromotionRuleResponse[]
-  campaigns: CampaignResponse[]
 }
 
 export const CreatePromotionForm = ({
@@ -57,7 +56,6 @@ export const CreatePromotionForm = ({
   rules,
   targetRules,
   buyRules,
-  campaigns,
 }: CreatePromotionFormProps) => {
   const [tab, setTab] = useState<Tab>(Tab.TYPE)
   const [detailsValidated, setDetailsValidated] = useState(false)
@@ -288,6 +286,16 @@ export const CreatePromotionForm = ({
   })
 
   const isTypeStandard = watchType === "standard"
+  const formData = form.getValues()
+  let campaignQuery: object = {}
+
+  if (isFixedValueType && formData.application_method.currency_code) {
+    campaignQuery = {
+      budget: { currency_code: formData.application_method.currency_code },
+    }
+  }
+
+  const { campaigns } = useCampaigns(campaignQuery)
 
   useEffect(() => {
     if (isTypeStandard) {
@@ -328,7 +336,10 @@ export const CreatePromotionForm = ({
       if (!formData.campaign || !formData.campaign?.budget?.type) {
         form.setValue("campaign", {
           ...defaultCampaignValues,
-          currency: formData.application_method.currency_code,
+          budget: {
+            ...defaultCampaignValues.budget,
+            currency_code: formData.application_method.currency_code,
+          },
         })
       }
     }
@@ -349,10 +360,8 @@ export const CreatePromotionForm = ({
     const ruleValue = watchCurrencyRule.values
 
     if (!Array.isArray(ruleValue) && currencyCode !== ruleValue) {
-      form.setValue(
-        "application_method.currency_code",
-        watchCurrencyRule.values as string
-      )
+      console.log("here?")
+      form.setValue("application_method.currency_code", ruleValue as string)
     }
   }
 
@@ -854,7 +863,10 @@ export const CreatePromotionForm = ({
               value={Tab.CAMPAIGN}
               className="flex flex-col items-center"
             >
-              <AddCampaignPromotionFields form={form} campaigns={campaigns} />
+              <AddCampaignPromotionFields
+                form={form}
+                campaigns={campaigns || []}
+              />
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
         </ProgressTabs>
