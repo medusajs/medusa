@@ -5,20 +5,19 @@ import {
   OrderDTO,
   OrderWorkflow,
 } from "@medusajs/types"
-import {
-  MedusaError,
-  OrderStatus,
-  arrayDifference,
-  deepFlatMap,
-} from "@medusajs/utils"
+import { MedusaError, OrderStatus, arrayDifference } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { createLinkStep, useRemoteQueryStep } from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
-import { validateInventoryLocationsStep } from "../../inventory/steps"
+import {
+  deleteReservationsStep,
+  updateReservationsStep,
+} from "../../reservation"
 import { registerOrderFulfillmentStep } from "../steps"
 
 function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
@@ -126,6 +125,40 @@ function prepareFulfillmentData({
   }
 }
 
+function prepareReservations({ reservations, order, input }) {
+  const reservationMap = reservations.reduce((acc, reservation) => {
+    acc[reservation.line_item_id as string] = reservation
+    return acc
+  })
+
+  const toDelete: string[] = []
+  const toUpdate: {
+    id: string
+    quantity: number // TODO: BigNumberInput
+    location_id: string
+  }[] = []
+
+  for (const item of order.items) {
+    const reservation = reservationMap[item.id]
+    const quantity = reservation.quantity - item.quantity
+
+    if (quantity === 0) {
+      toDelete.push(reservation.id)
+    } else {
+      toUpdate.push({
+        id: reservation.id,
+        quantity: quantity,
+        location_id: input.location_id ?? reservation.location_id,
+      })
+    }
+  }
+
+  return {
+    toDelete,
+    toUpdate,
+  }
+}
+
 export const createOrderFulfillmentWorkflowId = "create-order-fulfillment"
 export const createOrderFulfillmentWorkflow = createWorkflow(
   createOrderFulfillmentWorkflowId,
@@ -142,7 +175,6 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         "items.*",
         "shipping_address.*",
         "shipping_methods.shipping_option_id", // TODO: which shipping method to use when multiple?
-        "items.variant.inventory_items.inventory_item_id",
       ],
       variables: { id: input.order_id },
       list: false,
@@ -194,30 +226,30 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         ]
       }
     )
-
     createLinkStep(link)
 
-    // update stock reservation + inventory
+    const lineItemIds = transform({ order }, ({ order }) => {
+      return order.items?.map((i) => i.id)
+    })
+    const reservations = useRemoteQueryStep({
+      entry_point: "reservations",
+      fields: ["id", "line_item_id", "quantity"],
+      variables: {
+        line_item_id: lineItemIds,
+      },
+      list: false,
+      throw_if_key_not_found: true,
+    }).config({ name: "get-reservations" })
 
-    const inventoryLocation = transform(
-      { order, input },
-      ({ order, input }) => {
-        const ret: { inventory_item_id: string; location_id: string }[] = []
-        deepFlatMap(
-          order,
-          "items.variant.inventory_items",
-          ({ inventory_items }) => {
-            ret.push({
-              inventory_item_id: inventory_items.inventory_item_id,
-              location_id: input.location_id,
-            })
-          }
-        )
-        return ret
-      }
+    const { toDelete, toUpdate } = transform(
+      { order, reservations, input },
+      prepareReservations
     )
 
-    validateInventoryLocationsStep(inventoryLocation)
+    parallelize(
+      updateReservationsStep(toUpdate),
+      deleteReservationsStep(toDelete)
+    )
 
     // trigger event OrderModuleService.Events.FULFILLMENT_CREATED
   }

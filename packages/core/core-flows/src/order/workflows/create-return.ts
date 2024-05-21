@@ -10,6 +10,7 @@ import {
   ContainerRegistrationKeys,
   MathBN,
   MedusaError,
+  OrderStatus,
   arrayDifference,
   isDefined,
 } from "@medusajs/utils"
@@ -24,8 +25,7 @@ import { updateOrderTaxLinesStep } from "../steps"
 import { createReturnStep } from "../steps/create-return"
 
 function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
-  // TODO: need work, check canceled
-  if (false /*order.canceled_at*/) {
+  if (order.status === OrderStatus.CANCELED) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `Order with id ${order.id} has been cancelled.`
@@ -246,6 +246,7 @@ export const createReturnOrderWorkflow = createWorkflow(
       entry_point: "orders",
       fields: [
         "id",
+        "status",
         "region_id",
         "currency_code",
         "total",
