@@ -76,17 +76,24 @@ async function validateReturnReasons(
 
   const remoteQueryObject = remoteQueryObjectFromString({
     entryPoint: "return_reasons",
-    fields: ["return_reason_children.*"],
+    fields: [
+      "id",
+      "parent_return_reason_id",
+      "parent_return_reason",
+      "return_reason_children.id",
+    ],
     variables: { id: [inputItems.map((item) => item.reason_id)], limit: null },
   })
 
   const returnReasons = await remoteQuery(remoteQueryObject)
 
   const reasons = returnReasons.map((r) => r.id)
-  const hasInvalidReasons = returnReasons.filter(
-    // We do not allow for root reason to be applied
-    (reason) => reason.return_reason_children.length > 0
-  )
+  const hasInvalidReasons = returnReasons
+    .filter(
+      // We do not allow for root reason to be applied
+      (reason) => reason.return_reason_children.length > 0
+    )
+    .map((r) => r.id)
   const hasNonExistingReasons = arrayDifference(reasonIds, reasons)
 
   if (hasNonExistingReasons.length) {

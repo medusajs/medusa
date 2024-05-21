@@ -1,5 +1,10 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
+  ModuleRegistrationName,
+  Modules,
+  RemoteLink,
+} from "@medusajs/modules-sdk"
+import {
+  FulfillmentSetDTO,
   FulfillmentWorkflow,
   IOrderModuleService,
   IRegionModuleService,
@@ -208,6 +213,7 @@ async function prepareDataFixtures({ container }) {
     salesChannel,
     location,
     product,
+    fulfillmentSet,
   }
 }
 
@@ -314,11 +320,13 @@ async function createOrderFixture({ container, product }) {
 
   const returnReason = await orderService.createReturnReasons({
     value: "Test reason",
+    label: "Test reason",
   })
 
   await orderService.createReturnReasons({
     value: "Test child reason",
-    parent_id: returnReason.id,
+    label: "Test child reason",
+    parent_return_reason_id: returnReason.id,
   })
 
   await orderService.applyPendingOrderActions(order.id)
@@ -344,6 +352,7 @@ medusaIntegrationTestRunner({
       let region: RegionDTO
       let location: StockLocationDTO
       let product: ProductDTO
+      let fulfillmentSet: FulfillmentSetDTO
 
       let orderService: IOrderModuleService
 
@@ -356,6 +365,7 @@ medusaIntegrationTestRunner({
         region = fixtures.region
         location = fixtures.location
         product = fixtures.product
+        fulfillmentSet = fixtures.fulfillmentSet
 
         orderService = container.resolve(ModuleRegistrationName.ORDER)
       })
@@ -364,7 +374,7 @@ medusaIntegrationTestRunner({
         const order = await createOrderFixture({ container, product })
         const reasons = await orderService.listReturnReasons({})
         const testReason = reasons.find(
-          (r) => r.value.toLowerCase() === "test reason"
+          (r) => r.value.toLowerCase() === "test child reason"
         )!
 
         const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
@@ -503,11 +513,15 @@ medusaIntegrationTestRunner({
         // Remove the location link
         const remoteLink = container.resolve(
           ContainerRegistrationKeys.REMOTE_LINK
-        )
-        await remoteLink.remove([
+        ) as RemoteLink
+
+        await remoteLink.dismiss([
           {
             [Modules.STOCK_LOCATION]: {
               stock_location_id: location.id,
+            },
+            [Modules.FULFILLMENT]: {
+              fulfillment_set_id: fulfillmentSet.id,
             },
           },
         ])
@@ -517,8 +531,9 @@ medusaIntegrationTestRunner({
           throwOnError: false,
         })
 
-        // Expect an error to be thrown when running the workflow
-        await expect(errors).toHaveLength(1)
+        await expect(errors[0].error.message).toBe(
+          `Cannot create return without stock location, either provide a location or you should link the shipping option ${shippingOption.id} to a stock location.`
+        )
       })
 
       it("should fail when a reason with children is provided", async () => {
@@ -548,7 +563,9 @@ medusaIntegrationTestRunner({
           throwOnError: false,
         })
 
-        expect(errors).toHaveLength(1)
+        expect(errors[0].error.message).toBe(
+          `Cannot apply return reason with id ${testReason.id} to order with id ${order.id}. Return reason has nested reasons.`
+        )
       })
     })
   },
