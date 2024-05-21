@@ -3,7 +3,7 @@ import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { archiveOrdersStep } from "../steps"
 
 type ArchiveOrdersStepInput = {
-  order_ids: string[]
+  orderIds: string[]
 }
 
 export const archiveOrderWorkflowId = "archive-order-workflow"

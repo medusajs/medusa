@@ -104,6 +104,8 @@ describe("Order Exchange - Actions", function () {
       future_temporary_difference: 0,
       pending_difference: 312.5,
       difference_sum: 42.5,
+      paid_total: 0,
+      refunded_total: 0,
     })
 
     const toJson = JSON.parse(JSON.stringify(changes.order.items))

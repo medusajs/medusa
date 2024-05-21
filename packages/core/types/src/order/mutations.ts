@@ -317,7 +317,7 @@ export interface UpdateOrderChangeActionDTO {
 export interface CreateOrderTransactionDTO {
   order_id: string
   description?: string
-  reference_type?: string
+  reference?: string
   reference_id?: string
   internal_note?: string
   created_by?: string

@@ -2,19 +2,19 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IOrderModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type CompleteOrdersStepInput = {
-  order_ids: string[]
+type ArchiveOrdersStepInput = {
+  orderIds: string[]
 }
 
 export const archiveOrdersStepId = "archive-orders"
 export const archiveOrdersStep = createStep(
   archiveOrdersStepId,
-  async (data: CompleteOrdersStepInput, { container }) => {
+  async (data: ArchiveOrdersStepInput, { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
     )
 
-    const archived = await service.archive(data.order_ids)
+    const archived = await service.archive(data.orderIds)
     return new StepResponse(
       archived,
       archived.map((store) => {
