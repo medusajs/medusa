@@ -2,6 +2,7 @@ import loaders from "../loaders"
 import express from "express"
 import path from "path"
 import logger from "../loaders/logger"
+import { ExecArgs } from "@medusajs/types"
 
 type Options = {
   file: string
@@ -24,7 +25,12 @@ export default async function script({ file, args }: Options) {
 
     const scriptFile = (await import(path.resolve(directory, file))).default
 
-    await scriptFile(container, args)
+    const scriptParams: ExecArgs = {
+      container,
+      args,
+    }
+
+    await scriptFile(scriptParams)
 
     logger.info(`Finished executing script.`)
 
