@@ -24,6 +24,10 @@ export default async ({ app, container, plugins }: Options) => {
     next()
   })
 
+  const configModule = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
+
   // TODO: Figure out why this is causing issues with test when placed inside ./api.ts
   // Adding this here temporarily
   // Test: (packages/medusa/src/api/routes/admin/currencies/update-currency.ts)
@@ -33,7 +37,7 @@ export default async ({ app, container, plugins }: Options) => {
      */
     await new RoutesLoader({
       app: app,
-      configModule: container.resolve(ContainerRegistrationKeys.CONFIG_MODULE),
+      configModule,
       rootDir: path.join(__dirname, "../api-v2"),
     }).load()
   } catch (err) {
@@ -47,9 +51,7 @@ export default async ({ app, container, plugins }: Options) => {
     plugins.map(async (pluginDetails) => {
       return new RoutesLoader({
         app: app,
-        configModule: container.resolve(
-          ContainerRegistrationKeys.CONFIG_MODULE
-        ),
+        configModule,
         rootDir: path.join(pluginDetails.resolve, "api"),
       }).load()
     })
