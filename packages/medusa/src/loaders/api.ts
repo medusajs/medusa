@@ -50,7 +50,7 @@ export default async ({ app, container, plugins }: Options) => {
         configModule: container.resolve(
           ContainerRegistrationKeys.CONFIG_MODULE
         ),
-        rootDir: pluginDetails.resolve,
+        rootDir: path.join(pluginDetails.resolve, "api"),
       }).load()
     })
   )
