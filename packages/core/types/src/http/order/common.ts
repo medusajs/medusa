@@ -1,4 +1,8 @@
-interface BaseOrderSummary {
+import { BigNumberValue } from "../../totals"
+import { BasePaymentCollection } from "../payment/common"
+import { BaseProduct, BaseProductVariant } from "../product/common"
+
+export interface BaseOrderSummary {
   total: number
   subtotal: number
   total_tax: number
@@ -21,7 +25,7 @@ interface BaseOrderSummary {
   refunded_total: number
 }
 
-interface BaseOrderAdjustmentLine {
+export interface BaseOrderAdjustmentLine {
   id: string
   code?: string
   amount: number
@@ -33,17 +37,18 @@ interface BaseOrderAdjustmentLine {
   updated_at: Date | string
 }
 
-interface BaseOrderShippingMethodAdjustment extends BaseOrderAdjustmentLine {
+export interface BaseOrderShippingMethodAdjustment
+  extends BaseOrderAdjustmentLine {
   shipping_method: BaseOrderShippingMethod
   shipping_method_id: string
 }
 
-interface BaseOrderLineItemAdjustment extends BaseOrderAdjustmentLine {
+export interface BaseOrderLineItemAdjustment extends BaseOrderAdjustmentLine {
   item: BaseOrderLineItem
   item_id: string
 }
 
-interface BaseOrderTaxLine {
+export interface BaseOrderTaxLine {
   id: string
   description?: string
   tax_rate_id?: string
@@ -54,21 +59,21 @@ interface BaseOrderTaxLine {
   updated_at: Date | string
 }
 
-interface BaseOrderShippingMethodTaxLine extends BaseOrderTaxLine {
+export interface BaseOrderShippingMethodTaxLine extends BaseOrderTaxLine {
   shipping_method: BaseOrderShippingMethod
   shipping_method_id: string
   total: number
   subtotal: number
 }
 
-interface BaseOrderLineItemTaxLine extends BaseOrderTaxLine {
+export interface BaseOrderLineItemTaxLine extends BaseOrderTaxLine {
   item: BaseOrderLineItem
   item_id: string
   total: number
   subtotal: number
 }
 
-interface BaseOrderAddress {
+export interface BaseOrderAddress {
   id: string
   customer_id?: string
   first_name?: string
@@ -86,7 +91,7 @@ interface BaseOrderAddress {
   updated_at: Date | string
 }
 
-interface BaseOrderShippingMethod {
+export interface BaseOrderShippingMethod {
   id: string
   order_id: string
   name: string
@@ -98,16 +103,26 @@ interface BaseOrderShippingMethod {
   metadata: Record<string, unknown> | null
   tax_lines?: BaseOrderShippingMethodTaxLine[]
   adjustments?: BaseOrderShippingMethodAdjustment[]
+  original_total: BigNumberValue
+  original_subtotal: BigNumberValue
+  original_tax_total: BigNumberValue
+  total: BigNumberValue
+  subtotal: BigNumberValue
+  tax_total: BigNumberValue
+  discount_total: BigNumberValue
+  discount_tax_total: BigNumberValue
   created_at: Date | string
   updated_at: Date | string
 }
 
-interface BaseOrderLineItem {
+export interface BaseOrderLineItem {
   id: string
   title: string
   subtitle: string | null
   thumbnail: string | null
+  variant?: BaseProductVariant
   variant_id: string | null
+  product?: BaseProduct
   product_id: string | null
   product_title: string | null
   product_description: string | null
@@ -144,7 +159,7 @@ interface BaseOrderLineItem {
   discount_tax_total: number
 }
 
-interface BaseOrderItemDetail {
+export interface BaseOrderItemDetail {
   id: string
   item_id: string
   item: BaseOrderLineItem
@@ -160,7 +175,7 @@ interface BaseOrderItemDetail {
   updated_at: Date
 }
 
-interface BaseOrderChange {
+export interface BaseOrderChange {
   id: string
   order_id: string
   actions: BaseOrderChangeAction[]
@@ -179,7 +194,7 @@ interface BaseOrderChange {
   updated_at: Date | string
 }
 
-interface BaseOrderChangeAction {
+export interface BaseOrderChangeAction {
   id: string
   order_change_id: string | null
   order_change: BaseOrderChange | null
@@ -193,7 +208,7 @@ interface BaseOrderChangeAction {
   updated_at: Date | string
 }
 
-interface BaseOrderTransaction {
+export interface BaseOrderTransaction {
   id: string
   order_id: string
   amount: number
@@ -218,6 +233,7 @@ export interface BaseOrder {
   billing_address?: BaseOrderAddress
   items: BaseOrderLineItem[] | null
   shipping_methods: BaseOrderShippingMethod[] | null
+  payment_collection?: BasePaymentCollection
   transactions?: BaseOrderTransaction[]
   summary: BaseOrderSummary
   metadata: Record<string, unknown> | null
