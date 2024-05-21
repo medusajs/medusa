@@ -1,5 +1,5 @@
 import { createDefaultsWorkflow } from "@medusajs/core-flows"
-import { ConfigModule } from "@medusajs/types"
+import { ConfigModule, MedusaContainer } from "@medusajs/types"
 import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
@@ -7,39 +7,68 @@ import { createMedusaContainer } from "medusa-core-utils"
 import requestIp from "request-ip"
 import { v4 } from "uuid"
 import path from "path"
-import { MedusaContainer } from "../types/global"
 import adminLoader from "./admin"
 import apiLoader from "./api"
 import loadConfig from "./config"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
-import { registerProjectWorkflows } from "./helpers/register-workflows"
+import { registerWorkflows } from "./helpers/register-workflows"
 import Logger from "./logger"
 import loadMedusaApp from "./medusa-app"
-import pgConnectionLoader from "./pg-connection"
+import registerPgConnection from "./pg-connection"
 import { SubscriberLoader } from "./helpers/subscribers"
+import { getResolvedPlugins } from "./helpers/resolve-plugins"
+import { PluginDetails } from "@medusajs/types"
+import glob from "glob"
 
 type Options = {
   directory: string
   expressApp: Express
-  isTest: boolean
 }
 
 const isWorkerMode = (configModule) => {
   return configModule.projectConfig.worker_mode === "worker"
 }
 
-async function subscribersLoader(container) {
-  const subscribersPath = path.join(__dirname, "../subscribers")
-  await new SubscriberLoader(subscribersPath, container).load()
+async function subscribersLoader(
+  plugins: PluginDetails[],
+  container: MedusaContainer
+) {
+  /**
+   * Load subscribers from the medusa/medusa package
+   */
+  await new SubscriberLoader(
+    path.join(__dirname, "../subscribers"),
+    container
+  ).load()
+
+  /**
+   * Load subscribers from all the plugins.
+   */
+  await Promise.all(
+    plugins.map(async (pluginDetails) => {
+      const files = glob.sync(
+        `${pluginDetails.resolve}/subscribers/*.{ts,js,mjs,mts}`,
+        {
+          ignore: ["**/*.d.ts", "**/*.map"],
+        }
+      )
+      return Promise.all(
+        files.map(async (file) => new SubscriberLoader(file, container).load())
+      )
+    })
+  )
 }
 
 async function loadEntrypoints(
-  configModule,
-  container,
-  expressApp,
-  featureFlagRouter
+  plugins: PluginDetails[],
+  container: MedusaContainer,
+  expressApp: Express
 ) {
+  const configModule: ConfigModule = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
+
   if (isWorkerMode(configModule)) {
     return async () => {}
   }
@@ -60,33 +89,22 @@ async function loadEntrypoints(
     next()
   })
 
-  await adminLoader({ app: expressApp, configModule })
-  await subscribersLoader(container)
+  await adminLoader({ app: expressApp, adminConfig: configModule.admin })
+  await subscribersLoader(plugins, container)
   await apiLoader({
     container,
+    plugins,
     app: expressApp,
-    configModule,
-    featureFlagRouter,
   })
 
   return shutdown
 }
 
-export default async ({
-  directory: rootDirectory,
-  expressApp,
-}: Options): Promise<{
-  configModule: ConfigModule
-  container: MedusaContainer
-  app: Express
-  pgConnection: unknown
-  shutdown: () => Promise<void>
-  prepareShutdown: () => Promise<void>
-}> => {
+async function initializeContainer(rootDirectory: string) {
+  const container = createMedusaContainer()
   const configModule = loadConfig(rootDirectory)
   const featureFlagRouter = featureFlagsLoader(configModule, Logger)
-  const container = createMedusaContainer()
-  const pgConnection = await pgConnectionLoader({ container, configModule })
+
   container.register({
     [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
     [ContainerRegistrationKeys.FEATURE_FLAG_ROUTER]: asValue(featureFlagRouter),
@@ -94,28 +112,45 @@ export default async ({
     [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
   })
 
-  // Workflows are registered before the app to allow modules to run workflows as part of bootstrapping
-  //  e.g. the workflow engine will resume workflows that were running when the server was shut down
-  await registerProjectWorkflows({ rootDirectory, configModule })
+  await registerPgConnection({ container, configModule })
+  return container
+}
+
+export default async ({
+  directory: rootDirectory,
+  expressApp,
+}: Options): Promise<{
+  container: MedusaContainer
+  app: Express
+  shutdown: () => Promise<void>
+  prepareShutdown: () => Promise<void>
+}> => {
+  const container = await initializeContainer(rootDirectory)
+  const configModule = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
+
+  const plugins = getResolvedPlugins(rootDirectory, configModule, true) || []
+  await registerWorkflows(plugins)
 
   const {
     onApplicationShutdown: medusaAppOnApplicationShutdown,
     onApplicationPrepareShutdown: medusaAppOnApplicationPrepareShutdown,
   } = await loadMedusaApp({
-    configModule,
     container,
   })
 
   const entrypointsShutdown = await loadEntrypoints(
-    configModule,
+    plugins,
     container,
-    expressApp,
-    featureFlagRouter
+    expressApp
   )
-
   await createDefaultsWorkflow(container).run()
 
   const shutdown = async () => {
+    const pgConnection = container.resolve(
+      ContainerRegistrationKeys.PG_CONNECTION
+    )
     await medusaAppOnApplicationShutdown()
 
     await promiseAll([
@@ -127,10 +162,8 @@ export default async ({
   }
 
   return {
-    configModule,
     container,
     app: expressApp,
-    pgConnection,
     shutdown,
     prepareShutdown: medusaAppOnApplicationPrepareShutdown,
   }
