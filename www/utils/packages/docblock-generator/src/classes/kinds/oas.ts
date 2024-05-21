@@ -260,8 +260,8 @@ class OasKindGenerator extends FunctionKindGenerator {
         content: {
           "application/json": {
             schema:
-              this.oasSchemaHelper.schemaToReference(requestSchema) ||
-              requestSchema,
+              this.oasSchemaHelper.namedSchemaToReference(requestSchema) ||
+              this.oasSchemaHelper.schemaChildrenToRefs(requestSchema),
           },
         },
       }
@@ -335,8 +335,8 @@ class OasKindGenerator extends FunctionKindGenerator {
       ;(oas.responses[responseStatus] as OpenAPIV3.ResponseObject).content = {
         "application/json": {
           schema:
-            this.oasSchemaHelper.schemaToReference(responseSchema) ||
-            responseSchema,
+            this.oasSchemaHelper.namedSchemaToReference(responseSchema) ||
+            this.oasSchemaHelper.schemaChildrenToRefs(responseSchema),
         },
       }
     }
@@ -470,10 +470,11 @@ class OasKindGenerator extends FunctionKindGenerator {
       oas.requestBody = {
         content: {
           "application/json": {
-            schema: updatedRequestSchema
-              ? this.oasSchemaHelper.schemaToReference(updatedRequestSchema) ||
+            schema:
+              this.oasSchemaHelper.namedSchemaToReference(
                 updatedRequestSchema
-              : updatedRequestSchema,
+              ) ||
+              this.oasSchemaHelper.schemaChildrenToRefs(updatedRequestSchema),
           },
         },
       }
@@ -495,8 +496,10 @@ class OasKindGenerator extends FunctionKindGenerator {
           content: {
             "application/json": {
               schema:
-                this.oasSchemaHelper.schemaToReference(newResponseSchema) ||
-                newResponseSchema,
+                this.oasSchemaHelper.namedSchemaToReference(
+                  newResponseSchema
+                ) ||
+                this.oasSchemaHelper.schemaChildrenToRefs(newResponseSchema),
             },
           },
         },
@@ -532,8 +535,10 @@ class OasKindGenerator extends FunctionKindGenerator {
         content: {
           "application/json": {
             schema: updatedResponseSchema
-              ? this.oasSchemaHelper.schemaToReference(updatedResponseSchema) ||
-                updatedResponseSchema
+              ? this.oasSchemaHelper.namedSchemaToReference(
+                  updatedResponseSchema
+                ) ||
+                this.oasSchemaHelper.schemaChildrenToRefs(updatedResponseSchema)
               : updatedResponseSchema,
           },
         },
@@ -1534,7 +1539,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         if (objSchema["x-schemaName"]) {
           // add object to schemas to be created
           // if necessary
-          this.oasSchemaHelper.schemaToReference(objSchema)
+          this.oasSchemaHelper.namedSchemaToReference(objSchema)
         }
 
         return objSchema
