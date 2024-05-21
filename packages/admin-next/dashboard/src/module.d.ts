@@ -6,6 +6,14 @@ declare module "medusa-admin:widgets/*" {
   }
 }
 
+declare module "virtual:medusa/widgets/*" {
+  const widgets: { Component: () => JSX.Element }[]
+
+  export default {
+    widgets,
+  }
+}
+
 declare module "medusa-admin:routes/links" {
   const links: { path: string; label: string; icon?: React.ComponentType }[]
 

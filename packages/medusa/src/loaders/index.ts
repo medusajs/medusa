@@ -1,6 +1,10 @@
 import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import { ConfigModule } from "@medusajs/types"
-import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  FlagRouter,
+  promiseAll,
+} from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
 import { createMedusaContainer } from "medusa-core-utils"
@@ -30,10 +34,11 @@ const isWorkerMode = (configModule) => {
 }
 
 async function loadEntrypoints(
-  configModule,
-  container,
-  expressApp,
-  featureFlagRouter
+  rootDirectory: string,
+  configModule: ConfigModule,
+  container: MedusaContainer,
+  expressApp: Express,
+  featureFlagRouter: FlagRouter
 ) {
   if (isWorkerMode(configModule)) {
     return async () => {}
@@ -55,7 +60,7 @@ async function loadEntrypoints(
     next()
   })
 
-  await adminLoader({ app: expressApp, configModule })
+  await adminLoader({ app: expressApp, configModule, rootDirectory })
 
   // subscribersLoader({ container })
 
@@ -104,6 +109,7 @@ export default async ({
   })
 
   const entrypointsShutdown = await loadEntrypoints(
+    rootDirectory,
     configModule,
     container,
     expressApp,

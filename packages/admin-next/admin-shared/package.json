@@ -5,14 +5,16 @@
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "files": [
     "dist",
     "package.json"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsup"
   },
   "devDependencies": {
+    "tsup": "^8.0.2",
     "typescript": "^5.3.3"
   },
   "packageManager": "yarn@3.2.1"

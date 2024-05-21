@@ -1,0 +1,53 @@
+import { ROUTE_IMPORTS } from "../routes"
+import { SETTINGS_IMPORTS } from "../settings"
+import { INJECTION_ZONES } from "../widgets"
+import { getWidgetImport, id, resolve } from "./utils"
+
+const VIRTUAL_WIDGET_MODULES = INJECTION_ZONES.map((zone) => {
+  return id(getWidgetImport(zone))
+})
+
+const VIRTUAL_ROUTE_MODULES = ROUTE_IMPORTS.map((route) => {
+  return id(route)
+})
+
+const VIRTUAL_SETTING_MODULES = SETTINGS_IMPORTS.map((setting) => {
+  return id(setting)
+})
+
+/**
+ * All virtual modules that are used in the admin panel. Virtual modules are used
+ * to inject custom widgets, routes and settings. A virtual module is imported using
+ * a string that corresponds to the id of the virtual module.
+ *
+ * @example
+ * ```ts
+ * import ProductDetailsBefore from "virtual:medusa/widgets/product/details/before"
+ * ```
+ */
+export const VIRTUAL_MODULES = [
+  ...VIRTUAL_WIDGET_MODULES,
+  ...VIRTUAL_ROUTE_MODULES,
+  ...VIRTUAL_SETTING_MODULES,
+]
+
+/**
+ * Reolved paths to all virtual widget modules.
+ */
+export const RESOLVED_WIDGET_MODULES = VIRTUAL_WIDGET_MODULES.map((id) => {
+  return resolve(id)
+})
+
+/**
+ * Reolved paths to all virtual route modules.
+ */
+export const RESOLVED_ROUTE_MODULES = VIRTUAL_ROUTE_MODULES.map((id) => {
+  return resolve(id)
+})
+
+/**
+ * Reolved paths to all virtual setting modules.
+ */
+export const RESOLVED_SETTING_MODULES = VIRTUAL_SETTING_MODULES.map((id) => {
+  return resolve(id)
+})

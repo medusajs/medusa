@@ -4953,6 +4953,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-sdk@workspace:packages/admin-next/admin-sdk"
   dependencies:
+    "@medusajs/admin-shared": 0.0.1
     "@medusajs/admin-vite-plugin": 0.0.1
     "@medusajs/dashboard": 0.0.1
     "@medusajs/types": ^1.11.16
@@ -4973,16 +4974,18 @@ __metadata:
     typescript: ^5.3.3
     vite: ^5.2.11
     vite-plugin-node-polyfills: ^0.21.0
+    vite-plugin-virtual: ^0.3.0
   peerDependencies:
     express: ^4.18.2
     react-dom: ^18.0.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-shared@0.0.1, @medusajs/admin-shared@workspace:packages/admin-next/admin-shared":
+"@medusajs/admin-shared@0.0.1, @medusajs/admin-shared@^0.0.1, @medusajs/admin-shared@workspace:packages/admin-next/admin-shared":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-shared@workspace:packages/admin-next/admin-shared"
   dependencies:
+    tsup: ^8.0.2
     typescript: ^5.3.3
   languageName: unknown
   linkType: soft
@@ -5203,6 +5206,7 @@ __metadata:
     "@dnd-kit/core": ^6.1.0
     "@dnd-kit/sortable": ^8.0.0
     "@hookform/resolvers": 3.3.2
+    "@medusajs/admin-shared": ^0.0.1
     "@medusajs/admin-vite-plugin": 0.0.1
     "@medusajs/icons": 1.2.1
     "@medusajs/types": 1.11.16
@@ -32904,6 +32908,15 @@ __metadata:
   version: 1.0.3
   resolution: "vite-plugin-turbosnap@npm:1.0.3"
   checksum: fd4a283708e24b54442b5db05461f8302bc57094234fd5b0dae1a6f76bb79078c68a729e516f352d04b89fea7c459f8272921f788bd3cd20d1488c7e73d7238e
+  languageName: node
+  linkType: hard
+
+"vite-plugin-virtual@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "vite-plugin-virtual@npm:0.3.0"
+  peerDependencies:
+    vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
+  checksum: a9edbbefbca15878f69086d50ac45a05bcbd295f2e7f21eb03248ddec9df1516602dd700c3442f8fd9778598950383b0ef448ee6086465ade38e06d1005ad55b
   languageName: node
   linkType: hard
 

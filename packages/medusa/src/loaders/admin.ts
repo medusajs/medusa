@@ -1,23 +1,43 @@
 import { AdminOptions, ConfigModule } from "@medusajs/types"
 import { Express } from "express"
+import fs from "fs"
+import path from "path"
 
 type Options = {
   app: Express
   configModule: ConfigModule
+  rootDirectory: string
 }
 
 type IntializedOptions = Required<
   Pick<AdminOptions, "path" | "disable" | "outDir">
 > &
-  AdminOptions
+  AdminOptions & {
+    sources?: string[]
+  }
 
-export default async function adminLoader({ app, configModule }: Options) {
+export default async function adminLoader({
+  app,
+  configModule,
+  rootDirectory,
+}: Options) {
   const { admin } = configModule
+
+  const sources: string[] = []
+
+  const projectSource = path.join(rootDirectory, "src", "admin")
+
+  // check if the projectSource exists
+  if (fs.existsSync(projectSource)) {
+    console.log(`[DEBUG]: Found project source at ${projectSource}`)
+    sources.push(projectSource)
+  }
 
   const adminOptions: IntializedOptions = {
     disable: false,
     path: "/app",
     outDir: "./build",
+    sources,
     ...admin,
   }
 
