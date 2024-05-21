@@ -15,28 +15,25 @@ export const findOneOrAnyRegionStep = createStep(
       ModuleRegistrationName.STORE
     )
 
-    if (!data.regionId) {
-      const [store] = await storeModule.list()
-
-      if (!store) {
-        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Store not found")
-      }
-
-      const [region] = await service.list({
-        id: store.default_region_id,
-      })
-
-      if (!region) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "No regions found"
-        )
-      }
+    if (data.regionId) {
+      const region = await service.retrieve(data.regionId)
 
       return new StepResponse(region)
     }
 
-    const region = await service.retrieve(data.regionId)
+    const [store] = await storeModule.list()
+
+    if (!store) {
+      throw new MedusaError(MedusaError.Types.NOT_FOUND, "Store not found")
+    }
+
+    const [region] = await service.list({
+      id: store.default_region_id,
+    })
+
+    if (!region) {
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, "No regions found")
+    }
 
     return new StepResponse(region)
   }
