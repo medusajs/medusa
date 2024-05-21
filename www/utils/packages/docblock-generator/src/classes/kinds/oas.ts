@@ -1122,6 +1122,13 @@ class OasKindGenerator extends FunctionKindGenerator {
                   return
                 }
 
+                // check if parameter is already added
+                const isAdded = parameters.some((param) => param.name === key)
+
+                if (isAdded) {
+                  return
+                }
+
                 parameters.push(
                   this.getParameterObject({
                     name: key,
@@ -1273,8 +1280,8 @@ class OasKindGenerator extends FunctionKindGenerator {
           descriptionOptions as SchemaDescriptionOptions
         )
       : title
-      ? this.getSchemaDescription({ typeStr: title, nodeType: itemType })
-      : this.defaultSummary
+        ? this.getSchemaDescription({ typeStr: title, nodeType: itemType })
+        : this.defaultSummary
     const typeAsString =
       zodObjectTypeName || this.checker.typeToString(itemType)
 
@@ -1315,8 +1322,8 @@ class OasKindGenerator extends FunctionKindGenerator {
             itemType.flags === ts.TypeFlags.StringLiteral
               ? "string"
               : itemType.flags === ts.TypeFlags.NumberLiteral
-              ? "number"
-              : "boolean",
+                ? "number"
+                : "boolean",
           title: title || typeAsString,
           description,
           format: this.getSchemaTypeFormat({
