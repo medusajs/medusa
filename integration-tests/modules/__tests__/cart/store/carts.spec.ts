@@ -1,4 +1,3 @@
-import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import {
   LinkModuleUtils,
   ModuleRegistrationName,
@@ -28,6 +27,7 @@ import {
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { seedStorefrontDefaults } from "../../../../helpers/seed-storefront-defaults"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 import { setupTaxStructure } from "../../fixtures"
 
@@ -85,13 +85,8 @@ medusaIntegrationTestRunner({
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
-        // Here, so we don't have to create a region for each test
-        defaultRegion = await regionModule.create({
-          name: "Default Region",
-          currency_code: "dkk",
-        })
-
-        await createDefaultsWorkflow(appContainer).run()
+        const { region } = await seedStorefrontDefaults(appContainer, "dkk")
+        defaultRegion = region
       })
 
       describe("POST /store/carts", () => {
