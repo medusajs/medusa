@@ -111,7 +111,7 @@ async function initializeContainer(rootDirectory: string) {
     [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
   })
 
-  await registerPgConnection({ container })
+  await registerPgConnection({ container, configModule })
   return container
 }
 

@@ -1,18 +1,16 @@
+import { ConfigModule } from "@medusajs/types"
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 import { asValue, AwilixContainer } from "awilix"
 
 type Options = {
   container: AwilixContainer
+  configModule: ConfigModule
 }
 
-export default async ({ container }: Options): Promise<any> => {
+export default async ({ container, configModule }: Options): Promise<any> => {
   if (container.hasRegistration(ContainerRegistrationKeys.PG_CONNECTION)) {
     return container.resolve(ContainerRegistrationKeys.PG_CONNECTION)
   }
-
-  const configModule = container.resolve(
-    ContainerRegistrationKeys.CONFIG_MODULE
-  )
 
   // Share a knex connection to be consumed by the shared modules
   const connectionString = configModule.projectConfig.database_url
