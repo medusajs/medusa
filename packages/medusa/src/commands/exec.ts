@@ -1,6 +1,7 @@
 import loaders from "../loaders"
 import express from "express"
 import path from "path"
+import logger from "../loaders/logger"
 
 type Options = {
   file: string
@@ -8,7 +9,7 @@ type Options = {
 }
 
 export default async function script({ file, args }: Options) {
-  console.log(`Executing script at ${file}...`)
+  logger.info(`Executing script at ${file}...`)
   const app = express()
   const directory = process.cwd()
 
@@ -25,11 +26,11 @@ export default async function script({ file, args }: Options) {
 
     await scriptFile(container, args)
 
-    console.log(`Finished executing script.`)
+    logger.info(`Finished executing script.`)
 
     process.exit()
   } catch (err) {
-    console.error("Error running script", err)
+    logger.error("Error running script", err)
     process.exit(1)
   }
 }
