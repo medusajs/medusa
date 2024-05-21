@@ -14,7 +14,7 @@ export const POST = async (
   const { id } = req.params
 
   const { errors } = await archiveOrderWorkflow(req.scope).run({
-    input: { order_ids: [req.validatedBody.order_id] },
+    input: { orderIds: [req.validatedBody.order_id] },
     throwOnError: false,
   })
 

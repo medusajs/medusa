@@ -44,6 +44,8 @@ export interface OrderSummaryCalculated {
   future_temporary_difference: BigNumberInput
   temporary_difference: BigNumberInput
   difference_sum: BigNumberInput
+  paid_total: BigNumberInput
+  refunded_total: BigNumberInput
 }
 
 export interface OrderTransaction {
