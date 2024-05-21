@@ -414,6 +414,12 @@
       "hint": "Create a new customer to manage their details.",
       "successToast": "Customer {{email}} was successfully created."
     },
+    "groups": {
+      "label": "Customer groups",
+      "remove": "Are you sure you want to remove the customer from \"{{name}}\" customer group?",
+      "removeMany": "Are you sure you want to customer from following customer groups: {{groups}}?",
+      "alreadyAddedTooltip": "The customer is already in this customer group."
+    },
     "edit": {
       "header": "Edit Customer",
       "emailDisabledTooltip": "The email address cannot be changed for registered customers.",
@@ -428,7 +434,9 @@
       "guest": "Guest",
       "registered": "Registered",
       "groups": "Groups"
-    }
+    },
+    "registered": "Registered",
+    "guest": "Guest"
   },
   "customerGroups": {
     "domain": "Customer Groups",
@@ -528,8 +536,21 @@
       "unfulfilledItems": "Unfulfilled Items",
       "statusLabel": "Fulfillment status",
       "statusTitle": "Fulfillment Status",
+      "fulfillItems": "Fulfill items",
+      "awaitingFulfillmentBadge": "Awaiting fulfillment",
       "awaitingFullfillmentBadge": "Awaiting fulfillment",
       "number": "Fulfillment #{{number}}",
+      "itemsToFulfill": "Items to fulfill",
+      "create": "Create Fulfillment",
+      "available": "Available",
+      "inStock": "In stock",
+      "itemsToFulfillDesc": "Choose items and quantities to fulfill",
+      "locationDescription": "Choose which location you want to fulfill items from.",
+      "error": {
+        "wrongQuantity": "Only one item is available for fulfillment",
+        "wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",
+        "noItems": "No items to fulfill."
+      },
       "status": {
         "notFulfilled": "Not fulfilled",
         "partiallyFulfilled": "Partially fulfilled",
@@ -542,6 +563,7 @@
         "requiresAction": "Requires action"
       },
       "toast": {
+        "created": "Fulfillment created successfully",
         "canceled": "Fulfillment successfully canceled",
         "fulfillmentShipped": "Cannot cancel an already shipped fulfillment"
       },

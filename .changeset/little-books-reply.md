@@ -22,6 +22,7 @@
 "medusa-telemetry": patch
 "@medusajs/api-key": patch
 "@medusajs/auth": patch
+"@medusajs/js-sdk": patch
 "@medusajs/cache-inmemory": patch
 "@medusajs/cache-redis": patch
 "@medusajs/cart": patch

@@ -109,6 +109,28 @@ export class Client {
     this.setToken_(token)
   }
 
+  clearToken() {
+    this.clearToken_()
+  }
+
+  protected clearToken_() {
+    const { storageMethod, storageKey } = this.getTokenStorageInfo_()
+    switch (storageMethod) {
+      case "local": {
+        window.localStorage.removeItem(storageKey)
+        break
+      }
+      case "session": {
+        window.sessionStorage.removeItem(storageKey)
+        break
+      }
+      case "memory": {
+        this.token = ""
+        break
+      }
+    }
+  }
+
   protected initClient(): ClientFetch {
     const defaultHeaders = new Headers({
       "content-type": "application/json",

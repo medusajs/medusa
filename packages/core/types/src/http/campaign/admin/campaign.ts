@@ -1,9 +1,6 @@
 import { CampaignBudgetTypeValues } from "../../../promotion"
 import { PaginatedResponse } from "../../common"
 
-/**
- * @experimental
- */
 export interface CampaignResponse {
   id: string
   name: string
@@ -20,16 +17,10 @@ export interface CampaignResponse {
   }
 }
 
-/**
- * @experimental
- */
-export interface AdminCampaignListResponse extends PaginatedResponse {
+export type AdminCampaignListResponse = PaginatedResponse<{
   campaigns: CampaignResponse[]
-}
+}>
 
-/**
- * @experimental
- */
 export interface AdminCampaignResponse {
   campaign: CampaignResponse
 }

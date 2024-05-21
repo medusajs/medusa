@@ -11,7 +11,6 @@ import { toCamelCase, upperCaseFirst } from "@medusajs/utils"
 export function formatRegistrationName(path: string): string {
   const parsed = parse(path)
   const parsedDir = parse(parsed.dir)
-  const rawname = parsed.name
   let directoryNamespace = parsedDir.name
 
   if (directoryNamespace.startsWith("__")) {

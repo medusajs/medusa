@@ -1,6 +1,3 @@
-/**
- * @experimental
- */
 export interface AdminShippingOptionRuleResponse {
   id: string
   attribute: string

@@ -1,6 +1,5 @@
 import { PlusMini, Trash } from "@medusajs/icons"
 import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
-import { RegionCountryDTO, RegionDTO } from "@medusajs/types"
 import {
   ColumnDef,
   RowSelectionState,
@@ -15,9 +14,10 @@ import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
 import { useUpdateRegion } from "../../../../../hooks/api/regions"
+import { HttpTypes } from "@medusajs/types"
 
 type RegionCountrySectionProps = {
-  region: RegionDTO
+  region: HttpTypes.AdminRegion
 }
 
 const PREFIX = "c"
@@ -143,8 +143,8 @@ const CountryActions = ({
   country,
   region,
 }: {
-  country: RegionCountryDTO
-  region: RegionDTO
+  country: HttpTypes.AdminRegionCountry
+  region: HttpTypes.AdminRegion
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -204,7 +204,7 @@ const CountryActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<RegionCountryDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminRegionCountry>()
 
 const useColumns = () => {
   const base = useCountryTableColumns()
@@ -243,12 +243,14 @@ const useColumns = () => {
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
-          const { region } = table.options.meta as { region: RegionDTO }
+          const { region } = table.options.meta as {
+            region: HttpTypes.AdminRegion
+          }
 
           return <CountryActions country={row.original} region={region} />
         },
       }),
     ],
     [base]
-  ) as ColumnDef<RegionCountryDTO>[]
+  ) as ColumnDef<HttpTypes.AdminRegionCountry>[]
 }
