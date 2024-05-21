@@ -51,7 +51,7 @@ export const POST = async (
     },
   ]
 
-  const { result, errors } = await createProductOptionsWorkflow(req.scope).run({
+  const { errors } = await createProductOptionsWorkflow(req.scope).run({
     input: { product_options: input },
     throwOnError: false,
   })
