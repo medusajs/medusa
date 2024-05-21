@@ -670,6 +670,15 @@ export const currencies: CurrenciesType = {
     code: "MUR",
     name_plural: "Mauritian rupees",
   },
+  MWK: {
+    symbol: "K",
+    name: "Malawian Kwacha",
+    symbol_native: "K",
+    decimal_digits: 2,
+    rounding: 0,
+    code: "MWK",
+    name_plural: "Malawian Kwachas",
+  },
   MXN: {
     symbol: "MX$",
     name: "Mexican Peso",
