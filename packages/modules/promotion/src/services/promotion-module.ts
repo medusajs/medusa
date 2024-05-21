@@ -788,7 +788,7 @@ export default class PromotionModuleService<
         )
       }
 
-      if (campaignId) {
+      if (isDefined(campaignId)) {
         promotionsData.push({ ...promotionData, campaign_id: campaignId })
       } else {
         promotionsData.push(promotionData)
