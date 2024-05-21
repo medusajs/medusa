@@ -179,11 +179,11 @@ const clone = async (hostInfo, rootPath, v2 = false, inputBranch) => {
     url = hostInfo.https({ noCommittish: true, noGitPlus: true })
   }
 
-const branch = (inputBranch || hostInfo.committish ? [`-b`, inputBranch || hostInfo.committish] : [])
+  let branch = (inputBranch || hostInfo.committish ? [`-b`, inputBranch || hostInfo.committish] : [])
 
-if (v2) {
-  branch = [`-b`, inputBranch || "feat/v2"]
-}
+  if (v2) {
+    branch = [`-b`, inputBranch || "feat/v2"]
+  }
 
   const createAct = reporter.activity(`Creating new project from git: ${url}`)
 
