@@ -14,7 +14,7 @@ import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import { registerWorkflows } from "./helpers/register-workflows"
 import Logger from "./logger"
-import loadModules from "./medusa-app"
+import loadMedusaApp from "./medusa-app"
 import registerPgConnection from "./pg-connection"
 import { SubscriberLoader } from "./helpers/subscribers"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
@@ -136,7 +136,7 @@ export default async ({
   const {
     onApplicationShutdown: medusaAppOnApplicationShutdown,
     onApplicationPrepareShutdown: medusaAppOnApplicationPrepareShutdown,
-  } = await loadModules({
+  } = await loadMedusaApp({
     container,
   })
 

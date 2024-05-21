@@ -142,7 +142,7 @@ export async function revertMedusaApp({
   })
 }
 
-export const loadModules = async (
+export const loadMedusaApp = async (
   {
     container,
   }: {
@@ -262,4 +262,4 @@ export async function runModulesLoader({
   })
 }
 
-export default loadModules
+export default loadMedusaApp
