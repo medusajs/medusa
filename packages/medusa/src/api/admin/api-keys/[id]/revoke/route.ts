@@ -15,7 +15,7 @@ export const POST = async (
       selector: { id: req.params.id },
       revoke: {
         ...req.validatedBody,
-        revoked_by: req.auth.actor_id,
+        revoked_by: req.auth_context.actor_id,
       },
     },
     throwOnError: false,

@@ -1,8 +1,8 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { AuthenticationInput, IAuthModuleService } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
-import jwt from "jsonwebtoken"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import { generateJwtToken } from "../../../utils/auth/token"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { scope, auth_provider } = req.params
@@ -22,7 +22,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const authResult = await service.authenticate(auth_provider, authData)
 
-  const { success, error, authUser, location } = authResult
+  const { success, error, authIdentity, location } = authResult
 
   if (location) {
     res.redirect(location)
@@ -32,9 +32,21 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   if (success) {
     const { http } = req.scope.resolve("configModule").projectConfig
 
-    const token = jwt.sign(authUser, http.jwtSecret, {
-      expiresIn: http.jwtExpiresIn,
-    })
+    const { jwtSecret, jwtExpiresIn } = http
+    // TODO: Dynamically determine the actor information
+    const token = generateJwtToken(
+      {
+        actor_id: authIdentity.id,
+        actor_type: "user",
+        auth_identity_id: authIdentity.id,
+        app_metadata: {},
+        scope,
+      },
+      {
+        secret: jwtSecret,
+        expiresIn: jwtExpiresIn,
+      }
+    )
 
     return res.status(200).json({ token })
   }

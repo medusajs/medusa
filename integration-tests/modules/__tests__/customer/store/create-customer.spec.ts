@@ -34,15 +34,14 @@ medusaIntegrationTestRunner({
         const authService: IAuthModuleService = appContainer.resolve(
           ModuleRegistrationName.AUTH
         )
-        const { http } =
-          appContainer.resolve("configModule").projectConfig
-        const authUser = await authService.create({
+        const { http } = appContainer.resolve("configModule").projectConfig
+        const authIdentity = await authService.create({
           entity_id: "store_user",
           provider: "emailpass",
           scope: "store",
         })
 
-        const token = jwt.sign(authUser, http.jwtSecret)
+        const token = jwt.sign(authIdentity, http.jwtSecret)
 
         const response = await api.post(
           `/store/customers`,

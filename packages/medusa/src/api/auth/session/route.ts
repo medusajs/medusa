@@ -7,9 +7,9 @@ export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  req.session.auth_user = req.auth
+  req.session.auth_context = req.auth_context
 
-  res.status(200).json({ user: req.auth })
+  res.status(200).json({ user: req.auth_context })
 }
 
 export const DELETE = async (

@@ -37,7 +37,7 @@ export default async function ({
     } else {
       const user = await userService.create({ email })
 
-      const { authUser } = await authService.authenticate(provider, {
+      const { authIdentity } = await authService.authenticate(provider, {
         body: {
           email,
           password,
@@ -46,7 +46,7 @@ export default async function ({
       })
 
       await authService.update({
-        id: authUser.id,
+        id: authIdentity.id,
         app_metadata: {
           user_id: user.id,
         },
