@@ -7,6 +7,7 @@ import path from "path"
 import { customAlphabet } from "nanoid"
 import { isAbortError } from "./create-abort-controller.js"
 import logMessage from "./log-message.js"
+import ProcessManager from "./process-manager.js"
 
 const NEXTJS_REPO = "https://github.com/medusajs/nextjs-starter-medusa"
 
@@ -28,6 +29,7 @@ type InstallOptions = {
   abortController?: AbortController
   factBoxOptions: FactBoxOptions
   verbose?: boolean
+  processManager: ProcessManager
 }
 
 export async function installNextjsStarter({
@@ -35,6 +37,7 @@ export async function installNextjsStarter({
   abortController,
   factBoxOptions,
   verbose = false,
+  processManager
 }: InstallOptions): Promise<string> {
   factBoxOptions.interval = displayFactBox({
     ...factBoxOptions,
@@ -67,17 +70,24 @@ export async function installNextjsStarter({
       ],
       { verbose }
     )
-    await execute(
-      [
-        `npm install`,
-        {
-          signal: abortController?.signal,
-          env: process.env,
-          cwd: nextjsDirectory
-        },
-      ],
-      { verbose }
-    )
+    const execOptions = {
+      signal: abortController?.signal,
+      cwd: nextjsDirectory
+    }
+    await processManager.runProcess({
+      process: async () => {
+        try {
+          await execute([`yarn`, execOptions], { verbose })
+        } catch (e) {
+          // yarn isn't available
+          // use npm
+          await execute([`npm install`, execOptions], {
+            verbose,
+          })
+        }
+      },
+      ignoreERESOLVE: true,
+    })
   } catch (e) {
     if (isAbortError(e)) {
       process.exit()

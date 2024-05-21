@@ -155,6 +155,7 @@ export default async ({
         abortController,
         factBoxOptions,
         verbose,
+        processManager
       })
     : ""
 
