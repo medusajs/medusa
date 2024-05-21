@@ -7,6 +7,7 @@ import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
 import { refetchCart } from "../../../helpers"
 import { StoreUpdateCartLineItemType } from "../../../validators"
 import { prepareListQuery } from "../../../../../../utils/get-query-config"
+import { DeleteResponse } from "@medusajs/types"
 
 export const POST = async (
   req: MedusaRequest<StoreUpdateCartLineItemType>,
@@ -62,7 +63,10 @@ export const POST = async (
   res.status(200).json({ cart: updatedCart })
 }
 
-export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
+export const DELETE = async (
+  req: MedusaRequest,
+  res: MedusaResponse<DeleteResponse<"line-item">>
+) => {
   const id = req.params.line_id
 
   const { errors } = await deleteLineItemsWorkflow(req.scope).run({
@@ -80,5 +84,10 @@ export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
     req.remoteQueryConfig.fields
   )
 
-  res.status(200).json({ cart })
+  res.status(200).json({
+    id: id,
+    object: "line-item",
+    deleted: true,
+    parent: cart,
+  })
 }

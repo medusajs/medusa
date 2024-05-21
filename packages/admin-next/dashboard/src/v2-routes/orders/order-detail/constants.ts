@@ -23,6 +23,8 @@ const DEFAULT_RELATIONS = [
   "*billing_address",
   "*sales_channel",
   "*promotion",
+  "*fulfillments",
+  "*fulfillments.items",
 ]
 
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(

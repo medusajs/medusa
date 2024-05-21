@@ -14,7 +14,7 @@ export const GET = async (
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order",
+    entryPoint: "return",
     variables: {
       filters: {
         ...req.filterableFields,
