@@ -322,10 +322,10 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
-      command: `script [file]`,
+      command: `exec [file] [args..]`,
       desc: `Run a function defined in a file.`,
       handler: handlerP(
-        getCommandHandler(`script`, (args, cmd) => {
+        getCommandHandler(`exec`, (args, cmd) => {
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
