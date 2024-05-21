@@ -57,7 +57,9 @@ export const RuleValueFormField = ({
     buildFilters(attribute?.id, store),
     {
       enabled:
-        !!attribute?.id && attribute.field_type === "select" && !isStoreLoading,
+        !!attribute?.id &&
+        ["select", "multiselect"].includes(attribute.field_type) &&
+        !isStoreLoading,
     }
   )
 

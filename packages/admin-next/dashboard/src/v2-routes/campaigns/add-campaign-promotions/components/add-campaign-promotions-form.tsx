@@ -86,7 +86,11 @@ export const AddCampaignPromotionsForm = ({
       state: rowSelection,
       updater,
     },
-    meta: { campaignId: campaign.id, currencyCode: campaign.currency },
+    meta: {
+      campaignId: campaign.id,
+      currencyCode: campaign?.budget?.currency_code,
+      budgetType: campaign?.budget?.type,
+    },
   })
 
   const handleSubmit = form.handleSubmit(async (values) => {
@@ -177,16 +181,20 @@ const useColumns = () => {
           )
         },
         cell: ({ row, table }) => {
-          const { campaignId, currencyCode } = table.options.meta as {
+          const { campaignId, currencyCode, budgetType } = table.options
+            .meta as {
             campaignId: string
             currencyCode: string
+            budgetType: string
           }
 
+          const isTypeSpend = budgetType === "spend"
           const isAdded = row.original.campaign_id === campaignId
           const isAddedToADiffCampaign =
             !!row.original.campaign_id &&
             row.original.campaign_id !== campaignId
           const currencyMismatch =
+            isTypeSpend &&
             row.original.application_method?.currency_code !== currencyCode
           const isSelected = row.getIsSelected() || isAdded
           const isIndeterminate = currencyMismatch || isAddedToADiffCampaign

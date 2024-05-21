@@ -2,7 +2,6 @@ import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
   ApplicationMethodType,
-  CampaignBudgetType,
   PromotionRuleOperator,
   PromotionType,
 } from "@medusajs/utils"
@@ -12,6 +11,7 @@ import {
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
+import { AdminCreateCampaign } from "../campaigns/validators"
 
 export type AdminGetPromotionParamsType = z.infer<
   typeof AdminGetPromotionParams
@@ -117,7 +117,7 @@ export type AdminUpdateApplicationMethodType = z.infer<
 export const AdminUpdateApplicationMethod = z
   .object({
     description: z.string().optional(),
-    value: z.string().optional(),
+    value: z.number().optional(),
     max_quantity: z.number().optional(),
     currency_code: z.string().optional(),
     type: z.nativeEnum(ApplicationMethodType).optional(),
@@ -146,23 +146,6 @@ const promoRefinement = (promo) => {
 
   return true
 }
-
-// Ideally we don't allow for creation of campaigns through promotions, it should be the other way around.
-const CreateCampaignBudget = z.object({
-  type: z.nativeEnum(CampaignBudgetType),
-  limit: z.number(),
-})
-
-export type AdminCreateCampaignType = z.infer<typeof AdminCreateCampaign>
-export const AdminCreateCampaign = z.object({
-  name: z.string(),
-  campaign_identifier: z.string(),
-  description: z.string().optional(),
-  currency: z.string(),
-  budget: CreateCampaignBudget.optional(),
-  starts_at: z.coerce.date().optional(),
-  ends_at: z.coerce.date().optional(),
-})
 
 export type AdminCreatePromotionType = z.infer<typeof AdminCreatePromotion>
 export const AdminCreatePromotion = z

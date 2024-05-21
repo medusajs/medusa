@@ -550,8 +550,7 @@ export default class PromotionModuleService<
           ?.currency_code
 
       if (
-        (campaignData?.budget?.type === CampaignBudgetType.SPEND &&
-          !campaignCurrency) ||
+        campaignData?.budget?.type === CampaignBudgetType.SPEND &&
         campaignCurrency !== applicationMethodData?.currency_code
       ) {
         throw new MedusaError(

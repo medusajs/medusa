@@ -1,6 +1,7 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { PromotionDTO } from "@medusajs/types"
 import {
+  Badge,
   Container,
   Copy,
   Heading,
@@ -142,7 +143,15 @@ export const PromotionGeneralSection = ({
         </Text>
 
         <Text size="small" leading="compact" className="text-pretty">
-          {promotion.application_method?.value}
+          <Text className="inline pr-3" size="small" leading="compact">
+            {promotion.application_method?.value}
+          </Text>
+
+          {promotion?.application_method?.type === "fixed" && (
+            <Badge size="xsmall">
+              {promotion?.application_method?.currency_code}
+            </Badge>
+          )}
         </Text>
       </div>
 

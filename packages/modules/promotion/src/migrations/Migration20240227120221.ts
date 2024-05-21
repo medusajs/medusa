@@ -10,7 +10,7 @@ export class Migration20240227120221 extends Migration {
     )
 
     this.addSql(
-      'create table if not exists "promotion_campaign_budget" ("id" text not null, "type" text check ("type" in (\'spend\', \'usage\')) not null, "campaign_id" text not null, "limit" numeric null, "raw_limit" jsonb null, "used" numeric null, "raw_used" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_campaign_budget_pkey" primary key ("id"));'
+      'create table if not exists "promotion_campaign_budget" ("id" text not null, "type" text check ("type" in (\'spend\', \'usage\')) not null, "campaign_id" text not null, "limit" numeric null, "raw_limit" jsonb null, "used" numeric not null default 0, "raw_used" jsonb not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_campaign_budget_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index if not exists "IDX_campaign_budget_type" on "promotion_campaign_budget" ("type");'

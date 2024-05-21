@@ -9,14 +9,13 @@ jest.setTimeout(50000)
 export const campaignData = {
   name: "campaign 1",
   description: "test description",
-  currency: "USD",
   campaign_identifier: "test-1",
   starts_at: new Date("01/01/2023").toISOString(),
   ends_at: new Date("01/01/2024").toISOString(),
   budget: {
     type: CampaignBudgetType.SPEND,
     limit: 1000,
-    used: 0,
+    currency_code: "USD",
   },
 }
 
@@ -25,28 +24,25 @@ export const campaignsData = [
     id: "campaign-id-1",
     name: "campaign 1",
     description: "test description",
-    currency: "USD",
     campaign_identifier: "test-1",
     starts_at: new Date("01/01/2023"),
     ends_at: new Date("01/01/2024"),
     budget: {
       type: CampaignBudgetType.SPEND,
       limit: 1000,
-      used: 0,
+      currency_code: "USD",
     },
   },
   {
     id: "campaign-id-2",
     name: "campaign 2",
     description: "test description",
-    currency: "USD",
     campaign_identifier: "test-2",
     starts_at: new Date("01/01/2023"),
     ends_at: new Date("01/01/2024"),
     budget: {
       type: CampaignBudgetType.USAGE,
       limit: 1000,
-      used: 0,
     },
   },
 ]
@@ -138,13 +134,13 @@ medusaIntegrationTestRunner({
                 id: expect.any(String),
                 name: "campaign 1",
                 description: "test description",
-                currency: "USD",
                 campaign_identifier: "test-1",
                 starts_at: expect.any(String),
                 ends_at: expect.any(String),
                 budget: {
                   id: expect.any(String),
                   type: "spend",
+                  currency_code: "USD",
                   limit: 1000,
                   used: 0,
                   raw_limit: {
@@ -167,7 +163,6 @@ medusaIntegrationTestRunner({
                 id: expect.any(String),
                 name: "campaign 2",
                 description: "test description",
-                currency: "USD",
                 campaign_identifier: "test-2",
                 starts_at: expect.any(String),
                 ends_at: expect.any(String),
@@ -176,6 +171,7 @@ medusaIntegrationTestRunner({
                   type: "usage",
                   limit: 1000,
                   used: 0,
+                  currency_code: null,
                   raw_limit: {
                     precision: 20,
                     value: "1000",
@@ -268,7 +264,6 @@ medusaIntegrationTestRunner({
             id: expect.any(String),
             name: "campaign 1",
             description: "test description",
-            currency: "USD",
             campaign_identifier: "test-1",
             starts_at: expect.any(String),
             ends_at: expect.any(String),
@@ -276,6 +271,7 @@ medusaIntegrationTestRunner({
               id: expect.any(String),
               type: "spend",
               limit: 1000,
+              currency_code: "USD",
               raw_limit: {
                 precision: 20,
                 value: "1000",
@@ -331,7 +327,6 @@ medusaIntegrationTestRunner({
             {
               name: "test",
               campaign_identifier: "test",
-              currency: "USD",
               starts_at: new Date("01/01/2024").toISOString(),
               ends_at: new Date("01/01/2029").toISOString(),
               budget: {
@@ -376,7 +371,6 @@ medusaIntegrationTestRunner({
               {
                 name: "camp_1",
                 campaign_identifier: "camp_1",
-                currency: "USD",
                 starts_at: new Date("01/01/2024").toISOString(),
                 ends_at: new Date("01/02/2024").toISOString(),
                 budget: {
@@ -394,7 +388,6 @@ medusaIntegrationTestRunner({
               {
                 name: "camp_2",
                 campaign_identifier: "camp_2",
-                currency: "USD",
                 starts_at: new Date("01/02/2024").toISOString(),
                 ends_at: new Date("01/03/2029").toISOString(),
                 budget: {
@@ -412,7 +405,6 @@ medusaIntegrationTestRunner({
               {
                 name: "camp_3",
                 campaign_identifier: "camp_3",
-                currency: "USD",
                 starts_at: new Date("01/03/2024").toISOString(),
                 ends_at: new Date("01/04/2029").toISOString(),
                 budget: {
@@ -477,7 +469,6 @@ medusaIntegrationTestRunner({
               {
                 name: "test",
                 campaign_identifier: "test",
-                currency: "USD",
                 starts_at: new Date("01/01/2024").toISOString(),
                 ends_at: new Date("01/01/2029").toISOString(),
                 budget: {
@@ -533,7 +524,6 @@ medusaIntegrationTestRunner({
               {
                 name: "test",
                 campaign_identifier: "test",
-                currency: "USD",
                 starts_at: new Date("01/01/2024"),
                 ends_at: new Date("01/01/2025"),
               },

@@ -28,23 +28,31 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
 
   const currencyValue = useWatch({
     control: form.control,
-    name: `${fieldScope}currency`,
+    name: `${fieldScope}budget.currency_code`,
   })
 
-  useEffect(() => {
-    form.setValue(`${fieldScope}budget.limit`, undefined)
-  }, [watchValueType])
-
-  const watchCurrencyCode = useWatch({
+  const watchPromotionCurrencyCode = useWatch({
     control: form.control,
     name: "application_method.currency_code",
   })
 
-  if (watchCurrencyCode) {
-    const formCampaignCurrency = form.getValues().campaign?.currency
+  useEffect(() => {
+    form.setValue(`${fieldScope}budget.limit`, null)
 
-    if (formCampaignCurrency !== watchCurrencyCode) {
-      form.setValue("campaign.currency", watchCurrencyCode)
+    if (watchValueType === "spend") {
+      form.setValue(`campaign.budget.currency_code`, watchPromotionCurrencyCode)
+    }
+  }, [watchValueType])
+
+  if (watchPromotionCurrencyCode) {
+    const formCampaignBudget = form.getValues().campaign?.budget
+    const formCampaignCurrency = formCampaignBudget?.currency_code
+
+    if (
+      formCampaignBudget?.type === "spend" &&
+      formCampaignCurrency !== watchPromotionCurrencyCode
+    ) {
+      form.setValue("campaign.budget.currency_code", watchPromotionCurrencyCode)
     }
   }
 
@@ -113,54 +121,7 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
           }}
         />
 
-        <Form.Field
-          control={form.control}
-          name={`${fieldScope}currency`}
-          render={({ field: { onChange, ref, ...field } }) => {
-            return (
-              <Form.Item>
-                <Form.Label
-                  tooltip={
-                    fieldScope.length
-                      ? t("promotions.campaign_currency.tooltip")
-                      : undefined
-                  }
-                >
-                  {t("fields.currency")}
-                </Form.Label>
-                <Form.Control>
-                  <Select
-                    {...field}
-                    onValueChange={onChange}
-                    disabled={!!fieldScope.length}
-                  >
-                    <Select.Trigger ref={ref}>
-                      <Select.Value />
-                    </Select.Trigger>
-
-                    <Select.Content>
-                      {Object.values(currencies)
-                        .filter((currency) =>
-                          store?.supported_currency_codes?.includes(
-                            currency.code.toLocaleLowerCase()
-                          )
-                        )
-                        .map((currency) => (
-                          <Select.Item
-                            value={currency.code.toLowerCase()}
-                            key={currency.code}
-                          >
-                            {currency.name}
-                          </Select.Item>
-                        ))}
-                    </Select.Content>
-                  </Select>
-                </Form.Control>
-                <Form.ErrorMessage />
-              </Form.Item>
-            )
-          }}
-        />
+        <div></div>
 
         <Form.Field
           control={form.control}
@@ -260,6 +221,57 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
       />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {isTypeSpend && (
+          <Form.Field
+            control={form.control}
+            name={`${fieldScope}budget.currency_code`}
+            render={({ field: { onChange, ref, ...field } }) => {
+              return (
+                <Form.Item>
+                  <Form.Label
+                    tooltip={
+                      fieldScope.length
+                        ? t("promotions.campaign_currency.tooltip")
+                        : undefined
+                    }
+                  >
+                    {t("fields.currency")}
+                  </Form.Label>
+                  <Form.Control>
+                    <Select
+                      {...field}
+                      onValueChange={onChange}
+                      disabled={!!fieldScope.length}
+                    >
+                      <Select.Trigger ref={ref}>
+                        <Select.Value />
+                      </Select.Trigger>
+
+                      <Select.Content>
+                        {Object.values(currencies)
+                          .filter((currency) =>
+                            store?.supported_currency_codes?.includes(
+                              currency.code.toLocaleLowerCase()
+                            )
+                          )
+                          .map((currency) => (
+                            <Select.Item
+                              value={currency.code.toLowerCase()}
+                              key={currency.code}
+                            >
+                              {currency.name}
+                            </Select.Item>
+                          ))}
+                      </Select.Content>
+                    </Select>
+                  </Form.Control>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
+        )}
+
         <Form.Field
           control={form.control}
           name={`${fieldScope}budget.limit`}

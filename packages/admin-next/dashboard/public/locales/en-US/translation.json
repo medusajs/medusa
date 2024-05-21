@@ -1085,7 +1085,8 @@
       "identifier": "Identifier",
       "start_date": "Start date",
       "end_date": "End date",
-      "total_spend": "Total spend",
+      "total_spend": "Budget spent",
+      "total_used": "Budget used",
       "budget_limit": "Budget limit",
       "campaign_id": {
         "hint": "A list of campaigns with the same currency code as the promotion"
