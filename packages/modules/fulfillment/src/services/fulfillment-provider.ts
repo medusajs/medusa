@@ -101,4 +101,12 @@ export default class FulfillmentProviderService extends ModulesSdkUtils.internal
     const provider = this.retrieveProviderRegistration(providerId)
     return await provider.cancelFulfillment(fulfillment)
   }
+
+  async createReturn(
+    providerId: string,
+    fulfillment: Record<string, unknown>,
+  ) {
+    const provider = this.retrieveProviderRegistration(providerId)
+    return await provider.createReturnFulfillment(fulfillment)
+  }
 }

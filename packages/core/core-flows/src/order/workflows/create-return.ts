@@ -13,9 +13,11 @@ import {
   OrderStatus,
   arrayDifference,
   isDefined,
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
   WorkflowData,
+  createStep,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -54,7 +56,7 @@ function throwIfItemsDoesNotExistsInOrder({
   }
 }
 
-function validateReturnReasons(
+async function validateReturnReasons(
   {
     orderId,
     inputItems,
@@ -65,24 +67,32 @@ function validateReturnReasons(
   { container }
 ) {
   const reasonIds = inputItems.map((i) => i.reason_id).filter(Boolean)
-
   if (!reasonIds.length) {
     return
   }
 
   const remoteQuery = container.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const returnReasons = remoteQuery({
-    entry_point: "return_reasons",
-    fields: ["return_reason_children.*"],
-    variables: { id: [inputItems.map((item) => item.reason_id)] },
+  const remoteQueryObject = remoteQueryObjectFromString({
+    entryPoint: "return_reasons",
+    fields: [
+      "id",
+      "parent_return_reason_id",
+      "parent_return_reason",
+      "return_reason_children.id",
+    ],
+    variables: { id: [inputItems.map((item) => item.reason_id)], limit: null },
   })
 
+  const returnReasons = await remoteQuery(remoteQueryObject)
+
   const reasons = returnReasons.map((r) => r.id)
-  const hasInvalidReasons = reasons.filter(
-    // We do not allow for root reason to be applied
-    (reason) => reason.return_reason_children.length > 0
-  )
+  const hasInvalidReasons = returnReasons
+    .filter(
+      // We do not allow for root reason to be applied
+      (reason) => reason.return_reason_children.length > 0
+    )
+    .map((r) => r.id)
   const hasNonExistingReasons = arrayDifference(reasonIds, reasons)
 
   if (hasNonExistingReasons.length) {
@@ -94,7 +104,7 @@ function validateReturnReasons(
     )
   }
 
-  if (hasInvalidReasons.length()) {
+  if (hasInvalidReasons.length) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `Cannot apply return reason with id ${hasInvalidReasons.join(
@@ -236,12 +246,34 @@ function prepareReturnShippingOptionQueryVariables({
   return variables
 }
 
+const validationStep = createStep(
+  "create-return-order-validation",
+  async function (
+    {
+      order,
+      input,
+    }: {
+      order
+      input: OrderWorkflow.CreateOrderReturnWorkflowInput
+    },
+    context
+  ) {
+    throwIfOrderIsCancelled({ order })
+    throwIfItemsDoesNotExistsInOrder({ order, inputItems: input.items })
+    await validateReturnReasons(
+      { orderId: input.order_id, inputItems: input.items },
+      context
+    )
+    validateCustomRefundAmount({ order, refundAmount: input.refund_amount })
+  }
+)
+
 export const createReturnOrderWorkflowId = "create-return-order"
 export const createReturnOrderWorkflow = createWorkflow(
   createReturnOrderWorkflowId,
-  (
+  function (
     input: WorkflowData<OrderWorkflow.CreateOrderReturnWorkflowInput>
-  ): WorkflowData<void> => {
+  ): WorkflowData<void> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: [
@@ -258,19 +290,7 @@ export const createReturnOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    transform({ order }, throwIfOrderIsCancelled)
-    transform(
-      { order, inputItems: input.items },
-      throwIfItemsDoesNotExistsInOrder
-    )
-    transform(
-      { orderId: input.order_id, inputItems: input.items },
-      validateReturnReasons
-    )
-    transform(
-      { order, refundAmount: input.refund_amount },
-      validateCustomRefundAmount
-    )
+    validationStep({ order, input })
 
     const returnShippingOptionsVariables = transform(
       { input, order },
