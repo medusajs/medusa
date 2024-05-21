@@ -157,7 +157,8 @@ const getAuthContextFromSession = (
 
   if (
     session.auth_context &&
-    scopes.includes(session.auth_context.scope as Scope)
+    (scopes.includes("*") ||
+      scopes.includes(session.auth_context.scope as Scope))
   ) {
     return session.auth_context
   }
@@ -191,7 +192,7 @@ const getAuthContextFromJwtToken = (
       // verify token and set authUser
       try {
         const verified = jwt.verify(token, jwtSecret) as JwtPayload
-        if (scopes.includes(verified.scope)) {
+        if (scopes.includes("*") || scopes.includes(verified.scope)) {
           return verified as AuthContext
         }
       } catch (err) {
