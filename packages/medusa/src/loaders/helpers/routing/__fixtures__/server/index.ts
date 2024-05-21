@@ -3,8 +3,11 @@ import {
   ModulesDefinition,
   registerMedusaModule,
 } from "@medusajs/modules-sdk"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { asValue, createContainer } from "awilix"
+import {
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+} from "@medusajs/utils"
+import { asValue } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
 import { MockManager } from "medusa-test-utils"
@@ -44,7 +47,7 @@ export const createServer = async (rootDir) => {
     )[moduleKey]
   })
 
-  const container = createContainer() as MedusaContainer
+  const container = createMedusaContainer()
 
   container.registerAdd = function (name, registration) {
     const storeKey = name + "_STORE"
