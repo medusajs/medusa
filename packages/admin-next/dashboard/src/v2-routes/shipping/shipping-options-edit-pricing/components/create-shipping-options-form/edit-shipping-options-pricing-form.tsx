@@ -8,7 +8,6 @@ import {
   CurrencyDTO,
   PriceDTO,
   ProductVariantDTO,
-  RegionDTO,
   ShippingOptionDTO,
 } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
@@ -30,6 +29,7 @@ import { CurrencyCell } from "../../../../../components/grid/grid-cells/common/c
 import { DataGridMeta } from "../../../../../components/grid/types"
 import { DataGrid } from "../../../../../components/grid/data-grid"
 import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options.ts"
+import { HttpTypes } from "@medusajs/types"
 
 const getInitialCurrencyPrices = (prices: PriceDTO[]) => {
   const ret: Record<string, number> = {}
@@ -271,7 +271,7 @@ const useColumns = ({
   regions = [],
 }: {
   currencies?: CurrencyDTO[]
-  regions?: RegionDTO[]
+  regions?: HttpTypes.AdminRegion[]
 }) => {
   const { t } = useTranslation()
 

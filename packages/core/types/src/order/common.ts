@@ -38,6 +38,9 @@ export type OrderSummaryDTO = {
 
   balance: BigNumberValue
   future_balance: BigNumberValue
+
+  paid_total: BigNumberValue
+  refunded_total: BigNumberValue
 }
 
 export interface OrderAdjustmentLineDTO {
@@ -1266,10 +1269,6 @@ export interface OrderTransactionDTO {
    * The ID of the reference
    */
   reference_id: string
-  /**
-   * The metadata of the transaction
-   */
-  metadata: Record<string, unknown> | null
   /**
    * When the transaction was created
    */

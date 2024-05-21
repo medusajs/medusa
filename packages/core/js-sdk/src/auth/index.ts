@@ -10,10 +10,13 @@ export class Auth {
     this.config = config
   }
 
-  login = async (payload: { email: string; password: string }) => {
-    // TODO: It is a bit strange to eg. require to pass `scope` in `login`, it might be better for us to have auth methods in both `admin` and `store` classes instead?
+  login = async (
+    scope: "admin" | "store",
+    method: "emailpass",
+    payload: { email: string; password: string }
+  ) => {
     const { token } = await this.client.fetch<{ token: string }>(
-      "/auth/admin/emailpass",
+      `/auth/${scope}/${method}`,
       {
         method: "POST",
         body: payload,
@@ -32,9 +35,11 @@ export class Auth {
   }
 
   logout = async () => {
-    await this.client.fetch("/auth/session", {
-      method: "DELETE",
-    })
+    if (this.config?.auth?.type === "session") {
+      await this.client.fetch("/auth/session", {
+        method: "DELETE",
+      })
+    }
 
     this.client.clearToken()
   }

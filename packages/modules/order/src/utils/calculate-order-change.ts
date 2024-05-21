@@ -51,7 +51,18 @@ export class OrderChangeProcessing {
     this.transactions = JSON.parse(JSON.stringify(transactions ?? []))
     this.actions = JSON.parse(JSON.stringify(actions ?? []))
 
-    const transactionTotal = MathBN.add(...transactions.map((tr) => tr.amount))
+    let paid = MathBN.convert(0)
+    let refunded = MathBN.convert(0)
+    let transactionTotal = MathBN.convert(0)
+
+    for (const tr of transactions) {
+      if (MathBN.lt(tr.amount, 0)) {
+        refunded = MathBN.add(refunded, MathBN.abs(tr.amount))
+      } else {
+        paid = MathBN.add(paid, tr.amount)
+      }
+      transactionTotal = MathBN.add(transactionTotal, tr.amount)
+    }
 
     transformPropertiesToBigNumber(this.order.metadata)
 
@@ -65,6 +76,8 @@ export class OrderChangeProcessing {
       current_order_total: this.order.total ?? 0,
       original_order_total: this.order.total ?? 0,
       transaction_total: transactionTotal,
+      paid_total: paid,
+      refunded_total: refunded,
     }
   }
 
@@ -358,6 +371,8 @@ export class OrderChangeProcessing {
       ),
       pending_difference: new BigNumber(summary.pending_difference),
       difference_sum: new BigNumber(summary.difference_sum),
+      paid_total: new BigNumber(summary.paid_total),
+      refunded_total: new BigNumber(summary.refunded_total),
     } as unknown as OrderSummaryDTO
 
     return orderSummary

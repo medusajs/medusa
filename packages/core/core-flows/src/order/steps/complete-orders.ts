@@ -3,7 +3,7 @@ import { IOrderModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type CompleteOrdersStepInput = {
-  order_ids: string[]
+  orderIds: string[]
 }
 
 export const completeOrdersStepId = "complete-orders"
@@ -14,7 +14,7 @@ export const completeOrdersStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    const completed = await service.completeOrder(data.order_ids)
+    const completed = await service.completeOrder(data.orderIds)
     return new StepResponse(
       completed,
       completed.map((store) => {
