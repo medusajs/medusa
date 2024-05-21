@@ -11,8 +11,10 @@ export async function registerWorkflows(
   await Promise.all(
     plugins.map(async (pluginDetails) => {
       const files = glob.sync(
-        `${pluginDetails.resolve}/workflows/*(.js|.ts|.mjs)`,
-        {}
+        `${pluginDetails.resolve}/workflows/*.{ts,js,mjs,mts}`,
+        {
+          ignore: ["**/*.d.ts", "**/*.map"],
+        }
       )
       return Promise.all(files.map(async (file) => import(file)))
     })

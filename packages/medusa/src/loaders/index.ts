@@ -49,8 +49,10 @@ async function subscribersLoader(
   await Promise.all(
     plugins.map(async (pluginDetails) => {
       const files = glob.sync(
-        `${pluginDetails.resolve}/subscribers/*(.js|.ts|.mjs)`,
-        {}
+        `${pluginDetails.resolve}/subscribers/*.{ts,js,mjs,mts}`,
+        {
+          ignore: ["**/*.d.ts", "**/*.map"],
+        }
       )
       return Promise.all(
         files.map(async (file) => new SubscriberLoader(file, container).load())
