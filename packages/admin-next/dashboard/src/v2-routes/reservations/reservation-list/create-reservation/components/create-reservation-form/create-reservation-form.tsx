@@ -124,7 +124,7 @@ export const CreateReservationForm = () => {
               size="small"
               isLoading={isPending}
             >
-              {t("actions.reservation")}
+              {t("actions.create")}
             </Button>
           </div>
         </RouteFocusModal.Header>
