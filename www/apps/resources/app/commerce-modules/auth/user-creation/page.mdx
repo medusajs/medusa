@@ -12,11 +12,11 @@ In this document, you’ll learn about the user-creation flow and how to use it 
 
 ## Auth User Creation in Authentication Flow
 
-In the [Auth Provider](../auth-providers/page.mdx) documentation, you learned about the authentication flows supported by the Auth Module. These flows are used when an `AuthUser` is already available for the specified authentication data, such as email/password credentials.
+In the [Auth Provider](../auth-providers/page.mdx) documentation, you learned about the authentication flows supported by the Auth Module. These flows are used when an `AuthIdentity` is already available for the specified authentication data, such as email/password credentials.
 
-However, the `emailpass` and `google` providers support creating an `AuthUser` if none exists. If an email is provided that doesn’t have an `AuthUser` associated with it (checked via its `entity_id` field) for the specified provider (checked via its `provider` field), a new `AuthUser` is created for that email and provider.
+However, the `emailpass` and `google` providers support creating an `AuthIdentity` if none exists. If an email is provided that doesn’t have an `AuthIdentity` associated with it (checked via its `entity_id` field) for the specified provider (checked via its `provider` field), a new `AuthIdentity` is created for that email and provider.
 
-![Diagram showcasing the AuthUser creation part of the authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711441638/Medusa%20Resources/auth-user-creation_gmahvl.jpg)
+![Diagram showcasing the AuthIdentity creation part of the authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711441638/Medusa%20Resources/auth-user-creation_gmahvl.jpg)
 
 So, by default, your authentication flow supports both sign-in and sign-up flows.
 
@@ -34,22 +34,22 @@ The User Module provides user and invite management functionalities. However, it
 
 By combining the User and Auth Modules, you can use the Auth Module for authenticating users, and the User Module to manage those users.
 
-So, when a user is authenticated, and you receive the `AuthUser` object, you can use it to create a user if it doesn’t exist:
+So, when a user is authenticated, and you receive the `AuthIdentity` object, you can use it to create a user if it doesn’t exist:
 
 ```ts
-const { success, authUser } =
+const { success, authIdentity } =
   await authModuleService.authenticate("emailpass", {
     // ...
   })
 
-// assuming authUser is defined
+// assuming authIdentity is defined
 const [, count] = await userModuleService.listAndCount({
-  email: authUser.entity_id,
+  email: authIdentity.entity_id,
 })
 
 if (!count) {
   const user = await userModuleService.create({
-    email: authUser.entity_id,
+    email: authIdentity.entity_id,
   })
 }
 ```
