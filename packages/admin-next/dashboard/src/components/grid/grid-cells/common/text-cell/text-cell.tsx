@@ -1,12 +1,18 @@
 import { FieldValues } from "react-hook-form"
 import { CellProps } from "../../../types"
+import { GridCellType } from "../../../constants"
 
 interface TextCellProps<TFieldValues extends FieldValues = any>
-  extends CellProps<TFieldValues> {}
+  extends CellProps<TFieldValues>,
+    React.DetailedHTMLProps<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      HTMLInputElement
+    > {}
 
 export const TextCell = <TFieldValues extends FieldValues = any>({
   field,
   meta,
+  ...rest
 }: TextCellProps<TFieldValues>) => {
   const { register } = meta
 
@@ -17,7 +23,9 @@ export const TextCell = <TFieldValues extends FieldValues = any>({
         data-input-field="true"
         data-field-id={field}
         data-field-type="text"
+        data-cell-type={GridCellType.EDITABLE}
         {...register(field)}
+        {...rest}
       />
     </div>
   )

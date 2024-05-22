@@ -9,10 +9,10 @@ import { ReadonlyCell } from "../../../components/grid/grid-cells/common/readonl
 import { DataGridMeta } from "../../../components/grid/types"
 import { useCurrencies } from "../../../hooks/api/currencies"
 import { useStore } from "../../../hooks/api/store"
-import { ProductCreateSchemaType } from "../product-create/schema"
+import { ProductCreateSchema } from "../product-create/constants"
 
 type VariantPricingFormProps = {
-  form: UseFormReturn<ProductCreateSchemaType>
+  form: UseFormReturn<ProductCreateSchema>
 }
 
 export const VariantPricingForm = ({ form }: VariantPricingFormProps) => {

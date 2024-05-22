@@ -1,1 +1,1 @@
-export * from "./product-create-organize-form.tsx"
+export * from "./product-create-organize-form"

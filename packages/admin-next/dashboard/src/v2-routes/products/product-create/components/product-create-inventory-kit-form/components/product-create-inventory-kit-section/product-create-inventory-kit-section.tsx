@@ -140,14 +140,16 @@ export const ProductCreateInventoryKitSection = ({
     <div id="organize" className="flex flex-col gap-y-8">
       <Heading>{t("products.create.inventory.heading")}</Heading>
 
-      {variants.fields.map((variant, variantIndex) => (
-        <VariantSection
-          key={variant.id}
-          form={form}
-          variant={variant}
-          index={variantIndex}
-        />
-      ))}
+      {variants.fields
+        .filter((v) => v.inventory_kit)
+        .map((variant, variantIndex) => (
+          <VariantSection
+            key={variant.id}
+            form={form}
+            variant={variant}
+            index={variantIndex}
+          />
+        ))}
     </div>
   )
 }

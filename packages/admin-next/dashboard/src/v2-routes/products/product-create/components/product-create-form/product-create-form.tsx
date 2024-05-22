@@ -1,14 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
-import { useEffect, useState } from "react"
-import { useFieldArray, useForm } from "react-hook-form"
+import { useEffect, useMemo, useState } from "react"
+import { useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useCreateProduct } from "../../../../../hooks/api/products"
-import { VariantPricingForm } from "../../../common/variant-pricing-form"
 import {
   PRODUCT_CREATE_FORM_DEFAULTS,
   ProductCreateSchema,
@@ -18,6 +17,7 @@ import { normalizeProductFormValues } from "../../utils"
 import { ProductCreateDetailsForm } from "../product-create-details-form"
 import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-form"
+import { ProductCreateVariantsForm } from "../product-create-variants-form"
 
 enum Tab {
   DETAILS = "details",
@@ -60,6 +60,15 @@ export const ProductCreateForm = () => {
     control: form.control,
     name: "options",
   })
+
+  const watchedVariants = useWatch({
+    control: form.control,
+    name: "variants",
+  })
+
+  const showInventoryTab = useMemo(() => {
+    return watchedVariants.some((v) => v.inventory_kit)
+  }, [watchedVariants])
 
   const handleSubmit = form.handleSubmit(
     async (values, e) => {
@@ -114,6 +123,10 @@ export const ProductCreateForm = () => {
 
     if (currentTab === Tab.ORGANIZE) {
       setTab(Tab.VARIANTS)
+    }
+
+    if (currentTab === Tab.VARIANTS) {
+      setTab(Tab.INVENTORY)
     }
   }
 
@@ -196,12 +209,14 @@ export const ProductCreateForm = () => {
                     >
                       {t("products.create.tabs.variants")}
                     </ProgressTabs.Trigger>
-                    <ProgressTabs.Trigger
-                      status={tabState[Tab.INVENTORY]}
-                      value={Tab.INVENTORY}
-                    >
-                      {t("products.create.tabs.inventory")}
-                    </ProgressTabs.Trigger>
+                    {showInventoryTab && (
+                      <ProgressTabs.Trigger
+                        status={tabState[Tab.INVENTORY]}
+                        value={Tab.INVENTORY}
+                      >
+                        {t("products.create.tabs.inventory")}
+                      </ProgressTabs.Trigger>
+                    )}
                   </ProgressTabs.List>
                 </div>
                 <div className="flex items-center justify-end gap-x-2">
@@ -223,6 +238,7 @@ export const ProductCreateForm = () => {
                     tab={tab}
                     next={onNext}
                     isLoading={isPending}
+                    showInventoryTab={showInventoryTab}
                   />
                 </div>
               </div>
@@ -244,14 +260,16 @@ export const ProductCreateForm = () => {
                 className="size-full overflow-y-auto"
                 value={Tab.VARIANTS}
               >
-                <VariantPricingForm form={form} />
+                <ProductCreateVariantsForm form={form} />
               </ProgressTabs.Content>
-              <ProgressTabs.Content
-                className="size-full overflow-y-auto"
-                value={Tab.INVENTORY}
-              >
-                <ProductCreateInventoryKitForm form={form} />
-              </ProgressTabs.Content>
+              {showInventoryTab && (
+                <ProgressTabs.Content
+                  className="size-full overflow-y-auto"
+                  value={Tab.INVENTORY}
+                >
+                  <ProductCreateInventoryKitForm form={form} />
+                </ProgressTabs.Content>
+              )}
             </RouteFocusModal.Body>
           </ProgressTabs>
         </form>
@@ -264,12 +282,21 @@ type PrimaryButtonProps = {
   tab: Tab
   next: (tab: Tab) => void
   isLoading?: boolean
+  showInventoryTab: boolean
 }
 
-const PrimaryButton = ({ tab, next, isLoading }: PrimaryButtonProps) => {
+const PrimaryButton = ({
+  tab,
+  next,
+  isLoading,
+  showInventoryTab,
+}: PrimaryButtonProps) => {
   const { t } = useTranslation()
 
-  if (tab === Tab.VARIANTS) {
+  if (
+    (tab === Tab.VARIANTS && !showInventoryTab) ||
+    (tab === Tab.INVENTORY && showInventoryTab)
+  ) {
     return (
       <Button
         data-name="publish-button"

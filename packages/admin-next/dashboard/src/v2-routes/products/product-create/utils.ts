@@ -1,5 +1,6 @@
 import { CreateProductDTO } from "@medusajs/types"
 import { ProductCreateSchemaType } from "./types"
+import { z } from "zod"
 
 export const normalizeProductFormValues = (
   values: ProductCreateSchemaType & { status: CreateProductDTO["status"] }
@@ -41,8 +42,13 @@ export const normalizeVariants = (
   return variants
     .filter((variant) => variant.should_create)
     .map((variant) => ({
-      title: Object.values(variant.options || {}).join(" / "),
+      title:
+        variant.custom_title ||
+        Object.values(variant.options || {}).join(" / "),
       options: variant.options,
+      sku: variant.sku,
+      manage_inventory: variant.manage_inventory,
+      allow_backorder: variant.allow_backorder,
       prices: Object.entries(variant.prices || {}).map(([key, value]: any) => ({
         currency_code: key,
         amount: value ? parseFloat(value) : 0,
