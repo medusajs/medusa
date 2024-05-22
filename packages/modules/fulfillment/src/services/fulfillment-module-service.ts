@@ -1,7 +1,6 @@
 import {
   Context,
   DAL,
-  EventBusTypes,
   FilterableFulfillmentSetProps,
   FindConfig,
   FulfillmentDTO,
@@ -18,14 +17,12 @@ import {
   arrayDifference,
   CommonEvents,
   EmitEvents,
-  FulfillmentUtils,
   getSetDifference,
   InjectManager,
   InjectTransactionManager,
   isString,
   MedusaContext,
   MedusaError,
-  Modules,
   ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
@@ -40,7 +37,14 @@ import {
   ShippingOptionType,
   ShippingProfile,
 } from "@models"
-import { isContextValid, validateAndNormalizeRules } from "@utils"
+import {
+  buildCreatedFulfillmentSetEvents,
+  buildFulfillmentSetEvents,
+  buildGeoZoneEvents,
+  buildServiceZoneEvents,
+  isContextValid,
+  validateAndNormalizeRules,
+} from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { UpdateShippingOptionsInput } from "../types/service"
 import FulfillmentProviderService from "./fulfillment-provider"
@@ -273,11 +277,10 @@ export default class FulfillmentModuleService<
   > {
     const createdFulfillmentSets = await this.create_(data, sharedContext)
 
-    this.buildFulfillmentSetEvents(
-      createdFulfillmentSets,
-      CommonEvents.CREATED,
-      sharedContext
-    )
+    buildCreatedFulfillmentSetEvents({
+      fulfillmentSets: createdFulfillmentSets,
+      sharedContext,
+    })
 
     const returnedFulfillmentSets = Array.isArray(data)
       ? createdFulfillmentSets
@@ -659,6 +662,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.FulfillmentSetDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async update(
     data: UpdateFulfillmentSetDTO[] | UpdateFulfillmentSetDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -719,9 +723,11 @@ export default class FulfillmentModuleService<
       fulfillmentSets.map((f) => [f.id, f])
     )
 
-    // find service zones to delete
     const serviceZoneIdsToDelete: string[] = []
     const geoZoneIdsToDelete: string[] = []
+    const existingServiceZoneIds: string[] = []
+    const existingGeoZoneIds: string[] = []
+
     data_.forEach((fulfillmentSet) => {
       if (fulfillmentSet.service_zones) {
         /**
@@ -739,6 +745,7 @@ export default class FulfillmentModuleService<
               .filter((id): id is string => !!id)
           )
         )
+
         if (toDeleteServiceZoneIds.size) {
           serviceZoneIdsToDelete.push(...Array.from(toDeleteServiceZoneIds))
           geoZoneIdsToDelete.push(
@@ -763,11 +770,13 @@ export default class FulfillmentModuleService<
             .map((s) => "id" in s && s.id)
             .filter((id): id is string => !!id)
         )
+
         const expectedServiceZoneSet = new Set(
           fulfillmentSet.service_zones
             .map((s) => "id" in s && s.id)
             .filter((id): id is string => !!id)
         )
+
         const missingServiceZoneIds = getSetDifference(
           expectedServiceZoneSet,
           serviceZonesSet
@@ -794,6 +803,16 @@ export default class FulfillmentModuleService<
                 }
                 return serviceZone
               }
+
+              const existingServiceZone = serviceZonesMap.get(serviceZone.id)!
+              existingServiceZoneIds.push(existingServiceZone.id)
+
+              if (existingServiceZone.geo_zones.length) {
+                existingGeoZoneIds.push(
+                  ...existingServiceZone.geo_zones.map((g) => g.id)
+                )
+              }
+
               return serviceZonesMap.get(serviceZone.id)!
             }
           )
@@ -802,6 +821,17 @@ export default class FulfillmentModuleService<
     })
 
     if (serviceZoneIdsToDelete.length) {
+      buildServiceZoneEvents({
+        action: CommonEvents.DELETED,
+        serviceZones: serviceZoneIdsToDelete.map((id) => ({ id })),
+        sharedContext,
+      })
+      buildGeoZoneEvents({
+        action: CommonEvents.DELETED,
+        geoZones: geoZoneIdsToDelete.map((id) => ({ id })),
+        sharedContext,
+      })
+
       await promiseAll([
         this.geoZoneService_.delete(
           {
@@ -822,6 +852,35 @@ export default class FulfillmentModuleService<
       data_,
       sharedContext
     )
+
+    buildFulfillmentSetEvents({
+      action: CommonEvents.UPDATED,
+      fulfillmentSets: updatedFulfillmentSets,
+      sharedContext,
+    })
+
+    const createdServiceZoneIds: string[] = []
+    const createdGeoZoneIds = updatedFulfillmentSets
+      .flatMap((f) =>
+        [...f.service_zones].flatMap((serviceZone) => {
+          if (!existingServiceZoneIds.includes(serviceZone.id)) {
+            createdServiceZoneIds.push(serviceZone.id)
+          }
+          return serviceZone.geo_zones.map((g) => g.id)
+        })
+      )
+      .filter((id) => !existingGeoZoneIds.includes(id))
+
+    buildServiceZoneEvents({
+      action: CommonEvents.CREATED,
+      serviceZones: createdServiceZoneIds.map((id) => ({ id })),
+      sharedContext,
+    })
+    buildGeoZoneEvents({
+      action: CommonEvents.CREATED,
+      geoZones: createdGeoZoneIds.map((id) => ({ id })),
+      sharedContext,
+    })
 
     return Array.isArray(data)
       ? updatedFulfillmentSets
@@ -1795,66 +1854,5 @@ export default class FulfillmentModuleService<
       .filter((v): v is Record<string, any> => !!v)
 
     return geoZoneConstraints
-  }
-
-  protected buildFulfillmentSetEvents(
-    createdFulfillmentSets: TEntity[],
-    action: string,
-    sharedContext: Context
-  ): void {
-    const buildMessage = ({
-      eventName,
-      id,
-      object,
-    }: {
-      eventName: string
-      id: string
-      object: string
-    }): EventBusTypes.RawMessageFormat => {
-      return {
-        eventName,
-        object,
-        service: Modules.FULFILLMENT,
-        action,
-        context: sharedContext,
-        data: { id },
-      }
-    }
-
-    const messages: EventBusTypes.RawMessageFormat[] = []
-
-    createdFulfillmentSets.forEach((fulfillmentSet) => {
-      messages.push(
-        buildMessage({
-          eventName: FulfillmentUtils.FulfillmentEvents.created,
-          id: fulfillmentSet.id,
-          object: "fulfillment_set",
-        })
-      )
-
-      const serviceZones = [...(fulfillmentSet.service_zones ?? [])]
-      serviceZones.forEach((serviceZone) => {
-        messages.push(
-          buildMessage({
-            eventName: FulfillmentUtils.FulfillmentEvents.service_zone_created,
-            id: serviceZone.id,
-            object: "service_zone",
-          })
-        )
-
-        const geoZones = [...(serviceZone.geo_zones ?? [])]
-        geoZones.forEach((geoZone) => {
-          messages.push(
-            buildMessage({
-              eventName: FulfillmentUtils.FulfillmentEvents.geo_zone_created,
-              id: geoZone.id,
-              object: "geo_zone",
-            })
-          )
-        })
-      })
-    })
-
-    sharedContext.messageAggregator!.saveRawMessageData(messages)
   }
 }
