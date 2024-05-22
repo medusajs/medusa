@@ -15,7 +15,7 @@ export function buildCreatedFulfillmentSetEvents({
 
   const serviceZones: ServiceZone[] = []
 
-  fulfillmentSets.flatMap((fulfillmentSet) => {
+  fulfillmentSets.forEach((fulfillmentSet) => {
     if (!fulfillmentSet.service_zones?.length) {
       return
     }
@@ -45,7 +45,7 @@ export function buildCreatedServiceZoneEvents({
 
   const geoZones: GeoZone[] = []
 
-  serviceZones.flatMap((serviceZone) => {
+  serviceZones.forEach((serviceZone) => {
     if (!serviceZone.geo_zones.length) {
       return
     }
