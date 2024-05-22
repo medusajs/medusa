@@ -1,21 +1,26 @@
-import * as defaultProviders from "@providers"
+// import * as defaultProviders from "@providers"
 
+import { LoaderOptions, ModulesSdkTypes, ModuleProvider } from "@medusajs/types"
+import { Lifetime, asFunction, asValue } from "awilix"
+import { moduleProviderLoader } from "@medusajs/modules-sdk"
 import {
-  AuthModuleProviderConfig,
-  AuthProviderScope,
-  LoaderOptions,
-  ModulesSdkTypes,
-} from "@medusajs/types"
-import {
-  AwilixContainer,
-  ClassOrFunctionReturning,
-  Constructor,
-  Resolver,
-  asClass,
-} from "awilix"
+  AuthIdentifiersRegistrationName,
+  AuthProviderRegistrationPrefix,
+} from "@types"
 
-type AuthModuleProviders = {
-  providers: AuthModuleProviderConfig[]
+const registrationFn = async (klass, container, pluginOptions) => {
+  Object.entries(pluginOptions.config || []).map(([name, config]) => {
+    container.register({
+      [AuthProviderRegistrationPrefix + name]: asFunction(
+        (cradle) => new klass(cradle, config),
+        {
+          lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
+        }
+      ),
+    })
+
+    container.registerAdd(AuthIdentifiersRegistrationName, asValue(name))
+  })
 }
 
 export default async ({
@@ -25,48 +30,11 @@ export default async ({
   (
     | ModulesSdkTypes.ModuleServiceInitializeOptions
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-  ) &
-    AuthModuleProviders
+  ) & { providers: ModuleProvider[] }
 >): Promise<void> => {
-  const providerMap = new Map(
-    options?.providers?.map((provider) => [provider.name, provider.scopes]) ??
-      []
-  )
-
-  // if(options?.providers?.length) {
-  // TODO: implement plugin provider registration
-  // }
-
-  const providersToLoad = Object.values(defaultProviders)
-
-  for (const provider of providersToLoad) {
-    container.register({
-      [`auth_provider_${provider.PROVIDER}`]: asClass(
-        provider as Constructor<any>
-      )
-        .singleton()
-        .inject(() => ({ scopes: providerMap.get(provider.PROVIDER) ?? {} })),
-    })
-  }
-
-  container.register({
-    [`auth_providers`]: asArray(providersToLoad, providerMap),
+  await moduleProviderLoader({
+    container,
+    providers: options?.providers || [],
+    registerServiceFn: registrationFn,
   })
-}
-
-function asArray(
-  resolvers: (ClassOrFunctionReturning<unknown> | Resolver<unknown>)[],
-  providerScopeMap: Map<string, Record<string, AuthProviderScope>>
-): { resolve: (container: AwilixContainer) => unknown[] } {
-  return {
-    resolve: (container: AwilixContainer) =>
-      resolvers.map((resolver) =>
-        asClass(resolver as Constructor<any>)
-          .inject(() => ({
-            // @ts-ignore
-            scopes: providerScopeMap.get(resolver.PROVIDER) ?? {},
-          }))
-          .resolve(container)
-      ),
-  }
 }

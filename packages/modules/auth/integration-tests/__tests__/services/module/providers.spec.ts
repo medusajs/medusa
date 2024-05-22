@@ -26,9 +26,10 @@ moduleIntegrationTestRunner({
         })
 
         it("fails to authenticate using a valid provider with an invalid scope", async () => {
-          const { success, error } = await service.authenticate("emailpass", {
-            authScope: "non-existing",
-          } as any)
+          const { success, error } = await service.authenticate(
+            "emailpass",
+            {} as any
+          )
 
           expect(success).toBe(false)
           expect(error).toEqual(

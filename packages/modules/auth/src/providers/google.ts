@@ -98,7 +98,6 @@ class GoogleProvider extends AbstractAuthModuleProvider {
             entity_id,
             provider: GoogleProvider.PROVIDER,
             user_metadata: jwtData!.payload,
-            scope: this.scope_,
           },
         ])
         authIdentity = createdAuthIdentity
@@ -132,7 +131,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
         accessToken.token.id_token
       )
 
-      const { successRedirectUrl } = this.getConfigFromScope()
+      const { successRedirectUrl } = this.getConfig()
 
       return {
         success,
@@ -144,8 +143,10 @@ class GoogleProvider extends AbstractAuthModuleProvider {
     }
   }
 
-  private getConfigFromScope(): ProviderConfig {
-    const config: Partial<ProviderConfig> = { ...this.scopeConfig_ }
+  private getConfig(): ProviderConfig {
+    // TODO: Fetch this from provider config
+    // const config: Partial<ProviderConfig> = { ...this.scopeConfig_ }
+    const config = {} as any
 
     if (!config.clientID) {
       throw new Error("Google clientID is required")
@@ -173,7 +174,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   private async getProviderConfig(
     req: AuthenticationInput
   ): Promise<ProviderConfig> {
-    const config = this.getConfigFromScope()
+    const config = this.getConfig()
 
     const callbackURL = config.callbackURL
 

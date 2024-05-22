@@ -216,7 +216,6 @@ moduleIntegrationTestRunner({
               id: "test",
               provider: "manual",
               entity_id: "test",
-              scope: "store",
             },
           ])
 
