@@ -20,6 +20,12 @@ export default async function ({
   track("CLI_USER", { with_id: !!id })
   const app = express()
   try {
+    /**
+     * Enabling worker mode to prevent discovering/loading
+     * of API routes from the starter kit
+     */
+    process.env.MEDUSA_WORKER_MODE = "worker"
+
     const { container } = await loaders({
       directory,
       expressApp: app,
