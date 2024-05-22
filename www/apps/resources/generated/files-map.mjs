@@ -144,12 +144,36 @@ export const filesMap = [
     "pathname": "/architectural-modules/file"
   },
   {
+    "filePath": "/www/apps/resources/app/architectural-modules/file/s3/page.mdx",
+    "pathname": "/architectural-modules/file/s3"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/notification/local/page.mdx",
+    "pathname": "/architectural-modules/notification/local"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/notification/page.mdx",
+    "pathname": "/architectural-modules/notification"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/notification/send-notification/page.mdx",
+    "pathname": "/architectural-modules/notification/send-notification"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/notification/sendgrid/page.mdx",
+    "pathname": "/architectural-modules/notification/sendgrid"
+  },
+  {
     "filePath": "/www/apps/resources/app/architectural-modules/page.mdx",
     "pathname": "/architectural-modules"
   },
   {
     "filePath": "/www/apps/resources/app/architectural-modules/workflow-engine/in-memory/page.mdx",
     "pathname": "/architectural-modules/workflow-engine/in-memory"
+  },
+  {
+    "filePath": "/www/apps/resources/app/architectural-modules/workflow-engine/page.mdx",
+    "pathname": "/architectural-modules/workflow-engine"
   },
   {
     "filePath": "/www/apps/resources/app/architectural-modules/workflow-engine/redis/page.mdx",
@@ -6400,16 +6424,8 @@ export const filesMap = [
     "pathname": "/references/modules/workflows"
   },
   {
-    "filePath": "/www/apps/resources/references/notification/classes/notification.AbstractNotificationService/page.mdx",
-    "pathname": "/references/notification/classes/notification.AbstractNotificationService"
-  },
-  {
-    "filePath": "/www/apps/resources/references/notification/interfaces/notification.INotificationService/page.mdx",
-    "pathname": "/references/notification/interfaces/notification.INotificationService"
-  },
-  {
-    "filePath": "/www/apps/resources/references/notification/interfaces/notification.ReturnedData/page.mdx",
-    "pathname": "/references/notification/interfaces/notification.ReturnedData"
+    "filePath": "/www/apps/resources/references/notification/classes/notification.AbstractNotificationProviderService/page.mdx",
+    "pathname": "/references/notification/classes/notification.AbstractNotificationProviderService"
   },
   {
     "filePath": "/www/apps/resources/references/order/IMessageAggregator/methods/order.IMessageAggregator.clearMessages/page.mdx",

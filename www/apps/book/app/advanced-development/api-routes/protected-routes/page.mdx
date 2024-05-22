@@ -59,21 +59,21 @@ For example:
 
 ```ts title="src/api/store/me/custom/route.ts" highlights={[["16", "", "Access the logged-in customer's ID."]]}
 import type {
-  MedusaRequest,
+  AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/medusa"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ICustomerModuleService } from "@medusajs/types"
 
 export const GET = async (
-  req: MedusaRequest,
+  req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const customerService: ICustomerModuleService =
     req.scope.resolve(ModuleRegistrationName.CUSTOMER)
 
   const customer = await customerService.retrieve(
-    req.user.customer_id
+    req.auth.actor_id
   )
 
   // ...
@@ -92,21 +92,21 @@ For example:
 
 ```ts title="src/api/admin/custom/route.ts" highlights={[["16", "req.user.userId", "Access the logged-in admin user's ID."]]}
 import type {
-  MedusaRequest,
+  AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/medusa"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IUserModuleService } from "@medusajs/types"
 
 export const GET = async (
-  req: MedusaRequest,
+  req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const userService: IUserModuleService = req.scope.resolve(
     ModuleRegistrationName.USER
   )
 
-  const user = await userService.retrieve(req.user.userId)
+  const user = await userService.retrieve(req.auth.actor_id)
 
   // ...
 }
@@ -129,9 +129,7 @@ export const highlights = [
 
 ```ts title="src/api/middlewares.ts" highlights={highlights}
 // TODO update import
-import { 
-  authenticate,
-} from "@medusajs/medusa/dist/utils/authenticate-middleware"
+import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {
   routes: [

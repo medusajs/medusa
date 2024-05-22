@@ -1557,6 +1557,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Local",
           },
           {
+            path: "/architectural-modules/file/s3",
+            title: "AWS S3 (and Compatible APIs)",
+          },
+          {
             title: "Guides",
             children: [
               {
@@ -1568,6 +1572,35 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
+        path: "/architectural-modules/notification",
+        title: "Notification Provider Modules",
+        hasTitleStyling: true,
+        children: [
+          {
+            path: "/architectural-modules/notification/local",
+            title: "Local",
+          },
+          {
+            path: "/architectural-modules/notification/sendgrid",
+            title: "SendGrid",
+          },
+          {
+            title: "Guides",
+            children: [
+              {
+                path: "/architectural-modules/notification/send-notification",
+                title: "Send Notification",
+              },
+              {
+                path: "/references/notification-provider-module",
+                title: "Create Notification Module",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "/architectural-modules/workflow-engine",
         title: "Workflow Engine Modules",
         hasTitleStyling: true,
         children: [
