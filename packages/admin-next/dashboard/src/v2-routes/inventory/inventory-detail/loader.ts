@@ -8,7 +8,7 @@ const inventoryDetailQuery = (id: string) => ({
   queryKey: inventoryItemsQueryKeys.detail(id),
   queryFn: async () =>
     client.inventoryItems.retrieve(id, {
-      fields: "*variants",
+      fields: "*variant",
     }),
 })
 

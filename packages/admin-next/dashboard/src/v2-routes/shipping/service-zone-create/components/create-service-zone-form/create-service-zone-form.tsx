@@ -18,7 +18,7 @@ import {
   Text,
   toast,
 } from "@medusajs/ui"
-import { FulfillmentSetDTO, RegionCountryDTO, RegionDTO } from "@medusajs/types"
+import { FulfillmentSetDTO, HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { XMarkMini } from "@medusajs/icons"
 
@@ -123,7 +123,7 @@ export function CreateServiceZoneForm({
       iso_3: c.iso_3,
       num_code: c.num_code,
       region_id: null,
-      region: {} as RegionDTO,
+      region: {} as HttpTypes.AdminRegion,
     })),
     ...searchParams,
   })
@@ -322,7 +322,7 @@ export function CreateServiceZoneForm({
   )
 }
 
-const columnHelper = createColumnHelper<RegionCountryDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminRegionCountry>()
 
 const useColumns = () => {
   const base = useCountryTableColumns()
@@ -363,5 +363,5 @@ const useColumns = () => {
       ...base,
     ],
     [base]
-  ) as ColumnDef<RegionCountryDTO>[]
+  ) as ColumnDef<HttpTypes.AdminRegionCountry>[]
 }

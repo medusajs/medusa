@@ -6,12 +6,7 @@ import { readdir } from "fs/promises"
 import { parseCorsOrigins } from "medusa-core-utils"
 import { extname, join, sep } from "path"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import {
-  authenticateCustomer,
-  authenticateLegacy,
-  errorHandler,
-  requireCustomerAuthentication,
-} from "../../../utils/middlewares"
+import { errorHandler } from "../../../utils/middlewares"
 import logger from "../../logger"
 import {
   AsyncRouteHandler,
@@ -568,8 +563,6 @@ export class RoutesLoader {
     }
 
     if (mostSpecificConfig?.bodyParser) {
-      const sizeLimit = mostSpecificConfig?.bodyParser?.sizeLimit
-
       this.router[method.toLowerCase()](
         path,
         ...getBodyParserMiddleware(mostSpecificConfig?.bodyParser)
@@ -645,27 +638,6 @@ export class RoutesLoader {
             credentials: true,
           })
         )
-      }
-
-      if (descriptor.config.shouldAppendCustomer) {
-        /**
-         * Add the customer to the request object
-         */
-        this.router.use(descriptor.route, authenticateCustomer())
-      }
-
-      if (descriptor.config.shouldRequireCustomerAuth) {
-        /**
-         * Require the customer to be authenticated
-         */
-        this.router.use(descriptor.route, requireCustomerAuthentication())
-      }
-
-      if (descriptor.config.shouldRequireAdminAuth) {
-        /**
-         * Require the admin to be authenticated
-         */
-        this.router.use(descriptor.route, authenticateLegacy())
       }
 
       for (const route of routes) {

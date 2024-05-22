@@ -21,7 +21,9 @@ export type Config = {
 
 export type FetchParams = Parameters<typeof fetch>
 
-export type ClientHeaders = Record<string, string>
+export type ClientHeaders =
+  // The `tags` header is specifically added for nextJS, as they follow a non-standard header format
+  Record<string, string | { tags: string[] }>
 
 export type FetchInput = FetchParams[0]
 

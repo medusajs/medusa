@@ -1,4 +1,4 @@
-import { MedusaModule, Modules } from "@medusajs/modules-sdk"
+import { Modules } from "@medusajs/modules-sdk"
 
 import { IAuthModuleService } from "@medusajs/types"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"

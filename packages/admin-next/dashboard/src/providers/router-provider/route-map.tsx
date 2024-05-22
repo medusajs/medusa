@@ -1,8 +1,4 @@
-import {
-  AdminCollectionsRes,
-  AdminProductsRes,
-  AdminRegionsRes,
-} from "@medusajs/medusa"
+import { AdminCollectionsRes, AdminProductsRes } from "@medusajs/medusa"
 import {
   AdminApiKeyResponse,
   AdminCustomerGroupResponse,
@@ -11,6 +7,7 @@ import {
   AdminTaxRegionResponse,
   SalesChannelDTO,
   UserDTO,
+  HttpTypes,
 } from "@medusajs/types"
 import { Outlet, RouteObject } from "react-router-dom"
 
@@ -159,6 +156,13 @@ export const RouteMap: RouteObject[] = [
               {
                 path: ":id",
                 lazy: () => import("../../v2-routes/orders/order-detail"),
+                children: [
+                  {
+                    path: "fulfillment",
+                    lazy: () =>
+                      import("../../v2-routes/orders/order-create-fulfillment"),
+                  },
+                ],
               },
             ],
           },
@@ -586,7 +590,8 @@ export const RouteMap: RouteObject[] = [
                 path: ":id",
                 lazy: () => import("../../v2-routes/regions/region-detail"),
                 handle: {
-                  crumb: (data: AdminRegionsRes) => data.region.name,
+                  crumb: (data: { region: HttpTypes.AdminRegion }) =>
+                    data.region.name,
                 },
                 children: [
                   {

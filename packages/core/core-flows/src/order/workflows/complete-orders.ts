@@ -3,7 +3,7 @@ import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { completeOrdersStep } from "../steps"
 
 type CompleteOrdersStepInput = {
-  order_ids: string[]
+  orderIds: string[]
 }
 
 export const completeOrderWorkflowId = "complete-order-workflow"

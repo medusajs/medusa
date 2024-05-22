@@ -3,8 +3,8 @@ import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 import { asValue, AwilixContainer } from "awilix"
 
 type Options = {
-  configModule: ConfigModule
   container: AwilixContainer
+  configModule: ConfigModule
 }
 
 export default async ({ container, configModule }: Options): Promise<any> => {

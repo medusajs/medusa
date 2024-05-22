@@ -1,6 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
-import { RegionDTO } from "@medusajs/types"
 
 import {
   CountriesCell,
@@ -14,8 +13,9 @@ import {
   RegionCell,
   RegionHeader,
 } from "../../../components/table/table-cells/region/region-cell"
+import { HttpTypes } from "@medusajs/types"
 
-const columnHelper = createColumnHelper<RegionDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminRegion>()
 
 export const useRegionTableColumns = () => {
   return useMemo(

@@ -1,10 +1,10 @@
 import {
-  AuthUserDTO,
+  AuthIdentityDTO,
   AuthenticationInput,
   AuthenticationResponse,
-  CreateAuthUserDTO,
-  FilterableAuthUserProps,
-  UpdateAuthUserDTO,
+  CreateAuthIdentityDTO,
+  FilterableAuthIdentityProps,
+  UpdateAuthIdentityDTO,
 } from "./common"
 import { Context } from "../shared-context"
 import { FindConfig } from "../common"
@@ -37,7 +37,7 @@ export interface IAuthModuleService extends IModuleService {
    * `req` is an instance of the `MedusaRequest` object:
    *
    * ```ts
-   * const { success, authUser, location, error } =
+   * const { success, authIdentity, location, error } =
    *   await authModuleService.authenticate("emailpass", {
    *     url: req.url,
    *     headers: req.headers,
@@ -75,7 +75,7 @@ export interface IAuthModuleService extends IModuleService {
    * `req` is an instance of the `MedusaRequest` object:
    *
    * ```ts
-   * const { success, authUser, error, successRedirectUrl } =
+   * const { success, authIdentity, error, successRedirectUrl } =
    *   await authModuleService.validateCallback("google", {
    *     url: req.url,
    *     headers: req.headers,
@@ -93,37 +93,37 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthenticationResponse>
 
   /**
-   * This method retrieves an auth user by its ID.
+   * This method retrieves an auth identity by its ID.
    *
-   * @param {string} id - The ID of the auth user.
-   * @param {FindConfig<AuthUserDTO>} config - The configurations determining how the auth user is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a auth user.
+   * @param {string} id - The ID of the auth identity.
+   * @param {FindConfig<AuthIdentityDTO>} config - The configurations determining how the auth identity is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a auth identity.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthUserDTO>} The retrieved auth user.
+   * @returns {Promise<AuthIdentityDTO>} The retrieved auth identity.
    *
    * @example
-   * const authUser = await authModuleService.retrieve("authusr_1")
+   * const authIdentity = await authModuleService.retrieve("authusr_1")
    */
   retrieve(
     id: string,
-    config?: FindConfig<AuthUserDTO>,
+    config?: FindConfig<AuthIdentityDTO>,
     sharedContext?: Context
-  ): Promise<AuthUserDTO>
+  ): Promise<AuthIdentityDTO>
 
   /**
-   * This method retrieves a paginated list of auth users based on optional filters and configuration.
+   * This method retrieves a paginated list of auth identitys based on optional filters and configuration.
    *
-   * @param {FilterableAuthUserProps} filters - The filters to apply on the retrieved auth users.
-   * @param {FindConfig<AuthUserDTO>} config - The configurations determining how the auth user is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a auth user.
+   * @param {FilterableAuthIdentityProps} filters - The filters to apply on the retrieved auth identitys.
+   * @param {FindConfig<AuthIdentityDTO>} config - The configurations determining how the auth identity is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a auth identity.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthUserDTO[]>} The list of auth users.
+   * @returns {Promise<AuthIdentityDTO[]>} The list of auth identitys.
    *
    * @example
-   * To retrieve a list of auth users using their IDs:
+   * To retrieve a list of auth identitys using their IDs:
    *
    * ```ts
-   * const authUsers = await authModuleService.list({
+   * const authIdentities = await authModuleService.list({
    *   id: ["authusr_123", "authusr_321"],
    * })
    * ```
@@ -131,7 +131,7 @@ export interface IAuthModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const authUsers = await authModuleService.list(
+   * const authIdentities = await authModuleService.list(
    *   {
    *     id: ["authusr_123", "authusr_321"],
    *   },
@@ -143,25 +143,25 @@ export interface IAuthModuleService extends IModuleService {
    * ```
    */
   list(
-    filters?: FilterableAuthUserProps,
-    config?: FindConfig<AuthUserDTO>,
+    filters?: FilterableAuthIdentityProps,
+    config?: FindConfig<AuthIdentityDTO>,
     sharedContext?: Context
-  ): Promise<AuthUserDTO[]>
+  ): Promise<AuthIdentityDTO[]>
 
   /**
-   * This method retrieves a paginated list of auth users along with the total count of available auth users satisfying the provided filters.
+   * This method retrieves a paginated list of auth identitys along with the total count of available auth identitys satisfying the provided filters.
    *
-   * @param {FilterableAuthUserProps} filters - The filters to apply on the retrieved auth users.
-   * @param {FindConfig<AuthUserDTO>} config - The configurations determining how the auth user is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a auth user.
+   * @param {FilterableAuthIdentityProps} filters - The filters to apply on the retrieved auth identitys.
+   * @param {FindConfig<AuthIdentityDTO>} config - The configurations determining how the auth identity is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a auth identity.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[AuthUserDTO[], number]>} The list of auth users along with their total count.
+   * @returns {Promise<[AuthIdentityDTO[], number]>} The list of auth identitys along with their total count.
    *
    * @example
-   * To retrieve a list of auth users using their IDs:
+   * To retrieve a list of auth identitys using their IDs:
    *
    * ```ts
-   * const [authUsers, count] =
+   * const [authIdentities, count] =
    *   await authModuleService.listAndCount({
    *     id: ["authusr_123", "authusr_321"],
    *   })
@@ -170,7 +170,7 @@ export interface IAuthModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const [authUsers, count] =
+   * const [authIdentities, count] =
    *   await authModuleService.listAndCount(
    *     {
    *       id: ["authusr_123", "authusr_321"],
@@ -183,20 +183,20 @@ export interface IAuthModuleService extends IModuleService {
    * ```
    */
   listAndCount(
-    filters?: FilterableAuthUserProps,
-    config?: FindConfig<AuthUserDTO>,
+    filters?: FilterableAuthIdentityProps,
+    config?: FindConfig<AuthIdentityDTO>,
     sharedContext?: Context
-  ): Promise<[AuthUserDTO[], number]>
+  ): Promise<[AuthIdentityDTO[], number]>
 
   /**
-   * This method creates auth users.
+   * This method creates auth identitys.
    *
-   * @param {CreateAuthUserDTO[]} data - The auth users to be created.
+   * @param {CreateAuthIdentityDTO[]} data - The auth identitys to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthUserDTO[]>} The created auth users.
+   * @returns {Promise<AuthIdentityDTO[]>} The created auth identitys.
    *
    * @example
-   * const authUsers = await authModuleService.create([
+   * const authIdentities = await authModuleService.create([
    *   {
    *     provider: "emailpass",
    *     entity_id: "user@example.com",
@@ -210,35 +210,38 @@ export interface IAuthModuleService extends IModuleService {
    * ])
    */
   create(
-    data: CreateAuthUserDTO[],
+    data: CreateAuthIdentityDTO[],
     sharedContext?: Context
-  ): Promise<AuthUserDTO[]>
+  ): Promise<AuthIdentityDTO[]>
 
   /**
-   * This method creates an auth user.
+   * This method creates an auth identity.
    *
-   * @param {CreateAuthUserDTO} data - The auth user to be created.
+   * @param {CreateAuthIdentityDTO} data - The auth identity to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthUserDTO>} The created auth user.
+   * @returns {Promise<AuthIdentityDTO>} The created auth identity.
    *
    * @example
-   * const authUser = await authModuleService.create({
+   * const authIdentity = await authModuleService.create({
    *   provider: "emailpass",
    *   entity_id: "user@example.com",
    *   scope: "admin",
    * })
    */
-  create(data: CreateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
+  create(
+    data: CreateAuthIdentityDTO,
+    sharedContext?: Context
+  ): Promise<AuthIdentityDTO>
 
   /**
    * This method updates existing auths.
    *
-   * @param {UpdateAuthUserDTO[]} data - The attributes to update in the auth users.
+   * @param {UpdateAuthIdentityDTO[]} data - The attributes to update in the auth identitys.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthUserDTO[]>} The updated auths.
+   * @returns {Promise<AuthIdentityDTO[]>} The updated auths.
    *
    * @example
-   * const authUsers = await authModuleService.update([
+   * const authIdentities = await authModuleService.update([
    *   {
    *     id: "authusr_123",
    *     app_metadata: {
@@ -248,26 +251,29 @@ export interface IAuthModuleService extends IModuleService {
    * ])
    */
   update(
-    data: UpdateAuthUserDTO[],
+    data: UpdateAuthIdentityDTO[],
     sharedContext?: Context
-  ): Promise<AuthUserDTO[]>
+  ): Promise<AuthIdentityDTO[]>
 
   /**
    * This method updates an existing auth.
    *
-   * @param {UpdateAuthUserDTO} data - The attributes to update in the auth user.
+   * @param {UpdateAuthIdentityDTO} data - The attributes to update in the auth identity.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<AuthUserDTO>} The updated auth.
+   * @returns {Promise<AuthIdentityDTO>} The updated auth.
    *
    * @example
-   * const authUser = await authModuleService.update({
+   * const authIdentity = await authModuleService.update({
    *   id: "authusr_123",
    *   app_metadata: {
    *     test: true,
    *   },
    * })
    */
-  update(data: UpdateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
+  update(
+    data: UpdateAuthIdentityDTO,
+    sharedContext?: Context
+  ): Promise<AuthIdentityDTO>
 
   /**
    * This method deletes a auth by its ID.
