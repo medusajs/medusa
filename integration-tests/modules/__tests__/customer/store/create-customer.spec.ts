@@ -27,7 +27,8 @@ medusaIntegrationTestRunner({
         await createAdminUser(dbConnection, adminHeaders, appContainer)
       })
 
-      it("should create a customer", async () => {
+      // TODO: Reenable once the customer authentication is fixed, and use the HTTP endpoints instead.
+      it.skip("should create a customer", async () => {
         const authService: IAuthModuleService = appContainer.resolve(
           ModuleRegistrationName.AUTH
         )

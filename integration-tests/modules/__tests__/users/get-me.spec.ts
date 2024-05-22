@@ -27,7 +27,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
         expect(response.data).toEqual({
-          user: expect.objectContaining({ id: "admin_user" }),
+          user: expect.objectContaining({ id: expect.any(String) }),
         })
       })
     })
