@@ -1,6 +1,7 @@
 import {
   Context,
   DAL,
+  EventBusTypes,
   FilterableFulfillmentSetProps,
   FindConfig,
   FulfillmentDTO,
@@ -1809,7 +1810,7 @@ export default class FulfillmentModuleService<
       eventName: string
       id: string
       object: string
-    }) => {
+    }): EventBusTypes.RawMessageFormat => {
       return {
         eventName,
         object,
@@ -1820,8 +1821,10 @@ export default class FulfillmentModuleService<
       }
     }
 
-    for (const fulfillmentSet of createdFulfillmentSets) {
-      sharedContext.messageAggregator!.saveRawMessageData(
+    const messages: EventBusTypes.RawMessageFormat[] = []
+
+    createdFulfillmentSets.forEach((fulfillmentSet) => {
+      messages.push(
         buildMessage({
           eventName: FulfillmentUtils.FulfillmentEvents.created,
           id: fulfillmentSet.id,
@@ -1829,8 +1832,9 @@ export default class FulfillmentModuleService<
         })
       )
 
-      for (const serviceZone of fulfillmentSet.service_zones ?? []) {
-        sharedContext.messageAggregator!.saveRawMessageData(
+      const serviceZones = [...(fulfillmentSet.service_zones ?? [])]
+      serviceZones.forEach((serviceZone) => {
+        messages.push(
           buildMessage({
             eventName: FulfillmentUtils.FulfillmentEvents.service_zone_created,
             id: serviceZone.id,
@@ -1838,16 +1842,19 @@ export default class FulfillmentModuleService<
           })
         )
 
-        for (const geoZone of serviceZone.geo_zones ?? []) {
-          sharedContext.messageAggregator!.saveRawMessageData(
+        const geoZones = [...(serviceZone.geo_zones ?? [])]
+        geoZones.forEach((geoZone) => {
+          messages.push(
             buildMessage({
               eventName: FulfillmentUtils.FulfillmentEvents.geo_zone_created,
               id: geoZone.id,
               object: "geo_zone",
             })
           )
-        }
-      }
-    }
+        })
+      })
+    })
+
+    sharedContext.messageAggregator!.saveRawMessageData(messages)
   }
 }
