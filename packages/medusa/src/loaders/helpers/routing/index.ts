@@ -33,7 +33,7 @@ const log = ({
     return
   }
 
-  logger.info(message)
+  logger.debug(message)
 }
 
 /**
