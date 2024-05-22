@@ -106,10 +106,7 @@ function resolvePlugin(pluginName: string): {
 
 export function getResolvedPlugins(
   rootDirectory: string,
-  configModule: {
-    plugins: ConfigModule["plugins"]
-    directories?: ConfigModule["directories"]
-  },
+  configModule: ConfigModule,
   isMedusaProject = false
 ): undefined | PluginDetails[] {
   if (isMedusaProject) {
@@ -117,10 +114,14 @@ export function getResolvedPlugins(
      * Grab directory for loading resources inside a starter kit from
      * the medusa-config file.
      *
-     * This is because, we do not have a "dist" directory inside a starter
-     * kit. Instead we discover resources from the "src" directory.
+     * When using ts-node we will read resources from "src" directory
+     * otherwise from "dist" directory.
      */
-    const extensionDirectoryPath = configModule.directories?.srcDir ?? "dist"
+    const extensionDirectoryPath = process[
+      Symbol.for("ts-node.register.instance")
+    ]
+      ? "src"
+      : "dist"
     const extensionDirectory = path.join(rootDirectory, extensionDirectoryPath)
     return [
       {
