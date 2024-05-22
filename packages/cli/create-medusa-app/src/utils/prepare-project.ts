@@ -226,7 +226,7 @@ export default async ({
       title: "Seeding database...",
     })
 
-    const seedScriptPath = path.join("dist", "helpers", "seed.js")
+    const seedScriptPath = path.join("dist", "scripts", "seed.js")
 
     // check if a seed file exists in the project
     if (!fs.existsSync(path.join(directory, seedScriptPath))) {
