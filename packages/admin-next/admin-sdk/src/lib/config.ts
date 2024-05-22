@@ -57,7 +57,6 @@ export async function getViteConfig(
       react(),
       medusa({
         sources: options.sources,
-        debug: true,
       }),
       /**
        * TODO: Remove polyfills, they are currently only required for the

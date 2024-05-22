@@ -490,10 +490,6 @@ export type MedusaVitePluginOptions = {
    * A list of directories to source extensions from.
    */
   sources?: string[]
-  /**
-   * Whether to enable debug mode.
-   */
-  debug?: boolean
 }
 
 export type MedusaVitePlugin = (config?: MedusaVitePluginOptions) => Vite.Plugin
