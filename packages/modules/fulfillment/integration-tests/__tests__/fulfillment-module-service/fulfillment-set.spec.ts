@@ -625,6 +625,15 @@ moduleIntegrationTestRunner({
                 type: updateData.type,
               })
             )
+
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.updated,
+                action: "updated",
+                object: "fulfillment_set",
+                data: { id: updatedFulfillmentSets.id },
+              }),
+            ])
           })
 
           it("should update a collection of fulfillment sets", async function () {
@@ -668,10 +677,21 @@ moduleIntegrationTestRunner({
                   type: data_.type,
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.updated,
+                    action: "updated",
+                    object: "fulfillment_set",
+                    data: { id: currentFullfillmentSet.id },
+                  }),
+                ])
+              )
             }
           })
 
-          it("should update an existing fulfillment set and replace old service zones by a new one", async function () {
+          it.only("should update an existing fulfillment set and replace old service zones by a new one", async function () {
             const createData: CreateFulfillmentSetDTO = {
               name: "test",
               type: "test-type",
@@ -741,6 +761,45 @@ moduleIntegrationTestRunner({
               expect.objectContaining({
                 id: updatedFulfillmentSet.service_zones[0].id,
               })
+            )
+
+            expect(eventBusEmitSpy).toHaveBeenLastCalledWith(
+              expect.arrayContaining([
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.updated,
+                  action: "updated",
+                  object: "fulfillment_set",
+                  data: { id: updatedFulfillmentSet.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.service_zone_created,
+                  action: "created",
+                  object: "service_zone",
+                  data: { id: updatedFulfillmentSet.service_zones[0].id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.geo_zone_created,
+                  action: "created",
+                  object: "geo_zone",
+                  data: {
+                    id: updatedFulfillmentSet.service_zones[0].geo_zones[0].id,
+                  },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.service_zone_deleted,
+                  action: "deleted",
+                  object: "service_zone",
+                  data: { id: createdFulfillmentSet.service_zones[0].id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.geo_zone_deleted,
+                  action: "deleted",
+                  object: "geo_zone",
+                  data: {
+                    id: createdFulfillmentSet.service_zones[0].geo_zones[0].id,
+                  },
+                }),
+              ])
             )
           })
 
