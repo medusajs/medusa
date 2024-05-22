@@ -1807,12 +1807,10 @@ export default class FulfillmentModuleService<
     }) => {
       return {
         eventName,
-        metadata: {
-          object,
-          service: Modules.FULFILLMENT,
-          action: "created",
-          eventGroupId: sharedContext.eventGroupId,
-        },
+        object,
+        service: Modules.FULFILLMENT,
+        action: "created",
+        context: sharedContext,
         data: { id },
       }
     }

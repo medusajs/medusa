@@ -1,8 +1,10 @@
 import { MessageAggregator } from "../../event-bus"
 import { InjectIntoContext } from "./inject-into-context"
-import {MessageAggregatorFormat} from "@medusajs/types";
+import { MessageAggregatorFormat } from "@medusajs/types"
 
-export function EmitEvents(options: MessageAggregatorFormat = {} as MessageAggregatorFormat) {
+export function EmitEvents(
+  options: MessageAggregatorFormat = {} as MessageAggregatorFormat
+) {
   return function (
     target: any,
     propertyKey: string | symbol,
@@ -17,6 +19,15 @@ export function EmitEvents(options: MessageAggregatorFormat = {} as MessageAggre
 
     descriptor.value = async function (...args: any[]) {
       const result = await original.apply(this, args)
+
+      if (!target.emitEvents_) {
+        const logger = this.__container__?.["logger"]
+          ? this.__container__?.["logger"]
+          : console
+        logger.warn(
+          `No emitEvents_ method found on ${target.constructor.name}. No events emitted. To be able to use the @EmitEvents() you need to have the emitEvents_ method implemented in the class.`
+        )
+      }
 
       await target.emitEvents_.apply(this, [aggregator.getMessages(options)])
 

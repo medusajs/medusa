@@ -36,12 +36,13 @@ export const authenticate = (
     next: NextFunction
   ): Promise<void> => {
     const authTypes = Array.isArray(authType) ? authType : [authType]
+    const req_ = req as AuthenticatedMedusaRequest
 
     // We only allow authenticating using a secret API key on the admin
     if (authTypes.includes(API_KEY_AUTH) && isAdminScope(authScope)) {
       const apiKey = await getApiKeyInfo(req)
       if (apiKey) {
-        ;(req as AuthenticatedMedusaRequest).auth = {
+        req_.auth = {
           actor_id: apiKey.id,
           auth_user_id: "",
           app_metadata: {},
