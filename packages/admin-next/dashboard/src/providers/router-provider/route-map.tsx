@@ -5,9 +5,9 @@ import {
   AdminProductCategoryResponse,
   AdminTaxRateResponse,
   AdminTaxRegionResponse,
+  HttpTypes,
   SalesChannelDTO,
   UserDTO,
-  HttpTypes,
 } from "@medusajs/types"
 import { Outlet, RouteObject } from "react-router-dom"
 
@@ -539,9 +539,9 @@ export const RouteMap: RouteObject[] = [
               },
             ],
           },
+          ...RouteExtensions,
         ],
       },
-      ...RouteExtensions,
     ],
   },
   {
@@ -1040,9 +1040,9 @@ export const RouteMap: RouteObject[] = [
               },
             ],
           },
+          ...SettingsExtensions,
         ],
       },
-      ...SettingsExtensions,
     ],
   },
 ]

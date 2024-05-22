@@ -1,7 +1,6 @@
 import {
   InjectionZone,
   RESOLVED_ROUTE_MODULES,
-  RESOLVED_SETTING_MODULES,
   RESOLVED_WIDGET_MODULES,
   VIRTUAL_MODULES,
   getWidgetImport,
@@ -17,21 +16,16 @@ import path from "path"
 import type * as Vite from "vite"
 
 import {
+  ExportNamedDeclaration,
+  ObjectProperty,
   parse,
   traverse,
   type ExportDefaultDeclaration,
-  type ExportNamedDeclaration,
   type File,
   type NodePath,
-  type ObjectProperty,
   type ParseResult,
   type ParserOptions,
 } from "./babel"
-
-// const traverse = (_traverse as any).default as typeof _traverse
-// const traverse = _traverse
-
-let debug = false
 
 const VALID_FILE_EXTENSIONS = [".tsx", ".jsx"]
 
@@ -45,8 +39,6 @@ function getModuleType(file: string) {
     return "widget"
   } else if (normalizedPath.includes(path.normalize("/admin/routes/"))) {
     return "route"
-  } else if (normalizedPath.includes(path.normalize("/admin/settings/"))) {
-    return "setting"
   } else {
     return "none"
   }
@@ -138,9 +130,11 @@ function getConfigObjectProperties(path: NodePath<ExportNamedDeclaration>) {
 
     if (
       configDeclaration &&
-      configDeclaration.init?.type === "ObjectExpression"
+      configDeclaration.init?.type === "CallExpression" &&
+      configDeclaration.init.arguments.length > 0 &&
+      configDeclaration.init.arguments[0].type === "ObjectExpression"
     ) {
-      return configDeclaration.init.properties
+      return configDeclaration.init.arguments[0].properties
     }
   }
 
@@ -303,14 +297,10 @@ async function validateWidget(
       },
     })
   } catch (err) {
-    if (debug) {
-      console.log(`[DEBUG]: Error traversing file ${file}: ${err}`)
-    }
-
     return { valid: false, zone: _zoneValue }
   }
 
-  return { valid: hasNamedExport && hasDefaultExport, zone: _zoneValue }
+  return { valid: hasNamedExport && hasDefaultExport, zone: _zoneValue as any }
 }
 
 async function generateWidgetEntrypoint(
@@ -323,14 +313,6 @@ async function generateWidgetEntrypoint(
     )
   ).flat()
 
-  if (debug) {
-    console.log(
-      `[DEBUG]: Found ${
-        files.length
-      } widget files for zone ${zone}: [${files.join(", ")}]`
-    )
-  }
-
   const validatedWidgets = (
     await Promise.all(
       files.map(async (widget) => {
@@ -339,12 +321,6 @@ async function generateWidgetEntrypoint(
       })
     )
   ).filter(Boolean) as string[]
-
-  if (debug) {
-    console.log(
-      `[DEBUG]: ${validatedWidgets.length} widgets passed validation for zone ${zone}`
-    )
-  }
 
   if (!validatedWidgets.length) {
     const code = `export default {
@@ -369,14 +345,144 @@ async function generateWidgetEntrypoint(
   return { module: generateModule(code), paths: validatedWidgets }
 }
 
+/** Route utilities */
+
+function validateRouteConfig(
+  path: NodePath<ExportNamedDeclaration>,
+  resolveMenuItem: boolean
+) {
+  const properties = getConfigObjectProperties(path)
+
+  /**
+   * When resolving links for the sidebar, we a config to get the props needed to
+   * render the link correctly.
+   *
+   * If the user has not provided any config, then the route can never be a valid
+   * menu item, so we can skip the validation, and return false.
+   */
+  if (!properties && resolveMenuItem) {
+    return false
+  }
+
+  /**
+   * A config is not required for a component to be a valid route.
+   */
+  if (!properties) {
+    return true
+  }
+
+  const labelProperty = properties.find(
+    (p) =>
+      p.type === "ObjectProperty" &&
+      p.key.type === "Identifier" &&
+      p.key.name === "label"
+  ) as ObjectProperty | undefined
+
+  const labelIsValid =
+    !labelProperty || labelProperty.value.type === "StringLiteral"
+
+  return labelIsValid
+}
+
+async function validateRoute(file: string, resolveMenuItem = false) {
+  const content = await fs.readFile(file, "utf-8")
+  const parserOptions = getParserOptions(file)
+
+  let ast: ParseResult<File>
+
+  try {
+    ast = parse(content, parserOptions)
+  } catch (_e) {
+    return false
+  }
+
+  let hasDefaultExport = false
+  let hasNamedExport = resolveMenuItem ? false : true
+
+  try {
+    traverse(ast, {
+      ExportDefaultDeclaration(path) {
+        hasDefaultExport = isDefaultExportComponent(path, ast)
+      },
+      ExportNamedDeclaration(path) {
+        hasNamedExport = validateRouteConfig(path, resolveMenuItem)
+      },
+    })
+  } catch (_e) {
+    return false
+  }
+
+  return hasNamedExport && hasDefaultExport
+}
+
+function createRoutePath(file: string) {
+  return file
+    .replace(/.*\/admin\/(routes|settings)/, "")
+    .replace(/\[([^\]]+)\]/g, ":$1")
+    .replace(/\/page\.(tsx|jsx)/, "")
+}
+
+async function generateRouteEntrypoint(
+  sources: Set<string>,
+  type: "page" | "link",
+  base = ""
+) {
+  const files = (
+    await Promise.all(
+      Array.from(sources).map(async (source) =>
+        crawl(`${source}/routes`, "page", { min: 1 })
+      )
+    )
+  ).flat()
+
+  const validatedRoutes = (
+    await Promise.all(
+      files.map(async (route) => {
+        const valid = await validateRoute(route, type === "link")
+        return valid ? route : null
+      })
+    )
+  ).filter(Boolean) as string[]
+
+  if (!validatedRoutes.length) {
+    const code = `export default {
+        ${type}s: [],
+      }`
+
+    return { module: generateModule(code), paths: [] }
+  }
+
+  const importString = validatedRoutes
+    .map((path, index) => {
+      return type === "page"
+        ? `import RouteExt${index} from "${path}";`
+        : `import { config as routeConfig${index} } from "${path}";`
+    })
+    .join("\n")
+
+  const exportString = `export default {
+      ${type}s: [${validatedRoutes
+    .map((file, index) => {
+      return type === "page"
+        ? `{ path: "${createRoutePath(file)}", file: "${base + file}" }`
+        : `{ path: "${createRoutePath(file)}", ...routeConfig${index} }`
+    })
+    .join(", ")}],
+    }`
+
+  const code = `${importString}\n${exportString}`
+
+  return { module: generateModule(code), paths: validatedRoutes }
+}
+
 type LoadModuleOptions =
   | {
       type: "widget"
       get: InjectionZone
     }
   | {
-      type: "route" | "setting"
-      get: string
+      type: "route"
+      get: "page" | "link"
     }
 
 export type MedusaVitePluginOptions = {
@@ -392,10 +498,9 @@ export type MedusaVitePluginOptions = {
 
 export type MedusaVitePlugin = (config?: MedusaVitePluginOptions) => Vite.Plugin
 export const medusaVitePlugin: MedusaVitePlugin = (options) => {
-  debug = options?.debug ?? false
-
   const _extensionGraph = new Map<string, Set<string>>()
   const _sources = new Set<string>(options?.sources ?? [])
+  let _base = ""
 
   let server: Vite.ViteDevServer | undefined
   let watcher: Vite.FSWatcher | undefined
@@ -406,11 +511,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
         return await generateWidgetEntrypoint(_sources, options.get)
       }
       case "route":
-        // TODO: Handle route module loading
-        return null
-      case "setting":
-        // TODO: Handle setting module loading
-        return null
+        return await generateRouteEntrypoint(_sources, options.get, _base)
       default:
         return null
     }
@@ -434,62 +535,190 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     return module
   }
 
-  async function handleWidgetChange(file: string) {
+  async function handleWidgetChange(file: string, event: "add" | "change") {
     const { valid, zone } = await validateWidget(file)
-
-    if (!valid) {
-      _extensionGraph.delete(file)
-      return
-    }
-
     const zoneValues = Array.isArray(zone) ? zone : [zone]
 
-    for (const zoneValue of zoneValues) {
-      const zonePath = getWidgetImport(zoneValue)
-      const moduleId = id(zonePath)
-      const resolvedModuleId = resolve(moduleId)
-
-      const module = server?.moduleGraph.getModuleById(resolvedModuleId)
-
+    if (event === "change") {
       /**
-       * If the module is not in our extension graph, we generate a new entrypoint
-       * for the widget zone, to ensure that the widget is included in the bundle.
+       * If the file is in the extension graph, and it has become
+       * invalid, we need to remove it from the graph and reload all modules
+       * that import the widget.
        */
-      if (_extensionGraph.has(file)) {
-        await generateWidgetEntrypoint(_sources, zoneValue)
+      if (!valid) {
+        const extensionIds = _extensionGraph.get(file)
+        _extensionGraph.delete(file)
+
+        if (!extensionIds) {
+          return
+        }
+
+        for (const moduleId of extensionIds) {
+          const module = server?.moduleGraph.getModuleById(moduleId)
+
+          if (module) {
+            await server?.reloadModule(module)
+          }
+        }
+
+        return
       }
 
       /**
-       * If the module is already in the module graph, we reload it to ensure that
-       * the changes are reflected in the bundle.
+       * If the file is not in the extension graph, we need to add it.
+       * We also need to reload all modules that import the widget.
        */
-      if (module) {
-        await server?.reloadModule(module)
+      if (!_extensionGraph.has(file)) {
+        const imports = new Set<string>()
+
+        for (const zoneValue of zoneValues) {
+          const zonePath = getWidgetImport(zoneValue)
+          const moduleId = id(zonePath)
+          const resolvedModuleId = resolve(moduleId)
+          const module = server?.moduleGraph.getModuleById(resolvedModuleId)
+          if (module) {
+            imports.add(resolvedModuleId)
+            await server?.reloadModule(module)
+          }
+        }
+
+        _extensionGraph.set(file, imports)
       }
+    }
+
+    if (event === "add") {
+      /**
+       * If a new file is added in /admin/widgets, but it is not valid,
+       * we don't need to do anything.
+       */
+      if (!valid) {
+        return
+      }
+
+      /**
+       * If a new file is added in /admin/widgets, and it is valid, we need to
+       * add it to the extension graph and reload all modules that need to import
+       * the widget so that they can be updated with the new widget.
+       */
+      const imports = new Set<string>()
+
+      for (const zoneValue of zoneValues) {
+        const zonePath = getWidgetImport(zoneValue)
+        const moduleId = id(zonePath)
+        const resolvedModuleId = resolve(moduleId)
+
+        const module = server?.moduleGraph.getModuleById(resolvedModuleId)
+
+        if (module) {
+          imports.add(resolvedModuleId)
+          await server?.reloadModule(module)
+        }
+      }
+
+      _extensionGraph.set(file, imports)
     }
   }
 
-  async function handleAddOrChange(path: string) {
+  async function handleRouteChange(file: string, event: "add" | "change") {
+    const valid = await validateRoute(file)
+
+    if (event === "change") {
+      /**
+       * If the file is in the extension graph, and it has become
+       * invalid, we need to remove it from the graph and reload all modules
+       * that import the route.
+       */
+      if (!valid) {
+        const extensionIds = _extensionGraph.get(file)
+        _extensionGraph.delete(file)
+
+        if (!extensionIds) {
+          return
+        }
+
+        for (const moduleId of extensionIds) {
+          const module = server?.moduleGraph.getModuleById(moduleId)
+
+          if (module) {
+            await server?.reloadModule(module)
+          }
+        }
+
+        return
+      }
+
+      /**
+       * If the file is not in the extension graph, we need to add it.
+       * We also need to reload all modules that import the route.
+       */
+      if (!_extensionGraph.has(file)) {
+        const moduleId = id(file)
+        const resolvedModuleId = resolve(moduleId)
+        const module = server?.moduleGraph.getModuleById(resolvedModuleId)
+        if (module) {
+          await server?.reloadModule(module)
+        }
+      }
+
+      if (_extensionGraph.has(file)) {
+        const modules = _extensionGraph.get(file)
+
+        if (!modules) {
+          return
+        }
+
+        for (const moduleId of modules) {
+          const module = server?.moduleGraph.getModuleById(moduleId)
+
+          if (module) {
+            await server?.reloadModule(module)
+          }
+        }
+      }
+    }
+
+    if (event === "add") {
+      /**
+       * If a new file is added in /admin/routes, but it is not valid,
+       * we don't need to do anything.
+       */
+      if (!valid) {
+        return
+      }
+
+      const imports = new Set<string>()
+
+      for (const resolvedModuleId of RESOLVED_ROUTE_MODULES) {
+        const module = server?.moduleGraph.getModuleById(resolvedModuleId)
+        if (module) {
+          imports.add(resolvedModuleId)
+          await server?.reloadModule(module)
+        }
+      }
+
+      _extensionGraph.set(file, imports)
+    }
+  }
+
+  async function handleAddOrChange(path: string, event: "add" | "change") {
     const type = getModuleType(path)
 
     switch (type) {
       case "widget":
-        await handleWidgetChange(path)
+        await handleWidgetChange(path, event)
         break
       case "route":
-        // Handle route change if necessary
-        break
-      case "setting":
-        // Handle setting change if necessary
+        await handleRouteChange(path, event)
         break
       default:
-        // Handle other types if necessary
+        // In all other cases we don't need to do anything.
         break
     }
   }
 
   async function handleUnlink(path: string) {
     const moduleIds = _extensionGraph.get(path)
+    _extensionGraph.delete(path)
 
     if (!moduleIds) {
       return
@@ -499,7 +728,6 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
       const module = server?.moduleGraph.getModuleById(moduleId)
 
       if (module) {
-        _extensionGraph.delete(path)
         await server?.reloadModule(module)
       }
     }
@@ -508,6 +736,16 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
   return {
     name: "@medusajs/admin-vite-plugin",
     enforce: "pre",
+    configResolved(config) {
+      if (config.server?.middlewareMode) {
+        /**
+         * If we are in middleware mode, we need to set the base to the <base> + "@fs".
+         *
+         * This ensures that the page components are lazy-loaded correctly.
+         */
+        _base = `${config.base}@fs`
+      }
+    },
     configureServer(_server) {
       server = _server
       watcher = _server.watcher
@@ -520,7 +758,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
         switch (event) {
           case "add":
           case "change": {
-            await handleAddOrChange(path)
+            await handleAddOrChange(path, event)
             break
           }
           case "unlinkDir":
@@ -547,11 +785,8 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
       }
 
       if (RESOLVED_ROUTE_MODULES.includes(id)) {
-        return `export const msg = "Hello from virtual route!";`
-      }
-
-      if (RESOLVED_SETTING_MODULES.includes(id)) {
-        return `export const msg = "Hello from virtual setting!";`
+        const type = id.includes("link") ? "link" : "page"
+        return register(id, { type: "route", get: type })
       }
     },
     async closeBundle() {

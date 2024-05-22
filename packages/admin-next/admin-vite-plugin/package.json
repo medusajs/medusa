@@ -16,7 +16,8 @@
     "package.json"
   ],
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "watch": "tsup --watch"
   },
   "devDependencies": {
     "@babel/types": "7.22.5",

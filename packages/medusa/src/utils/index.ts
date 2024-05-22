@@ -1,6 +1,6 @@
 export * from "./clean-response-data"
 export * from "./exception-formatter"
+export * from "./middlewares"
 export * from "./omit-deep"
 export * from "./remote-query-fetch-data"
 export * from "./remove-undefined-properties"
-export * from "./middlewares"

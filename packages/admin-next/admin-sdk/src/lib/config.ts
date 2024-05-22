@@ -1,3 +1,4 @@
+import { VIRTUAL_MODULES } from "@medusajs/admin-shared"
 import path from "path"
 import { Config } from "tailwindcss"
 import type { InlineConfig } from "vite"
@@ -12,10 +13,6 @@ export async function getViteConfig(
   const { default: react } = await import("@vitejs/plugin-react")
   const { default: medusa } = await import("@medusajs/admin-vite-plugin")
 
-  if (typeof medusa !== "function") {
-    throw new Error("Medusa Vite plugin not found")
-  }
-
   const getPort = await import("get-port")
   const hmrPort = await getPort.default()
 
@@ -29,13 +26,10 @@ export async function getViteConfig(
     build: {
       emptyOutDir: true,
       outDir: path.resolve(process.cwd(), options.outDir),
-      // rollupOptions: {
-      //   external: ["virtual:medusa/widgets/product/details/before"],
-      // },
     },
     optimizeDeps: {
       include: ["@medusajs/dashboard", "react-dom/client"],
-      exclude: ["virtual:medusa/widgets/product/details/before"],
+      exclude: VIRTUAL_MODULES,
     },
     define: {
       __BASE__: JSON.stringify(options.path),
@@ -43,10 +37,7 @@ export async function getViteConfig(
     },
     server: {
       fs: {
-        allow: [
-          searchForWorkspaceRoot(process.cwd()),
-          path.resolve(__dirname, "../../medusa"),
-        ],
+        allow: [searchForWorkspaceRoot(process.cwd())],
       },
       hmr: {
         port: hmrPort,

@@ -47,7 +47,6 @@ export const ProductDetail = () => {
           </div>
         )
       })}
-      {/* <pre>{JSON.stringify(obj, null, 2)}</pre> */}
       <div className="flex flex-col gap-x-4 lg:flex-row lg:items-start">
         <div className="flex w-full flex-col gap-y-2">
           <ProductGeneralSection product={product} />

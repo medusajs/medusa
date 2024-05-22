@@ -15,15 +15,9 @@ import {
 let traverse: typeof _traverse
 
 if (typeof _traverse === "function") {
-  console.log("_traverse is defined")
   traverse = _traverse
 } else {
-  console.log("_traverse is not defined")
   traverse = (_traverse as any).default
-  console.log(
-    "getting default export... Was it successful?",
-    typeof traverse === "function"
-  )
 }
 
 export { parse, traverse }
