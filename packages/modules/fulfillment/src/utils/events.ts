@@ -9,6 +9,10 @@ export function buildCreatedFulfillmentSetEvents({
   fulfillmentSets: FulfillmentSet[]
   sharedContext: Context
 }): void {
+  if (!fulfillmentSets.length) {
+    return
+  }
+
   const serviceZones: ServiceZone[] = []
 
   fulfillmentSets.flatMap((fulfillmentSet) => {
@@ -35,6 +39,10 @@ export function buildCreatedServiceZoneEvents({
   serviceZones: ServiceZone[]
   sharedContext: Context
 }): void {
+  if (!serviceZones.length) {
+    return
+  }
+
   const geoZones: GeoZone[] = []
 
   serviceZones.flatMap((serviceZone) => {
@@ -67,6 +75,10 @@ export function buildFulfillmentSetEvents({
   fulfillmentSets: FulfillmentSet[]
   sharedContext: Context
 }) {
+  if (!fulfillmentSets.length) {
+    return
+  }
+
   const aggregator = sharedContext.messageAggregator!
   const messages: EventBusTypes.RawMessageFormat[] = []
 
@@ -93,6 +105,10 @@ export function buildServiceZoneEvents({
   serviceZones: { id: string }[]
   sharedContext: Context
 }) {
+  if (!serviceZones.length) {
+    return
+  }
+
   const aggregator = sharedContext.messageAggregator!
   const messages: EventBusTypes.RawMessageFormat[] = []
 
@@ -119,6 +135,10 @@ export function buildGeoZoneEvents({
   geoZones: { id: string }[]
   sharedContext: Context
 }) {
+  if (!geoZones.length) {
+    return
+  }
+
   const aggregator = sharedContext.messageAggregator!
   const messages: EventBusTypes.RawMessageFormat[] = []
 

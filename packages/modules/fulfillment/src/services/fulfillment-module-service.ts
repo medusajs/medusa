@@ -378,12 +378,7 @@ export default class FulfillmentModuleService<
       }
     }
 
-    const createdServiceZones = await this.serviceZoneService_.create(
-      data_,
-      sharedContext
-    )
-
-    return createdServiceZones
+    return await this.serviceZoneService_.create(data_, sharedContext)
   }
 
   createShippingOptions(
