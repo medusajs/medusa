@@ -12,7 +12,7 @@ export type AuthenticationResponse = {
   /**
    * The authenticated user's details.
    */
-  authUser?: any
+  authIdentity?: any
 
   /**
    * If an error occurs during the authentication process,

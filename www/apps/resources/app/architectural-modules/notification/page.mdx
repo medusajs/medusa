@@ -1,0 +1,66 @@
+import { ChildDocs } from "docs-ui"
+
+export const metadata = {
+  title: `Notification Provider Modules`,
+}
+
+# {metadata.title}
+
+A Notification Module exposes the functionalities to send a notification to a customer or user. For example, sending an order confirmation email.
+
+You can resolve the Notification Module and send notifications in API routes, subscribers, or other resources.
+
+---
+
+## What is a Notification Provider Module?
+
+A notification provider module implements the logic of sending the notification. It either integrates a third-party service or uses custom logic to send the notification.
+
+By default, Medusa uses the Local Notification Module which only simulates sending the notification by logging a message in the terminal.
+
+Medusa provides other Notification Modules that actually send notifications, such as the SendGrid Notification Provider Module.
+
+<ChildDocs type="item" filters={["Guides"]} onlyTopLevel={true} />
+
+---
+
+## Notification Provider Module Channels
+
+When you send a notification, you specify the channel to send it through, such as `email` or `sms`. Each provider defined in the Notification Module's `providers` option has a `channels` option specifying which channels it can be used in. Only one provider can be setup for each channel.
+
+For example:
+
+```js title="medusa-config.js" highlights={[["15"]]}
+module.exports = {
+  // ...
+  modules: {
+    // ...
+    [Modules.NOTIFICATION]: {
+      resolve: "@medusajs/notification",
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/notification-local",
+            options: {
+              config: {
+                local: {
+                  channels: ["email"]
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+  },
+}
+```
+
+The `channels` option is an array of strings indicating the channels this provider is used for.
+
+---
+
+## Create a Notification Provider Module
+
+To create a notification provider module, refer to [this guide](/references/notification-provider-module).

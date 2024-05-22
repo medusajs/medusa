@@ -23,7 +23,7 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<StoreGetCustomerAddressParamsType>,
   res: MedusaResponse
 ) => {
-  const customerId = req.auth.actor_id
+  const customerId = req.auth_context.actor_id
 
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
@@ -49,7 +49,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<StoreUpdateCustomerAddressType>,
   res: MedusaResponse
 ) => {
-  const id = req.auth.actor_id!
+  const id = req.auth_context.actor_id!
   await validateCustomerAddress(req.scope, id, req.params.address_id)
 
   const updateAddresses = updateCustomerAddressesWorkflow(req.scope)
@@ -78,7 +78,7 @@ export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const id = req.auth.actor_id
+  const id = req.auth_context.actor_id
   await validateCustomerAddress(req.scope, id, req.params.address_id)
 
   const deleteAddress = deleteCustomerAddressesWorkflow(req.scope)

@@ -6760,6 +6760,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "path": "/architectural-modules/file/s3",
+            "title": "AWS S3 (and Compatible APIs)",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "title": "Guides",
             "children": [
               {
@@ -6776,6 +6783,51 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "path": "/architectural-modules/notification",
+        "title": "Notification Provider Modules",
+        "hasTitleStyling": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/architectural-modules/notification/local",
+            "title": "Local",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/architectural-modules/notification/sendgrid",
+            "title": "SendGrid",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/architectural-modules/notification/send-notification",
+                "title": "Send Notification",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/notification-provider-module",
+                "title": "Create Notification Module",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/architectural-modules/workflow-engine",
         "title": "Workflow Engine Modules",
         "hasTitleStyling": true,
         "children": [

@@ -1,13 +1,13 @@
 import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
 import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
-import { AuthUserService } from "@services"
+import { AuthIdentityService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
 import { AuthorizationCode } from "simple-oauth2"
 import url from "url"
 
 type InjectedDependencies = {
-  authUserService: AuthUserService
+  authIdentityService: AuthIdentityService
 }
 
 type ProviderConfig = {
@@ -21,15 +21,15 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   public static PROVIDER = "google"
   public static DISPLAY_NAME = "Google Authentication"
 
-  protected readonly authUserService_: AuthUserService
+  protected readonly authIdentityService_: AuthIdentityService
 
-  constructor({ authUserService }: InjectedDependencies) {
+  constructor({ authIdentityService }: InjectedDependencies) {
     super(arguments[0], {
       provider: GoogleProvider.PROVIDER,
       displayName: GoogleProvider.DISPLAY_NAME,
     })
 
-    this.authUserService_ = authUserService
+    this.authIdentityService_ = authIdentityService
   }
 
   async authenticate(
@@ -83,16 +83,17 @@ class GoogleProvider extends AbstractAuthModuleProvider {
     }) as JwtPayload
     const entity_id = jwtData.payload.email
 
-    let authUser
+    let authIdentity
 
     try {
-      authUser = await this.authUserService_.retrieveByProviderAndEntityId(
-        entity_id,
-        GoogleProvider.PROVIDER
-      )
+      authIdentity =
+        await this.authIdentityService_.retrieveByProviderAndEntityId(
+          entity_id,
+          GoogleProvider.PROVIDER
+        )
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
-        const [createdAuthUser] = await this.authUserService_.create([
+        const [createdAuthIdentity] = await this.authIdentityService_.create([
           {
             entity_id,
             provider: GoogleProvider.PROVIDER,
@@ -100,7 +101,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
             scope: this.scope_,
           },
         ])
-        authUser = createdAuthUser
+        authIdentity = createdAuthIdentity
       } else {
         return { success: false, error: error.message }
       }
@@ -108,7 +109,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
 
     return {
       success: true,
-      authUser,
+      authIdentity,
     }
   }
 
@@ -127,7 +128,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
     try {
       const accessToken = await client.getToken(tokenParams)
 
-      const { authUser, success } = await this.verify_(
+      const { authIdentity, success } = await this.verify_(
         accessToken.token.id_token
       )
 
@@ -135,7 +136,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
 
       return {
         success,
-        authUser,
+        authIdentity,
         successRedirectUrl,
       }
     } catch (error) {

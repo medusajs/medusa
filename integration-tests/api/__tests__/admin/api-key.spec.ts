@@ -38,7 +38,7 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: created.data.api_key.id,
             title: "Test Secret Key",
-            created_by: "admin_user",
+            created_by: expect.any(String),
           })
         )
         // On create we get the token in raw form so we can store it.

@@ -37,17 +37,14 @@ The following example showcase a data model with common definitions:
 
 ```ts
 import { 
-  BeforeCreate, 
   Entity, 
   Enum, 
   OneToOne, 
   PrimaryKey, 
   Property,
 } from "@mikro-orm/core"
-import { 
-  createPsqlIndexStatementHelper, 
-  generateEntityId,
-} from "@medusajs/utils"
+import { BaseEntity } from "@medusajs/utils"
+// assuming this is another implemented data model
 import ProductVariant from "./product-variant"
 
 export enum MediaType {
@@ -55,14 +52,8 @@ export enum MediaType {
   PREVIEW = "preview"
 }
 
-const VariantIdIndex = createPsqlIndexStatementHelper({
-  name: "IDX_product_media_variant_id",
-  tableName: "product_media",
-  columns: "variant_id",
-}).MikroORMIndex
-
 @Entity()
-export default class ProductMedia {
+class ProductMedia extends BaseEntity {
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -78,7 +69,6 @@ export default class ProductMedia {
   @Property({ columnType: "text" })
   mime_type: string
 
-  @VariantIdIndex()
   @Property({ columnType: "text" })
   variant_id: string
 
@@ -87,21 +77,13 @@ export default class ProductMedia {
     onDelete: "cascade",
   })
   variant: ProductVariant
-
-  @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "promed")
-  }
-
-  @OnInit()
-  OnInit() {
-    this.id = generateEntityId(this.id, "promed")
-  }
 }
+
+export default ProductMedia
 ```
 
 In the example above:
 
 - The `ProductMedia` data model has the columns `id`, `name`, `type`, `file_key`, `mime_type`, and `variant_id`.
 - The data model has an index on the `variant_id` column.
-- The data model has a one-to-one relation to the `ProductVariant` data model.
+- The data model has a one-to-one relation to a `ProductVariant` data model.
