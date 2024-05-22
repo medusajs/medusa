@@ -135,6 +135,8 @@ export const ProductCreateVariantsSection = ({
         options: permutation,
         should_create: hasUserSelectedVariants ? false : true,
         variant_rank: newVariants.length,
+        // NOTE - prepare inventory array here for now so we prevent rendering issue if we append the items later
+        inventory: [{ title: "", quantity: 0 }],
       })
     })
 

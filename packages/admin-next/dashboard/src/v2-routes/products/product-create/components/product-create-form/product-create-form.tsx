@@ -66,25 +66,10 @@ export const ProductCreateForm = () => {
     name: "variants",
   })
 
-  const showInventoryTab = useMemo(() => {
-    let show = false
-    watchedVariants.forEach((v, index) => {
-      if (v.inventory_kit) {
-        show = true
-        if (!v.inventory?.length) {
-          // don't want to interupt rendering with this set state, TOOD: solve this better
-          setTimeout(
-            () =>
-              form.setValue(`variants.${index}.inventory`, [
-                { title: "", quantity: 0 },
-              ]),
-            0
-          )
-        }
-      }
-    })
-    return show
-  }, [watchedVariants])
+  const showInventoryTab = useMemo(
+    () => watchedVariants.some((v) => v.inventory_kit),
+    [watchedVariants]
+  )
 
   const handleSubmit = form.handleSubmit(
     async (values, e) => {
@@ -185,10 +170,22 @@ export const ProductCreateForm = () => {
           options: {
             "Default option": "Default option value",
           },
+          inventory: [{ title: "", quantity: 0 }],
           is_default: true,
         })
       }
     }
+
+    // if (tab === Tab.INVENTORY) {
+    //   // initialize inventory array for variants which have `inventory_kit` enabled before navigating to the page
+    //   watchedVariants.forEach((v, index) => {
+    //     if (v.inventory_kit && !v.inventory?.length) {
+    //       form.setValue(`variants.${index}.inventory`, [
+    //         { title: "", quantity: 0 },
+    //       ])
+    //     }
+    //   })
+    // }
 
     setTabState({ ...currentState })
 
