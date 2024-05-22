@@ -1749,6 +1749,123 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("updates products sales channels", async () => {
+          const [productId, salesChannel1Id, salesChannel2Id] = await breaking(
+            async () => {
+              const salesChannel1 = await simpleSalesChannelFactory(
+                dbConnection,
+                {
+                  name: "test name 1",
+                  description: "test description",
+                  products: [baseProduct],
+                }
+              )
+
+              const salesChannel2 = await simpleSalesChannelFactory(
+                dbConnection,
+                {
+                  name: "test name 2",
+                  description: "test description",
+                  salesChannel1,
+                  // no assigned products
+                }
+              )
+
+              return [baseProduct.id, salesChannel1.id, salesChannel2.id]
+            },
+            async () => {
+              const salesChannelService = getContainer().resolve(
+                ModuleRegistrationName.SALES_CHANNEL
+              )
+
+              const salesChannel1 = await salesChannelService.create({
+                name: "test name 1",
+                description: "test description",
+              })
+
+              const salesChannel2 = await salesChannelService.create({
+                name: "test name 2",
+                description: "test description",
+              })
+
+              const newProduct = (
+                await api.post(
+                  "/admin/products",
+                  getProductFixture({
+                    title: "Test saleschannel",
+                    sales_channels: [{ id: salesChannel1.id }],
+                  }),
+                  adminHeaders
+                )
+              ).data.product
+              return [newProduct.id, salesChannel1.id, salesChannel2.id]
+            }
+          )
+
+          await api.post(
+            `/admin/products/${productId}`,
+            {
+              title: "new name",
+              sales_channels: [
+                { id: salesChannel1Id },
+                { id: salesChannel2Id },
+              ],
+            },
+            adminHeaders
+          )
+
+          let res = await api.get(
+            `/admin/products/${productId}?fields=*sales_channels`,
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.product).toEqual(
+            expect.objectContaining({
+              id: productId,
+              title: "new name",
+              sales_channels: expect.arrayContaining([
+                expect.objectContaining({
+                  id: salesChannel1Id,
+                  name: "test name 1",
+                }),
+                expect.objectContaining({
+                  id: salesChannel2Id,
+                  name: "test name 2",
+                }),
+              ]),
+            })
+          )
+
+          await api.post(
+            `/admin/products/${productId}`,
+            {
+              title: "new name 2",
+              sales_channels: [{ id: salesChannel2Id }], // update channels again to remove the first one
+            },
+            adminHeaders
+          )
+
+          res = await api.get(
+            `/admin/products/${productId}?fields=*sales_channels`,
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.product).toEqual(
+            expect.objectContaining({
+              id: productId,
+              title: "new name 2",
+              sales_channels: expect.arrayContaining([
+                expect.objectContaining({
+                  id: salesChannel2Id,
+                  name: "test name 2",
+                }),
+              ]),
+            })
+          )
+        })
+
         it("fails to update product with invalid status", async () => {
           const payload = {
             status: null,

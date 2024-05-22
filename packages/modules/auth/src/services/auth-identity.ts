@@ -11,40 +11,42 @@ import {
   MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
-import { AuthUser } from "@models"
+import { AuthIdentity } from "@models"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  authUserRepository: DAL.RepositoryService
+  authIdentityRepository: DAL.RepositoryService
 }
 
-export default class AuthUserService<
-  TEntity extends AuthUser = AuthUser
+export default class AuthIdentityService<
+  TEntity extends AuthIdentity = AuthIdentity
 > extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
-  AuthUser
+  AuthIdentity
 )<TEntity> {
-  protected readonly authUserRepository_: RepositoryService<TEntity>
+  protected readonly authIdentityRepository_: RepositoryService<TEntity>
   protected baseRepository_: DAL.RepositoryService
 
   constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
-    this.authUserRepository_ = container.authUserRepository
+    this.authIdentityRepository_ = container.authIdentityRepository
     this.baseRepository_ = container.baseRepository
   }
 
-  @InjectManager("authUserRepository_")
-  async retrieveByProviderAndEntityId<TEntityMethod = AuthTypes.AuthUserDTO>(
+  @InjectManager("authIdentityRepository_")
+  async retrieveByProviderAndEntityId<
+    TEntityMethod = AuthTypes.AuthIdentityDTO
+  >(
     entityId: string,
     provider: string,
     config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthTypes.AuthUserDTO> {
+  ): Promise<AuthTypes.AuthIdentityDTO> {
     const queryConfig = ModulesSdkUtils.buildQuery<TEntity>(
       { entity_id: entityId, provider },
       { ...config, take: 1 }
     )
-    const [result] = await this.authUserRepository_.find(
+    const [result] = await this.authIdentityRepository_.find(
       queryConfig,
       sharedContext
     )
@@ -52,10 +54,12 @@ export default class AuthUserService<
     if (!result) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `AuthUser with entity_id: "${entityId}" and provider: "${provider}" not found`
+        `AuthIdentity with entity_id: "${entityId}" and provider: "${provider}" not found`
       )
     }
 
-    return await this.baseRepository_.serialize<AuthTypes.AuthUserDTO>(result)
+    return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
+      result
+    )
   }
 }

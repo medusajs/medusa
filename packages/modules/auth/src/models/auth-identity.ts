@@ -15,9 +15,9 @@ type OptionalFields = "provider_metadata" | "app_metadata" | "user_metadata"
 @Entity()
 @Unique({
   properties: ["provider", "scope", "entity_id"],
-  name: "IDX_auth_user_provider_scope_entity_id",
+  name: "IDX_auth_identity_provider_scope_entity_id",
 })
-export default class AuthUser {
+export default class AuthIdentity {
   [OptionalProps]: OptionalFields
 
   @PrimaryKey({ columnType: "text" })
@@ -43,11 +43,11 @@ export default class AuthUser {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "authusr")
+    this.id = generateEntityId(this.id, "authid")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "authusr")
+    this.id = generateEntityId(this.id, "authid")
   }
 }

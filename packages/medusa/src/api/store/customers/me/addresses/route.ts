@@ -18,7 +18,7 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<StoreGetCustomerAddressesParamsType>,
   res: MedusaResponse
 ) => {
-  const customerId = req.auth.actor_id
+  const customerId = req.auth_context.actor_id
 
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
@@ -44,7 +44,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<StoreCreateCustomerAddressType>,
   res: MedusaResponse
 ) => {
-  const customerId = req.auth.actor_id
+  const customerId = req.auth_context.actor_id
 
   const createAddresses = createCustomerAddressesWorkflow(req.scope)
   const addresses = [
