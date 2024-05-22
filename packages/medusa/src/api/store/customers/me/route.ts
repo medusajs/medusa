@@ -15,7 +15,7 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<StoreGetCustomerParamsType>,
   res: MedusaResponse
 ) => {
-  const id = req.auth.actor_id
+  const id = req.auth_context.actor_id
   const customer = await refetchCustomer(
     id,
     req.scope,
@@ -36,7 +36,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<StoreUpdateCustomerType>,
   res: MedusaResponse
 ) => {
-  const customerId = req.auth.actor_id
+  const customerId = req.auth_context.actor_id
   const { errors } = await updateCustomersWorkflow(req.scope).run({
     input: {
       selector: { id: customerId },

@@ -123,7 +123,7 @@ describe("/store/order-edits", () => {
       const orderEdit = await simpleOrderEditFactory(dbConnection, {
         id: orderEditId,
         order_id: order.id,
-        created_by: "admin_user",
+        created_by: expect.any(String),
         internal_note: "test internal note",
       })
 
@@ -254,20 +254,20 @@ describe("/store/order-edits", () => {
 
       declineableOrderEdit = await simpleOrderEditFactory(dbConnection, {
         id: IdMap.getId("order-edit-1"),
-        created_by: "admin_user",
+        created_by: expect.any(String),
         requested_at: new Date(),
       })
 
       declinedOrderEdit = await simpleOrderEditFactory(dbConnection, {
         id: IdMap.getId("order-edit-2"),
-        created_by: "admin_user",
+        created_by: expect.any(String),
         declined_reason: "wrong size",
         declined_at: new Date(),
       })
 
       confirmedOrderEdit = await simpleOrderEditFactory(dbConnection, {
         id: IdMap.getId("order-edit-3"),
-        created_by: "admin_user",
+        created_by: expect.any(String),
         confirmed_at: new Date(),
       })
     })
@@ -360,20 +360,20 @@ describe("/store/order-edits", () => {
 
       requestedOrderEdit = await simpleOrderEditFactory(dbConnection, {
         id: IdMap.getId("order-edit-1"),
-        created_by: "admin_user",
+        created_by: expect.any(String),
         requested_at: new Date(),
       })
 
       confirmedOrderEdit = await simpleOrderEditFactory(dbConnection, {
         id: IdMap.getId("order-edit-2"),
-        created_by: "admin_user",
+        created_by: expect.any(String),
         confirmed_at: new Date(),
         confirmed_by: "admin_user",
       })
 
       createdOrderEdit = await simpleOrderEditFactory(dbConnection, {
         id: IdMap.getId("order-edit-3"),
-        created_by: "admin_user",
+        created_by: expect.any(String),
       })
     })
 
