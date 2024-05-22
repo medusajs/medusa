@@ -20,8 +20,8 @@ export function EmitEvents(
       const result = await original.apply(this, args)
 
       if (!target.emitEvents_) {
-        const logger = this.__container__?.["logger"]
-          ? this.__container__?.["logger"]
+        const logger = Object.keys(this.__container__ ?? {}).includes("logger")
+          ? this.__container__.logger
           : console
         logger.warn(
           `No emitEvents_ method found on ${target.constructor.name}. No events emitted. To be able to use the @EmitEvents() you need to have the emitEvents_ method implemented in the class.`
