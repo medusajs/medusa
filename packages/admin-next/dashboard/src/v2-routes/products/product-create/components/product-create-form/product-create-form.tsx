@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import {
   RouteFocusModal,
@@ -17,16 +17,20 @@ import { ProductCreateSchemaType } from "../../types"
 import { normalizeProductFormValues } from "../../utils"
 import { ProductCreateDetailsForm } from "../product-create-details-form"
 import { ProductCreateOrganizeForm } from "../product-create-organize-form"
+import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-form"
 
 enum Tab {
   DETAILS = "details",
   ORGANIZE = "organize",
   VARIANTS = "variants",
+  INVENTORY = "inventory",
 }
 
 type TabState = Record<Tab, ProgressStatus>
 
 const SAVE_DRAFT_BUTTON = "save-draft-button"
+
+let LAST_VISITED_TAB = null
 
 export const ProductCreateForm = () => {
   const [tab, setTab] = useState<Tab>(Tab.DETAILS)
@@ -34,6 +38,7 @@ export const ProductCreateForm = () => {
     [Tab.DETAILS]: "in-progress",
     [Tab.ORGANIZE]: "not-started",
     [Tab.VARIANTS]: "not-started",
+    [Tab.INVENTORY]: "not-started",
   })
 
   const { t } = useTranslation()
@@ -45,6 +50,16 @@ export const ProductCreateForm = () => {
   })
 
   const { mutateAsync, isPending } = useCreateProduct()
+
+  const variantsField = useFieldArray({
+    control: form.control,
+    name: "variants",
+  })
+
+  const optionsField = useFieldArray({
+    control: form.control,
+    name: "options",
+  })
 
   const handleSubmit = form.handleSubmit(
     async (values, e) => {
@@ -104,20 +119,50 @@ export const ProductCreateForm = () => {
 
   useEffect(() => {
     const currentState = { ...tabState }
+    if (tab === Tab.DETAILS) {
+      currentState[Tab.DETAILS] = "in-progress"
+    }
     if (tab === Tab.ORGANIZE) {
       currentState[Tab.DETAILS] = "completed"
       currentState[Tab.ORGANIZE] = "in-progress"
-    }
-    if (tab === Tab.DETAILS) {
-      currentState[Tab.DETAILS] = "in-progress"
     }
     if (tab === Tab.VARIANTS) {
       currentState[Tab.DETAILS] = "completed"
       currentState[Tab.ORGANIZE] = "completed"
       currentState[Tab.VARIANTS] = "in-progress"
     }
+    if (tab === Tab.INVENTORY) {
+      currentState[Tab.DETAILS] = "completed"
+      currentState[Tab.ORGANIZE] = "completed"
+      currentState[Tab.VARIANTS] = "completed"
+      currentState[Tab.INVENTORY] = "in-progress"
+    }
+
+    if (tab !== Tab.DETAILS && LAST_VISITED_TAB === Tab.DETAILS) {
+      if (
+        !form.getValues("enable_variants") &&
+        !form.getValues("variants").length
+      ) {
+        optionsField.append({
+          title: "Default option",
+          values: ["Default option value"],
+        })
+
+        variantsField.append({
+          title: "Default variant",
+          should_create: true,
+          variant_rank: 0,
+          options: {
+            "Default option": "Default option value",
+          },
+          is_default: true,
+        })
+      }
+    }
 
     setTabState({ ...currentState })
+
+    LAST_VISITED_TAB = tab
   }, [tab])
 
   return (
@@ -131,8 +176,8 @@ export const ProductCreateForm = () => {
           >
             <RouteFocusModal.Header>
               <div className="flex w-full items-center justify-between gap-x-4">
-                <div className="-my-2 w-full max-w-[400px] border-l">
-                  <ProgressTabs.List className="grid w-full grid-cols-3">
+                <div className="-my-2 w-fit border-l">
+                  <ProgressTabs.List className="grid w-full grid-cols-4">
                     <ProgressTabs.Trigger
                       status={tabState[Tab.DETAILS]}
                       value={Tab.DETAILS}
@@ -150,6 +195,12 @@ export const ProductCreateForm = () => {
                       value={Tab.VARIANTS}
                     >
                       {t("products.create.tabs.variants")}
+                    </ProgressTabs.Trigger>
+                    <ProgressTabs.Trigger
+                      status={tabState[Tab.INVENTORY]}
+                      value={Tab.INVENTORY}
+                    >
+                      {t("products.create.tabs.inventory")}
                     </ProgressTabs.Trigger>
                   </ProgressTabs.List>
                 </div>
@@ -194,6 +245,12 @@ export const ProductCreateForm = () => {
                 value={Tab.VARIANTS}
               >
                 <VariantPricingForm form={form} />
+              </ProgressTabs.Content>
+              <ProgressTabs.Content
+                className="size-full overflow-y-auto"
+                value={Tab.INVENTORY}
+              >
+                <ProductCreateInventoryKitForm form={form} />
               </ProgressTabs.Content>
             </RouteFocusModal.Body>
           </ProgressTabs>

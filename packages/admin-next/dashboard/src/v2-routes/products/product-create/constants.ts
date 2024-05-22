@@ -36,10 +36,14 @@ export const ProductCreateSchema = z.object({
   variants: z.array(
     z.object({
       should_create: z.boolean(),
+      is_default: z.boolean().optional(),
       title: z.string(),
       options: z.record(z.string(), z.string()),
       variant_rank: z.number(),
       prices: z.record(z.string(), z.string()).optional(),
+      inventory: z
+        .array(z.object({ title: z.string(), quantity: z.number() }))
+        .optional(),
     })
   ),
   images: z.array(z.string()).optional(),

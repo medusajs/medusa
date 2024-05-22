@@ -25,6 +25,7 @@ import { Form } from "../../../../../../../components/common/form"
 import { SortableList } from "../../../../../../../components/common/sortable-list"
 import { ChipInput } from "../../../../../../../components/inputs/chip-input"
 import { ProductCreateSchemaType } from "../../../../types"
+import { useEffect } from "react"
 
 type ProductCreateVariantsSectionProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -191,7 +192,7 @@ export const ProductCreateVariantsSection = ({
   const handleRankChange = (
     items: FieldArrayWithId<ProductCreateSchemaType, "variants">[]
   ) => {
-    // Items in the SortableList are momorized, so we need to find the current
+    // Items in the SortableList are memorised, so we need to find the current
     // value to preserve any changes that have been made to `should_create`.
     const update = items.map((item, index) => {
       const variant = watchedVariants.find((v) => v.title === item.title)
@@ -246,6 +247,16 @@ export const ProductCreateVariantsSection = ({
         break
     }
   }
+
+  useEffect(() => {
+    if (watchedAreVariantsEnabled) {
+      // remove default variant and option that may have been created
+      if (variants.fields[0]?.is_default) {
+        form.setValue("options", [])
+        form.setValue("variants", [])
+      }
+    }
+  }, [watchedAreVariantsEnabled])
 
   return (
     <div id="variants" className="flex flex-col gap-y-8">

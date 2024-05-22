@@ -167,7 +167,12 @@
       "tabs": {
         "details": "Details",
         "organize": "Organize",
-        "variants": "Variants"
+        "variants": "Variants",
+        "inventory": "Inventory kits"
+      },
+      "inventory": {
+        "heading": "Inventory kits",
+        "label": "Inventory kit"
       },
       "variants": {
         "header": "Variants",
