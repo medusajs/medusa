@@ -42,6 +42,11 @@ const runLinkMigrations = async (directory) => {
 
 const main = async function ({ directory }) {
   const args = process.argv
+  /**
+   * Enabling worker mode to prevent discovering/loading
+   * starter kit resources
+   */
+  process.env.MEDUSA_WORKER_MODE = "worker"
 
   args.shift()
   args.shift()
