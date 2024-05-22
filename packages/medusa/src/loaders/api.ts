@@ -28,6 +28,28 @@ export default async ({ app, container, plugins }: Options) => {
     ContainerRegistrationKeys.CONFIG_MODULE
   )
 
+  /**
+   * Always load plugin routes before the Medusa core routes, since it
+   * will allow the plugin to define routes with higher priority
+   * than Medusa. Here are couple of examples.
+   *
+   * - Plugin registers a route called "/products/active"
+   * - Medusa registers a route called "/products/:id"
+   *
+   * Now, if Medusa routes gets registered first, then the "/products/active"
+   * route will never be resolved, because it will be handled by the
+   * "/products/:id" route.
+   */
+  await Promise.all(
+    plugins.map(async (pluginDetails) => {
+      return new RoutesLoader({
+        app: app,
+        configModule,
+        rootDir: path.join(pluginDetails.resolve, "api"),
+      }).load()
+    })
+  )
+
   // TODO: Figure out why this is causing issues with test when placed inside ./api.ts
   // Adding this here temporarily
   // Test: (packages/medusa/src/api/routes/admin/currencies/update-currency.ts)
@@ -46,16 +68,6 @@ export default async ({ app, container, plugins }: Options) => {
       { cause: err }
     )
   }
-
-  await Promise.all(
-    plugins.map(async (pluginDetails) => {
-      return new RoutesLoader({
-        app: app,
-        configModule,
-        rootDir: path.join(pluginDetails.resolve, "api"),
-      }).load()
-    })
-  )
 
   return app
 }

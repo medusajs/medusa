@@ -59,15 +59,18 @@ export interface MedusaRequest<Body = unknown>
   pricingContext?: MedusaPricingContext
 }
 
+export interface AuthContext {
+  actor_id: string
+  // TODO: We possibly want to make this more open-ended so it's easy to extend.
+  actor_type: "api-key" | "user" | "customer" | "unknown"
+  auth_identity_id: string
+  scope: string
+  app_metadata: Record<string, any>
+}
+
 export interface AuthenticatedMedusaRequest<Body = never>
   extends MedusaRequest<Body> {
-  user: { customer_id?: string; userId?: string } // TODO: Remove this property when v2 is released
-  auth: {
-    actor_id: string
-    auth_user_id: string
-    app_metadata: Record<string, any>
-    scope: string
-  }
+  auth_context: AuthContext
 }
 
 export type MedusaResponse<Body = unknown> = Response<Body>

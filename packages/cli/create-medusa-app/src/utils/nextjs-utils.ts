@@ -7,6 +7,7 @@ import path from "path"
 import { customAlphabet } from "nanoid"
 import { isAbortError } from "./create-abort-controller.js"
 import logMessage from "./log-message.js"
+import ProcessManager from "./process-manager.js"
 
 const NEXTJS_REPO = "https://github.com/medusajs/nextjs-starter-medusa"
 
@@ -28,6 +29,7 @@ type InstallOptions = {
   abortController?: AbortController
   factBoxOptions: FactBoxOptions
   verbose?: boolean
+  processManager: ProcessManager
 }
 
 export async function installNextjsStarter({
@@ -35,6 +37,7 @@ export async function installNextjsStarter({
   abortController,
   factBoxOptions,
   verbose = false,
+  processManager
 }: InstallOptions): Promise<string> {
   factBoxOptions.interval = displayFactBox({
     ...factBoxOptions,
@@ -56,19 +59,35 @@ export async function installNextjsStarter({
   }
 
   try {
+    // TODO change back to use create-next-app once Next.js v2 changes land on the main branch
     await execute(
       [
-        `npx create-next-app -e ${NEXTJS_REPO} ${nextjsDirectory}`,
+        `git clone ${NEXTJS_REPO} -b v2 ${nextjsDirectory}`,
         {
           signal: abortController?.signal,
-          env: {
-            ...process.env,
-            npm_config_yes: "yes",
-          },
+          env: process.env,
         },
       ],
       { verbose }
     )
+    const execOptions = {
+      signal: abortController?.signal,
+      cwd: nextjsDirectory
+    }
+    await processManager.runProcess({
+      process: async () => {
+        try {
+          await execute([`yarn`, execOptions], { verbose })
+        } catch (e) {
+          // yarn isn't available
+          // use npm
+          await execute([`npm install`, execOptions], {
+            verbose,
+          })
+        }
+      },
+      ignoreERESOLVE: true,
+    })
   } catch (e) {
     if (isAbortError(e)) {
       process.exit()
@@ -79,6 +98,11 @@ export async function installNextjsStarter({
       type: "error",
     })
   }
+
+  fs.rmSync(path.join(nextjsDirectory, ".git"), {
+    recursive: true,
+    force: true,
+  })
 
   fs.renameSync(
     path.join(nextjsDirectory, ".env.template"),

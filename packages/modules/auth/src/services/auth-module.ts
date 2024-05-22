@@ -2,17 +2,14 @@ import {
   AuthenticationInput,
   AuthenticationResponse,
   AuthTypes,
-  AuthUserDTO,
   Context,
-  CreateAuthUserDTO,
   DAL,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-  UpdateAuthUserDTO,
 } from "@medusajs/types"
 
-import { AuthUser } from "@models"
+import { AuthIdentity } from "@models"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
@@ -26,33 +23,35 @@ import {
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  authUserService: ModulesSdkTypes.InternalModuleService<any>
+  authIdentityService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateMethodForModels = [AuthUser]
+const generateMethodForModels = [AuthIdentity]
 
-export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
+export default class AuthModuleService<
+    TAuthIdentity extends AuthIdentity = AuthIdentity
+  >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
-    AuthTypes.AuthUserDTO,
+    AuthTypes.AuthIdentityDTO,
     {
-      AuthUser: { dto: AuthUserDTO }
+      AuthIdentity: { dto: AuthTypes.AuthIdentityDTO }
     }
-  >(AuthUser, generateMethodForModels, entityNameToLinkableKeysMap)
+  >(AuthIdentity, generateMethodForModels, entityNameToLinkableKeysMap)
   implements AuthTypes.IAuthModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected authUserService_: ModulesSdkTypes.InternalModuleService<TAuthUser>
+  protected authIdentityService_: ModulesSdkTypes.InternalModuleService<TAuthIdentity>
 
   constructor(
-    { authUserService, baseRepository }: InjectedDependencies,
+    { authIdentityService, baseRepository }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
     super(...arguments)
 
     this.baseRepository_ = baseRepository
-    this.authUserService_ = authUserService
+    this.authIdentityService_ = authIdentityService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -60,21 +59,27 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
   }
 
   create(
-    data: CreateAuthUserDTO[],
+    data: AuthTypes.CreateAuthIdentityDTO[],
     sharedContext?: Context
-  ): Promise<AuthUserDTO[]>
+  ): Promise<AuthTypes.AuthIdentityDTO[]>
 
-  create(data: CreateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
+  create(
+    data: AuthTypes.CreateAuthIdentityDTO,
+    sharedContext?: Context
+  ): Promise<AuthTypes.AuthIdentityDTO>
 
   @InjectManager("baseRepository_")
   async create(
-    data: CreateAuthUserDTO[] | CreateAuthUserDTO,
+    data: AuthTypes.CreateAuthIdentityDTO[] | AuthTypes.CreateAuthIdentityDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]> {
-    const authUsers = await this.authUserService_.create(data, sharedContext)
+  ): Promise<AuthTypes.AuthIdentityDTO | AuthTypes.AuthIdentityDTO[]> {
+    const authIdentities = await this.authIdentityService_.create(
+      data,
+      sharedContext
+    )
 
-    return await this.baseRepository_.serialize<AuthTypes.AuthUserDTO[]>(
-      authUsers,
+    return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO[]>(
+      authIdentities,
       {
         populate: true,
       }
@@ -82,22 +87,28 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
   }
 
   update(
-    data: UpdateAuthUserDTO[],
+    data: AuthTypes.UpdateAuthIdentityDTO[],
     sharedContext?: Context
-  ): Promise<AuthUserDTO[]>
+  ): Promise<AuthTypes.AuthIdentityDTO[]>
 
-  update(data: UpdateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
+  update(
+    data: AuthTypes.UpdateAuthIdentityDTO,
+    sharedContext?: Context
+  ): Promise<AuthTypes.AuthIdentityDTO>
 
   // TODO: should be pluralized, see convention about the methods naming or the abstract module service interface definition @engineering
   @InjectManager("baseRepository_")
   async update(
-    data: UpdateAuthUserDTO | UpdateAuthUserDTO[],
+    data: AuthTypes.UpdateAuthIdentityDTO | AuthTypes.UpdateAuthIdentityDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]> {
-    const updatedUsers = await this.authUserService_.update(data, sharedContext)
+  ): Promise<AuthTypes.AuthIdentityDTO | AuthTypes.AuthIdentityDTO[]> {
+    const updatedUsers = await this.authIdentityService_.update(
+      data,
+      sharedContext
+    )
 
     const serializedUsers = await this.baseRepository_.serialize<
-      AuthTypes.AuthUserDTO[]
+      AuthTypes.AuthIdentityDTO[]
     >(updatedUsers, {
       populate: true,
     })
