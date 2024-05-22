@@ -48,7 +48,7 @@ export const AdminCompleteOrder = z.object({
 export type AdminCompleteOrderType = z.infer<typeof AdminArchiveOrder>
 
 const Item = z.object({
-  item_id: z.string(),
+  id: z.string(),
   quantity: z.number(),
 })
 
@@ -61,4 +61,21 @@ export const AdminOrderCreateFulfillment = z.object({
 
 export type AdminOrderCreateFulfillmentType = z.infer<
   typeof AdminOrderCreateFulfillment
+>
+
+const Label = z.object({
+  tracking_number: z.string(),
+  tracking_url: z.string(),
+  label_url: z.string(),
+})
+
+export const AdminOrderCreateShipment = z.object({
+  items: z.array(Item),
+  labels: z.array(Label),
+  no_notification: z.boolean().optional(),
+  metadata: z.record(z.unknown()).optional(),
+})
+
+export type AdminOrderCreateShipmentType = z.infer<
+  typeof AdminOrderCreateShipment
 >

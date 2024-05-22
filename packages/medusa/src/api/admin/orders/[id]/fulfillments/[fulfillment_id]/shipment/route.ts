@@ -1,10 +1,10 @@
-import { createOrderFulfillmentWorkflow } from "@medusajs/core-flows"
+import { createOrderShipmentWorkflow } from "@medusajs/core-flows"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
-import { AdminOrderCreateFulfillmentType } from "../../validators"
+} from "../../../../../../../types/routing"
+import { AdminOrderCreateShipmentType } from "../../../../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
@@ -15,11 +15,12 @@ export const POST = async (
   const variables = { id: req.params.id }
 
   const input = {
-    ...((req.validatedBody as AdminOrderCreateFulfillmentType) ?? {}),
+    ...(req.validatedBody as AdminOrderCreateShipmentType),
     order_id: req.params.id,
+    fulfillment_id: req.params.fulfillment_id,
   }
 
-  const { errors } = await createOrderFulfillmentWorkflow(req.scope).run({
+  const { errors } = await createOrderShipmentWorkflow(req.scope).run({
     input,
     throwOnError: false,
   })
