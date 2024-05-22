@@ -194,7 +194,6 @@ export const CreatePromotionForm = ({
     async (error) => {
       // TODO: showcase error when something goes wrong
       // Wait for alert component and use it here
-      console.log("error - ", error)
     }
   )
 
@@ -360,7 +359,6 @@ export const CreatePromotionForm = ({
     const ruleValue = watchCurrencyRule.values
 
     if (!Array.isArray(ruleValue) && currencyCode !== ruleValue) {
-      console.log("here?")
       form.setValue("application_method.currency_code", ruleValue as string)
     }
   }
