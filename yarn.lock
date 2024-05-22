@@ -5092,6 +5092,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass"
+  dependencies:
+    "@medusajs/utils": ^1.11.7
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    rimraf: ^5.0.1
+    scrypt-kdf: ^2.0.1
+    typescript: ^4.9.5
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/auth@workspace:*, @medusajs/auth@workspace:packages/modules/auth":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"

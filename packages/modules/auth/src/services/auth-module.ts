@@ -1,6 +1,7 @@
 import {
   AuthenticationInput,
   AuthenticationResponse,
+  AuthIdentityProviderService,
   AuthTypes,
   Context,
   DAL,
@@ -13,7 +14,12 @@ import { AuthIdentity } from "@models"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
-import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
+import {
+  InjectManager,
+  MedusaContext,
+  MedusaError,
+  ModulesSdkUtils,
+} from "@medusajs/utils"
 import AuthProviderService from "./auth-provider"
 
 type InjectedDependencies = {
@@ -126,27 +132,7 @@ export default class AuthModuleService<
       return await this.authProviderService_.authenticate(
         provider,
         authenticationData,
-        {
-          retrieve: async ({ entity_id, provider }) => {
-            const authIdentity = await this.authIdentityService_.retrieve({
-              entity_id,
-              provider,
-            })
-
-            return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
-              authIdentity
-            )
-          },
-          create: async (data: AuthTypes.CreateAuthIdentityDTO) => {
-            const createdAuthIdentity = await this.authIdentityService_.create(
-              data
-            )
-
-            return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
-              createdAuthIdentity
-            )
-          },
-        }
+        this.getAuthIdentityProviderService()
       )
     } catch (error) {
       return { success: false, error: error.message }
@@ -161,30 +147,46 @@ export default class AuthModuleService<
       return await this.authProviderService_.validateCallback(
         provider,
         authenticationData,
-        {
-          retrieve: async ({ entity_id, provider }) => {
-            const authIdentity = await this.authIdentityService_.retrieve({
-              entity_id,
-              provider,
-            })
-
-            return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
-              authIdentity
-            )
-          },
-          create: async (data: AuthTypes.CreateAuthIdentityDTO) => {
-            const createdAuthIdentity = await this.authIdentityService_.create(
-              data
-            )
-
-            return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
-              createdAuthIdentity
-            )
-          },
-        }
+        this.getAuthIdentityProviderService()
       )
     } catch (error) {
       return { success: false, error: error.message }
+    }
+  }
+
+  getAuthIdentityProviderService(): AuthIdentityProviderService {
+    return {
+      retrieve: async ({ entity_id, provider }) => {
+        const authIdentities = await this.authIdentityService_.list({
+          entity_id,
+          provider,
+        })
+
+        if (!authIdentities.length) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `AuthIdentity with entity_id "${entity_id}" not found`
+          )
+        }
+
+        if (authIdentities.length > 1) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Multiple authIdentities found for entity_id "${entity_id}"`
+          )
+        }
+
+        return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
+          authIdentities[0]
+        )
+      },
+      create: async (data: AuthTypes.CreateAuthIdentityDTO) => {
+        const createdAuthIdentity = await this.authIdentityService_.create(data)
+
+        return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
+          createdAuthIdentity
+        )
+      },
     }
   }
 }

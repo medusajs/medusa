@@ -1,7 +1,7 @@
-import { createAuthIdentities } from "../../../__fixtures__/auth-identity"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { Modules } from "@medusajs/modules-sdk"
 import { IAuthModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/modules-sdk"
+import { createAuthIdentities } from "../../__fixtures__/auth-identity"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -11,17 +11,16 @@ moduleIntegrationTestRunner({
     MikroOrmWrapper,
     service,
   }: SuiteOptions<IAuthModuleService>) => {
-    describe("AuthIdentity Service", () => {
+    describe("AuthModuleService - AuthIdentity", () => {
       beforeEach(async () => {
         await createAuthIdentities(MikroOrmWrapper.forkManager())
       })
 
-      describe("list", () => {
+      describe("listAuthIdentities", () => {
         it("should list authIdentities", async () => {
           const authIdentities = await service.list()
-          const serialized = JSON.parse(JSON.stringify(authIdentities))
 
-          expect(serialized).toEqual([
+          expect(authIdentities).toEqual([
             expect.objectContaining({
               provider: "store",
             }),
@@ -46,14 +45,12 @@ moduleIntegrationTestRunner({
           ])
         })
 
-        it("should list authIdentities by provider_id", async () => {
+        it("should list authIdentities by provider", async () => {
           const authIdentities = await service.list({
             provider: "manual",
           })
 
-          const serialized = JSON.parse(JSON.stringify(authIdentities))
-
-          expect(serialized).toEqual([
+          expect(authIdentities).toEqual([
             expect.objectContaining({
               id: "test-id",
             }),
@@ -64,13 +61,12 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("listAndCount", () => {
-        it("should list authIdentities", async () => {
+      describe("listAndCountAuthIdentities", () => {
+        it("should list and count authIdentities", async () => {
           const [authIdentities, count] = await service.listAndCount()
-          const serialized = JSON.parse(JSON.stringify(authIdentities))
 
           expect(count).toEqual(3)
-          expect(serialized).toEqual([
+          expect(authIdentities).toEqual([
             expect.objectContaining({
               provider: "store",
             }),
@@ -100,7 +96,7 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("retrieve", () => {
+      describe("retrieveAuthIdentity", () => {
         const id = "test-id"
 
         it("should return an authIdentity for the given id", async () => {
@@ -111,18 +107,6 @@ moduleIntegrationTestRunner({
               id,
             })
           )
-        })
-
-        it("should return authIdentity based on config select param", async () => {
-          const authIdentity = await service.retrieve(id, {
-            select: ["id"],
-          })
-
-          const serialized = JSON.parse(JSON.stringify(authIdentity))
-
-          expect(serialized).toEqual({
-            id,
-          })
         })
 
         it("should throw an error when an authIdentity with the given id does not exist", async () => {
@@ -139,6 +123,17 @@ moduleIntegrationTestRunner({
           )
         })
 
+        it("should not return an authIdentity with password hash", async () => {
+          const authIdentity = await service.retrieve("test-id-1")
+
+          expect(authIdentity).toEqual(
+            expect.objectContaining({
+              id: "test-id-1",
+            })
+          )
+          expect(authIdentity["password_hash"]).toEqual(undefined)
+        })
+
         it("should throw an error when a authIdentityId is not provided", async () => {
           let error
 
@@ -150,12 +145,22 @@ moduleIntegrationTestRunner({
 
           expect(error.message).toEqual("authIdentity - id must be defined")
         })
+
+        it("should return authIdentity based on config select param", async () => {
+          const authIdentity = await service.retrieve(id, {
+            select: ["id"],
+          })
+
+          expect(authIdentity).toEqual({
+            id,
+          })
+        })
       })
 
-      describe("delete", () => {
-        it("should delete the authIdentities given an id successfully", async () => {
-          const id = "test-id"
+      describe("deleteAuthIdentity", () => {
+        const id = "test-id"
 
+        it("should delete the authIdentities given an id successfully", async () => {
           await service.delete([id])
 
           const authIdentities = await service.list({
@@ -166,7 +171,9 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("update", () => {
+      describe("updateAuthIdentity", () => {
+        const id = "test-id"
+
         it("should throw an error when a id does not exist", async () => {
           let error
 
@@ -186,8 +193,6 @@ moduleIntegrationTestRunner({
         })
 
         it("should update authIdentity", async () => {
-          const id = "test-id"
-
           await service.update([
             {
               id,
@@ -204,7 +209,7 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("create", () => {
+      describe("createAuthIdentity", () => {
         it("should create a authIdentity successfully", async () => {
           await service.create([
             {
@@ -214,11 +219,12 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [authIdentity] = await service.list({
+          const [authIdentity, count] = await service.listAndCount({
             id: ["test"],
           })
 
-          expect(authIdentity).toEqual(
+          expect(count).toEqual(1)
+          expect(authIdentity[0]).toEqual(
             expect.objectContaining({
               id: "test",
             })
