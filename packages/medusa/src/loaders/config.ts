@@ -102,8 +102,8 @@ export default (rootDirectory: string): ConfigModule => {
     modules: configModule.modules ?? {},
     featureFlags: configModule?.featureFlags ?? {},
     plugins: configModule?.plugins ?? [],
-    directories: configModule?.directories ?? {
-      srcDir: "dist",
+    directories: {
+      srcDir: process[Symbol.for("ts-node.register.instance")] ? "src" : "dist",
     },
   }
 }
