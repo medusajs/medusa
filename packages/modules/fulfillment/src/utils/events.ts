@@ -10,28 +10,39 @@ export function buildCreatedFulfillmentSetEvents({
   sharedContext: Context
 }): void {
   const serviceZones: ServiceZone[] = []
-  const geoZones: GeoZone[] = []
 
   fulfillmentSets.flatMap((fulfillmentSet) => {
     if (!fulfillmentSet.service_zones?.length) {
       return
     }
 
-    serviceZones.map((serviceZone) => {
-      serviceZones.push(serviceZone)
-
-      if (!serviceZone.geo_zones.length) {
-        return
-      }
-
-      geoZones.push(...serviceZone.geo_zones)
-    })
+    serviceZones.push(...fulfillmentSet.service_zones)
   })
 
   buildFulfillmentSetEvents({
     action: CommonEvents.CREATED,
     fulfillmentSets,
     sharedContext,
+  })
+
+  buildCreatedServiceZoneEvents({ serviceZones, sharedContext })
+}
+
+export function buildCreatedServiceZoneEvents({
+  serviceZones,
+  sharedContext,
+}: {
+  serviceZones: ServiceZone[]
+  sharedContext: Context
+}): void {
+  const geoZones: GeoZone[] = []
+
+  serviceZones.flatMap((serviceZone) => {
+    if (!serviceZone.geo_zones.length) {
+      return
+    }
+
+    geoZones.push(...serviceZone.geo_zones)
   })
 
   buildServiceZoneEvents({

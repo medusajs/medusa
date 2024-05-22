@@ -39,6 +39,7 @@ import {
 } from "@models"
 import {
   buildCreatedFulfillmentSetEvents,
+  buildCreatedServiceZoneEvents,
   buildFulfillmentSetEvents,
   buildGeoZoneEvents,
   buildServiceZoneEvents,
@@ -332,6 +333,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ServiceZoneDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createServiceZones(
     data:
       | FulfillmentTypes.CreateServiceZoneDTO[]
@@ -345,9 +347,14 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
+    buildCreatedServiceZoneEvents({
+      serviceZones: createdServiceZones,
+      sharedContext,
+    })
+
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
-    >(createdServiceZones)
+    >(Array.isArray(data) ? createdServiceZones : createdServiceZones[0])
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -356,7 +363,7 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.CreateServiceZoneDTO[]
       | FulfillmentTypes.CreateServiceZoneDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TServiceZoneEntity | TServiceZoneEntity[]> {
+  ): Promise<TServiceZoneEntity[]> {
     const data_ = Array.isArray(data) ? data : [data]
 
     if (!data_.length) {
@@ -376,7 +383,7 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    return Array.isArray(data) ? createdServiceZones : createdServiceZones[0]
+    return createdServiceZones
   }
 
   createShippingOptions(
