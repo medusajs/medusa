@@ -45,8 +45,6 @@ export const createAuthenticatedCustomer = async (
       actor_id: customer.id,
       actor_type: "customer",
       auth_identity_id: authIdentity.id,
-      scope: "store",
-      app_metadata: {},
     },
     http.jwtSecret
   )

@@ -33,7 +33,7 @@ medusaIntegrationTestRunner({
           })
         },
         async () => {
-          return await api.post("/auth/admin/emailpass", {
+          return await api.post("/auth/user/emailpass", {
             email: "admin@medusa.js",
             password: "secret_password",
           })
@@ -63,7 +63,7 @@ medusaIntegrationTestRunner({
 
     it("should test the entire authentication lifecycle", async () => {
       // sign in
-      const response = await api.post("/auth/admin/emailpass", {
+      const response = await api.post("/auth/user/emailpass", {
         email: "admin@medusa.js",
         password: "secret_password",
       })

@@ -51,7 +51,6 @@ export default async function ({
           email,
           password,
         },
-        authScope: "admin",
       })
 
       await remoteLink.create([

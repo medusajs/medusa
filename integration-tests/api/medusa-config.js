@@ -42,16 +42,14 @@ module.exports = {
     },
     workflows: true,
     [Modules.AUTH]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/auth",
       options: {
         providers: [
           {
-            name: "emailpass",
-            scopes: {
-              admin: {},
-              store: {},
+            resolve: "@medusajs/auth-emailpass",
+            options: {
+              config: {
+                emailpass: {},
+              },
             },
           },
         ],

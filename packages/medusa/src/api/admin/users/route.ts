@@ -73,8 +73,6 @@ export const POST = async (
       actor_id: result.id,
       actor_type: "user",
       auth_identity_id: req.auth_context.auth_identity_id,
-      app_metadata: {},
-      scope: "admin",
     },
     {
       secret: jwtSecret,
