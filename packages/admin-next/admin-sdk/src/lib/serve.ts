@@ -24,7 +24,7 @@ export async function serve(options: ServeOptions) {
 
   if (!indexExists) {
     throw new Error(
-      `Could not find the admin UI build files. Please run \`npm run build\` command and try again.`
+      `Could not find the admin UI build files. Please run \`npm run build\` or \`yarn build\` command and try again.`
     )
   }
 
