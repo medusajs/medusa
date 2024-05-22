@@ -23,7 +23,7 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { createLinkStep, useRemoteQueryStep } from "../../common"
-import { createFulfillmentWorkflow } from "../../fulfillment"
+import { createReturnFulfillmentWorkflow } from "../../fulfillment"
 import { updateOrderTaxLinesStep } from "../steps"
 import { createReturnStep } from "../steps/create-return"
 
@@ -340,7 +340,7 @@ export const createReturnOrderWorkflow = createWorkflow(
     )
 
     const returnFulfillment =
-      createFulfillmentWorkflow.runAsStep(fulfillmentData)
+      createReturnFulfillmentWorkflow.runAsStep(fulfillmentData)
 
     const link = transform(
       { order_id: input.order_id, fulfillment: returnFulfillment },
@@ -354,7 +354,5 @@ export const createReturnOrderWorkflow = createWorkflow(
       }
     )
     createLinkStep(link)
-
-    // TODO call the createReturn from the fulfillment provider
   }
 )

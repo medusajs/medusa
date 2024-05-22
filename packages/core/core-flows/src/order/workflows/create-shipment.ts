@@ -12,6 +12,8 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
+import { createShipmentWorkflow } from "../../fulfillment"
+import { registerOrderShipmentStep } from "../steps"
 
 function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
   if (order.status === OrderStatus.CANCELED) {
@@ -45,18 +47,27 @@ function throwIfItemsDoesNotExistsInOrder({
 
 const validateOrder = createStep(
   "validate-order",
-  (
-    {
-      order,
-      inputItems,
-    }: {
-      order: OrderDTO
-      inputItems: OrderWorkflow.CreateOrderShipmentWorkflowInput["items"]
-    },
-    context
-  ) => {
+  ({
+    order,
+    input,
+  }: {
+    order: OrderDTO
+    input: OrderWorkflow.CreateOrderShipmentWorkflowInput
+  }) => {
+    const inputItems = input.items
+
     throwIfOrderIsCancelled({ order })
     throwIfItemsDoesNotExistsInOrder({ order, inputItems })
+
+    const order_ = order as OrderDTO & { fulfillments: FulfillmentDTO[] }
+    const fulfillment = order_.fulfillments.find(
+      (f) => f.id === input.fulfillment_id
+    )
+    if (!fulfillment) {
+      throw new Error(
+        `Fulfillment with id ${input.fulfillment_id} not found in the order`
+      )
+    }
   }
 )
 
@@ -64,14 +75,12 @@ function prepareRegisterShipmentData({
   order,
   input,
 }: {
-  order: OrderDTO & { fulfillments: FulfillmentDTO[] }
+  order: OrderDTO
   input: OrderWorkflow.CreateOrderShipmentWorkflowInput
 }) {
   const fulfillId = input.fulfillment_id
-  const fulfillment = order.fulfillments.find((f) => f.id === fulfillId)
-  if (!fulfillment) {
-    throw new Error(`Fulfillment with id ${fulfillId} not found`)
-  }
+  const order_ = order as OrderDTO & { fulfillments: FulfillmentDTO[] }
+  const fulfillment = order_.fulfillments.find((f) => f.id === fulfillId)!
 
   return {
     order_id: order.id,
@@ -108,13 +117,24 @@ export const createOrderShipmentWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    validateOrder({ order, inputItems: input.items })
+    validateOrder({ order, input })
+
+    const fulfillmentData = transform({ input }, ({ input }) => {
+      return {
+        id: input.fulfillment_id,
+        labels: input.labels,
+      }
+    })
+
+    createShipmentWorkflow.runAsStep({
+      input: fulfillmentData,
+    })
 
     const shipmentData = transform(
       { order, input },
       prepareRegisterShipmentData
     )
 
-    // trigger event OrderModuleService.Events.SHIPMENT_CREATED
+    registerOrderShipmentStep(shipmentData)
   }
 )

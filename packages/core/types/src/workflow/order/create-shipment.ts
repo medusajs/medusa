@@ -1,4 +1,5 @@
 import { BigNumberInput } from "../../totals"
+import { CreateFulfillmentLabelWorkflowDTO } from "../fulfillment"
 
 interface CreateOrderShipmentItem {
   id: string
@@ -10,6 +11,7 @@ export interface CreateOrderShipmentWorkflowInput {
   fulfillment_id: string
   created_by?: string // The id of the authenticated user
   items: CreateOrderShipmentItem[]
+  labels?: CreateFulfillmentLabelWorkflowDTO[]
   no_notification?: boolean
   metadata: Record<string, any>
 }
