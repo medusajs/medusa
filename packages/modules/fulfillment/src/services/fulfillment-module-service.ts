@@ -15,6 +15,7 @@ import {
 } from "@medusajs/types"
 import {
   arrayDifference,
+  CommonEvents,
   EmitEvents,
   FulfillmentUtils,
   getSetDifference,
@@ -271,9 +272,19 @@ export default class FulfillmentModuleService<
   > {
     const createdFulfillmentSets = await this.create_(data, sharedContext)
 
+    this.buildFulfillmentSetEvents(
+      createdFulfillmentSets,
+      CommonEvents.CREATED,
+      sharedContext
+    )
+
+    const returnedFulfillmentSets = Array.isArray(data)
+      ? createdFulfillmentSets
+      : createdFulfillmentSets[0]
+
     return await this.baseRepository_.serialize<
       FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
-    >(createdFulfillmentSets)
+    >(returnedFulfillmentSets)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -282,7 +293,7 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.CreateFulfillmentSetDTO
       | FulfillmentTypes.CreateFulfillmentSetDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity | TEntity[]> {
+  ): Promise<TEntity[]> {
     const data_ = Array.isArray(data) ? data : [data]
 
     if (!data_.length) {
@@ -304,14 +315,7 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    this.aggregateFulfillmentSetCreatedEvents(
-      createdFulfillmentSets,
-      sharedContext
-    )
-
-    return Array.isArray(data)
-      ? createdFulfillmentSets
-      : createdFulfillmentSets[0]
+    return createdFulfillmentSets
   }
 
   createServiceZones(
@@ -1792,8 +1796,9 @@ export default class FulfillmentModuleService<
     return geoZoneConstraints
   }
 
-  protected aggregateFulfillmentSetCreatedEvents(
+  protected buildFulfillmentSetEvents(
     createdFulfillmentSets: TEntity[],
+    action: string,
     sharedContext: Context
   ): void {
     const buildMessage = ({
@@ -1809,7 +1814,7 @@ export default class FulfillmentModuleService<
         eventName,
         object,
         service: Modules.FULFILLMENT,
-        action: "created",
+        action,
         context: sharedContext,
         data: { id },
       }
