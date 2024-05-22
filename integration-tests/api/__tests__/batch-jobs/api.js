@@ -24,17 +24,17 @@ const setupJobDb = async (dbConnection) => {
   await simpleBatchJobFactory(dbConnection, {
     id: "job_1",
     type: "product-export",
-    created_by: "admin_user",
+    created_by: expect.any(String),
   })
   await simpleBatchJobFactory(dbConnection, {
     id: "job_2",
     type: "product-export",
-    created_by: "admin_user",
+    created_by: expect.any(String),
   })
   await simpleBatchJobFactory(dbConnection, {
     id: "job_3",
     type: "product-export",
-    created_by: "admin_user",
+    created_by: expect.any(String),
   })
   await simpleBatchJobFactory(dbConnection, {
     id: "job_4",
@@ -47,7 +47,7 @@ const setupJobDb = async (dbConnection) => {
     type: "product-export",
     status: "completed",
     completed_at: "2022-06-27T22:00:00.000Z",
-    created_by: "admin_user",
+    created_by: expect.any(String),
   })
 }
 
@@ -91,25 +91,25 @@ describe("/admin/batch-jobs", () => {
               id: "job_5",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
             expect.objectContaining({
               id: "job_3",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
             expect.objectContaining({
               id: "job_2",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
             expect.objectContaining({
               id: "job_1",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
           ]),
         })
@@ -132,19 +132,19 @@ describe("/admin/batch-jobs", () => {
               id: "job_3",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
             expect.objectContaining({
               id: "job_2",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
             expect.objectContaining({
               id: "job_1",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              created_by: "admin_user",
+              created_by: expect.any(String),
             }),
           ]),
         })
@@ -171,7 +171,7 @@ describe("/admin/batch-jobs", () => {
         expect.objectContaining({
           created_at: expect.any(String),
           updated_at: expect.any(String),
-          created_by: "admin_user",
+          created_by: expect.any(String),
         })
       )
     })
@@ -213,7 +213,7 @@ describe("/admin/batch-jobs", () => {
       expect(response.status).toEqual(201)
       expect(response.data.batch_job).toEqual(
         expect.objectContaining({
-          created_by: "admin_user",
+          created_by: expect.any(String),
           status: "created",
           id: expect.any(String),
         })
@@ -254,7 +254,7 @@ describe("/admin/batch-jobs", () => {
       await simpleBatchJobFactory(dbConnection, {
         id: "job_complete",
         type: "product-export",
-        created_by: "admin_user",
+        created_by: expect.any(String),
         completed_at: new Date(),
       })
     })

@@ -17,7 +17,10 @@ export const GET = async (
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "order",
     variables: {
-      filters: { ...req.filterableFields, customer_id: req.auth.actor_id },
+      filters: {
+        ...req.filterableFields,
+        customer_id: req.auth_context.actor_id,
+      },
       ...req.remoteQueryConfig.pagination,
     },
     fields: req.remoteQueryConfig.fields,

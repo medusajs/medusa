@@ -1,7 +1,7 @@
-import { AuthUser } from "@models"
+import { AuthIdentity } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-export async function createAuthUsers(
+export async function createAuthIdentities(
   manager: SqlEntityManager,
   userData: any[] = [
     {
@@ -22,16 +22,16 @@ export async function createAuthUsers(
       scope: "store",
     },
   ]
-): Promise<AuthUser[]> {
-  const authUsers: AuthUser[] = []
+): Promise<AuthIdentity[]> {
+  const authIdentities: AuthIdentity[] = []
 
   for (const user of userData) {
-    const authUser = manager.create(AuthUser, user)
+    const authIdentity = manager.create(AuthIdentity, user)
 
-    authUsers.push(authUser)
+    authIdentities.push(authIdentity)
   }
 
-  await manager.persistAndFlush(authUsers)
+  await manager.persistAndFlush(authIdentities)
 
-  return authUsers
+  return authIdentities
 }

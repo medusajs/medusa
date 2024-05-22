@@ -1,2 +1,2 @@
 export { default as AuthModuleService } from "./auth-module"
-export { default as AuthUserService } from "./auth-user"
+export { default as AuthIdentityService } from "./auth-identity"
