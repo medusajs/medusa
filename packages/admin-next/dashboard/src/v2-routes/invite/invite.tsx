@@ -14,6 +14,8 @@ import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
 import { isAxiosError } from "../../lib/is-axios-error"
 import { useV2AcceptInvite, useV2CreateAuthUser } from "../../lib/api-v2"
+import { useAcceptInvite } from "../../hooks/api/invites"
+import { useCreateAuthUser } from "../../hooks/api/auth"
 
 const CreateAccountSchema = z
   .object({
@@ -205,10 +207,10 @@ const CreateView = ({
   })
 
   const { mutateAsync: createAuthUser, isPending: isCreatingAuthUser } =
-    useV2CreateAuthUser()
+    useCreateAuthUser()
 
   const { mutateAsync: acceptInvite, isPending: isAcceptingInvite } =
-    useV2AcceptInvite(token)
+    useAcceptInvite(token)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
@@ -224,8 +226,8 @@ const CreateView = ({
       }
 
       await acceptInvite({
-        payload: invitePayload,
-        token: authToken,
+        ...invitePayload,
+        auth_token: authToken,
       })
       onSuccess()
       toast.success(t("general.success"), {

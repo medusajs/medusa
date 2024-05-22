@@ -161,8 +161,10 @@ export class Client {
       if (input instanceof URL || typeof input === "string") {
         normalizedInput = new URL(input, this.config.baseUrl)
         if (init?.query) {
-          const existing = qs.parse(normalizedInput.search)
-          const stringifiedQuery = qs.stringify({ existing, ...init.query })
+          const params = Object.fromEntries(
+            normalizedInput.searchParams.entries()
+          )
+          const stringifiedQuery = qs.stringify({ ...params, ...init.query })
           normalizedInput.search = stringifiedQuery
         }
       }
