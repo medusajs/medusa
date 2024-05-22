@@ -664,6 +664,7 @@ moduleIntegrationTestRunner({
             })
 
             expect(updatedFulfillmentSets).toHaveLength(2)
+            expect(eventBusEmitSpy.mock.calls[1][0]).toHaveLength(2)
 
             for (const data_ of updateData) {
               const currentFullfillmentSet = fullfillmentSets.find(
@@ -678,7 +679,7 @@ moduleIntegrationTestRunner({
                 })
               )
 
-              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+              expect(eventBusEmitSpy).toHaveBeenLastCalledWith(
                 expect.arrayContaining([
                   buildExpectedEventMessageShape({
                     eventName: FulfillmentEvents.updated,
@@ -691,7 +692,7 @@ moduleIntegrationTestRunner({
             }
           })
 
-          it.only("should update an existing fulfillment set and replace old service zones by a new one", async function () {
+          it("should update an existing fulfillment set and replace old service zones by a new one", async function () {
             const createData: CreateFulfillmentSetDTO = {
               name: "test",
               type: "test-type",
@@ -763,6 +764,7 @@ moduleIntegrationTestRunner({
               })
             )
 
+            expect(eventBusEmitSpy.mock.calls[1][0]).toHaveLength(5)
             expect(eventBusEmitSpy).toHaveBeenLastCalledWith(
               expect.arrayContaining([
                 buildExpectedEventMessageShape({
@@ -871,6 +873,36 @@ moduleIntegrationTestRunner({
                 ]),
               })
             )
+
+            const createdServiceZone = updatedFulfillmentSet.service_zones.find(
+              (s) => s.name === "service-zone-test2"
+            )
+
+            expect(eventBusEmitSpy.mock.calls[1][0]).toHaveLength(3)
+            expect(eventBusEmitSpy).toHaveBeenLastCalledWith(
+              expect.arrayContaining([
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.updated,
+                  action: "updated",
+                  object: "fulfillment_set",
+                  data: { id: updatedFulfillmentSet.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.service_zone_created,
+                  action: "created",
+                  object: "service_zone",
+                  data: { id: createdServiceZone.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.geo_zone_created,
+                  action: "created",
+                  object: "geo_zone",
+                  data: {
+                    id: createdServiceZone.geo_zones[0].id,
+                  },
+                }),
+              ])
+            )
           })
 
           it("should fail on duplicated fulfillment set name", async function () {
@@ -956,11 +988,16 @@ moduleIntegrationTestRunner({
             const updatedFulfillmentSets = await service.update(updateData)
 
             expect(updatedFulfillmentSets).toHaveLength(2)
+            expect(eventBusEmitSpy.mock.calls[1][0]).toHaveLength(10)
 
             for (const data_ of updateData) {
               const expectedFulfillmentSet = updatedFulfillmentSets.find(
                 (f) => f.id === data_.id
               )
+              const originalFulfillmentSet = createdFulfillmentSets.find(
+                (f) => f.id === data_.id
+              )
+
               expect(expectedFulfillmentSet).toEqual(
                 expect.objectContaining({
                   id: data_.id,
@@ -983,6 +1020,47 @@ moduleIntegrationTestRunner({
                     }),
                   ]),
                 })
+              )
+
+              expect(eventBusEmitSpy).toHaveBeenLastCalledWith(
+                expect.arrayContaining([
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.updated,
+                    action: "updated",
+                    object: "fulfillment_set",
+                    data: { id: expectedFulfillmentSet.id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.service_zone_created,
+                    action: "created",
+                    object: "service_zone",
+                    data: { id: expectedFulfillmentSet.service_zones[0].id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.geo_zone_created,
+                    action: "created",
+                    object: "geo_zone",
+                    data: {
+                      id: expectedFulfillmentSet.service_zones[0].geo_zones[0]
+                        .id,
+                    },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.service_zone_deleted,
+                    action: "deleted",
+                    object: "service_zone",
+                    data: { id: originalFulfillmentSet.service_zones[0].id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.geo_zone_deleted,
+                    action: "deleted",
+                    object: "geo_zone",
+                    data: {
+                      id: originalFulfillmentSet.service_zones[0].geo_zones[0]
+                        .id,
+                    },
+                  }),
+                ])
               )
             }
 
@@ -1061,6 +1139,7 @@ moduleIntegrationTestRunner({
             const updatedFulfillmentSets = await service.update(updateData)
 
             expect(updatedFulfillmentSets).toHaveLength(2)
+            expect(eventBusEmitSpy.mock.calls[1][0]).toHaveLength(6)
 
             for (const data_ of updateData) {
               const expectedFulfillmentSet = updatedFulfillmentSets.find(
@@ -1091,6 +1170,36 @@ moduleIntegrationTestRunner({
                     }),
                   ]),
                 })
+              )
+
+              const createdServiceZone =
+                expectedFulfillmentSet.service_zones.find((s) =>
+                  s.name.includes(`added-service-zone-test`)
+                )
+
+              expect(eventBusEmitSpy).toHaveBeenLastCalledWith(
+                expect.arrayContaining([
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.updated,
+                    action: "updated",
+                    object: "fulfillment_set",
+                    data: { id: expectedFulfillmentSet.id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.service_zone_created,
+                    action: "created",
+                    object: "service_zone",
+                    data: { id: createdServiceZone.id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.geo_zone_created,
+                    action: "created",
+                    object: "geo_zone",
+                    data: {
+                      id: createdServiceZone.geo_zones[0].id,
+                    },
+                  }),
+                ])
               )
             }
 

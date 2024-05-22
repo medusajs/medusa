@@ -10,9 +10,8 @@ export function EmitEvents(
     propertyKey: string | symbol,
     descriptor: any
   ): void {
-    const aggregator = new MessageAggregator()
     InjectIntoContext({
-      messageAggregator: () => aggregator,
+      messageAggregator: () => new MessageAggregator(),
     })(target, propertyKey, descriptor)
 
     const original = descriptor.value
@@ -29,6 +28,8 @@ export function EmitEvents(
         )
       }
 
+      const argIndex = target.MedusaContextIndex_[propertyKey]
+      const aggregator = args[argIndex].messageAggregator as MessageAggregator
       await target.emitEvents_.apply(this, [aggregator.getMessages(options)])
 
       aggregator.clearMessages()
