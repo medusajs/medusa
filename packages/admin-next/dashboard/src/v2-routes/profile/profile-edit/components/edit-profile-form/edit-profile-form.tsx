@@ -170,7 +170,8 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
                           <a
                             key="hint-link"
                             className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg underline"
-                            href="https://docs.medusajs.com/usage#admin-analytics"
+                            // TODO change link once docs are public
+                            href="https://medusa-resources-git-docs-v2-medusajs.vercel.app/resources/usage#admin-analytics"
                             target="_blank"
                             rel="noopener noreferrer"
                           />,
