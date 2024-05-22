@@ -1,0 +1,311 @@
+import { Table, Tabs, TabsList, TabsContent, TabsContentWrapper, TabsTrigger } from "docs-ui"
+
+export const metadata = {
+  title: `S3 File Provider Module`,
+}
+
+# {metadata.title}
+
+The S3 File Provider Module integrates Amazon S3 and services following a compatible API (such as MinIO or DigitalOcean Spaces) to store files uploaded to your Medusa application.
+
+---
+
+## Prerequisites
+
+<Tabs defaultValue="aws">
+  <TabsList>
+    <TabsTrigger value="aws">AWS S3</TabsTrigger>
+    <TabsTrigger value="minio">MinIO</TabsTrigger>
+    <TabsTrigger value="spaces">DigitalOcean Spaces</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="aws">
+
+    - [AWS account](https://console.aws.amazon.com/console/home?nc2=h_ct&src=header-signin).
+    - [S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) with the "Public Access setting" enabled.
+    - [AWS user with AmazonS3FullAccess permissions](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-and-attach-iam-policy.html).
+    - [AWS user access key ID and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
+    - Change your [bucket's policy](https://docs.aws.amazon.com/AmazonS3/latest/userguide/add-bucket-policy.html) to the following:
+
+    ```json
+    {
+      "Version": "2012-10-17",
+      "Id": "Policy1397632521960",
+      "Statement": [
+        {
+          "Sid": "Stmt1397633323327",
+          "Effect": "Allow",
+          "Principal": {
+            "AWS": "*"
+          },
+          "Action": "s3:GetObject",
+          "Resource": "arn:aws:s3:::{bucket_name}/*"
+        }
+      ]
+    }
+    ```
+
+    Make sure to replace `{bucket_name}` with the name of the bucket you created.
+
+    </TabsContent>
+    <TabsContent value="minio">
+
+    - [Install MinIO](https://min.io/docs/minio/linux/index.html).
+    - Change port to `9001` using the [console address](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html#minio.server.-console-address) and [address](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html#minio.server.-address) CLI options.
+    - [MinIO bucket with public access policy](https://min.io/docs/minio/linux/administration/console/managing-objects.html#creating-buckets).
+    - [MinIO access and secret access key](https://min.io/docs/minio/linux/administration/console/security-and-access.html#id1).
+
+    </TabsContent>
+    <TabsContent value="spaces">
+
+    - [DigitalOcean account](https://cloud.digitalocean.com/registrations/new).
+    - [DigitalOcean Spaces bucket](https://docs.digitalocean.com/products/spaces/how-to/create/).
+    - [DigitalOcean Spaces access and secret access keys](https://docs.digitalocean.com/products/spaces/how-to/manage-access/#access-keys).
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
+
+---
+
+## Install the S3 File Module
+
+To install the S3 File Provider Module, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install @medusajs/file-s3
+```
+
+Next, add the module into the `providers` array of the File Module:
+
+<Note>
+
+The File Module accepts one provider only.
+
+</Note>
+
+```js title="medusa-config.js"
+module.exports = {
+  // ...
+  modules: {
+    // ...
+    [Modules.FILE]: {
+      resolve: "@medusajs/file",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/file-s3",
+            options: {
+              config: {
+                s3: {
+                  file_url: process.env.S3_FILE_URL,
+                  access_key_id: process.env.S3_ACCESS_KEY_ID,
+                  secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
+                  region: process.env.S3_REGION,
+                  bucket: process.env.S3_BUCKET,
+                  endpoint: process.env.S3_ENDPOINT,
+                  // other options...
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+  },
+}
+```
+
+### S3 File Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `file_url`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The base URL to upload files to.
+
+      - For AWS S3, the endpoint is of the format `https://{bucket}.s3.{region}.amazonaws.com`
+      - For MinIO, it's the URL to the MinIO server.
+      - For DigitalOcean Spaces, it's either the Origin Endpoint or the CDN endpoint of your Spaces Object Storage bucket.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `access_key_id`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The AWS or (S3 compatible) user's access key ID.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `secret_access_key`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The AWS or (S3 compatible) user's secret access key.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `region`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The bucket's region code.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `bucket`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The bucket's name.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `endpoint`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The URL to the AWS S3 (or compatible S3 API) server.
+
+      - For AWS S3, the endpoint is of the format `{bucket}.s3.{region}.amazonaws.com`
+      - For MinIO, it's the URL to the MinIO server.
+      - For DigitalOcean Spaces, it's the Spaces Origin Endpoint.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `prefix`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string to prefix each uploaded file's name.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `cache_control`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating how long objects remain in the AWS S3 (or compatible S3 API) cache.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `public, max-age=31536000`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `download_file_duration`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A number indicating the expiry time of presigned URLs in seconds.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `3600` (An hour)
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `additional_client_config`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Any additional configurations to pass to the S3 client.
+      
+      Refer to [this AWS API reference](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html) for a full list of accepted configuration.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

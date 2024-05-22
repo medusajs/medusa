@@ -17,6 +17,11 @@ export default function (theme: MarkdownTheme) {
       const tagTitle = camelToTitleCase(tag.tag.substring(1)),
         tagContent = Handlebars.helpers.comment(tag.content)
 
+      if (tag.tag === "@deprecated") {
+        // show as admonition
+        return `:::note[Deprecated]\n\n${tagContent}\n\n:::`
+      }
+
       if (showCommentsAsHeader) {
         return `${Handlebars.helpers.titleLevel.call(
           parent

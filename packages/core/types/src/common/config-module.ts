@@ -29,17 +29,19 @@ export type AdminOptions = {
    */
   path?: `/${string}`
   /**
-   * The directory where the admin build is output. This is where the build process will place the generated files.
+   * The directory where the admin build is output. This is where the build process places the generated files.
    * The default value is `./build`.
    */
   outDir?: string
   /**
-   * The URL of your Medusa server. Defaults to an empty string, which means requests will hit the same server that serves the dashboard.
+   * The URL of your Medusa backend. Defaults to an empty string, which means requests will hit the same server that serves the dashboard.
    */
   backendUrl?: string
   /**
    * Configure the Vite configuration for the admin dashboard. This function receives the default Vite configuration
    * and returns the modified configuration. The default value is `undefined`.
+   * 
+   * @privateRemarks TODO Add example
    */
   vite?: (config: InlineConfig) => InlineConfig
 }
@@ -216,7 +218,7 @@ export type ProjectConfigOptions = {
    * @ignore
    * @deprecated
    *
-   * @privateRemark
+   * @privateRemarks
    * only postgres is supported, so this config has no effect
    */
   database_type?: string
@@ -379,11 +381,8 @@ export type ProjectConfigOptions = {
   session_options?: SessionOptions
 
   /**
-   * @deprecated - use `http.compression` instead
    * Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
    * However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
-   *
-   * Its value is an object that has the following properties:
    *
    * If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`.
    *
@@ -402,6 +401,9 @@ export type ProjectConfigOptions = {
    *   // ...
    * }
    * ```
+   * 
+   * @deprecated use {@link http }'s `compression` property instead.
+   * 
    */
   http_compression?: HttpCompressionOptions
 
@@ -713,7 +715,8 @@ export type ProjectConfigOptions = {
  *
  * `medusa-config.js` exports an object having the following properties:
  *
- * - {@link ConfigModule.projectConfig | projectConfig}: (required): An object that holds general configurations related to the Medusa backend, such as database or CORS configurations.
+ * - {@link ConfigModule.projectConfig | projectConfig} (required): An object that holds general configurations related to the Medusa backend, such as database or CORS configurations.
+ * - {@link ConfigModule.admin | admin}: An object that holds admin-related configurations.
  * - {@link ConfigModule.plugins | plugins}: An array of plugin configurations that defines what plugins are installed and optionally specifies each of their configurations.
  * - {@link ConfigModule.modules | modules}: An object that defines what modules are installed and optionally specifies each of their configurations.
  * - {@link ConfigModule.featureFlags | featureFlags}: An object that enables or disables features guarded by a feature flag.
@@ -723,7 +726,7 @@ export type ProjectConfigOptions = {
  * ```js title="medusa-config.js"
  * module.exports = {
  *   projectConfig,
- *   plugins,
+ *   admin,
  *   modules,
  *   featureFlags,
  * }
@@ -748,6 +751,16 @@ export type ConfigModule = {
 
   /**
    * Admin dashboard configurations.
+   * 
+   * @example
+   * ```js title="medusa-config.js"
+   * module.exports = {
+   *   admin: {
+   *     backendUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
+   *   }
+   *   // ...
+   * }
+   * ```
    */
   admin?: AdminOptions
 
@@ -863,6 +876,12 @@ export type ConfigModule = {
    */
   featureFlags: Record<string, boolean | string>
 
+  /**
+   * @ignore
+   * 
+   * @privateRemarks
+   * Since this is a temporary config, maybe let's not include it in the generated reference for now.
+   */
   directories?: {
     srcDir?: string
   }

@@ -1,4 +1,4 @@
-import { ProductTypes, PricingTypes } from "@medusajs/types"
+import { ProductTypes } from "@medusajs/types"
 import {
   WorkflowData,
   createWorkflow,
@@ -8,7 +8,7 @@ import { createProductsStep } from "../steps/create-products"
 import { createVariantPricingLinkStep } from "../steps/create-variant-pricing-link"
 import { createPriceSetsStep } from "../../pricing"
 import { associateProductsWithSalesChannelsStep } from "../../sales-channel"
-import { CreateProductWorkflowInputDTO } from "@medusajs/types/src"
+import { CreateProductWorkflowInputDTO } from "@medusajs/types"
 
 type WorkflowInput = {
   products: CreateProductWorkflowInputDTO[]
