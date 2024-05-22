@@ -226,30 +226,17 @@ export default async ({
       title: "Seeding database...",
     })
 
-    const seedScriptPath = path.join("dist", "scripts", "seed.js")
-
-    // check if a seed file exists in the project
-    if (!fs.existsSync(path.join(directory, seedScriptPath))) {
-      spinner
-        ?.warn(
-          chalk.yellow(
-            "Seed file was not found in the project. Skipping seeding..."
-          )
-        )
-        .start()
-      return inviteToken
-    }
-
     await processManager.runProcess({
       process: async () => {
-        await execute(
-          [
-            `npx medusa exec ${seedScriptPath}`,
-            npxOptions,
-          ],
-          { verbose }
-        )
+        try {
+          await execute([`yarn seed`, execOptions], { verbose })
+        } catch (e) {
+          // yarn isn't available
+          // use npm
+          await execute([`npm run seed`, execOptions], { verbose })
+        }
       },
+      ignoreERESOLVE: true,
     })
 
     displayFactBox({
