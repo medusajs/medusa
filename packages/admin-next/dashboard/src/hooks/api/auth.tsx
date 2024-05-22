@@ -21,3 +21,15 @@ export const useLogout = (options?: UseMutationOptions<void, Error>) => {
     ...options,
   })
 }
+
+export const useCreateAuthUser = (
+  options?: UseMutationOptions<{ token: string }, Error, EmailPassReq>
+) => {
+  return useMutation({
+    mutationFn: (payload) => sdk.auth.create("admin", "emailpass", payload),
+    onSuccess: async (data, variables, context) => {
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
