@@ -22,7 +22,7 @@ export default async function ({
   try {
     /**
      * Enabling worker mode to prevent discovering/loading
-     * starter kit resources
+     * of API routes from the starter kit
      */
     process.env.MEDUSA_WORKER_MODE = "worker"
 
