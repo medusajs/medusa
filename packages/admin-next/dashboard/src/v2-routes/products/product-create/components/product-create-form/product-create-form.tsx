@@ -67,7 +67,23 @@ export const ProductCreateForm = () => {
   })
 
   const showInventoryTab = useMemo(() => {
-    return watchedVariants.some((v) => v.inventory_kit)
+    let show = false
+    watchedVariants.forEach((v, index) => {
+      if (v.inventory_kit) {
+        show = true
+        if (!v.inventory?.length) {
+          // don't want to interupt rendering with this set state, TOOD: solve this better
+          setTimeout(
+            () =>
+              form.setValue(`variants.${index}.inventory`, [
+                { title: "", quantity: 0 },
+              ]),
+            0
+          )
+        }
+      }
+    })
+    return show
   }, [watchedVariants])
 
   const handleSubmit = form.handleSubmit(
@@ -85,15 +101,9 @@ export const ProductCreateForm = () => {
 
       const payload = { ...values }
 
-      if (!payload.enable_variants) {
-        payload.variants = []
-        payload.options = []
-      }
-
-      delete payload.enable_variants
-
       await mutateAsync(
         normalizeProductFormValues({
+          // TODO: workflow should handle inventory creation
           ...payload,
           status: (isDraftSubmission ? "draft" : "published") as any,
         }),
@@ -116,7 +126,14 @@ export const ProductCreateForm = () => {
     }
   )
 
-  const onNext = (currentTab: Tab) => {
+  const onNext = async (currentTab: Tab) => {
+    // TODO: check this
+    // const valid = await form.trigger()
+    //
+    // if (!valid) {
+    //   return
+    // }
+
     if (currentTab === Tab.DETAILS) {
       setTab(Tab.ORGANIZE)
     }

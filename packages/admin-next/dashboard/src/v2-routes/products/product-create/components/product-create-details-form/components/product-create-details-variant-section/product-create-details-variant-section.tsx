@@ -252,7 +252,12 @@ export const ProductCreateVariantsSection = ({
     if (watchedAreVariantsEnabled) {
       // remove default variant and option that may have been created
       if (variants.fields[0]?.is_default) {
-        form.setValue("options", [])
+        form.setValue("options", [
+          {
+            title: "",
+            values: [],
+          },
+        ])
         form.setValue("variants", [])
       }
     }
