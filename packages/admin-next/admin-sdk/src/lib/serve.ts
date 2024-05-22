@@ -24,7 +24,7 @@ export async function serve(options: ServeOptions) {
 
   if (!indexExists) {
     throw new Error(
-      `Could not find the admin UI build files. Please run "medusa-admin build" or enable "autoRebuild" in the plugin options to build the admin UI.`
+      `Could not find the admin UI build files. Please run the \`build\` command and try again.`
     )
   }
 
