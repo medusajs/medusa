@@ -201,6 +201,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
           ],
         },
         {
+          path: "/advanced-development/custom-cli-scripts",
+          title: "Custom CLI Scripts",
+        },
+        {
           path: "/advanced-development/admin",
           title: "Admin Development",
           children: [
