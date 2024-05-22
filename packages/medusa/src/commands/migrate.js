@@ -42,7 +42,6 @@ const runLinkMigrations = async (directory) => {
 
 const main = async function ({ directory }) {
   const args = process.argv
-
   args.shift()
   args.shift()
   args.shift()

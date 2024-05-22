@@ -78,8 +78,9 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     ],
   }),
   notification: getOptions({
-    entryPointPath: "packages/medusa/src/interfaces/notification-service.ts",
-    tsConfigName: "medusa.json",
+    entryPointPath:
+      "packages/core/utils/src/notification/abstract-notification-provider.ts",
+    tsConfigName: "utils.json",
     name: "notification",
     parentIgnore: true,
   }),

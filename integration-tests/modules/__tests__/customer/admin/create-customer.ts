@@ -44,7 +44,7 @@ medusaIntegrationTestRunner({
             id: expect.any(String),
             first_name: "John",
             last_name: "Doe",
-            created_by: "admin_user",
+            created_by: expect.any(String),
           })
         )
       })

@@ -10,7 +10,7 @@ export class Auth {
     this.config = config
   }
 
-  login = async (
+  public login = async (
     scope: "admin" | "store",
     method: "emailpass",
     payload: { email: string; password: string }
@@ -42,5 +42,16 @@ export class Auth {
     }
 
     this.client.clearToken()
+  }
+
+  create = async (
+    scope: "admin" | "store",
+    method: "emailpass",
+    payload: { email: string; password: string }
+  ): Promise<{ token: string }> => {
+    return await this.client.fetch(`/auth/${scope}/${method}`, {
+      method: "POST",
+      body: payload,
+    })
   }
 }
