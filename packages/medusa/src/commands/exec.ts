@@ -24,7 +24,7 @@ export default async function exec({ file, args }: Options) {
 
     const scriptToExec = (await import(path.resolve(filePath))).default
 
-    if (!scriptToExec) {
+    if (!scriptToExec || typeof scriptToExec !== "function") {
       throw new Error(`File doesn't default export a function to execute.`)
     }
 
