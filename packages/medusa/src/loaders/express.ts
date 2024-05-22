@@ -1,10 +1,10 @@
+import { ConfigModule } from "@medusajs/types"
 import createStore from "connect-redis"
 import cookieParser from "cookie-parser"
 import { Express } from "express"
 import session from "express-session"
-import morgan from "morgan"
 import Redis from "ioredis"
-import { ConfigModule } from "@medusajs/types"
+import morgan from "morgan"
 
 type Options = {
   app: Express
@@ -28,14 +28,14 @@ export default async ({
     sameSite = "none"
   }
 
-  const { cookie_secret, session_options } = configModule.projectConfig
+  const { http, session_options } = configModule.projectConfig
   const sessionOpts = {
     name: session_options?.name ?? "connect.sid",
     resave: session_options?.resave ?? true,
     rolling: session_options?.rolling ?? false,
     saveUninitialized: session_options?.saveUninitialized ?? true,
     proxy: true,
-    secret: session_options?.secret ?? cookie_secret,
+    secret: session_options?.secret ?? http?.cookieSecret,
     cookie: {
       sameSite,
       secure,

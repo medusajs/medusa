@@ -1,14 +1,13 @@
-import { AdminRegionsRes } from "@medusajs/medusa"
-import { Response } from "@medusajs/medusa-js"
 import { adminRegionKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
-
-import { medusa, queryClient } from "../../../lib/medusa"
+import { queryClient } from "../../../lib/medusa"
+import { sdk } from "../../../lib/client"
+import { HttpTypes } from "@medusajs/types"
 
 const regionQuery = (id: string) => ({
   queryKey: adminRegionKeys.detail(id),
   queryFn: async () =>
-    medusa.admin.regions.retrieve(id, { fields: "*payment_providers" }),
+    sdk.admin.region.retrieve(id, { fields: "*payment_providers" }),
 })
 
 export const regionLoader = async ({ params }: LoaderFunctionArgs) => {
@@ -16,7 +15,8 @@ export const regionLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = regionQuery(id!)
 
   return (
-    queryClient.getQueryData<Response<AdminRegionsRes>>(query.queryKey) ??
-    (await queryClient.fetchQuery(query))
+    queryClient.getQueryData<{ region: HttpTypes.AdminRegion }>(
+      query.queryKey
+    ) ?? (await queryClient.fetchQuery(query))
   )
 }

@@ -49,6 +49,9 @@ export const LocationFulfillmentSet: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.FULFILLMENT,
+      fieldAlias: {
+        location: "locations_link.location",
+      },
       relationship: {
         serviceName: LINKS.LocationFulfillmentSet,
         primaryKey: "fulfillment_set_id",

@@ -1,14 +1,21 @@
-import { IEventBusService, INotificationModuleService } from "@medusajs/types"
+import { INotificationModuleService } from "@medusajs/types"
 import { get } from "lodash"
+import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
 
-type InjectedDependencies = {
-  notificationModuleService: INotificationModuleService
-  eventBusModuleService: IEventBusService
+type HandlerConfig = {
+  event: string
+  template: string
+  channel: string
+  to: string
+  resource_id: string
+  data: Record<string, string>
 }
 
 // TODO: The config should be loaded dynamically from medusa-config.js
 // TODO: We can use a more powerful templating syntax to allow for eg. combining fields.
-const config = [
+const handlerConfig: HandlerConfig[] = [
   {
     event: "order.created",
     template: "order-created-template",
@@ -21,44 +28,61 @@ const config = [
   },
 ]
 
-class ConfigurableNotificationsSubscriber {
-  private readonly eventBusModuleService_: IEventBusService
-  private readonly notificationModuleService_: INotificationModuleService
+const configAsMap = handlerConfig.reduce(
+  (acc: Record<string, HandlerConfig[]>, h) => {
+    if (!acc[h.event]) {
+      acc[h.event] = []
+    }
 
-  constructor({
-    eventBusModuleService,
-    notificationModuleService,
-  }: InjectedDependencies) {
-    this.eventBusModuleService_ = eventBusModuleService
-    this.notificationModuleService_ = notificationModuleService
+    acc[h.event].push(h)
+    return acc
+  },
+  {}
+)
 
-    config.forEach((eventHandler) => {
-      this.eventBusModuleService_.subscribe(
-        eventHandler.event,
-        async (data: any) => {
-          const payload = data.data
+export default async function configurableNotifications({
+  data,
+  eventName,
+  container,
+}: SubscriberArgs<any>) {
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+  const notificationService: INotificationModuleService = container.resolve(
+    ModuleRegistrationName.NOTIFICATION
+  )
 
-          const notificationData = {
-            template: eventHandler.template,
-            channel: eventHandler.channel,
-            to: get(payload, eventHandler.to),
-            trigger_type: eventHandler.event,
-            resource_id: get(payload, eventHandler.resource_id),
-            data: Object.entries(eventHandler.data).reduce(
-              (acc, [key, value]) => {
-                acc[key] = get(payload, value)
-                return acc
-              },
-              {}
-            ),
-          }
+  const handlers = configAsMap[eventName] ?? []
+  const payload = data.data
 
-          await this.notificationModuleService_.create(notificationData)
-          return
-        }
-      )
+  await promiseAll(
+    handlers.map(async (handler) => {
+      const notificationData = {
+        template: handler.template,
+        channel: handler.channel,
+        to: get(payload, handler.to),
+        trigger_type: handler.event,
+        resource_id: get(payload, handler.resource_id),
+        data: Object.entries(handler.data).reduce((acc, [key, value]) => {
+          acc[key] = get(payload, value)
+          return acc
+        }, {}),
+      }
+
+      // We don't want to fail all handlers, so we catch and log errors only
+      try {
+        await notificationService.create(notificationData)
+      } catch (err) {
+        logger.error(
+          `Failed to send notification for ${eventName}`,
+          err.message
+        )
+      }
     })
-  }
+  )
 }
 
-export default ConfigurableNotificationsSubscriber
+export const config: SubscriberConfig = {
+  event: handlerConfig.map((h) => h.event),
+  context: {
+    subscriberId: "configurable-notifications-handler",
+  },
+}

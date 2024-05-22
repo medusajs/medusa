@@ -1,8 +1,5 @@
 import { GeoZoneType } from "../../../fulfillment"
 
-/**
- * @experimental
- */
 export interface AdminGeoZoneResponse {
   id: string
   type: GeoZoneType

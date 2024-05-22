@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node --esm src/index.ts",
+    "start": "node dist/index.js",
     "build": "tsc",
     "watch": "tsc --watch",
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build"

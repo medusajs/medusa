@@ -1,1 +1,1 @@
-export { default as AuthUser } from "./auth-user"
+export { default as AuthIdentity } from "./auth-identity"

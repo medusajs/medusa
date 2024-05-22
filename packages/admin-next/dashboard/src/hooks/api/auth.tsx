@@ -1,22 +1,23 @@
 import { UseMutationOptions, useMutation } from "@tanstack/react-query"
 
-import { client } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { EmailPassReq } from "../../types/api-payloads"
-import { EmailPassRes } from "../../types/api-responses"
 
 export const useEmailPassLogin = (
-  options?: UseMutationOptions<EmailPassRes, Error, EmailPassReq>
+  options?: UseMutationOptions<void, Error, EmailPassReq>
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.auth.authenticate.emailPass(payload),
-    onSuccess: async (data: { token: string }, variables, context) => {
-      const { token } = data
-
-      // Create a new session with the token
-      await client.auth.login(token)
-
+    mutationFn: (payload) => sdk.auth.login("admin", "emailpass", payload),
+    onSuccess: async (data, variables, context) => {
       options?.onSuccess?.(data, variables, context)
     },
+    ...options,
+  })
+}
+
+export const useLogout = (options?: UseMutationOptions<void, Error>) => {
+  return useMutation({
+    mutationFn: () => sdk.auth.logout(),
     ...options,
   })
 }

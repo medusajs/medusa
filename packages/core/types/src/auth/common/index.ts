@@ -1,2 +1,2 @@
-export * from "./auth-user"
+export * from "./auth-identity"
 export * from "./provider"

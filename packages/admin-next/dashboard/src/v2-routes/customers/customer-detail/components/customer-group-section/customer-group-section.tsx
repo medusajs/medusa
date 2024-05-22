@@ -2,21 +2,35 @@ import {
   AdminCustomerGroupResponse,
   AdminCustomerResponse,
 } from "@medusajs/types"
-import { Container, Heading } from "@medusajs/ui"
-import { createColumnHelper } from "@tanstack/react-table"
+import {
+  Button,
+  Checkbox,
+  Container,
+  Heading,
+  toast,
+  usePrompt,
+} from "@medusajs/ui"
+import { createColumnHelper, RowSelectionState } from "@tanstack/react-table"
 import { t } from "i18next"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 
-import { PencilSquare } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
-import { useCustomerGroups } from "../../../../../hooks/api/customer-groups"
+import {
+  customerGroupsQueryKeys,
+  useCustomerGroups,
+  useRemoveCustomersFromGroup,
+} from "../../../../../hooks/api/customer-groups"
 import { useCustomerGroupTableColumns } from "../../../../../hooks/table/columns/use-customer-group-table-columns"
 import { useCustomerGroupTableFilters } from "../../../../../hooks/table/filters/use-customer-group-table-filters"
 import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { Link } from "react-router-dom"
+import { client } from "../../../../../lib/client"
+import { queryClient } from "../../../../../lib/medusa.ts"
 
 type CustomerGroupSectionProps = {
   customer: AdminCustomerResponse["customer"]
@@ -27,9 +41,13 @@ const PAGE_SIZE = 10
 export const CustomerGroupSection = ({
   customer,
 }: CustomerGroupSectionProps) => {
+  const prompt = usePrompt()
+
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { raw, searchParams } = useCustomerGroupTableQuery({
     pageSize: PAGE_SIZE,
   })
+
   const { customer_groups, count, isLoading, isError, error } =
     useCustomerGroups(
       {
@@ -43,7 +61,7 @@ export const CustomerGroupSection = ({
     )
 
   const filters = useCustomerGroupTableFilters()
-  const columns = useColumns()
+  const columns = useColumns(customer.id)
 
   const { table } = useDataTable({
     data: customer_groups ?? [],
@@ -53,10 +71,52 @@ export const CustomerGroupSection = ({
     enablePagination: true,
     enableRowSelection: true,
     pageSize: PAGE_SIZE,
+    rowSelection: {
+      state: rowSelection,
+      updater: setRowSelection,
+    },
   })
 
-  if (isError) {
-    throw error
+  const handleRemove = async () => {
+    const customerGroupIds = Object.keys(rowSelection)
+
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("customers.groups.removeMany", {
+        groups: customer_groups
+          .filter((g) => customerGroupIds.includes(g.id))
+          .map((g) => g.name)
+          .join(","),
+      }),
+      confirmText: t("actions.remove"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    try {
+      /**
+       * TODO: use this for now until add customer groups to customers batch is implemented
+       */
+      const promises = customerGroupIds.map((id) =>
+        client.customerGroups.removeCustomers(id, {
+          customer_ids: [customer.id],
+        })
+      )
+
+      await Promise.all(promises)
+
+      await queryClient.invalidateQueries({
+        queryKey: customerGroupsQueryKeys.lists(),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("general.close"),
+      })
+    }
   }
 
   if (isError) {
@@ -67,6 +127,11 @@ export const CustomerGroupSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("customerGroups.domain")}</Heading>
+        <Link to={`/customers/${customer.id}/add-customer-groups`}>
+          <Button variant="secondary" size="small">
+            {t("general.add")}
+          </Button>
+        </Link>
       </div>
       <DataTable
         table={table}
@@ -79,19 +144,54 @@ export const CustomerGroupSection = ({
         search
         pagination
         orderBy={["name", "created_at", "updated_at"]}
+        commands={[
+          {
+            action: handleRemove,
+            label: t("actions.remove"),
+            shortcut: "r",
+          },
+        ]}
         queryObject={raw}
       />
     </Container>
   )
 }
 
-// TODO: Add remove association when /customer-groups/:id/batch has been created.
 const CustomerGroupRowActions = ({
   group,
+  customerId,
 }: {
   group: AdminCustomerGroupResponse["customer_group"]
+  customerId: string
 }) => {
+  const prompt = usePrompt()
   const { t } = useTranslation()
+
+  const { mutateAsync } = useRemoveCustomersFromGroup(group.id)
+
+  const onRemove = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("customers.groups.remove", {
+        name: group.name,
+      }),
+      confirmText: t("actions.remove"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    try {
+      await mutateAsync({ customer_ids: [customerId] })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("general.close"),
+      })
+    }
+  }
 
   return (
     <ActionMenu
@@ -103,6 +203,11 @@ const CustomerGroupRowActions = ({
               icon: <PencilSquare />,
               to: `/customer-groups/${group.id}/edit`,
             },
+            {
+              label: t("actions.remove"),
+              onClick: onRemove,
+              icon: <Trash />,
+            },
           ],
         },
       ]}
@@ -113,15 +218,48 @@ const CustomerGroupRowActions = ({
 const columnHelper =
   createColumnHelper<AdminCustomerGroupResponse["customer_group"]>()
 
-const useColumns = () => {
+const useColumns = (customerId: string) => {
   const columns = useCustomerGroupTableColumns()
 
   return useMemo(
     () => [
+      columnHelper.display({
+        id: "select",
+        header: ({ table }) => {
+          return (
+            <Checkbox
+              checked={
+                table.getIsSomePageRowsSelected()
+                  ? "indeterminate"
+                  : table.getIsAllPageRowsSelected()
+              }
+              onCheckedChange={(value) =>
+                table.toggleAllPageRowsSelected(!!value)
+              }
+            />
+          )
+        },
+        cell: ({ row }) => {
+          return (
+            <Checkbox
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            />
+          )
+        },
+      }),
       ...columns,
       columnHelper.display({
         id: "actions",
-        cell: ({ row }) => <CustomerGroupRowActions group={row.original} />,
+        cell: ({ row }) => (
+          <CustomerGroupRowActions
+            group={row.original}
+            customerId={customerId}
+          />
+        ),
       }),
     ],
     [columns]

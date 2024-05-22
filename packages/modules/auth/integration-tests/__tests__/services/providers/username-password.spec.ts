@@ -2,12 +2,12 @@ import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 
 import { IAuthModuleService } from "@medusajs/types"
 import Scrypt from "scrypt-kdf"
-import { createAuthUsers } from "../../../__fixtures__/auth-user"
+import { createAuthIdentities } from "../../../__fixtures__/auth-identity"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 const seedDefaultData = async (manager) => {
-  await createAuthUsers(manager)
+  await createAuthIdentities(manager)
 }
 
 moduleIntegrationTestRunner({
@@ -37,7 +37,7 @@ moduleIntegrationTestRunner({
           ).toString("base64")
 
           await seedDefaultData(MikroOrmWrapper.forkManager())
-          await createAuthUsers(MikroOrmWrapper.forkManager(), [
+          await createAuthIdentities(MikroOrmWrapper.forkManager(), [
             // Add authenticated user
             {
               provider: "emailpass",
@@ -59,7 +59,7 @@ moduleIntegrationTestRunner({
 
           expect(res).toEqual({
             success: true,
-            authUser: expect.objectContaining({
+            authIdentity: expect.objectContaining({
               entity_id: email,
               provider_metadata: {},
             }),
@@ -102,7 +102,7 @@ moduleIntegrationTestRunner({
           ).toString("base64")
 
           await seedDefaultData(MikroOrmWrapper.forkManager())
-          await createAuthUsers(MikroOrmWrapper.forkManager(), [
+          await createAuthIdentities(MikroOrmWrapper.forkManager(), [
             // Add authenticated user
             {
               provider: "emailpass",

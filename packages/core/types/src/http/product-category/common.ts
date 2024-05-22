@@ -1,6 +1,3 @@
-/**
- * @experimental
- */
 export interface ProductCategoryResponse {
   id: string
   name: string

@@ -5261,6 +5261,7 @@ __metadata:
     "@hookform/resolvers": 3.3.2
     "@medusajs/admin-vite-plugin": 0.0.1
     "@medusajs/icons": 1.2.1
+    "@medusajs/js-sdk": 0.0.1
     "@medusajs/types": 1.11.16
     "@medusajs/ui": 3.0.0
     "@medusajs/ui-preset": 1.1.3
@@ -5507,7 +5508,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/js-sdk@workspace:packages/core/js-sdk":
+"@medusajs/js-sdk@0.0.1, @medusajs/js-sdk@workspace:packages/core/js-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/js-sdk@workspace:packages/core/js-sdk"
   dependencies:

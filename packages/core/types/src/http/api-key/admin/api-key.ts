@@ -1,9 +1,6 @@
 import { ApiKeyType } from "../../../api-key"
-import { PaginatedResponse } from "../../../common"
+import { PaginatedResponse } from "../../common"
 
-/**
- * @experimental
- */
 interface ApiKeyResponse {
   id: string
   token: string
@@ -17,16 +14,10 @@ interface ApiKeyResponse {
   revoked_at: Date | null
 }
 
-/**
- * @experimental
- */
 export interface AdminApiKeyResponse {
   api_key: ApiKeyResponse
 }
 
-/**
- * @experimental
- */
-export interface AdminApiKeyListResponse extends PaginatedResponse {
+export type AdminApiKeyListResponse = PaginatedResponse<{
   api_keys: ApiKeyResponse[]
-}
+}>

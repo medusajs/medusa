@@ -14,17 +14,17 @@ import {
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import {
+  arrayDifference,
   EmitEvents,
   FulfillmentUtils,
+  getSetDifference,
   InjectManager,
   InjectTransactionManager,
+  isString,
   MedusaContext,
   MedusaError,
   Modules,
   ModulesSdkUtils,
-  arrayDifference,
-  getSetDifference,
-  isString,
   promiseAll,
 } from "@medusajs/utils"
 import {
@@ -193,9 +193,7 @@ export default class FulfillmentModuleService<
 
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO[]
-    >(shippingOptions, {
-      populate: true,
-    })
+    >(shippingOptions)
   }
 
   @InjectManager("baseRepository_")
@@ -211,10 +209,7 @@ export default class FulfillmentModuleService<
     )
 
     return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
-      fulfillment,
-      {
-        populate: true,
-      }
+      fulfillment
     )
   }
 
@@ -232,9 +227,7 @@ export default class FulfillmentModuleService<
 
     return await this.baseRepository_.serialize<
       FulfillmentTypes.FulfillmentDTO[]
-    >(fulfillments, {
-      populate: true,
-    })
+    >(fulfillments)
   }
 
   @InjectManager("baseRepository_")
@@ -251,10 +244,7 @@ export default class FulfillmentModuleService<
 
     return [
       await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO[]>(
-        fulfillments,
-        {
-          populate: true,
-        }
+        fulfillments
       ),
       count,
     ]
@@ -283,9 +273,7 @@ export default class FulfillmentModuleService<
 
     return await this.baseRepository_.serialize<
       FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
-    >(createdFulfillmentSets, {
-      populate: true,
-    })
+    >(createdFulfillmentSets)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -351,9 +339,7 @@ export default class FulfillmentModuleService<
 
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
-    >(createdServiceZones, {
-      populate: true,
-    })
+    >(createdServiceZones)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -410,9 +396,7 @@ export default class FulfillmentModuleService<
 
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
-    >(createdShippingOptions, {
-      populate: true,
-    })
+    >(createdShippingOptions)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -469,9 +453,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       | FulfillmentTypes.ShippingProfileDTO
       | FulfillmentTypes.ShippingProfileDTO[]
-    >(createdShippingProfiles, {
-      populate: true,
-    })
+    >(createdShippingProfiles)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -523,10 +505,7 @@ export default class FulfillmentModuleService<
     )
 
     return await this.baseRepository_.serialize<FulfillmentTypes.GeoZoneDTO[]>(
-      Array.isArray(data) ? createdGeoZones : createdGeoZones[0],
-      {
-        populate: true,
-      }
+      Array.isArray(data) ? createdGeoZones : createdGeoZones[0]
     )
   }
 
@@ -557,9 +536,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       | FulfillmentTypes.ShippingOptionRuleDTO
       | FulfillmentTypes.ShippingOptionRuleDTO[]
-    >(createdShippingOptionRules, {
-      populate: true,
-    })
+    >(createdShippingOptionRules)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -627,10 +604,43 @@ export default class FulfillmentModuleService<
     }
 
     return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
-      fulfillment,
-      {
-        populate: true,
-      }
+      fulfillment
+    )
+  }
+
+  @InjectManager("baseRepository_")
+  async createReturnFulfillment(
+    data: FulfillmentTypes.CreateFulfillmentDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<FulfillmentTypes.FulfillmentDTO> {
+    const { order, ...fulfillmentDataToCreate } = data
+
+    const fulfillment = await this.fulfillmentService_.create(
+      fulfillmentDataToCreate,
+      sharedContext
+    )
+
+    let fulfillmentThirdPartyData!: any
+    try {
+      fulfillmentThirdPartyData =
+        await this.fulfillmentProviderService_.createReturn(
+          fulfillment.provider_id,
+          fulfillment as Record<any, any>
+        )
+      await this.fulfillmentService_.update(
+        {
+          id: fulfillment.id,
+          data: fulfillmentThirdPartyData ?? {},
+        },
+        sharedContext
+      )
+    } catch (error) {
+      await this.fulfillmentService_.delete(fulfillment.id, sharedContext)
+      throw error
+    }
+
+    return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
+      fulfillment
     )
   }
 
@@ -654,9 +664,7 @@ export default class FulfillmentModuleService<
 
     return await this.baseRepository_.serialize<
       FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
-    >(updatedFulfillmentSets, {
-      populate: true,
-    })
+    >(updatedFulfillmentSets)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -865,9 +873,7 @@ export default class FulfillmentModuleService<
 
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
-    >(toReturn, {
-      populate: true,
-    })
+    >(toReturn)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1110,9 +1116,7 @@ export default class FulfillmentModuleService<
 
     const serialized = await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
-    >(updatedShippingOptions, {
-      populate: true,
-    })
+    >(updatedShippingOptions)
 
     return isString(idOrSelector) ? serialized[0] : serialized
   }
@@ -1359,9 +1363,7 @@ export default class FulfillmentModuleService<
 
     const serialized = await this.baseRepository_.serialize<
       FulfillmentTypes.GeoZoneDTO[]
-    >(updatedGeoZones, {
-      populate: true,
-    })
+    >(updatedGeoZones)
 
     return Array.isArray(data) ? serialized : serialized[0]
   }
@@ -1393,9 +1395,7 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       | FulfillmentTypes.ShippingOptionRuleDTO
       | FulfillmentTypes.ShippingOptionRuleDTO[]
-    >(updatedShippingOptionRules, {
-      populate: true,
-    })
+    >(updatedShippingOptionRules)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1434,10 +1434,7 @@ export default class FulfillmentModuleService<
 
     const serialized =
       await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
-        fulfillment,
-        {
-          populate: true,
-        }
+        fulfillment
       )
 
     return Array.isArray(serialized) ? serialized[0] : serialized
@@ -1478,9 +1475,7 @@ export default class FulfillmentModuleService<
       )
     }
 
-    const result = await this.baseRepository_.serialize(fulfillment, {
-      populate: true,
-    })
+    const result = await this.baseRepository_.serialize(fulfillment)
 
     return Array.isArray(result) ? result[0] : result
   }
