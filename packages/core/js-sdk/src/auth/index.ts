@@ -10,7 +10,7 @@ export class Auth {
     this.config = config
   }
 
-  public login = async (
+  login = async (
     scope: "admin" | "store",
     method: "emailpass",
     payload: { email: string; password: string }
