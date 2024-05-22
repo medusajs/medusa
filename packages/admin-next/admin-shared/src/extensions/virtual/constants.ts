@@ -1,5 +1,4 @@
 import { ROUTE_IMPORTS } from "../routes"
-import { SETTINGS_IMPORTS } from "../settings"
 import { INJECTION_ZONES } from "../widgets"
 import { getWidgetImport, id, resolve } from "./utils"
 
@@ -9,10 +8,6 @@ const VIRTUAL_WIDGET_MODULES = INJECTION_ZONES.map((zone) => {
 
 const VIRTUAL_ROUTE_MODULES = ROUTE_IMPORTS.map((route) => {
   return id(route)
-})
-
-const VIRTUAL_SETTING_MODULES = SETTINGS_IMPORTS.map((setting) => {
-  return id(setting)
 })
 
 /**
@@ -28,7 +23,6 @@ const VIRTUAL_SETTING_MODULES = SETTINGS_IMPORTS.map((setting) => {
 export const VIRTUAL_MODULES = [
   ...VIRTUAL_WIDGET_MODULES,
   ...VIRTUAL_ROUTE_MODULES,
-  ...VIRTUAL_SETTING_MODULES,
 ]
 
 /**
@@ -42,12 +36,5 @@ export const RESOLVED_WIDGET_MODULES = VIRTUAL_WIDGET_MODULES.map((id) => {
  * Reolved paths to all virtual route modules.
  */
 export const RESOLVED_ROUTE_MODULES = VIRTUAL_ROUTE_MODULES.map((id) => {
-  return resolve(id)
-})
-
-/**
- * Reolved paths to all virtual setting modules.
- */
-export const RESOLVED_SETTING_MODULES = VIRTUAL_SETTING_MODULES.map((id) => {
   return resolve(id)
 })
