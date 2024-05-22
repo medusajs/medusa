@@ -40,7 +40,7 @@ export type AdminOptions = {
   /**
    * Configure the Vite configuration for the admin dashboard. This function receives the default Vite configuration
    * and returns the modified configuration. The default value is `undefined`.
-   * 
+   *
    * @privateRemarks TODO Add example
    */
   vite?: (config: InlineConfig) => InlineConfig
@@ -401,9 +401,9 @@ export type ProjectConfigOptions = {
    *   // ...
    * }
    * ```
-   * 
+   *
    * @deprecated use {@link http }'s `compression` property instead.
-   * 
+   *
    */
   http_compression?: HttpCompressionOptions
 
@@ -751,7 +751,7 @@ export type ConfigModule = {
 
   /**
    * Admin dashboard configurations.
-   * 
+   *
    * @example
    * ```js title="medusa-config.js"
    * module.exports = {
@@ -875,16 +875,6 @@ export type ConfigModule = {
    * :::
    */
   featureFlags: Record<string, boolean | string>
-
-  /**
-   * @ignore
-   * 
-   * @privateRemarks
-   * Since this is a temporary config, maybe let's not include it in the generated reference for now.
-   */
-  directories?: {
-    srcDir?: string
-  }
 }
 
 export type PluginDetails = {
