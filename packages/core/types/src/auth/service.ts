@@ -43,7 +43,6 @@ export interface IAuthModuleService extends IModuleService {
    *     headers: req.headers,
    *     query: req.query,
    *     body: req.body,
-   *     authScope: "admin",
    *     protocol: req.protocol,
    *   } as AuthenticationInput)
    * ```
@@ -81,7 +80,6 @@ export interface IAuthModuleService extends IModuleService {
    *     headers: req.headers,
    *     query: req.query,
    *     body: req.body,
-   *     authScope: "admin",
    *     protocol: req.protocol,
    *   } as AuthenticationInput)
    * ```
@@ -200,12 +198,10 @@ export interface IAuthModuleService extends IModuleService {
    *   {
    *     provider: "emailpass",
    *     entity_id: "user@example.com",
-   *     scope: "admin",
    *   },
    *   {
    *     provider: "google",
    *     entity_id: "user@gmail.com",
-   *     scope: "email profile",
    *   },
    * ])
    */
@@ -225,7 +221,6 @@ export interface IAuthModuleService extends IModuleService {
    * const authIdentity = await authModuleService.create({
    *   provider: "emailpass",
    *   entity_id: "user@example.com",
-   *   scope: "admin",
    * })
    */
   create(
@@ -244,9 +239,6 @@ export interface IAuthModuleService extends IModuleService {
    * const authIdentities = await authModuleService.update([
    *   {
    *     id: "authusr_123",
-   *     app_metadata: {
-   *       test: true,
-   *     },
    *   },
    * ])
    */
@@ -265,9 +257,6 @@ export interface IAuthModuleService extends IModuleService {
    * @example
    * const authIdentity = await authModuleService.update({
    *   id: "authusr_123",
-   *   app_metadata: {
-   *     test: true,
-   *   },
    * })
    */
   update(
