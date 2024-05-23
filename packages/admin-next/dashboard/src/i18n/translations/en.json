@@ -81,7 +81,8 @@
     "download": "Download",
     "clearAll": "Clear all",
     "apply": "Apply",
-    "add": "Add"
+    "add": "Add",
+    "select": "Select"
   },
   "filters": {
     "date": {
