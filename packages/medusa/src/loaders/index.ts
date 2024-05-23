@@ -19,6 +19,7 @@ import { SubscriberLoader } from "./helpers/subscribers"
 import Logger from "./logger"
 import loadMedusaApp from "./medusa-app"
 import registerPgConnection from "./pg-connection"
+import { resolvePluginsLinks } from "./helpers/resolve-plugins-links"
 
 type Options = {
   directory: string
@@ -138,6 +139,7 @@ export default async ({
     onApplicationPrepareShutdown: medusaAppOnApplicationPrepareShutdown,
   } = await loadMedusaApp({
     container,
+    linkModules: await resolvePluginsLinks(plugins, container),
   })
 
   const entrypointsShutdown = await loadEntrypoints(
