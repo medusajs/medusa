@@ -424,8 +424,7 @@ function createRoutePath(file: string) {
 
 async function generateRouteEntrypoint(
   sources: Set<string>,
-  type: "page" | "link",
-  base = ""
+  type: "page" | "link"
 ) {
   const files = (
     await Promise.all(
@@ -464,7 +463,7 @@ async function generateRouteEntrypoint(
       ${type}s: [${validatedRoutes
     .map((file, index) => {
       return type === "page"
-        ? `{ path: "${createRoutePath(file)}", file: "${base + file}" }`
+        ? `{ path: "${createRoutePath(file)}", Component: RouteExt${index} }`
         : `{ path: "${createRoutePath(file)}", ...routeConfig${index} }`
     })
     .join(", ")}],
@@ -496,7 +495,6 @@ export type MedusaVitePlugin = (config?: MedusaVitePluginOptions) => Vite.Plugin
 export const medusaVitePlugin: MedusaVitePlugin = (options) => {
   const _extensionGraph = new Map<string, Set<string>>()
   const _sources = new Set<string>(options?.sources ?? [])
-  let _base = ""
 
   let server: Vite.ViteDevServer | undefined
   let watcher: Vite.FSWatcher | undefined
@@ -507,7 +505,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
         return await generateWidgetEntrypoint(_sources, options.get)
       }
       case "route":
-        return await generateRouteEntrypoint(_sources, options.get, _base)
+        return await generateRouteEntrypoint(_sources, options.get)
       default:
         return null
     }
@@ -781,16 +779,6 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
   return {
     name: "@medusajs/admin-vite-plugin",
     enforce: "pre",
-    configResolved(config) {
-      if (config.server?.middlewareMode) {
-        /**
-         * If we are in middleware mode, we need to set the base to the <base> + "@fs".
-         *
-         * This ensures that the page components are lazy-loaded correctly.
-         */
-        _base = `${config.base}@fs`
-      }
-    },
     configureServer(_server) {
       server = _server
       watcher = _server.watcher
