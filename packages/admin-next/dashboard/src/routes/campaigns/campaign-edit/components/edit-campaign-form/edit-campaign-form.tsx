@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CampaignResponse } from "@medusajs/types"
-import { Button, DatePicker, Input, Select, toast } from "@medusajs/ui"
+import { Button, DatePicker, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -10,7 +10,6 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateCampaign } from "../../../../../hooks/api/campaigns"
-import { currencies } from "../../../../../lib/currencies"
 
 type EditCampaignFormProps = {
   campaign: CampaignResponse
@@ -19,7 +18,6 @@ type EditCampaignFormProps = {
 const EditCampaignSchema = zod.object({
   name: zod.string(),
   description: zod.string().optional(),
-  currency: zod.string().optional(),
   campaign_identifier: zod.string().optional(),
   starts_at: zod.date().optional(),
   ends_at: zod.date().optional(),
@@ -33,7 +31,6 @@ export const EditCampaignForm = ({ campaign }: EditCampaignFormProps) => {
     defaultValues: {
       name: campaign.name || "",
       description: campaign.description || "",
-      currency: campaign.currency || "",
       campaign_identifier: campaign.campaign_identifier || "",
       starts_at: campaign.starts_at ? new Date(campaign.starts_at) : undefined,
       ends_at: campaign.ends_at ? new Date(campaign.ends_at) : undefined,
@@ -49,7 +46,6 @@ export const EditCampaignForm = ({ campaign }: EditCampaignFormProps) => {
         id: campaign.id,
         name: data.name,
         description: data.description,
-        currency: data.currency,
         campaign_identifier: data.campaign_identifier,
         starts_at: data.starts_at,
         ends_at: data.ends_at,
@@ -128,37 +124,6 @@ export const EditCampaignForm = ({ campaign }: EditCampaignFormProps) => {
                       <Input {...field} />
                     </Form.Control>
 
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-
-            <Form.Field
-              control={form.control}
-              name="currency"
-              render={({ field: { onChange, ref, ...field } }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>{t("fields.currency")}</Form.Label>
-                    <Form.Control>
-                      <Select {...field} onValueChange={onChange}>
-                        <Select.Trigger ref={ref}>
-                          <Select.Value />
-                        </Select.Trigger>
-
-                        <Select.Content>
-                          {Object.values(currencies).map((currency) => (
-                            <Select.Item
-                              value={currency.code}
-                              key={currency.code}
-                            >
-                              {currency.name}
-                            </Select.Item>
-                          ))}
-                        </Select.Content>
-                      </Select>
-                    </Form.Control>
                     <Form.ErrorMessage />
                   </Form.Item>
                 )

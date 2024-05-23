@@ -53,9 +53,11 @@ export const CampaignBudget = ({ campaign }: CampaignBudgetProps) => {
           <Trans
             i18nKey="campaigns.totalSpend"
             values={{
-              amount: campaign?.budget?.limit || 0,
+              amount: campaign?.budget?.limit || "no limit",
               currency:
-                campaign?.budget?.type === "spend" ? campaign.currency : "",
+                campaign?.budget?.type === "spend" && campaign?.budget.limit
+                  ? campaign.budget?.currency_code
+                  : "",
             }}
             components={[
               <span

@@ -19,6 +19,13 @@ export const GET = async (
   const { rule_type: ruleType, rule_attribute_id: ruleAttributeId } = req.params
   const queryConfig = ruleQueryConfigurations[ruleAttributeId]
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const filterableFields = req.filterableFields
+
+  if (filterableFields.value) {
+    filterableFields[queryConfig.valueAttr] = filterableFields.value
+
+    delete filterableFields.value
+  }
 
   validateRuleType(ruleType)
   validateRuleAttribute(ruleType, ruleAttributeId)
@@ -27,7 +34,7 @@ export const GET = async (
     remoteQueryObjectFromString({
       entryPoint: queryConfig.entryPoint,
       variables: {
-        filters: req.filterableFields,
+        filters: filterableFields,
         ...req.remoteQueryConfig.pagination,
       },
       fields: [queryConfig.labelAttr, queryConfig.valueAttr],

@@ -22,11 +22,6 @@ export interface CampaignDTO {
   description?: string
 
   /**
-   * The currency of the campaign.
-   */
-  currency?: string
-
-  /**
    * The campaign identifier of the campaign.
    */
   campaign_identifier?: string
