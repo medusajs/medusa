@@ -7,7 +7,11 @@ import { RouteFocusModal, useRouteModal } from "../../../components/route-modal"
 import { useUpdateProductVariant } from "../../../hooks/api/products"
 import { ExtendedProductDTO } from "../../../types/api-responses"
 import { VariantPricingForm } from "../common/variant-pricing-form"
-import { normalizeVariants } from "../product-create/utils"
+import {
+  getDbAmount,
+  getPresentationalAmount,
+} from "../../../lib/money-amount-helpers.ts"
+import { castNumber } from "../../../lib/cast-number.ts"
 
 export const UpdateVariantPricesSchema = zod.object({
   variants: zod.array(
@@ -28,7 +32,10 @@ export const PricingEdit = ({ product }: { product: ExtendedProductDTO }) => {
     defaultValues: {
       variants: product.variants.map((variant: any) => ({
         prices: variant.prices.reduce((acc: any, price: any) => {
-          acc[price.currency_code] = price.amount
+          acc[price.currency_code] = getPresentationalAmount(
+            price.amount,
+            price.currency_code
+          )
           return acc
         }, {}),
       })) as any,
@@ -42,7 +49,16 @@ export const PricingEdit = ({ product }: { product: ExtendedProductDTO }) => {
 
   const handleSubmit = form.handleSubmit(
     async (values) => {
-      const reqData = { variants: normalizeVariants(values.variants) }
+      const reqData = {
+        variants: values.variants.map((variant) => ({
+          prices: Object.entries(variant.prices || {}).map(
+            ([key, value]: any) => ({
+              currency_code: key,
+              amount: getDbAmount(castNumber(value), key),
+            })
+          ),
+        })),
+      }
       await mutateAsync(reqData, {
         onSuccess: () => {
           handleSuccess(`../${product.id}`)

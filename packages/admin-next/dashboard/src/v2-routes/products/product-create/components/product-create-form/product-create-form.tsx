@@ -176,17 +176,6 @@ export const ProductCreateForm = () => {
       }
     }
 
-    // if (tab === Tab.INVENTORY) {
-    //   // initialize inventory array for variants which have `inventory_kit` enabled before navigating to the page
-    //   watchedVariants.forEach((v, index) => {
-    //     if (v.inventory_kit && !v.inventory?.length) {
-    //       form.setValue(`variants.${index}.inventory`, [
-    //         { title: "", quantity: 0 },
-    //       ])
-    //     }
-    //   })
-    // }
-
     setTabState({ ...currentState })
 
     LAST_VISITED_TAB = tab

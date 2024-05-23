@@ -1,5 +1,7 @@
 import { CreateProductDTO } from "@medusajs/types"
 import { ProductCreateSchemaType } from "./types"
+import { getDbAmount } from "../../../lib/money-amount-helpers.ts"
+import { castNumber } from "../../../lib/cast-number.ts"
 
 export const normalizeProductFormValues = (
   values: ProductCreateSchemaType & { status: CreateProductDTO["status"] }
@@ -32,28 +34,26 @@ export const normalizeProductFormValues = (
     height: values.height ? parseFloat(values.height) : undefined,
     weight: values.weight ? parseFloat(values.weight) : undefined,
     options: values.options.filter((o) => o.title), // clean temp. values
-    variants: normalizeVariants(values.variants),
+    variants: normalizeVariants(
+      values.variants.filter((variant) => variant.should_create)
+    ),
   }
 }
 
 export const normalizeVariants = (
   variants: ProductCreateSchemaType["variants"]
 ) => {
-  return variants
-    .filter((variant) => variant.should_create)
-    .map((variant) => ({
-      title:
-        variant.custom_title ||
-        Object.values(variant.options || {}).join(" / "),
-      options: variant.options,
-      sku: variant.sku || undefined,
-      manage_inventory: variant.manage_inventory || undefined,
-      allow_backorder: variant.allow_backorder || undefined,
-      // TODO: inventory - should be added to the workflow
-      prices: Object.entries(variant.prices || {}).map(([key, value]: any) => ({
-        currency_code: key,
-        // TODO: convert to DB format
-        amount: value ? parseFloat(value) : 0,
-      })),
-    }))
+  return variants.map((variant) => ({
+    title:
+      variant.custom_title || Object.values(variant.options || {}).join(" / "),
+    options: variant.options,
+    sku: variant.sku || undefined,
+    manage_inventory: variant.manage_inventory || undefined,
+    allow_backorder: variant.allow_backorder || undefined,
+    // TODO: inventory - should be added to the workflow
+    prices: Object.entries(variant.prices || {}).map(([key, value]: any) => ({
+      currency_code: key,
+      amount: getDbAmount(castNumber(value), key),
+    })),
+  }))
 }
