@@ -18,7 +18,7 @@ const buildLink = (): string => {
   `
 }
 
-describe("resolve plugins link", () => {
+describe("resolve plugins links", () => {
   beforeEach(() => {
     jest.resetModules()
     jest.clearAllMocks()
@@ -35,7 +35,7 @@ describe("resolve plugins link", () => {
     rmSync(distTestTargetDirectorPath, { recursive: true, force: true })
   })
 
-  it("should load the custom links", async () => {
+  it("should load the custom links from the links directory", async () => {
     writeFileSync(
       resolve(getFolderTestTargetDirectoryPath("links"), "link.js"),
       buildLink()
