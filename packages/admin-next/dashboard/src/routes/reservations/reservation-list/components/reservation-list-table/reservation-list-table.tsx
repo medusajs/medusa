@@ -1,33 +1,26 @@
-import { useAdminReservations } from "medusa-react"
-
 import { Button, Container, Heading } from "@medusajs/ui"
-import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+
 import { DataTable } from "../../../../../components/table/data-table"
+import { Link } from "react-router-dom"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { reservationListExpand } from "../../constants"
+import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReservationTableColumns } from "./use-reservation-table-columns"
 import { useReservationTableFilters } from "./use-reservation-table-filters"
 import { useReservationTableQuery } from "./use-reservation-table-query"
+import { useTranslation } from "react-i18next"
 
 const PAGE_SIZE = 20
 
 export const ReservationListTable = () => {
   const { t } = useTranslation()
 
-  const { searchParams, raw } = useReservationTableQuery({
+  const { searchParams } = useReservationTableQuery({
     pageSize: PAGE_SIZE,
   })
-  const { reservations, count, isLoading, isError, error } =
-    useAdminReservations(
-      {
-        expand: reservationListExpand,
-        ...searchParams,
-      },
-      {
-        keepPreviousData: true,
-      }
-    )
+  const { reservations, count, isPending, isError, error } =
+    useReservationItems({
+      ...searchParams,
+    })
 
   const filters = useReservationTableFilters()
   const columns = useReservationTableColumns()
@@ -58,12 +51,10 @@ export const ReservationListTable = () => {
         columns={columns}
         pageSize={PAGE_SIZE}
         count={count}
-        isLoading={isLoading}
+        isLoading={isPending}
         filters={filters}
         pagination
-        navigateTo={(row) => `${row.id}`}
-        orderBy={["created_at", "updated_at"]}
-        queryObject={raw}
+        navigateTo={(row) => row.id}
         search={false}
       />
     </Container>
