@@ -220,7 +220,7 @@ const CreateView = ({
       {
         onSuccess,
         onError: (error) => {
-          if (isAxiosError(error) && error.response?.status === 400) {
+          if ("type" in error && error.type === "invalid_data") {
             form.setError("root", {
               type: "manual",
               message: t("invite.invalidInvite"),
