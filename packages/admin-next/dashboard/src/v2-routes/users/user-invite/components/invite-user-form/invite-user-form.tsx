@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowPath, Trash } from "@medusajs/icons"
+import { ArrowPath, Link, Trash } from "@medusajs/icons"
 import { InviteDTO } from "@medusajs/types"
 import {
   Button,
@@ -21,6 +21,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { Form } from "../../../../../components/common/form"
 import { RouteFocusModal } from "../../../../../components/route-modal"
+import copy from "copy-to-clipboard"
 import {
   useCreateInvite,
   useDeleteInvite,
@@ -29,6 +30,7 @@ import {
 } from "../../../../../hooks/api/invites"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useUserInviteTableQuery } from "../../../../../hooks/table/query/use-user-invite-table-query"
+import { backendUrl } from "../../../../../lib/client"
 
 const InviteUserSchema = zod.object({
   email: zod.string().email(),
@@ -188,6 +190,11 @@ const InviteActions = ({ invite }: { invite: InviteDTO }) => {
     await resendAsync()
   }
 
+  const handleCopyInviteLink = () => {
+    const inviteUrl = `${backendUrl}/app/invite?token=${invite.token}`
+    copy(inviteUrl)
+  }
+
   return (
     <ActionMenu
       groups={[
@@ -197,6 +204,15 @@ const InviteActions = ({ invite }: { invite: InviteDTO }) => {
               icon: <ArrowPath />,
               label: t("users.resendInvite"),
               onClick: handleResend,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <Link />,
+              label: t("users.copyInviteLink"),
+              onClick: handleCopyInviteLink,
             },
           ],
         },
