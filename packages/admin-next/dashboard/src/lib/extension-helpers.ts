@@ -16,7 +16,7 @@ export const createRouteMap = (
     file: string,
     currentLevel: RouteObject[]
   ) => {
-    if (pathSegments.length === 0) {
+    if (!pathSegments.length) {
       return
     }
 
