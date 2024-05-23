@@ -29,26 +29,21 @@ export const CartPromotion: ModuleJoinerConfig = {
       serviceName: Modules.PROMOTION,
       primaryKey: "id",
       foreignKey: "promotion_id",
-      alias: "promotion",
+      alias: "promotions",
     },
   ],
   extends: [
     {
       serviceName: Modules.CART,
+      fieldAlias: {
+        promotions: "cart_link.promotions",
+      },
       relationship: {
         serviceName: LINKS.CartPromotion,
         primaryKey: "cart_id",
         foreignKey: "id",
         alias: "cart_link",
-      },
-    },
-    {
-      serviceName: Modules.PROMOTION,
-      relationship: {
-        serviceName: LINKS.CartPromotion,
-        primaryKey: "promotion_id",
-        foreignKey: "id",
-        alias: "promotion_link",
+        isList: true,
       },
     },
   ],
