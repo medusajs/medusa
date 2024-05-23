@@ -95,8 +95,7 @@ export default async ({
 
   const projectName = await askForProjectName(directoryPath)
   const projectPath = getProjectPath(projectName, directoryPath)
-  const adminEmail =
-    !skipDb && migrations ? await askForAdminEmail(seed, boilerplate) : ""
+  const adminEmail = "admin@medusa-test.com"
   const installNextjs = withNextjsStarter || (await askForNextjsStarter())
 
   let { client, dbConnectionString } = !skipDb
@@ -284,27 +283,6 @@ async function askForProjectName(directoryPath?: string): Promise<string> {
     },
   ])
   return projectName
-}
-
-async function askForAdminEmail(
-  seed?: boolean,
-  boilerplate?: boolean
-): Promise<string> {
-  const { adminEmail } = await inquirer.prompt([
-    {
-      type: "input",
-      name: "adminEmail",
-      message: "Enter an email for your admin dashboard user",
-      default: !seed && boilerplate ? "admin@medusa-test.com" : undefined,
-      validate: (input) => {
-        return typeof input === "string" && input.length > 0 && isEmail(input)
-          ? true
-          : "Please enter a valid email"
-      },
-    },
-  ])
-
-  return adminEmail
 }
 
 function showSuccessMessage(
