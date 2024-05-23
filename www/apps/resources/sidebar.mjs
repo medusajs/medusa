@@ -567,7 +567,13 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 path: "/commerce-modules/payment/payment-provider",
-                title: "Payment Provider",
+                title: "Payment Provider Module",
+                children: [
+                  {
+                    path: "/commerce-modules/payment/payment-provider/stripe",
+                    title: "Stripe",
+                  },
+                ],
               },
               {
                 path: "/commerce-modules/payment/payment-flow",

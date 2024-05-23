@@ -2892,8 +2892,16 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/commerce-modules/payment/payment-provider",
-                "title": "Payment Provider",
-                "children": []
+                "title": "Payment Provider Module",
+                "children": [
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "path": "/commerce-modules/payment/payment-provider/stripe",
+                    "title": "Stripe",
+                    "children": []
+                  }
+                ]
               },
               {
                 "loaded": true,
@@ -5690,7 +5698,7 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "path": "/architectural-modules/file/s3",
-            "title": "S3",
+            "title": "AWS S3 (and Compatible APIs)",
             "children": []
           }
         ]
