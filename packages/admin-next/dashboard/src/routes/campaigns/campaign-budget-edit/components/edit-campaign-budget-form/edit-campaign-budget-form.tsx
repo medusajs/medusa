@@ -1,14 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CampaignResponse } from "@medusajs/types"
-import {
-  Button,
-  clx,
-  CurrencyInput,
-  Input,
-  RadioGroup,
-  toast,
-} from "@medusajs/ui"
-import { useForm, useWatch } from "react-hook-form"
+import { Button, CurrencyInput, Input, toast } from "@medusajs/ui"
+import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
@@ -24,8 +17,7 @@ type EditCampaignBudgetFormProps = {
 }
 
 const EditCampaignSchema = zod.object({
-  limit: zod.number().min(0),
-  type: zod.enum(["spend", "usage"]).optional(),
+  limit: zod.number().min(0).optional().nullable(),
 })
 
 export const EditCampaignBudgetForm = ({
@@ -36,8 +28,7 @@ export const EditCampaignBudgetForm = ({
 
   const form = useForm<zod.infer<typeof EditCampaignSchema>>({
     defaultValues: {
-      limit: campaign?.budget?.limit,
-      type: campaign?.budget?.type || "spend",
+      limit: campaign?.budget?.limit || undefined,
     },
     resolver: zodResolver(EditCampaignSchema),
   })
@@ -49,8 +40,7 @@ export const EditCampaignBudgetForm = ({
       {
         id: campaign.id,
         budget: {
-          limit: data.limit,
-          type: data.type,
+          limit: data.limit ? data.limit : null,
         },
       },
       {
@@ -74,63 +64,11 @@ export const EditCampaignBudgetForm = ({
     )
   })
 
-  const watchValueType = useWatch({
-    control: form.control,
-    name: "type",
-  })
-
-  const isTypeSpend = watchValueType === "spend"
-
   return (
     <RouteDrawer.Form form={form}>
       <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
         <RouteDrawer.Body>
           <div className="flex flex-col gap-y-4">
-            <Form.Field
-              control={form.control}
-              name="type"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>{t("campaigns.budget.fields.type")}</Form.Label>
-
-                    <Form.Control>
-                      <RadioGroup
-                        className="flex-col gap-y-3"
-                        {...field}
-                        onValueChange={field.onChange}
-                      >
-                        <RadioGroup.ChoiceBox
-                          className={clx("basis-1/2", {
-                            "border-2 border-ui-border-interactive":
-                              "spend" === field.value,
-                          })}
-                          value={"spend"}
-                          label={t("campaigns.budget.type.spend.title")}
-                          description={t(
-                            "campaigns.budget.type.spend.description"
-                          )}
-                        />
-
-                        <RadioGroup.ChoiceBox
-                          className={clx("basis-1/2", {
-                            "border-2 border-ui-border-interactive":
-                              "usage" === field.value,
-                          })}
-                          value={"usage"}
-                          label={t("campaigns.budget.type.usage.title")}
-                          description={t(
-                            "campaigns.budget.type.usage.description"
-                          )}
-                        />
-                      </RadioGroup>
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-
             <Form.Field
               control={form.control}
               name="limit"
@@ -142,16 +80,22 @@ export const EditCampaignBudgetForm = ({
                     </Form.Label>
 
                     <Form.Control>
-                      {isTypeSpend ? (
+                      {campaign.budget?.type === "spend" ? (
                         <CurrencyInput
                           min={0}
                           onValueChange={(value) =>
-                            onChange(value ? parseInt(value) : "")
+                            onChange(value ? parseInt(value) : null)
                           }
-                          code={campaign.currency}
-                          symbol={getCurrencySymbol(campaign.currency)}
+                          code={campaign.budget?.currency_code}
+                          symbol={
+                            campaign.budget?.currency_code
+                              ? getCurrencySymbol(
+                                  campaign.budget?.currency_code
+                                )
+                              : ""
+                          }
                           {...field}
-                          value={value}
+                          value={value || undefined}
                         />
                       ) : (
                         <Input

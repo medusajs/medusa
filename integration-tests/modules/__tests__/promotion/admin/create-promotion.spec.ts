@@ -65,6 +65,7 @@ medusaIntegrationTestRunner({
               target_type: "items",
               type: "fixed",
               allocation: "each",
+              currency_code: "USD",
               value: 100,
               max_quantity: 100,
               target_rules: [
@@ -97,6 +98,7 @@ medusaIntegrationTestRunner({
               name: "test",
               campaign_identifier: "test-1",
               budget: expect.objectContaining({
+                currency_code: null,
                 type: "usage",
                 limit: 100,
               }),
@@ -146,6 +148,7 @@ medusaIntegrationTestRunner({
                 allocation: "each",
                 value: 100,
                 max_quantity: 100,
+                currency_code: "USD",
                 target_rules: [
                   {
                     attribute: "test.test",
@@ -186,6 +189,7 @@ medusaIntegrationTestRunner({
                 allocation: "each",
                 value: 100,
                 max_quantity: 100,
+                currency_code: "USD",
                 buy_rules: [
                   {
                     attribute: "test.test",
@@ -235,6 +239,7 @@ medusaIntegrationTestRunner({
               max_quantity: 100,
               apply_to_quantity: 1,
               buy_rules_min_quantity: 1,
+              currency_code: "USD",
               target_rules: [
                 {
                   attribute: "test.test",

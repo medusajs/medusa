@@ -49,6 +49,7 @@ medusaIntegrationTestRunner({
               allocation: "each",
               value: "300",
               apply_to_quantity: 1,
+              currency_code: "usd",
               max_quantity: 1,
               target_rules: [
                 {
@@ -69,6 +70,7 @@ medusaIntegrationTestRunner({
               allocation: "each",
               value: "300",
               apply_to_quantity: 1,
+              currency_code: "usd",
               max_quantity: 1,
               target_rules: [
                 {
@@ -189,6 +191,7 @@ medusaIntegrationTestRunner({
               allocation: "each",
               value: "100",
               max_quantity: 1,
+              currency_code: "usd",
               target_rules: [
                 {
                   attribute: "name",
@@ -220,6 +223,7 @@ medusaIntegrationTestRunner({
               allocation: "each",
               value: "100",
               max_quantity: 1,
+              currency_code: "usd",
               target_rules: [
                 {
                   attribute: "name",

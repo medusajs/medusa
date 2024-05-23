@@ -9,14 +9,13 @@ jest.setTimeout(50000)
 export const campaignData = {
   name: "campaign 1",
   description: "test description",
-  currency: "USD",
   campaign_identifier: "test-1",
   starts_at: new Date("01/01/2023").toISOString(),
   ends_at: new Date("01/01/2024").toISOString(),
   budget: {
     type: CampaignBudgetType.SPEND,
     limit: 1000,
-    used: 0,
+    currency_code: "USD",
   },
 }
 
@@ -25,31 +24,56 @@ export const campaignsData = [
     id: "campaign-id-1",
     name: "campaign 1",
     description: "test description",
-    currency: "USD",
     campaign_identifier: "test-1",
     starts_at: new Date("01/01/2023"),
     ends_at: new Date("01/01/2024"),
     budget: {
       type: CampaignBudgetType.SPEND,
       limit: 1000,
-      used: 0,
+      currency_code: "USD",
     },
   },
   {
     id: "campaign-id-2",
     name: "campaign 2",
     description: "test description",
-    currency: "USD",
     campaign_identifier: "test-2",
     starts_at: new Date("01/01/2023"),
     ends_at: new Date("01/01/2024"),
     budget: {
       type: CampaignBudgetType.USAGE,
       limit: 1000,
-      used: 0,
     },
   },
 ]
+
+const promotionData = {
+  code: "TEST",
+  type: PromotionType.STANDARD,
+  is_automatic: true,
+  application_method: {
+    target_type: "items",
+    type: "fixed",
+    allocation: "each",
+    currency_code: "USD",
+    value: 100,
+    max_quantity: 100,
+    target_rules: [
+      {
+        attribute: "test.test",
+        operator: "eq",
+        values: ["test1", "test2"],
+      },
+    ],
+  },
+  rules: [
+    {
+      attribute: "test.test",
+      operator: "eq",
+      values: ["test1", "test2"],
+    },
+  ],
+}
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const adminHeaders = {
@@ -88,6 +112,7 @@ medusaIntegrationTestRunner({
             value: 100,
             max_quantity: 100,
             target_rules: [],
+            currency_code: "USD",
           },
           rules: [],
         }
@@ -109,13 +134,13 @@ medusaIntegrationTestRunner({
                 id: expect.any(String),
                 name: "campaign 1",
                 description: "test description",
-                currency: "USD",
                 campaign_identifier: "test-1",
                 starts_at: expect.any(String),
                 ends_at: expect.any(String),
                 budget: {
                   id: expect.any(String),
                   type: "spend",
+                  currency_code: "USD",
                   limit: 1000,
                   used: 0,
                   raw_limit: {
@@ -138,7 +163,6 @@ medusaIntegrationTestRunner({
                 id: expect.any(String),
                 name: "campaign 2",
                 description: "test description",
-                currency: "USD",
                 campaign_identifier: "test-2",
                 starts_at: expect.any(String),
                 ends_at: expect.any(String),
@@ -147,6 +171,7 @@ medusaIntegrationTestRunner({
                   type: "usage",
                   limit: 1000,
                   used: 0,
+                  currency_code: null,
                   raw_limit: {
                     precision: 20,
                     value: "1000",
@@ -239,7 +264,6 @@ medusaIntegrationTestRunner({
             id: expect.any(String),
             name: "campaign 1",
             description: "test description",
-            currency: "USD",
             campaign_identifier: "test-1",
             starts_at: expect.any(String),
             ends_at: expect.any(String),
@@ -247,6 +271,7 @@ medusaIntegrationTestRunner({
               id: expect.any(String),
               type: "spend",
               limit: 1000,
+              currency_code: "USD",
               raw_limit: {
                 precision: 20,
                 value: "1000",
@@ -297,11 +322,6 @@ medusaIntegrationTestRunner({
         })
 
         it("should create a campaign successfully", async () => {
-          const createdPromotion = await promotionModuleService.create({
-            code: "TEST",
-            type: "standard",
-          })
-
           const response = await api.post(
             `/admin/campaigns?fields=*promotions`,
             {
@@ -334,10 +354,11 @@ medusaIntegrationTestRunner({
         })
 
         it("should create 3 campaigns in parallel and have the context passed as argument when calling createCampaigns with different transactionId", async () => {
-          const parallelPromotion = await promotionModuleService.create({
-            code: "PARALLEL",
-            type: "standard",
-          })
+          await api.post(
+            `/admin/promotions`,
+            { ...promotionData, code: "PARALLEL" },
+            adminHeaders
+          )
 
           const spyCreateCampaigns = jest.spyOn(
             promotionModuleService.constructor.prototype,
@@ -438,22 +459,26 @@ medusaIntegrationTestRunner({
         })
 
         it("should update a campaign successfully", async () => {
-          const createdPromotion = await promotionModuleService.create({
-            code: "TEST",
-            type: "standard",
-          })
+          const createdPromotion = (
+            await api.post(`/admin/promotions`, promotionData, adminHeaders)
+          ).data.promotion
 
-          const createdCampaign = await promotionModuleService.createCampaigns({
-            name: "test",
-            campaign_identifier: "test",
-            starts_at: new Date("01/01/2024").toISOString(),
-            ends_at: new Date("01/01/2029").toISOString(),
-            budget: {
-              limit: 1000,
-              type: "usage",
-              used: 10,
-            },
-          })
+          const createdCampaign = (
+            await api.post(
+              `/admin/campaigns`,
+              {
+                name: "test",
+                campaign_identifier: "test",
+                starts_at: new Date("01/01/2024").toISOString(),
+                ends_at: new Date("01/01/2029").toISOString(),
+                budget: {
+                  limit: 1000,
+                  type: "usage",
+                },
+              },
+              adminHeaders
+            )
+          ).data.campaign
 
           await promotionModuleService.addPromotionsToCampaign({
             id: createdCampaign.id,
@@ -481,7 +506,6 @@ medusaIntegrationTestRunner({
               budget: expect.objectContaining({
                 limit: 2000,
                 type: "usage",
-                used: 10,
               }),
               promotions: [
                 expect.objectContaining({
