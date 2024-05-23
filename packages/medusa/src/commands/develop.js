@@ -23,6 +23,9 @@ export default async function ({ port, directory }) {
   args.shift()
   args.shift()
 
+  // Force NODE_ENV to development
+  process.env.NODE_ENV = "development"
+
   process.on("SIGINT", () => {
     const configStore = new Store()
     const hasPrompted = configStore.getConfig("star.prompted") ?? false
@@ -42,11 +45,6 @@ export default async function ({ port, directory }) {
     process.exit(0)
   })
 
-  execSync(`npx --no-install babel src -d dist --ignore "src/admin/**"`, {
-    cwd: directory,
-    stdio: ["ignore", process.stdout, process.stderr],
-  })
-
   /**
    * Environment variable to indicate that the `start` command was initiated by the `develop`.
    * Used to determine if Admin should build if it is installed and has `autoBuild` enabled.
@@ -61,16 +59,23 @@ export default async function ({ port, directory }) {
     "..",
     "cli.js"
   )
-  let child = fork(cliPath, [`start`, ...args], {
-    execArgv: argv,
-    cwd: directory,
-    env: { ...process.env, ...COMMAND_INITIATED_BY },
-  })
 
-  child.on("error", function (err) {
-    console.log("Error ", err)
-    process.exit(1)
-  })
+  const start = () => {
+    const child = fork(`${cliPath}`, [`start`, ...args], {
+      execArgv: argv,
+      cwd: directory,
+      env: { ...process.env, ...COMMAND_INITIATED_BY },
+    })
+
+    child.on("error", function (err) {
+      console.log("Error ", err)
+      process.exit(1)
+    })
+
+    return child
+  }
+
+  let child = start()
 
   chokidar
     .watch(`${directory}/src`, {
@@ -86,24 +91,6 @@ export default async function ({ port, directory }) {
 
       child.kill("SIGINT")
 
-      execSync(
-        `npx --no-install babel src -d dist --extensions ".ts,.js" --ignore "src/admin/**"`,
-        {
-          cwd: directory,
-          stdio: ["pipe", process.stdout, process.stderr],
-        }
-      )
-
-      Logger.info("Rebuilt")
-
-      child = fork(cliPath, [`start`, ...args], {
-        cwd: directory,
-        env: { ...process.env, ...COMMAND_INITIATED_BY },
-        stdio: ["pipe", process.stdout, process.stderr, "ipc"],
-      })
-      child.on("error", function (err) {
-        console.log("Error ", err)
-        process.exit(1)
-      })
+      child = start()
     })
 }
