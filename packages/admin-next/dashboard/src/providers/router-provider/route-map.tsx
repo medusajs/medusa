@@ -517,9 +517,9 @@ export const RouteMap: RouteObject[] = [
               },
             ],
           },
+          ...RouteExtensions,
         ],
       },
-      ...RouteExtensions,
     ],
   },
   {
@@ -1009,9 +1009,9 @@ export const RouteMap: RouteObject[] = [
               },
             ],
           },
+          ...SettingsExtensions,
         ],
       },
-      ...SettingsExtensions,
     ],
   },
 ]

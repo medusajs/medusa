@@ -17,5 +17,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
-  "exclude": ["tsup.config.ts", "node_modules", "dist"]
+  "exclude": ["tsup.config.cjs", "node_modules", "dist"]
 }
