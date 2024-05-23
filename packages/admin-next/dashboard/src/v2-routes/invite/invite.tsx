@@ -232,7 +232,7 @@ const CreateView = ({
         description: t("invite.toast.accepted"),
         dismissLabel: t("actions.close"),
       })
-    } catch (error) {
+    } catch (error: any) {
       if ("type" in error && error.type === "invalid_data") {
         form.setError("root", {
           type: "manual",
