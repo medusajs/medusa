@@ -19,13 +19,17 @@ You can either deploy the Medusa application fully (server along with the admin)
 
 ---
 
-## Deploying the Medusa Server
+## Deploying the Medusa Server with the Admin
 
-You must deploy the Medusa server before the admin or storefront, as both of them connect to it and won’t work without a deployed Medusa server URL.
+<Note type="soon">
 
-![Diagram showcasing how the Medusa server and its associated services would be deployed](https://res.cloudinary.com/dza7lstvk/image/upload/v1708600972/Medusa%20Book/backend_deployment_pgexo3.jpg)
+Admin deployment details coming soon.
+
+</Note>
 
 Since the Medusa server is a Node.js server, it must be deployed to a hosting provider that supports deploying servers, such as Railway, DigitalOcean, AWS, Heruko, etc…
+
+![Diagram showcasing how the Medusa server and its associated services would be deployed](https://res.cloudinary.com/dza7lstvk/image/upload/v1708600972/Medusa%20Book/backend_deployment_pgexo3.jpg)
 
 <Note title="Tip">
 
@@ -37,19 +41,19 @@ Your server connects to PostgreSQL and Redis databases. Most hosting providers s
 
 Refer to [this reference](!resources!/deployment) to find how-to deployment guides for specific hosting providers.
 
----
+{/* ---
 
 ## Deploying the Medusa Admin
 
 <Note type="soon" title="Development Notice">
 
-Admin deployment details are still in the work.
+Admin deployment details are still in progress.
 
 </Note>
 
 ### Deploy Admin with the Server
 
-Since the Medusa Admin is a plugin installed in the server, you may choose to host them together. 
+Since the Medusa Admin is installed in the server, you may choose to host them together. 
 
 In this scenario, make sure the hosting provider and plan of your choice provide at least 2GB of RAM, as the admin build requires high RAM usage.
 
@@ -65,7 +69,7 @@ The server deployment guides mention details on how to deploy the admin along wi
 
 If you host your server's code on GitHub, you can:
 
-1. Disable the `autoRebuild` option of the admin plugin. 
+1. Disable the `autoRebuild` option of the Medusa Admin. 
 2. Create a GitHub action that builds the admin before the deployment is triggered.
 
 With this solution, you can deploy the admin with the server but the hosting provider doesn’t handle the admin building, decreasing the RAM usage.
@@ -82,7 +86,7 @@ Per Vercel’s [license and plans](https://vercel.com/pricing), their free plan 
 
 </Note>
 
-Refer to [this reference](!resources!/deployment) to find how-to deployment guides for specific hosting providers.
+Refer to [this reference](!resources!/deployment) to find how-to deployment guides for specific hosting providers. */}
 
 ---
 
