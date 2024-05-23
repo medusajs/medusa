@@ -139,7 +139,7 @@ export default async ({
     onApplicationPrepareShutdown: medusaAppOnApplicationPrepareShutdown,
   } = await loadMedusaApp({
     container,
-    linkModules: ,
+    linkModules: await resolvePluginsLinks(plugins, container),
   })
 
   const entrypointsShutdown = await loadEntrypoints(
