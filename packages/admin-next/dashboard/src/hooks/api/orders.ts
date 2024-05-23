@@ -1,7 +1,7 @@
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query"
 
-import { queryKeysFactory } from "../../lib/query-key-factory"
 import { client } from "../../lib/client"
+import { queryKeysFactory } from "../../lib/query-key-factory"
 
 const ORDERS_QUERY_KEY = "orders" as const
 export const ordersQueryKeys = queryKeysFactory(ORDERS_QUERY_KEY)
@@ -15,7 +15,7 @@ export const useOrder = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.orders.retrieve(id, query),
+    queryFn: async () => client.orders.retrieve(id, query),
     queryKey: ordersQueryKeys.detail(id, query),
     ...options,
   })
@@ -31,7 +31,7 @@ export const useOrders = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.orders.list(query),
+    queryFn: async () => client.orders.list(query),
     queryKey: ordersQueryKeys.list(query),
     ...options,
   })
