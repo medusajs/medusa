@@ -45,9 +45,15 @@ export const POST = async (
     input: {
       invites: [req.validatedBody],
     },
+    throwOnError: false,
   }
 
-  const { result } = await workflow.run(input)
+  const { result, errors } = await workflow.run(input)
+
+  if (errors?.length) {
+    throw errors[0].error
+  }
+
   const invite = await refetchInvite(
     result[0].id,
     req.scope,

@@ -1,16 +1,16 @@
-import { AdminOrdersRes } from "@medusajs/medusa"
-import { Response } from "@medusajs/medusa-js"
-import { adminOrderKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { medusa, queryClient } from "../../../lib/medusa"
-import { orderExpand } from "./constants"
+import { ordersQueryKeys } from "../../../hooks/api/orders"
+import { client } from "../../../lib/client"
+import { queryClient } from "../../../lib/query-client"
+import { OrderRes } from "../../../types/api-responses"
+import { DEFAULT_FIELDS } from "./constants"
 
 const orderDetailQuery = (id: string) => ({
-  queryKey: adminOrderKeys.detail(id),
+  queryKey: ordersQueryKeys.detail(id),
   queryFn: async () =>
-    medusa.admin.orders.retrieve(id, {
-      expand: orderExpand,
+    client.orders.retrieve(id, {
+      fields: DEFAULT_FIELDS,
     }),
 })
 
@@ -19,7 +19,7 @@ export const orderLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = orderDetailQuery(id!)
 
   return (
-    queryClient.getQueryData<Response<AdminOrdersRes>>(query.queryKey) ??
+    queryClient.getQueryData<OrderRes>(query.queryKey) ??
     (await queryClient.fetchQuery(query))
   )
 }

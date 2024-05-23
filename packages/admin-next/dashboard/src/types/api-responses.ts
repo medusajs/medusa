@@ -29,7 +29,7 @@ import {
 } from "@medusajs/types"
 
 import { ProductTagDTO } from "@medusajs/types/dist/product"
-import { WorkflowExecutionDTO } from "../v2-routes/workflow-executions/types"
+import { WorkflowExecutionDTO } from "../routes/workflow-executions/types"
 
 type ListRes = {
   count: number

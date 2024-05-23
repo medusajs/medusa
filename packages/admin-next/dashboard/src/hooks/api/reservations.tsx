@@ -1,14 +1,14 @@
 import {
-  CreateReservationReq,
-  UpdateReservationReq,
-} from "../../types/api-payloads"
-import {
   QueryKey,
   UseMutationOptions,
   UseQueryOptions,
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
+import {
+  CreateReservationReq,
+  UpdateReservationReq,
+} from "../../types/api-payloads"
 import {
   ReservationItemDeleteRes,
   ReservationItemListRes,
@@ -17,7 +17,7 @@ import {
 
 import { InventoryNext } from "@medusajs/types"
 import { client } from "../../lib/client"
-import { queryClient } from "../../lib/medusa"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 
 const RESERVATION_ITEMS_QUERY_KEY = "reservation_items" as const

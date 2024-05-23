@@ -74,7 +74,7 @@ const getConstraintInfo = (err: any) => {
     return null
   }
 
-  const [keys, values] = detail.match(/\([^\(.]*\)/g) || []
+  const [keys, values] = detail.match(/\([^\(]*\)/g) || []
 
   if (!keys || !values) {
     return null
