@@ -17,7 +17,7 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/users",
     middlewares: [
-      authenticate("admin", ["bearer", "session"]),
+      authenticate("user", ["bearer", "session"]),
       validateAndTransformQuery(
         AdminGetUsersParams,
         QueryConfig.listTransformQueryConfig
@@ -28,7 +28,7 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/users",
     middlewares: [
-      authenticate("admin", ["bearer", "session"], { allowUnregistered: true }),
+      authenticate("user", ["bearer", "session"], { allowUnregistered: true }),
       validateAndTransformBody(AdminCreateUser),
       validateAndTransformQuery(
         AdminGetUserParams,
@@ -40,7 +40,7 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/users/:id",
     middlewares: [
-      authenticate("admin", ["bearer", "session"]),
+      authenticate("user", ["bearer", "session"]),
       validateAndTransformQuery(
         AdminGetUserParams,
         QueryConfig.retrieveTransformQueryConfig
@@ -51,7 +51,7 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/users/me",
     middlewares: [
-      authenticate("admin", ["bearer", "session"]),
+      authenticate("user", ["bearer", "session"]),
       validateAndTransformQuery(
         AdminGetUserParams,
         QueryConfig.retrieveTransformQueryConfig
@@ -62,7 +62,7 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/users/:id",
     middlewares: [
-      authenticate("admin", ["bearer", "session"]),
+      authenticate("user", ["bearer", "session"]),
       validateAndTransformBody(AdminUpdateUser),
       validateAndTransformQuery(
         AdminGetUserParams,
@@ -73,6 +73,6 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/users/:id",
-    middlewares: [authenticate("admin", ["bearer", "session"])],
+    middlewares: [authenticate("user", ["bearer", "session"])],
   },
 ]

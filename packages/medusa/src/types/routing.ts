@@ -61,11 +61,8 @@ export interface MedusaRequest<Body = unknown>
 
 export interface AuthContext {
   actor_id: string
-  // TODO: We possibly want to make this more open-ended so it's easy to extend.
-  actor_type: "api-key" | "user" | "customer" | "unknown"
+  actor_type: string
   auth_identity_id: string
-  scope: string
-  app_metadata: Record<string, any>
 }
 
 export interface AuthenticatedMedusaRequest<Body = never>
