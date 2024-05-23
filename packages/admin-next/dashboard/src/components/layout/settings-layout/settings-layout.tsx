@@ -82,7 +82,7 @@ const useDeveloperRoutes = (): NavItemProps[] => {
 
 /**
  * Ensure that the `from` prop is not another settings route, to avoid
- * the user getting stuck in a loop. If the user
+ * the user getting stuck in a navigation loop.
  */
 const getSafeFromValue = (from: string) => {
   if (from.startsWith("/settings")) {
