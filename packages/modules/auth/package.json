@@ -29,7 +29,7 @@
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build && tsc-alias -p tsconfig.json",
     "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
     "test": "jest --runInBand --bail --passWithNoTests --forceExit -- src",
-    "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/index.spec.ts",
+    "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts",
     "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
     "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial",
     "migration:create": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create",
@@ -48,6 +48,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@medusajs/auth-emailpass": "0.0.1",
     "@medusajs/modules-sdk": "^1.12.9",
     "@medusajs/types": "^1.11.14",
     "@medusajs/utils": "^1.11.7",

@@ -12,7 +12,7 @@ let moduleOptions = {
       ),
       options: {
         config: {
-          emailpass: {},
+          plaintextpass: {},
         },
       },
     },
@@ -29,7 +29,7 @@ moduleIntegrationTestRunner({
       beforeEach(async () => {
         await service.create({
           entity_id: "test@admin.com",
-          provider: "emailpass",
+          provider: "plaintextpass",
           provider_metadata: {
             password: "plaintext",
           },
@@ -53,7 +53,7 @@ moduleIntegrationTestRunner({
       })
 
       it("successfully calls the provider for authentication if correct password", async () => {
-        const result = await service.authenticate("emailpass", {
+        const result = await service.authenticate("plaintextpass", {
           body: {
             email: "test@admin.com",
             password: "plaintext",
@@ -73,7 +73,7 @@ moduleIntegrationTestRunner({
 
       it("should fail if the password is incorrect", async () => {
         const result = await service
-          .authenticate("emailpass", {
+          .authenticate("plaintextpass", {
             body: {
               email: "test@admin.com",
               password: "incorrect",
@@ -90,7 +90,7 @@ moduleIntegrationTestRunner({
       })
 
       it("successfully create a new entity if nonexistent", async () => {
-        const result = await service.authenticate("emailpass", {
+        const result = await service.authenticate("plaintextpass", {
           body: {
             email: "new@admin.com",
             password: "newpass",

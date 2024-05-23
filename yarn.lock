@@ -5092,7 +5092,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
+"@medusajs/auth-emailpass@0.0.1, @medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass"
   dependencies:
@@ -5109,6 +5109,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"
   dependencies:
+    "@medusajs/auth-emailpass": 0.0.1
     "@medusajs/modules-sdk": ^1.12.9
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.7

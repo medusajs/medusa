@@ -904,16 +904,6 @@ export type ConfigModule = {
    * :::
    */
   featureFlags: Record<string, boolean | string>
-
-  /**
-   * @ignore
-   *
-   * @privateRemarks
-   * Since this is a temporary config, maybe let's not include it in the generated reference for now.
-   */
-  directories?: {
-    srcDir?: string
-  }
 }
 
 export type PluginDetails = {

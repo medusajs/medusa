@@ -41,20 +41,7 @@ module.exports = {
       options: { ttl: cacheTTL },
     },
     workflows: true,
-    [Modules.AUTH]: {
-      options: {
-        providers: [
-          {
-            resolve: "@medusajs/auth-emailpass",
-            options: {
-              config: {
-                emailpass: {},
-              },
-            },
-          },
-        ],
-      },
-    },
+    [Modules.AUTH]: true,
     [Modules.USER]: {
       scope: "internal",
       resources: "shared",

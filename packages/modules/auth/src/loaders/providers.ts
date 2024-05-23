@@ -1,4 +1,4 @@
-// import * as defaultProviders from "@providers"
+import EmailPassProvider from "@medusajs/auth-emailpass"
 
 import { LoaderOptions, ModulesSdkTypes, ModuleProvider } from "@medusajs/types"
 import { Lifetime, asFunction, asValue } from "awilix"
@@ -32,9 +32,22 @@ export default async ({
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   ) & { providers: ModuleProvider[] }
 >): Promise<void> => {
+  // Note: For now we want to inject some providers out of the box
+  const providerConfig = [
+    {
+      resolve: EmailPassProvider,
+      options: {
+        config: {
+          emailpass: {},
+        },
+      },
+    },
+    ...(options?.providers ?? []),
+  ]
+
   await moduleProviderLoader({
     container,
-    providers: options?.providers || [],
+    providers: providerConfig,
     registerServiceFn: registrationFn,
   })
 }

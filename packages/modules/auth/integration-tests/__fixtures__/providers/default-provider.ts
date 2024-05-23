@@ -8,7 +8,10 @@ import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
 
 export class AuthServiceFixtures extends AbstractAuthModuleProvider {
   constructor() {
-    super({}, { provider: "emailpass", displayName: "emailpass Fixture" })
+    super(
+      {},
+      { provider: "plaintextpass", displayName: "plaintextpass Fixture" }
+    )
   }
 
   async authenticate(
