@@ -1,14 +1,15 @@
 import {
   QueryKey,
-  UseMutationOptions,
-  UseQueryOptions,
   useMutation,
+  UseMutationOptions,
   useQuery,
+  UseQueryOptions,
 } from "@tanstack/react-query"
-import { client } from "../../lib/client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { ProductDeleteRes, ProductRes } from "../../types/api-responses"
 import { queryClient } from "../../lib/medusa"
+import { client, sdk } from "../../lib/client"
+import { HttpTypes } from "@medusajs/types"
 
 const PRODUCTS_QUERY_KEY = "products" as const
 export const productsQueryKeys = queryKeysFactory(PRODUCTS_QUERY_KEY)
@@ -214,10 +215,14 @@ export const useProducts = (
 }
 
 export const useCreateProduct = (
-  options?: UseMutationOptions<ProductRes, Error, any>
+  options?: UseMutationOptions<
+    { product: HttpTypes.AdminProduct },
+    Error,
+    { product: HttpTypes.AdminProduct }
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload: any) => client.products.create(payload),
+    mutationFn: (payload: any) => sdk.admin.products.create(payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)
