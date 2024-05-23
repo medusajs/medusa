@@ -56,10 +56,10 @@ export default async function ({ port, directory }) {
   }
 
   const cliPath = path.resolve(
-    require.resolve("@medusajs/medusa"),
-    "../",
-    "bin",
-    "medusa.js"
+    require.resolve("@medusajs/medusa-cli"),
+    "..",
+    "..",
+    "cli.js"
   )
   let child = fork(cliPath, [`start`, ...args], {
     execArgv: argv,
