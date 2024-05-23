@@ -177,7 +177,7 @@ const ExtensionRouteSection = () => {
     (link) => !settingsRouteRegex.test(link.path)
   )
 
-  if (extensionLinks.length === 0) {
+  if (!extensionLinks.length) {
     return null
   }
 
@@ -203,7 +203,7 @@ const ExtensionRouteSection = () => {
           </div>
           <Collapsible.Content>
             <div className="flex flex-col gap-y-1 py-1 pb-4">
-              {extensionLinks.map((link: any) => {
+              {extensionLinks.map((link) => {
                 return (
                   <NavItem
                     key={link.path}

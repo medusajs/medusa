@@ -2,16 +2,12 @@ import { InjectionZone } from "../widgets"
 
 const PREFIX = "virtual:medusa/"
 
-export const id = (name: string) => {
+export const getVirtualId = (name: string) => {
   return `${PREFIX}${name}`
 }
 
-export const resolve = (id: string) => {
+export const resolveVirtualId = (id: string) => {
   return `\0${id}`
-}
-
-export const url = (id: string) => {
-  return `/@id/__x00__${id}`
 }
 
 export const getWidgetImport = (zone: InjectionZone) => {

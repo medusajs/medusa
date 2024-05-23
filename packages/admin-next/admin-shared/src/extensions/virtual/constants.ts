@@ -1,13 +1,13 @@
 import { ROUTE_IMPORTS } from "../routes"
 import { INJECTION_ZONES } from "../widgets"
-import { getWidgetImport, id, resolve } from "./utils"
+import { getVirtualId, getWidgetImport, resolveVirtualId } from "./utils"
 
 const VIRTUAL_WIDGET_MODULES = INJECTION_ZONES.map((zone) => {
-  return id(getWidgetImport(zone))
+  return getVirtualId(getWidgetImport(zone))
 })
 
 const VIRTUAL_ROUTE_MODULES = ROUTE_IMPORTS.map((route) => {
-  return id(route)
+  return getVirtualId(route)
 })
 
 /**
@@ -29,12 +29,12 @@ export const VIRTUAL_MODULES = [
  * Reolved paths to all virtual widget modules.
  */
 export const RESOLVED_WIDGET_MODULES = VIRTUAL_WIDGET_MODULES.map((id) => {
-  return resolve(id)
+  return resolveVirtualId(id)
 })
 
 /**
  * Reolved paths to all virtual route modules.
  */
 export const RESOLVED_ROUTE_MODULES = VIRTUAL_ROUTE_MODULES.map((id) => {
-  return resolve(id)
+  return resolveVirtualId(id)
 })

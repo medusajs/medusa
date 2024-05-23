@@ -29,7 +29,7 @@ export const createRouteMap = (
     }
 
     if (remainingSegments.length === 0) {
-      route.children = route.children || []
+      route.children ||= []
       route.children.push({
         path: "",
         async lazy() {
@@ -38,7 +38,7 @@ export const createRouteMap = (
         },
       })
     } else {
-      route.children = route.children || []
+      route.children ||= []
       addRoute(remainingSegments, file, route.children)
     }
   }

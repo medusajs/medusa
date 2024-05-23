@@ -3,11 +3,11 @@ import {
   RESOLVED_ROUTE_MODULES,
   RESOLVED_WIDGET_MODULES,
   VIRTUAL_MODULES,
+  getVirtualId,
   getWidgetImport,
   getWidgetZone,
-  id,
   isValidInjectionZone,
-  resolve,
+  resolveVirtualId,
 } from "@medusajs/admin-shared"
 import { fdir } from "fdir"
 import fs from "fs/promises"
@@ -569,8 +569,8 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
 
         for (const zoneValue of zoneValues) {
           const zonePath = getWidgetImport(zoneValue)
-          const moduleId = id(zonePath)
-          const resolvedModuleId = resolve(moduleId)
+          const moduleId = getVirtualId(zonePath)
+          const resolvedModuleId = resolveVirtualId(moduleId)
           const module = server?.moduleGraph.getModuleById(resolvedModuleId)
           if (module) {
             imports.add(resolvedModuleId)
@@ -600,8 +600,8 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
 
       for (const zoneValue of zoneValues) {
         const zonePath = getWidgetImport(zoneValue)
-        const moduleId = id(zonePath)
-        const resolvedModuleId = resolve(moduleId)
+        const moduleId = getVirtualId(zonePath)
+        const resolvedModuleId = resolveVirtualId(moduleId)
 
         const module = server?.moduleGraph.getModuleById(resolvedModuleId)
 
@@ -648,8 +648,8 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
        * We also need to reload all modules that import the route.
        */
       if (!_extensionGraph.has(file)) {
-        const moduleId = id(file)
-        const resolvedModuleId = resolve(moduleId)
+        const moduleId = getVirtualId(file)
+        const resolvedModuleId = resolveVirtualId(moduleId)
         const module = server?.moduleGraph.getModuleById(resolvedModuleId)
         if (module) {
           await server?.reloadModule(module)
@@ -768,7 +768,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     },
     resolveId(id) {
       if (VIRTUAL_MODULES.includes(id)) {
-        return resolve(id)
+        return resolveVirtualId(id)
       }
 
       return null
