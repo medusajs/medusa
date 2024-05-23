@@ -15,7 +15,9 @@ export const normalizeProductFormValues = (
     sales_channels: values?.sales_channels?.length
       ? values.sales_channels?.map((sc) => ({ id: sc.id }))
       : undefined,
-    images: values.images?.length ? values.images : undefined,
+    images: values.images?.length
+      ? values.images.map((url) => ({ url }))
+      : undefined,
     collection_id: values.collection_id || undefined,
     categories: values.categories.map((id) => ({ id })),
     type_id: values.type_id || undefined,

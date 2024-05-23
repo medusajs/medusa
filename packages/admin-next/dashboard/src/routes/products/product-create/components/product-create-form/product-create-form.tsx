@@ -18,6 +18,7 @@ import { ProductCreateDetailsForm } from "../product-create-details-form"
 import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-form"
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
+import { isFetchError } from "../../../../../lib/is-fetch-error.ts"
 
 enum Tab {
   DETAILS = "details",
@@ -30,11 +31,11 @@ type TabState = Record<Tab, ProgressStatus>
 
 const SAVE_DRAFT_BUTTON = "save-draft-button"
 
-let LAST_VISITED_TAB = null
+let LAST_VISITED_TAB: Tab | null = null
 
 export const ProductCreateForm = () => {
   const [tab, setTab] = useState<Tab>(Tab.DETAILS)
-  const [tabState, setTabState] = useState<Record<TabState>>({
+  const [tabState, setTabState] = useState<TabState>({
     [Tab.DETAILS]: "in-progress",
     [Tab.ORGANIZE]: "not-started",
     [Tab.VARIANTS]: "not-started",
@@ -86,25 +87,31 @@ export const ProductCreateForm = () => {
 
       const payload = { ...values }
 
-      await mutateAsync(
-        normalizeProductFormValues({
-          // TODO: workflow should handle inventory creation
-          ...payload,
-          status: (isDraftSubmission ? "draft" : "published") as any,
-        }),
-        {
-          onSuccess: ({ product }) => {
-            toast.success(t("general.success"), {
-              dismissLabel: t("actions.close"),
-              description: t("products.create.successToast", {
-                title: product.title,
-              }),
-            })
+      try {
+        const { product } = await mutateAsync(
+          normalizeProductFormValues({
+            // TODO: workflow should handle inventory creation
+            ...payload,
+            status: (isDraftSubmission ? "draft" : "published") as any,
+          })
+        )
 
-            handleSuccess(`../${product.id}`)
-          },
+        toast.success(t("general.success"), {
+          dismissLabel: t("actions.close"),
+          description: t("products.create.successToast", {
+            title: product.title,
+          }),
+        })
+
+        handleSuccess(`../${product.id}`)
+      } catch (error) {
+        if (isFetchError(error) && error.status === 400) {
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissLabel: t("general.close"),
+          })
         }
-      )
+      }
     },
     (err) => {
       console.log(err)

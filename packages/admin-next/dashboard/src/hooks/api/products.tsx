@@ -222,7 +222,7 @@ export const useCreateProduct = (
   options?: UseMutationOptions<
     { product: HttpTypes.AdminProduct },
     Error,
-    { product: HttpTypes.AdminProduct }
+    HttpTypes.AdminCreateProduct
   >
 ) => {
   return useMutation({
