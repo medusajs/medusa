@@ -942,6 +942,9 @@
   },
   "promotions": {
     "domain": "Promotions",
+    "sections": {
+      "details": "Promotion Details"
+    },
     "fields": {
       "method": "Method",
       "type": "Type",
@@ -951,6 +954,9 @@
       "allocation": "Allocation",
       "addCondition": "Add condition",
       "clearAll": "Clear all",
+      "amount": {
+        "tooltip": "Select the currency code to enable setting the amount"
+      },
       "conditions": {
         "rules": {
           "title": "Who can use this code?",
@@ -984,6 +990,9 @@
     },
     "addToCampaign": {
       "title": "Add Promotion To Campaign"
+    },
+    "campaign_currency": {
+      "tooltip": "Currency is carried over from the promotion. Change it on the promotions tab."
     },
     "form": {
       "required": "Required",
@@ -1089,8 +1098,12 @@
       "identifier": "Identifier",
       "start_date": "Start date",
       "end_date": "End date",
-      "total_spend": "Total spend",
-      "budget_limit": "Budget limit"
+      "total_spend": "Budget spent",
+      "total_used": "Budget used",
+      "budget_limit": "Budget limit",
+      "campaign_id": {
+        "hint": "A list of campaigns with the same currency code as the promotion"
+      }
     },
     "budget": {
       "create": {
@@ -1121,6 +1134,8 @@
         "description": "You are about to remove {{count}} promotion(s) from the campaign. This action cannot be undone."
       },
       "alreadyAdded": "This promotion has already been added to the campaign.",
+      "alreadyAddedDiffCampaign": "This promotion has already been added to a different campaign ({{name}}).",
+      "currencyMismatch": "Currency of the promotion and campaign doesn't match",
       "toast": {
         "success": "Successfully added {{count}} promotion(s) to campaign"
       }

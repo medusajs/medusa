@@ -12,6 +12,7 @@ export interface CreateApplicationMethodDTO {
   target_type: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
   value?: number
+  currency_code: string
   promotion: Promotion | string | PromotionDTO
   max_quantity?: number | null
   buy_rules_min_quantity?: number | null
@@ -19,11 +20,12 @@ export interface CreateApplicationMethodDTO {
 }
 
 export interface UpdateApplicationMethodDTO {
-  id: string
+  id?: string
   type?: ApplicationMethodTypeValues
   target_type?: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
   value?: number
+  currency_code?: string
   promotion?: Promotion | string | PromotionDTO
   max_quantity?: number | null
   buy_rules_min_quantity?: number | null

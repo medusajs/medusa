@@ -4,7 +4,7 @@ export interface CreatePromotionDTO {
   code: string
   type: PromotionTypeValues
   is_automatic?: boolean
-  campaign_id?: string
+  campaign_id?: string | null
 }
 
 export interface UpdatePromotionDTO {
@@ -12,5 +12,5 @@ export interface UpdatePromotionDTO {
   code?: string
   type?: PromotionTypeValues
   is_automatic?: boolean
-  campaign_id?: string
+  campaign_id?: string | null
 }

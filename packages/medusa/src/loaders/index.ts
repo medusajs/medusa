@@ -1,25 +1,24 @@
 import { createDefaultsWorkflow } from "@medusajs/core-flows"
-import { ConfigModule, MedusaContainer } from "@medusajs/types"
+import { ConfigModule, MedusaContainer, PluginDetails } from "@medusajs/types"
 import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
+import glob from "glob"
 import { createMedusaContainer } from "medusa-core-utils"
+import path from "path"
 import requestIp from "request-ip"
 import { v4 } from "uuid"
-import path from "path"
 import adminLoader from "./admin"
 import apiLoader from "./api"
 import loadConfig from "./config"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import { registerWorkflows } from "./helpers/register-workflows"
+import { getResolvedPlugins } from "./helpers/resolve-plugins"
+import { SubscriberLoader } from "./helpers/subscribers"
 import Logger from "./logger"
 import loadMedusaApp from "./medusa-app"
 import registerPgConnection from "./pg-connection"
-import { SubscriberLoader } from "./helpers/subscribers"
-import { getResolvedPlugins } from "./helpers/resolve-plugins"
-import { PluginDetails } from "@medusajs/types"
-import glob from "glob"
 
 type Options = {
   directory: string
@@ -63,7 +62,8 @@ async function subscribersLoader(
 async function loadEntrypoints(
   plugins: PluginDetails[],
   container: MedusaContainer,
-  expressApp: Express
+  expressApp: Express,
+  rootDirectory: string
 ) {
   const configModule: ConfigModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
@@ -89,7 +89,7 @@ async function loadEntrypoints(
     next()
   })
 
-  await adminLoader({ app: expressApp, adminConfig: configModule.admin })
+  await adminLoader({ app: expressApp, configModule, rootDirectory })
   await subscribersLoader(plugins, container)
   await apiLoader({
     container,
@@ -143,7 +143,8 @@ export default async ({
   const entrypointsShutdown = await loadEntrypoints(
     plugins,
     container,
-    expressApp
+    expressApp,
+    rootDirectory
   )
   await createDefaultsWorkflow(container).run()
 

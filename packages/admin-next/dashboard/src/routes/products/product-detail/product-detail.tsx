@@ -10,7 +10,9 @@ import { ProductVariantSection } from "./components/product-variant-section"
 import { productLoader } from "./loader"
 
 // import after from "medusa-admin:widgets/product/details/after"
-// import before from "medusa-admin:widgets/product/details/before"
+// @ts-ignore - virtual module
+// import obj from "virtual:config"
+import before from "virtual:medusa/widgets/product/details/before"
 // import sideAfter from "medusa-admin:widgets/product/details/side/after"
 // import sideBefore from "medusa-admin:widgets/product/details/side/before"
 
@@ -38,14 +40,13 @@ export const ProductDetail = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
-      {/* {before.widgets.map((w, i) => {
+      {before.widgets.map((w, i) => {
         return (
           <div key={i}>
             <w.Component />
           </div>
         )
-      })} */}
-
+      })}
       <div className="flex flex-col gap-x-4 lg:flex-row lg:items-start">
         <div className="flex w-full flex-col gap-y-2">
           <ProductGeneralSection product={product} />

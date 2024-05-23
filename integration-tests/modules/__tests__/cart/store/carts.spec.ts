@@ -534,6 +534,7 @@ medusaIntegrationTestRunner({
               target_type: "items",
               allocation: "each",
               value: 300,
+              currency_code: "usd",
               apply_to_quantity: 1,
               max_quantity: 1,
               target_rules: targetRules,
@@ -547,6 +548,7 @@ medusaIntegrationTestRunner({
               type: "fixed",
               target_type: "items",
               allocation: "across",
+              currency_code: "usd",
               value: 1000,
               apply_to_quantity: 1,
               target_rules: targetRules,
@@ -1232,6 +1234,7 @@ medusaIntegrationTestRunner({
               allocation: "across",
               value: 300,
               apply_to_quantity: 2,
+              currency_code: "usd",
               target_rules: [
                 {
                   attribute: "product_id",
