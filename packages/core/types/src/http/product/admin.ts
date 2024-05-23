@@ -14,7 +14,6 @@ import {
   BaseProductVariant,
   BaseProductVariantFilters,
 } from "./common"
-import { AdminCreateProductVariant } from "@medusajs/medusa/dist/api/admin/products/validators"
 
 export interface AdminProduct extends Omit<BaseProduct, "categories"> {
   categories?: AdminProductCategory[]

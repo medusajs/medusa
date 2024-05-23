@@ -74,6 +74,8 @@ export const ProductCreateForm = () => {
 
   const handleSubmit = form.handleSubmit(
     async (values, e) => {
+      console.log(values)
+
       if (!(e?.nativeEvent instanceof SubmitEvent)) {
         return
       }
@@ -105,12 +107,12 @@ export const ProductCreateForm = () => {
 
         handleSuccess(`../${product.id}`)
       } catch (error) {
-        if (isFetchError(error) && error.status === 400) {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("general.close"),
-          })
-        }
+        // if (isFetchError(error) && error.status === 400) {
+        toast.error(t("general.error"), {
+          description: error.message,
+          dismissLabel: t("general.close"),
+        })
+        // }
       }
     },
     (err) => {
