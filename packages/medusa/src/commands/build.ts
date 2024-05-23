@@ -96,6 +96,8 @@ const medusaTransform = async (file: string) => {
         transform: {
           decoratorMetadata: true,
         },
+        target: "es2021",
+        externalHelpers: true,
       },
     })
     await writeToOut(file, output.code, {

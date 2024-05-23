@@ -54,6 +54,7 @@
     "@medusajs/utils": "^1.11.9",
     "@medusajs/workflows-sdk": "^0.1.6",
     "@swc/core": "^1.4.8",
+    "@swc/helpers": "^0.5.11",
     "awilix": "^8.0.0",
     "body-parser": "^1.19.0",
     "boxen": "^5.0.1",
