@@ -808,6 +808,10 @@ export const filesMap = [
     "pathname": "/"
   },
   {
+    "filePath": "/www/apps/resources/app/integrations/page.mdx",
+    "pathname": "/integrations"
+  },
+  {
     "filePath": "/www/apps/resources/app/js-client/page.mdx",
     "pathname": "/js-client"
   },

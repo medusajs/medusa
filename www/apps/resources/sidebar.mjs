@@ -1170,6 +1170,44 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
+    path: "/integrations",
+    title: "Integrations",
+    isChildSidebar: true,
+    hasTitleStyling: true,
+    children: [
+      {
+        title: "File",
+        hasTitleStyling: true,
+        children: [
+          {
+            path: "/architectural-modules/file/s3",
+            title: "AWS S3 (and Compatible APIs)",
+          },
+        ],
+      },
+      {
+        title: "Notification",
+        hasTitleStyling: true,
+        children: [
+          {
+            path: "/architectural-modules/notification/sendgrid",
+            title: "SendGrid",
+          },
+        ],
+      },
+      {
+        title: "Payment",
+        hasTitleStyling: true,
+        children: [
+          {
+            path: "/commerce-modules/payment/payment-provider/stripe",
+            title: "Stripe",
+          },
+        ],
+      },
+    ],
+  },
+  {
     title: "SDKs and Tools",
     hasTitleStyling: true,
     children: [
