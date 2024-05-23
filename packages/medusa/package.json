@@ -3,7 +3,9 @@
   "version": "1.20.5",
   "description": "Building blocks for digital commerce",
   "main": "dist/index.js",
-  "bin": "./cli.js",
+  "bin": {
+    "medusa": "./dist/bin/medusa.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
