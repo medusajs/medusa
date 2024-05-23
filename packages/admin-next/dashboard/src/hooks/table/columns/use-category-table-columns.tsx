@@ -14,7 +14,7 @@ import {
   getCategoryPath,
   getIsActiveProps,
   getIsInternalProps,
-} from "../../../v2-routes/categories/common/utils"
+} from "../../../routes/categories/common/utils"
 
 const columnHelper =
   createColumnHelper<AdminProductCategoryResponse["product_category"]>()

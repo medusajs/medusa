@@ -1,12 +1,11 @@
+import { MedusaModule } from "@medusajs/modules-sdk"
 import {
   LocalWorkflow,
   TransactionHandlerType,
   TransactionState,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-
-import { MedusaModule } from "@medusajs/modules-sdk"
-import { MedusaContextType } from "@medusajs/utils"
+import { MedusaContextType, isPresent } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
@@ -62,13 +61,16 @@ function createContextualWorkflowRunner<
     },
     ...args
   ) => {
-    if (!executionContainer && !flow.container) {
-      executionContainer = MedusaModule.getLoadedModules().map(
-        (mod) => Object.values(mod)[0]
-      )
+    if (!executionContainer) {
+      const container_ = flow.container as MedusaContainer
+      if (!container_ || !isPresent(container_?.registrations)) {
+        executionContainer = MedusaModule.getLoadedModules().map(
+          (mod) => Object.values(mod)[0]
+        )
+      }
     }
 
-    if (!flow.container) {
+    if (executionContainer) {
       flow.container = executionContainer
     }
 

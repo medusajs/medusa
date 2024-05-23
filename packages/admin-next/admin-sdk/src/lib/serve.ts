@@ -1,3 +1,4 @@
+import compression from "compression"
 import { Request, Response, Router, static as static_ } from "express"
 import fs from "fs"
 import { ServerResponse } from "http"
@@ -24,7 +25,7 @@ export async function serve(options: ServeOptions) {
 
   if (!indexExists) {
     throw new Error(
-      `Could not find the admin UI build files. Please run \`npm run build\` or \`yarn build\` command and try again.`
+      `Could not find index.html in the admin build directory. Make sure to run 'medusa build' before starting the server.`
     )
   }
 
@@ -40,6 +41,8 @@ export async function serve(options: ServeOptions) {
     res.setHeader("Cache-Control", "max-age=31536000, immutable")
     res.setHeader("Vary", "Origin, Cache-Control")
   }
+
+  router.use(compression())
 
   router.get("/", sendHtml)
   router.use(

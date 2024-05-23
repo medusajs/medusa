@@ -19,6 +19,7 @@ import {
   ProductTypeDTO,
   ProductVariantDTO,
   PromotionDTO,
+  PromotionRuleDTO,
   SalesChannelDTO,
   ShippingOptionDTO,
   ShippingProfileDTO,
@@ -29,7 +30,7 @@ import {
 } from "@medusajs/types"
 
 import { ProductTagDTO } from "@medusajs/types/dist/product"
-import { WorkflowExecutionDTO } from "../v2-routes/workflow-executions/types"
+import { WorkflowExecutionDTO } from "../routes/workflow-executions/types"
 
 type ListRes = {
   count: number
@@ -52,7 +53,7 @@ export type PromotionListRes = { promotions: PromotionDTO[] } & ListRes
 export type PromotionRuleAttributesListRes = { attributes: Record<any, any>[] }
 export type PromotionRuleOperatorsListRes = { operators: Record<any, any>[] }
 export type PromotionRuleValuesListRes = { values: Record<any, any>[] }
-export type PromotionRulesListRes = { rules: Record<any, any>[] }
+export type PromotionRulesListRes = { rules: PromotionRuleDTO[] }
 export type PromotionDeleteRes = DeleteRes
 
 // Users

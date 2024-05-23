@@ -84,6 +84,7 @@ module.exports = {
 
           "./packages/admin-next/dashboard/tsconfig.json",
           "./packages/admin-next/admin-sdk/tsconfig.json",
+          "./packages/admin-next/admin-shared/tsconfig.json",
           "./packages/admin-next/admin-vite-plugin/tsconfig.json",
 
           "./packages/inventory/tsconfig.spec.json",

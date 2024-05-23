@@ -57,6 +57,7 @@ export const GET = async (
       attribute: disguisedRule.id,
       attribute_label: disguisedRule.label,
       field_type: disguisedRule.field_type,
+      hydrate: disguisedRule.hydrate || false,
       operator: RuleOperator.EQ,
       operator_label: operatorsMap[RuleOperator.EQ].label,
       values,
@@ -67,9 +68,11 @@ export const GET = async (
     continue
   }
 
-  for (const promotionRule of promotionRules) {
+  for (const promotionRule of [...promotionRules, ...transformedRules]) {
     const currentRuleAttribute = ruleAttributes.find(
-      (attr) => attr.value === promotionRule.attribute
+      (attr) =>
+        attr.value === promotionRule.attribute ||
+        attr.value === promotionRule.attribute
     )
 
     if (!currentRuleAttribute) {
@@ -77,6 +80,11 @@ export const GET = async (
     }
 
     const queryConfig = ruleQueryConfigurations[currentRuleAttribute.id]
+
+    if (!queryConfig) {
+      continue
+    }
+
     const rows = await remoteQuery(
       remoteQueryObjectFromString({
         entryPoint: queryConfig.entryPoint,
@@ -101,15 +109,17 @@ export const GET = async (
       label: valueLabelMap.get(value.value) || value.value,
     }))
 
-    transformedRules.push({
-      ...promotionRule,
-      attribute_label: currentRuleAttribute.label,
-      field_type: currentRuleAttribute.field_type,
-      operator_label:
-        operatorsMap[promotionRule.operator]?.label || promotionRule.operator,
-      disguised: false,
-      required: currentRuleAttribute.required || false,
-    })
+    if (!currentRuleAttribute.hydrate) {
+      transformedRules.push({
+        ...promotionRule,
+        attribute_label: currentRuleAttribute.label,
+        field_type: currentRuleAttribute.field_type,
+        operator_label:
+          operatorsMap[promotionRule.operator]?.label || promotionRule.operator,
+        disguised: false,
+        required: currentRuleAttribute.required || false,
+      })
+    }
   }
 
   if (requiredRules.length && !transformedRules.length) {
@@ -124,6 +134,7 @@ export const GET = async (
         values: [],
         disguised: true,
         required: true,
+        hydrate: false,
       })
 
       continue

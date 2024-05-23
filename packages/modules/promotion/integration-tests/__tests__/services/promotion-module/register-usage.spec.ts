@@ -2,6 +2,7 @@ import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
+import { createDefaultPromotion } from "../../../__fixtures__/promotion"
 
 jest.setTimeout(30000)
 
@@ -18,11 +19,7 @@ moduleIntegrationTestRunner({
 
       describe("registerUsage", () => {
         it("should register usage for type spend", async () => {
-          const createdPromotion = await service.create({
-            code: "TEST_PROMO_SPEND",
-            type: "standard",
-            campaign_id: "campaign-id-1",
-          })
+          const createdPromotion = await createDefaultPromotion(service, {})
 
           await service.registerUsage([
             {
@@ -53,9 +50,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should register usage for type usage", async () => {
-          const createdPromotion = await service.create({
-            code: "TEST_PROMO_USAGE",
-            type: "standard",
+          const createdPromotion = await createDefaultPromotion(service, {
             campaign_id: "campaign-id-2",
           })
 
@@ -103,9 +98,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should not register usage when limit is exceed for type usage", async () => {
-          const createdPromotion = await service.create({
-            code: "TEST_PROMO_USAGE",
-            type: "standard",
+          const createdPromotion = await createDefaultPromotion(service, {
             campaign_id: "campaign-id-2",
           })
 
@@ -144,11 +137,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should not register usage above limit when exceeded for type spend", async () => {
-          const createdPromotion = await service.create({
-            code: "TEST_PROMO_SPEND",
-            type: "standard",
-            campaign_id: "campaign-id-1",
-          })
+          const createdPromotion = await createDefaultPromotion(service, {})
 
           await service.updateCampaigns({
             id: "campaign-id-1",

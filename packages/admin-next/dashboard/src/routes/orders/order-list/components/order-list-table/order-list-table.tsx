@@ -1,17 +1,17 @@
+import { keepPreviousData } from "@tanstack/react-query"
 import { Container, Heading } from "@medusajs/ui"
-import { useAdminOrders } from "medusa-react"
 import { useTranslation } from "react-i18next"
+
 import { DataTable } from "../../../../../components/table/data-table/data-table"
 import { useOrderTableColumns } from "../../../../../hooks/table/columns/use-order-table-columns"
 import { useOrderTableFilters } from "../../../../../hooks/table/filters/use-order-table-filters"
 import { useOrderTableQuery } from "../../../../../hooks/table/query/use-order-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useOrders } from "../../../../../hooks/api/orders"
+
+import { DEFAULT_FIELDS } from "../../const"
 
 const PAGE_SIZE = 20
-const DEFAULT_RELATIONS =
-  "customer,items,sales_channel,shipping_address,shipping_address.country"
-const DEFAULT_FIELDS =
-  "id,status,display_id,created_at,email,fulfillment_status,payment_status,total,currency_code"
 
 export const OrderListTable = () => {
   const { t } = useTranslation()
@@ -19,14 +19,13 @@ export const OrderListTable = () => {
     pageSize: PAGE_SIZE,
   })
 
-  const { orders, count, isError, error, isLoading } = useAdminOrders(
+  const { orders, count, isError, error, isLoading } = useOrders(
     {
-      expand: DEFAULT_RELATIONS,
       fields: DEFAULT_FIELDS,
       ...searchParams,
     },
     {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
