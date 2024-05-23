@@ -4,7 +4,7 @@ import {
   ModuleJoinerConfig,
   PluginDetails,
 } from "@medusajs/types"
-import { isObject } from "@medusajs/utils"
+import { ContainerRegistrationKeys, isObject } from "@medusajs/utils"
 
 /**
  * import files from the links directory to retrieve the links to be loaded
@@ -15,7 +15,7 @@ export async function resolvePluginsLinks(
   plugins: PluginDetails[],
   container: MedusaContainer
 ): Promise<ModuleJoinerConfig[]> {
-  const logger = container.resolve("logger") ?? console
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER) ?? console
   return (
     await Promise.all(
       plugins.map(async (pluginDetails) => {
