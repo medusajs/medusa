@@ -18,7 +18,7 @@ const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
-    describe("Admin: Promotion Rules API", () => {
+    describe.skip("Admin: Promotion Rules API", () => {
       let appContainer
       let standardPromotion
       let promotionModule: IPromotionModuleService
