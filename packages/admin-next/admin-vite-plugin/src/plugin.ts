@@ -580,6 +580,55 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
 
         _extensionGraph.set(file, imports)
       }
+
+      if (_extensionGraph.has(file)) {
+        const modules = _extensionGraph.get(file)
+
+        if (!modules) {
+          return
+        }
+
+        for (const moduleId of modules) {
+          const module = server?.moduleGraph.getModuleById(moduleId)
+
+          if (!module || !module.id) {
+            continue
+          }
+
+          const matchedInjectionZone = getWidgetZone(module.id)
+
+          /**
+           * If the widget is imported in a module that does not match the new
+           * zone value, we need to reload the module, so the widget will be removed.
+           */
+          if (!zoneValues.includes(matchedInjectionZone)) {
+            modules.delete(moduleId)
+            await server?.reloadModule(module)
+          }
+        }
+
+        const imports = new Set<string>(modules)
+
+        /**
+         * If the widget is not currently being imported by the virtual module that
+         * matches its zone value, we need to reload the module, so the widget will be added.
+         */
+        for (const zoneValue of zoneValues) {
+          const zonePath = getWidgetImport(zoneValue)
+          const moduleId = getVirtualId(zonePath)
+          const resolvedModuleId = resolveVirtualId(moduleId)
+
+          if (!modules.has(resolvedModuleId)) {
+            const module = server?.moduleGraph.getModuleById(resolvedModuleId)
+            if (module) {
+              imports.add(resolvedModuleId)
+              await server?.reloadModule(module)
+            }
+          }
+        }
+
+        _extensionGraph.set(file, imports)
+      }
     }
 
     if (event === "add") {
