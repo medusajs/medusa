@@ -6,12 +6,6 @@ export const metadata = {
 
 # {metadata.title}
 
-<Note type="soon">
-
-Admin customizations are coming soon.
-
-</Note>
-
 In this chapter, you’ll learn more about widgets and how to use them.
 
 ## What is an Admin Widget?
@@ -28,8 +22,13 @@ A widget is created in a file under the `src/admin/widgets` directory. The file�
 
 For example, create the file `src/admin/widgets/product-widget.tsx` with the following content:
 
-```tsx title="src/admin/widgets/product-widget.tsx" highlights={[["4", "ProductWidget", "The React component of the product widget."], ["14", "", "The zone to inject the widget to."]]}
-import type { WidgetConfig } from "@medusajs/admin"
+export const widgetHighlights = [
+  ["4", "ProductWidget", "The React component of the product widget."], 
+  ["14", "zone", "The zone to inject the widget to."]
+]
+
+```tsx title="src/admin/widgets/product-widget.tsx" highlights={[]}
+import { defineWidgetConfig } from "@medusajs/admin-shared"
 
 // The widget
 const ProductWidget = () => {
@@ -41,16 +40,20 @@ const ProductWidget = () => {
 }
 
 // The widget's configurations
-export const config: WidgetConfig = {
+export const config = defineWidgetConfig({
   zone: "product.details.after",
-}
+})
 
 export default ProductWidget
 ```
 
 The widget only shows the heading `Product Widget`.
 
-In the exported widget’s configurations, you must specify the zone to inject the widget into. The `zone` property can be a string or an array of strings, each being the name of the injection zone.
+Use the `defineWidgetConfig` function imported from `@medusajs/admin-shared` to create and export the widget's configurations.
+
+The function accepts as a parameter an object with the following property:
+
+- `zone`: A string or an array of strings, each being the name of the zone to inject the widget into.
 
 In the example above, the widget is injected after a product’s details.
 
@@ -73,7 +76,7 @@ It’s highly recommended that you use the [Medusa UI package](https://docs.medu
 For example, you can rewrite the above component to the following:
 
 ```tsx title="src/admin/widgets/product-widget.tsx"
-import type { WidgetConfig } from "@medusajs/admin"
+import { defineWidgetConfig } from "@medusajs/admin-shared"
 import { Container, Heading } from "@medusajs/ui"
 
 const ProductWidget = () => {
@@ -84,72 +87,16 @@ const ProductWidget = () => {
   )
 }
 
-export const config: WidgetConfig = {
+export const config: WidgetConfig = defineWidgetConfig({
   zone: "product.details.after",
-}
+})
 
 export default ProductWidget
 ```
-
----
-
-## Widget Props
-
-A widget receives a `notify` prop, which is an object having the following properties:
-
-- `success`: a function that shows a success toast message.
-- `error`: a function that shows an error toast message.
-- `warn`: a function that shows a warning toast message.
-- `info`: a function that shows an info toast message.
-
-Each of these functions accepts two parameters: the message’s title, and the message’s content.
-
-In addition, some injection zones provide additional props based on the page’s context.
-
-For example, you can rewrite the above widget to the following:
-
-```tsx title="src/admin/widgets/product-widget.tsx" highlights={[["14", "product.title", "Show the product's title."], ["18", "success", "Show a success toast message on the click of a button."]]}
-import type {
-  WidgetConfig,
-  ProductDetailsWidgetProps,
-} from "@medusajs/admin"
-import { Container, Heading, Button } from "@medusajs/ui"
-
-const ProductWidget = ({
-  notify,
-  product,
-}: ProductDetailsWidgetProps) => {
-  return (
-    <Container>
-      <Heading level="h2">
-        Product Widget {product.title}
-      </Heading>
-      <Button
-        onClick={() =>
-          notify.success("Success!", "You clicked the button!")
-        }
-        className="mt-3"
-      >
-        Click me
-      </Button>
-    </Container>
-  )
-}
-
-export const config: WidgetConfig = {
-  zone: "product.details.after",
-}
-
-export default ProductWidget
-```
-
-Since the widget is in the product’s details page, it receives the product as a prop. The widget now shows the title of the product in the header.
-
-It also shows a button that, when you click, shows a success toast message.
 
 <Note title="Tip">
 
-Admin Widgets support [Tailwind CSS](https://tailwindcss.com/) out of the box.
+Admin Widgets also support [Tailwind CSS](https://tailwindcss.com/) out of the box.
 
 </Note>
 

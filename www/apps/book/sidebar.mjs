@@ -216,18 +216,6 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               path: "/advanced-development/admin/ui-routes",
               title: "Admin UI Routes",
             },
-            {
-              path: "/advanced-development/admin/setting-pages",
-              title: "Admin Setting Pages",
-            },
-            {
-              path: "/advanced-development/admin/tips",
-              title: "Tips",
-            },
-            {
-              path: "/advanced-development/admin/onboarding-example",
-              title: "Example: Onboarding Widget",
-            },
           ],
         },
       ],

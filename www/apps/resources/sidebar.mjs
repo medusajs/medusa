@@ -1624,10 +1624,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         path: "/references/medusa-config",
         title: "Medusa Application",
       },
-      // {
-      //   path: "/configurations/medusa-admin",
-      //   title: "Medusa Admin",
-      // },
     ],
   },
   {
@@ -1753,20 +1749,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               {
                 path: "/troubleshooting/cors-errors",
                 title: "CORS Errors",
-              },
-            ],
-          },
-          {
-            title: "Medusa Admin",
-            hasTitleStyling: true,
-            children: [
-              {
-                path: "/troubleshooting/admin-sign-in",
-                title: "Signing In",
-              },
-              {
-                path: "/troubleshooting/admin-custom-hooks-error",
-                title: "Custom Hooks Error",
               },
             ],
           },
