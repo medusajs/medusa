@@ -1,4 +1,5 @@
-import { ProductVariantDTO } from "@medusajs/types"
+import { CurrencyDTO, ProductVariantDTO } from "@medusajs/types"
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -6,12 +7,12 @@ import { ProductCreateSchemaType } from "../../types"
 import { useStore } from "../../../../../hooks/api/store"
 import { useCurrencies } from "../../../../../hooks/api/currencies"
 import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
-import { DataGridReadOnlyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell.tsx"
-import { DataGridTextCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-text-cell.tsx"
-import { createDataGridHelper } from "../../../../../components/data-grid/utils.ts"
-import { DataGridCurrencyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-currency-cell.tsx"
-import { DataGridBooleanCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-boolean-cell.tsx"
-import { DataGridCountrySelectCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-country-select-cell.tsx"
+import { DataGridReadOnlyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
+import { DataGridTextCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-text-cell"
+import { createDataGridHelper } from "../../../../../components/data-grid/utils"
+import { DataGridCurrencyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-currency-cell"
+import { DataGridBooleanCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-boolean-cell"
+import { DataGridCountrySelectCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-country-select-cell"
 
 type ProductCreateVariantsFormProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -20,8 +21,8 @@ type ProductCreateVariantsFormProps = {
 export const ProductCreateVariantsForm = ({
   form,
 }: ProductCreateVariantsFormProps) => {
-  const { store, isLoading: isStoreLoading } = useStore()
-  const { currencies = [], isLoading: isCurrenciesLoading } = useCurrencies(
+  const { store } = useStore()
+  const { currencies = [] } = useCurrencies(
     {
       code: store?.supported_currency_codes,
       limit: store?.supported_currency_codes?.length,
@@ -321,123 +322,3 @@ const useColumns = ({
     [currencies, options, t]
   )
 }
-
-// export const useVariantPriceGridColumns = ({
-//   currencies = [],
-// }: {
-//   currencies?: CurrencyDTO[]
-// }) => {
-//   const { t } = useTranslation()
-//
-//   const colDefs: ColumnDef<ProductVariantDTO>[] = useMemo(() => {
-//     return [
-//       columnHelper.display({
-//         id: t("fields.title"),
-//         header: t("fields.title"),
-//         cell: ({ row }) => {
-//           const entity = row.original
-//
-//           return (
-//             <DataGridReadOnlyCell>
-//               <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
-//                 <span className="truncate">{entity.title}</span>
-//               </div>
-//             </DataGridReadOnlyCell>
-//           )
-//         },
-//       }),
-//       columnHelper.display({
-//         id: t("fields.customTitle"),
-//         header: t("fields.customTitle"),
-//         cell: (context) => {
-//           return (
-//             <DataGridTextCell
-//               context={context}
-//               field={`variants.${context.row.index}.custom_title`}
-//               placeholder={t("fields.title")}
-//             />
-//           )
-//         },
-//       }),
-//       columnHelper.display({
-//         id: t("fields.sku"),
-//         header: t("fields.sku"),
-//         cell: (context) => {
-//           return (
-//             <DataGridTextCell
-//               context={context}
-//               field={`variants.${context.row.index}.sku`}
-//               placeholder="SKU-123"
-//             />
-//           )
-//         },
-//       }),
-//       columnHelper.display({
-//         id: t("fields.manageInventory"),
-//         header: t("fields.manageInventory"),
-//         cell: (context) => {
-//           return (
-//             <DataGridSelectCell
-//               context={context}
-//               options={[
-//                 { value: true, label: "True" },
-//                 { value: false, label: "False" },
-//               ]}
-//               field={`variants.${context.row.index}.manage_inventory`}
-//             />
-//           )
-//         },
-//       }),
-//       columnHelper.display({
-//         id: t("fields.allowBackorder"),
-//         header: t("fields.allowBackorder"),
-//         cell: (context) => {
-//           return (
-//             <DataGridSelectCell
-//               context={context}
-//               options={[
-//                 { value: true, label: "True" },
-//                 { value: false, label: "False" },
-//               ]}
-//               field={`variants.${context.row.index}.allow_backorder`}
-//               disabled={!context.row.original.manage_inventory}
-//             />
-//           )
-//         },
-//       }),
-//       columnHelper.display({
-//         id: t("fields.inventoryKit"),
-//         header: t("fields.inventoryKit"),
-//         cell: (context) => {
-//           return (
-//             <DataGridSelectCell
-//               context={context}
-//               options={[
-//                 { value: true, label: "True" },
-//                 { value: false, label: "False" },
-//               ]}
-//               field={`variants.${context.row.index}.inventory_kit`}
-//               disabled={!context.row.original.manage_inventory}
-//             />
-//           )
-//         },
-//       }),
-//       ...currencies.map((currency) => {
-//         return columnHelper.display({
-//           header: `Price ${currency.code.toUpperCase()}`,
-//           cell: ({ row, table }) => {
-//             return (
-//               <CurrencyCell
-//                 currency={currency}
-//                 meta={table.options.meta as DataGridMeta}
-//                 field={`variants.${row.index}.prices.${currency.code}`}
-//               />
-//             )
-//           },
-//         })
-//       }),
-//     ]
-//   }, [t, currencies])
-//
-//   return colDefs
-// }
