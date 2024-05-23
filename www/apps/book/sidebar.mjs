@@ -216,6 +216,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               path: "/advanced-development/admin/ui-routes",
               title: "Admin UI Routes",
             },
+            {
+              path: "/advanced-development/admin/tips",
+              title: "Tips",
+            },
           ],
         },
       ],

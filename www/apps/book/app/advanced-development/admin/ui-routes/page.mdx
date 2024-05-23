@@ -134,10 +134,27 @@ This adds a page under the path `/app/settings/custom`. An item is also added to
 
 ## Path Parameters
 
-<Note title="soon">
-
-Accepting path parameters in a UI route's props is coming soon.
-
-</Note>
-
 A UI route can accept path parameters if the name of any of the directories in its path is of the format `[param]`. For example, `src/admin/routes/custom/[id]/page.tsx`.
+
+To retrieve the path parameters, install the `react-router-dom` to use its `useParams` hook:
+
+```bash npm2yarn
+npm install react-router-dom
+```
+
+For example, create the file `src/admin/routes/custom/[id]/page.tsx` with the following content:
+
+```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={[["5", "", "Retrieve the path parameter."], ["7", "{id}", "Show the path parameter."]]}
+import { useParams } from "react-router-dom"
+import { Container } from "@medusajs/ui"
+
+const CustomPage = () => {
+  const { id } = useParams()
+
+  return <Container>Passed ID: {id}</Container>
+}
+
+export default CustomPage
+```
+
+If you run the Medusa application and go to `localhost:9000/app/custom/123`, you'll see `123` printed in the page.
