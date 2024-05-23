@@ -124,6 +124,7 @@ export const useVariantPriceGridColumns = ({
             <BooleanCell
               meta={table.options.meta as DataGridMeta}
               field={`variants.${row.index}.allow_backorder`}
+              disabled={!row.original.manage_inventory}
             />
           )
         },
@@ -136,6 +137,7 @@ export const useVariantPriceGridColumns = ({
             <BooleanCell
               meta={table.options.meta as DataGridMeta}
               field={`variants.${row.index}.inventory_kit`}
+              disabled={!row.original.manage_inventory}
             />
           )
         },

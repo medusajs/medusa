@@ -4,11 +4,14 @@ import { CellProps } from "../../../types"
 import { GridCellType } from "../../../constants"
 
 interface BooleanCellProps<TFieldValues extends FieldValues = any>
-  extends CellProps<TFieldValues> {}
+  extends CellProps<TFieldValues> {
+  disabled?: boolean
+}
 
 export const BooleanCell = <TFieldValues extends FieldValues = any>({
   field,
   meta,
+  ...propsRest
 }: BooleanCellProps<TFieldValues>) => {
   const { control } = meta
 
@@ -25,6 +28,7 @@ export const BooleanCell = <TFieldValues extends FieldValues = any>({
             data-field-id={field}
             data-field-type="boolean"
             data-cell-type={GridCellType.EDITABLE}
+            {...propsRest}
           >
             <Select.Trigger
               ref={ref}

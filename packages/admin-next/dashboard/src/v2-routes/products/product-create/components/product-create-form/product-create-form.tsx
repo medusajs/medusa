@@ -67,7 +67,7 @@ export const ProductCreateForm = () => {
   })
 
   const showInventoryTab = useMemo(
-    () => watchedVariants.some((v) => v.inventory_kit),
+    () => watchedVariants.some((v) => v.manage_inventory && v.inventory_kit),
     [watchedVariants]
   )
 
