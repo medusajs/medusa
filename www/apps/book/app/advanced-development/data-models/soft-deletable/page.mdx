@@ -20,25 +20,28 @@ When retrieving or listing records of that data model, records having their `del
 
 To create a soft-deletable model, first, add the following filter decorator to the data model class:
 
-```ts title="src/module/hello/models/my-soft-deletable.ts" highlights={[["6"]]}
+```ts title="src/module/hello/models/my-soft-deletable.ts" highlights={[["7"]]}
 // other imports...
 import { Entity, Filter } from "@mikro-orm/core"
 import { DALUtils } from "@medusajs/utils"
+import { BaseEntity } from "@medusajs/utils"
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-export default class MySoftDeletable {
+class MySoftDeletable extends BaseEntity {
   // ...
 }
+
+export default MySoftDeletable
 ```
 
 Then, add a `deleted_at` field to the data model:
 
-```ts highlights={[["4"], ["5"]]}
+```ts highlights={[["7"], ["8"]]}
 // other imports...
 import { Property } from "@mikro-orm/core"
 
-export default class MySoftDeletable {
+class MySoftDeletable extends BaseEntity {
   // ...
 
   @Property({ columnType: "timestamptz", nullable: true })

@@ -5009,16 +5009,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-sdk@workspace:packages/admin-next/admin-sdk"
   dependencies:
+    "@medusajs/admin-shared": 0.0.1
     "@medusajs/admin-vite-plugin": 0.0.1
     "@medusajs/dashboard": 0.0.1
     "@medusajs/types": ^1.11.16
     "@types/compression": ^1.7.5
-    "@types/connect-history-api-fallback": ^1.5.4
     "@vitejs/plugin-react": ^4.2.1
     autoprefixer: ^10.4.16
     commander: ^11.1.0
     compression: ^1.7.4
-    connect-history-api-fallback: ^2.0.0
     copyfiles: ^2.4.1
     deepmerge: ^4.3.1
     express: ^4.18.2
@@ -5035,10 +5034,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-shared@0.0.1, @medusajs/admin-shared@workspace:packages/admin-next/admin-shared":
+"@medusajs/admin-shared@0.0.1, @medusajs/admin-shared@^0.0.1, @medusajs/admin-shared@workspace:packages/admin-next/admin-shared":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-shared@workspace:packages/admin-next/admin-shared"
   dependencies:
+    "@types/react": ^18.3.2
+    tsup: ^8.0.2
     typescript: ^5.3.3
   languageName: unknown
   linkType: soft
@@ -5259,6 +5260,7 @@ __metadata:
     "@dnd-kit/core": ^6.1.0
     "@dnd-kit/sortable": ^8.0.0
     "@hookform/resolvers": 3.3.2
+    "@medusajs/admin-shared": ^0.0.1
     "@medusajs/admin-vite-plugin": 0.0.1
     "@medusajs/icons": 1.2.1
     "@medusajs/js-sdk": 0.0.1
@@ -5283,7 +5285,6 @@ __metadata:
     i18next-browser-languagedetector: 7.2.0
     i18next-http-backend: 2.4.2
     match-sorter: ^6.3.4
-    medusa-react: latest
     postcss: ^8.4.33
     prettier: ^3.1.1
     qs: ^6.12.0
@@ -5587,21 +5588,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-js@npm:*":
-  version: 6.1.8
-  resolution: "@medusajs/medusa-js@npm:6.1.8"
-  dependencies:
-    axios: ^0.24.0
-    cross-env: ^5.2.1
-    qs: ^6.10.3
-    retry-axios: ^2.6.0
-    uuid: ^9.0.0
-  peerDependencies:
-    "@medusajs/medusa": ^1.17.2
-  checksum: ee43f60c083a7fe5116405e57f86189b720e47019a2a991002e86fdb7ed438171ba428088bd19169ba1d07c20095605bef6d867a793d985362e7dfc181b6c0af
-  languageName: node
-  linkType: hard
-
 "@medusajs/medusa-oas-cli@0.3.2, @medusajs/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli"
@@ -5693,8 +5679,6 @@ __metadata:
     typescript: ^4.4.4
     uuid: ^9.0.0
     zod: 3.22.4
-  bin:
-    medusa: ./cli.js
   languageName: unknown
   linkType: soft
 
@@ -11175,16 +11159,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/connect-history-api-fallback@npm:^1.5.4":
-  version: 1.5.4
-  resolution: "@types/connect-history-api-fallback@npm:1.5.4"
-  dependencies:
-    "@types/express-serve-static-core": "*"
-    "@types/node": "*"
-  checksum: 1b4035b627dcd714b05a22557f942e24a57ca48e7377dde0d2f86313fe685bc0a6566512a73257a55b5665b96c3041fb29228ac93331d8133011716215de8244
-  languageName: node
-  linkType: hard
-
 "@types/connect@npm:*":
   version: 3.4.38
   resolution: "@types/connect@npm:3.4.38"
@@ -11273,7 +11247,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-serve-static-core@npm:*, @types/express-serve-static-core@npm:^4.17.33":
+"@types/express-serve-static-core@npm:^4.17.33":
   version: 4.19.0
   resolution: "@types/express-serve-static-core@npm:4.19.0"
   dependencies:
@@ -11739,6 +11713,16 @@ __metadata:
     "@types/prop-types": "*"
     csstype: ^3.0.2
   checksum: 18d856c12a4ec93f3cda2d58ef3d77a9480818afd3af895f812896fb82cfca1f35a692ab1add4ce826a4eb58a071624c7d1c8c6c4ccfb81c100d2916dc607614
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^18.3.2":
+  version: 18.3.2
+  resolution: "@types/react@npm:18.3.2"
+  dependencies:
+    "@types/prop-types": "*"
+    csstype: ^3.0.2
+  checksum: 9fb2f1fcf7e889ee4ea7c3c5978df595c66e770e5fd3a245dbdd2589b9b911524c11dab25a6275d8af4e336e4cb5fa850d447884b84c335a187a338c89df99ba
   languageName: node
   linkType: hard
 
@@ -15182,13 +15166,6 @@ __metadata:
     write-file-atomic: ^3.0.3
     xdg-basedir: ^5.0.1
   checksum: 6681a96038ab3e0397cbdf55e6e1624ac3dfa3afe955e219f683df060188a418bda043c9114a59a337e7aec9562b0a0c838ed7db24289e6d0c266bc8313b9580
-  languageName: node
-  linkType: hard
-
-"connect-history-api-fallback@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "connect-history-api-fallback@npm:2.0.0"
-  checksum: 90fa8b16ab76e9531646cc70b010b1dbd078153730c510d3142f6cf07479ae8a812c5a3c0e40a28528dd1681a62395d0cfdef67da9e914c4772ac85d69a3ed87
   languageName: node
   linkType: hard
 
@@ -24242,20 +24219,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@npm:latest":
-  version: 9.0.17
-  resolution: "medusa-react@npm:9.0.17"
-  dependencies:
-    "@medusajs/medusa-js": "*"
-  peerDependencies:
-    "@medusajs/medusa": ^1.17.2
-    "@tanstack/react-query": ^4.22.0
-    react: ^16.8 || ^17.0 || ^18.0
-    react-dom: ^16.8 || ^17.0 || ^18.0
-  checksum: 8d262e79a08b3b08092bf4394d27ece953f02de3cadf00682f53f3e07c62f01d12b4df4aecbd925d12a319c3af321eabb31a97262a6589fe51ccef20ac064a38
-  languageName: node
-  linkType: hard
-
 "medusa-telemetry@^0.0.17, medusa-telemetry@workspace:packages/medusa-telemetry":
   version: 0.0.0-use.local
   resolution: "medusa-telemetry@workspace:packages/medusa-telemetry"
@@ -27758,7 +27721,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.10.0, qs@npm:^6.10.3, qs@npm:^6.11.0, qs@npm:^6.11.2, qs@npm:^6.12.0, qs@npm:^6.12.1, qs@npm:^6.5.1":
+"qs@npm:^6.10.0, qs@npm:^6.11.0, qs@npm:^6.11.2, qs@npm:^6.12.0, qs@npm:^6.12.1, qs@npm:^6.5.1":
   version: 6.12.1
   resolution: "qs@npm:6.12.1"
   dependencies:

@@ -561,6 +561,62 @@ npx medusa user --email <email> [--password <password>]
   </Table.Body>
 </Table>
 
+### exec
+
+Run a custom CLI script. Learn more about it in [this guide](!docs!/advanced-development/custom-cli-scripts).
+
+```bash
+npx medusa exec [file] [args...]
+```
+
+#### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Argument</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `file`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The path to a JavaScript file holding the function to execute.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `args`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      A list of arguments to pass to the function. These arguments are passed in the `args` property of the function's object parameter.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
 ### start-cluster
 
 Starts the Medusa application in [cluster mode](https://expressjs.com/en/advanced/best-practice-performance.html#run-your-app-in-a-cluster). Running in cluster mode significantly improves performance as the workload and tasks are distributed among all available instances instead of a single one.

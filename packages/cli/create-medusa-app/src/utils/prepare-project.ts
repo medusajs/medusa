@@ -9,12 +9,11 @@ import ProcessManager from "./process-manager.js"
 import { clearProject } from "./clear-project.js"
 import type { Client } from "pg"
 
+const ADMIN_EMAIL = "admin@medusa-test.com"
+
 type PrepareOptions = {
   directory: string
   dbConnectionString: string
-  admin?: {
-    email: string
-  }
   seed?: boolean
   boilerplate?: boolean
   spinner: Ora
@@ -31,7 +30,6 @@ type PrepareOptions = {
 export default async ({
   directory,
   dbConnectionString,
-  admin,
   seed,
   boilerplate,
   spinner,
@@ -186,7 +184,7 @@ export default async ({
     })
   }
 
-  if (admin && !skipDb && migrations) {
+  if (!skipDb && migrations) {
     // create admin user
     factBoxOptions.interval = displayFactBox({
       ...factBoxOptions,
@@ -197,7 +195,7 @@ export default async ({
       process: async () => {
         const proc = await execute(
           [
-            `npx medusa user -e ${admin.email} --invite`,
+            `npx medusa user -e ${ADMIN_EMAIL} --invite`,
             npxOptions,
           ],
           { verbose, needOutput: true }
@@ -226,30 +224,17 @@ export default async ({
       title: "Seeding database...",
     })
 
-    const seedScriptPath = path.join("dist", "helpers", "seed.js")
-
-    // check if a seed file exists in the project
-    if (!fs.existsSync(path.join(directory, seedScriptPath))) {
-      spinner
-        ?.warn(
-          chalk.yellow(
-            "Seed file was not found in the project. Skipping seeding..."
-          )
-        )
-        .start()
-      return inviteToken
-    }
-
     await processManager.runProcess({
       process: async () => {
-        await execute(
-          [
-            `npx medusa exec ${seedScriptPath}`,
-            npxOptions,
-          ],
-          { verbose }
-        )
+        try {
+          await execute([`yarn seed`, execOptions], { verbose })
+        } catch (e) {
+          // yarn isn't available
+          // use npm
+          await execute([`npm run seed`, execOptions], { verbose })
+        }
       },
+      ignoreERESOLVE: true,
     })
 
     displayFactBox({

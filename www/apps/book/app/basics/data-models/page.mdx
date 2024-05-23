@@ -30,44 +30,24 @@ A data model is a class created in a TypeScript or JavaScript file under a modul
 For example, create the file `src/modules/hello/models/my-custom.ts` with the following content:
 
 ```ts title="src/modules/hello/models/my-custom.ts"
-import { generateEntityId } from "@medusajs/utils"
+import { BaseEntity } from "@medusajs/utils"
 import { 
-  BeforeCreate, 
   Entity, 
-  OnInit, 
   PrimaryKey, 
   Property,
 } from "@mikro-orm/core"
 
 @Entity()
-export class MyCustom {
+export class MyCustom extends BaseEntity {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
   @Property({ columnType: "text" })
   name: string
-
-  @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "mc")
-  }
-
-  @OnInit()
-  OnInit() {
-    this.id = generateEntityId(this.id, "mc")
-  }
 }
 ```
 
-This defines a new data model `MyCustom` with the fields `id` and `name`.
-
-The `onCreate` method generates an ID for the data model's record when it's created. The `onInit` method sets the ID when the record is loaded.
-
-<Note title="Tip">
-
-The `generateEntityId` utility method prefixes the `id` of a record with the string provided in the second parameter. This follows Medusa's conventions of creating IDs.
-
-</Note>
+This defines a new data model `MyCustom` with the fields `id` and `name`. Data models extend the `BaseEntity` class imported from `@medusajs/utils`.
 
 ### Create a Migration
 
@@ -80,8 +60,7 @@ A migration is a class created in a TypeScript or JavaScript file under a module
 
   1. Create the file `src/modules/hello/mikro-orm.config.dev.ts` with the following content:
 
-  ```ts
-  import "dotenv/config"
+  ```ts highlights={[["8", "hello", "The module's name."]]}
   import path from "path"
   import { TSMigrationGenerator } from "@medusajs/utils"
   import { MyCustom } from "./models/my-custom"
@@ -139,66 +118,6 @@ In the `up` method, you create the table `my_custom` and define its columns. In 
 The queries performed in each of the methods use PostgreSQL syntax.
 
 </Note>
-
-### Add Migration to Module Definition
-
-After creating the migration, you must add it to your module's definition.
-
-To add a module's migrations to its definitions, use the `ModulesSdkUtils` utility functions imported from `@medusajs/utils`. It has functions to create and define the migration scripts in your module definition.
-
-Change the content of `src/modules/hello.index.ts` that you created in a [previous chapter](../modules-and-services/page.mdx) to the following:
-
-```ts title="src/modules/hello.index.ts" highlights={[["2"], ["6"], ["10"], ["12"], ["14"], ["18"], ["22"], ["28"], ["36"]]}
-import HelloModuleService from "./service"
-// add necessary imports
-import { ModulesSdkUtils } from "@medusajs/utils"
-import { MyCustom } from "./models/my-custom"
-
-// define useful constants
-const moduleName = "hello"
-const pathToMigrations = __dirname + "/migrations"
-
-// assemble object to pass to utility functions
-const migrationScriptOptions = {
-  // the module's name
-  moduleName,
-  // the data models of the modules
-  models: {
-    MyCustom,
-  },
-  // the path to the migrations directory
-  pathToMigrations,
-}
-
-// create and export the script that runs migrations
-export const runMigrations = ModulesSdkUtils
-  .buildMigrationScript(
-    migrationScriptOptions
-  )
-
-// create and export the script that reverts migrations
-export const revertMigration = ModulesSdkUtils
-  .buildRevertMigrationScript(
-    migrationScriptOptions
-  )
-
-export default {
-  service: HelloModuleService,
-  // add the run and revert migration scripts to the module's definition
-  runMigrations,
-  revertMigration,
-}
-```
-
-After importing `ModulesSdkUtils`, you use its `buildMigrationScript` function to create the script that runs the migration, and its `buildRevertMigrationScript` function to create the script that reverts the migration.
-
-Both the `buildMigrationScript` and `buildRevertMigrationScript` accept the same object type as a parameter, which has the following properties:
-
-- `moduleName`: The name of the module that the migrations belong to.
-- `models`: An object of the module's data models.
-- `pathToMigrations`: The path to the `migrations` directory.
-
-Both created scripts must be exported in the file and within the module's definition object.
 
 ### Run Migration
 

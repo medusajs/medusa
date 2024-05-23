@@ -45,8 +45,12 @@ const normalizeRequest = (
 
 const normalizeResponse = async (resp: Response, reqHeaders: Headers) => {
   if (resp.status >= 300) {
-    const error = new FetchError(resp.statusText, resp.status)
-    throw error
+    const jsonError = await resp.json().catch(() => ({})) as { message?: string }
+    throw new FetchError(
+      jsonError.message ?? resp.statusText,
+      resp.statusText,
+      resp.status
+    )
   }
 
   // If we requested JSON, we try to parse the response. Otherwise, we return the raw response.
@@ -56,9 +60,11 @@ const normalizeResponse = async (resp: Response, reqHeaders: Headers) => {
 
 export class FetchError extends Error {
   status: number | undefined
+  statusText: string | undefined
 
-  constructor(message: string, status?: number) {
+  constructor(message: string, statusText?: string, status?: number) {
     super(message)
+    this.statusText = statusText
     this.status = status
   }
 }
@@ -161,8 +167,10 @@ export class Client {
       if (input instanceof URL || typeof input === "string") {
         normalizedInput = new URL(input, this.config.baseUrl)
         if (init?.query) {
-          const existing = qs.parse(normalizedInput.search)
-          const stringifiedQuery = qs.stringify({ existing, ...init.query })
+          const params = Object.fromEntries(
+            normalizedInput.searchParams.entries()
+          )
+          const stringifiedQuery = qs.stringify({ ...params, ...init.query })
           normalizedInput.search = stringifiedQuery
         }
       }

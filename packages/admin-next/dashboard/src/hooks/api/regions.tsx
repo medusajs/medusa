@@ -1,3 +1,4 @@
+import { DeleteResponse, HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -6,12 +7,11 @@ import {
   useQuery,
 } from "@tanstack/react-query"
 import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/medusa"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { DeleteResponse, HttpTypes, PaginatedResponse } from "@medusajs/types"
 
 const REGIONS_QUERY_KEY = "regions" as const
-const regionsQueryKeys = queryKeysFactory(REGIONS_QUERY_KEY)
+export const regionsQueryKeys = queryKeysFactory(REGIONS_QUERY_KEY)
 
 export const useRegion = (
   id: string,

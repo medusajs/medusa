@@ -6,8 +6,12 @@ import {
   useQuery,
 } from "@tanstack/react-query"
 
+import {
+  AdminSalesChannelListResponse,
+  AdminSalesChannelResponse,
+} from "@medusajs/types"
 import { client } from "../../lib/client"
-import { queryClient } from "../../lib/medusa"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import {
   AddProductsSalesChannelReq,
@@ -17,10 +21,6 @@ import {
 } from "../../types/api-payloads"
 import { SalesChannelDeleteRes } from "../../types/api-responses"
 import { productsQueryKeys } from "./products"
-import {
-  AdminSalesChannelListResponse,
-  AdminSalesChannelResponse,
-} from "@medusajs/types"
 
 const SALES_CHANNELS_QUERY_KEY = "sales-channels" as const
 export const salesChannelsQueryKeys = queryKeysFactory(SALES_CHANNELS_QUERY_KEY)
