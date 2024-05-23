@@ -29,7 +29,6 @@ import {
 } from "../utils/nextjs-utils.js"
 
 const slugify = slugifyType.default
-const isEmail = isEmailImported.default
 
 export type CreateOptions = {
   repoUrl?: string
@@ -95,7 +94,6 @@ export default async ({
 
   const projectName = await askForProjectName(directoryPath)
   const projectPath = getProjectPath(projectName, directoryPath)
-  const adminEmail = "admin@medusa-test.com"
   const installNextjs = withNextjsStarter || (await askForNextjsStarter())
 
   let { client, dbConnectionString } = !skipDb
@@ -177,9 +175,6 @@ export default async ({
     inviteToken = await prepareProject({
       directory: projectPath,
       dbConnectionString,
-      admin: {
-        email: adminEmail,
-      },
       seed,
       boilerplate,
       spinner,
