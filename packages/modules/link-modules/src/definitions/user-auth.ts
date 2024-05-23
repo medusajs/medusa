@@ -27,7 +27,6 @@ export const UserAuth: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.AUTH,
-      isInternalService: true,
       primaryKey: "id",
       foreignKey: "auth_identity_id",
       alias: "auth",
