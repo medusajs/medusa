@@ -2,6 +2,7 @@ import {
   MedusaApp,
   MedusaAppMigrateDown,
   MedusaAppMigrateUp,
+  MedusaAppOptions,
   MedusaAppOutput,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
@@ -60,11 +61,13 @@ async function runMedusaAppMigrations({
   configModule,
   container,
   revert = false,
+  customLinkModules,
 }: {
   configModule: {
     modules?: CommonTypes.ConfigModule["modules"]
     projectConfig: CommonTypes.ConfigModule["projectConfig"]
   }
+  customLinkModules?: MedusaAppOptions["linkModules"]
   container: MedusaContainer
   revert?: boolean
 }): Promise<void> {
@@ -93,6 +96,7 @@ async function runMedusaAppMigrations({
     await MedusaAppMigrateDown({
       modulesConfig: configModules,
       sharedContainer: container,
+      linkModules: customLinkModules,
       sharedResourcesConfig,
       injectedDependencies,
     })
@@ -100,6 +104,7 @@ async function runMedusaAppMigrations({
     await MedusaAppMigrateUp({
       modulesConfig: configModules,
       sharedContainer: container,
+      linkModules: customLinkModules,
       sharedResourcesConfig,
       injectedDependencies,
     })
@@ -108,6 +113,7 @@ async function runMedusaAppMigrations({
 
 export async function migrateMedusaApp({
   configModule,
+  customLinkModules,
   container,
 }: {
   configModule: {
@@ -115,15 +121,18 @@ export async function migrateMedusaApp({
     projectConfig: CommonTypes.ConfigModule["projectConfig"]
   }
   container: MedusaContainer
+  customLinkModules?: MedusaAppOptions["linkModules"]
 }): Promise<void> {
   await runMedusaAppMigrations({
     configModule,
     container,
+    customLinkModules,
   })
 }
 
 export async function revertMedusaApp({
   configModule,
+  customLinkModules,
   container,
 }: {
   configModule: {
@@ -131,19 +140,23 @@ export async function revertMedusaApp({
     projectConfig: CommonTypes.ConfigModule["projectConfig"]
   }
   container: MedusaContainer
+  customLinkModules?: MedusaAppOptions["linkModules"]
 }): Promise<void> {
   await runMedusaAppMigrations({
     configModule,
     container,
     revert: true,
+    customLinkModules,
   })
 }
 
 export const loadMedusaApp = async (
   {
     container,
+    customLinkModules,
   }: {
     container: MedusaContainer
+    customLinkModules?: MedusaAppOptions["linkModules"]
   },
   config = { registerInContainer: true }
 ): Promise<MedusaAppOutput> => {
@@ -177,6 +190,7 @@ export const loadMedusaApp = async (
     workerMode: configModule.projectConfig.worker_mode,
     modulesConfig: configModules,
     sharedContainer: container,
+    linkModules: customLinkModules,
     sharedResourcesConfig,
     injectedDependencies,
   })
@@ -221,6 +235,7 @@ export const loadMedusaApp = async (
  */
 export async function runModulesLoader({
   configModule,
+  customLinkModules,
   container,
 }: {
   configModule: {
@@ -228,6 +243,7 @@ export async function runModulesLoader({
     projectConfig: CommonTypes.ConfigModule["projectConfig"]
   }
   container: MedusaContainer
+  customLinkModules?: MedusaAppOptions["linkModules"]
 }): Promise<void> {
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
@@ -251,6 +267,7 @@ export async function runModulesLoader({
   await MedusaApp({
     modulesConfig: configModules,
     sharedContainer: container,
+    linkModules: customLinkModules,
     sharedResourcesConfig,
     injectedDependencies,
     loaderOnly: true,
