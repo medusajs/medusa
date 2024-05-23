@@ -15,8 +15,8 @@ import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
-    RouteDrawer,
-    useRouteModal,
+  RouteDrawer,
+  useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/currencies"
@@ -29,7 +29,7 @@ const EditPromotionSchema = zod.object({
   is_automatic: zod.string().toLowerCase(),
   code: zod.string().min(1),
   value_type: zod.enum(["fixed", "percentage"]),
-  value: zod.string(),
+  value: zod.number(),
   allocation: zod.enum(["each", "across"]),
 })
 
@@ -43,7 +43,7 @@ export const EditPromotionDetailsForm = ({
     defaultValues: {
       is_automatic: promotion.is_automatic!.toString(),
       code: promotion.code,
-      value: promotion.application_method!.value?.toString(),
+      value: promotion.application_method!.value,
       allocation: promotion.application_method!.allocation,
       value_type: promotion.application_method!.type,
     },
@@ -218,11 +218,13 @@ export const EditPromotionDetailsForm = ({
                       {isFixedValueType ? (
                         <CurrencyInput
                           min={0}
-                          onValueChange={onChange}
+                          onValueChange={(val) =>
+                            onChange(val ? parseInt(val) : null)
+                          }
                           code={"USD"}
                           symbol={getCurrencySymbol("USD")}
                           {...field}
-                          value={Number(field.value)}
+                          value={field.value}
                         />
                       ) : (
                         <PercentageInput
@@ -233,7 +235,9 @@ export const EditPromotionDetailsForm = ({
                           value={field.value || ""}
                           onChange={(e) => {
                             onChange(
-                              e.target.value === "" ? null : e.target.value
+                              e.target.value === ""
+                                ? null
+                                : parseInt(e.target.value)
                             )
                           }}
                         />

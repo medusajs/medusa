@@ -87,7 +87,9 @@ export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {
           </Text>
 
           <div className="flex items-center gap-1">
-            <Text className="txt-small">{campaign.currency || "-"}</Text>
+            <Text className="txt-small">
+              {campaign?.budget?.currency_code || "-"}
+            </Text>
           </div>
         </div>
 

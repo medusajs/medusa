@@ -38,6 +38,7 @@ medusaIntegrationTestRunner({
               type: "fixed",
               target_type: "order",
               value: 100,
+              currency_code: "USD",
             },
           },
         ])
@@ -76,6 +77,7 @@ medusaIntegrationTestRunner({
               type: "fixed",
               target_type: "order",
               value: 100,
+              currency_code: "USD",
             },
           },
           {
@@ -85,6 +87,7 @@ medusaIntegrationTestRunner({
               type: "fixed",
               target_type: "order",
               value: 100,
+              currency_code: "USD",
             },
           },
         ])
@@ -108,6 +111,7 @@ medusaIntegrationTestRunner({
               type: "fixed",
               target_type: "order",
               value: 100,
+              currency_code: "USD",
             },
           },
         ])

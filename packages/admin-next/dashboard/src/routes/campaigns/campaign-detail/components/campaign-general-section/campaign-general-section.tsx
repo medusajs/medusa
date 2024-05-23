@@ -30,7 +30,6 @@ export const CampaignGeneralSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
-
   const { mutateAsync } = useDeleteCampaign(campaign.id)
 
   const handleDelete = async () => {
@@ -124,18 +123,20 @@ export const CampaignGeneralSection = ({
         </Text>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("fields.currency")}
-        </Text>
-
-        <div>
-          <Badge size="xsmall">{campaign.currency}</Badge>
-          <Text className="inline pl-3" size="small" leading="compact">
-            {currencies[campaign.currency]?.name}
+      {campaign?.budget && campaign.budget.type === "spend" && (
+        <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+          <Text size="small" leading="compact" weight="plus">
+            {t("fields.currency")}
           </Text>
+
+          <div>
+            <Badge size="xsmall">{campaign?.budget.currency_code}</Badge>
+            <Text className="inline pl-3" size="small" leading="compact">
+              {currencies[campaign?.budget.currency_code?.toUpperCase()]?.name}
+            </Text>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
