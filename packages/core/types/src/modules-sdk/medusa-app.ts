@@ -49,6 +49,7 @@ export type MedusaAppOutput = {
   entitiesMap?: Record<string, any>
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
+  revertMigrations: RunMigrationFn
   onApplicationShutdown: () => Promise<void>
   onApplicationPrepareShutdown: () => Promise<void>
   listen?: (
