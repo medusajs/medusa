@@ -331,14 +331,14 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   return (
     <div className="py-4">
       <div className="flex flex-row items-center justify-between gap-x-4 px-6">
-        {/*ICON*/}
+        {/* ICON*/}
         <div className="grow-0 rounded-lg border">
           <div className="bg-ui-bg-field m-1 rounded-md p-2">
             <Map className="text-ui-fg-subtle" />
           </div>
         </div>
 
-        {/*INFO*/}
+        {/* INFO*/}
         <div className="grow-1 flex flex-1 flex-col">
           <Text weight="plus">{zone.name}</Text>
           <div className="flex items-center gap-2">
@@ -364,7 +364,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
           </div>
         </div>
 
-        {/*ACTION*/}
+        {/* ACTION*/}
         <div className="itemx-center flex grow-0 gap-1">
           <Button
             onClick={() => setOpen((s) => !s)}
@@ -392,7 +392,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
                     to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit`,
                   },
                   {
-                    label: t("shipping.serviceZone.manageAreas"),
+                    label: t("shipping.serviceZone.areas.manage"),
                     icon: <Map />,
                     to: `/settings/shipping/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit-areas`,
                   },
