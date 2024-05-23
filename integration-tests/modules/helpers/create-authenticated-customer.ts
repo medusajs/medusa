@@ -2,7 +2,6 @@ import { CreateCustomerDTO, MedusaContainer } from "@medusajs/types"
 
 import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import jwt from "jsonwebtoken"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 export const createAuthenticatedCustomer = async (
   appContainer: MedusaContainer,
@@ -13,7 +12,6 @@ export const createAuthenticatedCustomer = async (
   const customerModuleService = appContainer.resolve(
     ModuleRegistrationName.CUSTOMER
   )
-  const remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
   const customer = await customerModuleService.create({
     first_name: "John",
@@ -25,19 +23,10 @@ export const createAuthenticatedCustomer = async (
   const authIdentity = await authService.create({
     entity_id: "store_user",
     provider: "emailpass",
-  })
-
-  // Ideally we simulate a signup process than manually linking here.
-  await remoteLink.create([
-    {
-      [Modules.CUSTOMER]: {
-        customer_id: customer.id,
-      },
-      [Modules.AUTH]: {
-        auth_identity_id: authIdentity.id,
-      },
+    app_metadata: {
+      customer_id: customer.id,
     },
-  ])
+  })
 
   const token = jwt.sign(
     {

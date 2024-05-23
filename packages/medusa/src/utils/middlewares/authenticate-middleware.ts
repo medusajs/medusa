@@ -48,6 +48,7 @@ export const authenticate = (
           actor_id: apiKey.id,
           actor_type: "api-key",
           auth_identity_id: "",
+          app_metadata: {},
         }
 
         return next()
