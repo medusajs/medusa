@@ -54,6 +54,10 @@
 "@medusajs/user": patch
 "@medusajs/workflow-engine-inmemory": patch
 "@medusajs/workflow-engine-redis": patch
+"@medusajs/dashboard": patch
+"@medusajs/admin-sdk": patch
+"@medusajs/admin-shared": patch
+"@medusajs/admin-vite-plugin": patch
 ---
 
 chore: Preview release changeset
