@@ -15,7 +15,7 @@ export const POST = async (
   const { errors } = await capturePaymentWorkflow(req.scope).run({
     input: {
       payment_id: id,
-      captured_by: req.auth?.actor_id,
+      captured_by: req.auth_context.actor_id,
       amount: req.validatedBody.amount,
     },
     throwOnError: false,

@@ -2,47 +2,53 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 
 import { createCustomerAccountWorkflow } from "@medusajs/core-flows"
 import { refetchCustomer } from "./helpers"
 import { StoreCreateCustomerType } from "./validators"
+import { generateJwtToken } from "../../utils/auth/token"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<StoreCreateCustomerType>,
   res: MedusaResponse
 ) => {
-  if (req.auth.actor_id) {
-    const remoteQuery = req.scope.resolve(
-      ContainerRegistrationKeys.REMOTE_QUERY
+  // If `actor_id` is present, the request carries authentication for an existing customer
+  if (req.auth_context.actor_id) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Request already authenticated as a customer."
     )
-
-    const query = remoteQueryObjectFromString({
-      entryPoint: "customer",
-      variables: { id: req.auth.actor_id },
-      fields: [],
-    })
-    const [customer] = await remoteQuery(query)
-
-    res.status(200).json({ customer })
-
-    return
   }
 
   const createCustomers = createCustomerAccountWorkflow(req.scope)
   const customersData = req.validatedBody
 
-  const { result } = await createCustomers.run({
-    input: { customersData, authUserId: req.auth.auth_user_id },
+  const { result, errors } = await createCustomers.run({
+    input: { customersData, authIdentityId: req.auth_context.auth_identity_id },
   })
 
-  // Set customer_id on session user if we are in session
-  if (req.session.auth_user) {
-    req.session.auth_user.app_metadata.customer_id = result.id
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
   }
+
+  const { http } = req.scope.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  ).projectConfig
+  const { jwtSecret, jwtExpiresIn } = http
+  const token = generateJwtToken(
+    {
+      actor_id: result.id,
+      actor_type: "customer",
+      auth_identity_id: req.auth_context.auth_identity_id,
+      app_metadata: {},
+      scope: "store",
+    },
+    {
+      secret: jwtSecret,
+      expiresIn: jwtExpiresIn,
+    }
+  )
 
   const customer = await refetchCustomer(
     result.id,
@@ -50,5 +56,5 @@ export const POST = async (
     req.remoteQueryConfig.fields
   )
 
-  res.status(200).json({ customer })
+  res.status(200).json({ customer, token })
 }

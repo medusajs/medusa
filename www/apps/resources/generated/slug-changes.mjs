@@ -1880,9 +1880,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/modules/workflows/page.mdx"
   },
   {
-    "origSlug": "/references/notification/classes/notification.AbstractNotificationService",
-    "newSlug": "/references/notification-service",
-    "filePath": "/www/apps/resources/references/notification/classes/notification.AbstractNotificationService/page.mdx"
+    "origSlug": "/references/notification/classes/notification.AbstractNotificationProviderService",
+    "newSlug": "/references/notification-provider-module",
+    "filePath": "/www/apps/resources/references/notification/classes/notification.AbstractNotificationProviderService/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.addOrderAction",

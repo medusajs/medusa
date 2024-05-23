@@ -5,12 +5,12 @@ import {
   MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import jwt from "jsonwebtoken"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
 import { refetchUser } from "./helpers"
+import { generateJwtToken } from "../../utils/auth/token"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -41,7 +41,7 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   // If `actor_id` is present, the request carries authentication for an existing user
-  if (req.auth.actor_id) {
+  if (req.auth_context.actor_id) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       "Request carries authentication for an existing user"
@@ -51,30 +51,42 @@ export const POST = async (
   const input = {
     input: {
       userData: req.validatedBody,
-      authUserId: req.auth.auth_user_id,
+      authIdentityId: req.auth_context.auth_identity_id,
     },
     throwOnError: false,
   }
 
-  const { errors } = await createUserAccountWorkflow(req.scope).run(input)
+  const { result, errors } = await createUserAccountWorkflow(req.scope).run(
+    input
+  )
 
   if (Array.isArray(errors) && errors[0]) {
     throw errors[0].error
   }
 
-  const user = await refetchUser(
-    req.auth.auth_user_id,
-    req.scope,
-    req.remoteQueryConfig.fields
-  )
-
   const { http } = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   ).projectConfig
+  const { jwtSecret, jwtExpiresIn } = http
+  const token = generateJwtToken(
+    {
+      actor_id: result.id,
+      actor_type: "user",
+      auth_identity_id: req.auth_context.auth_identity_id,
+      app_metadata: {},
+      scope: "admin",
+    },
+    {
+      secret: jwtSecret,
+      expiresIn: jwtExpiresIn,
+    }
+  )
 
-  const token = jwt.sign(user, http.jwtSecret, {
-    expiresIn: http.jwtExpiresIn,
-  })
+  const user = await refetchUser(
+    result.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
   res.status(200).json({ user, token })
 }

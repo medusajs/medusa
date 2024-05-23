@@ -248,7 +248,11 @@ const LoggedInUser = () => {
       <DropdownMenu.Content align="center">
         <Profile />
         <DropdownMenu.Separator />
-        <Link to="https://docs.medusajs.com/user-guide" target="_blank">
+        <Link
+          // TODO change link once docs are public
+          to="https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app/"
+          target="_blank"
+        >
           <DropdownMenu.Item>
             <BookOpen className="text-ui-fg-subtle mr-2" />
             Documentation

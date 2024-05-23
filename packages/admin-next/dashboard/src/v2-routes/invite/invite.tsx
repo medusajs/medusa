@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "framer-motion"
 import { Trans, useTranslation } from "react-i18next"
 import { Link, useSearchParams } from "react-router-dom"
 import * as z from "zod"
-
 import i18n from "i18next"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -13,7 +12,8 @@ import { decodeToken } from "react-jwt"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
 import { isAxiosError } from "../../lib/is-axios-error"
-import { useV2AcceptInvite, useV2CreateAuthUser } from "../../lib/api-v2"
+import { useAcceptInvite } from "../../hooks/api/invites"
+import { useCreateAuthUser } from "../../hooks/api/auth"
 
 const CreateAccountSchema = z
   .object({
@@ -205,10 +205,10 @@ const CreateView = ({
   })
 
   const { mutateAsync: createAuthUser, isPending: isCreatingAuthUser } =
-    useV2CreateAuthUser()
+    useCreateAuthUser()
 
   const { mutateAsync: acceptInvite, isPending: isAcceptingInvite } =
-    useV2AcceptInvite(token)
+    useAcceptInvite(token)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
@@ -224,8 +224,8 @@ const CreateView = ({
       }
 
       await acceptInvite({
-        payload: invitePayload,
-        token: authToken,
+        ...invitePayload,
+        auth_token: authToken,
       })
       onSuccess()
       toast.success(t("general.success"), {

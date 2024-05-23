@@ -45,10 +45,10 @@ const {
 
 // ...
 const { 
-  jwt_secret,
-} = req.scope.resolve("configModule").projectConfig
+  jwtSecret,
+} = req.scope.resolve("configModule").projectConfig.http
 
-const token = jwt.sign(authUser, jwt_secret)
+const token = jwt.sign(authUser, jwtSecret)
 ```
 
 Then, the token is passed in the header of subsequent requests in the Authorization Bearer header.

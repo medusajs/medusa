@@ -48,7 +48,7 @@ export const POST = async (
   const customersData = [
     {
       ...req.validatedBody,
-      created_by: req.auth?.actor_id,
+      created_by: req.auth_context.actor_id,
     },
   ]
 
