@@ -12,14 +12,12 @@ import {
   CreateProductCollectionDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
-  CreateRegionDTO,
   CreateSalesChannelDTO,
   CreateServiceZoneDTO,
   CreateShippingOptionDTO,
   CreateShippingProfileDTO,
   CreateStockLocationInput,
   InventoryNext,
-  ShippingOptionDTO,
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
   UpdateCustomerDTO,
@@ -27,7 +25,6 @@ import {
   UpdateProductCollectionDTO,
   UpdatePromotionDTO,
   UpdatePromotionRuleDTO,
-  UpdateRegionDTO,
   UpdateSalesChannelDTO,
   UpdateServiceZoneDTO,
   UpdateShippingOptionDTO,
@@ -38,10 +35,6 @@ import {
 
 // Auth
 export type EmailPassReq = { email: string; password: string }
-
-// Regions
-export type CreateRegionReq = CreateRegionDTO
-export type UpdateRegionReq = UpdateRegionDTO
 
 // Stores
 export type UpdateStoreReq = UpdateStoreDTO
@@ -70,8 +63,8 @@ export type CreateInviteReq = CreateInviteDTO
 export type CreateStockLocationReq = CreateStockLocationInput
 export type UpdateStockLocationReq = UpdateStockLocationInput
 export type UpdateStockLocationSalesChannelsReq = {
-  add: string[]
-  remove: string[]
+  add?: string[]
+  remove?: string[]
 }
 export type CreateFulfillmentSetReq = CreateFulfillmentSetDTO
 export type CreateServiceZoneReq = CreateServiceZoneDTO
@@ -87,6 +80,10 @@ export type CreateShippingProfileReq = CreateShippingProfileDTO
 // Product Collections
 export type CreateProductCollectionReq = CreateProductCollectionDTO
 export type UpdateProductCollectionReq = UpdateProductCollectionDTO
+export type UpdateProductCollectionProductsReq = {
+  add?: string[]
+  remove?: string[]
+}
 
 // Price Lists
 export type CreatePriceListReq = CreatePriceListDTO
@@ -102,7 +99,7 @@ export type DeletePriceListPricesReq = { ids: string[] }
 
 // Promotion
 export type CreatePromotionReq = CreatePromotionDTO
-export type UpdatePromotionReq = UpdatePromotionDTO
+export type UpdatePromotionReq = Omit<UpdatePromotionDTO, "id">
 export type BatchAddPromotionRulesReq = { rules: CreatePromotionRuleDTO[] }
 export type BatchRemovePromotionRulesReq = { rule_ids: string[] }
 export type BatchUpdatePromotionRulesReq = { rules: UpdatePromotionRuleDTO[] }

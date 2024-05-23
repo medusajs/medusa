@@ -1,14 +1,13 @@
 import {
-  MODULE_PACKAGE_NAMES,
   MedusaApp,
+  MedusaAppMigrateDown,
   MedusaAppMigrateUp,
   MedusaAppOutput,
-  MedusaModule,
-  Modules,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
 import {
   CommonTypes,
+  ConfigModule,
   InternalModuleDeclaration,
   LoadedModule,
   MedusaContainer,
@@ -21,7 +20,6 @@ import {
 } from "@medusajs/utils"
 
 import { asValue } from "awilix"
-import { remoteQueryFetchData } from "../utils/remote-query-fetch-data"
 
 export function mergeDefaultModules(
   modulesConfig: CommonTypes.ConfigModule["modules"]
@@ -58,19 +56,18 @@ export function mergeDefaultModules(
   return configModules
 }
 
-export async function migrateMedusaApp(
-  {
-    configModule,
-    container,
-  }: {
-    configModule: {
-      modules?: CommonTypes.ConfigModule["modules"]
-      projectConfig: CommonTypes.ConfigModule["projectConfig"]
-    }
-    container: MedusaContainer
-  },
-  config = { registerInContainer: true }
-): Promise<void> {
+async function runMedusaAppMigrations({
+  configModule,
+  container,
+  revert = false,
+}: {
+  configModule: {
+    modules?: CommonTypes.ConfigModule["modules"]
+    projectConfig: CommonTypes.ConfigModule["projectConfig"]
+  }
+  container: MedusaContainer
+  revert?: boolean
+}): Promise<void> {
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
@@ -92,24 +89,60 @@ export async function migrateMedusaApp(
   }
   const configModules = mergeDefaultModules(configModule.modules)
 
-  await MedusaAppMigrateUp({
-    modulesConfig: configModules,
-    remoteFetchData: remoteQueryFetchData(container),
-    sharedContainer: container,
-    sharedResourcesConfig,
-    injectedDependencies,
+  if (revert) {
+    await MedusaAppMigrateDown({
+      modulesConfig: configModules,
+      sharedContainer: container,
+      sharedResourcesConfig,
+      injectedDependencies,
+    })
+  } else {
+    await MedusaAppMigrateUp({
+      modulesConfig: configModules,
+      sharedContainer: container,
+      sharedResourcesConfig,
+      injectedDependencies,
+    })
+  }
+}
+
+export async function migrateMedusaApp({
+  configModule,
+  container,
+}: {
+  configModule: {
+    modules?: CommonTypes.ConfigModule["modules"]
+    projectConfig: CommonTypes.ConfigModule["projectConfig"]
+  }
+  container: MedusaContainer
+}): Promise<void> {
+  await runMedusaAppMigrations({
+    configModule,
+    container,
+  })
+}
+
+export async function revertMedusaApp({
+  configModule,
+  container,
+}: {
+  configModule: {
+    modules?: CommonTypes.ConfigModule["modules"]
+    projectConfig: CommonTypes.ConfigModule["projectConfig"]
+  }
+  container: MedusaContainer
+}): Promise<void> {
+  await runMedusaAppMigrations({
+    configModule,
+    container,
+    revert: true,
   })
 }
 
 export const loadMedusaApp = async (
   {
-    configModule,
     container,
   }: {
-    configModule: {
-      modules?: CommonTypes.ConfigModule["modules"]
-      projectConfig: CommonTypes.ConfigModule["projectConfig"]
-    }
     container: MedusaContainer
   },
   config = { registerInContainer: true }
@@ -122,6 +155,10 @@ export const loadMedusaApp = async (
       ContainerRegistrationKeys.LOGGER
     ),
   }
+
+  const configModule: ConfigModule = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
 
   const sharedResourcesConfig = {
     database: {
@@ -139,34 +176,10 @@ export const loadMedusaApp = async (
   const medusaApp = await MedusaApp({
     workerMode: configModule.projectConfig.worker_mode,
     modulesConfig: configModules,
-    remoteFetchData: remoteQueryFetchData(container),
     sharedContainer: container,
     sharedResourcesConfig,
     injectedDependencies,
   })
-
-  // TODO: Remove this and make it more dynamic on ensuring all modules are loaded.
-  const requiredModuleKeys = [Modules.PRODUCT, Modules.PRICING]
-
-  const missingPackages: string[] = []
-
-  for (const requiredModuleKey of requiredModuleKeys) {
-    const isModuleInstalled = MedusaModule.isInstalled(requiredModuleKey)
-
-    if (!isModuleInstalled) {
-      missingPackages.push(
-        MODULE_PACKAGE_NAMES[requiredModuleKey] || requiredModuleKey
-      )
-    }
-  }
-
-  if (missingPackages.length) {
-    throw new Error(
-      `Medusa requires the following packages/module registration: (${missingPackages.join(
-        ", "
-      )})`
-    )
-  }
 
   if (!config.registerInContainer) {
     return medusaApp
@@ -237,7 +250,6 @@ export async function runModulesLoader({
 
   await MedusaApp({
     modulesConfig: configModules,
-    remoteFetchData: remoteQueryFetchData(container),
     sharedContainer: container,
     sharedResourcesConfig,
     injectedDependencies,

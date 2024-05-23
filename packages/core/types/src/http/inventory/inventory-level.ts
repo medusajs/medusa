@@ -11,16 +11,11 @@ interface InventoryLevelResponse {
   incoming_quantity: number
   metadata?: Record<string, unknown> | null
 }
-/**
- * @experimental
- */
+
 export interface AdminInventoryLevelResponse {
   inventory_item: AdminInventoryItemResponse
 }
 
-/**
- * @experimental
- */
-export interface AdminInventoryLevelListResponse extends PaginatedResponse {
+export type AdminInventoryLevelListResponse = PaginatedResponse<{
   inventory_levels: InventoryLevelResponse[]
-}
+}>

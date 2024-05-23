@@ -45,14 +45,14 @@ jobs:
        uses: ./.github/actions/setup-server
        with:
          cache-extension: "cli-test"
-         node-version: "16.14"
+         node-version: 18
 
      - name: Install Medusa cli
        run: npm i -g @medusajs/medusa-cli@preview
 
      - name: Create Medusa project
        run: |
-         medusa new cli-test --skip-db --v2
+         medusa new cli-test --skip-db --v2 --branch feat/v2-ci
        working-directory: ..
 
      - name: run medusa dev

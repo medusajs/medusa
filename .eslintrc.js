@@ -83,6 +83,9 @@ module.exports = {
           "./packages/medusa/tsconfig.json",
 
           "./packages/admin-next/dashboard/tsconfig.json",
+          "./packages/admin-next/admin-sdk/tsconfig.json",
+          "./packages/admin-next/admin-shared/tsconfig.json",
+          "./packages/admin-next/admin-vite-plugin/tsconfig.json",
 
           "./packages/inventory/tsconfig.spec.json",
           "./packages/stock-location/tsconfig.spec.json",
@@ -98,6 +101,7 @@ module.exports = {
           "./packages/core/orchestration/tsconfig.json",
           "./packages/core/workflows-sdk/tsconfig.spec.json",
           "./packages/core/modules-sdk/tsconfig.spec.json",
+          "./packages/core/js-sdk/tsconfig.spec.json",
           "./packages/core/types/tsconfig.spec.json",
           "./packages/core/utils/tsconfig.spec.json",
           "./packages/core/medusa-test-utils/tsconfig.spec.json",
@@ -237,6 +241,55 @@ module.exports = {
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: "module", // Allows for the use of imports
         project: "./packages/admin-next/dashboard/tsconfig.json",
+      },
+      globals: {
+        __BASE__: "readonly",
+      },
+      env: {
+        browser: true,
+      },
+      rules: {
+        "prettier/prettier": "error",
+        "react/prop-types": "off",
+        "new-cap": "off",
+        "require-jsdoc": "off",
+        "valid-jsdoc": "off",
+        "react-refresh/only-export-components": [
+          "warn",
+          { allowConstantExport: true },
+        ],
+        "no-unused-expressions": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            vars: "all",
+            varsIgnorePattern: "^_",
+            args: "after-used",
+            argsIgnorePattern: "^_",
+          },
+        ],
+      },
+    },
+    {
+      files: [
+        "packages/admin-next/app/**/*.ts",
+        "packages/admin-next/app/**/*.tsx",
+      ],
+      plugins: ["unused-imports", "react-refresh"],
+      extends: [
+        "plugin:react/recommended",
+        "plugin:react/jsx-runtime",
+        "plugin:react-hooks/recommended",
+      ],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
+        sourceType: "module", // Allows for the use of imports
+        project: "./packages/admin-next/app/tsconfig.json",
       },
       globals: {
         __BASE__: "readonly",

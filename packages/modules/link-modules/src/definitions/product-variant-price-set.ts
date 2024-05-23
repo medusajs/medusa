@@ -21,8 +21,6 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
   relationships: [
     {
       serviceName: Modules.PRODUCT,
-      // TODO: Remove this when product module is the default product service
-      isInternalService: true,
       primaryKey: "id",
       foreignKey: "variant_id",
       alias: "variant",

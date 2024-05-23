@@ -32,6 +32,7 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
+import { seedStorefrontDefaults } from "../../../../helpers/seed-storefront-defaults"
 
 jest.setTimeout(200000)
 
@@ -89,11 +90,9 @@ medusaIntegrationTestRunner({
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
-        // Here, so we don't have to create a region for each test
-        defaultRegion = await regionModuleService.create({
-          name: "Default Region",
-          currency_code: "dkk",
-        })
+        const { region } = await seedStorefrontDefaults(appContainer, "dkk")
+
+        defaultRegion = region
       })
 
       describe("CreateCartWorkflow", () => {
@@ -367,6 +366,11 @@ medusaIntegrationTestRunner({
             },
           ])
 
+          const region = await regionModuleService.create({
+            name: "US",
+            currency_code: "usd",
+          })
+
           const priceSet = await pricingModule.create({
             prices: [
               {
@@ -405,6 +409,7 @@ medusaIntegrationTestRunner({
 
           const { errors } = await createCartWorkflow(appContainer).run({
             input: {
+              region_id: region.id,
               sales_channel_id: salesChannel.id,
               items: [
                 {

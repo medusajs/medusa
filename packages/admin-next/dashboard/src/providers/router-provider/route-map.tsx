@@ -1,23 +1,20 @@
-import {
-  AdminCollectionsRes,
-  AdminProductsRes,
-  AdminRegionsRes,
-} from "@medusajs/medusa"
+import { AdminCollectionsRes, AdminProductsRes } from "@medusajs/medusa"
 import {
   AdminApiKeyResponse,
   AdminCustomerGroupResponse,
   AdminProductCategoryResponse,
   AdminTaxRateResponse,
   AdminTaxRegionResponse,
+  HttpTypes,
   SalesChannelDTO,
   UserDTO,
 } from "@medusajs/types"
 import { Outlet, RouteObject } from "react-router-dom"
 
 import { ProtectedRoute } from "../../components/authentication/protected-route"
-import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
+import { ErrorBoundary } from "../../components/utilities/error-boundary"
 import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
 
 import { RouteExtensions } from "./route-extensions"
@@ -26,11 +23,11 @@ import { SettingsExtensions } from "./settings-extensions"
 export const RouteMap: RouteObject[] = [
   {
     path: "/login",
-    lazy: () => import("../../v2-routes/login"),
+    lazy: () => import("../../routes/login"),
   },
   {
     path: "/",
-    lazy: () => import("../../v2-routes/home"),
+    lazy: () => import("../../routes/home"),
   },
   {
     path: "*",
@@ -38,7 +35,7 @@ export const RouteMap: RouteObject[] = [
   },
   {
     path: "/invite",
-    lazy: () => import("../../v2-routes/invite"),
+    lazy: () => import("../../routes/invite"),
   },
   {
     element: <ProtectedRoute />,
@@ -56,70 +53,67 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () => import("../../v2-routes/products/product-list"),
+                lazy: () => import("../../routes/products/product-list"),
                 children: [
                   {
                     path: "create",
-                    lazy: () =>
-                      import("../../v2-routes/products/product-create"),
+                    lazy: () => import("../../routes/products/product-create"),
                   },
                 ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../v2-routes/products/product-detail"),
+                lazy: () => import("../../routes/products/product-detail"),
                 handle: {
                   crumb: (data: AdminProductsRes) => data.product.title,
                 },
                 children: [
                   {
                     path: "edit",
-                    lazy: () => import("../../v2-routes/products/product-edit"),
+                    lazy: () => import("../../routes/products/product-edit"),
                   },
                   {
                     path: "sales-channels",
                     lazy: () =>
-                      import("../../v2-routes/products/product-sales-channels"),
+                      import("../../routes/products/product-sales-channels"),
                   },
                   {
                     path: "attributes",
                     lazy: () =>
-                      import("../../v2-routes/products/product-attributes"),
+                      import("../../routes/products/product-attributes"),
                   },
                   {
                     path: "organization",
                     lazy: () =>
-                      import("../../v2-routes/products/product-organization"),
+                      import("../../routes/products/product-organization"),
                   },
                   {
                     path: "media",
-                    lazy: () =>
-                      import("../../v2-routes/products/product-media"),
+                    lazy: () => import("../../routes/products/product-media"),
                   },
                   {
                     path: "prices",
-                    lazy: () =>
-                      import("../../v2-routes/products/product-prices"),
+                    lazy: () => import("../../routes/products/product-prices"),
                   },
                   {
                     path: "options/create",
                     lazy: () =>
-                      import("../../v2-routes/products/product-create-option"),
+                      import("../../routes/products/product-create-option"),
                   },
                   {
                     path: "options/:option_id/edit",
                     lazy: () =>
-                      import("../../v2-routes/products/product-edit-option"),
+                      import("../../routes/products/product-edit-option"),
                   },
                   {
                     path: "variants/create",
                     lazy: () =>
-                      import("../../v2-routes/products/product-create-variant"),
+                      import("../../routes/products/product-create-variant"),
                   },
                   {
                     path: "variants/:variant_id/edit",
                     lazy: () =>
-                      import("../../v2-routes/products/product-edit-variant"),
+                      import("../../routes/products/product-edit-variant"),
                   },
                 ],
               },
@@ -133,12 +127,11 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () => import("../../v2-routes/categories/category-list"),
+                lazy: () => import("../../routes/categories/category-list"),
               },
               {
                 path: ":id",
-                lazy: () =>
-                  import("../../v2-routes/categories/category-detail"),
+                lazy: () => import("../../routes/categories/category-detail"),
                 handle: {
                   crumb: (data: AdminProductCategoryResponse) =>
                     data.product_category.name,
@@ -154,11 +147,18 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () => import("../../v2-routes/orders/order-list"),
+                lazy: () => import("../../routes/orders/order-list"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../v2-routes/orders/order-detail"),
+                lazy: () => import("../../routes/orders/order-detail"),
+                children: [
+                  {
+                    path: "fulfillment",
+                    lazy: () =>
+                      import("../../routes/orders/order-create-fulfillment"),
+                  },
+                ],
               },
             ],
           },
@@ -170,17 +170,15 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () => import("../../v2-routes/promotions/promotion-list"),
+                lazy: () => import("../../routes/promotions/promotion-list"),
               },
               {
                 path: "create",
-                lazy: () =>
-                  import("../../v2-routes/promotions/promotion-create"),
+                lazy: () => import("../../routes/promotions/promotion-create"),
               },
               {
                 path: ":id",
-                lazy: () =>
-                  import("../../v2-routes/promotions/promotion-detail"),
+                lazy: () => import("../../routes/promotions/promotion-detail"),
                 handle: {
                   // TODO: Re-add type when it's available again
                   crumb: (data: any) => data.promotion?.code,
@@ -189,21 +187,17 @@ export const RouteMap: RouteObject[] = [
                   {
                     path: "edit",
                     lazy: () =>
-                      import(
-                        "../../v2-routes/promotions/promotion-edit-details"
-                      ),
+                      import("../../routes/promotions/promotion-edit-details"),
                   },
                   {
                     path: "add-to-campaign",
                     lazy: () =>
-                      import(
-                        "../../v2-routes/promotions/promotion-add-campaign"
-                      ),
+                      import("../../routes/promotions/promotion-add-campaign"),
                   },
                   {
                     path: ":ruleType/edit",
                     lazy: () =>
-                      import("../../v2-routes/promotions/common/edit-rules"),
+                      import("../../routes/promotions/common/edit-rules"),
                   },
                 ],
               },
@@ -215,34 +209,31 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () => import("../../v2-routes/campaigns/campaign-list"),
+                lazy: () => import("../../routes/campaigns/campaign-list"),
                 children: [],
               },
               {
                 path: "create",
-                lazy: () => import("../../v2-routes/campaigns/campaign-create"),
+                lazy: () => import("../../routes/campaigns/campaign-create"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../v2-routes/campaigns/campaign-detail"),
+                lazy: () => import("../../routes/campaigns/campaign-detail"),
                 handle: { crumb: (data: any) => data.campaign.name },
                 children: [
                   {
                     path: "edit",
-                    lazy: () =>
-                      import("../../v2-routes/campaigns/campaign-edit"),
+                    lazy: () => import("../../routes/campaigns/campaign-edit"),
                   },
                   {
                     path: "edit-budget",
                     lazy: () =>
-                      import("../../v2-routes/campaigns/campaign-budget-edit"),
+                      import("../../routes/campaigns/campaign-budget-edit"),
                   },
                   {
                     path: "add-promotions",
                     lazy: () =>
-                      import(
-                        "../../v2-routes/campaigns/add-campaign-promotions"
-                      ),
+                      import("../../routes/campaigns/add-campaign-promotions"),
                   },
                 ],
               },
@@ -256,20 +247,19 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () =>
-                  import("../../v2-routes/collections/collection-list"),
+                lazy: () => import("../../routes/collections/collection-list"),
                 children: [
                   {
                     path: "create",
                     lazy: () =>
-                      import("../../v2-routes/collections/collection-create"),
+                      import("../../routes/collections/collection-create"),
                   },
                 ],
               },
               {
                 path: ":id",
                 lazy: () =>
-                  import("../../v2-routes/collections/collection-detail"),
+                  import("../../routes/collections/collection-detail"),
                 handle: {
                   crumb: (data: AdminCollectionsRes) => data.collection.title,
                 },
@@ -277,13 +267,13 @@ export const RouteMap: RouteObject[] = [
                   {
                     path: "edit",
                     lazy: () =>
-                      import("../../v2-routes/collections/collection-edit"),
+                      import("../../routes/collections/collection-edit"),
                   },
                   {
                     path: "products",
                     lazy: () =>
                       import(
-                        "../../v2-routes/collections/collection-add-products"
+                        "../../routes/collections/collection-add-products"
                       ),
                   },
                 ],
@@ -298,40 +288,38 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () => import("../../v2-routes/pricing/pricing-list"),
+                lazy: () => import("../../routes/pricing/pricing-list"),
                 children: [
                   {
                     path: "create",
-                    lazy: () =>
-                      import("../../v2-routes/pricing/pricing-create"),
+                    lazy: () => import("../../routes/pricing/pricing-create"),
                   },
                 ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../v2-routes/pricing/pricing-detail"),
+                lazy: () => import("../../routes/pricing/pricing-detail"),
                 handle: {
                   crumb: (data: PriceListRes) => data.price_list.title,
                 },
                 children: [
                   {
                     path: "edit",
-                    lazy: () => import("../../v2-routes/pricing/pricing-edit"),
+                    lazy: () => import("../../routes/pricing/pricing-edit"),
                   },
                   {
                     path: "configuration",
                     lazy: () =>
-                      import("../../v2-routes/pricing/pricing-configuration"),
+                      import("../../routes/pricing/pricing-configuration"),
                   },
                   {
                     path: "products/add",
-                    lazy: () =>
-                      import("../../v2-routes/pricing/pricing-products"),
+                    lazy: () => import("../../routes/pricing/pricing-products"),
                   },
                   {
                     path: "products/edit",
                     lazy: () =>
-                      import("../../v2-routes/pricing/pricing-products-prices"),
+                      import("../../routes/pricing/pricing-products-prices"),
                   },
                 ],
               },
@@ -345,18 +333,18 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () => import("../../v2-routes/customers/customer-list"),
+                lazy: () => import("../../routes/customers/customer-list"),
                 children: [
                   {
                     path: "create",
                     lazy: () =>
-                      import("../../v2-routes/customers/customer-create"),
+                      import("../../routes/customers/customer-create"),
                   },
                 ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../v2-routes/customers/customer-detail"),
+                lazy: () => import("../../routes/customers/customer-detail"),
                 handle: {
                   // Re-add type when it's available again
                   crumb: (data: any) => data.customer.email,
@@ -364,8 +352,14 @@ export const RouteMap: RouteObject[] = [
                 children: [
                   {
                     path: "edit",
+                    lazy: () => import("../../routes/customers/customer-edit"),
+                  },
+                  {
+                    path: "add-customer-groups",
                     lazy: () =>
-                      import("../../v2-routes/customers/customer-edit"),
+                      import(
+                        "../../routes/customers/customers-add-customer-group"
+                      ),
                   },
                 ],
               },
@@ -380,13 +374,13 @@ export const RouteMap: RouteObject[] = [
               {
                 path: "",
                 lazy: () =>
-                  import("../../v2-routes/customer-groups/customer-group-list"),
+                  import("../../routes/customer-groups/customer-group-list"),
                 children: [
                   {
                     path: "create",
                     lazy: () =>
                       import(
-                        "../../v2-routes/customer-groups/customer-group-create"
+                        "../../routes/customer-groups/customer-group-create"
                       ),
                   },
                 ],
@@ -394,9 +388,7 @@ export const RouteMap: RouteObject[] = [
               {
                 path: ":id",
                 lazy: () =>
-                  import(
-                    "../../v2-routes/customer-groups/customer-group-detail"
-                  ),
+                  import("../../routes/customer-groups/customer-group-detail"),
                 handle: {
                   crumb: (data: AdminCustomerGroupResponse) =>
                     data.customer_group.name,
@@ -406,14 +398,14 @@ export const RouteMap: RouteObject[] = [
                     path: "edit",
                     lazy: () =>
                       import(
-                        "../../v2-routes/customer-groups/customer-group-edit"
+                        "../../routes/customer-groups/customer-group-edit"
                       ),
                   },
                   {
                     path: "add-customers",
                     lazy: () =>
                       import(
-                        "../../v2-routes/customer-groups/customer-group-add-customers"
+                        "../../routes/customer-groups/customer-group-add-customers"
                       ),
                   },
                 ],
@@ -429,13 +421,13 @@ export const RouteMap: RouteObject[] = [
               {
                 path: "",
                 lazy: () =>
-                  import("../../v2-routes/reservations/reservation-list"),
+                  import("../../routes/reservations/reservation-list"),
                 children: [
                   {
                     path: "create",
                     lazy: () =>
                       import(
-                        "../../v2-routes/reservations/reservation-list/create-reservation"
+                        "../../routes/reservations/reservation-list/create-reservation"
                       ),
                   },
                 ],
@@ -443,7 +435,7 @@ export const RouteMap: RouteObject[] = [
               {
                 path: ":id",
                 lazy: () =>
-                  import("../../v2-routes/reservations/reservation-detail"),
+                  import("../../routes/reservations/reservation-detail"),
                 handle: {
                   crumb: ({ reservation }: any) => {
                     return (
@@ -458,7 +450,7 @@ export const RouteMap: RouteObject[] = [
                     path: "edit",
                     lazy: () =>
                       import(
-                        "../../v2-routes/reservations/reservation-detail/components/edit-reservation"
+                        "../../routes/reservations/reservation-detail/components/edit-reservation"
                       ),
                   },
                 ],
@@ -473,12 +465,11 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () => import("../../v2-routes/inventory/inventory-list"),
+                lazy: () => import("../../routes/inventory/inventory-list"),
               },
               {
                 path: ":id",
-                lazy: () =>
-                  import("../../v2-routes/inventory/inventory-detail"),
+                lazy: () => import("../../routes/inventory/inventory-detail"),
                 handle: {
                   crumb: (data: InventoryItemRes) =>
                     data.inventory_item.title ?? data.inventory_item.sku,
@@ -488,49 +479,47 @@ export const RouteMap: RouteObject[] = [
                     path: "edit",
                     lazy: () =>
                       import(
-                        "../../v2-routes/inventory/inventory-detail/components/edit-inventory-item"
+                        "../../routes/inventory/inventory-detail/components/edit-inventory-item"
                       ),
                   },
                   {
                     path: "attributes",
                     lazy: () =>
                       import(
-                        "../../v2-routes/inventory/inventory-detail/components/edit-inventory-item-attributes"
+                        "../../routes/inventory/inventory-detail/components/edit-inventory-item-attributes"
                       ),
                   },
                   {
                     path: "locations",
                     lazy: () =>
                       import(
-                        "../../v2-routes/inventory/inventory-detail/components/manage-locations"
+                        "../../routes/inventory/inventory-detail/components/manage-locations"
                       ),
                   },
                   {
                     path: "locations/:location_id",
                     lazy: () =>
                       import(
-                        "../../v2-routes/inventory/inventory-detail/components/adjust-inventory"
+                        "../../routes/inventory/inventory-detail/components/adjust-inventory"
                       ),
                   },
                   {
                     // TODO: create reservation
                     path: "reservations",
-                    lazy: () =>
-                      import("../../v2-routes/customers/customer-edit"),
+                    lazy: () => import("../../routes/customers/customer-edit"),
                   },
                   {
                     // TODO: edit reservation
                     path: "reservations/:reservation_id",
-                    lazy: () =>
-                      import("../../v2-routes/customers/customer-edit"),
+                    lazy: () => import("../../routes/customers/customer-edit"),
                   },
                 ],
               },
             ],
           },
+          ...RouteExtensions,
         ],
       },
-      ...RouteExtensions,
     ],
   },
   {
@@ -543,18 +532,18 @@ export const RouteMap: RouteObject[] = [
         children: [
           {
             index: true,
-            lazy: () => import("../../v2-routes/settings"),
+            lazy: () => import("../../routes/settings"),
           },
           {
             path: "profile",
-            lazy: () => import("../../v2-routes/profile/profile-detail"),
+            lazy: () => import("../../routes/profile/profile-detail"),
             handle: {
               crumb: () => "Profile",
             },
             children: [
               {
                 path: "edit",
-                lazy: () => import("../../v2-routes/profile/profile-edit"),
+                lazy: () => import("../../routes/profile/profile-edit"),
               },
             ],
           },
@@ -567,29 +556,30 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () => import("../../v2-routes/regions/region-list"),
+                lazy: () => import("../../routes/regions/region-list"),
                 children: [
                   {
                     path: "create",
-                    lazy: () => import("../../v2-routes/regions/region-create"),
+                    lazy: () => import("../../routes/regions/region-create"),
                   },
                 ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../v2-routes/regions/region-detail"),
+                lazy: () => import("../../routes/regions/region-detail"),
                 handle: {
-                  crumb: (data: AdminRegionsRes) => data.region.name,
+                  crumb: (data: { region: HttpTypes.AdminRegion }) =>
+                    data.region.name,
                 },
                 children: [
                   {
                     path: "edit",
-                    lazy: () => import("../../v2-routes/regions/region-edit"),
+                    lazy: () => import("../../routes/regions/region-edit"),
                   },
                   {
                     path: "countries/add",
                     lazy: () =>
-                      import("../../v2-routes/regions/region-add-countries"),
+                      import("../../routes/regions/region-add-countries"),
                   },
                 ],
               },
@@ -597,19 +587,18 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "store",
-            lazy: () => import("../../v2-routes/store/store-detail"),
+            lazy: () => import("../../routes/store/store-detail"),
             handle: {
               crumb: () => "Store",
             },
             children: [
               {
                 path: "edit",
-                lazy: () => import("../../v2-routes/store/store-edit"),
+                lazy: () => import("../../routes/store/store-edit"),
               },
               {
                 path: "currencies",
-                lazy: () =>
-                  import("../../v2-routes/store/store-add-currencies"),
+                lazy: () => import("../../routes/store/store-add-currencies"),
               },
             ],
           },
@@ -622,24 +611,24 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () => import("../../v2-routes/users/user-list"),
+                lazy: () => import("../../routes/users/user-list"),
                 children: [
                   {
                     path: "invite",
-                    lazy: () => import("../../v2-routes/users/user-invite"),
+                    lazy: () => import("../../routes/users/user-invite"),
                   },
                 ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../v2-routes/users/user-detail"),
+                lazy: () => import("../../routes/users/user-detail"),
                 handle: {
                   crumb: (data: { user: UserDTO }) => data.user.email,
                 },
                 children: [
                   {
                     path: "edit",
-                    lazy: () => import("../../v2-routes/users/user-edit"),
+                    lazy: () => import("../../routes/users/user-edit"),
                   },
                 ],
               },
@@ -655,13 +644,13 @@ export const RouteMap: RouteObject[] = [
               {
                 path: "",
                 lazy: () =>
-                  import("../../v2-routes/sales-channels/sales-channel-list"),
+                  import("../../routes/sales-channels/sales-channel-list"),
                 children: [
                   {
                     path: "create",
                     lazy: () =>
                       import(
-                        "../../v2-routes/sales-channels/sales-channel-create"
+                        "../../routes/sales-channels/sales-channel-create"
                       ),
                   },
                 ],
@@ -669,7 +658,7 @@ export const RouteMap: RouteObject[] = [
               {
                 path: ":id",
                 lazy: () =>
-                  import("../../v2-routes/sales-channels/sales-channel-detail"),
+                  import("../../routes/sales-channels/sales-channel-detail"),
                 handle: {
                   crumb: (data: { sales_channel: SalesChannelDTO }) =>
                     data.sales_channel.name,
@@ -678,15 +667,13 @@ export const RouteMap: RouteObject[] = [
                   {
                     path: "edit",
                     lazy: () =>
-                      import(
-                        "../../v2-routes/sales-channels/sales-channel-edit"
-                      ),
+                      import("../../routes/sales-channels/sales-channel-edit"),
                   },
                   {
                     path: "add-products",
                     lazy: () =>
                       import(
-                        "../../v2-routes/sales-channels/sales-channel-add-products"
+                        "../../routes/sales-channels/sales-channel-add-products"
                       ),
                   },
                 ],
@@ -702,26 +689,25 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () => import("../../v2-routes/shipping/location-list"),
+                lazy: () => import("../../routes/shipping/location-list"),
               },
               {
                 path: "create",
-                lazy: () => import("../../v2-routes/shipping/location-create"),
+                lazy: () => import("../../routes/shipping/location-create"),
               },
               {
                 path: ":location_id",
-                lazy: () => import("../../v2-routes/shipping/location-details"),
+                lazy: () => import("../../routes/shipping/location-details"),
                 children: [
                   {
                     path: "edit",
-                    lazy: () =>
-                      import("../../v2-routes/shipping/location-edit"),
+                    lazy: () => import("../../routes/shipping/location-edit"),
                   },
                   {
                     path: "sales-channels/edit",
                     lazy: () =>
                       import(
-                        "../../v2-routes/shipping/location-add-sales-channels"
+                        "../../routes/shipping/location-add-sales-channels"
                       ),
                   },
                   {
@@ -730,9 +716,7 @@ export const RouteMap: RouteObject[] = [
                       {
                         path: "service-zones/create",
                         lazy: () =>
-                          import(
-                            "../../v2-routes/shipping/service-zone-create"
-                          ),
+                          import("../../routes/shipping/service-zone-create"),
                       },
                       {
                         path: "service-zone/:zone_id",
@@ -740,8 +724,13 @@ export const RouteMap: RouteObject[] = [
                           {
                             path: "edit",
                             lazy: () =>
+                              import("../../routes/shipping/service-zone-edit"),
+                          },
+                          {
+                            path: "edit-areas",
+                            lazy: () =>
                               import(
-                                "../../v2-routes/shipping/service-zone-edit"
+                                "../../routes/shipping/service-zone-areas-edit"
                               ),
                           },
                           {
@@ -751,7 +740,7 @@ export const RouteMap: RouteObject[] = [
                                 path: "create",
                                 lazy: () =>
                                   import(
-                                    "../../v2-routes/shipping/shipping-options-create"
+                                    "../../routes/shipping/shipping-options-create"
                                   ),
                               },
                               {
@@ -761,7 +750,14 @@ export const RouteMap: RouteObject[] = [
                                     path: "edit",
                                     lazy: () =>
                                       import(
-                                        "../../v2-routes/shipping/shipping-option-edit"
+                                        "../../routes/shipping/shipping-option-edit"
+                                      ),
+                                  },
+                                  {
+                                    path: "edit-pricing",
+                                    lazy: () =>
+                                      import(
+                                        "../../routes/shipping/shipping-options-edit-pricing"
                                       ),
                                   },
                                 ],
@@ -787,14 +783,14 @@ export const RouteMap: RouteObject[] = [
                 path: "",
                 lazy: () =>
                   import(
-                    "../../v2-routes/workflow-executions/workflow-execution-list"
+                    "../../routes/workflow-executions/workflow-execution-list"
                   ),
               },
               {
                 path: ":id",
                 lazy: () =>
                   import(
-                    "../../v2-routes/workflow-executions/workflow-execution-detail"
+                    "../../routes/workflow-executions/workflow-execution-detail"
                   ),
                 handle: {
                   crumb: (data: { workflow: any }) => {
@@ -819,14 +815,14 @@ export const RouteMap: RouteObject[] = [
                 path: "",
                 lazy: () =>
                   import(
-                    "../../v2-routes/shipping-profiles/shipping-profiles-list"
+                    "../../routes/shipping-profiles/shipping-profiles-list"
                   ),
                 children: [
                   {
                     path: "create",
                     lazy: () =>
                       import(
-                        "../../v2-routes/shipping-profiles/shipping-profile-create"
+                        "../../routes/shipping-profiles/shipping-profile-create"
                       ),
                   },
                 ],
@@ -835,7 +831,7 @@ export const RouteMap: RouteObject[] = [
                 path: ":id",
                 lazy: () =>
                   import(
-                    "../../v2-routes/shipping-profiles/shipping-profile-detail"
+                    "../../routes/shipping-profiles/shipping-profile-detail"
                   ),
               },
             ],
@@ -855,14 +851,14 @@ export const RouteMap: RouteObject[] = [
                     path: "",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-list"
+                        "../../routes/api-key-management/api-key-management-list"
                       ),
                     children: [
                       {
                         path: "create",
                         lazy: () =>
                           import(
-                            "../../v2-routes/api-key-management/api-key-management-create"
+                            "../../routes/api-key-management/api-key-management-create"
                           ),
                       },
                     ],
@@ -873,7 +869,7 @@ export const RouteMap: RouteObject[] = [
                 path: ":id",
                 lazy: () =>
                   import(
-                    "../../v2-routes/api-key-management/api-key-management-detail"
+                    "../../routes/api-key-management/api-key-management-detail"
                   ),
                 handle: {
                   crumb: (data: AdminApiKeyResponse) => {
@@ -885,14 +881,14 @@ export const RouteMap: RouteObject[] = [
                     path: "edit",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-edit"
+                        "../../routes/api-key-management/api-key-management-edit"
                       ),
                   },
                   {
                     path: "sales-channels",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-sales-channels"
+                        "../../routes/api-key-management/api-key-management-sales-channels"
                       ),
                   },
                 ],
@@ -914,14 +910,14 @@ export const RouteMap: RouteObject[] = [
                     path: "",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-list"
+                        "../../routes/api-key-management/api-key-management-list"
                       ),
                     children: [
                       {
                         path: "create",
                         lazy: () =>
                           import(
-                            "../../v2-routes/api-key-management/api-key-management-create"
+                            "../../routes/api-key-management/api-key-management-create"
                           ),
                       },
                     ],
@@ -932,7 +928,7 @@ export const RouteMap: RouteObject[] = [
                 path: ":id",
                 lazy: () =>
                   import(
-                    "../../v2-routes/api-key-management/api-key-management-detail"
+                    "../../routes/api-key-management/api-key-management-detail"
                   ),
                 handle: {
                   crumb: (data: AdminApiKeyResponse) => {
@@ -944,7 +940,7 @@ export const RouteMap: RouteObject[] = [
                     path: "edit",
                     lazy: () =>
                       import(
-                        "../../v2-routes/api-key-management/api-key-management-edit"
+                        "../../routes/api-key-management/api-key-management-edit"
                       ),
                   },
                 ],
@@ -960,19 +956,18 @@ export const RouteMap: RouteObject[] = [
             children: [
               {
                 path: "",
-                lazy: () => import("../../v2-routes/taxes/tax-region-list"),
+                lazy: () => import("../../routes/taxes/tax-region-list"),
                 children: [
                   {
                     path: "create",
-                    lazy: () =>
-                      import("../../v2-routes/taxes/tax-region-create"),
+                    lazy: () => import("../../routes/taxes/tax-region-create"),
                     children: [],
                   },
                 ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../v2-routes/taxes/tax-region-detail"),
+                lazy: () => import("../../routes/taxes/tax-region-detail"),
                 handle: {
                   crumb: (data: AdminTaxRegionResponse) => {
                     return data.tax_region.country_code
@@ -982,12 +977,12 @@ export const RouteMap: RouteObject[] = [
                   {
                     path: "create-default",
                     lazy: () =>
-                      import("../../v2-routes/taxes/tax-province-create"),
+                      import("../../routes/taxes/tax-province-create"),
                     children: [],
                   },
                   {
                     path: "create-override",
-                    lazy: () => import("../../v2-routes/taxes/tax-rate-create"),
+                    lazy: () => import("../../routes/taxes/tax-rate-create"),
                     children: [],
                   },
                   {
@@ -999,7 +994,7 @@ export const RouteMap: RouteObject[] = [
                           {
                             path: "edit",
                             lazy: () =>
-                              import("../../v2-routes/taxes/tax-rate-edit"),
+                              import("../../routes/taxes/tax-rate-edit"),
                             handle: {
                               crumb: (data: AdminTaxRateResponse) => {
                                 return data.tax_rate.code
@@ -1014,9 +1009,9 @@ export const RouteMap: RouteObject[] = [
               },
             ],
           },
+          ...SettingsExtensions,
         ],
       },
-      ...SettingsExtensions,
     ],
   },
 ]

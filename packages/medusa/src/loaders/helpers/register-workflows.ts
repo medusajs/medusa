@@ -1,21 +1,22 @@
-import { PluginDetails } from "@medusajs/types"
 import { glob } from "glob"
-import { getResolvedPlugins } from "./resolve-plugins"
+import { PluginDetails } from "@medusajs/types"
 
 /**
  * import files from the workflows directory to run the registration of the wofklows
  * @param pluginDetails
  */
-async function registerWorkflows(pluginDetails: PluginDetails): Promise<void> {
-  const files = glob.sync(`${pluginDetails.resolve}/workflows/*.js`, {})
-  await Promise.all(files.map(async (file) => import(file)))
-}
-
-export async function registerProjectWorkflows({
-  rootDirectory,
-  configModule,
-}) {
-  const [resolved] =
-    getResolvedPlugins(rootDirectory, configModule, "dist", true) || []
-  await registerWorkflows(resolved)
+export async function registerWorkflows(
+  plugins: PluginDetails[]
+): Promise<void> {
+  await Promise.all(
+    plugins.map(async (pluginDetails) => {
+      const files = glob.sync(
+        `${pluginDetails.resolve}/workflows/*.{ts,js,mjs,mts}`,
+        {
+          ignore: ["**/*.d.ts", "**/*.map"],
+        }
+      )
+      return Promise.all(files.map(async (file) => import(file)))
+    })
+  )
 }

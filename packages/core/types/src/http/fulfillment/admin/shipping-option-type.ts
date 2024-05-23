@@ -1,6 +1,3 @@
-/**
- * @experimental
- */
 export interface AdminShippingOptionTypeResponse {
   id: string
   label: string

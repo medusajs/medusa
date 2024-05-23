@@ -99,26 +99,27 @@ The File Module accepts one provider only.
 </Note>
 
 ```js title="medusa-config.js"
-module.exports = {
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+const modules = {
   // ...
-  modules: {
-    // ...
-    [Modules.FILE]: {
-      resolve: "@medusajs/file",
-      options: {
-        providers: [
-          {
-            resolve: "./dist/modules/my-file",
-            options: {
-              config: {
-                "my-file": {
-                  // provider options...
-                },
+  [Modules.FILE]: {
+    resolve: "@medusajs/file",
+    options: {
+      providers: [
+        {
+          resolve: "./dist/modules/my-file",
+          options: {
+            config: {
+              "my-file": {
+                // provider options...
               },
             },
           },
-        ],
-      },
+        },
+      ],
     },
   },
 }

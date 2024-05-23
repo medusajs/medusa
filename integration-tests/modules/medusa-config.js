@@ -31,12 +31,17 @@ const customFulfillmentProvider = {
 }
 
 module.exports = {
+  admin: {
+    disable: true,
+  },
   plugins: [],
   projectConfig: {
     database_url: DB_URL,
     database_type: "postgres",
-    jwt_secret: "test",
-    cookie_secret: "test",
+    http: {
+      jwtSecret: "test",
+      cookieSecret: "test",
+    },
   },
   featureFlags: {
     medusa_v2: enableMedusaV2,
@@ -81,6 +86,7 @@ module.exports = {
     [Modules.PRODUCT]: true,
     [Modules.PRICING]: true,
     [Modules.PROMOTION]: true,
+    [Modules.REGION]: true,
     [Modules.CUSTOMER]: true,
     [Modules.SALES_CHANNEL]: true,
     [Modules.CART]: true,

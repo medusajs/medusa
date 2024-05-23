@@ -1,5 +1,6 @@
 import { BigNumberInput } from "../totals"
 import {
+  ChangeActionType,
   OrderItemDTO,
   OrderLineItemDTO,
   OrderReturnReasonDTO,
@@ -300,7 +301,7 @@ export interface CreateOrderChangeActionDTO {
   version?: number
   reference?: string
   reference_id?: string
-  action: string
+  action: ChangeActionType
   internal_note?: string
   amount?: BigNumberInput
   details?: Record<string, unknown>
@@ -316,7 +317,7 @@ export interface UpdateOrderChangeActionDTO {
 export interface CreateOrderTransactionDTO {
   order_id: string
   description?: string
-  reference_type?: string
+  reference?: string
   reference_id?: string
   internal_note?: string
   created_by?: string

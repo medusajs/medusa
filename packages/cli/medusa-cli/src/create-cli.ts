@@ -117,7 +117,11 @@ function buildLocalCommands(cli, isLocalProject) {
           .option(`v2`, {
             type: `boolean`,
             describe: `Install Medusa with the V2 feature flag enabled. WARNING: Medusa V2 is still in development and shouldn't be used in production.`,
-            default: false
+            default: false,
+          })
+          .option(`branch`, {
+            type: `string`,
+            describe: `The branch of the git repository to clone.`,
           }),
       desc: `Create a new Medusa project.`,
       handler: handlerP(newStarter),
@@ -239,6 +243,19 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
+      command: `build`,
+      desc: `Build your project.`,
+      builder: (_) => _,
+      handler: handlerP(
+        getCommandHandler(`build`, (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          cmd(args)
+
+          return new Promise((resolve) => {})
+        })
+      ),
+    })
+    .command({
       command: `start-cluster`,
       desc: `Start development server in cluster mode (beta).`,
       builder: (_) =>
@@ -300,6 +317,19 @@ function buildLocalCommands(cli, isLocalProject) {
           }),
       handler: handlerP(
         getCommandHandler(`user`, (args, cmd) => {
+          cmd(args)
+          // Return an empty promise to prevent handlerP from exiting early.
+          // The development server shouldn't ever exit until the user directly
+          // kills it so this is fine.
+          return new Promise((resolve) => {})
+        })
+      ),
+    })
+    .command({
+      command: `exec [file] [args..]`,
+      desc: `Run a function defined in a file.`,
+      handler: handlerP(
+        getCommandHandler(`exec`, (args, cmd) => {
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly

@@ -2,190 +2,22 @@ get:
   operationId: GetTaxRates
   summary: List Tax Rates
   description: >-
-    Retrieve a list of Tax Rates. The tax rates can be filtered by fields such
-    as `name` or `rate`. The tax rates can also be paginated.
+    Retrieve a list of tax rates. The tax rates can be filtered by fields such
+    as `id`. The tax rates can also be sorted or paginated.
   x-authenticated: true
-  parameters:
-    - in: query
-      name: name
-      description: Filter by name.
-      schema:
-        type: string
-    - in: query
-      name: region_id
-      style: form
-      explode: false
-      description: Filter by Region IDs
-      schema:
-        oneOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-    - in: query
-      name: code
-      description: Filter by code.
-      schema:
-        type: string
-    - in: query
-      name: created_at
-      description: Filter by a creation date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: updated_at
-      description: Filter by an update date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: deleted_at
-      description: Filter by a deletion date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: rate
-      style: form
-      explode: false
-      description: Filter by Rate
-      schema:
-        oneOf:
-          - type: number
-          - type: object
-            properties:
-              lt:
-                type: number
-                description: filter by rates less than this number
-              gt:
-                type: number
-                description: filter by rates greater than this number
-              lte:
-                type: number
-                description: filter by rates less than or equal to this number
-              gte:
-                type: number
-                description: filter by rates greater than or equal to this number
-    - in: query
-      name: q
-      description: Term used to search tax rates by name.
-      schema:
-        type: string
-    - in: query
-      name: order
-      description: A tax rate field to sort-order the retrieved tax rates by.
-      schema:
-        type: string
-    - in: query
-      name: offset
-      description: The number of tax rates to skip when retrieving the tax rates.
-      schema:
-        type: integer
-        default: 0
-    - in: query
-      name: limit
-      description: Limit the number of tax rates returned.
-      schema:
-        type: integer
-        default: 50
-    - in: query
-      name: fields
-      description: Comma-separated fields that should be included in the returned tax rate.
-      style: form
-      explode: false
-      schema:
-        type: array
-        items:
-          type: string
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned tax
-        rate.
-      style: form
-      explode: false
-      schema:
-        type: array
-        items:
-          type: string
-  x-codegen:
-    method: list
-    queryParams: AdminGetTaxRatesParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_tax-rates/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_tax-rates/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_tax-rates/get.sh
+  parameters: []
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_tax-rates/get.sh
   tags:
     - Tax Rates
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminTaxRatesListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -198,66 +30,33 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
 post:
   operationId: PostTaxRates
-  summary: Create a Tax Rate
-  description: Create a Tax Rate.
-  parameters:
-    - in: query
-      name: fields
-      description: Comma-separated fields that should be included in the returned tax rate.
-      style: form
-      explode: false
-      schema:
-        type: array
-        items:
-          type: string
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned tax
-        rate.
-      style: form
-      explode: false
-      schema:
-        type: array
-        items:
-          type: string
+  summary: Create Tax Rate
+  description: Create a tax rate.
   x-authenticated: true
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   requestBody:
     content:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostTaxRatesReq.yaml
-  x-codegen:
-    method: create
-    queryParams: AdminPostTaxRatesParams
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_tax-rates/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_tax-rates/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_tax-rates/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Tax Rates
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminTaxRatesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

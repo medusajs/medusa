@@ -3,81 +3,10 @@ get:
   summary: List Regions
   description: >-
     Retrieve a list of regions. The regions can be filtered by fields such as
-    `created_at`. The regions can also be paginated. This API Route is useful to
-    show the customer all available regions to choose from.
-  externalDocs:
-    description: How to use regions in a storefront
-    url: >-
-      https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions
-  parameters:
-    - in: query
-      name: offset
-      description: The number of regions to skip when retrieving the regions.
-      schema:
-        type: integer
-        default: 0
-    - in: query
-      name: limit
-      description: Limit the number of regions returned.
-      schema:
-        type: integer
-        default: 100
-    - in: query
-      name: created_at
-      description: Filter by a creation date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: updated_at
-      description: Filter by an update date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-  x-codegen:
-    method: list
-    queryParams: StoreGetRegionsParams
+    `id`. The regions can also be sorted or paginated.
+  x-authenticated: false
+  parameters: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/store_regions/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_regions/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -85,14 +14,10 @@ get:
   tags:
     - Regions
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/StoreRegionsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -101,3 +26,7 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

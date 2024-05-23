@@ -1,12 +1,15 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { MedusaContainer, Subscriber } from "@medusajs/types"
+import {
+  IEventBusModuleService,
+  MedusaContainer,
+  Subscriber,
+} from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
 import { readdir } from "fs/promises"
 import { extname, join, sep } from "path"
 
 import { SubscriberArgs, SubscriberConfig } from "../../../types/subscribers"
 import logger from "../../logger"
-import { IEventBusModuleService } from "@medusajs/types"
 
 type SubscriberHandler<T> = (args: SubscriberArgs<T>) => Promise<void>
 
@@ -18,7 +21,6 @@ type SubscriberModule<T> = {
 export class SubscriberLoader {
   protected container_: MedusaContainer
   protected pluginOptions_: Record<string, unknown>
-  protected activityId_: string
   protected rootDir_: string
   protected excludes: RegExp[] = [
     /\.DS_Store/,
@@ -32,13 +34,11 @@ export class SubscriberLoader {
   constructor(
     rootDir: string,
     container: MedusaContainer,
-    options: Record<string, unknown> = {},
-    activityId: string
+    options: Record<string, unknown> = {}
   ) {
     this.rootDir_ = rootDir
     this.pluginOptions_ = options
     this.container_ = container
-    this.activityId_ = activityId
   }
 
   private validateSubscriber(
@@ -160,10 +160,7 @@ export class SubscriberLoader {
     /**
      * If the handler is not anonymous, use the name
      */
-    if (
-      handlerName &&
-      !(handlerName.startsWith("default") || handlerName.startsWith("_default"))
-    ) {
+    if (handlerName && !handlerName.startsWith("_default")) {
       return kebabCase(handlerName)
     }
 
@@ -190,26 +187,25 @@ export class SubscriberLoader {
     )
 
     const { event } = config
-    const events = Array.isArray(event) ? event : [event]
 
-    const subscriber = async (data: T, eventName: string) => {
-      return handler({
-        eventName,
-        data,
-        container: this.container_,
-        pluginOptions: this.pluginOptions_,
-      })
-    }
+    const events = Array.isArray(event) ? event : [event]
 
     const subscriberId = this.inferIdentifier(fileName, config, handler)
 
     for (const e of events) {
-      const obj = {
-        ...(config.context ?? {}),
-        subscriberId,
+      const subscriber = async (data: T) => {
+        return handler({
+          eventName: e,
+          data,
+          container: this.container_,
+          pluginOptions: this.pluginOptions_,
+        })
       }
 
-      eventBusService.subscribe(e, subscriber as Subscriber, obj)
+      eventBusService.subscribe(e, subscriber as Subscriber, {
+        ...(config.context ?? {}),
+        subscriberId,
+      })
     }
   }
 

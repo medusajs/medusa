@@ -1,6 +1,3 @@
-/**
- * @experimental
- */
 export interface PromotionRuleResponse {
   id: string
   attribute: string
@@ -13,9 +10,6 @@ export interface PromotionRuleResponse {
   required: boolean
 }
 
-/**
- * @experimental
- */
 export interface AdminPromotionRuleListResponse {
   attributes: PromotionRuleResponse[]
 }

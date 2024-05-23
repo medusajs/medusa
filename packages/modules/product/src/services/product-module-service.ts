@@ -32,6 +32,9 @@ import {
   ProductStatus,
   promiseAll,
   removeUndefined,
+  isValidHandle,
+  toHandle,
+  isPresent,
 } from "@medusajs/utils"
 import {
   ProductCategoryEventData,
@@ -923,37 +926,53 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    const collectionWithProducts = await promiseAll(
-      updatedCollections.map(async (collection, i) => {
-        const input = normalizedInput.find((c) => c.id === collection.id)
+    const collections: TProductCollection[] = []
+
+    const updateSelectorAndData = updatedCollections.flatMap(
+      (collectionData) => {
+        const input = normalizedInput.find((c) => c.id === collectionData.id)
         const productsToUpdate = (input as any)?.products
-        if (!productsToUpdate) {
-          return { ...collection, products: [] }
+
+        const dissociateSelector = {
+          collection_id: collectionData.id,
+        }
+        const associateSelector = {}
+
+        if (!!productsToUpdate?.length) {
+          const productIds = productsToUpdate.map((p) => p.id)
+          dissociateSelector["id"] = { $nin: productIds }
+          associateSelector["id"] = { $in: productIds }
         }
 
-        await this.productService_.update(
+        const result: Record<string, any>[] = [
           {
-            selector: { collection_id: collection.id },
-            data: { collection_id: null },
+            selector: dissociateSelector,
+            data: {
+              collection_id: null,
+            },
           },
-          sharedContext
-        )
+        ]
 
-        if (productsToUpdate.length > 0) {
-          await this.productService_.update(
-            productsToUpdate.map((p) => ({
-              id: p.id,
-              collection_id: collection.id,
-            })),
-            sharedContext
-          )
+        if (isPresent(associateSelector)) {
+          result.push({
+            selector: associateSelector,
+            data: {
+              collection_id: collectionData.id,
+            },
+          })
         }
 
-        return { ...collection, products: productsToUpdate }
-      })
+        collections.push({
+          ...collectionData,
+          products: productsToUpdate ?? [],
+        })
+
+        return result
+      }
     )
 
-    return collectionWithProducts
+    await this.productService_.update(updateSelectorAndData, sharedContext)
+    return collections
   }
 
   @InjectManager("baseRepository_")
@@ -1165,9 +1184,14 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
     const normalizedInput = await promiseAll(
-      data.map(
-        async (d) => await this.normalizeCreateProductInput(d, sharedContext)
-      )
+      data.map(async (d) => {
+        const normalized = await this.normalizeCreateProductInput(
+          d,
+          sharedContext
+        )
+        this.validateProductPayload(normalized)
+        return normalized
+      })
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1223,9 +1247,14 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
     const normalizedInput = await promiseAll(
-      data.map(
-        async (d) => await this.normalizeUpdateProductInput(d, sharedContext)
-      )
+      data.map(async (d) => {
+        const normalized = await this.normalizeUpdateProductInput(
+          d,
+          sharedContext
+        )
+        this.validateProductPayload(normalized)
+        return normalized
+      })
     )
 
     const productData = await this.productService_.upsertWithReplace(
@@ -1306,6 +1335,21 @@ export default class ProductModuleService<
     return productData
   }
 
+  /**
+   * Validates the manually provided handle value of the product
+   * to be URL-safe
+   */
+  protected validateProductPayload(
+    productData: UpdateProductInput | ProductTypes.CreateProductDTO
+  ) {
+    if (productData.handle && !isValidHandle(productData.handle)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Invalid product handle. It must contain URL safe characters"
+      )
+    }
+  }
+
   protected async normalizeCreateProductInput(
     product: ProductTypes.CreateProductDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -1316,7 +1360,7 @@ export default class ProductModuleService<
     )) as ProductTypes.CreateProductDTO
 
     if (!productData.handle && productData.title) {
-      productData.handle = kebabCase(productData.title)
+      productData.handle = toHandle(productData.title)
     }
 
     if (!productData.status) {

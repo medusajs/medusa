@@ -15,13 +15,12 @@ The object that the subscriber function receives as a parameter has a `data` pro
 For example:
 
 export const highlights = [
-  ["8", "", "The event's data payload."],
-  ["9", "{ id: string }", "The type of expected data payloads."]
+  ["7", "", "The event's data payload."],
+  ["8", "{ id: string }", "The type of expected data payloads."]
 ]
 
 ```ts title="src/subscribers/product-created.ts" highlights={highlights}
 import {
-  ProductService,
   SubscriberArgs,
   type SubscriberConfig,
 } from "@medusajs/medusa"
@@ -33,11 +32,11 @@ export default async function productCreateHandler({
 }
 
 export const config: SubscriberConfig = {
-  event: ProductService.Events.CREATED,
+  event: "product.created",
 }
 ```
 
-This logs the product ID received in the `ProductService.Events.CREATED` (`product-created`) event’s data payload to the console.
+This logs the product ID received in the `product.created` event’s data payload to the console.
 
 ## List of Events with Data Payload
 

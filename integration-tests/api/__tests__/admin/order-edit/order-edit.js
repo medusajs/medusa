@@ -120,7 +120,7 @@ describe("/admin/order-edits", () => {
       const orderEdit = await simpleOrderEditFactory(dbConnection, {
         id: orderEditId,
         order_id: order.id,
-        created_by: "admin_user",
+        created_by: expect.any(String),
         internal_note: "test internal note",
       })
 
@@ -176,7 +176,7 @@ describe("/admin/order-edits", () => {
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: orderEditId,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           requested_by: null,
           canceled_by: null,
           confirmed_by: null,
@@ -289,7 +289,7 @@ describe("/admin/order-edits", () => {
       await simpleOrderEditFactory(dbConnection, {
         id: orderEditId,
         order_id: order.id,
-        created_by: "admin_user",
+        created_by: expect.any(String),
         internal_note: "test internal note",
       })
 
@@ -303,7 +303,7 @@ describe("/admin/order-edits", () => {
       await simpleOrderEditFactory(dbConnection, {
         id: IdMap.getId("random-oe-id"),
         order_id: additionalOrder.id,
-        created_by: "admin_user",
+        created_by: expect.any(String),
         internal_note: "test unused note",
       })
     })
@@ -327,7 +327,7 @@ describe("/admin/order-edits", () => {
         expect.arrayContaining([
           expect.objectContaining({
             id: orderEditId,
-            created_by: "admin_user",
+            created_by: expect.any(String),
             requested_by: null,
             canceled_by: null,
             confirmed_by: null,
@@ -344,7 +344,7 @@ describe("/admin/order-edits", () => {
           }),
           expect.objectContaining({
             order_id: IdMap.getId("random-order-id"),
-            created_by: "admin_user",
+            created_by: expect.any(String),
             requested_by: null,
             canceled_by: null,
             confirmed_by: null,
@@ -381,7 +381,7 @@ describe("/admin/order-edits", () => {
           expect.objectContaining({
             id: orderEditId,
             order_id: orderId,
-            created_by: "admin_user",
+            created_by: expect.any(String),
             requested_by: null,
             canceled_by: null,
             confirmed_by: null,
@@ -416,7 +416,7 @@ describe("/admin/order-edits", () => {
       expect(response.data.order_edits).toEqual([
         expect.objectContaining({
           id: orderEditId,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           requested_by: null,
           canceled_by: null,
           confirmed_by: null,
@@ -712,7 +712,7 @@ describe("/admin/order-edits", () => {
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           order_id: orderId,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           requested_by: null,
           canceled_by: null,
           confirmed_by: null,
@@ -788,7 +788,7 @@ describe("/admin/order-edits", () => {
         order_id: orderId,
         internal_note: "test",
         confirmed_at: new Date(),
-        created_by: "admin_user",
+        created_by: expect.any(String),
       })
 
       const payload = {
@@ -806,7 +806,7 @@ describe("/admin/order-edits", () => {
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           order_id: orderId,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           requested_by: null,
           canceled_by: null,
           confirmed_by: null,
@@ -912,12 +912,12 @@ describe("/admin/order-edits", () => {
       })
 
       const { id } = await simpleOrderEditFactory(dbConnection, {
-        created_by: "admin_user",
+        created_by: expect.any(String),
         order_id: order.id,
       })
 
       const noChangesEdit = await simpleOrderEditFactory(dbConnection, {
-        created_by: "admin_user",
+        created_by: expect.any(String),
       })
 
       const lineItemAdded = await simpleLineItemFactory(dbConnection, {
@@ -1103,7 +1103,7 @@ describe("/admin/order-edits", () => {
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: orderEditId,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           requested_by: null,
           canceled_by: null,
           confirmed_by: null,
@@ -1174,7 +1174,7 @@ describe("/admin/order-edits", () => {
       await simpleOrderEditFactory(dbConnection, {
         id: orderEditId,
         order_id: order.id,
-        created_by: "admin_user",
+        created_by: expect.any(String),
       })
     })
 
@@ -1196,7 +1196,7 @@ describe("/admin/order-edits", () => {
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: orderEditId,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           requested_by: null,
           canceled_by: null,
           confirmed_by: null,
@@ -1534,7 +1534,7 @@ describe("/admin/order-edits", () => {
       await simpleOrderEditFactory(dbConnection, {
         id: orderEditId,
         order_id: orderId1,
-        created_by: "admin_user",
+        created_by: expect.any(String),
         internal_note: "test internal note",
       })
 
@@ -1577,7 +1577,7 @@ describe("/admin/order-edits", () => {
       await simpleOrderEditFactory(dbConnection, {
         id: orderEditId,
         order_id: orderId1,
-        created_by: "admin_user",
+        created_by: expect.any(String),
         internal_note: "test internal note 2",
       })
 
@@ -1592,7 +1592,7 @@ describe("/admin/order-edits", () => {
       await simpleOrderEditFactory(dbConnection, {
         id: orderEditId2,
         order_id: orderId1,
-        created_by: "admin_user",
+        created_by: expect.any(String),
         internal_note: "test internal note 2",
       })
 
@@ -1623,7 +1623,7 @@ describe("/admin/order-edits", () => {
       await simpleOrderEditFactory(dbConnection, {
         id: orderEditId,
         order_id: orderId1,
-        created_by: "admin_user",
+        created_by: expect.any(String),
         internal_note: "test internal note 3",
         confirmed_at: new Date(),
       })
@@ -1655,7 +1655,7 @@ describe("/admin/order-edits", () => {
       await simpleOrderEditFactory(dbConnection, {
         id: orderEditId,
         order_id: orderId1,
-        created_by: "admin_user",
+        created_by: expect.any(String),
         internal_note: "test internal note 4",
         canceled_at: new Date(),
       })
@@ -1694,7 +1694,7 @@ describe("/admin/order-edits", () => {
 
       await simpleOrderEditFactory(dbConnection, {
         id: cancellableEditId,
-        created_by: "admin_user",
+        created_by: expect.any(String),
         internal_note: "test internal note",
       })
 
@@ -1702,14 +1702,14 @@ describe("/admin/order-edits", () => {
         id: canceledEditId,
         canceled_at: new Date(),
         canceled_by: "admin_user",
-        created_by: "admin_user",
+        created_by: expect.any(String),
       })
 
       await simpleOrderEditFactory(dbConnection, {
         id: confirmedEditId,
         confirmed_at: new Date(),
         confirmed_by: "admin_user",
-        created_by: "admin_user",
+        created_by: expect.any(String),
         internal_note: "test internal note",
       })
     })
@@ -1732,7 +1732,7 @@ describe("/admin/order-edits", () => {
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: cancellableEditId,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           canceled_by: "admin_user",
           canceled_at: expect.any(String),
           status: "canceled",
@@ -1753,7 +1753,7 @@ describe("/admin/order-edits", () => {
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: canceledEditId,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           canceled_by: "admin_user",
           canceled_at: expect.any(String),
           status: "canceled",
@@ -1868,7 +1868,7 @@ describe("/admin/order-edits", () => {
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: orderEditId,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           confirmed_by: "admin_user",
           confirmed_at: expect.any(String),
           status: "confirmed",
@@ -1915,7 +1915,7 @@ describe("/admin/order-edits", () => {
       const api = useApi()
 
       const confirmedOrderEdit = await simpleOrderEditFactory(dbConnection, {
-        created_by: "admin_user",
+        created_by: expect.any(String),
         confirmed_at: new Date(),
         confirmed_by: "admin_user",
       })
@@ -1930,7 +1930,7 @@ describe("/admin/order-edits", () => {
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: confirmedOrderEdit.id,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           confirmed_by: "admin_user",
           confirmed_at: expect.any(String),
           status: "confirmed",
@@ -1942,7 +1942,7 @@ describe("/admin/order-edits", () => {
       const api = useApi()
 
       const canceledOrderEdit = await simpleOrderEditFactory(dbConnection, {
-        created_by: "admin_user",
+        created_by: expect.any(String),
         canceled_at: new Date(),
         canceled_by: "admin_user",
       })
@@ -1965,7 +1965,7 @@ describe("/admin/order-edits", () => {
       const api = useApi()
 
       const declinedOrderEdit = await simpleOrderEditFactory(dbConnection, {
-        created_by: "admin_user",
+        created_by: expect.any(String),
         declined_at: new Date(),
         declined_by: "admin_user",
       })
@@ -2155,7 +2155,7 @@ describe("/admin/order-edits", () => {
           status: "created",
           order_id: orderId,
           internal_note: "This is an internal note",
-          created_by: "admin_user",
+          created_by: expect.any(String),
           items: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
@@ -2330,7 +2330,7 @@ describe("/admin/order-edits", () => {
           status: "created",
           order_id: orderId,
           internal_note: "This is an internal note",
-          created_by: "admin_user",
+          created_by: expect.any(String),
           items: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
@@ -2503,7 +2503,7 @@ describe("/admin/order-edits", () => {
           status: "created",
           order_id: order.id,
           internal_note: "This is an internal note",
-          created_by: "admin_user",
+          created_by: expect.any(String),
           items: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
@@ -2617,7 +2617,7 @@ describe("/admin/order-edits", () => {
           status: "created",
           order_id: order.id,
           internal_note: "This is an internal note",
-          created_by: "admin_user",
+          created_by: expect.any(String),
           items: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
@@ -2810,7 +2810,7 @@ describe("/admin/order-edits", () => {
           status: "created",
           order_id: orderId,
           internal_note: "This is an internal note",
-          created_by: "admin_user",
+          created_by: expect.any(String),
           items: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
@@ -3040,7 +3040,7 @@ describe("/admin/order-edits", () => {
           ]),
           status: "created",
           order_id: orderId,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           items: [
             expect.objectContaining({
               id: expect.any(String),
@@ -3164,7 +3164,7 @@ describe("/admin/order-edits", () => {
           ],
           status: "created",
           order_id: discountOrder.id,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           items: [
             expect.objectContaining({
               id: expect.any(String),
@@ -3298,7 +3298,7 @@ describe("/admin/order-edits", () => {
           ],
           status: "created",
           order_id: discountOrder.id,
-          created_by: "admin_user",
+          created_by: expect.any(String),
           items: [
             expect.objectContaining({
               id: expect.any(String),

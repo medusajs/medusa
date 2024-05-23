@@ -1,25 +1,18 @@
 get:
-  operationId: GetRegionsRegion
+  operationId: GetRegionsId
   summary: Get a Region
-  description: Retrieve a Region's details.
+  description: >-
+    Retrieve a region by its ID. You can expand the region's relations or select
+    the fields that should be returned.
+  x-authenticated: false
   parameters:
-    - in: path
-      name: id
+    - name: id
+      in: path
+      description: The region's ID.
       required: true
-      description: The ID of the Region.
       schema:
         type: string
-  x-codegen:
-    method: retrieve
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/store_regions_{id}/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/store_regions_{id}/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -27,14 +20,10 @@ get:
   tags:
     - Regions
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/StoreRegionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
     '404':
       $ref: ../components/responses/not_found_error.yaml
     '409':
@@ -43,3 +32,7 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

@@ -2,6 +2,19 @@ import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 import { BigNumberRawValue, BigNumberValue } from "../totals"
 
+export type ChangeActionType =
+  | "CANCEL"
+  | "CANCEL_RETURN"
+  | "FULFILL_ITEM"
+  | "ITEM_ADD"
+  | "ITEM_REMOVE"
+  | "RECEIVE_DAMAGED_RETURN_ITEM"
+  | "RECEIVE_RETURN_ITEM"
+  | "RETURN_ITEM"
+  | "SHIPPING_ADD"
+  | "SHIP_ITEM"
+  | "WRITE_OFF_ITEM"
+
 export type OrderSummaryDTO = {
   total: BigNumberValue
   subtotal: BigNumberValue
@@ -25,6 +38,9 @@ export type OrderSummaryDTO = {
 
   balance: BigNumberValue
   future_balance: BigNumberValue
+
+  paid_total: BigNumberValue
+  refunded_total: BigNumberValue
 }
 
 export interface OrderAdjustmentLineDTO {
@@ -776,6 +792,14 @@ export interface OrderItemDTO {
   updated_at: Date
 }
 
+type OrderStatus =
+  | "pending"
+  | "completed"
+  | "draft"
+  | "archived"
+  | "canceled"
+  | "requires_action"
+
 export interface OrderDTO {
   /**
    * The ID of the order.
@@ -785,6 +809,10 @@ export interface OrderDTO {
    * The version of the order.
    */
   version: number
+  /**
+   * The status of the order.
+   */
+  status: OrderStatus
   /**
    * The ID of the region the order belongs to.
    */
@@ -1187,7 +1215,7 @@ export interface OrderChangeActionDTO {
   /**
    * The action of the order change action
    */
-  action: string
+  action: ChangeActionType
   /**
    * The details of the order change action
    */
@@ -1241,10 +1269,6 @@ export interface OrderTransactionDTO {
    * The ID of the reference
    */
   reference_id: string
-  /**
-   * The metadata of the transaction
-   */
-  metadata: Record<string, unknown> | null
   /**
    * When the transaction was created
    */

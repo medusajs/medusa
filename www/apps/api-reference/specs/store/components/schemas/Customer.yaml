@@ -1,94 +1,87 @@
-title: Customer
-description: A customer can make purchases in your store and manage their profile.
 type: object
-required:
-  - billing_address_id
-  - created_at
-  - deleted_at
-  - email
-  - first_name
-  - has_account
-  - id
-  - last_name
-  - metadata
-  - phone
-  - updated_at
+description: The context's customer.
+x-schemaName: Customer
 properties:
   id:
-    description: The customer's ID
     type: string
-    example: cus_01G2SG30J8C85S4A5CHM2S1NS2
+    title: id
+    description: The customer's ID.
   email:
-    description: The customer's email
     type: string
+    title: email
+    description: The customer's email.
     format: email
+  default_billing_address_id:
+    type: string
+    title: default_billing_address_id
+    description: The customer's default billing address id.
+  default_shipping_address_id:
+    type: string
+    title: default_shipping_address_id
+    description: The customer's default shipping address id.
+  company_name:
+    type: string
+    title: company_name
+    description: The customer's company name.
   first_name:
-    description: The customer's first name
-    nullable: true
     type: string
-    example: Arno
+    title: first_name
+    description: The customer's first name.
   last_name:
-    description: The customer's last name
-    nullable: true
     type: string
-    example: Willms
-  billing_address_id:
-    description: The customer's billing address ID
-    nullable: true
-    type: string
-    example: addr_01G8ZH853YPY9B94857DY91YGW
-  billing_address:
-    description: The details of the billing address associated with the customer.
-    x-expandable: billing_address
-    nullable: true
-    $ref: ./Address.yaml
-  shipping_addresses:
-    description: The details of the shipping addresses associated with the customer.
+    title: last_name
+    description: The customer's last name.
+  addresses:
     type: array
-    x-expandable: shipping_addresses
-    items:
-      $ref: ./Address.yaml
-  phone:
-    description: The customer's phone number
-    nullable: true
-    type: string
-    example: 16128234334802
-  has_account:
-    description: Whether the customer has an account or not
-    type: boolean
-    default: false
-  orders:
-    description: The details of the orders this customer placed.
-    type: array
-    x-expandable: orders
+    description: The customer's addresses.
     items:
       type: object
+      description: The address's addresses.
+      x-schemaName: CustomerAddress
+      properties: {}
+  phone:
+    type: string
+    title: phone
+    description: The customer's phone.
   groups:
-    description: The customer groups the customer belongs to.
     type: array
-    x-expandable: groups
+    description: The customer's groups.
     items:
-      $ref: ./CustomerGroup.yaml
-  created_at:
-    description: The date with timezone at which the resource was created.
-    type: string
-    format: date-time
-  updated_at:
-    description: The date with timezone at which the resource was updated.
-    type: string
-    format: date-time
-  deleted_at:
-    description: The date with timezone at which the resource was deleted.
-    nullable: true
-    type: string
-    format: date-time
+      type: object
+      description: The group's groups.
+      properties: {}
   metadata:
-    description: An optional key-value map with additional details
-    nullable: true
     type: object
-    example:
-      car: white
-    externalDocs:
-      description: Learn about the metadata attribute, and how to delete and update it.
-      url: >-
-        https://docs.medusajs.com/development/entities/overview#metadata-attribute
+    description: The customer's metadata.
+    properties: {}
+  created_by:
+    type: string
+    title: created_by
+    description: The customer's created by.
+  deleted_at:
+    oneOf:
+      - type: string
+        title: deleted_at
+        description: The customer's deleted at.
+      - type: string
+        title: deleted_at
+        description: The customer's deleted at.
+        format: date-time
+  created_at:
+    oneOf:
+      - type: string
+        title: created_at
+        description: The customer's created at.
+      - type: string
+        title: created_at
+        description: The customer's created at.
+        format: date-time
+  updated_at:
+    oneOf:
+      - type: string
+        title: updated_at
+        description: The customer's updated at.
+      - type: string
+        title: updated_at
+        description: The customer's updated at.
+        format: date-time

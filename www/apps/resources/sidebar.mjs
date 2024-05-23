@@ -65,6 +65,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/api-key/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -133,6 +137,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/auth/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -197,6 +205,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/cart/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -239,6 +251,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/currency_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/currency/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -295,6 +311,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/customer_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/customer/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -364,6 +384,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/fulfillment/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -424,6 +448,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                       "/references/inventory_next_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/inventory/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -500,6 +528,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/order_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/order/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -585,6 +617,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/payment/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -645,6 +681,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/pricing/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -696,6 +736,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/product_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/product/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -757,6 +801,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/promotion/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -808,6 +856,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/region_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/region/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -865,6 +917,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                       "/references/sales_channel_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/sales-channel/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -924,6 +980,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/stock-location/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -966,6 +1026,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/store_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/store/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -1035,6 +1099,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
+              {
+                path: "/commerce-modules/tax/events",
+                title: "Events Reference",
+              },
             ],
           },
         ],
@@ -1090,6 +1158,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     autogenerate_path: "/references/user_models/classes",
                   },
                 ],
+              },
+              {
+                path: "/commerce-modules/user/events",
+                title: "Events Reference",
               },
             ],
           },
@@ -1485,6 +1557,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Local",
           },
           {
+            path: "/architectural-modules/file/s3",
+            title: "AWS S3 (and Compatible APIs)",
+          },
+          {
             title: "Guides",
             children: [
               {
@@ -1496,6 +1572,35 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
+        path: "/architectural-modules/notification",
+        title: "Notification Provider Modules",
+        hasTitleStyling: true,
+        children: [
+          {
+            path: "/architectural-modules/notification/local",
+            title: "Local",
+          },
+          {
+            path: "/architectural-modules/notification/sendgrid",
+            title: "SendGrid",
+          },
+          {
+            title: "Guides",
+            children: [
+              {
+                path: "/architectural-modules/notification/send-notification",
+                title: "Send Notification",
+              },
+              {
+                path: "/references/notification-provider-module",
+                title: "Create Notification Module",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "/architectural-modules/workflow-engine",
         title: "Workflow Engine Modules",
         hasTitleStyling: true,
         children: [

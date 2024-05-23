@@ -4,11 +4,6 @@ export type JoinerRelationship = {
   primaryKey: string
   serviceName: string
   /**
-   * If true, the relationship is an internal service from the medusa core
-   * TODO: Remove when there are no more "internal" services
-   */
-  isInternalService?: boolean
-  /**
    * In an inverted relationship the foreign key is on the other service and the primary key is on the current service
    */
   inverse?: boolean

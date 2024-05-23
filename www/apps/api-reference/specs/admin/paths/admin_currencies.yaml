@@ -1,73 +1,23 @@
 get:
   operationId: GetCurrencies
-  summary: List Currency
+  summary: List Currencies
   description: >-
     Retrieve a list of currencies. The currencies can be filtered by fields such
-    as `code`. The currencies can also be sorted or paginated.
+    as `id`. The currencies can also be sorted or paginated.
   x-authenticated: true
-  parameters:
-    - in: query
-      name: code
-      description: filter by currency code.
-      schema:
-        type: string
-    - in: query
-      name: includes_tax
-      description: filter currencies by whether they include taxes or not.
-      schema:
-        type: boolean
-        x-featureFlag: tax_inclusive_pricing
-    - in: query
-      name: order
-      description: A field to sort order the retrieved currencies by.
-      schema:
-        type: string
-    - in: query
-      name: q
-      description: Term used to search currencies' name and code.
-      schema:
-        type: string
-    - in: query
-      name: offset
-      description: The number of currencies to skip when retrieving the currencies.
-      schema:
-        type: number
-        default: '0'
-    - in: query
-      name: limit
-      description: The number of currencies to return.
-      schema:
-        type: number
-        default: '20'
-  x-codegen:
-    method: list
-    queryParams: AdminGetCurrenciesParams
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_currencies/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_currencies/get.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_currencies/get.sh
+  parameters: []
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_currencies/get.sh
   tags:
     - Currencies
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminCurrenciesListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -80,3 +30,7 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

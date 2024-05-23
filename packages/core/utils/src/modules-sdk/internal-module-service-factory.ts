@@ -248,7 +248,9 @@ export function internalModuleServiceFactory<
         if (input_.selector) {
           const entitiesToUpdate = await this.list(
             input_.selector,
-            {},
+            {
+              take: null,
+            },
             sharedContext
           )
           // Create a pair of entity and data to update

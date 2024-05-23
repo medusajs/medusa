@@ -6,9 +6,13 @@ import {
   useQuery,
 } from "@tanstack/react-query"
 import { client } from "../../lib/client"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { ProductDeleteRes, ProductRes } from "../../types/api-responses"
-import { queryClient } from "../../lib/medusa"
+import {
+  ProductDeleteRes,
+  ProductListRes,
+  ProductRes,
+} from "../../types/api-responses"
 
 const PRODUCTS_QUERY_KEY = "products" as const
 export const productsQueryKeys = queryKeysFactory(PRODUCTS_QUERY_KEY)
@@ -110,7 +114,7 @@ export const useProductVariants = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => client.products.listVariants(productId, query),
-    queryKey: variantsQueryKeys.list(query),
+    queryKey: variantsQueryKeys.list({ productId, ...query }),
     ...options,
   })
 
@@ -200,7 +204,7 @@ export const useProduct = (
 export const useProducts = (
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<ProductListRes, Error, ProductListRes, QueryKey>,
     "queryFn" | "queryKey"
   >
 ) => {

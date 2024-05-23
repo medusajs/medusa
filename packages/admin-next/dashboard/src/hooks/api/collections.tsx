@@ -6,10 +6,11 @@ import {
   useQuery,
 } from "@tanstack/react-query"
 import { client } from "../../lib/client"
-import { queryClient } from "../../lib/medusa"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import {
   CreateProductCollectionReq,
+  UpdateProductCollectionProductsReq,
   UpdateProductCollectionReq,
 } from "../../types/api-payloads"
 import {
@@ -74,6 +75,29 @@ export const useUpdateCollection = (
   return useMutation({
     mutationFn: (payload: UpdateProductCollectionReq) =>
       client.collections.update(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: collectionsQueryKeys.detail(id),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useUpdateCollectionProducts = (
+  id: string,
+  options?: UseMutationOptions<
+    ProductCollectionRes,
+    Error,
+    UpdateProductCollectionProductsReq
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: UpdateProductCollectionProductsReq) =>
+      client.collections.updateProducts(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
       queryClient.invalidateQueries({

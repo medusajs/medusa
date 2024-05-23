@@ -160,7 +160,7 @@ export class RemoteJoiner {
 
       // add aliases
       const isReadOnlyDefinition =
-        service.serviceName === undefined || service.isReadOnlyLink
+        !isDefined(service.serviceName) || service.isReadOnlyLink
       if (!isReadOnlyDefinition) {
         service.alias ??= []
 
@@ -244,18 +244,6 @@ export class RemoteJoiner {
       { fieldAlias, relationships },
     ] of expandedRelationships) {
       if (!this.serviceConfigCache.has(serviceName)) {
-        // If true, the relationship is an internal service from the medusa core
-        // If modules are being used ouside of the core, we should not be throwing
-        // errors when the core services are not found in cache.
-        // TODO: Remove when there are no more "internal" services
-        const isInternalServicePresent = relationships.some(
-          (rel) => rel.isInternalService === true
-        )
-
-        if (isInternalServicePresent) {
-          continue
-        }
-
         throw new Error(`Service "${serviceName}" was not found`)
       }
 
@@ -354,7 +342,7 @@ export class RemoteJoiner {
         uniqueIds = Array.from(new Set(uniqueIds.flat()))
       }
 
-      uniqueIds = uniqueIds.filter((id) => id !== undefined)
+      uniqueIds = uniqueIds.filter((id) => isDefined(id))
     }
 
     if (relationship) {
@@ -478,7 +466,7 @@ export class RemoteJoiner {
 
         const curPath: string[] = [BASE_PATH].concat(alias.location)
         for (const prop of propPath) {
-          if (currentItems === undefined) {
+          if (!isDefined(currentItems)) {
             break
           }
 
@@ -500,7 +488,9 @@ export class RemoteJoiner {
           }
         } else {
           locationItem[alias.property] = alias.isList
-            ? [currentItems]
+            ? isDefined(currentItems)
+              ? [currentItems]
+              : []
             : currentItems
         }
 
@@ -645,18 +635,18 @@ export class RemoteJoiner {
       if (Array.isArray(item[field])) {
         item[relationship.alias] = item[field].map((id) => {
           if (relationship.isList && !Array.isArray(relatedDataMap[id])) {
-            relatedDataMap[id] =
-              relatedDataMap[id] !== undefined ? [relatedDataMap[id]] : []
+            relatedDataMap[id] = isDefined(relatedDataMap[id])
+              ? [relatedDataMap[id]]
+              : []
           }
 
           return relatedDataMap[id]
         })
       } else {
         if (relationship.isList && !Array.isArray(relatedDataMap[itemKey])) {
-          relatedDataMap[itemKey] =
-            relatedDataMap[itemKey] !== undefined
-              ? [relatedDataMap[itemKey]]
-              : []
+          relatedDataMap[itemKey] = isDefined(relatedDataMap[itemKey])
+            ? [relatedDataMap[itemKey]]
+            : []
         }
 
         item[relationship.alias] = relatedDataMap[itemKey]

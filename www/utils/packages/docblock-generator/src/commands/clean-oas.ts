@@ -1,5 +1,3 @@
-import path from "path"
-import getOasOutputBasePath from "../utils/get-oas-output-base-path.js"
 import {
   existsSync,
   readFileSync,
@@ -7,16 +5,18 @@ import {
   rmSync,
   writeFileSync,
 } from "fs"
-import parseOas from "../utils/parse-oas.js"
-import OasKindGenerator, { OasArea } from "../classes/kinds/oas.js"
-import getMonorepoRoot from "../utils/get-monorepo-root.js"
+import { OpenAPIV3 } from "openapi-types"
+import path from "path"
 import ts from "typescript"
-import GeneratorEventManager from "../classes/helpers/generator-event-manager.js"
 import { parse, stringify } from "yaml"
+import GeneratorEventManager from "../classes/helpers/generator-event-manager.js"
 import OasSchemaHelper from "../classes/helpers/oas-schema.js"
+import OasKindGenerator, { OasArea } from "../classes/kinds/oas.js"
 import { DEFAULT_OAS_RESPONSES } from "../constants.js"
 import { OpenApiDocument, OpenApiSchema } from "../types/index.js"
-import { OpenAPIV3 } from "openapi-types"
+import getMonorepoRoot from "../utils/get-monorepo-root.js"
+import getOasOutputBasePath from "../utils/get-oas-output-base-path.js"
+import parseOas from "../utils/parse-oas.js"
 
 const OAS_PREFIX_REGEX = /@oas \[(?<method>(get|post|delete))\] (?<path>.+)/
 
@@ -28,7 +28,7 @@ export default async function () {
     "packages",
     "medusa",
     "src",
-    "api-v2"
+    "api"
   )
   const areas: OasArea[] = ["admin", "store"]
   const tags: Map<OasArea, Set<string>> = new Map()
@@ -197,7 +197,7 @@ export default async function () {
   console.log("Clean tags...")
 
   // check if any tags should be removed
-  const oasBasePath = path.join(oasOutputBasePath, "base-v2")
+  const oasBasePath = path.join(oasOutputBasePath, "base")
   readdirSync(oasBasePath, {
     recursive: true,
     encoding: "utf-8",

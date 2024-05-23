@@ -1,48 +1,29 @@
-post:
-  operationId: PostCurrenciesCurrency
-  summary: Update a Currency
-  description: Update a Currency's details.
+get:
+  operationId: GetCurrenciesCode
+  summary: Get a Currency
+  description: >-
+    Retrieve a currency by its ID. You can expand the currency's relations or
+    select the fields that should be returned.
   x-authenticated: true
   parameters:
-    - in: path
-      name: code
+    - name: code
+      in: path
+      description: The currency's code.
       required: true
-      description: The code of the Currency.
       schema:
         type: string
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostCurrenciesCurrencyReq.yaml
-  x-codegen:
-    method: update
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_currencies_{code}/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_currencies_{code}/post.tsx
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/admin_currencies_{code}/post.sh
   security:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_currencies_{code}/get.sh
   tags:
     - Currencies
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminCurrenciesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -55,3 +36,7 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

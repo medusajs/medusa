@@ -5,22 +5,26 @@ import {
   isString,
 } from "@medusajs/utils"
 
-import { AuthUserService } from "@services"
+import { AuthIdentityService } from "@services"
 import Scrypt from "scrypt-kdf"
 
 class EmailPasswordProvider extends AbstractAuthModuleProvider {
   public static PROVIDER = "emailpass"
   public static DISPLAY_NAME = "Email/Password Authentication"
 
-  protected readonly authUserSerivce_: AuthUserService
+  protected readonly authIdentitySerivce_: AuthIdentityService
 
-  constructor({ authUserService }: { authUserService: AuthUserService }) {
+  constructor({
+    authIdentityService,
+  }: {
+    authIdentityService: AuthIdentityService
+  }) {
     super(arguments[0], {
       provider: EmailPasswordProvider.PROVIDER,
       displayName: EmailPasswordProvider.DISPLAY_NAME,
     })
 
-    this.authUserSerivce_ = authUserService
+    this.authIdentitySerivce_ = authIdentityService
   }
 
   private getHashConfig() {
@@ -52,18 +56,19 @@ class EmailPasswordProvider extends AbstractAuthModuleProvider {
         error: "Email should be a string",
       }
     }
-    let authUser
+    let authIdentity
 
     try {
-      authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
-        email,
-        EmailPasswordProvider.PROVIDER
-      )
+      authIdentity =
+        await this.authIdentitySerivce_.retrieveByProviderAndEntityId(
+          email,
+          EmailPasswordProvider.PROVIDER
+        )
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
         const password_hash = await Scrypt.kdf(password, this.getHashConfig())
 
-        const [createdAuthUser] = await this.authUserSerivce_.create([
+        const [createdAuthIdentity] = await this.authIdentitySerivce_.create([
           {
             entity_id: email,
             provider: EmailPasswordProvider.PROVIDER,
@@ -76,13 +81,13 @@ class EmailPasswordProvider extends AbstractAuthModuleProvider {
 
         return {
           success: true,
-          authUser: JSON.parse(JSON.stringify(createdAuthUser)),
+          authIdentity: JSON.parse(JSON.stringify(createdAuthIdentity)),
         }
       }
       return { success: false, error: error.message }
     }
 
-    const password_hash = authUser.provider_metadata?.password
+    const password_hash = authIdentity.provider_metadata?.password
 
     if (isString(password_hash)) {
       const buf = Buffer.from(password_hash as string, "base64")
@@ -90,9 +95,12 @@ class EmailPasswordProvider extends AbstractAuthModuleProvider {
       const success = await Scrypt.verify(buf, password)
 
       if (success) {
-        delete authUser.provider_metadata!.password
+        delete authIdentity.provider_metadata!.password
 
-        return { success, authUser: JSON.parse(JSON.stringify(authUser)) }
+        return {
+          success,
+          authIdentity: JSON.parse(JSON.stringify(authIdentity)),
+        }
       }
     }
 

@@ -7,7 +7,7 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query"
 import { client } from "../../lib/client"
-import { queryClient } from "../../lib/medusa"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import {
   BatchAddPromotionRulesReq,
@@ -25,6 +25,7 @@ import {
   PromotionRulesListRes,
   PromotionRuleValuesListRes,
 } from "../../types/api-responses"
+import { campaignsQueryKeys } from "./campaigns"
 
 const PROMOTIONS_QUERY_KEY = "promotions" as const
 export const promotionsQueryKeys = {
@@ -185,6 +186,7 @@ export const useCreatePromotion = (
     mutationFn: (payload) => client.promotions.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

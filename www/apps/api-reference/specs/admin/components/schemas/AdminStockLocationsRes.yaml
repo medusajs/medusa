@@ -1,8 +1,0 @@
-type: object
-description: The stock location's details.
-required:
-  - stock_location
-properties:
-  stock_location:
-    description: Stock location details.
-    $ref: ./StockLocationExpandedDTO.yaml

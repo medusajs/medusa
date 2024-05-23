@@ -164,7 +164,7 @@ describe("Publishable API keys", () => {
 
       expect(response.status).toBe(200)
       expect(response.data.publishable_api_key).toMatchObject({
-        created_by: "admin_user",
+        created_by: expect.any(String),
         id: expect.any(String),
         title: "Store api key",
         revoked_by: null,

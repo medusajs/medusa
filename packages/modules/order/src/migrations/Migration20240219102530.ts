@@ -445,6 +445,7 @@ export class Migration20240219102530 extends Migration {
       CREATE TABLE IF NOT EXISTS "order_transaction" (
           "id" TEXT NOT NULL,
           "order_id" TEXT NOT NULL,
+          "version" INTEGER NOT NULL DEFAULT 1,
           "amount" NUMERIC NOT NULL,
           "raw_amount" JSONB NOT NULL,
           "currency_code" TEXT NOT NULL,
@@ -452,20 +453,25 @@ export class Migration20240219102530 extends Migration {
           "reference_id" TEXT NULL,
           "created_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           "updated_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
+          "deleted_at" timestamptz NULL,
           CONSTRAINT "order_transaction_pkey" PRIMARY KEY ("id")
       );
 
-      CREATE INDEX IF NOT EXISTS "IDX_order_transaction_order_id" ON "order_transaction" (
-          order_id
-      );
+      CREATE INDEX IF NOT EXISTS "IDX_order_transaction_order_id_version" ON "order_transaction" (
+          order_id,
+          version
+      )
+      WHERE deleted_at IS NOT NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_transaction_currency_code" ON "order_transaction" (
           currency_code
-      );
+      )
+      WHERE deleted_at IS NOT NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_transaction_reference_id" ON "order_transaction" (
           reference_id
-      );
+      )
+      WHERE deleted_at IS NOT NULL;
       
       CREATE TABLE IF NOT EXISTS "return_reason"
       (

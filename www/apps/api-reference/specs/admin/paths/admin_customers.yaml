@@ -2,133 +2,22 @@ get:
   operationId: GetCustomers
   summary: List Customers
   description: >-
-    Retrieve a list of Customers. The customers can be filtered by fields such
-    as `q` or `groups`. The customers can also be paginated.
+    Retrieve a list of customers. The customers can be filtered by fields such
+    as `id`. The customers can also be sorted or paginated.
   x-authenticated: true
-  parameters:
-    - in: query
-      name: limit
-      description: The number of customers to return.
-      schema:
-        type: integer
-        default: 50
-    - in: query
-      name: offset
-      description: The number of customers to skip when retrieving the customers.
-      schema:
-        type: integer
-        default: 0
-    - in: query
-      name: expand
-      description: >-
-        Comma-separated relations that should be expanded in the returned
-        customers.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: >-
-        Comma-separated fields that should be included in the returned
-        customers.
-      schema:
-        type: string
-    - in: query
-      name: q
-      description: term to search customers' email, first_name, and last_name fields.
-      schema:
-        type: string
-    - in: query
-      name: has_account
-      description: Filter customers by whether they have an account.
-      schema:
-        type: boolean
-    - in: query
-      name: order
-      description: A field to sort-order the retrieved customers by.
-      schema:
-        type: string
-    - in: query
-      name: groups
-      style: form
-      explode: false
-      description: Filter by customer group IDs.
-      schema:
-        type: array
-        items:
-          type: string
-    - in: query
-      name: created_at
-      description: Filter by a creation date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-    - in: query
-      name: updated_at
-      description: Filter by an update date range.
-      schema:
-        type: object
-        properties:
-          lt:
-            type: string
-            description: filter by dates less than this date
-            format: date
-          gt:
-            type: string
-            description: filter by dates greater than this date
-            format: date
-          lte:
-            type: string
-            description: filter by dates less than or equal to this date
-            format: date
-          gte:
-            type: string
-            description: filter by dates greater than or equal to this date
-            format: date
-  x-codegen:
-    method: list
-    queryParams: AdminGetCustomersParams
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_customers/get.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_customers/get.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_customers/get.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Customers
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminCustomersListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -141,44 +30,28 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-post:
-  operationId: PostCustomers
-  summary: Create a Customer
-  description: Create a customer as an admin.
-  x-authenticated: true
   requestBody:
     content:
       application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostCustomersReq.yaml
-  x-codegen:
-    method: create
+        schema: {}
+post:
+  operationId: PostCustomers
+  summary: Create Customer
+  description: Create a customer.
+  x-authenticated: true
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_customers/post.js
-    - lang: tsx
-      label: Medusa React
-      source:
-        $ref: ../code_samples/tsx/admin_customers/post.tsx
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_customers/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Customers
   responses:
-    '201':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminCustomersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -191,3 +64,7 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

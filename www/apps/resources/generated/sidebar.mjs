@@ -162,6 +162,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/api-key/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -328,6 +335,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/auth/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -830,6 +844,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/cart/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -919,6 +940,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/currency/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -1197,6 +1225,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/customer/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -1825,6 +1860,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/fulfillment/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -2173,6 +2215,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/inventory/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -2780,6 +2829,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/order/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -3121,6 +3177,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/payment/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -3588,6 +3651,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/pricing/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -4118,6 +4188,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/product/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -4431,6 +4508,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/promotion/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -4604,6 +4688,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/region/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -4756,6 +4847,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/sales-channel/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -4915,6 +5013,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/stock-location/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -5046,6 +5151,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/store/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -5317,6 +5429,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/tax/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -5539,6 +5658,13 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/user/events",
+                "title": "Events Reference",
+                "children": []
               }
             ]
           }
@@ -6634,6 +6760,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "path": "/architectural-modules/file/s3",
+            "title": "AWS S3 (and Compatible APIs)",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "title": "Guides",
             "children": [
               {
@@ -6650,6 +6783,51 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "path": "/architectural-modules/notification",
+        "title": "Notification Provider Modules",
+        "hasTitleStyling": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/architectural-modules/notification/local",
+            "title": "Local",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/architectural-modules/notification/sendgrid",
+            "title": "SendGrid",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/architectural-modules/notification/send-notification",
+                "title": "Send Notification",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/notification-provider-module",
+                "title": "Create Notification Module",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/architectural-modules/workflow-engine",
         "title": "Workflow Engine Modules",
         "hasTitleStyling": true,
         "children": [
