@@ -40,6 +40,15 @@
           "nullable": true,
           "mappedType": "json"
         },
+        "app_metadata": {
+          "name": "app_metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
         "provider_metadata": {
           "name": "provider_metadata",
           "type": "jsonb",

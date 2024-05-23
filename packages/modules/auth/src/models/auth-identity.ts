@@ -10,7 +10,7 @@ import {
 
 import { generateEntityId } from "@medusajs/utils"
 
-type OptionalFields = "provider_metadata" | "user_metadata"
+type OptionalFields = "provider_metadata" | "app_metadata" | "user_metadata"
 
 @Entity()
 @Unique({
@@ -31,6 +31,9 @@ export default class AuthIdentity {
 
   @Property({ columnType: "jsonb", nullable: true })
   user_metadata: Record<string, unknown> | null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  app_metadata: Record<string, unknown> | null
 
   @Property({ columnType: "jsonb", nullable: true })
   provider_metadata: Record<string, unknown> | null = null

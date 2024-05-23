@@ -32,6 +32,10 @@ export default async ({
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   ) & { providers: ModuleProvider[] }
 >): Promise<void> => {
+  // TODO: Temporary settings used by the starter, remove once the auth module is updated
+  const isLegacyOptions =
+    options?.providers?.length && !!(options?.providers[0] as any)?.name
+
   // Note: For now we want to inject some providers out of the box
   const providerConfig = [
     {
@@ -42,7 +46,7 @@ export default async ({
         },
       },
     },
-    ...(options?.providers ?? []),
+    ...(isLegacyOptions ? [] : options?.providers ?? []),
   ]
 
   await moduleProviderLoader({

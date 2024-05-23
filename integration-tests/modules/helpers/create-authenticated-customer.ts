@@ -25,7 +25,6 @@ export const createAuthenticatedCustomer = async (
   const authIdentity = await authService.create({
     entity_id: "store_user",
     provider: "emailpass",
-    scope: "store",
   })
 
   // Ideally we simulate a signup process than manually linking here.

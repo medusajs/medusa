@@ -46,12 +46,17 @@ export default async function ({
     } else {
       const user = await userService.create({ email })
 
-      const { authIdentity } = await authService.authenticate(provider, {
+      const { authIdentity, error } = await authService.authenticate(provider, {
         body: {
           email,
           password,
         },
       })
+
+      if (error) {
+        Logger.error(error)
+        throw new Error(error)
+      }
 
       await remoteLink.create([
         {
