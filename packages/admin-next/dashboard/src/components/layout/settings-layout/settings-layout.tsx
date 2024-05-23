@@ -86,18 +86,29 @@ const useDeveloperRoutes = (): NavItemProps[] => {
 
 const useExtensionRoutes = (): NavItemProps[] => {
   const links = routes.links
-  const settingsLinks = links.filter((link: any) =>
-    settingsRouteRegex.test(link.path)
-  )
 
-  return useMemo(
-    () =>
-      settingsLinks.map((link) => ({
-        label: link.label,
-        to: link.path,
-      })),
-    [settingsLinks]
-  )
+  return useMemo(() => {
+    const settingsLinks = links.filter((link) =>
+      settingsRouteRegex.test(link.path)
+    )
+
+    return settingsLinks.map((link) => ({
+      label: link.label,
+      to: link.path,
+    }))
+  }, [links])
+}
+
+/**
+ * Ensure that the `from` prop is not another settings route, to avoid
+ * the user getting stuck in a navigation loop.
+ */
+const getSafeFromValue = (from: string) => {
+  if (from.startsWith("/settings")) {
+    return "/orders"
+  }
+
+  return from
 }
 
 const SettingsSidebar = () => {
@@ -112,7 +123,7 @@ const SettingsSidebar = () => {
 
   useEffect(() => {
     if (location.state?.from) {
-      setFrom(location.state.from)
+      setFrom(getSafeFromValue(location.state.from))
     }
   }, [location])
 

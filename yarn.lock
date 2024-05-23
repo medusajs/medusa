@@ -5285,7 +5285,6 @@ __metadata:
     i18next-browser-languagedetector: 7.2.0
     i18next-http-backend: 2.4.2
     match-sorter: ^6.3.4
-    medusa-react: latest
     postcss: ^8.4.33
     prettier: ^3.1.1
     qs: ^6.12.0
@@ -5588,21 +5587,6 @@ __metadata:
     medusa: cli.js
   languageName: unknown
   linkType: soft
-
-"@medusajs/medusa-js@npm:*":
-  version: 6.1.8
-  resolution: "@medusajs/medusa-js@npm:6.1.8"
-  dependencies:
-    axios: ^0.24.0
-    cross-env: ^5.2.1
-    qs: ^6.10.3
-    retry-axios: ^2.6.0
-    uuid: ^9.0.0
-  peerDependencies:
-    "@medusajs/medusa": ^1.17.2
-  checksum: ee43f60c083a7fe5116405e57f86189b720e47019a2a991002e86fdb7ed438171ba428088bd19169ba1d07c20095605bef6d867a793d985362e7dfc181b6c0af
-  languageName: node
-  linkType: hard
 
 "@medusajs/medusa-oas-cli@0.3.2, @medusajs/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli":
   version: 0.0.0-use.local
@@ -24237,20 +24221,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@npm:latest":
-  version: 9.0.17
-  resolution: "medusa-react@npm:9.0.17"
-  dependencies:
-    "@medusajs/medusa-js": "*"
-  peerDependencies:
-    "@medusajs/medusa": ^1.17.2
-    "@tanstack/react-query": ^4.22.0
-    react: ^16.8 || ^17.0 || ^18.0
-    react-dom: ^16.8 || ^17.0 || ^18.0
-  checksum: 8d262e79a08b3b08092bf4394d27ece953f02de3cadf00682f53f3e07c62f01d12b4df4aecbd925d12a319c3af321eabb31a97262a6589fe51ccef20ac064a38
-  languageName: node
-  linkType: hard
-
 "medusa-telemetry@^0.0.17, medusa-telemetry@workspace:packages/medusa-telemetry":
   version: 0.0.0-use.local
   resolution: "medusa-telemetry@workspace:packages/medusa-telemetry"
@@ -27753,7 +27723,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.10.0, qs@npm:^6.10.3, qs@npm:^6.11.0, qs@npm:^6.11.2, qs@npm:^6.12.0, qs@npm:^6.12.1, qs@npm:^6.5.1":
+"qs@npm:^6.10.0, qs@npm:^6.11.0, qs@npm:^6.11.2, qs@npm:^6.12.0, qs@npm:^6.12.1, qs@npm:^6.5.1":
   version: 6.12.1
   resolution: "qs@npm:6.12.1"
   dependencies:
