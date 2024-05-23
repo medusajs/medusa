@@ -20,7 +20,7 @@ export const Login = () => {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const from = location.state?.from?.pathname || "/settings"
+  const from = location.state?.from?.pathname || "/orders"
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
