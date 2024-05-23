@@ -12,7 +12,7 @@ export const POST = async (
 ) => {
   const workflowInput = {
     ...req.validatedBody,
-    customer_id: req.auth?.actor_id,
+    customer_id: req.auth_context?.actor_id,
   }
 
   const { result, errors } = await createCartWorkflow(req.scope).run({

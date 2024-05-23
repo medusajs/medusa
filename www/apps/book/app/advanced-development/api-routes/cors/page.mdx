@@ -12,16 +12,18 @@ Cross-Origin Resource Sharing (CORS) allows only configured origins to access yo
 
 ### CORS Configurations
 
-You configure allowed origins for Store and Admin API Routes using the `store_cors` and `admin_cors` configurations in `medusa-config.js`. Each of these configurations accepts a URL pattern to identify allowed origins.
+You configure allowed origins for Store and Admin API Routes using the `storeCors` and `adminCors` properties of the `http` configuration in `medusa-config.js`. Each of these configurations accepts a URL pattern to identify allowed origins.
 
 For example:
 
 ```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
-    admin_cors: "http://localhost:7001",
-    store_cors: "http://localhost:8000",
-    // ...
+    http: {
+      adminCors: "http://localhost:7001",
+      storeCors: "http://localhost:8000",
+      // ...
+    }
   },
   // ...
 }
@@ -90,7 +92,7 @@ export const config: MiddlewaresConfig = {
 
           return cors({
             origin: parseCorsOrigins(
-              configModule.projectConfig.store_cors
+              configModule.projectConfig.http.storeCors
             ),
             credentials: true,
           })(req, res, next)
@@ -101,4 +103,4 @@ export const config: MiddlewaresConfig = {
 }
 ```
 
-This retrieves the configurations exported from `medusa-config.js` and applies the `store_cors` to routes starting with `/custom`.
+This retrieves the configurations exported from `medusa-config.js` and applies the `storeCors` to routes starting with `/custom`.

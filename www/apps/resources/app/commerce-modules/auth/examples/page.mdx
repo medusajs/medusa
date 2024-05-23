@@ -55,9 +55,9 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
       return
     }
 
-    const { jwt_secret } =
-      req.scope.resolve("configModule").projectConfig
-    const token = jwt.sign(authUser, jwt_secret)
+    const { jwtSecret } =
+      req.scope.resolve("configModule").projectConfig.http
+    const token = jwt.sign(authUser, jwtSecret)
 
     res.status(200).json({ token })
   }
@@ -153,9 +153,9 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
       throw new MedusaError(MedusaError.Types.UNAUTHORIZED, error)
     }
 
-    const { jwt_secret } =
-      req.scope.resolve("configModule").projectConfig
-    const token = jwt.sign(authUser, jwt_secret)
+    const { jwtSecret } =
+      req.scope.resolve("configModule").projectConfig.http
+    const token = jwt.sign(authUser, jwtSecret)
 
     if (successRedirectUrl) {
       const url = new URL(successRedirectUrl!)

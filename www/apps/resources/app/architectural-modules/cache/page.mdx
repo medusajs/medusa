@@ -6,6 +6,22 @@ export const metadata = {
 
 # {metadata.title}
 
-Learn how to create a cache module in [this guide](./create/page.mdx).
+A Cache Module is used to cache the results of computations such as price selection or various tax calculations.
+
+The underlying database, third-party service, or caching logic is flexible since it's implemented in a module. You can choose from Medusa’s cache modules or create your own to support something more suitable for your architecture.
+
+---
+
+## List of Cache Modules
+
+By default, Medusa uses the In-Memory Cache Module. This module uses a plain JavaScript Map object to store the cache data.
+
+This is useful for development. However, for production, it's highly recommended to use other Cache Modules, such as the Redis Cache Module.
 
 <ChildDocs type="item" filters={["Guides"]} onlyTopLevel={true} />
+
+---
+
+## Create a Cache Module
+
+To create a cache module, refer to [this guide](./create/page.mdx).
