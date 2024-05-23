@@ -28,7 +28,7 @@ const ruleAttributes = [
   },
   {
     id: "customer_group",
-    value: "customer_group.id",
+    value: "customer.groups.id",
     label: "Customer Group",
     required: false,
     field_type: "multiselect",
@@ -49,7 +49,7 @@ const ruleAttributes = [
   },
   {
     id: "sales_channel",
-    value: "sales_channel.id",
+    value: "sales_channel_id",
     label: "Sales Channel",
     required: false,
     field_type: "multiselect",
