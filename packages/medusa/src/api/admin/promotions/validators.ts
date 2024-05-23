@@ -2,7 +2,6 @@ import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
   ApplicationMethodType,
-  CampaignBudgetType,
   PromotionRuleOperator,
   PromotionType,
 } from "@medusajs/utils"
@@ -12,6 +11,7 @@ import {
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
+import { AdminCreateCampaign } from "../campaigns/validators"
 
 export type AdminGetPromotionParamsType = z.infer<
   typeof AdminGetPromotionParams
@@ -30,6 +30,11 @@ export const AdminGetPromotionsParams = createFindParams({
       q: z.string().optional(),
       code: z.union([z.string(), z.array(z.string())]).optional(),
       campaign_id: z.union([z.string(), z.array(z.string())]).optional(),
+      application_method: z
+        .object({
+          currency_code: z.union([z.string(), z.array(z.string())]).optional(),
+        })
+        .optional(),
       created_at: createOperatorMap().optional(),
       updated_at: createOperatorMap().optional(),
       deleted_at: createOperatorMap().optional(),
@@ -58,6 +63,7 @@ export const AdminGetPromotionsRuleValueParams = createFindParams({
 }).merge(
   z.object({
     q: z.string().optional(),
+    value: z.union([z.string(), z.array(z.string())]).optional(),
   })
 )
 
@@ -69,7 +75,7 @@ export const AdminCreatePromotionRule = z
     operator: z.nativeEnum(PromotionRuleOperator),
     description: z.string().optional(),
     attribute: z.string(),
-    values: z.array(z.string()),
+    values: z.union([z.string(), z.array(z.string())]),
   })
   .strict()
 
@@ -82,7 +88,7 @@ export const AdminUpdatePromotionRule = z
     operator: z.nativeEnum(PromotionRuleOperator).optional(),
     description: z.string().optional(),
     attribute: z.string().optional(),
-    values: z.array(z.string()).optional(),
+    values: z.union([z.string(), z.array(z.string())]),
   })
   .strict()
 
@@ -93,12 +99,12 @@ export const AdminCreateApplicationMethod = z
   .object({
     description: z.string().optional(),
     value: z.number(),
-    max_quantity: z.number().optional(),
+    currency_code: z.string(),
+    max_quantity: z.number().optional().nullable(),
     type: z.nativeEnum(ApplicationMethodType),
     target_type: z.nativeEnum(ApplicationMethodTargetType),
     allocation: z.nativeEnum(ApplicationMethodAllocation).optional(),
     target_rules: z.array(AdminCreatePromotionRule).optional(),
-
     buy_rules: z.array(AdminCreatePromotionRule).optional(),
     apply_to_quantity: z.number().optional(),
     buy_rules_min_quantity: z.number().optional(),
@@ -111,8 +117,9 @@ export type AdminUpdateApplicationMethodType = z.infer<
 export const AdminUpdateApplicationMethod = z
   .object({
     description: z.string().optional(),
-    value: z.string().optional(),
-    max_quantity: z.number().optional(),
+    value: z.number().optional(),
+    max_quantity: z.number().optional().nullable(),
+    currency_code: z.string().optional(),
     type: z.nativeEnum(ApplicationMethodType).optional(),
     target_type: z.nativeEnum(ApplicationMethodTargetType).optional(),
     allocation: z.nativeEnum(ApplicationMethodAllocation).optional(),
@@ -139,23 +146,6 @@ const promoRefinement = (promo) => {
 
   return true
 }
-
-// Ideally we don't allow for creation of campaigns through promotions, it should be the other way around.
-const CreateCampaignBudget = z.object({
-  type: z.nativeEnum(CampaignBudgetType),
-  limit: z.number(),
-})
-
-export type AdminCreateCampaignType = z.infer<typeof AdminCreateCampaign>
-export const AdminCreateCampaign = z.object({
-  name: z.string(),
-  campaign_identifier: z.string(),
-  description: z.string().optional(),
-  currency: z.string().optional(),
-  budget: CreateCampaignBudget.optional(),
-  starts_at: z.coerce.date().optional(),
-  ends_at: z.coerce.date().optional(),
-})
 
 export type AdminCreatePromotionType = z.infer<typeof AdminCreatePromotion>
 export const AdminCreatePromotion = z

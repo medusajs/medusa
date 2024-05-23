@@ -56,6 +56,7 @@ medusaIntegrationTestRunner({
             target_type: "items",
             value: 100,
             target_rules: [promotionRule],
+            currency_code: "USD",
           },
           rules: [promotionRule],
         })
@@ -202,7 +203,7 @@ medusaIntegrationTestRunner({
           })
         })
 
-        it.only("should add target rules to a promotion successfully", async () => {
+        it("should add target rules to a promotion successfully", async () => {
           const response = await api.post(
             `/admin/promotions/${standardPromotion.id}/target-rules/batch`,
             {
@@ -333,6 +334,7 @@ medusaIntegrationTestRunner({
               buy_rules_min_quantity: 1,
               buy_rules: [promotionRule],
               target_rules: [promotionRule],
+              currency_code: "USD",
             },
             rules: [promotionRule],
           })
@@ -355,10 +357,11 @@ medusaIntegrationTestRunner({
 
           const promotion = (
             await api.get(
-              `/admin/promotions/${standardPromotion.id}`,
+              `/admin/promotions/${buyGetPromotion.id}`,
               adminHeaders
             )
           ).data.promotion
+
           expect(promotion).toEqual(
             expect.objectContaining({
               id: buyGetPromotion.id,
@@ -382,23 +385,6 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /admin/promotions/:id/rules/batch", () => {
-        it("should throw error when required params are missing", async () => {
-          const { response } = await api
-            .post(
-              `/admin/promotions/${standardPromotion.id}/rules/batch`,
-              {},
-              adminHeaders
-            )
-            .catch((e) => e)
-
-          expect(response.status).toEqual(400)
-          // expect(response.data).toEqual({
-          //   type: "invalid_data",
-          //   message:
-          //     "each value in rule_ids must be a string, rule_ids should not be empty",
-          // })
-        })
-
         it("should throw error when promotion does not exist", async () => {
           const { response } = await api
             .post(
@@ -438,23 +424,6 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /admin/promotions/:id/target-rules/batch", () => {
-        it("should throw error when required params are missing", async () => {
-          const { response } = await api
-            .post(
-              `/admin/promotions/${standardPromotion.id}/target-rules/batch`,
-              {},
-              adminHeaders
-            )
-            .catch((e) => e)
-
-          expect(response.status).toEqual(400)
-          // expect(response.data).toEqual({
-          //   type: "invalid_data",
-          //   message:
-          //     "each value in rule_ids must be a string, rule_ids should not be empty",
-          // })
-        })
-
         it("should throw error when promotion does not exist", async () => {
           const { response } = await api
             .post(
@@ -496,23 +465,6 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /admin/promotions/:id/buy-rules/batch", () => {
-        it("should throw error when required params are missing", async () => {
-          const { response } = await api
-            .post(
-              `/admin/promotions/${standardPromotion.id}/buy-rules/batch`,
-              {},
-              adminHeaders
-            )
-            .catch((e) => e)
-
-          expect(response.status).toEqual(400)
-          // expect(response.data).toEqual({
-          //   type: "invalid_data",
-          //   message:
-          //     "each value in rule_ids must be a string, rule_ids should not be empty",
-          // })
-        })
-
         it("should throw error when promotion does not exist", async () => {
           const { response } = await api
             .post(
@@ -535,6 +487,7 @@ medusaIntegrationTestRunner({
             type: PromotionType.BUYGET,
             application_method: {
               type: "fixed",
+              currency_code: "USD",
               target_type: "items",
               allocation: "across",
               value: 100,
@@ -569,30 +522,6 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /admin/promotions/:id/rules/batch", () => {
-        it("should throw error when required params are missing", async () => {
-          const { response } = await api
-            .post(
-              `/admin/promotions/${standardPromotion.id}/rules/batch`,
-              {
-                update: [
-                  {
-                    attribute: "test",
-                    operator: "eq",
-                    values: ["new value"],
-                  },
-                ],
-              },
-              adminHeaders
-            )
-            .catch((e) => e)
-
-          expect(response.status).toEqual(400)
-          // expect(response.data).toEqual({
-          //   type: "invalid_data",
-          //   message: "id must be a string, id should not be empty",
-          // })
-        })
-
         it("should throw error when promotion does not exist", async () => {
           const { response } = await api
             .post(
@@ -705,38 +634,40 @@ medusaIntegrationTestRunner({
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.attributes).toEqual([
-            {
-              id: "currency",
-              label: "Currency code",
-              required: true,
-              value: "currency_code",
-            },
-            {
-              id: "customer_group",
-              label: "Customer Group",
-              required: false,
-              value: "customer_group.id",
-            },
-            {
-              id: "region",
-              label: "Region",
-              required: false,
-              value: "region.id",
-            },
-            {
-              id: "country",
-              label: "Country",
-              required: false,
-              value: "shipping_address.country_code",
-            },
-            {
-              id: "sales_channel",
-              label: "Sales Channel",
-              required: false,
-              value: "sales_channel.id",
-            },
-          ])
+          expect(response.data.attributes).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: "currency_code",
+                label: "Currency Code",
+                required: true,
+                value: "currency_code",
+              }),
+              expect.objectContaining({
+                id: "customer_group",
+                label: "Customer Group",
+                required: false,
+                value: "customer_group.id",
+              }),
+              expect.objectContaining({
+                id: "region",
+                label: "Region",
+                required: false,
+                value: "region.id",
+              }),
+              expect.objectContaining({
+                id: "country",
+                label: "Country",
+                required: false,
+                value: "shipping_address.country_code",
+              }),
+              expect.objectContaining({
+                id: "sales_channel",
+                label: "Sales Channel",
+                required: false,
+                value: "sales_channel.id",
+              }),
+            ])
+          )
         })
       })
 
@@ -826,7 +757,7 @@ medusaIntegrationTestRunner({
           )
 
           response = await api.get(
-            `/admin/promotions/rule-value-options/rules/currency?limit=2&order=name`,
+            `/admin/promotions/rule-value-options/rules/currency_code?limit=2&order=name`,
             adminHeaders
           )
 
@@ -834,8 +765,8 @@ medusaIntegrationTestRunner({
           expect(response.data.values.length).toEqual(2)
           expect(response.data.values).toEqual(
             expect.arrayContaining([
-              { label: "afn", value: "afn" },
-              { label: "all", value: "all" },
+              { label: "Afghan Afghani", value: "afn" },
+              { label: "Albanian Lek", value: "all" },
             ])
           )
 

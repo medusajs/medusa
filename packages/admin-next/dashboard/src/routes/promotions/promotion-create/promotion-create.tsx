@@ -1,5 +1,4 @@
 import { RouteFocusModal } from "../../../components/route-modal"
-import { useCampaigns } from "../../../hooks/api/campaigns"
 import {
   usePromotionRuleAttributes,
   usePromotionRuleOperators,
@@ -18,14 +17,12 @@ export const PromotionCreate = () => {
   const { rules: targetRules } = usePromotionRules(null, "target-rules")
   const { rules: buyRules } = usePromotionRules(null, "buy-rules")
   const { operators } = usePromotionRuleOperators()
-  const { campaigns } = useCampaigns()
 
   return (
     <RouteFocusModal>
       {rules &&
         buyRules &&
         targetRules &&
-        campaigns &&
         operators &&
         ruleAttributes &&
         targetRuleAttributes &&
@@ -38,7 +35,6 @@ export const PromotionCreate = () => {
             rules={rules}
             targetRules={targetRules}
             buyRules={buyRules}
-            campaigns={campaigns}
           />
         )}
     </RouteFocusModal>

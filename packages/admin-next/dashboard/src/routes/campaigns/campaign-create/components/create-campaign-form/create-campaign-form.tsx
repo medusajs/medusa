@@ -15,26 +15,29 @@ import { CreateCampaignFormFields } from "../../../common/components/create-camp
 export const CreateCampaignSchema = zod.object({
   name: zod.string().min(1),
   description: zod.string().optional(),
-  currency: zod.string().min(1),
   campaign_identifier: zod.string().min(1),
   starts_at: zod.date().optional(),
   ends_at: zod.date().optional(),
-  budget: zod.object({
-    limit: zod.number().min(0),
-    type: zod.enum(["spend", "usage"]),
-  }),
+  budget: zod
+    .object({
+      limit: zod.number().min(0).optional().nullable(),
+      type: zod.enum(["spend", "usage"]),
+      currency_code: zod.string().optional().nullable(),
+    })
+    .refine((data) => data.type !== "spend" || data.currency_code, {
+      path: ["currency_code"],
+      message: `required field`,
+    }),
 })
 
 export const defaultCampaignValues = {
   name: "",
   description: "",
-  currency: "",
   campaign_identifier: "",
-  starts_at: undefined,
-  ends_at: undefined,
   budget: {
     type: "spend" as CampaignBudgetTypeValues,
-    limit: undefined,
+    currency_code: null,
+    limit: null,
   },
 }
 
@@ -53,13 +56,13 @@ export const CreateCampaignForm = () => {
       {
         name: data.name,
         description: data.description,
-        currency: data.currency,
         campaign_identifier: data.campaign_identifier,
         starts_at: data.starts_at,
         ends_at: data.ends_at,
         budget: {
           type: data.budget.type,
-          limit: data.budget.limit,
+          limit: data.budget.limit ? data.budget.limit : undefined,
+          currency_code: data.budget.currency_code,
         },
       },
       {
