@@ -221,10 +221,6 @@ export type ModuleJoinerConfig = Omit<
 
 export declare type ModuleJoinerRelationship = JoinerRelationship & {
   /**
-   * If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more "internal" services
-   */
-  isInternalService?: boolean
-  /**
    * If true, the link joiner will cascade deleting the relationship
    */
   deleteCascade?: boolean

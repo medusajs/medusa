@@ -1,11 +1,7 @@
 import { Fulfillment, Note, Order } from "@medusajs/medusa"
 import { IconButton, Text, Tooltip, clx, usePrompt } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
-import {
-  useAdminDeleteNote,
-  useAdminNotes,
-  useAdminStockLocation,
-} from "medusa-react"
+
 import { PropsWithChildren, ReactNode, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 
@@ -14,9 +10,10 @@ import { useTranslation } from "react-i18next"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { useDate } from "../../../../../hooks/use-date"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
+import { OrderDTO } from "@medusajs/types"
 
 type OrderTimelineProps = {
-  order: Order
+  order: OrderDTO
 }
 
 /**
@@ -84,20 +81,22 @@ type Activity = {
 const useActivityItems = (order: Order) => {
   const { t } = useTranslation()
 
-  const { notes, isLoading, isError, error } = useAdminNotes(
-    {
-      resource_id: order.id,
-      limit: NOTE_LIMIT,
-      offset: 0,
-    },
-    {
-      keepPreviousData: true,
-    }
-  )
-
-  if (isError) {
-    throw error
-  }
+  const notes = []
+  const isLoading = false
+  // const { notes, isLoading, isError, error } = useNotes(
+  //   {
+  //     resource_id: order.id,
+  //     limit: NOTE_LIMIT,
+  //     offset: 0,
+  //   },
+  //   {
+  //     keepPreviousData: true,
+  //   }
+  // )
+  //
+  // if (isError) {
+  //   throw error
+  // }
 
   return useMemo(() => {
     if (isLoading) {
@@ -106,71 +105,71 @@ const useActivityItems = (order: Order) => {
 
     const items: Activity[] = []
 
-    for (const payment of order.payments) {
-      items.push({
-        title: t("orders.activity.events.payment.awaiting"),
-        timestamp: payment.created_at,
-        children: (
-          <Text size="small" className="text-ui-fg-subtle">
-            {getStylizedAmount(payment.amount, payment.currency_code)}
-          </Text>
-        ),
-      })
+    // for (const payment of order.payments) {
+    //   items.push({
+    //     title: t("orders.activity.events.payment.awaiting"),
+    //     timestamp: payment.created_at,
+    //     children: (
+    //       <Text size="small" className="text-ui-fg-subtle">
+    //         {getStylizedAmount(payment.amount, payment.currency_code)}
+    //       </Text>
+    //     ),
+    //   })
+    //
+    //   if (payment.canceled_at) {
+    //     items.push({
+    //       title: t("orders.activity.events.payment.canceled"),
+    //       timestamp: payment.canceled_at,
+    //       children: (
+    //         <Text size="small" className="text-ui-fg-subtle">
+    //           {getStylizedAmount(payment.amount, payment.currency_code)}
+    //         </Text>
+    //       ),
+    //     })
+    //   }
+    //
+    //   if (payment.captured_at) {
+    //     items.push({
+    //       title: t("orders.activity.events.payment.captured"),
+    //       timestamp: payment.captured_at,
+    //       children: (
+    //         <Text size="small" className="text-ui-fg-subtle">
+    //           {getStylizedAmount(payment.amount, payment.currency_code)}
+    //         </Text>
+    //       ),
+    //     })
+    //   }
+    // }
 
-      if (payment.canceled_at) {
-        items.push({
-          title: t("orders.activity.events.payment.canceled"),
-          timestamp: payment.canceled_at,
-          children: (
-            <Text size="small" className="text-ui-fg-subtle">
-              {getStylizedAmount(payment.amount, payment.currency_code)}
-            </Text>
-          ),
-        })
-      }
+    // for (const fulfillment of order.fulfillments) {
+    //   items.push({
+    //     title: t("orders.activity.events.fulfillment.created"),
+    //     timestamp: fulfillment.created_at,
+    //     children: <FulfillmentCreatedBody fulfillment={fulfillment} />,
+    //   })
+    //
+    //   if (fulfillment.shipped_at) {
+    //     items.push({
+    //       title: t("orders.activity.events.fulfillment.shipped"),
+    //       timestamp: fulfillment.shipped_at,
+    //     })
+    //   }
+    // }
 
-      if (payment.captured_at) {
-        items.push({
-          title: t("orders.activity.events.payment.captured"),
-          timestamp: payment.captured_at,
-          children: (
-            <Text size="small" className="text-ui-fg-subtle">
-              {getStylizedAmount(payment.amount, payment.currency_code)}
-            </Text>
-          ),
-        })
-      }
-    }
+    // for (const ret of order.returns) {
+    //   items.push({
+    //     title: t("orders.activity.events.return.created"),
+    //     timestamp: ret.created_at,
+    //   })
+    // }
 
-    for (const fulfillment of order.fulfillments) {
-      items.push({
-        title: t("orders.activity.events.fulfillment.created"),
-        timestamp: fulfillment.created_at,
-        children: <FulfillmentCreatedBody fulfillment={fulfillment} />,
-      })
-
-      if (fulfillment.shipped_at) {
-        items.push({
-          title: t("orders.activity.events.fulfillment.shipped"),
-          timestamp: fulfillment.shipped_at,
-        })
-      }
-    }
-
-    for (const ret of order.returns) {
-      items.push({
-        title: t("orders.activity.events.return.created"),
-        timestamp: ret.created_at,
-      })
-    }
-
-    for (const note of notes || []) {
-      items.push({
-        title: t("orders.activity.events.note.comment"),
-        timestamp: note.created_at,
-        children: <NoteBody note={note} />,
-      })
-    }
+    // for (const note of notes || []) {
+    //   items.push({
+    //     title: t("orders.activity.events.note.comment"),
+    //     timestamp: note.created_at,
+    //     children: <NoteBody note={note} />,
+    //   })
+    // }
 
     if (order.canceled_at) {
       items.push({

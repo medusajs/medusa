@@ -3,8 +3,8 @@ import {
   AdminCustomerGroupResponse,
 } from "@medusajs/types"
 import { z } from "zod"
-import { CreateCustomerGroupSchema } from "../../v2-routes/customer-groups/customer-group-create/components/create-customer-group-form"
-import { EditCustomerGroupSchema } from "../../v2-routes/customer-groups/customer-group-edit/components/edit-customer-group-form"
+import { CreateCustomerGroupSchema } from "../../routes/customer-groups/customer-group-create/components/create-customer-group-form"
+import { EditCustomerGroupSchema } from "../../routes/customer-groups/customer-group-edit/components/edit-customer-group-form"
 import { deleteRequest, getRequest, postRequest } from "./common"
 
 async function retrieveCustomerGroup(id: string, query?: Record<string, any>) {

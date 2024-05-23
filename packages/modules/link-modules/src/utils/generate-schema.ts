@@ -32,11 +32,7 @@ export function generateGraphQLSchema(
 
   for (const extend of joinerConfig.extends ?? []) {
     const extendedModule = MedusaModule.getModuleInstance(extend.serviceName)
-    if (
-      !isReadOnlyLink &&
-      !extendedModule &&
-      !extend.relationship.isInternalService
-    ) {
+    if (!extendedModule) {
       throw new Error(
         `Module ${extend.serviceName} not found. Please verify that the module is configured and installed, also the module must be loaded before the link modules.`
       )
@@ -48,7 +44,7 @@ export function generateGraphQLSchema(
     let extendedEntityName =
       extJoinerConfig?.linkableKeys?.[extend.relationship.foreignKey]!
 
-    if (!extendedEntityName && (!primary || !foreign)) {
+    if (!isReadOnlyLink && !extendedEntityName && (!primary || !foreign)) {
       logger.warn(
         `Link modules schema: No linkable key found for ${extend.relationship.foreignKey} on module ${extend.relationship.serviceName}.`
       )
