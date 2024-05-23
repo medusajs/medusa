@@ -19,7 +19,7 @@ import {
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/promotions*",
-    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
+    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
   },
   {
     method: ["GET"],

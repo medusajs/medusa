@@ -16,7 +16,7 @@ import { createLinkBody } from "../../utils/validators"
 export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/api-keys*",
-    middlewares: [authenticate("admin", ["bearer", "session"])],
+    middlewares: [authenticate("user", ["bearer", "session"])],
   },
   {
     method: ["GET"],

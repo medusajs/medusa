@@ -13,7 +13,7 @@ export const adminReturnReasonRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["ALL"],
     matcher: "/admin/return-reasons*",
-    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
+    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
   },
   {
     method: ["GET"],
