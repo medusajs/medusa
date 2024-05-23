@@ -232,8 +232,8 @@ const CreateView = ({
         description: t("invite.toast.accepted"),
         dismissLabel: t("actions.close"),
       })
-    } catch (error: any) {
-      if ("type" in error && error.type === "invalid_data") {
+    } catch (error) {
+      if (isAxiosError(error) && error.response?.status === 400) {
         form.setError("root", {
           type: "manual",
           message: t("invite.invalidInvite"),
