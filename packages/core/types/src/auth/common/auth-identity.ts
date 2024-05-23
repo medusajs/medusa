@@ -23,6 +23,11 @@ export type AuthIdentityDTO = {
   entity_id: string
 
   /**
+   * Holds information related to the actor IDs tied to the auth identity.
+   */
+  app_metadata?: Record<string, unknown>
+
+  /**
    * Holds custom data related to the provider in key-value pairs.
    */
   provider_metadata?: Record<string, unknown>
@@ -57,6 +62,11 @@ export type CreateAuthIdentityDTO = {
   entity_id: string
 
   /**
+   * Holds information related to the actor IDs tied to the auth identity.
+   */
+  app_metadata?: Record<string, unknown>
+
+  /**
    * Holds custom data related to the provider in key-value pairs.
    */
   provider_metadata?: Record<string, unknown>
@@ -79,6 +89,10 @@ export type UpdateAuthIdentityDTO = {
   id: string
 
   /**
+   * Holds information related to the actor IDs tied to the auth identity.
+   */
+  app_metadata?: Record<string, unknown>
+  /**
    * Holds custom data related to the provider in key-value pairs.
    */
   provider_metadata?: Record<string, unknown>
@@ -100,7 +114,7 @@ export interface FilterableAuthIdentityProps
   id?: string[]
 
   /**
-   * Filter the auth identitys by the ID of their auth provider.
+   * Filter the auth identities by the ID of their auth provider.
    */
   provider?: string[] | string
 }

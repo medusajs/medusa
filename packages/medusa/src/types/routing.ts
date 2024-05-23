@@ -63,6 +63,7 @@ export interface AuthContext {
   actor_id: string
   actor_type: string
   auth_identity_id: string
+  app_metadata: Record<string, unknown>
 }
 
 export interface AuthenticatedMedusaRequest<Body = never>
