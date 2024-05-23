@@ -10,14 +10,6 @@ const getFolderTestTargetDirectoryPath = (folderName: string): string => {
   return resolve(distTestTargetDirectorPath, folderName)
 }
 
-const buildLink = (): string => {
-  return `
-    export default {
-      isLink: true
-    }
-  `
-}
-
 describe("resolve plugins links", () => {
   beforeEach(() => {
     jest.resetModules()
@@ -38,7 +30,11 @@ describe("resolve plugins links", () => {
   it("should load the custom links from the links directory", async () => {
     writeFileSync(
       resolve(getFolderTestTargetDirectoryPath("links"), "link.js"),
-      buildLink()
+      `
+        export default {
+          isLink: true
+        }
+      `
     )
 
     writeFileSync(
