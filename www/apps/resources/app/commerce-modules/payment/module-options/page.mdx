@@ -113,13 +113,11 @@ const modules = {
         {
           resolve: "@medusajs/payment-stripe",
           options: {
-            // ...
-          },
-        },
-        {
-          resolve: "medusa-payment-paypal",
-          options: {
-            // ...
+            config: {
+              stripe: {
+                // provider options...
+              }
+            }
           },
         },
       ],
@@ -131,4 +129,5 @@ const modules = {
 The `providers` option is an array of objects that accept the following properties:
 
 - `resolve`: A string indicating the package name of the payment provider module or the path to it.
-- `options`: An optional object of options to pass to the payment provider module.
+- `options`: An optional object of the payment provider module's options. The object must have the following property:
+  - `config`: An object whose key is the ID of the payment provider, and its value is an object of options to pass to the provider module.
