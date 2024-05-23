@@ -187,7 +187,6 @@ async function MedusaApp_({
   linkModules,
   remoteFetchData,
   injectedDependencies = {},
-  onApplicationStartCb,
   migrationOnly = false,
   loaderOnly = false,
   workerMode = "server",
@@ -422,7 +421,7 @@ export async function MedusaAppMigrateUp(
 }
 
 export async function MedusaAppMigrateDown(
-  options: MedusaAppOptions = {}
+  options: MedusaAppOptions<RemoteFetchDataCallback> = {}
 ): Promise<void> {
   const migrationOnly = true
 
