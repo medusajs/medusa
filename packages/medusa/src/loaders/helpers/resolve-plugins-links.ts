@@ -15,7 +15,10 @@ export async function resolvePluginsLinks(
   plugins: PluginDetails[],
   container: MedusaContainer
 ): Promise<ModuleJoinerConfig[]> {
-  const logger = container.resolve(ContainerRegistrationKeys.LOGGER) ?? console
+  const logger =
+    container.resolve(ContainerRegistrationKeys.LOGGER, {
+      allowUnregistered: true,
+    }) ?? console
   return (
     await Promise.all(
       plugins.map(async (pluginDetails) => {
