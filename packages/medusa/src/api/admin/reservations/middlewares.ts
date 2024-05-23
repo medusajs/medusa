@@ -15,7 +15,7 @@ export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["ALL"],
     matcher: "/admin/reservations*",
-    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
+    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
   },
   {
     method: ["GET"],

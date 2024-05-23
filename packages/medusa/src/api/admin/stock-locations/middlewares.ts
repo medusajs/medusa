@@ -17,7 +17,7 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "ALL",
     matcher: "/admin/stock-locations*",
-    middlewares: [authenticate("admin", ["session", "bearer", "api-key"])],
+    middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
   },
   {
     method: ["POST"],

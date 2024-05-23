@@ -20,7 +20,9 @@ export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/store/customers",
     middlewares: [
-      authenticate("store", ["session", "bearer"], { allowUnregistered: true }),
+      authenticate("customer", ["session", "bearer"], {
+        allowUnregistered: true,
+      }),
       validateAndTransformBody(StoreCreateCustomer),
       validateAndTransformQuery(
         StoreGetCustomerParams,
@@ -31,7 +33,7 @@ export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "ALL",
     matcher: "/store/customers/me*",
-    middlewares: [authenticate("store", ["session", "bearer"])],
+    middlewares: [authenticate("customer", ["session", "bearer"])],
   },
   {
     method: ["GET"],

@@ -21,7 +21,7 @@ import { createBatchBody } from "../../utils/validators"
 export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/shipping-options*",
-    middlewares: [authenticate("admin", ["bearer", "session"])],
+    middlewares: [authenticate("user", ["bearer", "session"])],
   },
   {
     method: ["GET"],
