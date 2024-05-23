@@ -23,12 +23,6 @@ export type AuthIdentityDTO = {
   entity_id: string
 
   /**
-   * The scope of the auth identity. For example,
-   * `admin` or `store`.
-   */
-  scope: string
-
-  /**
    * Holds custom data related to the provider in key-value pairs.
    */
   provider_metadata?: Record<string, unknown>
@@ -37,11 +31,6 @@ export type AuthIdentityDTO = {
    * Holds custom data related to the user in key-value pairs.
    */
   user_metadata: Record<string, unknown>
-
-  /**
-   * Holds custom data related to the third-party app in key-value pairs.
-   */
-  app_metadata: Record<string, unknown>
 }
 
 /**
@@ -68,12 +57,6 @@ export type CreateAuthIdentityDTO = {
   entity_id: string
 
   /**
-   * The scope of the auth identity. For example,
-   * `admin` or `store`.
-   */
-  scope: string
-
-  /**
    * Holds custom data related to the provider in key-value pairs.
    */
   provider_metadata?: Record<string, unknown>
@@ -82,11 +65,6 @@ export type CreateAuthIdentityDTO = {
    * Holds custom data related to the user in key-value pairs.
    */
   user_metadata?: Record<string, unknown>
-
-  /**
-   * Holds custom data related to the third-party app in key-value pairs.
-   */
-  app_metadata?: Record<string, unknown>
 }
 
 /**
@@ -109,11 +87,6 @@ export type UpdateAuthIdentityDTO = {
    * Holds custom data related to the user in key-value pairs.
    */
   user_metadata?: Record<string, unknown>
-
-  /**
-   * Holds custom data related to the third-party app in key-value pairs.
-   */
-  app_metadata?: Record<string, unknown>
 }
 
 /**

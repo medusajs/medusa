@@ -32,7 +32,6 @@ export const createAdminUser = async (
   const authIdentity = await authModule.create({
     provider: "emailpass",
     entity_id: "admin@medusa.js",
-    scope: "admin",
     provider_metadata: {
       password: "somepassword",
     },
@@ -55,8 +54,6 @@ export const createAdminUser = async (
       actor_id: user.id,
       actor_type: "user",
       auth_identity_id: authIdentity.id,
-      scope: "admin",
-      app_metadata: {},
     },
     "test"
   )

@@ -38,7 +38,6 @@ medusaIntegrationTestRunner({
         const authIdentity = await authService.create({
           entity_id: "store_user",
           provider: "emailpass",
-          scope: "store",
         })
 
         const token = jwt.sign(authIdentity, http.jwtSecret)

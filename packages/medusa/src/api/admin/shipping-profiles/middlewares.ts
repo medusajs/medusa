@@ -15,7 +15,7 @@ import {
 export const adminShippingProfilesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/shipping-profiles*",
-    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
+    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
   },
   {
     method: ["POST"],
