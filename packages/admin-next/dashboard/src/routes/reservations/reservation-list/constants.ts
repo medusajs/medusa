@@ -1,1 +1,1 @@
-export const reservationListExpand = "line_item,inventory_item"
+export const reservationListExpand = "line_item"

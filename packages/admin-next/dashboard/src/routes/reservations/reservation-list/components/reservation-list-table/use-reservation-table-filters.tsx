@@ -1,10 +1,10 @@
-import { useAdminStockLocations } from "medusa-react"
-import { useTranslation } from "react-i18next"
 import { Filter } from "../../../../../components/table/data-table"
+import { useStockLocations } from "../../../../../hooks/api/stock-locations"
+import { useTranslation } from "react-i18next"
 
 export const useReservationTableFilters = () => {
   const { t } = useTranslation()
-  const { stock_locations } = useAdminStockLocations({
+  const { stock_locations } = useStockLocations({
     limit: 1000,
   })
 
