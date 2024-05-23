@@ -6,17 +6,17 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query"
 
-import {
-  ShippingOptionDeleteRes,
-  ShippingOptionRes,
-} from "../../types/api-responses"
+import { client } from "../../lib/client"
+import { queryClient } from "../../lib/query-client"
 import {
   CreateShippingOptionReq,
   UpdateShippingOptionReq,
 } from "../../types/api-payloads"
+import {
+  ShippingOptionDeleteRes,
+  ShippingOptionRes,
+} from "../../types/api-responses"
 import { stockLocationsQueryKeys } from "./stock-locations"
-import { queryClient } from "../../lib/medusa"
-import { client } from "../../lib/client"
 
 export const useShippingOptions = (
   query?: Record<string, any>,

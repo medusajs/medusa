@@ -80,6 +80,18 @@ const useDeveloperRoutes = (): NavItemProps[] => {
   )
 }
 
+/**
+ * Ensure that the `from` prop is not another settings route, to avoid
+ * the user getting stuck in a navigation loop.
+ */
+const getSafeFromValue = (from: string) => {
+  if (from.startsWith("/settings")) {
+    return "/orders"
+  }
+
+  return from
+}
+
 const SettingsSidebar = () => {
   const routes = useSettingRoutes()
   const developerRoutes = useDeveloperRoutes()
@@ -90,7 +102,7 @@ const SettingsSidebar = () => {
 
   useEffect(() => {
     if (location.state?.from) {
-      setFrom(location.state.from)
+      setFrom(getSafeFromValue(location.state.from))
     }
   }, [location])
 

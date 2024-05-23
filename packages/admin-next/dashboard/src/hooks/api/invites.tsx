@@ -1,4 +1,10 @@
 import {
+  AdminInviteResponse,
+  DeleteResponse,
+  HttpTypes,
+  PaginatedResponse,
+} from "@medusajs/types"
+import {
   QueryKey,
   UseMutationOptions,
   UseQueryOptions,
@@ -6,14 +12,8 @@ import {
   useQuery,
 } from "@tanstack/react-query"
 import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/medusa"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import {
-  AdminInviteResponse,
-  DeleteResponse,
-  HttpTypes,
-  PaginatedResponse,
-} from "@medusajs/types"
 
 const INVITES_QUERY_KEY = "invites" as const
 const invitesQueryKeys = queryKeysFactory(INVITES_QUERY_KEY)
