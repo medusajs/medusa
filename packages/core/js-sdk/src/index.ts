@@ -21,3 +21,4 @@ class Medusa {
 }
 
 export default Medusa
+export { FetchError } from "./client"

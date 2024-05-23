@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowPath, Link, Trash } from "@medusajs/icons"
 import { InviteDTO } from "@medusajs/types"
 import {
+  Alert,
   Button,
   Container,
   Heading,
@@ -31,6 +32,7 @@ import {
 import { DataTable } from "../../../../../components/table/data-table"
 import { useUserInviteTableQuery } from "../../../../../hooks/table/query/use-user-invite-table-query"
 import { backendUrl } from "../../../../../lib/client"
+import { isFetchError } from "../../../../../lib/is-fetch-error.ts"
 
 const InviteUserSchema = zod.object({
   email: zod.string().email(),
@@ -76,16 +78,18 @@ export const InviteUserForm = () => {
   const { mutateAsync, isPending } = useCreateInvite()
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync(
-      {
-        email: values.email,
-      },
-      {
-        onSuccess: () => {
-          form.reset()
-        },
+    try {
+      await mutateAsync({ email: values.email })
+      form.reset()
+    } catch (error) {
+      if (isFetchError(error) && error.status === 400) {
+        form.setError("root", {
+          type: "manual",
+          message: error.message,
+        })
+        return
       }
-    )
+    }
   })
 
   if (isError) {
@@ -108,6 +112,17 @@ export const InviteUserForm = () => {
                   {t("users.inviteUserHint")}
                 </Text>
               </div>
+
+              {form.formState.errors.root && (
+                <Alert
+                  variant="error"
+                  dismissible={false}
+                  className="text-balance"
+                >
+                  {form.formState.errors.root.message}
+                </Alert>
+              )}
+
               <div className="flex flex-col gap-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <Form.Field
