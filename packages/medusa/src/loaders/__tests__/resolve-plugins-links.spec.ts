@@ -2,6 +2,7 @@ import { mkdirSync, rmSync, writeFileSync } from "fs"
 import { resolve } from "path"
 import { resolvePluginsLinks } from "../helpers/resolve-plugins-links"
 import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
 
 const distTestTargetDirectorPath = resolve(__dirname, "__links__")
 
@@ -40,8 +41,17 @@ describe("resolve plugins link", () => {
       buildLink()
     )
 
-    const container = createMedusaContainer({
-      logger: console,
+    writeFileSync(
+      resolve(getFolderTestTargetDirectoryPath("links"), "empty-link.js"),
+      `
+          export default 'string'
+      `
+    )
+
+    const loggerMock = { warn: jest.fn() }
+    const container = createMedusaContainer()
+    container.register({
+      logger: asValue(loggerMock),
     })
 
     const links = await resolvePluginsLinks(
@@ -51,6 +61,11 @@ describe("resolve plugins link", () => {
         },
       ],
       container
+    )
+
+    expect(loggerMock.warn).toHaveBeenCalledTimes(1)
+    expect(loggerMock.warn).toHaveBeenCalledWith(
+      `Links file ${distTestTargetDirectorPath}/links/empty-link.js does not export a default object`
     )
 
     expect(links).toEqual([
