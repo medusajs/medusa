@@ -1,7 +1,5 @@
-import { AdminCollectionsRes, AdminProductsRes } from "@medusajs/medusa"
 import {
   AdminApiKeyResponse,
-  AdminCustomerGroupResponse,
   AdminProductCategoryResponse,
   AdminTaxRateResponse,
   AdminTaxRegionResponse,
@@ -65,7 +63,8 @@ export const RouteMap: RouteObject[] = [
                 path: ":id",
                 lazy: () => import("../../routes/products/product-detail"),
                 handle: {
-                  crumb: (data: AdminProductsRes) => data.product.title,
+                  crumb: (data: { product: HttpTypes.AdminProduct }) =>
+                    data.product.title,
                 },
                 children: [
                   {
@@ -261,7 +260,8 @@ export const RouteMap: RouteObject[] = [
                 lazy: () =>
                   import("../../routes/collections/collection-detail"),
                 handle: {
-                  crumb: (data: AdminCollectionsRes) => data.collection.title,
+                  crumb: (data: { collection: HttpTypes.AdminCollection }) =>
+                    data.collection.title,
                 },
                 children: [
                   {
@@ -390,8 +390,9 @@ export const RouteMap: RouteObject[] = [
                 lazy: () =>
                   import("../../routes/customer-groups/customer-group-detail"),
                 handle: {
-                  crumb: (data: AdminCustomerGroupResponse) =>
-                    data.customer_group.name,
+                  crumb: (data: {
+                    customer_group: HttpTypes.AdminCustomerGroup
+                  }) => data.customer_group.name,
                 },
                 children: [
                   {

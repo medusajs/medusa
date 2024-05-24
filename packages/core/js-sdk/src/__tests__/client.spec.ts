@@ -28,8 +28,15 @@ const server = setupServer(
       })
     }
   }),
+  http.get(`${baseUrl}/replaced-header`, ({ request, params, cookies }) => {
+    request.headers
+    if (request.headers.get("Content-Type") === "application/xml") {
+      return HttpResponse.json({
+        test: "test",
+      })
+    }
+  }),
   http.get(`${baseUrl}/apikey`, ({ request, params, cookies }) => {
-    console.log(request.headers.get("authorization"))
     if (request.headers.get("authorization")?.startsWith("Basic")) {
       return HttpResponse.json({
         test: "test",
@@ -80,6 +87,14 @@ describe("Client", () => {
     it("should allow passing custom request headers while the defaults are preserved", async () => {
       const resp = await client.fetch<any>("header", {
         headers: { "X-custom-header": "test" },
+      })
+
+      expect(resp).toEqual({ test: "test" })
+    })
+
+    it("should allow replacing a default header", async () => {
+      const resp = await client.fetch<any>("replaced-header", {
+        headers: { "content-Type": "application/xml" },
       })
 
       expect(resp).toEqual({ test: "test" })

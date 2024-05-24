@@ -14,7 +14,6 @@ import { useFieldArray, type UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { XMarkMini } from "@medusajs/icons"
-import { AdminCustomerGroupResponse } from "@medusajs/types"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
   OnChangeFn,
@@ -35,6 +34,7 @@ import type {
   PricingCreateSchemaType,
   PricingCustomerGroupsArrayType,
 } from "./schema"
+import { HttpTypes } from "@medusajs/types"
 
 type PricingDetailsFormProps = {
   form: UseFormReturn<PricingCreateSchemaType>
@@ -511,8 +511,7 @@ const CustomerGroupDrawer = ({
   )
 }
 
-const columnHelper =
-  createColumnHelper<AdminCustomerGroupResponse["customer_group"]>()
+const columnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
 
 const useColumns = () => {
   const base = useCustomerGroupTableColumns()

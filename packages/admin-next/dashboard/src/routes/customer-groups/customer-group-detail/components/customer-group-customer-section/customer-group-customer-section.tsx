@@ -1,8 +1,5 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import {
-  AdminCustomerGroupResponse,
-  AdminCustomerResponse,
-} from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
@@ -19,7 +16,7 @@ import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-cust
 import { useDataTable } from "../../../../../hooks/use-data-table"
 
 type CustomerGroupCustomerSectionProps = {
-  group: AdminCustomerGroupResponse["customer_group"]
+  group: HttpTypes.AdminCustomerGroup
 }
 
 const PAGE_SIZE = 10
@@ -138,7 +135,7 @@ const CustomerActions = ({
   customer,
   customerGroupId,
 }: {
-  customer: AdminCustomerResponse["customer"]
+  customer: HttpTypes.AdminCustomer
   customerGroupId: string
 }) => {
   const { t } = useTranslation()
@@ -193,7 +190,7 @@ const CustomerActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<AdminCustomerResponse["customer"]>()
+const columnHelper = createColumnHelper<HttpTypes.AdminCustomer>()
 
 const useColumns = () => {
   const columns = useCustomerTableColumns()

@@ -1,3 +1,4 @@
+import { BaseFilterable, OperatorMap } from "../../dal"
 import { BigNumberValue } from "../../totals"
 import { BasePaymentCollection } from "../payment/common"
 import { BaseProduct, BaseProductVariant } from "../product/common"
@@ -261,4 +262,9 @@ export interface BaseOrder {
   original_shipping_total: number
   original_shipping_subtotal: number
   original_shipping_tax_total: number
+}
+
+export interface BaseOrderFilters extends BaseFilterable<BaseOrderFilters> {
+  id?: string[] | string | OperatorMap<string | string[]>
+  status?: string[] | string | OperatorMap<string | string[]>
 }
