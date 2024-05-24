@@ -95,3 +95,37 @@ export interface BaseUpdateCustomer {
   phone?: string
   metadata?: Record<string, unknown>
 }
+
+export interface BaseCreateCustomerAddress {
+  first_name?: string
+  last_name?: string
+  phone?: string
+  company?: string
+  address_1?: string
+  address_2?: string
+  city?: string
+  country_code?: string
+  province?: string
+  postal_code?: string
+  metadata?: Record<string, unknown>
+  address_name?: string
+  is_default_shipping?: boolean
+  is_default_billing?: boolean
+}
+
+export interface BaseUpdateCustomerAddress {
+  first_name?: string
+  last_name?: string
+  phone?: string
+  company?: string
+  address_1?: string
+  address_2?: string
+  city?: string
+  country_code?: string
+  province?: string
+  postal_code?: string
+  metadata?: Record<string, unknown> | null
+  address_name?: string
+  is_default_shipping?: boolean
+  is_default_billing?: boolean
+}
