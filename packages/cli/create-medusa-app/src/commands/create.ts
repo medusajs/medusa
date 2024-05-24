@@ -29,12 +29,10 @@ import {
 } from "../utils/nextjs-utils.js"
 
 const slugify = slugifyType.default
-const isEmail = isEmailImported.default
 
 export type CreateOptions = {
   repoUrl?: string
   seed?: boolean
-  // commander passed --no-boilerplate as boilerplate
   boilerplate?: boolean
   skipDb?: boolean
   dbUrl?: string
@@ -43,7 +41,6 @@ export type CreateOptions = {
   directoryPath?: string
   withNextjsStarter?: boolean
   verbose?: boolean
-  v2?: boolean
 }
 
 export default async ({
@@ -57,7 +54,6 @@ export default async ({
   directoryPath,
   withNextjsStarter = false,
   verbose = false,
-  v2 = false,
 }: CreateOptions) => {
   track("CREATE_CLI_CMA")
 
@@ -98,8 +94,6 @@ export default async ({
 
   const projectName = await askForProjectName(directoryPath)
   const projectPath = getProjectPath(projectName, directoryPath)
-  const adminEmail =
-    !skipDb && migrations ? await askForAdminEmail(seed, boilerplate) : ""
   const installNextjs = withNextjsStarter || (await askForNextjsStarter())
 
   let { client, dbConnectionString } = !skipDb
@@ -142,7 +136,6 @@ export default async ({
       abortController,
       spinner,
       verbose,
-      v2,
     })
   } catch {
     return
@@ -159,6 +152,7 @@ export default async ({
         abortController,
         factBoxOptions,
         verbose,
+        processManager
       })
     : ""
 
@@ -181,9 +175,6 @@ export default async ({
     inviteToken = await prepareProject({
       directory: projectPath,
       dbConnectionString,
-      admin: {
-        email: adminEmail,
-      },
       seed,
       boilerplate,
       spinner,
@@ -195,7 +186,6 @@ export default async ({
       nextjsDirectory,
       client,
       verbose,
-      v2,
     })
   } catch (e: any) {
     if (isAbortError(e)) {
@@ -257,14 +247,10 @@ export default async ({
   await waitOn({
     resources: ["http://localhost:9000/health"],
   }).then(async () => {
-    if (v2) {
-      return
-    }
-
     open(
       inviteToken
-        ? `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
-        : "http://localhost:7001"
+        ? `http://localhost:9000/app/invite?token=${inviteToken}&first_run=true`
+        : "http://localhost:9000/app"
     )
   })
 }
@@ -294,27 +280,6 @@ async function askForProjectName(directoryPath?: string): Promise<string> {
   return projectName
 }
 
-async function askForAdminEmail(
-  seed?: boolean,
-  boilerplate?: boolean
-): Promise<string> {
-  const { adminEmail } = await inquirer.prompt([
-    {
-      type: "input",
-      name: "adminEmail",
-      message: "Enter an email for your admin dashboard user",
-      default: !seed && boilerplate ? "admin@medusa-test.com" : undefined,
-      validate: (input) => {
-        return typeof input === "string" && input.length > 0 && isEmail(input)
-          ? true
-          : "Please enter a valid email"
-      },
-    },
-  ])
-
-  return adminEmail
-}
-
 function showSuccessMessage(
   projectName: string,
   inviteToken?: string,
@@ -324,7 +289,7 @@ function showSuccessMessage(
     message: boxen(
       chalk.green(
         // eslint-disable-next-line prettier/prettier
-        `Change to the \`${projectName}\` directory to explore your Medusa project.${EOL}${EOL}Start your Medusa app again with the following command:${EOL}${EOL}npx @medusajs/medusa-cli develop${EOL}${EOL}${inviteToken ? `After you start the Medusa app, you can set a password for your admin user with the URL ${getInviteUrl(inviteToken)}${EOL}${EOL}` : ""}${nextjsDirectory?.length ? `The Next.js Starter storefront was installed in the \`${nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}npm run dev${EOL}${EOL}` : ""}Check out the Medusa documentation to start your development:${EOL}${EOL}https://docs.medusajs.com/${EOL}${EOL}Star us on GitHub if you like what we're building:${EOL}${EOL}https://github.com/medusajs/medusa/stargazers`
+        `Change to the \`${projectName}\` directory to explore your Medusa project.${EOL}${EOL}Start your Medusa app again with the following command:${EOL}${EOL}yarn dev${EOL}${EOL}${inviteToken ? `After you start the Medusa app, you can set a password for your admin user with the URL ${getInviteUrl(inviteToken)}${EOL}${EOL}` : ""}${nextjsDirectory?.length ? `The Next.js Starter storefront was installed in the \`${nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}npm run dev${EOL}${EOL}` : ""}Check out the Medusa documentation to start your development:${EOL}${EOL}https://docs.medusajs.com/${EOL}${EOL}Star us on GitHub if you like what we're building:${EOL}${EOL}https://github.com/medusajs/medusa/stargazers`
       ),
       {
         titleAlignment: "center",

@@ -1,11 +1,12 @@
 import { CreateCustomerDTO, CustomerDTO } from "@medusajs/types"
 import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk"
 import { createCustomersStep } from "../steps"
-import { setAuthAppMetadataStep } from "../../auth/steps"
 import { transform } from "@medusajs/workflows-sdk"
+import { Modules } from "@medusajs/modules-sdk"
+import { createLinkStep } from "../../common"
 
 type WorkflowInput = {
-  authUserId: string
+  authIdentityId: string
   customersData: CreateCustomerDTO
 }
 
@@ -20,12 +21,19 @@ export const createCustomerAccountWorkflow = createWorkflow(
       (customers: CustomerDTO[]) => customers[0]
     )
 
-    setAuthAppMetadataStep({
-      authUserId: input.authUserId,
-      key: "customer_id",
-      value: customer.id,
-    })
+    const link = transform(
+      { customer, authIdentityId: input.authIdentityId },
+      (data) => {
+        return [
+          {
+            [Modules.CUSTOMER]: { customer_id: data.customer.id },
+            [Modules.AUTH]: { auth_identity_id: data.authIdentityId },
+          },
+        ]
+      }
+    )
 
+    createLinkStep(link)
     return customer
   }
 )

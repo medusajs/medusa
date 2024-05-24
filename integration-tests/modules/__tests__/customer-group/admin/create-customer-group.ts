@@ -43,7 +43,7 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             name: "VIP",
-            created_by: "admin_user",
+            created_by: expect.any(String),
           })
         )
       })

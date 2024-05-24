@@ -14,9 +14,9 @@ export const POST = async (
   const { context = {}, data, provider_id } = req.body
 
   // If the customer is logged in, we auto-assign them to the payment collection
-  if (req.auth?.actor_id) {
+  if (req.auth_context?.actor_id) {
     ;(context as any).customer = {
-      id: req.auth.actor_id,
+      id: req.auth_context?.actor_id,
     }
   }
   const workflowInput = {

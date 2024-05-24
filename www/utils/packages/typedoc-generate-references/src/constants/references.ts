@@ -22,9 +22,9 @@ export const modules = [
 const allReferences = [
   ...modules,
   "file",
-  "js-client",
+  // "js-client",
   "medusa-config",
-  "medusa-react",
+  // "medusa-react",
   "medusa",
   "notification",
   "payment-provider",

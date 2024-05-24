@@ -118,6 +118,10 @@ function buildLocalCommands(cli, isLocalProject) {
             type: `boolean`,
             describe: `Install Medusa with the V2 feature flag enabled. WARNING: Medusa V2 is still in development and shouldn't be used in production.`,
             default: false,
+          })
+          .option(`branch`, {
+            type: `string`,
+            describe: `The branch of the git repository to clone.`,
           }),
       desc: `Create a new Medusa project.`,
       handler: handlerP(newStarter),

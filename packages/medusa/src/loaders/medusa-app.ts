@@ -20,7 +20,6 @@ import {
 } from "@medusajs/utils"
 
 import { asValue } from "awilix"
-import { remoteQueryFetchData } from "../utils/remote-query-fetch-data"
 
 export function mergeDefaultModules(
   modulesConfig: CommonTypes.ConfigModule["modules"]
@@ -93,7 +92,6 @@ async function runMedusaAppMigrations({
   if (revert) {
     await MedusaAppMigrateDown({
       modulesConfig: configModules,
-      remoteFetchData: remoteQueryFetchData(container),
       sharedContainer: container,
       sharedResourcesConfig,
       injectedDependencies,
@@ -101,7 +99,6 @@ async function runMedusaAppMigrations({
   } else {
     await MedusaAppMigrateUp({
       modulesConfig: configModules,
-      remoteFetchData: remoteQueryFetchData(container),
       sharedContainer: container,
       sharedResourcesConfig,
       injectedDependencies,
@@ -179,7 +176,6 @@ export const loadMedusaApp = async (
   const medusaApp = await MedusaApp({
     workerMode: configModule.projectConfig.worker_mode,
     modulesConfig: configModules,
-    remoteFetchData: remoteQueryFetchData(container),
     sharedContainer: container,
     sharedResourcesConfig,
     injectedDependencies,
@@ -254,7 +250,6 @@ export async function runModulesLoader({
 
   await MedusaApp({
     modulesConfig: configModules,
-    remoteFetchData: remoteQueryFetchData(container),
     sharedContainer: container,
     sharedResourcesConfig,
     injectedDependencies,
