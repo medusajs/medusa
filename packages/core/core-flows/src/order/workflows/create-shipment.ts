@@ -1,10 +1,5 @@
 import { FulfillmentDTO, OrderDTO, OrderWorkflow } from "@medusajs/types"
-import {
-  MedusaError,
-  Modules,
-  OrderStatus,
-  arrayDifference,
-} from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import {
   WorkflowData,
   createStep,
@@ -14,36 +9,10 @@ import {
 import { useRemoteQueryStep } from "../../common"
 import { createShipmentWorkflow } from "../../fulfillment"
 import { registerOrderShipmentStep } from "../steps"
-
-function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
-  if (order.status === OrderStatus.CANCELED) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Order with id ${order.id} has been cancelled.`
-    )
-  }
-}
-
-function throwIfItemsDoesNotExistsInOrder({
-  order,
-  inputItems,
-}: {
-  order: Pick<OrderDTO, "id" | "items">
-  inputItems: OrderWorkflow.CreateOrderShipmentWorkflowInput["items"]
-}) {
-  const orderItemIds = order.items?.map((i) => i.id) ?? []
-  const inputItemIds = inputItems.map((i) => i.id)
-  const diff = arrayDifference(inputItemIds, orderItemIds)
-
-  if (diff.length) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Items with ids ${diff.join(", ")} does not exist in order with id ${
-        order.id
-      }.`
-    )
-  }
-}
+import {
+  throwIfItemsDoesNotExistsInOrder,
+  throwIfOrderIsCancelled,
+} from "../utils/order-validation"
 
 const validateOrder = createStep(
   "validate-order",
