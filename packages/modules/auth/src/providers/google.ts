@@ -1,13 +1,12 @@
 import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
 import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
-import { AuthIdentityService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
 import { AuthorizationCode } from "simple-oauth2"
 import url from "url"
 
 type InjectedDependencies = {
-  authIdentityService: AuthIdentityService
+  authIdentityService: any
 }
 
 type ProviderConfig = {
@@ -18,15 +17,12 @@ type ProviderConfig = {
 }
 
 class GoogleProvider extends AbstractAuthModuleProvider {
-  public static PROVIDER = "google"
-  public static DISPLAY_NAME = "Google Authentication"
+  protected readonly authIdentityService_: any
 
-  protected readonly authIdentityService_: AuthIdentityService
-
-  constructor({ authIdentityService }: InjectedDependencies) {
+  constructor({ authIdentityService }: InjectedDependencies, options: any) {
     super(arguments[0], {
-      provider: GoogleProvider.PROVIDER,
-      displayName: GoogleProvider.DISPLAY_NAME,
+      provider: "google",
+      displayName: "Google Authentication",
     })
 
     this.authIdentityService_ = authIdentityService
@@ -72,6 +68,9 @@ class GoogleProvider extends AbstractAuthModuleProvider {
     }
 
     const code = req.query?.code ?? req.body?.code
+    if (!code) {
+      return { success: false, error: "No code provided" }
+    }
 
     return await this.validateCallbackToken(code, config)
   }
@@ -89,16 +88,15 @@ class GoogleProvider extends AbstractAuthModuleProvider {
       authIdentity =
         await this.authIdentityService_.retrieveByProviderAndEntityId(
           entity_id,
-          GoogleProvider.PROVIDER
+          this.provider
         )
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
         const [createdAuthIdentity] = await this.authIdentityService_.create([
           {
             entity_id,
-            provider: GoogleProvider.PROVIDER,
+            provider: this.provider,
             user_metadata: jwtData!.payload,
-            scope: this.scope_,
           },
         ])
         authIdentity = createdAuthIdentity
@@ -132,7 +130,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
         accessToken.token.id_token
       )
 
-      const { successRedirectUrl } = this.getConfigFromScope()
+      const { successRedirectUrl } = this.getConfig()
 
       return {
         success,
@@ -144,8 +142,10 @@ class GoogleProvider extends AbstractAuthModuleProvider {
     }
   }
 
-  private getConfigFromScope(): ProviderConfig {
-    const config: Partial<ProviderConfig> = { ...this.scopeConfig_ }
+  private getConfig(): ProviderConfig {
+    // TODO: Fetch this from provider config
+    // const config: Partial<ProviderConfig> = { ...this.scopeConfig_ }
+    const config = {} as any
 
     if (!config.clientID) {
       throw new Error("Google clientID is required")
@@ -163,7 +163,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   }
 
   private originalURL(req: AuthenticationInput) {
-    const host = req.headers.host
+    const host = req.headers?.host
     const protocol = req.protocol
     const path = req.url || ""
 
@@ -173,7 +173,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   private async getProviderConfig(
     req: AuthenticationInput
   ): Promise<ProviderConfig> {
-    const config = this.getConfigFromScope()
+    const config = this.getConfig()
 
     const callbackURL = config.callbackURL
 

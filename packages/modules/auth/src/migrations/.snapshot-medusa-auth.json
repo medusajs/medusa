@@ -31,15 +31,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "scope": {
-          "name": "scope",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "user_metadata": {
           "name": "user_metadata",
           "type": "jsonb",
@@ -72,8 +63,8 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_auth_identity_provider_scope_entity_id",
-          "columnNames": ["provider", "scope", "entity_id"],
+          "keyName": "IDX_auth_identity_provider_entity_id",
+          "columnNames": ["provider", "entity_id"],
           "composite": true,
           "primary": false,
           "unique": true

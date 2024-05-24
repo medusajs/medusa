@@ -14,7 +14,7 @@ export const adminUploadRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["ALL"],
     matcher: "/admin/uploads*",
-    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
+    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
   },
   // TODO: There is a `/protected` route in v1 that might need a bit more thought when implementing
   {

@@ -14,8 +14,8 @@ type OptionalFields = "provider_metadata" | "app_metadata" | "user_metadata"
 
 @Entity()
 @Unique({
-  properties: ["provider", "scope", "entity_id"],
-  name: "IDX_auth_identity_provider_scope_entity_id",
+  properties: ["provider", "entity_id"],
+  name: "IDX_auth_identity_provider_entity_id",
 })
 export default class AuthIdentity {
   [OptionalProps]: OptionalFields
@@ -29,14 +29,11 @@ export default class AuthIdentity {
   @Property({ columnType: "text" })
   provider: string
 
-  @Property({ columnType: "text" })
-  scope: string
-
   @Property({ columnType: "jsonb", nullable: true })
   user_metadata: Record<string, unknown> | null
 
-  @Property({ columnType: "jsonb" })
-  app_metadata: Record<string, unknown> = {}
+  @Property({ columnType: "jsonb", nullable: true })
+  app_metadata: Record<string, unknown> | null
 
   @Property({ columnType: "jsonb", nullable: true })
   provider_metadata: Record<string, unknown> | null = null

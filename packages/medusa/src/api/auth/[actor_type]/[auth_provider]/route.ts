@@ -1,17 +1,29 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { AuthenticationInput, IAuthModuleService } from "@medusajs/types"
 import {
-  ContainerRegistrationKeys,
-  MedusaError,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+  AuthenticationInput,
+  IAuthModuleService,
+  ConfigModule,
+} from "@medusajs/types"
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 import { generateJwtToken } from "../../../utils/auth/token"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const { scope, auth_provider } = req.params
-  const actorType = scope === "admin" ? "user" : "customer"
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const { actor_type, auth_provider } = req.params
+  const config: ConfigModule = req.scope.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
+
+  const authMethods = (config.projectConfig?.http as any)?.authMethods ?? {}
+  // Not having the config defined would allow for all auth providers for the particular actor.
+  if (authMethods[actor_type]) {
+    if (!authMethods[actor_type].includes(auth_provider)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `The actor type ${actor_type} is not allowed to use the auth provider ${auth_provider}`
+      )
+    }
+  }
 
   const service: IAuthModuleService = req.scope.resolve(
     ModuleRegistrationName.AUTH
@@ -22,7 +34,6 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     headers: req.headers,
     query: req.query,
     body: req.body,
-    authScope: scope,
     protocol: req.protocol,
   } as AuthenticationInput
 
@@ -41,23 +52,17 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       ContainerRegistrationKeys.CONFIG_MODULE
     ).projectConfig
 
-    const queryObject = remoteQueryObjectFromString({
-      entryPoint: "auth_identity",
-      fields: [`${actorType}.id`],
-      variables: { id: authIdentity.id },
-    })
-    const [actorData] = await remoteQuery(queryObject)
-    const entityId = actorData?.[actorType]?.id
-
+    const entityIdKey = `${actor_type}_id`
+    const entityId = authIdentity.app_metadata?.[entityIdKey]
     const { jwtSecret, jwtExpiresIn } = http
-    // TODO: Clean up mapping between scope and actor type
     const token = generateJwtToken(
       {
         actor_id: entityId,
-        actor_type: actorType,
+        actor_type,
         auth_identity_id: authIdentity.id,
-        app_metadata: {},
-        scope,
+        app_metadata: {
+          entityIdKey: entityId,
+        },
       },
       {
         secret: jwtSecret,

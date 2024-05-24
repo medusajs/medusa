@@ -25,7 +25,7 @@ export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
     method: "ALL",
     matcher: "/store/carts*",
     middlewares: [
-      authenticate("store", ["session", "bearer"], {
+      authenticate("customer", ["session", "bearer"], {
         allowUnauthenticated: true,
       }),
     ],

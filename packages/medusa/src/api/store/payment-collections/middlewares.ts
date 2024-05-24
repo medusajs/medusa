@@ -14,7 +14,7 @@ export const storePaymentCollectionsMiddlewares: MiddlewareRoute[] = [
     method: "ALL",
     matcher: "/store/payment-collections*",
     middlewares: [
-      authenticate("store", ["session", "bearer"], {
+      authenticate("customer", ["session", "bearer"], {
         allowUnauthenticated: true,
       }),
     ],
