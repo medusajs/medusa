@@ -21,6 +21,7 @@ export const POST = async (
     ...req.validatedBody,
     order_id: req.params.id,
     fulfillment_id: req.params.fulfillment_id,
+    labels: req.validatedBody.labels ?? [],
   }
 
   const { errors } = await createOrderShipmentWorkflow(req.scope).run({
