@@ -43,17 +43,12 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateProductType>,
   res: MedusaResponse
 ) => {
-  const { result, errors } = await updateProductsWorkflow(req.scope).run({
+  const { result } = await updateProductsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody as UpdateProductDTO,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const product = await refetchProduct(
     result[0].id,
@@ -69,14 +64,9 @@ export const DELETE = async (
 ) => {
   const id = req.params.id
 
-  const { errors } = await deleteProductsWorkflow(req.scope).run({
+  await deleteProductsWorkflow(req.scope).run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,

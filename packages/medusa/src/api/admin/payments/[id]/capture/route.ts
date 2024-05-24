@@ -12,18 +12,13 @@ export const POST = async (
 ) => {
   const { id } = req.params
 
-  const { errors } = await capturePaymentWorkflow(req.scope).run({
+  await capturePaymentWorkflow(req.scope).run({
     input: {
       payment_id: id,
       captured_by: req.auth_context.actor_id,
       amount: req.validatedBody.amount,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const payment = await refetchPayment(
     id,

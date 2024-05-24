@@ -44,14 +44,9 @@ export const POST = async (
   const workflow = createPricingRuleTypesWorkflow(req.scope)
   const ruleTypesData = [req.validatedBody]
 
-  const { result, errors } = await workflow.run({
+  const { result } = await workflow.run({
     input: { data: ruleTypesData },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const ruleType = await refetchRuleType(
     result[0].id,

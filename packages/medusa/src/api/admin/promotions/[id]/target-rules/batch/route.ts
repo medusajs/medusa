@@ -21,7 +21,7 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const id = req.params.id
-  const { result, errors } = await batchPromotionRulesWorkflow(req.scope).run({
+  const { result } = await batchPromotionRulesWorkflow(req.scope).run({
     input: {
       id,
       rule_type: RuleType.TARGET_RULES,
@@ -29,12 +29,7 @@ export const POST = async (
       update: req.validatedBody.update,
       delete: req.validatedBody.delete,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const batchResults = await refetchBatchRules(
     result,

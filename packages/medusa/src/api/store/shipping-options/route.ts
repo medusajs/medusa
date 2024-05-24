@@ -29,10 +29,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     relations: ["shipping_address"],
   })
 
-  const { result, errors } = await listShippingOptionsForCartWorkflow(
-    req.scope
-  ).run({
-    throwOnError: false,
+  const { result } = await listShippingOptionsForCartWorkflow(req.scope).run({
     input: {
       cart_id: cart.id,
       sales_channel_id: cart.sales_channel_id,
@@ -44,10 +41,6 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       },
     },
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.json({ shipping_options: result })
 }
