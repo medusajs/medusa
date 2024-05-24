@@ -1,6 +1,6 @@
 const path = require("path")
 
-const { getConfigFile } = require("medusa-core-utils")
+const { getConfigFile } = require("@medusajs/utils")
 const { asValue } = require("awilix")
 const {
   isObject,
