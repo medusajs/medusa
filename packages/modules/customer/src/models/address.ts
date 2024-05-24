@@ -20,15 +20,19 @@ type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when 
 
 const CustomerAddressUniqueCustomerShippingAddress =
   createPsqlIndexStatementHelper({
+    name: "IDX_customer_address_unique_customer_shipping",
     tableName: "customer_address",
     columns: "customer_id",
+    unique: true,
     where: '"is_default_shipping" = true',
   })
 
 const CustomerAddressUniqueCustomerBillingAddress =
   createPsqlIndexStatementHelper({
+    name: "IDX_customer_address_unique_customer_billing",
     tableName: "customer_address",
     columns: "customer_id",
+    unique: true,
     where: '"is_default_billing" = true',
   })
 

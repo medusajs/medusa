@@ -329,20 +329,20 @@
           "unique": false
         },
         {
-          "keyName": "IDX_customer_address_customer_id",
+          "keyName": "IDX_customer_address_unique_customer_billing",
           "columnNames": [],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_customer_address_customer_id\" ON \"customer_address\" (customer_id) WHERE \"is_default_billing\" = true"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_customer_address_unique_customer_billing\" ON \"customer_address\" (customer_id) WHERE \"is_default_billing\" = true"
         },
         {
-          "keyName": "IDX_customer_address_customer_id",
+          "keyName": "IDX_customer_address_unique_customer_shipping",
           "columnNames": [],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_customer_address_customer_id\" ON \"customer_address\" (customer_id) WHERE \"is_default_shipping\" = true"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_customer_address_unique_customer_shipping\" ON \"customer_address\" (customer_id) WHERE \"is_default_shipping\" = true"
         },
         {
           "keyName": "customer_address_pkey",
