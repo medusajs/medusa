@@ -11,14 +11,9 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const { id } = req.params
-  const { errors } = await cancelFulfillmentWorkflow(req.scope).run({
+  await cancelFulfillmentWorkflow(req.scope).run({
     input: { id },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const fulfillment = await refetchFulfillment(
     id,

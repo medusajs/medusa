@@ -1,4 +1,4 @@
-import { createReturnOrderWorkflow } from "@medusajs/core-flows"
+import {createReturnOrderWorkflow} from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -7,7 +7,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { AdminPostReturnsReqSchemaType } from "./validators"
+import {AdminPostReturnsReqSchemaType} from "./validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -43,14 +43,9 @@ export const POST = async (
   const input = req.validatedBody as AdminPostReturnsReqSchemaType
 
   const workflow = createReturnOrderWorkflow(req.scope)
-  const { result, errors } = await workflow.run({
+  const { result } = await workflow.run({
     input,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({ return: result })
 }

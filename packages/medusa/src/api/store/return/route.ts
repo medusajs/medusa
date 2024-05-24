@@ -9,14 +9,9 @@ export const POST = async (
   const input = req.validatedBody as StorePostReturnsReqSchemaType
 
   const workflow = createReturnOrderWorkflow(req.scope)
-  const { result, errors } = await workflow.run({
+  const { result } = await workflow.run({
     input,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({ return: result })
 }

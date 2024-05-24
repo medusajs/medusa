@@ -38,16 +38,11 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const workflow = updatePricingRuleTypesWorkflow(req.scope)
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: {
       data: [{ ...req.validatedBody, id: req.params.id }],
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const ruleType = await refetchRuleType(
     req.params.id,
@@ -67,14 +62,9 @@ export const DELETE = async (
   const id = req.params.id
   const workflow = deletePricingRuleTypesWorkflow(req.scope)
 
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,

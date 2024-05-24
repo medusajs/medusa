@@ -44,14 +44,9 @@ export const POST = async (
 ) => {
   const input = [req.validatedBody]
 
-  const { result, errors } = await createProductTypesWorkflow(req.scope).run({
+  const { result } = await createProductTypesWorkflow(req.scope).run({
     input: { product_types: input },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const productType = await refetchProductType(
     result[0].id,

@@ -10,6 +10,7 @@ import os from "os"
 
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
+import { isPresent } from "@medusajs/utils"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
@@ -30,15 +31,15 @@ export default async function ({ port, cpus, directory }) {
     cluster.on("exit", (worker) => {
       if (!isShuttingDown) {
         cluster.fork()
-      } else if (Object.keys(cluster.workers).length === 0) {
+      } else if (!isPresent(cluster.workers)) {
         setTimeout(killMainProccess, 100)
       }
     })
 
     const gracefulShutDown = () => {
       isShuttingDown = true
-      for (const id of Object.keys(cluster.workers)) {
-        cluster.workers[id].kill("SIGTERM")
+      for (const id of Object.keys(cluster.workers ?? {})) {
+        cluster.workers?.[id]?.kill("SIGTERM")
       }
     }
 
@@ -54,13 +55,13 @@ export default async function ({ port, cpus, directory }) {
 
       const app = express()
 
-      const { dbConnection, shutdown, prepareShutdown } = await loaders({
+      const { shutdown } = await loaders({
         directory,
         expressApp: app,
       })
       const serverActivity = Logger.activity(`Creating server`)
       const server = GracefulShutdownServer.create(
-        app.listen(port, (err) => {
+        app.listen(port).on("error", (err) => {
           if (err) {
             return
           }
@@ -73,9 +74,6 @@ export default async function ({ port, cpus, directory }) {
         server
           .shutdown()
           .then(async () => {
-            return await prepareShutdown()
-          })
-          .then(async () => {
             await shutdown()
             process.exit(0)
           })
@@ -87,12 +85,12 @@ export default async function ({ port, cpus, directory }) {
       process.on("SIGTERM", gracefulShutDown)
       process.on("SIGINT", gracefulShutDown)
 
-      return { dbConnection, server }
+      return { server }
     }
 
-    process.on("message", async (msg) => {
+    process.on("message", async (msg: any) => {
       if (msg.index > 0) {
-        process.env.PLUGIN_ADMIN_UI_SKIP_CACHE = true
+        process.env.PLUGIN_ADMIN_UI_SKIP_CACHE = "true"
       }
 
       await start()

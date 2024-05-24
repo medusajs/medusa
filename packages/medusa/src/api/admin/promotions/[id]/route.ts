@@ -54,14 +54,9 @@ export const POST = async (
     } as any,
   ]
 
-  const { errors } = await updatePromotions.run({
+  await updatePromotions.run({
     input: { promotionsData },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const promotion = await refetchPromotion(
     req.params.id,
@@ -79,14 +74,9 @@ export const DELETE = async (
   const id = req.params.id
   const deletePromotions = deletePromotionsWorkflow(req.scope)
 
-  const { errors } = await deletePromotions.run({
+  await deletePromotions.run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,
