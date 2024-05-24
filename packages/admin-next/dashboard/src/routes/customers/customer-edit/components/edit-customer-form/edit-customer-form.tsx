@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AdminCustomerResponse } from "@medusajs/types"
 import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -17,9 +16,10 @@ import {
   metadataToFormValues,
 } from "../../../../../lib/metadata.ts"
 import { metadataFormSchema } from "../../../../../lib/validation.ts"
+import { HttpTypes } from "@medusajs/types"
 
 type EditCustomerFormProps = {
-  customer: AdminCustomerResponse["customer"]
+  customer: HttpTypes.AdminCustomer
 }
 
 const EditCustomerSchema = zod.object({

@@ -61,7 +61,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
         actor_type,
         auth_identity_id: authIdentity.id,
         app_metadata: {
-          entityIdKey: entityId,
+          [entityIdKey]: entityId,
         },
       },
       {

@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AdminCustomerGroupResponse } from "@medusajs/types"
 import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -10,9 +9,10 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateCustomerGroup } from "../../../../../hooks/api/customer-groups"
+import { HttpTypes } from "@medusajs/types"
 
 type EditCustomerGroupFormProps = {
-  group: AdminCustomerGroupResponse["customer_group"]
+  group: HttpTypes.AdminCustomerGroup
 }
 
 export const EditCustomerGroupSchema = z.object({
