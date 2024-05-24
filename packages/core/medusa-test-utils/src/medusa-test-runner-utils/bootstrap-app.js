@@ -2,7 +2,9 @@ const path = require("path")
 const express = require("express")
 const getPort = require("get-port")
 const { isObject, promiseAll } = require("@medusajs/utils")
-const { GracefulShutdownServer } = require("@medusajs/medusa")
+const {
+  GracefulShutdownServer,
+} = require("@medusajs/medusa/dist/utils/graceful-shutdown-server")
 
 async function bootstrapApp({ cwd, env = {} } = {}) {
   const app = express()
@@ -16,7 +18,6 @@ async function bootstrapApp({ cwd, env = {} } = {}) {
   const { container, shutdown } = await loaders({
     directory: path.resolve(cwd || process.cwd()),
     expressApp: app,
-    isTest: false,
   })
 
   const PORT = await getPort()
