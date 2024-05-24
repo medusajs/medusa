@@ -2,8 +2,8 @@ import { ConfigModule, PluginDetails } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
-import { createRequireFromPath } from "medusa-core-utils"
 import path from "path"
+import Module from "module";
 
 export const MEDUSA_PROJECT_NAME = "project-plugin"
 function createPluginId(name: string): string {
@@ -13,6 +13,19 @@ function createPluginId(name: string): string {
 function createFileContentHash(path, files): string {
   return path + files
 }
+
+const fallback = (filename: string) => {
+  const mod = new Module(filename)
+
+  mod.filename = filename
+  mod.paths = (Module as any)._nodeModulePaths(path.dirname(filename))
+  ;(mod as any)._compile(`module.exports = require;`, filename)
+
+  return mod.exports
+}
+
+// Polyfill Node's `Module.createRequireFromPath` if not present (added in Node v10.12.0)
+const createRequireFromPath = Module.createRequire || fallback
 
 /**
  * Finds the correct path for the plugin. If it is a local plugin it will be

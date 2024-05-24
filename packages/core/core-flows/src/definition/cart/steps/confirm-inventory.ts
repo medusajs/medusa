@@ -2,7 +2,7 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IInventoryServiceNext } from "@medusajs/types"
 import { promiseAll } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError } from "@medusajs/utils"
 
 interface StepInput {
   items: {

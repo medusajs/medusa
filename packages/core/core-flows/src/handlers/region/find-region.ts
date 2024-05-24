@@ -1,6 +1,6 @@
 import { RegionTypes } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
-import { isDefined } from "medusa-core-utils"
+import { isDefined } from "@medusajs/utils"
 
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
