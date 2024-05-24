@@ -10,7 +10,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateStockLocationFulfillmentSetType>,
   res: MedusaResponse
 ) => {
-  const { errors } = await createLocationFulfillmentSetWorkflow(req.scope).run({
+  await createLocationFulfillmentSetWorkflow(req.scope).run({
     input: {
       location_id: req.params.id,
       fulfillment_set_data: {
@@ -18,12 +18,7 @@ export const POST = async (
         type: req.validatedBody.type,
       },
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const stockLocation = await refetchStockLocation(
     req.params.id,

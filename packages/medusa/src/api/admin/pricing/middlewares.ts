@@ -13,7 +13,7 @@ import {
 export const adminPricingRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/pricing*",
-    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
+    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
   },
   {
     method: ["GET"],

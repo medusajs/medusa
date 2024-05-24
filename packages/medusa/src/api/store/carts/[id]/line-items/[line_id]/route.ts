@@ -2,12 +2,12 @@ import {
   deleteLineItemsWorkflow,
   updateLineItemInCartWorkflow,
 } from "@medusajs/core-flows"
+import { DeleteResponse } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
+import { prepareListQuery } from "../../../../../../utils/get-query-config"
 import { refetchCart } from "../../../helpers"
 import { StoreUpdateCartLineItemType } from "../../../validators"
-import { prepareListQuery } from "../../../../../../utils/get-query-config"
-import { DeleteResponse } from "@medusajs/types"
 
 export const POST = async (
   req: MedusaRequest<StoreUpdateCartLineItemType>,
@@ -45,14 +45,9 @@ export const POST = async (
     update: req.validatedBody,
   }
 
-  const { errors } = await updateLineItemInCartWorkflow(req.scope).run({
+  await updateLineItemInCartWorkflow(req.scope).run({
     input,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const updatedCart = await refetchCart(
     req.params.id,
@@ -69,14 +64,9 @@ export const DELETE = async (
 ) => {
   const id = req.params.line_id
 
-  const { errors } = await deleteLineItemsWorkflow(req.scope).run({
-    input: { ids: [id] },
-    throwOnError: false,
+  await deleteLineItemsWorkflow(req.scope).run({
+    input: { cart_id: req.params.id, ids: [id] },
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const cart = await refetchCart(
     req.params.id,

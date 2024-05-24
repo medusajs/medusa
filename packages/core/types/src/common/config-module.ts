@@ -705,6 +705,35 @@ export type ProjectConfigOptions = {
      * ```
      */
     adminCors: string
+
+    /**
+     * Optionally you can specify the supported authentication providers per actor type (such as user, customer, or any custom actors).
+     * For example, you only want to allow SSO logins for `users` to the admin, while you want to allow email/password logins for `customers` to the storefront.
+     *
+     * `authMethodsPerActor` is a a map where the actor type (eg. 'user') is the key, and an array of supported auth providers as the value.
+     *
+     *
+     * @example
+     * Some example values of common use cases:
+     *
+     * Then, set the configuration in `medusa-config.js`:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     http: {
+     *       authMethodsPerActor: {
+     *        user: ['sso'],
+     *        customer: ["emailpass", "google"]
+     *       },
+     *     },
+     *     // ...
+     *   },
+     *   // ...
+     * }
+     * ```
+     */
+    authMethodsPerActor: Record<string, string[]>
   }
 }
 

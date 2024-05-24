@@ -86,16 +86,4 @@ export const LINKS = {
     Modules.FULFILLMENT,
     "fulfillment_id"
   ),
-  UserAuth: composeLinkName(
-    Modules.USER,
-    "user_id",
-    Modules.AUTH,
-    "auth_identity_id"
-  ),
-  CustomerAuth: composeLinkName(
-    Modules.CUSTOMER,
-    "customer_id",
-    Modules.AUTH,
-    "auth_identity_id"
-  ),
 }

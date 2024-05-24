@@ -19,7 +19,7 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: "ALL",
     matcher: "/store/products*",
     middlewares: [
-      authenticate("store", ["session", "bearer"], {
+      authenticate("customer", ["session", "bearer"], {
         allowUnauthenticated: true,
       }),
     ],

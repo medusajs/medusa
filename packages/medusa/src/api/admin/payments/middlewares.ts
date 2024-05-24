@@ -16,7 +16,7 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "ALL",
     matcher: "/admin/payments",
-    middlewares: [authenticate("admin", ["session", "bearer", "api-key"])],
+    middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
   },
   {
     method: ["GET"],

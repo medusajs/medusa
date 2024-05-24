@@ -33,16 +33,10 @@ export const moduleLoader = async ({
 
     if (registrationResult?.error) {
       const { error } = registrationResult
-      if (resolution.definition.isRequired) {
-        logger?.error(
-          `Could not resolve required module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
-        )
-        throw error
-      }
-
-      logger?.warn(
+      logger?.error(
         `Could not resolve module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
       )
+      throw error
     }
   }
 }

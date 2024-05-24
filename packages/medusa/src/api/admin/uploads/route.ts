@@ -19,7 +19,7 @@ export const POST = async (
     )
   }
 
-  const { result, errors } = await uploadFilesWorkflow(req.scope).run({
+  const { result } = await uploadFilesWorkflow(req.scope).run({
     input: {
       files: input?.map((f) => ({
         filename: f.originalname,
@@ -27,12 +27,7 @@ export const POST = async (
         content: f.buffer.toString("binary"),
       })),
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({ files: result })
 }

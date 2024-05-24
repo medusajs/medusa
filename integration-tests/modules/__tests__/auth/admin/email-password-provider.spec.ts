@@ -43,14 +43,13 @@ medusaIntegrationTestRunner({
         await authService.create({
           provider: "emailpass",
           entity_id: email,
-          scope: "admin",
           provider_metadata: {
             password: passwordHash,
           },
         })
 
         const response = await api
-          .post(`/auth/admin/emailpass`, {
+          .post(`/auth/user/emailpass`, {
             email: email,
             password: password,
           })
@@ -75,14 +74,13 @@ medusaIntegrationTestRunner({
         await authService.create({
           provider: "emailpass",
           entity_id: email,
-          scope: "admin",
           provider_metadata: {
             password: passwordHash,
           },
         })
 
         const error = await api
-          .post(`/auth/admin/emailpass`, {
+          .post(`/auth/user/emailpass`, {
             email: email,
             password: "incorrect-password",
           })
@@ -101,7 +99,7 @@ medusaIntegrationTestRunner({
         ).toString("base64")
 
         const error = await api
-          .post(`/auth/admin/emailpass`, {
+          .post(`/auth/user/emailpass`, {
             email: "should-not-exist",
             password: "should-not-exist",
           })
