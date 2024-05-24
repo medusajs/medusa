@@ -18,7 +18,7 @@ import { ProductCreateDetailsForm } from "../product-create-details-form"
 import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-form"
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
-import { isFetchError } from "../../../../../lib/is-fetch-error.ts"
+import { isFetchError } from "../../../../../lib/is-fetch-error"
 
 enum Tab {
   DETAILS = "details",
@@ -105,12 +105,17 @@ export const ProductCreateForm = () => {
 
         handleSuccess(`../${product.id}`)
       } catch (error) {
-        // if (isFetchError(error) && error.status === 400) {
-        toast.error(t("general.error"), {
-          description: error.message,
-          dismissLabel: t("general.close"),
-        })
-        // }
+        if (isFetchError(error) && error.status === 400) {
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissLabel: t("general.close"),
+          })
+        } else {
+          toast.error(t("general.error"), {
+            description: t("errors.serverError"),
+            dismissLabel: t("general.close"),
+          })
+        }
       }
     },
     (err) => {
