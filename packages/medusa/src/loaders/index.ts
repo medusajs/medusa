@@ -103,7 +103,7 @@ async function loadEntrypoints(
   return shutdown
 }
 
-async function initializeContainer(rootDirectory: string) {
+export async function initializeContainer(rootDirectory: string) {
   const container = createMedusaContainer()
   const configModule = loadConfig(rootDirectory)
   const featureFlagRouter = featureFlagsLoader(configModule, Logger)
