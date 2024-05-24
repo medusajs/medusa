@@ -4,7 +4,10 @@ import { PromotionActions } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
-  cart: CartDTO
+  cart: {
+    items?: { adjustments?: { code?: string }[] }[]
+    shipping_methods?: { adjustments?: { code?: string }[] }[]
+  }
   promo_codes?: string[]
   action?:
     | PromotionActions.ADD
@@ -23,43 +26,36 @@ export const getPromotionCodesToApply = createStep(
       ModuleRegistrationName.PROMOTION
     )
 
-    for (const item of items) {
-      for (const adjustment of item.adjustments || []) {
+    const objects = items.concat(shipping_methods)
+
+    objects.forEach(object => {
+      object.adjustments?.forEach(adjustment => {
         if (adjustment.code && !adjustmentCodes.includes(adjustment.code)) {
           adjustmentCodes.push(adjustment.code)
         }
-      }
-    }
+      })
+    })
 
-    for (const shippingMethod of shipping_methods) {
-      for (const adjustment of shippingMethod.adjustments || []) {
-        if (adjustment.code && !adjustmentCodes.includes(adjustment.code)) {
-          adjustmentCodes.push(adjustment.code)
-        }
-      }
-    }
-
-    let promotionCodesToApply: string[] = (
+    const promotionCodesToApply: Set<string> = new Set((
       await promotionService.list(
         { code: adjustmentCodes },
         { select: ["code"], take: null }
       )
-    ).map((p) => p.code!)
+    ).map((p) => p.code!))
 
     if (action === PromotionActions.ADD) {
-      promotionCodesToApply.push(...promo_codes)
+      promo_codes.forEach(promotionCodesToApply.add)
     }
 
     if (action === PromotionActions.REMOVE) {
-      promotionCodesToApply = promotionCodesToApply.filter(
-        (code) => !promo_codes.includes(code!)
-      )
+      promo_codes.forEach(promotionCodesToApply.delete)
     }
 
     if (action === PromotionActions.REPLACE) {
-      promotionCodesToApply = promo_codes
+      promotionCodesToApply.clear()
+      promo_codes.forEach(promotionCodesToApply.add)
     }
 
-    return new StepResponse(promotionCodesToApply)
+    return new StepResponse(Array.from(promotionCodesToApply))
   }
 )
