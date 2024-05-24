@@ -5,7 +5,6 @@ import { categories } from "./categories"
 import { collections } from "./collections"
 import { currencies } from "./currencies"
 import { customerGroups } from "./customer-groups"
-import { customers } from "./customers"
 import { fulfillmentProviders } from "./fulfillment-providers"
 import { fulfillments } from "./fulfillments"
 import { inventoryItems } from "./inventory"
@@ -33,7 +32,6 @@ export const client = {
   apiKeys: apiKeys,
   campaigns: campaigns,
   categories: categories,
-  customers: customers,
   customerGroups: customerGroups,
   currencies: currencies,
   collections: collections,

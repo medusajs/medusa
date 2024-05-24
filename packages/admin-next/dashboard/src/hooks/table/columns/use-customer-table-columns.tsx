@@ -1,7 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 
-import { AdminCustomerResponse } from "@medusajs/types"
 import {
   EmailCell,
   EmailHeader,
@@ -18,8 +17,9 @@ import {
   FirstSeenCell,
   FirstSeenHeader,
 } from "../../../components/table/table-cells/customer/first-seen-cell"
+import { HttpTypes } from "@medusajs/types"
 
-const columnHelper = createColumnHelper<AdminCustomerResponse["customer"]>()
+const columnHelper = createColumnHelper<HttpTypes.AdminCustomer>()
 
 export const useCustomerTableColumns = () => {
   return useMemo(
