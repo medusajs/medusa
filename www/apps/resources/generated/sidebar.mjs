@@ -59,9 +59,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/api-key",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IApiKeyModuleService Reference",
+                "childSidebarTitle": "API Key Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -184,13 +184,6 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
-            "path": "/commerce-modules/auth/module-options",
-            "title": "Module Options",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
             "path": "/commerce-modules/auth/examples",
             "title": "Examples",
             "children": []
@@ -220,13 +213,6 @@ export const generatedSidebar = [
                 "path": "/commerce-modules/auth/user-creation",
                 "title": "User Creation",
                 "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/auth/persisting-auth-user",
-                "title": "Persisting Auth User",
-                "children": []
               }
             ]
           },
@@ -238,10 +224,17 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "path": "/references/auth/provider",
+                "title": "Create Auth Provider Module",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
                 "path": "/references/auth",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IAuthModuleService Reference",
+                "childSidebarTitle": "Auth Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -328,8 +321,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/auth/models/AuthUser",
-                        "title": "AuthUser",
+                        "path": "/references/auth/models/AuthIdentity",
+                        "title": "AuthIdentity",
                         "children": []
                       }
                     ]
@@ -405,9 +398,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/cart",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "ICartModuleService Reference",
+                "childSidebarTitle": "Cart Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -879,9 +872,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/currency",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "ICurrencyModuleService Reference",
+                "childSidebarTitle": "Cart Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -996,9 +989,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/customer",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "ICustomerModuleService Reference",
+                "childSidebarTitle": "Customer Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -1273,8 +1266,8 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/fulfillment/shipping-options",
-                "title": "Shipping Options",
+                "path": "/commerce-modules/fulfillment/shipping-option",
+                "title": "Shipping Option",
                 "children": []
               },
               {
@@ -1287,7 +1280,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/fulfillment/relation-to-other-modules",
+                "path": "/commerce-modules/fulfillment/relations-to-other-modules",
                 "title": "Relations to Other Modules",
                 "children": []
               }
@@ -1301,10 +1294,17 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "path": "/references/fulfillment/provider",
+                "title": "Create Fulfillment Provider Module",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
                 "path": "/references/fulfillment",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IFulfillmentModuleService Reference",
+                "childSidebarTitle": "Fulfillment Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -1923,9 +1923,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/inventory_next",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IInventoryServiceNext Reference",
+                "childSidebarTitle": "Inventory Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -2306,9 +2306,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/order",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IOrderModuleService Reference",
+                "childSidebarTitle": "Order Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -2934,9 +2934,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/payment",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IPaymentModuleService Reference",
+                "childSidebarTitle": "Payment Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -3240,9 +3240,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/pricing",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IPricingModuleService Reference",
+                "childSidebarTitle": "Pricing Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -3700,9 +3700,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/product",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IProductModuleService Reference",
+                "childSidebarTitle": "Product Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -4251,9 +4251,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/promotion",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IPromotionModuleService Reference",
+                "childSidebarTitle": "Promotion Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -4557,9 +4557,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/region",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IRegionModuleService Reference",
+                "childSidebarTitle": "Region Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -4744,9 +4744,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/sales-channel",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "ISalesChannelModuleService Reference",
+                "childSidebarTitle": "Sales Channel Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -4903,9 +4903,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/stock-location",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IStockLocationServiceNext Reference",
+                "childSidebarTitle": "Stock Location Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -5048,9 +5048,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/store",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IStoreModuleService Reference",
+                "childSidebarTitle": "Store Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -5228,9 +5228,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/tax",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "ITaxModuleService Reference",
+                "childSidebarTitle": "Tax Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,
@@ -5485,9 +5485,9 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/user",
-                "title": "Interface Reference",
+                "title": "Main Service Reference",
                 "isChildSidebar": true,
-                "childSidebarTitle": "IUserModuleService Reference",
+                "childSidebarTitle": "User Module's Main Service Reference",
                 "children": [
                   {
                     "loaded": true,

@@ -69,18 +69,18 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const customerService: ICustomerModuleService =
+  const customerModuleService: ICustomerModuleService =
     req.scope.resolve(ModuleRegistrationName.CUSTOMER)
 
-  const customer = await customerService.retrieve(
-    req.auth.actor_id
+  const customer = await customerModuleService.retrieve(
+    req.auth_context.actor_id
   )
 
   // ...
 }
 ```
 
-In the route handler, you resolve the `CustomerService`, then use it to retrieve the logged-in customer, if available.
+In the route handler, you resolve the Customer Module's main service, then use it to retrieve the logged-in customer, if available.
 
 ---
 
@@ -106,13 +106,15 @@ export const GET = async (
     ModuleRegistrationName.USER
   )
 
-  const user = await userService.retrieve(req.auth.actor_id)
+  const user = await userService.retrieve(
+    req.auth_context.actor_id
+  )
 
   // ...
 }
 ```
 
-In the route handler, you resolve the `UserService`, and then use it to retrieve the logged-in admin user.
+In the route handler, you resolve the User Module's main service, and then use it to retrieve the logged-in admin user.
 
 ---
 

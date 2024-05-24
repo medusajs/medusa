@@ -40,9 +40,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/api-key",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IApiKeyModuleService Reference",
+                childSidebarTitle: "API Key Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -79,10 +79,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         hasTitleStyling: true,
         children: [
           {
-            path: "/commerce-modules/auth/module-options",
-            title: "Module Options",
-          },
-          {
             path: "/commerce-modules/auth/examples",
             title: "Examples",
           },
@@ -101,20 +97,20 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 path: "/commerce-modules/auth/user-creation",
                 title: "User Creation",
               },
-              {
-                path: "/commerce-modules/auth/persisting-auth-user",
-                title: "Persisting Auth User",
-              },
             ],
           },
           {
             title: "References",
             children: [
               {
+                path: "/references/auth/provider",
+                title: "Create Auth Provider Module",
+              },
+              {
                 path: "/references/auth",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IAuthModuleService Reference",
+                childSidebarTitle: "Auth Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -180,9 +176,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/cart",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "ICartModuleService Reference",
+                childSidebarTitle: "Cart Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -227,9 +223,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/currency",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "ICurrencyModuleService Reference",
+                childSidebarTitle: "Cart Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -287,9 +283,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/customer",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "ICustomerModuleService Reference",
+                childSidebarTitle: "Customer Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -341,15 +337,15 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 title: "Fulfillment Provider",
               },
               {
-                path: "/commerce-modules/fulfillment/shipping-options",
-                title: "Shipping Options",
+                path: "/commerce-modules/fulfillment/shipping-option",
+                title: "Shipping Option",
               },
               {
                 path: "/commerce-modules/fulfillment/item-fulfillment",
                 title: "Item Fulfillment",
               },
               {
-                path: "/commerce-modules/fulfillment/relation-to-other-modules",
+                path: "/commerce-modules/fulfillment/relations-to-other-modules",
                 title: "Relations to Other Modules",
               },
             ],
@@ -358,10 +354,15 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "References",
             children: [
               {
+                path: "/references/fulfillment/provider",
+                title: "Create Fulfillment Provider Module",
+              },
+              {
                 path: "/references/fulfillment",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IFulfillmentModuleService Reference",
+                childSidebarTitle:
+                  "Fulfillment Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -423,9 +424,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/inventory_next",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IInventoryServiceNext Reference",
+                childSidebarTitle: "Inventory Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -504,9 +505,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/order",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IOrderModuleService Reference",
+                childSidebarTitle: "Order Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -592,9 +593,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 path: "/references/payment",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IPaymentModuleService Reference",
+                childSidebarTitle: "Payment Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -656,9 +657,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/pricing",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IPricingModuleService Reference",
+                childSidebarTitle: "Pricing Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -712,9 +713,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/product",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IProductModuleService Reference",
+                childSidebarTitle: "Product Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -776,9 +777,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/promotion",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IPromotionModuleService Reference",
+                childSidebarTitle: "Promotion Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -832,9 +833,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/region",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IRegionModuleService Reference",
+                childSidebarTitle: "Region Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -892,9 +893,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/sales-channel",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "ISalesChannelModuleService Reference",
+                childSidebarTitle:
+                  "Sales Channel Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -953,9 +955,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/stock-location",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IStockLocationServiceNext Reference",
+                childSidebarTitle:
+                  "Stock Location Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -1002,9 +1005,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/store",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IStoreModuleService Reference",
+                childSidebarTitle: "Store Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -1074,9 +1077,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 path: "/references/tax",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "ITaxModuleService Reference",
+                childSidebarTitle: "Tax Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",
@@ -1134,9 +1137,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/user",
-                title: "Interface Reference",
+                title: "Main Service Reference",
                 isChildSidebar: true,
-                childSidebarTitle: "IUserModuleService Reference",
+                childSidebarTitle: "User Module's Main Service Reference",
                 children: [
                   {
                     title: "Methods",

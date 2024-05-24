@@ -4,36 +4,50 @@ export const metadata = {
 
 # {metadata.title}
 
-When Commerce Modules are used together in a Medusa application, the Medusa application handles building the relations between these modules.
-
-This document showcases the relation between the Cart Module and other Commerce Modules.
+This document showcases the link modules defined between the Cart Module and other commerce modules.
 
 ## Customer Module
 
-A cart is scoped to the customer using it. The Medusa application forms a relation between the `Cart` and `Customer` data models.
+A cart is scoped to the customer using it. Medusa defines a link module that builds a relationship between the `Cart` and `Customer` data models.
 
-![A diagram showcasing an example of how resources from the Cart and Customer modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711537276/Medusa%20Resources/cart-customer_pnjvuw.jpg)
+![A diagram showcasing an example of how data models from the Cart and Customer modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711537276/Medusa%20Resources/cart-customer_pnjvuw.jpg)
 
 ---
 
 ## Payment Module
 
-The Payment Module allows you to associate payments with a cart. The Medusa application forms a relation between the `Cart` and `PaymentCollection` data models.
+The Payment Module allows you to associate payments with a cart. Medusa defines a link module that builds a relationship between the `Cart` and `PaymentCollection` data models.
 
-![A diagram showcasing an example of how resources from the Cart and Payment modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711537849/Medusa%20Resources/cart-payment_ixziqm.jpg)
+![A diagram showcasing an example of how data models from the Cart and Payment modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711537849/Medusa%20Resources/cart-payment_ixziqm.jpg)
+
+---
+
+## Product Module
+
+A cart's line item is associated with a product and its variant. Medusa defines a link module that builds a relationship between the `Cart`, `Product`, and `ProductVariant` data models.
+
+![A diagram showcasing an example of how data models from the Cart and Product modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716546229/Medusa%20Resources/cart-product_x82x9j.jpg)
 
 ---
 
 ## Promotion Module
 
-A promotion can be applied on line items and shipping methods of a cart. The Medusa application forms a relation between the `Cart` and `Promotion` data models.
+A promotion can be applied on line items and shipping methods of a cart. Medusa defines a link module that builds a relationship between the `Cart` and `Promotion` data models.
 
-![A diagram showcasing an example of how resources from the Cart and Promotion modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711538015/Medusa%20Resources/cart-promotion_kuh9vm.jpg)
+![A diagram showcasing an example of how data models from the Cart and Promotion modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711538015/Medusa%20Resources/cart-promotion_kuh9vm.jpg)
+
+---
+
+## Region Module
+
+A cart is scoped to a region. Medusa defines a link module that builds a relationship between the `Cart` and `Region` data models.
+
+![A diagram showcasing an example of how data models from the Cart and Region modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716543714/Medusa%20Resources/customer-region_rtmymb.jpg)
 
 ---
 
 ## Sales Channel Module
 
-A cart is scoped to a sales channel. The Medusa application forms a relation between the `Cart` and `SalesChannel` data models.
+A cart is scoped to a sales channel. Medusa defines a link module that builds a relationship between the `Cart` and `SalesChannel` data models.
 
-![A diagram showcasing an example of how resources from the Cart and Sales Channel modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711538159/Medusa%20Resources/cart-sales-channel_n2oi0v.jpg)
+![A diagram showcasing an example of how data models from the Cart and Sales Channel modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711538159/Medusa%20Resources/cart-sales-channel_n2oi0v.jpg)

@@ -13,31 +13,13 @@ There are two types of API keys:
 - `publishable`: A public key used in client applications, such as a storefront.
 - `secret`: A secret key used for authentication and verification purposes, such as an admin user’s authentication token or a password reset token.
 
-The API key’s type is stored in the `type` field of the `ApiKey` data model.
-
----
-
-## Publishable Token Generation
-
-When you create a publishable API key, its token is generated using [the `randomBytes` method of Node.js’s crypto package](https://nodejs.org/docs/latest-v18.x/api/crypto.html#cryptorandombytessize-callback). The token is `32` characters long and is hex-encoded. It’s stored in the `token` field of the `ApiKey` data model.
-
----
-
-## Secret Token Generation
-
-When you create a secret API key, three tokens are generated:
-
-- A token that’s `32` characters long and hex-encoded. It’s generated using the `randomBytes` method of Node.js’s crypto package.
-- A salt token that’s `15` characters long and hex-encoded. It’s also generated using the `randomBytes` method.
-- A hashed token is generated from the token and salt token using [the `scrypt` method of Node.js’s crypto package](https://nodejs.org/docs/latest-v18.x/api/crypto.html#x509tostring). It’s `64` characters long and hex-encoded.
-
-The salt and hashed tokens are stored in the `ApiKey` data model’s `salt` and `token` fields, respectively.
+The API key’s type is stored in the `type` field of the [ApiKey data model](/references/api-key/models/ApiKey).
 
 ---
 
 ## API Key Expiration
 
-An API key expires when it’s revoked using the `revoke` method of the module’s main service. The method sets the API key’s `revoked_at` and `revoked_by` fields accordingly.
+An API key expires when it’s revoked using the [revoke method of the module’s main service](/references/api-key/revoke).
 
 The associated token is no longer usable or verifiable.
 
@@ -45,6 +27,4 @@ The associated token is no longer usable or verifiable.
 
 ## Token Verification
 
-To verify a token received as an input or in a request, the `authenticate` method of the module’s main service goes through all non-expired API keys. It recalculates the hash token using the supplied token and the API key’s `salt` field.
-
-If the calculated hashed token matches the one in the database, the token is considered verified.
+To verify a token received as an input or in a request, use the [authenticate method of the module’s main service](/references/api-key/authenticate) which validates the token against all non-expired tokens.

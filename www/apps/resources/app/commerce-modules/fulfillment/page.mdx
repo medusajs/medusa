@@ -8,13 +8,11 @@ export const metadata = {
 
 The Fulfillment Module is the `@medusajs/fulfillment` NPM package that provides fulfillment-related features in your Medusa and Node.js applications.
 
----
-
 ## Features
 
 ### Fulfillment Management
 
-Create fulfillments and keep track of their statuses, items, and more.
+Create fulfillments and keep track of their status, items, and more.
 
 ```ts
 const fulfillment =
@@ -46,7 +44,6 @@ Use third-party fulfillment providers to provide customers with shipping options
 ```ts
 const shippingOption =
   await fulfillmentModuleService.createShippingOptions({
-    name: "Express shipping",
     // ...
     provider_id: "webshipper",
   })
@@ -109,12 +106,14 @@ const fulfillmentSets = await fulfillmentModuleService.create(
 
 ## Configure Fulfillment Module
 
-After installing the `@medusajs/fulfillment` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+To use the Fulfillment Module, enable it in the `modules` object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
 const modules = {
   // ...
-  fulfillment: {
+  [Modules.FULFILLMENT]: {
     resolve: "@medusajs/fulfillment",
     providers: [
       // ...
@@ -184,11 +183,14 @@ For example:
   import { IFulfillmentModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const fulfillmentModuleService: IFulfillmentModuleService =
-      context.container.resolve(
+      container.resolve(
         ModuleRegistrationName.FULFILLMENT
       )
+      
     const fulfillments = 
       await fulfillmentModuleService.listFulfillments()
   })
