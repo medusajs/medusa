@@ -23,6 +23,109 @@ export default async function ({ port, directory }) {
   args.shift()
   args.shift()
 
+  /**
+   * Re-constructing the path to Medusa CLI to execute the
+   * start command.
+   */
+  const cliPath = path.resolve(
+    require.resolve("@medusajs/medusa-cli"),
+    "..",
+    "..",
+    "cli.js"
+  )
+
+  const devServer = {
+    childProcess: null,
+    watcher: null,
+
+    /**
+     * Start the development server by forking a new process.
+     *
+     * We do not kill the parent process when child process dies. This is
+     * because sometimes the dev server can die because of programming
+     * or logical errors and we can still watch the file system and
+     * restart the dev server instead of asking the user to re-run
+     * the command.
+     */
+    start() {
+      this.childProcess = fork(cliPath, ["start", ...args], {
+        cwd: directory,
+        env: {
+          ...process.env,
+          NODE_ENV: "development",
+        },
+        execArgv: argv,
+      })
+      this.childProcess.on("error", (error) => {
+        Logger.error("Dev server died with error", error)
+        Logger.info("Still watching filesystem to restart the dev server")
+      })
+    },
+
+    /**
+     * Restarts the development server by cleaning up the existing
+     * child process and forking a new one
+     */
+    restart() {
+      if (this.childProcess) {
+        this.childProcess.removeAllListeners()
+        if (process.platform === "win32") {
+          execSync(`taskkill /PID ${this.childProcess.pid} /F /T`)
+        }
+        this.childProcess.kill("SIGINT")
+      }
+      this.start()
+    },
+
+    /**
+     * Watches the entire file system and ignores the following files
+     *
+     * - Dot files
+     * - node_modules
+     * - dist
+     * - src/admin/**
+     */
+    watch() {
+      this.watcher = chokidar.watch(["."], {
+        ignoreInitial: true,
+        cwd: process.cwd(),
+        ignored: [/(^|[\\/\\])\../, "node_modules", "dist", "src/admin/**/*"],
+      })
+
+      this.watcher.on("add", (file) => {
+        Logger.info(
+          `${path.relative(
+            directory,
+            file
+          )} file created: restarting dev server...`
+        )
+        this.restart()
+      })
+      this.watcher.on("change", (file) => {
+        Logger.info(
+          `${path.relative(
+            directory,
+            file
+          )} file modified: restarting dev server...`
+        )
+        this.restart()
+      })
+      this.watcher.on("unlink", (file) => {
+        Logger.info(
+          `${path.relative(
+            directory,
+            file
+          )} file removed: restarting dev server...`
+        )
+        this.restart()
+      })
+
+      this.watcher.on("ready", function () {
+        Logger.info(`Watching filesystem to reload dev server on file change`)
+      })
+    },
+  }
+
   process.on("SIGINT", () => {
     const configStore = new Store()
     const hasPrompted = configStore.getConfig("star.prompted") ?? false
@@ -42,68 +145,6 @@ export default async function ({ port, directory }) {
     process.exit(0)
   })
 
-  execSync(`npx --no-install babel src -d dist --ignore "src/admin/**"`, {
-    cwd: directory,
-    stdio: ["ignore", process.stdout, process.stderr],
-  })
-
-  /**
-   * Environment variable to indicate that the `start` command was initiated by the `develop`.
-   * Used to determine if Admin should build if it is installed and has `autoBuild` enabled.
-   */
-  const COMMAND_INITIATED_BY = {
-    COMMAND_INITIATED_BY: "develop",
-  }
-
-  const cliPath = path.resolve(
-    require.resolve("@medusajs/medusa-cli"),
-    "..",
-    "..",
-    "cli.js"
-  )
-  let child = fork(cliPath, [`start`, ...args], {
-    execArgv: argv,
-    cwd: directory,
-    env: { ...process.env, ...COMMAND_INITIATED_BY },
-  })
-
-  child.on("error", function (err) {
-    console.log("Error ", err)
-    process.exit(1)
-  })
-
-  chokidar
-    .watch(`${directory}/src`, {
-      ignored: `${directory}/src/admin`,
-    })
-    .on("change", (file) => {
-      const f = file.split("src")[1]
-      Logger.info(`${f} changed: restarting...`)
-
-      if (process.platform === "win32") {
-        execSync(`taskkill /PID ${child.pid} /F /T`)
-      }
-
-      child.kill("SIGINT")
-
-      execSync(
-        `npx --no-install babel src -d dist --extensions ".ts,.js" --ignore "src/admin/**"`,
-        {
-          cwd: directory,
-          stdio: ["pipe", process.stdout, process.stderr],
-        }
-      )
-
-      Logger.info("Rebuilt")
-
-      child = fork(cliPath, [`start`, ...args], {
-        cwd: directory,
-        env: { ...process.env, ...COMMAND_INITIATED_BY },
-        stdio: ["pipe", process.stdout, process.stderr, "ipc"],
-      })
-      child.on("error", function (err) {
-        console.log("Error ", err)
-        process.exit(1)
-      })
-    })
+  devServer.start()
+  devServer.watch()
 }
