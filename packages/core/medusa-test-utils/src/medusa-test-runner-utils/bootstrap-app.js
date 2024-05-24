@@ -2,7 +2,7 @@ const path = require("path")
 const express = require("express")
 const getPort = require("get-port")
 const { isObject, promiseAll } = require("@medusajs/utils")
-const { GracefulShutdownServer } = require("medusa-core-utils")
+const { GracefulShutdownServer } = require("@medusajs/medusa")
 
 async function bootstrapApp({ cwd, env = {} } = {}) {
   const app = express()

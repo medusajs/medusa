@@ -23831,18 +23831,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"medusa-core-utils@^1.2.0, medusa-core-utils@^1.2.2, medusa-core-utils@workspace:packages/medusa-core-utils":
-  version: 0.0.0-use.local
-  resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
+"medusa-core-utils@npm:^1.2.0, medusa-core-utils@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "medusa-core-utils@npm:1.2.2"
   dependencies:
     awilix: ^8.0.0
-    cross-env: ^5.2.1
-    jest: ^25.5.4
-    rimraf: ^5.0.1
-    ts-jest: ^25.5.1
-    typescript: ^4.4.4
-  languageName: unknown
-  linkType: soft
+  checksum: 023583382c885d4c87a6baf2e99b17b947e88295a205b5bb409c8deb2c2d9eb8091534044fea15efdd2f427b2963262377b106dce283d352e937f235d8e2ffea
+  languageName: node
+  linkType: hard
 
 "medusa-dev-cli@workspace:packages/cli/medusa-dev-cli":
   version: 0.0.0-use.local

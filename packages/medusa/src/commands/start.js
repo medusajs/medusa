@@ -2,7 +2,7 @@ import "core-js/stable"
 import "regenerator-runtime/runtime"
 
 import express from "express"
-import { GracefulShutdownServer } from "medusa-core-utils"
+import { GracefulShutdownServer } from "../utils"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
