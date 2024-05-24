@@ -1,11 +1,9 @@
-import { CurrencyDTO, ProductVariantDTO } from "@medusajs/types"
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
+import { ProductVariantDTO } from "@medusajs/types"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { ProductCreateSchemaType } from "../../types"
 import { useStore } from "../../../../../hooks/api/store"
-import { useCurrencies } from "../../../../../hooks/api/currencies"
 import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
 import { DataGridReadOnlyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
 import { DataGridTextCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-text-cell"
@@ -21,16 +19,16 @@ type ProductCreateVariantsFormProps = {
 export const ProductCreateVariantsForm = ({
   form,
 }: ProductCreateVariantsFormProps) => {
-  const { store } = useStore()
-  const { currencies = [] } = useCurrencies(
-    {
-      code: store?.supported_currency_codes,
-      limit: store?.supported_currency_codes?.length,
-    },
-    {
-      enabled: !!store,
-    }
-  )
+  const { store, isPending, isError, error } = useStore({
+    fields: "supported_currency_codes",
+    limit: 9999,
+  })
+
+  const variants = useWatch({
+    control: form.control,
+    name: "variants",
+    defaultValue: [],
+  })
 
   const options = useWatch({
     control: form.control,
@@ -40,17 +38,20 @@ export const ProductCreateVariantsForm = ({
 
   const columns = useColumns({
     options,
-    currencies: currencies.map((c) => c.code),
+    currencies: store?.supported_currency_codes,
   })
 
-  const variants = useWatch({
-    control: form.control,
-    name: "variants",
-  }) as any
+  if (isError) {
+    throw error
+  }
 
   return (
     <div className="flex size-full flex-col divide-y overflow-hidden">
-      <DataGridRoot columns={columns} data={variants} state={form} />
+      {isPending && !store ? (
+        <div>Loading...</div>
+      ) : (
+        <DataGridRoot columns={columns} data={variants} state={form} />
+      )}
     </div>
   )
 }

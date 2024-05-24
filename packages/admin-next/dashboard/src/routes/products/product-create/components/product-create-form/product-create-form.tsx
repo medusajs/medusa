@@ -62,6 +62,11 @@ export const ProductCreateForm = () => {
     name: "options",
   })
 
+  /**
+   * TODO: Important to revisit this - use variants watch so high in the tree can cause needless rerenders of the entire page
+   * which is suboptimal when rereners are caused by bulk editor changes
+   */
+
   const watchedVariants = useWatch({
     control: form.control,
     name: "variants",
