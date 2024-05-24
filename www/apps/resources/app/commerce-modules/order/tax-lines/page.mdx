@@ -12,7 +12,7 @@ In this document, you’ll learn about tax lines in an order.
 
 ## What are Tax Lines?
 
-A tax line indicates the tax rate of a line item or a shipping method. The `LineItemTaxLine` data model represents a line item’s tax line, and the `ShippingMethodTaxLine` data model represents a shipping method’s tax line.
+A tax line indicates the tax rate of a line item or a shipping method. The [LineItemTaxLine data model](/references/order/models/LineItemTaxLine) represents a line item’s tax line, and the [ShippingMethodTaxLine data model](/references/order/models/ShippingMethodTaxLine) represents a shipping method’s tax line.
 
 ![https://res.cloudinary.com/dza7lstvk/image/upload/v1712307225/Medusa%20Resources/order-tax-lines_sixujd.jpg](https://res.cloudinary.com/dza7lstvk/image/upload/v1712307225/Medusa%20Resources/order-tax-lines_sixujd.jpg)
 
@@ -20,7 +20,7 @@ A tax line indicates the tax rate of a line item or a shipping method. The `Line
 
 ## Tax Inclusivity
 
-By default, the tax amount is calculated by taking the tax rate from the line item or shipping method’s amount and then added to the item/method’s subtotal.
+By default, the tax amount is calculated by taking the tax rate from the line item or shipping method’s amount and then adding it to the item/method’s subtotal.
 
 However, line items and shipping methods have an `is_tax_inclusive` field that, when enabled, indicates that the item or method’s price already includes taxes.
 

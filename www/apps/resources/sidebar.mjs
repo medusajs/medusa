@@ -471,10 +471,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 title: "Order Concepts",
               },
               {
-                path: "/commerce-modules/order/order-items",
-                title: "Order Title",
-              },
-              {
                 path: "/commerce-modules/order/promotion-adjustments",
                 title: "Promotions Adjustments",
               },

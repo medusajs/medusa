@@ -4,27 +4,23 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you’ll learn about orders and their general fields.
-
-## Order Data Model
-
-An order represents a customer purchase in your store. The `Order` data model holds the information about that purchase.
-
----
+In this document, you’ll learn about orders and related concepts
 
 ## Order Items
 
-The items purchased in the order are represented by the `OrderItem` data model. An order can have multiple items.
+The items purchased in the order are represented by the [OrderItem data model](/references/order/models/OrderItem). An order can have multiple items.
 
 ![https://res.cloudinary.com/dza7lstvk/image/upload/v1712304722/Medusa%20Resources/order-order-items_uvckxd.jpg](https://res.cloudinary.com/dza7lstvk/image/upload/v1712304722/Medusa%20Resources/order-order-items_uvckxd.jpg)
 
-Learn more about order items in [this guide](../order-items/page.mdx).
+### Item’s Product Details
+
+The details of the purchased products are represented by the [LineItem data model](/references/order/models/LineItem). Not only does a line item hold the details of the product, but also details related to its price, adjustments due to promotions, and taxes.
 
 ---
 
 ## Order’s Shipping Method
 
-An order has one or more shipping methods used to handle item shipment. Each shipping method is represented by the `ShippingMethod` data model that holds its details.
+An order has one or more shipping methods used to handle item shipment. Each shipping method is represented by the [ShippingMethod data model](/references/order/models/ShippingMethod) that holds its details.
 
 ### data Field
 
@@ -32,19 +28,19 @@ When fulfilling the order, you may use a third-party fulfillment provider that r
 
 The `ShippingMethod` data model has a `data` field. It’s an object used to store custom data relevant later for fulfillment.
 
-In the Medusa application, the `data` is passed to the Fulfillment Module when fulfilling items.
+The Medusa application passes the `data` field to the Fulfillment Module when fulfilling items.
 
 ---
 
 ## Order Totals
 
-The order’s total amounts (including tax total, total after an item is returned, etc…) are represented by the `OrderSummary` data model. An order can have multiple summaries.
+The order’s total amounts (including tax total, total after an item is returned, etc…) are represented by the [OrderSummary data model](/references/order/models/OrderSummary).
 
 ---
 
 ## Order Payments
 
-Payments made on an order, whether they’re capture or refund payments, are recorded as transactions represented by the `Transaction` data model.
+Payments made on an order, whether they’re capture or refund payments, are recorded as transactions represented by the [Transaction data model](/references/order/models/Transaction).
 
 An order can have multiple transactions. The sum of these transactions must be equal to the order summary’s total. Otherwise, there’s an outstanding amount.
 

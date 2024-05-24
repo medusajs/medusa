@@ -14,7 +14,7 @@ In this document, you’ll learn how a promotion is applied to an order’s item
 
 An adjustment line indicates a change to a line item or a shipping method’s amount. It’s used to apply promotions or discounts on an order.
 
-The `LineItemAdjustment` data model represents adjustment lines for a line item, and the `ShippingMethodAdjustment` data model represents adjustment lines for a shipping method.
+The [LineItemAdjustment data model](/references/order/models/LineItemAdjustment) represents changes on a line item, and the [ShippingMethodAdjustment data model](/references/order/models/ShippingMethodAdjustment) represents changes on a shipping method.
 
 ![https://res.cloudinary.com/dza7lstvk/image/upload/v1712306017/Medusa%20Resources/order-adjustments_myflir.jpg](https://res.cloudinary.com/dza7lstvk/image/upload/v1712306017/Medusa%20Resources/order-adjustments_myflir.jpg)
 
@@ -22,9 +22,18 @@ The `amount` field of the adjustment line indicates the amount to be discounted 
 
 ---
 
+## Discountable Option
+
+The `LineItem` data model has an `is_discountable` field that indicates whether promotions can be applied to the line item. It’s enabled by default.
+
+When disabled, a promotion can’t be applied to a line item. In the context of the Promotion Module, the promotion isn’t applied to the line item even if it matches its rules.
+
+
+---
+
 ## Promotion Actions
 
-When using the Order and Promotion modules together, such as in the Medusa application, use the `computeActions` method of the Promotion Module’s main service. It retrieves the actions of line items and shipping methods.
+When using the Order and Promotion modules together, use the [computeActions method of the Promotion Module’s main service](/references/promotion/computeActions). It retrieves the actions of line items and shipping methods.
 
 <Note>
 
@@ -92,12 +101,6 @@ const actions = await promotionModuleService.computeActions(
 
 The `computeActions` method accepts the existing adjustments of line items and shipping methods to compute the actions accurately.
 
-<Note>
-
-Learn more about the `computeActions` method in [this reference](/references/promotion/computeActions).
-
-</Note>
-
 Then, use the returned `addItemAdjustment` and `addShippingMethodAdjustment` actions to set the order’s line items and the shipping method’s adjustments.
 
 ```ts
@@ -124,11 +127,3 @@ await orderModuleService.setShippingMethodAdjustments(
   ) as AddShippingMethodAdjustment[]
 )
 ```
-
----
-
-## Discountable Option
-
-The `LineItem` data model has an `is_discountable` field that indicates whether promotions can be applied to the line item. It’s enabled by default.
-
-When disabled, a promotion can’t be applied to a line item. In the context of the Promotion Module, the promotion isn’t applied to the line item even if it matches its rules.
