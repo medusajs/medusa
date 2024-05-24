@@ -30,7 +30,7 @@
     "start": "nodemon --watch plugins/ --watch src/ --exec node src/index.js",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "watch": "tsc --build --watch",
-    "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
+    "build": "rimraf dist && tsc --build",
     "serve": "node dist/index.js",
     "postinstall": "node dist/postinstall.js || true",
     "test": "jest --passWithNoTests src"
