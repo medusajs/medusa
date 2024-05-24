@@ -11,5 +11,5 @@ export interface CreateOrderFulfillmentWorkflowInput {
   items: CreateOrderFulfillmentItem[]
   no_notification?: boolean
   location_id?: string
-  metadata: Record<string, any>
+  metadata?: Record<string, any>
 }

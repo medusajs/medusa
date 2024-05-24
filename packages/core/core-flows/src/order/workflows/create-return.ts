@@ -11,7 +11,6 @@ import {
   ContainerRegistrationKeys,
   MathBN,
   MedusaError,
-  OrderStatus,
   arrayDifference,
   isDefined,
   remoteQueryObjectFromString,
@@ -23,39 +22,13 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { createLinkStep, useRemoteQueryStep } from "../../common"
-import { createFulfillmentWorkflow } from "../../fulfillment"
+import { createReturnFulfillmentWorkflow } from "../../fulfillment"
 import { updateOrderTaxLinesStep } from "../steps"
 import { createReturnStep } from "../steps/create-return"
-
-function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
-  if (order.status === OrderStatus.CANCELED) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Order with id ${order.id} has been cancelled.`
-    )
-  }
-}
-
-function throwIfItemsDoesNotExistsInOrder({
-  order,
-  inputItems,
-}: {
-  order: Pick<OrderDTO, "id" | "items">
-  inputItems: OrderWorkflow.CreateOrderReturnWorkflowInput["items"]
-}) {
-  const orderItemIds = order.items?.map((i) => i.id) ?? []
-  const inputItemIds = inputItems.map((i) => i.id)
-  const diff = arrayDifference(inputItemIds, orderItemIds)
-
-  if (diff.length) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Items with ids ${diff.join(", ")} does not exist in order with id ${
-        order.id
-      }.`
-    )
-  }
-}
+import {
+  throwIfItemsDoesNotExistsInOrder,
+  throwIfOrderIsCancelled,
+} from "../utils/order-validation"
 
 async function validateReturnReasons(
   {
@@ -340,7 +313,7 @@ export const createReturnOrderWorkflow = createWorkflow(
     )
 
     const returnFulfillment =
-      createFulfillmentWorkflow.runAsStep(fulfillmentData)
+      createReturnFulfillmentWorkflow.runAsStep(fulfillmentData)
 
     const link = transform(
       { order_id: input.order_id, fulfillment: returnFulfillment },
@@ -354,7 +327,5 @@ export const createReturnOrderWorkflow = createWorkflow(
       }
     )
     createLinkStep(link)
-
-    // TODO call the createReturn from the fulfillment provider
   }
 )

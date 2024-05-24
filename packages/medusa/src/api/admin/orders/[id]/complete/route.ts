@@ -1,5 +1,8 @@
 import { completeOrderWorkflow } from "@medusajs/core-flows"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -10,7 +13,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCompleteOrderType>,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const { id } = req.params
 
   const { errors } = await completeOrderWorkflow(req.scope).run({

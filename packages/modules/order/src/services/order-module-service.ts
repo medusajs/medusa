@@ -2149,17 +2149,6 @@ export default class OrderModuleService<
   ): Promise<void> {
     let shippingMethodId
 
-    if (!isString(data.shipping_method)) {
-      const methods = await this.createShippingMethods(
-        data.order_id,
-        data.shipping_method as any,
-        sharedContext
-      )
-      shippingMethodId = methods[0].id
-    } else {
-      shippingMethodId = data.shipping_method
-    }
-
     const method = await this.shippingMethodService_.retrieve(
       shippingMethodId,
       {
