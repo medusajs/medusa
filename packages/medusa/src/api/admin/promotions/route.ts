@@ -45,14 +45,9 @@ export const POST = async (
   const createPromotions = createPromotionsWorkflow(req.scope)
   const promotionsData = [req.validatedBody] as any
 
-  const { result, errors } = await createPromotions.run({
+  const { result } = await createPromotions.run({
     input: { promotionsData },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const promotion = await refetchPromotion(
     result[0].id,

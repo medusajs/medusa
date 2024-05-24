@@ -26,14 +26,9 @@ export const POST = async (
     context,
   }
 
-  const { errors } = await createPaymentSessionsWorkflow(req.scope).run({
+  await createPaymentSessionsWorkflow(req.scope).run({
     input: workflowInput,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const paymentCollection = await refetchPaymentCollection(
     collectionId,

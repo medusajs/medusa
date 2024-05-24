@@ -18,7 +18,7 @@ export const POST = async (
   const { id } = req.params
 
   const workflow = createInventoryLevelsWorkflow(req.scope)
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: {
       inventory_levels: [
         {
@@ -27,12 +27,7 @@ export const POST = async (
         },
       ],
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const inventoryItem = await refetchInventoryItem(
     id,

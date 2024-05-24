@@ -53,17 +53,12 @@ export const POST = async (
   await validateCustomerAddress(req.scope, id, req.params.address_id)
 
   const updateAddresses = updateCustomerAddressesWorkflow(req.scope)
-  const { errors } = await updateAddresses.run({
+  await updateAddresses.run({
     input: {
       selector: { id: req.params.address_id, customer_id: req.params.id },
       update: req.validatedBody,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const customer = await refetchCustomer(
     id,
@@ -82,14 +77,9 @@ export const DELETE = async (
   await validateCustomerAddress(req.scope, id, req.params.address_id)
 
   const deleteAddress = deleteCustomerAddressesWorkflow(req.scope)
-  const { errors } = await deleteAddress.run({
+  await deleteAddress.run({
     input: { ids: [req.params.address_id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const customer = await refetchCustomer(
     id,
