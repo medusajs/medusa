@@ -244,6 +244,7 @@ export default class PromotionModuleService<
     const computedActions: PromotionTypes.ComputeActions[] = []
     const { items = [], shipping_methods: shippingMethods = [] } =
       applicationContext
+
     const appliedItemCodes: string[] = []
     const appliedShippingCodes: string[] = []
     const codeAdjustmentMap = new Map<
