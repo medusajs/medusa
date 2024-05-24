@@ -1,8 +1,7 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IAuthModuleService, IUserModuleService } from "@medusajs/types"
 import jwt from "jsonwebtoken"
 import { getContainer } from "../environment-helpers/use-container"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 export const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
@@ -21,8 +20,6 @@ export const createAdminUser = async (
   const authModule: IAuthModuleService = appContainer.resolve(
     ModuleRegistrationName.AUTH
   )
-  const remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
-
   const user = await userModule.create({
     first_name: "Admin",
     last_name: "User",
@@ -32,31 +29,19 @@ export const createAdminUser = async (
   const authIdentity = await authModule.create({
     provider: "emailpass",
     entity_id: "admin@medusa.js",
-    scope: "admin",
     provider_metadata: {
       password: "somepassword",
     },
-  })
-
-  // Ideally we simulate a signup process than manually linking here.
-  await remoteLink.create([
-    {
-      [Modules.USER]: {
-        user_id: user.id,
-      },
-      [Modules.AUTH]: {
-        auth_identity_id: authIdentity.id,
-      },
+    app_metadata: {
+      user_id: user.id,
     },
-  ])
+  })
 
   const token = jwt.sign(
     {
       actor_id: user.id,
       actor_type: "user",
       auth_identity_id: authIdentity.id,
-      scope: "admin",
-      app_metadata: {},
     },
     "test"
   )

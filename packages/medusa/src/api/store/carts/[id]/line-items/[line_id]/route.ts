@@ -2,12 +2,12 @@ import {
   deleteLineItemsWorkflow,
   updateLineItemInCartWorkflow,
 } from "@medusajs/core-flows"
+import { DeleteResponse } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
+import { prepareListQuery } from "../../../../../../utils/get-query-config"
 import { refetchCart } from "../../../helpers"
 import { StoreUpdateCartLineItemType } from "../../../validators"
-import { prepareListQuery } from "../../../../../../utils/get-query-config"
-import { DeleteResponse } from "@medusajs/types"
 
 export const POST = async (
   req: MedusaRequest<StoreUpdateCartLineItemType>,
@@ -70,7 +70,7 @@ export const DELETE = async (
   const id = req.params.line_id
 
   const { errors } = await deleteLineItemsWorkflow(req.scope).run({
-    input: { ids: [id] },
+    input: { cart_id: req.params.id, ids: [id] },
     throwOnError: false,
   })
 

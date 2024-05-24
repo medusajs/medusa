@@ -47,22 +47,7 @@ module.exports = {
     medusa_v2: enableMedusaV2,
   },
   modules: {
-    [Modules.AUTH]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/auth",
-      options: {
-        providers: [
-          {
-            name: "emailpass",
-            scopes: {
-              admin: {},
-              store: {},
-            },
-          },
-        ],
-      },
-    },
+    [Modules.AUTH]: true,
     [Modules.USER]: {
       scope: "internal",
       resources: "shared",

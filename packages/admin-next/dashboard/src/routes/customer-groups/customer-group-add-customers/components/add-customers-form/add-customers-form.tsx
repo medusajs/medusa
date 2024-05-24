@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { AdminCustomerResponse } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -22,6 +21,7 @@ import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-
 import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
 import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { HttpTypes } from "@medusajs/types"
 
 type AddCustomersFormProps = {
   customerGroupId: string
@@ -180,7 +180,7 @@ export const AddCustomersForm = ({
   )
 }
 
-const columnHelper = createColumnHelper<AdminCustomerResponse["customer"]>()
+const columnHelper = createColumnHelper<HttpTypes.AdminCustomer>()
 
 const useColumns = () => {
   const { t } = useTranslation()

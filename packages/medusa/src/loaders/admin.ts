@@ -44,7 +44,7 @@ export default async function adminLoader({
     return app
   }
 
-  if (process.env.COMMAND_INITIATED_BY === "develop") {
+  if (process.env.NODE_ENV === "development") {
     return initDevelopmentServer(app, adminOptions)
   }
 

@@ -2,7 +2,6 @@ import { VIRTUAL_MODULES } from "@medusajs/admin-shared"
 import path from "path"
 import { Config } from "tailwindcss"
 import type { InlineConfig } from "vite"
-import { nodePolyfills } from "vite-plugin-node-polyfills"
 
 import { BundlerOptions } from "../types"
 
@@ -57,15 +56,6 @@ export async function getViteConfig(
       react(),
       medusa({
         sources: options.sources,
-      }),
-      /**
-       * TODO: Remove polyfills, they are currently only required for the
-       * `axios` dependency in the dashboard. Once we have the new SDK,
-       * we should remove this, and leave it up to the user to include
-       * polyfills if they need them.
-       */
-      nodePolyfills({
-        include: ["crypto", "util", "stream"],
       }),
     ],
   }

@@ -7,8 +7,7 @@ import {
 import { createUsersStep } from "../../user"
 import { deleteInvitesStep } from "../steps"
 import { validateTokenStep } from "../steps/validate-token"
-import { Modules } from "@medusajs/modules-sdk"
-import { createLinkStep } from "../../common"
+import { setAuthAppMetadataStep } from "../../auth"
 
 export const acceptInviteWorkflowId = "accept-invite-workflow"
 export const acceptInviteWorkflow = createWorkflow(
@@ -32,20 +31,17 @@ export const acceptInviteWorkflow = createWorkflow(
 
     const users = createUsersStep(createUserInput)
 
-    const link = transform(
-      { users, authIdentityId: input.auth_identity_id },
-      (data) => {
-        const user = data.users[0]
-        return [
-          {
-            [Modules.USER]: { user_id: user.id },
-            [Modules.AUTH]: { auth_identity_id: data.authIdentityId },
-          },
-        ]
-      }
-    )
+    const authUserInput = transform({ input, users }, ({ input, users }) => {
+      const createdUser = users[0]
 
-    createLinkStep(link)
+      return {
+        authIdentityId: input.auth_identity_id,
+        actorType: "user",
+        value: createdUser.id,
+      }
+    })
+
+    setAuthAppMetadataStep(authUserInput)
     deleteInvitesStep([invite.id])
 
     return users

@@ -14,7 +14,7 @@ export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "ALL",
     matcher: "/admin/fulfillment-sets*",
-    middlewares: [authenticate("admin", ["session", "bearer", "api-key"])],
+    middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
   },
   {
     method: ["POST"],

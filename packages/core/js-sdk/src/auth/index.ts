@@ -10,13 +10,13 @@ export class Auth {
     this.config = config
   }
 
-  public login = async (
-    scope: "admin" | "store",
+  login = async (
+    actor: "customer" | "user",
     method: "emailpass",
     payload: { email: string; password: string }
   ) => {
     const { token } = await this.client.fetch<{ token: string }>(
-      `/auth/${scope}/${method}`,
+      `/auth/${actor}/${method}`,
       {
         method: "POST",
         body: payload,
@@ -32,6 +32,8 @@ export class Auth {
     } else {
       this.client.setToken(token)
     }
+
+    return token
   }
 
   logout = async () => {
@@ -45,11 +47,11 @@ export class Auth {
   }
 
   create = async (
-    scope: "admin" | "store",
+    actor: "customer" | "user",
     method: "emailpass",
     payload: { email: string; password: string }
   ): Promise<{ token: string }> => {
-    return await this.client.fetch(`/auth/${scope}/${method}`, {
+    return await this.client.fetch(`/auth/${actor}/${method}`, {
       method: "POST",
       body: payload,
     })

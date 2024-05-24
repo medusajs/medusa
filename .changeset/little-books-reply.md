@@ -22,6 +22,7 @@
 "medusa-telemetry": patch
 "@medusajs/api-key": patch
 "@medusajs/auth": patch
+"@medusajs/auth-emailpass": patch
 "@medusajs/js-sdk": patch
 "@medusajs/cache-inmemory": patch
 "@medusajs/cache-redis": patch
@@ -54,6 +55,10 @@
 "@medusajs/user": patch
 "@medusajs/workflow-engine-inmemory": patch
 "@medusajs/workflow-engine-redis": patch
+"@medusajs/dashboard": patch
+"@medusajs/admin-sdk": patch
+"@medusajs/admin-shared": patch
+"@medusajs/admin-vite-plugin": patch
 ---
 
 chore: Preview release changeset

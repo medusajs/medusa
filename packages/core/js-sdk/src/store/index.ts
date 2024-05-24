@@ -314,6 +314,17 @@ export class Store {
   }
 
   public order = {
+    list: async (
+      query?: FindParams & HttpTypes.StoreOrderFilters,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<
+        PaginatedResponse<{ orders: HttpTypes.StoreOrder[] }>
+      >(`/store/orders`, {
+        query,
+        headers,
+      })
+    },
     retrieve: async (
       id: string,
       query?: SelectParams,
@@ -324,6 +335,48 @@ export class Store {
         {
           headers,
           query,
+        }
+      )
+    },
+  }
+
+  public customer = {
+    create: async (
+      body: HttpTypes.StoreCreateCustomer,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{
+        customer: HttpTypes.StoreCustomer
+        token: string
+      }>(`/store/customers`, {
+        method: "POST",
+        headers,
+        body,
+        query,
+      })
+    },
+    update: async (
+      body: HttpTypes.StoreUpdateCustomer,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ customer: HttpTypes.StoreCustomer }>(
+        `/store/customers/me`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+    retrieve: async (query?: SelectParams, headers?: ClientHeaders) => {
+      return this.client.fetch<{ customer: HttpTypes.StoreCustomer }>(
+        `/store/customers/me`,
+        {
+          query,
+          headers,
         }
       )
     },

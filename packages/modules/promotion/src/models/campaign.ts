@@ -19,7 +19,6 @@ import Promotion from "./promotion"
 type OptionalRelations = "budget"
 type OptionalFields =
   | "description"
-  | "currency"
   | "starts_at"
   | "ends_at"
   | DAL.SoftDeletableEntityDateColumns
@@ -39,9 +38,6 @@ export default class Campaign {
   @Searchable()
   @Property({ columnType: "text", nullable: true })
   description: string | null = null
-
-  @Property({ columnType: "text", nullable: true })
-  currency: string | null = null
 
   @Property({ columnType: "text" })
   @Unique({

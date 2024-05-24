@@ -14,12 +14,12 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/auth/:scope/:auth_provider/callback",
+    matcher: "/auth/:actor_type/:auth_provider/callback",
     middlewares: [],
   },
   {
     method: ["POST"],
-    matcher: "/auth/:scope/:auth_provider",
+    matcher: "/auth/:actor_type/:auth_provider",
     middlewares: [],
   },
 ]
