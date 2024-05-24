@@ -29,7 +29,7 @@ type OptionalCustomerProps =
 
 const CustomerUniqueEmail = createPsqlIndexStatementHelper({
   tableName: "customer",
-  columns: "email",
+  columns: ["email", "has_account"],
   unique: true,
   where: "deleted_at IS NULL",
 })

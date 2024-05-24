@@ -125,12 +125,12 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_customer_email_unique",
+          "keyName": "IDX_customer_email_has_account_unique",
           "columnNames": [],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_customer_email_unique\" ON \"customer\" (email) WHERE deleted_at IS NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_customer_email_has_account_unique\" ON \"customer\" (email, has_account) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "customer_pkey",
