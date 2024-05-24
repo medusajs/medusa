@@ -6,8 +6,7 @@ import { track } from "medusa-telemetry"
 
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export default async function ({
   directory,
@@ -33,7 +32,6 @@ export default async function ({
 
     const userService = container.resolve(ModuleRegistrationName.USER)
     const authService = container.resolve(ModuleRegistrationName.AUTH)
-    const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
     const provider = "emailpass"
 
@@ -55,19 +53,15 @@ export default async function ({
 
       if (error) {
         Logger.error(error)
-        throw new Error(error)
+        process.exit(1)
       }
 
-      await remoteLink.create([
-        {
-          [Modules.USER]: {
-            user_id: user.id,
-          },
-          [Modules.AUTH]: {
-            auth_identity_id: authIdentity.id,
-          },
+      await authService.update({
+        id: authIdentity.id,
+        app_metadata: {
+          user_id: user.id,
         },
-      ])
+      })
     }
   } catch (err) {
     console.error(err)

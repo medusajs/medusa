@@ -4,6 +4,7 @@ import { isObject } from "@medusajs/utils"
 /**
  * Pipe utils that merges data from an object into a new object.
  * The new object will have a target key with the merged data from the keys if specified.
+ * @deprecated
  * @param keys
  * @param target
  */

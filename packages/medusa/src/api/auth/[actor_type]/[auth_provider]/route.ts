@@ -4,17 +4,12 @@ import {
   IAuthModuleService,
   ConfigModule,
 } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  MedusaError,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 import { generateJwtToken } from "../../../utils/auth/token"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { actor_type, auth_provider } = req.params
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const config: ConfigModule = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   )
@@ -57,20 +52,17 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       ContainerRegistrationKeys.CONFIG_MODULE
     ).projectConfig
 
-    const queryObject = remoteQueryObjectFromString({
-      entryPoint: "auth_identity",
-      fields: [`${actor_type}.id`],
-      variables: { id: authIdentity.id },
-    })
-    const [actorData] = await remoteQuery(queryObject)
-    const entityId = actorData?.[actor_type]?.id
-
+    const entityIdKey = `${actor_type}_id`
+    const entityId = authIdentity.app_metadata?.[entityIdKey]
     const { jwtSecret, jwtExpiresIn } = http
     const token = generateJwtToken(
       {
         actor_id: entityId,
         actor_type,
         auth_identity_id: authIdentity.id,
+        app_metadata: {
+          [entityIdKey]: entityId,
+        },
       },
       {
         secret: jwtSecret,

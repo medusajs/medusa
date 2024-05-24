@@ -864,7 +864,7 @@ describe("mikroOrmRepository", () => {
         .upsertWithReplace([entity3])
         .catch((e) => e.message)
 
-      expect(err).toEqual("Entity3 with title: en3 already exists.")
+      expect(err).toEqual("Entity3 with title: en3, already exists.")
     })
 
     it("should map NotNullConstraintViolationException MedusaError on upsertWithReplace", async () => {

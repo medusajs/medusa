@@ -21,18 +21,13 @@ export const POST = async (
     )
   }
 
-  const { errors } = await linkSalesChannelsToApiKeyWorkflow(req.scope).run({
+  await linkSalesChannelsToApiKeyWorkflow(req.scope).run({
     input: {
       id: req.params.id,
       add,
       remove,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const updatedApiKey = await refetchApiKey(
     req.params.id,

@@ -53,16 +53,9 @@ export const POST = async (
       userData: req.validatedBody,
       authIdentityId: req.auth_context.auth_identity_id,
     },
-    throwOnError: false,
   }
 
-  const { result, errors } = await createUserAccountWorkflow(req.scope).run(
-    input
-  )
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
+  const { result } = await createUserAccountWorkflow(req.scope).run(input)
 
   const { http } = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
@@ -73,6 +66,9 @@ export const POST = async (
       actor_id: result.id,
       actor_type: "user",
       auth_identity_id: req.auth_context.auth_identity_id,
+      app_metadata: {
+        user_id: result.id,
+      },
     },
     {
       secret: jwtSecret,

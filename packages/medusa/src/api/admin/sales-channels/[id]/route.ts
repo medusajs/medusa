@@ -29,17 +29,12 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateSalesChannelType>,
   res: MedusaResponse
 ) => {
-  const { errors } = await updateSalesChannelsWorkflow(req.scope).run({
+  await updateSalesChannelsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const salesChannel = await refetchSalesChannel(
     req.params.id,
@@ -55,14 +50,9 @@ export const DELETE = async (
 ) => {
   const id = req.params.id
 
-  const { errors } = await deleteSalesChannelsWorkflow(req.scope).run({
+  await deleteSalesChannelsWorkflow(req.scope).run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,

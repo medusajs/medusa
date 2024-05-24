@@ -32,17 +32,12 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateStoreType>,
   res: MedusaResponse
 ) => {
-  const { result, errors } = await updateStoresWorkflow(req.scope).run({
+  const { result } = await updateStoresWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody as UpdateStoreDTO,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const store = await refetchStore(
     result[0].id,

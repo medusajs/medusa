@@ -24,7 +24,7 @@ type MedusaSession = {
 }
 
 export const authenticate = (
-  actorType: string,
+  actorType: string | string[],
   authType: AuthType | AuthType[],
   options: { allowUnauthenticated?: boolean; allowUnregistered?: boolean } = {}
 ): RequestHandler => {
@@ -48,6 +48,7 @@ export const authenticate = (
           actor_id: apiKey.id,
           actor_type: "api-key",
           auth_identity_id: "",
+          app_metadata: {},
         }
 
         return next()
