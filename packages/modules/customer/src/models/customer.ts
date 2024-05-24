@@ -1,5 +1,10 @@
 import { DAL } from "@medusajs/types"
-import { DALUtils, Searchable, generateEntityId } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  DALUtils,
+  generateEntityId,
+  Searchable,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -7,8 +12,8 @@ import {
   Entity,
   Filter,
   ManyToMany,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -22,8 +27,16 @@ type OptionalCustomerProps =
   | "addresses"
   | DAL.SoftDeletableEntityDateColumns
 
+const CustomerUniqueEmail = createPsqlIndexStatementHelper({
+  tableName: "customer",
+  columns: "email",
+  unique: true,
+  where: "deleted_at IS NULL",
+})
+
 @Entity({ tableName: "customer" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
+@CustomerUniqueEmail.MikroORMIndex()
 export default class Customer {
   [OptionalProps]?: OptionalCustomerProps
 
