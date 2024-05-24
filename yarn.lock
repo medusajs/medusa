@@ -870,33 +870,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/cli@npm:^7.12.10, @babel/cli@npm:^7.14.3":
-  version: 7.24.5
-  resolution: "@babel/cli@npm:7.24.5"
-  dependencies:
-    "@jridgewell/trace-mapping": ^0.3.25
-    "@nicolo-ribaudo/chokidar-2": 2.1.8-no-fsevents.3
-    chokidar: ^3.4.0
-    commander: ^4.0.1
-    convert-source-map: ^2.0.0
-    fs-readdir-recursive: ^1.1.0
-    glob: ^7.2.0
-    make-dir: ^2.1.0
-    slash: ^2.0.0
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  dependenciesMeta:
-    "@nicolo-ribaudo/chokidar-2":
-      optional: true
-    chokidar:
-      optional: true
-  bin:
-    babel: ./bin/babel.js
-    babel-external-helpers: ./bin/babel-external-helpers.js
-  checksum: ec1c0546986b1b2423a125f919701b1c29ea1e999302035379adbfb9104e819d9cecc9d947ac91a26a9da7e6445f1812fc61deabf9d0a5f3894f53ec19fdfa04
-  languageName: node
-  linkType: hard
-
 "@babel/code-frame@npm:7.12.11":
   version: 7.12.11
   resolution: "@babel/code-frame@npm:7.12.11"
@@ -946,7 +919,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.1.0, @babel/core@npm:^7.11.6, @babel/core@npm:^7.12.10, @babel/core@npm:^7.12.3, @babel/core@npm:^7.12.7, @babel/core@npm:^7.14.3, @babel/core@npm:^7.18.9, @babel/core@npm:^7.20.12, @babel/core@npm:^7.21.3, @babel/core@npm:^7.23.0, @babel/core@npm:^7.23.2, @babel/core@npm:^7.23.5, @babel/core@npm:^7.23.9, @babel/core@npm:^7.7.5":
+"@babel/core@npm:^7.1.0, @babel/core@npm:^7.11.6, @babel/core@npm:^7.12.10, @babel/core@npm:^7.12.3, @babel/core@npm:^7.12.7, @babel/core@npm:^7.18.9, @babel/core@npm:^7.20.12, @babel/core@npm:^7.21.3, @babel/core@npm:^7.23.0, @babel/core@npm:^7.23.2, @babel/core@npm:^7.23.5, @babel/core@npm:^7.23.9, @babel/core@npm:^7.7.5":
   version: 7.24.5
   resolution: "@babel/core@npm:7.24.5"
   dependencies:
@@ -1256,7 +1229,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/node@npm:^7.12.10, @babel/node@npm:^7.12.6, @babel/node@npm:^7.22.10":
+"@babel/node@npm:^7.12.6":
   version: 7.23.9
   resolution: "@babel/node@npm:7.23.9"
   dependencies:
@@ -2732,7 +2705,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-typescript@npm:^7.15.0, @babel/preset-typescript@npm:^7.16.0, @babel/preset-typescript@npm:^7.23.0":
+"@babel/preset-typescript@npm:^7.16.0, @babel/preset-typescript@npm:^7.23.0":
   version: 7.24.1
   resolution: "@babel/preset-typescript@npm:7.24.1"
   dependencies:
@@ -6633,13 +6606,6 @@ __metadata:
     readdirp: ^2.2.1
     upath: ^1.1.1
   checksum: 8ca958d7763d73a7fc63b208b865bf656d5970c7161014c71ef190aa0e30e14766f286ecb6c856f7fa2e2b5da7252788baab1382e96ed2a07f5c3d65131947f9
-  languageName: node
-  linkType: hard
-
-"@nicolo-ribaudo/chokidar-2@npm:2.1.8-no-fsevents.3":
-  version: 2.1.8-no-fsevents.3
-  resolution: "@nicolo-ribaudo/chokidar-2@npm:2.1.8-no-fsevents.3"
-  checksum: 27dcabaa0c9a29b3a60217bd3fff87a22cb43ed77863da570c6828e4d0b8f1c6ee52582cd3d439275a2b1f2051005e648ed866b981f2a03b61c645b7e4806ba7
   languageName: node
   linkType: hard
 
@@ -13536,9 +13502,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-medusa-package@*, babel-preset-medusa-package@^1.0.0, babel-preset-medusa-package@^1.1.19, babel-preset-medusa-package@workspace:packages/babel-preset-medusa-package":
-  version: 0.0.0-use.local
-  resolution: "babel-preset-medusa-package@workspace:packages/babel-preset-medusa-package"
+"babel-preset-medusa-package@npm:*, babel-preset-medusa-package@npm:^1.0.0":
+  version: 1.1.20
+  resolution: "babel-preset-medusa-package@npm:1.1.20"
   dependencies:
     "@babel/plugin-proposal-class-properties": ^7.12.1
     "@babel/plugin-proposal-decorators": ^7.12.1
@@ -13552,8 +13518,9 @@ __metadata:
     core-js: ^3.7.0
   peerDependencies:
     "@babel/core": ^7.11.6
-  languageName: unknown
-  linkType: soft
+  checksum: 597a3aa1aac8460af95c72819702e770a4a023ec7554f55ef938dcca433dd3f26e3e149b3fd33df4b8249300dc29014a5b0382e88a11ece373b8669561783e52
+  languageName: node
+  linkType: hard
 
 "balanced-match@npm:^1.0.0":
   version: 1.0.2
@@ -19867,9 +19834,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "integration-tests-api@workspace:integration-tests/api"
   dependencies:
-    "@babel/cli": ^7.12.10
-    "@babel/core": ^7.12.10
-    "@babel/node": ^7.12.10
     "@medusajs/api-key": "workspace:^"
     "@medusajs/auth": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
@@ -19896,6 +19860,7 @@ __metadata:
     jest-environment-node: 26.6.2
     pg: ^8.11.0
     typeorm: ^0.3.16
+    typescript: ^4.1.3
   languageName: unknown
   linkType: soft
 
@@ -19903,9 +19868,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "integration-tests-modules@workspace:integration-tests/modules"
   dependencies:
-    "@babel/cli": ^7.12.10
-    "@babel/core": ^7.12.10
-    "@babel/node": ^7.12.10
     "@medusajs/api-key": "workspace:^"
     "@medusajs/auth": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
@@ -19929,13 +19891,13 @@ __metadata:
     "@medusajs/workflow-engine-inmemory": "workspace:*"
     "@swc/core": ^1.4.8
     "@swc/jest": ^0.2.36
-    babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-test-utils: "workspace:*"
     pg: ^8.11.0
     typeorm: ^0.3.16
+    typescript: ^4.1.3
   languageName: unknown
   linkType: soft
 
@@ -23874,14 +23836,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-telemetry@workspace:packages/medusa-telemetry"
   dependencies:
-    "@babel/cli": ^7.14.3
-    "@babel/core": ^7.14.3
-    "@babel/node": ^7.22.10
-    "@babel/preset-typescript": ^7.15.0
     "@babel/runtime": ^7.22.10
     axios: ^0.21.4
     axios-retry: ^3.1.9
-    babel-preset-medusa-package: ^1.1.19
     boxen: ^5.0.1
     ci-info: ^3.2.0
     configstore: 5.0.1
@@ -23891,6 +23848,8 @@ __metadata:
     jest: ^25.5.4
     nodemon: ^2.0.20
     remove-trailing-slash: ^0.1.1
+    rimraf: ^3.0.2
+    typescript: ^4.1.3
     uuid: ^8.3.2
   languageName: unknown
   linkType: soft
