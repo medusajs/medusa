@@ -4,14 +4,10 @@ export const metadata = {
 
 # {metadata.title}
 
-When Commerce Modules are used together in a Medusa application, the Medusa application handles building the relations between these modules.
-
-This document showcases the relation between the Fulfillment Module and other Commerce Modules.
+This document showcases the link modules defined between the Customer Module and other commerce modules.
 
 ## Stock Location Module
 
-When the Fulfillment and Stock Location modules are used together, a fulfillment set can be conditioned to a specific stock location.
+A fulfillment set can be conditioned to a specific stock location. Medusa defines a link module that builds a relationship between the `FulfillmentSet` and `StockLocation` data models.
 
-The Medusa application forms a relation between the `FulfillmentSet` and `StockLocation` data models.
-
-![A diagram showcasing an example of how resources from the Fulfillment and Stock Location modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1712567101/Medusa%20Resources/fulfillment-stock-location_nlkf7e.jpg)
+![A diagram showcasing an example of how data models from the Fulfillment and Stock Location modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1712567101/Medusa%20Resources/fulfillment-stock-location_nlkf7e.jpg)
