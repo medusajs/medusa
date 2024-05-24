@@ -5,7 +5,6 @@
 import {
   CreateApiKeyDTO,
   CreateCampaignDTO,
-  CreateCustomerDTO,
   CreateFulfillmentSetDTO,
   CreateInviteDTO,
   CreatePriceListDTO,
@@ -20,7 +19,6 @@ import {
   InventoryNext,
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
-  UpdateCustomerDTO,
   UpdatePriceListDTO,
   UpdateProductCollectionDTO,
   UpdatePromotionDTO,
@@ -42,10 +40,6 @@ export type UpdateStoreReq = UpdateStoreDTO
 // API Keys
 export type CreateApiKeyReq = CreateApiKeyDTO
 export type UpdateApiKeyReq = UpdateApiKeyDTO
-
-// Customers
-export type CreateCustomerReq = CreateCustomerDTO
-export type UpdateCustomerReq = Omit<UpdateCustomerDTO, "id">
 
 // Sales Channels
 export type CreateSalesChannelReq = CreateSalesChannelDTO

@@ -41,14 +41,9 @@ export const POST = async (
 ) => {
   const input = [req.validatedBody]
 
-  const { result, errors } = await createRegionsWorkflow(req.scope).run({
+  const { result } = await createRegionsWorkflow(req.scope).run({
     input: { regions: input },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const region = await refetchRegion(
     result[0].id,

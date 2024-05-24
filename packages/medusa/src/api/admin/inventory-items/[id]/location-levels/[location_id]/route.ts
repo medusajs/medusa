@@ -64,16 +64,11 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const { id, location_id } = req.params
-  const { errors } = await updateInventoryLevelsWorkflow(req.scope).run({
+  await updateInventoryLevelsWorkflow(req.scope).run({
     input: {
       updates: [{ ...req.validatedBody, inventory_item_id: id, location_id }],
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const inventoryItem = await refetchInventoryItem(
     id,

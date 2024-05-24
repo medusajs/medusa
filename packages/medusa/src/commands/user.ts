@@ -6,7 +6,7 @@ import { track } from "medusa-telemetry"
 
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export default async function ({
   directory,
@@ -53,7 +53,7 @@ export default async function ({
 
       if (error) {
         Logger.error(error)
-        throw new Error(error)
+        process.exit(1)
       }
 
       await authService.update({

@@ -1,6 +1,6 @@
 import boxen from "boxen"
-import { execSync, fork } from "child_process"
-import chokidar from "chokidar"
+import { ChildProcess, execSync, fork } from "child_process"
+import chokidar, { FSWatcher } from "chokidar"
 import Store from "medusa-telemetry/dist/store"
 import { EOL } from "os"
 import path from "path"
@@ -11,7 +11,7 @@ const defaultConfig = {
   padding: 5,
   borderColor: `blue`,
   borderStyle: `double`,
-}
+} as boxen.Options
 
 export default async function ({ port, directory }) {
   const args = process.argv
@@ -35,8 +35,8 @@ export default async function ({ port, directory }) {
   )
 
   const devServer = {
-    childProcess: null,
-    watcher: null,
+    childProcess: null as ChildProcess | null,
+    watcher: null as FSWatcher | null,
 
     /**
      * Start the development server by forking a new process.
