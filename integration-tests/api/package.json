@@ -34,7 +34,6 @@
   "devDependencies": {
     "@swc/core": "^1.4.8",
     "@swc/jest": "^0.2.36",
-    "babel-preset-medusa-package": "*",
     "form-data": "^4.0.0",
     "jest": "^26.6.3",
     "jest-environment-node": "26.6.2",
