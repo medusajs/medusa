@@ -12,7 +12,7 @@ The Product Module is the `@medusajs/product` NPM package that provides product-
 
 ### Products Management
 
-With the Product Module, store products and manage them through the main interface methods. Products have custom options, such as color or size, and each variant in the product sets the value for these options.
+Store and manage products. Products have custom options, such as color or size, and each variant in the product sets the value for these options.
 
 ```ts
 const products = await productService.create([
@@ -62,14 +62,16 @@ const products = await productService.update([
 
 ## Configure Product Module
 
-After installing the `@medusajs/product` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+To use the Product Module, enable it in the `modules` object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 const modules = {
   // ...
-  productService: {
-    resolve: "@medusajs/product",
-  },
+  [Modules.PRODUCT]: true,
 }
 ```
 
@@ -126,9 +128,11 @@ For example:
   import { IProductModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const productModuleService: IProductModuleService =
-      context.container.resolve(ModuleRegistrationName.PRODUCT)
+      container.resolve(ModuleRegistrationName.PRODUCT)
 
     const products = await productModuleService.list()
   })

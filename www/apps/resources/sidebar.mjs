@@ -567,16 +567,21 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 title: "Payment Provider",
               },
               {
-                path: "/commerce-modules/payment/payment-flow",
-                title: "Payment Flow",
-              },
-              {
                 path: "/commerce-modules/payment/webhook-events",
                 title: "Webhook Events",
               },
               {
                 path: "/commerce-modules/payment/relation-to-other-modules",
                 title: "Relations to Other Modules",
+              },
+            ],
+          },
+          {
+            title: "Guides",
+            children: [
+              {
+                path: "/commerce-modules/payment/payment-flow",
+                title: "Accept Payment Flow",
               },
             ],
           },
@@ -637,6 +642,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               {
                 path: "/commerce-modules/pricing/concepts",
                 title: "Pricing Concepts",
+              },
+              {
+                path: "/commerce-modules/pricing/price-rules",
+                title: "Price Rules",
               },
               {
                 path: "/commerce-modules/pricing/price-calculation",
@@ -756,7 +765,15 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/commerce-modules/promotion/concepts",
-                title: "Promotion Concepts",
+                title: "Promotion",
+              },
+              {
+                path: "/commerce-modules/promotion/application-method",
+                title: "Application Method",
+              },
+              {
+                path: "/commerce-modules/promotion/campaign",
+                title: "Campaign",
               },
               {
                 path: "/commerce-modules/promotion/actions",

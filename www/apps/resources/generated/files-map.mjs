@@ -436,10 +436,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/order/order-change"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/order/order-items/page.mdx",
-    "pathname": "/commerce-modules/order/order-items"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/order/order-versioning/page.mdx",
     "pathname": "/commerce-modules/order/order-versioning"
   },
@@ -544,6 +540,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/pricing/price-calculation"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/pricing/price-rules/page.mdx",
+    "pathname": "/commerce-modules/pricing/price-rules"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/pricing/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/pricing/relations-to-other-modules"
   },
@@ -570,6 +570,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/promotion/actions/page.mdx",
     "pathname": "/commerce-modules/promotion/actions"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/promotion/application-method/page.mdx",
+    "pathname": "/commerce-modules/promotion/application-method"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/promotion/campaign/page.mdx",
+    "pathname": "/commerce-modules/promotion/campaign"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/promotion/concepts/page.mdx",

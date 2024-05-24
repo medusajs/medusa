@@ -1,167 +1,164 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
+import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper, TypeList } from "docs-ui"
 
 export const metadata = {
-  title: `Prices Calculation`,
+  title: `Prices Calculation Strategy`,
 }
 
 # {metadata.title}
 
-In this document, you'll learn how prices are calculated under the hood when you use the `calculatePrices` method of the Pricing Module interface.
+In this document, you'll learn how prices are calculated when you use the `calculatePrices` method of the Pricing Module's main service.
 
 ## Overview
 
-The `calculatePrices` method accepts the ID of one or more price sets and a context. For each price set, it selects two types of prices that best match the context; one belongs to a price list, and one doesn't.
-
-Then, it returns an array of price objects, each price for every supplied price set ID.
+The [calculatePrices method](/references/pricing/calculatePrices) accepts the ID of one or more price sets and a context. It returns a price object with the best matching price for each price set.
 
 ---
 
 ## Calculation Context
 
-The context is an object passed to the `calculatePrices` method. It must contain at least the `currency_code`. Only prices in the price sets with the same currency code are considered for the price selection.
+The context is an object passed as a second parameter to the `calculatePrices` method. It must contain at least the `currency_code`. Only prices in the price sets with the same currency code are considered for the price selection.
 
 For example:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function calculatePrice(
-  priceSetId: string,
-  currencyCode: string
-) {
-  const pricingModuleService = await initializePricingModule()
-
-  const price = await pricingModuleService.calculatePrices(
-    { id: [priceSetId] },
-    {
-      context: {
-        currency_code: currencyCode,
-      },
-    }
-  )
-}
+const price = await pricingModuleService.calculatePrices(
+  { id: [priceSetId] },
+  {
+    context: {
+      currency_code: currencyCode,
+    },
+  }
+)
 ```
 
-The context object can also contain any custom rules, with the key being the `rule_field` of a rule type and its value being the rule's value.
+The context object can also contain any custom rules, with the key being the `rule_attribute` of a rule type and its value being the rule's value.
 
 For example:
 
 ```ts
-import {
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
-
-async function calculatePrice(
-  priceSetId: string,
-  currencyCode: string
-) {
-  const pricingModuleService = await initializePricingModule()
-
-  const price = await pricingModuleService.calculatePrices(
-    { id: [priceSetId] },
-    {
-      context: {
-        currency_code: currencyCode,
-        region_id: "US",
-      },
-    }
-  )
-}
+const price = await pricingModuleService.calculatePrices(
+  { id: [priceSetId] },
+  {
+    context: {
+      currency_code: currencyCode,
+      region_id: "US",
+    },
+  }
+)
 ```
 
 ---
 
-## Prices Selection
+## Returned Price Object
 
 For each price set, the method selects two prices:
 
 - The calculated price: a price that belongs to a price list. If there are no prices associated with a price list, it’ll be the same as the original price.
-- The original price: a price that doesn't belong to a price list.
+- The original price: If the calculated price's price list type is `override`, then the original price will be the same as the calculated price. Otheriwse, a price that doesn't belong to a price list.
 
-### Calculated Price Selection Process
+After the original and calculated prices are selected, the method will use them to create a price object for each price set.
 
-![A diagram showcasing the calculated price selection process.](https://res.cloudinary.com/dza7lstvk/image/upload/v1700574799/Medusa%20Docs/Diagrams/calculated-price_vjnx3j.jpg)
+The price object has the following properties:
 
-- Find the price set’s associated valid price lists. A price list is considered valid if:
-  - The current date is between its start and end dates.
-  - The price list's rules satisfy the context's rules.
-- If valid price lists are found, the prices within them are sorted by their amount in ascending order. The one having the lowest amount is selected as the calculated price.
-- If no valid price list is found, the selected calculated price will be the same as the original price.
-
-### Original Price Selection Process
-
-![A diagram showcasing the original price selection process.](https://res.cloudinary.com/dza7lstvk/image/upload/v1700574800/Medusa%20Docs/Diagrams/original-price_i47fso.jpg)
-
-- If the price list associated with the calculated price is of type `override`, the selected original price is set to the calculated price.
-- If no rules are provided in the context other than the `currency_code`, the default price is selected as the original price. The default price is a price having no rules applied to it.
-- Otherwise, if a price exists in any price set with the same rules provided in the context, it's selected as the original price.
-- If no price exists with the same rules as the context, all prices satisfying any combination of the provided rules are retrieved.
-  - The prices are sorted in descending order by the associated `Price`'s `rules_count`, the `default_priority` of the rule types, and the `priority` of the associated `PriceRule`. The `priority` field has a higher precedence than the `default_priority`.
-  - The highest price sorted is selected as the original price since it's considered the best price.
-
----
-
-## Returned Calculated Price
-
-After the original and calculated prices are selected, the method will use them to create the following price object for each pr
-
-```ts
-const price = {
-  id: priceSetId,
-  is_calculated_price_price_list: 
-    !!calculatedPrice?.price_list_id,
-  calculated_amount: parseInt(
-    calculatedPrice?.amount || ""
-  ) || null,
-
-  is_original_price_price_list: 
-    !!originalPrice?.price_list_id,
-  original_amount: parseInt(
-    originalPrice?.amount || ""
-  ) || null,
-
-  currency_code: calculatedPrice?.currency_code || null,
-
-  calculated_price: {
-    price_id: calculatedPrice?.id || null,
-    price_list_id: calculatedPrice?.price_list_id || null,
-    price_list_type: calculatedPrice?.price_list_type || null,
-    min_quantity: parseInt(
-      calculatedPrice?.min_quantity || ""
-    ) || null,
-    max_quantity: parseInt(
-      calculatedPrice?.max_quantity || ""
-    ) || null,
-  },
-
-  original_price: {
-    price_id: originalPrice?.id || null,
-    price_list_id: originalPrice?.price_list_id || null,
-    price_list_type: originalPrice?.price_list_type || null,
-    min_quantity: parseInt(
-      originalPrice?.min_quantity || ""
-    ) || null,
-    max_quantity: parseInt(
-      originalPrice?.max_quantity || ""
-    ) || null,
-  },
-}
-```
-
-Where:
-
-- `id`: The ID of the price set from which the price was selected.
-- `is_calculated_price_price_list`: whether the calculated price belongs to a price list. As mentioned earlier, if no valid price list is found, the calculated price is set to the original price, which doesn't belong to a price list.
-- `calculated_amount`: The amount of the calculated price, or `null` if there isn't a calculated price.
-- `is_original_price_price_list`: whether the original price belongs to a price list. As mentioned earlier, if the price list of the calculated price is of type `override`, the original price will be the same as the calculated price.
-- `original_amount`: The amount of the original price, or `null` if there isn't an original price.
-- `currency_code`: The currency code of the calculated price, or `null` if there isn't a calculated price.
-- `calculated_price`: An object containing the calculated price's price details and potentially its associated price list.
-- `original_price`: An object containing the original price's price details and potentially its associated price list.
-
-The method returns an array of these price objects.
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: "The ID of the price set from which the price was selected."
+    },
+    {
+      name: "is_calculated_price_price_list",
+      type: "`boolean`",
+      description: "Whether the calculated price belongs to a price list. As mentioned earlier, if no valid price list is found, the calculated price is set to the original price, which doesn't belong to a price list."
+    },
+    {
+      name: "calculated_amount",
+      type: "`number`",
+      description: "The amount of the calculated price, or `null` if there isn't a calculated price."
+    },
+    {
+      name: "is_original_price_price_list",
+      type: "`boolean`",
+      description: "Whether the original price belongs to a price list. As mentioned earlier, if the price list of the calculated price is of type `override`, the original price will be the same as the calculated price."
+    },
+    {
+      name: "original_amount",
+      type: "`number`",
+      description: "The amount of the original price, or `null` if there isn't an original price."
+    },
+    {
+      name: "currency_code",
+      type: "`string`",
+      description: "The currency code of the calculated price, or `null` if there isn't a calculated price."
+    },
+    {
+      name: "calculated_price",
+      type: "`object`",
+      description: "The calculated price's price details and potentially its associated price list.",
+      children: [
+        {
+          name: "price_id",
+          type: "`string`",
+          description: "The ID of the price."
+        },
+        {
+          name: "price_list_id",
+          type: "`string`",
+          description: "The ID of the associated price list."
+        },
+        {
+          name: "price_list_type",
+          type: "`string`",
+          description: "The price list's type."
+        },
+        {
+          name: "min_quantity",
+          type: "`number`",
+          description: "The price's min quantity condition."
+        },
+        {
+          name: "max_quantity",
+          type: "`number`",
+          description: "The price's max quantity condition."
+        }
+      ]
+    },
+    {
+      name: "original_price",
+      type: "`object`",
+      description: "The original price's price details and potentially its associated price list.",
+      children: [
+        {
+          name: "price_id",
+          type: "`string`",
+          description: "The ID of the price."
+        },
+        {
+          name: "price_list_id",
+          type: "`string`",
+          description: "The ID of the associated price list."
+        },
+        {
+          name: "price_list_type",
+          type: "`string`",
+          description: "The price list's type."
+        },
+        {
+          name: "min_quantity",
+          type: "`number`",
+          description: "The price's min quantity condition."
+        },
+        {
+          name: "max_quantity",
+          type: "`number`",
+          description: "The price's max quantity condition."
+        }
+      ]
+    }
+  ]}
+  sectionTitle="Returned Calculated Price"
+/>
 
 ---
 
@@ -173,18 +170,18 @@ Consider the following rule types and price sets:
 const ruleTypes = await pricingModuleService.createRuleTypes([
   {
     name: "Region",
-    rule_field: "region_id",
+    rule_attribute: "region_id",
   },
   {
     name: "City",
-    rule_field: "city",
+    rule_attribute: "city",
   },
 ])
 
 const priceSet = await pricingModuleService.create({
   rules: [
-    { rule_field: "region_id" },
-    { rule_field: "city" },
+    { rule_attribute: "region_id" },
+    { rule_attribute: "city" },
   ],
   prices: [
     //default

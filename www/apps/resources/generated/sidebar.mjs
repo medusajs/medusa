@@ -2249,13 +2249,6 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/order/order-items",
-                "title": "Order Title",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
                 "path": "/commerce-modules/order/promotion-adjustments",
                 "title": "Promotions Adjustments",
                 "children": []
@@ -2898,13 +2891,6 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/payment/payment-flow",
-                "title": "Payment Flow",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
                 "path": "/commerce-modules/payment/webhook-events",
                 "title": "Webhook Events",
                 "children": []
@@ -2914,6 +2900,20 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/commerce-modules/payment/relation-to-other-modules",
                 "title": "Relations to Other Modules",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/payment/payment-flow",
+                "title": "Accept Payment Flow",
                 "children": []
               }
             ]
@@ -3213,6 +3213,13 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/commerce-modules/pricing/concepts",
                 "title": "Pricing Concepts",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/pricing/price-rules",
+                "title": "Price Rules",
                 "children": []
               },
               {
@@ -4223,7 +4230,21 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/commerce-modules/promotion/concepts",
-                "title": "Promotion Concepts",
+                "title": "Promotion",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/promotion/application-method",
+                "title": "Application Method",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/promotion/campaign",
+                "title": "Campaign",
                 "children": []
               },
               {

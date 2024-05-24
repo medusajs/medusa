@@ -10,8 +10,16 @@ This document showcases the relation between the Promotion Module and other Comm
 
 ## Cart Module
 
-When the Cart and Promotion modules are used together, the Medusa application links the `Promotion` data model to the `Cart`, `LineItemAdjustment`, and `ShippingMethodAdjustment` data models of the Cart Module.
+{/* TODO change diagram */}
 
-![A diagram showcasing an example of how resources from the Promotion and Cart modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1709905821/Medusa%20Resources/promotion-cart_z5qklr.jpg)
+A promotion can be applied on line items and shipping methods of a cart. Medusa defines a link module that builds a relationship between the `Cart`, `LineItemAdjustment`, and `Promotion` data models.
 
-A promotion is linked to a cart when a promotion is applied on the cart. Adjustments on items and shipping methods, represented by the `LineItemAdjustment` and `ShippingMethodAdjustment` data models, are linked to the promotion as well.
+![A diagram showcasing an example of how data models from the Cart and Promotion modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711538015/Medusa%20Resources/cart-promotion_kuh9vm.jpg)
+
+---
+
+## Order Module
+
+An order is associated with the promotion applied on it. Medusa defines a link module that builds a relationship between the `Order` and `Promotion` data models.
+
+![A diagram showcasing an example of how data models from the Order and Promotion modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716555015/Medusa%20Resources/order-promotion_dgjzzd.jpg)
