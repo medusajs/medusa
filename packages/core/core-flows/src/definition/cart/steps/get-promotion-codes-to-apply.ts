@@ -17,7 +17,7 @@ export const getPromotionCodesToApply = createStep(
   getPromotionCodesToApplyId,
   async (data: StepInput, { container }) => {
     const { promo_codes = [], cart, action = PromotionActions.ADD } = data
-    const { items = [] } = cart
+    const { items = [], shipping_methods = [] } = cart
     const adjustmentCodes: string[] = []
     const promotionService = container.resolve<IPromotionModuleService>(
       ModuleRegistrationName.PROMOTION
@@ -25,6 +25,14 @@ export const getPromotionCodesToApply = createStep(
 
     for (const item of items) {
       for (const adjustment of item.adjustments || []) {
+        if (adjustment.code && !adjustmentCodes.includes(adjustment.code)) {
+          adjustmentCodes.push(adjustment.code)
+        }
+      }
+    }
+
+    for (const shippingMethod of shipping_methods) {
+      for (const adjustment of shippingMethod.adjustments || []) {
         if (adjustment.code && !adjustmentCodes.includes(adjustment.code)) {
           adjustmentCodes.push(adjustment.code)
         }
