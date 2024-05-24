@@ -38,6 +38,26 @@ moduleIntegrationTestRunner({
           )
         })
 
+        it("should fail to create a duplicated customers", async () => {
+          const customerData = {
+            company_name: "Acme Corp",
+            first_name: "John",
+            last_name: "Doe",
+            email: "john.doe@acmecorp.com",
+            phone: "123456789",
+            created_by: "admin",
+            metadata: { membership: "gold" },
+          }
+
+          const err = await service
+            .create([customerData, customerData])
+            .catch((err) => err)
+
+          expect(err.message).toBe(
+            "Customer with email: john.doe@acmecorp.com already exists."
+          )
+        })
+
         it("should create address", async () => {
           const customerData = {
             company_name: "Acme Corp",
