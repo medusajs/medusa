@@ -1,11 +1,10 @@
-import { LoadedModule, MedusaAppOutput, MedusaContainer } from "@medusajs/types"
+import { LoadedModule, MedusaContainer } from "@medusajs/types"
 import { ModuleRegistrationName } from "../../definitions"
 import { findMedusaContext } from "../../loaders/utils/clients/find-medusa-context"
 
 export default function (
   container: MedusaContainer,
-  loadedModules: Record<string, LoadedModule | LoadedModule[]>,
-  remoteQuery: MedusaAppOutput["query"]
+  loadedModules: Record<string, LoadedModule | LoadedModule[]>
 ) {
   return async (port: number, options?: Record<string, any>) => {
     let serverDependency
@@ -16,7 +15,7 @@ export default function (
       fastifyCompress = await import("@fastify/compress")
     } catch (err) {
       throw new Error(
-        "Fastify or fastify-compress is not installed. Please install them to serve MedusaApp as a web server."
+        `"fastify" and "@fastify/compress" are not installed. Please install them to serve MedusaApp as a web server.`
       )
     }
 
@@ -56,7 +55,7 @@ export default function (
         return response.status(500).send(`Module ${modName} not found.`)
       }
 
-      if (method === "__joinerConfig" || method == "__definition") {
+      if (method === "__joinerConfig") {
         return resolvedModule[method]
       } else if (typeof resolvedModule[method] !== "function") {
         return response

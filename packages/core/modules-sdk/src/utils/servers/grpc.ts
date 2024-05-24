@@ -1,12 +1,10 @@
-import { LoadedModule, MedusaAppOutput, MedusaContainer } from "@medusajs/types"
-import { isString } from "@medusajs/utils"
+import { LoadedModule, MedusaContainer } from "@medusajs/types"
 import { ModuleRegistrationName } from "../../definitions"
 import { findMedusaContext } from "../../loaders/utils/clients/find-medusa-context"
 
 export default function (
   container: MedusaContainer,
-  loadedModules: Record<string, LoadedModule | LoadedModule[]>,
-  remoteQuery: MedusaAppOutput["query"]
+  loadedModules: Record<string, LoadedModule | LoadedModule[]>
 ) {
   return async (port: number, options?: Record<string, any>) => {
     let grpc
@@ -43,7 +41,7 @@ export default function (
         })
       }
 
-      if (method === "__joinerConfig" || method == "__definition") {
+      if (method === "__joinerConfig") {
         const result = JSON.stringify(resolvedModule[method])
 
         return callback(null, { result })
@@ -54,9 +52,8 @@ export default function (
         })
       }
 
+      const args_ = JSON.parse(args)
       try {
-        const args_ = JSON.parse(args)
-
         const requestId = call.metadata.get("request-id")?.[0]
         if (requestId) {
           const medusaContext = findMedusaContext(args_)
@@ -77,53 +74,17 @@ export default function (
       }
     }
 
-    async function handleQuery(call, callback) {
-      const { args } = call.request
-
-      try {
-        const input = JSON.parse(args)
-
-        let query
-        let variables = {}
-        if (isString(input.query)) {
-          query = input.query
-          variables = input.variables ?? {}
-        } else {
-          query = input
-        }
-
-        try {
-          const result = await remoteQuery(query, variables)
-
-          return callback(null, { result })
-        } catch (err) {
-          return callback({
-            code: grpc.status.UNKNOWN,
-            message: err.message,
-          })
-        }
-      } catch (error) {
-        return callback({
-          code: grpc.status.UNKNOWN,
-          message: error.message,
-        })
-      }
-    }
-
     const medusaAppService = protoDescriptor.medusaAppService as any
 
     const server = new grpc.Server()
     server.addService(medusaAppService.MedusaAppService.service, {
       Call: handleCall,
-      Query: handleQuery,
     })
 
     return server.bindAsync(
       "0.0.0.0:" + port,
       grpc.ServerCredentials.createInsecure(),
-      () => {
-        server.start()
-      }
+      () => {}
     )
   }
 }

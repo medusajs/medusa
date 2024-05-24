@@ -1,4 +1,4 @@
-import { RemoteJoinerQuery } from "../joiner"
+import { RemoteExpandProperty, RemoteJoinerQuery } from "../joiner"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
@@ -59,7 +59,17 @@ export type MedusaAppOutput = {
   ) => Promise<void>
 }
 
-export type MedusaAppOptions<TRemoteFetch> = {
+type DefaultRemoteFetchDataCallback = (
+  expand: RemoteExpandProperty,
+  keyField: string,
+  ids?: (unknown | unknown[])[],
+  relationship?: any
+) => Promise<{
+  data: unknown[] | { [path: string]: unknown }
+  path?: string
+}>
+
+export type MedusaAppOptions<TRemoteFetch = DefaultRemoteFetchDataCallback> = {
   workerMode?: "shared" | "worker" | "server"
   sharedContainer?: MedusaContainer
   sharedResourcesConfig?: SharedResources

@@ -21,6 +21,7 @@ import {
   ContainerRegistrationKeys,
   ModulesSdkUtils,
   createMedusaContainer,
+  isDefined,
   isObject,
   isString,
   promiseAll,
@@ -387,12 +388,12 @@ async function MedusaApp_({
     runMigrations,
     revertMigrations,
     listen: async (protocol, port, options?: Record<string, any>) => {
+      if (!protocol || !isDefined(Servers[protocol])) {
+        throw new Error(`"${protocol}" protocol is not supported`)
+      }
+
       const serverConstructor = Servers[protocol].default
-      await serverConstructor(
-        sharedContainer_,
-        allModules,
-        query
-      )(port, options)
+      await serverConstructor(sharedContainer_, allModules)(port, options)
     },
   }
 }

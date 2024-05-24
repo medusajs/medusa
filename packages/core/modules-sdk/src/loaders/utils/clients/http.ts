@@ -8,7 +8,15 @@ async function getHttpClient(baseUrl, serverOptions?: Record<string, unknown>) {
     return openedClients.get(baseUrl)
   }
 
-  const { Client } = await import("undici")
+  let Client
+  try {
+    const { Client: client } = await import("undici")
+    Client = client
+  } catch (err) {
+    throw new Error(
+      `"undici" is not installed. Please install it to load external modules using "http"`
+    )
+  }
 
   let keepAliveAgent
   if (serverOptions?.keepAlive) {
@@ -54,7 +62,7 @@ export default async function (
               connection: "keep-alive",
             }
 
-            if (medusaContext) {
+            if (medusaContext?.requestId) {
               sendHeaders["x-request-id"] = medusaContext.requestId
             }
 
@@ -62,7 +70,7 @@ export default async function (
               path,
               method: "POST",
               headers: sendHeaders,
-              body: JSON.stringify(args), // arguments as an array
+              body: JSON.stringify(args),
             })
 
             let responseData = ""

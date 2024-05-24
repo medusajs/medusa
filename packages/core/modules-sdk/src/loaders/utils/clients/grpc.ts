@@ -9,7 +9,7 @@ export default async function (moduleKeyName, baseUrl, serverOptions, logger) {
     protoLoader = await import("@grpc/proto-loader")
   } catch (err) {
     throw new Error(
-      "@grpc/grpc-js and @grpc/proto-loader are not installed. Please install them to serve MedusaApp as a web gRPC server."
+      `"@grpc/grpc-js" and "@grpc/proto-loader" are not installed. Please install them to load external modules using "grpc"`
     )
   }
 
@@ -32,8 +32,8 @@ export default async function (moduleKeyName, baseUrl, serverOptions, logger) {
   return new Proxy(
     {},
     {
-      get(target, methodName) {
-        if (["then", "catch", "finally"].includes(methodName as string)) {
+      get(target, methodName: string) {
+        if (["then", "catch", "finally"].includes(methodName)) {
           return target
         } else if (methodName in target) {
           return target[methodName]
@@ -49,7 +49,7 @@ export default async function (moduleKeyName, baseUrl, serverOptions, logger) {
           const metadata = new grpc.Metadata()
 
           const medusaContext = findMedusaContext(args)
-          if (medusaContext) {
+          if (medusaContext?.requestId) {
             metadata.add("request-id", medusaContext.requestId)
           }
 
