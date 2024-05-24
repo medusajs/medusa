@@ -24,13 +24,9 @@ export const POST = async (
   const createCustomers = createCustomerAccountWorkflow(req.scope)
   const customersData = req.validatedBody
 
-  const { result, errors } = await createCustomers.run({
+  const { result } = await createCustomers.run({
     input: { customersData, authIdentityId: req.auth_context.auth_identity_id },
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const { http } = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE

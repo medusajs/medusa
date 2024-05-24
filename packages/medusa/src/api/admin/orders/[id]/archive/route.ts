@@ -13,14 +13,9 @@ export const POST = async (
   const remoteQuery = req.scope.resolve("remoteQuery")
   const { id } = req.params
 
-  const { errors } = await archiveOrderWorkflow(req.scope).run({
+  await archiveOrderWorkflow(req.scope).run({
     input: { orderIds: [req.validatedBody.order_id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "order",

@@ -35,17 +35,12 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateCustomerType>,
   res: MedusaResponse<{ customer: AdminCustomer }>
 ) => {
-  const { errors } = await updateCustomersWorkflow(req.scope).run({
+  await updateCustomersWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const customer = await refetchCustomer(
     req.params.id,
@@ -62,14 +57,9 @@ export const DELETE = async (
   const id = req.params.id
   const deleteCustomers = deleteCustomersWorkflow(req.scope)
 
-  const { errors } = await deleteCustomers.run({
+  await deleteCustomers.run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,

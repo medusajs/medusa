@@ -11,18 +11,13 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const { id } = req.params
-  const { errors } = await refundPaymentWorkflow(req.scope).run({
+  await refundPaymentWorkflow(req.scope).run({
     input: {
       payment_id: id,
       created_by: req.auth_context.actor_id,
       amount: req.validatedBody.amount,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const payment = await refetchPayment(
     id,

@@ -43,14 +43,9 @@ export const POST = async (
     },
   ]
 
-  const { errors } = await updateCampaigns.run({
+  await updateCampaigns.run({
     input: { campaignsData },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const campaign = await refetchCampaign(
     req.params.id,
@@ -67,14 +62,9 @@ export const DELETE = async (
   const id = req.params.id
   const deleteCampaigns = deleteCampaignsWorkflow(req.scope)
 
-  const { errors } = await deleteCampaigns.run({
+  await deleteCampaigns.run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,

@@ -17,19 +17,14 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateTaxRegionType>,
   res: MedusaResponse
 ) => {
-  const { result, errors } = await createTaxRegionsWorkflow(req.scope).run({
+  const { result } = await createTaxRegionsWorkflow(req.scope).run({
     input: [
       {
         ...req.validatedBody,
         created_by: req.auth_context.actor_id,
       },
     ],
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const taxRegion = await refetchTaxRegion(
     result[0].id,
