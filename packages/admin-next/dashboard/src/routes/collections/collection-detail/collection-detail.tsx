@@ -42,7 +42,6 @@ export const CollectionDetail = () => {
       })}
       <CollectionGeneralSection collection={collection} />
       <CollectionProductSection collection={collection} />
-      <JsonViewSection data={collection} />
       {after.widgets.map((w, i) => {
         return (
           <div key={i}>
@@ -50,6 +49,7 @@ export const CollectionDetail = () => {
           </div>
         )
       })}
+      <JsonViewSection data={collection} />
       <Outlet />
     </div>
   )
