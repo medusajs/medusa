@@ -12,14 +12,9 @@ export const DELETE = async (
 ) => {
   const { id } = req.params
 
-  const { errors } = await deleteFulfillmentSetsWorkflow(req.scope).run({
+  await deleteFulfillmentSetsWorkflow(req.scope).run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,

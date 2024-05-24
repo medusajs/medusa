@@ -34,7 +34,7 @@ export const POST = async (
   )
 
   const workflow = batchPriceListPricesWorkflow(req.scope)
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: {
       data: {
         id,
@@ -43,12 +43,7 @@ export const POST = async (
         delete: productPriceIds,
       },
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const priceList = await fetchPriceList(
     id,

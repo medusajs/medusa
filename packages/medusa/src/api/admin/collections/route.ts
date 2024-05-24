@@ -46,14 +46,9 @@ export const POST = async (
     },
   ]
 
-  const { result, errors } = await createCollectionsWorkflow(req.scope).run({
+  const { result } = await createCollectionsWorkflow(req.scope).run({
     input: { collections: input },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const collection = await refetchCollection(
     result[0].id,
