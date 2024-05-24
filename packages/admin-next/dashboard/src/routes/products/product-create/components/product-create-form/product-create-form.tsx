@@ -129,12 +129,11 @@ export const ProductCreateForm = () => {
   )
 
   const onNext = async (currentTab: Tab) => {
-    // TODO: check this
-    // const valid = await form.trigger()
-    //
-    // if (!valid) {
-    //   return
-    // }
+    const valid = await form.trigger()
+
+    if (!valid) {
+      return
+    }
 
     if (currentTab === Tab.DETAILS) {
       setTab(Tab.ORGANIZE)
@@ -204,7 +203,15 @@ export const ProductCreateForm = () => {
         <form onSubmit={handleSubmit} className="flex h-full flex-col">
           <ProgressTabs
             value={tab}
-            onValueChange={(tab) => setTab(tab as Tab)}
+            onValueChange={async (tab) => {
+              const valid = await form.trigger()
+
+              if (!valid) {
+                return
+              }
+
+              setTab(tab as Tab)
+            }}
             className="flex h-full flex-col overflow-hidden"
           >
             <RouteFocusModal.Header>

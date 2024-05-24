@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 export const ProductCreateSchema = z.object({
-  title: z.string(),
+  title: z.string().min(1),
   subtitle: z.string().optional(),
   handle: z.string().optional(),
   description: z.string().optional(),
