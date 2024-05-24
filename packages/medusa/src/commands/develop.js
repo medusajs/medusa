@@ -57,8 +57,8 @@ export default async function ({ port, directory }) {
         execArgv: argv,
       })
       this.childProcess.on("error", (error) => {
-        Logger.error("Dev server died with error", error)
-        Logger.info("Still watching filesystem to restart the dev server")
+        Logger.error("Dev server failed to start", error)
+        Logger.info("The server will restart automatically after your changes")
       })
     },
 
@@ -94,28 +94,19 @@ export default async function ({ port, directory }) {
 
       this.watcher.on("add", (file) => {
         Logger.info(
-          `${path.relative(
-            directory,
-            file
-          )} file created: restarting dev server...`
+          `${path.relative(directory, file)} created: Restarting dev server`
         )
         this.restart()
       })
       this.watcher.on("change", (file) => {
         Logger.info(
-          `${path.relative(
-            directory,
-            file
-          )} file modified: restarting dev server...`
+          `${path.relative(directory, file)} modified: Restarting dev server`
         )
         this.restart()
       })
       this.watcher.on("unlink", (file) => {
         Logger.info(
-          `${path.relative(
-            directory,
-            file
-          )} file removed: restarting dev server...`
+          `${path.relative(directory, file)} removed: Restarting dev server`
         )
         this.restart()
       })
