@@ -29,9 +29,7 @@ export const POST = async (
   let paymentCollection = cartCollectionRelation?.payment_collection
 
   if (!paymentCollection) {
-    const { errors } = await createPaymentCollectionForCartWorkflow(
-      req.scope
-    ).run({
+    await createPaymentCollectionForCartWorkflow(req.scope).run({
       input: req.body,
     })
 

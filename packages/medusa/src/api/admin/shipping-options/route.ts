@@ -50,14 +50,9 @@ export const POST = async (
 
   const workflow = createShippingOptionsWorkflow(req.scope)
 
-  const { result, errors } = await workflow.run({
+  const { result } = await workflow.run({
     input: [shippingOptionPayload],
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const shippingOption = await refetchShippingOption(
     result[0].id,

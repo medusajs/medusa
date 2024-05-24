@@ -15,14 +15,9 @@ export const POST = async (
 ) => {
   const { id } = req.params
 
-  const { errors } = await batchLinkProductsToCategoryWorkflow(req.scope).run({
+  await batchLinkProductsToCategoryWorkflow(req.scope).run({
     input: { id, ...req.validatedBody },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const category = await refetchEntity(
     "product_category",

@@ -19,14 +19,9 @@ export const POST = async (
   // TODO: Fix types
   const input = req.validatedBody as any
 
-  const { result, errors } = await batchProductsWorkflow(req.scope).run({
+  const { result } = await batchProductsWorkflow(req.scope).run({
     input,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const batchResults = await refetchBatchProducts(
     result,

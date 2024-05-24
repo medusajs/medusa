@@ -16,7 +16,6 @@ export const POST = async (
   const { errors, result } = await completeCartWorkflow(req.scope).run({
     input: { id: cart_id },
     context: { transactionId: cart_id },
-    throwOnError: false,
   })
 
   // When an error occurs on the workflow, its potentially got to with cart validations, payments

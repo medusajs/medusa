@@ -34,14 +34,9 @@ export const POST = async (
     // TODO: Fix types
   } as any
 
-  const { result, errors } = await batchProductVariantsWorkflow(req.scope).run({
+  const { result } = await batchProductVariantsWorkflow(req.scope).run({
     input: normalizedInput,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const batchResults = await refetchBatchVariants(
     result,
