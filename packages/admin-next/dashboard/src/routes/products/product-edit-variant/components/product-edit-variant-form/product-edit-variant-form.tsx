@@ -17,6 +17,7 @@ import {
 import { useUpdateProductVariant } from "../../../../../hooks/api/products"
 import { castNumber } from "../../../../../lib/cast-number"
 import { optionalInt } from "../../../../../lib/validation"
+import { normalizeProductVariantFormValues } from "../../utils"
 
 type ProductEditVariantFormProps = {
   product: Product
@@ -24,7 +25,7 @@ type ProductEditVariantFormProps = {
   isStockAndInventoryEnabled?: boolean
 }
 
-const ProductEditVariantSchema = z.object({
+export const ProductEditVariantSchema = z.object({
   title: z.string().min(1),
   material: z.string().optional(),
   sku: z.string().optional(),
@@ -131,6 +132,11 @@ export const ProductEditVariantForm = ({
         }
       : {}
 
+    const cleanedUp = normalizeProductVariantFormValues({
+      ...rest,
+      ...conditionalPayload,
+    })
+
     await mutateAsync(
       {
         id: variant.id,
@@ -138,8 +144,7 @@ export const ProductEditVariantForm = ({
         height: parseNumber(height),
         width: parseNumber(width),
         length: parseNumber(length),
-        ...conditionalPayload,
-        ...rest,
+        ...cleanedUp,
       },
       {
         onSuccess: () => {
