@@ -711,7 +711,7 @@ moduleIntegrationTestRunner({
             ],
           })
         ).rejects.toThrowError(
-          /Tax rate rule with tax_rate_id: .*?, reference_id: product_id_1 already exists./
+          /Tax rate rule with tax_rate_id: .*?, reference_id: product_id_1, already exists./
         )
 
         const rate = await service.create({
@@ -729,7 +729,7 @@ moduleIntegrationTestRunner({
             reference_id: "product_id_1",
           })
         ).rejects.toThrowError(
-          /Tax rate rule with tax_rate_id: .*?, reference_id: product_id_1 already exists./
+          /Tax rate rule with tax_rate_id: .*?, reference_id: product_id_1, already exists./
         )
       })
 
@@ -764,7 +764,7 @@ moduleIntegrationTestRunner({
             province_code: "QC",
           })
         ).rejects.toThrowError(
-          "Tax region with country_code: ca, province_code: qc already exists."
+          "Tax region with country_code: ca, province_code: qc, already exists."
         )
       })
 
@@ -797,7 +797,7 @@ moduleIntegrationTestRunner({
             is_default: true,
           })
         ).rejects.toThrowError(
-          /Tax rate with tax_region_id: .*? already exists./
+          /Tax rate with tax_region_id: .*?, already exists./
         )
       })
 
