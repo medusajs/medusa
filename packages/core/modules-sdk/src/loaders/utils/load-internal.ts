@@ -15,9 +15,9 @@ import {
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
-import { join, resolve } from "path"
 import { statSync } from "fs"
 import { readdir } from "fs/promises"
+import { join, resolve } from "path"
 
 type ModuleResource = {
   services: Function[]
@@ -90,7 +90,7 @@ export async function loadInternalModule(
 
     return {
       error: new Error(
-        "No service found in module. Make sure your module exports a service."
+        `No service found in module ${resolution?.definition?.label}. Make sure your module exports a service.`
       ),
     }
   }

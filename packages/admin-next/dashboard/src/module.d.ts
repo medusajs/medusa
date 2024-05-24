@@ -1,4 +1,4 @@
-declare module "medusa-admin:widgets/*" {
+declare module "virtual:medusa/widgets/*" {
   const widgets: { Component: () => JSX.Element }[]
 
   export default {
@@ -6,34 +6,20 @@ declare module "medusa-admin:widgets/*" {
   }
 }
 
-declare module "medusa-admin:routes/links" {
-  const links: { path: string; label: string; icon?: React.ComponentType }[]
+declare module "virtual:medusa/routes/pages" {
+  const pages: { path: string; Component: () => JSX.Element }[]
+
+  export default {
+    pages,
+  }
+}
+
+declare module "virtual:medusa/routes/links" {
+  import type { ComponentType } from "react"
+
+  const links: { path: string; label: string; icon?: ComponentType }[]
 
   export default {
     links,
-  }
-}
-
-declare module "medusa-admin:routes/pages" {
-  const pages: { path: string; file: string }[]
-
-  export default {
-    pages,
-  }
-}
-
-declare module "medusa-admin:settings/cards" {
-  const cards: { path: string; label: string; description: string }[]
-
-  export default {
-    cards,
-  }
-}
-
-declare module "medusa-admin:settings/pages" {
-  const pages: { path: string; file: string }[]
-
-  export default {
-    pages,
   }
 }

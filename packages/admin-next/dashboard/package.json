@@ -61,6 +61,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@medusajs/admin-shared": "^0.0.1",
     "@medusajs/admin-vite-plugin": "0.0.1",
     "@medusajs/types": "1.11.16",
     "@medusajs/ui-preset": "1.1.3",

@@ -16,7 +16,7 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["ALL"],
     matcher: "/admin/sales-channels*",
-    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
+    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
   },
   {
     method: ["GET"],
