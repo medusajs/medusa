@@ -30,7 +30,7 @@ if (!IS_DEV) {
 if (LOG_FILE) {
   transports.push(
     new winston.transports.File({
-      filename: LOG_FILE
+      filename: LOG_FILE,
     })
   )
 }
@@ -172,7 +172,7 @@ export class Reporter {
    *   message to log the error under; or an error object.
    * @param {Error?} error - an error object to log message with
    */
-  error = (messageOrError, error = null) => {
+  error = (messageOrError, error: any = null) => {
     let message = messageOrError
     if (typeof messageOrError === "object") {
       message = messageOrError.message
