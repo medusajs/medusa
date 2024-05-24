@@ -21,7 +21,6 @@ export const updateCartPromotionsStep = createStep(
   updateCartPromotionsStepId,
   async (data: StepInput, { container }) => {
     const { promo_codes = [], id, action = PromotionActions.ADD } = data
-    console.log("action --- ", action)
     const remoteLink = container.resolve(LinkModuleUtils.REMOTE_LINK)
     const remoteQuery = container.resolve(LinkModuleUtils.REMOTE_QUERY)
     const promotionService = container.resolve<IPromotionModuleService>(
@@ -34,7 +33,7 @@ export const updateCartPromotionsStep = createStep(
         fields: ["cart_id", "promotion_id"],
       },
     })
-    console.log("existingCartPromotionLinks --- ", existingCartPromotionLinks)
+
     const promotionLinkMap = new Map<string, any>(
       existingCartPromotionLinks.map((link) => [link.promotion_id, link])
     )
@@ -74,11 +73,11 @@ export const updateCartPromotionsStep = createStep(
         })
       }
     }
-    console.log("linksToDismiss --- ", linksToDismiss)
+
     if (linksToDismiss.length) {
       await remoteLink.dismiss(linksToDismiss)
     }
-    console.log("linksToCreate -- ", linksToCreate)
+
     const createdLinks = linksToCreate.length
       ? await remoteLink.create(linksToCreate)
       : []

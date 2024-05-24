@@ -68,7 +68,7 @@ export const DELETE = async (
   res: MedusaResponse<DeleteResponse<"line-item">>
 ) => {
   const id = req.params.line_id
-  console.log("req.params.id -- ", req.params.id)
+
   const { errors } = await deleteLineItemsWorkflow(req.scope).run({
     input: { cart_id: req.params.id, ids: [id] },
     throwOnError: false,
