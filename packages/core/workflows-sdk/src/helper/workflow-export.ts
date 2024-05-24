@@ -5,7 +5,7 @@ import {
   TransactionState,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { MedusaContextType, isPresent } from "@medusajs/utils"
+import { isPresent, MedusaContextType } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
@@ -87,10 +87,11 @@ function createContextualWorkflowRunner<
       failedStatus.includes(transaction.getState()) &&
       throwOnError
     ) {
-      const errorMessage = errors
+      /*const errorMessage = errors
         ?.map((err) => `${err.error?.message}${EOL}${err.error?.stack}`)
-        ?.join(`${EOL}`)
-      throw new Error(errorMessage)
+        ?.join(`${EOL}`)*/
+      const firstError = errors?.[0]?.error ?? new Error("Unknown error")
+      throw firstError
     }
 
     let result

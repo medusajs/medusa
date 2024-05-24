@@ -29,15 +29,9 @@ export const POST = async (
   let paymentCollection = cartCollectionRelation?.payment_collection
 
   if (!paymentCollection) {
-    const { errors } = await createPaymentCollectionForCartWorkflow(
-      req.scope
-    ).run({
+    await createPaymentCollectionForCartWorkflow(req.scope).run({
       input: req.body,
     })
-
-    if (Array.isArray(errors) && errors[0]) {
-      throw errors[0].error
-    }
 
     const [cartCollectionRelation] = await remoteQuery(
       remoteQueryObjectFromString({

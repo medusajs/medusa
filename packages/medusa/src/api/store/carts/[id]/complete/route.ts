@@ -22,7 +22,7 @@ export const POST = async (
   // When an error occurs on the workflow, its potentially got to with cart validations, payments
   // or inventory checks. Return the cart here along with errors for the consumer to take more action
   // and fix them
-  if (Array.isArray(errors) && errors[0]) {
+  if (errors?.[0]) {
     const error = errors[0].error
     const statusOKErrors: string[] = [
       // TODO: add inventory specific errors

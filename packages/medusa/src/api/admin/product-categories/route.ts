@@ -37,16 +37,9 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateProductCategoryType>,
   res: MedusaResponse<AdminProductCategoryResponse>
 ) => {
-  const { result, errors } = await createProductCategoryWorkflow(req.scope).run(
-    {
-      input: { product_category: req.validatedBody },
-      throwOnError: false,
-    }
-  )
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
+  const { result } = await createProductCategoryWorkflow(req.scope).run({
+    input: { product_category: req.validatedBody },
+  })
 
   const [category] = await refetchEntities(
     "product_category",

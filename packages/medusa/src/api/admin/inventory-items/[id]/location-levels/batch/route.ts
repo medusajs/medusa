@@ -20,7 +20,7 @@ export const POST = async (
 
   // TODO: Normalize workflow and response, and add support for updates
   const workflow = bulkCreateDeleteLevelsWorkflow(req.scope)
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: {
       deletes:
         req.validatedBody.delete?.map((location_id) => ({
@@ -33,12 +33,7 @@ export const POST = async (
           inventory_item_id: id,
         })) ?? [],
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({ inventory_item: {} })
 }

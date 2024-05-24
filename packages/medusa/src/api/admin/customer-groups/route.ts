@@ -47,14 +47,9 @@ export const POST = async (
     },
   ]
 
-  const { result, errors } = await createGroups.run({
+  const { result } = await createGroups.run({
     input: { customersData },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const customerGroup = await refetchCustomerGroup(
     result[0].id,

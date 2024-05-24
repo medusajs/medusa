@@ -66,6 +66,11 @@ export type PipelineHandler<T extends any = undefined> = (
     : T
 >
 
+/**
+ * @deprecated
+ * @param input
+ * @param functions
+ */
 export function pipe<T>(
   input: PipelineInput,
   ...functions: [...PipelineHandler[], PipelineHandler<T>]

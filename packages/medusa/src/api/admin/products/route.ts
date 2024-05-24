@@ -50,14 +50,9 @@ export const POST = async (
 ) => {
   const input = [req.validatedBody as CreateProductDTO]
 
-  const { result, errors } = await createProductsWorkflow(req.scope).run({
+  const { result } = await createProductsWorkflow(req.scope).run({
     input: { products: input },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const product = await refetchProduct(
     result[0].id,
