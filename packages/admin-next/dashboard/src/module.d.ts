@@ -7,7 +7,7 @@ declare module "virtual:medusa/widgets/*" {
 }
 
 declare module "virtual:medusa/routes/pages" {
-  const pages: { path: string; file: string }[]
+  const pages: { path: string; Component: () => JSX.Element }[]
 
   export default {
     pages,

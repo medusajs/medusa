@@ -2,7 +2,6 @@ import {
   deleteCustomersWorkflow,
   updateCustomersWorkflow,
 } from "@medusajs/core-flows"
-import { AdminCustomerResponse } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -10,10 +9,11 @@ import {
 } from "../../../../types/routing"
 import { refetchCustomer } from "../helpers"
 import { AdminUpdateCustomerType } from "../validators"
+import { AdminCustomer } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<AdminCustomerResponse>
+  res: MedusaResponse<{ customer: AdminCustomer }>
 ) => {
   const customer = await refetchCustomer(
     req.params.id,
@@ -33,7 +33,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateCustomerType>,
-  res: MedusaResponse<AdminCustomerResponse>
+  res: MedusaResponse<{ customer: AdminCustomer }>
 ) => {
   const { errors } = await updateCustomersWorkflow(req.scope).run({
     input: {

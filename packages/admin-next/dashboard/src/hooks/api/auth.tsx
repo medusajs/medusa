@@ -7,7 +7,7 @@ export const useEmailPassLogin = (
   options?: UseMutationOptions<void, Error, EmailPassReq>
 ) => {
   return useMutation({
-    mutationFn: (payload) => sdk.auth.login("admin", "emailpass", payload),
+    mutationFn: (payload) => sdk.auth.login("user", "emailpass", payload),
     onSuccess: async (data, variables, context) => {
       options?.onSuccess?.(data, variables, context)
     },
@@ -26,7 +26,7 @@ export const useCreateAuthUser = (
   options?: UseMutationOptions<{ token: string }, Error, EmailPassReq>
 ) => {
   return useMutation({
-    mutationFn: (payload) => sdk.auth.create("admin", "emailpass", payload),
+    mutationFn: (payload) => sdk.auth.create("user", "emailpass", payload),
     onSuccess: async (data, variables, context) => {
       options?.onSuccess?.(data, variables, context)
     },

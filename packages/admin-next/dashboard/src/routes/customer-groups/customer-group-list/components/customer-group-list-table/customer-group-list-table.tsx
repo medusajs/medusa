@@ -1,5 +1,4 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { AdminCustomerGroupResponse } from "@medusajs/types"
 import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -16,6 +15,7 @@ import { useCustomerGroupTableColumns } from "../../../../../hooks/table/columns
 import { useCustomerGroupTableFilters } from "../../../../../hooks/table/filters/use-customer-group-table-filters"
 import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { HttpTypes } from "@medusajs/types"
 
 const PAGE_SIZE = 20
 
@@ -77,7 +77,7 @@ export const CustomerGroupListTable = () => {
 const CustomerGroupRowActions = ({
   group,
 }: {
-  group: AdminCustomerGroupResponse["customer_group"]
+  group: HttpTypes.AdminCustomerGroup
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -142,8 +142,7 @@ const CustomerGroupRowActions = ({
   )
 }
 
-const columnHelper =
-  createColumnHelper<AdminCustomerGroupResponse["customer_group"]>()
+const columnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
 
 const useColumns = () => {
   const columns = useCustomerGroupTableColumns()

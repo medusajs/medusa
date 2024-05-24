@@ -1,7 +1,4 @@
-import {
-  AdminCustomerGroupResponse,
-  AdminCustomerResponse,
-} from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import {
   Button,
   Checkbox,
@@ -33,7 +30,7 @@ import { client } from "../../../../../lib/client/index.ts"
 import { queryClient } from "../../../../../lib/query-client.ts"
 
 type CustomerGroupSectionProps = {
-  customer: AdminCustomerResponse["customer"]
+  customer: HttpTypes.AdminCustomer
 }
 
 const PAGE_SIZE = 10
@@ -161,7 +158,7 @@ const CustomerGroupRowActions = ({
   group,
   customerId,
 }: {
-  group: AdminCustomerGroupResponse["customer_group"]
+  group: HttpTypes.AdminCustomerGroup
   customerId: string
 }) => {
   const prompt = usePrompt()
@@ -215,8 +212,7 @@ const CustomerGroupRowActions = ({
   )
 }
 
-const columnHelper =
-  createColumnHelper<AdminCustomerGroupResponse["customer_group"]>()
+const columnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
 
 const useColumns = (customerId: string) => {
   const columns = useCustomerGroupTableColumns()

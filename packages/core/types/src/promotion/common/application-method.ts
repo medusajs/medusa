@@ -54,6 +54,11 @@ export interface ApplicationMethodDTO {
   value?: number
 
   /**
+   * The currency code of the application method
+   */
+  currency_code?: string
+
+  /**
    * The max quantity allowed in the cart for the associated promotion to be applied.
    */
   max_quantity?: number | null
@@ -117,6 +122,11 @@ export interface CreateApplicationMethodDTO {
   value?: number
 
   /**
+   * Currency of the value to apply.
+   */
+  currency_code: string
+
+  /**
    * The max quantity allowed in the cart for the associated promotion to be applied.
    */
   max_quantity?: number | null
@@ -158,7 +168,7 @@ export interface UpdateApplicationMethodDTO {
   /**
    * The ID of the application method.
    */
-  id: string
+  id?: string
 
   /**
    * The type of the application method indicating how
@@ -183,6 +193,11 @@ export interface UpdateApplicationMethodDTO {
    * The discounted amount applied by the associated promotion based on the `type`.
    */
   value?: number
+
+  /**
+   * The currency code of the promotions application
+   */
+  currency_code?: string
 
   /**
    * The max quantity allowed in the cart for the associated promotion to be applied.

@@ -59,4 +59,20 @@ export const templates = [
       },
     },
   },
+  {
+    id: "buy_get",
+    type: "buy_get",
+    title: "Buy X Get Y",
+    description: "Buy X product(s), get Y product(s)",
+    defaults: {
+      is_automatic: "false",
+      type: "buyget",
+      application_method: {
+        type: "percentage",
+        value: 100,
+        apply_to_quantity: 1,
+        max_quantity: 1,
+      },
+    },
+  },
 ]

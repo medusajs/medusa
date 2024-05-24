@@ -48,6 +48,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@medusajs/auth-emailpass": "0.0.1",
     "@medusajs/modules-sdk": "^1.12.9",
     "@medusajs/types": "^1.11.14",
     "@medusajs/utils": "^1.11.7",

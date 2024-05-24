@@ -88,7 +88,7 @@ export interface CreatePromotionDTO {
   /**
    * The associated application method.
    */
-  application_method?: CreateApplicationMethodDTO
+  application_method: CreateApplicationMethodDTO
 
   /**
    * The rules of the promotion.

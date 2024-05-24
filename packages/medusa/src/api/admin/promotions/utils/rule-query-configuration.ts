@@ -4,9 +4,9 @@ export const ruleQueryConfigurations = {
     labelAttr: "name",
     valueAttr: "id",
   },
-  currency: {
+  currency_code: {
     entryPoint: "currency",
-    labelAttr: "code",
+    labelAttr: "name",
     valueAttr: "code",
   },
   customer_group: {

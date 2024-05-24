@@ -6,14 +6,14 @@ import { RouteObject } from "react-router-dom"
 export const settingsRouteRegex = /^\/settings\//
 
 export const createRouteMap = (
-  routes: { path: string; file: string }[],
+  routes: { path: string; Component: () => JSX.Element }[],
   ignore?: string
 ): RouteObject[] => {
   const root: RouteObject[] = []
 
   const addRoute = (
     pathSegments: string[],
-    file: string,
+    Component: () => JSX.Element,
     currentLevel: RouteObject[]
   ) => {
     if (!pathSegments.length) {
@@ -33,23 +33,22 @@ export const createRouteMap = (
       route.children.push({
         path: "",
         async lazy() {
-          const { default: Component } = await import(/* @vite-ignore */ file)
           return { Component }
         },
       })
     } else {
       route.children ||= []
-      addRoute(remainingSegments, file, route.children)
+      addRoute(remainingSegments, Component, route.children)
     }
   }
 
-  routes.forEach(({ path, file }) => {
+  routes.forEach(({ path, Component }) => {
     // Remove the ignore segment from the path if it is provided
     const cleanedPath = ignore
       ? path.replace(ignore, "").replace(/^\/+/, "")
       : path.replace(/^\/+/, "")
     const pathSegments = cleanedPath.split("/").filter(Boolean)
-    addRoute(pathSegments, file, root)
+    addRoute(pathSegments, Component, root)
   })
 
   return root
