@@ -44,7 +44,7 @@ export const POST = async (
 ) => {
   const salesChannelsData = [req.validatedBody]
 
-  const { errors, result } = await createSalesChannelsWorkflow(req.scope).run({
+  const { result } = await createSalesChannelsWorkflow(req.scope).run({
     input: { salesChannelsData },
   })
 

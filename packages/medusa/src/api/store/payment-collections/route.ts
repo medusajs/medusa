@@ -33,10 +33,6 @@ export const POST = async (
       input: req.body,
     })
 
-    if (Array.isArray(errors) && errors[0]) {
-      throw errors[0].error
-    }
-
     const [cartCollectionRelation] = await remoteQuery(
       remoteQueryObjectFromString({
         entryPoint: "cart_payment_collection",
