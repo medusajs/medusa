@@ -43,11 +43,7 @@ export const POST = async (
     update: req.validatedBody,
   }
 
-  const { result, errors } = await workflow.run({ input })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
+  const { result } = await workflow.run({ input })
 
   const variables = { id: result[0].id }
 

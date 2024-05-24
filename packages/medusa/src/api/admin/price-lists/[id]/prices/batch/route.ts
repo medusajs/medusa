@@ -29,7 +29,7 @@ export const POST = async (
   } = req.validatedBody
 
   const workflow = batchPriceListPricesWorkflow(req.scope)
-  const { result, errors } = await workflow.run({
+  const { result } = await workflow.run({
     input: {
       data: {
         id,
@@ -38,12 +38,7 @@ export const POST = async (
         delete: deletePriceIds,
       },
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const [created, updated] = await promiseAll([
     listPrices(

@@ -9,14 +9,9 @@ export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const { errors } = await deleteTaxRateRulesWorkflow(req.scope).run({
+  await deleteTaxRateRulesWorkflow(req.scope).run({
     input: { ids: [req.params.rule_id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const taxRate = await refetchTaxRate(
     req.params.id,

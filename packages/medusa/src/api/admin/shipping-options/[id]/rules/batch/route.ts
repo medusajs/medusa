@@ -20,9 +20,7 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const id = req.params.id
-  const { result, errors } = await batchShippingOptionRulesWorkflow(
-    req.scope
-  ).run({
+  const { result } = await batchShippingOptionRulesWorkflow(req.scope).run({
     input: {
       create: req.validatedBody.create?.map((c) => ({
         ...c,
@@ -31,12 +29,7 @@ export const POST = async (
       update: req.validatedBody.update,
       delete: req.validatedBody.delete,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const batchResults = await refetchBatchRules(
     result,

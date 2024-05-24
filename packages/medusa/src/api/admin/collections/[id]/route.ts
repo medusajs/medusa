@@ -27,17 +27,12 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateCollectionType>,
   res: MedusaResponse
 ) => {
-  const { errors } = await updateCollectionsWorkflow(req.scope).run({
+  await updateCollectionsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const collection = await refetchCollection(
     req.params.id,
@@ -54,14 +49,9 @@ export const DELETE = async (
 ) => {
   const id = req.params.id
 
-  const { errors } = await deleteCollectionsWorkflow(req.scope).run({
+  await deleteCollectionsWorkflow(req.scope).run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,
