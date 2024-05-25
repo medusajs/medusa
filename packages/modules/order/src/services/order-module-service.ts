@@ -2149,24 +2149,12 @@ export default class OrderModuleService<
   ): Promise<void> {
     let shippingMethodId
 
-    const method = await this.shippingMethodService_.retrieve(
-      shippingMethodId,
-      {
-        relations: ["tax_lines", "adjustments"],
-      },
-      sharedContext
-    )
-
-    const calculatedAmount = getShippingMethodsTotals([method as any], {})[
-      method.id
-    ]
-
     const actions: CreateOrderChangeActionDTO[] = data.items.map((item) => {
       return {
         action: ChangeActionType.SHIP_ITEM,
         internal_note: item.internal_note,
         reference: data.reference,
-        reference_id: shippingMethodId,
+        reference_id: data.reference_id,
         details: {
           reference_id: item.id,
           quantity: item.quantity,
@@ -2180,7 +2168,6 @@ export default class OrderModuleService<
         action: ChangeActionType.SHIPPING_ADD,
         reference: data.reference,
         reference_id: shippingMethodId,
-        amount: calculatedAmount.total,
       })
     }
 

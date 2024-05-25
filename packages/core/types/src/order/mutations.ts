@@ -389,6 +389,7 @@ export interface RegisterOrderShipmentDTO {
   description?: string
   internal_note?: string
   reference?: string
+  reference_id?: string
   created_by?: string
   items: {
     id: string
