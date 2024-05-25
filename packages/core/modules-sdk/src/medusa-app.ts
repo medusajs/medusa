@@ -25,6 +25,7 @@ import {
   isObject,
   isString,
   promiseAll,
+  upperCaseFirst,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
@@ -68,6 +69,12 @@ export async function loadModules(
         delete declaration.definition
       } else {
         path = MODULE_PACKAGE_NAMES[moduleName]
+      }
+
+      definition ??= {
+        key: moduleName,
+        registrationName: moduleName,
+        label: upperCaseFirst(moduleName),
       }
 
       declaration.scope ??= MODULE_SCOPE.INTERNAL

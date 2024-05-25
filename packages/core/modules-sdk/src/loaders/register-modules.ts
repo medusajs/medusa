@@ -41,12 +41,8 @@ export const registerMedusaModule = (
       modDefinition,
       modDeclaration as ExternalModuleDeclaration
     )
-  } else {
-    moduleResolutions[moduleKey] = getInternalModuleResolution(
-      modDefinition,
-      moduleDeclaration as InternalModuleDeclaration,
-      moduleExports
-    )
+
+    return moduleResolutions
   }
 
   if (modDefinition === undefined) {
