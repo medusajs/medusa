@@ -1,5 +1,8 @@
 import { ExternalModuleDeclaration, Logger } from "@medusajs/types"
-import { findMedusaContext } from "./find-medusa-context"
+import {
+  findMedusaContext,
+  removeTrailingUndefined,
+} from "./find-medusa-context"
 
 const openedClients = new Map<string, any>()
 
@@ -70,7 +73,7 @@ export default async function (
               path,
               method: "POST",
               headers: sendHeaders,
-              body: JSON.stringify(args),
+              body: JSON.stringify(removeTrailingUndefined(args)),
             })
 
             let responseData = ""

@@ -13,3 +13,10 @@ export const findMedusaContext = (args: any[]) => {
 
   return
 }
+
+export function removeTrailingUndefined(arr: unknown[]) {
+  for (let i = arr.length; i && arr[--i] === undefined; ) {
+    arr.pop()
+  }
+  return arr
+}

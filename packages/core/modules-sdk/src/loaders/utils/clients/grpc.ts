@@ -1,5 +1,8 @@
 import { isString } from "@medusajs/utils"
-import { findMedusaContext } from "./find-medusa-context"
+import {
+  findMedusaContext,
+  removeTrailingUndefined,
+} from "./find-medusa-context"
 
 export default async function (moduleKeyName, baseUrl, serverOptions, logger) {
   let grpc
@@ -43,7 +46,7 @@ export default async function (moduleKeyName, baseUrl, serverOptions, logger) {
           const request = {
             module: moduleKeyName,
             method: methodName,
-            args: JSON.stringify(args),
+            args: JSON.stringify(removeTrailingUndefined(args)),
           }
 
           const metadata = new grpc.Metadata()
