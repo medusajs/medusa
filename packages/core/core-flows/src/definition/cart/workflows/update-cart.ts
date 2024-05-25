@@ -1,5 +1,5 @@
 import { UpdateCartWorkflowInputDTO } from "@medusajs/types"
-import { PromotionActions, isPresent } from "@medusajs/utils"
+import { MedusaError, PromotionActions, isPresent } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
@@ -43,6 +43,13 @@ export const updateCartWorkflow = createWorkflow(
         const data_ = { ...updateCartData }
 
         if (isPresent(updateCartData.region_id)) {
+          if (!data.region) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_FOUND,
+              "Region not found"
+            )
+          }
+
           data_.currency_code = data.region.currency_code
           data_.region_id = data.region.id
         }
