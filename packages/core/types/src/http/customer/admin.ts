@@ -1,11 +1,13 @@
 import {
   BaseCreateCustomer,
+  BaseCreateCustomerAddress,
   BaseCustomer,
   BaseCustomerAddress,
   BaseCustomerAddressFilters,
   BaseCustomerFilters,
   BaseCustomerGroup,
   BaseUpdateCustomer,
+  BaseUpdateCustomerAddress,
   CustomerGroupInCustomerFilters,
 } from "./common"
 
@@ -23,3 +25,6 @@ export interface AdminCustomerAddressFilters
 
 export interface AdminCreateCustomer extends BaseCreateCustomer {}
 export interface AdminUpdateCustomer extends BaseUpdateCustomer {}
+
+export interface AdminCreateCustomerAddress extends BaseCreateCustomerAddress {}
+export interface AdminUpdateCustomerAddress extends BaseUpdateCustomerAddress {}
