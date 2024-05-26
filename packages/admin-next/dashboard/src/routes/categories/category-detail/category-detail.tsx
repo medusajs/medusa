@@ -6,6 +6,11 @@ import { CategoryOrganizationSection } from "./components/category-organization-
 import { CategoryProductSection } from "./components/category-product-section"
 import { categoryLoader } from "./loader"
 
+import after from "virtual:medusa/widgets/product_category/details/after"
+import before from "virtual:medusa/widgets/product_category/details/before"
+import sideAfter from "virtual:medusa/widgets/product_category/details/side/after"
+import sideBefore from "virtual:medusa/widgets/product_category/details/side/before"
+
 export const CategoryDetail = () => {
   const { id } = useParams()
 
@@ -31,17 +36,45 @@ export const CategoryDetail = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
-      <div className="flex flex-col gap-x-4 lg:flex-row lg:items-start">
+      {before.widgets.map((w, i) => {
+        return (
+          <div key={i}>
+            <w.Component />
+          </div>
+        )
+      })}
+      <div className="flex flex-col gap-x-4 xl:flex-row xl:items-start">
         <div className="flex w-full flex-col gap-y-2">
           <CategoryGeneralSection category={product_category} />
           <CategoryProductSection category={product_category} />
-          <div className="hidden lg:block">
+          {after.widgets.map((w, i) => {
+            return (
+              <div key={i}>
+                <w.Component />
+              </div>
+            )
+          })}
+          <div className="hidden xl:block">
             <JsonViewSection data={product_category} />
           </div>
         </div>
-        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 lg:mt-0 lg:max-w-[400px]">
+        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 xl:mt-0 xl:max-w-[400px]">
+          {sideBefore.widgets.map((w, i) => {
+            return (
+              <div key={i}>
+                <w.Component />
+              </div>
+            )
+          })}
           <CategoryOrganizationSection category={product_category} />
-          <div className="lg:hidden">
+          {sideAfter.widgets.map((w, i) => {
+            return (
+              <div key={i}>
+                <w.Component />
+              </div>
+            )
+          })}
+          <div className="xl:hidden">
             <JsonViewSection data={product_category} />
           </div>
         </div>
