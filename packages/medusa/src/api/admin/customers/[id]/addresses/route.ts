@@ -49,14 +49,9 @@ export const POST = async (
     },
   ]
 
-  const { errors } = await createAddresses.run({
+  await createAddresses.run({
     input: { addresses },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const customer = await refetchCustomer(
     customerId,

@@ -19,4 +19,3 @@ export * from "./sales-channel"
 export * from "./stock-locations"
 export * from "./tax"
 export * from "./user"
-

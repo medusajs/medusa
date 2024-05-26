@@ -32,6 +32,8 @@ export class Auth {
     } else {
       this.client.setToken(token)
     }
+
+    return token
   }
 
   logout = async () => {

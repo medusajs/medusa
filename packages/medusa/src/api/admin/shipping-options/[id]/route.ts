@@ -28,14 +28,9 @@ export const POST = async (
       ...shippingOptionPayload,
     }
 
-  const { result, errors } = await workflow.run({
+  const { result } = await workflow.run({
     input: [workflowInput],
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const shippingOption = await refetchShippingOption(
     result[0].id,
@@ -54,14 +49,9 @@ export const DELETE = async (
 
   const workflow = deleteShippingOptionsWorkflow(req.scope)
 
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: { ids: [shippingOptionId] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res
     .status(200)

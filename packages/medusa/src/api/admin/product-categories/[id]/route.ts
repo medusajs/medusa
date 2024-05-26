@@ -31,14 +31,9 @@ export const POST = async (
   const { id } = req.params
 
   // TODO: Should be converted to bulk update
-  const { errors } = await updateProductCategoryWorkflow(req.scope).run({
+  await updateProductCategoryWorkflow(req.scope).run({
     input: { id, data: req.validatedBody },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const [category] = await refetchEntities(
     "product_category",

@@ -1,15 +1,14 @@
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 
-import { AdminCustomerGroupResponse } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import {
   TextCell,
   TextHeader,
 } from "../../../components/table/table-cells/common/text-cell"
+import { HttpTypes } from "@medusajs/types"
 
-const columnHelper =
-  createColumnHelper<AdminCustomerGroupResponse["customer_group"]>()
+const columnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
 
 export const useCustomerGroupTableColumns = () => {
   const { t } = useTranslation()
