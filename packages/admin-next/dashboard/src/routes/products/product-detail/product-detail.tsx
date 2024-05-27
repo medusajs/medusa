@@ -40,7 +40,7 @@ export const ProductDetail = () => {
       {before.widgets.map((w, i) => {
         return (
           <div key={i}>
-            <w.Component />
+            <w.Component data={product} />
           </div>
         )
       })}
@@ -53,7 +53,7 @@ export const ProductDetail = () => {
           {after.widgets.map((w, i) => {
             return (
               <div key={i}>
-                <w.Component />
+                <w.Component data={product} />
               </div>
             )
           })}
@@ -65,7 +65,7 @@ export const ProductDetail = () => {
           {sideBefore.widgets.map((w, i) => {
             return (
               <div key={i}>
-                <w.Component />
+                <w.Component data={product} />
               </div>
             )
           })}
@@ -75,7 +75,7 @@ export const ProductDetail = () => {
           {sideAfter.widgets.map((w, i) => {
             return (
               <div key={i}>
-                <w.Component />
+                <w.Component data={product} />
               </div>
             )
           })}

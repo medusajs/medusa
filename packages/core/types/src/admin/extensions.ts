@@ -1,0 +1,27 @@
+/**
+ * The props for detail widgets. All widgets that are rendered in a detail view,
+ * e.g. the product detail view, should implement this interface.
+ *
+ * The type of the data prop should be the same as the data that is passed to the widget.
+ * If the widget is rendered in the product detail view, the data prop should be of
+ * type AdminProduct.
+ *
+ * @example
+ * ```tsx
+ * import type { DetailWidgetProps, AdminProduct } from "@medusajs/types"
+ * import { defineConfig } from "@medusajs/admin-shared"
+ *
+ * const ProductWidget = ({ data }: DetailWidgetProps<AdminProduct>) => {
+ *  return <div>{data.title}</div>
+ * }
+ *
+ * export const config = defineConfig({
+ *  zone: "product.details.after",
+ * })
+ *
+ * export default ProductWidget
+ * ```
+ */
+export interface DetailWidgetProps<TData> {
+  data: TData
+}
