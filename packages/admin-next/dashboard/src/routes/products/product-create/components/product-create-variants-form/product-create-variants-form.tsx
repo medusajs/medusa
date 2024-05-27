@@ -208,7 +208,7 @@ const useColumns = ({
               <DataGridCurrencyCell
                 code={currency}
                 context={context}
-                field={`variants.${context.row.index}.price.${currency}`}
+                field={`variants.${context.row.index}.prices.${currency}`}
               />
             )
           },
