@@ -17,7 +17,7 @@ export interface BaseRegionCountry {
   id: string
   iso_2?: string
   iso_3?: string
-  num_code?: number
+  num_code?: string
   name?: string
   display_name?: string
 }
@@ -37,7 +37,7 @@ export interface BaseRegionCountryFilters
   id?: string[] | string
   iso_2?: string[] | string
   iso_3?: string[] | string
-  num_code?: number[] | string
+  num_code?: string | string[]
   name?: string[] | string
   display_name?: string[] | string
 }
