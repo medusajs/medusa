@@ -1,11 +1,12 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { Button, Container, Heading, usePrompt, toast } from "@medusajs/ui"
+import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
-import { keepPreviousData } from "@tanstack/react-query"
 
+import { HttpTypes } from "@medusajs/types"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDeleteRegion, useRegions } from "../../../../../hooks/api/regions"
@@ -13,7 +14,6 @@ import { useRegionTableColumns } from "../../../../../hooks/table/columns/use-re
 import { useRegionTableFilters } from "../../../../../hooks/table/filters/use-region-table-filters"
 import { useRegionTableQuery } from "../../../../../hooks/table/query/use-region-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { HttpTypes } from "@medusajs/types"
 
 const PAGE_SIZE = 20
 
@@ -56,7 +56,7 @@ export const RegionListTable = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">{t("regions.domain")}</Heading>
+        <Heading>{t("regions.domain")}</Heading>
         <Link to="/settings/regions/create">
           <Button size="small" variant="secondary">
             {t("actions.create")}
