@@ -5,7 +5,6 @@ import {
   isObject,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { migrateMedusaApp } from "@medusajs/medusa/dist/loaders/medusa-app"
 import { ConfigModule } from "@medusajs/types"
 
 export async function initDb({
@@ -42,6 +41,9 @@ export async function initDb({
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
+  const { migrateMedusaApp } = await import(
+    "@medusajs/medusa/dist/loaders/medusa-app"
+  )
   await migrateMedusaApp({ configModule, container })
 
   return pgConnection
