@@ -1,25 +1,28 @@
-const { asValue } = require("awilix")
-const {
-  isObject,
+import {
+  ContainerRegistrationKeys,
   createMedusaContainer,
   getConfigFile,
-} = require("@medusajs/utils")
-const { ContainerRegistrationKeys } = require("@medusajs/utils")
-const { migrateMedusaApp } = require("@medusajs/medusa/dist/loaders/medusa-app")
+  isObject,
+} from "@medusajs/utils"
+import { asValue } from "awilix"
+import { migrateMedusaApp } from "@medusajs/medusa/dist/loaders/medusa-app"
+import { ConfigModule } from "@medusajs/types"
 
-module.exports = {
+export default {
   initDb: async function ({
     cwd,
     env = {},
   }: {
-    cwd?: string
+    cwd: string
     env?: Record<any, any>
   }) {
     if (isObject(env)) {
       Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
     }
 
-    const { configModule } = getConfigFile(cwd, `medusa-config`)
+    const { configModule } = getConfigFile(cwd, `medusa-config`) as {
+      configModule: ConfigModule
+    }
 
     const pgConnectionLoader =
       require("@medusajs/medusa/dist/loaders/pg-connection").default
@@ -40,10 +43,7 @@ module.exports = {
       featureFlagRouter: asValue(featureFlagRouter),
     })
 
-    await migrateMedusaApp(
-      { configModule, container },
-      { registerInContainer: false }
-    )
+    await migrateMedusaApp({ configModule, container })
 
     return pgConnection
   },

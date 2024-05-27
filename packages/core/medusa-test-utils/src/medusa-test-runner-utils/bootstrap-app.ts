@@ -34,7 +34,7 @@ async function bootstrapApp({
   }
 }
 
-module.exports = {
+export default {
   startBootstrapApp: async ({
     cwd,
     env = {},
