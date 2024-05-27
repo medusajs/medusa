@@ -65,11 +65,17 @@ export const prepareAdjustmentsFromPromotionActionsStep = createStep(
       )
       .map((a) => (a as RemoveShippingMethodAdjustment).adjustment_id)
 
+    const computedPromotionCodes = [
+      ...lineItemAdjustmentsToCreate,
+      ...shippingMethodAdjustmentsToCreate,
+    ].map((adjustment) => adjustment.code)
+
     return new StepResponse({
       lineItemAdjustmentsToCreate,
       lineItemAdjustmentIdsToRemove,
       shippingMethodAdjustmentsToCreate,
       shippingMethodAdjustmentIdsToRemove,
+      computedPromotionCodes,
     })
   }
 )

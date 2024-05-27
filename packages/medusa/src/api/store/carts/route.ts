@@ -15,14 +15,9 @@ export const POST = async (
     customer_id: req.auth_context?.actor_id,
   }
 
-  const { result, errors } = await createCartWorkflow(req.scope).run({
+  const { result } = await createCartWorkflow(req.scope).run({
     input: workflowInput,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const cart = await refetchCart(
     result.id,

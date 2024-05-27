@@ -38,14 +38,9 @@ export const DELETE = async (
   // Test if exists
   await fulfillmentModuleService.retrieveShippingProfile(id)
 
-  const { errors } = await deleteShippingProfileWorkflow(req.scope).run({
+  await deleteShippingProfileWorkflow(req.scope).run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,

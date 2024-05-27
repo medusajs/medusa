@@ -5,6 +5,9 @@ export const defaultStoreOrderFields = [
   "status",
   "version",
   "summary",
+  "display_id",
+  "total",
+  "currency_code",
   "metadata",
   "created_at",
   "updated_at",
@@ -59,5 +62,5 @@ export const retrieveTransformQueryConfig = {
 
 export const listTransformQueryConfig = {
   defaults: defaultStoreOrderFields,
-  isList: false,
+  isList: true,
 }

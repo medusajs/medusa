@@ -10,7 +10,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateTaxRateRuleType>,
   res: MedusaResponse
 ) => {
-  const { errors } = await createTaxRateRulesWorkflow(req.scope).run({
+  await createTaxRateRulesWorkflow(req.scope).run({
     input: {
       rules: [
         {
@@ -20,12 +20,7 @@ export const POST = async (
         },
       ],
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const taxRate = await refetchTaxRate(
     req.params.id,

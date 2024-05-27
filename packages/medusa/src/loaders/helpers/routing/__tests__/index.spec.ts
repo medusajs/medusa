@@ -1,5 +1,4 @@
 import express from "express"
-import { IdMap } from "medusa-test-utils"
 import { resolve } from "path"
 import {
   config,
@@ -32,7 +31,7 @@ describe("RoutesLoader", function () {
       const res = await request("GET", "/admin/orders/1000", {
         adminSession: {
           jwt: {
-            userId: IdMap.getId("admin_user"),
+            userId: "admin_user",
           },
         },
       })
@@ -45,7 +44,7 @@ describe("RoutesLoader", function () {
       const res = await request("POST", "/admin/orders/1000", {
         adminSession: {
           jwt: {
-            userId: IdMap.getId("admin_user"),
+            userId: "admin_user",
           },
         },
       })
@@ -132,7 +131,7 @@ describe("RoutesLoader", function () {
       const res = await request("GET", "/admin/protected", {
         adminSession: {
           jwt: {
-            userId: IdMap.getId("admin_user"),
+            userId: "admin_user",
           },
         },
       })
@@ -159,7 +158,7 @@ describe("RoutesLoader", function () {
       const res = await request("GET", "/store/me/protected", {
         clientSession: {
           jwt: {
-            customer_id: IdMap.getId("lebron"),
+            customer_id: "lebron",
           },
         },
       })

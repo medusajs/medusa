@@ -49,17 +49,12 @@ export const POST = async (
   const productId = req.params.id
   const variantId = req.params.variant_id
 
-  const { errors } = await updateProductVariantsWorkflow(req.scope).run({
+  await updateProductVariantsWorkflow(req.scope).run({
     input: {
       selector: { id: variantId, product_id: productId },
       update: req.validatedBody,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const product = await refetchProduct(
     productId,
@@ -78,14 +73,9 @@ export const DELETE = async (
   const variantId = req.params.variant_id
 
   // TODO: I believe here we cannot even enforce the product ID based on the standard API we provide?
-  const { errors } = await deleteProductVariantsWorkflow(req.scope).run({
+  await deleteProductVariantsWorkflow(req.scope).run({
     input: { ids: [variantId] /* product_id: productId */ },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const product = await refetchProduct(
     productId,

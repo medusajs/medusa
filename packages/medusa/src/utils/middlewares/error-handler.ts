@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError } from "@medusajs/utils"
 import { Logger } from "../../types/global"
 import { formatException } from "../../utils"
 
