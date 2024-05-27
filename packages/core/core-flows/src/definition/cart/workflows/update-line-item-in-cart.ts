@@ -5,7 +5,7 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
-import { updateLineItemsStep } from "../../line-item/steps"
+import { updateLineItemsStepWithSelector } from "../../line-item/steps"
 import { refreshCartShippingMethodsStep } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { validateVariantPricesStep } from "../steps/validate-variant-prices"
@@ -77,7 +77,7 @@ export const updateLineItemInCartWorkflow = createWorkflow(
       }
     })
 
-    const result = updateLineItemsStep(lineItemUpdate)
+    const result = updateLineItemsStepWithSelector(lineItemUpdate)
 
     const cart = useRemoteQueryStep({
       entry_point: "cart",
