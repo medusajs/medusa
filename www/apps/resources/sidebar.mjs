@@ -26,8 +26,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Concepts",
             children: [
               {
-                path: "/commerce-modules/api-key/tokens",
-                title: "Tokens",
+                path: "/commerce-modules/api-key/concepts",
+                title: "API Key Concepts",
               },
               {
                 path: "/commerce-modules/api-key/relations-to-other-modules",
@@ -217,6 +217,15 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             path: "/commerce-modules/currency/examples",
             title: "Examples",
+          },
+          {
+            title: "Concepts",
+            children: [
+              {
+                path: "/commerce-modules/currency/relations-to-other-modules",
+                title: "Relation to Modules",
+              },
+            ],
           },
           {
             title: "References",
@@ -1014,6 +1023,15 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Examples",
           },
           {
+            title: "Concepts",
+            children: [
+              {
+                path: "/commerce-modules/store/relations-to-other-modules",
+                title: "Relation to Modules",
+              },
+            ],
+          },
+          {
             title: "References",
             children: [
               {
@@ -1077,17 +1095,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 path: "/commerce-modules/tax/tax-calculation-with-provider",
-                title: "Tax Calculation",
+                title: "Tax Calculation and Providers",
               },
             ],
           },
           {
             title: "References",
             children: [
-              {
-                path: "/references/tax/provider",
-                title: "Tax Provider Reference",
-              },
+              // {
+              //   path: "/references/tax/provider",
+              //   title: "Tax Provider Reference",
+              // },
               {
                 path: "/references/tax",
                 title: "Main Service Reference",
