@@ -61,10 +61,7 @@ export default async function ({ port, cpus, directory }) {
       })
       const serverActivity = Logger.activity(`Creating server`)
       const server = GracefulShutdownServer.create(
-        app.listen(port).on("error", (err) => {
-          if (err) {
-            return
-          }
+        app.listen(port).on("listening", () => {
           Logger.success(serverActivity, `Server is ready on port: ${port}`)
           track("CLI_START_COMPLETED")
         })
