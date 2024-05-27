@@ -2,6 +2,7 @@ import express from "express"
 import getPort from "get-port"
 import { resolve } from "path"
 import { isObject, promiseAll } from "@medusajs/utils"
+import { MedusaContainer } from "@medusajs/types"
 // TODO: fix that once we find the appropriate place to put this util
 const {
   GracefulShutdownServer,
@@ -34,48 +35,50 @@ async function bootstrapApp({
   }
 }
 
-export default {
-  startBootstrapApp: async ({
+export async function startBootstrapApp({
+  cwd,
+  env = {},
+}: { cwd?: string; env?: Record<any, any> } = {}): Promise<{
+  shutdown: () => Promise<void>
+  container: MedusaContainer
+  port: number
+}> {
+  const {
+    app,
+    port,
+    container,
+    shutdown: medusaShutdown,
+  } = await bootstrapApp({
     cwd,
-    env = {},
-  }: { cwd?: string; env?: Record<any, any> } = {}) => {
-    const {
-      app,
-      port,
-      container,
-      shutdown: medusaShutdown,
-    } = await bootstrapApp({
-      cwd,
-      env,
-    })
+    env,
+  })
 
-    let expressServer
+  let expressServer
 
-    const shutdown = async () => {
-      await promiseAll([expressServer.shutdown(), medusaShutdown()])
+  const shutdown = async () => {
+    await promiseAll([expressServer.shutdown(), medusaShutdown()])
 
-      if (typeof global !== "undefined" && global?.gc) {
-        global.gc()
-      }
+    if (typeof global !== "undefined" && global?.gc) {
+      global.gc()
     }
+  }
 
-    return await new Promise((resolve, reject) => {
-      const server = app.listen(port).on("error", async (err) => {
-        if (err) {
-          await shutdown()
-          return reject(err)
-        }
+  return await new Promise((resolve, reject) => {
+    const server = app.listen(port).on("error", async (err) => {
+      if (err) {
+        await shutdown()
+        return reject(err)
+      }
 
-        process.send?.(port)
+      process.send?.(port)
 
-        resolve({
-          shutdown,
-          container,
-          port,
-        })
+      resolve({
+        shutdown,
+        container,
+        port,
       })
-
-      expressServer = GracefulShutdownServer.create(server)
     })
-  },
+
+    expressServer = GracefulShutdownServer.create(server)
+  })
 }
