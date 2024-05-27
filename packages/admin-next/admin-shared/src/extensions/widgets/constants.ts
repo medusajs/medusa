@@ -85,6 +85,29 @@ const GIFT_CARD_INJECTION_ZONES = [
   "custom_gift_card.after",
 ] as const
 
+const REGION_INJECTION_ZONES = [
+  "region.details.before",
+  "region.details.after",
+  "region.list.before",
+  "region.list.after",
+] as const
+
+const SHIPPING_PROFILE_INJECTION_ZONES = [
+  "shipping_profile.details.before",
+  "shipping_profile.details.after",
+  "shipping_profile.list.before",
+  "shipping_profile.list.after",
+] as const
+
+const LOCATION_INJECTION_ZONES = [
+  "location.details.before",
+  "location.details.after",
+  "location.details.side.before",
+  "location.details.side.after",
+  "location.list.before",
+  "location.list.after",
+] as const
+
 const LOGIN_INJECTION_ZONES = ["login.before", "login.after"] as const
 
 /**
@@ -103,5 +126,8 @@ export const INJECTION_ZONES = [
   ...DISCOUNT_INJECTION_ZONES,
   ...PROMOTION_INJECTION_ZONES,
   ...GIFT_CARD_INJECTION_ZONES,
+  ...REGION_INJECTION_ZONES,
+  ...SHIPPING_PROFILE_INJECTION_ZONES,
+  ...LOCATION_INJECTION_ZONES,
   ...LOGIN_INJECTION_ZONES,
 ] as const
