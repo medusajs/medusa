@@ -1,5 +1,4 @@
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import { unlessPath } from "../../utils/unless-path"
 import { validateAndTransformBody } from "../../utils/validate-body"
@@ -25,11 +24,6 @@ import {
 } from "./validators"
 
 export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: ["ALL"],
-    matcher: "/admin/products*",
-    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/products",

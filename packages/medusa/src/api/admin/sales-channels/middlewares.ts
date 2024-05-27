@@ -1,5 +1,4 @@
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
@@ -13,11 +12,6 @@ import {
 } from "./validators"
 
 export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: ["ALL"],
-    matcher: "/admin/sales-channels*",
-    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/sales-channels",

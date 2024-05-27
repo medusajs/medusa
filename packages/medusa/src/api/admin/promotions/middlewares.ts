@@ -1,5 +1,4 @@
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import { createBatchBody } from "../../utils/validators"
@@ -17,10 +16,6 @@ import {
 } from "./validators"
 
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    matcher: "/admin/promotions*",
-    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/promotions",
