@@ -95,7 +95,6 @@ export const CreateCampaignForm = () => {
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-
             <Button
               size="small"
               variant="primary"

@@ -58,20 +58,17 @@ const PRODUCT_CATEGORY_INJECTION_ZONES = [
 const PRICE_LIST_INJECTION_ZONES = [
   "price_list.details.before",
   "price_list.details.after",
+  "price_list.details.side.before",
+  "price_list.details.side.after",
   "price_list.list.before",
   "price_list.list.after",
-] as const
-
-const DISCOUNT_INJECTION_ZONES = [
-  "discount.details.before",
-  "discount.details.after",
-  "discount.list.before",
-  "discount.list.after",
 ] as const
 
 const PROMOTION_INJECTION_ZONES = [
   "promotion.details.before",
   "promotion.details.after",
+  "promotion.details.side.before",
+  "promotion.details.side.after",
   "promotion.list.before",
   "promotion.list.after",
 ] as const
@@ -102,6 +99,29 @@ const PROFILE_INJECTION_ZONES = [
   "profile.details.after",
 ] as const
 
+const REGION_INJECTION_ZONES = [
+  "region.details.before",
+  "region.details.after",
+  "region.list.before",
+  "region.list.after",
+] as const
+
+const SHIPPING_PROFILE_INJECTION_ZONES = [
+  "shipping_profile.details.before",
+  "shipping_profile.details.after",
+  "shipping_profile.list.before",
+  "shipping_profile.list.after",
+] as const
+
+const LOCATION_INJECTION_ZONES = [
+  "location.details.before",
+  "location.details.after",
+  "location.details.side.before",
+  "location.details.side.after",
+  "location.list.before",
+  "location.list.after",
+] as const
+
 const LOGIN_INJECTION_ZONES = ["login.before", "login.after"] as const
 
 /**
@@ -117,11 +137,13 @@ export const INJECTION_ZONES = [
   ...PRODUCT_COLLECTION_INJECTION_ZONES,
   ...PRODUCT_CATEGORY_INJECTION_ZONES,
   ...PRICE_LIST_INJECTION_ZONES,
-  ...DISCOUNT_INJECTION_ZONES,
   ...PROMOTION_INJECTION_ZONES,
   ...GIFT_CARD_INJECTION_ZONES,
   ...USER_INJECTION_ZONES,
   ...STORE_INJECTION_ZONES,
   ...PROFILE_INJECTION_ZONES,
+  ...REGION_INJECTION_ZONES,
+  ...SHIPPING_PROFILE_INJECTION_ZONES,
+  ...LOCATION_INJECTION_ZONES,
   ...LOGIN_INJECTION_ZONES,
 ] as const
