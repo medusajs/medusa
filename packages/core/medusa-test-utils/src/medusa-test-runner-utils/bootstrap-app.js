@@ -2,6 +2,7 @@ const path = require("path")
 const express = require("express")
 const getPort = require("get-port")
 const { isObject, promiseAll } = require("@medusajs/utils")
+// TODO: fix that once we find the appropriate place to put this util
 const {
   GracefulShutdownServer,
 } = require("@medusajs/medusa/dist/utils/graceful-shutdown-server")

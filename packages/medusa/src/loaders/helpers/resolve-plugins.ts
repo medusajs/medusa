@@ -3,7 +3,6 @@ import { isString } from "@medusajs/utils"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
 import path from "path"
-import Module from "module";
 
 export const MEDUSA_PROJECT_NAME = "project-plugin"
 function createPluginId(name: string): string {
@@ -13,19 +12,6 @@ function createPluginId(name: string): string {
 function createFileContentHash(path, files): string {
   return path + files
 }
-
-const fallback = (filename: string) => {
-  const mod = new Module(filename)
-
-  mod.filename = filename
-  mod.paths = (Module as any)._nodeModulePaths(path.dirname(filename))
-  ;(mod as any)._compile(`module.exports = require;`, filename)
-
-  return mod.exports
-}
-
-// Polyfill Node's `Module.createRequireFromPath` if not present (added in Node v10.12.0)
-const createRequireFromPath = Module.createRequire || fallback
 
 /**
  * Finds the correct path for the plugin. If it is a local plugin it will be
@@ -70,23 +56,14 @@ function resolvePlugin(pluginName: string): {
     }
   }
 
-  const rootDir = path.resolve(".")
-
   /**
    *  Here we have an absolute path to an internal plugin, or a name of a module
    *  which should be located in node_modules.
    */
   try {
-    const requireSource =
-      rootDir !== null
-        ? createRequireFromPath(`${rootDir}/:internal:`)
-        : require
-
     // If the path is absolute, resolve the directory of the internal plugin,
     // otherwise resolve the directory containing the package.json
-    const resolvedPath = path.dirname(
-      requireSource.resolve(`${pluginName}/package.json`)
-    )
+    const resolvedPath = require.resolve(pluginName)
 
     const packageJSON = JSON.parse(
       fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)
