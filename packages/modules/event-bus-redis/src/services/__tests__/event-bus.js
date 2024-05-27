@@ -1,5 +1,4 @@
 import { Queue, Worker } from "bullmq"
-import { MockManager } from "medusa-test-utils"
 import RedisEventBusService from "../event-bus-redis"
 
 jest.genMockFromModule("bullmq")
@@ -15,7 +14,7 @@ const loggerMock = {
 
 const simpleModuleOptions = { redisUrl: "test-url" }
 const moduleDeps = {
-  manager: MockManager,
+  manager: {},
   logger: loggerMock,
   eventBusRedisConnection: {},
 }
