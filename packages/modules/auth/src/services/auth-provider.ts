@@ -4,7 +4,7 @@ import {
   AuthIdentityProviderService,
   AuthenticationResponse,
 } from "@medusajs/types"
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError } from "@medusajs/utils"
 import { AuthProviderRegistrationPrefix } from "@types"
 
 type InjectedDependencies = {

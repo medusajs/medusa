@@ -1,5 +1,5 @@
 import { ConfigModule } from "@medusajs/types"
-import { getConfigFile, isDefined } from "medusa-core-utils"
+import { getConfigFile, isDefined } from "@medusajs/utils"
 import logger from "./logger"
 
 const isProduction = ["production", "prod"].includes(process.env.NODE_ENV || "")

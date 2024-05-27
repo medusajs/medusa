@@ -1,6 +1,8 @@
 const ORDER_INJECTION_ZONES = [
   "order.details.before",
   "order.details.after",
+  "order.details.side.before",
+  "order.details.side.after",
   "order.list.before",
   "order.list.after",
 ] as const
@@ -8,6 +10,8 @@ const ORDER_INJECTION_ZONES = [
 const DRAFT_ORDER_INJECTION_ZONES = [
   "draft_order.list.before",
   "draft_order.list.after",
+  "draft_order.details.side.before",
+  "draft_order.details.side.after",
   "draft_order.details.before",
   "draft_order.details.after",
 ] as const
@@ -45,6 +49,8 @@ const PRODUCT_COLLECTION_INJECTION_ZONES = [
 const PRODUCT_CATEGORY_INJECTION_ZONES = [
   "product_category.details.before",
   "product_category.details.after",
+  "product_category.details.side.before",
+  "product_category.details.side.after",
   "product_category.list.before",
   "product_category.list.after",
 ] as const

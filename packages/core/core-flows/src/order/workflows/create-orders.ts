@@ -1,5 +1,5 @@
 import { CreateOrderDTO, OrderDTO } from "@medusajs/types"
-import { MathBN } from "@medusajs/utils"
+import { MathBN, MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
@@ -95,6 +95,10 @@ export const createOrdersWorkflow = createWorkflow(
     const pricingContext = transform(
       { input, region, customerData },
       (data) => {
+        if (!data.region) {
+          throw new MedusaError(MedusaError.Types.NOT_FOUND, "Region not found")
+        }
+
         return {
           currency_code: data.input.currency_code ?? data.region.currency_code,
           region_id: data.region.id,
