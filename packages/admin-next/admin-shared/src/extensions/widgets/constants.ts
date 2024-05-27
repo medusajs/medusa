@@ -66,6 +66,8 @@ const DISCOUNT_INJECTION_ZONES = [
 const PROMOTION_INJECTION_ZONES = [
   "promotion.details.before",
   "promotion.details.after",
+  "promotion.details.side.before",
+  "promotion.details.side.after",
   "promotion.list.before",
   "promotion.list.after",
 ] as const
