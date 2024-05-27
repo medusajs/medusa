@@ -1,14 +1,10 @@
 import {
-  createReturnOrderWorkflow,
+  createOrderFulfillmentWorkflow,
+  createOrderShipmentWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
+import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
-  ModuleRegistrationName,
-  Modules,
-  RemoteLink,
-} from "@medusajs/modules-sdk"
-import {
-  FulfillmentSetDTO,
   FulfillmentWorkflow,
   IOrderModuleService,
   IRegionModuleService,
@@ -30,6 +26,7 @@ jest.setTimeout(500000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const providerId = "manual_test-provider"
+let inventoryItem
 
 async function prepareDataFixtures({ container }) {
   const fulfillmentService = container.resolve(
@@ -104,7 +101,7 @@ async function prepareDataFixtures({ container }) {
     },
   ])
 
-  const inventoryItem = await inventoryModule.create({
+  inventoryItem = await inventoryModule.create({
     sku: "inv-1234",
   })
 
@@ -213,11 +210,10 @@ async function prepareDataFixtures({ container }) {
     salesChannel,
     location,
     product,
-    fulfillmentSet,
   }
 }
 
-async function createOrderFixture({ container, product }) {
+async function createOrderFixture({ container, product, location }) {
   const orderService: IOrderModuleService = container.resolve(
     ModuleRegistrationName.ORDER
   )
@@ -244,7 +240,7 @@ async function createOrderFixture({ container, product }) {
     ],
     transactions: [
       {
-        amount: 50, // TODO: check calculation, I think it should be 60 wit the shipping but the order total is 50
+        amount: 50,
         currency_code: "usd",
       },
     ],
@@ -293,43 +289,15 @@ async function createOrderFixture({ container, product }) {
     customer_id: "joe",
   })
 
-  await orderService.addOrderAction([
+  const inventoryModule = container.resolve(ModuleRegistrationName.INVENTORY)
+  const reservation = await inventoryModule.createReservationItems([
     {
-      action: "FULFILL_ITEM",
-      order_id: order.id,
-      version: order.version,
-      reference: "fullfilment",
-      reference_id: "fulfill_123",
-      details: {
-        reference_id: order.items![0].id,
-        quantity: 1,
-      },
-    },
-    {
-      action: "SHIP_ITEM",
-      order_id: order.id,
-      version: order.version,
-      reference: "fullfilment",
-      reference_id: "fulfill_123",
-      details: {
-        reference_id: order.items![0].id,
-        quantity: 1,
-      },
+      line_item_id: order.items![0].id,
+      inventory_item_id: inventoryItem.id,
+      location_id: location.id,
+      quantity: order.items![0].quantity,
     },
   ])
-
-  const returnReason = await orderService.createReturnReasons({
-    value: "Test reason",
-    label: "Test reason",
-  })
-
-  await orderService.createReturnReasons({
-    value: "Test child reason",
-    label: "Test child reason",
-    parent_return_reason_id: returnReason.id,
-  })
-
-  await orderService.applyPendingOrderActions(order.id)
 
   order = await orderService.retrieve(order.id, {
     relations: ["items"],
@@ -347,12 +315,11 @@ medusaIntegrationTestRunner({
       container = getContainer()
     })
 
-    describe("Create return order workflow", () => {
+    describe("Create order fulfillment workflow", () => {
       let shippingOption: ShippingOptionDTO
       let region: RegionDTO
       let location: StockLocationDTO
       let product: ProductDTO
-      let fulfillmentSet: FulfillmentSetDTO
 
       let orderService: IOrderModuleService
 
@@ -365,36 +332,53 @@ medusaIntegrationTestRunner({
         region = fixtures.region
         location = fixtures.location
         product = fixtures.product
-        fulfillmentSet = fixtures.fulfillmentSet
 
         orderService = container.resolve(ModuleRegistrationName.ORDER)
       })
 
-      it("should create a return order", async () => {
-        const order = await createOrderFixture({ container, product })
-        const reasons = await orderService.listReturnReasons({})
-        const testReason = reasons.find(
-          (r) => r.value.toLowerCase() === "test child reason"
-        )!
-
-        const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
+      it("should create a order fulfillment", async () => {
+        const order = await createOrderFixture({ container, product, location })
+        const createReturnOrderData: OrderWorkflow.CreateOrderFulfillmentWorkflowInput =
           {
             order_id: order.id,
-            return_shipping: {
-              option_id: shippingOption.id,
-            },
+            created_by: "user_1",
             items: [
               {
                 id: order.items![0].id,
                 quantity: 1,
-                reason_id: testReason.id,
+              },
+            ],
+            no_notification: false,
+            location_id: undefined,
+          }
+
+        const { result: fulfillment } = await createOrderFulfillmentWorkflow(
+          container
+        ).run({
+          input: createReturnOrderData,
+        })
+
+        const createShipmentData: OrderWorkflow.CreateOrderShipmentWorkflowInput =
+          {
+            order_id: order.id,
+            fulfillment_id: fulfillment.id,
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+              },
+            ],
+            labels: [
+              {
+                tracking_number: "123456",
+                tracking_url: "abcdef-xpress.com/track/123456",
+                label_url: "http://abcdef-xpress.com/label/123456",
               },
             ],
           }
 
-        await createReturnOrderWorkflow(container).run({
-          input: createReturnOrderData,
-          throwOnError: true,
+        await createOrderShipmentWorkflow(container).run({
+          input: createShipmentData,
         })
 
         const remoteQuery = container.resolve(
@@ -415,157 +399,24 @@ medusaIntegrationTestRunner({
           ],
         })
 
-        const [returnOrder] = await remoteQuery(remoteQueryObject)
+        const [orderFulfill] = await remoteQuery(remoteQueryObject)
 
-        expect(returnOrder).toEqual(
-          expect.objectContaining({
-            id: expect.any(String),
-            display_id: 1,
-            region_id: "test_region_idclear",
-            customer_id: "joe",
-            version: 2,
-            sales_channel_id: "test", // TODO: What about order with a sales channel but a shipping option link to a stock from another channel?
-            status: "pending",
-            is_draft_order: false,
-            email: "foo@bar.com",
-            currency_code: "usd",
-            shipping_address_id: expect.any(String),
-            billing_address_id: expect.any(String),
-            items: [
-              expect.objectContaining({
-                id: order.items![0].id,
-                title: "Custom Item 2",
-                variant_sku: product.variants[0].sku,
-                variant_title: product.variants[0].title,
-                requires_shipping: true,
-                is_discountable: true,
-                is_tax_inclusive: false,
-                compare_at_unit_price: null,
-                unit_price: 50,
-                quantity: 1,
-                detail: expect.objectContaining({
-                  id: expect.any(String),
-                  order_id: expect.any(String),
-                  version: 2,
-                  item_id: expect.any(String),
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 1,
-                  return_requested_quantity: 1,
-                  return_received_quantity: 0,
-                  return_dismissed_quantity: 0,
-                  written_off_quantity: 0,
-                }),
-              }),
-            ],
-            shipping_methods: expect.arrayContaining([
-              expect.objectContaining({
-                id: expect.any(String),
-                name: "Test shipping method",
-                description: null,
-                is_tax_inclusive: false,
-                shipping_option_id: null,
-                amount: 10,
-                order_id: expect.any(String),
-              }),
-              expect.objectContaining({
-                id: expect.any(String),
-                name: shippingOption.name,
-                description: null,
-                is_tax_inclusive: false,
-                shipping_option_id: shippingOption.id,
-                amount: 10,
-                order_id: expect.any(String),
-              }),
-            ]),
-            fulfillments: [
-              expect.objectContaining({
-                id: expect.any(String),
-                location_id: location.id,
-                provider_id: providerId,
-                shipping_option_id: shippingOption.id,
-                // TODO: Validate the address once we are fixed on it
-                /*delivery_address: {
-                  id: "fuladdr_01HY0RTAP0P1EEAFK7BXJ0BKBN",
-                },*/
-              }),
-            ],
-          })
+        expect(orderFulfill.fulfillments).toHaveLength(1)
+        expect(orderFulfill.items[0].detail.fulfilled_quantity).toEqual(1)
+
+        const inventoryModule = container.resolve(
+          ModuleRegistrationName.INVENTORY
         )
-      })
-
-      it("should fail when location is not linked", async () => {
-        const order = await createOrderFixture({ container, product })
-        const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
-          {
-            order_id: order.id,
-            return_shipping: {
-              option_id: shippingOption.id,
-            },
-            items: [
-              {
-                id: order.items![0].id,
-                quantity: 1,
-              },
-            ],
-          }
-
-        // Remove the location link
-        const remoteLink = container.resolve(
-          ContainerRegistrationKeys.REMOTE_LINK
-        ) as RemoteLink
-
-        await remoteLink.dismiss([
-          {
-            [Modules.STOCK_LOCATION]: {
-              stock_location_id: location.id,
-            },
-            [Modules.FULFILLMENT]: {
-              fulfillment_set_id: fulfillmentSet.id,
-            },
-          },
-        ])
-
-        const { errors } = await createReturnOrderWorkflow(container).run({
-          input: createReturnOrderData,
-          throwOnError: false,
+        const reservation = await inventoryModule.listReservationItems({
+          line_item_id: order.items![0].id,
         })
+        expect(reservation).toHaveLength(0)
 
-        await expect(errors[0].error.message).toBe(
-          `Cannot create return without stock location, either provide a location or you should link the shipping option ${shippingOption.id} to a stock location.`
+        const stockAvailability = await inventoryModule.retrieveStockedQuantity(
+          inventoryItem.id,
+          [location.id]
         )
-      })
-
-      it("should fail when a reason with children is provided", async () => {
-        const order = await createOrderFixture({ container, product })
-        const reasons = await orderService.listReturnReasons({})
-        const testReason = reasons.find(
-          (r) => r.value.toLowerCase() === "test reason"
-        )!
-
-        const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
-          {
-            order_id: order.id,
-            return_shipping: {
-              option_id: shippingOption.id,
-            },
-            items: [
-              {
-                id: order.items![0].id,
-                quantity: 1,
-                reason_id: testReason.id,
-              },
-            ],
-          }
-
-        const { errors } = await createReturnOrderWorkflow(container).run({
-          input: createReturnOrderData,
-          throwOnError: false,
-        })
-
-        expect(errors[0].error.message).toBe(
-          `Cannot apply return reason with id ${testReason.id} to order with id ${order.id}. Return reason has nested reasons.`
-        )
+        expect(stockAvailability).toEqual(1)
       })
     })
   },

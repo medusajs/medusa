@@ -56,3 +56,19 @@ export type BulkUpdateInventoryLevelInput = {
    */
   location_id: string
 } & UpdateInventoryLevelInput
+
+export type BulkAdjustInventoryLevelInput = {
+  /**
+   * The ID of the associated inventory level.
+   */
+  inventory_item_id: string
+  /**
+   * The ID of the associated location.
+   */
+  location_id: string
+
+  /**
+   * The quantity to adjust the inventory level by.
+   */
+  adjustment: number // TODO: BigNumberInput
+} & UpdateInventoryLevelInput
