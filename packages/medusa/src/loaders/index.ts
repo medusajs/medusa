@@ -4,7 +4,7 @@ import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
 import glob from "glob"
-import { createMedusaContainer } from "medusa-core-utils"
+import { createMedusaContainer } from "@medusajs/utils"
 import path from "path"
 import requestIp from "request-ip"
 import { v4 } from "uuid"
@@ -103,7 +103,7 @@ async function loadEntrypoints(
   return shutdown
 }
 
-async function initializeContainer(rootDirectory: string) {
+export async function initializeContainer(rootDirectory: string) {
   const container = createMedusaContainer()
   const configModule = loadConfig(rootDirectory)
   const featureFlagRouter = featureFlagsLoader(configModule, Logger)

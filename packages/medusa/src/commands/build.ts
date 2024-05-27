@@ -1,6 +1,6 @@
 import { ConfigModule } from "@medusajs/types"
 import { transformFile } from "@swc/core"
-import { getConfigFile } from "medusa-core-utils"
+import { getConfigFile } from "@medusajs/utils"
 import { existsSync } from "node:fs"
 import { copyFile, mkdir, readdir, rm, writeFile } from "node:fs/promises"
 import path from "path"
