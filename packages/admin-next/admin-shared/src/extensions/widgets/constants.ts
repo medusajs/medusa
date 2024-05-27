@@ -73,6 +73,15 @@ const PROMOTION_INJECTION_ZONES = [
   "promotion.list.after",
 ] as const
 
+const CAMPAIGN_INJECTION_ZONES = [
+  "campaign.details.before",
+  "campaign.details.after",
+  "campaign.details.side.before",
+  "campaign.details.side.after",
+  "campaign.list.before",
+  "campaign.list.after",
+] as const
+
 const GIFT_CARD_INJECTION_ZONES = [
   "gift_card.details.before",
   "gift_card.details.after",
@@ -124,6 +133,43 @@ const LOCATION_INJECTION_ZONES = [
 
 const LOGIN_INJECTION_ZONES = ["login.before", "login.after"] as const
 
+const SALES_CHANNEL_INJECTION_ZONES = [
+  "sales_channel.details.before",
+  "sales_channel.details.after",
+  "sales_channel.list.before",
+  "sales_channel.list.after",
+] as const
+
+const RESERVATION_INJECTION_ZONES = [
+  "reservation.details.before",
+  "reservation.details.after",
+  "reservation.details.side.before",
+  "reservation.details.side.after",
+  "reservation.list.before",
+  "reservation.list.after",
+] as const
+
+const API_KEY_INJECTION_ZONES = [
+  "api_key.details.before",
+  "api_key.details.after",
+  "api_key.list.before",
+  "api_key.list.after",
+]
+
+const WORKFLOW_INJECTION_ZONES = [
+  "workflow.details.before",
+  "workflow.details.after",
+  "workflow.list.before",
+  "workflow.list.after",
+] as const
+
+const TAX_INJECTION_ZONES = [
+  "tax.details.before",
+  "tax.details.after",
+  "tax.list.before",
+  "tax.list.after",
+] as const
+
 /**
  * All valid injection zones in the admin panel. An injection zone is a specific place
  * in the admin panel where a plugin can inject custom widgets.
@@ -146,4 +192,10 @@ export const INJECTION_ZONES = [
   ...SHIPPING_PROFILE_INJECTION_ZONES,
   ...LOCATION_INJECTION_ZONES,
   ...LOGIN_INJECTION_ZONES,
+  ...SALES_CHANNEL_INJECTION_ZONES,
+  ...RESERVATION_INJECTION_ZONES,
+  ...API_KEY_INJECTION_ZONES,
+  ...WORKFLOW_INJECTION_ZONES,
+  ...CAMPAIGN_INJECTION_ZONES,
+  ...TAX_INJECTION_ZONES,
 ] as const

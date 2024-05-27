@@ -7,6 +7,9 @@ import { WorkflowExecutionHistorySection } from "./components/workflow-execution
 import { WorkflowExecutionPayloadSection } from "./components/workflow-execution-payload-section"
 import { WorkflowExecutionTimelineSection } from "./components/workflow-execution-timeline-section"
 
+import after from "virtual:medusa/widgets/workflow/details/after"
+import before from "virtual:medusa/widgets/workflow/details/before"
+
 export const ExecutionDetail = () => {
   const { id } = useParams()
 
@@ -23,10 +26,24 @@ export const ExecutionDetail = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
+      {before.widgets.map((w, i) => {
+        return (
+          <div key={i}>
+            <w.Component execution={workflow_execution} />
+          </div>
+        )
+      })}
       <WorkflowExecutionGeneralSection execution={workflow_execution} />
       <WorkflowExecutionTimelineSection execution={workflow_execution} />
       <WorkflowExecutionPayloadSection execution={workflow_execution} />
       <WorkflowExecutionHistorySection execution={workflow_execution} />
+      {after.widgets.map((w, i) => {
+        return (
+          <div key={i}>
+            <w.Component execution={workflow_execution} />
+          </div>
+        )
+      })}
       <JsonViewSection data={workflow_execution} />
     </div>
   )
