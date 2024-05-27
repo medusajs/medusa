@@ -1,13 +1,16 @@
-const path = require("path")
-const express = require("express")
-const getPort = require("get-port")
-const { isObject, promiseAll } = require("@medusajs/utils")
+import express from "express"
+import getPort from "get-port"
+import { resolve } from "path"
+import { isObject, promiseAll } from "@medusajs/utils"
 // TODO: fix that once we find the appropriate place to put this util
 const {
   GracefulShutdownServer,
 } = require("@medusajs/medusa/dist/utils/graceful-shutdown-server")
 
-async function bootstrapApp({ cwd, env = {} } = {}) {
+async function bootstrapApp({
+  cwd,
+  env = {},
+}: { cwd?: string; env?: Record<any, any> } = {}) {
   const app = express()
 
   if (isObject(env)) {
@@ -17,7 +20,7 @@ async function bootstrapApp({ cwd, env = {} } = {}) {
   const loaders = require("@medusajs/medusa/dist/loaders").default
 
   const { container, shutdown } = await loaders({
-    directory: path.resolve(cwd || process.cwd()),
+    directory: resolve(cwd || process.cwd()),
     expressApp: app,
   })
 
@@ -35,8 +38,7 @@ module.exports = {
   startBootstrapApp: async ({
     cwd,
     env = {},
-    skipExpressListen = false,
-  } = {}) => {
+  }: { cwd?: string; env?: Record<any, any> } = {}) => {
     const {
       app,
       port,
@@ -49,10 +51,6 @@ module.exports = {
 
     let expressServer
 
-    if (skipExpressListen) {
-      return
-    }
-
     const shutdown = async () => {
       await promiseAll([expressServer.shutdown(), medusaShutdown()])
 
@@ -62,12 +60,14 @@ module.exports = {
     }
 
     return await new Promise((resolve, reject) => {
-      const server = app.listen(port, async (err) => {
+      const server = app.listen(port).on("error", async (err) => {
         if (err) {
           await shutdown()
           return reject(err)
         }
-        process.send(port)
+
+        process.send?.(port)
+
         resolve({
           shutdown,
           container,

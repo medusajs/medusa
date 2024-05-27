@@ -8,14 +8,18 @@ const { ContainerRegistrationKeys } = require("@medusajs/utils")
 const { migrateMedusaApp } = require("@medusajs/medusa/dist/loaders/medusa-app")
 
 module.exports = {
-  initDb: async function ({ cwd, env }) {
+  initDb: async function ({
+    cwd,
+    env = {},
+  }: {
+    cwd?: string
+    env?: Record<any, any>
+  }) {
     if (isObject(env)) {
       Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
     }
 
     const { configModule } = getConfigFile(cwd, `medusa-config`)
-
-    await dbFactory.createFromTemplate(DB_NAME)
 
     const pgConnectionLoader =
       require("@medusajs/medusa/dist/loaders/pg-connection").default
