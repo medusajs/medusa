@@ -1,6 +1,5 @@
 import multer from "multer"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import { retrieveUploadConfig } from "./query-config"
 import { AdminGetUploadParams } from "./validators"
@@ -11,11 +10,6 @@ import { AdminGetUploadParams } from "./validators"
 const upload = multer({ storage: multer.memoryStorage() })
 
 export const adminUploadRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: ["ALL"],
-    matcher: "/admin/uploads*",
-    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
-  },
   // TODO: There is a `/protected` route in v1 that might need a bit more thought when implementing
   {
     method: ["POST"],

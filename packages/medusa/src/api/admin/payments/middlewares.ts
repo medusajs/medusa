@@ -1,5 +1,4 @@
 import { MiddlewareRoute } from "../../../types/middlewares"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { unlessPath } from "../../utils/unless-path"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
@@ -13,11 +12,6 @@ import {
 } from "./validators"
 
 export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: "ALL",
-    matcher: "/admin/payments",
-    middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/payments",

@@ -5,7 +5,7 @@ import { type Express, json, Router, text, urlencoded } from "express"
 import { readdir } from "fs/promises"
 import { extname, join, sep } from "path"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { errorHandler } from "../../../utils/middlewares"
+import { authenticate, errorHandler } from "../../../utils/middlewares"
 import logger from "../../logger"
 import {
   AsyncRouteHandler,
@@ -298,10 +298,6 @@ export class RoutesLoader {
 
           const config: RouteConfig = {
             routes: [],
-            shouldRequireAdminAuth: false,
-            shouldRequireCustomerAuth: false,
-            shouldAppendCustomer: false,
-            shouldAppendAuthCors: false,
           }
 
           /**
@@ -313,6 +309,7 @@ export class RoutesLoader {
               ? (import_[AUTHTHENTICATE] as boolean)
               : true
 
+          config.optedOutOfAuth = !shouldRequireAuth
           /**
            * If the developer has not exported the
            * CORS flag we default to true.
@@ -321,29 +318,24 @@ export class RoutesLoader {
             import_["CORS"] !== undefined ? (import_["CORS"] as boolean) : true
 
           if (route.startsWith("/admin")) {
+            config.routeType = "admin"
             if (shouldAddCors) {
               config.shouldAppendAdminCors = true
-            }
-
-            if (shouldRequireAuth) {
-              config.shouldRequireAdminAuth = true
             }
           }
 
           if (route.startsWith("/store")) {
-            config.shouldAppendCustomer = true
-
+            config.routeType = "store"
             if (shouldAddCors) {
               config.shouldAppendStoreCors = true
             }
           }
 
           if (route.startsWith("/auth") && shouldAddCors) {
-            config.shouldAppendAuthCors = true
-          }
-
-          if (shouldRequireAuth && route.startsWith("/store/me")) {
-            config.shouldRequireCustomerAuth = shouldRequireAuth
+            config.routeType = "auth"
+            if (shouldAddCors) {
+              config.shouldAppendAuthCors = true
+            }
           }
 
           const handlers = Object.keys(import_).filter((key) => {
@@ -587,6 +579,7 @@ export class RoutesLoader {
         continue
       }
 
+      const config = descriptor.config
       const routes = descriptor.config.routes
 
       /**
@@ -594,7 +587,7 @@ export class RoutesLoader {
        * not opted out of.
        */
 
-      if (descriptor.config.shouldAppendAdminCors) {
+      if (config.shouldAppendAdminCors) {
         /**
          * Apply the admin cors
          */
@@ -609,7 +602,7 @@ export class RoutesLoader {
         )
       }
 
-      if (descriptor.config.shouldAppendAuthCors) {
+      if (config.shouldAppendAuthCors) {
         /**
          * Apply the auth cors
          */
@@ -624,7 +617,7 @@ export class RoutesLoader {
         )
       }
 
-      if (descriptor.config.shouldAppendStoreCors) {
+      if (config.shouldAppendStoreCors) {
         /**
          * Apply the store cors
          */
@@ -636,6 +629,24 @@ export class RoutesLoader {
             ),
             credentials: true,
           })
+        )
+      }
+
+      // We only apply the auth middleware to store routes to populate the auth context. For actual authentication, users can just reapply the middleware.
+      if (!config.optedOutOfAuth && config.routeType === "store") {
+        this.router.use(
+          descriptor.route,
+          authenticate("customer", ["bearer", "session"], {
+            allowUnauthenticated: true,
+          })
+        )
+      }
+
+      if (!config.optedOutOfAuth && config.routeType === "admin") {
+        // We probably don't want to allow access to all endpoints using an api key, but it will do until we revamp our routing.
+        this.router.use(
+          descriptor.route,
+          authenticate("user", ["bearer", "session", "api-key"])
         )
       }
 

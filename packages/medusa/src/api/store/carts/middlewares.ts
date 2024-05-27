@@ -1,5 +1,4 @@
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { ensurePublishableKeyAndSalesChannelMatch } from "../../utils/middlewares/common/ensure-pub-key-sales-channel-match"
 import { maybeAttachPublishableKeyScopes } from "../../utils/middlewares/common/maybe-attach-pub-key-scopes"
 import { validateAndTransformBody } from "../../utils/validate-body"
@@ -21,15 +20,6 @@ import {
 } from "./validators"
 
 export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: "ALL",
-    matcher: "/store/carts*",
-    middlewares: [
-      authenticate("customer", ["session", "bearer"], {
-        allowUnauthenticated: true,
-      }),
-    ],
-  },
   {
     method: ["GET"],
     matcher: "/store/carts/:id",

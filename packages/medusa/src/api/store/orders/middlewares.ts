@@ -20,9 +20,6 @@ export const storeOrderRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/store/orders/:id",
     middlewares: [
-      authenticate("customer", ["session", "bearer"], {
-        allowUnauthenticated: true,
-      }),
       validateAndTransformQuery(
         StoreGetOrderParams,
         QueryConfig.retrieveTransformQueryConfig

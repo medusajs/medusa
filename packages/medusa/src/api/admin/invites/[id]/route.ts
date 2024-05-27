@@ -45,3 +45,5 @@ export const DELETE = async (
     deleted: true,
   })
 }
+
+export const AUTHENTICATE = false

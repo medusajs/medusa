@@ -1,5 +1,4 @@
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
@@ -13,10 +12,6 @@ import {
 } from "./validators"
 
 export const adminShippingProfilesMiddlewares: MiddlewareRoute[] = [
-  {
-    matcher: "/admin/shipping-profiles*",
-    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
-  },
   {
     method: ["POST"],
     matcher: "/admin/shipping-profiles",
