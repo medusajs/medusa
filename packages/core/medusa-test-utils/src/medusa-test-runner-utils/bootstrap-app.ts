@@ -3,10 +3,6 @@ import getPort from "get-port"
 import { resolve } from "path"
 import { isObject, promiseAll } from "@medusajs/utils"
 import { MedusaContainer } from "@medusajs/types"
-// TODO: fix that once we find the appropriate place to put this util
-const {
-  GracefulShutdownServer,
-} = require("@medusajs/medusa/dist/utils/graceful-shutdown-server")
 
 async function bootstrapApp({
   cwd,
@@ -78,6 +74,11 @@ export async function startBootstrapApp({
         port,
       })
     })
+
+    // TODO: fix that once we find the appropriate place to put this util
+    const {
+      GracefulShutdownServer,
+    } = require("@medusajs/medusa/dist/utils/graceful-shutdown-server")
 
     expressServer = GracefulShutdownServer.create(server)
   })

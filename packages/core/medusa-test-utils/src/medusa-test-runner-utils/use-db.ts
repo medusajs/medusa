@@ -41,9 +41,9 @@ export async function initDb({
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
-  const { migrateMedusaApp } = await import(
-    "@medusajs/medusa/dist/loaders/medusa-app"
-  )
+  const {
+    migrateMedusaApp,
+  } = require("@medusajs/medusa/dist/loaders/medusa-app")
   await migrateMedusaApp({ configModule, container })
 
   return pgConnection
