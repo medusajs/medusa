@@ -144,6 +144,11 @@ export function medusaIntegrationTestRunner({
       }
     ),
     getContainer: () => container,
+    dbConfig: {
+      dbName,
+      schema,
+      clientUrl: dbConfig.clientUrl,
+    },
   } as MedusaSuiteOptions
 
   let isFirstTime = true

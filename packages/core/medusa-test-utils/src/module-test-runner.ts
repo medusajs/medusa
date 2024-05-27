@@ -110,6 +110,10 @@ export function moduleIntegrationTestRunner({
         },
       }
     ),
+    dbConfig: {
+      schema,
+      clientUrl: dbConfig.clientUrl,
+    },
   } as SuiteOptions
 
   const beforeEach_ = async () => {
