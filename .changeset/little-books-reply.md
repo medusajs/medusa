@@ -57,7 +57,6 @@
 "@medusajs/admin-sdk": patch
 "@medusajs/admin-shared": patch
 "@medusajs/admin-vite-plugin": patch
-"@medusajs/ui": patch
 ---
 
 chore: Preview release changeset
