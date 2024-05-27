@@ -1,14 +1,10 @@
 import path from "path"
 import { promises as fs } from "fs"
 import type { OpenAPIV3 } from "openapi-types"
-import type { Operation, Document } from "@/types/openapi"
+import type { Operation, Document, ParsedPathItemObject } from "@/types/openapi"
 import readSpecDocument from "./read-spec-document"
 import getSectionId from "./get-section-id"
-import OpenAPIParser from "@readme/openapi-parser"
-
-type ParsedPathItemObject = OpenAPIV3.PathItemObject<Operation> & {
-  operationPath?: string
-}
+import dereference from "./dereference"
 
 export default async function getPathsOfTag(
   tagName: string,
@@ -46,34 +42,8 @@ export default async function getPathsOfTag(
     })
   )
 
-  // dereference the references in the paths
-  let paths: Document = {
-    paths: {},
-    // These attributes are only for validation purposes
-    openapi: "3.0.0",
-    info: {
-      title: "Medusa API",
-      version: "1.0.0",
-    },
-  }
-
-  documents.forEach((document) => {
-    const documentPath = document.operationPath || ""
-    delete document.operationPath
-    paths.paths[documentPath] = document
+  return dereference({
+    basePath,
+    paths: documents,
   })
-
-  // resolve references in paths
-  paths = (await OpenAPIParser.dereference(`${basePath}/`, paths, {
-    parse: {
-      text: {
-        // This ensures that all files are parsed as expected
-        // resolving the error with incorrect new lines for
-        // example files having `undefined` extension.
-        canParse: /.*/,
-      },
-    },
-  })) as unknown as Document
-
-  return paths
 }

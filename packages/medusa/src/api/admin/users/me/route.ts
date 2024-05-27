@@ -36,3 +36,5 @@ export const GET = async (
 
   res.status(200).json({ user })
 }
+
+export const AUTHENTICATE = false

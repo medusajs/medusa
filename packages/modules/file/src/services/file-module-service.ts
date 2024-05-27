@@ -10,7 +10,7 @@ import {
 
 import { joinerConfig } from "../joiner-config"
 import FileProviderService from "./file-provider-service"
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError } from "@medusajs/utils"
 
 type InjectedDependencies = {
   fileProviderService: FileProviderService

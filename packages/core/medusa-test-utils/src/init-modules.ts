@@ -58,6 +58,8 @@ export async function initModules({
 
   async function shutdown() {
     if (shouldDestroyConnectionAutomatically) {
+      await medusaApp.onApplicationPrepareShutdown()
+
       await promiseAll([
         (sharedPgConnection as any).context?.destroy(),
         (sharedPgConnection as any).destroy(),

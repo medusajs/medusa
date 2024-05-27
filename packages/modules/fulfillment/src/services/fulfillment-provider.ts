@@ -4,8 +4,7 @@ import {
   FulfillmentTypes,
   IFulfillmentProvider,
 } from "@medusajs/types"
-import { ModulesSdkUtils, promiseAll } from "@medusajs/utils"
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError, ModulesSdkUtils, promiseAll } from "@medusajs/utils"
 import { FulfillmentProvider } from "@models"
 
 type InjectedDependencies = {
@@ -87,7 +86,7 @@ export default class FulfillmentProviderService extends ModulesSdkUtils.internal
     providerId: string,
     data: object,
     items: object[],
-    order: object,
+    order: object | undefined,
     fulfillment: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
     const provider = this.retrieveProviderRegistration(providerId)
@@ -102,10 +101,7 @@ export default class FulfillmentProviderService extends ModulesSdkUtils.internal
     return await provider.cancelFulfillment(fulfillment)
   }
 
-  async createReturn(
-    providerId: string,
-    fulfillment: Record<string, unknown>,
-  ) {
+  async createReturn(providerId: string, fulfillment: Record<string, unknown>) {
     const provider = this.retrieveProviderRegistration(providerId)
     return await provider.createReturnFulfillment(fulfillment)
   }

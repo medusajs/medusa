@@ -325,11 +325,9 @@ medusaIntegrationTestRunner({
           })
 
           expect(errors).toEqual([
-            {
-              action: "find-one-or-any-region",
-              handlerType: "invoke",
+            expect.objectContaining({
               error: expect.objectContaining({ message: "No regions found" }),
-            },
+            }),
           ])
         })
 

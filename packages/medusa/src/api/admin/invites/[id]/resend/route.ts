@@ -19,3 +19,5 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
   res.status(200).json({ invite })
 }
+
+export const AUTHENTICATE = false

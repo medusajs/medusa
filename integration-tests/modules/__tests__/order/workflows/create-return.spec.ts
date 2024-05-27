@@ -1,4 +1,8 @@
 import {
+  createReturnOrderWorkflow,
+  createShippingOptionsWorkflow,
+} from "@medusajs/core-flows"
+import {
   ModuleRegistrationName,
   Modules,
   RemoteLink,
@@ -15,16 +19,12 @@ import {
   ShippingOptionDTO,
   StockLocationDTO,
 } from "@medusajs/types"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
-import {
-  createReturnOrderWorkflow,
-  createShippingOptionsWorkflow,
-} from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
   RuleOperator,
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
 jest.setTimeout(500000)
 
@@ -394,7 +394,7 @@ medusaIntegrationTestRunner({
 
         await createReturnOrderWorkflow(container).run({
           input: createReturnOrderData,
-          throwOnError: false,
+          throwOnError: true,
         })
 
         const remoteQuery = container.resolve(

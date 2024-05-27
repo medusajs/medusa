@@ -6,7 +6,7 @@ import { join } from "path"
  * @param {string} configName - the name of the config file.
  * @return {object} an object containing the config module and its path as well as an error property if the config couldn't be loaded.
  */
-function getConfigFile<TConfig = unknown>(
+export function getConfigFile<TConfig = unknown>(
   rootDir: string,
   configName: string
 ): { configModule: TConfig; configFilePath: string; error?: any } {
@@ -28,5 +28,3 @@ function getConfigFile<TConfig = unknown>(
 
   return { configModule, configFilePath, error: err }
 }
-
-export default getConfigFile

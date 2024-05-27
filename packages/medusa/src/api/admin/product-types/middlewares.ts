@@ -1,6 +1,5 @@
 import * as QueryConfig from "./query-config"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
   AdminCreateProductType,
@@ -11,12 +10,6 @@ import {
 import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminProductTypeRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: ["ALL"],
-    matcher: "/admin/product-types/*",
-    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
-  },
-
   {
     method: ["GET"],
     matcher: "/admin/product-types",

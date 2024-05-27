@@ -72,4 +72,9 @@ function deleteGitDirectory(projectDirectory: string) {
     recursive: true,
     force: true,
   })
+
+  fs.rmSync(path.join(projectDirectory, ".github"), {
+    recursive: true,
+    force: true,
+  })
 }

@@ -57,3 +57,5 @@ export const POST = async (
 
   res.status(200).json({ invite })
 }
+
+export const AUTHENTICATE = false

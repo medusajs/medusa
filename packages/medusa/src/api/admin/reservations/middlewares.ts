@@ -1,7 +1,6 @@
 import * as QueryConfig from "./query-config"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
   AdminCreateReservation,
@@ -12,11 +11,6 @@ import {
 import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: ["ALL"],
-    matcher: "/admin/reservations*",
-    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/reservations",
