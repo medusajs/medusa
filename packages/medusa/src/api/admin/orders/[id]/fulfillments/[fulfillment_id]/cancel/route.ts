@@ -1,14 +1,17 @@
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../types/routing"
+} from "../../../../../../../types/routing"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const variables = { id: req.params.id }
 

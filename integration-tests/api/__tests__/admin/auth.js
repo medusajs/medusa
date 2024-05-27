@@ -12,7 +12,6 @@ const adminHeaders = {
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  force_modules_migration: true,
   env: {
     MEDUSA_FF_MEDUSA_V2: true,
   },

@@ -4,12 +4,6 @@ import { DB_URL } from "./database"
 
 export function getInitModuleConfig() {
   const moduleOptions = {
-    defaultAdapterOptions: {
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PAYMENT_DB_SCHEMA,
-      },
-    },
     providers: [
       {
         resolve: "@medusajs/payment-stripe",

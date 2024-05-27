@@ -5040,6 +5040,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/pluralize@npm:^0.0.33":
+  version: 0.0.33
+  resolution: "@types/pluralize@npm:0.0.33"
+  checksum: 24899caf85b79dd291a6b6e9b9f3b67b452b18d578d0ac0d531a705bf5ee0361d9386ea1f8532c64de9e22c6e9606c5497787bb5e31bd299c487980436c59785
+  languageName: node
+  linkType: hard
+
 "@types/prismjs@npm:^1.26.0":
   version: 1.26.3
   resolution: "@types/prismjs@npm:1.26.3"
@@ -5657,6 +5664,7 @@ __metadata:
     "@types/mapbox__rehype-prism": ^0.8.0
     "@types/mdx": ^2.0.5
     "@types/node": 20.4.5
+    "@types/pluralize": ^0.0.33
     "@types/react": ^18.2.0
     "@types/react-dom": ^18.2.0
     "@types/react-transition-group": ^4.4.6
@@ -5671,6 +5679,7 @@ __metadata:
     next-mdx-remote: ^4.4.1
     openapi-sampler: ^1.3.1
     openapi-types: ^12.1.3
+    pluralize: ^8.0.0
     postcss: 8.4.27
     prism-react-renderer: 2.3.1
     react: ^18.2.0
@@ -12491,6 +12500,13 @@ eslint-config-next@latest:
   dependencies:
     queue-lit: ^1.5.1
   checksum: af5d351bb55afe1eaa84b27c2b329699e150e4cf70464f3d474f5eabe9bdb9f48ed378ada1498d3b893f68ee7da2423ba6d9a4d88b1429d3b0aea22afcf5292b
+  languageName: node
+  linkType: hard
+
+"pluralize@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "pluralize@npm:8.0.0"
+  checksum: 2044cfc34b2e8c88b73379ea4a36fc577db04f651c2909041b054c981cd863dd5373ebd030123ab058d194ae615d3a97cfdac653991e499d10caf592e8b3dc33
   languageName: node
   linkType: hard
 

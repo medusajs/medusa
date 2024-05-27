@@ -19,6 +19,7 @@ import {
   MedusaError,
   ModulesSdkUtils,
   isDefined,
+  isString,
   partitionArray,
   promiseAll,
 } from "@medusajs/utils"
@@ -799,33 +800,68 @@ export default class InventoryModuleService<
    * @return The updated inventory level
    * @throws when the inventory level is not found
    */
-  @InjectManager("baseRepository_")
-  @EmitEvents()
-  async adjustInventory(
+  adjustInventory(
     inventoryItemId: string,
     locationId: string,
     adjustment: number,
-    @MedusaContext() context: Context = {}
-  ): Promise<InventoryNext.InventoryLevelDTO> {
-    const result = await this.adjustInventory_(
-      inventoryItemId,
-      locationId,
-      adjustment,
-      context
-    )
+    context: Context
+  ): Promise<InventoryNext.InventoryLevelDTO>
 
-    context.messageAggregator?.saveRawMessageData({
-      eventName: InventoryEvents.inventory_level_updated,
-      metadata: {
-        service: this.constructor.name,
-        action: CommonEvents.UPDATED,
-        object: "inventory-level",
-      },
-      data: { id: result.id },
-    })
+  adjustInventory(
+    data: {
+      inventoryItemId: string
+      locationId: string
+      adjustment: number
+    }[],
+    context: Context
+  ): Promise<InventoryNext.InventoryLevelDTO[]>
+
+  @InjectManager("baseRepository_")
+  @EmitEvents()
+  async adjustInventory(
+    inventoryItemIdOrData: string | any,
+    locationId?: string | Context,
+    adjustment?: number,
+    @MedusaContext() context: Context = {}
+  ): Promise<
+    InventoryNext.InventoryLevelDTO | InventoryNext.InventoryLevelDTO[]
+  > {
+    let all: any = inventoryItemIdOrData
+
+    if (isString(inventoryItemIdOrData)) {
+      all = [
+        {
+          inventoryItemId: inventoryItemIdOrData,
+          locationId,
+          adjustment,
+        },
+      ]
+    }
+
+    const results: TInventoryLevel[] = []
+
+    for (const data of all) {
+      const result = await this.adjustInventory_(
+        data.inventoryItemId,
+        data.locationId,
+        data.adjustment,
+        context
+      )
+      results.push(result)
+
+      context.messageAggregator?.saveRawMessageData({
+        eventName: InventoryEvents.inventory_level_updated,
+        metadata: {
+          service: this.constructor.name,
+          action: CommonEvents.UPDATED,
+          object: "inventory-level",
+        },
+        data: { id: result.id },
+      })
+    }
 
     return await this.baseRepository_.serialize<InventoryNext.InventoryLevelDTO>(
-      result,
+      Array.isArray(inventoryItemIdOrData) ? results : results[0],
       {
         populate: true,
       }
