@@ -1,8 +1,11 @@
 import { ContainerLike, MedusaContainer } from "@medusajs/types"
-import { createMedusaContainer } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+} from "@medusajs/utils"
 import { createDatabase, dropDatabase } from "pg-god"
 import { getDatabaseURL } from "./database"
-import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
+import { startApp } from "./medusa-test-runner-utils/bootstrap-app"
 import { initDb } from "./medusa-test-runner-utils/use-db"
 
 const axios = require("axios").default
@@ -18,45 +21,35 @@ const pgGodCredentials = {
 }
 
 const dbTestUtilFactory = (): any => ({
-  db_: null,
   pgConnection_: null,
-
-  clear: async function () {
-    this.db_?.synchronize(true)
-  },
 
   create: async function (dbName: string) {
     await createDatabase({ databaseName: dbName }, pgGodCredentials)
   },
 
-  teardown: async function ({
-    forceDelete,
-    schema,
-  }: { forceDelete?: string[]; schema?: string } = {}) {
-    forceDelete ??= []
-    if (!this.db_) {
+  teardown: async function ({ schema }: { schema?: string } = {}) {
+    if (!this.pgConnection_) {
       return
     }
 
-    const manager = this.db_.manager
+    const runRawQuery = this.pgConnection_.raw.bind(this.pgConnection_)
 
     schema ??= "public"
 
-    await manager.query(`SET session_replication_role = 'replica';`)
-    const tableNames = await manager.query(`SELECT table_name
+    await runRawQuery(`SET session_replication_role = 'replica';`)
+    const { rows: tableNames } = await runRawQuery(`SELECT table_name
                                             FROM information_schema.tables
                                             WHERE table_schema = '${schema}';`)
 
     for (const { table_name } of tableNames) {
-      await manager.query(`DELETE
+      await runRawQuery(`DELETE
                            FROM ${schema}."${table_name}";`)
     }
 
-    await manager.query(`SET session_replication_role = 'origin';`)
+    await runRawQuery(`SET session_replication_role = 'origin';`)
   },
 
   shutdown: async function (dbName: string) {
-    await this.db_?.destroy()
     await this.pgConnection_?.context?.destroy()
     await this.pgConnection_?.destroy()
 
@@ -68,8 +61,7 @@ const dbTestUtilFactory = (): any => ({
 })
 
 export interface MedusaSuiteOptions<TService = unknown> {
-  dbUtils: any
-  dbConnection: any // Legacy typeorm connection
+  dbConnection: any // knex instance
   getContainer: () => MedusaContainer
   api: any
   dbConfig: {
@@ -84,7 +76,6 @@ export function medusaIntegrationTestRunner({
   dbName,
   schema = "public",
   env = {},
-  force_modules_migration = false,
   debug = false,
   testSuite,
 }: {
@@ -93,7 +84,6 @@ export function medusaIntegrationTestRunner({
   dbName?: string
   schema?: string
   debug?: boolean
-  force_modules_migration?: boolean
   testSuite: <TService = unknown>(options: MedusaSuiteOptions<TService>) => void
 }) {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
@@ -130,12 +120,11 @@ export function medusaIntegrationTestRunner({
   const cwd = process.cwd()
 
   let shutdown = async () => void 0
-  let dbUtils = dbTestUtilFactory()
+  const dbUtils = dbTestUtilFactory()
   let container: ContainerLike
   let apiUtils: any
 
   let options = {
-    dbUtils,
     api: new Proxy(
       {},
       {
@@ -148,11 +137,16 @@ export function medusaIntegrationTestRunner({
       {},
       {
         get: (target, prop) => {
-          return dbUtils.db_[prop]
+          return dbUtils.pgConnection_[prop]
         },
       }
     ),
     getContainer: () => container,
+    dbConfig: {
+      dbName,
+      schema,
+      clientUrl: dbConfig.clientUrl,
+    },
   } as MedusaSuiteOptions
 
   let isFirstTime = true
@@ -160,38 +154,26 @@ export function medusaIntegrationTestRunner({
   const beforeAll_ = async () => {
     await dbUtils.create(dbName)
 
-    let dataSourceRes
-    let pgConnectionRes
-
     try {
-      const { dbDataSource, pgConnection } = await initDb({
+      dbUtils.pgConnection_ = await initDb({
         cwd,
         env,
-        force_modules_migration,
-        database_extra: {},
-        dbUrl: dbConfig.clientUrl,
-        dbSchema: dbConfig.schema,
       })
-
-      dataSourceRes = dbDataSource
-      pgConnectionRes = pgConnection
     } catch (error) {
       console.error("Error initializing database", error?.message)
       throw error
     }
 
-    dbUtils.db_ = dataSourceRes
-    dbUtils.pgConnection_ = pgConnectionRes
-
     let containerRes
     let serverShutdownRes
     let portRes
+
     try {
       const {
         shutdown = () => void 0,
         container,
         port,
-      } = await startBootstrapApp({
+      } = await startApp({
         cwd,
         env,
       })
@@ -233,7 +215,9 @@ export function medusaIntegrationTestRunner({
         require("@medusajs/medusa/dist/loaders/medusa-app").runModulesLoader
       await medusaAppLoaderRunner({
         container: copiedContainer,
-        configModule: container.resolve("configModule"),
+        configModule: container.resolve(
+          ContainerRegistrationKeys.CONFIG_MODULE
+        ),
       })
     } catch (error) {
       console.error("Error runner modules loaders", error?.message)

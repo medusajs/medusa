@@ -5,14 +5,13 @@ import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 jest.setTimeout(5000000)
 
 medusaIntegrationTestRunner({
-  force_modules_migration: true,
-  testSuite: ({ dbConnection, getContainer }) => {
+  testSuite: ({ getContainer, dbConfig: { clientUrl } }) => {
     let DB_URL
     let container
     let links
 
     beforeAll(async () => {
-      DB_URL = dbConnection.manager.connection.options.url
+      DB_URL = clientUrl
       container = getContainer()
 
       const linkDefinition: ModuleJoinerConfig[] = [
