@@ -61,18 +61,16 @@ export async function startBootstrapApp({
 
   return await new Promise((resolve, reject) => {
     const server = app.listen(port).on("error", async (err) => {
-      if (err) {
-        await shutdown()
-        return reject(err)
-      }
+      await shutdown()
+      return reject(err)
+    })
 
-      process.send?.(port)
+    process.send?.(port)
 
-      resolve({
-        shutdown,
-        container,
-        port,
-      })
+    resolve({
+      shutdown,
+      container,
+      port,
     })
 
     // TODO: fix that once we find the appropriate place to put this util
