@@ -66,9 +66,6 @@ export function moduleIntegrationTestRunner({
       definition: moduleSdkImports.ModulesDefinition[moduleName],
       resolve,
       options: {
-        defaultAdapterOptions: {
-          database: dbConfig,
-        },
         database: dbConfig,
         ...moduleOptions,
       },
