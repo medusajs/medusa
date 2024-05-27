@@ -171,6 +171,10 @@
         "variants": "Variants",
         "inventory": "Inventory kits"
       },
+      "errors": {
+        "variants": "Please select at least one variant.",
+        "options": "Please create at least one option."
+      },
       "inventory": {
         "heading": "Inventory kits",
         "label": "Inventory kit"

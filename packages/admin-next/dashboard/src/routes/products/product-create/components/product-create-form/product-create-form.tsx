@@ -52,16 +52,6 @@ export const ProductCreateForm = () => {
 
   const { mutateAsync, isPending } = useCreateProduct()
 
-  const variantsField = useFieldArray({
-    control: form.control,
-    name: "variants",
-  })
-
-  const optionsField = useFieldArray({
-    control: form.control,
-    name: "options",
-  })
-
   /**
    * TODO: Important to revisit this - use variants watch so high in the tree can cause needless rerenders of the entire page
    * which is suboptimal when rereners are caused by bulk editor changes
@@ -169,28 +159,9 @@ export const ProductCreateForm = () => {
       currentState[Tab.INVENTORY] = "in-progress"
     }
 
-    if (tab !== Tab.DETAILS && LAST_VISITED_TAB === Tab.DETAILS) {
-      if (
-        !form.getValues("enable_variants") &&
-        !form.getValues("variants").length
-      ) {
-        optionsField.append({
-          title: "Default option",
-          values: ["Default option value"],
-        })
-
-        variantsField.append({
-          title: "Default variant",
-          should_create: true,
-          variant_rank: 0,
-          options: {
-            "Default option": "Default option value",
-          },
-          inventory: [{ title: "", quantity: 0 }],
-          is_default: true,
-        })
-      }
-    }
+    // if (tab !== Tab.DETAILS && LAST_VISITED_TAB === Tab.DETAILS) {
+    //   createDefaultOptionAndVariant()
+    // }
 
     setTabState({ ...currentState })
 

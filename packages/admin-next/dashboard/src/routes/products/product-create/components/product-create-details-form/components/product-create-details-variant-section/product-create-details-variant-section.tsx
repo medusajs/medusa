@@ -25,7 +25,6 @@ import { Form } from "../../../../../../../components/common/form"
 import { SortableList } from "../../../../../../../components/common/sortable-list"
 import { ChipInput } from "../../../../../../../components/inputs/chip-input"
 import { ProductCreateSchemaType } from "../../../../types"
-import { useEffect } from "react"
 
 type ProductCreateVariantsSectionProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -92,6 +91,10 @@ export const ProductCreateVariantsSection = ({
     defaultValue: [],
   })
 
+  const showInvalidOptionsMessage = !!form.formState.errors.options?.length
+  const showInvalidVariantsMessage =
+    form.formState.errors.variants?.root?.message === "invalid_length"
+
   const handleOptionValueUpdate = (index: number, value: string[]) => {
     const { isTouched: hasUserSelectedVariants } =
       form.getFieldState("variants")
@@ -144,6 +147,10 @@ export const ProductCreateVariantsSection = ({
   }
 
   const handleRemoveOption = (index: number) => {
+    if (index === 0) {
+      return
+    }
+
     options.remove(index)
 
     const newOptions = [...watchedOptions]
@@ -250,20 +257,26 @@ export const ProductCreateVariantsSection = ({
     }
   }
 
-  useEffect(() => {
-    if (watchedAreVariantsEnabled) {
-      // remove default variant and option that may have been created
-      if (variants.fields[0]?.is_default) {
-        form.setValue("options", [
-          {
-            title: "",
-            values: [],
-          },
-        ])
-        form.setValue("variants", [])
-      }
-    }
-  }, [watchedAreVariantsEnabled])
+  const createDefaultOptionAndVariant = () => {
+    form.setValue("options", [
+      {
+        title: "Default option",
+        values: ["Default option value"],
+      },
+    ])
+    form.setValue("variants", [
+      {
+        title: "Default variant",
+        should_create: true,
+        variant_rank: 0,
+        options: {
+          "Default option": "Default option value",
+        },
+        inventory: [{ title: "", quantity: 0 }],
+        is_default: true,
+      },
+    ])
+  }
 
   return (
     <div id="variants" className="flex flex-col gap-y-8">
@@ -278,7 +291,21 @@ export const ProductCreateVariantsSection = ({
                 <Form.Control>
                   <Switch
                     checked={value}
-                    onCheckedChange={(checked) => onChange(!!checked)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        form.setValue("options", [
+                          {
+                            title: "",
+                            values: [],
+                          },
+                        ])
+                        form.setValue("variants", [])
+                      } else {
+                        createDefaultOptionAndVariant()
+                      }
+
+                      onChange(!!checked)
+                    }}
                     {...field}
                     className="mt-1"
                   />
@@ -329,6 +356,11 @@ export const ProductCreateVariantsSection = ({
                           {t("actions.add")}
                         </Button>
                       </div>
+                      {showInvalidOptionsMessage && (
+                        <Alert dismissible variant="error">
+                          {t("products.create.errors.options")}
+                        </Alert>
+                      )}
                       <ul className="flex flex-col gap-y-4">
                         {options.fields.map((option, index) => {
                           return (
@@ -391,6 +423,7 @@ export const ProductCreateVariantsSection = ({
                                 size="small"
                                 variant="transparent"
                                 className="text-ui-fg-muted"
+                                disabled={index === 0}
                                 onClick={() => handleRemoveOption(index)}
                               >
                                 <XMarkMini />
@@ -412,6 +445,11 @@ export const ProductCreateVariantsSection = ({
               </Label>
               <Hint>{t("products.create.variants.productVariants.hint")}</Hint>
             </div>
+            {!showInvalidOptionsMessage && showInvalidVariantsMessage && (
+              <Alert dismissible variant="error">
+                {t("products.create.errors.variants")}
+              </Alert>
+            )}
             {variants.fields.length > 0 ? (
               <div className="overflow-hidden rounded-xl border">
                 <div
