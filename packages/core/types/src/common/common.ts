@@ -190,10 +190,8 @@ export interface CustomFindOptions<TModel, InKeys extends keyof TModel> {
  * @ignore
  */
 export type QueryConfig<TEntity extends BaseEntity> = {
-  defaultFields?: (keyof TEntity | string)[]
-  defaultRelations?: string[]
-  allowedFields?: string[]
-  allowedRelations?: string[]
+  deafults?: (keyof TEntity | string)[]
+  allowed?: (keyof TEntity | string)[]
   defaultLimit?: number
   isList?: boolean
 }

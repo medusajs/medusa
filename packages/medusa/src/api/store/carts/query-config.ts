@@ -45,6 +45,7 @@ export const defaultStoreCartFields = [
   "items.variant_sku",
   "items.variant_barcode",
   "items.variant_title",
+  "items.metadata",
   "items.created_at",
   "items.updated_at",
   "items.title",

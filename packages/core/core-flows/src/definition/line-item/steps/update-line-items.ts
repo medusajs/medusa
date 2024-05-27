@@ -10,9 +10,10 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-export const updateLineItemsStepId = "update-line-items"
-export const updateLineItemsStep = createStep(
-  updateLineItemsStepId,
+export const updateLineItemsStepWithSelectorId =
+  "update-line-items-with-selector"
+export const updateLineItemsStepWithSelector = createStep(
+  updateLineItemsStepWithSelectorId,
   async (input: UpdateLineItemWithSelectorDTO, { container }) => {
     const service = container.resolve<ICartModuleService>(
       ModuleRegistrationName.CART
