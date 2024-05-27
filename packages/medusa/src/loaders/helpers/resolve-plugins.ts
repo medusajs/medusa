@@ -2,7 +2,6 @@ import { ConfigModule, PluginDetails } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
-import { createRequireFromPath } from "medusa-core-utils"
 import path from "path"
 
 export const MEDUSA_PROJECT_NAME = "project-plugin"
@@ -57,23 +56,14 @@ function resolvePlugin(pluginName: string): {
     }
   }
 
-  const rootDir = path.resolve(".")
-
   /**
    *  Here we have an absolute path to an internal plugin, or a name of a module
    *  which should be located in node_modules.
    */
   try {
-    const requireSource =
-      rootDir !== null
-        ? createRequireFromPath(`${rootDir}/:internal:`)
-        : require
-
     // If the path is absolute, resolve the directory of the internal plugin,
     // otherwise resolve the directory containing the package.json
-    const resolvedPath = path.dirname(
-      requireSource.resolve(`${pluginName}/package.json`)
-    )
+    const resolvedPath = require.resolve(pluginName)
 
     const packageJSON = JSON.parse(
       fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)

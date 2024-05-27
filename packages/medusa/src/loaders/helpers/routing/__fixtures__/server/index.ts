@@ -10,7 +10,6 @@ import {
 import { asValue } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
-import { MockManager } from "medusa-test-utils"
 import querystring from "querystring"
 import supertest from "supertest"
 import apiLoader from "../../../../api"
@@ -70,7 +69,7 @@ export const createServer = async (rootDir) => {
     logger: asValue({
       error: () => {},
     }),
-    manager: asValue(MockManager),
+    manager: asValue({}),
   })
 
   app.set("trust proxy", 1)
