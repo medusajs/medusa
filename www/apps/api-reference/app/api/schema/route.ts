@@ -3,6 +3,7 @@ import { SchemaObject } from "../../../types/openapi"
 import path from "path"
 import { existsSync, promises as fs } from "fs"
 import { parseDocument } from "yaml"
+import dereference from "../../../utils/dereference"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -37,14 +38,14 @@ export async function GET(request: Request) {
     .replace("#/components/schemas/", "")
     .replaceAll("./components/schemas/", "")
 
-  const schemaPath = path.join(
+  const baseSchemasPath = path.join(
     process.cwd(),
     "specs",
     area,
     "components",
-    "schemas",
-    name
+    "schemas"
   )
+  const schemaPath = path.join(baseSchemasPath, name)
 
   if (!existsSync(schemaPath)) {
     return NextResponse.json(
@@ -61,9 +62,17 @@ export async function GET(request: Request) {
   const schemaContent = await fs.readFile(schemaPath, "utf-8")
   const schema = parseDocument(schemaContent).toJS() as SchemaObject
 
+  // resolve references in schema
+  const dereferencedDocument = await dereference({
+    basePath: baseSchemasPath,
+    schemas: [schema],
+  })
+
   return NextResponse.json(
     {
-      schema,
+      schema: dereferencedDocument.components?.schemas
+        ? Object.values(dereferencedDocument.components?.schemas)[0]
+        : schema,
     },
     {
       status: 200,

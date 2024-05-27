@@ -1,3 +1,4 @@
+import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateOrderShippingMethodDTO,
   FulfillmentWorkflow,
@@ -7,55 +8,27 @@ import {
   WithCalculatedPrice,
 } from "@medusajs/types"
 import {
+  ContainerRegistrationKeys,
+  MathBN,
+  MedusaError,
+  arrayDifference,
+  isDefined,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import {
+  WorkflowData,
   createStep,
   createWorkflow,
   transform,
-  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { createLinkStep, useRemoteQueryStep } from "../../common"
-import {
-  arrayDifference,
-  ContainerRegistrationKeys,
-  isDefined,
-  MathBN,
-  MedusaError,
-  Modules,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { createReturnFulfillmentWorkflow } from "../../fulfillment"
 import { updateOrderTaxLinesStep } from "../steps"
 import { createReturnStep } from "../steps/create-return"
-import { createFulfillmentWorkflow } from "../../fulfillment"
-
-function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
-  // TODO: need work, check canceled
-  if (false /*order.canceled_at*/) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Order with id ${order.id} has been cancelled.`
-    )
-  }
-}
-
-function throwIfItemsDoesNotExistsInOrder({
-  order,
-  inputItems,
-}: {
-  order: Pick<OrderDTO, "id" | "items">
-  inputItems: OrderWorkflow.CreateOrderReturnWorkflowInput["items"]
-}) {
-  const orderItemIds = order.items?.map((i) => i.id) ?? []
-  const inputItemIds = inputItems.map((i) => i.id)
-  const diff = arrayDifference(inputItemIds, orderItemIds)
-
-  if (diff.length) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Items with ids ${diff.join(", ")} does not exist in order with id ${
-        order.id
-      }.`
-    )
-  }
-}
+import {
+  throwIfItemsDoesNotExistsInOrder,
+  throwIfOrderIsCancelled,
+} from "../utils/order-validation"
 
 async function validateReturnReasons(
   {
@@ -214,8 +187,7 @@ function prepareFulfillmentData({
       items: fulfillmentItems,
       labels: [] as FulfillmentWorkflow.CreateFulfillmentLabelWorkflowDTO[],
       delivery_address: order.shipping_address ?? ({} as any), // TODO: should it be the stock location address?
-      order: {} as FulfillmentWorkflow.CreateFulfillmentOrderWorkflowDTO, // TODO see what todo here, is that even necessary?
-      order_id: input.order_id,
+      order: order,
     },
   }
 }
@@ -280,6 +252,7 @@ export const createReturnOrderWorkflow = createWorkflow(
       entry_point: "orders",
       fields: [
         "id",
+        "status",
         "region_id",
         "currency_code",
         "total",
@@ -339,8 +312,20 @@ export const createReturnOrderWorkflow = createWorkflow(
       prepareFulfillmentData
     )
 
-    createFulfillmentWorkflow.runAsStep(fulfillmentData)
+    const returnFulfillment =
+      createReturnFulfillmentWorkflow.runAsStep(fulfillmentData)
 
-    // TODO call the createReturn from the fulfillment provider
+    const link = transform(
+      { order_id: input.order_id, fulfillment: returnFulfillment },
+      (data) => {
+        return [
+          {
+            [Modules.ORDER]: { order_id: data.order_id },
+            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
+          },
+        ]
+      }
+    )
+    createLinkStep(link)
   }
 )

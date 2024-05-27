@@ -1,9 +1,9 @@
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
 
-import { Context } from "../shared-context"
+import { InventoryNext } from "."
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
-import { InventoryNext } from "."
+import { Context } from "../shared-context"
 
 /**
  * The main service interface for the Inventory Module.
@@ -994,6 +994,16 @@ export interface IInventoryServiceNext extends IModuleService {
    *     -5
    *   )
    */
+
+  adjustInventory(
+    data: {
+      inventoryItemId: string
+      locationId: string
+      adjustment: number
+    }[],
+    context?: Context
+  ): Promise<InventoryNext.InventoryLevelDTO[]>
+
   adjustInventory(
     inventoryItemId: string,
     locationId: string,
