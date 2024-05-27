@@ -389,8 +389,8 @@ export interface RegisterOrderShipmentDTO {
   description?: string
   internal_note?: string
   reference?: string
+  reference_id?: string
   created_by?: string
-  shipping_method: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
   items: {
     id: string
     quantity: BigNumberInput
