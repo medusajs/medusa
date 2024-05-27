@@ -31,7 +31,7 @@ async function bootstrapApp({
   }
 }
 
-export async function startBootstrapApp({
+export async function startApp({
   cwd,
   env = {},
 }: { cwd?: string; env?: Record<any, any> } = {}): Promise<{

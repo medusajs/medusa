@@ -5,7 +5,7 @@ import {
 } from "@medusajs/utils"
 import { createDatabase, dropDatabase } from "pg-god"
 import { getDatabaseURL } from "./database"
-import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
+import { startApp } from "./medusa-test-runner-utils/bootstrap-app"
 import { initDb } from "./medusa-test-runner-utils/use-db"
 
 const axios = require("axios").default
@@ -170,7 +170,7 @@ export function medusaIntegrationTestRunner({
         shutdown = () => void 0,
         container,
         port,
-      } = await startBootstrapApp({
+      } = await startApp({
         cwd,
         env,
       })
