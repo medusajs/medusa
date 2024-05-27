@@ -62,7 +62,7 @@ export const ProductCreateSchema = z
           inventory_kit: z.boolean().optional(),
           options: z.record(z.string(), z.string()),
           variant_rank: z.number(),
-          prices: z.record(z.string(), z.string()).optional(),
+          prices: z.record(z.string(), z.string().optional()).optional(),
           inventory: z
             .array(z.object({ title: z.string(), quantity: z.number() }))
             .optional(),

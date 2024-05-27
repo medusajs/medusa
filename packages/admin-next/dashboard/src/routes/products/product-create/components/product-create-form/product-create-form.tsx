@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
-import { useFieldArray, useForm, useWatch } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import {
   RouteFocusModal,
@@ -158,10 +158,6 @@ export const ProductCreateForm = () => {
       currentState[Tab.VARIANTS] = "completed"
       currentState[Tab.INVENTORY] = "in-progress"
     }
-
-    // if (tab !== Tab.DETAILS && LAST_VISITED_TAB === Tab.DETAILS) {
-    //   createDefaultOptionAndVariant()
-    // }
 
     setTabState({ ...currentState })
 
