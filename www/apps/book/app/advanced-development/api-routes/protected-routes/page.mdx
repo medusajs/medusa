@@ -163,7 +163,7 @@ export const config: MiddlewaresConfig = {
 
 The `authenticate` middleware function accepts three parameters:
 
-1. The scope of authentication. Use `user` for authenticating admin users, and `customer` for authenticating customers.
+1. The type of user authenticating. Use `user` for authenticating admin users, and `customer` for authenticating customers.
 2. An array of the types of authentication methods allowed. Both `user` and `customer` scopes support `session` and `bearer`. The `admin` scope also supports the `api-key` authentication method.
 3. An optional object of options having the following properties:
     1. `allowUnauthenticated`: (default: `false`) A boolean indicating whether authentication is required. For example, you may have an API route where you want to access the logged-in customer if available, but guest customers can still access it too. In that case, enable the `allowUnauthenticated` option.
