@@ -177,10 +177,7 @@ export type CreateFulfillmentWorkflowInput = {
   labels: CreateFulfillmentLabelWorkflowDTO[]
 
   /**
-   * The associated fulfillment order.
+   * The associated fulfillment order to be sent to the provider.
    */
-  order: CreateFulfillmentOrderWorkflowDTO
-
-  // TODO: revisit - either remove `order_id` or `order`
-  order_id: string
+  order?: CreateFulfillmentOrderWorkflowDTO
 }

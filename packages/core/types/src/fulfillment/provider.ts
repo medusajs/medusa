@@ -51,7 +51,7 @@ export interface IFulfillmentProvider {
   createFulfillment(
     data: object,
     items: object[],
-    order: object,
+    order: object | undefined,
     fulfillment: Record<string, unknown>
   ): Promise<Record<string, unknown>>
   /**

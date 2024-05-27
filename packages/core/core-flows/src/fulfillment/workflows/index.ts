@@ -1,6 +1,7 @@
 export * from "./batch-shipping-option-rules"
 export * from "./cancel-fulfillment"
 export * from "./create-fulfillment"
+export * from "./create-return-fulfillment"
 export * from "./create-service-zones"
 export * from "./create-shipment"
 export * from "./create-shipping-options"
