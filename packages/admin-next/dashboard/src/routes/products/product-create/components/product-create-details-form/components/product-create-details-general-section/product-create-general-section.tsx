@@ -43,7 +43,7 @@ export const ProductCreateGeneralSection = ({
                     {t("products.fields.subtitle.label")}
                   </Form.Label>
                   <Form.Control>
-                    <Input {...field} placeholder="Worm and cosy" />
+                    <Input {...field} placeholder="Warm and cosy" />
                   </Form.Control>
                 </Form.Item>
               )
