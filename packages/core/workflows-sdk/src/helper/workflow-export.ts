@@ -5,7 +5,7 @@ import {
   TransactionState,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { isPresent, MedusaContextType } from "@medusajs/utils"
+import { MedusaContextType, isPresent } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
@@ -99,6 +99,10 @@ function createContextualWorkflowRunner<
       result = resolveValue(resultFrom, transaction.getContext())
       if (result instanceof Promise) {
         result = await result.catch((e) => {
+          if (throwOnError) {
+            throw e
+          }
+
           errors ??= []
           errors.push(e)
         })
