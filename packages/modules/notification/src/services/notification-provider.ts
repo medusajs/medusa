@@ -1,6 +1,5 @@
 import { Constructor, DAL, NotificationTypes } from "@medusajs/types"
-import { ModulesSdkUtils } from "@medusajs/utils"
-import { MedusaError } from "medusa-core-utils"
+import { ModulesSdkUtils, MedusaError } from "@medusajs/utils"
 import { NotificationProvider } from "@models"
 import { NotificationProviderRegistrationPrefix } from "@types"
 

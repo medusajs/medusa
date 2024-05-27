@@ -17,7 +17,6 @@
 "@medusajs/ui": patch
 "@medusajs/ui-preset": patch
 "@medusajs/medusa": patch
-"medusa-core-utils": patch
 "medusa-telemetry": patch
 "@medusajs/api-key": patch
 "@medusajs/auth": patch

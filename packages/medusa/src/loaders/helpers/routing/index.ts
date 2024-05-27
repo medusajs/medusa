@@ -1,9 +1,8 @@
 import { ConfigModule } from "@medusajs/types"
-import { promiseAll, wrapHandler } from "@medusajs/utils"
+import { parseCorsOrigins, promiseAll, wrapHandler } from "@medusajs/utils"
 import cors from "cors"
-import { Router, json, text, urlencoded, type Express } from "express"
+import { type Express, json, Router, text, urlencoded } from "express"
 import { readdir } from "fs/promises"
-import { parseCorsOrigins } from "medusa-core-utils"
 import { extname, join, sep } from "path"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import { errorHandler } from "../../../utils/middlewares"
@@ -13,8 +12,8 @@ import {
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
   MiddlewareRoute,
-  MiddlewareVerb,
   MiddlewaresConfig,
+  MiddlewareVerb,
   ParserConfigArgs,
   RouteConfig,
   RouteDescriptor,

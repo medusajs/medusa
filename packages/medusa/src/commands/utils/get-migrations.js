@@ -1,6 +1,6 @@
 import { MedusaModule, registerMedusaModule } from "@medusajs/modules-sdk"
 import glob from "glob"
-import { isDefined } from "medusa-core-utils"
+import { isDefined } from "@medusajs/utils"
 
 export function getInternalModules(configModule) {
   const modules = []
