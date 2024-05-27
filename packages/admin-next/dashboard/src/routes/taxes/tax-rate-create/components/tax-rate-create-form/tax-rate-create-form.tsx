@@ -103,7 +103,7 @@ export const TaxRateCreateForm = ({
         code: data.code,
         rate: data.rate,
         is_combinable: data.is_combinable,
-        tax_region_id: data.tax_region_id,
+        tax_region_id: data.tax_region_id || taxRegion.id,
         rules:
           data.products?.map((product) => ({
             reference: "product",
