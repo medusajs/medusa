@@ -61,6 +61,7 @@ const dbTestUtilFactory = (): any => ({
 })
 
 export interface MedusaSuiteOptions<TService = unknown> {
+  dbConnection: any // knex instance
   getContainer: () => MedusaContainer
   api: any
   dbConfig: {
@@ -118,8 +119,8 @@ export function medusaIntegrationTestRunner({
 
   const cwd = process.cwd()
 
-  const dbUtils = dbTestUtilFactory()
   let shutdown = async () => void 0
+  const dbUtils = dbTestUtilFactory()
   let container: ContainerLike
   let apiUtils: any
 
@@ -129,6 +130,14 @@ export function medusaIntegrationTestRunner({
       {
         get: (target, prop) => {
           return apiUtils[prop]
+        },
+      }
+    ),
+    dbConnection: new Proxy(
+      {},
+      {
+        get: (target, prop) => {
+          return dbUtils.pgConnection_[prop]
         },
       }
     ),
