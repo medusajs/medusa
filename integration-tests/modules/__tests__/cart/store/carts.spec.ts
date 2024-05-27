@@ -17,6 +17,7 @@ import {
   IRegionModuleService,
   ISalesChannelModuleService,
   ITaxModuleService,
+  ProductStatus,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -1166,14 +1167,65 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /store/carts/:id/line-items", () => {
-        it.skip("should add item to cart", async () => {
+        let region
+        const productData = {
+          title: "Medusa T-Shirt",
+          handle: "t-shirt",
+          status: ProductStatus.PUBLISHED,
+          options: [
+            {
+              title: "Size",
+              values: ["S"],
+            },
+            {
+              title: "Color",
+              values: ["Black", "White"],
+            },
+          ],
+          variants: [
+            {
+              title: "S / Black",
+              sku: "SHIRT-S-BLACK",
+              options: {
+                Size: "S",
+                Color: "Black",
+              },
+              manage_inventory: false,
+              prices: [
+                {
+                  amount: 1500,
+                  currency_code: "usd",
+                },
+              ],
+            },
+            {
+              title: "S / White",
+              sku: "SHIRT-S-WHITE",
+              options: {
+                Size: "S",
+                Color: "White",
+              },
+              manage_inventory: false,
+              prices: [
+                {
+                  amount: 1500,
+                  currency_code: "usd",
+                },
+              ],
+            },
+          ],
+        }
+
+        beforeEach(async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          region = await regionModule.create({
             name: "US",
             currency_code: "usd",
           })
+        })
 
+        it("should add item to cart", async () => {
           const customer = await customerModule.create({
             email: "tony@stark-industries.com",
           })
@@ -1354,6 +1406,82 @@ medusaIntegrationTestRunner({
                   ],
                 }),
               ]),
+            })
+          )
+        })
+
+        it("adding an existing variant should update or create line item depending on metadata", async () => {
+          const product = (
+            await api.post(`/admin/products`, productData, adminHeaders)
+          ).data.product
+
+          const cart = (
+            await api.post(`/store/carts`, {
+              email: "tony@stark.com",
+              currency_code: region.currency_code,
+              region_id: region.id,
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                  metadata: {
+                    Size: "S",
+                    Color: "Black",
+                  },
+                },
+              ],
+            })
+          ).data.cart
+
+          let response = await api.post(`/store/carts/${cart.id}/line-items`, {
+            variant_id: product.variants[0].id,
+            quantity: 1,
+            metadata: {
+              Size: "S",
+              Color: "Black",
+            },
+          })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              items: [
+                expect.objectContaining({
+                  unit_price: 1500,
+                  quantity: 2,
+                  title: "S / Black",
+                }),
+              ],
+              subtotal: 3000,
+            })
+          )
+
+          response = await api.post(`/store/carts/${cart.id}/line-items`, {
+            variant_id: product.variants[0].id,
+            quantity: 1,
+            metadata: {
+              Size: "S",
+              Color: "White",
+              Special: "attribute",
+            },
+          })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              items: [
+                expect.objectContaining({
+                  unit_price: 1500,
+                  quantity: 2,
+                  title: "S / Black",
+                }),
+                expect.objectContaining({
+                  unit_price: 1500,
+                  quantity: 1,
+                  title: "S / Black",
+                }),
+              ],
+              subtotal: 4500,
             })
           )
         })
