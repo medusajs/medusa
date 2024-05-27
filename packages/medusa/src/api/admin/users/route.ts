@@ -84,3 +84,5 @@ export const POST = async (
 
   res.status(200).json({ user, token })
 }
+
+export const AUTHENTICATE = false

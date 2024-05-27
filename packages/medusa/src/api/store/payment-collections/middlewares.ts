@@ -1,5 +1,4 @@
 import { MiddlewareRoute } from "../../../types/middlewares"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as queryConfig from "./query-config"
@@ -10,15 +9,6 @@ import {
 } from "./validators"
 
 export const storePaymentCollectionsMiddlewares: MiddlewareRoute[] = [
-  {
-    method: "ALL",
-    matcher: "/store/payment-collections*",
-    middlewares: [
-      authenticate("customer", ["session", "bearer"], {
-        allowUnauthenticated: true,
-      }),
-    ],
-  },
   {
     method: ["POST"],
     matcher: "/store/payment-collections",

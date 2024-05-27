@@ -489,7 +489,6 @@ moduleIntegrationTestRunner({
         await service.registerShipment({
           order_id: createdOrder.id,
           reference: Modules.FULFILLMENT,
-          shipping_method: createdOrder.shipping_methods![0].id,
           items: createdOrder.items!.map((item) => {
             return {
               id: item.id,

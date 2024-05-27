@@ -1,4 +1,3 @@
-import { revertIsolatedModulesMigration } from "./utils/get-migrations"
 import Logger from "../loaders/logger"
 import { migrateMedusaApp, revertMedusaApp } from "../loaders/medusa-app"
 import { initializeContainer } from "../loaders"
@@ -22,7 +21,6 @@ const main = async function ({ directory }) {
     process.exit()
   } else if (args[0] === "revert") {
     await revertMedusaApp({ configModule, container })
-    await revertIsolatedModulesMigration(configModule)
 
     Logger.info("Migrations reverted.")
   } else if (args[0] === "show") {

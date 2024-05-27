@@ -66,9 +66,6 @@ export function moduleIntegrationTestRunner({
       definition: moduleSdkImports.ModulesDefinition[moduleName],
       resolve,
       options: {
-        defaultAdapterOptions: {
-          database: dbConfig,
-        },
         database: dbConfig,
         ...moduleOptions,
       },
@@ -110,6 +107,10 @@ export function moduleIntegrationTestRunner({
         },
       }
     ),
+    dbConfig: {
+      schema,
+      clientUrl: dbConfig.clientUrl,
+    },
   } as SuiteOptions
 
   const beforeEach_ = async () => {

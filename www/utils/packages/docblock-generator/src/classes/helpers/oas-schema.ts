@@ -54,7 +54,7 @@ class OasSchemaHelper {
    * @returns The schema as a reference. If the schema doesn't have the x-schemaName property set,
    * the schema isn't converted and `undefined` is returned.
    */
-  schemaToReference(
+  namedSchemaToReference(
     schema: OpenApiSchema,
     level = 0
   ): OpenAPIV3.ReferenceObject | undefined {
@@ -84,7 +84,7 @@ class OasSchemaHelper {
           !("$ref" in propertySchema.items)
         ) {
           propertySchema.items =
-            this.schemaToReference(propertySchema.items, level + 1) ||
+            this.namedSchemaToReference(propertySchema.items, level + 1) ||
             propertySchema.items
         } else if (
           propertySchema.oneOf ||
@@ -101,13 +101,15 @@ class OasSchemaHelper {
             }
 
             schemaTarget![index] =
-              this.schemaToReference(item, level + 1) || item
+              this.namedSchemaToReference(item, level + 1) || item
           })
         }
 
         schema.properties![property] =
-          this.schemaToReference(propertySchema as OpenApiSchema, level + 1) ||
-          propertySchema
+          this.namedSchemaToReference(
+            propertySchema as OpenApiSchema,
+            level + 1
+          ) || propertySchema
       })
     }
 
@@ -116,6 +118,67 @@ class OasSchemaHelper {
     return {
       $ref: this.constructSchemaReference(schema["x-schemaName"]),
     }
+  }
+
+  schemaChildrenToRefs(schema: OpenApiSchema, level = 0): OpenApiSchema {
+    if (level > this.MAX_LEVEL) {
+      return schema
+    }
+
+    const clonedSchema = Object.assign({}, schema)
+
+    if (clonedSchema.allOf) {
+      clonedSchema.allOf = clonedSchema.allOf.map((item) => {
+        if (this.isRefObject(item)) {
+          return item
+        }
+
+        const transformChildItems = this.schemaChildrenToRefs(item, level + 1)
+        return (
+          this.namedSchemaToReference(transformChildItems) ||
+          transformChildItems
+        )
+      })
+    } else if (clonedSchema.oneOf) {
+      clonedSchema.oneOf = clonedSchema.oneOf.map((item) => {
+        if (this.isRefObject(item)) {
+          return item
+        }
+
+        const transformChildItems = this.schemaChildrenToRefs(item, level + 1)
+        return (
+          this.namedSchemaToReference(transformChildItems) ||
+          transformChildItems
+        )
+      })
+    } else if (
+      clonedSchema.type === "array" &&
+      !this.isRefObject(clonedSchema.items)
+    ) {
+      const transformedChildItems = this.schemaChildrenToRefs(
+        clonedSchema.items,
+        level
+      )
+      clonedSchema.items =
+        this.namedSchemaToReference(transformedChildItems) ||
+        transformedChildItems
+    } else if (clonedSchema.properties && !clonedSchema["x-schemaName"]) {
+      Object.entries(clonedSchema.properties).forEach(([key, property]) => {
+        if (this.isRefObject(property)) {
+          return
+        }
+
+        const transformedProperty = this.schemaChildrenToRefs(
+          property,
+          level + 1
+        )
+        schema.properties![key] =
+          this.namedSchemaToReference(transformedProperty) ||
+          transformedProperty
+      })
+    }
+
+    return clonedSchema
   }
 
   /**
@@ -264,7 +327,11 @@ class OasSchemaHelper {
    */
   tagNameToSchemaName(tagName: string, area: OasArea): string[] {
     const mainSchemaName = wordsToPascal(pluralize.singular(tagName))
-    return [mainSchemaName, `${capitalize(area)}Create${mainSchemaName}`]
+    return [
+      mainSchemaName,
+      `${mainSchemaName}Response`,
+      `${capitalize(area)}Create${mainSchemaName}`,
+    ]
   }
 }
 

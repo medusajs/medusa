@@ -1,4 +1,8 @@
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -14,8 +18,15 @@ medusaIntegrationTestRunner({
         appContainer = getContainer()
       })
 
+      beforeEach(async () => {
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
+      })
+
       it("should list payment providers", async () => {
-        let response = await api.get(`/admin/payments/payment-providers`)
+        let response = await api.get(
+          `/admin/payments/payment-providers`,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.payment_providers).toEqual([

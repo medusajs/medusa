@@ -1,5 +1,4 @@
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import {
   AdminCreateShippingOption,
   AdminCreateShippingOptionRule,
@@ -19,10 +18,6 @@ import { validateAndTransformQuery } from "../../utils/validate-query"
 import { createBatchBody } from "../../utils/validators"
 
 export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    matcher: "/admin/shipping-options*",
-    middlewares: [authenticate("user", ["bearer", "session"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/shipping-options",

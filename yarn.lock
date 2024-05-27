@@ -23712,7 +23712,6 @@ __metadata:
     express: ^4.18.3
     get-port: ^5.1.0
     pg-god: ^1.0.12
-    typeorm: ^0.2.43
   peerDependenciesMeta:
     "@medusajs/medusa":
       optional: true
@@ -23723,8 +23722,6 @@ __metadata:
     get-port:
       optional: true
     pg-god:
-      optional: true
-    typeorm:
       optional: true
   languageName: unknown
   linkType: soft
