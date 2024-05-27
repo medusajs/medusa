@@ -59,3 +59,27 @@ export const normalizeVariants = (
     })),
   }))
 }
+
+export const decorateVariantsWithDefaultValues = (
+  variants: ProductCreateSchemaType["variants"]
+) => {
+  return variants.map((variant) => ({
+    ...variant,
+    title: variant.title || "",
+    sku: variant.sku || "",
+    ean: variant.ean || "",
+    upc: variant.upc || "",
+    barcode: variant.barcode || "",
+    manage_inventory: variant.manage_inventory || false,
+    allow_backorder: variant.allow_backorder || false,
+    inventory_kit: variant.inventory_kit || false,
+    mid_code: variant.mid_code || "",
+    hs_code: variant.hs_code || "",
+    width: variant.width || 0,
+    height: variant.height || 0,
+    weight: variant.weight || 0,
+    length: variant.length || 0,
+    material: variant.material || "",
+    origin_country: variant.origin_country || "",
+  }))
+}

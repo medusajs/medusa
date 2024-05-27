@@ -25,6 +25,7 @@ import { Form } from "../../../../../../../components/common/form"
 import { SortableList } from "../../../../../../../components/common/sortable-list"
 import { ChipInput } from "../../../../../../../components/inputs/chip-input"
 import { ProductCreateSchemaType } from "../../../../types"
+import { decorateVariantsWithDefaultValues } from "../../../../utils"
 
 type ProductCreateVariantsSectionProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -249,7 +250,7 @@ export const ProductCreateVariantsSection = ({
           }
         })
 
-        form.setValue("variants", update)
+        form.setValue("variants", decorateVariantsWithDefaultValues(update))
         break
       }
       case "indeterminate":
@@ -264,18 +265,21 @@ export const ProductCreateVariantsSection = ({
         values: ["Default option value"],
       },
     ])
-    form.setValue("variants", [
-      {
-        title: "Default variant",
-        should_create: true,
-        variant_rank: 0,
-        options: {
-          "Default option": "Default option value",
+    form.setValue(
+      "variants",
+      decorateVariantsWithDefaultValues([
+        {
+          title: "Default variant",
+          should_create: true,
+          variant_rank: 0,
+          options: {
+            "Default option": "Default option value",
+          },
+          inventory: [{ title: "", quantity: 0 }],
+          is_default: true,
         },
-        inventory: [{ title: "", quantity: 0 }],
-        is_default: true,
-      },
-    ])
+      ])
+    )
   }
 
   return (

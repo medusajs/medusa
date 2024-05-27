@@ -1,5 +1,6 @@
 import { z } from "zod"
 import i18n from "i18next"
+import { decorateVariantsWithDefaultValues } from "./utils.ts"
 
 export const ProductCreateSchema = z
   .object({
@@ -43,6 +44,17 @@ export const ProductCreateSchema = z
           should_create: z.boolean(),
           is_default: z.boolean().optional(),
           title: z.string(),
+          upc: z.string().optional(),
+          ean: z.string().optional(),
+          barcode: z.string().optional(),
+          mid_code: z.string().optional(),
+          hs_code: z.string().optional(),
+          width: z.number().optional(),
+          height: z.number().optional(),
+          length: z.number().optional(),
+          weight: z.number().optional(),
+          material: z.string().optional(),
+          origin_country: z.string().optional(),
           custom_title: z.string().optional(),
           sku: z.string().optional(),
           manage_inventory: z.boolean().optional(),
@@ -82,7 +94,7 @@ export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
       values: ["Default option value"],
     },
   ],
-  variants: [
+  variants: decorateVariantsWithDefaultValues([
     {
       title: "Default variant",
       should_create: true,
@@ -93,7 +105,7 @@ export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
       inventory: [{ title: "", quantity: 0 }],
       is_default: true,
     },
-  ],
+  ]),
   enable_variants: false,
   images: [],
   thumbnail: "",
