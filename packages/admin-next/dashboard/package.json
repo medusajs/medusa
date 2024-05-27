@@ -33,7 +33,7 @@
     "@dnd-kit/sortable": "^8.0.0",
     "@hookform/resolvers": "3.3.2",
     "@medusajs/icons": "1.2.1",
-    "@medusajs/js-sdk": "0.0.1",
+    "@medusajs/js-sdk": "^0.0.1",
     "@medusajs/ui": "3.0.0",
     "@radix-ui/react-collapsible": "1.0.3",
     "@radix-ui/react-hover-card": "^1.0.7",
