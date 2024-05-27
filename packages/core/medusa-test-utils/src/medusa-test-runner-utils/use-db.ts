@@ -1,11 +1,9 @@
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
-  getConfigFile,
   isObject,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { ConfigModule } from "@medusajs/types"
 
 export async function initDb({
   cwd,
@@ -18,33 +16,36 @@ export async function initDb({
     Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
   }
 
-  const { configModule } = getConfigFile(cwd, `medusa-config`) as {
-    configModule: ConfigModule
-  }
-
-  const pgConnectionLoader =
-    require("@medusajs/medusa/dist/loaders/pg-connection").default
-
-  const featureFlagLoader =
-    require("@medusajs/medusa/dist/loaders/feature-flags").default
-
   const container = createMedusaContainer()
 
-  const featureFlagRouter = await featureFlagLoader(configModule)
+  const configModule =
+    await require("@medusajs/medusa/dist/loaders/config").default(cwd)
 
-  const pgConnection = await pgConnectionLoader({ configModule, container })
+  const pgConnection =
+    await require("@medusajs/medusa/dist/loaders/pg-connection").default({
+      configModule,
+      container,
+    })
+
+  const featureFlagRouter =
+    require("@medusajs/medusa/dist/loaders/feature-flags").default(configModule)
 
   container.register({
     [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
     [ContainerRegistrationKeys.LOGGER]: asValue(console),
     [ContainerRegistrationKeys.PG_CONNECTION]: asValue(pgConnection),
-    featureFlagRouter: asValue(featureFlagRouter),
+    [ContainerRegistrationKeys.FEATURE_FLAG_ROUTER]: asValue(featureFlagRouter),
   })
 
-  const {
-    migrateMedusaApp,
-  } = require("@medusajs/medusa/dist/loaders/medusa-app")
-  await migrateMedusaApp({ configModule, container })
+  try {
+    const {
+      migrateMedusaApp,
+    } = require("@medusajs/medusa/dist/loaders/medusa-app")
+    await migrateMedusaApp({ configModule, container })
+  } catch (err) {
+    console.error("Something went wrong while running the migrations")
+    throw err
+  }
 
   return pgConnection
 }

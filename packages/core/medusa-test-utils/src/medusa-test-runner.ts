@@ -1,5 +1,8 @@
 import { ContainerLike, MedusaContainer } from "@medusajs/types"
-import { createMedusaContainer } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+} from "@medusajs/utils"
 import { createDatabase, dropDatabase } from "pg-god"
 import { getDatabaseURL } from "./database"
 import { startBootstrapApp } from "./medusa-test-runner-utils/bootstrap-app"
@@ -29,12 +32,12 @@ const dbTestUtilFactory = (): any => ({
       return
     }
 
-    const runRawQuery = this.pgConnection_.raw
+    const runRawQuery = this.pgConnection_.raw.bind(this.pgConnection_)
 
     schema ??= "public"
 
     await runRawQuery(`SET session_replication_role = 'replica';`)
-    const tableNames = await runRawQuery(`SELECT table_name
+    const { rows: tableNames } = await runRawQuery(`SELECT table_name
                                             FROM information_schema.tables
                                             WHERE table_schema = '${schema}';`)
 
@@ -148,25 +151,20 @@ export function medusaIntegrationTestRunner({
   const beforeAll_ = async () => {
     await dbUtils.create(dbName)
 
-    let pgConnectionRes
-
     try {
-      const pgConnection = await initDb({
+      dbUtils.pgConnection_ = await initDb({
         cwd,
         env,
       })
-
-      pgConnectionRes = pgConnection
     } catch (error) {
       console.error("Error initializing database", error?.message)
       throw error
     }
 
-    dbUtils.pgConnection_ = pgConnectionRes
-
     let containerRes
     let serverShutdownRes
     let portRes
+
     try {
       const {
         shutdown = () => void 0,
@@ -214,7 +212,9 @@ export function medusaIntegrationTestRunner({
         require("@medusajs/medusa/dist/loaders/medusa-app").runModulesLoader
       await medusaAppLoaderRunner({
         container: copiedContainer,
-        configModule: container.resolve("configModule"),
+        configModule: container.resolve(
+          ContainerRegistrationKeys.CONFIG_MODULE
+        ),
       })
     } catch (error) {
       console.error("Error runner modules loaders", error?.message)
