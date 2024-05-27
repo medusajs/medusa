@@ -1,5 +1,7 @@
-import { RequestQueryFields } from "@medusajs/types"
-import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
+import {
+  MedusaContainer as coreMedusaContainer,
+  RequestQueryFields,
+} from "@medusajs/types"
 import { FindConfig } from "./common"
 
 declare global {

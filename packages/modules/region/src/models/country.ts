@@ -22,8 +22,8 @@ export default class Country {
   @Property({ columnType: "text" })
   iso_3: string
 
-  @Property({ columnType: "int" })
-  num_code: number
+  @Property({ columnType: "text" })
+  num_code: string
 
   @Property({ columnType: "text" })
   name: string

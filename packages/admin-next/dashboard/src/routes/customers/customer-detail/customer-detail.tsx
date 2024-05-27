@@ -32,7 +32,7 @@ export const CustomerDetail = () => {
       {before.widgets.map((w, i) => {
         return (
           <div key={i}>
-            <w.Component />
+            <w.Component data={customer} />
           </div>
         )
       })}
@@ -44,7 +44,7 @@ export const CustomerDetail = () => {
       {after.widgets.map((w, i) => {
         return (
           <div key={i}>
-            <w.Component />
+            <w.Component data={customer} />
           </div>
         )
       })}

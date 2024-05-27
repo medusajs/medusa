@@ -19,9 +19,8 @@ const {
   simpleProductFactory,
   simpleCartFactory,
   simpleShippingOptionFactory,
-  simpleOrderFactory,
 } = require("../../../factories")
-const { MedusaError } = require("medusa-core-utils")
+const { MedusaError } = require("@medusajs/utils")
 
 jest.setTimeout(30000)
 

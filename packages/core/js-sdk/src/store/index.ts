@@ -252,12 +252,13 @@ export class Store {
   }
 
   public fulfillment = {
-    // TODO: Finalize typings for list options
     listCartOptions: async (
       query?: FindParams & { cart_id: string },
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/shipping-options`, {
+      return this.client.fetch<{
+        shipping_options: HttpTypes.StoreCartShippingOption[]
+      }>(`/store/shipping-options`, {
         headers,
         query,
       })

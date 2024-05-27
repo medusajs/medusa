@@ -15,6 +15,7 @@ import SectionContainer from "../../../Section/Container"
 import useSchemaExample from "../../../../hooks/use-schema-example"
 import { InView } from "react-intersection-observer"
 import checkElementInViewport from "../../../../utils/check-element-in-viewport"
+import { singular } from "pluralize"
 
 export type TagSectionSchemaProps = {
   schema: SchemaObject
@@ -24,15 +25,10 @@ export type TagSectionSchemaProps = {
 const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
   const { addItems, setActivePath, activePath } = useSidebar()
   const tagSlugName = useMemo(() => getSectionId([tagName]), [tagName])
-  const formattedName = useMemo(() => {
-    if (!schema["x-schemaName"]) {
-      return tagName.replaceAll(" ", "")
-    }
-
-    return schema["x-schemaName"]
-      .replaceAll(/^(Admin|Store)/g, "")
-      .replaceAll(/^Create/g, "")
-  }, [schema, tagName])
+  const formattedName = useMemo(
+    () => singular(tagName).replaceAll(" ", ""),
+    [tagName]
+  )
   const schemaSlug = useMemo(
     () => getSectionId([tagName, formattedName, "schema"]),
     [tagName, formattedName]
