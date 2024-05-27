@@ -60,18 +60,21 @@ export async function startApp({
   }
 
   return await new Promise((resolve, reject) => {
-    const server = app.listen(port).on("error", async (err) => {
-      await shutdown()
-      return reject(err)
-    })
+    const server = app
+      .listen(port)
+      .on("error", async (err) => {
+        await shutdown()
+        return reject(err)
+      })
+      .on("listening", () => {
+        process.send?.(port)
 
-    process.send?.(port)
-
-    resolve({
-      shutdown,
-      container,
-      port,
-    })
+        resolve({
+          shutdown,
+          container,
+          port,
+        })
+      })
 
     // TODO: fix that once we find the appropriate place to put this util
     const {

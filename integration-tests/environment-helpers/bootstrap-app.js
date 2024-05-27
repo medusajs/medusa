@@ -63,15 +63,19 @@ module.exports = {
     }
 
     return await new Promise((resolve, reject) => {
-      expressServer = app.listen(port, async (err) => {
-        if (err) {
-          await shutdown()
-          return reject(err)
-        }
-        setPort(port)
-        process.send(port)
-        resolve(shutdown)
-      })
+      expressServer = app
+        .listen(port)
+        .on("error", async (err) => {
+          if (err) {
+            await shutdown()
+            return reject(err)
+          }
+        })
+        .on("listening", () => {
+          setPort(port)
+          process.send(port)
+          resolve(shutdown)
+        })
 
       setExpressServer(expressServer)
     })
