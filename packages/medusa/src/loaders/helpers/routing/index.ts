@@ -298,8 +298,6 @@ export class RoutesLoader {
 
           const config: RouteConfig = {
             routes: [],
-            shouldRequireAdminAuth: false,
-            shouldRequireCustomerAuth: false,
           }
 
           /**
@@ -324,20 +322,12 @@ export class RoutesLoader {
             if (shouldAddCors) {
               config.shouldAppendAdminCors = true
             }
-
-            if (shouldRequireAuth) {
-              config.shouldRequireAdminAuth = true
-            }
           }
 
           if (route.startsWith("/store")) {
             config.routeType = "store"
             if (shouldAddCors) {
               config.shouldAppendStoreCors = true
-            }
-
-            if (shouldRequireAuth && route.startsWith("/store/customers/me")) {
-              config.shouldRequireCustomerAuth = true
             }
           }
 
@@ -642,11 +632,12 @@ export class RoutesLoader {
         )
       }
 
+      // We only apply the auth middleware to store routes to populate the auth context. For actual authentication, users can just reapply the middleware.
       if (!config.optedOutOfAuth && config.routeType === "store") {
         this.router.use(
           descriptor.route,
           authenticate("customer", ["bearer", "session"], {
-            allowUnauthenticated: !config.shouldRequireCustomerAuth,
+            allowUnauthenticated: true,
           })
         )
       }
@@ -655,9 +646,7 @@ export class RoutesLoader {
         // We probably don't want to allow access to all endpoints using an api key, but it will do until we revamp our routing.
         this.router.use(
           descriptor.route,
-          authenticate("user", ["bearer", "session", "api-key"], {
-            allowUnauthenticated: !config.shouldRequireAdminAuth,
-          })
+          authenticate("user", ["bearer", "session", "api-key"])
         )
       }
 

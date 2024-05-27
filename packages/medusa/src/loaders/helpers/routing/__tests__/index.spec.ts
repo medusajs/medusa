@@ -154,35 +154,6 @@ describe("RoutesLoader", function () {
       expect(res.text).toBe("GET /admin/unprotected")
     })
 
-    it("should return 200 when customer is authenticated", async () => {
-      const res = await request("GET", "/store/customers/me/protected", {
-        clientSession: {
-          jwt: {
-            customer_id: "lebron",
-          },
-        },
-      })
-
-      expect(res.status).toBe(200)
-      expect(res.text).toBe("GET /store/protected")
-    })
-
-    // The authentication middleware has changed and is not automatically attached currently
-    it("should return 401 when customer is not authenticated", async () => {
-      const res = await request("GET", "/store/customers/me/protected")
-
-      expect(res.status).toBe(401)
-      const message = JSON.parse(res.text).message
-      expect(message).toBe("Unauthorized")
-    })
-
-    it("should return 200 when customer route is opted out of authentication", async () => {
-      const res = await request("GET", "/store/customers/me/unprotected")
-
-      expect(res.status).toBe(200)
-      expect(res.text).toBe("GET /store/unprotected")
-    })
-
     it("should return the error as JSON when an error is thrown with default error handling", async () => {
       const res = await request("GET", "/customers/error")
 

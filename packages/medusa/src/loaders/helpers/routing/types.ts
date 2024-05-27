@@ -36,8 +36,6 @@ export type RouteImplementation = {
 }
 
 export type RouteConfig = {
-  shouldRequireAdminAuth?: boolean
-  shouldRequireCustomerAuth?: boolean
   optedOutOfAuth?: boolean
   routeType?: "admin" | "store" | "auth"
   shouldAppendAdminCors?: boolean
