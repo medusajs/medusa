@@ -99,7 +99,7 @@ export const addToCartWorkflow = createWorkflow(
     })
 
     const items = transform({ createdItems, updatedItems }, (data) => {
-      return [...data.createdItems, ...data.updatedItems]
+      return [...(data.createdItems || []), ...(data.updatedItems || [])]
     })
 
     const cart = useRemoteQueryStep({
