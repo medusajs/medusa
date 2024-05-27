@@ -78,7 +78,7 @@ export const addToCartWorkflow = createWorkflow(
       return items
     })
 
-    const items = addToCartStep({ items: lineItems })
+    const items = addToCartStep({ id: input.cart.id, items: lineItems })
 
     const cart = useRemoteQueryStep({
       entry_point: "cart",
@@ -88,9 +88,7 @@ export const addToCartWorkflow = createWorkflow(
     }).config({ name: "refetch–cart" })
 
     refreshCartShippingMethodsStep({ cart })
-    // TODO: since refreshCartShippingMethodsStep potentially removes cart shipping methods, we need the updated cart here
-    // for the following 2 steps as they act upon final cart shape
-    updateTaxLinesStep({ cart_or_cart_id: cart, items })
+    updateTaxLinesStep({ cart_or_cart_id: input.cart.id, items })
     refreshCartPromotionsStep({ id: input.cart.id })
     refreshPaymentCollectionForCartStep({ cart_id: input.cart.id })
 
