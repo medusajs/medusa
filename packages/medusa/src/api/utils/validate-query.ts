@@ -9,6 +9,7 @@ import {
   prepareRetrieveQuery,
 } from "../../utils/get-query-config"
 import { zodValidator } from "./validate-body"
+
 /**
  * Normalize an input query, especially from array like query params to an array type
  * e.g: /admin/orders/?fields[]=id,status,cart_id becomes { fields: ["id", "status", "cart_id"] }
@@ -43,11 +44,14 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
 ) => Promise<void> {
   return async (req: MedusaRequest, _: MedusaResponse, next: NextFunction) => {
     try {
+      const allowed = req.allowed ?? queryConfig.allowed ?? []
+      delete req.allowed
+
       const query = normalizeQuery(req)
       const validated = await zodValidator(zodSchema, query)
       const cnf = queryConfig.isList
-        ? prepareListQuery(validated, queryConfig)
-        : prepareRetrieveQuery(validated, queryConfig)
+        ? prepareListQuery(validated, { ...queryConfig, allowed })
+        : prepareRetrieveQuery(validated, { ...queryConfig, allowed })
 
       req.validatedQuery = validated
       req.filterableFields = getFilterableFields(req.validatedQuery)
