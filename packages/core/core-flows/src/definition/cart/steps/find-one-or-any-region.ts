@@ -16,9 +16,12 @@ export const findOneOrAnyRegionStep = createStep(
     )
 
     if (data.regionId) {
-      const region = await service.retrieve(data.regionId)
-
-      return new StepResponse(region)
+      try {
+        const region = await service.retrieve(data.regionId)
+        return new StepResponse(region)
+      } catch (error) {
+        return new StepResponse(null)
+      }
     }
 
     const [store] = await storeModule.list()
@@ -32,7 +35,7 @@ export const findOneOrAnyRegionStep = createStep(
     })
 
     if (!region) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, "No regions found")
+      return new StepResponse(null)
     }
 
     return new StepResponse(region)
