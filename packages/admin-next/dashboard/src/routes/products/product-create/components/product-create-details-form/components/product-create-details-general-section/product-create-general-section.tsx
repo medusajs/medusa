@@ -1,6 +1,6 @@
 import { Input, Textarea } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
-import { Trans, useTranslation } from "react-i18next"
+import { useTranslation } from "react-i18next"
 
 import { Form } from "../../../../../../../components/common/form"
 import { HandleInput } from "../../../../../../../components/inputs/handle-input"
@@ -18,7 +18,7 @@ export const ProductCreateGeneralSection = ({
   return (
     <div id="general" className="flex flex-col gap-y-8">
       <div className="flex flex-col gap-y-2">
-        <div className="grid grid-cols-3 gap-x-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <Form.Field
             control={form.control}
             name="title"

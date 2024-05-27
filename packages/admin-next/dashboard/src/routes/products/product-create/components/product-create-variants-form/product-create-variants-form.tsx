@@ -41,6 +41,11 @@ export const ProductCreateVariantsForm = ({
     currencies: store?.supported_currency_codes,
   })
 
+  const variantData = useMemo(
+    () => variants.filter((v) => v.should_create),
+    [variants]
+  )
+
   if (isError) {
     throw error
   }
@@ -50,7 +55,7 @@ export const ProductCreateVariantsForm = ({
       {isPending && !store ? (
         <div>Loading...</div>
       ) : (
-        <DataGridRoot columns={columns} data={variants} state={form} />
+        <DataGridRoot columns={columns} data={variantData} state={form} />
       )}
     </div>
   )
