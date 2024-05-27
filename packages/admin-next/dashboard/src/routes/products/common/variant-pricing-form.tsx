@@ -64,7 +64,6 @@ export const useVariantPriceGridColumns = ({
         header: t("fields.title"),
         cell: ({ row }) => {
           const entity = row.original
-
           return (
             <ReadonlyCell>
               <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">

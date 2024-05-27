@@ -163,6 +163,25 @@ export const useUpdateProductVariant = (
   })
 }
 
+export const useUpdateProductVariantsBatch = (
+  productId: string,
+  options?: UseMutationOptions<any, Error, any>
+) => {
+  return useMutation({
+    mutationFn: (payload: any) =>
+      client.products.updateVariantsBatch(productId, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useDeleteVariant = (
   productId: string,
   variantId: string,

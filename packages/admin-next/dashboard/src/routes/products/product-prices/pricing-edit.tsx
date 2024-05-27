@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { RouteFocusModal, useRouteModal } from "../../../components/route-modal"
-import { useUpdateProductVariant } from "../../../hooks/api/products"
+import { useUpdateProductVariantsBatch } from "../../../hooks/api/products"
 import { ExtendedProductDTO } from "../../../types/api-responses"
 import { VariantPricingForm } from "../common/variant-pricing-form"
 import {
@@ -16,7 +16,9 @@ import { castNumber } from "../../../lib/cast-number.ts"
 export const UpdateVariantPricesSchema = zod.object({
   variants: zod.array(
     zod.object({
-      prices: zod.record(zod.string(), zod.string()).optional(),
+      prices: zod
+        .record(zod.string(), zod.string().or(zod.number()).optional())
+        .optional(),
     })
   ),
 })
@@ -31,6 +33,7 @@ export const PricingEdit = ({ product }: { product: ExtendedProductDTO }) => {
   const form = useForm<UpdateVariantPricesSchemaType>({
     defaultValues: {
       variants: product.variants.map((variant: any) => ({
+        title: variant.title,
         prices: variant.prices.reduce((acc: any, price: any) => {
           acc[price.currency_code] = getPresentationalAmount(
             price.amount,
@@ -44,13 +47,13 @@ export const PricingEdit = ({ product }: { product: ExtendedProductDTO }) => {
     resolver: zodResolver(UpdateVariantPricesSchema, {}),
   })
 
-  // TODO: Add batch update method here
-  const { mutateAsync, isPending } = useUpdateProductVariant(product.id, "")
+  const { mutateAsync, isPending } = useUpdateProductVariantsBatch(product.id)
 
   const handleSubmit = form.handleSubmit(
     async (values) => {
       const reqData = {
-        variants: values.variants.map((variant) => ({
+        update: values.variants.map((variant, ind) => ({
+          id: product.variants[ind].id,
           prices: Object.entries(variant.prices || {}).map(
             ([key, value]: any) => ({
               currency_code: key,
@@ -61,7 +64,7 @@ export const PricingEdit = ({ product }: { product: ExtendedProductDTO }) => {
       }
       await mutateAsync(reqData, {
         onSuccess: () => {
-          handleSuccess(`../${product.id}`)
+          handleSuccess(`/products/${product.id}`)
         },
       })
     },
