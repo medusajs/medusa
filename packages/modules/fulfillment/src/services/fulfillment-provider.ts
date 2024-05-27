@@ -4,8 +4,7 @@ import {
   FulfillmentTypes,
   IFulfillmentProvider,
 } from "@medusajs/types"
-import { ModulesSdkUtils, promiseAll } from "@medusajs/utils"
-import { MedusaError } from "medusa-core-utils"
+import { ModulesSdkUtils, promiseAll, MedusaError } from "@medusajs/utils"
 import { FulfillmentProvider } from "@models"
 
 type InjectedDependencies = {

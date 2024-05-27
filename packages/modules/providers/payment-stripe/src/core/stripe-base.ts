@@ -17,8 +17,8 @@ import {
   MedusaError,
   PaymentActions,
   isPaymentProviderError,
+  isDefined
 } from "@medusajs/utils"
-import { isDefined } from "medusa-core-utils"
 
 import { CreatePaymentProviderSession } from "@medusajs/types"
 import {

@@ -131,12 +131,12 @@
         },
         "num_code": {
           "name": "num_code",
-          "type": "int",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "integer"
+          "mappedType": "text"
         },
         "name": {
           "name": "name",

@@ -36,7 +36,7 @@ export const CustomerGroupDetail = () => {
       {before.widgets.map((w, i) => {
         return (
           <div key={i}>
-            <w.Component />
+            <w.Component data={customer_group} />
           </div>
         )
       })}
@@ -45,7 +45,7 @@ export const CustomerGroupDetail = () => {
       {after.widgets.map((w, i) => {
         return (
           <div key={i}>
-            <w.Component />
+            <w.Component data={customer_group} />
           </div>
         )
       })}

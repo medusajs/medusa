@@ -5556,7 +5556,6 @@ __metadata:
     is-valid-path: ^0.1.1
     jest: ^25.5.4
     meant: ^1.0.3
-    medusa-core-utils: ^1.2.0
     medusa-telemetry: ^0.0.17
     open: ^8.0.6
     ora: ^5.4.1
@@ -5649,9 +5648,7 @@ __metadata:
     jest: ^25.5.4
     jsonwebtoken: ^9.0.0
     lodash: ^4.17.21
-    medusa-core-utils: ^1.2.2
     medusa-telemetry: ^0.0.17
-    medusa-test-utils: ^1.1.44
     morgan: ^1.9.1
     multer: ^1.4.5-lts.1
     node-schedule: ^2.1.1
@@ -24048,19 +24045,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"medusa-core-utils@^1.2.0, medusa-core-utils@^1.2.2, medusa-core-utils@workspace:packages/medusa-core-utils":
-  version: 0.0.0-use.local
-  resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
-  dependencies:
-    awilix: ^8.0.0
-    cross-env: ^5.2.1
-    jest: ^25.5.4
-    rimraf: ^5.0.1
-    ts-jest: ^25.5.1
-    typescript: ^4.4.4
-  languageName: unknown
-  linkType: soft
-
 "medusa-dev-cli@workspace:packages/cli/medusa-dev-cli":
   version: 0.0.0-use.local
   resolution: "medusa-dev-cli@workspace:packages/cli/medusa-dev-cli"
@@ -24119,7 +24103,6 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     cross-env: ^5.2.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.2.2
     randomatic: ^3.1.1
     rimraf: ^3.0.2
     typescript: ^5.1.6
@@ -24130,7 +24113,6 @@ __metadata:
     express: ^4.18.3
     get-port: ^5.1.0
     pg-god: ^1.0.12
-    typeorm: ^0.2.43
   peerDependenciesMeta:
     "@medusajs/medusa":
       optional: true
@@ -24141,8 +24123,6 @@ __metadata:
     get-port:
       optional: true
     pg-god:
-      optional: true
-    typeorm:
       optional: true
   languageName: unknown
   linkType: soft
