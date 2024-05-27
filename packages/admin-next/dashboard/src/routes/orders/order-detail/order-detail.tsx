@@ -43,7 +43,7 @@ export const OrderDetail = () => {
       {before.widgets.map((w, i) => {
         return (
           <div key={i}>
-            <w.Component />
+            <w.Component data={order} />
           </div>
         )
       })}
@@ -56,7 +56,7 @@ export const OrderDetail = () => {
           {after.widgets.map((w, i) => {
             return (
               <div key={i}>
-                <w.Component />
+                <w.Component data={order} />
               </div>
             )
           })}
@@ -68,7 +68,7 @@ export const OrderDetail = () => {
           {sideBefore.widgets.map((w, i) => {
             return (
               <div key={i}>
-                <w.Component />
+                <w.Component data={order} />
               </div>
             )
           })}
@@ -77,7 +77,7 @@ export const OrderDetail = () => {
           {sideAfter.widgets.map((w, i) => {
             return (
               <div key={i}>
-                <w.Component />
+                <w.Component data={order} />
               </div>
             )
           })}
