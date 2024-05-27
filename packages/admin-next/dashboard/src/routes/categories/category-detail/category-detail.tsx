@@ -39,7 +39,7 @@ export const CategoryDetail = () => {
       {before.widgets.map((w, i) => {
         return (
           <div key={i}>
-            <w.Component />
+            <w.Component data={product_category} />
           </div>
         )
       })}
@@ -50,7 +50,7 @@ export const CategoryDetail = () => {
           {after.widgets.map((w, i) => {
             return (
               <div key={i}>
-                <w.Component />
+                <w.Component data={product_category} />
               </div>
             )
           })}
@@ -62,7 +62,7 @@ export const CategoryDetail = () => {
           {sideBefore.widgets.map((w, i) => {
             return (
               <div key={i}>
-                <w.Component />
+                <w.Component data={product_category} />
               </div>
             )
           })}
@@ -70,7 +70,7 @@ export const CategoryDetail = () => {
           {sideAfter.widgets.map((w, i) => {
             return (
               <div key={i}>
-                <w.Component />
+                <w.Component data={product_category} />
               </div>
             )
           })}

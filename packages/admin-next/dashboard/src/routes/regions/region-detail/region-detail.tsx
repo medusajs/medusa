@@ -6,6 +6,9 @@ import { RegionCountrySection } from "./components/region-country-section"
 import { RegionGeneralSection } from "./components/region-general-section"
 import { regionLoader } from "./loader"
 
+import after from "virtual:medusa/widgets/region/details/after"
+import before from "virtual:medusa/widgets/region/details/before"
+
 export const RegionDetail = () => {
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof regionLoader>
@@ -36,8 +39,22 @@ export const RegionDetail = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
+      {before.widgets.map((w, i) => {
+        return (
+          <div key={i}>
+            <w.Component data={region} />
+          </div>
+        )
+      })}
       <RegionGeneralSection region={region} />
       <RegionCountrySection region={region} />
+      {after.widgets.map((w, i) => {
+        return (
+          <div key={i}>
+            <w.Component data={region} />
+          </div>
+        )
+      })}
       <JsonViewSection data={region} />
       <Outlet />
     </div>

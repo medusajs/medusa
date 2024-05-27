@@ -36,7 +36,7 @@ export const CollectionDetail = () => {
       {before.widgets.map((w, i) => {
         return (
           <div key={i}>
-            <w.Component />
+            <w.Component data={collection} />
           </div>
         )
       })}
@@ -45,7 +45,7 @@ export const CollectionDetail = () => {
       {after.widgets.map((w, i) => {
         return (
           <div key={i}>
-            <w.Component />
+            <w.Component data={collection} />
           </div>
         )
       })}
