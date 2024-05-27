@@ -4895,7 +4895,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/admin-sdk@0.0.1, @medusajs/admin-sdk@workspace:packages/admin-next/admin-sdk":
+"@medusajs/admin-sdk@^0.0.1, @medusajs/admin-sdk@workspace:packages/admin-next/admin-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-sdk@workspace:packages/admin-next/admin-sdk"
   dependencies:
@@ -4978,7 +4978,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-emailpass@0.0.1, @medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
+"@medusajs/auth-emailpass@^0.0.1, @medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass"
   dependencies:
@@ -4995,7 +4995,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"
   dependencies:
-    "@medusajs/auth-emailpass": 0.0.1
+    "@medusajs/auth-emailpass": ^0.0.1
     "@medusajs/modules-sdk": ^1.12.9
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.7
@@ -5057,7 +5057,7 @@ __metadata:
   resolution: "@medusajs/cart@workspace:packages/modules/cart"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.11
-    "@medusajs/types": "workspace:^"
+    "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
@@ -5130,7 +5130,7 @@ __metadata:
   resolution: "@medusajs/customer@workspace:packages/modules/customer"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.11
-    "@medusajs/types": "workspace:^"
+    "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
@@ -5163,7 +5163,7 @@ __metadata:
     "@medusajs/admin-shared": ^0.0.1
     "@medusajs/admin-vite-plugin": 0.0.1
     "@medusajs/icons": 1.2.1
-    "@medusajs/js-sdk": 0.0.1
+    "@medusajs/js-sdk": ^0.0.1
     "@medusajs/types": 1.11.16
     "@medusajs/ui": 3.0.0
     "@medusajs/ui-preset": 1.1.3
@@ -5296,7 +5296,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/fulfillment-manual@workspace:*, @medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
+"@medusajs/fulfillment-manual@^0.0.2, @medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual"
   dependencies:
@@ -5314,7 +5314,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment@workspace:packages/modules/fulfillment"
   dependencies:
-    "@medusajs/fulfillment-manual": "workspace:*"
+    "@medusajs/fulfillment-manual": ^0.0.2
     "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
@@ -5409,7 +5409,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/js-sdk@0.0.1, @medusajs/js-sdk@workspace:packages/core/js-sdk":
+"@medusajs/js-sdk@^0.0.1, @medusajs/js-sdk@workspace:packages/core/js-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/js-sdk@workspace:packages/core/js-sdk"
   dependencies:
@@ -5521,7 +5521,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
-    "@medusajs/admin-sdk": 0.0.1
+    "@medusajs/admin-sdk": ^0.0.1
     "@medusajs/core-flows": ^0.0.9
     "@medusajs/link-modules": ^0.2.11
     "@medusajs/medusa-cli": ^1.3.22
@@ -5852,7 +5852,7 @@ __metadata:
   dependencies:
     "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
-    "@medusajs/utils": 1.11.9
+    "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6166,7 +6166,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@1.11.9, @medusajs/utils@^1.11.2, @medusajs/utils@^1.11.5, @medusajs/utils@^1.11.7, @medusajs/utils@^1.11.8, @medusajs/utils@^1.11.9, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/core/utils":
+"@medusajs/utils@^1.11.2, @medusajs/utils@^1.11.5, @medusajs/utils@^1.11.7, @medusajs/utils@^1.11.8, @medusajs/utils@^1.11.9, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/core/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/core/utils"
   dependencies:
