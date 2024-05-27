@@ -151,10 +151,10 @@ medusaIntegrationTestRunner({
                 code: "test-code",
               },
               prices: [
-                // {
-                //   currency_code: "usd",
-                //   amount: 1000,
-                // },
+                {
+                  currency_code: "usd",
+                  amount: 1000,
+                },
                 {
                   region_id: region.id,
                   amount: 1100,
@@ -182,8 +182,7 @@ medusaIntegrationTestRunner({
         ).data.cart
       })
 
-      describe.only("GET /admin/shipping-options?cart_id=", () => {
-        // TODO: Enable it when product workflows manage inventory items
+      describe("GET /admin/shipping-options?cart_id=", () => {
         it("should get all shipping options for a cart successfully", async () => {
           const resp = await api.get(`/store/shipping-options?cart_id=${cart.id}`)
 
