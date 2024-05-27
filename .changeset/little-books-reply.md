@@ -1,5 +1,4 @@
 ---
-"babel-preset-medusa-package": patch
 "create-medusa-app": patch
 "@medusajs/medusa-cli": patch
 "medusa-dev-cli": patch
