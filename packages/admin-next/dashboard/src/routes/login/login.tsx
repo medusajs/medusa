@@ -5,10 +5,14 @@ import { Trans, useTranslation } from "react-i18next"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import * as z from "zod"
 
+import { Divider } from "../../components/common/divider"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
 import { useEmailPassLogin } from "../../hooks/api/auth"
 import { isAxiosError } from "../../lib/is-axios-error"
+
+import after from "virtual:medusa/widgets/login/after"
+import before from "virtual:medusa/widgets/login/before"
 
 const LoginSchema = z.object({
   email: z.string().email(),
@@ -76,58 +80,74 @@ export const Login = () => {
             {t("login.hint")}
           </Text>
         </div>
-        <Form {...form}>
-          <form
-            onSubmit={handleSubmit}
-            className="flex w-full flex-col gap-y-6"
-          >
-            <div className="flex flex-col gap-y-4">
-              <Form.Field
-                control={form.control}
-                name="email"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>{t("fields.email")}</Form.Label>
-                      <Form.Control>
-                        <Input autoComplete="email" {...field} />
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-              <Form.Field
-                control={form.control}
-                name="password"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>{t("fields.password")}</Form.Label>
-                      <Form.Control>
-                        <Input
-                          type="password"
-                          autoComplete="current-password"
-                          {...field}
-                        />
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-            </div>
-            <Button className="w-full" type="submit" isLoading={isPending}>
-              {t("actions.continue")}
-            </Button>
-          </form>
-          {serverError && (
-            <Alert className="mt-4" dismissible variant="error">
-              {serverError}
-            </Alert>
-          )}
-        </Form>
-        <div className="my-6 h-px w-full border-b border-dotted" />
+        <div className="flex w-full flex-col gap-y-3">
+          {before.widgets.map((w, i) => {
+            return (
+              <div key={i}>
+                <w.Component />
+              </div>
+            )
+          })}
+          <Form {...form}>
+            <form
+              onSubmit={handleSubmit}
+              className="flex w-full flex-col gap-y-6"
+            >
+              <div className="flex flex-col gap-y-4">
+                <Form.Field
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label>{t("fields.email")}</Form.Label>
+                        <Form.Control>
+                          <Input autoComplete="email" {...field} />
+                        </Form.Control>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+                <Form.Field
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label>{t("fields.password")}</Form.Label>
+                        <Form.Control>
+                          <Input
+                            type="password"
+                            autoComplete="current-password"
+                            {...field}
+                          />
+                        </Form.Control>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+              </div>
+              <Button className="w-full" type="submit" isLoading={isPending}>
+                {t("actions.continue")}
+              </Button>
+            </form>
+            {serverError && (
+              <Alert className="mt-4" dismissible variant="error">
+                {serverError}
+              </Alert>
+            )}
+          </Form>
+          {after.widgets.map((w, i) => {
+            return (
+              <div key={i}>
+                <w.Component />
+              </div>
+            )
+          })}
+        </div>
+        <Divider variant="dashed" className="my-6" />
         <span className="text-ui-fg-subtle txt-small">
           <Trans
             i18nKey="login.forgotPassword"
