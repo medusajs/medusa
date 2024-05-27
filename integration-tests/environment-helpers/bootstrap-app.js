@@ -66,10 +66,8 @@ module.exports = {
       expressServer = app
         .listen(port)
         .on("error", async (err) => {
-          if (err) {
-            await shutdown()
-            return reject(err)
-          }
+          await shutdown()
+          return reject(err)
         })
         .on("listening", () => {
           setPort(port)
