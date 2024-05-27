@@ -5,10 +5,10 @@ import { IProductModuleService } from "@medusajs/types"
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection }) => {
+  testSuite: ({ dbConfig: { clientUrl } }) => {
     describe("Standalone Modules", () => {
       beforeAll(async () => {
-        process.env.POSTGRES_URL = dbConnection.manager.connection.options.url
+        process.env.POSTGRES_URL = clientUrl
       })
 
       afterAll(async () => {
