@@ -13,9 +13,9 @@ interface StepInput {
   items: CreateLineItemForCartDTO[]
 }
 
-export const addToCartStepId = "add-to-cart-step"
-export const addToCartStep = createStep(
-  addToCartStepId,
+export const getLineItemActionsStepId = "get-line-item-actions-step"
+export const getLineItemActionsStep = createStep(
+  getLineItemActionsStepId,
   async (data: StepInput, { container }) => {
     const cartModule = container.resolve<ICartModuleService>(
       ModuleRegistrationName.CART
@@ -54,50 +54,6 @@ export const addToCartStep = createStep(
       }
     }
 
-    const createdItems = itemsToCreate.length
-      ? await cartModule.addLineItems(itemsToCreate)
-      : []
-
-    const itemsBeforeUpdate = await cartModule.listLineItems(
-      { id: itemsToUpdate.map((d) => d.selector.id!) },
-      { select: ["id", "quantity"] }
-    )
-
-    const updatedItems = itemsToUpdate.length
-      ? await cartModule.updateLineItems(itemsToUpdate)
-      : []
-
-    return new StepResponse([...createdItems, ...updatedItems], {
-      createdItems,
-      itemsBeforeUpdate,
-    })
-  },
-  async (revertData, { container }) => {
-    if (!revertData) {
-      return
-    }
-
-    const { createdItems, itemsBeforeUpdate } = revertData
-
-    const cartModule: ICartModuleService = container.resolve(
-      ModuleRegistrationName.CART
-    )
-
-    if (createdItems.length) {
-      await cartModule.deleteLineItems(createdItems.map((c) => c.id))
-    }
-
-    if (itemsBeforeUpdate.length) {
-      const itemsToUpdate: UpdateLineItemWithSelectorDTO[] = []
-
-      for (const item of itemsBeforeUpdate) {
-        itemsToUpdate.push({
-          selector: { id: item.id },
-          data: { id: item.id, quantity: item.quantity },
-        })
-      }
-
-      await cartModule.updateLineItems(itemsToUpdate)
-    }
+    return new StepResponse({ itemsToCreate, itemsToUpdate }, null)
   }
 )
