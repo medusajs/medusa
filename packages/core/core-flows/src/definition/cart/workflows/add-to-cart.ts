@@ -5,6 +5,7 @@ import {
 import {
   WorkflowData,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
@@ -88,15 +89,16 @@ export const addToCartWorkflow = createWorkflow(
       items: lineItems,
     })
 
-    const createdItems = createLineItemsStep({
-      id: input.cart.id,
-      items: itemsToCreate,
-    })
-
-    const updatedItems = updateLineItemsStep({
-      id: input.cart.id,
-      items: itemsToUpdate,
-    })
+    const [createdItems, updatedItems] = parallelize(
+      createLineItemsStep({
+        id: input.cart.id,
+        items: itemsToCreate,
+      }),
+      updateLineItemsStep({
+        id: input.cart.id,
+        items: itemsToUpdate,
+      })
+    )
 
     const items = transform({ createdItems, updatedItems }, (data) => {
       return [...(data.createdItems || []), ...(data.updatedItems || [])]
