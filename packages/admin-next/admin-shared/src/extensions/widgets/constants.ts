@@ -153,7 +153,7 @@ const API_KEY_INJECTION_ZONES = [
   "api_key.details.before",
   "api_key.details.after",
   "api_key.list.before",
-  "api_key",
+  "api_key.list.after",
 ]
 
 const WORKFLOW_INJECTION_ZONES = [
@@ -161,6 +161,13 @@ const WORKFLOW_INJECTION_ZONES = [
   "workflow.details.after",
   "workflow.list.before",
   "workflow.list.after",
+] as const
+
+const TAX_INJECTION_ZONES = [
+  "tax.details.before",
+  "tax.details.after",
+  "tax.list.before",
+  "tax.list.after",
 ] as const
 
 /**
@@ -190,4 +197,5 @@ export const INJECTION_ZONES = [
   ...API_KEY_INJECTION_ZONES,
   ...WORKFLOW_INJECTION_ZONES,
   ...CAMPAIGN_INJECTION_ZONES,
+  ...TAX_INJECTION_ZONES,
 ] as const
