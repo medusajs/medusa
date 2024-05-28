@@ -5,14 +5,14 @@ on:
     inputs:
       version:
         type: choice
-        default: 'preview'
+        default: "preview"
         description: What tag do you want to release?
         required: true
-        options: 
-        - preview
-        - next
-        - snapshot
-        - canary
+        options:
+          - preview
+          - next
+          - snapshot
+          - canary
     branches:
       - develop
     paths-ignore:
@@ -32,10 +32,10 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js 16.x
+      - name: Setup Node.js 20
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 20
 
       - name: Creating .npmrc
         run: |
@@ -44,8 +44,8 @@ jobs:
           EOF
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          
-      - name: Configure npm node prepend 
+
+      - name: Configure npm node prepend
         run: npm config set scripts-prepend-node-path auto
 
       - name: Install Dependencies
@@ -61,6 +61,6 @@ jobs:
 
       - name: Build all packages
         run: yarn build
-        
+
       - name: Publish packages under next tag
         run: yarn changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'preview' }}
