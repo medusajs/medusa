@@ -21,9 +21,9 @@ module.exports = {
     disable: true,
   },
   projectConfig: {
-    redis_url: redisUrl,
-    database_url: DB_URL,
-    database_type: "postgres",
+    redisUrl: redisUrl,
+    databaseUrl: DB_URL,
+    databaseType: "postgres",
     http: {
       compression: {
         enabled: enableResponseCompression,

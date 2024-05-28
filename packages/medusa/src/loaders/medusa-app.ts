@@ -85,9 +85,9 @@ async function runMedusaAppMigrations({
       clientUrl:
         injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]?.client
           ?.config?.connection?.connectionString ??
-        configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_driver_options,
-      debug: !!(configModule.projectConfig.database_logging ?? false),
+        configModule.projectConfig.databaseUrl,
+      driverOptions: configModule.projectConfig.databaseDriverOptions,
+      debug: !!(configModule.projectConfig.databaseLogging ?? false),
     },
   }
   const configModules = mergeDefaultModules(configModule.modules)
@@ -175,9 +175,9 @@ export const loadMedusaApp = async (
 
   const sharedResourcesConfig = {
     database: {
-      clientUrl: configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_driver_options,
-      debug: !!(configModule.projectConfig.database_logging ?? false),
+      clientUrl: configModule.projectConfig.databaseUrl,
+      driverOptions: configModule.projectConfig.databaseDriverOptions,
+      debug: !!(configModule.projectConfig.databaseLogging ?? false),
     },
   }
 
@@ -187,7 +187,7 @@ export const loadMedusaApp = async (
   const configModules = mergeDefaultModules(configModule.modules)
 
   const medusaApp = await MedusaApp({
-    workerMode: configModule.projectConfig.worker_mode,
+    workerMode: configModule.projectConfig.workerMode,
     modulesConfig: configModules,
     sharedContainer: container,
     linkModules,
@@ -256,9 +256,9 @@ export async function runModulesLoader({
 
   const sharedResourcesConfig = {
     database: {
-      clientUrl: configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_driver_options,
-      debug: !!(configModule.projectConfig.database_logging ?? false),
+      clientUrl: configModule.projectConfig.databaseUrl,
+      driverOptions: configModule.projectConfig.databaseDriverOptions,
+      debug: !!(configModule.projectConfig.databaseLogging ?? false),
     },
   }
 

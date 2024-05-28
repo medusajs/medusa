@@ -57,30 +57,30 @@ const buildHttpConfig = (projectConfig: ConfigModule["projectConfig"]) => {
 const normalizeProjectConfig = (
   projectConfig: ConfigModule["projectConfig"]
 ) => {
-  if (!projectConfig?.redis_url) {
+  if (!projectConfig?.redisUrl) {
     console.log(
-      `[medusa-config] ⚠️ redis_url not found. A fake redis instance will be used.`
+      `[medusa-config] ⚠️ redisUrl not found. A fake redis instance will be used.`
     )
   }
 
   projectConfig.http = buildHttpConfig(projectConfig)
 
-  let worker_mode = projectConfig?.worker_mode
+  let workedMode = projectConfig?.workerMode
 
-  if (!isDefined(worker_mode)) {
+  if (!isDefined(workedMode)) {
     const env = process.env.MEDUSA_WORKER_MODE
     if (isDefined(env)) {
       if (env === "shared" || env === "worker" || env === "server") {
-        worker_mode = env
+        workedMode = env
       }
     } else {
-      worker_mode = "shared"
+      workedMode = "shared"
     }
   }
 
   return {
     ...projectConfig,
-    worker_mode,
+    workerMode: workedMode,
   }
 }
 
