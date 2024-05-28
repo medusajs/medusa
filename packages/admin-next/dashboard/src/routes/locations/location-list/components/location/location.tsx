@@ -161,7 +161,7 @@ function Location(props: LocationProps) {
           </div>
 
           {/* ACTION*/}
-          <div className="flex h-[12px] grow-0 items-center gap-4 divide-x overflow-hidden">
+          <div className="flex grow-0 items-center gap-4 overflow-hidden">
             <ActionMenu
               groups={[
                 {
@@ -180,8 +180,9 @@ function Location(props: LocationProps) {
                 },
               ]}
             />
+            <div className="bg-ui-border-strong h-[12px] w-[1px]" />
             <Button
-              className="text-ui-fg-interactive rounded-none pl-5 hover:bg-transparent active:bg-transparent"
+              className="text-ui-fg-interactive -ml-1 rounded-none"
               onClick={() => navigate(`/settings/locations/${location.id}`)}
               variant="transparent"
             >
