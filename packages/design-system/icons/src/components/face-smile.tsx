@@ -5,19 +5,32 @@ const FaceSmile = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
-          stroke={color}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M12.652 12.652a3.753 3.753 0 0 1-5.304 0M17.5 10a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0ZM8.125 8.125c0 .345-.14.625-.313.625-.172 0-.312-.28-.312-.625s.14-.625.313-.625c.172 0 .312.28.312.625Zm-.313 0h.007v.012h-.006v-.012Zm4.688 0c0 .345-.14.625-.313.625-.172 0-.312-.28-.312-.625s.14-.625.313-.625c.172 0 .312.28.312.625Zm-.313 0h.007v.012h-.007v-.012Z"
-        />
+        <g stroke={color} clipPath="url(#a)">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M7.5 13.944a6.444 6.444 0 1 0 0-12.888 6.444 6.444 0 0 0 0 12.888"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M10.832 9.278a3.78 3.78 0 0 1-3.332 2 3.78 3.78 0 0 1-3.332-2"
+          />
+          <path d="M6.111 6.611a.389.389 0 1 1-.778 0 .389.389 0 0 1 .778 0ZM9.667 6.611a.389.389 0 1 1-.778 0 .389.389 0 0 1 .778 0Z" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

@@ -5,32 +5,39 @@ const Figma = React.forwardRef<SVGSVGElement, Omit<IconProps, "color">>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
-          fill="#1ABCFE"
-          d="M10 10a2.97 2.97 0 1 1 5.939 0A2.97 2.97 0 0 1 10 10Z"
-        />
-        <path
-          fill="#0ACF83"
-          d="M4.061 15.939a2.97 2.97 0 0 1 2.97-2.97H10v2.97a2.97 2.97 0 1 1-5.94 0Z"
-        />
-        <path
-          fill="#FF7262"
-          d="M10 1.092V7.03h2.97a2.97 2.97 0 1 0 0-5.938H10Z"
-        />
-        <path
-          fill="#F24E1E"
-          d="M4.061 4.061a2.97 2.97 0 0 0 2.97 2.97H10V1.09H7.03a2.97 2.97 0 0 0-2.97 2.97Z"
-        />
-        <path
-          fill="#A259FF"
-          d="M4.061 10a2.97 2.97 0 0 0 2.97 2.97H10V7.03H7.03A2.97 2.97 0 0 0 4.06 10Z"
-        />
+        <g clipPath="url(#a)">
+          <path
+            fill="#1ABCFE"
+            d="M7.5 7.5a2.227 2.227 0 1 1 4.454 0 2.227 2.227 0 0 1-4.454 0"
+          />
+          <path
+            fill="#0ACF83"
+            d="M3.046 11.954c0-1.23.997-2.227 2.227-2.227H7.5v2.227a2.227 2.227 0 1 1-4.454 0"
+          />
+          <path
+            fill="#FF7262"
+            d="M7.5.819v4.454h2.227a2.227 2.227 0 1 0 0-4.454z"
+          />
+          <path
+            fill="#F24E1E"
+            d="M3.046 3.046c0 1.23.997 2.227 2.227 2.227H7.5V.819H5.273c-1.23 0-2.227.997-2.227 2.227"
+          />
+          <path
+            fill="#A259FF"
+            d="M3.046 7.5c0 1.23.997 2.227 2.227 2.227H7.5V5.273H5.273c-1.23 0-2.227.997-2.227 2.227"
+          />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M3 .75h9v13.5H3z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

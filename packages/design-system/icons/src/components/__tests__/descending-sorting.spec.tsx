@@ -1,11 +1,11 @@
   import * as React from "react"
   import { cleanup, render, screen } from "@testing-library/react"
 
-  import Ellipse from "../ellipse"
+  import DescendingSorting from "../descending-sorting"
 
-  describe("Ellipse", () => {
+  describe("DescendingSorting", () => {
     it("should render the icon without errors", async () => {
-      render(<Ellipse data-testid="icon" />)
+      render(<DescendingSorting data-testid="icon" />)
 
 
       const svgElement = screen.getByTestId("icon")

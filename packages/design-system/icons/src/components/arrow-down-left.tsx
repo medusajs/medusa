@@ -5,8 +5,8 @@ const ArrowDownLeft = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,14 +16,14 @@ const ArrowDownLeft = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M7.502 8.333 3.335 12.5l4.167 4.166"
+          d="M1.944 8.167h9.334c.982 0 1.778-.796 1.778-1.778V2.833"
         />
         <path
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M16.668 3.333v5.833a3.333 3.333 0 0 1-3.333 3.334h-10"
+          d="M5.722 4.389 1.944 8.167l3.778 3.778"
         />
       </svg>
     )
