@@ -107,7 +107,7 @@ export const ProductCreateForm = () => {
           })
         } else {
           toast.error(t("general.error"), {
-            description: t("errors.serverError"),
+            description: error.message,
             dismissLabel: t("general.close"),
           })
         }

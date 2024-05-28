@@ -1,6 +1,6 @@
 import { z } from "zod"
-import i18n from "i18next"
 import { decorateVariantsWithDefaultValues } from "./utils.ts"
+import { optionalInt } from "../../../lib/validation.ts"
 
 export const ProductCreateSchema = z
   .object({
@@ -49,10 +49,10 @@ export const ProductCreateSchema = z
           barcode: z.string().optional(),
           mid_code: z.string().optional(),
           hs_code: z.string().optional(),
-          width: z.number().optional(),
-          height: z.number().optional(),
-          length: z.number().optional(),
-          weight: z.number().optional(),
+          width: optionalInt,
+          height: optionalInt,
+          length: optionalInt,
+          weight: optionalInt,
           material: z.string().optional(),
           origin_country: z.string().optional(),
           custom_title: z.string().optional(),
