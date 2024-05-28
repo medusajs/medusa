@@ -27,7 +27,7 @@ export const widgetHighlights = [
   ["14", "zone", "The zone to inject the widget to."]
 ]
 
-```tsx title="src/admin/widgets/product-widget.tsx" highlights={[]}
+```tsx title="src/admin/widgets/product-widget.tsx" highlights={widgetHighlights}
 import { defineWidgetConfig } from "@medusajs/admin-shared"
 
 // The widget
@@ -66,6 +66,37 @@ npm run dev
 ```
 
 Then, open a product’s details page. You’ll find your custom widget at the bottom of the page.
+
+---
+
+## Detail Widget Props
+
+Widgets that are injected into a details page (for example, `product.details.after`) receive a `data` prop, which is the main data of the details page (for example, the product object).
+
+For example:
+
+```tsx title="src/admin/widgets/product-widget.tsx" highlights={[["5"]]}
+import { defineWidgetConfig } from "@medusajs/admin-shared"
+import { DetailWidgetProps, AdminProduct } from "@medusajs/types"
+
+const ProductWidget = ({ 
+  data
+}: DetailWidgetProps<AdminProduct>) => {
+  return (
+    <div>
+      <h2>Product Widget {data.title}</h2>
+    </div>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.after",
+})
+
+export default ProductWidget
+```
+
+Notice that the type of the props is `DetailWidgetProps`, which accepts as a type argument the expected type of the data.
 
 ---
 
