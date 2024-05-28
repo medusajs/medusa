@@ -1864,6 +1864,83 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("updates multiple products that have the same sales channel", async () => {
+          const salesChannel = (
+            await api.post(
+              "/admin/sales-channels",
+              {
+                name: "Sales",
+              },
+              adminHeaders
+            )
+          ).data.sales_channel
+
+          await api.post(
+            `/admin/products/${baseProduct.id}`,
+            {
+              sales_channels: [{ id: salesChannel.id }],
+            },
+            adminHeaders
+          )
+          await api.post(
+            `/admin/products/${proposedProduct.id}`,
+            {
+              sales_channels: [{ id: salesChannel.id }],
+            },
+            adminHeaders
+          )
+
+          let res = await api.get(
+            `/admin/products?fields=*sales_channels&sales_channel_id[]=${salesChannel.id}`,
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.products).toEqual([
+            expect.objectContaining({
+              id: baseProduct.id,
+              sales_channels: expect.arrayContaining([
+                expect.objectContaining({
+                  id: salesChannel.id,
+                }),
+              ]),
+            }),
+            expect.objectContaining({
+              id: proposedProduct.id,
+              sales_channels: expect.arrayContaining([
+                expect.objectContaining({
+                  id: salesChannel.id,
+                }),
+              ]),
+            }),
+          ])
+
+          await api.post(
+            `/admin/products/${proposedProduct.id}`,
+            {
+              sales_channels: [],
+            },
+            adminHeaders
+          )
+
+          res = await api.get(
+            `/admin/products?fields=*sales_channels&sales_channel_id[]=${salesChannel.id}`,
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.products).toEqual([
+            expect.objectContaining({
+              id: baseProduct.id,
+              sales_channels: expect.arrayContaining([
+                expect.objectContaining({
+                  id: salesChannel.id,
+                }),
+              ]),
+            }),
+          ])
+        })
+
         it("fails to update product with invalid status", async () => {
           const payload = {
             status: null,
