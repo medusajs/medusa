@@ -1,4 +1,4 @@
-import { dirname, join } from "node:path"
+import { dirname, join } from "path"
 import {
   rm,
   stat,
@@ -7,7 +7,7 @@ import {
   readdir,
   readFile,
   writeFile,
-} from "node:fs/promises"
+} from "fs/promises"
 import {
   constants,
   type Dirent,
@@ -15,7 +15,7 @@ import {
   type StatOptions,
   type WriteFileOptions,
   type MakeDirectoryOptions,
-} from "node:fs"
+} from "fs"
 
 export type JSONFileOptions = WriteFileOptions & {
   spaces?: number | string
@@ -40,6 +40,7 @@ export class FileSystem {
     return rm(this.basePath, {
       recursive: true,
       maxRetries: 10,
+      force: true,
       ...options,
     })
   }
