@@ -710,14 +710,6 @@ export const CreatePromotionForm = () => {
 
               <Divider />
 
-              <RulesFormField
-                form={form}
-                ruleType={"target-rules"}
-                scope="application_method.target_rules"
-              />
-
-              <Divider />
-
               {!isTypeStandard && (
                 <RulesFormField
                   form={form}
@@ -725,6 +717,14 @@ export const CreatePromotionForm = () => {
                   scope="application_method.buy_rules"
                 />
               )}
+
+              <Divider />
+
+              <RulesFormField
+                form={form}
+                ruleType={"target-rules"}
+                scope="application_method.target_rules"
+              />
             </ProgressTabs.Content>
 
             <ProgressTabs.Content
