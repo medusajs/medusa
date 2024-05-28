@@ -7,7 +7,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this recipe, you'll find resources to guide you in building subscription-based purchases with Medusa.
+This recipe provides the general steps to build subscription-based purchase with Medusa.
 
 ## Overview
 
@@ -21,38 +21,34 @@ For example, a customer can purchase a book subscription box for a period of thr
 
 </Note>
 
-<LearningPath pathName="subscriptions" />
-
 ---
 
-## Save Subscription Details in the Database
+## Save Subscription Details
 
 Subscriptions have details related to the subscription interval, subscription period, and more.
 
-Based on the approach you choose to implement the subscription logic (which is discussed in the next section), you may need to store different data in your Medusa application.
+To store the subscription details, create a data model in a module. The module's main service provides data management feature of the data model.
 
-To store the subscription details in a new table in the database, create a data model. You can also extend an existing data model in Medusa's commerce modules, such as the `Order` data model, to add details related to the subscription.
-
-<CardList itemsPerRow={2} items={[
+<CardList items={[
   {
-    href: "#",
-    title: "Create a Data Model",
-    text: "Learn how to create a data model in Medusa.",
+    href: "!docs!/basics/modules-and-services",
+    title: "Create a Module",
+    text: "Learn how to create a module.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
-    title: "Extend a Data Model",
-    text: "Learn how to extend a data model in Medusa.",
+    href: "!docs!/basics/data-models",
+    title: "Create a Data Model",
+    text: "Learn how to create a data model.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
-  }
+  },
 ]} />
 
 ---
 
-## Decide on Subscription Approach
+## Implement Subscription Approach
 
 There are different ways to implement subscriptions in your Medusa application. This recipe provides two options: using Stripe subscriptions, or implementing subscriptions logic within the application, independent of a specific payment provider.
 
@@ -62,46 +58,44 @@ Stripe provides a [subscription payments feature](https://stripe.com/docs/billin
 
 This approach allows you to delegate the complications of implementing the subscription logic to Stripe, but doesn't support using other payment providers.
 
-Although Medusa provides a Stripe plugin, it doesn't handle subscriptions. You can either use that plugin to add the subscription feature on top of it, or create a custom Stripe Subscription payment provider.
+Although Medusa provides a Stripe provider module, it doesn't handle subscriptions. You can create a custom Stripe Subscription payment module.
 
-<CardList itemsPerRow={2} items={[
-  {
-    href: "https://github.com/medusajs/medusa/tree/develop/packages/medusa-payment-stripe",
-    title: "Use Medusa's Stripe Plugin",
-    text: "Check out Medusa's stripe plugin to build subscription on top of it.",
-    startIcon: <Github />,
-    showLinkIcon: false
-  },
-  {
-    href: "#",
-    title: "Create Payment Processor",
-    text: "Create a Stripe Subscription payment processor from scratch.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  }
-]} />
+<Card
+  href="/references/payment/provider"
+  title="Create Payment Provider Module"
+  text="Learn how to create a payment provider module."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>
 
-### Option 2: Implement Subscription Logic
+### Option 2: Custom Subscription Logic
 
-By implementing the subscription logic within your application, you have full control over the subscription logic. You'll also be independent of payment providers, providing customers with more than one payment provider option.
+By implementing the subscription logic within your application, you have full control over the subscription logic. You'll also be independent of payment providers, providing customers with more than one payment provider.
 
 Implementing the logic depends on your use case, but you'll mainly implement the following:
 
-1. Create a subscriber that listens to the `order.placed` event to save the subscription details or perform other actions.
+1. Create a subscriber that listens to the `order.created` event to save the subscription details or perform other actions.
 2. Create a scheduled job that checks daily for subscriptions that need renewal.
+
+<Note type="soon">
+
+- The `order.created` event isn't emitted yet.
+- Scheduled jobs are coming soon.
+
+</Note>
 
 <CardList itemsPerRow={2} items={[
   {
-    href: "#",
+    href: "!docs!/basics/events-and-subscribers",
     title: "Create a Subscriber",
-    text: "Learn how to create a subscriber in Medusa.",
+    text: "Learn how to create a subscriber.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
+    href: "!docs!/basics/scheduled-jobs",
     title: "Create a Scheduled Job",
-    text: "Learn how to create a scheduled job in Medusa.",
+    text: "Learn how to create a scheduled job.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   }
@@ -111,29 +105,22 @@ Implementing the logic depends on your use case, but you'll mainly implement the
 
 ## Customize Admin
 
-You can customize the admin to provide an interface to manage your custom features.
+You can extend the admin to provide an interface to manage your custom features.
 
-You can extend the Medusa Admin plugin to add widgets to existing pages, add new pages, or add setting pages.
+Extend the Medusa Admin to add widgets to existing pages or add new pages.
 
 <CardList items={[
   {
-    href: "#",
+    href: "!docs!/advanced-development/admin/widget",
     title: "Create Admin Widget",
     text: "Learn how to add widgets into existing admin pages.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
+    href: "!docs!/advanced-development/admin/ui-routes",
     title: "Create Admin UI Routes",
     text: "Learn how to add new pages to your Medusa Admin.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "#",
-    title: "Create Admin Setting Page",
-    text: "Learn how to add new page to the Medusa Admin settings.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   }
@@ -145,39 +132,19 @@ You can extend the Medusa Admin plugin to add widgets to existing pages, add new
 
 Medusa provides a Next.js Starter. Since you've customized your Medusa project, you must either customize the existing Next.js Starter, or create a custom storefront.
 
-<CardList itemsPerRow={2} items={[
+<CardList items={[
   {
-    href: "#",
+    href: "/nextjs-starter",
     title: "Option 1: Use Next.js Starter",
     text: "Install the Next.js Starter to customize it.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
+    href: "!docs!/storefront-development/tips",
     title: "Option 2: Build Custom Storefront",
-    text: "Find useful resources to build your own storefront.",
+    text: "Find tips to build your own storefront.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   }
 ]} />
-
----
-
-## Deploy Medusa Application
-
-The Medusa Resources documentation includes deployment guides for a basic Medusa application. You can follow it to deploy your customized marketplace, as well.
-
-<Card
-  href="#"
-  title="Deploy Medusa Application"
-  text="Learn how to deploy your subscription-based application to different hosting providers."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
-/>
-
----
-
-## Additional Development
-
-Refer to other guides in the Medusa Resources or the Medusa Book for additional guidance during your development.
