@@ -1,10 +1,10 @@
-import { ProductTypes } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
 
 export const productsData = [
   {
     id: "test-1",
     title: "product 1",
-    status: ProductTypes.ProductStatus.PUBLISHED,
+    status: ProductStatus.PUBLISHED,
     tags: [
       {
         id: "tag-1",
@@ -15,7 +15,7 @@ export const productsData = [
   {
     id: "test-2",
     title: "product",
-    status: ProductTypes.ProductStatus.PUBLISHED,
+    status: ProductStatus.PUBLISHED,
     tags: [
       {
         id: "tag-2",
@@ -26,7 +26,7 @@ export const productsData = [
   {
     id: "test-3",
     title: "product 3",
-    status: ProductTypes.ProductStatus.PUBLISHED,
+    status: ProductStatus.PUBLISHED,
     tags: [
       {
         id: "tag-3",
