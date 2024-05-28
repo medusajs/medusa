@@ -30,6 +30,7 @@
     "@types/multer": "^1.4.7",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
+    "medusa-test-utils": "workspace:^",
     "rimraf": "^5.0.1",
     "supertest": "^4.0.2",
     "ts-jest": "^25.5.1",

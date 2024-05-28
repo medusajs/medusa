@@ -77,9 +77,7 @@ export async function startApp({
       })
 
     // TODO: fix that once we find the appropriate place to put this util
-    const {
-      GracefulShutdownServer,
-    } = require("@medusajs/medusa/dist/utils/graceful-shutdown-server")
+    const { GracefulShutdownServer } = require("../graceful-shutdown-server")
 
     expressServer = GracefulShutdownServer.create(server)
   })
