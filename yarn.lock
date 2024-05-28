@@ -5527,7 +5527,7 @@ __metadata:
     "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/orchestration": ^0.5.7
     "@medusajs/types": ^1.11.16
-    "@medusajs/utils": ^1.11.9
+    "@medusajs/utils": "workspace:^"
     "@medusajs/workflows-sdk": ^0.1.6
     "@swc/core": ^1.4.8
     "@swc/helpers": ^0.5.11
