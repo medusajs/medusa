@@ -2,69 +2,21 @@ import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 import { BigNumberValue } from "../totals"
 /* ********** PAYMENT COLLECTION ********** */
-/**
- * @enum
- *
- * The payment collection's status.
- */
-export enum PaymentCollectionStatus {
-  /**
-   * The payment collection isn't paid.
-   */
-  NOT_PAID = "not_paid",
 
-  /**
-   * The payment sessions in the payment collection are await authorization.
-   */
-  AWAITING = "awaiting",
+export type PaymentCollectionStatus =
+  | "not_paid"
+  | "awaiting"
+  | "authorized"
+  | "partially_authorized"
+  | "canceled"
 
-  /**
-   * The payment sessions in the payment collection are authorized.
-   */
-  AUTHORIZED = "authorized",
-
-  /**
-   * Some of the payments in the payment collection are authorized.
-   */
-  PARTIALLY_AUTHORIZED = "partially_authorized",
-
-  /**
-   * The payments in the payment collection are canceled.
-   */
-  CANCELED = "canceled",
-}
-
-/**
- * @enum
- *
- * The status of a payment session.
- */
-export enum PaymentSessionStatus {
-  /**
-   * The payment is authorized.
-   */
-  AUTHORIZED = "authorized",
-
-  /**
-   * The payment is pending.
-   */
-  PENDING = "pending",
-
-  /**
-   * The payment requires an action.
-   */
-  REQUIRES_MORE = "requires_more",
-
-  /**
-   * An error occurred while processing the payment.
-   */
-  ERROR = "error",
-
-  /**
-   * The payment is canceled.
-   */
-  CANCELED = "canceled",
-}
+export type PaymentSessionStatus =
+  | "authorized"
+  | "captured"
+  | "pending"
+  | "requires_more"
+  | "error"
+  | "canceled"
 
 /**
  * The payment collection details.

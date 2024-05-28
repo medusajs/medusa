@@ -1,11 +1,8 @@
-import {
-  InternalModuleDeclaration,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-} from "@medusajs/types"
+import { InternalModuleDeclaration } from "@medusajs/types"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "@types"
 
-import { MedusaModule } from "../../medusa-module"
 import { asValue } from "awilix"
+import { MedusaModule } from "../../medusa-module"
 
 const mockRegisterMedusaModule = jest.fn().mockImplementation(() => {
   return {

@@ -1,10 +1,5 @@
-import {
-  Logger,
-  MedusaContainer,
-  MODULE_SCOPE,
-  ModuleResolution,
-} from "@medusajs/types"
-
+import { Logger, MedusaContainer, ModuleResolution } from "@medusajs/types"
+import { MODULE_SCOPE } from "@types"
 import { asValue } from "awilix"
 import { EOL } from "os"
 import { loadInternalModule } from "./utils"

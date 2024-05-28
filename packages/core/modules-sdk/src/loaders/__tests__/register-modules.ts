@@ -1,9 +1,5 @@
-import {
-  InternalModuleDeclaration,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-  ModuleDefinition,
-} from "@medusajs/types"
+import { InternalModuleDeclaration, ModuleDefinition } from "@medusajs/types"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "@types"
 import { ModulesDefinition } from "../../definitions"
 import { registerMedusaModule } from "../register-modules"
 

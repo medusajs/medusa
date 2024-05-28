@@ -1,14 +1,12 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
   ModuleDefinition,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
-
 import { isObject, isString } from "@medusajs/utils"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "@types"
 import resolveCwd from "resolve-cwd"
 import { ModulesDefinition } from "../definitions"
 

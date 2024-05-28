@@ -3,17 +3,17 @@ import {
   InternalModuleDeclaration,
   Logger,
   MedusaContainer,
-  MODULE_RESOURCE_TYPE,
   ModuleExports,
   ModuleLoaderFunction,
   ModuleResolution,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  createMedusaContainer,
   MedusaModuleType,
   ModulesSdkUtils,
+  createMedusaContainer,
 } from "@medusajs/utils"
+import { MODULE_RESOURCE_TYPE } from "@types"
 import { asFunction, asValue } from "awilix"
 import { statSync } from "fs"
 import { readdir } from "fs/promises"

@@ -6,8 +6,6 @@ import {
   InternalModuleDeclaration,
   LoadedModule,
   MedusaContainer,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
   ModuleDefinition,
   ModuleExports,
   ModuleJoinerConfig,
@@ -18,12 +16,13 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModulesSdkUtils,
   createMedusaContainer,
   isObject,
   isString,
-  ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "@types"
 import { asValue } from "awilix"
 import {
   MODULE_PACKAGE_NAMES,
