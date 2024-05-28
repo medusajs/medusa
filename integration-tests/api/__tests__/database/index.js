@@ -13,7 +13,7 @@ describe("Database options", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({
       cwd,
-      database_extra: { idle_in_transaction_session_timeout: 1000 },
+      databaseExtra: { idle_in_transaction_session_timeout: 1000 },
     })
     medusaProcess = await setupServer({ cwd })
   })

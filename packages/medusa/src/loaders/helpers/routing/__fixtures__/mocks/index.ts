@@ -6,7 +6,7 @@ export const storeGlobalMiddlewareMock = jest.fn()
 
 export const config: ConfigModule = {
   projectConfig: {
-    database_logging: false,
+    databaseLogging: false,
     http: {
       authCors: "http://localhost:9000",
       storeCors: "http://localhost:8000",
