@@ -1,6 +1,10 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ISalesChannelModuleService, SalesChannelDTO } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import {
+  ISalesChannelModuleService,
+  IStoreModuleService,
+  SalesChannelDTO,
+} from "@medusajs/types"
+import { MedusaError, isDefined } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
@@ -14,16 +18,29 @@ export const findSalesChannelStep = createStep(
     const salesChannelService = container.resolve<ISalesChannelModuleService>(
       ModuleRegistrationName.SALES_CHANNEL
     )
-
-    if (data.salesChannelId === null) {
-      return new StepResponse(null)
-    }
+    const storeModule = container.resolve<IStoreModuleService>(
+      ModuleRegistrationName.STORE
+    )
 
     let salesChannel: SalesChannelDTO | undefined
+
     if (data.salesChannelId) {
       salesChannel = await salesChannelService.retrieve(data.salesChannelId)
-    } else {
-      // TODO: Find default sales channel from store
+    } else if (!isDefined(data.salesChannelId)) {
+      const [store] = await storeModule.list(
+        {},
+        { select: ["default_sales_channel_id"] }
+      )
+
+      if (store?.default_sales_channel_id) {
+        salesChannel = await salesChannelService.retrieve(
+          store.default_sales_channel_id
+        )
+      }
+    }
+
+    if (!salesChannel) {
+      return new StepResponse(null)
     }
 
     if (salesChannel?.is_disabled) {
