@@ -77,8 +77,8 @@ export async function startApp({
       })
 
     // TODO: fix that once we find the appropriate place to put this util
-    const { GracefulShutdownServer } = require("../graceful-shutdown-server")
-
-    expressServer = GracefulShutdownServer.create(server)
+    import("../graceful-shutdown-server").then(({ GracefulShutdownServer }) => {
+      expressServer = GracefulShutdownServer.create(server)
+    })
   })
 }

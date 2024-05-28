@@ -1,5 +1,5 @@
 import { join } from "path"
-import { FileSystem } from "medusa-test-utils"
+import { FileSystem } from "../file-system"
 import { loadEnv } from "../load-env"
 
 const filesystem = new FileSystem(join(__dirname, "tmp"))

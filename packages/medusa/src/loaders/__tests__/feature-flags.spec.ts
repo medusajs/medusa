@@ -1,5 +1,5 @@
 import { join } from "path"
-import { FileSystem } from "medusa-test-utils"
+import { FileSystem } from "@medusajs/utils"
 
 import loadFeatureFlags from "../feature-flags"
 const filesystem = new FileSystem(join(__dirname, "__ff-test__"))
