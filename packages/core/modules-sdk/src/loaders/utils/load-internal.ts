@@ -13,11 +13,11 @@ import {
   ModulesSdkUtils,
   createMedusaContainer,
 } from "@medusajs/utils"
-import { MODULE_RESOURCE_TYPE } from "@types"
 import { asFunction, asValue } from "awilix"
 import { statSync } from "fs"
 import { readdir } from "fs/promises"
 import { join, resolve } from "path"
+import { MODULE_RESOURCE_TYPE } from "../../types"
 
 type ModuleResource = {
   services: Function[]

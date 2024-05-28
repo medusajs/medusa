@@ -1,6 +1,6 @@
 import { ModuleDefinition } from "@medusajs/types"
 import { upperCaseFirst } from "@medusajs/utils"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "@types"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 export enum LinkModuleUtils {
   REMOTE_QUERY = "remoteQuery",

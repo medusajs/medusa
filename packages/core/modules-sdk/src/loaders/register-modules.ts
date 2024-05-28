@@ -6,9 +6,9 @@ import {
   ModuleResolution,
 } from "@medusajs/types"
 import { isObject, isString } from "@medusajs/utils"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "@types"
 import resolveCwd from "resolve-cwd"
 import { ModulesDefinition } from "../definitions"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../types"
 
 export const registerMedusaModule = (
   moduleKey: string,

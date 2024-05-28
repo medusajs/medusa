@@ -17,7 +17,6 @@ import {
   simpleHash,
   stringifyCircular,
 } from "@medusajs/utils"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "@types"
 import { asValue } from "awilix"
 import { EOL } from "os"
 import {
@@ -26,6 +25,7 @@ import {
   registerMedusaModule,
 } from "./loaders"
 import { loadModuleMigrations } from "./loaders/utils"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 const logger: any = {
   log: (a) => console.log(a),

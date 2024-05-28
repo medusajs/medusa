@@ -1,5 +1,5 @@
 import { InternalModuleDeclaration } from "@medusajs/types"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "@types"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../../types"
 
 import { asValue } from "awilix"
 import { MedusaModule } from "../../medusa-module"

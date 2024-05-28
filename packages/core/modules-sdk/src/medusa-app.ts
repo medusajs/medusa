@@ -22,7 +22,6 @@ import {
   isString,
   promiseAll,
 } from "@medusajs/utils"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "@types"
 import { asValue } from "awilix"
 import {
   MODULE_PACKAGE_NAMES,
@@ -32,6 +31,7 @@ import {
 import { MedusaModule } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]

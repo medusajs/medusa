@@ -1,6 +1,6 @@
 import { InternalModuleDeclaration, ModuleDefinition } from "@medusajs/types"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "@types"
 import { ModulesDefinition } from "../../definitions"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../../types"
 import { registerMedusaModule } from "../register-modules"
 
 const RESOLVED_PACKAGE = "@medusajs/test-service-resolved"

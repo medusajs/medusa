@@ -16,10 +16,7 @@
     "noImplicitThis": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "downlevelIteration": true, // to use ES5 specific tooling
-    "paths": {
-      "@types": ["./src/types"]
-    }
+    "downlevelIteration": true // to use ES5 specific tooling
   },
   "include": ["./src/**/*"],
   "exclude": [
