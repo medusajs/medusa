@@ -164,17 +164,28 @@
   "products": {
     "domain": "Products",
     "create": {
-      "header": "Create Product",
-      "hint": "Create a new product to sell in your store.",
+      "header": "General",
       "tabs": {
         "details": "Details",
-        "variants": "Variants"
+        "organize": "Organize",
+        "variants": "Variants",
+        "inventory": "Inventory kits"
+      },
+      "errors": {
+        "variants": "Please select at least one variant.",
+        "options": "Please create at least one option."
+      },
+      "inventory": {
+        "heading": "Inventory kits",
+        "label": "Inventory kit"
       },
       "variants": {
         "header": "Variants",
+        "subHeadingTitle": "Yes, this is a product with variants",
+        "subHeadingDescription": "When unchecked we will create a default variant for you",
         "productVariants": {
           "label": "Product variants",
-          "hint": "Variants left unchecked won't be created. This ranking will affect how the variants are ranked in your frontend.",
+          "hint": "This ranking will affect how the variants are ranked in your frontend.",
           "alert": "Add options to create variants."
         },
         "productOptions": {
@@ -233,8 +244,7 @@
         "tooltip": "The handle is used to reference the product in your storefront. If not specified, the handle will be generated from the product title."
       },
       "description": {
-        "label": "Description",
-        "hint": "Give your product a short and clear description.<0/>120-160 characters is the recommended length for search engines."
+        "label": "Description"
       },
       "discountable": {
         "label": "Discountable",
@@ -1560,6 +1570,9 @@
     "lastName": "Last Name",
     "firstName": "First Name",
     "title": "Title",
+    "customTitle": "Custom title",
+    "manageInventory": "Manage inventory",
+    "inventoryKit": "Inventory kit",
     "description": "Description",
     "email": "Email",
     "password": "Password",
@@ -1579,7 +1592,6 @@
     "tags": "Tags",
     "type": "Type",
     "reason": "Reason",
-    "note": "Note",
     "none": "none",
     "all": "all",
     "percentage": "Percentage",

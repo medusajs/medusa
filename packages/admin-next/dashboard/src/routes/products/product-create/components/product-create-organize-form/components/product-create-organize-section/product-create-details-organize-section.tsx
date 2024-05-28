@@ -9,7 +9,7 @@ import { useComboboxData } from "../../../../../../../hooks/use-combobox-data"
 import { client } from "../../../../../../../lib/client"
 import { CategoryCombobox } from "../../../../../common/components/category-combobox"
 import { ProductCreateSchemaType } from "../../../../types"
-import { useProductCreateDetailsContext } from "../product-create-details-context"
+import { useProductCreateDetailsContext } from "../product-create-organize-context"
 
 type ProductCreateOrganizationSectionProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -53,7 +53,7 @@ export const ProductCreateOrganizationSection = ({
 
   return (
     <div id="organize" className="flex flex-col gap-y-8">
-      <Heading level="h2">{t("products.organization")}</Heading>
+      <Heading>{t("products.organization")}</Heading>
       <div className="grid grid-cols-1 gap-x-4">
         <Form.Field
           control={form.control}
@@ -61,25 +61,28 @@ export const ProductCreateOrganizationSection = ({
           render={({ field: { value, onChange, ...field } }) => {
             return (
               <Form.Item>
-                <div className="flex items-center justify-between">
-                  <Form.Label optional>
-                    {t("products.fields.discountable.label")}
-                  </Form.Label>
+                <div className="shadow-elevation-card-rest bg-ui-bg-field flex flex-row gap-x-4 rounded-xl p-2">
                   <Form.Control>
                     <Switch
                       {...field}
                       checked={!!value}
                       onCheckedChange={onChange}
+                      className="mt-1"
                     />
                   </Form.Control>
+                  <div className="flex flex-col">
+                    <Form.Label>
+                      {t("products.fields.discountable.label")}
+                    </Form.Label>
+                    <Form.Hint>
+                      {t("products.fields.discountable.hint")}
+                    </Form.Hint>
+                  </div>
                 </div>
               </Form.Item>
             )
           }}
         />
-        <Form.Hint>
-          <Trans i18nKey={"products.fields.discountable.hint"} />
-        </Form.Hint>
       </div>
       <div className="grid grid-cols-2 gap-x-4">
         <Form.Field
