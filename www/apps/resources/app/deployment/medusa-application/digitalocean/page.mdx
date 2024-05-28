@@ -105,13 +105,13 @@ const DATABASE_URL =
   `@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`
 ```
 
-In addition, add to the `projectConfig` property in the exported object a new property `database_extra`:
+In addition, add to the `projectConfig` property in the exported object a new property `databaseExtra`:
 
 ```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     // ...
-    database_extra: { ssl: { rejectUnauthorized: false } },
+    databaseExtra: { ssl: { rejectUnauthorized: false } },
   },
 }
 ```

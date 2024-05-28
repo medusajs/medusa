@@ -567,7 +567,13 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 path: "/commerce-modules/payment/payment-provider",
-                title: "Payment Provider",
+                title: "Payment Provider Module",
+                children: [
+                  {
+                    path: "/commerce-modules/payment/payment-provider/stripe",
+                    title: "Stripe",
+                  },
+                ],
               },
               {
                 path: "/commerce-modules/payment/payment-flow",
@@ -1164,6 +1170,44 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 title: "Events Reference",
               },
             ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/integrations",
+    title: "Integrations",
+    isChildSidebar: true,
+    hasTitleStyling: true,
+    children: [
+      {
+        title: "File",
+        hasTitleStyling: true,
+        children: [
+          {
+            path: "/architectural-modules/file/s3",
+            title: "AWS S3 (and Compatible APIs)",
+          },
+        ],
+      },
+      {
+        title: "Notification",
+        hasTitleStyling: true,
+        children: [
+          {
+            path: "/architectural-modules/notification/sendgrid",
+            title: "SendGrid",
+          },
+        ],
+      },
+      {
+        title: "Payment",
+        hasTitleStyling: true,
+        children: [
+          {
+            path: "/commerce-modules/payment/payment-provider/stripe",
+            title: "Stripe",
           },
         ],
       },

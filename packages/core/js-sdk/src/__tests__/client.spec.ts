@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw"
 import { setupServer } from "msw/node"
 
-import { Client, FetchError } from "../client"
+import { Client, FetchError, PUBLISHABLE_KEY_HEADER } from "../client"
 
 const baseUrl = "https://someurl.com"
 
@@ -44,7 +44,7 @@ const server = setupServer(
     }
   }),
   http.get(`${baseUrl}/pubkey`, ({ request, params, cookies }) => {
-    if (request.headers.get("x-medusa-pub-key") === "test-pub-key") {
+    if (request.headers.get(PUBLISHABLE_KEY_HEADER) === "test-pub-key") {
       return HttpResponse.json({
         test: "test",
       })

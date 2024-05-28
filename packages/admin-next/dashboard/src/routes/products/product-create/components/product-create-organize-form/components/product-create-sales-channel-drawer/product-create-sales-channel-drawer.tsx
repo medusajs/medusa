@@ -17,7 +17,7 @@ import { useSalesChannelTableFilters } from "../../../../../../../hooks/table/fi
 import { useSalesChannelTableQuery } from "../../../../../../../hooks/table/query/use-sales-channel-table-query"
 import { useDataTable } from "../../../../../../../hooks/use-data-table"
 import { ProductCreateSchemaType } from "../../../../types"
-import { useProductCreateDetailsContext } from "../product-create-details-context"
+import { useProductCreateDetailsContext } from "../product-create-organize-context"
 
 type ProductCreateSalesChannelDrawerProps = {
   form: UseFormReturn<ProductCreateSchemaType>
