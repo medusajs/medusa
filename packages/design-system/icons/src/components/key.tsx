@@ -5,19 +5,26 @@ const Key = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
-          stroke={color}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M12.91 4.761a2.327 2.327 0 0 1 2.327 2.328m2.327 0a4.656 4.656 0 0 1-5.453 4.586c-.437-.075-.9.02-1.213.334l-2.062 2.062H7.091v1.746H5.345v1.745h-2.91v-2.186c0-.463.184-.908.512-1.234L7.989 9.1c.313-.314.409-.776.334-1.213a4.655 4.655 0 1 1 9.241-.798v0Z"
-        />
+        <g stroke={color} clipPath="url(#a)">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="m1.345 13.497.158-2.53L6.739 5.73a3.6 3.6 0 0 1-.128-.897 3.556 3.556 0 1 1 3.556 3.556c-.322 0-.629-.057-.926-.137L7.5 9.944h-2v2l-1.462 1.559z"
+          />
+          <path d="M10.611 4.778a.389.389 0 1 0 0-.778.389.389 0 0 0 0 .778Z" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

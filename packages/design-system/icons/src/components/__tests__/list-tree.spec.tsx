@@ -1,11 +1,11 @@
   import * as React from "react"
   import { cleanup, render, screen } from "@testing-library/react"
 
-  import Twitter from "../twitter"
+  import ListTree from "../list-tree"
 
-  describe("Twitter", () => {
+  describe("ListTree", () => {
     it("should render the icon without errors", async () => {
-      render(<Twitter data-testid="icon" />)
+      render(<ListTree data-testid="icon" />)
 
 
       const svgElement = screen.getByTestId("icon")

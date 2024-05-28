@@ -5,8 +5,8 @@ const Facebook = React.forwardRef<SVGSVGElement, Omit<IconProps, "color">>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -14,16 +14,16 @@ const Facebook = React.forwardRef<SVGSVGElement, Omit<IconProps, "color">>(
         <path
           fill="url(#a)"
           fillRule="evenodd"
-          d="M1 10c0 4.455 3.24 8.145 7.515 8.91l.053-.044-.008-.001V12.52H6.31V10h2.25V8.02c0-2.25 1.44-3.51 3.51-3.51.63 0 1.35.09 1.98.18v2.295h-1.17c-1.08 0-1.35.54-1.35 1.26V10h2.385l-.405 2.52h-1.98v6.345l-.082.015.037.03C15.76 18.145 19 14.455 19 10c0-4.95-4.05-9-9-9s-9 4.05-9 9Z"
+          d="M.75 7.5c0 3.341 2.43 6.109 5.636 6.682l.04-.032-.006-.001v-4.76H4.733V7.5H6.42V6.016c0-1.688 1.08-2.633 2.633-2.633.472 0 1.012.068 1.484.135V5.24H9.66c-.81 0-1.012.405-1.012.945V7.5h1.788l-.303 1.89H8.648v4.759l-.062.01.028.023c3.206-.573 5.636-3.34 5.636-6.682 0-3.712-3.037-6.75-6.75-6.75S.75 3.788.75 7.5"
           clipRule="evenodd"
         />
         <defs>
           <linearGradient
             id="a"
-            x1={10}
-            x2={10}
-            y1={18.374}
-            y2={0.997}
+            x1={7.5}
+            x2={7.5}
+            y1={13.78}
+            y2={0.748}
             gradientUnits="userSpaceOnUse"
           >
             <stop stopColor="#0062E0" />

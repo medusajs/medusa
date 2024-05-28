@@ -1,12 +1,12 @@
 import * as React from "react"
 import type { IconProps } from "../types"
-const UserCircleMini = React.forwardRef<SVGSVGElement, IconProps>(
+const UserMini = React.forwardRef<SVGSVGElement, IconProps>(
   ({ color = "currentColor", ...props }, ref) => {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,11 +16,11 @@ const UserCircleMini = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M12.5 6a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM5 15.412a5 5 0 0 1 10 0 11.956 11.956 0 0 1-5 1.088c-1.784 0-3.477-.39-5-1.088Z"
+          d="M7.5 5.944a2.444 2.444 0 1 0 0-4.888 2.444 2.444 0 0 0 0 4.888M11.733 13.292c.764-.24 1.166-1.085.842-1.818A5.55 5.55 0 0 0 7.5 8.167a5.55 5.55 0 0 0-5.075 3.307c-.324.733.078 1.577.842 1.818a14.1 14.1 0 0 0 8.466 0"
         />
       </svg>
     )
   }
 )
-UserCircleMini.displayName = "UserCircleMini"
-export default UserCircleMini
+UserMini.displayName = "UserMini"
+export default UserMini

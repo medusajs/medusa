@@ -5,8 +5,8 @@ const ArrowDownMini = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const ArrowDownMini = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="m15 11-5 5m0 0-5-5m5 5V4"
+          d="M7.5 13.056V1.944M11.278 9.278 7.5 13.056 3.722 9.278"
         />
       </svg>
     )
