@@ -3,25 +3,23 @@ import { PromotionDTO, PromotionRuleDTO } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import i18n from "i18next"
 import { useState } from "react"
-import { useFieldArray, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { RouteDrawer } from "../../../../../../components/route-modal"
 import { RuleTypeValues } from "../../edit-rules"
 import { RulesFormField } from "../rules-form-field"
-import { getDisguisedRules } from "./utils"
 
 type EditPromotionFormProps = {
   promotion: PromotionDTO
   rules: PromotionRuleDTO[]
   ruleType: RuleTypeValues
-  attributes: any[]
-  operators: any[]
   handleSubmit: any
   isSubmitting: boolean
 }
 
 const EditRules = zod.object({
+  type: zod.string().optional(),
   rules: zod.array(
     zod.object({
       id: zod.string().optional(),
@@ -39,6 +37,7 @@ const EditRules = zod.object({
           .min(1, { message: i18n.t("promotions.form.required") }),
       ]),
       required: zod.boolean().optional(),
+      disguised: zod.boolean().optional(),
       field_type: zod.string().optional(),
     })
   ),
@@ -46,39 +45,16 @@ const EditRules = zod.object({
 
 export const EditRulesForm = ({
   promotion,
-  rules,
   ruleType,
-  attributes,
-  operators,
   handleSubmit,
   isSubmitting,
 }: EditPromotionFormProps) => {
   const { t } = useTranslation()
-  const requiredAttributes = attributes?.filter((ra) => ra.required) || []
-  const requiredAttributeValues = requiredAttributes?.map((ra) => ra.value)
-  const disguisedRules =
-    getDisguisedRules(promotion, requiredAttributes, ruleType) || []
   const [rulesToRemove, setRulesToRemove] = useState([])
 
   const form = useForm<zod.infer<typeof EditRules>>({
-    defaultValues: {
-      rules: [...disguisedRules, ...rules].map((rule) => ({
-        id: rule.id,
-        required: requiredAttributeValues.includes(rule.attribute),
-        attribute: rule.attribute!,
-        operator: rule.operator!,
-        values: Array.isArray(rule?.values)
-          ? rule?.values?.map((v: any) => v.value!)
-          : rule.values!,
-      })),
-    },
+    defaultValues: { rules: [], type: promotion.type },
     resolver: zodResolver(EditRules),
-  })
-
-  const { fields, append, remove, update } = useFieldArray({
-    control: form.control,
-    name: "rules",
-    keyName: "rules_id",
   })
 
   const handleFormSubmit = form.handleSubmit(handleSubmit(rulesToRemove))
@@ -88,16 +64,11 @@ export const EditRulesForm = ({
       <form onSubmit={handleFormSubmit} className="flex h-full flex-col">
         <RouteDrawer.Body>
           <RulesFormField
-            form={form}
+            form={form as any}
             ruleType={ruleType}
-            attributes={attributes}
-            operators={operators}
-            fields={fields}
             setRulesToRemove={setRulesToRemove}
             rulesToRemove={rulesToRemove}
-            appendRule={append}
-            removeRule={remove}
-            updateRule={update}
+            promotionId={promotion.id}
           />
         </RouteDrawer.Body>
 

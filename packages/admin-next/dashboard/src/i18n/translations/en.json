@@ -954,11 +954,11 @@
       "conditions": {
         "rules": {
           "title": "Who can use this code?",
-          "description": "Is the customer allowed to add the promotion code? Discount code can be used by all customers if left untouched. Choose between attributes, operators, and values to set up the conditions."
+          "description": "Is the customer allowed to add the promotion code? Discount code can be used by all customers if left untouched."
         },
         "target-rules": {
           "title": "What needs to be in the cart to unlock the promotion?",
-          "description": "If these conditions match, we enable a promotion action on the target items. Choose between attributes, operators, and values to set up the conditions."
+          "description": "We enable the promotion only on those items where the following conditions match. If left empty, the promotion applies to all items in the cart."
         },
         "buy-rules": {
           "title": "What will the promotion be applied to?",

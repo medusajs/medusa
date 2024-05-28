@@ -81,15 +81,22 @@ async function removePromotionRules(
   )
 }
 
-async function listPromotionRules(id: string | null, ruleType: string) {
+async function listPromotionRules(
+  id: string | null,
+  ruleType: string,
+  promotionType?: string
+) {
   return getRequest<PromotionRuleAttributesListRes>(
-    `/admin/promotions/${id}/${ruleType}`
+    `/admin/promotions/${id}/${ruleType}?promotion_type=${promotionType}`
   )
 }
 
-async function listPromotionRuleAttributes(ruleType: string) {
+async function listPromotionRuleAttributes(
+  ruleType: string,
+  promotionType?: string
+) {
   return getRequest<PromotionRuleAttributesListRes>(
-    `/admin/promotions/rule-attribute-options/${ruleType}`
+    `/admin/promotions/rule-attribute-options/${ruleType}?promotion_type=${promotionType}`
   )
 }
 
