@@ -1452,6 +1452,7 @@
     "fields": {
       "lastUsedAtLabel": "Last used at",
       "revokedByLabel": "Revoked by",
+      "revokedAtLabel": "Revoked at",
       "createdByLabel": "Created by"
     }
   },

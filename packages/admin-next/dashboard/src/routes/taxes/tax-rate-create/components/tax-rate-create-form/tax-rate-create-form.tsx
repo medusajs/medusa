@@ -1,13 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
-    Button,
-    clx,
-    DropdownMenu,
-    Heading,
-    Input,
-    Select,
-    Switch,
-    Text,
+  Button,
+  clx,
+  DropdownMenu,
+  Heading,
+  Input,
+  Select,
+  Switch,
+  Text,
 } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -20,16 +20,16 @@ import { Form } from "../../../../../components/common/form"
 import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import { SplitView } from "../../../../../components/layout/split-view"
 import {
-    RouteFocusModal,
-    useRouteModal,
+  RouteFocusModal,
+  useRouteModal,
 } from "../../../../../components/route-modal"
 import { useCreateTaxRate } from "../../../../../hooks/api/tax-rates"
 import { useTaxRegions } from "../../../../../hooks/api/tax-regions"
 import { ConditionsDrawer } from "../../../common/components/conditions-drawer"
 import { ConditionEntities } from "../../../common/constants"
 import {
-    ConditionEntitiesValues,
-    ConditionsOption,
+  ConditionEntitiesValues,
+  ConditionsOption,
 } from "../../../common/types"
 import { Condition } from "../condition"
 
@@ -72,6 +72,7 @@ export const TaxRateCreateForm = ({
 
   const form = useForm<zod.infer<typeof CreateTaxRateSchema>>({
     defaultValues: {
+      tax_region_id: taxRegion.id,
       selected_condition_types: {
         [ConditionEntities.PRODUCT]: true,
         [ConditionEntities.PRODUCT_TYPE]: false,
@@ -102,7 +103,7 @@ export const TaxRateCreateForm = ({
         code: data.code,
         rate: data.rate,
         is_combinable: data.is_combinable,
-        tax_region_id: data.tax_region_id,
+        tax_region_id: data.tax_region_id || taxRegion.id,
         rules:
           data.products?.map((product) => ({
             reference: "product",

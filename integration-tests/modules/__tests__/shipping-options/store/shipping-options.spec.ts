@@ -70,7 +70,7 @@ medusaIntegrationTestRunner({
               variants: [
                 {
                   title: "Test variant",
-                  inventory_quantity: 10,
+                  manage_inventory: false,
                   prices: [
                     {
                       currency_code: "usd",
@@ -182,10 +182,9 @@ medusaIntegrationTestRunner({
         ).data.cart
       })
 
-      describe("GET /admin/shipping-options/:cart_id", () => {
-        // TODO: Enable it when product workflows manage inventory items
-        it.skip("should get all shipping options for a cart successfully", async () => {
-          const resp = await api.get(`/store/shipping-options/${cart.id}`)
+      describe("GET /admin/shipping-options?cart_id=", () => {
+        it("should get all shipping options for a cart successfully", async () => {
+          const resp = await api.get(`/store/shipping-options?cart_id=${cart.id}`)
 
           const shippingOptions = resp.data.shipping_options
           expect(shippingOptions).toHaveLength(1)
