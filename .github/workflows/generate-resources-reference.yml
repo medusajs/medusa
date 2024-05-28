@@ -1,4 +1,4 @@
-name: Generate References for Docblocks [Automated]
+name: Generate Resources References [Automated]
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       referenceName:
-        description: "Reference to Generate. Use either `all` or a name of a config file in `www/utils/packages/typedoc-config` such as `product`."
+        description: "Reference to Generate. Use either `all` or a name defined in `www/utils/packages/typedoc-generate-references/src/constants/references.ts` such as `product`."
         required: false
         default: "all"
 
@@ -80,7 +80,9 @@ jobs:
           base: "develop"
           title: "chore(docs): Generated References"
           labels: "type: chore"
-          add-paths: www/apps/resources/references/**
+          add-paths: |
+            www/apps/resources/references/**
+            www/apps/resources/generated/**
           branch: "docs/generate-reference"
           branch-suffix: "timestamp"
           body: ${{ steps.pr-message.outputs.body }}
