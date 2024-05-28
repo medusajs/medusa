@@ -1,7 +1,6 @@
 import * as QueryConfig from "./query-config"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
   AdminCreateApiKey,
@@ -14,10 +13,6 @@ import { validateAndTransformBody } from "../../utils/validate-body"
 import { createLinkBody } from "../../utils/validators"
 
 export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    matcher: "/admin/api-keys*",
-    middlewares: [authenticate("user", ["bearer", "session"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/api-keys",

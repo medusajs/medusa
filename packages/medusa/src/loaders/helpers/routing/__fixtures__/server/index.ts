@@ -123,21 +123,31 @@ export const createServer = async (rootDir) => {
       if (opts.adminSession) {
         const token = jwt.sign(
           {
-            user_id: opts.adminSession.userId || opts.adminSession.jwt?.userId,
-            domain: "admin",
+            actor_id: opts.adminSession.userId || opts.adminSession.jwt?.userId,
+            actor_type: "user",
+            app_metadata: {
+              user_id:
+                opts.adminSession.userId || opts.adminSession.jwt?.userId,
+            },
           },
           config.projectConfig.http.jwtSecret!
         )
 
         headers.Authorization = `Bearer ${token}`
       }
+
       if (opts.clientSession) {
         const token = jwt.sign(
           {
-            customer_id:
+            actor_id:
               opts.clientSession.customer_id ||
               opts.clientSession.jwt?.customer_id,
-            domain: "store",
+            actor_type: "customer",
+            app_metadata: {
+              customer_id:
+                opts.clientSession.customer_id ||
+                opts.clientSession.jwt?.customer_id,
+            },
           },
           config.projectConfig.http.jwtSecret!
         )

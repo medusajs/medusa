@@ -1,8 +1,8 @@
 import { listShippingOptionsForCartWorkflow } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ICartModuleService } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import { MedusaError } from "@medusajs/utils"
+import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { cart_id } = req.filterableFields as { cart_id: string }

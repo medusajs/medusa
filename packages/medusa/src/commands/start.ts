@@ -2,12 +2,12 @@ import "core-js/stable"
 import "regenerator-runtime/runtime"
 
 import express from "express"
-import { GracefulShutdownServer } from "../utils"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
+import { GracefulShutdownServer } from "@medusajs/utils"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
@@ -26,10 +26,7 @@ export default async function ({ port, directory }) {
 
       const serverActivity = Logger.activity(`Creating server`)
       const server = GracefulShutdownServer.create(
-        app.listen(port).on("error", (err) => {
-          if (err) {
-            return
-          }
+        app.listen(port).on("listening", () => {
           Logger.success(serverActivity, `Server is ready on port: ${port}`)
           track("CLI_START_COMPLETED")
         })
