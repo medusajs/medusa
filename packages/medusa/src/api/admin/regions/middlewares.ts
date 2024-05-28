@@ -1,6 +1,5 @@
 import * as QueryConfig from "./query-config"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
   AdminCreateRegion,
@@ -11,11 +10,6 @@ import {
 import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: ["ALL"],
-    matcher: "/admin/regions*",
-    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/regions",

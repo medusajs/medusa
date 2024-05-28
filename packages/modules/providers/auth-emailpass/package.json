@@ -1,0 +1,40 @@
+{
+  "name": "@medusajs/auth-emailpass",
+  "version": "0.0.1",
+  "description": "Email and password credential authentication provider for Medusa",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/modules/providers/auth-emailpass"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "author": "Medusa",
+  "license": "MIT",
+  "scripts": {
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
+    "test": "jest --passWithNoTests src",
+    "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.spec.ts",
+    "build": "rimraf dist && tsc -p ./tsconfig.json",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.1",
+    "jest": "^25.5.4",
+    "rimraf": "^5.0.1",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@medusajs/utils": "^1.11.7",
+    "scrypt-kdf": "^2.0.1"
+  },
+  "keywords": [
+    "medusa-provider",
+    "medusa-provider-auth-userpass"
+  ]
+}

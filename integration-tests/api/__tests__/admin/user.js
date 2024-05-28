@@ -175,7 +175,7 @@ medusaIntegrationTestRunner({
         token = await breaking(
           () => null,
           async () => {
-            const emailPassResponse = await api.post("/auth/admin/emailpass", {
+            const emailPassResponse = await api.post("/auth/user/emailpass", {
               email: "test@test123.com",
               password: "test123",
             })
@@ -230,7 +230,7 @@ medusaIntegrationTestRunner({
 
       // V2 only test
       it.skip("should throw, if session/bearer auth is present for existing user", async () => {
-        const emailPassResponse = await api.post("/auth/admin/emailpass", {
+        const emailPassResponse = await api.post("/auth/user/emailpass", {
           email: "test@test123.com",
           password: "test123",
         })

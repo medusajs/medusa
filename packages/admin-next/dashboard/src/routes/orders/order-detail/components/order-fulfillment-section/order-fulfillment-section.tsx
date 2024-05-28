@@ -11,8 +11,8 @@ import {
   Heading,
   StatusBadge,
   Text,
-  toast,
   Tooltip,
+  toast,
   usePrompt,
 } from "@medusajs/ui"
 import { format } from "date-fns"
@@ -21,10 +21,10 @@ import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
+import { useCancelFulfillment } from "../../../../../hooks/api/fulfillment"
+import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
-import { useStockLocation } from "../../../../../hooks/api/stock-locations"
-import { useCancelFulfillment } from "../../../../../hooks/api/fulfillment"
 
 type OrderFulfillmentSectionProps = {
   order: OrderDTO & { fulfillments: FulfillmentDTO[] }
@@ -285,7 +285,7 @@ const Fulfillment = ({
           </Text>
           {stock_location ? (
             <Link
-              to={`/settings/shipping/${stock_location.id}`}
+              to={`/settings/locations/${stock_location.id}`}
               className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg"
             >
               <Text size="small" leading="compact">

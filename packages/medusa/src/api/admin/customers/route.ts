@@ -1,8 +1,5 @@
 import { createCustomersWorkflow } from "@medusajs/core-flows"
-import {
-  AdminCustomerListResponse,
-  AdminCustomerResponse,
-} from "@medusajs/types"
+
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -13,10 +10,11 @@ import {
 } from "../../../types/routing"
 import { AdminCreateCustomerType } from "./validators"
 import { refetchCustomer } from "./helpers"
+import { AdminCustomer, PaginatedResponse } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<AdminCustomerListResponse>
+  res: MedusaResponse<PaginatedResponse<{ customers: AdminCustomer }>>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -41,7 +39,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateCustomerType>,
-  res: MedusaResponse<AdminCustomerResponse>
+  res: MedusaResponse<{ customer: AdminCustomer }>
 ) => {
   const createCustomers = createCustomersWorkflow(req.scope)
 
@@ -52,14 +50,9 @@ export const POST = async (
     },
   ]
 
-  const { result, errors } = await createCustomers.run({
+  const { result } = await createCustomers.run({
     input: { customersData },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const customer = await refetchCustomer(
     result[0].id,

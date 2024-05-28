@@ -15,18 +15,13 @@ export const POST = async (
   const { add, remove } = req.validatedBody
 
   const workflow = linkProductsToSalesChannelWorkflow(req.scope)
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: {
       id,
       add,
       remove,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const salesChannel = await refetchSalesChannel(
     req.params.id,

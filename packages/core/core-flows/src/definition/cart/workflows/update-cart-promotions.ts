@@ -4,16 +4,18 @@ import {
   createWorkflow,
   parallelize,
 } from "@medusajs/workflows-sdk"
+import { useRemoteQueryStep } from "../../../common"
 import {
   createLineItemAdjustmentsStep,
   createShippingMethodAdjustmentsStep,
   getActionsToComputeFromPromotionsStep,
+  getPromotionCodesToApply,
   prepareAdjustmentsFromPromotionActionsStep,
   removeLineItemAdjustmentsStep,
   removeShippingMethodAdjustmentsStep,
-  retrieveCartStep,
-  updateCartPromotionsStep,
 } from "../steps"
+import { updateCartPromotionsStep } from "../steps/update-cart-promotions"
+import { cartFieldsForRefreshSteps } from "../utils/fields"
 
 type WorkflowInput = {
   promoCodes: string[]
@@ -28,27 +30,22 @@ export const updateCartPromotionsWorkflowId = "update-cart-promotions"
 export const updateCartPromotionsWorkflow = createWorkflow(
   updateCartPromotionsWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
-    const retrieveCartInput = {
-      id: input.cartId,
-      config: {
-        relations: [
-          "items",
-          "items.adjustments",
-          "shipping_methods",
-          "shipping_methods.adjustments",
-        ],
-      },
-    }
+    const cart = useRemoteQueryStep({
+      entry_point: "cart",
+      fields: cartFieldsForRefreshSteps,
+      variables: { id: input.cartId },
+      list: false,
+    })
 
-    updateCartPromotionsStep({
-      id: input.cartId,
+    const promotionCodesToApply = getPromotionCodesToApply({
+      cart: cart,
       promo_codes: input.promoCodes,
       action: input.action || PromotionActions.ADD,
     })
 
-    const cart = retrieveCartStep(retrieveCartInput)
     const actions = getActionsToComputeFromPromotionsStep({
       cart,
+      promotionCodesToApply,
     })
 
     const {
@@ -56,6 +53,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       lineItemAdjustmentIdsToRemove,
       shippingMethodAdjustmentsToCreate,
       shippingMethodAdjustmentIdsToRemove,
+      computedPromotionCodes,
     } = prepareAdjustmentsFromPromotionActionsStep({ actions })
 
     parallelize(
@@ -69,5 +67,11 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       createLineItemAdjustmentsStep({ lineItemAdjustmentsToCreate }),
       createShippingMethodAdjustmentsStep({ shippingMethodAdjustmentsToCreate })
     )
+
+    updateCartPromotionsStep({
+      id: input.cartId,
+      promo_codes: computedPromotionCodes,
+      action: PromotionActions.REPLACE,
+    })
   }
 )

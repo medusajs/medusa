@@ -36,8 +36,7 @@
     "axios": "^0.28.0",
     "express": "^4.18.3",
     "get-port": "^5.1.0",
-    "pg-god": "^1.0.12",
-    "typeorm": "^0.2.43"
+    "pg-god": "^1.0.12"
   },
   "peerDependenciesMeta": {
     "@medusajs/medusa": {
@@ -54,16 +53,12 @@
     },
     "pg-god": {
       "optional": true
-    },
-    "typeorm": {
-      "optional": true
     }
   },
   "dependencies": {
     "@medusajs/utils": "^1.11.9",
     "@mikro-orm/migrations": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",
-    "medusa-core-utils": "^1.2.2",
     "randomatic": "^3.1.1"
   },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"

@@ -1,5 +1,7 @@
 declare module "virtual:medusa/widgets/*" {
-  const widgets: { Component: () => JSX.Element }[]
+  import type { ComponentType } from "react"
+
+  const widgets: { Component: ComponentType<any> }[]
 
   export default {
     widgets,
@@ -7,7 +9,7 @@ declare module "virtual:medusa/widgets/*" {
 }
 
 declare module "virtual:medusa/routes/pages" {
-  const pages: { path: string; file: string }[]
+  const pages: { path: string; Component: () => JSX.Element }[]
 
   export default {
     pages,

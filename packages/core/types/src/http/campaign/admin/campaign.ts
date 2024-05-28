@@ -12,6 +12,7 @@ export interface CampaignResponse {
   budget: {
     id: string
     type: CampaignBudgetTypeValues
+    currency_code: string
     limit: number
     used: number
   }

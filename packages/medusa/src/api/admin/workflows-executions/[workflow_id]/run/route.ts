@@ -28,7 +28,6 @@ export const POST = async (
     context: {
       requestId: req.requestId,
     },
-    throwOnError: false,
   } as WorkflowOrchestratorTypes.WorkflowOrchestratorRunDTO
 
   const { acknowledgement } = await workflowEngineService.run(

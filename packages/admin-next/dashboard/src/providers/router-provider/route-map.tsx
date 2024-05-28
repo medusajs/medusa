@@ -1,7 +1,5 @@
-import { AdminCollectionsRes, AdminProductsRes } from "@medusajs/medusa"
 import {
   AdminApiKeyResponse,
-  AdminCustomerGroupResponse,
   AdminProductCategoryResponse,
   AdminTaxRateResponse,
   AdminTaxRegionResponse,
@@ -65,7 +63,8 @@ export const RouteMap: RouteObject[] = [
                 path: ":id",
                 lazy: () => import("../../routes/products/product-detail"),
                 handle: {
-                  crumb: (data: AdminProductsRes) => data.product.title,
+                  crumb: (data: { product: HttpTypes.AdminProduct }) =>
+                    data.product.title,
                 },
                 children: [
                   {
@@ -261,7 +260,8 @@ export const RouteMap: RouteObject[] = [
                 lazy: () =>
                   import("../../routes/collections/collection-detail"),
                 handle: {
-                  crumb: (data: AdminCollectionsRes) => data.collection.title,
+                  crumb: (data: { collection: HttpTypes.AdminCollection }) =>
+                    data.collection.title,
                 },
                 children: [
                   {
@@ -390,8 +390,9 @@ export const RouteMap: RouteObject[] = [
                 lazy: () =>
                   import("../../routes/customer-groups/customer-group-detail"),
                 handle: {
-                  crumb: (data: AdminCustomerGroupResponse) =>
-                    data.customer_group.name,
+                  crumb: (data: {
+                    customer_group: HttpTypes.AdminCustomerGroup
+                  }) => data.customer_group.name,
                 },
                 children: [
                   {
@@ -681,33 +682,33 @@ export const RouteMap: RouteObject[] = [
             ],
           },
           {
-            path: "shipping",
+            path: "locations",
             element: <Outlet />,
             handle: {
-              crumb: () => "Location & Shipping",
+              crumb: () => "Locations & Shipping",
             },
             children: [
               {
                 path: "",
-                lazy: () => import("../../routes/shipping/location-list"),
+                lazy: () => import("../../routes/locations/location-list"),
               },
               {
                 path: "create",
-                lazy: () => import("../../routes/shipping/location-create"),
+                lazy: () => import("../../routes/locations/location-create"),
               },
               {
                 path: ":location_id",
-                lazy: () => import("../../routes/shipping/location-details"),
+                lazy: () => import("../../routes/locations/location-details"),
                 children: [
                   {
                     path: "edit",
-                    lazy: () => import("../../routes/shipping/location-edit"),
+                    lazy: () => import("../../routes/locations/location-edit"),
                   },
                   {
                     path: "sales-channels/edit",
                     lazy: () =>
                       import(
-                        "../../routes/shipping/location-add-sales-channels"
+                        "../../routes/locations/location-add-sales-channels"
                       ),
                   },
                   {
@@ -716,7 +717,7 @@ export const RouteMap: RouteObject[] = [
                       {
                         path: "service-zones/create",
                         lazy: () =>
-                          import("../../routes/shipping/service-zone-create"),
+                          import("../../routes/locations/service-zone-create"),
                       },
                       {
                         path: "service-zone/:zone_id",
@@ -724,13 +725,15 @@ export const RouteMap: RouteObject[] = [
                           {
                             path: "edit",
                             lazy: () =>
-                              import("../../routes/shipping/service-zone-edit"),
+                              import(
+                                "../../routes/locations/service-zone-edit"
+                              ),
                           },
                           {
                             path: "edit-areas",
                             lazy: () =>
                               import(
-                                "../../routes/shipping/service-zone-areas-edit"
+                                "../../routes/locations/service-zone-areas-edit"
                               ),
                           },
                           {
@@ -740,7 +743,7 @@ export const RouteMap: RouteObject[] = [
                                 path: "create",
                                 lazy: () =>
                                   import(
-                                    "../../routes/shipping/shipping-options-create"
+                                    "../../routes/locations/shipping-options-create"
                                   ),
                               },
                               {
@@ -750,14 +753,14 @@ export const RouteMap: RouteObject[] = [
                                     path: "edit",
                                     lazy: () =>
                                       import(
-                                        "../../routes/shipping/shipping-option-edit"
+                                        "../../routes/locations/shipping-option-edit"
                                       ),
                                   },
                                   {
                                     path: "edit-pricing",
                                     lazy: () =>
                                       import(
-                                        "../../routes/shipping/shipping-options-edit-pricing"
+                                        "../../routes/locations/shipping-options-edit-pricing"
                                       ),
                                   },
                                 ],

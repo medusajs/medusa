@@ -10,16 +10,11 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateFulfillmentType>,
   res: MedusaResponse
 ) => {
-  const { result: fullfillment, errors } = await createFulfillmentWorkflow(
+  const { result: fullfillment } = await createFulfillmentWorkflow(
     req.scope
   ).run({
     input: req.validatedBody,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const fulfillment = await refetchFulfillment(
     fullfillment.id,

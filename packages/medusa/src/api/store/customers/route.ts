@@ -24,13 +24,9 @@ export const POST = async (
   const createCustomers = createCustomerAccountWorkflow(req.scope)
   const customersData = req.validatedBody
 
-  const { result, errors } = await createCustomers.run({
+  const { result } = await createCustomers.run({
     input: { customersData, authIdentityId: req.auth_context.auth_identity_id },
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const { http } = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
@@ -41,8 +37,9 @@ export const POST = async (
       actor_id: result.id,
       actor_type: "customer",
       auth_identity_id: req.auth_context.auth_identity_id,
-      app_metadata: {},
-      scope: "store",
+      app_metadata: {
+        customer_id: result.id,
+      },
     },
     {
       secret: jwtSecret,

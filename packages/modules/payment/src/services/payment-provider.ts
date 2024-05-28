@@ -22,10 +22,10 @@ import {
   InjectTransactionManager,
   isPaymentProviderError,
   MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { PaymentProvider } from "@models"
-import { MedusaError } from "medusa-core-utils"
 import { EOL } from "os"
 
 type InjectedDependencies = {

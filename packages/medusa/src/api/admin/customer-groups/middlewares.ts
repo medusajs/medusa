@@ -1,6 +1,5 @@
 import * as QueryConfig from "./query-config"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
   AdminCreateCustomerGroup,
@@ -12,11 +11,6 @@ import { validateAndTransformBody } from "../../utils/validate-body"
 import { createLinkBody } from "../../utils/validators"
 
 export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: ["ALL"],
-    matcher: "/admin/customer-groups*",
-    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/customer-groups",

@@ -13,12 +13,14 @@ import { authenticate } from "../../../utils/middlewares/authenticate-middleware
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import { validateAndTransformBody } from "../../utils/validate-body"
 
+// TODO: Due to issues with our routing (and using router.use for applying middlewares), we have to opt-out of global auth in all routes, and then reapply it here.
+// See https://medusacorp.slack.com/archives/C025KMS13SA/p1716455350491879 for details.
 export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET"],
     matcher: "/admin/invites",
     middlewares: [
-      authenticate("admin", ["session", "bearer", "api-key"]),
+      authenticate("user", ["session", "bearer", "api-key"]),
       validateAndTransformQuery(
         AdminGetInvitesParams,
         QueryConfig.listTransformQueryConfig
@@ -29,7 +31,7 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/invites",
     middlewares: [
-      authenticate("admin", ["session", "bearer", "api-key"]),
+      authenticate("user", ["session", "bearer", "api-key"]),
       validateAndTransformBody(AdminCreateInvite),
       validateAndTransformQuery(
         AdminGetInviteParams,
@@ -41,7 +43,7 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
     method: "POST",
     matcher: "/admin/invites/accept",
     middlewares: [
-      authenticate("admin", ["session", "bearer"], {
+      authenticate("user", ["session", "bearer"], {
         allowUnregistered: true,
       }),
       validateAndTransformBody(AdminInviteAccept),
@@ -55,7 +57,7 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/invites/:id",
     middlewares: [
-      authenticate("admin", ["session", "bearer", "api-key"]),
+      authenticate("user", ["session", "bearer", "api-key"]),
       validateAndTransformQuery(
         AdminGetInviteParams,
         QueryConfig.retrieveTransformQueryConfig
@@ -65,13 +67,13 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/invites/:id",
-    middlewares: [authenticate("admin", ["session", "bearer", "api-key"])],
+    middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
   },
   {
     method: "POST",
     matcher: "/admin/invites/:id/resend",
     middlewares: [
-      authenticate("admin", ["session", "bearer", "api-key"]),
+      authenticate("user", ["session", "bearer", "api-key"]),
       validateAndTransformQuery(
         AdminGetInviteParams,
         QueryConfig.retrieveTransformQueryConfig

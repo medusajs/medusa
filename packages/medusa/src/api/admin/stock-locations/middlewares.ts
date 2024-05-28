@@ -1,5 +1,4 @@
 import { MiddlewareRoute } from "../../../types/middlewares"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
@@ -14,11 +13,6 @@ import {
 } from "./validators"
 
 export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: "ALL",
-    matcher: "/admin/stock-locations*",
-    middlewares: [authenticate("admin", ["session", "bearer", "api-key"])],
-  },
   {
     method: ["POST"],
     matcher: "/admin/stock-locations",

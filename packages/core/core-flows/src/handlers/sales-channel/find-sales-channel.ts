@@ -1,5 +1,4 @@
-import { MedusaError } from "@medusajs/utils"
-import { isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "@medusajs/utils"
 
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
 

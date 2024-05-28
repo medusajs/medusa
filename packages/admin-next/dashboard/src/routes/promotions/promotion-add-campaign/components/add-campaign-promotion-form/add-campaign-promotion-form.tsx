@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CampaignResponse, PromotionDTO } from "@medusajs/types"
-import { Button, clx, RadioGroup, Select } from "@medusajs/ui"
+import { Button, RadioGroup, Select, Text } from "@medusajs/ui"
 import { useEffect } from "react"
 import { useForm, useWatch } from "react-hook-form"
-import { useTranslation } from "react-i18next"
+import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import {
@@ -67,10 +67,6 @@ export const AddCampaignPromotionFields = ({
                     value={"none"}
                     label={t("promotions.form.campaign.none.title")}
                     description={t("promotions.form.campaign.none.description")}
-                    className={clx("border", {
-                      "border border-ui-border-interactive":
-                        "none" === field.value,
-                    })}
                   />
 
                   <RadioGroup.ChoiceBox
@@ -79,10 +75,6 @@ export const AddCampaignPromotionFields = ({
                     description={t(
                       "promotions.form.campaign.existing.description"
                     )}
-                    className={clx("border", {
-                      "border border-ui-border-interactive":
-                        "existing" === field.value,
-                    })}
                   />
 
                   {withNewCampaign && (
@@ -92,10 +84,6 @@ export const AddCampaignPromotionFields = ({
                       description={t(
                         "promotions.form.campaign.new.description"
                       )}
-                      className={clx("border", {
-                        "border border-ui-border-interactive":
-                          "new" === field.value,
-                      })}
                     />
                   )}
                 </RadioGroup>
@@ -133,6 +121,18 @@ export const AddCampaignPromotionFields = ({
                     </Select.Content>
                   </Select>
                 </Form.Control>
+
+                <Text
+                  size="small"
+                  leading="compact"
+                  className="text-ui-fg-subtle"
+                >
+                  <Trans
+                    t={t}
+                    i18nKey="campaigns.fields.campaign_id.hint"
+                    components={[<br key="break" />]}
+                  />
+                </Text>
                 <Form.ErrorMessage />
               </Form.Item>
             )
