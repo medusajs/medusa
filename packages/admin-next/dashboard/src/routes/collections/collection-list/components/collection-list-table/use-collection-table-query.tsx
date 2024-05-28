@@ -1,4 +1,4 @@
-import { AdminGetCollectionsParams } from "@medusajs/medusa"
+import { AdminCollectionFilters, FindParams } from "@medusajs/types"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 type UseCollectionTableQueryProps = {
@@ -17,7 +17,7 @@ export const useCollectionTableQuery = ({
 
   const { offset, created_at, updated_at, q, order } = queryObject
 
-  const searchParams: AdminGetCollectionsParams = {
+  const searchParams: FindParams & AdminCollectionFilters = {
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     order,
