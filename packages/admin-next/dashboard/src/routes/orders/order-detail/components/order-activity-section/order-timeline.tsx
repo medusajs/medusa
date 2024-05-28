@@ -6,13 +6,13 @@ import { PropsWithChildren, ReactNode, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 
 import { XMarkMini } from "@medusajs/icons"
-import { OrderDetailDTO } from "@medusajs/types"
+import { AdminOrder } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { useDate } from "../../../../../hooks/use-date"
 
 type OrderTimelineProps = {
-  order: OrderDetailDTO
+  order: AdminOrder
 }
 
 /**

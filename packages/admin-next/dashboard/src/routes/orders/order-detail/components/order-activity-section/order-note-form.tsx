@@ -5,12 +5,12 @@ import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { OrderDetailDTO } from "@medusajs/types"
+import { AdminOrder } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../components/common/form"
 
 type OrderNoteFormProps = {
-  order: OrderDetailDTO
+  order: AdminOrder
 }
 
 const OrderNoteSchema = z.object({

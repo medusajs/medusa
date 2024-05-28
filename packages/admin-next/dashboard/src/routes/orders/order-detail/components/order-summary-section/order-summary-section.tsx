@@ -1,5 +1,5 @@
 import {
-  OrderDetailDTO,
+  AdminOrder,
   OrderLineItemDTO,
   ReservationItemDTO,
 } from "@medusajs/types"
@@ -14,7 +14,7 @@ import {
 } from "../../../../../lib/money-amount-helpers"
 
 type OrderSummarySectionProps = {
-  order: OrderDetailDTO
+  order: AdminOrder
 }
 
 export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
@@ -28,7 +28,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   )
 }
 
-const Header = ({ order }: { order: OrderDetailDTO }) => {
+const Header = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   return (
@@ -132,7 +132,7 @@ const Item = ({
   )
 }
 
-const ItemBreakdown = ({ order }: { order: OrderDetailDTO }) => {
+const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
   // const { reservations, isError, error } = useAdminReservations({
   //   line_item_id: order.items.map((i) => i.id),
   // })
@@ -187,7 +187,7 @@ const Cost = ({
   </div>
 )
 
-const CostBreakdown = ({ order }: { order: OrderDetailDTO }) => {
+const CostBreakdown = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   return (
@@ -233,7 +233,7 @@ const CostBreakdown = ({ order }: { order: OrderDetailDTO }) => {
   )
 }
 
-const Total = ({ order }: { order: OrderDetailDTO }) => {
+const Total = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   return (

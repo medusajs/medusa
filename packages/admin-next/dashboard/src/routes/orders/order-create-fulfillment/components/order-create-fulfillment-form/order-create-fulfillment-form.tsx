@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { OrderDetailDTO } from "@medusajs/types"
+import { AdminOrder } from "@medusajs/types"
 import { Alert, Button, Select, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 
@@ -21,7 +21,7 @@ import { CreateFulfillmentSchema } from "./constants"
 import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
 
 type OrderCreateFulfillmentFormProps = {
-  order: OrderDetailDTO
+  order: AdminOrder
 }
 
 export function OrderCreateFulfillmentForm({
