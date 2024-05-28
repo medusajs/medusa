@@ -1,18 +1,24 @@
+import { ChildDocs } from "docs-ui"
+
 export const metadata = {
-  title: `Payment Provider`,
+  title: `Payment Provider Module`,
 }
 
 # {metadata.title}
 
-In this document, you’ll learn what a payment provider is.
+In this document, you’ll learn what a payment provider module is.
 
-## What's a Payment Provider?
+## What's a Payment Provider Module?
 
-A payment provider handles payment processing. It can integrate third-party payment providers, such as Stripe or PayPal.
+A payment provider module registers a payment provider that handles payment processing. It can integrate third-party payment providers, such as Stripe.
 
 To authorize a payment amount with a payment provider, a payment session is created and associated with that payment provider. The payment provider is then used to handle the authorization.
 
 After the payment session is authorized, the payment provider is associated with the resulting payment and handles its payment processing, such as to capture or refund payment.
+
+### List of Payment Provider Modules
+
+<ChildDocs type="item" />
 
 ---
 
@@ -24,7 +30,7 @@ The Payment Module provides a `system` payment provider that acts as a placehold
 
 ## How are Payment Providers Created?
 
-A payment provider is a TypeScript or JavaScript class that extends the `AbstractPaymentProvider` imported from `@medusajs/utils`. It can then be used in a payment plugin or exported in a provider module.
+A payment provider is a TypeScript or JavaScript class that extends the `AbstractPaymentProvider` imported from `@medusajs/utils`. It can then be exported as the main service of a module.
 
 <Note title="Tip">
 
