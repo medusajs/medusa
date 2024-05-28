@@ -186,13 +186,13 @@ Update the `scripts` in `package.json` to include the following scripts:
 
 ### Changes to medusa-config.js
 
-Add to the `projectConfig` property in the exported object a new property `database_extra`:
+Add to the `projectConfig` property in the exported object a new property `databaseExtra`:
 
 ```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     // ...
-    database_extra: { ssl: { rejectUnauthorized: false } },
+    databaseExtra: { ssl: { rejectUnauthorized: false } },
   },
 }
 ```
