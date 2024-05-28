@@ -21,18 +21,18 @@ export const getLastPaymentStatus = (order: OrderDetailDTO) => {
   }
 
   for (const paymentCollection of order.payment_collections) {
-    if (paymentCollection.captured_amount > 0) {
+    if (MathBN.gt(paymentCollection.captured_amount ?? 0, 0)) {
       paymentStatus[PaymentStatus.CAPTURED] += MathBN.eq(
-        paymentCollection.captured_amount,
+        paymentCollection.captured_amount as number,
         paymentCollection.amount
       )
         ? 1
         : 0.5
     }
 
-    if (paymentCollection.refunded_amount > 0) {
+    if (MathBN.gt(paymentCollection.refunded_amount ?? 0, 0)) {
       paymentStatus[PaymentStatus.REFUNDED] += MathBN.eq(
-        paymentCollection.refunded_amount,
+        paymentCollection.refunded_amount as number,
         paymentCollection.amount
       )
         ? 1
