@@ -28,33 +28,33 @@ export default async ({
     sameSite = "none"
   }
 
-  const { http, session_options } = configModule.projectConfig
+  const { http, sessionOptions } = configModule.projectConfig
   const sessionOpts = {
-    name: session_options?.name ?? "connect.sid",
-    resave: session_options?.resave ?? true,
-    rolling: session_options?.rolling ?? false,
-    saveUninitialized: session_options?.saveUninitialized ?? true,
+    name: sessionOptions?.name ?? "connect.sid",
+    resave: sessionOptions?.resave ?? true,
+    rolling: sessionOptions?.rolling ?? false,
+    saveUninitialized: sessionOptions?.saveUninitialized ?? true,
     proxy: true,
-    secret: session_options?.secret ?? http?.cookieSecret,
+    secret: sessionOptions?.secret ?? http?.cookieSecret,
     cookie: {
       sameSite,
       secure,
-      maxAge: session_options?.ttl ?? 10 * 60 * 60 * 1000,
+      maxAge: sessionOptions?.ttl ?? 10 * 60 * 60 * 1000,
     },
     store: null,
   }
 
   let redisClient
 
-  if (configModule?.projectConfig?.redis_url) {
+  if (configModule?.projectConfig?.redisUrl) {
     const RedisStore = createStore(session)
     redisClient = new Redis(
-      configModule.projectConfig.redis_url,
-      configModule.projectConfig.redis_options ?? {}
+      configModule.projectConfig.redisUrl,
+      configModule.projectConfig.redisOptions ?? {}
     )
     sessionOpts.store = new RedisStore({
       client: redisClient,
-      prefix: `${configModule?.projectConfig?.redis_prefix ?? ""}sess:`,
+      prefix: `${configModule?.projectConfig?.redisPrefix ?? ""}sess:`,
     })
   }
 
