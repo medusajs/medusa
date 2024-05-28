@@ -6,7 +6,6 @@ import {
   UsersSolid,
   PuzzleSolid,
   EnvelopeSolid,
-  MagnifyingGlass,
   ArrowDownTray,
   ChartBar,
   Text,
@@ -17,7 +16,9 @@ import {
   NextJs,
   BuildingStorefront,
   CreditCardSolid,
-  ClockSolid
+  ClockSolid,
+  DocumentTextSolid,
+  Stripe
 } from "@medusajs/icons"
 
 # Medusa Learning Resources
@@ -69,34 +70,38 @@ Follow the [Medusa Book](https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app)
   }
 ]} />
 
-{/* ## Plugins
+---
+
+## Integrations
 
 <CardList items={[
   {
+    startIcon: <Stripe className="[&>path]:fill-medusa-fg-subtle" />,
+    title: "Stripe",
+    href: "/commerce-modules/payment/payment-provider/stripe",
+    showLinkIcon: false
+  },
+  {
     startIcon: <EnvelopeSolid />,
     title: "SendGrid",
-    href: "/plugins/notifications/sendgrid",
+    href: "/architectural-modules/notification/sendgrid",
     showLinkIcon: false
   },
   {
-    startIcon: <MagnifyingGlass />,
-    title: "MeiliSearch",
-    href: "/plugins/search/meilisearch",
-    showLinkIcon: false
-  },
-  {
-    startIcon: <ChartBar />,
-    title: "Segment",
-    href: "/plugins/analytics/segment",
+    startIcon: <DocumentTextSolid />,
+    title: "S3",
+    href: "/architectural-modules/file/s3",
     showLinkIcon: false
   },
   {
     startIcon: <SquaresPlusSolid />,
-    title: "More Plugins",
-    href: "/plugins",
+    title: "More Integrations",
+    href: "/integrations",
     showLinkIcon: false
   }
-]} /> */}
+]} />
+
+---
 
 ## SDKs and Tools
 

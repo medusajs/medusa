@@ -20,7 +20,7 @@ export class Admin {
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{ region: HttpTypes.AdminRegion }>(
+      return await this.client.fetch<{ region: HttpTypes.AdminRegion }>(
         `/admin/regions`,
         {
           method: "POST",
@@ -36,7 +36,7 @@ export class Admin {
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{ region: HttpTypes.AdminRegion }>(
+      return await this.client.fetch<{ region: HttpTypes.AdminRegion }>(
         `/admin/regions/${id}`,
         {
           method: "POST",
@@ -50,7 +50,7 @@ export class Admin {
       queryParams?: FindParams & HttpTypes.AdminRegionFilters,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<
+      return await this.client.fetch<
         PaginatedResponse<{ regions: HttpTypes.AdminRegion[] }>
       >(`/admin/regions`, {
         query: queryParams,
@@ -62,7 +62,7 @@ export class Admin {
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{ region: HttpTypes.AdminRegion }>(
+      return await this.client.fetch<{ region: HttpTypes.AdminRegion }>(
         `/admin/regions/${id}`,
         {
           query,
@@ -71,7 +71,7 @@ export class Admin {
       )
     },
     delete: async (id: string, headers?: ClientHeaders) => {
-      return this.client.fetch<DeleteResponse<"region">>(
+      return await this.client.fetch<DeleteResponse<"region">>(
         `/admin/regions/${id}`,
         {
           method: "DELETE",
@@ -88,7 +88,7 @@ export class Admin {
       headers?: ClientHeaders
     ) => {
       const { invite_token, ...rest } = input
-      return this.client.fetch<{ user: HttpTypes.AdminUserResponse }>(
+      return await this.client.fetch<{ user: HttpTypes.AdminUserResponse }>(
         `/admin/invites/accept?token=${input.invite_token}`,
         {
           method: "POST",
@@ -103,7 +103,7 @@ export class Admin {
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{ invite: HttpTypes.AdminInviteResponse }>(
+      return await this.client.fetch<{ invite: HttpTypes.AdminInviteResponse }>(
         `/admin/invites`,
         {
           method: "POST",
@@ -118,7 +118,7 @@ export class Admin {
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{ invite: HttpTypes.AdminInviteResponse }>(
+      return await this.client.fetch<{ invite: HttpTypes.AdminInviteResponse }>(
         `/admin/invites/${id}`,
         {
           headers,
@@ -127,7 +127,7 @@ export class Admin {
       )
     },
     list: async (queryParams?: FindParams, headers?: ClientHeaders) => {
-      return this.client.fetch<
+      return await this.client.fetch<
         PaginatedResponse<{ invites: HttpTypes.AdminInviteResponse[] }>
       >(`/admin/invites`, {
         headers,
@@ -135,7 +135,7 @@ export class Admin {
       })
     },
     resend: async (id: string, headers?: ClientHeaders) => {
-      return this.client.fetch<{ invite: HttpTypes.AdminInviteResponse }>(
+      return await this.client.fetch<{ invite: HttpTypes.AdminInviteResponse }>(
         `/admin/invites/${id}/resend`,
         {
           headers,
@@ -143,11 +143,29 @@ export class Admin {
       )
     },
     delete: async (id: string, headers?: ClientHeaders) => {
-      return this.client.fetch<DeleteResponse<"invite">>(
+      return await this.client.fetch<DeleteResponse<"invite">>(
         `/admin/invites/${id}`,
         {
           method: "DELETE",
           headers,
+        }
+      )
+    },
+  }
+
+  public products = {
+    create: async (
+      body: HttpTypes.AdminCreateProduct,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return await this.client.fetch<{ product: HttpTypes.AdminProduct }>(
+        `/admin/products`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
         }
       )
     },

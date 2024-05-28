@@ -5,8 +5,8 @@ const Hashtag = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -15,8 +15,8 @@ const Hashtag = React.forwardRef<SVGSVGElement, IconProps>(
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M3.333 7.5h13.334M3.333 12.5h13.334M8.333 2.5l-1.666 15M13.333 2.5l-1.666 15"
+          strokeWidth={1.333}
+          d="M2.833 5.056h10.223M1.944 9.944h10.223M6.285 1.944 4.2 13.056M10.799 1.944 8.715 13.056"
         />
       </svg>
     )

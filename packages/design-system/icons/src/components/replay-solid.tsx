@@ -5,19 +5,16 @@ const ReplaySolid = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
         <path
           fill={color}
-          fillRule="evenodd"
-          d="M16.136 6.141c0-.866-.9-1.416-1.636-.998L7.708 9.002c-.763.432-.763 1.564 0 1.996l6.792 3.86c.735.417 1.635-.133 1.635-1V6.142h.001Z"
-          clipRule="evenodd"
+          d="M12.67 2.535a1.34 1.34 0 0 0-1.348-.018L4.445 6.325A1.35 1.35 0 0 0 3.75 7.5c0 .488.266.938.694 1.175l6.879 3.808a1.35 1.35 0 0 0 1.349-.018 1.33 1.33 0 0 0 .662-1.156V3.692c0-.48-.247-.912-.662-1.156zM2.292 1.667a.625.625 0 0 0-.625.625v10.416a.625.625 0 0 0 1.25 0V2.292a.625.625 0 0 0-.625-.625"
         />
-        <rect width={2} height={10} x={3.864} y={5} fill={color} rx={1} />
       </svg>
     )
   }

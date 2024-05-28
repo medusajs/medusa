@@ -5,19 +5,31 @@ const BarsThree = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
-          stroke={color}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M3.125 5h13.75m-13.75 5h13.75m-13.75 5h13.75"
-        />
+        <g clipPath="url(#a)">
+          <g
+            stroke={color}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            clipPath="url(#b)"
+          >
+            <path d="M1.5 7.5h12M1.5 2.833h12M1.5 12.167h12" />
+          </g>
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+          <clipPath id="b">
+            <path fill="#fff" d="M-.5-.5h16v16h-16z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

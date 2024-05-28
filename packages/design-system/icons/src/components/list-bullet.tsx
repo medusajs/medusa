@@ -5,8 +5,8 @@ const ListBullet = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const ListBullet = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M6.875 5.625h10M6.875 10h10m-10 4.375h10m-13.75-8.75h.006v.007h-.006v-.007Zm.313 0a.312.312 0 1 1-.625 0 .312.312 0 0 1 .624 0ZM3.124 10h.006v.007h-.006V10Zm.313 0a.313.313 0 1 1-.626 0 .313.313 0 0 1 .626 0Zm-.313 4.375h.006v.007h-.006v-.007Zm.313 0a.313.313 0 1 1-.626 0 .313.313 0 0 1 .626 0Z"
+          d="M6.833 9.5H13.5M6.833 12.611H13.5M6.833 3.278H13.5M6.833 6.389H13.5M2.833 4.611a1.333 1.333 0 1 0 0-2.667 1.333 1.333 0 0 0 0 2.667M2.833 10.833a1.333 1.333 0 1 0 0-2.666 1.333 1.333 0 0 0 0 2.666"
         />
       </svg>
     )

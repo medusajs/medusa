@@ -1,11 +1,11 @@
 import {
   QueryKey,
-  UseMutationOptions,
-  UseQueryOptions,
   useMutation,
+  UseMutationOptions,
   useQuery,
+  UseQueryOptions,
 } from "@tanstack/react-query"
-import { client } from "../../lib/client"
+import { client, sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import {
@@ -13,6 +13,7 @@ import {
   ProductListRes,
   ProductRes,
 } from "../../types/api-responses"
+import { HttpTypes } from "@medusajs/types"
 
 const PRODUCTS_QUERY_KEY = "products" as const
 export const productsQueryKeys = queryKeysFactory(PRODUCTS_QUERY_KEY)
@@ -162,6 +163,25 @@ export const useUpdateProductVariant = (
   })
 }
 
+export const useUpdateProductVariantsBatch = (
+  productId: string,
+  options?: UseMutationOptions<any, Error, any>
+) => {
+  return useMutation({
+    mutationFn: (payload: any) =>
+      client.products.updateVariantsBatch(productId, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useDeleteVariant = (
   productId: string,
   variantId: string,
@@ -218,10 +238,14 @@ export const useProducts = (
 }
 
 export const useCreateProduct = (
-  options?: UseMutationOptions<ProductRes, Error, any>
+  options?: UseMutationOptions<
+    { product: HttpTypes.AdminProduct },
+    Error,
+    HttpTypes.AdminCreateProduct
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload: any) => client.products.create(payload),
+    mutationFn: (payload: any) => sdk.admin.products.create(payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)

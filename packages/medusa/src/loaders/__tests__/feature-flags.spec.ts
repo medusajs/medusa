@@ -1,13 +1,8 @@
-import { mkdirSync, rmSync, writeFileSync } from "fs"
-import { resolve } from "path"
+import { join } from "path"
+import { FileSystem } from "@medusajs/utils"
 
 import loadFeatureFlags from "../feature-flags"
-
-const distTestTargetDirectorPath = resolve(__dirname, "__ff-test__")
-
-const getFolderTestTargetDirectoryPath = (folderName: string): string => {
-  return resolve(distTestTargetDirectorPath, folderName)
-}
+const filesystem = new FileSystem(join(__dirname, "__ff-test__"))
 
 const buildFeatureFlag = (
   key: string,
@@ -28,60 +23,42 @@ const buildFeatureFlag = (
 describe("feature flags", () => {
   const OLD_ENV = { ...process.env }
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.resetModules()
     jest.clearAllMocks()
 
     process.env = { ...OLD_ENV }
-
-    rmSync(distTestTargetDirectorPath, { recursive: true, force: true })
-
-    mkdirSync(getFolderTestTargetDirectoryPath("project"), {
-      mode: "777",
-      recursive: true,
-    })
-
-    mkdirSync(getFolderTestTargetDirectoryPath("flags"), {
-      mode: "777",
-      recursive: true,
-    })
+    await filesystem.cleanup()
   })
 
-  afterAll(() => {
+  afterAll(async () => {
     process.env = OLD_ENV
-    rmSync(distTestTargetDirectorPath, { recursive: true, force: true })
+    await filesystem.cleanup()
   })
 
   it("should load the flag from project", async () => {
-    writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-1.js"),
-      buildFeatureFlag("flag-1", true)
-    )
+    await filesystem.create("flags/flag-1.js", buildFeatureFlag("flag-1", true))
 
-    const flags = await loadFeatureFlags(
+    const flags = loadFeatureFlags(
       { featureFlags: { flag_1: false } },
       undefined,
-      getFolderTestTargetDirectoryPath("flags")
+      join(filesystem.basePath, "flags")
     )
 
     expect(flags.isFeatureEnabled("flag_1")).toEqual(false)
   })
 
   it("should load a nested + simple flag from project", async () => {
-    writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "test.js"),
-      buildFeatureFlag("test", false)
-    )
-
-    writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "simpletest.js"),
+    await filesystem.create("flags/test.js", buildFeatureFlag("test", false))
+    await filesystem.create(
+      "flags/simpletest.js",
       buildFeatureFlag("simpletest", false)
     )
 
-    const flags = await loadFeatureFlags(
+    const flags = loadFeatureFlags(
       { featureFlags: { test: { nested: true }, simpletest: true } },
       undefined,
-      getFolderTestTargetDirectoryPath("flags")
+      join(filesystem.basePath, "flags")
     )
 
     expect(flags.isFeatureEnabled({ test: "nested" })).toEqual(true)
@@ -89,15 +66,15 @@ describe("feature flags", () => {
   })
 
   it("should load the default feature flags", async () => {
-    writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-1.js"),
-      buildFeatureFlag("flag-1", true)
+    await filesystem.create(
+      "flags/flag-1.js",
+      buildFeatureFlag("flag-1", false)
     )
 
-    const flags = await loadFeatureFlags(
+    const flags = loadFeatureFlags(
       {},
       undefined,
-      getFolderTestTargetDirectoryPath("flags")
+      join(filesystem.basePath, "flags")
     )
 
     expect(flags.isFeatureEnabled("flag_1")).toEqual(true)
@@ -106,15 +83,14 @@ describe("feature flags", () => {
   it("should load the flag from env", async () => {
     process.env.MEDUSA_FF_FLAG_1 = "false"
 
-    writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-1.js"),
-      buildFeatureFlag("flag-1", true)
+    await filesystem.create(
+      "flags/flag-1.js",
+      buildFeatureFlag("flag-1", false)
     )
-
-    const flags = await loadFeatureFlags(
+    const flags = loadFeatureFlags(
       {},
       undefined,
-      getFolderTestTargetDirectoryPath("flags")
+      join(filesystem.basePath, "flags")
     )
 
     expect(flags.isFeatureEnabled("flag_1")).toEqual(false)
@@ -122,26 +98,23 @@ describe("feature flags", () => {
 
   it("should load mix of flags", async () => {
     process.env.MEDUSA_FF_FLAG_3 = "false"
-
-    writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-1.js"),
-      buildFeatureFlag("flag-1", true)
+    await filesystem.create(
+      "flags/flag-1.js",
+      buildFeatureFlag("flag-1", false)
+    )
+    await filesystem.create(
+      "flags/flag-2.js",
+      buildFeatureFlag("flag-2", false)
+    )
+    await filesystem.create(
+      "flags/flag-3.js",
+      buildFeatureFlag("flag-3", false)
     )
 
-    writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-2.js"),
-      buildFeatureFlag("flag-2", true)
-    )
-
-    writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-3.js"),
-      buildFeatureFlag("flag-3", true)
-    )
-
-    const flags = await loadFeatureFlags(
+    const flags = loadFeatureFlags(
       { featureFlags: { flag_2: false } },
       undefined,
-      getFolderTestTargetDirectoryPath("flags")
+      join(filesystem.basePath, "flags")
     )
 
     expect(flags.isFeatureEnabled("flag_1")).toEqual(true)
