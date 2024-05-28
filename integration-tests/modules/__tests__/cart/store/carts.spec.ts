@@ -16,6 +16,7 @@ import {
   IPromotionModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
+  IStoreModuleService,
   ITaxModuleService,
   ProductStatus,
 } from "@medusajs/types"
@@ -56,8 +57,8 @@ medusaIntegrationTestRunner({
       let remoteLinkService
       let regionService: IRegionModuleService
       let paymentService: IPaymentModuleService
+      let storeService: IStoreModuleService
 
-      let defaultRegion
       let region
       let store
 
@@ -75,6 +76,7 @@ medusaIntegrationTestRunner({
         taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
         regionService = appContainer.resolve(ModuleRegistrationName.REGION)
         paymentService = appContainer.resolve(ModuleRegistrationName.PAYMENT)
+        storeService = appContainer.resolve(ModuleRegistrationName.STORE)
         fulfillmentModule = appContainer.resolve(
           ModuleRegistrationName.FULFILLMENT
         )
@@ -86,8 +88,12 @@ medusaIntegrationTestRunner({
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
-        const { region } = await seedStorefrontDefaults(appContainer, "dkk")
-        defaultRegion = region
+        const { store: defaultStore } = await seedStorefrontDefaults(
+          appContainer,
+          "dkk"
+        )
+
+        store = defaultStore
       })
 
       describe("POST /store/carts", () => {
@@ -294,6 +300,31 @@ medusaIntegrationTestRunner({
               region: expect.objectContaining({
                 id: expect.any(String),
               }),
+            })
+          )
+        })
+
+        it("should create cart with default store sales channel", async () => {
+          const sc = await scModule.create({
+            name: "Webshop",
+          })
+
+          await storeService.update(store.id, {
+            default_sales_channel_id: sc.id,
+          })
+
+          const response = await api.post(`/store/carts`, {
+            email: "tony@stark.com",
+            currency_code: "usd",
+          })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: response.data.cart.id,
+              currency_code: "usd",
+              email: "tony@stark.com",
+              sales_channel_id: sc.id,
             })
           )
         })

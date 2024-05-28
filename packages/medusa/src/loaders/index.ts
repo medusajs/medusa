@@ -27,7 +27,7 @@ type Options = {
 }
 
 const isWorkerMode = (configModule) => {
-  return configModule.projectConfig.worker_mode === "worker"
+  return configModule.projectConfig.workerMode === "worker"
 }
 
 async function subscribersLoader(

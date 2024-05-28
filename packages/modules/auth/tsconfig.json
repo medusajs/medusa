@@ -24,8 +24,7 @@
       "@models": ["./src/models"],
       "@services": ["./src/services"],
       "@repositories": ["./src/repositories"],
-      "@types": ["./src/types"],
-      "@providers": ["./src/providers"]
+      "@types": ["./src/types"]
     }
   },
   "include": ["src"],
