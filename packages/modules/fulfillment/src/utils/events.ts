@@ -1,67 +1,119 @@
-import { FulfillmentSet, GeoZone, ServiceZone } from "@models"
+import {
+  FulfillmentSet,
+  GeoZone,
+  ServiceZone,
+  ShippingOption,
+  ShippingOptionRule,
+  ShippingOptionType,
+} from "@models"
 import { Context, EventBusTypes } from "@medusajs/types"
 import { CommonEvents, FulfillmentUtils, Modules } from "@medusajs/utils"
 
-export function buildCreatedFulfillmentSetEvents({
-  fulfillmentSets,
+export function buildShippingOptionTypeEvents({
+  action,
+  shippingOptionTypes,
   sharedContext,
 }: {
-  fulfillmentSets: FulfillmentSet[]
+  action: string
+  shippingOptionTypes: ShippingOptionType[]
   sharedContext: Context
-}): void {
-  if (!fulfillmentSets.length) {
+}) {
+  if (!shippingOptionTypes.length) {
     return
   }
 
-  const serviceZones: ServiceZone[] = []
+  const aggregator = sharedContext.messageAggregator!
+  const messages: EventBusTypes.RawMessageFormat[] = []
 
-  fulfillmentSets.forEach((fulfillmentSet) => {
-    if (!fulfillmentSet.service_zones?.length) {
-      return
-    }
-
-    serviceZones.push(...fulfillmentSet.service_zones)
+  shippingOptionTypes.forEach((shippingOptionType) => {
+    messages.push({
+      service: Modules.FULFILLMENT,
+      action: CommonEvents.CREATED,
+      context: sharedContext,
+      data: { id: shippingOptionType.id },
+      eventName:
+        FulfillmentUtils.FulfillmentEvents[`shipping_option_type_[${action}`],
+      object: "shipping_option_type",
+    })
   })
 
-  buildFulfillmentSetEvents({
-    action: CommonEvents.CREATED,
-    fulfillmentSets,
-    sharedContext,
-  })
-
-  buildCreatedServiceZoneEvents({ serviceZones, sharedContext })
+  aggregator.saveRawMessageData(messages)
 }
 
-export function buildCreatedServiceZoneEvents({
-  serviceZones,
+export function buildShippingOptionRuleEvents({
+  action,
+  shippingOptionRules,
   sharedContext,
 }: {
-  serviceZones: ServiceZone[]
+  action: string
+  shippingOptionRules: ShippingOptionRule[]
   sharedContext: Context
-}): void {
-  if (!serviceZones.length) {
+}) {
+  if (!shippingOptionRules.length) {
     return
   }
 
-  const geoZones: GeoZone[] = []
+  const aggregator = sharedContext.messageAggregator!
+  const messages: EventBusTypes.RawMessageFormat[] = []
 
-  serviceZones.forEach((serviceZone) => {
-    if (!serviceZone.geo_zones.length) {
-      return
-    }
-
-    geoZones.push(...serviceZone.geo_zones)
+  shippingOptionRules.forEach((shippingOptionType) => {
+    messages.push({
+      service: Modules.FULFILLMENT,
+      action: CommonEvents.CREATED,
+      context: sharedContext,
+      data: { id: shippingOptionType.id },
+      eventName:
+        FulfillmentUtils.FulfillmentEvents[`shipping_option_rule_[${action}`],
+      object: "shipping_option_rule",
+    })
   })
 
-  buildServiceZoneEvents({
+  aggregator.saveRawMessageData(messages)
+}
+
+export function buildCreatedShippingOptionEvents({
+  shippingOptions,
+  sharedContext,
+}: {
+  shippingOptions: ShippingOption[]
+  sharedContext: Context
+}) {
+  if (!shippingOptions.length) {
+    return
+  }
+
+  const aggregator = sharedContext.messageAggregator!
+  const messages: EventBusTypes.RawMessageFormat[] = []
+
+  let types: ShippingOptionType[] = []
+  let rules: ShippingOptionRule[] = []
+
+  shippingOptions.forEach((shippingOption) => {
+    messages.push({
+      service: Modules.FULFILLMENT,
+      action: CommonEvents.CREATED,
+      context: sharedContext,
+      data: { id: shippingOption.id },
+      eventName: FulfillmentUtils.FulfillmentEvents.shipping_option_created,
+      object: "shipping_option",
+    })
+
+    if (shippingOption.type) {
+      types.push(shippingOption.type)
+    }
+  })
+
+  aggregator.saveRawMessageData(messages)
+
+  buildShippingOptionTypeEvents({
     action: CommonEvents.CREATED,
-    serviceZones,
+    shippingOptionTypes: types,
     sharedContext,
   })
 
-  buildGeoZoneEvents({
+  buildShippingOptionRuleEvents({
     action: CommonEvents.CREATED,
-    geoZones,
+    shippingOptionRules: rules,
     sharedContext,
   })
 }
@@ -154,4 +206,68 @@ export function buildGeoZoneEvents({
   })
 
   aggregator.saveRawMessageData(messages)
+}
+
+export function buildCreatedFulfillmentSetEvents({
+  fulfillmentSets,
+  sharedContext,
+}: {
+  fulfillmentSets: FulfillmentSet[]
+  sharedContext: Context
+}): void {
+  if (!fulfillmentSets.length) {
+    return
+  }
+
+  const serviceZones: ServiceZone[] = []
+
+  fulfillmentSets.forEach((fulfillmentSet) => {
+    if (!fulfillmentSet.service_zones?.length) {
+      return
+    }
+
+    serviceZones.push(...fulfillmentSet.service_zones)
+  })
+
+  buildFulfillmentSetEvents({
+    action: CommonEvents.CREATED,
+    fulfillmentSets,
+    sharedContext,
+  })
+
+  buildCreatedServiceZoneEvents({ serviceZones, sharedContext })
+}
+
+export function buildCreatedServiceZoneEvents({
+  serviceZones,
+  sharedContext,
+}: {
+  serviceZones: ServiceZone[]
+  sharedContext: Context
+}): void {
+  if (!serviceZones.length) {
+    return
+  }
+
+  const geoZones: GeoZone[] = []
+
+  serviceZones.forEach((serviceZone) => {
+    if (!serviceZone.geo_zones.length) {
+      return
+    }
+
+    geoZones.push(...serviceZone.geo_zones)
+  })
+
+  buildServiceZoneEvents({
+    action: CommonEvents.CREATED,
+    serviceZones,
+    sharedContext,
+  })
+
+  buildGeoZoneEvents({
+    action: CommonEvents.CREATED,
+    geoZones,
+    sharedContext,
+  })
 }

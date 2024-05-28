@@ -5,6 +5,7 @@ const eventBaseNames: [
   "serviceZone",
   "geoZone",
   "shippingOption",
+  "shippingOptionType",
   "shippingProfile",
   "shippingOptionRule",
   "fulfillment"
@@ -13,6 +14,7 @@ const eventBaseNames: [
   "serviceZone",
   "geoZone",
   "shippingOption",
+  "shippingOptionType",
   "shippingProfile",
   "shippingOptionRule",
   "fulfillment",

@@ -49,6 +49,7 @@ import {
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { UpdateShippingOptionsInput } from "../types/service"
 import FulfillmentProviderService from "./fulfillment-provider"
+import { buildCreatedShippingOptionEvents } from "../utils/events"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -404,9 +405,14 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
+    buildCreatedShippingOptionEvents({
+      shippingOptions: createdShippingOptions,
+      sharedContext,
+    })
+
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
-    >(createdShippingOptions)
+    >(Array.isArray(data) ? createdShippingOptions : createdShippingOptions[0])
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -415,7 +421,7 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.CreateShippingOptionDTO[]
       | FulfillmentTypes.CreateShippingOptionDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TShippingOptionEntity | TShippingOptionEntity[]> {
+  ): Promise<TShippingOptionEntity[]> {
     const data_ = Array.isArray(data) ? data : [data]
 
     if (!data_.length) {
@@ -432,9 +438,7 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    return Array.isArray(data)
-      ? createdShippingOptions
-      : createdShippingOptions[0]
+    return createdShippingOptions
   }
 
   createShippingProfiles(
