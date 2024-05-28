@@ -7,6 +7,24 @@ describe("Aggregate Order Status", () => {
   it("should return aggregated payment collection status", () => {
     expect(
       getLastPaymentStatus({
+        payment_collections: [],
+      })
+    ).toEqual("not_paid")
+
+    expect(
+      getLastPaymentStatus({
+        payment_collections: [{ status: "not_paid" }],
+      })
+    ).toEqual("not_paid")
+
+    expect(
+      getLastPaymentStatus({
+        payment_collections: [{ status: "not_paid" }, { status: "awaiting" }],
+      })
+    ).toEqual("awaiting")
+
+    expect(
+      getLastPaymentStatus({
         payment_collections: [
           { status: "requires_action" },
           { status: "refunded" },
@@ -118,7 +136,11 @@ describe("Aggregate Order Status", () => {
   })
 
   it("should return aggregated fulfillment status", () => {
-    const aaa = ["packed_at", "shipped_at", "delivered_at", "canceled_at"]
+    expect(
+      getLastFulfillmentStatus({
+        fulfillments: [],
+      })
+    ).toEqual("not_fulfilled")
 
     expect(
       getLastFulfillmentStatus({

@@ -76,7 +76,10 @@ export const getLastPaymentStatus = (order: OrderDetailDTO) => {
     return PaymentStatus.PARTIALLY_AUTHORIZED
   }
 
-  if (paymentStatus[PaymentStatus.CANCELED] === totalPayments) {
+  if (
+    paymentStatus[PaymentStatus.CANCELED] > 0 &&
+    paymentStatus[PaymentStatus.CANCELED] === totalPayments
+  ) {
     return PaymentStatus.CANCELED
   }
 
@@ -156,10 +159,11 @@ export const getLastFulfillmentStatus = (order: OrderDetailDTO) => {
     return FulfillmentStatus.PARTIALLY_FULFILLED
   }
 
-  if (fulfillmentStatus[FulfillmentStatus.CANCELED] > 0) {
-    if (fulfillmentStatus[FulfillmentStatus.CANCELED] === totalFulfillments) {
-      return FulfillmentStatus.CANCELED
-    }
+  if (
+    fulfillmentStatus[FulfillmentStatus.CANCELED] > 0 &&
+    fulfillmentStatus[FulfillmentStatus.CANCELED] === totalFulfillments
+  ) {
+    return FulfillmentStatus.CANCELED
   }
 
   return FulfillmentStatus.NOT_FULFILLED
