@@ -8,10 +8,10 @@ import { CampaignPromotionSection } from "./components/campaign-promotion-sectio
 import { CampaignSpend } from "./components/campaign-spend"
 import { campaignLoader } from "./loader"
 
-import after from "virtual:medusa/widgets/campaign/detail/after"
-import before from "virtual:medusa/widgets/campaign/detail/before"
-import sideAfter from "virtual:medusa/widgets/campaign/detail/side/after"
-import sideBefore from "virtual:medusa/widgets/campaign/detail/side/before"
+import after from "virtual:medusa/widgets/campaign/details/after"
+import before from "virtual:medusa/widgets/campaign/details/before"
+import sideAfter from "virtual:medusa/widgets/campaign/details/side/after"
+import sideBefore from "virtual:medusa/widgets/campaign/details/side/before"
 
 export const CampaignDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -58,7 +58,7 @@ export const CampaignDetail = () => {
           </div>
         </div>
 
-        <div className="hidden w-full max-w-[400px] flex-col gap-y-2 xl:flex">
+        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 xl:mt-0 xl:max-w-[400px]">
           {sideBefore.widgets.map((w, i) => {
             return (
               <div key={i}>
