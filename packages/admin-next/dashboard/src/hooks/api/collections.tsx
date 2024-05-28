@@ -1,13 +1,5 @@
 import { FetchError } from "@medusajs/js-sdk"
-import {
-  AdminCollection,
-  AdminCreateCollection,
-  AdminUpdateCollection,
-  AdminUpdateCollectionProducts,
-  FindParams,
-  HttpTypes,
-  PaginatedResponse,
-} from "@medusajs/types"
+import { FindParams, HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -70,7 +62,7 @@ export const useUpdateCollection = (
   options?: UseMutationOptions<
     { collection: HttpTypes.AdminCollection },
     FetchError,
-    AdminUpdateCollection
+    HttpTypes.AdminUpdateCollection
   >
 ) => {
   return useMutation({
@@ -92,7 +84,7 @@ export const useUpdateCollectionProducts = (
   options?: UseMutationOptions<
     { collection: HttpTypes.AdminCollection },
     FetchError,
-    AdminUpdateCollectionProducts
+    HttpTypes.AdminUpdateCollectionProducts
   >
 ) => {
   return useMutation({
@@ -117,9 +109,9 @@ export const useUpdateCollectionProducts = (
 
 export const useCreateCollection = (
   options?: UseMutationOptions<
-    { collection: AdminCollection },
+    { collection: HttpTypes.AdminCollection },
     FetchError,
-    AdminCreateCollection
+    HttpTypes.AdminCreateCollection
   >
 ) => {
   return useMutation({
