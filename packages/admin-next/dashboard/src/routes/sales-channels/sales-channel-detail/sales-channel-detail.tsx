@@ -6,6 +6,9 @@ import { SalesChannelGeneralSection } from "./components/sales-channel-general-s
 import { SalesChannelProductSection } from "./components/sales-channel-product-section"
 import { salesChannelLoader } from "./loader"
 
+import after from "virtual:medusa/widgets/sales_channel/details/after"
+import before from "virtual:medusa/widgets/sales_channel/details/before"
+
 export const SalesChannelDetail = () => {
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof salesChannelLoader>
@@ -22,8 +25,22 @@ export const SalesChannelDetail = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
+      {before.widgets.map((w, i) => {
+        return (
+          <div key={i}>
+            <w.Component data={sales_channel} />
+          </div>
+        )
+      })}
       <SalesChannelGeneralSection salesChannel={sales_channel} />
       <SalesChannelProductSection salesChannel={sales_channel} />
+      {after.widgets.map((w, i) => {
+        return (
+          <div key={i}>
+            <w.Component data={sales_channel} />
+          </div>
+        )
+      })}
       <JsonViewSection data={sales_channel} />
       <Outlet />
     </div>

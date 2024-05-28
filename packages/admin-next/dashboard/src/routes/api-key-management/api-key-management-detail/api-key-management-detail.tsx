@@ -12,6 +12,9 @@ import { ApiKeyGeneralSection } from "./components/api-key-general-section"
 import { ApiKeySalesChannelSection } from "./components/api-key-sales-channel-section"
 import { apiKeyLoader } from "./loader"
 
+import after from "virtual:medusa/widgets/api_key/details/after"
+import before from "virtual:medusa/widgets/api_key/details/before"
+
 export const ApiKeyManagementDetail = () => {
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof apiKeyLoader>
@@ -41,8 +44,22 @@ export const ApiKeyManagementDetail = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
+      {before.widgets.map((w, i) => {
+        return (
+          <div key={i}>
+            <w.Component apiKey={api_key} />
+          </div>
+        )
+      })}
       <ApiKeyGeneralSection apiKey={api_key} />
       {isPublishable && <ApiKeySalesChannelSection apiKey={api_key} />}
+      {after.widgets.map((w, i) => {
+        return (
+          <div key={i}>
+            <w.Component apiKey={api_key} />
+          </div>
+        )
+      })}
       <JsonViewSection data={api_key} />
       <Outlet />
     </div>
