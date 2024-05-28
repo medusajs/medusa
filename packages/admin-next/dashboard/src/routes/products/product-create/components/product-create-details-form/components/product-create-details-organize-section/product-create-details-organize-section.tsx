@@ -6,7 +6,7 @@ import { ChipGroup } from "../../../../../../../components/common/chip-group"
 import { Form } from "../../../../../../../components/common/form"
 import { Combobox } from "../../../../../../../components/inputs/combobox"
 import { useComboboxData } from "../../../../../../../hooks/use-combobox-data"
-import { client } from "../../../../../../../lib/client"
+import { client, sdk } from "../../../../../../../lib/client"
 import { CategoryCombobox } from "../../../../../common/components/category-combobox"
 import { ProductCreateSchemaType } from "../../../../types"
 import { useProductCreateDetailsContext } from "../product-create-details-context"
@@ -23,11 +23,11 @@ export const ProductCreateOrganizationSection = ({
 
   const collections = useComboboxData({
     queryKey: ["product_collections"],
-    queryFn: client.collections.list,
+    queryFn: sdk.admin.collection.list,
     getOptions: (data) =>
       data.collections.map((collection) => ({
-        label: collection.title,
-        value: collection.id,
+        label: collection.title!,
+        value: collection.id!,
       })),
   })
 

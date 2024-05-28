@@ -2,7 +2,6 @@ import Medusa from "@medusajs/js-sdk"
 import { apiKeys } from "./api-keys"
 import { campaigns } from "./campaigns"
 import { categories } from "./categories"
-import { collections } from "./collections"
 import { currencies } from "./currencies"
 import { customerGroups } from "./customer-groups"
 import { fulfillmentProviders } from "./fulfillment-providers"
@@ -34,7 +33,6 @@ export const client = {
   categories: categories,
   customerGroups: customerGroups,
   currencies: currencies,
-  collections: collections,
   promotions: promotions,
   payments: payments,
   stores: stores,
