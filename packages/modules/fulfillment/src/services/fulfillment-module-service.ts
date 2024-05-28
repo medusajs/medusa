@@ -392,6 +392,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createShippingOptions(
     data:
       | FulfillmentTypes.CreateShippingOptionDTO[]
