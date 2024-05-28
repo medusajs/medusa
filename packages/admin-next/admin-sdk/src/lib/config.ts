@@ -8,7 +8,7 @@ import { BundlerOptions } from "../types"
 export async function getViteConfig(
   options: BundlerOptions
 ): Promise<InlineConfig> {
-  const { searchForWorkspaceRoot } = await import("vite")
+  const { searchForWorkspaceRoot, mergeConfig } = await import("vite")
   const { default: react } = await import("@vitejs/plugin-react")
   const { default: medusa } = await import("@medusajs/admin-vite-plugin")
 
@@ -19,7 +19,7 @@ export async function getViteConfig(
 
   const backendUrl = options.backendUrl ?? ""
 
-  return {
+  const baseConfig: InlineConfig = {
     root,
     base: options.path,
     build: {
@@ -59,6 +59,14 @@ export async function getViteConfig(
       }),
     ],
   }
+
+  if (options.vite) {
+    const customConfig = options.vite(baseConfig)
+
+    return mergeConfig(baseConfig, customConfig)
+  }
+
+  return baseConfig
 }
 
 function createTailwindConfig(entry: string, sources: string[] = []) {

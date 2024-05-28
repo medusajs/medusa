@@ -172,13 +172,6 @@ export type WorkflowExecutionListRes = {
   workflow_executions: WorkflowExecutionDTO[]
 } & ListRes
 
-// Product Collections
-export type ProductCollectionRes = { collection: ProductCollectionDTO }
-export type ProductCollectionListRes = {
-  collections: ProductCollectionDTO[]
-} & ListRes
-export type ProductCollectionDeleteRes = DeleteRes
-
 // Taxes
 export type TaxRegionDeleteRes = DeleteRes
 export type TaxRateDeleteRes = DeleteRes
