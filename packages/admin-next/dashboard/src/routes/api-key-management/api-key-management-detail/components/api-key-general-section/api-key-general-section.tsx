@@ -195,12 +195,22 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
         <ActionBy userId={apiKey.created_by} />
       </div>
       {apiKey.revoked_at && (
-        <div className="grid grid-cols-2 items-center px-6 py-4">
-          <Text size="small" leading="compact" weight="plus">
-            {t("apiKeyManagement.fields.revokedByLabel")}
-          </Text>
-          <ActionBy userId={apiKey.revoked_by} />
-        </div>
+        <>
+          <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+            <Text size="small" leading="compact" weight="plus">
+              {t("apiKeyManagement.fields.revokedAtLabel")}
+            </Text>
+            <Text size="small" leading="compact">
+              {getFullDate({ date: apiKey.revoked_at, includeTime: true })}
+            </Text>
+          </div>
+          <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+            <Text size="small" leading="compact" weight="plus">
+              {t("apiKeyManagement.fields.revokedByLabel")}
+            </Text>
+            <ActionBy userId={apiKey.revoked_by} />
+          </div>
+        </>
       )}
     </Container>
   )
