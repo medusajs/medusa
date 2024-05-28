@@ -1102,6 +1102,32 @@ export interface OrderDTO {
   raw_original_shipping_tax_total: BigNumberRawValue
 }
 
+type PaymentStatus =
+  | "not_paid"
+  | "awaiting"
+  | "captured"
+  | "partially_captured"
+  | "partially_refunded"
+  | "refunded"
+  | "canceled"
+  | "requires_action"
+
+type FulfillmentStatus =
+  | "not_fulfilled"
+  | "partially_fulfilled"
+  | "fulfilled"
+  | "partially_shipped"
+  | "shipped"
+  | "partially_returned"
+  | "returned"
+  | "canceled"
+  | "requires_action"
+
+export interface OrderDetailDTO extends OrderDTO {
+  payment_status: PaymentStatus
+  fulfillment_status: FulfillmentStatus
+}
+
 export interface OrderChangeDTO {
   /**
    * The ID of the order change

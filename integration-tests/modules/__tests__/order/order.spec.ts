@@ -155,6 +155,9 @@ medusaIntegrationTestRunner({
           version: 1,
           display_id: 1,
           payment_collections: [],
+          payment_status: "not_paid",
+          fulfillments: [],
+          fulfillment_status: "not_fulfilled",
           summary: expect.objectContaining({
             // TODO: add all summary fields
           }),

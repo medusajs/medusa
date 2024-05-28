@@ -1,11 +1,11 @@
+import { OrderDetailDTO } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { OrderNoteForm } from "./order-note-form"
 import { OrderTimeline } from "./order-timeline"
-import { OrderDTO } from "@medusajs/types"
 
 type OrderActivityProps = {
-  order: OrderDTO
+  order: OrderDetailDTO
 }
 
 export const OrderActivitySection = ({ order }: OrderActivityProps) => {

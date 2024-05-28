@@ -1,7 +1,7 @@
 import { Buildings, XCircle } from "@medusajs/icons"
 import {
   FulfillmentDTO,
-  OrderDTO,
+  OrderDetailDTO,
   OrderLineItemDTO,
   ProductVariantDTO,
 } from "@medusajs/types"
@@ -27,7 +27,7 @@ import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 
 type OrderFulfillmentSectionProps = {
-  order: OrderDTO & { fulfillments: FulfillmentDTO[] }
+  order: OrderDetailDTO & { fulfillments: FulfillmentDTO[] }
 }
 
 export const OrderFulfillmentSection = ({
@@ -106,7 +106,7 @@ const UnfulfilledItem = ({
 const UnfulfilledItemBreakdown = ({
   order,
 }: {
-  order: OrderDTO & { fulfillments: FulfillmentDTO[] }
+  order: OrderDetailDTO & { fulfillments: FulfillmentDTO[] }
 }) => {
   const { t } = useTranslation()
 
@@ -161,7 +161,7 @@ const Fulfillment = ({
   index,
 }: {
   fulfillment: FulfillmentDTO
-  order: OrderDTO
+  order: OrderDetailDTO
   index: number
 }) => {
   const { t } = useTranslation()
