@@ -1,14 +1,6 @@
 import { dirname, join } from "path"
 import {
-  rm,
-  stat,
-  mkdir,
-  access,
-  readdir,
-  readFile,
-  writeFile,
-} from "fs/promises"
-import {
+  promises,
   constants,
   type Dirent,
   type RmOptions,
@@ -16,6 +8,8 @@ import {
   type WriteFileOptions,
   type MakeDirectoryOptions,
 } from "fs"
+
+const { rm, stat, mkdir, access, readdir, readFile, writeFile } = promises
 
 export type JSONFileOptions = WriteFileOptions & {
   spaces?: number | string
