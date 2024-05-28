@@ -7,6 +7,17 @@ import {
 } from "@mikro-orm/core"
 import { MedusaError, upperCaseFirst } from "../../common"
 
+function parseValue(value: string) {
+  switch (value) {
+    case "t":
+      return "true"
+    case "f":
+      return "false"
+    default:
+      return value
+  }
+}
+
 export const dbErrorMapper = (err: Error) => {
   if (err instanceof NotFoundError) {
     throw new MedusaError(MedusaError.Types.NOT_FOUND, err.message)
@@ -24,8 +35,8 @@ export const dbErrorMapper = (err: Error) => {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `${upperCaseFirst(info.table.split("_").join(" "))} with ${info.keys
-        .map((key, i) => `${key}: ${info.values[i]}`)
-        .join(", ")} already exists.`
+        .map((key, i) => `${key}: ${parseValue(info.values[i])}`)
+        .join(", ")}, already exists.`
     )
   }
 

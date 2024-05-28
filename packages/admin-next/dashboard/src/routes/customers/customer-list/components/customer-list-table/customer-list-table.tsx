@@ -1,5 +1,4 @@
 import { PencilSquare } from "@medusajs/icons"
-import { AdminCustomerResponse } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
@@ -14,6 +13,7 @@ import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-
 import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
 import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { HttpTypes } from "@medusajs/types"
 
 const PAGE_SIZE = 20
 
@@ -82,7 +82,7 @@ export const CustomerListTable = () => {
 const CustomerActions = ({
   customer,
 }: {
-  customer: AdminCustomerResponse["customer"]
+  customer: HttpTypes.AdminCustomer
 }) => {
   const { t } = useTranslation()
 
@@ -103,7 +103,7 @@ const CustomerActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<AdminCustomerResponse["customer"]>()
+const columnHelper = createColumnHelper<HttpTypes.AdminCustomer>()
 
 const useColumns = () => {
   const columns = useCustomerTableColumns()

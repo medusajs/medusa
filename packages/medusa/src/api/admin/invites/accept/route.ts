@@ -36,3 +36,5 @@ export const POST = async (
 
   res.status(200).json({ user: users[0] })
 }
+
+export const AUTHENTICATE = false

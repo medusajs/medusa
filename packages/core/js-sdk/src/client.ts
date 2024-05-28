@@ -20,7 +20,7 @@ const toBase64 = (str: string) => {
 const sanitizeHeaders = (headers: Headers) => {
   return {
     ...Object.fromEntries(headers.entries()),
-    Authorization: "<REDACTED>",
+    authorization: "<REDACTED>",
   }
 }
 
@@ -45,7 +45,9 @@ const normalizeRequest = (
 
 const normalizeResponse = async (resp: Response, reqHeaders: Headers) => {
   if (resp.status >= 300) {
-    const jsonError = await resp.json().catch(() => ({})) as { message?: string }
+    const jsonError = (await resp.json().catch(() => ({}))) as {
+      message?: string
+    }
     throw new FetchError(
       jsonError.message ?? resp.statusText,
       resp.statusText,

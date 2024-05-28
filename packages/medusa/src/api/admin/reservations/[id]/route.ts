@@ -38,16 +38,11 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const { id } = req.params
-  const { errors } = await updateReservationsWorkflow(req.scope).run({
+  await updateReservationsWorkflow(req.scope).run({
     input: {
       updates: [{ ...req.validatedBody, id }],
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const reservation = await refetchReservation(
     id,
@@ -63,14 +58,9 @@ export const DELETE = async (
 ) => {
   const id = req.params.id
 
-  const { errors } = await deleteReservationsWorkflow(req.scope).run({
+  await deleteReservationsWorkflow(req.scope).run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,

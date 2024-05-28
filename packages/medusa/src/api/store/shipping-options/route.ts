@@ -1,8 +1,8 @@
 import { listShippingOptionsForCartWorkflow } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ICartModuleService } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import { MedusaError } from "@medusajs/utils"
+import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { cart_id } = req.filterableFields as { cart_id: string }
@@ -29,10 +29,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     relations: ["shipping_address"],
   })
 
-  const { result, errors } = await listShippingOptionsForCartWorkflow(
-    req.scope
-  ).run({
-    throwOnError: false,
+  const { result } = await listShippingOptionsForCartWorkflow(req.scope).run({
     input: {
       cart_id: cart.id,
       sales_channel_id: cart.sales_channel_id,
@@ -44,10 +41,6 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       },
     },
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.json({ shipping_options: result })
 }

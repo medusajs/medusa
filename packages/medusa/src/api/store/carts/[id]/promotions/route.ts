@@ -14,18 +14,13 @@ export const POST = async (
   const workflow = updateCartPromotionsWorkflow(req.scope)
   const payload = req.validatedBody
 
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: {
       promoCodes: payload.promo_codes,
       cartId: req.params.id,
       action: PromotionActions.ADD,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const cart = await refetchCart(
     req.params.id,
@@ -43,18 +38,13 @@ export const DELETE = async (
   const workflow = updateCartPromotionsWorkflow(req.scope)
   const payload = req.validatedBody
 
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: {
       promoCodes: payload.promo_codes,
       cartId: req.params.id,
       action: PromotionActions.REMOVE,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const cart = await refetchCart(
     req.params.id,

@@ -1,5 +1,4 @@
 import {
-  clx,
   CurrencyInput,
   DatePicker,
   Heading,
@@ -7,10 +6,12 @@ import {
   RadioGroup,
   Select,
   Text,
+  Textarea,
 } from "@medusajs/ui"
 import { useEffect } from "react"
 import { useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+
 import { Form } from "../../../../../components/common/form"
 import { useStore } from "../../../../../hooks/api/store"
 import { currencies, getCurrencySymbol } from "../../../../../lib/currencies"
@@ -70,24 +71,44 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
         </Text>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Form.Field
-          control={form.control}
-          name={`${fieldScope}name`}
-          render={({ field }) => {
-            return (
-              <Form.Item>
-                <Form.Label>{t("fields.name")}</Form.Label>
+      <div className="flex flex-col gap-y-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Form.Field
+            control={form.control}
+            name={`${fieldScope}name`}
+            render={({ field }) => {
+              return (
+                <Form.Item>
+                  <Form.Label>{t("fields.name")}</Form.Label>
 
-                <Form.Control>
-                  <Input {...field} />
-                </Form.Control>
+                  <Form.Control>
+                    <Input {...field} />
+                  </Form.Control>
 
-                <Form.ErrorMessage />
-              </Form.Item>
-            )
-          }}
-        />
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
+
+          <Form.Field
+            control={form.control}
+            name={`${fieldScope}campaign_identifier`}
+            render={({ field }) => {
+              return (
+                <Form.Item>
+                  <Form.Label>{t("campaigns.fields.identifier")}</Form.Label>
+
+                  <Form.Control>
+                    <Input {...field} />
+                  </Form.Control>
+
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
+        </div>
 
         <Form.Field
           control={form.control}
@@ -98,7 +119,7 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
                 <Form.Label>{t("fields.description")}</Form.Label>
 
                 <Form.Control>
-                  <Input {...field} />
+                  <Textarea {...field} />
                 </Form.Control>
 
                 <Form.ErrorMessage />
@@ -106,27 +127,9 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
             )
           }}
         />
+      </div>
 
-        <Form.Field
-          control={form.control}
-          name={`${fieldScope}campaign_identifier`}
-          render={({ field }) => {
-            return (
-              <Form.Item>
-                <Form.Label>{t("campaigns.fields.identifier")}</Form.Label>
-
-                <Form.Control>
-                  <Input {...field} />
-                </Form.Control>
-
-                <Form.ErrorMessage />
-              </Form.Item>
-            )
-          }}
-        />
-
-        <div></div>
-
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Form.Field
           control={form.control}
           name={`${fieldScope}starts_at`}
@@ -198,20 +201,12 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
                   onValueChange={field.onChange}
                 >
                   <RadioGroup.ChoiceBox
-                    className={clx("basis-1/2 border", {
-                      "border border-ui-border-interactive":
-                        "spend" === field.value,
-                    })}
                     value={"spend"}
                     label={t("campaigns.budget.type.spend.title")}
                     description={t("campaigns.budget.type.spend.description")}
                   />
 
                   <RadioGroup.ChoiceBox
-                    className={clx("basis-1/2 border", {
-                      "border border-ui-border-interactive":
-                        "usage" === field.value,
-                    })}
                     value={"usage"}
                     label={t("campaigns.budget.type.usage.title")}
                     description={t("campaigns.budget.type.usage.description")}

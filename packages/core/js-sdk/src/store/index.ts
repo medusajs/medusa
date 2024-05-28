@@ -252,12 +252,13 @@ export class Store {
   }
 
   public fulfillment = {
-    // TODO: Finalize typings for list options
     listCartOptions: async (
       query?: FindParams & { cart_id: string },
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<any>(`/store/shipping-options`, {
+      return this.client.fetch<{
+        shipping_options: HttpTypes.StoreCartShippingOption[]
+      }>(`/store/shipping-options`, {
         headers,
         query,
       })
@@ -314,6 +315,17 @@ export class Store {
   }
 
   public order = {
+    list: async (
+      query?: FindParams & HttpTypes.StoreOrderFilters,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<
+        PaginatedResponse<{ orders: HttpTypes.StoreOrder[] }>
+      >(`/store/orders`, {
+        query,
+        headers,
+      })
+    },
     retrieve: async (
       id: string,
       query?: SelectParams,
@@ -326,6 +338,110 @@ export class Store {
           query,
         }
       )
+    },
+  }
+
+  public customer = {
+    create: async (
+      body: HttpTypes.StoreCreateCustomer,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{
+        customer: HttpTypes.StoreCustomer
+        token: string
+      }>(`/store/customers`, {
+        method: "POST",
+        headers,
+        body,
+        query,
+      })
+    },
+    update: async (
+      body: HttpTypes.StoreUpdateCustomer,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ customer: HttpTypes.StoreCustomer }>(
+        `/store/customers/me`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+    retrieve: async (query?: SelectParams, headers?: ClientHeaders) => {
+      return this.client.fetch<{ customer: HttpTypes.StoreCustomer }>(
+        `/store/customers/me`,
+        {
+          query,
+          headers,
+        }
+      )
+    },
+    createAddress: async (
+      body: HttpTypes.StoreCreateCustomerAddress,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{
+        customer: HttpTypes.StoreCustomer
+      }>(`/store/customers/me/addresses`, {
+        method: "POST",
+        headers,
+        body,
+        query,
+      })
+    },
+    updateAddress: async (
+      addressId: string,
+      body: HttpTypes.StoreUpdateCustomerAddress,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ customer: HttpTypes.StoreCustomer }>(
+        `/store/customers/me/addresses/${addressId}`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+    listAddress: async (
+      query?: FindParams & HttpTypes.StoreCustomerAddressFilters,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<
+        PaginatedResponse<{ addresses: HttpTypes.StoreCustomerAddress[] }>
+      >(`/store/customers/me/addresses`, {
+        query,
+        headers,
+      })
+    },
+    retrieveAddress: async (
+      addressId: string,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ address: HttpTypes.StoreCustomerAddress }>(
+        `/store/customers/me/addresses/${addressId}`,
+        {
+          query,
+          headers,
+        }
+      )
+    },
+    deleteAddress: async (addressId: string, headers?: ClientHeaders) => {
+      return this.client.fetch<
+        DeleteResponse<"address", HttpTypes.StoreCustomer>
+      >(`/store/customers/me/addresses/${addressId}`, {
+        method: "DELETE",
+        headers,
+      })
     },
   }
 }

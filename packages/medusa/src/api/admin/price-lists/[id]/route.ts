@@ -29,14 +29,9 @@ export const POST = async (
   const id = req.params.id
   const workflow = updatePriceListsWorkflow(req.scope)
 
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: { price_lists_data: [{ ...req.validatedBody, id }] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const price_list = await fetchPriceList(
     id,
@@ -54,14 +49,9 @@ export const DELETE = async (
   const id = req.params.id
   const workflow = deletePriceListsWorkflow(req.scope)
 
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,

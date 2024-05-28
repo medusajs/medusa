@@ -1,5 +1,4 @@
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
@@ -8,14 +7,10 @@ import {
   AdminCompleteOrder,
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
+  AdminOrderCreateFulfillment,
 } from "./validators"
 
 export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: ["ALL"],
-    matcher: "/admin/orders*",
-    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/orders",
@@ -74,7 +69,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/orders/:id/fulfillments",
     middlewares: [
-      // validateAndTransformBody(),
+      validateAndTransformBody(AdminOrderCreateFulfillment),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig

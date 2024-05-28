@@ -23,16 +23,9 @@ export const POST = async (
 ) => {
   const shippingProfilePayload = req.validatedBody
 
-  const { result, errors } = await createShippingProfilesWorkflow(
-    req.scope
-  ).run({
+  const { result } = await createShippingProfilesWorkflow(req.scope).run({
     input: { data: [shippingProfilePayload] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const shippingProfile = await refetchShippingProfile(
     result?.[0].id,

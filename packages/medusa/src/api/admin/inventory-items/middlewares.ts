@@ -1,6 +1,5 @@
 import * as QueryConfig from "./query-config"
 import { MiddlewareRoute } from "../../../types/middlewares"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
   AdminCreateInventoryItem,
@@ -17,11 +16,6 @@ import { createBatchBody } from "../../utils/validators"
 import { unlessPath } from "../../utils/unless-path"
 
 export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: "ALL",
-    matcher: "/admin/inventory-items*",
-    middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/inventory-items",

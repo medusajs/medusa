@@ -10,15 +10,9 @@ import {
 } from "./validators"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: "ALL",
-    matcher: "/admin/tax-rates*",
-    middlewares: [authenticate("user", ["bearer", "session", "api-key"])],
-  },
   {
     method: "POST",
     matcher: "/admin/tax-rates",

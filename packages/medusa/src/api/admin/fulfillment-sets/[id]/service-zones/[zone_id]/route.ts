@@ -75,14 +75,9 @@ export const POST = async (
     update: req.validatedBody,
   }
 
-  const { errors } = await updateServiceZonesWorkflow(req.scope).run({
+  await updateServiceZonesWorkflow(req.scope).run({
     input: workflowInput,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const [fulfillment_set] = await remoteQuery(
     remoteQueryObjectFromString({
@@ -119,14 +114,9 @@ export const DELETE = async (
     )
   }
 
-  const { errors } = await deleteServiceZonesWorkflow(req.scope).run({
+  await deleteServiceZonesWorkflow(req.scope).run({
     input: { ids: [zone_id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id: zone_id,

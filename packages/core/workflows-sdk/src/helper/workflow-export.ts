@@ -87,10 +87,11 @@ function createContextualWorkflowRunner<
       failedStatus.includes(transaction.getState()) &&
       throwOnError
     ) {
-      const errorMessage = errors
+      /*const errorMessage = errors
         ?.map((err) => `${err.error?.message}${EOL}${err.error?.stack}`)
-        ?.join(`${EOL}`)
-      throw new Error(errorMessage)
+        ?.join(`${EOL}`)*/
+      const firstError = errors?.[0]?.error ?? new Error("Unknown error")
+      throw firstError
     }
 
     let result
@@ -98,6 +99,10 @@ function createContextualWorkflowRunner<
       result = resolveValue(resultFrom, transaction.getContext())
       if (result instanceof Promise) {
         result = await result.catch((e) => {
+          if (throwOnError) {
+            throw e
+          }
+
           errors ??= []
           errors.push(e)
         })

@@ -20,6 +20,7 @@ import { productVariantsFields } from "../utils/fields"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
+import { MedusaError } from "@medusajs/utils"
 
 // TODO: The createCartWorkflow are missing the following steps:
 // - Refresh/delete shipping methods (fulfillment module)
@@ -49,6 +50,10 @@ export const createCartWorkflow = createWorkflow(
     const pricingContext = transform(
       { input, region, customerData },
       (data) => {
+        if (!data.region) {
+          throw new MedusaError(MedusaError.Types.NOT_FOUND, "No regions found")
+        }
+
         return {
           currency_code: data.input.currency_code ?? data.region.currency_code,
           region_id: data.region.id,
@@ -87,6 +92,10 @@ export const createCartWorkflow = createWorkflow(
     const cartInput = transform(
       { input, region, customerData, salesChannel },
       (data) => {
+        if (!data.region) {
+          throw new MedusaError(MedusaError.Types.NOT_FOUND, "No regions found")
+        }
+
         const data_ = {
           ...data.input,
           currency_code: data.input.currency_code ?? data.region.currency_code,

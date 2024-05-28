@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { AdminCustomerGroupResponse } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -191,8 +190,7 @@ export const AddCustomerGroupsForm = ({
   )
 }
 
-const columnHelper =
-  createColumnHelper<AdminCustomerGroupResponse["customer_group"]>()
+const columnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
 
 const useColumns = () => {
   const { t } = useTranslation()

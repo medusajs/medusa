@@ -17,14 +17,9 @@ export const POST = async (
     ],
   }
 
-  const { errors } = await createServiceZonesWorkflow(req.scope).run({
+  await createServiceZonesWorkflow(req.scope).run({
     input: workflowInput,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const fulfillmentSet = await refetchFulfillmentSet(
     req.params.id,

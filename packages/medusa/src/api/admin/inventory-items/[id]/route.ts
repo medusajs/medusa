@@ -60,14 +60,9 @@ export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
   const id = req.params.id
   const deleteInventoryItems = deleteInventoryItemWorkflow(req.scope)
 
-  const { errors } = await deleteInventoryItems.run({
+  await deleteInventoryItems.run({
     input: [id],
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,

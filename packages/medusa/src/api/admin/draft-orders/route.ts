@@ -76,14 +76,9 @@ export const POST = async (
     input.email = customer?.email
   }
 
-  const { result, errors } = await createOrdersWorkflow(req.scope).run({
+  const { result } = await createOrdersWorkflow(req.scope).run({
     input: workflowInput,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const draftOrder = await refetchOrder(
     result.id,

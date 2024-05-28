@@ -675,8 +675,8 @@
       "invalidEmail": "Email must be a valid email address."
     }
   },
-  "shipping": {
-    "title": "Location & Shipping",
+  "location": {
+    "title": "Locations & Shipping",
     "domain": "Location & Shipping",
     "description": "Choose where you ship and how much you charge for shipping at checkout. Define shipping options specific for your locations.",
     "createLocation": "Create location",
@@ -1452,6 +1452,7 @@
     "fields": {
       "lastUsedAtLabel": "Last used at",
       "revokedByLabel": "Revoked by",
+      "revokedAtLabel": "Revoked at",
       "createdByLabel": "Created by"
     }
   },

@@ -37,17 +37,12 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const updateAddresses = updateCustomerAddressesWorkflow(req.scope)
-  const { errors } = await updateAddresses.run({
+  await updateAddresses.run({
     input: {
       selector: { id: req.params.address_id, customer_id: req.params.id },
       update: req.validatedBody,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const customer = await refetchCustomer(
     req.params.id,
@@ -65,14 +60,9 @@ export const DELETE = async (
   const id = req.params.address_id
   const deleteAddress = deleteCustomerAddressesWorkflow(req.scope)
 
-  const { errors } = await deleteAddress.run({
+  await deleteAddress.run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const customer = await refetchCustomer(
     req.params.id,

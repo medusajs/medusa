@@ -37,7 +37,6 @@ import {
   CreateShippingMethodDTO,
   CreateShippingMethodTaxLineDTO,
   UpdateLineItemDTO,
-  UpdateLineItemTaxLineDTO,
   UpdateShippingMethodTaxLineDTO,
 } from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
@@ -1034,7 +1033,7 @@ export default class CartModuleService<
     }
 
     const result = await this.lineItemTaxLineService_.upsert(
-      taxLines as UpdateLineItemTaxLineDTO[],
+      taxLines,
       sharedContext
     )
 

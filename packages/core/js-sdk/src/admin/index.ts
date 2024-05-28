@@ -152,4 +152,68 @@ export class Admin {
       )
     },
   }
+
+  public customer = {
+    create: async (
+      body: HttpTypes.AdminCreateCustomer,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{
+        customer: HttpTypes.AdminCustomer
+        token: string
+      }>(`/admin/customers`, {
+        method: "POST",
+        headers,
+        body,
+        query,
+      })
+    },
+    update: async (
+      id: string,
+      body: HttpTypes.AdminUpdateCustomer,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ customer: HttpTypes.AdminCustomer }>(
+        `/admin/customers/${id}`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+    list: async (queryParams?: FindParams, headers?: ClientHeaders) => {
+      return this.client.fetch<
+        PaginatedResponse<{ customers: HttpTypes.AdminCustomer[] }>
+      >(`/admin/customers`, {
+        headers,
+        query: queryParams,
+      })
+    },
+    retrieve: async (
+      id: string,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ customer: HttpTypes.AdminCustomer }>(
+        `/admin/customers/${id}`,
+        {
+          query,
+          headers,
+        }
+      )
+    },
+    delete: async (id: string, headers?: ClientHeaders) => {
+      return this.client.fetch<DeleteResponse<"customer">>(
+        `/admin/customers/${id}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      )
+    },
+  }
 }
