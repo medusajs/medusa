@@ -51,6 +51,16 @@ async function updateVariant(
   )
 }
 
+async function updateVariantsBatch(
+  productId: string,
+  payload: { add: any[]; update: any[]; remove: any[] }
+) {
+  return postRequest<any>(
+    `/admin/products/${productId}/variants/batch`,
+    payload
+  )
+}
+
 async function deleteVariant(productId: string, variantId: string) {
   return deleteRequest<any>(
     `/admin/products/${productId}/variants/${variantId}`
@@ -82,6 +92,7 @@ export const products = {
   listVariants,
   createVariant,
   updateVariant,
+  updateVariantsBatch,
   deleteVariant,
   createOption,
   updateOption,
