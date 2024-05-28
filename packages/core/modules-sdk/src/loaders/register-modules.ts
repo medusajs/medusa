@@ -8,7 +8,7 @@ import {
   ModuleResolution,
 } from "@medusajs/types"
 
-import { isObject, isString } from "@medusajs/utils"
+import { isObject, isString, upperCaseFirst } from "@medusajs/utils"
 import resolveCwd from "resolve-cwd"
 import { ModulesDefinition } from "../definitions"
 
@@ -23,7 +23,12 @@ export const registerMedusaModule = (
 ): Record<string, ModuleResolution> => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
 
-  const modDefinition = definition ?? ModulesDefinition[moduleKey]
+  const modDefinition = definition ??
+    ModulesDefinition[moduleKey] ?? {
+      key: moduleKey,
+      registrationName: moduleKey,
+      label: upperCaseFirst(moduleKey),
+    }
 
   const modDeclaration =
     moduleDeclaration ??
