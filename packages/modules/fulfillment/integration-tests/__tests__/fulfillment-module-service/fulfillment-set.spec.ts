@@ -7,15 +7,15 @@ import {
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
 import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { MockEventBusService } from "medusa-test-utils/dist"
 import { buildExpectedEventMessageShape } from "../../__fixtures__"
 
 jest.setTimeout(100000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IFulfillmentModuleService>({
   moduleName: Modules.FULFILLMENT,
-  testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
+  testSuite: ({ service }) => {
     let eventBusEmitSpy
 
     beforeEach(() => {

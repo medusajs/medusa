@@ -3,13 +3,13 @@ import {
   CreateShippingProfileDTO,
   IFulfillmentModuleService,
 } from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IFulfillmentModuleService>({
   moduleName: Modules.FULFILLMENT,
-  testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Fulfillment Module Service", () => {
       describe("mutations", () => {
         describe("on create", () => {

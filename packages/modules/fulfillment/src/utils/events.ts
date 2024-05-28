@@ -101,6 +101,10 @@ export function buildCreatedShippingOptionEvents({
     if (shippingOption.type) {
       types.push(shippingOption.type)
     }
+
+    if (shippingOption.rules) {
+      rules.push(...shippingOption.rules)
+    }
   })
 
   aggregator.saveRawMessageData(messages)

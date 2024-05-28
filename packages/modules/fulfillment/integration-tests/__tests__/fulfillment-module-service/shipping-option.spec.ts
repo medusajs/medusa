@@ -3,12 +3,18 @@ import {
   CreateShippingOptionDTO,
   IFulfillmentModuleService,
 } from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { generateCreateShippingOptionsData } from "../../__fixtures__"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
+import {
+  buildExpectedEventMessageShape,
+  generateCreateShippingOptionsData,
+} from "../../__fixtures__"
 import { resolve } from "path"
 import { FulfillmentProviderService } from "@services"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
-import { GeoZoneType } from "@medusajs/utils"
+import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
 import { UpdateShippingOptionDTO } from "@medusajs/types/src"
 
 jest.setTimeout(100000)
@@ -34,10 +40,20 @@ const providerId = FulfillmentProviderService.getRegistrationIdentifier(
   "test-provider"
 )
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IFulfillmentModuleService>({
   moduleName: Modules.FULFILLMENT,
   moduleOptions,
-  testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
+  testSuite: ({ service }) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list shipping options with a filter", async function () {
@@ -411,7 +427,7 @@ moduleIntegrationTestRunner({
 
       describe("mutations", () => {
         describe("on create", () => {
-          it("should create a new shipping option", async function () {
+          it.only("should create a new shipping option", async function () {
             const shippingProfile = await service.createShippingProfiles({
               name: "test",
               type: "default",
@@ -462,6 +478,28 @@ moduleIntegrationTestRunner({
                 ]),
               })
             )
+
+            expect(eventBusEmitSpy.mock.calls[1][0]).toHaveLength(3)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.updated,
+                action: "updated",
+                object: "shipping_option",
+                data: { id: createdShippingOption.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.updated,
+                action: "updated",
+                object: "shipping_option_type",
+                data: { id: createdShippingOption.type.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.updated,
+                action: "updated",
+                object: "shipping_option_rule",
+                data: { id: createdShippingOption.rules[0].id },
+              }),
+            ])
           })
 
           it("should create multiple new shipping options", async function () {

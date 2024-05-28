@@ -6,13 +6,13 @@ import {
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import { GeoZoneType } from "@medusajs/utils"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IFulfillmentModuleService>({
   moduleName: Modules.FULFILLMENT,
-  testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list service zones with a filter", async function () {
