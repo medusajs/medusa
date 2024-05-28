@@ -1,5 +1,7 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
+import { FulfillmentDTO } from "../fulfillment"
+import { PaymentCollectionDTO } from "../payment"
 import { BigNumberRawValue, BigNumberValue } from "../totals"
 
 export type ChangeActionType =
@@ -1105,6 +1107,8 @@ export interface OrderDTO {
 type PaymentStatus =
   | "not_paid"
   | "awaiting"
+  | "authorized"
+  | "partially_authorized"
   | "captured"
   | "partially_captured"
   | "partially_refunded"
@@ -1118,13 +1122,14 @@ type FulfillmentStatus =
   | "fulfilled"
   | "partially_shipped"
   | "shipped"
-  | "partially_returned"
-  | "returned"
+  | "partially_delivered"
+  | "delivered"
   | "canceled"
-  | "requires_action"
 
 export interface OrderDetailDTO extends OrderDTO {
+  payment_collections: PaymentCollectionDTO[]
   payment_status: PaymentStatus
+  fulfillments: FulfillmentDTO[]
   fulfillment_status: FulfillmentStatus
 }
 
