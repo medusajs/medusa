@@ -118,7 +118,7 @@ export type HttpCompressionOptions = {
  */
 export type ProjectConfigOptions = {
   /**
-   * The name of the database to connect to. If specified in `database_url`, then it’s not required to include it.
+   * The name of the database to connect to. If specified in `databaseUrl`, then it’s not required to include it.
    *
    * Make sure to create the PostgreSQL database before using it. You can check how to create a database in
    * [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
