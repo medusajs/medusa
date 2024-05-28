@@ -1,21 +1,24 @@
-import { BaseFilterable } from "../../dal"
-import { BaseProduct } from "../product/common"
+import { BaseFilterable, OperatorMap } from "../../dal"
+import { AdminProduct } from "../product"
 
-export interface BaseProductCollection {
+export interface BaseCollection {
   id?: string
   title?: string
   handle?: string
   created_at?: string
   updated_at?: string
   deleted_at?: string | null
-  products?: BaseProduct[]
+  products?: AdminProduct[]
   metadata?: Record<string, unknown> | null
 }
 
-export interface BaseProductCollectionFilters
-  extends BaseFilterable<BaseProductCollectionFilters> {
+export interface BaseCollectionFilters
+  extends BaseFilterable<BaseCollectionFilters> {
   q?: string
   id?: string | string[]
   handle?: string | string[]
   title?: string | string[]
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
 }
