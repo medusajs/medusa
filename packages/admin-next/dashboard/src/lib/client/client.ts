@@ -5,17 +5,16 @@ import { categories } from "./categories"
 import { collections } from "./collections"
 import { currencies } from "./currencies"
 import { customerGroups } from "./customer-groups"
-import { customers } from "./customers"
 import { fulfillmentProviders } from "./fulfillment-providers"
+import { fulfillments } from "./fulfillments"
 import { inventoryItems } from "./inventory"
 import { invites } from "./invites"
+import { orders } from "./orders"
 import { payments } from "./payments"
 import { priceLists } from "./price-lists"
 import { productTypes } from "./product-types"
 import { products } from "./products"
 import { promotions } from "./promotions"
-import { orders } from "./orders"
-import { fulfillments } from "./fulfillments"
 import { reservations } from "./reservations"
 import { salesChannels } from "./sales-channels"
 import { shippingOptions } from "./shipping-options"
@@ -27,11 +26,12 @@ import { taxes } from "./taxes"
 import { users } from "./users"
 import { workflowExecutions } from "./workflow-executions"
 
+export const backendUrl = __BACKEND_URL__ ?? "http://localhost:9000"
+
 export const client = {
   apiKeys: apiKeys,
   campaigns: campaigns,
   categories: categories,
-  customers: customers,
   customerGroups: customerGroups,
   currencies: currencies,
   collections: collections,
@@ -58,7 +58,7 @@ export const client = {
 }
 
 export const sdk = new Medusa({
-  baseUrl: __BACKEND_URL__ ?? "http://localhost:9000",
+  baseUrl: backendUrl,
   auth: {
     type: "session",
   },

@@ -11,7 +11,7 @@ import {
   useQuery,
 } from "@tanstack/react-query"
 import { client } from "../../lib/client"
-import { queryClient } from "../../lib/medusa"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { CreateCampaignReq, UpdateCampaignReq } from "../../types/api-payloads"
 import { CampaignDeleteRes } from "../../types/api-responses"

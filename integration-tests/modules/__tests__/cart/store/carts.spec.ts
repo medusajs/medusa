@@ -16,7 +16,9 @@ import {
   IPromotionModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
+  IStoreModuleService,
   ITaxModuleService,
+  ProductStatus,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -55,8 +57,8 @@ medusaIntegrationTestRunner({
       let remoteLinkService
       let regionService: IRegionModuleService
       let paymentService: IPaymentModuleService
+      let storeService: IStoreModuleService
 
-      let defaultRegion
       let region
       let store
 
@@ -74,6 +76,7 @@ medusaIntegrationTestRunner({
         taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
         regionService = appContainer.resolve(ModuleRegistrationName.REGION)
         paymentService = appContainer.resolve(ModuleRegistrationName.PAYMENT)
+        storeService = appContainer.resolve(ModuleRegistrationName.STORE)
         fulfillmentModule = appContainer.resolve(
           ModuleRegistrationName.FULFILLMENT
         )
@@ -85,8 +88,12 @@ medusaIntegrationTestRunner({
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
-        const { region } = await seedStorefrontDefaults(appContainer, "dkk")
-        defaultRegion = region
+        const { store: defaultStore } = await seedStorefrontDefaults(
+          appContainer,
+          "dkk"
+        )
+
+        store = defaultStore
       })
 
       describe("POST /store/carts", () => {
@@ -293,6 +300,31 @@ medusaIntegrationTestRunner({
               region: expect.objectContaining({
                 id: expect.any(String),
               }),
+            })
+          )
+        })
+
+        it("should create cart with default store sales channel", async () => {
+          const sc = await scModule.create({
+            name: "Webshop",
+          })
+
+          await storeService.update(store.id, {
+            default_sales_channel_id: sc.id,
+          })
+
+          const response = await api.post(`/store/carts`, {
+            email: "tony@stark.com",
+            currency_code: "usd",
+          })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: response.data.cart.id,
+              currency_code: "usd",
+              email: "tony@stark.com",
+              sales_channel_id: sc.id,
             })
           )
         })
@@ -534,6 +566,7 @@ medusaIntegrationTestRunner({
               target_type: "items",
               allocation: "each",
               value: 300,
+              currency_code: "usd",
               apply_to_quantity: 1,
               max_quantity: 1,
               target_rules: targetRules,
@@ -547,6 +580,7 @@ medusaIntegrationTestRunner({
               type: "fixed",
               target_type: "items",
               allocation: "across",
+              currency_code: "usd",
               value: 1000,
               apply_to_quantity: 1,
               target_rules: targetRules,
@@ -1164,14 +1198,65 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /store/carts/:id/line-items", () => {
-        it.skip("should add item to cart", async () => {
+        let region
+        const productData = {
+          title: "Medusa T-Shirt",
+          handle: "t-shirt",
+          status: ProductStatus.PUBLISHED,
+          options: [
+            {
+              title: "Size",
+              values: ["S"],
+            },
+            {
+              title: "Color",
+              values: ["Black", "White"],
+            },
+          ],
+          variants: [
+            {
+              title: "S / Black",
+              sku: "SHIRT-S-BLACK",
+              options: {
+                Size: "S",
+                Color: "Black",
+              },
+              manage_inventory: false,
+              prices: [
+                {
+                  amount: 1500,
+                  currency_code: "usd",
+                },
+              ],
+            },
+            {
+              title: "S / White",
+              sku: "SHIRT-S-WHITE",
+              options: {
+                Size: "S",
+                Color: "White",
+              },
+              manage_inventory: false,
+              prices: [
+                {
+                  amount: 1500,
+                  currency_code: "usd",
+                },
+              ],
+            },
+          ],
+        }
+
+        beforeEach(async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          region = await regionModule.create({
             name: "US",
             currency_code: "usd",
           })
+        })
 
+        it("should add item to cart", async () => {
           const customer = await customerModule.create({
             email: "tony@stark-industries.com",
           })
@@ -1232,6 +1317,7 @@ medusaIntegrationTestRunner({
               allocation: "across",
               value: 300,
               apply_to_quantity: 2,
+              currency_code: "usd",
               target_rules: [
                 {
                   attribute: "product_id",
@@ -1351,6 +1437,82 @@ medusaIntegrationTestRunner({
                   ],
                 }),
               ]),
+            })
+          )
+        })
+
+        it("adding an existing variant should update or create line item depending on metadata", async () => {
+          const product = (
+            await api.post(`/admin/products`, productData, adminHeaders)
+          ).data.product
+
+          const cart = (
+            await api.post(`/store/carts`, {
+              email: "tony@stark.com",
+              currency_code: region.currency_code,
+              region_id: region.id,
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                  metadata: {
+                    Size: "S",
+                    Color: "Black",
+                  },
+                },
+              ],
+            })
+          ).data.cart
+
+          let response = await api.post(`/store/carts/${cart.id}/line-items`, {
+            variant_id: product.variants[0].id,
+            quantity: 1,
+            metadata: {
+              Size: "S",
+              Color: "Black",
+            },
+          })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              items: [
+                expect.objectContaining({
+                  unit_price: 1500,
+                  quantity: 2,
+                  title: "S / Black",
+                }),
+              ],
+              subtotal: 3000,
+            })
+          )
+
+          response = await api.post(`/store/carts/${cart.id}/line-items`, {
+            variant_id: product.variants[0].id,
+            quantity: 1,
+            metadata: {
+              Size: "S",
+              Color: "White",
+              Special: "attribute",
+            },
+          })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              items: [
+                expect.objectContaining({
+                  unit_price: 1500,
+                  quantity: 2,
+                  title: "S / Black",
+                }),
+                expect.objectContaining({
+                  unit_price: 1500,
+                  quantity: 1,
+                  title: "S / Black",
+                }),
+              ],
+              subtotal: 4500,
             })
           )
         })

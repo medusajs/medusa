@@ -1,12 +1,11 @@
+import { MedusaModule } from "@medusajs/modules-sdk"
 import {
   LocalWorkflow,
   TransactionHandlerType,
   TransactionState,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-
-import { MedusaModule } from "@medusajs/modules-sdk"
-import { MedusaContextType } from "@medusajs/utils"
+import { MedusaContextType, isPresent } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
@@ -62,13 +61,16 @@ function createContextualWorkflowRunner<
     },
     ...args
   ) => {
-    if (!executionContainer && !flow.container) {
-      executionContainer = MedusaModule.getLoadedModules().map(
-        (mod) => Object.values(mod)[0]
-      )
+    if (!executionContainer) {
+      const container_ = flow.container as MedusaContainer
+      if (!container_ || !isPresent(container_?.registrations)) {
+        executionContainer = MedusaModule.getLoadedModules().map(
+          (mod) => Object.values(mod)[0]
+        )
+      }
     }
 
-    if (!flow.container) {
+    if (executionContainer) {
       flow.container = executionContainer
     }
 
@@ -85,10 +87,11 @@ function createContextualWorkflowRunner<
       failedStatus.includes(transaction.getState()) &&
       throwOnError
     ) {
-      const errorMessage = errors
+      /*const errorMessage = errors
         ?.map((err) => `${err.error?.message}${EOL}${err.error?.stack}`)
-        ?.join(`${EOL}`)
-      throw new Error(errorMessage)
+        ?.join(`${EOL}`)*/
+      const firstError = errors?.[0]?.error ?? new Error("Unknown error")
+      throw firstError
     }
 
     let result
@@ -96,6 +99,10 @@ function createContextualWorkflowRunner<
       result = resolveValue(resultFrom, transaction.getContext())
       if (result instanceof Promise) {
         result = await result.catch((e) => {
+          if (throwOnError) {
+            throw e
+          }
+
           errors ??= []
           errors.push(e)
         })

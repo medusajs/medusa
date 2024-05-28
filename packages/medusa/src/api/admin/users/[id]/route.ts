@@ -73,14 +73,9 @@ export const DELETE = async (
   const { id } = req.params
   const workflow = deleteUsersWorkflow(req.scope)
 
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,
@@ -88,3 +83,5 @@ export const DELETE = async (
     deleted: true,
   })
 }
+
+export const AUTHENTICATE = false

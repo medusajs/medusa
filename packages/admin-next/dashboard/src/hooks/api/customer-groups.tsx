@@ -5,17 +5,14 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { client } from "../../lib/client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
-import {
-  AdminCustomerGroupListResponse,
-  AdminCustomerGroupResponse,
-} from "@medusajs/types"
 import { z } from "zod"
-import { CreateCustomerGroupSchema } from "../../v2-routes/customer-groups/customer-group-create/components/create-customer-group-form"
-import { queryClient } from "../../lib/medusa"
-import { EditCustomerGroupSchema } from "../../v2-routes/customer-groups/customer-group-edit/components/edit-customer-group-form"
+import { client } from "../../lib/client"
+import { queryClient } from "../../lib/query-client"
+import { queryKeysFactory } from "../../lib/query-key-factory"
+import { CreateCustomerGroupSchema } from "../../routes/customer-groups/customer-group-create/components/create-customer-group-form"
+import { EditCustomerGroupSchema } from "../../routes/customer-groups/customer-group-edit/components/edit-customer-group-form"
 import { customersQueryKeys } from "./customers"
+import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 
 const CUSTOMER_GROUPS_QUERY_KEY = "customer_groups" as const
 export const customerGroupsQueryKeys = queryKeysFactory(
@@ -27,9 +24,9 @@ export const useCustomerGroup = (
   query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<
-      AdminCustomerGroupResponse,
+      { customer_group: HttpTypes.AdminCustomerGroup },
       Error,
-      AdminCustomerGroupResponse,
+      { customer_group: HttpTypes.AdminCustomerGroup },
       QueryKey
     >,
     "queryFn" | "queryKey"
@@ -48,9 +45,9 @@ export const useCustomerGroups = (
   query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<
-      AdminCustomerGroupListResponse,
+      PaginatedResponse<HttpTypes.AdminCustomerGroup[]>,
       Error,
-      AdminCustomerGroupListResponse,
+      PaginatedResponse<HttpTypes.AdminCustomerGroup[]>,
       QueryKey
     >,
     "queryFn" | "queryKey"
@@ -67,7 +64,7 @@ export const useCustomerGroups = (
 
 export const useCreateCustomerGroup = (
   options?: UseMutationOptions<
-    AdminCustomerGroupResponse,
+    { customer_group: HttpTypes.AdminCustomerGroup },
     Error,
     z.infer<typeof CreateCustomerGroupSchema>
   >
@@ -87,7 +84,7 @@ export const useCreateCustomerGroup = (
 export const useUpdateCustomerGroup = (
   id: string,
   options?: UseMutationOptions<
-    AdminCustomerGroupResponse,
+    { customer_group: HttpTypes.AdminCustomerGroup },
     Error,
     z.infer<typeof EditCustomerGroupSchema>
   >
@@ -135,7 +132,7 @@ export const useDeleteCustomerGroup = (
 export const useAddCustomersToGroup = (
   id: string,
   options?: UseMutationOptions<
-    AdminCustomerGroupResponse,
+    { customer_group: HttpTypes.AdminCustomerGroup },
     Error,
     { customer_ids: string[] }
   >
@@ -162,7 +159,7 @@ export const useAddCustomersToGroup = (
 export const useRemoveCustomersFromGroup = (
   id: string,
   options?: UseMutationOptions<
-    AdminCustomerGroupResponse,
+    { customer_group: HttpTypes.AdminCustomerGroup },
     Error,
     { customer_ids: string[] }
   >

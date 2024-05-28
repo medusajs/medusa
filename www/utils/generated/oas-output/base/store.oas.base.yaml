@@ -81,20 +81,16 @@ components:
             message: Entity with id 1 was not found
             type: not_found
     400_error:
-      description: Client Error or Multiple Errors
+      description: Client Error
       content:
         application/json:
           schema:
-            oneOf:
-              - $ref: "#/components/schemas/Error"
-              - $ref: "#/components/schemas/MultipleErrors"
+            $ref: "#/components/schemas/Error"
           examples:
             not_allowed:
               $ref: "#/components/examples/not_allowed_error"
             invalid_data:
               $ref: "#/components/examples/invalid_data_error"
-            MultipleErrors:
-              $ref: "#/components/examples/multiple_errors"
     500_error:
       description: Server Error
       content:

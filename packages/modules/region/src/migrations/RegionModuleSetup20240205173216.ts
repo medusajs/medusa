@@ -29,7 +29,7 @@ CREATE INDEX IF NOT EXISTS "IDX_region_deleted_at" ON "region" ("deleted_at") WH
 CREATE TABLE IF NOT EXISTS "region_country" (
   "iso_2" text NOT NULL,
   "iso_3" text NOT NULL,
-  "num_code" int NOT NULL,
+  "num_code" text NOT NULL,
   "name" text NOT NULL,
   "display_name" text NOT NULL,
   "region_id" text NULL,

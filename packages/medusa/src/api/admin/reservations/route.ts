@@ -45,14 +45,9 @@ export const POST = async (
 ) => {
   const input = [req.validatedBody]
 
-  const { result, errors } = await createReservationsWorkflow(req.scope).run({
+  const { result } = await createReservationsWorkflow(req.scope).run({
     input: { reservations: input },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const reservation = await refetchReservation(
     result[0].id,

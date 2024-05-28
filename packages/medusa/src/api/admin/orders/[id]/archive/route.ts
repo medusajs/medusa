@@ -1,5 +1,8 @@
 import { archiveOrderWorkflow } from "@medusajs/core-flows"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -10,17 +13,12 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminArchiveOrderType>,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const { id } = req.params
 
-  const { errors } = await archiveOrderWorkflow(req.scope).run({
+  await archiveOrderWorkflow(req.scope).run({
     input: { orderIds: [req.validatedBody.order_id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "order",

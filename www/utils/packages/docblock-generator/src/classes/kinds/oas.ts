@@ -260,8 +260,8 @@ class OasKindGenerator extends FunctionKindGenerator {
         content: {
           "application/json": {
             schema:
-              this.oasSchemaHelper.schemaToReference(requestSchema) ||
-              requestSchema,
+              this.oasSchemaHelper.namedSchemaToReference(requestSchema) ||
+              this.oasSchemaHelper.schemaChildrenToRefs(requestSchema),
           },
         },
       }
@@ -335,8 +335,8 @@ class OasKindGenerator extends FunctionKindGenerator {
       ;(oas.responses[responseStatus] as OpenAPIV3.ResponseObject).content = {
         "application/json": {
           schema:
-            this.oasSchemaHelper.schemaToReference(responseSchema) ||
-            responseSchema,
+            this.oasSchemaHelper.namedSchemaToReference(responseSchema) ||
+            this.oasSchemaHelper.schemaChildrenToRefs(responseSchema),
         },
       }
     }
@@ -462,7 +462,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       newSchema: requestSchema,
     })
 
-    if (!updatedRequestSchema && existingRequestBodySchema) {
+    if (!updatedRequestSchema) {
       // if there's no request schema, remove it from the OAS
       delete oas.requestBody
     } else {
@@ -470,10 +470,11 @@ class OasKindGenerator extends FunctionKindGenerator {
       oas.requestBody = {
         content: {
           "application/json": {
-            schema: updatedRequestSchema
-              ? this.oasSchemaHelper.schemaToReference(updatedRequestSchema) ||
+            schema:
+              this.oasSchemaHelper.namedSchemaToReference(
                 updatedRequestSchema
-              : updatedRequestSchema,
+              ) ||
+              this.oasSchemaHelper.schemaChildrenToRefs(updatedRequestSchema),
           },
         },
       }
@@ -495,8 +496,10 @@ class OasKindGenerator extends FunctionKindGenerator {
           content: {
             "application/json": {
               schema:
-                this.oasSchemaHelper.schemaToReference(newResponseSchema) ||
-                newResponseSchema,
+                this.oasSchemaHelper.namedSchemaToReference(
+                  newResponseSchema
+                ) ||
+                this.oasSchemaHelper.schemaChildrenToRefs(newResponseSchema),
             },
           },
         },
@@ -532,8 +535,10 @@ class OasKindGenerator extends FunctionKindGenerator {
         content: {
           "application/json": {
             schema: updatedResponseSchema
-              ? this.oasSchemaHelper.schemaToReference(updatedResponseSchema) ||
-                updatedResponseSchema
+              ? this.oasSchemaHelper.namedSchemaToReference(
+                  updatedResponseSchema
+                ) ||
+                this.oasSchemaHelper.schemaChildrenToRefs(updatedResponseSchema)
               : updatedResponseSchema,
           },
         },
@@ -1122,6 +1127,13 @@ class OasKindGenerator extends FunctionKindGenerator {
                   return
                 }
 
+                // check if parameter is already added
+                const isAdded = parameters.some((param) => param.name === key)
+
+                if (isAdded) {
+                  return
+                }
+
                 parameters.push(
                   this.getParameterObject({
                     name: key,
@@ -1134,7 +1146,7 @@ class OasKindGenerator extends FunctionKindGenerator {
               }
             )
           }
-        } else {
+        } else if (methodName !== "delete") {
           requestSchema = parameterSchema
         }
       }
@@ -1273,8 +1285,8 @@ class OasKindGenerator extends FunctionKindGenerator {
           descriptionOptions as SchemaDescriptionOptions
         )
       : title
-      ? this.getSchemaDescription({ typeStr: title, nodeType: itemType })
-      : this.defaultSummary
+        ? this.getSchemaDescription({ typeStr: title, nodeType: itemType })
+        : this.defaultSummary
     const typeAsString =
       zodObjectTypeName || this.checker.typeToString(itemType)
 
@@ -1315,8 +1327,8 @@ class OasKindGenerator extends FunctionKindGenerator {
             itemType.flags === ts.TypeFlags.StringLiteral
               ? "string"
               : itemType.flags === ts.TypeFlags.NumberLiteral
-              ? "number"
-              : "boolean",
+                ? "number"
+                : "boolean",
           title: title || typeAsString,
           description,
           format: this.getSchemaTypeFormat({
@@ -1518,13 +1530,16 @@ class OasKindGenerator extends FunctionKindGenerator {
               : undefined,
           required:
             requiredProperties.length > 0 ? requiredProperties : undefined,
-          properties,
+        }
+
+        if (Object.values(properties).length) {
+          objSchema.properties = properties
         }
 
         if (objSchema["x-schemaName"]) {
           // add object to schemas to be created
           // if necessary
-          this.oasSchemaHelper.schemaToReference(objSchema)
+          this.oasSchemaHelper.namedSchemaToReference(objSchema)
         }
 
         return objSchema
@@ -1826,7 +1841,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     if (oldSchemaObj!.type === "object") {
       if (!oldSchemaObj?.properties && newSchemaObj?.properties) {
         oldSchemaObj!.properties = newSchemaObj.properties
-      } else if (oldSchemaObj?.properties && !newSchemaObj?.properties) {
+      } else if (!newSchemaObj?.properties) {
         delete oldSchemaObj!.properties
       } else {
         // update existing properties

@@ -81,7 +81,8 @@
     "download": "Download",
     "clearAll": "Clear all",
     "apply": "Apply",
-    "add": "Add"
+    "add": "Add",
+    "select": "Select"
   },
   "filters": {
     "date": {
@@ -163,17 +164,28 @@
   "products": {
     "domain": "Products",
     "create": {
-      "header": "Create Product",
-      "hint": "Create a new product to sell in your store.",
+      "header": "General",
       "tabs": {
         "details": "Details",
-        "variants": "Variants"
+        "organize": "Organize",
+        "variants": "Variants",
+        "inventory": "Inventory kits"
+      },
+      "errors": {
+        "variants": "Please select at least one variant.",
+        "options": "Please create at least one option."
+      },
+      "inventory": {
+        "heading": "Inventory kits",
+        "label": "Inventory kit"
       },
       "variants": {
         "header": "Variants",
+        "subHeadingTitle": "Yes, this is a product with variants",
+        "subHeadingDescription": "When unchecked we will create a default variant for you",
         "productVariants": {
           "label": "Product variants",
-          "hint": "Variants left unchecked won't be created. This ranking will affect how the variants are ranked in your frontend.",
+          "hint": "This ranking will affect how the variants are ranked in your frontend.",
           "alert": "Add options to create variants."
         },
         "productOptions": {
@@ -232,8 +244,7 @@
         "tooltip": "The handle is used to reference the product in your storefront. If not specified, the handle will be generated from the product title."
       },
       "description": {
-        "label": "Description",
-        "hint": "Give your product a short and clear description.<0/>120-160 characters is the recommended length for search engines."
+        "label": "Description"
       },
       "discountable": {
         "label": "Discountable",
@@ -674,8 +685,8 @@
       "invalidEmail": "Email must be a valid email address."
     }
   },
-  "shipping": {
-    "title": "Location & Shipping",
+  "location": {
+    "title": "Locations & Shipping",
     "domain": "Location & Shipping",
     "description": "Choose where you ship and how much you charge for shipping at checkout. Define shipping options specific for your locations.",
     "createLocation": "Create location",
@@ -935,6 +946,9 @@
   },
   "promotions": {
     "domain": "Promotions",
+    "sections": {
+      "details": "Promotion Details"
+    },
     "fields": {
       "method": "Method",
       "type": "Type",
@@ -944,6 +958,9 @@
       "allocation": "Allocation",
       "addCondition": "Add condition",
       "clearAll": "Clear all",
+      "amount": {
+        "tooltip": "Select the currency code to enable setting the amount"
+      },
       "conditions": {
         "rules": {
           "title": "Who can use this code?",
@@ -977,6 +994,9 @@
     },
     "addToCampaign": {
       "title": "Add Promotion To Campaign"
+    },
+    "campaign_currency": {
+      "tooltip": "Currency is carried over from the promotion. Change it on the promotions tab."
     },
     "form": {
       "required": "Required",
@@ -1082,8 +1102,12 @@
       "identifier": "Identifier",
       "start_date": "Start date",
       "end_date": "End date",
-      "total_spend": "Total spend",
-      "budget_limit": "Budget limit"
+      "total_spend": "Budget spent",
+      "total_used": "Budget used",
+      "budget_limit": "Budget limit",
+      "campaign_id": {
+        "hint": "A list of campaigns with the same currency code as the promotion"
+      }
     },
     "budget": {
       "create": {
@@ -1114,6 +1138,8 @@
         "description": "You are about to remove {{count}} promotion(s) from the campaign. This action cannot be undone."
       },
       "alreadyAdded": "This promotion has already been added to the campaign.",
+      "alreadyAddedDiffCampaign": "This promotion has already been added to a different campaign ({{name}}).",
+      "currencyMismatch": "Currency of the promotion and campaign doesn't match",
       "toast": {
         "success": "Successfully added {{count}} promotion(s) to campaign"
       }
@@ -1436,6 +1462,7 @@
     "fields": {
       "lastUsedAtLabel": "Last used at",
       "revokedByLabel": "Revoked by",
+      "revokedAtLabel": "Revoked at",
       "createdByLabel": "Created by"
     }
   },
@@ -1543,6 +1570,9 @@
     "lastName": "Last Name",
     "firstName": "First Name",
     "title": "Title",
+    "customTitle": "Custom title",
+    "manageInventory": "Manage inventory",
+    "inventoryKit": "Inventory kit",
     "description": "Description",
     "email": "Email",
     "password": "Password",
@@ -1562,7 +1592,6 @@
     "tags": "Tags",
     "type": "Type",
     "reason": "Reason",
-    "note": "Note",
     "none": "none",
     "all": "all",
     "percentage": "Percentage",

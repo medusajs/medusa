@@ -48,6 +48,7 @@ export const POST = async (
   }
 
   const { result } = await workflow.run(input)
+
   const invite = await refetchInvite(
     result[0].id,
     req.scope,
@@ -56,3 +57,5 @@ export const POST = async (
 
   res.status(200).json({ invite })
 }
+
+export const AUTHENTICATE = false

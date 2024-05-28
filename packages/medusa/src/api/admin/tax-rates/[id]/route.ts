@@ -20,17 +20,12 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateTaxRateType>,
   res: MedusaResponse
 ) => {
-  const { errors } = await updateTaxRatesWorkflow(req.scope).run({
+  await updateTaxRatesWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: { ...req.validatedBody, updated_by: req.auth_context.actor_id },
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const taxRate = await refetchTaxRate(
     req.params.id,
@@ -62,14 +57,9 @@ export const DELETE = async (
   res: MedusaResponse
 ) => {
   const id = req.params.id
-  const { errors } = await deleteTaxRatesWorkflow(req.scope).run({
+  await deleteTaxRatesWorkflow(req.scope).run({
     input: { ids: [id] },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   res.status(200).json({
     id,

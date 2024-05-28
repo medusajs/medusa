@@ -1,6 +1,7 @@
 import {
   AuthenticationInput,
   AuthenticationResponse,
+  AuthIdentityProviderService,
   AuthTypes,
   Context,
   DAL,
@@ -14,16 +15,17 @@ import { AuthIdentity } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 import {
-  AbstractAuthModuleProvider,
   InjectManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
+import AuthProviderService from "./auth-provider"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   authIdentityService: ModulesSdkTypes.InternalModuleService<any>
+  authProviderService: AuthProviderService
 }
 
 const generateMethodForModels = [AuthIdentity]
@@ -42,9 +44,14 @@ export default class AuthModuleService<
 {
   protected baseRepository_: DAL.RepositoryService
   protected authIdentityService_: ModulesSdkTypes.InternalModuleService<TAuthIdentity>
+  protected readonly authProviderService_: AuthProviderService
 
   constructor(
-    { authIdentityService, baseRepository }: InjectedDependencies,
+    {
+      authIdentityService,
+      authProviderService,
+      baseRepository,
+    }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
@@ -52,6 +59,7 @@ export default class AuthModuleService<
 
     this.baseRepository_ = baseRepository
     this.authIdentityService_ = authIdentityService
+    this.authProviderService_ = authProviderService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -116,34 +124,16 @@ export default class AuthModuleService<
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
-  protected getRegisteredAuthenticationProvider(
-    provider: string,
-    { authScope }: AuthenticationInput
-  ): AbstractAuthModuleProvider {
-    let containerProvider: AbstractAuthModuleProvider
-    try {
-      containerProvider = this.__container__[`auth_provider_${provider}`]
-    } catch (error) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `AuthenticationProvider: ${provider} wasn't registered in the module. Have you configured your options correctly?`
-      )
-    }
-
-    return containerProvider.withScope(authScope)
-  }
-
   async authenticate(
     provider: string,
     authenticationData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     try {
-      const registeredProvider = this.getRegisteredAuthenticationProvider(
+      return await this.authProviderService_.authenticate(
         provider,
-        authenticationData
+        authenticationData,
+        this.getAuthIdentityProviderService()
       )
-
-      return await registeredProvider.authenticate(authenticationData)
     } catch (error) {
       return { success: false, error: error.message }
     }
@@ -154,14 +144,49 @@ export default class AuthModuleService<
     authenticationData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     try {
-      const registeredProvider = this.getRegisteredAuthenticationProvider(
+      return await this.authProviderService_.validateCallback(
         provider,
-        authenticationData
+        authenticationData,
+        this.getAuthIdentityProviderService()
       )
-
-      return await registeredProvider.validateCallback(authenticationData)
     } catch (error) {
       return { success: false, error: error.message }
+    }
+  }
+
+  getAuthIdentityProviderService(): AuthIdentityProviderService {
+    return {
+      retrieve: async ({ entity_id, provider }) => {
+        const authIdentities = await this.authIdentityService_.list({
+          entity_id,
+          provider,
+        })
+
+        if (!authIdentities.length) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `AuthIdentity with entity_id "${entity_id}" not found`
+          )
+        }
+
+        if (authIdentities.length > 1) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Multiple authIdentities found for entity_id "${entity_id}"`
+          )
+        }
+
+        return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
+          authIdentities[0]
+        )
+      },
+      create: async (data: AuthTypes.CreateAuthIdentityDTO) => {
+        const createdAuthIdentity = await this.authIdentityService_.create(data)
+
+        return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
+          createdAuthIdentity
+        )
+      },
     }
   }
 }

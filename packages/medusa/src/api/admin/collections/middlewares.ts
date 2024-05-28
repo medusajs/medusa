@@ -1,6 +1,5 @@
 import * as QueryConfig from "./query-config"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
   AdminCreateCollection,
@@ -12,12 +11,6 @@ import { validateAndTransformBody } from "../../utils/validate-body"
 import { createLinkBody } from "../../utils/validators"
 
 export const adminCollectionRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: ["ALL"],
-    matcher: "/admin/collections*",
-    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
-  },
-
   {
     method: ["GET"],
     matcher: "/admin/collections",

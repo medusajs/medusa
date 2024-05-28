@@ -560,6 +560,11 @@ export interface CreateLineItemDTO {
    * The adjustments of the line item.
    */
   adjustments?: CreateAdjustmentDTO[]
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 /**

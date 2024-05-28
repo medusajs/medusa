@@ -1,25 +1,25 @@
 import { createDefaultsWorkflow } from "@medusajs/core-flows"
-import { ConfigModule, MedusaContainer } from "@medusajs/types"
+import { ConfigModule, MedusaContainer, PluginDetails } from "@medusajs/types"
 import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
-import { createMedusaContainer } from "medusa-core-utils"
+import glob from "glob"
+import { createMedusaContainer } from "@medusajs/utils"
+import path from "path"
 import requestIp from "request-ip"
 import { v4 } from "uuid"
-import path from "path"
 import adminLoader from "./admin"
 import apiLoader from "./api"
 import loadConfig from "./config"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import { registerWorkflows } from "./helpers/register-workflows"
+import { getResolvedPlugins } from "./helpers/resolve-plugins"
+import { SubscriberLoader } from "./helpers/subscribers"
 import Logger from "./logger"
 import loadMedusaApp from "./medusa-app"
 import registerPgConnection from "./pg-connection"
-import { SubscriberLoader } from "./helpers/subscribers"
-import { getResolvedPlugins } from "./helpers/resolve-plugins"
-import { PluginDetails } from "@medusajs/types"
-import glob from "glob"
+import { resolvePluginsLinks } from "./helpers/resolve-plugins-links"
 
 type Options = {
   directory: string
@@ -53,8 +53,10 @@ async function subscribersLoader(
           ignore: ["**/*.d.ts", "**/*.map"],
         }
       )
-      return Promise.all(
-        files.map(async (file) => new SubscriberLoader(file, container).load())
+      return await Promise.all(
+        files.map(
+          async (file) => await new SubscriberLoader(file, container).load()
+        )
       )
     })
   )
@@ -63,7 +65,8 @@ async function subscribersLoader(
 async function loadEntrypoints(
   plugins: PluginDetails[],
   container: MedusaContainer,
-  expressApp: Express
+  expressApp: Express,
+  rootDirectory: string
 ) {
   const configModule: ConfigModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
@@ -89,7 +92,7 @@ async function loadEntrypoints(
     next()
   })
 
-  await adminLoader({ app: expressApp, adminConfig: configModule.admin })
+  await adminLoader({ app: expressApp, configModule, rootDirectory })
   await subscribersLoader(plugins, container)
   await apiLoader({
     container,
@@ -100,7 +103,7 @@ async function loadEntrypoints(
   return shutdown
 }
 
-async function initializeContainer(rootDirectory: string) {
+export async function initializeContainer(rootDirectory: string) {
   const container = createMedusaContainer()
   const configModule = loadConfig(rootDirectory)
   const featureFlagRouter = featureFlagsLoader(configModule, Logger)
@@ -123,7 +126,6 @@ export default async ({
   container: MedusaContainer
   app: Express
   shutdown: () => Promise<void>
-  prepareShutdown: () => Promise<void>
 }> => {
   const container = await initializeContainer(rootDirectory)
   const configModule = container.resolve(
@@ -133,17 +135,18 @@ export default async ({
   const plugins = getResolvedPlugins(rootDirectory, configModule, true) || []
   await registerWorkflows(plugins)
 
-  const {
-    onApplicationShutdown: medusaAppOnApplicationShutdown,
-    onApplicationPrepareShutdown: medusaAppOnApplicationPrepareShutdown,
-  } = await loadMedusaApp({
-    container,
-  })
+  const pluginLinks = await resolvePluginsLinks(plugins, container)
+  const { onApplicationShutdown, onApplicationPrepareShutdown } =
+    await loadMedusaApp({
+      container,
+      linkModules: pluginLinks,
+    })
 
   const entrypointsShutdown = await loadEntrypoints(
     plugins,
     container,
-    expressApp
+    expressApp,
+    rootDirectory
   )
   await createDefaultsWorkflow(container).run()
 
@@ -151,13 +154,14 @@ export default async ({
     const pgConnection = container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
     )
-    await medusaAppOnApplicationShutdown()
+
+    await onApplicationPrepareShutdown()
+    await onApplicationShutdown()
 
     await promiseAll([
       container.dispose(),
       pgConnection?.context?.destroy(),
       entrypointsShutdown(),
-      medusaAppOnApplicationShutdown(),
     ])
   }
 
@@ -165,6 +169,5 @@ export default async ({
     container,
     app: expressApp,
     shutdown,
-    prepareShutdown: medusaAppOnApplicationPrepareShutdown,
   }
 }

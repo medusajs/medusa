@@ -40,7 +40,7 @@ export type AdminOptions = {
   /**
    * Configure the Vite configuration for the admin dashboard. This function receives the default Vite configuration
    * and returns the modified configuration. The default value is `undefined`.
-   * 
+   *
    * @privateRemarks TODO Add example
    */
   vite?: (config: InlineConfig) => InlineConfig
@@ -401,9 +401,9 @@ export type ProjectConfigOptions = {
    *   // ...
    * }
    * ```
-   * 
+   *
    * @deprecated use {@link http }'s `compression` property instead.
-   * 
+   *
    */
   http_compression?: HttpCompressionOptions
 
@@ -705,6 +705,35 @@ export type ProjectConfigOptions = {
      * ```
      */
     adminCors: string
+
+    /**
+     * Optionally you can specify the supported authentication providers per actor type (such as user, customer, or any custom actors).
+     * For example, you only want to allow SSO logins for `users` to the admin, while you want to allow email/password logins for `customers` to the storefront.
+     *
+     * `authMethodsPerActor` is a a map where the actor type (eg. 'user') is the key, and an array of supported auth providers as the value.
+     *
+     *
+     * @example
+     * Some example values of common use cases:
+     *
+     * Then, set the configuration in `medusa-config.js`:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     http: {
+     *       authMethodsPerActor: {
+     *        user: ['sso'],
+     *        customer: ["emailpass", "google"]
+     *       },
+     *     },
+     *     // ...
+     *   },
+     *   // ...
+     * }
+     * ```
+     */
+    authMethodsPerActor: Record<string, string[]>
   }
 }
 
@@ -751,7 +780,7 @@ export type ConfigModule = {
 
   /**
    * Admin dashboard configurations.
-   * 
+   *
    * @example
    * ```js title="medusa-config.js"
    * module.exports = {
@@ -875,16 +904,6 @@ export type ConfigModule = {
    * :::
    */
   featureFlags: Record<string, boolean | string>
-
-  /**
-   * @ignore
-   * 
-   * @privateRemarks
-   * Since this is a temporary config, maybe let's not include it in the generated reference for now.
-   */
-  directories?: {
-    srcDir?: string
-  }
 }
 
 export type PluginDetails = {

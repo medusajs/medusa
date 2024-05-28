@@ -7,7 +7,7 @@ import {
 } from "../../types/api-responses"
 
 const WORKFLOW_EXECUTIONS_QUERY_KEY = "workflow_executions" as const
-const workflowExecutionsQueryKeys = queryKeysFactory(
+export const workflowExecutionsQueryKeys = queryKeysFactory(
   WORKFLOW_EXECUTIONS_QUERY_KEY
 )
 

@@ -5,7 +5,7 @@ import {
   objectFromStringPath,
 } from "@medusajs/utils"
 import glob from "glob"
-import { isDefined } from "medusa-core-utils"
+import { isDefined } from "@medusajs/utils"
 import { trackFeatureFlag } from "medusa-telemetry"
 import path from "path"
 import { FlagSettings } from "../../types/feature-flags"

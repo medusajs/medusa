@@ -4,7 +4,6 @@ import path from "path"
 import resolveCwd from "resolve-cwd"
 
 import { didYouMean } from "./did-you-mean"
-import { getLocalMedusaVersion } from "./util/version"
 
 import { newStarter } from "./commands/new"
 import reporter from "./reporter"
@@ -362,7 +361,17 @@ function getVersionInfo() {
   const { version } = require(`../package.json`)
   const isMedusaProject = isLocalMedusaProject()
   if (isMedusaProject) {
-    let medusaVersion = getLocalMedusaVersion()
+    let medusaVersion = ""
+    try {
+      medusaVersion = require(path.join(
+        process.cwd(),
+        `node_modules`,
+        `@medusajs/medusa`,
+        `package.json`
+      )).version
+    } catch (e) {
+      /* noop */
+    }
 
     if (!medusaVersion) {
       medusaVersion = `unknown`

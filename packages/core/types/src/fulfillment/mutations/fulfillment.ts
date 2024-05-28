@@ -1,11 +1,7 @@
+import { OrderDTO } from "../../order"
 import { CreateFulfillmentAddressDTO } from "./fulfillment-address"
 import { CreateFulfillmentItemDTO } from "./fulfillment-item"
 import { CreateFulfillmentLabelDTO } from "./fulfillment-label"
-
-/**
- * The fulfillment order to be created.
- */
-export interface CreateFulfillmentOrderDTO {}
 
 /**
  * The fulfillment to be created.
@@ -72,9 +68,9 @@ export interface CreateFulfillmentDTO {
   labels: Omit<CreateFulfillmentLabelDTO, "fulfillment_id">[]
 
   /**
-   * The associated fulfillment order.
+   * The associated order to be sent to the provider.
    */
-  order: CreateFulfillmentOrderDTO
+  order?: Partial<OrderDTO>
 }
 
 /**

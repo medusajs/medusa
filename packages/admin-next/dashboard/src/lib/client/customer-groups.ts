@@ -1,30 +1,26 @@
-import {
-  AdminCustomerGroupListResponse,
-  AdminCustomerGroupResponse,
-} from "@medusajs/types"
 import { z } from "zod"
-import { CreateCustomerGroupSchema } from "../../v2-routes/customer-groups/customer-group-create/components/create-customer-group-form"
-import { EditCustomerGroupSchema } from "../../v2-routes/customer-groups/customer-group-edit/components/edit-customer-group-form"
+import { CreateCustomerGroupSchema } from "../../routes/customer-groups/customer-group-create/components/create-customer-group-form"
+import { EditCustomerGroupSchema } from "../../routes/customer-groups/customer-group-edit/components/edit-customer-group-form"
 import { deleteRequest, getRequest, postRequest } from "./common"
+import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 
 async function retrieveCustomerGroup(id: string, query?: Record<string, any>) {
-  return getRequest<AdminCustomerGroupResponse>(
+  return getRequest<{ customer_group: HttpTypes.AdminCustomerGroup }>(
     `/admin/customer-groups/${id}`,
     query
   )
 }
 
 async function listCustomerGroups(query?: Record<string, any>) {
-  return getRequest<AdminCustomerGroupListResponse>(
-    `/admin/customer-groups`,
-    query
-  )
+  return getRequest<
+    PaginatedResponse<{ customer_groups: HttpTypes.AdminCustomerGroup[] }>
+  >(`/admin/customer-groups`, query)
 }
 
 async function createCustomerGroup(
   payload: z.infer<typeof CreateCustomerGroupSchema>
 ) {
-  return postRequest<AdminCustomerGroupResponse>(
+  return postRequest<{ customer_group: HttpTypes.AdminCustomerGroup }>(
     `/admin/customer-groups`,
     payload
   )
@@ -34,7 +30,7 @@ async function updateCustomerGroup(
   id: string,
   payload: z.infer<typeof EditCustomerGroupSchema>
 ) {
-  return postRequest<AdminCustomerGroupResponse>(
+  return postRequest<{ customer_group: HttpTypes.AdminCustomerGroup }>(
     `/admin/customer-groups/${id}`,
     payload
   )
@@ -52,7 +48,7 @@ async function batchAddCustomers(
   id: string,
   payload: { customer_ids: string[] }
 ) {
-  return postRequest<AdminCustomerGroupResponse>(
+  return postRequest<{ customer_group: HttpTypes.AdminCustomerGroup }>(
     `/admin/customer-groups/${id}/customers`,
     {
       add: payload.customer_ids,
@@ -64,7 +60,7 @@ async function batchRemoveCustomers(
   id: string,
   payload: { customer_ids: string[] }
 ) {
-  return postRequest<AdminCustomerGroupResponse>(
+  return postRequest<{ customer_group: HttpTypes.AdminCustomerGroup }>(
     `/admin/customer-groups/${id}/customers`,
     {
       remove: payload.customer_ids,

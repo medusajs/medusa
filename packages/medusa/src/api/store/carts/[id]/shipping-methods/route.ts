@@ -10,17 +10,12 @@ export const POST = async (
   const workflow = addShippingMethodToWorkflow(req.scope)
   const payload = req.validatedBody
 
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: {
       options: [{ id: payload.option_id, data: payload.data }],
       cart_id: req.params.id,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const cart = await refetchCart(
     req.params.id,

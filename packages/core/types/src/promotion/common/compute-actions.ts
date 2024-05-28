@@ -201,6 +201,11 @@ export interface ComputeActionShippingLine extends Record<string, unknown> {
  */
 export interface ComputeActionContext extends Record<string, unknown> {
   /**
+   * The cart's currency
+   */
+  currency_code: string
+
+  /**
    * The cart's line items.
    */
   items?: ComputeActionItemLine[]

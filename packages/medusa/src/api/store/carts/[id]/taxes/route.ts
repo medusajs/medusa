@@ -9,17 +9,12 @@ export const POST = async (
 ) => {
   const workflow = updateTaxLinesWorkflow(req.scope)
 
-  const { errors } = await workflow.run({
+  await workflow.run({
     input: {
       cart_or_cart_id: req.params.id,
       force_tax_calculation: true,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const cart = await refetchCart(
     req.params.id,

@@ -1,8 +1,4 @@
-import {
-  AdminCustomerListResponse,
-  AdminCustomerResponse,
-  DeleteResponse,
-} from "@medusajs/types"
+import { DeleteResponse, HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -10,10 +6,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { client } from "../../lib/client"
-import { queryClient } from "../../lib/medusa"
+import { sdk } from "../../lib/client"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { CreateCustomerReq, UpdateCustomerReq } from "../../types/api-payloads"
 
 const CUSTOMERS_QUERY_KEY = "customers" as const
 export const customersQueryKeys = queryKeysFactory(CUSTOMERS_QUERY_KEY)
@@ -23,9 +18,9 @@ export const useCustomer = (
   query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<
-      AdminCustomerResponse,
+      { customer: HttpTypes.AdminCustomer },
       Error,
-      AdminCustomerResponse,
+      { customer: HttpTypes.AdminCustomer },
       QueryKey
     >,
     "queryFn" | "queryKey"
@@ -33,7 +28,7 @@ export const useCustomer = (
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: customersQueryKeys.detail(id),
-    queryFn: async () => client.customers.retrieve(id, query),
+    queryFn: async () => sdk.admin.customer.retrieve(id, query),
     ...options,
   })
 
@@ -44,16 +39,16 @@ export const useCustomers = (
   query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<
-      AdminCustomerListResponse,
+      PaginatedResponse<{ customers: HttpTypes.AdminCustomer[] }>,
       Error,
-      AdminCustomerListResponse,
+      PaginatedResponse<{ customers: HttpTypes.AdminCustomer[] }>,
       QueryKey
     >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.customers.list(query),
+    queryFn: () => sdk.admin.customer.list(query),
     queryKey: customersQueryKeys.list(query),
     ...options,
   })
@@ -62,10 +57,14 @@ export const useCustomers = (
 }
 
 export const useCreateCustomer = (
-  options?: UseMutationOptions<AdminCustomerResponse, Error, CreateCustomerReq>
+  options?: UseMutationOptions<
+    { customer: HttpTypes.AdminCustomer; token: string },
+    Error,
+    HttpTypes.AdminCreateCustomer
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.customers.create(payload),
+    mutationFn: (payload) => sdk.admin.customer.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)
@@ -76,10 +75,14 @@ export const useCreateCustomer = (
 
 export const useUpdateCustomer = (
   id: string,
-  options?: UseMutationOptions<AdminCustomerResponse, Error, UpdateCustomerReq>
+  options?: UseMutationOptions<
+    { customer: HttpTypes.AdminCustomer },
+    Error,
+    HttpTypes.AdminUpdateCustomer
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.customers.update(id, payload),
+    mutationFn: (payload) => sdk.admin.customer.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.detail(id) })
@@ -92,10 +95,10 @@ export const useUpdateCustomer = (
 
 export const useDeleteCustomer = (
   id: string,
-  options?: UseMutationOptions<DeleteResponse, Error, void>
+  options?: UseMutationOptions<DeleteResponse<"customer">, Error, void>
 ) => {
   return useMutation({
-    mutationFn: () => client.customers.delete(id),
+    mutationFn: () => sdk.admin.customer.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.lists() })
       queryClient.invalidateQueries({

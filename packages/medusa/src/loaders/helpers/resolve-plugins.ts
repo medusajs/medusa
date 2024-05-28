@@ -2,7 +2,6 @@ import { ConfigModule, PluginDetails } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
-import { createRequireFromPath } from "medusa-core-utils"
 import path from "path"
 
 export const MEDUSA_PROJECT_NAME = "project-plugin"
@@ -57,23 +56,14 @@ function resolvePlugin(pluginName: string): {
     }
   }
 
-  const rootDir = path.resolve(".")
-
   /**
    *  Here we have an absolute path to an internal plugin, or a name of a module
    *  which should be located in node_modules.
    */
   try {
-    const requireSource =
-      rootDir !== null
-        ? createRequireFromPath(`${rootDir}/:internal:`)
-        : require
-
     // If the path is absolute, resolve the directory of the internal plugin,
     // otherwise resolve the directory containing the package.json
-    const resolvedPath = path.dirname(
-      requireSource.resolve(`${pluginName}/package.json`)
-    )
+    const resolvedPath = require.resolve(pluginName)
 
     const packageJSON = JSON.parse(
       fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)
@@ -106,10 +96,7 @@ function resolvePlugin(pluginName: string): {
 
 export function getResolvedPlugins(
   rootDirectory: string,
-  configModule: {
-    plugins: ConfigModule["plugins"]
-    directories?: ConfigModule["directories"]
-  },
+  configModule: ConfigModule,
   isMedusaProject = false
 ): undefined | PluginDetails[] {
   if (isMedusaProject) {
@@ -117,10 +104,14 @@ export function getResolvedPlugins(
      * Grab directory for loading resources inside a starter kit from
      * the medusa-config file.
      *
-     * This is because, we do not have a "dist" directory inside a starter
-     * kit. Instead we discover resources from the "src" directory.
+     * When using ts-node we will read resources from "src" directory
+     * otherwise from "dist" directory.
      */
-    const extensionDirectoryPath = configModule.directories?.srcDir ?? "dist"
+    const extensionDirectoryPath = process[
+      Symbol.for("ts-node.register.instance")
+    ]
+      ? "src"
+      : "dist"
     const extensionDirectory = path.join(rootDirectory, extensionDirectoryPath)
     return [
       {

@@ -37,17 +37,12 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const customerId = req.auth_context.actor_id
-  const { errors } = await updateCustomersWorkflow(req.scope).run({
+  await updateCustomersWorkflow(req.scope).run({
     input: {
       selector: { id: customerId },
       update: req.validatedBody,
     },
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const customer = await refetchCustomer(
     req.params.id,

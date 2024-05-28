@@ -8,18 +8,15 @@ export async function createAuthIdentities(
       id: "test-id",
       entity_id: "test-id",
       provider: "manual",
-      scope: "store",
     },
     {
       id: "test-id-1",
       entity_id: "test-id-1",
       provider: "manual",
-      scope: "store",
     },
     {
       entity_id: "test-id-2",
       provider: "store",
-      scope: "store",
     },
   ]
 ): Promise<AuthIdentity[]> {
