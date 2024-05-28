@@ -15,7 +15,10 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateProductVariant } from "../../../../../hooks/api/products"
-import { castNumber } from "../../../../../lib/cast-number"
+import {
+  parseOptionalFormNumber,
+  parseOptionalFormValue,
+} from "../../../../../lib/form-helpers"
 import { optionalInt } from "../../../../../lib/validation"
 
 type ProductEditVariantFormProps = {
@@ -81,23 +84,20 @@ export const ProductEditVariantForm = ({
     resolver: zodResolver(ProductEditVariantSchema),
   })
 
-  const { mutateAsync, isLoading } = useUpdateProductVariant(
+  const { mutateAsync, isPending } = useUpdateProductVariant(
     product.id,
     variant.id
   )
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const parseNumber = (value?: string | number) => {
-      if (typeof value === "undefined" || value === "") {
-        return undefined
-      }
+    const cleanedValues = Object.entries(data).reduce((acc, [key, value]) => {
+      const cleanValue = parseOptionalFormValue(value)
 
-      if (typeof value === "string") {
-        return castNumber(value)
+      return {
+        ...acc,
+        [key]: cleanValue,
       }
-
-      return value
-    }
+    }, {} as z.infer<typeof ProductEditVariantSchema>)
 
     const {
       weight,
@@ -112,7 +112,7 @@ export const ProductEditVariantForm = ({
       upc,
       barcode,
       ...rest
-    } = data
+    } = cleanedValues
 
     /**
      * If stock and inventory is not enabled, we need to send the inventory and
@@ -125,7 +125,7 @@ export const ProductEditVariantForm = ({
           ean,
           upc,
           barcode,
-          inventory_quantity: parseNumber(inventory_quantity),
+          inventory_quantity: parseOptionalFormNumber(inventory_quantity),
           allow_backorder,
           manage_inventory,
         }
@@ -134,10 +134,10 @@ export const ProductEditVariantForm = ({
     await mutateAsync(
       {
         id: variant.id,
-        weight: parseNumber(weight),
-        height: parseNumber(height),
-        width: parseNumber(width),
-        length: parseNumber(length),
+        weight: parseOptionalFormNumber(weight),
+        height: parseOptionalFormNumber(height),
+        width: parseOptionalFormNumber(width),
+        length: parseOptionalFormNumber(length),
         ...conditionalPayload,
         ...rest,
       },
@@ -495,7 +495,7 @@ export const ProductEditVariantForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button type="submit" size="small" isLoading={isLoading}>
+            <Button type="submit" size="small" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>
