@@ -5,8 +5,8 @@ const ChevronDoubleRight = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const ChevronDoubleRight = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="m9.375 3.75 6.25 6.25-6.25 6.25m-5-12.5 6.25 6.25-6.25 6.25"
+          d="M8.167 3.722 11.945 7.5l-3.778 3.778M3.944 3.722 7.722 7.5l-3.778 3.778"
         />
       </svg>
     )

@@ -5,27 +5,15 @@ const PauseSolid = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <rect
-          width={3.5}
-          height={13.75}
-          x={4.75}
-          y={3.125}
+        <path
           fill={color}
-          rx={1}
-        />
-        <rect
-          width={3.5}
-          height={13.75}
-          x={11.75}
-          y={3.125}
-          fill={color}
-          rx={1}
+          d="M4.167 1.278H2.833c-.859 0-1.555.696-1.555 1.555v9.334c0 .859.696 1.555 1.555 1.555h1.334c.859 0 1.555-.696 1.555-1.555V2.833c0-.859-.696-1.555-1.555-1.555M12.167 1.278h-1.334c-.859 0-1.555.696-1.555 1.555v9.334c0 .859.696 1.555 1.555 1.555h1.334c.859 0 1.555-.696 1.555-1.555V2.833c0-.859-.696-1.555-1.555-1.555"
         />
       </svg>
     )
