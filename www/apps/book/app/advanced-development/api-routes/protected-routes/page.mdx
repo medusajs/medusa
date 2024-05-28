@@ -8,12 +8,6 @@ In this chapter, you’ll learn how to create protected routes.
 
 ## Default Protected Routes
 
-<Note type="soon">
-
-Default protected routes are coming soon. For now, enforce authentication on your custom route as explained in [this section](#protect-custom-api-routes).
-
-</Note>
-
 A protected route is a route that requires requests to be user-authenticated before performing the route's functionality. Otherwise, the request fails, and the user is prevented access.
 
 Medusa applies an authentication guard on the following routes:
@@ -30,12 +24,6 @@ Refer to the API Reference for [Admin](https://docs.medusajs.com/api/admin#authe
 ---
 
 ## Authentication Opt-Out
-
-<Note type="soon">
-
-Authentication opt-out, similar to default protect routes, is coming soon.
-
-</Note>
 
 To disable the authentication guard on custom routes under the `/admin` or `/store/customers/me` path prefixes, export an `AUTHENTICATE` variable in the route file with its value set to `false`.
 
