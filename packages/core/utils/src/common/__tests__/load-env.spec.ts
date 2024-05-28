@@ -1,27 +1,13 @@
 import { join } from "node:path"
+import { FileSystem } from "medusa-test-utils"
 import { writeFile, rm, mkdir } from "node:fs/promises"
 import { loadEnv } from "../load-env"
 
-const filesystem = {
-  tmpFolder: join(__dirname, "tmp"),
-  setup() {
-    return mkdir(this.tmpFolder, { recursive: true })
-  },
-  teardown() {
-    return rm(this.tmpFolder, { recursive: true })
-  },
-  create(filePath: string, contents: string) {
-    return writeFile(join(this.tmpFolder, filePath), contents)
-  },
-}
+const filesystem = new FileSystem(join(__dirname, "tmp"))
 
 describe("loadEnv", function () {
-  beforeEach(async () => {
-    await filesystem.setup()
-  })
-
   afterEach(async () => {
-    await filesystem.teardown()
+    await filesystem.cleanup()
     delete process.env.MEDUSA_VERSION
     delete process.env.MEDUSA_DEV_VERSION
     delete process.env.MEDUSA_TEST_VERSION
@@ -31,7 +17,7 @@ describe("loadEnv", function () {
 
   it("should load .env file when in unknown environment", async function () {
     await filesystem.create(".env", "MEDUSA_VERSION=1.0")
-    loadEnv("", filesystem.tmpFolder)
+    loadEnv("", filesystem.basePath)
 
     expect(process.env.MEDUSA_VERSION).toEqual("1.0")
   })
@@ -42,10 +28,10 @@ describe("loadEnv", function () {
     await filesystem.create(".env.staging", "MEDUSA_STAGING_VERSION=1.0")
     await filesystem.create(".env.production", "MEDUSA_PRODUCTION_VERSION=1.0")
 
-    loadEnv("development", filesystem.tmpFolder)
-    loadEnv("test", filesystem.tmpFolder)
-    loadEnv("staging", filesystem.tmpFolder)
-    loadEnv("production", filesystem.tmpFolder)
+    loadEnv("development", filesystem.basePath)
+    loadEnv("test", filesystem.basePath)
+    loadEnv("staging", filesystem.basePath)
+    loadEnv("production", filesystem.basePath)
 
     expect(process.env.MEDUSA_DEV_VERSION).toEqual("1.0")
     expect(process.env.MEDUSA_TEST_VERSION).toEqual("1.0")
