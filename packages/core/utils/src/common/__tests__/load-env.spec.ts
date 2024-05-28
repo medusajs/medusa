@@ -1,6 +1,5 @@
-import { join } from "node:path"
+import { join } from "path"
 import { FileSystem } from "medusa-test-utils"
-import { writeFile, rm, mkdir } from "node:fs/promises"
 import { loadEnv } from "../load-env"
 
 const filesystem = new FileSystem(join(__dirname, "tmp"))
