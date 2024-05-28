@@ -4995,6 +4995,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-google@workspace:packages/modules/providers/auth-google"
   dependencies:
+    "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.7
     "@types/simple-oauth2": ^5.0.7
     cross-env: ^5.2.1
