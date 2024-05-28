@@ -3,8 +3,8 @@ import { Language } from "./types"
 
 export const languages: Language[] = [
   {
-    code: "en-US",
-    display_name: "English (US)",
+    code: "en",
+    display_name: "English",
     ltr: true,
     date_locale: enUS,
   },

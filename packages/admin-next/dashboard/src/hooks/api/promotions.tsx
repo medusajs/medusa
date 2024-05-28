@@ -32,6 +32,7 @@ import { campaignsQueryKeys } from "./campaigns"
 const PROMOTIONS_QUERY_KEY = "promotions" as const
 export const promotionsQueryKeys = {
   ...queryKeysFactory(PROMOTIONS_QUERY_KEY),
+  // TODO: handle invalidations properly
   listRules: (id: string | null, ruleType: string, promotionType?: string) => [
     PROMOTIONS_QUERY_KEY,
     id,
@@ -218,10 +219,7 @@ export const useUpdatePromotion = (
   return useMutation({
     mutationFn: (payload) => client.promotions.update(id, payload),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
-      queryClient.invalidateQueries({
-        queryKey: promotionsQueryKeys.detail(id),
-      })
+      queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.all })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -237,10 +235,7 @@ export const usePromotionAddRules = (
   return useMutation({
     mutationFn: (payload) => client.promotions.addRules(id, ruleType, payload),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
-      queryClient.invalidateQueries({
-        queryKey: promotionsQueryKeys.detail(id),
-      })
+      queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.all })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -261,10 +256,7 @@ export const usePromotionRemoveRules = (
     mutationFn: (payload) =>
       client.promotions.removeRules(id, ruleType, payload),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
-      queryClient.invalidateQueries({
-        queryKey: promotionsQueryKeys.detail(id),
-      })
+      queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.all })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -275,7 +267,6 @@ export const usePromotionRemoveRules = (
 export const usePromotionUpdateRules = (
   id: string,
   ruleType: string,
-  promotionType?: string,
   options?: UseMutationOptions<
     PromotionRes,
     Error,
@@ -286,13 +277,7 @@ export const usePromotionUpdateRules = (
     mutationFn: (payload) =>
       client.promotions.updateRules(id, ruleType, payload),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
-      queryClient.invalidateQueries({
-        queryKey: promotionsQueryKeys.listRules(id, ruleType, promotionType),
-      })
-      queryClient.invalidateQueries({
-        queryKey: promotionsQueryKeys.detail(id),
-      })
+      queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.all })
 
       options?.onSuccess?.(data, variables, context)
     },
