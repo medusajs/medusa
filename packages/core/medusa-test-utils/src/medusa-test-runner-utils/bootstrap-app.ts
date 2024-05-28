@@ -1,7 +1,7 @@
 import express from "express"
 import getPort from "get-port"
 import { resolve } from "path"
-import { isObject, promiseAll } from "@medusajs/utils"
+import { isObject, promiseAll, GracefulShutdownServer } from "@medusajs/utils"
 import { MedusaContainer } from "@medusajs/types"
 
 async function bootstrapApp({
@@ -52,7 +52,7 @@ export async function startApp({
   let expressServer
 
   const shutdown = async () => {
-    await promiseAll([expressServer.shutdown(), medusaShutdown()])
+    await promiseAll([expressServer?.shutdown(), medusaShutdown()])
 
     if (typeof global !== "undefined" && global?.gc) {
       global.gc()
@@ -77,8 +77,6 @@ export async function startApp({
       })
 
     // TODO: fix that once we find the appropriate place to put this util
-    import("../graceful-shutdown-server").then(({ GracefulShutdownServer }) => {
-      expressServer = GracefulShutdownServer.create(server)
-    })
+    expressServer = GracefulShutdownServer.create(server)
   })
 }

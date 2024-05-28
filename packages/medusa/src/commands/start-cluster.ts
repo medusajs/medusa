@@ -3,14 +3,13 @@ import "regenerator-runtime/runtime"
 
 import cluster from "cluster"
 import express from "express"
-import { GracefulShutdownServer } from "medusa-test-utils"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 import os from "os"
 
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
-import { isPresent } from "@medusajs/utils"
+import { isPresent, GracefulShutdownServer } from "@medusajs/utils"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
