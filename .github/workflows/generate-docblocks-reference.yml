@@ -9,9 +9,9 @@ on:
   workflow_dispatch:
     inputs:
       referenceName:
-        description: 'Reference to Generate. Use either `all` or a name of a config file in `www/utils/packages/typedoc-config` such as `product`.'
+        description: "Reference to Generate. Use either `all` or a name of a config file in `www/utils/packages/typedoc-config` such as `product`."
         required: false
-        default: 'all'
+        default: "all"
 
 jobs:
   references:
@@ -31,7 +31,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: 20
           cache: "yarn"
 
       - name: Install dependencies

@@ -2892,8 +2892,16 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/commerce-modules/payment/payment-provider",
-                "title": "Payment Provider",
-                "children": []
+                "title": "Payment Provider Module",
+                "children": [
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "path": "/commerce-modules/payment/payment-provider/stripe",
+                    "title": "Stripe",
+                    "children": []
+                  }
+                ]
               },
               {
                 "loaded": true,
@@ -5667,6 +5675,61 @@ export const generatedSidebar = [
                 "children": []
               }
             ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "loaded": true,
+    "isPathHref": true,
+    "path": "/integrations",
+    "title": "Integrations",
+    "isChildSidebar": true,
+    "hasTitleStyling": true,
+    "children": [
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "title": "File",
+        "hasTitleStyling": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/architectural-modules/file/s3",
+            "title": "AWS S3 (and Compatible APIs)",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "title": "Notification",
+        "hasTitleStyling": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/architectural-modules/notification/sendgrid",
+            "title": "SendGrid",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "title": "Payment",
+        "hasTitleStyling": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/commerce-modules/payment/payment-provider/stripe",
+            "title": "Stripe",
+            "children": []
           }
         ]
       }

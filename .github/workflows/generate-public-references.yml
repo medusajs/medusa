@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       referenceName:
-        description: 'Reference to Generate. Use either `all` to generate all references, `api` to generate the API reference, or `ui` to generate UI reference.'
+        description: "Reference to Generate. Use either `all` to generate all references, `api` to generate the API reference, or `ui` to generate UI reference."
         required: false
-        default: 'all'
+        default: "all"
   release:
     types: [published]
 
@@ -28,7 +28,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: 20
           cache: "yarn"
 
       - name: Install dependencies
@@ -78,7 +78,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: 20
           cache: "yarn"
 
       - name: Install dependencies
