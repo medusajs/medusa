@@ -57,7 +57,6 @@ export const colors = {
     "--button-neutral-pressed-gradient-to": "rgba(255, 255, 255, 0)",
     "--tag-neutral-bg": "rgba(39, 39, 42, 1)",
     "--bg-highlight": "rgba(23, 37, 84, 1)",
-    "--border-base": "rgba(255, 255, 255, 0.1)",
     "--code-fg-base": "rgba(250, 250, 250, 1)",
     "--tag-neutral-icon": "rgba(113, 113, 122, 1)",
     "--bg-switch-off-hover": "rgba(82, 82, 91, 1)",
@@ -69,7 +68,6 @@ export const colors = {
     "--button-neutral-hover-gradient-from": "rgba(255, 255, 255, 1)",
     "--button-neutral-hover-gradient-to": "rgba(255, 255, 255, 0)",
     "--bg-switch-off": "rgba(63, 63, 70, 1)",
-    "--border-strong": "rgba(255, 255, 255, 0.15)",
     "--fg-subtle": "rgba(161, 161, 170, 1)",
     "--bg-highlight-hover": "rgba(30, 58, 138, 1)",
     "--button-inverted": "rgba(82, 82, 91, 1)",
@@ -109,7 +107,10 @@ export const colors = {
     "--bg-field": "rgba(39, 39, 42, 1)",
     "--bg-field-component": "rgba(24, 24, 27, 1)",
     "--bg-field-component-hover": "rgba(24, 24, 27, 1)",
-    "--bg-field-hover": "rgba(39, 39, 42, 1)"
+    "--bg-field-hover": "rgba(39, 39, 42, 1)",
+    "--border-base": "rgba(255, 255, 255, 0.08)",
+    "--border-strong": "rgba(255, 255, 255, 0.12)",
+    "--contrast-bg-alpha": "rgba(63, 63, 70, 0.9)"
   },
   "light": {
     "--tag-green-bg": "rgba(209, 250, 229, 1)",
@@ -161,13 +162,12 @@ export const colors = {
     "--bg-interactive": "rgba(59, 130, 246, 1)",
     "--bg-highlight-hover": "rgba(219, 234, 254, 1)",
     "--button-transparent": "rgba(255, 255, 255, 0.01)",
+    "--bg-base-pressed": "rgba(228, 228, 231, 1)",
     "--bg-overlay": "rgba(9, 9, 11, 0.4)",
     "--tag-neutral-border": "rgba(228, 228, 231, 1)",
     "--border-loud": "rgba(9, 9, 11, 1)",
-    "--contrast-fg-primary": "rgba(250, 250, 250, 1)",
     "--bg-switch-off": "rgba(228, 228, 231, 1)",
     "--contrast-bg-base-pressed": "rgba(63, 63, 70, 1)",
-    "--bg-base-pressed": "rgba(228, 228, 231, 1)",
     "--tag-neutral-text": "rgba(82, 82, 91, 1)",
     "--button-transparent-hover": "rgba(244, 244, 245, 1)",
     "--contrast-bg-base": "rgba(24, 24, 27, 1)",
@@ -175,10 +175,8 @@ export const colors = {
     "--bg-field": "rgba(250, 250, 250, 1)",
     "--border-strong": "rgba(212, 212, 216, 1)",
     "--bg-field-hover": "rgba(244, 244, 245, 1)",
-    "--contrast-border-base": "rgba(82, 82, 91, 1)",
     "--fg-base": "rgba(9, 9, 11, 1)",
     "--contrast-bg-subtle": "rgba(39, 39, 42, 1)",
-    "--contrast-fg-secondary": "rgba(161, 161, 170, 1)",
     "--code-fg-subtle": "rgba(161, 161, 170, 1)",
     "--tag-neutral-bg": "rgba(244, 244, 245, 1)",
     "--button-transparent-pressed": "rgba(228, 228, 231, 1)",
@@ -221,6 +219,10 @@ export const colors = {
     "--bg-field-component-hover": "rgba(250, 250, 250, 1)",
     "--bg-component-pressed": "rgba(228, 228, 231, 1)",
     "--bg-component": "rgba(250, 250, 250, 1)",
-    "--bg-base-hover": "rgba(244, 244, 245, 1)"
+    "--bg-base-hover": "rgba(244, 244, 245, 1)",
+    "--contrast-bg-alpha": "rgba(9, 9, 11, 0.8)",
+    "--contrast-fg-primary": "rgba(255, 255, 255, 0.95)",
+    "--contrast-fg-secondary": "rgba(255, 255, 255, 0.6)",
+    "--contrast-border-base": "rgba(255, 255, 255, 0.15)"
   }
 }
