@@ -1,6 +1,8 @@
 import qs from "qs"
 import { ClientFetch, Config, FetchArgs, FetchInput, Logger } from "./types"
 
+export const PUBLISHABLE_KEY_HEADER = "x-publishable-api-key"
+
 const hasStorage = (storage: "localStorage" | "sessionStorage") => {
   if (typeof window !== "undefined") {
     return storage in window
@@ -201,10 +203,10 @@ export class Client {
   }
 
   protected getPublishableKeyHeader_ = ():
-    | { "x-medusa-pub-key": string }
+    | { [PUBLISHABLE_KEY_HEADER]: string }
     | {} => {
     return this.config.publishableKey
-      ? { "x-medusa-pub-key": this.config.publishableKey }
+      ? { [PUBLISHABLE_KEY_HEADER]: this.config.publishableKey }
       : {}
   }
 
