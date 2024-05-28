@@ -1,5 +1,5 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
-import { BaseProductCollection } from "../collection/common"
+import { BaseCollection } from "../collection/common"
 
 export type ProductStatus = "draft" | "proposed" | "published" | "rejected"
 
@@ -20,7 +20,7 @@ export interface BaseProduct {
   hs_code?: string
   mid_code?: string
   material?: string
-  collection?: BaseProductCollection
+  collection?: BaseCollection
   collection_id?: string | null
   categories?: BaseProductCategory[]
   type?: BaseProductType | null
