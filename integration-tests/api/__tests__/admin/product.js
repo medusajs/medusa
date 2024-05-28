@@ -45,7 +45,6 @@ const getProductFixture = (overrides) => ({
   variants: [
     {
       title: "Test variant",
-      inventory_quantity: 10,
       prices: [
         {
           currency_code: "usd",
@@ -1075,13 +1074,15 @@ medusaIntegrationTestRunner({
               return [baseProduct.id, salesChannel.id]
             },
             async () => {
-              const salesChannel = await simpleSalesChannelFactory(
-                dbConnection,
-                {
-                  name: "test name",
-                  description: "test description",
-                }
-              )
+              const salesChannel = (
+                await api.post(
+                  "/admin/sales-channels",
+                  {
+                    name: "Sales",
+                  },
+                  adminHeaders
+                )
+              ).data.sales_channel
 
               // Currently the product update doesn't support managing sales channels
               const newProduct = (
@@ -1423,7 +1424,6 @@ medusaIntegrationTestRunner({
             variants: [
               {
                 title: "Test variant",
-                inventory_quantity: 10,
                 prices: [{ currency_code: "usd", amount: 100 }],
               },
             ],
@@ -1446,6 +1446,7 @@ medusaIntegrationTestRunner({
         it("Sets variant ranks when creating a product", async () => {
           const payload = {
             title: "Test product - 1",
+            handle: "test-1",
             description: "test-product-description 1",
             images: breaking(
               () => ["test-image.png", "test-image-2.png"],
@@ -1456,12 +1457,10 @@ medusaIntegrationTestRunner({
             variants: [
               {
                 title: "Test variant 1",
-                inventory_quantity: 10,
                 prices: [{ currency_code: "usd", amount: 100 }],
               },
               {
                 title: "Test variant 2",
-                inventory_quantity: 10,
                 prices: [{ currency_code: "usd", amount: 100 }],
               },
             ],
@@ -1632,7 +1631,6 @@ medusaIntegrationTestRunner({
                   upc: "test-upc",
                   created_at: expect.any(String),
                   id: baseProduct.variants[0].id,
-                  inventory_quantity: 10,
                   manage_inventory: true,
                   options: breaking(
                     () =>
@@ -1896,15 +1894,12 @@ medusaIntegrationTestRunner({
             variants: [
               {
                 title: "first",
-                inventory_quantity: 10,
               },
               {
                 title: "second",
-                inventory_quantity: 10,
               },
               {
                 title: "third",
-                inventory_quantity: 10,
               },
             ],
           }
@@ -2528,7 +2523,6 @@ medusaIntegrationTestRunner({
             ean: "new-ean",
             upc: "new-upc",
             barcode: "new-barcode",
-            inventory_quantity: 10,
             prices: [
               {
                 currency_code: "usd",
@@ -2790,7 +2784,6 @@ medusaIntegrationTestRunner({
             variants: [
               {
                 title: "Test variant",
-                inventory_quantity: 10,
                 prices: [{ currency_code: "usd", amount: 100 }],
               },
             ],
@@ -2821,7 +2814,6 @@ medusaIntegrationTestRunner({
             variants: [
               {
                 title: "Test variant",
-                inventory_quantity: 10,
                 prices: [{ currency_code: "usd", amount: 100 }],
               },
             ],
@@ -2833,7 +2825,7 @@ medusaIntegrationTestRunner({
             expect(error.response.data.message).toMatch(
               breaking(
                 () => "Product with handle base-product already exists.",
-                () => "Product with handle: base-product already exists."
+                () => "Product with handle: base-product, already exists."
               )
             )
           }
@@ -2890,7 +2882,7 @@ medusaIntegrationTestRunner({
                 () =>
                   `Product_collection with handle ${baseCollection.handle} already exists.`,
                 () =>
-                  `Product collection with handle: ${baseCollection.handle} already exists.`
+                  `Product collection with handle: ${baseCollection.handle}, already exists.`
               )
             )
           }
@@ -3059,7 +3051,6 @@ medusaIntegrationTestRunner({
                 variants: [
                   {
                     title: "Variant 1",
-                    inventory_quantity: 5,
                     prices: [
                       {
                         currency_code: "usd",
@@ -3069,7 +3060,6 @@ medusaIntegrationTestRunner({
                   },
                   {
                     title: "Variant 2",
-                    inventory_quantity: 20,
                     prices: [
                       {
                         currency_code: "usd",
@@ -3090,7 +3080,6 @@ medusaIntegrationTestRunner({
 
               const createPayload = {
                 title: "Test batch create variant",
-                inventory_quantity: 10,
                 prices: [
                   {
                     currency_code: "usd",
