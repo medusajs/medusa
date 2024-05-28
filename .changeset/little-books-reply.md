@@ -21,6 +21,7 @@
 "@medusajs/api-key": patch
 "@medusajs/auth": patch
 "@medusajs/auth-emailpass": patch
+"@medusajs/auth-google": patch
 "@medusajs/js-sdk": patch
 "@medusajs/cache-inmemory": patch
 "@medusajs/cache-redis": patch
