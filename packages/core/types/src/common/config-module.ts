@@ -735,7 +735,7 @@ export type ProjectConfigOptions = {
      * }
      * ```
      */
-    authMethodsPerActor: Record<string, string[]>
+    authMethodsPerActor?: Record<string, string[]>
   }
 }
 

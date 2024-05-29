@@ -53,6 +53,11 @@ export interface PaymentCollectionDTO {
   refunded_amount?: BigNumberValue
 
   /**
+   * The amount captured within the associated payments.
+   */
+  captured_amount?: BigNumberValue
+
+  /**
    * When the payment collection was completed.
    */
   completed_at?: string | Date

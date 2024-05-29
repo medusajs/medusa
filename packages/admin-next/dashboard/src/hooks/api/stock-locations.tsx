@@ -40,7 +40,7 @@ export const useStockLocation = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => client.stockLocations.retrieve(id, query),
-    queryKey: stockLocationsQueryKeys.details(),
+    queryKey: stockLocationsQueryKeys.detail(id, query),
     ...options,
   })
 

@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react"
-import * as zod from "zod"
-import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
+import * as zod from "zod"
 
-import { useForm, useWatch } from "react-hook-form"
+import { AdminOrder } from "@medusajs/types"
 import { Alert, Button, Select, toast } from "@medusajs/ui"
-import { OrderDTO } from "@medusajs/types"
+import { useForm, useWatch } from "react-hook-form"
 
+import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { CreateFulfillmentSchema } from "./constants"
-import { Form } from "../../../../../components/common/form"
-import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
-import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { useCreateFulfillment } from "../../../../../hooks/api/fulfillment"
-import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
+import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { cleanNonValues, pick } from "../../../../../lib/common"
+import { getFulfillableQuantity } from "../../../../../lib/order-item"
+import { CreateFulfillmentSchema } from "./constants"
+import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
 
 type OrderCreateFulfillmentFormProps = {
-  order: OrderDTO
+  order: AdminOrder
 }
 
 export function OrderCreateFulfillmentForm({
@@ -43,10 +43,13 @@ export function OrderCreateFulfillmentForm({
 
   const form = useForm<zod.infer<typeof CreateFulfillmentSchema>>({
     defaultValues: {
-      quantity: fulfillableItems.reduce((acc, item) => {
-        acc[item.id] = getFulfillableQuantity(item)
-        return acc
-      }, {} as Record<string, number>),
+      quantity: fulfillableItems.reduce(
+        (acc, item) => {
+          acc[item.id] = getFulfillableQuantity(item)
+          return acc
+        },
+        {} as Record<string, number>
+      ),
       // send_notification: !order.no_notification,
     },
     resolver: zodResolver(CreateFulfillmentSchema),
