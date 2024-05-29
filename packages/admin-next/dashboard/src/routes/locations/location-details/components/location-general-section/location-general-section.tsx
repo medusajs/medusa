@@ -28,7 +28,9 @@ import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { Divider } from "../../../../../components/common/divider"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
+import { LinkButton } from "../../../../../components/common/link-button"
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { useDeleteShippingOption } from "../../../../../hooks/api/shipping-options"
 import {
@@ -147,7 +149,7 @@ function ShippingOption({
         </span>
       </div>
       {isInStore && (
-        <Badge className="mr-4" color="purple">
+        <Badge className="mr-4" color="grey" size="2xsmall" rounded="full">
           {t("location.shippingOptions.inStore")}
         </Badge>
       )}
@@ -199,23 +201,18 @@ function ServiceZoneOptions({
   const returnOptions = zone.shipping_options.filter((o) => isReturnOption(o))
 
   return (
-    <>
-      <div className="mt-4 flex flex-col border-t border-dashed px-6 py-4">
+    <div>
+      <Divider variant="dashed" />
+      <div className="flex flex-col px-6 py-4">
         <div className="item-center flex justify-between">
           <span className="text-ui-fg-subtle txt-small self-center font-medium">
             {t("location.serviceZone.shippingOptions")}
           </span>
-          <Button
-            className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent active:bg-transparent"
-            variant="transparent"
-            onClick={() =>
-              navigate(
-                `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create`
-              )
-            }
+          <LinkButton
+            to={`/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create`}
           >
             {t("location.serviceZone.addOption")}
-          </Button>
+          </LinkButton>
         </div>
 
         {!!shippingOptions.length && (
@@ -232,26 +229,22 @@ function ServiceZoneOptions({
         )}
       </div>
 
-      <div className="-mb-4 flex flex-col border-t border-dashed px-6 py-4">
+      <Divider variant="dashed" />
+
+      <div className="flex flex-col px-6 py-4">
         <div className="item-center flex justify-between">
           <span className="text-ui-fg-subtle txt-small self-center font-medium">
             {t("location.serviceZone.returnOptions")}
           </span>
-          <Button
-            className="text-ui-fg-interactive txt-small px-0 font-medium hover:bg-transparent active:bg-transparent"
-            variant="transparent"
-            onClick={() =>
-              navigate(
-                `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create?is_return`
-              )
-            }
+          <LinkButton
+            to={`/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create?is_return`}
           >
             {t("location.serviceZone.addOption")}
-          </Button>
+          </LinkButton>
         </div>
 
         {!!returnOptions.length && (
-          <div className="shadow-elevation-card-rest bg-ui-bg-subtle mt-4 grid divide-y rounded-md">
+          <div className="shadow-elevation-card-rest bg-ui-bg-subtle grid divide-y rounded-md pt-4">
             {returnOptions.map((o) => (
               <ShippingOption
                 key={o.id}
@@ -264,7 +257,7 @@ function ServiceZoneOptions({
           </div>
         )}
       </div>
-    </>
+    </div>
   )
 }
 
@@ -336,8 +329,8 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   }, [zone.shipping_options])
 
   return (
-    <div className="py-4">
-      <div className="flex flex-row items-center justify-between gap-x-4 px-6">
+    <div className="flex flex-col">
+      <div className="flex flex-row items-center justify-between gap-x-4 px-6 py-4">
         {/* ICON*/}
         <div className="shadow-borders-base flex size-7 items-center justify-center rounded-md">
           <div className="bg-ui-bg-field flex size-6 items-center justify-center rounded-[4px]">
@@ -412,13 +405,11 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
         </div>
       </div>
       {open && (
-        <div>
-          <ServiceZoneOptions
-            fulfillmentSetId={fulfillmentSetId}
-            locationId={locationId}
-            zone={zone}
-          />
-        </div>
+        <ServiceZoneOptions
+          fulfillmentSetId={fulfillmentSetId}
+          locationId={locationId}
+          zone={zone}
+        />
       )}
     </div>
   )
