@@ -8,8 +8,6 @@ export const metadata = {
 
 The API Key Module is the `@medusajs/api-key` NPM package that provides API-key-related features in your Medusa and Node.js applications.
 
----
-
 ## Features
 
 ### API Key Types and Management
@@ -54,7 +52,9 @@ if (!authenticatedToken) {
 Revoke keys to disable their use permenantly.
 
 ```ts
-const revokedKey = await apiKeyModuleService.revoke("apk_1")
+const revokedKey = await apiKeyModuleService.revoke("apk_1", {
+  revoked_by: "user_123"
+})
 ```
 
 ### Roll API Keys
@@ -62,7 +62,9 @@ const revokedKey = await apiKeyModuleService.revoke("apk_1")
 Roll API keys by revoking a key then re-creating it.
 
 ```ts
-const revokedKey = await apiKeyModuleService.revoke("apk_1")
+const revokedKey = await apiKeyModuleService.revoke("apk_1", {
+  revoked_by: "user_123"
+})
 
 const newKey = await apiKeyModuleService.create({
   title: revokedKey.title,
@@ -75,14 +77,16 @@ const newKey = await apiKeyModuleService.create({
 
 ## Configure API Key Module
 
-After installing the `@medusajs/api-key` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+To use the API Key Module, enable it in the `modules` object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 const modules = {
   // ...
-  apiKey: {
-    resolve: "@medusajs/api-key",
-  },
+  [Modules.API_KEY]: true,
 }
 ```
 
@@ -141,12 +145,15 @@ For example:
   import { IApiKeyModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
-    const apiKeyModuleService: IApiKeyModuleService =
-      context.container.resolve(
-        ModuleRegistrationName.API_KEY
-      )
-    const apiKeys = await apiKeyModuleService.list()
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
+      const apiKeyModuleService: IApiKeyModuleService =
+        container.resolve(
+          ModuleRegistrationName.API_KEY
+        )
+
+      const apiKeys = await apiKeyModuleService.list()
   })
   ```
 

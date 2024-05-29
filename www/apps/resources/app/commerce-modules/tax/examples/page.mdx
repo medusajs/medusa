@@ -27,7 +27,7 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
     )
 
     const taxRegion = await taxModuleService.createTaxRegions({
-      country_code: "US",
+      country_code: "us",
       default_tax_rate: {
         rate: 10,
         name: "Default rate",
@@ -54,7 +54,7 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
     const taxModuleService = await initializeTaxModule()
 
     const taxRegion = await taxModuleService.createTaxRegions({
-      country_code: "US",
+      country_code: "us",
       default_tax_rate: {
         rate: 10,
         name: "Default rate",
@@ -262,7 +262,7 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
   import { ITaxModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  export async function POST(
+  export async function GET(
     req: MedusaRequest,
     res: MedusaResponse
   ): Promise<void> {
@@ -312,7 +312,7 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
     initialize as initializeTaxModule,
   } from "@medusajs/tax"
 
-  export async function POST(
+  export async function GET(
     request: Request
   ) {
     const taxModuleService = await initializeTaxModule()
@@ -356,4 +356,4 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
 
 ## More Examples
 
-The [module interface reference](/references/tax) provides a reference to all the methods available for use with examples for each.
+The [Tax Module's main service reference](/references/tax) provides a reference to all the methods available for use with examples for each.

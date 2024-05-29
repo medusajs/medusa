@@ -213,7 +213,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  databaseLogging: LoggerOptions
+  databaseLogging?: LoggerOptions
 
   /**
    * @ignore

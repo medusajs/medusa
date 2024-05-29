@@ -10,7 +10,7 @@ In this document, you’ll learn about some basic fulfillment concepts.
 
 A fulfillment set is a general form or way of fulfillment. For example, shipping is a form of fulfillment, and pick-up is another form of fulfillment. Each of these can be created as fulfillment sets.
 
-A fulfillment set is represented by the `FulfillmentSet` data model. All other configurations, options, and management features are related to a fulfillment set, in one way or another. So, the first step when using the Fulfillment Module is to create a fulfillment set.
+A fulfillment set is represented by the [FulfillmentSet data model](/references/fulfillment/models/FulfillmentSet). All other configurations, options, and management features are related to a fulfillment set, in one way or another.
 
 ```ts
 const fulfillmentSets = await fulfillmentModuleService.create(
@@ -33,13 +33,11 @@ const fulfillmentSets = await fulfillmentModuleService.create(
 
 A service zone is a collection of geographical zones or areas. It’s used to restrict available shipping options to a defined set of locations.
 
-A service zone is represented by the `ServiceZone` data model. It’s associated with a fulfillment set, as each service zone is specific to a form of fulfillment. For example, if a customer chooses to pick up items, you can restrict the available shipping options based on their location.
+A service zone is represented by the [ServiceZone data model](/references/fulfillment/models/ServiceZone). It’s associated with a fulfillment set, as each service zone is specific to a form of fulfillment. For example, if a customer chooses to pick up items, you can restrict the available shipping options based on their location.
 
-A fulfillment set can have multiple service zones, each restricting different locations.
+![A diagram showcasing the relation between fulfillment sets, service zones, and geo zones](https://res.cloudinary.com/dza7lstvk/image/upload/v1712329770/Medusa%20Resources/service-zone_awmvfs.jpg)
 
-![https://res.cloudinary.com/dza7lstvk/image/upload/v1712329770/Medusa%20Resources/service-zone_awmvfs.jpg](https://res.cloudinary.com/dza7lstvk/image/upload/v1712329770/Medusa%20Resources/service-zone_awmvfs.jpg)
-
-A service zone can have multiple geographical zones, each represented by the `GeoZone` data model. It holds location-related details to narrow down supported areas, such as country, city, or province code.
+A service zone can have multiple geographical zones, each represented by the [GeoZone data model](/references/fulfillment/models/GeoZone). It holds location-related details to narrow down supported areas, such as country, city, or province code.
 
 ---
 
@@ -47,4 +45,4 @@ A service zone can have multiple geographical zones, each represented by the `Ge
 
 A shipping profile defines a type of items that are shipped in a similar manner. For example, a `default` shipping profile is used for all item types, but the `digital` shipping profile is used for digital items that aren’t shipped and delivered conventionally.
 
-A shipping profile is represented by the `ShippingProfile` data model. It only defines the profile’s details, but it’s associated with the shipping options available for the item type.
+A shipping profile is represented by the [ShippingProfile data model](/references/fulfillment/models/ShippingProfile). It only defines the profile’s details, but it’s associated with the shipping options available for the item type.

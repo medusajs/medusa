@@ -9,6 +9,10 @@ export enum PaymentSessionStatus {
    */
   AUTHORIZED = "authorized",
   /**
+   * The payment is captured.
+   */
+  CAPTURED = "captured",
+  /**
    * The payment is pending.
    */
   PENDING = "pending",

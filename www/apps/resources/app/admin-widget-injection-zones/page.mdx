@@ -6,13 +6,9 @@ export const metadata = {
 
 # {metadata.title}
 
-<Note type="soon">
-
-Admin customizations are coming soon.
-
-</Note>
-
 This documentation page includes the list of injection zones you can add Admin Widgets to.
+
+## Login Page
 
 <Table>
   <Table.Header>
@@ -57,6 +53,22 @@ This documentation page includes the list of injection zones you can add Admin W
 
       </Table.Cell>
     </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Order Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
     <Table.Row>
       <Table.Cell>
 
@@ -104,11 +116,11 @@ This documentation page includes the list of injection zones you can add Admin W
       </Table.Cell>
       <Table.Cell>
       
-        Type `OrderDetailsWidgetProps` imported from `@medusajs/admin`.
+        Type `DetailWidgetProps<AdminOrder>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          order, // Order object
+          data, // Order object
         }
         ```
 
@@ -127,11 +139,11 @@ This documentation page includes the list of injection zones you can add Admin W
       </Table.Cell>
       <Table.Cell>
       
-        Type `OrderDetailsWidgetProps` imported from `@medusajs/admin`
+        Type `DetailWidgetProps<AdminOrder>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          order, // Order object
+          data, // Order object
         }
         ```
 
@@ -140,55 +152,21 @@ This documentation page includes the list of injection zones you can add Admin W
     <Table.Row>
       <Table.Cell>
 
-        `draft_order.list.before`
+        `order.details.side.before`
 
       </Table.Cell>
       <Table.Cell>
 
-        Added at the top of the draft orders list page.
-
-      </Table.Cell>
-      <Table.Cell>
-
-        \-
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-        `draft_order.list.after`
-
-      </Table.Cell>
-      <Table.Cell>
-
-        Added at the bottom of the draft orders list page.
-
-      </Table.Cell>
-      <Table.Cell>
-
-        \-
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-      `draft_order.details.before`
-
-      </Table.Cell>
-      <Table.Cell>
-
-        Added at the top of the draft order details page
+        Added at the top of the second column in the order details page.
 
       </Table.Cell>
       <Table.Cell>
       
-        Type `DraftOrderDetailsWidgetProps` imported from `@medusajs/admin`.
+        Type `DetailWidgetProps<AdminOrder>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          draftOrder, // DraftOrder object
+          data, // Order object
         }
         ```
 
@@ -197,26 +175,42 @@ This documentation page includes the list of injection zones you can add Admin W
     <Table.Row>
       <Table.Cell>
 
-        `draft_order.details.after`
+        `order.details.side.before`
 
       </Table.Cell>
       <Table.Cell>
 
-        Added at the bottom of the draft order details page.
+        Added at the end of the second column in the order details page.
 
       </Table.Cell>
       <Table.Cell>
       
-        Type `DraftOrderDetailsWidgetProps` imported from `@medusajs/admin`.
+        Type `DetailWidgetProps<AdminOrder>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          draftOrder, // DraftOrder object
+          data, // Order object
         }
         ```
 
       </Table.Cell>
     </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Customer Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
     <Table.Row>
       <Table.Cell>
 
@@ -264,11 +258,11 @@ This documentation page includes the list of injection zones you can add Admin W
       </Table.Cell>
       <Table.Cell>
       
-        Type `CustomerDetailsWidgetProps` imported from `@medusajs/admin`.
+        Type `DetailWidgetProps<AdminCustomer>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          customer, // Customer object
+          data, // Customer object
         }
         ```
 
@@ -286,12 +280,12 @@ This documentation page includes the list of injection zones you can add Admin W
 
       </Table.Cell>
       <Table.Cell>
-
-        Type `CustomerDetailsWidgetProps` imported from `@medusajs/admin`.
+      
+        Type `DetailWidgetProps<AdminCustomer>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          customer, // Customer object
+          data, // Customer object
         }
         ```
 
@@ -343,12 +337,12 @@ This documentation page includes the list of injection zones you can add Admin W
 
       </Table.Cell>
       <Table.Cell>
-
-        Type `CustomerGroupDetailsWidgetProps` imported from `@medusajs/admin`.
+      
+        Type `DetailWidgetProps<AdminCustomerGroup>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          customerGroup, // CustomerGroup object
+          data, // CustomerGroup object
         }
         ```
 
@@ -366,17 +360,33 @@ This documentation page includes the list of injection zones you can add Admin W
 
       </Table.Cell>
       <Table.Cell>
-
-        Type `CustomerGroupDetailsWidgetProps` imported from `@medusajs/admin`.
+      
+        Type `DetailWidgetProps<AdminCustomerGroup>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          customerGroup, // CustomerGroup object
+          data, // CustomerGroup object
         }
         ```
 
       </Table.Cell>
     </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Product Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
     <Table.Row>
       <Table.Cell>
 
@@ -423,12 +433,12 @@ This documentation page includes the list of injection zones you can add Admin W
 
       </Table.Cell>
       <Table.Cell>
-
-        Type `ProductDetailsWidgetProps` imported from `@medusajs/admin`.
+      
+        Type `DetailWidgetProps<AdminProduct>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          product, // Product object
+          data, // Product object
         }
         ```
 
@@ -446,12 +456,58 @@ This documentation page includes the list of injection zones you can add Admin W
 
       </Table.Cell>
       <Table.Cell>
-
-        Type `ProductDetailsWidgetProps` imported from `@medusajs/admin`.
+      
+        Type `DetailWidgetProps<AdminProduct>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          product, // Product object
+          data, // Product object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product.details.side.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the second column in the product details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<AdminProduct>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // Product object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product.details.side.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the second column in the product details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<AdminProduct>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // Product object
         }
         ```
 
@@ -499,16 +555,16 @@ This documentation page includes the list of injection zones you can add Admin W
       </Table.Cell>
       <Table.Cell>
 
-        Added at the top of the product collection details page
+        Added at the top of the product collection details page.
 
       </Table.Cell>
       <Table.Cell>
-
-        Type `ProductCollectionDetailsWidgetProps` imported from `@medusajs/admin`.
+      
+        Type `DetailWidgetProps<AdminProductCollection>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          productCollection, // Collection object
+          data, // ProductCollection object
         }
         ```
 
@@ -526,17 +582,159 @@ This documentation page includes the list of injection zones you can add Admin W
 
       </Table.Cell>
       <Table.Cell>
-
-        Type `ProductCollectionDetailsWidgetProps` imported from `@medusajs/admin`.
+      
+        Type `DetailWidgetProps<AdminProductCollection>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          productCollection, // Collection object
+          data, // ProductCollection object
         }
         ```
 
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product_category.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the product categories list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product_category.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the product categories list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product_category.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the product category details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<AdminProductCategory>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // ProductCategory object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product_category.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the product category details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<AdminProductCategory>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // ProductCategory object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product_category.details.side.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the second column in the product category details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<AdminProductCategory>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // ProductCategory object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `product_category.details.side.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the second column in the product category details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<AdminProductCategory>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // ProductCategory object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Pricing Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
     <Table.Row>
       <Table.Cell>
 
@@ -583,12 +781,12 @@ This documentation page includes the list of injection zones you can add Admin W
 
       </Table.Cell>
       <Table.Cell>
-
-        Type `PriceListDetailsWidgetProps` imported from `@medusajs/admin`.
+      
+        Type `DetailWidgetProps<PriceListDTO>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          priceList, // PriceList object
+          data, // PriceList object
         }
         ```
 
@@ -606,12 +804,12 @@ This documentation page includes the list of injection zones you can add Admin W
 
       </Table.Cell>
       <Table.Cell>
-
-        Type `PriceListDetailsWidgetProps` imported from `@medusajs/admin`.
+      
+        Type `DetailWidgetProps<PriceListDTO>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          priceList, // PriceList object
+          data, // PriceList object
         }
         ```
 
@@ -620,12 +818,74 @@ This documentation page includes the list of injection zones you can add Admin W
     <Table.Row>
       <Table.Cell>
 
-        `discount.list.before`
+        `price_list.details.side.before`
 
       </Table.Cell>
       <Table.Cell>
 
-        Added at the top of the discounts list page.
+        Added at the top of the second column in the price list details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<PriceListDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // PriceList object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `price_list.details.side.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the second column in the price list details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<PriceListDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // PriceList object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Promotion Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `promotion.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the promotions list page.
 
       </Table.Cell>
       <Table.Cell>
@@ -637,75 +897,12 @@ This documentation page includes the list of injection zones you can add Admin W
     <Table.Row>
       <Table.Cell>
 
-        `discount.list.after`
+        `promotion.list.after`
 
       </Table.Cell>
       <Table.Cell>
 
-        Added at the bottom of the discounts list page.
-
-      </Table.Cell>
-      <Table.Cell>
-
-        \-
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-        `discount.details.before`
-
-      </Table.Cell>
-      <Table.Cell>
-
-        Added at the top of a discount's details page.
-
-      </Table.Cell>
-      <Table.Cell>
-
-        Type `DiscountDetailsWidgetProps` imported from `@medusajs/admin`.
-
-        ```ts noCopy noReport
-        {
-          discount, // Discount object
-        }
-        ```
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-        `discount.details.after`
-
-      </Table.Cell>
-      <Table.Cell>
-
-        Added at the bottom of a discount's details page.
-
-      </Table.Cell>
-      <Table.Cell>
-
-        Type `DiscountDetailsWidgetProps` imported from `@medusajs/admin`.
-
-        ```ts noCopy noReport
-        {
-          discount, // Discount object
-        }
-        ```
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-        `gift_card.list.before`
-
-      </Table.Cell>
-      <Table.Cell>
-
-        Added at the top of the gift cards list page.
+        Added at the bottom of the promotions list page.
 
       </Table.Cell>
       <Table.Cell>
@@ -717,12 +914,104 @@ This documentation page includes the list of injection zones you can add Admin W
     <Table.Row>
       <Table.Cell>
 
-        `gift_card.list.after`
+        `promotion.details.before`
 
       </Table.Cell>
       <Table.Cell>
 
-        Added at the bottom of the gift cards list page.
+        Added at the top of a promotion's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<PromotionDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // Promotion object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `promotion.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a promotion's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<PromotionDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // Promotion object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `promotion.details.side.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the second column in the promotion details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<PromotionDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // Promotion object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `promotion.details.side.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the second column in the promotion details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<PromotionDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // Promotion object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `campaign.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the campaigns list page.
 
       </Table.Cell>
       <Table.Cell>
@@ -734,21 +1023,38 @@ This documentation page includes the list of injection zones you can add Admin W
     <Table.Row>
       <Table.Cell>
 
-        `gift_card.details.before`
+        `campaign.list.after`
 
       </Table.Cell>
       <Table.Cell>
 
-        Added at the top of a gift card's details page.
+        Added at the bottom of the campaigns list page.
 
       </Table.Cell>
       <Table.Cell>
 
-        Type `GiftCardDetailsWidgetProps` imported from `@medusajs/admin`.
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `campaign.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a campaign's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<CampaignDTO>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          giftCard, // Product object
+          data, // Campaign object
         }
         ```
 
@@ -757,21 +1063,21 @@ This documentation page includes the list of injection zones you can add Admin W
     <Table.Row>
       <Table.Cell>
 
-        `gift_card.details.after`
+        `campaign.details.after`
 
       </Table.Cell>
       <Table.Cell>
 
-        Added at the bottom of a gift card's details page.
+        Added at the bottom of a campaign's details page.
 
       </Table.Cell>
       <Table.Cell>
-
-        Type `GiftCardDetailsWidgetProps` imported from `@medusajs/admin`.
+      
+        Type `DetailWidgetProps<CampaignDTO>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          giftCard, // Product object
+          data, // Campaign object
         }
         ```
 
@@ -780,21 +1086,21 @@ This documentation page includes the list of injection zones you can add Admin W
     <Table.Row>
       <Table.Cell>
 
-        `custom_gift_card.before`
+        `campaign.details.side.before`
 
       </Table.Cell>
       <Table.Cell>
 
-        Added at the top of a custom gift card's page.
+        Added at the top of the second column in the campaign details page.
 
       </Table.Cell>
       <Table.Cell>
-
-        Type `GiftCardCustomWidgetProps` imported from `@medusajs/admin`.
+      
+        Type `DetailWidgetProps<CampaignDTO>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          giftCard, // GiftCard object
+          data, // Campaign object
         }
         ```
 
@@ -803,21 +1109,1083 @@ This documentation page includes the list of injection zones you can add Admin W
     <Table.Row>
       <Table.Cell>
 
-        `custom_gift_card.after`
+        `campaign.details.side.after`
 
       </Table.Cell>
       <Table.Cell>
 
-        Added at the bottom of a custom gift card's page.
+        Added at the bottom of the second column in the campaign details page.
 
       </Table.Cell>
       <Table.Cell>
-
-        Type `GiftCardCustomWidgetProps` imported from `@medusajs/admin`.
+      
+        Type `DetailWidgetProps<CampaignDTO>` imported from `@medusajs/types`
 
         ```ts noCopy noReport
         {
-          giftCard, // GiftCard object
+          data, // Campaign object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Setting Pages
+
+### User Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `user.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the users list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `user.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the users list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `user.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a user's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<UserDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // User object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `user.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a user's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<UserDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // User object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Store Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `store.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a store's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ExtendedStoreDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // Store object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `store.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a store's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ExtendedStoreDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // Store object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Profile Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `profile.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a profile's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<UserDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // User object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `profile.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a profile's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<UserDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // User object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Region Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `region.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the regions list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `region.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the regions list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `region.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a region's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<AdminRegion>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // Region object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `region.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a region's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<AdminRegion>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // Region object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Shipping Profile Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `shipping_profile.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the shipping profiles list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `shipping_profile.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the shipping profiles list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `shipping_profile.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a shipping profile's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ShippingProfileDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // ShippingProfile object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `shipping_profile.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a shipping profile's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ShippingProfileDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // ShippingProfile object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Location Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `location.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the locations list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `location.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the locations list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `location.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a location's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ExtendedStockLocationDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // StockLocation object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `location.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a location's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ExtendedStockLocationDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // StockLocation object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `location.details.side.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the second column in the location details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ExtendedStockLocationDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // StockLocation object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `location.details.side.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the second column in the location details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ExtendedStockLocationDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // StockLocation object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Sales Channel Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `sales_channel.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the sales channels list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `sales_channel.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the sales channels list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `sales_channel.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a sales channel's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<SalesChannelResponse>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // SalesChannel object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `sales_channel.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a sales channel's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<SalesChannelResponse>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // SalesChannel object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Reservation Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `reservation.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the reservations list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `reservation.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the reservations list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `reservation.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a reservation item's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ReservationItemDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // ReservationItem object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `reservation.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a reservation item's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ReservationItemDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // ReservationItem object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `reservation.details.side.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the second column in the reservation item details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ReservationItemDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // ReservationItem object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `reservation.details.side.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the second column in the reservation item details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ReservationItemDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // ReservationItem object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### API Key Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `api_key.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the API keys list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `api_key.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the API keys list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `api_key.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a API key's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ApiKeyResponse>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // ApiKey object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `api_key.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a API key's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<ApiKeyResponse>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // ApiKey object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Workflow Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `workflow.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the workflows list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `workflow.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the workflows list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `workflow.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a workflow execution's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<WorkflowExecutionDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // WorkflowExecution object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `workflow.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a workflow execution's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<WorkflowExecutionDTO>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // WorkflowExecution object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Tax Pages
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">Injection Zone Name</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">Additional Props</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `tax.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the tax regions list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `tax.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the tax regions list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `tax.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a tax region's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<TaxRegionResponse>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // TaxRegion object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `tax.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a tax region's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<TaxRegionResponse>` imported from `@medusajs/types`
+
+        ```ts noCopy noReport
+        {
+          data, // TaxRegion object
         }
         ```
 

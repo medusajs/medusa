@@ -1,4 +1,4 @@
-import { PriceListStatus, PriceListType } from "@medusajs/utils"
+import { PriceListStatus, PriceListType } from "@medusajs/types"
 
 export interface CreatePriceListDTO {
   title: string
