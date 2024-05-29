@@ -1,10 +1,10 @@
 import { z } from "zod"
+import { OptionalBooleanValidator } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
-import { OptionalBooleanValidator } from "../../utils/common-validators"
 
 export type AdminGetInventoryItemParamsType = z.infer<
   typeof AdminGetInventoryItemParams
@@ -21,7 +21,6 @@ export const AdminGetInventoryItemsParams = createFindParams({
   z.object({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    location_id: z.union([z.string(), z.array(z.string())]).optional(),
     sku: z.union([z.string(), z.array(z.string())]).optional(),
     origin_country: z.union([z.string(), z.array(z.string())]).optional(),
     mid_code: z.union([z.string(), z.array(z.string())]).optional(),
@@ -32,6 +31,11 @@ export const AdminGetInventoryItemsParams = createFindParams({
     length: createOperatorMap(z.number(), parseFloat).optional(),
     height: createOperatorMap(z.number(), parseFloat).optional(),
     width: createOperatorMap(z.number(), parseFloat).optional(),
+    location_levels: z
+      .object({
+        location_id: z.union([z.string(), z.array(z.string())]).optional(),
+      })
+      .optional(),
     $and: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
     $or: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
   })
