@@ -33,15 +33,17 @@ Merchants define a default tax rate and tax rates for specific conditions (for e
 
 During checkout, the taxes are calculated based on the customer's region, tax configurations, and rates.
 
-{/* TODO add links */}
-
 <CardList items={[
   {
     href: "#",
     title: "Manage Taxes in Medusa Admin",
     text: "Manage taxes in Medusa Admin.",
     startIcon: <UsersSolid />,
-    showLinkIcon: false
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
   },
   {
     href: "!api!/admin#tax-regions_posttaxregions",
@@ -70,46 +72,26 @@ During checkout, customers only see the payment providers and shipping options c
 
 Medusa provides official provider modules for payment and fulfillment. You can also create custom provider modules.
 
-{/* TODO add links */}
-
-{/* TODO change provider pages to integration page */}
-
-{/* TODO add the following item
-
-{
-  href: "#",
-  title: "Create Fulfillment Provider",
-  text: "Learn how to create a fulfillment provider.",
-  startIcon: <AcademicCapSolid />,
-  showLinkIcon: false
-}
-*/}
-
 <CardList items={[
   {
     href: "#",
     title: "Manage Providers in Medusa Admin",
     text: "Learn how to manage providers in Medusa Admin.",
     startIcon: <UsersSolid />,
-    showLinkIcon: false
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
   },
   {
-    href: "/commerce-modules/payment/payment-provider",
-    title: "Payment Providers Modules",
-    text: "Check out the list of payment provider modules.",
+    href: "/integrations",
+    title: "Integrations",
+    text: "Check out available integrations, including payment provider modules.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
 ]} />
-
-<Card
-  href="/references/payment/provider"
-  title="Create Payment Provider"
-  text="Learn how to create a payment provider."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
-  className="mt-1"
-/>
 
 ---
 
@@ -119,22 +101,28 @@ Merchants sets the price of a product price per currency and region. This also a
 
 Using the tax-inclusive feature, merchants can specify prices including taxes per currency and region. Medusa then calculates the tax amount applied to a line item in the cart based on the region's tax configurations.
 
-{/* TODO add links */}
-
-<CardList itemsPerRow={2} items={[
+<CardList items={[
   {
     href: "#",
     title: "Setting Product Prices in Medusa Admin",
     text: "Learn how to set a product prices in Medusa Admin.",
     startIcon: <UsersSolid />,
-    showLinkIcon: false
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
   },
   {
     href: "#",
     title: "Display Product Price in Storefront",
     text: "Learn how to display the correct product price in a storefront.",
     startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
   },
 ]} />
 
@@ -154,14 +142,22 @@ A multi-regional setup lets merchants manage their inventory through Medusa acro
     title: "Manage Stock Locations",
     text: "Learn how to manage stock locations in the Medusa Admin.",
     startIcon: <UsersSolid />,
-    showLinkIcon: false
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
   },
   {
     href: "#",
     title: "Manage Inventory",
     text: "Learn how to manage inventory in the Medusa Admin.",
     startIcon: <UsersSolid />,
-    showLinkIcon: false
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
   },
 ]} />
 

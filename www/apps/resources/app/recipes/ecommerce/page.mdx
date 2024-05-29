@@ -48,31 +48,13 @@ You can integrate third-party services and tools, customizing the architecture a
 
 For example, you can integrate Stripe for payment, or SendGrid for notifications.
 
-{/* TODO replace with an integrations page? */}
-
-<CardList items={[
-  {
-    href: "/commerce-modules/payment/payment-provider/stripe",
-    title: "Stripe",
-    text: "Learn how to install and use the Stripe Provider Module.",
-    startIcon: <PuzzleSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "/architectural-modules/notification/sendgrid",
-    title: "SendGrid",
-    text: "Learn how to install and use the SendGrid Provider Module.",
-    startIcon: <PuzzleSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "/architectural-modules/file/s3",
-    title: "S3",
-    text: "Learn how to install and use the S3 Provider Module.",
-    startIcon: <PuzzleSolid />,
-    showLinkIcon: false
-  },
-]} />
+<Card
+  href="/integrations"
+  title="Integrations"
+  text="Check out available integrations for your Medusa application."
+  startIcon={<PuzzleSolid />}
+  showLinkIcon={false}
+/>
 
 ---
 

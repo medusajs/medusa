@@ -5738,6 +5738,98 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "title": "Recipes",
+    "hasTitleStyling": true,
+    "children": [
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/b2b",
+        "title": "B2B",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/commerce-automation",
+        "title": "Commerce Automation",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/digital-products",
+        "title": "Digital Products",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/ecommerce",
+        "title": "Ecommerce",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/integrate-ecommerce-stack",
+        "title": "Integrate Ecommerce Stack",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/marketplace",
+        "title": "Marketplace",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/multi-region-store",
+        "title": "Multi-Region Store",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/omnichannel",
+        "title": "Omnichannel Store",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/oms",
+        "title": "OMS",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/personalized-products",
+        "title": "Personalized Products",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/pos",
+        "title": "POS",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/subscriptions",
+        "title": "Subscriptions",
+        "children": []
+      }
+    ]
+  },
+  {
+    "loaded": true,
+    "isPathHref": true,
     "title": "SDKs and Tools",
     "hasTitleStyling": true,
     "children": [

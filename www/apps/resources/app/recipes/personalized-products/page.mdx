@@ -7,25 +7,35 @@ export const metadata = {
 
 # {metadata.title}
 
-In this recipe, you'll find resources to guide you in building digital products with Medusa.
+This recipe provides the general steps to build personalized products in Medusa.
 
 ## Overview
 
 Personalized products are products that customers can customize based on their need. For example, they can upload an image to print on a shirt or provide a message to include in a letter.
 
-Medusa’s modular architecture and customization tools allows you to create custom data models and expose new features through the REST APIs. You also have freedom in how you choose to implement the storefront, allowing you to build a unique experience around your products.
+In Medusa, you create a custom module defining data models, implementing custom features, and creating relationships to other modules' data models.
+
+You also have freedom in how you choose to implement the storefront, allowing you to build a unique experience around your products.
 
 ---
 
 ## Store Personalized Data
 
-Most of the data models in Medusa’s commerce modules include a `metadata` attribute, which can be used to store custom data as key-value pairs.
+The Cart Module's `LineItem` data model has a `metadata` field that holds any custom data. You can pass the customer's customization in that field when adding a product to the cart.
 
-The `Product` data model represents the main product, whereas the `ProductVariant` data model represents the different saleable options of that product. For example, a shirt is a `Product`, and each different color of the shirt is the `ProductVariant`. The `LineItem` data model is the product variant added to the cart.
+For example, if you’re asking customers to enter a message to put in a letter they’re purchasing, use the `metadata` attribute of the `LineItem` data model to set the personalized information entered by the customer:
 
-So, you can use the `metadata` attribute of the `LineItem` data model to store the customer’s personalization.
-
-For example, if you’re asking customers to enter a message to put in a letter they’re purchasing, use the `metadata` attribute of the `LineItem` data model to set the personalized information entered by the customer.
+```bash
+curl -X POST '{backend_url}/store/carts/{id}/line-items' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "variant_id": "variant_123",
+  "quantity": 1,
+  "metadata": {
+    "message": "Hello, World!"
+  }
+}'
+```
 
 <Note>
 
@@ -33,27 +43,20 @@ Two line items in the cart having different `metadata` attributes are not consid
 
 </Note>
 
-In more complex cases, you can extend data models, such as the `Product` data model, to add more attributes. You can also create new custom data models to hold your personalized data and logic.
+In more complex cases, you can create a custom module that stores and manages the personalization data models. You can also create a relationship between these data models and the `LineItem` data model.
 
 <CardList items={[
   {
-    href: "#",
-    title: "Metadata Attribute",
-    text: "Learn about the metadata attribute and how to use it.",
+    href: "!docs!/basics/modules-and-services",
+    title: "Create a Module",
+    text: "Learn how to create a module.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
+    href: "!docs!/basics/data-models",
     title: "Create a Data Model",
     text: "Learn how to create a data model.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "#",
-    title: "Extend a Data Model",
-    text: "Learn how to extend a data model.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   }
@@ -63,7 +66,7 @@ In more complex cases, you can extend data models, such as the `Product` data mo
 
 ## Build a Custom Storefront
 
-Due to Medusa's modular architecture, there are no restrictions on what language or framework you use to build the storefront or what design or experience you provide customers. The storefront connects to the Medusa application using the Store API Routes.
+Due to Medusa's modular architecture, there are no restrictions on the framework you use to build the storefront, or design and experience you provide customers. The storefront connects to the Medusa application using the Store API Routes.
 
 You can build a unique experience around your products that focuses on the customer’s personalization capabilities.
 
@@ -71,16 +74,16 @@ Medusa provides a Next.js Starter storefront with basic ecommerce functionalitie
 
 <CardList itemsPerRow={2} items={[
   {
-    href: "#",
+    href: "/nextjs-starter",
     title: "Next.js Starter",
     text: "Learn about the Next.js Starter and how to install it.",
     startIcon: <NextJs />,
     showLinkIcon: false
   },
   {
-    href: "#",
+    href: "!docs!/storefront-development/tips",
     title: "Build Your Own Storefront",
-    text: "Follow this roadmap to learn how to create a storefront.",
+    text: "Find tips on how to create a storefront.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
@@ -90,56 +93,30 @@ Medusa provides a Next.js Starter storefront with basic ecommerce functionalitie
 
 ## Pass Personalized Data to the Order
 
-If you followed the basic approach of using the `metadata` attribute to store the personalized data, pass the personalization data when you add an item to the cart in the storefront using the [Add a line item](https://docs.medusajs.com/api/store#carts_postcartscartlineitems) API Route. This API Route accepts a `metadata` request body parameter that will be stored in the created line item’s `metadata` attribute.
+If you store the personalized data using a custom module:
 
-In the case that you’ve created a custom data model or extended a data model, create a custom API Route that handles saving the personalization data. Then, call that API Route from the storefront before or after adding the item to the cart.
+- Create a custom API Route that handles saving the personalization data.
+- Call that API Route from the storefront after adding the item to the cart.
+- Listen to the `order.created` event to attach the personalized data to the Order Module's `LineItem` data model.
 
-<CardList itemsPerRow={2} items={[
-  {
-    href: "https://docs.medusajs.com/api/store#carts_postcartscartlineitems",
-    title: "Add a line item API Route",
-    text: "Learn about the expected request parameters and response.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "#",
-    title: "Create API Route",
-    text: "Learn how to create an API Route.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-]} />
+<Note type="soon">
 
----
+The `order.created` event is currently not emitted.
 
-## Access Personalized Data in the Order
-
-Line items are associated with the placed order. So, if you stored the personalized data in the `metadata` of the line items, expand the `items` relation on the `Order` data model to retrieve the `metadata` attribute of the line items.
-
-On the other hand, if you’ve created a custom data model or extended a data model, create a custom API route that handles retrieving the personalization data. Alternatively, if the data model you’ve created or customized is associated with the `Order` data model, expand it similarly to the `items` relation.
-
-To show the personalized data in the Medusa Admin, extend the Medusa Admin to add a widget or a page to show the personalized data.
+</Note>
 
 <CardList items={[
   {
-    href: "https://docs.medusajs.com/api/store#expanding-fields",
-    title: "Expanding Relations in API Requests",
-    text: "Learn how to expand relations in API requests.",
+    href: "!docs!/basics/api-routes",
+    title: "Create API Route",
+    text: "Learn how to create an API route.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
-    title: "Expanding Relations in Services",
-    text: "Learn how to expand relations in services.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "#",
-    title: "Extending Medusa Admin",
-    text: "Learn how to extend the Medusa Admin with widgets and more.",
+    href: "!docs!/basics/events-and-subscribers",
+    title: "Create a Subscriber",
+    text: "Learn how to create a subscriber.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
@@ -149,31 +126,14 @@ To show the personalized data in the Medusa Admin, extend the Medusa Admin to ad
 
 ## Fulfill Personalized Products in Orders
 
-To access the order’s details and fulfill its personalized products, create a subscriber that listens to the `order.placed` event.
+To fulfill your personalized products with a third-party service or custom logic, create a fulfillment provider module.
 
-For example, if the customer personalizes a shirt to include an image or message, create a subscriber that listens to the `order.placed` event and sends the personalization to the printing third-party fulfillment service.
+The Fulfillment Module registers your fulfillment provider module to use it to fulfill orders.
 
-Alternatively, you can create a fulfillment service that integrates a third-party service or mechanism to fulfill the personalized product. This is useful if you want the fulfillment of personalized products to be embedded into Medusa’s existing order fulfillment.
-
-<CardList itemsPerRow={2} items={[
-  {
-    href: "#",
-    title: "Create a Subscriber",
-    text: "Learn how to create a subscriber and listen to events.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "#",
-    title: "Create a Fulfillment Service",
-    text: "Learn how to create a fulfillment provider in Medusa.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-]} />
-
----
-
-## Additional Development
-
-Refer to other guides in the Medusa Resources or the Medusa Book for additional guidance during your development.
+<Card
+  href="/references/fulfillment/provider"
+  title="Create a Fulfillment Service"
+  text="Learn how to create a fulfillment provider in Medusa."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>

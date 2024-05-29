@@ -1213,6 +1213,61 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       },
     ],
   },
+
+  {
+    title: "Recipes",
+    hasTitleStyling: true,
+    children: [
+      {
+        path: "/recipes/b2b",
+        title: "B2B",
+      },
+      {
+        path: "/recipes/commerce-automation",
+        title: "Commerce Automation",
+      },
+      {
+        path: "/recipes/digital-products",
+        title: "Digital Products",
+      },
+      {
+        path: "/recipes/ecommerce",
+        title: "Ecommerce",
+      },
+      {
+        path: "/recipes/integrate-ecommerce-stack",
+        title: "Integrate Ecommerce Stack",
+      },
+      {
+        path: "/recipes/marketplace",
+        title: "Marketplace",
+      },
+      {
+        path: "/recipes/multi-region-store",
+        title: "Multi-Region Store",
+      },
+      {
+        path: "/recipes/omnichannel",
+        title: "Omnichannel Store",
+      },
+      {
+        path: "/recipes/oms",
+        title: "OMS",
+      },
+      {
+        path: "/recipes/personalized-products",
+        title: "Personalized Products",
+      },
+      {
+        path: "/recipes/pos",
+        title: "POS",
+      },
+      {
+        path: "/recipes/subscriptions",
+        title: "Subscriptions",
+      },
+    ],
+  },
   {
     title: "SDKs and Tools",
     hasTitleStyling: true,

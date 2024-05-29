@@ -27,18 +27,16 @@ Use a file provider module to manage your stored digital products.
 
 During development, you can use the Local File Provider Module, which is installed by default in your store. For production, check out available file provider modules or create your own.
 
-{/* TODO add links */}
-
 <CardList items={[
   {
-    href: "#",
+    href: "/architectural-modules/file",
     title: "File Provider Modules",
     text: "Check out available file provider modules.",
     startIcon: <PuzzleSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
+    href: "/references/file-provider-module",
     title: "Create a File Provider Module",
     text: "Learn how to create a file provider module.",
     startIcon: <AcademicCapSolid />,
@@ -50,8 +48,6 @@ During development, you can use the Local File Provider Module, which is install
 
 ## Install a Notification Provider Module
 
-{/* TODO check info */}
-
 A notification provider module handles sending notifications to users and customers.
 
 For digital products, a notification provider module allows you to send the customer an email or another form of notification with a link to download the file they purchased.
@@ -62,7 +58,7 @@ You can use one of Medusa’s notification provider modules or create your own.
 
 <CardList items={[
   {
-    href: "#",
+    href: "/architectural-modules/notification",
     title: "Notification Provider Modules",
     text: "Check out available official notification provider modules.",
     startIcon: <PuzzleSolid />,
@@ -73,7 +69,11 @@ You can use one of Medusa’s notification provider modules or create your own.
     title: "Create a Notification Provider Module",
     text: "Learn how to create a custom notification service.",
     startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
   },
 ]} />
 
@@ -753,8 +753,6 @@ To utilize the relationship to the Product Module, you use the remote query to f
   Make sure to replace `/path/to/file` with the path to the file to upload. Copy the `id` field’s value as you’ll use it as the `file_key`'s value when creating the digital product.
   
   Finally, send a request to the API route you created:
-
-  {/* TODO make it possible to send request from docs. Require improving the api testing toolkit */}
   
   ```bash
   curl -X POST 'localhost:9000/admin/digital-products' \
@@ -1252,14 +1250,14 @@ Following this approach assumes the file provider module you're using handles cr
 In the subscriber, you can send a notification, such as an email, to the customer using the notification provider module of your choice. That notification would hold the download links to the products the customer purchased.
 
 <Card
-  href="#"
+  href="!docs!/basics/events-and-subscribers"
   title="Create a Subscriber"
-  text="Learn how to create a service."
+  text="Learn how to create a subscriber."
   startIcon={<AcademicCapSolid />}
   showLinkIcon={false}
 />
 
-<Details summaryContent="Example: Using SendGrid">
+<Details summaryContent="Example">
 
   <Note>
 
@@ -1267,7 +1265,7 @@ In the subscriber, you can send a notification, such as an email, to the custome
 
   </Note>
 
-  Here’s an example of a subscriber that retrieves the download links and sends them to the customer using the SendGrid plugin:
+  Here’s an example of a subscriber that retrieves the download links and sends them to the customer using the installed notification provider module:
       
   ```ts title="src/subscribers/handle-order.ts" badgeLabel="Medusa Application"
   import { 
@@ -1277,16 +1275,17 @@ In the subscriber, you can send a notification, such as an email, to the custome
   import { 
     IOrderModuleService,
     IFileModuleService,
+    INotificationModuleService
   } from "@medusajs/types"
   import { 
     ModuleRegistrationName,
   } from "@medusajs/modules-sdk"
   import DigitalProductModuleService 
     from "../modules/digital-product/service"
-  
+
   export default async function handleOrderPlaced({ 
     data, container, 
-  }: SubscriberArgs<Record<string, string>>) {
+  }: SubscriberArgs<{ id: string }>) {
     const orderModuleService: IOrderModuleService = 
       container.resolve(
         ModuleRegistrationName.ORDER
@@ -1295,17 +1294,19 @@ In the subscriber, you can send a notification, such as an email, to the custome
       container.resolve(
         ModuleRegistrationName.FILE
       )
+    const notificationModuleService: INotificationModuleService = 
+      container.resolve(ModuleRegistrationName.NOTIFICATION)
     const digitalProductModuleService:
       DigitalProductModuleService = container.resolve(
         "digitalProductModuleService"
       )
-    // TODO change this
-    const sendgridService = container.resolve("sendgridService")
-  
-    const order = await orderModuleService.retrieve(data.id, {
+
+    const orderId = "data" in data ? data.data.id : data.id
+
+    const order = await orderModuleService.retrieve(orderId, {
       relations: ["items"]
     })
-  
+
     // find product medias in the order
     const urls = []
     for (const item of order.items) {
@@ -1323,33 +1324,27 @@ In the subscriber, you can send a notification, such as an email, to the custome
           )).url
         })
       )
-  
+
       urls.push(...downloadUrls)
     }
-  
-    // TODO change this
-    sendgridService.sendEmail({
-      templateId: "digital-download",
-      from: "hello@medusajs.com",
+
+    notificationModuleService.create({
       to: order.email,
-      dynamic_template_data: {
+      template: "digital-download",
+      channel: "email",
+      data: {
         // any data necessary for your template...
         digital_download_urls: urls,
       },
     })
   }
-  
+
   export const config: SubscriberConfig = {
     event: "order.placed",
-    context: {
-      subscriberId: "order-placed-handler",
-    },
   }
   ```
-
-  Notice that regardless of what file provider module you have installed, you resolve and use the File Module. The File Module’s `retrieve` field retrieves the pre-signed URL of the file.
     
-  The `handleOrderPlaced` subscriber function retrieves the order, loops over its items to find digital products and retrieve their download links, then uses SendGrid to send the email, passing the URLs as a data payload. You can customize the sent data based on your SendGrid template and your use case.
+  The `handleOrderPlaced` subscriber function retrieves the order, loops over its items to find digital products and retrieve their download links, then uses the installed notification provider module to send the email, passing the URLs as a data payload. You can customize the sent data based on your template and your use case.
 
 </Details>
 
@@ -2616,11 +2611,8 @@ After the customer purchases the digital product you can show a download button 
   ```tsx
   import {
     type MiddlewaresConfig, 
-  } from "@medusajs/medusa"
-  // TODO change to direct import?
-  import { 
     authenticate
-  } from "@medusajs/medusa/dist/utils/authenticate-middleware"
+  } from "@medusajs/medusa"
   
   export const config: MiddlewaresConfig = {
     routes: [

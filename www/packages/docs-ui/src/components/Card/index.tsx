@@ -1,7 +1,7 @@
 import React from "react"
 import { ArrowUpRightOnBox } from "@medusajs/icons"
 import clsx from "clsx"
-import { Link } from "@/components"
+import { Badge, BadgeProps, Link } from "@/components"
 
 export type CardProps = {
   startIcon?: React.ReactNode
@@ -14,6 +14,7 @@ export type CardProps = {
   children?: React.ReactNode
   showLinkIcon?: boolean
   isExternal?: boolean
+  badge?: BadgeProps
 }
 
 export const Card = ({
@@ -27,6 +28,7 @@ export const Card = ({
   children,
   showLinkIcon = true,
   isExternal = false,
+  badge,
 }: CardProps) => {
   return (
     <div
@@ -42,8 +44,11 @@ export const Card = ({
       <div className="flex items-start gap-docs_1 justify-between flex-1">
         <div className={clsx("flex flex-col", contentClassName)}>
           {title && (
-            <span className="text-compact-medium-plus text-medusa-fg-base">
-              {title}
+            <span className={clsx(badge && "flex gap-docs_0.5")}>
+              <span className="text-compact-medium-plus text-medusa-fg-base">
+                {title}
+              </span>
+              {badge && <Badge {...badge} />}
             </span>
           )}
           {text && (
