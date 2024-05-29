@@ -1,3 +1,4 @@
+import { getOrderDetailWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -11,18 +12,15 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const variables = { id: req.params.id }
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order",
-    variables,
-    fields: req.remoteQueryConfig.fields,
+  const worklow = getOrderDetailWorkflow(req.scope)
+  const { result } = await worklow.run({
+    input: {
+      fields: req.remoteQueryConfig.fields,
+      order_id: req.params.id,
+    },
   })
 
-  const [order] = await remoteQuery(queryObject)
-  res.status(200).json({ order })
+  res.status(200).json({ order: result })
 }
 
 export const POST = async (
