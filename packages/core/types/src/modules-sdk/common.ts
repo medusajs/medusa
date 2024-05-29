@@ -22,16 +22,6 @@ export type LogLevel =
   | "migration"
 export type LoggerOptions = boolean | "all" | LogLevel[]
 
-export enum MODULE_SCOPE {
-  INTERNAL = "internal",
-  EXTERNAL = "external",
-}
-
-export enum MODULE_RESOURCE_TYPE {
-  SHARED = "shared",
-  ISOLATED = "isolated",
-}
-
 export type CustomModuleDefinition = {
   key?: string
   registrationName?: string
@@ -41,8 +31,8 @@ export type CustomModuleDefinition = {
 }
 
 export type InternalModuleDeclaration = {
-  scope: MODULE_SCOPE.INTERNAL
-  resources: MODULE_RESOURCE_TYPE
+  scope: "internal"
+  resources: "shared" | "isolated"
   dependencies?: string[]
   definition?: CustomModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   resolve?: string | ModuleExports
@@ -59,7 +49,7 @@ export type InternalModuleDeclaration = {
 }
 
 export type ExternalModuleDeclaration = {
-  scope: MODULE_SCOPE.EXTERNAL
+  scope: "external"
   definition?: CustomModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   server:
     | {
