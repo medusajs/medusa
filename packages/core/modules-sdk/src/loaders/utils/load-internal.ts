@@ -244,7 +244,7 @@ async function loadResources(
   moduleResolution: ModuleResolution,
   logger: Logger
 ): Promise<ModuleResource> {
-  const modulePath = moduleResolution.resolutionPath as string
+  let modulePath = moduleResolution.resolutionPath as string
   let normalizedPath = modulePath
     .replace("index.js", "")
     .replace("index.ts", "")
@@ -259,6 +259,7 @@ async function loadResources(
       ? "src"
       : "dist"
     normalizedPath = join(process.cwd(), sourceDir, normalizedPath)
+    modulePath = normalizedPath
   } else {
     normalizedPath = resolve(normalizedPath)
   }
@@ -269,9 +270,7 @@ async function loadResources(
     }
 
     const [moduleService, services, models, repositories] = await Promise.all([
-      import(normalizedPath).then(
-        (moduleExports) => moduleExports.default.service
-      ),
+      import(modulePath).then((moduleExports) => moduleExports.default.service),
       importAllFromDir(resolve(normalizedPath, "services")).catch(
         defaultOnFail
       ),
