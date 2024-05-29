@@ -1,4 +1,4 @@
-import { INotificationModuleService } from "@medusajs/types"
+import { ConfigModule, INotificationModuleService } from "@medusajs/types"
 import { get } from "lodash"
 import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
@@ -13,32 +13,15 @@ type HandlerConfig = {
   data: Record<string, string>
 }
 
-// TODO: The config should be loaded dynamically from medusa-config.js
-// TODO: We can use a more powerful templating syntax to allow for eg. combining fields.
-const handlerConfig: HandlerConfig[] = [
-  {
-    event: "order.created",
-    template: "order-created-template",
-    channel: "email",
-    to: "order.email",
-    resource_id: "order.id",
-    data: {
-      order_id: "order.id",
-    },
-  },
-]
-
-const configAsMap = handlerConfig.reduce(
-  (acc: Record<string, HandlerConfig[]>, h) => {
+const asMap = (handlerConfig: any[]) =>
+  handlerConfig.reduce((acc: Record<string, HandlerConfig[]>, h) => {
     if (!acc[h.event]) {
       acc[h.event] = []
     }
 
     acc[h.event].push(h)
     return acc
-  },
-  {}
-)
+  }, {})
 
 export default async function configurableNotifications({
   data,
@@ -46,12 +29,22 @@ export default async function configurableNotifications({
   container,
 }: SubscriberArgs<any>) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+  const config: ConfigModule = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
   const notificationService: INotificationModuleService = container.resolve(
     ModuleRegistrationName.NOTIFICATION
   )
 
+  const notificationsConfig = config.projectConfig?.notifications?.events ?? []
+  const configAsMap = asMap(notificationsConfig)
+
   const handlers = configAsMap[eventName] ?? []
   const payload = data.data
+
+  if (!handlers.length) {
+    return
+  }
 
   await promiseAll(
     handlers.map(async (handler) => {
@@ -81,7 +74,9 @@ export default async function configurableNotifications({
 }
 
 export const config: SubscriberConfig = {
-  event: handlerConfig.map((h) => h.event),
+  // event: handlerConfig.map((h) => h.event),
+  // TODO: We need to add support for wildcard events
+  event: "*",
   context: {
     subscriberId: "configurable-notifications-handler",
   },

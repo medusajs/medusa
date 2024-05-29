@@ -737,6 +737,52 @@ export type ProjectConfigOptions = {
      */
     authMethodsPerActor?: Record<string, string[]>
   }
+
+  /**
+   * Configure the application notifications.
+   */
+  notifications: {
+    /**
+     * An array of notification configurations. Each configuration object has the following properties:
+     *
+     * - `event`: The event that triggers the notification.
+     * - `template`: The template to use for the notification.
+     * - `channel`: The channel to send the notification to.
+     * - `to`: The recipient of the notification. It can be a selector from the event data, or a hard-coded string
+     * - `resource_id`: The resource ID to use in the notification: It can be a selector from the event data, or a hard-coded string
+     * - `data`: Additional data to include in the notification. It can be a selector from the event data, or a hard-coded string
+     *
+     * @example
+     * ```js title="medusa-config.js"
+     * module.exports = {
+     *   projectConfig: {
+     *     notifications: [
+     *       {
+     *         event: "order.created",
+     *         template: "order-created-template",
+     *         channel: "email",
+     *         to: "order.email",
+     *         resource_id: "order.id",
+     *         data: {
+     *           order_id: "order.id",
+     *         },
+     *       },
+     *     ],
+     *     // ...
+     *   },
+     *   // ...
+     * }
+     * ```
+     */
+    events: {
+      event: string
+      template: string
+      channel: string
+      to?: string
+      resource_id?: string
+      data?: Record<string, string>
+    }[]
+  }
 }
 
 /**
