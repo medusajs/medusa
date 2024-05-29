@@ -22,7 +22,6 @@ export const AdminGetInventoryItemsParams = createFindParams({
     z.object({
       q: z.string().optional(),
       id: z.union([z.string(), z.array(z.string())]).optional(),
-      location_id: z.union([z.string(), z.array(z.string())]).optional(),
       sku: z.union([z.string(), z.array(z.string())]).optional(),
       origin_country: z.union([z.string(), z.array(z.string())]).optional(),
       mid_code: z.union([z.string(), z.array(z.string())]).optional(),

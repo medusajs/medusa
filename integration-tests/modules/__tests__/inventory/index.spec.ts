@@ -10,7 +10,6 @@ import { createAdminUser } from "../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../factories")
 const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 medusaIntegrationTestRunner({
@@ -794,7 +793,10 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const response = await api.get(`/admin/inventory-items`, adminHeaders)
+          const response = await api.get(
+            `/admin/inventory-items?location_levels[location_id]=${location1}`,
+            adminHeaders
+          )
 
           expect(response.data.inventory_items).toHaveLength(1)
           expect(response.data.inventory_items[0]).toEqual(
