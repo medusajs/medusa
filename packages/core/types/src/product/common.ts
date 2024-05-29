@@ -1188,19 +1188,19 @@ export interface CreateProductVariantDTO {
   /**
    * The SKU of the product variant.
    */
-  sku?: string
+  sku?: string | null
   /**
    * The barcode of the product variant.
    */
-  barcode?: string
+  barcode?: string | null
   /**
    * The EAN of the product variant.
    */
-  ean?: string
+  ean?: string | null
   /**
    * The UPC of the product variant.
    */
-  upc?: string
+  upc?: string | null
   /**
    * Whether the product variant can be ordered when it's out of stock.
    */
@@ -1212,35 +1212,35 @@ export interface CreateProductVariantDTO {
   /**
    * The HS Code of the product variant.
    */
-  hs_code?: string
+  hs_code?: string | null
   /**
    * The origin country of the product variant.
    */
-  origin_country?: string
+  origin_country?: string | null
   /**
    * The MID Code of the product variant.
    */
-  mid_code?: string
+  mid_code?: string | null
   /**
    * The material of the product variant.
    */
-  material?: string
+  material?: string | null
   /**
    * The weight of the product variant.
    */
-  weight?: number
+  weight?: number | null
   /**
    * The length of the product variant.
    */
-  length?: number
+  length?: number | null
   /**
    * The height of the product variant.
    */
-  height?: number
+  height?: number | null
   /**
    * The width of the product variant.
    */
-  width?: number
+  width?: number | null
   /**
    * The options of the variant. Each key is an option's title, and value
    * is an option's value. If an option with the specified title doesn't exist,
@@ -1285,19 +1285,19 @@ export interface UpdateProductVariantDTO {
   /**
    * The SKU of the product variant.
    */
-  sku?: string
+  sku?: string | null
   /**
    * The barcode of the product variant.
    */
-  barcode?: string
+  barcode?: string | null
   /**
    * The EAN of the product variant.
    */
-  ean?: string
+  ean?: string | null
   /**
    * The UPC of the product variant.
    */
-  upc?: string
+  upc?: string | null
   /**
    * Whether the product variant can be ordered when it's out of stock.
    */
@@ -1309,35 +1309,35 @@ export interface UpdateProductVariantDTO {
   /**
    * The HS Code of the product variant.
    */
-  hs_code?: string
+  hs_code?: string | null
   /**
    * The origin country of the product variant.
    */
-  origin_country?: string
+  origin_country?: string | null
   /**
    * The MID Code of the product variant.
    */
-  mid_code?: string
+  mid_code?: string | null
   /**
    * The material of the product variant.
    */
-  material?: string
+  material?: string | null
   /**
    * The weight of the product variant.
    */
-  weight?: number
+  weight?: number | null
   /**
    * The length of the product variant.
    */
-  length?: number
+  length?: number | null
   /**
    * The height of the product variant.
    */
-  height?: number
+  height?: number | null
   /**
    * The width of the product variant.
    */
-  width?: number
+  width?: number | null
   /**
    * The product variant options to associate with the product variant.
    */

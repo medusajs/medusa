@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
-import { Fragment } from "react"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
@@ -24,7 +23,6 @@ import { optionalInt } from "../../../../../lib/validation"
 type ProductEditVariantFormProps = {
   product: Product
   variant: ProductVariant
-  isStockAndInventoryEnabled?: boolean
 }
 
 const ProductEditVariantSchema = z.object({
@@ -34,7 +32,6 @@ const ProductEditVariantSchema = z.object({
   ean: z.string().optional(),
   upc: z.string().optional(),
   barcode: z.string().optional(),
-  inventory_quantity: optionalInt,
   manage_inventory: z.boolean(),
   allow_backorder: z.boolean(),
   weight: optionalInt,
@@ -51,7 +48,6 @@ const ProductEditVariantSchema = z.object({
 export const ProductEditVariantForm = ({
   product,
   variant,
-  isStockAndInventoryEnabled = false,
 }: ProductEditVariantFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -99,37 +95,7 @@ export const ProductEditVariantForm = ({
       }
     }, {} as z.infer<typeof ProductEditVariantSchema>)
 
-    const {
-      weight,
-      height,
-      width,
-      length,
-      inventory_quantity,
-      allow_backorder,
-      manage_inventory,
-      sku,
-      ean,
-      upc,
-      barcode,
-      ...rest
-    } = cleanedValues
-
-    /**
-     * If stock and inventory is not enabled, we need to send the inventory and
-     * stock related fields to the API. If it is enabled, it should be handled
-     * in the separate stock and inventory form.
-     */
-    const conditionalPayload = !isStockAndInventoryEnabled
-      ? {
-          sku,
-          ean,
-          upc,
-          barcode,
-          inventory_quantity: parseOptionalFormNumber(inventory_quantity),
-          allow_backorder,
-          manage_inventory,
-        }
-      : {}
+    const { weight, height, width, length, ...rest } = cleanedValues
 
     await mutateAsync(
       {
@@ -138,7 +104,6 @@ export const ProductEditVariantForm = ({
         height: parseOptionalFormNumber(height),
         width: parseOptionalFormNumber(width),
         length: parseOptionalFormNumber(length),
-        ...conditionalPayload,
         ...rest,
       },
       {
@@ -218,165 +183,130 @@ export const ProductEditVariantForm = ({
             })}
           </div>
           <Divider />
-          {!isStockAndInventoryEnabled && (
-            <Fragment>
-              <div className="flex flex-col gap-y-8">
-                <div className="flex flex-col gap-y-4">
-                  <Heading level="h2">
-                    {t("products.variant.inventory.header")}
-                  </Heading>
-                  <Form.Field
-                    control={form.control}
-                    name="sku"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label optional>{t("fields.sku")}</Form.Label>
-                          <Form.Control>
-                            <Input {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                  <Form.Field
-                    control={form.control}
-                    name="ean"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label optional>{t("fields.ean")}</Form.Label>
-                          <Form.Control>
-                            <Input {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                  <Form.Field
-                    control={form.control}
-                    name="upc"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label optional>{t("fields.upc")}</Form.Label>
-                          <Form.Control>
-                            <Input {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                  <Form.Field
-                    control={form.control}
-                    name="barcode"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label optional>
-                            {t("fields.barcode")}
-                          </Form.Label>
-                          <Form.Control>
-                            <Input {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                  <Form.Field
-                    control={form.control}
-                    name="inventory_quantity"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label>
-                            {t("fields.inventoryQuantity")}
-                          </Form.Label>
-                          <Form.Control>
-                            <Input type="number" {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                </div>
-                <Form.Field
-                  control={form.control}
-                  name="manage_inventory"
-                  render={({ field: { value, onChange, ...field } }) => {
-                    return (
-                      <Form.Item>
-                        <div className="flex flex-col gap-y-1">
-                          <div className="flex items-center justify-between">
-                            <Form.Label>
-                              {t(
-                                "products.variant.inventory.manageInventoryLabel"
-                              )}
-                            </Form.Label>
-                            <Form.Control>
-                              <Switch
-                                checked={value}
-                                onCheckedChange={(checked) =>
-                                  onChange(!!checked)
-                                }
-                                {...field}
-                              />
-                            </Form.Control>
-                          </div>
-                          <Form.Hint>
-                            {t(
-                              "products.variant.inventory.manageInventoryHint"
-                            )}
-                          </Form.Hint>
-                        </div>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="allow_backorder"
-                  render={({ field: { value, onChange, ...field } }) => {
-                    return (
-                      <Form.Item>
-                        <div className="flex flex-col gap-y-1">
-                          <div className="flex items-center justify-between">
-                            <Form.Label>
-                              {t(
-                                "products.variant.inventory.allowBackordersLabel"
-                              )}
-                            </Form.Label>
-                            <Form.Control>
-                              <Switch
-                                checked={value}
-                                onCheckedChange={(checked) =>
-                                  onChange(!!checked)
-                                }
-                                {...field}
-                              />
-                            </Form.Control>
-                          </div>
-                          <Form.Hint>
-                            {t(
-                              "products.variant.inventory.allowBackordersHint"
-                            )}
-                          </Form.Hint>
-                        </div>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-              </div>
-              <Divider />
-            </Fragment>
-          )}
+          <div className="flex flex-col gap-y-8">
+            <div className="flex flex-col gap-y-4">
+              <Heading level="h2">
+                {t("products.variant.inventory.header")}
+              </Heading>
+              <Form.Field
+                control={form.control}
+                name="sku"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label optional>{t("fields.sku")}</Form.Label>
+                      <Form.Control>
+                        <Input {...field} />
+                      </Form.Control>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+              <Form.Field
+                control={form.control}
+                name="ean"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label optional>{t("fields.ean")}</Form.Label>
+                      <Form.Control>
+                        <Input {...field} />
+                      </Form.Control>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+              <Form.Field
+                control={form.control}
+                name="upc"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label optional>{t("fields.upc")}</Form.Label>
+                      <Form.Control>
+                        <Input {...field} />
+                      </Form.Control>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+              <Form.Field
+                control={form.control}
+                name="barcode"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label optional>{t("fields.barcode")}</Form.Label>
+                      <Form.Control>
+                        <Input {...field} />
+                      </Form.Control>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+            </div>
+            <Form.Field
+              control={form.control}
+              name="manage_inventory"
+              render={({ field: { value, onChange, ...field } }) => {
+                return (
+                  <Form.Item>
+                    <div className="flex flex-col gap-y-1">
+                      <div className="flex items-center justify-between">
+                        <Form.Label>
+                          {t("products.variant.inventory.manageInventoryLabel")}
+                        </Form.Label>
+                        <Form.Control>
+                          <Switch
+                            checked={value}
+                            onCheckedChange={(checked) => onChange(!!checked)}
+                            {...field}
+                          />
+                        </Form.Control>
+                      </div>
+                      <Form.Hint>
+                        {t("products.variant.inventory.manageInventoryHint")}
+                      </Form.Hint>
+                    </div>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="allow_backorder"
+              render={({ field: { value, onChange, ...field } }) => {
+                return (
+                  <Form.Item>
+                    <div className="flex flex-col gap-y-1">
+                      <div className="flex items-center justify-between">
+                        <Form.Label>
+                          {t("products.variant.inventory.allowBackordersLabel")}
+                        </Form.Label>
+                        <Form.Control>
+                          <Switch
+                            checked={value}
+                            onCheckedChange={(checked) => onChange(!!checked)}
+                            {...field}
+                          />
+                        </Form.Control>
+                      </div>
+                      <Form.Hint>
+                        {t("products.variant.inventory.allowBackordersHint")}
+                      </Form.Hint>
+                    </div>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+          </div>
+          <Divider />
           <div className="flex flex-col gap-y-4">
             <Heading level="h2">{t("products.attributes")}</Heading>
             <Form.Field
