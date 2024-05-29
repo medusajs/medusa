@@ -22,6 +22,21 @@ export default class AuthIdentity {
   @Property({ columnType: "jsonb", nullable: true })
   app_metadata: Record<string, unknown> | null
 
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
+
   @BeforeCreate()
   @OnInit()
   onCreate() {
