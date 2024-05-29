@@ -7,9 +7,7 @@ describe("defineConfig", function () {
         "admin": {
           "backendUrl": "http://localhost:9000",
         },
-        "featureFlags": {
-          "medusa_v2": true,
-        },
+        "featureFlags": {},
         "modules": {
           "apiKey": true,
           "auth": true,
@@ -71,8 +69,8 @@ describe("defineConfig", function () {
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
           "http": {
-            "adminCors": "http://localhost:7000,http://localhost:7001",
-            "authCors": "http://localhost:7000,http://localhost:7001",
+            "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "cookieSecret": "supersecret",
             "jwtSecret": "supersecret",
             "storeCors": "http://localhost:8000",
@@ -96,9 +94,7 @@ describe("defineConfig", function () {
         "admin": {
           "backendUrl": "http://localhost:9000",
         },
-        "featureFlags": {
-          "medusa_v2": true,
-        },
+        "featureFlags": {},
         "modules": {
           "apiKey": true,
           "auth": true,
@@ -163,8 +159,8 @@ describe("defineConfig", function () {
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
           "http": {
-            "adminCors": "http://localhost:7000,http://localhost:7001",
-            "authCors": "http://localhost:7000,http://localhost:7001",
+            "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "cookieSecret": "supersecret",
             "jwtSecret": "supersecret",
             "storeCors": "http://localhost:8000",
@@ -180,7 +176,7 @@ describe("defineConfig", function () {
         projectConfig: {
           http: {
             adminCors: "http://localhost:3000",
-          },
+          } as any,
         },
       })
     ).toMatchInlineSnapshot(`
@@ -188,9 +184,7 @@ describe("defineConfig", function () {
         "admin": {
           "backendUrl": "http://localhost:9000",
         },
-        "featureFlags": {
-          "medusa_v2": true,
-        },
+        "featureFlags": {},
         "modules": {
           "apiKey": true,
           "auth": true,
@@ -253,7 +247,7 @@ describe("defineConfig", function () {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
           "http": {
             "adminCors": "http://localhost:3000",
-            "authCors": "http://localhost:7000,http://localhost:7001",
+            "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "cookieSecret": "supersecret",
             "jwtSecret": "supersecret",
             "storeCors": "http://localhost:8000",
