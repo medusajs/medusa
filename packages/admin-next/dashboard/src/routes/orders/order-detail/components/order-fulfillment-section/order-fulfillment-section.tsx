@@ -1,7 +1,7 @@
 import { Buildings, XCircle } from "@medusajs/icons"
 import {
+  AdminOrder,
   FulfillmentDTO,
-  OrderDTO,
   OrderLineItemDTO,
   ProductVariantDTO,
 } from "@medusajs/types"
@@ -27,7 +27,7 @@ import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 
 type OrderFulfillmentSectionProps = {
-  order: OrderDTO & { fulfillments: FulfillmentDTO[] }
+  order: AdminOrder
 }
 
 export const OrderFulfillmentSection = ({
@@ -103,11 +103,7 @@ const UnfulfilledItem = ({
   )
 }
 
-const UnfulfilledItemBreakdown = ({
-  order,
-}: {
-  order: OrderDTO & { fulfillments: FulfillmentDTO[] }
-}) => {
+const UnfulfilledItemBreakdown = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   // Create an array of order items that haven't been fulfilled or at least not fully fulfilled
@@ -161,7 +157,7 @@ const Fulfillment = ({
   index,
 }: {
   fulfillment: FulfillmentDTO
-  order: OrderDTO
+  order: AdminOrder
   index: number
 }) => {
   const { t } = useTranslation()
