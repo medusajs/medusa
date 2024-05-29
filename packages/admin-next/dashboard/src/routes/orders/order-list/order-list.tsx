@@ -5,7 +5,7 @@ import before from "virtual:medusa/widgets/order/list/before"
 
 export const OrderList = () => {
   return (
-    <div className="flex w-full flex-col gap-y-2">
+    <div className="flex w-full flex-col gap-y-3">
       {before.widgets.map((w, i) => {
         return (
           <div key={i}>

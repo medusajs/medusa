@@ -52,7 +52,7 @@ export const LocationDetails = () => {
         )
       })}
       <div className="flex flex-col gap-x-4 lg:flex-row xl:items-start">
-        <div className="flex w-full flex-col gap-y-2">
+        <div className="flex w-full flex-col gap-y-3">
           <LocationGeneralSection location={location} />
           {after.widgets.map((w, i) => {
             return (
