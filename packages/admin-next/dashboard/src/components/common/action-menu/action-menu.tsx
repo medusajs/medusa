@@ -1,8 +1,8 @@
 import { DropdownMenu, IconButton } from "@medusajs/ui"
 
 import { EllipsisHorizontal } from "@medusajs/icons"
-import { Link } from "react-router-dom"
 import { ReactNode } from "react"
+import { Link } from "react-router-dom"
 
 type Action = {
   icon: ReactNode
@@ -55,7 +55,7 @@ export const ActionMenu = ({ groups }: ActionMenuProps) => {
                         e.stopPropagation()
                         action.onClick()
                       }}
-                      className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="[&_svg]:text-ui-fg-subtle disabled:text-ui-fg-disabled disabled:[&_svg]:text-ui-fg-disabled flex items-center gap-x-2 disabled:cursor-not-allowed"
                     >
                       {action.icon}
                       <span>{action.label}</span>
@@ -66,7 +66,7 @@ export const ActionMenu = ({ groups }: ActionMenuProps) => {
                 return (
                   <div key={index}>
                     <DropdownMenu.Item
-                      className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2 disabled:cursor-not-allowed disabled:opacity-50"
                       asChild
                       disabled={action.disabled}
                     >

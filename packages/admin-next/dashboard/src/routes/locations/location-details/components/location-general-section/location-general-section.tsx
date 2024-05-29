@@ -105,7 +105,7 @@ function ShippingOption({
   const prompt = usePrompt()
   const { t } = useTranslation()
 
-  const isInStore = isOptionEnabledInStore(option)
+  const isStoreOption = isOptionEnabledInStore(option)
 
   const { mutateAsync: deleteOption } = useDeleteShippingOption(option.id)
 
@@ -123,36 +123,40 @@ function ShippingOption({
       return
     }
 
-    try {
-      await deleteOption()
-
-      toast.success(t("general.success"), {
-        description: t("location.shippingOptions.toast.delete", {
-          name: option.name,
-        }),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await deleteOption(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("location.shippingOptions.toast.delete", {
+            name: option.name,
+          }),
+          dismissLabel: t("actions.close"),
+        })
+      },
+      onError: (e) => {
+        toast.error(t("general.error"), {
+          description: e.message,
+          dismissLabel: t("actions.close"),
+        })
+      },
+    })
   }
 
   return (
-    <div className="flex items-center justify-between px-4 py-3">
+    <div className="flex items-center justify-between px-3 py-2">
       <div className="flex-1">
         <span className="txt-small font-medium">
           {option.name} - {option.shipping_profile.name} (
           {formatProvider(option.provider_id)})
         </span>
       </div>
-      {isInStore && (
-        <Badge className="mr-4" color="grey" size="2xsmall" rounded="full">
-          {t("location.shippingOptions.inStore")}
-        </Badge>
-      )}
+      <Badge
+        className="mr-4"
+        color={isStoreOption ? "grey" : "purple"}
+        size="2xsmall"
+        rounded="full"
+      >
+        {isStoreOption ? t("general.store") : t("general.admin")}
+      </Badge>
       <ActionMenu
         groups={[
           {
@@ -192,7 +196,6 @@ function ServiceZoneOptions({
   fulfillmentSetId,
 }: ServiceZoneOptionsProps) {
   const { t } = useTranslation()
-  const navigate = useNavigate()
 
   const shippingOptions = zone.shipping_options.filter(
     (o) => !isReturnOption(o)
