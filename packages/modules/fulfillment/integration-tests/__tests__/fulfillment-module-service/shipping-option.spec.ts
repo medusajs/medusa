@@ -427,7 +427,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
       describe("mutations", () => {
         describe("on create", () => {
-          it.only("should create a new shipping option", async function () {
+          it("should create a new shipping option", async function () {
             const shippingProfile = await service.createShippingProfiles({
               name: "test",
               type: "default",
@@ -531,11 +531,14 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               }),
             ]
 
+            jest.clearAllMocks()
+
             const createdShippingOptions = await service.createShippingOptions(
               createData
             )
 
             expect(createdShippingOptions).toHaveLength(2)
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(6)
 
             let i = 0
             for (const data_ of createData) {
@@ -565,6 +568,30 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                   ]),
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.shipping_option_created,
+                    action: "created",
+                    object: "shipping_option",
+                    data: { id: createdShippingOptions[i].id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.shipping_option_type_created,
+                    action: "created",
+                    object: "shipping_option_type",
+                    data: { id: createdShippingOptions[i].type.id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.shipping_option_rule_created,
+                    action: "created",
+                    object: "shipping_option_rule",
+                    data: { id: createdShippingOptions[i].rules[0].id },
+                  }),
+                ])
+              )
+
               ++i
             }
           })

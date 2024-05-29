@@ -3,13 +3,28 @@ import {
   CreateShippingProfileDTO,
   IFulfillmentModuleService,
 } from "@medusajs/types"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
+import { buildExpectedEventMessageShape } from "../../__fixtures__"
+import { FulfillmentEvents } from "@medusajs/utils"
 
 jest.setTimeout(100000)
 
 moduleIntegrationTestRunner<IFulfillmentModuleService>({
   moduleName: Modules.FULFILLMENT,
   testSuite: ({ service }) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("Fulfillment Module Service", () => {
       describe("mutations", () => {
         describe("on create", () => {
@@ -29,6 +44,16 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 type: createData.type,
               })
             )
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.shipping_profile_created,
+                action: "created",
+                object: "shipping_profile",
+                data: { id: createdShippingProfile.id },
+              }),
+            ])
           })
 
           it("should create multiple new shipping profiles", async function () {
@@ -47,6 +72,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               await service.createShippingProfiles(createData)
 
             expect(createdShippingProfiles).toHaveLength(2)
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(2)
 
             let i = 0
             for (const data_ of createData) {
@@ -56,6 +82,18 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                   type: data_.type,
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.shipping_profile_created,
+                    action: "created",
+                    object: "shipping_profile",
+                    data: { id: createdShippingProfiles[i].id },
+                  }),
+                ])
+              )
+
               ++i
             }
           })

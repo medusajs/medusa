@@ -5,9 +5,41 @@ import {
   ShippingOption,
   ShippingOptionRule,
   ShippingOptionType,
+  ShippingProfile,
 } from "@models"
 import { Context, EventBusTypes } from "@medusajs/types"
 import { CommonEvents, FulfillmentUtils, Modules } from "@medusajs/utils"
+
+export function buildShippingProfileEvents({
+  action,
+  shippingProfiles,
+  sharedContext,
+}: {
+  action: string
+  shippingProfiles: ShippingProfile[]
+  sharedContext: Context
+}) {
+  if (!shippingProfiles.length) {
+    return
+  }
+
+  const aggregator = sharedContext.messageAggregator!
+  const messages: EventBusTypes.RawMessageFormat[] = []
+
+  shippingProfiles.forEach((shippingOptionType) => {
+    messages.push({
+      service: Modules.FULFILLMENT,
+      action,
+      context: sharedContext,
+      data: { id: shippingOptionType.id },
+      eventName:
+        FulfillmentUtils.FulfillmentEvents[`shipping_profile_${action}`],
+      object: "shipping_profile",
+    })
+  })
+
+  aggregator.saveRawMessageData(messages)
+}
 
 export function buildShippingOptionTypeEvents({
   action,
@@ -28,7 +60,7 @@ export function buildShippingOptionTypeEvents({
   shippingOptionTypes.forEach((shippingOptionType) => {
     messages.push({
       service: Modules.FULFILLMENT,
-      action: CommonEvents.CREATED,
+      action,
       context: sharedContext,
       data: { id: shippingOptionType.id },
       eventName:
@@ -59,7 +91,7 @@ export function buildShippingOptionRuleEvents({
   shippingOptionRules.forEach((shippingOptionType) => {
     messages.push({
       service: Modules.FULFILLMENT,
-      action: CommonEvents.CREATED,
+      action,
       context: sharedContext,
       data: { id: shippingOptionType.id },
       eventName:
@@ -141,7 +173,7 @@ export function buildFulfillmentSetEvents({
   fulfillmentSets.forEach((fulfillmentSet) => {
     messages.push({
       service: Modules.FULFILLMENT,
-      action: action,
+      action,
       context: sharedContext,
       data: { id: fulfillmentSet.id },
       eventName: FulfillmentUtils.FulfillmentEvents[action],
@@ -171,7 +203,7 @@ export function buildServiceZoneEvents({
   serviceZones.forEach((serviceZone) => {
     messages.push({
       service: Modules.FULFILLMENT,
-      action: action,
+      action,
       context: sharedContext,
       data: { id: serviceZone.id },
       eventName: FulfillmentUtils.FulfillmentEvents[`service_zone_${action}`],
@@ -201,7 +233,7 @@ export function buildGeoZoneEvents({
   geoZones.forEach((geoZone) => {
     messages.push({
       service: Modules.FULFILLMENT,
-      action: action,
+      action,
       context: sharedContext,
       data: { id: geoZone.id },
       eventName: FulfillmentUtils.FulfillmentEvents[`geo_zone_${action}`],

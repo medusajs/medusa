@@ -43,6 +43,7 @@ import {
   buildFulfillmentSetEvents,
   buildGeoZoneEvents,
   buildServiceZoneEvents,
+  buildShippingProfileEvents,
   isContextValid,
   validateAndNormalizeRules,
 } from "@utils"
@@ -434,12 +435,7 @@ export default class FulfillmentModuleService<
       validateAndNormalizeRules(rules as Record<string, unknown>[])
     }
 
-    const createdShippingOptions = await this.shippingOptionService_.create(
-      data_,
-      sharedContext
-    )
-
-    return createdShippingOptions
+    return await this.shippingOptionService_.create(data_, sharedContext)
   }
 
   createShippingProfiles(
@@ -452,6 +448,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ShippingProfileDTO>
 
   @InjectTransactionManager("baseRepository_")
+  @EmitEvents()
   async createShippingProfiles(
     data:
       | FulfillmentTypes.CreateShippingProfileDTO[]
@@ -465,10 +462,18 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
+    buildShippingProfileEvents({
+      action: CommonEvents.CREATED,
+      shippingProfiles: createdShippingProfiles,
+      sharedContext,
+    })
+
     return await this.baseRepository_.serialize<
       | FulfillmentTypes.ShippingProfileDTO
       | FulfillmentTypes.ShippingProfileDTO[]
-    >(createdShippingProfiles)
+    >(
+      Array.isArray(data) ? createdShippingProfiles : createdShippingProfiles[0]
+    )
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -477,7 +482,7 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.CreateShippingProfileDTO[]
       | FulfillmentTypes.CreateShippingProfileDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TShippingProfileEntity[] | TShippingProfileEntity> {
+  ): Promise<TShippingProfileEntity[]> {
     const data_ = Array.isArray(data) ? data : [data]
 
     if (!data_.length) {
@@ -489,9 +494,7 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    return Array.isArray(data)
-      ? createdShippingProfiles
-      : createdShippingProfiles[0]
+    return createdShippingProfiles
   }
 
   createGeoZones(
