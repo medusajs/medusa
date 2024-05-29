@@ -248,7 +248,6 @@ async function loadResources(
   let normalizedPath = modulePath
     .replace("index.js", "")
     .replace("index.ts", "")
-  normalizedPath = resolve(normalizedPath)
   /**
    * If the project is running on ts-node all relative module resolution
    * will target the src directory and otherwise the dist directory.
