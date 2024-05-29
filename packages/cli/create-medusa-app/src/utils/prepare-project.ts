@@ -10,6 +10,10 @@ import { clearProject } from "./clear-project.js"
 import type { Client } from "pg"
 
 const ADMIN_EMAIL = "admin@medusa-test.com"
+// TODO remove preview links once we move to main docs
+const STORE_CORS = "http://localhost:8000,https://docs.medusajs.com,https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app,https://medusa-resources-git-docs-v2-medusajs.vercel.app"
+const ADMIN_CORS = "http://localhost:7000,http://localhost:7001,https://docs.medusajs.com,https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app,https://medusa-resources-git-docs-v2-medusajs.vercel.app"
+const DEFAULT_REDIS_URL = "redis://localhost:6379"
 
 type PrepareOptions = {
   directory: string
@@ -68,14 +72,18 @@ export default async ({
   // initialize the invite token to return
   let inviteToken: string | undefined = undefined
 
+  // add environment variables
+  let env = `MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=${STORE_CORS}${EOL}ADMIN_CORS=${ADMIN_CORS}${EOL}REDIS_URL=${DEFAULT_REDIS_URL}${EOL}JWT_SECRET=supersecret${EOL}COOKIE_SECRET=supersecret`
+
   if (!skipDb) {
-    let env = `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}${EOL}MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=http://localhost:8000,http://localhost:7001${EOL}POSTGRES_URL=${dbConnectionString}`
-    if (nextjsDirectory) {
-      env += `${EOL}MEDUSA_ADMIN_ONBOARDING_NEXTJS_DIRECTORY=${nextjsDirectory}`
-    }
-    // add connection string to project
-    fs.appendFileSync(path.join(directory, `.env`), env)
+    env += `${EOL}DATABASE_URL=${dbConnectionString}${EOL}POSTGRES_URL=${dbConnectionString}`
   }
+
+  if (nextjsDirectory) {
+    env += `${EOL}MEDUSA_ADMIN_ONBOARDING_NEXTJS_DIRECTORY=${nextjsDirectory}`
+  }
+  
+  fs.appendFileSync(path.join(directory, `.env`), env)
 
   factBoxOptions.interval = displayFactBox({
     ...factBoxOptions,
