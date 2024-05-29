@@ -32,7 +32,7 @@ export function buildShippingOptionTypeEvents({
       context: sharedContext,
       data: { id: shippingOptionType.id },
       eventName:
-        FulfillmentUtils.FulfillmentEvents[`shipping_option_type_[${action}`],
+        FulfillmentUtils.FulfillmentEvents[`shipping_option_type_${action}`],
       object: "shipping_option_type",
     })
   })
@@ -63,7 +63,7 @@ export function buildShippingOptionRuleEvents({
       context: sharedContext,
       data: { id: shippingOptionType.id },
       eventName:
-        FulfillmentUtils.FulfillmentEvents[`shipping_option_rule_[${action}`],
+        FulfillmentUtils.FulfillmentEvents[`shipping_option_rule_${action}`],
       object: "shipping_option_rule",
     })
   })

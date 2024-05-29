@@ -29,7 +29,7 @@
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build && tsc-alias -p tsconfig.json",
     "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
     "test": "jest --runInBand --bail --forceExit --passWithNoTests -- src",
-    "test:integration": "jest --forceExit -- integration-tests/__tests__/fulfillment-module-service/shipping-option.spec.ts",
+    "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.spec.ts",
     "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
     "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial -n InitialSetupMigration",
     "migration:create": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create",

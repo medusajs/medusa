@@ -448,6 +448,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 provider_id: providerId,
               })
 
+            jest.clearAllMocks()
+
             const createdShippingOption = await service.createShippingOptions(
               createData
             )
@@ -479,23 +481,23 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               })
             )
 
-            expect(eventBusEmitSpy.mock.calls[1][0]).toHaveLength(3)
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(3)
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.updated,
-                action: "updated",
+                eventName: FulfillmentEvents.shipping_option_created,
+                action: "created",
                 object: "shipping_option",
                 data: { id: createdShippingOption.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.updated,
-                action: "updated",
+                eventName: FulfillmentEvents.shipping_option_type_created,
+                action: "created",
                 object: "shipping_option_type",
                 data: { id: createdShippingOption.type.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.updated,
-                action: "updated",
+                eventName: FulfillmentEvents.shipping_option_rule_created,
+                action: "created",
                 object: "shipping_option_rule",
                 data: { id: createdShippingOption.rules[0].id },
               }),
