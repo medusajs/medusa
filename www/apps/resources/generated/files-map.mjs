@@ -228,6 +228,10 @@ export const filesMap = [
     "pathname": "/architectural-modules/workflow-engine/redis"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/api-key/concepts/page.mdx",
+    "pathname": "/commerce-modules/api-key/concepts"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/api-key/events/_events-table/page.mdx",
     "pathname": "/commerce-modules/api-key/events/_events-table"
   },
@@ -248,16 +252,32 @@ export const filesMap = [
     "pathname": "/commerce-modules/api-key/relations-to-other-modules"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/api-key/tokens/page.mdx",
-    "pathname": "/commerce-modules/api-key/tokens"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-flows/page.mdx",
     "pathname": "/commerce-modules/auth/auth-flows"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-identity-and-actor-types/page.mdx",
+    "pathname": "/commerce-modules/auth/auth-identity-and-actor-types"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/_google/page.mdx",
+    "pathname": "/commerce-modules/auth/auth-providers/_google"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/emailpass/page.mdx",
+    "pathname": "/commerce-modules/auth/auth-providers/emailpass"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/page.mdx",
     "pathname": "/commerce-modules/auth/auth-providers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/authentication-route/page.mdx",
+    "pathname": "/commerce-modules/auth/authentication-route"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/create-actor-type/page.mdx",
+    "pathname": "/commerce-modules/auth/create-actor-type"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/events/_events-table/page.mdx",
@@ -278,10 +298,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/page.mdx",
     "pathname": "/commerce-modules/auth"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/auth/user-creation/page.mdx",
-    "pathname": "/commerce-modules/auth/user-creation"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/concepts/page.mdx",
@@ -332,6 +348,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/currency"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/currency/relations-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/currency/relations-to-other-modules"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/customer-accounts/page.mdx",
     "pathname": "/commerce-modules/customer/customer-accounts"
   },
@@ -350,6 +370,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/page.mdx",
     "pathname": "/commerce-modules/customer"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/customer/register-customer-email/page.mdx",
+    "pathname": "/commerce-modules/customer/register-customer-email"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/relations-to-other-modules/page.mdx",
@@ -688,6 +712,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/store"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/store/relations-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/store/relations-to-other-modules"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/tax/events/_events-table/page.mdx",
     "pathname": "/commerce-modules/tax/events/_events-table"
   },
@@ -742,10 +770,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/user/user-creation-flows/page.mdx",
     "pathname": "/commerce-modules/user/user-creation-flows"
-  },
-  {
-    "filePath": "/www/apps/resources/app/configurations/_medusa-admin/page.mdx",
-    "pathname": "/configurations/_medusa-admin"
   },
   {
     "filePath": "/www/apps/resources/app/contribution-guidelines/_admin-translations/page.mdx",
@@ -930,14 +954,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/troubleshooting/_transaction-promise-all/page.mdx",
     "pathname": "/troubleshooting/_transaction-promise-all"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/admin-sign-in/page.mdx",
-    "pathname": "/troubleshooting/admin-sign-in"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/admin-webpack-build-error/page.mdx",
-    "pathname": "/troubleshooting/admin-webpack-build-error"
   },
   {
     "filePath": "/www/apps/resources/app/troubleshooting/cors-errors/page.mdx",

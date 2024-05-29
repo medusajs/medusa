@@ -37,8 +37,8 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/api-key/tokens",
-                "title": "Tokens",
+                "path": "/commerce-modules/api-key/concepts",
+                "title": "API Key Concepts",
                 "children": []
               },
               {
@@ -196,8 +196,30 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "path": "/commerce-modules/auth/auth-identity-and-actor-types",
+                "title": "Identity and Actor Types",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
                 "path": "/commerce-modules/auth/auth-providers",
                 "title": "Auth Providers",
+                "children": [
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "path": "/commerce-modules/auth/auth-providers/emailpass",
+                    "title": "Emailpass Auth Provider Module",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/auth/authentication-route",
+                "title": "Authentication Route",
                 "children": []
               },
               {
@@ -206,12 +228,19 @@ export const generatedSidebar = [
                 "path": "/commerce-modules/auth/auth-flows",
                 "title": "Auth Flows",
                 "children": []
-              },
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/auth/user-creation",
-                "title": "User Creation",
+                "path": "/commerce-modules/auth/create-actor-type",
+                "title": "Create an Actor Type",
                 "children": []
               }
             ]
@@ -866,6 +895,20 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "title": "Concepts",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/currency/relations-to-other-modules",
+                "title": "Relation to Modules",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "title": "References",
             "children": [
               {
@@ -976,6 +1019,20 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/commerce-modules/customer/relations-to-other-modules",
                 "title": "Relations to Other Modules",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/customer/register-customer-email",
+                "title": "Register a Customer with Email",
                 "children": []
               }
             ]
@@ -5071,6 +5128,20 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "title": "Concepts",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/store/relations-to-other-modules",
+                "title": "Relation to Modules",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "title": "References",
             "children": [
               {
@@ -5236,7 +5307,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/commerce-modules/tax/tax-calculation-with-provider",
-                "title": "Tax Calculation",
+                "title": "Tax Calculation and Providers",
                 "children": []
               }
             ]
@@ -5246,13 +5317,6 @@ export const generatedSidebar = [
             "isPathHref": true,
             "title": "References",
             "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/tax/provider",
-                "title": "Tax Provider Reference",
-                "children": []
-              },
               {
                 "loaded": true,
                 "isPathHref": true,
@@ -7141,28 +7205,6 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/troubleshooting/cors-errors",
                 "title": "CORS Errors",
-                "children": []
-              }
-            ]
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "title": "Medusa Admin",
-            "hasTitleStyling": true,
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/troubleshooting/admin-sign-in",
-                "title": "Signing In",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/troubleshooting/admin-custom-hooks-error",
-                "title": "Custom Hooks Error",
                 "children": []
               }
             ]

@@ -58,4 +58,26 @@ const user = await userModuleService.create({
 })
 ```
 
-However, the User Module doesn’t handle authentication methods or store a user’s password. For that, you’d need to use the [Auth Module](../../auth/page.mdx).
+### With the Auth Module
+
+By combining the User and Auth Modules, you can use the Auth Module for authenticating users, and the User Module to manage those users.
+
+So, when a user is authenticated, and you receive the `AuthIdentity` object, you can use it to create a user if it doesn’t exist:
+
+```ts
+const { success, authIdentity } =
+  await authModuleService.authenticate("emailpass", {
+    // ...
+  })
+
+// assuming authIdentity is defined
+const [, count] = await userModuleService.listAndCount({
+  email: authIdentity.entity_id,
+})
+
+if (!count) {
+  const user = await userModuleService.create({
+    email: authIdentity.entity_id,
+  })
+}
+```
