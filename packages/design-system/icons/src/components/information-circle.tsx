@@ -5,19 +5,25 @@ const InformationCircle = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
-          stroke={color}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="m9.375 9.375.034-.017a.625.625 0 0 1 .886.71l-.59 2.364a.625.625 0 0 0 .886.71l.034-.017M17.5 10a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0ZM10 6.875h.007v.007H10v-.007Z"
-        />
+        <g stroke={color} strokeWidth={1.5} clipPath="url(#a)">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m6.829 6.784.037-.018a.671.671 0 0 1 .95.763l-.633 2.537a.67.67 0 0 0 .951.763l.037-.018M7.5 4.1h.007v.007H7.5z"
+          />
+          <circle cx={7.5} cy={7.5} r={6.36} />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

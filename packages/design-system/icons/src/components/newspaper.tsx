@@ -5,19 +5,28 @@ const Newspaper = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M10 6.25h1.25M10 8.75h1.25M5 11.25h6.25M5 13.75h6.25m2.5-7.5h2.813c.517 0 .937.42.937.938V15a1.875 1.875 0 0 1-1.875 1.875M13.75 6.25V15a1.875 1.875 0 0 0 1.875 1.875M13.75 6.25V4.062a.938.938 0 0 0-.938-.937H3.438a.938.938 0 0 0-.938.938V15a1.875 1.875 0 0 0 1.875 1.875h11.25M5 6.25h2.5v2.5H5v-2.5Z"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="M2.611 13.945a1.556 1.556 0 0 1-1.555-1.556V8.611c0-.245.199-.444.444-.444h.444" />
+          <path d="M4.167 12.389c0 .859-.697 1.556-1.556 1.556h9.556c.982 0 1.777-.796 1.777-1.778V2.833c0-.982-.795-1.777-1.777-1.777H5.944c-.982 0-1.777.795-1.777 1.777z" />
+          <path d="M11.278 3.722H6.833v2.222h4.445zM11.278 8.611H6.833M11.278 11.278H6.833" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

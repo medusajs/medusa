@@ -3908,12 +3908,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:3.3.2":
-  version: 3.3.2
-  resolution: "@hookform/resolvers@npm:3.3.2"
+"@hookform/resolvers@npm:3.4.2":
+  version: 3.4.2
+  resolution: "@hookform/resolvers@npm:3.4.2"
   peerDependencies:
     react-hook-form: ^7.0.0
-  checksum: 538c86a744c71735a5c3be7b450c704111fe53a52634463ed3c801681d57504d3717ab5f7bd20e99ee87d81a9da0aca640af0837eb807486d9d5c927269a9b37
+  checksum: cb8a3e0cc1c9aeaf2adad585f29badf342a96da9cfdf4efa1168aadb7ef52f440cac5cc6fedf0fda6a52effd27a5c859692c89bb99ed5c76d03064aea1f0d684
   languageName: node
   linkType: hard
 
@@ -4991,6 +4991,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/auth-google@workspace:packages/modules/providers/auth-google":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/auth-google@workspace:packages/modules/providers/auth-google"
+  dependencies:
+    "@medusajs/types": ^1.11.16
+    "@medusajs/utils": ^1.11.7
+    "@types/simple-oauth2": ^5.0.7
+    cross-env: ^5.2.1
+    jest: ^29.6.3
+    jsonwebtoken: ^9.0.2
+    msw: ^2.3.0
+    rimraf: ^5.0.1
+    typescript: ^5.1.6
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/auth@workspace:*, @medusajs/auth@workspace:packages/modules/auth":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"
@@ -5159,7 +5175,7 @@ __metadata:
     "@ariakit/react": ^0.4.1
     "@dnd-kit/core": ^6.1.0
     "@dnd-kit/sortable": ^8.0.0
-    "@hookform/resolvers": 3.3.2
+    "@hookform/resolvers": 3.4.2
     "@medusajs/admin-shared": ^0.0.1
     "@medusajs/admin-vite-plugin": 0.0.1
     "@medusajs/icons": 1.2.1
@@ -5201,7 +5217,7 @@ __metadata:
     tsup: ^8.0.2
     typescript: 5.2.2
     vite: ^5.2.11
-    zod: ^3.22.4
+    zod: 3.22.4
   languageName: unknown
   linkType: soft
 
@@ -6017,13 +6033,13 @@ __metadata:
     "@types/fs-extra": 11.0.1
     "@types/react": ^18.2.14
     axios: ^0.24.0
+    axios-retry: ^3.1.9
     commander: 11.0.0
     dotenv: ^16.4.5
     eslint: 7.32.0
     fs-extra: 11.1.1
     picocolors: ^1.0.0
     react: ^18.2.0
-    retry-axios: ^2.6.0
     ts-dedent: 2.2.0
     tsup: 7.1.0
     typescript: 5.1.6
@@ -6178,6 +6194,7 @@ __metadata:
     awilix: ^8.0.1
     bignumber.js: ^9.1.2
     cross-env: ^5.2.1
+    dotenv: ^16.4.5
     express: ^4.18.2
     jest: ^29.6.3
     knex: 2.4.2
@@ -11774,6 +11791,13 @@ __metadata:
     "@types/node": "*"
     "@types/send": "*"
   checksum: 26ec864d3a626ea627f8b09c122b623499d2221bbf2f470127f4c9ebfe92bd8a6bb5157001372d4c4bd0dd37a1691620217d9dc4df5aa8f779f3fd996b1c60ae
+  languageName: node
+  linkType: hard
+
+"@types/simple-oauth2@npm:^5.0.7":
+  version: 5.0.7
+  resolution: "@types/simple-oauth2@npm:5.0.7"
+  checksum: 1cfb87b1ee4b58b30e4f9753271ea73282e707553b9b3360755064e4c7b1e96a01cabc5e83d13841369595ea7e451d3d576bea02340b4f17f9e930f54c08a15e
   languageName: node
   linkType: hard
 
@@ -28298,15 +28322,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"retry-axios@npm:^2.6.0":
-  version: 2.6.0
-  resolution: "retry-axios@npm:2.6.0"
-  peerDependencies:
-    axios: "*"
-  checksum: da951029dacaf9eba56b2714dd97941381e15d670d22aaa39effc13e0793b392da6b0e7b4ba36539c957d40b859bc6c46d64f85097ba625da196218074aeacf7
-  languageName: node
-  linkType: hard
-
 "retry@npm:^0.12.0":
   version: 0.12.0
   resolution: "retry@npm:0.12.0"
@@ -33278,12 +33293,5 @@ __metadata:
   version: 3.22.4
   resolution: "zod@npm:3.22.4"
   checksum: 7578ab283dac0eee66a0ad0fc4a7f28c43e6745aadb3a529f59a4b851aa10872b3890398b3160f257f4b6817b4ce643debdda4fb21a2c040adda7862cab0a587
-  languageName: node
-  linkType: hard
-
-"zod@npm:^3.22.4":
-  version: 3.23.8
-  resolution: "zod@npm:3.23.8"
-  checksum: 8f14c87d6b1b53c944c25ce7a28616896319d95bc46a9660fe441adc0ed0a81253b02b5abdaeffedbeb23bdd25a0bf1c29d2c12dd919aef6447652dd295e3e69
   languageName: node
   linkType: hard

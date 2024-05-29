@@ -11,47 +11,48 @@ const ThumbnailBadge = React.forwardRef<SVGSVGElement, IconProps>(
         ref={ref}
         {...props}
       >
-        <g clipPath="url(#a)">
-          <g filter="url(#b)">
-            <circle cx={10} cy={10} r={9} fill="#3B82F6" />
-            <circle cx={10} cy={10} r={9} fill="url(#c)" fillOpacity={0.2} />
-            <circle
-              cx={10}
-              cy={10}
-              r={8.75}
-              stroke="#000"
-              strokeOpacity={0.2}
-              strokeWidth={0.5}
-            />
-          </g>
-          <g fill="#fff" clipPath="url(#d)">
-            <path d="M5.5 12.87a.835.835 0 0 1-.833-.833V7.963a.835.835 0 0 1 1.096-.791l.562.187a.5.5 0 0 1-.317.949l-.342-.114v3.613l.342-.114a.5.5 0 1 1 .317.948l-.562.188a.826.826 0 0 1-.262.042ZM8.167 14.167a.834.834 0 0 1-.833-.834V6.667a.832.832 0 0 1 1.153-.77l.539.224a.5.5 0 0 1-.385.924l-.307-.128v6.166l.307-.128a.5.5 0 0 1 .385.924l-.539.224a.843.843 0 0 1-.32.064ZM14.655 6.367l-3.472-1.603A.833.833 0 0 0 10 5.52v8.958a.83.83 0 0 0 .833.834.84.84 0 0 0 .35-.077l3.472-1.603a1.17 1.17 0 0 0 .678-1.06V7.428c0-.454-.266-.87-.678-1.06Z" />
-          </g>
+        <g filter="url(#a)">
+          <circle cx={10} cy={8.903} r={7.806} fill="#3B82F6" />
+          <circle
+            cx={10}
+            cy={8.903}
+            r={7.806}
+            fill="url(#b)"
+            fillOpacity={0.2}
+          />
+          <circle
+            cx={10}
+            cy={8.903}
+            r={7.556}
+            stroke="#000"
+            strokeOpacity={0.2}
+            strokeWidth={0.5}
+          />
+        </g>
+        <g fill="#fff" clipPath="url(#c)">
+          <path d="M6.098 11.393a.724.724 0 0 1-.724-.723V7.136a.724.724 0 0 1 .951-.686l.487.163a.434.434 0 1 1-.274.822l-.297-.098v3.133l.297-.099a.433.433 0 1 1 .274.823l-.487.162a.7.7 0 0 1-.227.037M8.41 12.517a.723.723 0 0 1-.722-.723V6.012a.72.72 0 0 1 1-.667l.467.194a.434.434 0 0 1-.333.801l-.267-.111v5.349l.267-.111a.434.434 0 1 1 .333.8l-.467.195a.7.7 0 0 1-.278.055M14.038 5.752l-3.012-1.39A.722.722 0 0 0 10 5.018v7.77a.72.72 0 0 0 .722.724.7.7 0 0 0 .304-.067l3.012-1.39c.357-.165.588-.526.588-.92V6.672c0-.393-.23-.754-.588-.919" />
         </g>
         <defs>
-          <clipPath id="a">
-            <path fill="#fff" d="M0 0h20v20H0z" />
-          </clipPath>
-          <clipPath id="d">
-            <path fill="#fff" d="M4 4h12v12H4z" />
-          </clipPath>
           <linearGradient
-            id="c"
-            x1={10}
-            x2={10}
-            y1={1}
-            y2={19}
+            id="b"
+            x1={10.09}
+            x2={10.09}
+            y1={1.142}
+            y2={16.754}
             gradientUnits="userSpaceOnUse"
           >
             <stop stopColor="#fff" />
             <stop offset={1} stopColor="#fff" stopOpacity={0} />
           </linearGradient>
+          <clipPath id="c">
+            <path fill="#fff" d="M4.796 3.699h10.408v10.408H4.796z" />
+          </clipPath>
           <filter
-            id="b"
-            width={22.215}
-            height={22.215}
-            x={-1.108}
-            y={-0.054}
+            id="a"
+            width={20}
+            height={20}
+            x={0}
+            y={0}
             colorInterpolationFilters="sRGB"
             filterUnits="userSpaceOnUse"
           >

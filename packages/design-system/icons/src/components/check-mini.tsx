@@ -5,8 +5,8 @@ const CheckMini = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const CheckMini = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="m5.833 10.417 3.334 3.333 5-7.5"
+          d="m3.036 7.679 2.857 3.571 6.071-7.5"
         />
       </svg>
     )

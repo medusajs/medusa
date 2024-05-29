@@ -8,7 +8,6 @@ import {
   CreateFulfillmentSetDTO,
   CreateInviteDTO,
   CreatePriceListDTO,
-  CreateProductCollectionDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
   CreateSalesChannelDTO,
@@ -20,7 +19,6 @@ import {
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
   UpdatePriceListDTO,
-  UpdateProductCollectionDTO,
   UpdatePromotionDTO,
   UpdatePromotionRuleDTO,
   UpdateSalesChannelDTO,
@@ -88,14 +86,6 @@ export type UpdateShippingOptionReq = UpdateShippingOptionDTO & {
 
 // Shipping Profile
 export type CreateShippingProfileReq = CreateShippingProfileDTO
-
-// Product Collections
-export type CreateProductCollectionReq = CreateProductCollectionDTO
-export type UpdateProductCollectionReq = UpdateProductCollectionDTO
-export type UpdateProductCollectionProductsReq = {
-  add?: string[]
-  remove?: string[]
-}
 
 // Price Lists
 export type CreatePriceListReq = CreatePriceListDTO

@@ -42,6 +42,7 @@ export const AdminGetProductsParams = createFindParams({
     .object({
       variants: AdminGetProductVariantsParams.optional(),
       price_list_id: z.string().array().optional(),
+      status: statusEnum.array().optional(),
       $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
       $or: z.lazy(() => AdminGetProductsParams.array()).optional(),
     })

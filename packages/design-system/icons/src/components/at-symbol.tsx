@@ -5,18 +5,27 @@ const AtSymbol = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
+          strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M13.75 10c0 1.38.84 2.5 1.875 2.5 1.036 0 1.875-1.12 1.875-2.5a7.5 7.5 0 1 0-2.197 5.303M13.75 10V6.875m0 3.125a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0v0Z"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="M7.389 10.167c1.411 0 2.555-1.244 2.555-2.778S8.8 4.61 7.39 4.61 4.833 5.855 4.833 7.39s1.144 2.778 2.556 2.778" />
+          <path d="M9.944 4.611v4.607c0 1.382 2.077 1.62 3.175-.248.932-1.58.704-3.99-.46-5.577C10.947 1.058 6.99.185 4.114 2.115 1.472 3.89.531 7.478 1.991 10.378c1.444 2.87 4.835 4.262 7.905 3.223" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

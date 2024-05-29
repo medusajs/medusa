@@ -103,8 +103,8 @@ export function medusaIntegrationTestRunner({
     rootDirectory: string
   ) => {
     const config = originalConfigLoader(rootDirectory)
-    config.projectConfig.database_url = dbConfig.clientUrl
-    config.projectConfig.database_driver_options = dbConfig.clientUrl.includes(
+    config.projectConfig.databaseUrl = dbConfig.clientUrl
+    config.projectConfig.databaseDriverOptions = dbConfig.clientUrl.includes(
       "localhost"
     )
       ? {}
