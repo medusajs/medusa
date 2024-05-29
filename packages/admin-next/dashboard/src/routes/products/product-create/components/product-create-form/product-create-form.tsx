@@ -79,7 +79,6 @@ export const ProductCreateForm = ({
 
   const handleSubmit = form.handleSubmit(
     async (values, e) => {
-      return
       if (!(e?.nativeEvent instanceof SubmitEvent)) {
         return
       }
