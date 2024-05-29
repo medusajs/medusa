@@ -244,7 +244,8 @@
         "tooltip": "The handle is used to reference the product in your storefront. If not specified, the handle will be generated from the product title."
       },
       "description": {
-        "label": "Description"
+        "label": "Description",
+        "hint": "Give your product a short and clear description.<0/>120-160 characters is the recommended length for search engines."
       },
       "discountable": {
         "label": "Discountable",
