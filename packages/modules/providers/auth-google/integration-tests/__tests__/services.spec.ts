@@ -19,7 +19,6 @@ const sampleIdPayload = {
   given_name: "Test",
   family_name: "Admin",
   iat: 1716891837,
-  exp: 1716895437,
 }
 
 const encodedIdToken = generateJwtToken(sampleIdPayload, {
