@@ -23,7 +23,7 @@ function SalesChannels(props: SalesChannelsProps) {
   const { salesChannels } = props
 
   return (
-    <div className="flex flex-col px-6 py-5">
+    <div className="flex flex-col px-6 py-4">
       <div className="flex items-center justify-between">
         <Text
           size="small"
@@ -67,7 +67,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
   const fulfillmentSetExists = !!fulfillmentSet
 
   return (
-    <div className="flex flex-col px-6 py-5">
+    <div className="flex flex-col px-6 py-4">
       <div className="flex items-center justify-between">
         <Text
           size="small"
@@ -132,7 +132,7 @@ function Location(props: LocationProps) {
 
   return (
     <Container className="flex flex-col divide-y p-0">
-      <div className="px-6 py-5">
+      <div className="px-6 py-4">
         <div className="flex flex-row items-center justify-between gap-x-4">
           {/* ICON*/}
           <div className="shadow-borders-base flex size-7 items-center justify-center rounded-md">

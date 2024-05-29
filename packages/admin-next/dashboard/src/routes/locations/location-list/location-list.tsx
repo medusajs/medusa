@@ -33,14 +33,14 @@ export function LocationList() {
           </div>
         )
       })}
-      <Container className="flex h-fit items-center justify-between p-8">
+      <Container className="flex h-fit items-center justify-between gap-x-4 px-6 py-4">
         <div>
-          <Heading className="mb-2">{t("location.title")}</Heading>
+          <Heading>{t("location.title")}</Heading>
           <Text className="text-ui-fg-subtle txt-small">
             {t("location.description")}
           </Text>
         </div>
-        <Button size="small" variant="secondary" asChild>
+        <Button size="small" className="shrink-0" variant="secondary" asChild>
           <Link to="create">{t("location.createLocation")}</Link>
         </Button>
       </Container>
