@@ -208,7 +208,7 @@ export async function loadModuleMigrations(
 async function importAllFromDir(path: string) {
   let filesToLoad: string[] = []
 
-  const excludedExtensionsRegexp = /(\.ts\.map|\.js\.map|\.d\.ts)/
+  const excludedExtensionsRegexp = /(\.ts\.map|\.js\.map|\.d\.ts)$/
 
   await readdir(path).then((files) => {
     files.forEach((file) => {
