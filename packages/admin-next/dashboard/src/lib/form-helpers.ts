@@ -4,6 +4,11 @@ export function parseOptionalFormValue<T>(
   value: T,
   nullify = true
 ): T | undefined | null {
+  if (typeof value === "string") {
+    console.log("string", value)
+    console.log("trimmed", value.trim())
+  }
+
   if (typeof value === "string" && value.trim() === "") {
     return nullify ? null : undefined
   }

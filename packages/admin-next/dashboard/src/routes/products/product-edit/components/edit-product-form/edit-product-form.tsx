@@ -12,6 +12,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
+import { parseOptionalFormValue } from "../../../../../lib/form-helpers"
 
 type EditProductFormProps = {
   product: Product
@@ -20,10 +21,10 @@ type EditProductFormProps = {
 const EditProductSchema = zod.object({
   status: zod.enum(["draft", "published", "proposed", "rejected"]),
   title: zod.string().min(1),
-  subtitle: zod.string(),
+  subtitle: zod.string().optional(),
   handle: zod.string().min(1),
-  material: zod.string(),
-  description: zod.string(),
+  material: zod.string().optional(),
+  description: zod.string().optional(),
   discountable: zod.boolean(),
 })
 
@@ -44,13 +45,25 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
     resolver: zodResolver(EditProductSchema),
   })
 
-  const { mutateAsync, isLoading } = useUpdateProduct(product.id)
+  const { mutateAsync, isPending } = useUpdateProduct(product.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
+    const { title, discountable, handle, status, ...optional } = data
+
+    const cleanedData = Object.entries(optional).reduce((acc, [key, value]) => {
+      return {
+        ...acc,
+        [key]: parseOptionalFormValue(value),
+      }
+    }, {} as Pick<zod.infer<typeof EditProductSchema>, "description" | "subtitle" | "material">)
+
     await mutateAsync(
       {
-        ...data,
-        status: data.status as ProductStatus,
+        title,
+        discountable,
+        handle,
+        status: status as ProductStatus,
+        ...cleanedData,
       },
       {
         onSuccess: () => {
@@ -249,7 +262,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>
