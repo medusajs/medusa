@@ -123,7 +123,7 @@ const Content = React.forwardRef<
       <SelectPrimitive.Content
         ref={ref}
         className={clx(
-          "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout relative max-h-[200px] min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg",
+          "bg-ui-bg-component text-ui-fg-base shadow-elevation-flyout relative max-h-[200px] min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg",
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
           "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
@@ -163,7 +163,7 @@ const Label = React.forwardRef<
   <SelectPrimitive.Label
     ref={ref}
     className={clx(
-      "txt-compact-xsmall-plus text-ui-fg-subtle px-3 py-2",
+      "txt-compact-xsmall-plus text-ui-fg-muted px-2 py-1.5",
       className
     )}
     {...props}
@@ -179,25 +179,18 @@ const Item = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
 >(({ className, children, ...props }, ref) => {
-  const { size } = useSelectContext()
-
   return (
     <SelectPrimitive.Item
       ref={ref}
       className={clx(
-        "bg-ui-bg-base grid cursor-pointer grid-cols-[20px_1fr] gap-x-2 rounded-md px-3 py-2 outline-none transition-colors",
-        "hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-hover",
-        {
-          "txt-compact-medium data-[state=checked]:txt-compact-medium-plus":
-            size === "base",
-          "txt-compact-small data-[state=checked]:txt-compact-medium-plus":
-            size === "small",
-        },
+        "bg-ui-bg-component grid cursor-pointer grid-cols-[20px_1fr] gap-x-2 rounded-[4px] px-2 py-1.5 outline-none transition-colors txt-compact-small data-[state=checked]:txt-compact-medium-plus",
+        "focus-visible:bg-ui-bg-component-hover",
+        "disabled:text-ui-fg-disabled",
         className
       )}
       {...props}
     >
-      <span className="flex h-5 w-5 items-center justify-center">
+      <span className="flex h-[15px] w-[15px] items-center justify-center">
         <SelectPrimitive.ItemIndicator>
           <EllipseMiniSolid />
         </SelectPrimitive.ItemIndicator>
