@@ -12,7 +12,7 @@ In this document, you’ll learn what publishable API keys are and how to use th
 
 When using multiple sales channels, you’ll need to specify the ID of a storefront’s sales channel. This ensures that you retrieve the products available in that sales channel and associate the sales channel with the storefront’s carts and orders.
 
-The Store API routes accept the sales channel’s IDs differently. For example, the [List Products API route](https://docs.medusajs.com/api/store#products) accepts the sales channel’s ID as a query parameter, whereas the [Create Cart API route](https://docs.medusajs.com/api/store#carts_postcart) accepts it in the request’s body.
+The [Store API routes](!api!/store) accept the sales channel’s IDs differently depending on the API route's HTTP method. Some accept it as a query parameter whereas others accept it as a request body parameter.
 
 This approach is tedious and error-prone as your storefront scales and as you develop multiple types of storefronts.
 
@@ -20,59 +20,17 @@ This approach is tedious and error-prone as your storefront scales and as you de
 
 ## Introducing Publishable API Keys
 
-The API Key module allows you to create keys for different usages. One of those usages is to create a publishable API key.
+A publishable API key, provided by the API Key Module, is a client key scoped to one or more sales channels. When passed in the header of a request, the Medusa application infers the associated sales channels.
 
-A publishable API key is a client key scoped to one or more sales channels. When passed in the header of a request, the Medusa application infers the associated sales channels.
-
-So, instead of the previous approach of manually passing the sales channel’s ID based on the API route, you always pass the publishable API key in the header of your requests:
+So, instead of the approach, indicated in the previous section, of manually passing the sales channel’s ID based on the API route, you always pass the publishable API key in the header of your requests:
 
 ```bash
 curl http://localhost:9000/store/products \
   x-publishable-api-key: {your_publishable_api_key}
 ```
 
-The Medusa JS Client and Medusa React both provide the option to pass the publishable API key during initialization:
-
-<CodeTabs groupId="client-id">
-  <CodeTab label="JS Client" value="js-client">
-
-  ```ts
-  const medusa = new Medusa({
-    maxRetries: 3,
-    baseUrl: "http://localhost:9000",
-    publishableApiKey,
-  })
-  ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-
-  ```tsx
-  import { MedusaProvider } from "medusa-react"
-
-  // define query client...
-
-  const App = () => {
-    return (
-      <MedusaProvider
-        queryClientProviderProps={{ client: queryClient }}
-        baseUrl="http://localhost:9000"
-        // ...
-        publishableApiKey={publishableApiKey}
-      >
-        <MyStorefront />
-      </MedusaProvider>
-    )
-  }
-  ```
-
-  </CodeTab>
-</CodeTabs>
-
-Then, all requests using the client/hooks automatically include the publishable API key in the header.
-
 ---
 
 ## How to Create a Publishable API Key?
 
-To create a publishable API key, either use the Medusa Admin or the [Admin API Routes](https://docs.medusajs.com/api/admin#publishable-api-keys).
+To create a publishable API key, either use the Medusa Admin or the [Admin API Routes](!api!/admin#publishable-api-keys).

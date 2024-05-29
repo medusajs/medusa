@@ -1,12 +1,10 @@
-import { ProductOptionService } from "@services"
-import { Product } from "@models"
-
-import { createOptions } from "../../../__fixtures__/product"
-import { ProductTypes } from "@medusajs/types"
-
 import { Modules } from "@medusajs/modules-sdk"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { IProductModuleService } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
+import { Product } from "@models"
+import { ProductOptionService } from "@services"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { createOptions } from "../../../__fixtures__/product"
 
 jest.setTimeout(30000)
 
@@ -29,13 +27,13 @@ moduleIntegrationTestRunner({
       const productOneData = {
         id: "product-1",
         title: "product 1",
-        status: ProductTypes.ProductStatus.PUBLISHED,
+        status: ProductStatus.PUBLISHED,
       }
 
       const productTwoData = {
         id: "product-2",
         title: "product 2",
-        status: ProductTypes.ProductStatus.PUBLISHED,
+        status: ProductStatus.PUBLISHED,
       }
 
       beforeEach(async () => {

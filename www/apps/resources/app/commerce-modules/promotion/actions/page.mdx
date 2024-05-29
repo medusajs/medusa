@@ -8,13 +8,7 @@ In this document, you’ll learn about promotion actions and how they’re compu
 
 ## computeActions Method
 
-The `IPromotionModuleService` has a `computeActions` method that returns an array of actions to perform on a cart when one or more promotions are applied.
-
-<Note>
-
-Refer to [the method’s reference](/references/promotion/computeActions) for full details on this method’s parameters and return type.
-
-</Note>
+The Promotion Module's main service has a [computeActions method](/references/promotion/computeActions) that returns an array of actions to perform on a cart when one or more promotions are applied.
 
 Actions inform you what adjustment must be made to a cart item or shipping method. Each action is an object having the `action` field indicating the type of action.
 
@@ -38,7 +32,7 @@ export interface AddItemAdjustmentAction {
 }
 ```
 
-When the Medusa application receives this action type, it creates a new record of the `LineItemAdjustment` data model in the Cart Module.
+This action means that a new record should be created of the `LineItemAdjustment` data model in the Cart Module.
 
 <Note>
 
@@ -50,7 +44,7 @@ Refer to [this reference](/references/promotion/interfaces/promotion.AddItemAdju
 
 The `removeItemAdjustment` action indicates that an adjustment must be removed from a line item. For example, remove the $5 discount.
 
-When the Medusa application uses the `computeActions` method, it passes any previous item adjustments in the `items` property of the second parameter.
+The `computeActions` method accepts any previous item adjustments in the `items` property of the second parameter.
 
 This action has the following format:
 
@@ -63,7 +57,7 @@ export interface RemoveItemAdjustmentAction {
 }
 ```
 
-When the Medusa application receives this action type, it removes the `LineItemAdjustment` with the specified ID in the `adjustment_id` property.
+This action means that a new record should be removed of the `LineItemAdjustment` with the specified ID in the `adjustment_id` property.
 
 <Note>
 
@@ -87,7 +81,7 @@ export interface AddShippingMethodAdjustment {
 }
 ```
 
-When the Medusa application receives this action type, it creates a new record of the `ShippingMethodAdjustment` data model in the Cart Module.
+This action means that a new record should be created of the `ShippingMethodAdjustment` data model in the Cart Module.
 
 <Note>
 
@@ -99,7 +93,7 @@ Refer to [this reference](/references/promotion/interfaces/promotion.AddShipping
 
 The `removeShippingMethodAdjustment` action indicates that an adjustment must be removed from a shipping method. For example, remove the free shipping discount.
 
-When the Medusa application uses the `computeActions` method, it passes any previous shipping method adjustments in the `shipping_methods` property of the second parameter.
+The `computeActions` method accepts any previous shipping method adjustments in the `shipping_methods` property of the second parameter.
 
 This action has the following format:
 
@@ -131,8 +125,6 @@ export interface CampaignBudgetExceededAction {
   code: string
 }
 ```
-
-The Medusa Application considers this an error, so it doesn’t apply the promotions on the cart.
 
 <Note>
 

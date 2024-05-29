@@ -12,7 +12,7 @@ The Pricing Module is the `@medusajs/pricing` NPM package that provides pricing-
 
 ### Price Management
 
-With the Pricing Module, store the prices of a resource and manage them through the main interface's methods.
+With the Pricing Module, store the prices of a resource and manage them through the main service's methods.
 
 Prices are grouped in a price set, allowing you to add more than one price for a resource based on different conditions, such as currency code.
 
@@ -23,7 +23,6 @@ const priceSet = await pricingModuleService.create({
    {
       amount: 500,
       currency_code: "USD",
-      rules: {},
     },
     {
         amount: 400,
@@ -87,9 +86,7 @@ const priceList = await pricingModuleService.createPriceLists({
 
 ### Price Calculation Strategy
 
-The module’s main service provides a `calculatePrices` method to retrieve the best price for a given context.
-
-You can use your custom rules here to find the best price for the specified rule values.
+Retrieve the best price in a given context and for the specified rule values.
 
 ```ts
 const price = await pricingModuleService.calculatePrices(
@@ -107,14 +104,16 @@ const price = await pricingModuleService.calculatePrices(
 
 ## Configure Pricing Module
 
-After installing the `@medusajs/pricing` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+To use the Pricing Module, enable it in the `modules` object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 const modules = {
   // ...
-  pricingService: {
-    resolve: "@medusajs/pricing",
-  },
+  [Modules.PRICING]: true,
 }
 ```
 
@@ -173,9 +172,11 @@ For example:
   import { IPricingModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const pricingModuleService: IPricingModuleService =
-      context.container.resolve(ModuleRegistrationName.PRICING)
+      container.resolve(ModuleRegistrationName.PRICING)
 
     const priceSets = await pricingModuleService.list()
   })

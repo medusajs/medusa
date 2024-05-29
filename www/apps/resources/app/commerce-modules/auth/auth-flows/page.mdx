@@ -12,7 +12,7 @@ In this document, you'll learn about how the Auth Provider is used in an authent
 
 ## How to Authenticate a User
 
-To authenticate a user, you use the `authenticate` method of the Auth Module's main service (`IAuthModuleService`). For example:
+To authenticate a user, you use the [authenticate method of the Auth Module's main service](/references/auth/authenticate) (`IAuthModuleService`). For example:
 
 ```ts
 const data = await authModuleService.authenticate(
@@ -24,13 +24,7 @@ const data = await authModuleService.authenticate(
 )
 ```
 
-This method calls the `authenticate` method of the specified provider and returns its data.
-
-<Note>
-
-Learn about the parameters and return type of the `IAuthModuleService`'s `authenticate` method in [this reference](/references/auth/authenticate).
-
-</Note>
+This method calls the `authenticate` method of the provider specified in the first parameter and returns its data.
 
 ---
 
@@ -41,17 +35,17 @@ If the `authenticate` method returns the following object:
 ```ts
 data = {
 	success: true,
-	authUser: {
+	authIdentity: {
     // ...
   },
 }
 ```
 
-Then, the user is authenticated successfully, and their authentication details are available within the `authUser` object.
+Then, the user is authenticated successfully, and their authentication details are available within the `authIdentity` object.
 
 <Note>
 
-Learn more about the `authUser` in [this guide](../persisting-auth-user/page.mdx#what-is-an-authuser).
+Check out the [AuthIdentity](/references/auth/models/AuthIdentity) reference for the expected fields in `authIdentity`.
 
 </Note>
 
@@ -65,8 +59,8 @@ If the `authenticate` method returns the following object:
 
 ```ts
 data = {
-	success: true,
-	location: "https://....",
+  success: true,
+  location: "https://....",
 }
 ```
 
@@ -78,7 +72,7 @@ It means the authentication process requires the user to perform an action with 
 
 Providers handling this authentication flow must implement the `validateCallback` method. It implements the logic to validate the authentication with the third-party service.
 
-So, once the user performs the required action, the third-party service must redirect to an API route that uses the `validateCallback` method of the `IAuthModuleService`. The method calls the specified provider’s `validateCallback` method passing it the authentication details it received in the second parameter:
+So, once the user performs the required action, the third-party service must redirect to an API route that uses the [validateCallback method of the Auth Module's main service](/references/auth/validateCallback). The method calls the specified provider’s `validateCallback` method passing it the authentication details it received in the second parameter:
 
 ```ts
 const data = await authModuleService.validateCallback(
@@ -90,18 +84,12 @@ const data = await authModuleService.validateCallback(
   )
 ```
 
-<Note>
-
-Learn more about the parameters and return type of the `IAuthModuleService`'s `validateCallback` method in [this reference](/references/auth/validateCallback).
-
-</Note>
-
-If the authentication is successful, the auth provider’s `validateCallback` method returns the same data as the basic authentication:
+If the authentication is successful, the `validateCallback` method returns the same data as the basic authentication:
 
 ```ts
 data = {
 	success: true,
-	authUser: {
+	authIdentity: {
     // ...
   },
 }

@@ -8,7 +8,7 @@ const { ModuleRegistrationName, Modules } = require("@medusajs/modules-sdk")
 const {
   createVariantPriceSet,
 } = require("../../../modules/helpers/create-variant-price-set")
-const { PriceListStatus, PriceListType } = require("@medusajs/types")
+const { PriceListStatus, PriceListType } = require("@medusajs/utils")
 
 let {
   ProductOptionValue,

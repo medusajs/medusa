@@ -8,7 +8,7 @@ In this document, you’ll learn how tax lines are calculated and what a tax pro
 
 ## Tax Lines Calculation
 
-Tax lines are calculated and retrieved using the `getTaxLines` method of the Tax Module’s main service (`ITaxModuleService`). It accepts an array of line items and shipping methods, and the context of the calculation.
+Tax lines are calculated and retrieved using the [getTaxLines method of the Tax Module’s main service](/references/tax/getTaxLines). It accepts an array of line items and shipping methods, and the context of the calculation.
 
 It returns the tax lines that are used to adjust the cart’s tax and grand totals.
 
@@ -35,32 +35,24 @@ const taxLines = await taxModuleService.getTaxLines(
 )
 ```
 
-The context object is used to determine which tax regions and rates to use in the calculation. The object includes fields related to the address and customer.
-
-<Note>
-
-Learn more about the `getTaxLines` method’s parameters and return type in [this reference](/references/tax/getTaxLines).
-
-</Note>
+The context object is used to determine which tax regions and rates to use in the calculation. It includes fields related to the address and customer.
 
 The example above returns the tax lines based on the tax region for the United States.
 
 ---
 
-## Tax Provider Usage in the Calculation
+## Using the Tax Provider in the Calculation
 
 The tax lines retrieved by the `getTaxLines` method are actually retrieved from the tax region’s provider.
 
-A tax provider is a TypeScript or JavaScript class that implements the logic to shape tax lines. Each tax region has a tax provider.
+A tax provider module whose main service implements the logic to shape tax lines. Each tax region has a tax provider.
 
 The Tax Module provides a `system` tax provider that only transforms calculated item and shipping tax rates into the required return type.
 
----
+{/* ---
+
+TODO add once tax provider guide is updated + add provider modules match other modules.
 
 ## Create Tax Provider
 
-You can create a tax provider by implementing the `ITaxProvider` imported from `@meduasjs/types`.
-
-Then, you can add the tax provider to the [providers](../module-options/page.mdx#providers) option and use it to retrieve tax lines.
-
-Refer to [this reference](/modules/tax/provider) to learn more about creating a tax provider.
+Refer to [this guide](/modules/tax/provider) to learn more about creating a tax provider. */}
