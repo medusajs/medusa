@@ -18,11 +18,11 @@ import {
   ISalesChannelModuleService,
   IStoreModuleService,
   ITaxModuleService,
-  ProductStatus,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  ProductStatus,
   PromotionRuleOperator,
   PromotionType,
   RuleOperator,

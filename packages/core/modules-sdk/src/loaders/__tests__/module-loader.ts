@@ -1,9 +1,6 @@
-import {
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-  ModuleResolution,
-} from "@medusajs/types"
+import { ModuleResolution } from "@medusajs/types"
 import { createMedusaContainer } from "@medusajs/utils"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../../types"
 import { moduleLoader } from "../module-loader"
 
 const logger = {

@@ -1,5 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
+import { IProductModuleService } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
 import { Product, ProductCategory } from "@models"
 import {
   MockEventBusService,
@@ -33,13 +34,13 @@ moduleIntegrationTestRunner({
         productOne = testManager.create(Product, {
           id: "product-1",
           title: "product 1",
-          status: ProductTypes.ProductStatus.PUBLISHED,
+          status: ProductStatus.PUBLISHED,
         })
 
         productTwo = testManager.create(Product, {
           id: "product-2",
           title: "product 2",
-          status: ProductTypes.ProductStatus.PUBLISHED,
+          status: ProductStatus.PUBLISHED,
         })
 
         const productCategoriesData = [

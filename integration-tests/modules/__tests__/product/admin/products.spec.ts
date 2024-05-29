@@ -3,11 +3,10 @@ import {
   CreateProductDTO,
   IPricingModuleService,
   IProductModuleService,
-  PriceListStatus,
-  PriceListType,
   ProductDTO,
   ProductVariantDTO,
 } from "@medusajs/types"
+import { PriceListStatus, PriceListType } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
