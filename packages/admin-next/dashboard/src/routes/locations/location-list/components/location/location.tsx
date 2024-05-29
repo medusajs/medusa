@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { BadgeListSummary } from "../../../../../components/common/badge-list-summary"
 import { useDeleteStockLocation } from "../../../../../hooks/api/stock-locations"
-import { countries } from "../../../../../lib/countries"
+import { getFormattedAddress } from "../../../../../lib/addresses"
 
 type SalesChannelsProps = {
   salesChannels?: SalesChannelDTO[]
@@ -150,13 +150,7 @@ function Location(props: LocationProps) {
           <div className="grow-1 flex flex-1 flex-col">
             <Text weight="plus">{location.name}</Text>
             <Text className="text-ui-fg-subtle txt-small">
-              {location.address?.city},{" "}
-              {
-                countries.find(
-                  (c) =>
-                    location.address?.country_code.toLowerCase() === c.iso_2
-                )?.display_name
-              }
+              {getFormattedAddress({ address: location.address }).join(", ")}
             </Text>
           </div>
 
