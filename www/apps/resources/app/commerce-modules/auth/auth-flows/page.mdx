@@ -41,17 +41,17 @@ If the `authenticate` method returns the following object:
 ```ts
 data = {
 	success: true,
-	authUser: {
+	authIdentity: {
     // ...
   },
 }
 ```
 
-Then, the user is authenticated successfully, and their authentication details are available within the `authUser` object.
+Then, the user is authenticated successfully, and their authentication details are available within the `authIdentity` object.
 
 <Note>
 
-Learn more about the `authUser` in [this guide](../persisting-auth-user/page.mdx#what-is-an-authuser).
+Learn more about the `authIdentity` in [this guide](../persisting-auth-user/page.mdx#what-is-an-authuser).
 
 </Note>
 
@@ -101,7 +101,7 @@ If the authentication is successful, the auth provider’s `validateCallback` me
 ```ts
 data = {
 	success: true,
-	authUser: {
+	authIdentity: {
     // ...
   },
 }

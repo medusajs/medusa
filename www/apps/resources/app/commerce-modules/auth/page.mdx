@@ -17,7 +17,7 @@ The Auth Module is the `@medusajs/auth` NPM package that provides authentication
 With the Auth Module, authenticate users using their credentials.
 
 ```ts
-const { success, authUser, error } =
+const { success, authIdentity, error } =
   await authModuleService.authenticate("emailpass", {
     url: req.url,
     headers: req.headers,
@@ -40,7 +40,7 @@ The Auth Module supports a variety of authentication methods, such as authentica
 
 ```ts
 // in authentication API route
-const { success, authUser, location } =
+const { success, authIdentity, location } =
   await authModuleService.authenticate("google", {
     url: req.url,
     headers: req.headers,
@@ -50,13 +50,13 @@ const { success, authUser, location } =
     protocol: req.protocol,
   } as AuthenticationInput)
 
-if (!authUser && location) {
+if (!authIdentity && location) {
   res.redirect(location)
   return
 }
 
 // in callback API route
-const { success, authUser } =
+const { success, authIdentity } =
   await authModuleService.validateCallback("google", {
     url: req.url,
     headers: req.headers,
@@ -115,7 +115,7 @@ For example:
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
     res.json({
-      authUsers: authModuleService.list(),
+      authIdentitys: authModuleService.list(),
     })
   }
   ```
@@ -134,7 +134,7 @@ For example:
     const authModuleService: IAuthModuleService =
       container.resolve(ModuleRegistrationName.AUTH)
 
-    const authUsers = await authModuleService.list()
+    const authIdentitys = await authModuleService.list()
   }
   ```
 
@@ -151,7 +151,7 @@ For example:
       context.container.resolve(
         ModuleRegistrationName.AUTH
       )
-    const authUsers = await authModuleService.list()
+    const authIdentitys = await authModuleService.list()
   })
   ```
 
