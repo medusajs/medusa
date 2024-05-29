@@ -37,6 +37,7 @@
     "orm:cache:clear": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm cache:clear"
   },
   "devDependencies": {
+    "@medusajs/types": "^1.11.16",
     "@mikro-orm/cli": "5.9.7",
     "cross-env": "^5.2.1",
     "faker": "^5.5.3",
@@ -51,7 +52,6 @@
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^1.12.11",
-    "@medusajs/types": "^1.11.16",
     "@medusajs/utils": "^1.11.9",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",

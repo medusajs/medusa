@@ -27,7 +27,7 @@ In this document, you’ll find common examples of how you can use the Stock Loc
 
     const stockLocation = await stockLocationModuleService.create(
       {
-        name: request.body.name,
+        name: "Warehouse 1",
       }
     )
 
@@ -50,11 +50,10 @@ In this document, you’ll find common examples of how you can use the Stock Loc
   export async function POST(request: Request) {
     const stockLocationModuleService =
       await initializeStockLocationModule({})
-    const body = await request.json()
 
     const stockLocation = await stockLocationModuleService.create(
       {
-        name: body.name,
+        name: "Warehouse 1",
       }
     )
 
@@ -132,17 +131,15 @@ In this document, you’ll find common examples of how you can use the Stock Loc
     const stockLocationModuleService: IStockLocationService =
       request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
-    const stockLocation = await stockLocationModuleService.update(
-      {
-        id: request.params.id,
-        address: {
-          country_code: request.body.country_code,
-          city: request.body.city,
-          address_1: request.body.address_1,
-          postal_code: request.body.postal_code,
-        },
-      }
-    )
+    const stockLocation = await stockLocationModuleService.update({
+      id: "sloc_123",
+      address: {
+        country_code: "US",
+        city: "New York City",
+        address_1: "52 Stone St",
+        postal_code: "10004",
+      },
+    })
 
     res.json({
       stock_location: stockLocation,
@@ -160,31 +157,21 @@ In this document, you’ll find common examples of how you can use the Stock Loc
     initialize as initializeStockLocationModule,
   } from "@medusajs/stock-location-next"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
-  }
-
   export async function POST(
-    request: Request,
-    { params }: ContextType
+    request: Request
   ) {
     const stockLocationModuleService =
       await initializeStockLocationModule({})
-    const body = await request.json()
 
-    const stockLocation = await stockLocationModuleService.update(
-      {
-        id: params.id,
-        address: {
-          country_code: body.country_code,
-          city: body.city,
-          address_1: body.address_1,
-          postal_code: body.postal_code,
-        },
-      }
-    )
+    const stockLocation = await stockLocationModuleService.update({
+      id: "sloc_123",
+      address: {
+        country_code: "us",
+        city: "New York City",
+        address_1: "52 Stone St",
+        postal_code: "10004",
+      },
+    })
 
     return NextResponse.json({
       stock_location: stockLocation,
@@ -214,7 +201,7 @@ In this document, you’ll find common examples of how you can use the Stock Loc
     const stockLocationModuleService: IStockLocationService =
       request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
-    await stockLocationModuleService.delete(request.params.id)
+    await stockLocationModuleService.delete("sloc_123")
 
     res.status(200)
   }
@@ -230,20 +217,13 @@ In this document, you’ll find common examples of how you can use the Stock Loc
     initialize as initializeStockLocationModule,
   } from "@medusajs/stock-location-next"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
-  }
-
   export async function DELETE(
-    request: Request,
-    { params }: ContextType
+    request: Request
   ) {
     const stockLocationModuleService =
       await initializeStockLocationModule({})
 
-    await stockLocationModuleService.delete(params.id)
+    await stockLocationModuleService.delete("sloc_123")
   }
   ```
 
@@ -254,4 +234,4 @@ In this document, you’ll find common examples of how you can use the Stock Loc
 
 ## More Examples
 
-The [module interface reference](/references/stock-location) provides a reference to all the methods available for use with examples for each.
+The [Stock Location Module's main service reference](/references/stock-location) provides a reference to all the methods available for use with examples for each.

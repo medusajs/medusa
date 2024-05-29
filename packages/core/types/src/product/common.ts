@@ -4,12 +4,7 @@ import { OperatorMap } from "../dal/utils"
 /**
  * @enum
  */
-export enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
-}
+export type ProductStatus = "draft" | "proposed" | "published" | "rejected"
 
 /**
  * @interface

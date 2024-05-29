@@ -1,10 +1,4 @@
-import {
-  Logger,
-  MedusaContainer,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-  ModulesSdkTypes,
-} from "@medusajs/types"
+import { Logger, MedusaContainer, ModulesSdkTypes } from "@medusajs/types"
 import { PostgreSqlDriver, SqlEntityManager } from "@mikro-orm/postgresql"
 import { asValue } from "awilix"
 import { ContainerRegistrationKeys, MedusaError } from "../../common"
@@ -60,8 +54,8 @@ export async function mikroOrmConnectionLoader({
   }
 
   if (
-    moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
-    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
+    moduleDeclaration?.scope === "internal" &&
+    moduleDeclaration.resources === "shared"
   ) {
     const shouldSwallowError = true
     const dbConfig = loadDatabaseConfig(

@@ -1,12 +1,7 @@
-import {
-  Logger,
-  MedusaContainer,
-  MODULE_SCOPE,
-  ModuleResolution,
-} from "@medusajs/types"
-
+import { Logger, MedusaContainer, ModuleResolution } from "@medusajs/types"
 import { asValue } from "awilix"
 import { EOL } from "os"
+import { MODULE_SCOPE } from "../types"
 import { loadInternalModule } from "./utils"
 
 export const moduleLoader = async ({

@@ -1,4 +1,4 @@
-import { ProductTypes } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   Image,
@@ -18,7 +18,7 @@ export async function createProductAndTags(
   data: {
     id?: string
     title: string
-    status: ProductTypes.ProductStatus
+    status: ProductStatus
     tags?: { id: string; value: string }[]
     collection_id?: string
   }[]
@@ -37,7 +37,7 @@ export async function createProductAndTypes(
   data: {
     id?: string
     title: string
-    status: ProductTypes.ProductStatus
+    status: ProductStatus
     type?: { id: string; value: string }
   }[]
 ) {

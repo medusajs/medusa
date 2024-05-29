@@ -1,9 +1,13 @@
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import { Product, ProductCollection } from "@models"
-import { MockEventBusService } from "medusa-test-utils"
-import { createCollections } from "../../../__fixtures__/product"
 import { Modules } from "@medusajs/modules-sdk"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { IProductModuleService } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
+import { Product, ProductCollection } from "@models"
+import {
+  MockEventBusService,
+  SuiteOptions,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
+import { createCollections } from "../../../__fixtures__/product"
 
 jest.setTimeout(30000)
 
@@ -29,13 +33,13 @@ moduleIntegrationTestRunner({
         productOne = testManager.create(Product, {
           id: "product-1",
           title: "product 1",
-          status: ProductTypes.ProductStatus.PUBLISHED,
+          status: ProductStatus.PUBLISHED,
         })
 
         productTwo = testManager.create(Product, {
           id: "product-2",
           title: "product 2",
-          status: ProductTypes.ProductStatus.PUBLISHED,
+          status: ProductStatus.PUBLISHED,
         })
 
         const productCollectionsData = [
