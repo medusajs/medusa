@@ -246,8 +246,6 @@ async function loadResources(
 ): Promise<ModuleResource> {
   let modulePath = moduleResolution.resolutionPath as string
   let normalizedPath = modulePath
-    .replace("index.js", "")
-    .replace("index.ts", "")
   /**
    * If the project is running on ts-node all relative module resolution
    * will target the src directory and otherwise the dist directory.
@@ -263,6 +261,10 @@ async function loadResources(
   } else {
     normalizedPath = resolve(normalizedPath)
   }
+
+  normalizedPath = normalizedPath
+    .replace("index.js", "")
+    .replace("index.ts", "")
 
   try {
     const defaultOnFail = () => {
