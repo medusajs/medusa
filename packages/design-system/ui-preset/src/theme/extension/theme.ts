@@ -116,9 +116,6 @@ export const theme = {
           "danger": {
             "DEFAULT": "var(--border-danger)"
           },
-          "loud": {
-            "DEFAULT": "var(--border-loud)"
-          },
           "strong": {
             "DEFAULT": "var(--border-strong)"
           },
@@ -127,6 +124,14 @@ export const theme = {
           },
           "transparent": {
             "DEFAULT": "var(--border-transparent)"
+          },
+          "menu": {
+            "bot": {
+              "DEFAULT": "var(--border-menu-bot)"
+            },
+            "top": {
+              "DEFAULT": "var(--border-menu-top)"
+            }
           }
         },
         "bg": {
@@ -134,24 +139,6 @@ export const theme = {
             "DEFAULT": "var(--bg-highlight)",
             "hover": {
               "DEFAULT": "var(--bg-highlight-hover)"
-            }
-          },
-          "base": {
-            "DEFAULT": "var(--bg-base)",
-            "pressed": {
-              "DEFAULT": "var(--bg-base-pressed)"
-            },
-            "hover": {
-              "DEFAULT": "var(--bg-base-hover)"
-            }
-          },
-          "subtle": {
-            "pressed": {
-              "DEFAULT": "var(--bg-subtle-pressed)"
-            },
-            "DEFAULT": "var(--bg-subtle)",
-            "hover": {
-              "DEFAULT": "var(--bg-subtle-hover)"
             }
           },
           "interactive": {
@@ -183,14 +170,32 @@ export const theme = {
           "disabled": {
             "DEFAULT": "var(--bg-disabled)"
           },
-          "component": {
-            "hover": {
-              "DEFAULT": "var(--bg-component-hover)"
+          "base": {
+            "pressed": {
+              "DEFAULT": "var(--bg-base-pressed)"
             },
+            "hover": {
+              "DEFAULT": "var(--bg-base-hover)"
+            },
+            "DEFAULT": "var(--bg-base)"
+          },
+          "component": {
             "pressed": {
               "DEFAULT": "var(--bg-component-pressed)"
             },
-            "DEFAULT": "var(--bg-component)"
+            "DEFAULT": "var(--bg-component)",
+            "hover": {
+              "DEFAULT": "var(--bg-component-hover)"
+            }
+          },
+          "subtle": {
+            "DEFAULT": "var(--bg-subtle)",
+            "pressed": {
+              "DEFAULT": "var(--bg-subtle-pressed)"
+            },
+            "hover": {
+              "DEFAULT": "var(--bg-subtle-hover)"
+            }
           }
         },
         "fg": {

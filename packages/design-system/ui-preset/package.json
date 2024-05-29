@@ -20,7 +20,8 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsup",
-    "generate": "toolbox tokens -o './src/theme'"
+    "generate": "toolbox tokens -o './src/theme'",
+    "variables": "toolbox variables -o './src/theme'"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.3",
