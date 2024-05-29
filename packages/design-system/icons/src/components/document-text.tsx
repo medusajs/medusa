@@ -5,8 +5,8 @@ const DocumentText = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,14 @@ const DocumentText = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M16.25 11.846V9.692c0-.734-.296-1.438-.824-1.958a2.835 2.835 0 0 0-1.989-.81h-1.25a.945.945 0 0 1-.662-.271A.916.916 0 0 1 11.25 6V4.77c0-.735-.296-1.44-.824-1.959A2.835 2.835 0 0 0 8.437 2H6.875m0 10.461h6.25m-6.25 2.462H10M8.75 2H4.687a.93.93 0 0 0-.937.923v14.154c0 .51.42.923.938.923h10.625a.93.93 0 0 0 .937-.923V9.385c0-1.959-.79-3.837-2.197-5.222A7.56 7.56 0 0 0 8.75 2v0Z"
+          d="M4.611 5.5H6.39M4.611 8.167h5.778M4.611 10.833h5.778M1.944 12.167V2.833c0-.982.796-1.777 1.778-1.777h4.966c.235 0 .462.093.628.26l3.48 3.48c.166.166.26.392.26.628v6.743c0 .982-.796 1.778-1.778 1.778H3.722a1.777 1.777 0 0 1-1.778-1.778"
+        />
+        <path
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M12.976 5.056H9.944a.89.89 0 0 1-.888-.89v-3.02"
         />
       </svg>
     )

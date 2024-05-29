@@ -32,13 +32,13 @@ Make sure the `start` script in your `package.json` runs migrations, the `build`
 
 ## Set SSL Database Option
 
-In production, it’s recommended to set the [database_extra option](/references/medusa-config#database_extra) in `medusa-config.js` to disable the `ssl.rejectUnauthorized` option:
+In production, it’s recommended to set the [databaseExtra option](/references/medusa-config#databaseExtra) in `medusa-config.js` to disable the `ssl.rejectUnauthorized` option:
 
 ```js title="medusa-config.js" highlights={[["4"]]}
 module.exports = {
   projectConfig: {
     // ...
-    database_extra: process.env.NODE_ENV !== "development" ?
+    databaseExtra: process.env.NODE_ENV !== "development" ?
       {
         ssl: {
           rejectUnauthorized: false,

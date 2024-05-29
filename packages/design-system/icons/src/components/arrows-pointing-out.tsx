@@ -5,8 +5,8 @@ const ArrowsPointingOut = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const ArrowsPointingOut = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M3.125 16.875v-3.75m0 3.75h3.75m-3.75 0L7.5 12.5m9.375-9.375h-3.75m3.75 0v3.75m0-3.75L12.5 7.5"
+          d="M9.056 1.944h4v4M13.056 1.944l-4 4M1.944 9.056v4h4M1.944 13.056l4-4"
         />
       </svg>
     )

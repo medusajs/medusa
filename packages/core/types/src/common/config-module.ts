@@ -118,7 +118,7 @@ export type HttpCompressionOptions = {
  */
 export type ProjectConfigOptions = {
   /**
-   * The name of the database to connect to. If specified in `database_url`, then it’s not required to include it.
+   * The name of the database to connect to. If specified in `databaseUrl`, then it’s not required to include it.
    *
    * Make sure to create the PostgreSQL database before using it. You can check how to create a database in
    * [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
@@ -127,7 +127,7 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     database_database: process.env.DATABASE_DATABASE ||
+   *     databaseName: process.env.DATABASE_DATABASE ||
    *       "medusa-store",
    *     // ...
    *   },
@@ -135,7 +135,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  database_database?: string
+  databaseName?: string
 
   /**
    * The connection URL of the database. The format of the connection URL for PostgreSQL is:
@@ -166,21 +166,22 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     database_url: process.env.DATABASE_URL,
+   *     databaseUrl: process.env.DATABASE_URL,
    *     // ...
    *   },
    *   // ...
    * }
    * ```
    */
-  database_url?: string
+  databaseUrl?: string
+
   /**
    * The database schema to connect to. This is not required to provide if you’re using the default schema, which is `public`.
    *
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     database_schema: process.env.DATABASE_SCHEMA ||
+   *     databaseSchema: process.env.DATABASE_SCHEMA ||
    *       "custom",
    *     // ...
    *   },
@@ -188,7 +189,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  database_schema?: string
+  databaseSchema?: string
 
   /**
    * This configuration specifies what database messages to log. Its value can be one of the following:
@@ -203,7 +204,7 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     database_logging: [
+   *     databaseLogging: [
    *       "query", "error",
    *     ],
    *     // ...
@@ -212,7 +213,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  database_logging: LoggerOptions
+  databaseLogging: LoggerOptions
 
   /**
    * @ignore
@@ -221,7 +222,7 @@ export type ProjectConfigOptions = {
    * @privateRemarks
    * only postgres is supported, so this config has no effect
    */
-  database_type?: string
+  databaseType?: string
 
   /**
    * An object that includes additional configurations to pass to the database connection. You can pass any configuration. One defined configuration to pass is
@@ -234,7 +235,7 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     database_extra:
+   *     databaseExtra:
    *       process.env.NODE_ENV !== "development"
    *         ? { ssl: { rejectUnauthorized: false } }
    *         : {},
@@ -244,7 +245,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  database_extra?: Record<string, unknown> & {
+  databaseExtra?: Record<string, unknown> & {
     /**
      * Configure support for TLS/SSL connection
      */
@@ -267,7 +268,7 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     database_driver_options:
+   *     databaseDriverOptions:
    *       process.env.NODE_ENV !== "development"
    *         ? { connection: { ssl: { rejectUnauthorized: false } } }
    *         : {},
@@ -277,7 +278,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  database_driver_options?: Record<string, unknown> & {
+  databaseDriverOptions?: Record<string, unknown> & {
     connection?: {
       /**
        * Configure support for TLS/SSL connection
@@ -312,7 +313,7 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     redis_url: process.env.REDIS_URL ||
+   *     redisUrl: process.env.REDIS_URL ||
    *       "redis://localhost:6379",
    *     // ...
    *   },
@@ -320,7 +321,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  redis_url?: string
+  redisUrl?: string
 
   /**
    * The prefix set on all keys stored in Redis. The default value is `sess:`.
@@ -331,7 +332,7 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     redis_prefix: process.env.REDIS_PREFIX ||
+   *     redisPrefix: process.env.REDIS_PREFIX ||
    *       "medusa:",
    *     // ...
    *   },
@@ -339,7 +340,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  redis_prefix?: string
+  redisPrefix?: string
 
   /**
    * An object of options to pass ioredis. You can refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions)
@@ -349,7 +350,7 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     redis_options: {
+   *     redisOptions: {
    *       connectionName: process.env.REDIS_CONNECTION_NAME ||
    *         "medusa",
    *     },
@@ -359,7 +360,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  redis_options?: RedisOptions
+  redisOptions?: RedisOptions
 
   /**
    * An object of options to pass to [express-session](https://www.npmjs.com/package/express-session).
@@ -368,7 +369,7 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     session_options: {
+   *     sessionOptions: {
    *       name: process.env.SESSION_NAME ||
    *         "custom",
    *     },
@@ -378,7 +379,7 @@ export type ProjectConfigOptions = {
    * }
    * ```
    */
-  session_options?: SessionOptions
+  sessionOptions?: SessionOptions
 
   /**
    * Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
@@ -390,7 +391,7 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     http_compression: {
+   *     httpCompression: {
    *       enabled: true,
    *       level: 6,
    *       memLevel: 8,
@@ -405,7 +406,7 @@ export type ProjectConfigOptions = {
    * @deprecated use {@link http }'s `compression` property instead.
    *
    */
-  http_compression?: HttpCompressionOptions
+  httpCompression?: HttpCompressionOptions
 
   /**
    * Configure the number of staged jobs that are polled from the database. Default is `1000`.
@@ -414,14 +415,14 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     jobs_batch_size: 100
+   *     jobsBatchSize: 100
    *     // ...
    *   },
    *   // ...
    * }
    * ```
    */
-  jobs_batch_size?: number
+  jobsBatchSize?: number
 
   /**
    * Configure the application's worker mode. Default is `shared`.
@@ -436,14 +437,14 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = {
    *   projectConfig: {
-   *     worker_mode: "shared"
+   *     workerMode: "shared"
    *     // ...
    *   },
    *   // ...
    * }
    * ```
    */
-  worker_mode?: "shared" | "worker" | "server"
+  workerMode?: "shared" | "worker" | "server"
 
   /**
    * Configure the application's http-specific settings
@@ -652,6 +653,7 @@ export type ProjectConfigOptions = {
      * ```
      */
     storeCors: string
+
     /**
      * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
      *
