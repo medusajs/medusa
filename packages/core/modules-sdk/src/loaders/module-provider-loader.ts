@@ -43,7 +43,7 @@ export async function loadModuleProvider(
     }
   } catch (error) {
     throw new Error(
-      `Unable to find plugin ${pluginName} -- perhaps you need to install its package?`
+      `Unable to find module ${pluginName} -- perhaps you need to install its package?`
     )
   }
 
