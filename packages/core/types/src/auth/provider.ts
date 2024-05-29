@@ -5,6 +5,7 @@ import {
   CreateAuthIdentityDTO,
 } from "./common"
 
+// This interface currently won't allow for linking multiple providers to a single auth entity. That flow is more complex and not supported yet.
 export interface AuthIdentityProviderService {
   // The provider is injected by the auth identity module
   retrieve: (selector: {

@@ -10,7 +10,7 @@ import {
   ModulesSdkTypes,
 } from "@medusajs/types"
 
-import { AuthIdentity } from "@models"
+import { AuthIdentity, ProviderIdentity } from "@models"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
@@ -21,34 +21,40 @@ import {
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import AuthProviderService from "./auth-provider"
+import { populate } from "dotenv"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   authIdentityService: ModulesSdkTypes.InternalModuleService<any>
+  providerIdentityService: ModulesSdkTypes.InternalModuleService<any>
   authProviderService: AuthProviderService
 }
 
-const generateMethodForModels = [AuthIdentity]
+const generateMethodForModels = [AuthIdentity, ProviderIdentity]
 
 export default class AuthModuleService<
-    TAuthIdentity extends AuthIdentity = AuthIdentity
+    TAuthIdentity extends AuthIdentity = AuthIdentity,
+    TProviderIdentity extends ProviderIdentity = ProviderIdentity
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
     AuthTypes.AuthIdentityDTO,
     {
       AuthIdentity: { dto: AuthTypes.AuthIdentityDTO }
+      ProviderIdentity: { dto: AuthTypes.ProviderIdentityDTO }
     }
   >(AuthIdentity, generateMethodForModels, entityNameToLinkableKeysMap)
   implements AuthTypes.IAuthModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected authIdentityService_: ModulesSdkTypes.InternalModuleService<TAuthIdentity>
+  protected providerIdentityService_: ModulesSdkTypes.InternalModuleService<TProviderIdentity>
   protected readonly authProviderService_: AuthProviderService
 
   constructor(
     {
       authIdentityService,
+      providerIdentityService,
       authProviderService,
       baseRepository,
     }: InjectedDependencies,
@@ -60,6 +66,7 @@ export default class AuthModuleService<
     this.baseRepository_ = baseRepository
     this.authIdentityService_ = authIdentityService
     this.authProviderService_ = authProviderService
+    this.providerIdentityService_ = providerIdentityService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -157,10 +164,17 @@ export default class AuthModuleService<
   getAuthIdentityProviderService(): AuthIdentityProviderService {
     return {
       retrieve: async ({ entity_id, provider }) => {
-        const authIdentities = await this.authIdentityService_.list({
-          entity_id,
-          provider,
-        })
+        const authIdentities = await this.authIdentityService_.list(
+          {
+            provider_identities: {
+              entity_id,
+              provider,
+            },
+          },
+          {
+            relations: ["provider_identities"],
+          }
+        )
 
         if (!authIdentities.length) {
           throw new MedusaError(

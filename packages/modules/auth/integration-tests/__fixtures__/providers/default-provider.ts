@@ -26,7 +26,12 @@ export class AuthServiceFixtures extends AbstractAuthModuleProvider {
         provider: this.provider,
       })
 
-      if (authIdentity.provider_metadata?.password === password) {
+      // The provider has to be present, guaranteed by the retrieve filter above.
+      const providerIdentity = authIdentity.provider_identities?.find(
+        (pi) => pi.provider === this.provider
+      )!
+
+      if (providerIdentity.provider_metadata?.password === password) {
         return {
           success: true,
           authIdentity,
@@ -35,11 +40,15 @@ export class AuthServiceFixtures extends AbstractAuthModuleProvider {
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
         const createdAuthIdentity = await service.create({
-          entity_id: email,
-          provider: this.provider,
-          provider_metadata: {
-            password,
-          },
+          provider_identities: [
+            {
+              entity_id: email,
+              provider: this.provider,
+              provider_metadata: {
+                password,
+              },
+            },
+          ],
         })
 
         return {
