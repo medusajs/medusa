@@ -13,7 +13,7 @@ A protected route is a route that requires requests to be user-authenticated bef
 Medusa applies an authentication guard on the following routes:
 
 - Routes starting with `/admin` require an authenticated admin user.
-- Routes starting with `/store/me` require an authenticated customer.
+- Routes starting with `/store/customers/me` require an authenticated customer.
 
 <Note>
 
@@ -25,11 +25,11 @@ Refer to the API Reference for [Admin](https://docs.medusajs.com/api/admin#authe
 
 ## Authentication Opt-Out
 
-To disable the authentication guard on custom routes under the `/admin` or `/store/me` path prefixes, export an `AUTHENTICATE` variable in the route file with its value set to `false`.
+To disable the authentication guard on custom routes under the `/admin` or `/store/customers/me` path prefixes, export an `AUTHENTICATE` variable in the route file with its value set to `false`.
 
 For example:
 
-```ts title="src/api/store/me/custom/route.ts" highlights={[["15"]]} apiTesting testApiUrl="http://localhost:9000/store/me/custom" testApiMethod="GET"
+```ts title="src/api/store/customers/me/custom/route.ts" highlights={[["15"]]} apiTesting testApiUrl="http://localhost:9000/store/customers/me/custom" testApiMethod="GET"
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -47,7 +47,7 @@ export const GET = async (
 export const AUTHENTICATE = false
 ```
 
-Now, any request sent to the `/store/me/custom` API route is allowed, regardless if the customer is authenticated or not.
+Now, any request sent to the `/store/customers/me/custom` API route is allowed, regardless if the customer is authenticated or not.
 
 ---
 
@@ -57,7 +57,7 @@ You can access the logged-in customer’s ID in all API routes starting with `/s
 
 For example:
 
-```ts title="src/api/store/me/custom/route.ts" highlights={[["16", "", "Access the logged-in customer's ID."]]}
+```ts title="src/api/store/customers/me/custom/route.ts" highlights={[["16", "", "Access the logged-in customer's ID."]]}
 import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -120,7 +120,7 @@ In the route handler, you resolve the User Module's main service, and then use i
 
 ## Protect Custom API Routes
 
-To protect custom API Routes that don’t start with `/store/me` or `/admin`, use the `authenticate` middleware imported from `@medusajs/medusa`.
+To protect custom API Routes that don’t start with `/store/customers/me` or `/admin`, use the `authenticate` middleware imported from `@medusajs/medusa`.
 
 For example:
 
@@ -138,13 +138,13 @@ export const config: MiddlewaresConfig = {
     {
       matcher: "/custom/admin*",
       middlewares: [
-        authenticate("admin", ["session", "bearer", "api-key"]),
+        authenticate("user", ["session", "bearer", "api-key"]),
       ],
     },
     {
       matcher: "/custom/customer*",
       middlewares: [
-        authenticate("store", ["session", "bearer"]),
+        authenticate("customer", ["session", "bearer"]),
       ],
     },
   ],
@@ -153,8 +153,8 @@ export const config: MiddlewaresConfig = {
 
 The `authenticate` middleware function accepts three parameters:
 
-1. The scope of authentication. Use `admin` for authenticating admin users, and `store` for authenticating customers.
-2. An array of the types of authentication methods allowed. Both `admin` and `store` scopes support `session` and `bearer`. The `admin` scope also supports the `api-key` authentication method.
+1. The type of user authenticating. Use `user` for authenticating admin users, and `customer` for authenticating customers.
+2. An array of the types of authentication methods allowed. Both `user` and `customer` scopes support `session` and `bearer`. The `admin` scope also supports the `api-key` authentication method.
 3. An optional object of options having the following properties:
     1. `allowUnauthenticated`: (default: `false`) A boolean indicating whether authentication is required. For example, you may have an API route where you want to access the logged-in customer if available, but guest customers can still access it too. In that case, enable the `allowUnauthenticated` option.
     2. `allowUnregistered`: (default: `false`) A boolean indicating whether new users can be authenticated.

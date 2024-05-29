@@ -36,7 +36,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService: IAuthModuleService =
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
-    const { success, authUser, location, error } =
+    const { success, authIdentity, location, error } =
       await authModuleService.authenticate("emailpass", {
         url: req.url,
         headers: req.headers,
@@ -57,7 +57,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
 
     const { jwtSecret } =
       req.scope.resolve("configModule").projectConfig.http
-    const token = jwt.sign(authUser, jwtSecret)
+    const token = jwt.sign(authIdentity, jwtSecret)
 
     res.status(200).json({ token })
   }
@@ -77,7 +77,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService = await initializeAuthModule()
     const url = new URL(request.url)
 
-    const { success, authUser, location, error } =
+    const { success, authIdentity, location, error } =
       await authModuleService.authenticate("emailpass", {
         url: request.url,
         headers: Object.fromEntries(request.headers),
@@ -96,7 +96,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
       return
     }
 
-    const token = jwt.sign(authUser, "supersecret")
+    const token = jwt.sign(authIdentity, "supersecret")
 
     return NextResponse.json({
       token,
@@ -139,7 +139,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService: IAuthModuleService =
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
-    const { success, authUser, error, successRedirectUrl } =
+    const { success, authIdentity, error, successRedirectUrl } =
       await authModuleService.validateCallback("google", {
         url: req.url,
         headers: req.headers,
@@ -155,7 +155,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
 
     const { jwtSecret } =
       req.scope.resolve("configModule").projectConfig.http
-    const token = jwt.sign(authUser, jwtSecret)
+    const token = jwt.sign(authIdentity, jwtSecret)
 
     if (successRedirectUrl) {
       const url = new URL(successRedirectUrl!)
@@ -182,7 +182,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService = await initializeAuthModule()
     const url = new URL(request.url)
 
-    const { success, authUser, location, error } =
+    const { success, authIdentity, location, error } =
       await authModuleService.authenticate("google", {
         url: request.url,
         headers: Object.fromEntries(request.headers),
@@ -196,7 +196,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
       throw new Error(error)
     }
 
-    const token = jwt.sign(authUser, "supersecret")
+    const token = jwt.sign(authIdentity, "supersecret")
 
     if (successRedirectUrl) {
       const url = new URL(successRedirectUrl!)
@@ -235,13 +235,13 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService: IAuthModuleService =
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
-    const authUser = await authModuleService.create({
+    const authIdentity = await authModuleService.create({
       provider: "emailpass",
       entity_id: "user@example.com",
       scope: "admin",
     })
 
-    res.json({ auth_user: authUser })
+    res.json({ auth_identity: authIdentity })
   }
   ```
 
@@ -258,14 +258,14 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
   export async function POST(request: Request) {
     const authModuleService = await initializeAuthModule()
 
-    const authUser = await authModuleService.create({
+    const authIdentity = await authModuleService.create({
       provider: "emailpass",
       entity_id: "user@example.com",
       scope: "admin",
     })
 
     return NextResponse.json({
-      auth_user: authUser,
+      auth_identity: authIdentity,
     })
   }
   ```
@@ -293,7 +293,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
     res.json({
-      auth_users: await authModuleService.list(),
+      auth_identitys: await authModuleService.list(),
     })
   }
   ```
@@ -312,7 +312,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService = await initializeAuthModule()
 
     return NextResponse.json({
-      auth_users: await authModuleService.list(),
+      auth_identities: await authModuleService.list(),
     })
   }
   ```
@@ -339,7 +339,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService: IAuthModuleService =
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
-    const authUser = await authModuleService.update({
+    const authIdentity = await authModuleService.update({
       id: "authusr_123",
       provider_metadata: {
         test: true,
@@ -347,7 +347,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     })
 
     res.json({
-      auth_user: authUser,
+      auth_identity: authIdentity,
     })
   }
   ```
@@ -374,7 +374,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
   ) {
     const authModuleService = await initializeAuthModule()
 
-    const authUser = await authModuleService.update({
+    const authIdentity = await authModuleService.update({
       id: "authusr_123",
       provider_metadata: {
         test: true,
@@ -382,7 +382,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     })
 
     return NextResponse.json({
-      auth_users: await authModuleService.list(),
+      auth_identitys: await authModuleService.list(),
     })
   }
   ```
