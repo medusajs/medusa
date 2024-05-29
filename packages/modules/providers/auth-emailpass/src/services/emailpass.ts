@@ -4,6 +4,7 @@ import {
   AuthenticationResponse,
   AuthenticationInput,
   AuthIdentityProviderService,
+  AuthIdentityDTO,
 } from "@medusajs/types"
 import {
   AbstractAuthModuleProvider,
@@ -53,7 +54,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         error: "Email should be a string",
       }
     }
-    let authIdentity
+    let authIdentity: AuthIdentityDTO | undefined
 
     try {
       authIdentity = await authIdentityService.retrieve({
@@ -66,15 +67,22 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         const passwordHash = await Scrypt.kdf(password, config)
 
         const createdAuthIdentity = await authIdentityService.create({
-          entity_id: email,
-          provider: this.provider,
-          provider_metadata: {
-            password: passwordHash.toString("base64"),
-          },
+          provider_identities: [
+            {
+              entity_id: email,
+              provider: this.provider,
+              provider_metadata: {
+                password: passwordHash.toString("base64"),
+              },
+            },
+          ],
         })
 
         const copy = JSON.parse(JSON.stringify(createdAuthIdentity))
-        delete copy.provider_metadata?.password
+        const providerIdentity = copy.provider_identities?.find(
+          (pi) => pi.provider === this.provider
+        )!
+        delete providerIdentity.provider_metadata?.password
 
         return {
           success: true,
@@ -85,7 +93,10 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       return { success: false, error: error.message }
     }
 
-    const passwordHash = authIdentity.provider_metadata?.password
+    const providerIdentity = authIdentity.provider_identities?.find(
+      (pi) => pi.provider === this.provider
+    )!
+    const passwordHash = providerIdentity.provider_metadata?.password
 
     if (isString(passwordHash)) {
       const buf = Buffer.from(passwordHash as string, "base64")
@@ -93,7 +104,10 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
       if (success) {
         const copy = JSON.parse(JSON.stringify(authIdentity))
-        delete copy.provider_metadata!.password
+        const providerIdentity = copy.provider_identities?.find(
+          (pi) => pi.provider === this.provider
+        )!
+        delete providerIdentity.provider_metadata?.password
 
         return {
           success,
