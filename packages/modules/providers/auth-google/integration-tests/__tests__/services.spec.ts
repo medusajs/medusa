@@ -1,9 +1,8 @@
-import { MedusaError } from "@medusajs/utils"
+import { generateJwtToken, MedusaError } from "@medusajs/utils"
 import { GoogleAuthService } from "../../src/services/google"
 jest.setTimeout(100000)
 import { http, HttpResponse } from "msw"
 import { setupServer } from "msw/node"
-import jwt from "jsonwebtoken"
 
 const sampleIdPayload = {
   iss: "https://accounts.google.com",
@@ -23,7 +22,10 @@ const sampleIdPayload = {
   exp: 1716895437,
 }
 
-const encodedIdToken = jwt.sign(sampleIdPayload, "test")
+const encodedIdToken = generateJwtToken(sampleIdPayload, {
+  secret: "test",
+  expiresIn: "1d",
+})
 
 const baseUrl = "https://someurl.com"
 

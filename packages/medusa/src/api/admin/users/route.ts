@@ -4,13 +4,13 @@ import {
   ContainerRegistrationKeys,
   MedusaError,
   remoteQueryObjectFromString,
+  generateJwtToken,
 } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
 import { refetchUser } from "./helpers"
-import { generateJwtToken } from "../../utils/auth/token"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

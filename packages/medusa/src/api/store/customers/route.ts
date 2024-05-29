@@ -2,12 +2,15 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  generateJwtToken,
+} from "@medusajs/utils"
 
 import { createCustomerAccountWorkflow } from "@medusajs/core-flows"
 import { refetchCustomer } from "./helpers"
 import { StoreCreateCustomerType } from "./validators"
-import { generateJwtToken } from "../../utils/auth/token"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<StoreCreateCustomerType>,
