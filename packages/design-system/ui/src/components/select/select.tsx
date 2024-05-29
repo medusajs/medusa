@@ -185,6 +185,7 @@ const Item = React.forwardRef<
       className={clx(
         "bg-ui-bg-component grid cursor-pointer grid-cols-[20px_1fr] gap-x-2 rounded-[4px] px-2 py-1.5 outline-none transition-colors txt-compact-small data-[state=checked]:txt-compact-medium-plus",
         "focus-visible:bg-ui-bg-component-hover",
+        "active:bg-ui-bg-component-pressed",
         "disabled:text-ui-fg-disabled",
         className
       )}
@@ -209,7 +210,7 @@ const Separator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Separator
     ref={ref}
-    className={clx("bg-ui-border-base -mx-1 my-1 h-px", className)}
+    className={clx("bg-ui-border-component -mx-1 my-1 h-0.5 border-t border-t-ui-border-menu-top border-b border-b-ui-border-menu-bot", className)}
     {...props}
   />
 ))
