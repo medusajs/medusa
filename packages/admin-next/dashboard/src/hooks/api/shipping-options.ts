@@ -17,6 +17,12 @@ import {
   ShippingOptionRes,
 } from "../../types/api-responses"
 import { stockLocationsQueryKeys } from "./stock-locations"
+import { queryKeysFactory } from "../../lib/query-key-factory"
+
+const SHIPPING_OPTIONS_QUERY_KEY = "shipping_options" as const
+export const shippingOptionsQueryKeys = queryKeysFactory(
+  SHIPPING_OPTIONS_QUERY_KEY
+)
 
 export const useShippingOptions = (
   query?: Record<string, any>,
@@ -27,7 +33,7 @@ export const useShippingOptions = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => client.shippingOptions.list(query),
-    queryKey: stockLocationsQueryKeys.all,
+    queryKey: shippingOptionsQueryKeys.list(query),
     ...options,
   })
 
@@ -46,6 +52,9 @@ export const useCreateShippingOptions = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.all,
+      })
+      queryClient.invalidateQueries({
+        queryKey: shippingOptionsQueryKeys.all,
       })
       options?.onSuccess?.(data, variables, context)
     },
@@ -67,6 +76,9 @@ export const useUpdateShippingOptions = (
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.all,
       })
+      queryClient.invalidateQueries({
+        queryKey: shippingOptionsQueryKeys.all,
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -82,6 +94,9 @@ export const useDeleteShippingOption = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.all,
+      })
+      queryClient.invalidateQueries({
+        queryKey: shippingOptionsQueryKeys.all,
       })
 
       options?.onSuccess?.(data, variables, context)
