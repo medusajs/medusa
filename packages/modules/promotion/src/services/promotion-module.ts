@@ -14,6 +14,7 @@ import {
   ComputedActions,
   InjectManager,
   InjectTransactionManager,
+  MathBN,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
@@ -23,6 +24,7 @@ import {
   isDefined,
   isPresent,
   isString,
+  transformPropertiesToBigNumber,
 } from "@medusajs/utils"
 import {
   ApplicationMethod,
@@ -176,12 +178,14 @@ export default class PromotionModuleService<
           campaignBudget.id
         ) || { id: campaignBudget.id, used: campaignBudget.used ?? 0 }
 
-        campaignBudgetData.used =
-          (campaignBudgetData.used ?? 0) + computedAction.amount
+        campaignBudgetData.used = MathBN.add(
+          campaignBudgetData.used ?? 0,
+          computedAction.amount
+        )
 
         if (
           campaignBudget.limit &&
-          campaignBudgetData.used > campaignBudget.limit
+          MathBN.gt(campaignBudgetData.used, campaignBudget.limit)
         ) {
           continue
         }
@@ -202,12 +206,12 @@ export default class PromotionModuleService<
 
         const campaignBudgetData = {
           id: campaignBudget.id,
-          used: (campaignBudget.used ?? 0) + 1,
+          used: MathBN.add(campaignBudget.used ?? 0, 1), // TODO: is it correct
         }
 
         if (
           campaignBudget.limit &&
-          campaignBudgetData.used > campaignBudget.limit
+          MathBN.gt(campaignBudgetData.used, campaignBudget.limit)
         ) {
           continue
         }
@@ -423,6 +427,8 @@ export default class PromotionModuleService<
         }
       }
     }
+
+    transformPropertiesToBigNumber(computedActions, { include: ["amount"] })
 
     return computedActions
   }
