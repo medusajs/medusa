@@ -4,19 +4,13 @@ import {
   SalesChannelDTO,
   StockLocationDTO,
 } from "@medusajs/types"
-import {
-  Button,
-  Container,
-  StatusBadge,
-  Text,
-  toast,
-  usePrompt,
-} from "@medusajs/ui"
+import { Container, StatusBadge, Text, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { BadgeListSummary } from "../../../../../components/common/badge-list-summary"
+import { LinkButton } from "../../../../../components/common/link-button"
 import { useDeleteStockLocation } from "../../../../../hooks/api/stock-locations"
 import { getFormattedAddress } from "../../../../../lib/addresses"
 
@@ -156,7 +150,7 @@ function Location(props: LocationProps) {
           </div>
 
           {/* ACTION*/}
-          <div className="flex grow-0 items-center gap-4 overflow-hidden">
+          <div className="flex grow-0 items-center gap-4">
             <ActionMenu
               groups={[
                 {
@@ -176,13 +170,9 @@ function Location(props: LocationProps) {
               ]}
             />
             <div className="bg-ui-border-strong h-[12px] w-[1px]" />
-            <Button
-              className="text-ui-fg-interactive -ml-1 rounded-none"
-              onClick={() => navigate(`/settings/locations/${location.id}`)}
-              variant="transparent"
-            >
+            <LinkButton to={`/settings/locations/${location.id}`}>
               {t("actions.viewDetails")}
-            </Button>
+            </LinkButton>
           </div>
         </div>
       </div>

@@ -13,7 +13,11 @@ import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { MainLayout } from "../../components/layout/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
-import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
+import {
+  InventoryItemRes,
+  PriceListRes,
+  StockLocationRes,
+} from "../../types/api-responses"
 
 import { RouteExtensions } from "./route-extensions"
 import { SettingsExtensions } from "./settings-extensions"
@@ -699,6 +703,9 @@ export const RouteMap: RouteObject[] = [
               {
                 path: ":location_id",
                 lazy: () => import("../../routes/locations/location-details"),
+                handle: {
+                  crumb: (data: StockLocationRes) => data.stock_location.name,
+                },
                 children: [
                   {
                     path: "edit",
