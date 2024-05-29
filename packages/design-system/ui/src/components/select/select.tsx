@@ -183,16 +183,17 @@ const Item = React.forwardRef<
     <SelectPrimitive.Item
       ref={ref}
       className={clx(
-        "bg-ui-bg-component grid cursor-pointer grid-cols-[20px_1fr] gap-x-2 rounded-[4px] px-2 py-1.5 outline-none transition-colors txt-compact-small data-[state=checked]:txt-compact-medium-plus",
+        "bg-ui-bg-component grid cursor-pointer grid-cols-[15px_1fr] gap-x-2 rounded-[4px] px-2 py-1.5 outline-none transition-colors txt-compact-small items-center",
         "focus-visible:bg-ui-bg-component-hover",
         "active:bg-ui-bg-component-pressed",
+        "data-[state=checked]:txt-compact-small-plus",
         "disabled:text-ui-fg-disabled",
         className
       )}
       {...props}
     >
       <span className="flex h-[15px] w-[15px] items-center justify-center">
-        <SelectPrimitive.ItemIndicator>
+        <SelectPrimitive.ItemIndicator className="flex items-center justify-center">
           <EllipseMiniSolid />
         </SelectPrimitive.ItemIndicator>
       </span>
