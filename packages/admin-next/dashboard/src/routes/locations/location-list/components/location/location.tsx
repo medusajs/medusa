@@ -42,6 +42,7 @@ function SalesChannels(props: SalesChannelsProps) {
         <div className="flex-1 text-left">
           {salesChannels?.length ? (
             <BadgeListSummary
+              rounded
               inline
               n={3}
               list={salesChannels.map((s) => s.name)}
