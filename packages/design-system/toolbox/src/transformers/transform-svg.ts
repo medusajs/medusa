@@ -22,7 +22,7 @@ export async function transformSvg({
       typescript: true,
       replaceAttrValues: !fixed
         ? {
-            "#030712": "{color}",
+            "#09090B": "{color}",
           }
         : undefined,
       svgProps: {

@@ -15,11 +15,11 @@
     "@svgr/plugin-prettier": "8.0.1",
     "@svgr/plugin-svgo": "8.0.1",
     "axios": "^0.24.0",
+    "axios-retry": "^3.1.9",
     "commander": "11.0.0",
     "dotenv": "^16.4.5",
     "fs-extra": "11.1.1",
     "picocolors": "^1.0.0",
-    "retry-axios": "^2.6.0",
     "ts-dedent": "2.2.0"
   },
   "devDependencies": {

@@ -36,8 +36,8 @@ module.exports = {
   },
   plugins: [],
   projectConfig: {
-    database_url: DB_URL,
-    database_type: "postgres",
+    databaseUrl: DB_URL,
+    databaseType: "postgres",
     http: {
       jwtSecret: "test",
       cookieSecret: "test",

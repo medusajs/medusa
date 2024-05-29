@@ -5,8 +5,8 @@ const Phone = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,14 @@ const Phone = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M8.75 1.25H6.875A1.875 1.875 0 0 0 5 3.125v13.75a1.875 1.875 0 0 0 1.875 1.875h6.25A1.875 1.875 0 0 0 15 16.875V3.125a1.875 1.875 0 0 0-1.875-1.875H11.25m-2.5 0V2.5h2.5V1.25m-2.5 0h2.5m-2.5 15.625h2.5"
+          d="M10.389 1.056H4.61c-.982 0-1.778.796-1.778 1.777v9.334c0 .982.796 1.778 1.778 1.778h5.778c.982 0 1.778-.796 1.778-1.778V2.833c0-.981-.796-1.777-1.778-1.777"
+        />
+        <path
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M6.389 1.056v.889H8.61v-.89M6.389 11.256H8.61"
         />
       </svg>
     )
