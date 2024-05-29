@@ -179,7 +179,6 @@ export class Admin {
     ) => {
       return this.client.fetch<{
         customer: HttpTypes.AdminCustomer
-        token: string
       }>(`/admin/customers`, {
         method: "POST",
         headers,
