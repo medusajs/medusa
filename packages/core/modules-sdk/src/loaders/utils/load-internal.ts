@@ -17,7 +17,7 @@ import {
 import { asFunction, asValue } from "awilix"
 import { statSync } from "fs"
 import { readdir } from "fs/promises"
-import { join, resolve } from "path"
+import { extname, join, resolve } from "path"
 
 type ModuleResource = {
   services: Function[]
@@ -208,17 +208,24 @@ export async function loadModuleMigrations(
 async function importAllFromDir(path: string) {
   let filesToLoad: string[] = []
 
+  const excludedExtensionsRegexp = /(\.ts\.map|\.js\.map|\.d\.ts)/
+
   await readdir(path).then((files) => {
     files.forEach((file) => {
-      if (file !== "index.js" && file.endsWith(".js")) {
-        const filePath = join(path, file)
-        const stats = statSync(filePath)
+      if (
+        file.startsWith("index.") ||
+        excludedExtensionsRegexp.test(extname(file))
+      ) {
+        return
+      }
 
-        if (stats.isDirectory()) {
-          // TODO: should we handle that? dont think so but I put that here for discussion
-        } else if (stats.isFile()) {
-          filesToLoad.push(filePath)
-        }
+      const filePath = join(path, file)
+      const stats = statSync(filePath)
+
+      if (stats.isDirectory()) {
+        // TODO: should we handle that? dont think so but I put that here for discussion
+      } else if (stats.isFile()) {
+        filesToLoad.push(filePath)
       }
     })
 
@@ -238,7 +245,9 @@ async function loadResources(
   logger: Logger
 ): Promise<ModuleResource> {
   const modulePath = moduleResolution.resolutionPath as string
-  let normalizedPath = modulePath.replace("index.js", "")
+  let normalizedPath = modulePath
+    .replace("index.js", "")
+    .replace("index.ts", "")
   normalizedPath = resolve(normalizedPath)
 
   try {
