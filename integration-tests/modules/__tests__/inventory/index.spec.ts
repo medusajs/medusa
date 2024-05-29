@@ -124,7 +124,7 @@ medusaIntegrationTestRunner({
             inventoryItemId,
             locationId
           )
-        console.log("newStockLevel --- ", newStockLevel)
+
         expect(newStockLevel.stocked_quantity).toEqual(21)
         expect(newStockLevel.incoming_quantity).toEqual(0)
 
@@ -132,7 +132,7 @@ medusaIntegrationTestRunner({
           `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`,
           adminHeaders
         )
-        console.log("wut")
+
         const invLevel = await service
           .retrieveInventoryLevelByItemAndLocation(inventoryItemId, locationId)
           .catch((e) => e)
