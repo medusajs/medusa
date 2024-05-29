@@ -448,7 +448,7 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
     const cartModuleService: ICartModuleService =
       req.scope.resolve(ModuleRegistrationName.CART)
 
-    await cartModuleService.deleteLineItems(["cali_123"])
+    await cartModuleService.deleteShippingMethods(["casm_123"])
 
     res.status(200)
   }
@@ -482,4 +482,4 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
 
 ## More Examples
 
-The [module interface reference](/references/cart) provides a reference to all the methods available for use with examples for each.
+The [Cart Module's main service reference](/references/cart) provides a reference to all the methods available for use with examples for each.

@@ -1,5 +1,7 @@
 import {
   InternalModuleDeclaration,
+  MODULE_RESOURCE_TYPE,
+  MODULE_SCOPE,
   MedusaModule,
   ModuleRegistrationName,
 } from "@medusajs/modules-sdk"
@@ -8,8 +10,6 @@ import {
   ILinkModule,
   LinkModuleDefinition,
   LoaderOptions,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
   ModuleExports,
   ModuleJoinerConfig,
   ModuleServiceInitializeCustomDataLayerOptions,

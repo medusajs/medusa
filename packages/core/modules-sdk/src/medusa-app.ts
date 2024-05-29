@@ -6,8 +6,6 @@ import {
   InternalModuleDeclaration,
   LoadedModule,
   MedusaContainer,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
   ModuleDefinition,
   ModuleExports,
   ModuleJoinerConfig,
@@ -18,10 +16,10 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModulesSdkUtils,
   createMedusaContainer,
   isObject,
   isString,
-  ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -33,6 +31,7 @@ import {
 import { MedusaModule } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]

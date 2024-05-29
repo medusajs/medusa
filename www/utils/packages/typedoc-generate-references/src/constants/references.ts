@@ -21,10 +21,10 @@ export const modules = [
 
 const allReferences = [
   ...modules,
+  "auth-provider",
   "file",
-  // "js-client",
+  "fulfillment-provider",
   "medusa-config",
-  // "medusa-react",
   "medusa",
   "notification",
   "payment-provider",

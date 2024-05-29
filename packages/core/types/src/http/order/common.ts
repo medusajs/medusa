@@ -221,6 +221,43 @@ export interface BaseOrderTransaction {
   updated_at: Date | string
 }
 
+export interface BaseOrderFulfillment {
+  id: string
+  location_id: string
+  packed_at: Date | null
+  shipped_at: Date | null
+  delivered_at: Date | null
+  canceled_at: Date | null
+  data: Record<string, unknown> | null
+  provider_id: string
+  shipping_option_id: string | null
+  metadata: Record<string, unknown> | null
+  created_at: Date
+  updated_at: Date
+}
+
+type PaymentStatus =
+  | "not_paid"
+  | "awaiting"
+  | "authorized"
+  | "partially_authorized"
+  | "captured"
+  | "partially_captured"
+  | "partially_refunded"
+  | "refunded"
+  | "canceled"
+  | "requires_action"
+
+type FulfillmentStatus =
+  | "not_fulfilled"
+  | "partially_fulfilled"
+  | "fulfilled"
+  | "partially_shipped"
+  | "shipped"
+  | "partially_delivered"
+  | "delivered"
+  | "canceled"
+
 export interface BaseOrder {
   id: string
   version: number
@@ -234,7 +271,10 @@ export interface BaseOrder {
   billing_address?: BaseOrderAddress
   items: BaseOrderLineItem[] | null
   shipping_methods: BaseOrderShippingMethod[] | null
-  payment_collection?: BasePaymentCollection
+  payment_collections?: BasePaymentCollection[]
+  payment_status: PaymentStatus
+  fulfillments?: BaseOrderFulfillment[]
+  fulfillment_status: FulfillmentStatus
   transactions?: BaseOrderTransaction[]
   summary: BaseOrderSummary
   metadata: Record<string, unknown> | null

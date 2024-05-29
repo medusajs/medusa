@@ -1,0 +1,29 @@
+export const metadata = {
+  title: `API Key Concepts`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how about the different types of API keys, and their expiration and verification.
+## API Key Types
+
+There are two types of API keys:
+
+- `publishable`: A public key used in client applications, such as a storefront.
+- `secret`: A secret key used for authentication and verification purposes, such as an admin user’s authentication token or a password reset token.
+
+The API key’s type is stored in the `type` field of the [ApiKey data model](/references/api-key/models/ApiKey).
+
+---
+
+## API Key Expiration
+
+An API key expires when it’s revoked using the [revoke method of the module’s main service](/references/api-key/revoke).
+
+The associated token is no longer usable or verifiable.
+
+---
+
+## Token Verification
+
+To verify a token received as an input or in a request, use the [authenticate method of the module’s main service](/references/api-key/authenticate) which validates the token against all non-expired tokens.

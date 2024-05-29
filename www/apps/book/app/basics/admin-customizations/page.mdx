@@ -6,19 +6,13 @@ export const metadata = {
 
 In this chapter, you’ll learn how to customize the Medusa Admin dashboard.
 
-<Note type="soon">
-
-Admin customizations are coming soon.
-
-</Note>
-
 ## Overview
 
 The Medusa Admin is an admin dashboard that merchants use to manage their store's data.
 
 You can extend the Medusa Admin to add widgets and new pages. Your customizations interact with API routes to provide merchants with custom functionalities.
 
-The Medusa Admin is installed in your Medusa application and runs at port `7001` when you start the Medusa application.
+The Medusa Admin is installed in your Medusa application and runs at the path `/app` when you start the Medusa application.
 
 ---
 
@@ -29,7 +23,7 @@ A widget is a React component that can be injected into an existing page in the 
 For example, create the file `src/admin/widgets/product-widget.tsx` with the following content:
 
 ```tsx title="src/admin/widgets/product-widget.tsx"
-import type { WidgetConfig } from "@medusajs/admin"
+import { defineWidgetConfig } from "@medusajs/admin-shared"
 
 const ProductWidget = () => {
   return (
@@ -39,9 +33,9 @@ const ProductWidget = () => {
   )
 }
 
-export const config: WidgetConfig = {
+export const config = defineWidgetConfig({
   zone: "product.details.after",
-}
+})
 
 export default ProductWidget
 ```
