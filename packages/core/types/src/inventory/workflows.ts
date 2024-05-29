@@ -4,6 +4,6 @@ export type CreateVariantInventoryItemDTO = CreateInventoryItemInput & {
   variant_id: string
 }
 
-export type CreateVariantInventoryItemWorkflowInputDTO = {
-  data: CreateVariantInventoryItemDTO[]
+export type CreateVariantInventoryItemWorkflowInput = {
+  items: CreateVariantInventoryItemDTO[]
 }

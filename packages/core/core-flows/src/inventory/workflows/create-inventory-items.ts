@@ -6,18 +6,14 @@ import {
 import { createInventoryItemsStep } from "../steps"
 
 import { LinkDefinition } from "@medusajs/modules-sdk"
+import { CreateVariantInventoryItemWorkflowInput } from "@medusajs/types/src"
 import { Modules } from "../../../../modules-sdk/src/definitions"
-import { CreateVariantInventoryItemDTO } from "../../../../types/dist/inventory/workflows"
 import { createLinkStep } from "../../common"
-
-interface WorkflowInput {
-  items: CreateVariantInventoryItemDTO[]
-}
 
 export const createInventoryItemsWorkflowId = "create-inventory-items-workflow"
 export const createInventoryItemsWorkflow = createWorkflow(
   createInventoryItemsWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<CreateVariantInventoryItemWorkflowInput>) => {
     const variantItemsMap = createInventoryItemsStep(input.items)
 
     const variantItemsLinks = transform(variantItemsMap, (map) => {
