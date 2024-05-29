@@ -3,32 +3,14 @@ sidebar_label: "User Creation"
 ---
 
 export const metadata = {
-  title: `User Creation with Auth Module`,
+  title: `User Creation`,
 }
 
 # {metadata.title}
 
-In this document, you’ll learn about the user-creation flow and how to use it with the User Module.
+In this document, you’ll learn about creating a user with the User Module after authentication.
 
-## Auth User Creation in Authentication Flow
-
-In the [Auth Provider](../auth-providers/page.mdx) documentation, you learned about the authentication flows supported by the Auth Module. These flows are used when an `AuthIdentity` is already available for the specified authentication data, such as email/password credentials.
-
-However, the `emailpass` and `google` providers support creating an `AuthIdentity` if none exists. If an email is provided that doesn’t have an `AuthIdentity` associated with it (checked via its `entity_id` field) for the specified provider (checked via its `provider` field), a new `AuthIdentity` is created for that email and provider.
-
-![Diagram showcasing the AuthIdentity creation part of the authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711441638/Medusa%20Resources/auth-user-creation_gmahvl.jpg)
-
-So, by default, your authentication flow supports both sign-in and sign-up flows.
-
-<Note title="Tip">
-
-This step actually occurs at different points of the authentication flow for each of the providers. For the `emailpass` provider, it occurs before checking that the password is correct. For the `google` provider, you must go through the full authentication flow to retrieve the user details, such as email, from Google.
-
-</Note>
-
----
-
-## Creating a User in the User Module
+## Creating a User using the User Module
 
 The User Module provides user and invite management functionalities. However, it doesn’t provide authentication functionalities or store any related data.
 

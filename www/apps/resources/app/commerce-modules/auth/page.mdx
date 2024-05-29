@@ -8,13 +8,11 @@ export const metadata = {
 
 The Auth Module is the `@medusajs/auth` NPM package that provides authentication-related features in your Medusa and Node.js applications.
 
----
-
 ## Features
 
-### Authenticate Users
+### Basic User Authentication
 
-With the Auth Module, authenticate users using their credentials.
+With the Auth Module, authenticate users using their email and password credentials.
 
 ```ts
 const { success, authIdentity, error } =
@@ -71,25 +69,22 @@ const { success, authIdentity } =
 
 ## Configure Auth Module
 
-After installing the `@medusajs/auth` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+To use the Auth Module, enable it in the `modules` object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 const modules = {
   // ...
-  auth: {
-    resolve: "@medusajs/auth",
-    options: {
-      providers: [
-        // ...
-      ],
-    },
-  },
+  [Modules.AUTH]: true,
 }
 ```
 
-### Module Options
+{/* ### Module Options
 
-Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
+Refer to [this documentation](./module-options/page.mdx) for details on the module's options. */}
 
 ---
 
@@ -103,9 +98,14 @@ For example:
   <CodeTab label="API Route" value="api-route">
 
   ```ts title="src/api/store/custom/route.ts"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { 
+    MedusaRequest, 
+    MedusaResponse
+  } from "@medusajs/medusa"
   import { IAuthModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { 
+    ModuleRegistrationName
+  } from "@medusajs/modules-sdk"
 
   export async function GET(
     req: MedusaRequest,
@@ -126,7 +126,9 @@ For example:
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { IAuthModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { 
+    ModuleRegistrationName
+  } from "@medusajs/modules-sdk"
 
   export default async function subscriberHandler({
     container,
@@ -144,11 +146,15 @@ For example:
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { IAuthModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { 
+    ModuleRegistrationName
+  } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const authModuleService: IAuthModuleService =
-      context.container.resolve(
+      container.resolve(
         ModuleRegistrationName.AUTH
       )
     const authIdentitys = await authModuleService.list()

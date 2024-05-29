@@ -1,5 +1,5 @@
 export const metadata = {
-  title: `Shipping Options`,
+  title: `Shipping Option`,
 }
 
 # {metadata.title}
@@ -12,21 +12,21 @@ A shipping option is a way of shipping an item. Each fulfillment provider provid
 
 When the customer places their order, they choose a shipping option to be used to fulfill their items.
 
-A shipping option is represented by the `ShippingOption` data model.
+A shipping option is represented by the [ShippingOption data model](/references/fulfillment/models/ShippingOption).
 
 ---
 
 ## Service Zone Restrictions
 
-A shipping option is restricted by a service zone, which specifies in what locations can a shipping option be used.
+A shipping option is restricted by a service zone, limiting the locations a shipping option be used in.
 
 For example, a fulfillment provider may have a shipping option that can be used in the United States, and another in Canada.
 
-![https://res.cloudinary.com/dza7lstvk/image/upload/v1712330831/Medusa%20Resources/shipping-option-service-zone_pobh6k.jpg](https://res.cloudinary.com/dza7lstvk/image/upload/v1712330831/Medusa%20Resources/shipping-option-service-zone_pobh6k.jpg)
+![A diagram showcasing the relation between shipping options and service zones.](https://res.cloudinary.com/dza7lstvk/image/upload/v1712330831/Medusa%20Resources/shipping-option-service-zone_pobh6k.jpg)
 
 Service zones can be more restrictive, such as restricting to certain cities or province codes.
 
-![https://res.cloudinary.com/dza7lstvk/image/upload/v1712331186/Medusa%20Resources/shipping-option-service-zone-city_m5sxod.jpg](https://res.cloudinary.com/dza7lstvk/image/upload/v1712331186/Medusa%20Resources/shipping-option-service-zone-city_m5sxod.jpg)
+![A diagram showcasing the relation between shipping options, service zones, and geo zones](https://res.cloudinary.com/dza7lstvk/image/upload/v1712331186/Medusa%20Resources/shipping-option-service-zone-city_m5sxod.jpg)
 
 ---
 
@@ -34,26 +34,26 @@ Service zones can be more restrictive, such as restricting to certain cities or 
 
 You can restrict shipping options by custom rules, such as the item’s weight or the customer’s group.
 
-These rules are represented by the `ShippingOptionRule` data model. Its fields define the custom rule:
+These rules are represented by the [ShippingOptionRule data model](/references/fulfillment/models/ShippingOptionRule). Its fields define the custom rule:
 
-- `field`: The name of an field or table that the rule applies to. For example, `customer_group`.
-- `value`: One or more values.
+- `attribute`: The name of a field or table that the rule applies to. For example, `customer_group`.
 - `operator`: The operator used in the condition. For example:
     - To allow multiple values, use the operator `in`, which validates that the provided values are in the rule’s values.
     - To create a negation condition that considers `value` against the rule, use `nin`, which validates that the provided values aren’t in the rule’s values.
     - Check out more operators in [this reference](/references/fulfillment/types/fulfillment.RuleOperatorType).
+- `value`: One or more values.
 
-![https://res.cloudinary.com/dza7lstvk/image/upload/v1712331340/Medusa%20Resources/shipping-option-rule_oosopf.jpg](https://res.cloudinary.com/dza7lstvk/image/upload/v1712331340/Medusa%20Resources/shipping-option-rule_oosopf.jpg)
+![A diagram showcasing the relation between shipping option and shipping option rules.](https://res.cloudinary.com/dza7lstvk/image/upload/v1712331340/Medusa%20Resources/shipping-option-rule_oosopf.jpg)
 
 A shipping option can have multiple rules. For example, a shipping option is available if the customer belongs to the VIP group and the total weight is less than 2000g.
 
-![https://res.cloudinary.com/dza7lstvk/image/upload/v1712331462/Medusa%20Resources/shipping-option-rule-2_ylaqdb.jpg](https://res.cloudinary.com/dza7lstvk/image/upload/v1712331462/Medusa%20Resources/shipping-option-rule-2_ylaqdb.jpg)
+![A diagram showcasing how a shipping option can have multiple rules.](https://res.cloudinary.com/dza7lstvk/image/upload/v1712331462/Medusa%20Resources/shipping-option-rule-2_ylaqdb.jpg)
 
 ---
 
 ## Shipping Profile and Types
 
-A shipping option belongs to a type. For example, a shipping option’s type may be `express`, while another `standard`. The type is represented by the `ShippingOptionType` data model.
+A shipping option belongs to a type. For example, a shipping option’s type may be `express`, while another `standard`. The type is represented by the [ShippingOptionType data model](/references/fulfillment/models/ShippingOptionType).
 
 A shipping option also belongs to a shipping profile, as each shipping profile defines the type of items to be shipped in a similar manner.
 

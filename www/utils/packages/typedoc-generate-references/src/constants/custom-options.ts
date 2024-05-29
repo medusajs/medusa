@@ -10,10 +10,11 @@ import { rootPathPrefix } from "./general.js"
 import { modules } from "./references.js"
 
 const customOptions: Record<string, Partial<TypeDocOptions>> = {
-  entities: getOptions({
-    entryPointPath: "packages/medusa/src/models/index.ts",
-    tsConfigName: "medusa.json",
-    name: "entities",
+  "auth-provider": getOptions({
+    entryPointPath: "packages/core/utils/src/auth/abstract-auth-provider.ts",
+    tsConfigName: "utils.json",
+    name: "auth-provider",
+    parentIgnore: true,
   }),
   file: getOptions({
     entryPointPath: "packages/core/utils/src/file/abstract-file-provider.ts",
@@ -21,10 +22,10 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "file",
     parentIgnore: true,
   }),
-  "fulfillment-service": getOptions({
-    entryPointPath: "packages/medusa/src/interfaces/fulfillment-service.ts",
-    tsConfigName: "medusa.json",
-    name: "fulfillment-service",
+  "fulfillment-provider": getOptions({
+    entryPointPath: "packages/core/utils/src/fulfillment/provider.ts",
+    tsConfigName: "utils.json",
+    name: "fulfillment-provider",
     parentIgnore: true,
   }),
   "js-client": getOptions({
@@ -84,23 +85,11 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "notification",
     parentIgnore: true,
   }),
-  "payment-processor": getOptions({
-    entryPointPath: "packages/medusa/src/interfaces/payment-processor.ts",
-    tsConfigName: "medusa.json",
-    name: "payment-processor",
-  }),
   "payment-provider": getOptions({
     entryPointPath:
       "packages/core/utils/src/payment/abstract-payment-provider.ts",
     tsConfigName: "utils.json",
     name: "payment-provider",
-  }),
-  "price-selection": getOptions({
-    entryPointPath:
-      "packages/medusa/src/interfaces/price-selection-strategy.ts",
-    tsConfigName: "medusa.json",
-    name: "price-selection",
-    parentIgnore: true,
   }),
   search: getOptions({
     entryPointPath: "packages/core/utils/src/search/abstract-service.ts",
@@ -112,23 +101,10 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     tsConfigName: "medusa.json",
     name: "services",
   }),
-  "tax-calculation": getOptions({
-    entryPointPath:
-      "packages/medusa/src/interfaces/tax-calculation-strategy.ts",
-    tsConfigName: "medusa.json",
-    name: "tax-calculation",
-    parentIgnore: true,
-  }),
   "tax-provider": getOptions({
     entryPointPath: "packages/core/types/src/tax/provider.ts",
     tsConfigName: "types.json",
     name: "tax-provider",
-  }),
-  "tax-service": getOptions({
-    entryPointPath: "packages/medusa/src/interfaces/tax-service.ts",
-    tsConfigName: "medusa.json",
-    name: "tax-service",
-    parentIgnore: true,
   }),
   types: getOptions({
     entryPointPath: "packages/core/types/src/index.ts",

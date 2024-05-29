@@ -9,8 +9,6 @@ export const metadata = {
 
 The Payment Module is the `@medusajs/payment` NPM package that provides payment-related features in your Medusa and Node.js applications.
 
----
-
 ## Features
 
 ### Add Payment Functionalities to Any Resource
@@ -40,7 +38,7 @@ await paymentModuleService.capturePayment({
 
 ### Integrate Third-Party Payment Providers
 
-Use payment providers like Stripe and PayPal to handle and process payments.
+Use payment providers like Stripe to handle and process payments.
 
 ```ts
 const payment =
@@ -74,12 +72,16 @@ await paymentModuleService.processEvent({
 
 ## Configure Payment Module
 
-After installing the `@medusajs/payment` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+To use the Payment Module, enable it in the `modules` object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 const modules = {
   // ...
-  apiKey: {
+  [Modules.PAYMENT]: {
     resolve: "@medusajs/payment",
     options: {
       // ...
@@ -134,7 +136,7 @@ For example:
     container,
   }: SubscriberArgs) {
     const paymentModuleService: IPaymentModuleService =
-      container.resolve(ModuleRegistrationName.API_KEY)
+      container.resolve(ModuleRegistrationName.PAYMENT)
 
     const payment_collections =
       await paymentModuleService.listPaymentCollections()
@@ -149,10 +151,12 @@ For example:
   import { IPaymentModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const paymentModuleService: IPaymentModuleService =
-      context.container.resolve(
-        ModuleRegistrationName.API_KEY
+      container.resolve(
+        ModuleRegistrationName.PAYMENT
       )
 
     const payment_collections =

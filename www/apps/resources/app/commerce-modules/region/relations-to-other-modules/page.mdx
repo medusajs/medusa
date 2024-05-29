@@ -4,14 +4,28 @@ export const metadata = {
 
 # {metadata.title}
 
-When Commerce Modules are used together in a Medusa application, the Medusa application handles building the relations between these modules.
-
-This document showcases the relation between the Region Module and other Commerce Modules.
+This document showcases the link modules defined between the Region Module and other commerce modules.
 
 ## Cart Module
 
-Carts are associated with a region. The Medusa application forms a relation between the `Region` and the `Cart` data models.
+Carts are associated with a region. Medusa defines a link module that builds a relationship between the `Region` and the `Cart` data models.
 
-![A diagram showcasing an example of how resources from the API Key and Sales Channel modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711116934/Medusa%20Resources/region-cart_hffaib.jpg)
+![A diagram showcasing an example of how resources from the API Key and Sales Channel modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716543714/Medusa%20Resources/customer-region_rtmymb.jpg)
 
 The cart then uses the same currency as the region. During checkout, the cart's taxes, payment, and fulfillment providers are available based on the region's settings.
+
+---
+
+## Order Module
+
+An order is associated with the customer's region. Medusa defines a link module that builds a relationship between the `Order` and `Region` data models.
+
+![A diagram showcasing an example of how data models from the Order and Region modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716555119/Medusa%20Resources/order-region_ihkp2u.jpg)
+
+---
+
+## Payment Module
+
+You can specify for each region which payment providers are available. Medusa defines a link module that builds a relationship between the `PaymentProvider` and the `Region` data models.
+
+![A diagram showcasing an example of how resources from the Payment and Region modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711569520/Medusa%20Resources/payment-region_jyo2dz.jpg)

@@ -26,7 +26,7 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
       request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
 
     const salesChannel = await salesChannelModuleService.create({
-      name: request.body.name,
+      name: "B2B",
     })
 
     res.json({
@@ -48,10 +48,9 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
   export async function POST(request: Request) {
     const salesChannelModuleService =
       await initializeSalesChannelModule()
-    const body = await request.json()
 
     const salesChannel = await salesChannelModuleService.create({
-      name: body.name,
+      name: "B2B",
     })
 
     return NextResponse.json({ sales_channel: salesChannel })
@@ -129,7 +128,7 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
       request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
 
     const salesChannel = await salesChannelModuleService.retrieve(
-      request.params.id
+      "sc_123"
     )
 
     res.json({
@@ -148,22 +147,14 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
     initialize as initializeSalesChannelModule,
   } from "@medusajs/sales-channel"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
-  }
-
   export async function GET(
-    request: Request,
-    { params }: ContextType
+    request: Request
   ) {
     const salesChannelModuleService =
       await initializeSalesChannelModule()
-    const body = await request.json()
 
     const salesChannel = await salesChannelModuleService.retrieve(
-      params.id
+      "sc_123"
     )
 
     return NextResponse.json({ sales_channel: salesChannel })
@@ -193,8 +184,8 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
       request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
 
     const salesChannel = await salesChannelModuleService.update({
-      id: request.params.id,
-      description: request.body.description,
+      id: "sc_123",
+      description: "Sales channel for B2B customers",
     })
 
     res.json({
@@ -213,23 +204,15 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
     initialize as initializeSalesChannelModule,
   } from "@medusajs/sales-channel"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
-  }
-
   export async function POST(
-    request: Request,
-    { params }: ContextType
+    request: Request
   ) {
     const salesChannelModuleService =
       await initializeSalesChannelModule()
-    const body = await request.json()
 
     const salesChannel = await salesChannelModuleService.update({
-      id: params.id,
-      description: body.description,
+      id: "sc_123",
+      description: "Sales channel for B2B customers",
     })
 
     return NextResponse.json({ sales_channel: salesChannel })
@@ -258,7 +241,7 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
     const salesChannelModuleService: ISalesChannelModuleService =
       request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
 
-    await salesChannelModuleService.delete(request.params.id)
+    await salesChannelModuleService.delete("sc_123")
 
     res.status(200)
   }
@@ -274,20 +257,13 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
     initialize as initializeSalesChannelModule,
   } from "@medusajs/sales-channel"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
-  }
-
   export async function DELETE(
-    request: Request,
-    { params }: ContextType
+    request: Request
   ) {
     const salesChannelModuleService =
       await initializeSalesChannelModule()
 
-    await salesChannelModuleService.delete(params.id)
+    await salesChannelModuleService.delete("sc_123")
   }
   ```
 
@@ -298,4 +274,4 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
 
 ## More Examples
 
-The [Sales Channel Module interface reference](/references/sales-channel) provides a reference to all the methods available for use with examples for each.
+The [Sales Channel Module's main service reference](/references/sales-channel) provides a reference to all the methods available for use with examples for each.

@@ -6,11 +6,11 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you’ll learn about the concepts in the Promotion Module.
+In this document, you’ll learn about the main promotion and rule concepts in the Promotion Module.
 
-## Promotion
+## What is a Promotion?
 
-A promotion, represented by the `Promotion` data model, represents a discount applied on cart items, shipping methods, or entire orders.
+A promotion, represented by the [Promotion data model](/references/promotion/models/Promotion), represents a discount applied on cart items, shipping methods, or entire orders.
 
 A promotion has two types:
 
@@ -72,131 +72,27 @@ A promotion has two types:
   </Table.Body>
 </Table>
 
-### PromotionRule
+## PromotionRule
 
-A promotion can be restricted by a set of rules, each rule is represented by the `PromotionRule` data model. For example, you can create a promotion that only customers of the `VIP` customer group can use it.
+A promotion can be restricted by a set of rules, each rule is represented by the [PromotionRule data model](/references/promotion/models/PromotionRule). For example, you can create a promotion that only customers of the `VIP` customer group can use.
 
 ![A diagram showcasing the relation between Promotion and PromotionRule](https://res.cloudinary.com/dza7lstvk/image/upload/v1709833196/Medusa%20Resources/promotion-promotion-rule_msbx0w.jpg)
 
-A `PromotionRule`'s `field` field indicates the field's name to which this rule is applied. For example, `customer_group_id`. Its value is stored in the `PromotionRuleValue` data model. So, a rule can have multiple values.
+A `PromotionRule`'s `attribute` field indicates the field's name to which this rule is applied. For example, `customer_group_id`. Its value is stored in the `PromotionRuleValue` data model. So, a rule can have multiple values.
 
-When testing whether a promotion can be applied to a cart, the rule's `field` field and its values are tested on the cart itself. For example, the cart's customer must be part of the customer group(s) indicated in the promotion rule's value.
+When testing whether a promotion can be applied to a cart, the rule's `attribute` field and its values are tested on the cart itself. For example, the cart's customer must be part of the customer group(s) indicated in the promotion rule's value.
 
-### Flexible Rules
+---
+
+## Flexible Rules
 
 The `PromotionRule`'s `operator` field adds more flexibility to the rule’s condition rather than simple equality (`eq`).
 
 For example, to restrict the promotion to only `VIP` and `B2B` customer groups:
 
-- Add a `PromotionRule` with its `field` field set to `customer_group_id` and `operator` field to `in`.
+- Add a `PromotionRule` with its `attribute` field set to `customer_group_id` and `operator` field to `in`.
 - Add two `PromotionRuleValue` associated with the rule: one with the value `VIP` and the other `B2B`.
 
 ![A diagram showcasing the relation between PromotionRule and PromotionRuleValue when a rule has multiple values](https://res.cloudinary.com/dza7lstvk/image/upload/v1709897383/Medusa%20Resources/promotion-promotion-rule-multiple_hctpmt.jpg)
 
 In this case, a customer’s group must be in the `VIP` and `B2B` set of values to use the promotion.
-
----
-
-## Application Method
-
-The `ApplicationMethod` data model defines how a promotion is applied:
-
-<Table>
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell>
-      
-      field
-      
-      </Table.HeaderCell>
-      <Table.HeaderCell>
-      
-      Purpose
-      
-      </Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
-
-      `type`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Does the promotion discount a fixed amount or a percentage?
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-      `target_type`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Is the promotion applied on a cart item, shipping method, or the entire order?
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-      `allocation`
-
-      </Table.Cell>
-      <Table.Cell>
-
-      Is the discounted amount applied on each item or split between the applicable items?
-
-      </Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
-
-### Target Promotion Rules
-
-When the promotion is applied to a cart item or a shipping method, you can restrict which items/shipping methods the promotion is applied to.
-
-The `ApplicationMethod` data model has a collection of `PromotionRule` records to restrict which items or shipping methods the promotion applies to. The `target_rules` field represents this relation. 
-
-![A diagram showcasing the target_rules relation between the ApplicationMethod and PromotionRule data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709898273/Medusa%20Resources/application-method-target-rules_hqaymz.jpg)
-
-In this example, the promotion is only applied on products in the cart having the SKU `SHIRT`.
-
-### Buy Promotion Rules
-
-When the promotion’s type is `buyget`, you must specify the “buy X” condition. For example, a cart must have two shirts before the promotion can be applied.
-
-The application method has a collection of `PromotionRule` items to define the “buy X” rule. The `buy_rules` field represents this relation. 
-
-![A diagram showcasing the buy_rules relation between the ApplicationMethod and PromotionRule data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709898453/Medusa%20Resources/application-method-buy-rules_djjuhw.jpg)
-
-In this example, the cart must have two products with the SKU `SHIRT` for the promotion to be applied.
-
----
-
-## Campaign
-
-A `Campaign` combines promotions under the same conditions, such as start and end dates.
-
-![A diagram showcasing the relation between the Campaign and Promotion data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709899225/Medusa%20Resources/campagin-promotion_hh3qsi.jpg)
-
-### Campaign Limits
-
-Each campaign has a budget represented by the `CampaignBudget` data model. The budget limits how many times the promotion can be used.
-
-There are two types of budgets:
-
-- `spend`: An amount that, when crossed, the promotion becomes unusable. For example, if the amount limit is set to `$100`, and the total amount of usage of this promotion crosses that threshold, the promotion can no longer be applied.
-- `usage`: The number of times that a promotion can be used. For example, if the usage limit is set to `10`, the promotion can be used only 10 times by customers. After that, it can no longer be applied.
-
-![A diagram showcasing the relation between the Campaign and CampaignBudget data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709899463/Medusa%20Resources/campagin-budget_rvqlmi.jpg)
-
----
-
-## Full Data Models Diagram
-
-![A diagram showcasing all data models and the relations between them](https://res.cloudinary.com/dza7lstvk/image/upload/v1709900277/Medusa%20Resources/promotion-architecture_an8mzy.jpg)

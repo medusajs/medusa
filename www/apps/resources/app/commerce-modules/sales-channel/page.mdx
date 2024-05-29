@@ -16,7 +16,7 @@ Some use case examples for using a sales channel:
 
 - Implement a B2B Ecommerce Store.
 - Specify different products for each channel you sell in.
-- Support Omnichannel in your ecommerce store.
+- Support omnichannel in your ecommerce store.
 
 ---
 
@@ -24,9 +24,7 @@ Some use case examples for using a sales channel:
 
 ### Sales Channel Management
 
-Store and manage sales channels in your store.
-
-Each sales channel has different meta information such as name or description, allowing you to easily differentiate between sales channels.
+Manage sales channels in your store. Each sales channel has different meta information such as name or description, allowing you to easily differentiate between sales channels.
 
 ```ts
 const salesChannels = await salesChannelModuleService.create([
@@ -41,7 +39,7 @@ const salesChannels = await salesChannelModuleService.create([
 
 ### Product Availability
 
-By combining the Product and Sales Channel modules, you can specify a product's availability per sales channel.
+Medusa links the Product and Sales Channel modules, allowing merchants to specify a product's availability per sales channel.
 
 For example, B2B customers viewing products only see products in the B2B sales channel.
 
@@ -55,14 +53,16 @@ Orders are also scoped to a sales channel due to the relation between the Sales 
 
 ## Configure Sales Channel Module
 
-After installing the `@medusajs/sales-channel` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+To use the Sales Channel Module, enable it in the `modules` object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 const modules = {
   // ...
-  salesChannel: {
-    resolve: "@medusajs/sales-channel",
-  },
+  [Modules.SALES_CHANNEL]: true,
 }
 ```
 
@@ -121,11 +121,14 @@ For example:
   import { ISalesChannelModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const salesChannelModuleService: ISalesChannelModuleService =
-      context.container.resolve(
+      container.resolve(
         ModuleRegistrationName.SALES_CHANNEL
       )
+    
     const salesChannels = await salesChannelModuleService.list()
   })
   ```
