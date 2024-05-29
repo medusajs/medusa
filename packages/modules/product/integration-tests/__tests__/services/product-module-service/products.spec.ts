@@ -1,14 +1,14 @@
 import { Modules } from "@medusajs/modules-sdk"
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import { kebabCase } from "@medusajs/utils"
+import { IProductModuleService } from "@medusajs/types"
+import { kebabCase, ProductStatus } from "@medusajs/utils"
 import {
   Product,
   ProductCategory,
   ProductCollection,
   ProductType,
-  ProductVariant,
 } from "@models"
 
+import { UpdateProductInput } from "@types"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
@@ -17,7 +17,6 @@ import {
 import { createCollections, createTypes } from "../../../__fixtures__/product"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { buildProductAndRelationsData } from "../../../__fixtures__/product/data/create-product"
-import { UpdateProductInput } from "@types"
 
 jest.setTimeout(300000)
 
@@ -114,7 +113,7 @@ moduleIntegrationTestRunner({
           productOne = service.create({
             id: "product-1",
             title: "product 1",
-            status: ProductTypes.ProductStatus.PUBLISHED,
+            status: ProductStatus.PUBLISHED,
             variants: [
               {
                 id: "variant-1",
@@ -126,7 +125,7 @@ moduleIntegrationTestRunner({
           productTwo = service.create({
             id: "product-2",
             title: "product 2",
-            status: ProductTypes.ProductStatus.PUBLISHED,
+            status: ProductStatus.PUBLISHED,
             categories: [{ id: productCategoryOne.id }],
             collection_id: productCollectionOne.id,
             tags: tagsData,

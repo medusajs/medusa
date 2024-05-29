@@ -1,4 +1,5 @@
 import {
+  BigNumberInput,
   CaptureDTO,
   Context,
   CreateCaptureDTO,
@@ -18,7 +19,6 @@ import {
   PaymentDTO,
   PaymentProviderDTO,
   PaymentSessionDTO,
-  PaymentSessionStatus,
   ProviderWebhookPayload,
   RefundDTO,
   UpdatePaymentCollectionDTO,
@@ -37,6 +37,7 @@ import {
   ModulesSdkUtils,
   PaymentActions,
   PaymentCollectionStatus,
+  PaymentSessionStatus,
   promiseAll,
 } from "@medusajs/utils"
 import { IsolationLevel } from "@mikro-orm/core"
@@ -417,6 +418,7 @@ export default class PaymentModuleService<
           "data",
           "provider_id",
           "amount",
+          "raw_amount",
           "currency_code",
           "payment_collection_id",
         ],
@@ -434,14 +436,19 @@ export default class PaymentModuleService<
       return await this.baseRepository_.serialize(payment, { populate: true })
     }
 
-    const { data, status } =
-      await this.paymentProviderService_.authorizePayment(
-        {
-          provider_id: session.provider_id,
-          data: session.data,
-        },
-        context
-      )
+    let { data, status } = await this.paymentProviderService_.authorizePayment(
+      {
+        provider_id: session.provider_id,
+        data: session.data,
+      },
+      context
+    )
+
+    let autoCapture = false
+    if (status === PaymentSessionStatus.CAPTURED) {
+      status = PaymentSessionStatus.AUTHORIZED
+      autoCapture = true
+    }
 
     await this.paymentSessionService_.update(
       {
@@ -478,6 +485,13 @@ export default class PaymentModuleService<
       },
       sharedContext
     )
+
+    if (autoCapture) {
+      await this.capturePayment_(
+        { payment_id: payment.id, amount: session.amount as BigNumberInput },
+        sharedContext
+      )
+    }
 
     return await this.retrievePayment(
       payment.id,

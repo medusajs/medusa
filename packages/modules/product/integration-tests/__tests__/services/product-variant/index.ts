@@ -1,8 +1,5 @@
-import {
-  InternalModuleService,
-  IProductModuleService,
-  ProductTypes,
-} from "@medusajs/types"
+import { InternalModuleService, IProductModuleService } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
 import { Collection } from "@mikro-orm/core"
 import { Product, ProductOption, ProductTag, ProductVariant } from "@models"
 import {
@@ -42,7 +39,7 @@ moduleIntegrationTestRunner({
           productOne = testManager.create(Product, {
             id: "product-1",
             title: "product 1",
-            status: ProductTypes.ProductStatus.PUBLISHED,
+            status: ProductStatus.PUBLISHED,
           })
 
           variantOne = testManager.create(ProductVariant, {
@@ -251,7 +248,7 @@ moduleIntegrationTestRunner({
           productOne = testManager.create(Product, {
             id: "product-1",
             title: "product 1",
-            status: ProductTypes.ProductStatus.PUBLISHED,
+            status: ProductStatus.PUBLISHED,
           })
 
           variantOne = testManager.create(ProductVariant, {
