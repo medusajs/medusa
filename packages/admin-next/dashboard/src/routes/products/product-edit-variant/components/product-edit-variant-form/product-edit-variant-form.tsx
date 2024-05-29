@@ -15,8 +15,8 @@ import {
 } from "../../../../../components/route-modal"
 import { useUpdateProductVariant } from "../../../../../hooks/api/products"
 import {
+  parseOptionalFormData,
   parseOptionalFormNumber,
-  parseOptionalFormValue,
 } from "../../../../../lib/form-helpers"
 import { optionalInt } from "../../../../../lib/validation"
 
@@ -86,16 +86,19 @@ export const ProductEditVariantForm = ({
   )
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const cleanedValues = Object.entries(data).reduce((acc, [key, value]) => {
-      const cleanValue = parseOptionalFormValue(value)
+    const {
+      title,
+      weight,
+      height,
+      width,
+      length,
+      allow_backorder,
+      manage_inventory,
+      options,
+      ...optional
+    } = data
 
-      return {
-        ...acc,
-        [key]: cleanValue,
-      }
-    }, {} as z.infer<typeof ProductEditVariantSchema>)
-
-    const { weight, height, width, length, ...rest } = cleanedValues
+    const nullableData = parseOptionalFormData(optional)
 
     await mutateAsync(
       {
@@ -104,7 +107,11 @@ export const ProductEditVariantForm = ({
         height: parseOptionalFormNumber(height),
         width: parseOptionalFormNumber(width),
         length: parseOptionalFormNumber(length),
-        ...rest,
+        title,
+        allow_backorder,
+        manage_inventory,
+        options,
+        ...nullableData,
       },
       {
         onSuccess: () => {

@@ -12,7 +12,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
-import { parseOptionalFormValue } from "../../../../../lib/form-helpers"
+import { parseOptionalFormData } from "../../../../../lib/form-helpers"
 
 type EditProductFormProps = {
   product: Product
@@ -50,12 +50,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
   const handleSubmit = form.handleSubmit(async (data) => {
     const { title, discountable, handle, status, ...optional } = data
 
-    const cleanedData = Object.entries(optional).reduce((acc, [key, value]) => {
-      return {
-        ...acc,
-        [key]: parseOptionalFormValue(value),
-      }
-    }, {} as Pick<zod.infer<typeof EditProductSchema>, "description" | "subtitle" | "material">)
+    const nullableData = parseOptionalFormData(optional)
 
     await mutateAsync(
       {
@@ -63,7 +58,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
         discountable,
         handle,
         status: status as ProductStatus,
-        ...cleanedData,
+        ...nullableData,
       },
       {
         onSuccess: () => {
