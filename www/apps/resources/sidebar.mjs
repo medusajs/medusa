@@ -79,6 +79,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         hasTitleStyling: true,
         children: [
           {
+            path: "/commerce-modules/auth/module-options",
+            title: "Module Options",
+          },
+          {
             path: "/commerce-modules/auth/examples",
             title: "Examples",
           },

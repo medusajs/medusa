@@ -184,6 +184,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "path": "/commerce-modules/auth/module-options",
+            "title": "Module Options",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "path": "/commerce-modules/auth/examples",
             "title": "Examples",
             "children": []
