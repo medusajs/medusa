@@ -1,18 +1,18 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../types/routing"
-import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
 
 import { createInventoryItemsWorkflow } from "@medusajs/core-flows"
+import { refetchInventoryItem } from "./helpers"
 import {
   AdminCreateInventoryItemType,
   AdminGetInventoryItemsParamsType,
 } from "./validators"
-import { refetchInventoryItem } from "./helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateInventoryItemType>,

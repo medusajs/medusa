@@ -46,7 +46,6 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
     try {
       const allowed = (req.allowed ?? queryConfig.allowed ?? []) as string[]
       delete req.allowed
-
       const query = normalizeQuery(req)
       const validated = await zodValidator(zodSchema, query)
       const cnf = queryConfig.isList

@@ -356,6 +356,63 @@ medusaIntegrationTestRunner({
             ])
           )
         })
+
+        describe("with inventory items", () => {
+          let inventoryItem1
+          let inventoryItem2
+          let salesChannel1
+          let salesChannel2
+          let publishableKey1
+
+          beforeEach(async () => {
+            salesChannel1 = await createSalesChannel(
+              { name: "sales channel test" },
+              [product.id]
+            )
+
+            salesChannel2 = await createSalesChannel(
+              { name: "sales channel test 2" },
+              [product2.id]
+            )
+
+            const api1Res = await api.post(
+              `/admin/api-keys`,
+              { title: "Test publishable KEY", type: ApiKeyType.PUBLISHABLE },
+              adminHeaders
+            )
+
+            publishableKey1 = api1Res.data.api_key
+
+            await api.post(
+              `/admin/api-keys/${publishableKey1.id}/sales-channels`,
+              { add: [salesChannel1.id] },
+              adminHeaders
+            )
+
+            const inventoryItem1 = (
+              await api.post(
+                `/admin/inventory-items`,
+                { variant_id: variant.id, sku: variant.sku },
+                adminHeaders
+              )
+            ).data.inventory
+          })
+
+          it("should list all products for a sales channel", async () => {
+            let response = await api.get(
+              `/store/products?sales_channel_id[]=${salesChannel1.id}`,
+              { headers: { "x-publishable-api-key": publishableKey1.token } }
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.count).toEqual(1)
+            expect(response.data.products).toEqual([
+              expect.objectContaining({
+                id: product.id,
+              }),
+            ])
+          })
+        })
       })
 
       describe("GET /store/products/:id", () => {

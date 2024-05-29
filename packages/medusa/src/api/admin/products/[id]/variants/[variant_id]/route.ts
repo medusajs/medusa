@@ -1,11 +1,11 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../../../types/routing"
-import {
   deleteProductVariantsWorkflow,
   updateProductVariantsWorkflow,
 } from "@medusajs/core-flows"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../../types/routing"
 
 import {
   ContainerRegistrationKeys,
