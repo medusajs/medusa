@@ -135,8 +135,8 @@ function Location(props: LocationProps) {
       <div className="px-6 py-5">
         <div className="flex flex-row items-center justify-between gap-x-4">
           {/* ICON*/}
-          <div className="grow-0 rounded-lg border">
-            <div className="bg-ui-bg-field m-1 rounded-md p-2">
+          <div className="shadow-borders-base flex size-7 items-center justify-center rounded-md">
+            <div className="bg-ui-bg-field flex size-6 items-center justify-center rounded-[4px]">
               <Buildings className="text-ui-fg-subtle" />
             </div>
           </div>

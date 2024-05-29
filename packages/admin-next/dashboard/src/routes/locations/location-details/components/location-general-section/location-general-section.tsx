@@ -1,10 +1,10 @@
 import {
-  ChevronDownMini,
   CurrencyDollar,
   Map,
   PencilSquare,
   Plus,
   Trash,
+  TriangleDownMini,
 } from "@medusajs/icons"
 import {
   FulfillmentSetDTO,
@@ -17,6 +17,7 @@ import {
   Button,
   Container,
   Heading,
+  IconButton,
   StatusBadge,
   Text,
   toast,
@@ -36,13 +37,13 @@ import {
   useDeleteServiceZone,
   useDeleteStockLocation,
 } from "../../../../../hooks/api/stock-locations"
+import { getFormattedAddress } from "../../../../../lib/addresses"
 import { countries as staticCountries } from "../../../../../lib/countries"
 import { formatProvider } from "../../../../../lib/format-provider"
 import {
   isOptionEnabledInStore,
   isReturnOption,
 } from "../../../../../lib/shipping-options"
-import { getFormattedAddress } from "../../../../../lib/addresses"
 
 type LocationGeneralSectionProps = {
   location: StockLocationDTO
@@ -338,8 +339,8 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
     <div className="py-4">
       <div className="flex flex-row items-center justify-between gap-x-4 px-6">
         {/* ICON*/}
-        <div className="grow-0 rounded-lg border">
-          <div className="bg-ui-bg-field m-1 rounded-md p-2">
+        <div className="shadow-borders-base flex size-7 items-center justify-center rounded-md">
+          <div className="bg-ui-bg-field flex size-6 items-center justify-center rounded-[4px]">
             <Map className="text-ui-fg-subtle" />
           </div>
         </div>
@@ -349,6 +350,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
           <Text weight="plus">{zone.name}</Text>
           <div className="flex items-center gap-2">
             <ListSummary
+              variant="base"
               list={countries.map((c) => c.display_name)}
               inline
               n={1}
@@ -371,23 +373,19 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
         </div>
 
         {/* ACTION*/}
-        <div className="itemx-center flex grow-0 gap-1">
-          <Button
+        <div className="flex grow-0 items-center gap-4">
+          <IconButton
+            size="small"
             onClick={() => setOpen((s) => !s)}
-            className="flex items-center justify-center"
             variant="transparent"
-            style={{
-              transform: `translateY(${!open ? -4 : -2}px)`,
-              transition: ".1s transform ease-in-out",
-            }}
           >
-            <ChevronDownMini
+            <TriangleDownMini
               style={{
                 transform: `rotate(${!open ? 0 : 180}deg)`,
                 transition: ".2s transform ease-in-out",
               }}
             />
-          </Button>
+          </IconButton>
           <ActionMenu
             groups={[
               {
