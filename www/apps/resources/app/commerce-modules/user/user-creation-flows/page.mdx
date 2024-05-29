@@ -4,7 +4,7 @@ export const metadata = {
 
 # {metadata.title}
 
-This document provides some possible flows to create a user.
+This document provides flows to create a user.
 
 ## Using the Auth Module
 
@@ -50,7 +50,7 @@ await userModuleService.refreshInviteTokens(["invite_123"])
 
 ## Straightforward Creation
 
-Finally, you can create a user using the `create` method of the User Module’s main service (`IUserModuleService`):
+Finally, you can create a user using the [create method of the User Module’s main service](/references/user/create):
 
 ```ts
 const user = await userModuleService.create({

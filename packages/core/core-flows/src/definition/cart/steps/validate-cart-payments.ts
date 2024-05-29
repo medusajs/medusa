@@ -29,7 +29,7 @@ export const validateCartPaymentsStep = createStep(
     ]
 
     const paymentsToProcess = paymentCollection.payment_sessions?.filter((ps) =>
-      processablePaymentStatuses.includes(ps.status)
+      processablePaymentStatuses.includes(ps.status as PaymentSessionStatus)
     )
 
     if (!paymentsToProcess?.length) {

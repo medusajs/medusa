@@ -8,7 +8,7 @@ In this document, you’ll learn what a payment session is.
 
 ## What's a Payment Session?
 
-A payment session, represented by the `PaymentSession` data model, is a payment amount to be authorized. It’s associated with a payment provider that handles authorizing it.
+A payment session, represented by the [PaymentSession data model](/references/payment/modules/PaymentSession), is a payment amount to be authorized. It’s associated with a payment provider that handles authorizing it.
 
 A payment collection can have multiple payment sessions. For example, during checkout, when a customer chooses between paying with Stripe or PayPal, each of these payment options is a payment session associated with a payment provider (Stripe or PayPal).
 
@@ -18,9 +18,9 @@ A payment collection can have multiple payment sessions. For example, during che
 
 ## data field
 
-Payment providers may need some additional data to process the payment later. The `PaymentSession` data model has a `data` field used to store that data.
+Payment providers may need additional data to process the payment later. The `PaymentSession` data model has a `data` field used to store that data.
 
-For example, for Stripe, you must pass Stripe’s customer ID when processing the payment. So, when you create a payment session, the Stripe payment provider creates the customer in Stripe and stores the ID in the `data` field.
+For example, the customer's ID in Stripe is stored in the `data` field.
 
 ---
 

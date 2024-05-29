@@ -6,70 +6,46 @@ export const metadata = {
 
 In this document, you’ll learn about the main concepts in the Pricing Module, and how data is stored and related.
 
-## Price
-
-The `Price` data model represents any price.
-
-Prices can be conditioned by the `min_quantity` and `max_quantity` fields, which are helpful when calculating the price for a specific quantity.
-
-If a price has its `min_quantity` or `max_quantity` fields set, they’re only considered for the price calculation if they have a lower `min_quantity` or a higher `max_quantity` than the quantity specified for calculation.
-
----
-
 ## Price Set
 
-A `PriceSet` represents a collection of prices that are linked to a resource (for example, a product or a shipping option). Each of these prices are represented by the `Price` data module.
+A [PriceSet](/references/pricing/models/PriceSet) represents a collection of prices that are linked to a resource (for example, a product or a shipping option). Each of these prices are represented by the [Price data module](/references/pricing/models/Price).
 
 ![A diagram showcasing the relation between the price set and price](https://res.cloudinary.com/dza7lstvk/image/upload/v1709648650/Medusa%20Resources/price-set-money-amount_xeees0.jpg)
 
 ---
 
-## Prices with Rules
-
-### Rule Type
+## Rule Type
 
 Each price within a price set can be applied for different conditions. These conditions are represented as rule types.
 
-A `RuleType` defines custom conditions. Each rule type has a unique `rule_field`, referenced in rule values, such as when setting a rule of a price.
+A [RuleType](/references/pricing/models/RuleType) defines custom conditions. A rule type has a unique `rule_attribute` which indicates the field this rule applies on. For example, `region_id`.
 
-### Price Rule
+This is referenced when setting a rule of a price. For example:
 
-Each rule of a price within a price set is represented by the `PriceRule` data model, which holds the value of a rule type. The `Price` data model has a `rules_count` field, which indicates how many rules, represented by `PriceRule`, are applied to the price.
+export const ruleTypeHighlights = [
+  ["8", "region_id", "Reference a rule type by its `rule_attribute`."],
+  ["8", `"PL"`, "The value of this rule."]
+]
 
-![A diagram showcasing the relation between the PriceRule, PriceSet, Price, and RuleType.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709648772/Medusa%20Resources/price-rule-1_vy8bn9.jpg)
-
-For example, you create a `zip_code` rule type. Then, a price within the price set can have the rule value `10557`, indicating that the price can only be applied within the `10557` zip code.
-
-Each price within the price set can have different values for the same rule type.
-
-For example:
-
-![A diagram showcasing the relation between the PriceRule, PriceSet, Price, and RuleType.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709648884/Medusa%20Resources/price-rule-2_b6fuyb.jpg)
-
-Each price can have multiple rules applied to it as well.
-
-For example, a price can have the rules `zip_code` and `region_id` applied to it. In this case, the value of each rule is represented by a `PriceRule`.
-
-![A diagram showcasing the relation between the PriceRule, PriceSet, Price, and RuleType with multiple rules.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709649296/Medusa%20Resources/price-rule-3_pwpocz.jpg)
-
-### PriceSetRuleType
-
-The `PriceSetRuleType` data model indicates what rules the prices can have within a price set. It creates a relation between the `PriceSet` and `RuleType` entities.
-
-For example, to use the `zip_code` rule type on a price in a price set, the rule type must first be enabled on the price set through the `PriceSetRuleType`.
-
-![A diagram showcasing the relation between the PriceSet, PriceRule, Price, RuleType, and PriceSetRuleType](https://res.cloudinary.com/dza7lstvk/image/upload/v1709649375/Medusa%20Resources/price-set-rule-type_cqqt0u.jpg)
+```ts highlights={ruleTypeHighlights}
+const priceSet = await pricingModuleService.addPrices({
+  priceSetId,
+  prices: [
+   {
+      amount: 500,
+      currency_code: "EUR",
+      rules: {
+        region_id: "PL",
+      },
+    },
+  ],
+})
+```
 
 ---
 
 ## Price List
 
-A `PriceList` is a group of prices only enabled if their rules are satisfied. A price list has optional `start_date` and `end_date` fields, which indicate the date range in which a price list can be applied.
+A [PriceList](/references/pricing/models/PriceList) is a group of prices only enabled if their conditions and rules are satisfied. A price list has optional `start_date` and `end_date` fields, which indicate the date range in which a price list can be applied.
 
 Its associated prices are represented by the `Price` data model.
-
-Each rule that can be applied to a price list is represented by the `PriceListRule` data model. The `rules_count` field of a `PriceList` indicates how many rules are applied to it.
-
-Each rule of a price list can have more than one value, representing its values by the `PriceListRuleValue` data model.
-
-![A diagram showcasing the relation between the PriceSet, PriceList, Price, RuleType, and PriceListRuleValue](https://res.cloudinary.com/dza7lstvk/image/upload/v1709641999/Medusa%20Resources/price-list_zd10yd.jpg)
