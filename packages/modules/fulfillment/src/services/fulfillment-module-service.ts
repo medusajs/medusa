@@ -38,11 +38,13 @@ import {
   ShippingProfile,
 } from "@models"
 import {
+  buildCreatedFulfillmentEvents,
   buildCreatedFulfillmentSetEvents,
   buildCreatedServiceZoneEvents,
   buildFulfillmentSetEvents,
   buildGeoZoneEvents,
-  buildServiceZoneEvents, buildShippingOptionRuleEvents,
+  buildServiceZoneEvents,
+  buildShippingOptionRuleEvents,
   buildShippingProfileEvents,
   isContextValid,
   validateAndNormalizeRules,
@@ -563,7 +565,11 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       | FulfillmentTypes.ShippingOptionRuleDTO
       | FulfillmentTypes.ShippingOptionRuleDTO[]
-    >(Array.isArray(data) ? createdShippingOptionRules : createdShippingOptionRules[0])
+    >(
+      Array.isArray(data)
+        ? createdShippingOptionRules
+        : createdShippingOptionRules[0]
+    )
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -581,13 +587,11 @@ export default class FulfillmentModuleService<
 
     validateAndNormalizeRules(data_ as unknown as Record<string, unknown>[])
 
-    const createdShippingOptionRules =
-      await this.shippingOptionRuleService_.create(data_, sharedContext)
-
-    return createdShippingOptionRules
+    return await this.shippingOptionRuleService_.create(data_, sharedContext)
   }
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createFulfillment(
     data: FulfillmentTypes.CreateFulfillmentDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -627,6 +631,11 @@ export default class FulfillmentModuleService<
       await this.fulfillmentService_.delete(fulfillment.id, sharedContext)
       throw error
     }
+
+    buildCreatedFulfillmentEvents({
+      fulfillments: [fulfillment],
+      sharedContext,
+    })
 
     return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
       fulfillment

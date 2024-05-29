@@ -1,4 +1,5 @@
 import {
+  Fulfillment,
   FulfillmentSet,
   GeoZone,
   ServiceZone,
@@ -9,6 +10,167 @@ import {
 } from "@models"
 import { Context, EventBusTypes } from "@medusajs/types"
 import { CommonEvents, FulfillmentUtils, Modules } from "@medusajs/utils"
+
+export function buildFulfillmentAddressEvents({
+  action,
+  fulfillmentAddresses,
+  sharedContext,
+}: {
+  action: string
+  fulfillmentAddresses: { id: string }[]
+  sharedContext: Context
+}) {
+  if (!fulfillmentAddresses.length) {
+    return
+  }
+
+  const aggregator = sharedContext.messageAggregator!
+  const messages: EventBusTypes.RawMessageFormat[] = []
+
+  fulfillmentAddresses.forEach((fulfillmentAddress) => {
+    messages.push({
+      service: Modules.FULFILLMENT,
+      action,
+      context: sharedContext,
+      data: { id: fulfillmentAddress.id },
+      eventName:
+        FulfillmentUtils.FulfillmentEvents[`fulfillment_address_${action}`],
+      object: "fulfillment_address",
+    })
+  })
+
+  aggregator.saveRawMessageData(messages)
+}
+
+export function buildFulfillmentItemEvents({
+  action,
+  fulfillmentItems,
+  sharedContext,
+}: {
+  action: string
+  fulfillmentItems: { id: string }[]
+  sharedContext: Context
+}) {
+  if (!fulfillmentItems.length) {
+    return
+  }
+
+  const aggregator = sharedContext.messageAggregator!
+  const messages: EventBusTypes.RawMessageFormat[] = []
+
+  fulfillmentItems.forEach((fulfillmentItem) => {
+    messages.push({
+      service: Modules.FULFILLMENT,
+      action,
+      context: sharedContext,
+      data: { id: fulfillmentItem.id },
+      eventName:
+        FulfillmentUtils.FulfillmentEvents[`fulfillment_item_${action}`],
+      object: "fulfillment_item",
+    })
+  })
+
+  aggregator.saveRawMessageData(messages)
+}
+
+export function buildFulfillmentLabelEvents({
+  action,
+  fulfillmentLabels,
+  sharedContext,
+}: {
+  action: string
+  fulfillmentLabels: { id: string }[]
+  sharedContext: Context
+}) {
+  if (!fulfillmentLabels.length) {
+    return
+  }
+
+  const aggregator = sharedContext.messageAggregator!
+  const messages: EventBusTypes.RawMessageFormat[] = []
+
+  fulfillmentLabels.forEach((fulfillmentLabel) => {
+    messages.push({
+      service: Modules.FULFILLMENT,
+      action,
+      context: sharedContext,
+      data: { id: fulfillmentLabel.id },
+      eventName:
+        FulfillmentUtils.FulfillmentEvents[`fulfillment_label_${action}`],
+      object: "fulfillment_item",
+    })
+  })
+
+  aggregator.saveRawMessageData(messages)
+}
+
+export function buildCreatedFulfillmentEvents({
+  fulfillments,
+  sharedContext,
+}: {
+  fulfillments: Fulfillment[]
+  sharedContext: Context
+}) {
+  if (!fulfillments.length) {
+    return
+  }
+
+  const aggregator = sharedContext.messageAggregator!
+  const messages: EventBusTypes.RawMessageFormat[] = []
+
+  let addresses: { id: string }[] = []
+  let items: { id: string }[] = []
+  let labels: { id: string }[] = []
+
+  fulfillments.forEach((fulfillment) => {
+    messages.push({
+      service: Modules.FULFILLMENT,
+      action: CommonEvents.CREATED,
+      context: sharedContext,
+      data: { id: fulfillment.id },
+      eventName: FulfillmentUtils.FulfillmentEvents.fulfillment_created,
+      object: "fulfillment",
+    })
+
+    if (fulfillment.delivery_address) {
+      addresses.push({ id: fulfillment.delivery_address.id })
+    }
+
+    if (fulfillment.items) {
+      items.push(...fulfillment.items)
+    }
+
+    if (fulfillment.labels) {
+      labels.push(...fulfillment.labels)
+    }
+  })
+
+  aggregator.saveRawMessageData(messages)
+
+  if (addresses.length) {
+    buildFulfillmentAddressEvents({
+      action: CommonEvents.CREATED,
+      fulfillmentAddresses: addresses,
+      sharedContext,
+    })
+  }
+
+  if (items.length) {
+    buildFulfillmentItemEvents({
+      action: CommonEvents.CREATED,
+      fulfillmentItems: items,
+      sharedContext,
+    })
+  }
+
+  if (labels.length) {
+    buildFulfillmentLabelEvents({
+      action: CommonEvents.CREATED,
+      fulfillmentLabels: labels,
+      sharedContext,
+    })
+  }
+}
 
 export function buildShippingProfileEvents({
   action,
