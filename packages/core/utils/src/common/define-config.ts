@@ -5,7 +5,7 @@ const DEFAULT_SECRET = "supersecret"
 const DEFAULT_ADMIN_URL = "http://localhost:9000"
 const DEFAULT_STORE_CORS = "http://localhost:8000"
 const DEFAULT_DATABASE_URL = "postgres://localhost/medusa-starter-default"
-const DEFAULT_ADMIN_CORS = "http://localhost:7000,http://localhost:7001"
+const DEFAULT_ADMIN_CORS = "http://localhost:7000,http://localhost:7001,http://localhost:5173"
 
 /**
  * The "defineConfig" helper can be used to define the configuration
