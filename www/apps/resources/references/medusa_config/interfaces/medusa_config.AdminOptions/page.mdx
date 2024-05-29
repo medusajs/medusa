@@ -1,0 +1,7 @@
+import { TypeList } from "docs-ui"
+
+# AdminOptions
+
+Admin dashboard configurations.
+
+<TypeList types={[{"name":"disable","type":"`boolean`","description":"Whether to disable the admin dashboard. If set to `true`, the admin dashboard is disabled,\nin both development and production environments. The default value is `false`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"path","type":"\\`/$&#123;string&#125;\\`","description":"The path to the admin dashboard. The default value is `/app`.\n\nThe value cannot be one of the reserved paths:\n- `/admin`\n- `/store`\n- `/auth`\n- `/`","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"outDir","type":"`string`","description":"The directory where the admin build is output. This is where the build process places the generated files.\nThe default value is `./build`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"backendUrl","type":"`string`","description":"The URL of your Medusa backend. Defaults to an empty string, which means requests will hit the same server that serves the dashboard.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"vite","type":"(`config`: `InlineConfig`) => `InlineConfig`","description":"Configure the Vite configuration for the admin dashboard. This function receives the default Vite configuration\nand returns the modified configuration. The default value is `undefined`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="AdminOptions"/>

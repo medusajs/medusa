@@ -32,6 +32,7 @@ In this document, you’ll find common examples of how you can use the Promotion
         type: "percentage",
         target_type: "order",
         value: "10",
+        currency_code: "usd",
       },
     })
 
@@ -61,6 +62,7 @@ In this document, you’ll find common examples of how you can use the Promotion
         type: "percentage",
         target_type: "order",
         value: "10",
+        currency_code: "usd",
       },
     })
 
@@ -96,11 +98,6 @@ In this document, you’ll find common examples of how you can use the Promotion
         campaign_identifier: "G-123445",
         starts_at: new Date("2024-05-02"),
         ends_at: new Date("2024-07-20"),
-        promotions: [
-          {
-            id: "promo_123",
-          },
-        ],
       }
     )
 
@@ -129,11 +126,6 @@ In this document, you’ll find common examples of how you can use the Promotion
         campaign_identifier: "G-123445",
         starts_at: new Date("2024-05-02"),
         ends_at: new Date("2024-07-20"),
-        promotions: [
-          {
-            id: "promo_123",
-          },
-        ],
       }
     )
 
@@ -170,10 +162,11 @@ In this document, you’ll find common examples of how you can use the Promotion
         type: "percentage",
         target_type: "order",
         value: "10",
+        currency_code: "usd",
       },
       rules: [
         {
-          field: "customer_group_id",
+          attribute: "customer_group_id",
           operator: "eq",
           values: ["VIP"],
         },
@@ -205,10 +198,11 @@ In this document, you’ll find common examples of how you can use the Promotion
         type: "percentage",
         target_type: "order",
         value: "10",
+        currency_code: "usd",
       },
       rules: [
         {
-          field: "customer_group_id",
+          attribute: "customer_group_id",
           operator: "eq",
           values: ["VIP"],
         },
@@ -257,7 +251,7 @@ In this document, you’ll find common examples of how you can use the Promotion
     initialize as initializePromotionModule,
   } from "@medusajs/promotion"
 
-  export async function POST(request: Request) {
+  export async function GET(request: Request) {
     const promotionModuleService =
       await initializePromotionModule()
 
@@ -274,4 +268,4 @@ In this document, you’ll find common examples of how you can use the Promotion
 
 ## More Examples
 
-The [module interface reference](/references/promotion) provides a reference to all the methods available for use with examples for each.
+The [Promotion Module's main service reference](/references/promotion) provides a reference to all the methods available for use with examples for each.

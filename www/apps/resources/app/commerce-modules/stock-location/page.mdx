@@ -8,19 +8,11 @@ export const metadata = {
 
 The Stock Location Module is the `@medusajs/stock-location-next` NPM package that provides stock-location-related features in your Medusa and Node.js applications.
 
-It's mainly useful with the [Inventory Module](../inventory/page.mdx).
-
-<Note>
-
-This module is an updated version of the [Stock Location Module part of the multi-warehouse feature](../../modules/multiwarehouse/stock-location-module.md). In Medusa V2, the previous version of the module will no longer be in use.
-
-</Note>
-
 ## Features
 
 ### Stock Location Management
 
-Store and manage stock locations. Stock locations can be associated with other models that require a location, such as the [Inventory Module's InventoryLevel](../inventory/concepts/page.mdx#inventory-level).
+Store and manage stock locations. Stock locations are associated with data models of other modules that require a location, such as the [Inventory Module's InventoryLevel](../inventory/concepts/page.mdx#inventory-level).
 
 ```ts
 const stockLocation = await stockLocationModuleService.create(
@@ -32,14 +24,14 @@ const stockLocation = await stockLocationModuleService.create(
 
 ### Address Management
 
-A stock location can have detailed address details.
+Manage the address of each stock location.
 
 ```ts
 const stockLocation = await stockLocationModuleService.update(
   {
     id: "sloc_123",
     address: {
-      country_code: "US",
+      country_code: "us",
       city: "New York City",
       address_1: "52 Stone St",
       postal_code: "10004",
@@ -52,14 +44,16 @@ const stockLocation = await stockLocationModuleService.update(
 
 ## Configure Stock Location Module
 
-After installing the `@medusajs/stock-location` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+To use the Stock Location Module, enable it in the `modules` object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 const modules = {
   // ...
-  stockLocationService: {
-    resolve: "@medusajs/stock-location-next",
-  },
+  [Modules.STOCK_LOCATION]: true,
 }
 ```
 
@@ -120,9 +114,11 @@ For example:
   import { IStockLocationService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const stockLocationModuleService: IStockLocationService =
-      context.container.resolve(
+      container.resolve(
         ModuleRegistrationName.STOCK_LOCATION
       )
 

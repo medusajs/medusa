@@ -8,13 +8,11 @@ export const metadata = {
 
 The Order Module is the `@medusajs/order` NPM package that provides order-related features in your Medusa and Node.js applications.
 
----
-
 ## Features
 
 ### Order Management
 
-Store and manage your orders by retrieving, creating, canceling, and performing other operations.
+Store and manage your orders to retriev, create, cancel, and perform other operations.
 
 ```ts
 const order = await orderModuleService.create({
@@ -47,9 +45,35 @@ const draftOrder = await orderModuleService.create({
 })
 ```
 
+### Apply Promotions
+
+Apply promotions or discounts to the order's items and shipping methods by adding adjustment lines that are factored into their subtotals.
+
+```ts
+const lineAdjustments =
+  await orderModuleService.addLineItemAdjustments({
+    item_id: "cali_123",
+    code: "50OFF",
+    amount: 500,
+  })
+
+const shippingAdjustments =
+  await orderModuleService.addShippingMethodAdjustments({
+    shipping_method_id: "casm_123",
+    code: "FREESHIPPING",
+    amount: 1000,
+  })
+```
+
 ### Returns, Exchanges, and Other Order Changes
 
-Orders can be changed to return items from the customer, exchange an item with another, change the quantity of an item, or other changes.
+<Note title="In Development" type="soon">
+
+Order Changes are still in development.
+
+</Note>
+
+Orders can be changed to return items from the customer, exchange an item with another, change the quantity of an item, or perform other changes.
 
 Changes are only applied after confirmation, and order history is preserved through versioning.
 
@@ -74,38 +98,20 @@ await orderModuleService.addOrderAction({
 await orderModuleService.confirmOrderChange("ord_123")
 ```
 
-### Apply Promotions
-
-Apply promotions or discounts to the order's items and shipping methods by adding adjustment lines that are factored into their subtotals.
-
-```ts
-const lineAdjustments =
-  await orderModuleService.addLineItemAdjustments({
-    item_id: "cali_123",
-    code: "50OFF",
-    amount: 500,
-  })
-
-const shippingAdjustments =
-  await orderModuleService.addShippingMethodAdjustments({
-    shipping_method_id: "casm_123",
-    code: "FREESHIPPING",
-    amount: 1000,
-  })
-```
-
 ---
 
 ## Configure Order Module
 
-After installing the `@medusajs/order` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+To use the Order Module, enable it in the `modules` object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 const modules = {
   // ...
-  order: {
-    resolve: "@medusajs/order",
-  },
+  [Modules.ORDER]: true,
 }
 ```
 
@@ -150,7 +156,7 @@ For example:
     container,
   }: SubscriberArgs) {
     const orderModuleService: IOrderModuleService =
-      container.resolve(ModuleRegistrationName.API_KEY)
+      container.resolve(ModuleRegistrationName.ORDER)
 
     const orders = await orderModuleService.list()
   }
@@ -164,10 +170,12 @@ For example:
   import { IOrderModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const orderModuleService: IOrderModuleService =
-      context.container.resolve(
-        ModuleRegistrationName.API_KEY
+      container.resolve(
+        ModuleRegistrationName.ORDER
       )
     const orders = await orderModuleService.list()
   })

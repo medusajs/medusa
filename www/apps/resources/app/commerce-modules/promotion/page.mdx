@@ -24,6 +24,7 @@ const promotion = await promotionModuleService.create({
     type: "percentage",
     target_type: "order",
     value: "10",
+    currency_code: "usd"
   },
 })
 ```
@@ -40,10 +41,11 @@ const promotion = await promotionModuleService.create({
     type: "percentage",
     target_type: "order",
     value: "10",
+    currency_code: "usd"
   },
   rules: [
     {
-      field: "customer_group_id",
+      attribute: "customer_group_id",
       operator: "eq",
       values: ["VIP"],
     },
@@ -64,11 +66,6 @@ const campaign = await promotionModuleService.createCampaigns(
     campaign_identifier: "G-123445",
     starts_at: new Date("2024-05-02"),
     ends_at: new Date("2024-07-20"),
-    promotions: [
-      {
-        id: "promo_123",
-      },
-    ],
   }
 )
 ```
@@ -77,14 +74,16 @@ const campaign = await promotionModuleService.createCampaigns(
 
 ## Configure Promotion Module
 
-After installing the `@medusajs/promotion` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+To use the Promotion Module, enable it in the `modules` object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 const modules = {
   // ...
-  promotion: {
-    resolve: "@medusajs/promotion",
-  },
+  [Modules.PROMOTION]: true,
 }
 ```
 
@@ -143,9 +142,11 @@ For example:
   import { IPromotionModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const promotionModuleService: IPromotionModuleService =
-      context.container.resolve(ModuleRegistrationName.PROMOTION)
+      container.resolve(ModuleRegistrationName.PROMOTION)
 
     const promotions = await promotionModuleService.list()
   })

@@ -8,8 +8,6 @@ export const metadata = {
 
 The Region Module is the `@medusajs/region` NPM package that provides region-related features in your Medusa and Node.js applications.
 
----
-
 ## What is a Region?
 
 A region represents the area you sell products in. Each region can cover multiple countries, but uses a single currency.
@@ -48,7 +46,7 @@ const regions = await regionModuleService.create([
 
 ### Different Settings Per Region
 
-Each region has its own settings, such as what countries belong to a region or its tax settings. When using other commerce modules such as the Tax Module or Payment Module, each region has different tax rates, payment providers, and more.
+Each region has its own settings, such as what countries belong to a region or its tax settings. Each region has different tax rates, payment providers, and more provided by other commerce modules.
 
 ```ts
 const regions = await regionModuleService.create([
@@ -62,7 +60,7 @@ const regions = await regionModuleService.create([
     name: "United States of America",
     currency_code: "usd",
     countries: ["us"],
-    automatic_taxes: false,
+    payment_providers: ["stripe"]
   },
 ])
 ```
@@ -71,14 +69,16 @@ const regions = await regionModuleService.create([
 
 ## Configure Region Module
 
-After installing the `@medusajs/region` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
+To use the Region Module, enable it in the `modules` object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
 const modules = {
   // ...
-  region: {
-    resolve: "@medusajs/region",
-  },
+  [Modules.REGION]: true,
 }
 ```
 
@@ -137,9 +137,11 @@ For example:
   import { IRegionModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const regionModuleService: IRegionModuleService =
-      context.container.resolve(
+      container.resolve(
         ModuleRegistrationName.REGION
       )
     
