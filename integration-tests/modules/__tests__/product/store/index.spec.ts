@@ -356,6 +356,83 @@ medusaIntegrationTestRunner({
             ])
           )
         })
+
+        describe("with inventory items", () => {
+          let inventoryItem1
+          let inventoryItem2
+          let salesChannel1
+          let salesChannel2
+          let publishableKey1
+
+          beforeEach(async () => {
+            salesChannel1 = await createSalesChannel(
+              { name: "sales channel test" },
+              [product.id]
+            )
+
+            salesChannel2 = await createSalesChannel(
+              { name: "sales channel test 2" },
+              [product2.id]
+            )
+
+            const api1Res = await api.post(
+              `/admin/api-keys`,
+              { title: "Test publishable KEY", type: ApiKeyType.PUBLISHABLE },
+              adminHeaders
+            )
+
+            publishableKey1 = api1Res.data.api_key
+
+            await api.post(
+              `/admin/api-keys/${publishableKey1.id}/sales-channels`,
+              { add: [salesChannel1.id] },
+              adminHeaders
+            )
+
+            inventoryItem1 = (
+              await api.post(
+                `/admin/inventory-items`,
+                { variant_id: variant.id, sku: "test-sku" },
+                adminHeaders
+              )
+            ).data.inventory_item
+
+            inventoryItem2 = (
+              await api.post(
+                `/admin/inventory-items`,
+                { variant_id: variant.id, sku: "test-sku-2" },
+                adminHeaders
+              )
+            ).data.inventory_item
+          })
+
+          it("should list all inventory items for a variant", async () => {
+            let response = await api.get(
+              `/store/products?sales_channel_id[]=${salesChannel1.id}&fields=variants.inventory_items.inventory.location_levels.*`,
+              { headers: { "x-publishable-api-key": publishableKey1.token } }
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.count).toEqual(1)
+            expect(response.data.products).toEqual([
+              expect.objectContaining({
+                id: product.id,
+                variants: expect.arrayContaining([
+                  expect.objectContaining({
+                    inventory_items: expect.arrayContaining([
+                      expect.objectContaining({
+                        inventory_item_id: inventoryItem1.id,
+                      }),
+                      expect.objectContaining({
+                        inventory_item_id: inventoryItem2.id,
+                      }),
+                    ]),
+                  }),
+                ]),
+              }),
+            ])
+          })
+        })
       })
 
       describe("GET /store/products/:id", () => {

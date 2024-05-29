@@ -17,7 +17,7 @@ export const createInventoryItemsWorkflow = createWorkflow(
     const variantItemsLinks = transform(variantItemsMap, (map) => {
       const linkDefinitions: LinkDefinition[] = []
 
-      for (const [variant_id, items] of map) {
+      for (const [variant_id, items] of Object.entries(map)) {
         for (const item of items) {
           linkDefinitions.push({
             [Modules.PRODUCT]: { variant_id },

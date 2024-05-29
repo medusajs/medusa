@@ -13,23 +13,23 @@ export const createInventoryItemsStep = createStep(
     const inventoryService: IInventoryServiceNext = container.resolve(
       ModuleRegistrationName.INVENTORY
     )
-    const variantItemDataMap = new Map<
+    const variantItemDataMap: Record<
       string,
       InventoryNext.CreateInventoryItemInput[]
-    >()
-    const variantItemsMap = new Map<string, InventoryNext.InventoryItemDTO[]>()
+    > = {}
+    const variantItemsMap: Record<string, InventoryNext.InventoryItemDTO[]> = {}
 
     for (const { variant_id, ...inventoryData } of data) {
-      const array = variantItemDataMap.get(variant_id) || []
+      const array = variantItemDataMap[variant_id] || []
 
       array.push(inventoryData)
-      variantItemDataMap.set(variant_id, array)
+      variantItemDataMap[variant_id] = array
     }
 
-    for (const [variantId, itemsData] of variantItemDataMap.entries()) {
+    for (const [variantId, itemsData] of Object.entries(variantItemDataMap)) {
       const createdItems = await inventoryService.create(itemsData)
 
-      variantItemsMap.set(variantId, createdItems)
+      variantItemsMap[variantId] = createdItems
     }
 
     const createdItems = Object.values(variantItemsMap).flat(1)

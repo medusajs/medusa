@@ -8,7 +8,7 @@ import {
 } from "../../../types/routing"
 
 import { createInventoryItemsWorkflow } from "@medusajs/core-flows"
-import { refetchInventoryItem } from "./helpers"
+import { refetchEntity } from "../../utils/refetch-entity"
 import {
   AdminCreateInventoryItemType,
   AdminGetInventoryItemsParamsType,
@@ -22,8 +22,13 @@ export const POST = async (
     input: { items: [req.validatedBody] },
   })
 
-  const inventoryItem = await refetchInventoryItem(
-    result[0].id,
+  const [itemId] = Object.values(result)
+    .map((items) => items.map((item) => item.id))
+    .flat(1)
+
+  const inventoryItem = await refetchEntity(
+    "inventory_item",
+    { id: itemId, ...req.filterableFields },
     req.scope,
     req.remoteQueryConfig.fields
   )
