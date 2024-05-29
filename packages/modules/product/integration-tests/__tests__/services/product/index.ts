@@ -8,23 +8,18 @@ import {
   createProductVariants,
 } from "../../../__fixtures__/product"
 
+import { Modules } from "@medusajs/modules-sdk"
+import { IProductModuleService, ProductDTO } from "@medusajs/types"
+import { ProductStatus, kebabCase } from "@medusajs/utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { ProductService } from "@services"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { createProductCategories } from "../../../__fixtures__/product-category"
 import {
   categoriesData,
   productsData,
   variantsData,
 } from "../../../__fixtures__/product/data"
-import { ProductService } from "@services"
-import {
-  IProductModuleService,
-  ProductDTO,
-  ProductTypes,
-} from "@medusajs/types"
-import { kebabCase } from "@medusajs/utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createProductCategories } from "../../../__fixtures__/product-category"
-import { Modules } from "@medusajs/modules-sdk"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { ProductTag } from "../../../../src/models"
 
 jest.setTimeout(30000)
 
@@ -52,7 +47,7 @@ moduleIntegrationTestRunner({
           productOne = testManager.create(Product, {
             id: "product-1",
             title: "product 1",
-            status: ProductTypes.ProductStatus.PUBLISHED,
+            status: ProductStatus.PUBLISHED,
           })
 
           await testManager.persistAndFlush([productOne])
@@ -145,7 +140,7 @@ moduleIntegrationTestRunner({
           productOne = testManager.create(Product, {
             id: "product-1",
             title: "product 1",
-            status: ProductTypes.ProductStatus.PUBLISHED,
+            status: ProductStatus.PUBLISHED,
           })
 
           await testManager.persistAndFlush([productOne])

@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^1.12.11",
-    "@medusajs/types": "^1.11.16",
     "@medusajs/utils": "^1.11.9",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",

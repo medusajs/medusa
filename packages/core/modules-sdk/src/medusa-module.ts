@@ -5,8 +5,6 @@ import {
   LinkModuleDefinition,
   LoadedModule,
   MedusaContainer,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
   ModuleBootstrapDeclaration,
   ModuleDefinition,
   ModuleExports,
@@ -19,15 +17,15 @@ import {
   simpleHash,
   stringifyCircular,
 } from "@medusajs/utils"
+import { asValue } from "awilix"
 import { EOL } from "os"
 import {
   moduleLoader,
   registerMedusaLinkModule,
   registerMedusaModule,
 } from "./loaders"
-
-import { asValue } from "awilix"
 import { loadModuleMigrations } from "./loaders/utils"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 const logger: any = {
   log: (a) => console.log(a),
