@@ -42,7 +42,7 @@ import {
   buildCreatedServiceZoneEvents,
   buildFulfillmentSetEvents,
   buildGeoZoneEvents,
-  buildServiceZoneEvents,
+  buildServiceZoneEvents, buildShippingOptionRuleEvents,
   buildShippingProfileEvents,
   isContextValid,
   validateAndNormalizeRules,
@@ -539,6 +539,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ShippingOptionRuleDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createShippingOptionRules(
     data:
       | FulfillmentTypes.CreateShippingOptionRuleDTO[]
@@ -553,10 +554,16 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
+    buildShippingOptionRuleEvents({
+      action: CommonEvents.CREATED,
+      shippingOptionRules: createdShippingOptionRules,
+      sharedContext,
+    })
+
     return await this.baseRepository_.serialize<
       | FulfillmentTypes.ShippingOptionRuleDTO
       | FulfillmentTypes.ShippingOptionRuleDTO[]
-    >(createdShippingOptionRules)
+    >(Array.isArray(data) ? createdShippingOptionRules : createdShippingOptionRules[0])
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -565,7 +572,7 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.CreateShippingOptionRuleDTO[]
       | FulfillmentTypes.CreateShippingOptionRuleDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TShippingOptionRuleEntity | TShippingOptionRuleEntity[]> {
+  ): Promise<TShippingOptionRuleEntity[]> {
     const data_ = Array.isArray(data) ? data : [data]
 
     if (!data_.length) {
@@ -577,9 +584,7 @@ export default class FulfillmentModuleService<
     const createdShippingOptionRules =
       await this.shippingOptionRuleService_.create(data_, sharedContext)
 
-    return Array.isArray(data)
-      ? createdShippingOptionRules
-      : createdShippingOptionRules[0]
+    return createdShippingOptionRules
   }
 
   @InjectManager("baseRepository_")

@@ -1159,6 +1159,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               shipping_option_id: shippingOption.id,
             }
 
+            jest.clearAllMocks()
+
             const rule = await service.createShippingOptionRules(ruleData)
 
             expect(rule).toEqual(
@@ -1170,6 +1172,16 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 shipping_option_id: ruleData.shipping_option_id,
               })
             )
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.shipping_option_rule_created,
+                action: "created",
+                object: "shipping_option_rule",
+                data: { id: rule.id },
+              }),
+            ])
 
             const rules = await service.listShippingOptionRules()
             expect(rules).toHaveLength(2)
