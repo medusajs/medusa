@@ -97,7 +97,7 @@ export function buildFulfillmentLabelEvents({
       data: { id: fulfillmentLabel.id },
       eventName:
         FulfillmentUtils.FulfillmentEvents[`fulfillment_label_${action}`],
-      object: "fulfillment_item",
+      object: "fulfillment_label",
     })
   })
 

@@ -1,11 +1,16 @@
 import { resolve } from "path"
 import { Modules } from "@medusajs/modules-sdk"
 import { IFulfillmentModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
+import {
+  buildExpectedEventMessageShape,
   generateCreateFulfillmentData,
   generateCreateShippingOptionsData,
 } from "../../__fixtures__"
+import { FulfillmentEvents } from "@medusajs/utils"
 
 jest.setTimeout(100000)
 
@@ -31,6 +36,16 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
   moduleName: Modules.FULFILLMENT,
   moduleOptions: moduleOptions,
   testSuite: ({ service }) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list fulfillment", async () => {
@@ -103,6 +118,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               })
             )
 
+            jest.clearAllMocks()
+
             const fulfillment = await service.createFulfillment(
               generateCreateFulfillmentData({
                 provider_id: providerId,
@@ -136,6 +153,34 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 ],
               })
             )
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_created,
+                action: "created",
+                object: "fulfillment",
+                data: { id: fulfillment.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_address_created,
+                action: "created",
+                object: "fulfillment_address",
+                data: { id: fulfillment.delivery_address.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_item_created,
+                action: "created",
+                object: "fulfillment_item",
+                data: { id: fulfillment.items[0].id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_label_created,
+                action: "created",
+                object: "fulfillment_label",
+                data: { id: fulfillment.labels[0].id },
+              }),
+            ])
           })
 
           it("should create a return fulfillment", async () => {

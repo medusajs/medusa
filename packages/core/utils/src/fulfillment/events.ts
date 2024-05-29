@@ -8,7 +8,10 @@ const eventBaseNames: [
   "shippingOptionType",
   "shippingProfile",
   "shippingOptionRule",
-  "fulfillment"
+  "fulfillment",
+  "fulfillmentAddress",
+  "fulfillmentItem",
+  "fulfillmentLabel"
 ] = [
   "fulfillmentSet",
   "serviceZone",
@@ -18,6 +21,9 @@ const eventBaseNames: [
   "shippingProfile",
   "shippingOptionRule",
   "fulfillment",
+  "fulfillmentAddress",
+  "fulfillmentItem",
+  "fulfillmentLabel",
 ]
 
 export const FulfillmentEvents = buildEventNamesFromEntityName(eventBaseNames)
