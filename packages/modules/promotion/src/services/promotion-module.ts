@@ -206,7 +206,7 @@ export default class PromotionModuleService<
 
         const campaignBudgetData = {
           id: campaignBudget.id,
-          used: MathBN.add(campaignBudget.used ?? 0, 1), // TODO: is it correct
+          used: MathBN.add(campaignBudget.used ?? 0, 1),
         }
 
         if (
