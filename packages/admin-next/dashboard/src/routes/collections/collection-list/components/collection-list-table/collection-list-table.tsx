@@ -18,6 +18,7 @@ export const CollectionListTable = () => {
   const { collections, count, isError, error, isLoading } = useCollections(
     {
       ...searchParams,
+      fields: "+products.id",
     },
     {
       placeholderData: keepPreviousData,
@@ -32,7 +33,7 @@ export const CollectionListTable = () => {
     columns,
     count,
     enablePagination: true,
-    getRowId: (row) => row.id,
+    getRowId: (row, index) => row.id ?? `${index}`,
     pageSize: PAGE_SIZE,
   })
 
