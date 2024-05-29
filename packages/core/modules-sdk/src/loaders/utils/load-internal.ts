@@ -249,6 +249,20 @@ async function loadResources(
     .replace("index.js", "")
     .replace("index.ts", "")
   normalizedPath = resolve(normalizedPath)
+  /**
+   * If the project is running on ts-node all relative module resolution
+   * will target the src directory and otherwise the dist directory.
+   * If the path is not relative, then we can safely import from it and let the resolution
+   * happen under the hood.
+   */
+  if (/\.\//.test(normalizedPath)) {
+    const sourceDir = process[Symbol.for("ts-node.register.instance")]
+      ? "src"
+      : "dist"
+    normalizedPath = join(process.cwd(), sourceDir, normalizedPath)
+  } else {
+    normalizedPath = resolve(normalizedPath)
+  }
 
   try {
     const defaultOnFail = () => {
@@ -256,7 +270,9 @@ async function loadResources(
     }
 
     const [moduleService, services, models, repositories] = await Promise.all([
-      import(modulePath).then((moduleExports) => moduleExports.default.service),
+      import(normalizedPath).then(
+        (moduleExports) => moduleExports.default.service
+      ),
       importAllFromDir(resolve(normalizedPath, "services")).catch(
         defaultOnFail
       ),
