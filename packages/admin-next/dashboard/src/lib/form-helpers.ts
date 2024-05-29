@@ -18,12 +18,13 @@ export function parseOptionalFormValue<T>(
 type Nullable<T> = { [K in keyof T]: T[K] | null }
 
 export function parseOptionalFormData<T extends Record<string, unknown>>(
-  data: T
+  data: T,
+  nullify = true
 ): Nullable<T> {
   return Object.entries(data).reduce((acc, [key, value]) => {
     return {
       ...acc,
-      [key]: parseOptionalFormValue(value),
+      [key]: parseOptionalFormValue(value, nullify),
     }
   }, {} as Nullable<T>)
 }
