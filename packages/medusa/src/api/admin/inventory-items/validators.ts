@@ -17,29 +17,31 @@ export type AdminGetInventoryItemsParamsType = z.infer<
 export const AdminGetInventoryItemsParams = createFindParams({
   limit: 20,
   offset: 0,
-}).merge(
-  z.object({
-    q: z.string().optional(),
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    sku: z.union([z.string(), z.array(z.string())]).optional(),
-    origin_country: z.union([z.string(), z.array(z.string())]).optional(),
-    mid_code: z.union([z.string(), z.array(z.string())]).optional(),
-    hs_code: z.union([z.string(), z.array(z.string())]).optional(),
-    material: z.union([z.string(), z.array(z.string())]).optional(),
-    requires_shipping: OptionalBooleanValidator,
-    weight: createOperatorMap(z.number(), parseFloat).optional(),
-    length: createOperatorMap(z.number(), parseFloat).optional(),
-    height: createOperatorMap(z.number(), parseFloat).optional(),
-    width: createOperatorMap(z.number(), parseFloat).optional(),
-    location_levels: z
-      .object({
-        location_id: z.union([z.string(), z.array(z.string())]).optional(),
-      })
-      .optional(),
-    $and: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
-    $or: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
-  })
-)
+})
+  .merge(
+    z.object({
+      q: z.string().optional(),
+      id: z.union([z.string(), z.array(z.string())]).optional(),
+      sku: z.union([z.string(), z.array(z.string())]).optional(),
+      origin_country: z.union([z.string(), z.array(z.string())]).optional(),
+      mid_code: z.union([z.string(), z.array(z.string())]).optional(),
+      hs_code: z.union([z.string(), z.array(z.string())]).optional(),
+      material: z.union([z.string(), z.array(z.string())]).optional(),
+      requires_shipping: OptionalBooleanValidator,
+      weight: createOperatorMap(z.number(), parseFloat).optional(),
+      length: createOperatorMap(z.number(), parseFloat).optional(),
+      height: createOperatorMap(z.number(), parseFloat).optional(),
+      width: createOperatorMap(z.number(), parseFloat).optional(),
+      location_levels: z
+        .object({
+          location_id: z.union([z.string(), z.array(z.string())]).optional(),
+        })
+        .optional(),
+      $and: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
+      $or: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
+    })
+  )
+  .strict()
 
 export type AdminGetInventoryLocationLevelParamsType = z.infer<
   typeof AdminGetInventoryLocationLevelParams
