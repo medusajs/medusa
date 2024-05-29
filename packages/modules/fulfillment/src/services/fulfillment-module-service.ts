@@ -489,12 +489,7 @@ export default class FulfillmentModuleService<
       return []
     }
 
-    const createdShippingProfiles = await this.shippingProfileService_.create(
-      data_,
-      sharedContext
-    )
-
-    return createdShippingProfiles
+    return await this.shippingProfileService_.create(data_, sharedContext)
   }
 
   createGeoZones(
@@ -507,6 +502,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.GeoZoneDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createGeoZones(
     data:
       | FulfillmentTypes.CreateGeoZoneDTO
@@ -521,6 +517,12 @@ export default class FulfillmentModuleService<
       data_,
       sharedContext
     )
+
+    buildGeoZoneEvents({
+      action: CommonEvents.CREATED,
+      geoZones: createdGeoZones,
+      sharedContext,
+    })
 
     return await this.baseRepository_.serialize<FulfillmentTypes.GeoZoneDTO[]>(
       Array.isArray(data) ? createdGeoZones : createdGeoZones[0]

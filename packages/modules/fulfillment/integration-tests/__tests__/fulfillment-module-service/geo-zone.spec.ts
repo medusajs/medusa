@@ -4,14 +4,28 @@ import {
   IFulfillmentModuleService,
   UpdateGeoZoneDTO,
 } from "@medusajs/types"
-import { GeoZoneType } from "@medusajs/utils"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
+import { buildExpectedEventMessageShape } from "../../__fixtures__"
 
 jest.setTimeout(100000)
 
 moduleIntegrationTestRunner<IFulfillmentModuleService>({
   moduleName: Modules.FULFILLMENT,
   testSuite: ({ service }) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list geo zones with a filter", async function () {
@@ -81,6 +95,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               country_code: "fr",
             }
 
+            jest.clearAllMocks()
+
             const geoZone = await service.createGeoZones(data)
 
             expect(geoZone).toEqual(
@@ -90,6 +106,16 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 country_code: data.country_code,
               })
             )
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.geo_zone_created,
+                action: "created",
+                object: "geo_zone",
+                data: { id: geoZone.id },
+              }),
+            ])
           })
 
           it("should create a collection of geo zones", async function () {
@@ -115,9 +141,12 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
+            jest.clearAllMocks()
+
             const geoZones = await service.createGeoZones(data)
 
             expect(geoZones).toHaveLength(2)
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(2)
 
             let i = 0
             for (const data_ of data) {
@@ -128,6 +157,16 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                   country_code: data_.country_code,
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(expect.arrayContaining([
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.geo_zone_created,
+                  action: "created",
+                  object: "geo_zone",
+                  data: { id: geoZones[i].id },
+                }),
+              ]))
+
               ++i
             }
           })
