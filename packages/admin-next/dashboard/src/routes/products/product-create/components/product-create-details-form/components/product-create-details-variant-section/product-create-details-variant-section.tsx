@@ -388,6 +388,9 @@ export const ProductCreateVariantsSection = ({
                                   {...form.register(
                                     `options.${index}.title` as const
                                   )}
+                                  placeholder={t(
+                                    "products.create.variants.optionTitle.placeholder"
+                                  )}
                                 />
                                 <div className="flex items-center px-2 py-1.5">
                                   <Label
@@ -417,6 +420,9 @@ export const ProductCreateVariantsSection = ({
                                         {...field}
                                         variant="contrast"
                                         onChange={handleValueChange}
+                                        placeholder={t(
+                                          "products.create.variants.optionValues.placeholder"
+                                        )}
                                       />
                                     )
                                   }}

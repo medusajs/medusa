@@ -20,6 +20,7 @@ type ChipInputProps = {
   showRemove?: boolean
   variant?: "base" | "contrast"
   className?: string
+  placeholder?: string
 }
 
 export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
@@ -33,6 +34,7 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
       showRemove = true,
       variant = "base",
       allowDuplicates = false,
+      placeholder = "",
       className,
     },
     ref
@@ -178,6 +180,7 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
           disabled={disabled}
           name={name}
           ref={innerRef}
+          placeholder={!chips?.length ? placeholder : ""}
         />
       </div>
     )
