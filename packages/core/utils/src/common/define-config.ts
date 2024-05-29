@@ -5,7 +5,8 @@ const DEFAULT_SECRET = "supersecret"
 const DEFAULT_ADMIN_URL = "http://localhost:9000"
 const DEFAULT_STORE_CORS = "http://localhost:8000"
 const DEFAULT_DATABASE_URL = "postgres://localhost/medusa-starter-default"
-const DEFAULT_ADMIN_CORS = "http://localhost:7000,http://localhost:7001,http://localhost:5173"
+const DEFAULT_ADMIN_CORS =
+  "http://localhost:7000,http://localhost:7001,http://localhost:5173"
 
 /**
  * The "defineConfig" helper can be used to define the configuration
@@ -16,7 +17,7 @@ const DEFAULT_ADMIN_CORS = "http://localhost:7000,http://localhost:7001,http://l
  * to override configuration as needed.
  */
 export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
-  const { http, ...restOrProjectConfig } = config.projectConfig || {}
+  const { http, ...restOfProjectConfig } = config.projectConfig || {}
 
   /**
    * The defaults to use for the project config. They are shallow merged
@@ -32,7 +33,7 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
       cookieSecret: process.env.COOKIE_SECRET || DEFAULT_SECRET,
       ...http,
     },
-    ...restOrProjectConfig,
+    ...restOfProjectConfig,
   }
 
   /**
@@ -49,7 +50,6 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
    * with the user defined config
    */
   const featureFlags: ConfigModule["featureFlags"] = {
-    medusa_v2: true,
     ...config.featureFlags,
   }
 
