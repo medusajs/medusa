@@ -8,7 +8,7 @@ This document explains how the Inventory Module is used within the Medusa applic
 
 ## Product Variant Creation
 
-When a product variant is created and its `manage_inventory` field's value is `true`, the Medusa application uses the Inventory Module to create an inventory item associated with that product variant.
+When a product variant is created and its `manage_inventory` field's value is `true`, the Medusa application creates an inventory item associated with that product variant.
 
 ![A diagram showcasing how the Inventory Module is used in the product variant creation form](https://res.cloudinary.com/dza7lstvk/image/upload/v1709661511/Medusa%20Resources/inventory-product-create_khz2hk.jpg)
 
@@ -16,7 +16,7 @@ When a product variant is created and its `manage_inventory` field's value is `t
 
 ## Add to Cart
 
-When a product variant with `manage_inventory` set to `true` is added to cart, the Medusa application uses the Inventory Module to check whether there's sufficient stocked quantity. If not, an error is thrown and the product variant won't be added to the cart.
+When a product variant with `manage_inventory` set to `true` is added to cart, the Medusa application checks whether there's sufficient stocked quantity. If not, an error is thrown and the product variant won't be added to the cart.
 
 ![A diagram showcasing how the Inventory Module is used in the add to cart flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1709711645/Medusa%20Resources/inventory-cart-flow_achwq9.jpg)
 
@@ -24,7 +24,7 @@ When a product variant with `manage_inventory` set to `true` is added to cart, t
 
 ## Order Placed
 
-When an order is placed, the Medusa application uses the Inventory Module to create a reservation item for each product variant with `manage_inventory` set to `true`. It also sets the `reserved_quantity` of the inventory level associated with the inventory item to the ordered quantity of that item.
+When an order is placed, the Medusa application creates a reservation item for each product variant with `manage_inventory` set to `true`.
 
 ![A diagram showcasing how the Inventory Module is used in the order placed flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1709712005/Medusa%20Resources/inventory-order-placed_qdxqdn.jpg)
 
@@ -32,11 +32,11 @@ When an order is placed, the Medusa application uses the Inventory Module to cre
 
 ## Order Fulfillment
 
-When an item in an order is fulfilled and the associated variant has its `manage_inventory` field set to `true`, the Medusa application uses the Inventory Module to:
+When an item in an order is fulfilled and the associated variant has its `manage_inventory` field set to `true`, the Medusa application:
 
-- Subtract the `reserved_quantity` from the `stocked_quantity` in the inventory level associated with the variant's inventory item.
-- Reset the `reserved_quantity` to `0`.
-- Delete the associated reservation item.
+- Subtracts the `reserved_quantity` from the `stocked_quantity` in the inventory level associated with the variant's inventory item.
+- Resets the `reserved_quantity` to `0`.
+- Deletes the associated reservation item.
 
 ![A diagram showcasing how the Inventory Module is used in the order fulfillment flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1709712390/Medusa%20Resources/inventory-order-fulfillment_o9wdxh.jpg)
 
@@ -44,6 +44,6 @@ When an item in an order is fulfilled and the associated variant has its `manage
 
 ## Order Return
 
-When an item in an order is returned and the associated variant has its `manage_inventory` field set to `true`, the Medusa application uses the Inventor Module to increment the `stocked_quantity` of the inventory level associated with the inventory item with the returned quantity.
+When an item in an order is returned and the associated variant has its `manage_inventory` field set to `true`, the Medusa application increments the `stocked_quantity` of the inventory item's level with the returned quantity.
 
 ![A diagram showcasing how the Inventory Module is used in the order return flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1709712457/Medusa%20Resources/inventory-order-return_ihftyk.jpg)
