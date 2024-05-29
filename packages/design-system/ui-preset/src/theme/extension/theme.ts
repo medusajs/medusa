@@ -116,9 +116,6 @@ export const theme = {
           "danger": {
             "DEFAULT": "var(--border-danger)"
           },
-          "loud": {
-            "DEFAULT": "var(--border-loud)"
-          },
           "strong": {
             "DEFAULT": "var(--border-strong)"
           },
@@ -127,6 +124,14 @@ export const theme = {
           },
           "transparent": {
             "DEFAULT": "var(--border-transparent)"
+          },
+          "menu": {
+            "bot": {
+              "DEFAULT": "var(--border-menu-bot)"
+            },
+            "top": {
+              "DEFAULT": "var(--border-menu-top)"
+            }
           }
         },
         "bg": {
@@ -134,24 +139,6 @@ export const theme = {
             "DEFAULT": "var(--bg-highlight)",
             "hover": {
               "DEFAULT": "var(--bg-highlight-hover)"
-            }
-          },
-          "base": {
-            "DEFAULT": "var(--bg-base)",
-            "pressed": {
-              "DEFAULT": "var(--bg-base-pressed)"
-            },
-            "hover": {
-              "DEFAULT": "var(--bg-base-hover)"
-            }
-          },
-          "subtle": {
-            "pressed": {
-              "DEFAULT": "var(--bg-subtle-pressed)"
-            },
-            "DEFAULT": "var(--bg-subtle)",
-            "hover": {
-              "DEFAULT": "var(--bg-subtle-hover)"
             }
           },
           "interactive": {
@@ -183,14 +170,32 @@ export const theme = {
           "disabled": {
             "DEFAULT": "var(--bg-disabled)"
           },
-          "component": {
-            "hover": {
-              "DEFAULT": "var(--bg-component-hover)"
+          "base": {
+            "pressed": {
+              "DEFAULT": "var(--bg-base-pressed)"
             },
+            "hover": {
+              "DEFAULT": "var(--bg-base-hover)"
+            },
+            "DEFAULT": "var(--bg-base)"
+          },
+          "component": {
             "pressed": {
               "DEFAULT": "var(--bg-component-pressed)"
             },
-            "DEFAULT": "var(--bg-component)"
+            "DEFAULT": "var(--bg-component)",
+            "hover": {
+              "DEFAULT": "var(--bg-component-hover)"
+            }
+          },
+          "subtle": {
+            "DEFAULT": "var(--bg-subtle)",
+            "pressed": {
+              "DEFAULT": "var(--bg-subtle-pressed)"
+            },
+            "hover": {
+              "DEFAULT": "var(--bg-subtle-hover)"
+            }
           }
         },
         "fg": {
@@ -263,14 +268,6 @@ export const theme = {
           }
         },
         "contrast": {
-          "fg": {
-            "primary": {
-              "DEFAULT": "var(--contrast-fg-primary)"
-            },
-            "secondary": {
-              "DEFAULT": "var(--contrast-fg-secondary)"
-            }
-          },
           "bg": {
             "base": {
               "pressed": {
@@ -286,6 +283,17 @@ export const theme = {
             },
             "highlight": {
               "DEFAULT": "var(--contrast-bg-highlight)"
+            },
+            "alpha": {
+              "DEFAULT": "var(--contrast-bg-alpha)"
+            }
+          },
+          "fg": {
+            "primary": {
+              "DEFAULT": "var(--contrast-fg-primary)"
+            },
+            "secondary": {
+              "DEFAULT": "var(--contrast-fg-secondary)"
             }
           },
           "border": {
@@ -323,26 +331,27 @@ export const theme = {
     "boxShadow": {
       "borders-interactive-with-active": "var(--borders-interactive-with-active)",
       "buttons-danger-focus": "var(--buttons-danger-focus)",
-      "buttons-danger": "var(--buttons-danger)",
       "details-contrast-on-bg-interactive": "var(--details-contrast-on-bg-interactive)",
       "borders-interactive-with-focus": "var(--borders-interactive-with-focus)",
       "borders-error": "var(--borders-error)",
       "borders-focus": "var(--borders-focus)",
       "borders-interactive-with-shadow": "var(--borders-interactive-with-shadow)",
+      "buttons-danger": "var(--buttons-danger)",
+      "buttons-inverted-focus": "var(--buttons-inverted-focus)",
+      "elevation-card-hover": "var(--elevation-card-hover)",
+      "buttons-inverted": "var(--buttons-inverted)",
       "details-switch-handle": "var(--details-switch-handle)",
       "buttons-neutral": "var(--buttons-neutral)",
-      "details-commandbar": "var(--details-commandbar)",
-      "details-switch-background-focus": "var(--details-switch-background-focus)",
-      "buttons-inverted-focus": "var(--buttons-inverted-focus)",
-      "details-switch-background": "var(--details-switch-background)",
       "borders-base": "var(--borders-base)",
-      "elevation-tooltip": "var(--elevation-tooltip)",
-      "elevation-card-hover": "var(--elevation-card-hover)",
-      "elevation-modal": "var(--elevation-modal)",
-      "buttons-inverted": "var(--buttons-inverted)",
       "elevation-card-rest": "var(--elevation-card-rest)",
       "buttons-neutral-focus": "var(--buttons-neutral-focus)",
-      "elevation-flyout": "var(--elevation-flyout)"
+      "details-code-block": "var(--details-code-block)",
+      "details-switch-background-focus": "var(--details-switch-background-focus)",
+      "details-switch-background": "var(--details-switch-background)",
+      "elevation-flyout": "var(--elevation-flyout)",
+      "elevation-tooltip": "var(--elevation-tooltip)",
+      "elevation-modal": "var(--elevation-modal)",
+      "details-commandbar": "var(--details-commandbar)"
     }
   }
 }

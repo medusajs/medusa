@@ -4,8 +4,6 @@ import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
   InternalModuleDeclaration,
   LoadedModule,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
   MedusaAppOptions,
   MedusaAppOutput,
   MedusaModuleConfig,
@@ -15,7 +13,7 @@ import {
   ModuleServiceInitializeOptions,
   RemoteJoinerOptions,
   RemoteJoinerQuery,
-  RunMigrationFn,
+  RunMigrationFn
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -35,6 +33,7 @@ import {
 import { MedusaModule } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
 import * as Servers from "./utils/servers"
 

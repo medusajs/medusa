@@ -11,7 +11,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 ## Create Product
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -51,7 +51,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -96,7 +96,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 ## List Products
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -110,14 +110,14 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-    const data = await productModuleService.list()
+    const products = await productModuleService.list()
 
-    res.json({ products: data })
+    res.json({ products })
   }
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -129,19 +129,21 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   export async function GET(request: Request) {
     const productModuleService = await initializeProductModule()
 
-    const data = await productModuleService.list()
+    const products = await productModuleService.list()
 
-    return NextResponse.json({ products: data })
+    return NextResponse.json({ products })
   }
   ```
 
   </CodeTab>
 </CodeTabs>
 
+---
+
 ## Retrieve a Product by its ID
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -155,16 +157,16 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-    const data = await productModuleService.list({
-      id: request.params.id,
-    })
+    const product = await productModuleService.retrieve(
+      request.params.id
+    )
 
-    res.json({ product: data[0] })
+    res.json({ product })
   }
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -180,11 +182,11 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const { id } = params
     const productModuleService = await initializeProductModule()
 
-    const data = await productModuleService.list({
-      id,
-    })
+    const product = await productModuleService.retrieve(
+      id
+    )
 
-    return NextResponse.json({ product: data[0] })
+    return NextResponse.json({ product })
   }
   ```
 
@@ -196,7 +198,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 ## Retrieve a Product by its Handle
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -210,14 +212,16 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-    const data = await productModuleService.list()
+    const data = await productModuleService.list({
+      handle: "shirt"
+    })
 
-    res.json({ products: data })
+    res.json({ product: data[0] })
   }
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -229,59 +233,8 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   export async function GET(request: Request) {
     const productModuleService = await initializeProductModule()
 
-    const data = await productModuleService.list()
-
-    return NextResponse.json({ products: data })
-  }
-  ```
-
-  </CodeTab>
-</CodeTabs>
-
-## Retrieve a Product by its ID
-
-<CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
-
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const productModuleService: IProductModuleService =
-      request.scope.resolve(ModuleRegistrationName.PRODUCT)
-
     const data = await productModuleService.list({
-      handle: request.params.handle,
-    })
-
-    res.json({ product: data[0] })
-  }
-  ```
-
-  </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
-
-  ```ts
-  import { NextResponse } from "next/server"
-
-  import { 
-    initialize as initializeProductModule,
-  } from "@medusajs/product"
-
-  export async function GET(
-    request: Request, 
-    { params }: { params: Record<string, any> }) {
-    
-    const { handle } = params
-    const productModuleService = await initializeProductModule()
-
-    const data = await productModuleService.list({
-      handle,
+      handle: "shirt"
     })
 
     return NextResponse.json({ product: data[0] })
@@ -296,7 +249,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 ## Retrieve Categories
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -310,14 +263,14 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-    const data = await productModuleService.listCategories()
+    const categories = await productModuleService.listCategories()
 
-    res.json({ categories: data })
+    res.json({ categories })
   }
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -329,9 +282,9 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   export async function GET(request: Request) {
     const productModuleService = await initializeProductModule()
 
-    const data = await productModuleService.listCategories()
+    const categories = await productModuleService.listCategories()
 
-    return NextResponse.json({ categories: data })
+    return NextResponse.json({ categories })
   }
   ```
 
@@ -343,7 +296,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 ## Retrieve Category by Handle
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -366,7 +319,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -397,4 +350,4 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 
 ## More Examples
 
-The [Product Module interface reference](/references/product) provides a reference to all the methods available for use with examples for each.
+The [Product Module's main service reference](/references/product) provides a reference to all the methods available for use with examples for each.

@@ -5,20 +5,21 @@ const EnvelopeSolid = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
-          fill={color}
-          d="M1.625 7.344v6.844a2.393 2.393 0 0 0 2.393 2.392h11.964a2.393 2.393 0 0 0 2.393-2.392V7.344l-7.121 4.381a2.393 2.393 0 0 1-2.508 0L1.625 7.344Z"
-        />
-        <path
-          fill={color}
-          d="M18.375 5.938v-.126a2.393 2.393 0 0 0-2.393-2.392H4.018a2.393 2.393 0 0 0-2.393 2.392v.126l7.748 4.769a1.196 1.196 0 0 0 1.254 0l7.748-4.769Z"
-        />
+        <g fill={color} clipPath="url(#a)">
+          <path d="M7.393 7.346a.22.22 0 0 0 .214 0l6.912-3.807a2.44 2.44 0 0 0-2.352-1.817H2.833A2.44 2.44 0 0 0 .483 3.53z" />
+          <path d="M8.251 8.513a1.55 1.55 0 0 1-1.502 0L.389 5v5.833a2.446 2.446 0 0 0 2.444 2.445h9.334a2.446 2.446 0 0 0 2.444-2.445V5.011z" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

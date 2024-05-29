@@ -8,7 +8,7 @@ In this document, you’ll learn about the main concepts in the Inventory Module
 
 ## InventoryItem
 
-An inventory item, represented by the `InventoryItem` data model, is a stock-kept item, such as a product, whose inventory can be managed.
+An inventory item, represented by the [InventoryItem data model](/references/inventory/models/InventoryItem), is a stock-kept item, such as a product, whose inventory can be managed.
 
 The `InventoryItem` data model mainly holds details related to the underlying stock item, but has relations to other data models that include its inventory details.
 
@@ -18,7 +18,7 @@ The `InventoryItem` data model mainly holds details related to the underlying st
 
 ## InventoryLevel
 
-An inventory level, represented by the `InventoryLevel` data model, holds the inventory and quantity details of an inventory item in a specific location.
+An inventory level, represented by the [InventoryLevel data model](/references/inventory/models/InventoryLevel), holds the inventory and quantity details of an inventory item in a specific location.
 
 It has three quantity-related fields:
 
@@ -28,9 +28,7 @@ It has three quantity-related fields:
 
 ### Associated Location
 
-The inventory level's location is determined by the `location_id` field. The Medusa application links the `InventoryLevel` data model with the `StockLocation` data model from the Stock Location Module.
-
-Learn more about this relation in [this guide](../relations-to-other-modules/page.mdx#stock-location-module)
+The inventory level's location is determined by the `location_id` field. Medusa links the `InventoryLevel` data model with the `StockLocation` data model from the Stock Location Module.
 
 ---
 

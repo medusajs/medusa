@@ -1,5 +1,5 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ModulesSdkTypes, LoaderOptions, Logger } from "@medusajs/types"
+import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 import { ContainerRegistrationKeys, defaultCurrencies } from "@medusajs/utils"
 import { Currency } from "@models"
 
@@ -24,7 +24,7 @@ export default async ({
       code: c.code.toLowerCase(),
     }))
     const resp = await currencyService_.upsert(normalizedCurrencies)
-    logger.info(`Loaded ${resp.length} currencies`)
+    logger.debug(`Loaded ${resp.length} currencies`)
   } catch (error) {
     logger.warn(
       `Failed to load currencies, skipping loader. Original error: ${error.message}`

@@ -8,11 +8,17 @@ export const metadata = {
 
 In this document, you’ll learn how to make changes to an order, such as return or exchange an item.
 
+<Note type="soon" title="In Development">
+
+Order Change is still in development.
+
+</Note>
+
 ## What's an Order Change?
 
-An order change is modifying the order’s items for business purposes. For example, when a customer requests to return an item, or when you suggest exchanging an item with another.
+An order change is modifying the order’s items for business purposes. For example, when a customer requests to return an item, or when a merchant suggests exchanging an item with another.
 
-Order changes are represented by the `OrderChange` data model.
+Order changes are represented by the [OrderChange data model](/references/order/models/OrderChange).
 
 ---
 
@@ -25,7 +31,7 @@ An order change can have multiple underlying actions. For example, to exchange a
 - Add the new item to be sent to the customer.
 - Fulfill the item and send it to the customer.
 
-Each of these actions is represented by the `OrderChangeAction` data model.
+Each of these actions is represented by the [OrderChangeAction data model](/references/order/models/OrderChangeAction).
 
 ### Action Name
 
@@ -269,33 +275,12 @@ The `action` field of the `OrderChangeAction` holds the name of the action to pe
   </Table.Body>
 </Table>
 
-
-### Action Chaining
-
-Actions are chained one after the other, similar to the example in the earlier section. This also allows you to cancel or undo some actions.
-
-For example, if you request an order return with `RETURN_ITEM` action, you can later cancel it with the `CANCEL_RETURN` action.
-
-The actions are ordered by the `ordering` field of the `OrderChangeAction` data model.
-
-### Action Amount
-
-The `OrderChangeAction` data model has an `amount` field that indicates a change in the order’s amount that this action incurs.
-
----
-
 ## Order Change Confirmation
 
 The `OrderChange` data model has a `status` field that indicates its current status. By default, it’s pending. At this point, the order change’s actions aren’t applied to the order yet.
 
-To apply these changes to the order, you must confirm the order change. When the order change is confirmed:
+To apply these changes to the order, you confirm the order change. When the order change is confirmed:
 
 - The status of the order change is changed to `confirmed`.
 - The order’s items are changed based on the order change’s actions. For example, an item is added, or an existing item’s quantity is changed.
 - The order summary is modified to reflect new changes.
-
-<Note>
-
-If there are changes to the order’s total amount due to refunding or capturing payment, they must be added as transactions first. Otherwise, they won’t be accounted for when modifying the order summary
-
-</Note>

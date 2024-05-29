@@ -91,7 +91,7 @@ const instance = DbTestUtil
 module.exports = {
   initDb: async function ({
     cwd,
-    database_extra,
+    databaseExtra,
     env,
     force_modules_migration,
   }) {
@@ -145,7 +145,7 @@ module.exports = {
       url: DB_URL,
       entities: enabledEntities.concat(moduleModels),
       migrations: enabledMigrations.concat(moduleMigrations),
-      extra: database_extra ?? {},
+      extra: databaseExtra ?? {},
       name: "integration-tests",
     })
 

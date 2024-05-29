@@ -10,6 +10,7 @@ import after from "virtual:medusa/widgets/location/details/after"
 import before from "virtual:medusa/widgets/location/details/before"
 import sideAfter from "virtual:medusa/widgets/location/details/side/after"
 import sideBefore from "virtual:medusa/widgets/location/details/side/before"
+import { detailsFields } from "./const"
 
 export const LocationDetails = () => {
   const initialData = useLoaderData() as Awaited<
@@ -25,8 +26,7 @@ export const LocationDetails = () => {
   } = useStockLocation(
     location_id!,
     {
-      fields:
-        "name,*sales_channels,address.city,address.country_code,fulfillment_sets.type,fulfillment_sets.name,*fulfillment_sets.service_zones.geo_zones,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options,*fulfillment_sets.service_zones.shipping_options.rules,*fulfillment_sets.service_zones.shipping_options.shipping_profile",
+      fields: detailsFields,
     },
     {
       initialData,

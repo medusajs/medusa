@@ -1,5 +1,8 @@
-import { Buildings, PencilSquare, ArrowUturnLeft } from "@medusajs/icons"
-import { OrderDTO, OrderLineItemDTO, ReservationItemDTO } from "@medusajs/types"
+import {
+  AdminOrder,
+  OrderLineItemDTO,
+  ReservationItemDTO,
+} from "@medusajs/types"
 import { Container, Copy, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
@@ -11,7 +14,7 @@ import {
 } from "../../../../../lib/money-amount-helpers"
 
 type OrderSummarySectionProps = {
-  order: OrderDTO
+  order: AdminOrder
 }
 
 export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
@@ -25,7 +28,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   )
 }
 
-const Header = ({ order }: { order: OrderDTO }) => {
+const Header = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   return (
@@ -129,7 +132,7 @@ const Item = ({
   )
 }
 
-const ItemBreakdown = ({ order }: { order: OrderDTO }) => {
+const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
   // const { reservations, isError, error } = useAdminReservations({
   //   line_item_id: order.items.map((i) => i.id),
   // })
@@ -184,7 +187,7 @@ const Cost = ({
   </div>
 )
 
-const CostBreakdown = ({ order }: { order: OrderDTO }) => {
+const CostBreakdown = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   return (
@@ -230,7 +233,7 @@ const CostBreakdown = ({ order }: { order: OrderDTO }) => {
   )
 }
 
-const Total = ({ order }: { order: OrderDTO }) => {
+const Total = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   return (

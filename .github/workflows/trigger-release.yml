@@ -45,9 +45,6 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Configure npm node prepend
-        run: npm config set scripts-prepend-node-path auto
-
       - name: Install Dependencies
         run: yarn
 

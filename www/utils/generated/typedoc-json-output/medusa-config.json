@@ -1,12 +1,265 @@
 {
-	"id": 16332,
+	"id": 25,
 	"name": "medusa-config",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 16333,
+			"id": 26,
+			"name": "AdminOptions",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Admin dashboard configurations."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 27,
+					"name": "disable",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether to disable the admin dashboard. If set to "
+							},
+							{
+								"kind": "code",
+								"text": "`true`"
+							},
+							{
+								"kind": "text",
+								"text": ", the admin dashboard is disabled,\nin both development and production environments. The default value is "
+							},
+							{
+								"kind": "code",
+								"text": "`false`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				},
+				{
+					"id": 28,
+					"name": "path",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The path to the admin dashboard. The default value is "
+							},
+							{
+								"kind": "code",
+								"text": "`/app`"
+							},
+							{
+								"kind": "text",
+								"text": ".\n\nThe value cannot be one of the reserved paths:\n- "
+							},
+							{
+								"kind": "code",
+								"text": "`/admin`"
+							},
+							{
+								"kind": "text",
+								"text": "\n- "
+							},
+							{
+								"kind": "code",
+								"text": "`/store`"
+							},
+							{
+								"kind": "text",
+								"text": "\n- "
+							},
+							{
+								"kind": "code",
+								"text": "`/auth`"
+							},
+							{
+								"kind": "text",
+								"text": "\n- "
+							},
+							{
+								"kind": "code",
+								"text": "`/`"
+							}
+						]
+					},
+					"type": {
+						"type": "templateLiteral",
+						"head": "/",
+						"tail": [
+							[
+								{
+									"type": "intrinsic",
+									"name": "string"
+								},
+								""
+							]
+						]
+					}
+				},
+				{
+					"id": 29,
+					"name": "outDir",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The directory where the admin build is output. This is where the build process places the generated files.\nThe default value is "
+							},
+							{
+								"kind": "code",
+								"text": "`./build`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 30,
+					"name": "backendUrl",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The URL of your Medusa backend. Defaults to an empty string, which means requests will hit the same server that serves the dashboard."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 31,
+					"name": "vite",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Configure the Vite configuration for the admin dashboard. This function receives the default Vite configuration\nand returns the modified configuration. The default value is "
+							},
+							{
+								"kind": "code",
+								"text": "`undefined`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 32,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"signatures": [
+								{
+									"id": 33,
+									"name": "__type",
+									"variant": "signature",
+									"kind": 4096,
+									"flags": {},
+									"parameters": [
+										{
+											"id": 34,
+											"name": "config",
+											"variant": "param",
+											"kind": 32768,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/types/node_modules/vite/dist/node/index.d.ts",
+													"qualifiedName": "InlineConfig"
+												},
+												"name": "InlineConfig",
+												"package": "vite"
+											}
+										}
+									],
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/node_modules/vite/dist/node/index.d.ts",
+											"qualifiedName": "InlineConfig"
+										},
+										"name": "InlineConfig",
+										"package": "vite"
+									}
+								}
+							]
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						27,
+						28,
+						29,
+						30,
+						31
+					]
+				}
+			]
+		},
+		{
+			"id": 35,
 			"name": "HttpCompressionOptions",
 			"variant": "declaration",
 			"kind": 256,
@@ -21,7 +274,7 @@
 			},
 			"children": [
 				{
-					"id": 16334,
+					"id": 36,
 					"name": "enabled",
 					"variant": "declaration",
 					"kind": 1024,
@@ -50,7 +303,7 @@
 					}
 				},
 				{
-					"id": 16335,
+					"id": 37,
 					"name": "level",
 					"variant": "declaration",
 					"kind": 1024,
@@ -79,7 +332,7 @@
 					}
 				},
 				{
-					"id": 16336,
+					"id": 38,
 					"name": "memLevel",
 					"variant": "declaration",
 					"kind": 1024,
@@ -108,7 +361,7 @@
 					}
 				},
 				{
-					"id": 16337,
+					"id": 39,
 					"name": "threshold",
 					"variant": "declaration",
 					"kind": 1024,
@@ -150,16 +403,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						16334,
-						16335,
-						16336,
-						16337
+						36,
+						37,
+						38,
+						39
 					]
 				}
 			]
 		},
 		{
-			"id": 16338,
+			"id": 40,
 			"name": "ProjectConfigOptions",
 			"variant": "declaration",
 			"kind": 256,
@@ -174,419 +427,7 @@
 			},
 			"children": [
 				{
-					"id": 16339,
-					"name": "store_cors",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.\n\n"
-							},
-							{
-								"kind": "code",
-								"text": "`store_cors`"
-							},
-							{
-								"kind": "text",
-								"text": " is a string used to specify the accepted URLs or patterns for store API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.\n\nEvery origin in that list must either be:\n\n1. A URL. For example, "
-							},
-							{
-								"kind": "code",
-								"text": "`http://localhost:8000`"
-							},
-							{
-								"kind": "text",
-								"text": ". The URL must not end with a backslash;\n2. Or a regular expression pattern that can match more than one origin. For example, "
-							},
-							{
-								"kind": "code",
-								"text": "`.example.com`"
-							},
-							{
-								"kind": "text",
-								"text": ". The regex pattern that the backend tests for is "
-							},
-							{
-								"kind": "code",
-								"text": "`^([/~@;%#'])(.*?)\\1([gimsuy]*)$`"
-							},
-							{
-								"kind": "text",
-								"text": "."
-							}
-						],
-						"blockTags": [
-							{
-								"tag": "@example",
-								"content": [
-									{
-										"kind": "text",
-										"text": "Some example values of common use cases:\n\n"
-									},
-									{
-										"kind": "code",
-										"text": "```bash\n# Allow different ports locally starting with 800\nSTORE_CORS=/http://localhost:800\\d+$/\n\n# Allow any origin ending with vercel.app. For example, storefront.vercel.app\nSTORE_CORS=/vercel\\.app$/\n\n# Allow all HTTP requests\nSTORE_CORS=/http://.+/\n```"
-									},
-									{
-										"kind": "text",
-										"text": "\n\nThen, set the configuration in "
-									},
-									{
-										"kind": "code",
-										"text": "`medusa-config.js`"
-									},
-									{
-										"kind": "text",
-										"text": ":\n\n"
-									},
-									{
-										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    store_cors: process.env.STORE_CORS,\n    // ...\n  },\n  // ...\n}\n```"
-									},
-									{
-										"kind": "text",
-										"text": "\n\nIf you’re adding the value directly within "
-									},
-									{
-										"kind": "code",
-										"text": "`medusa-config.js`"
-									},
-									{
-										"kind": "text",
-										"text": ", make sure to add an extra escaping "
-									},
-									{
-										"kind": "code",
-										"text": "`/`"
-									},
-									{
-										"kind": "text",
-										"text": " for every backslash in the pattern. For example:\n\n"
-									},
-									{
-										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    store_cors: \"/vercel\\\\.app$/\",\n    // ...\n  },\n  // ...\n}\n```"
-									}
-								]
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 16340,
-					"name": "admin_cors",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.\n\n"
-							},
-							{
-								"kind": "code",
-								"text": "`admin_cors`"
-							},
-							{
-								"kind": "text",
-								"text": " is a string used to specify the accepted URLs or patterns for admin API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.\n\nEvery origin in that list must either be:\n\n1. A URL. For example, "
-							},
-							{
-								"kind": "code",
-								"text": "`http://localhost:7001`"
-							},
-							{
-								"kind": "text",
-								"text": ". The URL must not end with a backslash;\n2. Or a regular expression pattern that can match more than one origin. For example, "
-							},
-							{
-								"kind": "code",
-								"text": "`.example.com`"
-							},
-							{
-								"kind": "text",
-								"text": ". The regex pattern that the backend tests for is "
-							},
-							{
-								"kind": "code",
-								"text": "`^([/~@;%#'])(.*?)\\1([gimsuy]*)$`"
-							},
-							{
-								"kind": "text",
-								"text": "."
-							}
-						],
-						"blockTags": [
-							{
-								"tag": "@example",
-								"content": [
-									{
-										"kind": "text",
-										"text": "Some example values of common use cases:\n\n"
-									},
-									{
-										"kind": "code",
-										"text": "```bash\n# Allow different ports locally starting with 700\nADMIN_CORS=/http://localhost:700\\d+$/\n\n# Allow any origin ending with vercel.app. For example, admin.vercel.app\nADMIN_CORS=/vercel\\.app$/\n\n# Allow all HTTP requests\nADMIN_CORS=/http://.+/\n```"
-									},
-									{
-										"kind": "text",
-										"text": "\n\nThen, set the configuration in "
-									},
-									{
-										"kind": "code",
-										"text": "`medusa-config.js`"
-									},
-									{
-										"kind": "text",
-										"text": ":\n\n"
-									},
-									{
-										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    admin_cors: process.env.ADMIN_CORS,\n    // ...\n  },\n  // ...\n}\n```"
-									},
-									{
-										"kind": "text",
-										"text": "\n\nIf you’re adding the value directly within "
-									},
-									{
-										"kind": "code",
-										"text": "`medusa-config.js`"
-									},
-									{
-										"kind": "text",
-										"text": ", make sure to add an extra escaping "
-									},
-									{
-										"kind": "code",
-										"text": "`/`"
-									},
-									{
-										"kind": "text",
-										"text": " for every backslash in the pattern. For example:\n\n"
-									},
-									{
-										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    admin_cors: \"/http:\\\\/\\\\/localhost:700\\\\d+$/\",\n    // ...\n  },\n  // ...\n}\n```"
-									}
-								]
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 16341,
-					"name": "auth_cors",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.\n\n"
-							},
-							{
-								"kind": "code",
-								"text": "`auth_cors`"
-							},
-							{
-								"kind": "text",
-								"text": " is a string used to specify the accepted URLs or patterns for API Routes starting with "
-							},
-							{
-								"kind": "code",
-								"text": "`/auth`"
-							},
-							{
-								"kind": "text",
-								"text": ". It can either be one accepted origin, or a comma-separated list of accepted origins.\n\nEvery origin in that list must either be:\n\n1. A URL. For example, "
-							},
-							{
-								"kind": "code",
-								"text": "`http://localhost:7001`"
-							},
-							{
-								"kind": "text",
-								"text": ". The URL must not end with a backslash;\n2. Or a regular expression pattern that can match more than one origin. For example, "
-							},
-							{
-								"kind": "code",
-								"text": "`.example.com`"
-							},
-							{
-								"kind": "text",
-								"text": ". The regex pattern that the backend tests for is "
-							},
-							{
-								"kind": "code",
-								"text": "`^([/~@;%#'])(.*?)\\1([gimsuy]*)$`"
-							},
-							{
-								"kind": "text",
-								"text": "."
-							}
-						],
-						"blockTags": [
-							{
-								"tag": "@example",
-								"content": [
-									{
-										"kind": "text",
-										"text": "Some example values of common use cases:\n\n"
-									},
-									{
-										"kind": "code",
-										"text": "```bash\n# Allow different ports locally starting with 700\nAUTH_CORS=/http://localhost:700\\d+$/\n\n# Allow any origin ending with vercel.app. For example, admin.vercel.app\nAUTH_CORS=/vercel\\.app$/\n\n# Allow all HTTP requests\nAUTH_CORS=/http://.+/\n```"
-									},
-									{
-										"kind": "text",
-										"text": "\n\nThen, set the configuration in "
-									},
-									{
-										"kind": "code",
-										"text": "`medusa-config.js`"
-									},
-									{
-										"kind": "text",
-										"text": ":\n\n"
-									},
-									{
-										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    auth_cors: process.env.AUTH_CORS,\n    // ...\n  },\n  // ...\n}\n```"
-									},
-									{
-										"kind": "text",
-										"text": "\n\nIf you’re adding the value directly within "
-									},
-									{
-										"kind": "code",
-										"text": "`medusa-config.js`"
-									},
-									{
-										"kind": "text",
-										"text": ", make sure to add an extra escaping "
-									},
-									{
-										"kind": "code",
-										"text": "`/`"
-									},
-									{
-										"kind": "text",
-										"text": " for every backslash in the pattern. For example:\n\n"
-									},
-									{
-										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    auth_cors: \"/http:\\\\/\\\\/localhost:700\\\\d+$/\",\n    // ...\n  },\n  // ...\n}\n```"
-									}
-								]
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 16342,
-					"name": "cookie_secret",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "A random string used to create cookie tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.\n\nIn a development environment, if this option is not set, the default secret is "
-							},
-							{
-								"kind": "code",
-								"text": "`supersecret`"
-							},
-							{
-								"kind": "text",
-								"text": " However, in production, if this configuration is not set, an error is thrown and\nthe backend crashes."
-							}
-						],
-						"blockTags": [
-							{
-								"tag": "@example",
-								"content": [
-									{
-										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    cookie_secret: process.env.COOKIE_SECRET ||\n      \"supersecret\",\n    // ...\n  },\n  // ...\n}\n```"
-									}
-								]
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 16343,
-					"name": "jwt_secret",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "A random string used to create authentication tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.\n\nIn a development environment, if this option is not set the default secret is "
-							},
-							{
-								"kind": "code",
-								"text": "`supersecret`"
-							},
-							{
-								"kind": "text",
-								"text": " However, in production, if this configuration is not set an error, an\nerror is thrown and the backend crashes."
-							}
-						],
-						"blockTags": [
-							{
-								"tag": "@example",
-								"content": [
-									{
-										"kind": "code",
-										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    jwt_secret: process.env.JWT_SECRET ||\n      \"supersecret\",\n    // ...\n  },\n  // ...\n}\n```"
-									}
-								]
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 16344,
+					"id": 41,
 					"name": "database_database",
 					"variant": "declaration",
 					"kind": 1024,
@@ -626,7 +467,7 @@
 					}
 				},
 				{
-					"id": 16345,
+					"id": 42,
 					"name": "database_url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -766,7 +607,7 @@
 					}
 				},
 				{
-					"id": 16346,
+					"id": 43,
 					"name": "database_schema",
 					"variant": "declaration",
 					"kind": 1024,
@@ -799,7 +640,7 @@
 					}
 				},
 				{
-					"id": 16347,
+					"id": 44,
 					"name": "database_logging",
 					"variant": "declaration",
 					"kind": 1024,
@@ -898,7 +739,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../node_modules/typeorm/logger/LoggerOptions.d.ts",
+							"sourceFileName": "../../../../node_modules/typeorm/logger/LoggerOptions.d.ts",
 							"qualifiedName": "LoggerOptions"
 						},
 						"name": "LoggerOptions",
@@ -906,7 +747,7 @@
 					}
 				},
 				{
-					"id": 16349,
+					"id": 46,
 					"name": "database_extra",
 					"variant": "declaration",
 					"kind": 1024,
@@ -989,14 +830,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 16350,
+									"id": 47,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 16351,
+											"id": 48,
 											"name": "ssl",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1012,14 +853,14 @@
 											"type": {
 												"type": "reflection",
 												"declaration": {
-													"id": 16352,
+													"id": 49,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 16353,
+															"id": 50,
 															"name": "rejectUnauthorized",
 															"variant": "declaration",
 															"kind": 1024,
@@ -1042,7 +883,7 @@
 														{
 															"title": "Properties",
 															"children": [
-																16353
+																50
 															]
 														}
 													]
@@ -1054,7 +895,7 @@
 										{
 											"title": "Properties",
 											"children": [
-												16351
+												48
 											]
 										}
 									]
@@ -1064,7 +905,7 @@
 					}
 				},
 				{
-					"id": 16354,
+					"id": 51,
 					"name": "database_driver_options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1147,14 +988,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 16355,
+									"id": 52,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 16356,
+											"id": 53,
 											"name": "connection",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1164,14 +1005,14 @@
 											"type": {
 												"type": "reflection",
 												"declaration": {
-													"id": 16357,
+													"id": 54,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 16358,
+															"id": 55,
 															"name": "ssl",
 															"variant": "declaration",
 															"kind": 1024,
@@ -1189,14 +1030,14 @@
 															"type": {
 																"type": "reflection",
 																"declaration": {
-																	"id": 16359,
+																	"id": 56,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"children": [
 																		{
-																			"id": 16360,
+																			"id": 57,
 																			"name": "rejectUnauthorized",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -1221,7 +1062,7 @@
 																		{
 																			"title": "Properties",
 																			"children": [
-																				16360
+																				57
 																			]
 																		}
 																	]
@@ -1233,7 +1074,7 @@
 														{
 															"title": "Properties",
 															"children": [
-																16358
+																55
 															]
 														}
 													]
@@ -1245,7 +1086,7 @@
 										{
 											"title": "Properties",
 											"children": [
-												16356
+												53
 											]
 										}
 									]
@@ -1255,7 +1096,7 @@
 					}
 				},
 				{
-					"id": 16361,
+					"id": 58,
 					"name": "redis_url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1303,7 +1144,7 @@
 					}
 				},
 				{
-					"id": 16362,
+					"id": 59,
 					"name": "redis_prefix",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1351,7 +1192,7 @@
 					}
 				},
 				{
-					"id": 16363,
+					"id": 60,
 					"name": "redis_options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1380,7 +1221,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../node_modules/ioredis/built/redis/RedisOptions.d.ts",
+							"sourceFileName": "../../../../node_modules/ioredis/built/redis/RedisOptions.d.ts",
 							"qualifiedName": "RedisOptions"
 						},
 						"name": "RedisOptions",
@@ -1388,7 +1229,7 @@
 					}
 				},
 				{
-					"id": 16364,
+					"id": 61,
 					"name": "session_options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1417,7 +1258,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+							"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 							"qualifiedName": "SessionOptions"
 						},
 						"name": "SessionOptions",
@@ -1425,7 +1266,7 @@
 					}
 				},
 				{
-					"id": 16365,
+					"id": 62,
 					"name": "http_compression",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1436,7 +1277,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.\nHowever, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.\n\nIts value is an object that has the following properties:\n\nIf you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header "
+								"text": "Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.\nHowever, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.\n\nIf you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header "
 							},
 							{
 								"kind": "code",
@@ -1456,18 +1297,45 @@
 										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http_compression: {\n      enabled: true,\n      level: 6,\n      memLevel: 8,\n      threshold: 1024,\n    },\n    // ...\n  },\n  // ...\n}\n```"
 									}
 								]
+							},
+							{
+								"tag": "@deprecated",
+								"content": [
+									{
+										"kind": "text",
+										"text": "use "
+									},
+									{
+										"kind": "inline-tag",
+										"tag": "@link",
+										"text": "http",
+										"target": 65
+									},
+									{
+										"kind": "text",
+										"text": "'s "
+									},
+									{
+										"kind": "code",
+										"text": "`compression`"
+									},
+									{
+										"kind": "text",
+										"text": " property instead."
+									}
+								]
 							}
 						]
 					},
 					"type": {
 						"type": "reference",
-						"target": 16333,
+						"target": 35,
 						"name": "HttpCompressionOptions",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 16366,
+					"id": 63,
 					"name": "jobs_batch_size",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1507,7 +1375,7 @@
 					}
 				},
 				{
-					"id": 16367,
+					"id": 64,
 					"name": "worker_mode",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1582,36 +1450,657 @@
 							}
 						]
 					}
+				},
+				{
+					"id": 65,
+					"name": "http",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Configure the application's http-specific settings"
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http: {\n      cookieSecret: \"some-super-secret\",\n      compression: { ... },\n    }\n    // ...\n  },\n  // ...\n}\n```"
+									}
+								]
+							}
+						]
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 66,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 67,
+									"name": "jwtSecret",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A random string used to create authentication tokens in the http layer. Although this configuration option is not required, it’s highly recommended to set it for better security.\n\nIn a development environment, if this option is not set the default secret is "
+											},
+											{
+												"kind": "code",
+												"text": "`supersecret`"
+											},
+											{
+												"kind": "text",
+												"text": " However, in production, if this configuration is not set an error, an\nerror is thrown and the backend crashes."
+											}
+										],
+										"blockTags": [
+											{
+												"tag": "@example",
+												"content": [
+													{
+														"kind": "code",
+														"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http: {\n      cookieSecret: \"supersecret\"\n    }\n  },\n  // ...\n}\n```"
+													}
+												]
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 68,
+									"name": "jwtExpiresIn",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The expiration time for the JWT token. If not provided, the default value is "
+											},
+											{
+												"kind": "code",
+												"text": "`24h`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										],
+										"blockTags": [
+											{
+												"tag": "@example",
+												"content": [
+													{
+														"kind": "code",
+														"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http: {\n      jwtExpiresIn: \"2d\"\n    }\n  },\n  // ...\n}\n```"
+													}
+												]
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 69,
+									"name": "cookieSecret",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A random string used to create cookie tokens in the http layer. Although this configuration option is not required, it’s highly recommended to set it for better security.\n\nIn a development environment, if this option is not set, the default secret is "
+											},
+											{
+												"kind": "code",
+												"text": "`supersecret`"
+											},
+											{
+												"kind": "text",
+												"text": " However, in production, if this configuration is not set, an error is thrown and\nthe backend crashes."
+											}
+										],
+										"blockTags": [
+											{
+												"tag": "@example",
+												"content": [
+													{
+														"kind": "code",
+														"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http: {\n     cookieSecret: \"supersecret\"\n    }\n    // ...\n  },\n  // ...\n}\n```"
+													}
+												]
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 70,
+									"name": "authCors",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "`cors`"
+											},
+											{
+												"kind": "text",
+												"text": " is a string used to specify the accepted URLs or patterns for API Routes starting with "
+											},
+											{
+												"kind": "code",
+												"text": "`/auth`"
+											},
+											{
+												"kind": "text",
+												"text": ". It can either be one accepted origin, or a comma-separated list of accepted origins.\n\nEvery origin in that list must either be:\n\n1. A URL. For example, "
+											},
+											{
+												"kind": "code",
+												"text": "`http://localhost:7001`"
+											},
+											{
+												"kind": "text",
+												"text": ". The URL must not end with a backslash;\n2. Or a regular expression pattern that can match more than one origin. For example, "
+											},
+											{
+												"kind": "code",
+												"text": "`.example.com`"
+											},
+											{
+												"kind": "text",
+												"text": ". The regex pattern that the backend tests for is "
+											},
+											{
+												"kind": "code",
+												"text": "`^([/~@;%#'])(.*?)\\1([gimsuy]*)$`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										],
+										"blockTags": [
+											{
+												"tag": "@example",
+												"content": [
+													{
+														"kind": "text",
+														"text": "Some example values of common use cases:\n\n"
+													},
+													{
+														"kind": "code",
+														"text": "```bash\n# Allow different ports locally starting with 700\nAUTH_CORS=/http://localhost:700\\d+$/\n\n# Allow any origin ending with vercel.app. For example, admin.vercel.app\nAUTH_CORS=/vercel\\.app$/\n\n# Allow all HTTP requests\nAUTH_CORS=/http://.+/\n```"
+													},
+													{
+														"kind": "text",
+														"text": "\n\nThen, set the configuration in "
+													},
+													{
+														"kind": "code",
+														"text": "`medusa-config.js`"
+													},
+													{
+														"kind": "text",
+														"text": ":\n\n"
+													},
+													{
+														"kind": "code",
+														"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http: {\n      authCors: process.env.AUTH_CORS\n    }\n    // ...\n  },\n  // ...\n}\n```"
+													},
+													{
+														"kind": "text",
+														"text": "\n\nIf you’re adding the value directly within "
+													},
+													{
+														"kind": "code",
+														"text": "`medusa-config.js`"
+													},
+													{
+														"kind": "text",
+														"text": ", make sure to add an extra escaping "
+													},
+													{
+														"kind": "code",
+														"text": "`/`"
+													},
+													{
+														"kind": "text",
+														"text": " for every backslash in the pattern. For example:\n\n"
+													},
+													{
+														"kind": "code",
+														"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http: {\n      authCors: \"/http:\\\\/\\\\/localhost:700\\\\d+$/\",\n    }\n    // ...\n  },\n  // ...\n}\n```"
+													}
+												]
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 71,
+									"name": "compression",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.\nHowever, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.\n\nIts value is an object that has the following properties:\n\nIf you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header "
+											},
+											{
+												"kind": "code",
+												"text": "`\"x-no-compression\": true`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										],
+										"blockTags": [
+											{
+												"tag": "@example",
+												"content": [
+													{
+														"kind": "code",
+														"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http: {\n      compression: {\n        enabled: true,\n        level: 6,\n        memLevel: 8,\n        threshold: 1024,\n      }\n    },\n    // ...\n  },\n  // ...\n}\n```"
+													}
+												]
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 35,
+										"name": "HttpCompressionOptions",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 72,
+									"name": "storeCors",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "`store_cors`"
+											},
+											{
+												"kind": "text",
+												"text": " is a string used to specify the accepted URLs or patterns for store API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.\n\nEvery origin in that list must either be:\n\n1. A URL. For example, "
+											},
+											{
+												"kind": "code",
+												"text": "`http://localhost:8000`"
+											},
+											{
+												"kind": "text",
+												"text": ". The URL must not end with a backslash;\n2. Or a regular expression pattern that can match more than one origin. For example, "
+											},
+											{
+												"kind": "code",
+												"text": "`.example.com`"
+											},
+											{
+												"kind": "text",
+												"text": ". The regex pattern that the backend tests for is "
+											},
+											{
+												"kind": "code",
+												"text": "`^([/~@;%#'])(.*?)\\1([gimsuy]*)$`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										],
+										"blockTags": [
+											{
+												"tag": "@example",
+												"content": [
+													{
+														"kind": "text",
+														"text": "Some example values of common use cases:\n\n"
+													},
+													{
+														"kind": "code",
+														"text": "```bash\n# Allow different ports locally starting with 800\nSTORE_CORS=/http://localhost:800\\d+$/\n\n# Allow any origin ending with vercel.app. For example, storefront.vercel.app\nSTORE_CORS=/vercel\\.app$/\n\n# Allow all HTTP requests\nSTORE_CORS=/http://.+/\n```"
+													},
+													{
+														"kind": "text",
+														"text": "\n\nThen, set the configuration in "
+													},
+													{
+														"kind": "code",
+														"text": "`medusa-config.js`"
+													},
+													{
+														"kind": "text",
+														"text": ":\n\n"
+													},
+													{
+														"kind": "code",
+														"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http: {\n      storeCors: process.env.STORE_CORS,\n    }\n    // ...\n  },\n  // ...\n}\n```"
+													},
+													{
+														"kind": "text",
+														"text": "\n\nIf you’re adding the value directly within "
+													},
+													{
+														"kind": "code",
+														"text": "`medusa-config.js`"
+													},
+													{
+														"kind": "text",
+														"text": ", make sure to add an extra escaping "
+													},
+													{
+														"kind": "code",
+														"text": "`/`"
+													},
+													{
+														"kind": "text",
+														"text": " for every backslash in the pattern. For example:\n\n"
+													},
+													{
+														"kind": "code",
+														"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http: {\n      storeCors: \"/vercel\\\\.app$/\",\n    }\n    // ...\n  },\n  // ...\n}\n```"
+													}
+												]
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 73,
+									"name": "adminCors",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "`admin_cors`"
+											},
+											{
+												"kind": "text",
+												"text": " is a string used to specify the accepted URLs or patterns for admin API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.\n\nEvery origin in that list must either be:\n\n1. A URL. For example, "
+											},
+											{
+												"kind": "code",
+												"text": "`http://localhost:7001`"
+											},
+											{
+												"kind": "text",
+												"text": ". The URL must not end with a backslash;\n2. Or a regular expression pattern that can match more than one origin. For example, "
+											},
+											{
+												"kind": "code",
+												"text": "`.example.com`"
+											},
+											{
+												"kind": "text",
+												"text": ". The regex pattern that the backend tests for is "
+											},
+											{
+												"kind": "code",
+												"text": "`^([/~@;%#'])(.*?)\\1([gimsuy]*)$`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										],
+										"blockTags": [
+											{
+												"tag": "@example",
+												"content": [
+													{
+														"kind": "text",
+														"text": "Some example values of common use cases:\n\n"
+													},
+													{
+														"kind": "code",
+														"text": "```bash\n# Allow different ports locally starting with 700\nADMIN_CORS=/http://localhost:700\\d+$/\n\n# Allow any origin ending with vercel.app. For example, admin.vercel.app\nADMIN_CORS=/vercel\\.app$/\n\n# Allow all HTTP requests\nADMIN_CORS=/http://.+/\n```"
+													},
+													{
+														"kind": "text",
+														"text": "\n\nThen, set the configuration in "
+													},
+													{
+														"kind": "code",
+														"text": "`medusa-config.js`"
+													},
+													{
+														"kind": "text",
+														"text": ":\n\n"
+													},
+													{
+														"kind": "code",
+														"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http: {\n      adminCors: process.env.ADMIN_CORS,\n    }\n    // ...\n  },\n  // ...\n}\n```"
+													},
+													{
+														"kind": "text",
+														"text": "\n\nIf you’re adding the value directly within "
+													},
+													{
+														"kind": "code",
+														"text": "`medusa-config.js`"
+													},
+													{
+														"kind": "text",
+														"text": ", make sure to add an extra escaping "
+													},
+													{
+														"kind": "code",
+														"text": "`/`"
+													},
+													{
+														"kind": "text",
+														"text": " for every backslash in the pattern. For example:\n\n"
+													},
+													{
+														"kind": "code",
+														"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http: {\n      adminCors: process.env.ADMIN_CORS,\n    }\n    // ...\n  },\n  // ...\n}\n```"
+													}
+												]
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 74,
+									"name": "authMethodsPerActor",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Optionally you can specify the supported authentication providers per actor type (such as user, customer, or any custom actors).\nFor example, you only want to allow SSO logins for "
+											},
+											{
+												"kind": "code",
+												"text": "`users`"
+											},
+											{
+												"kind": "text",
+												"text": " to the admin, while you want to allow email/password logins for "
+											},
+											{
+												"kind": "code",
+												"text": "`customers`"
+											},
+											{
+												"kind": "text",
+												"text": " to the storefront.\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "`authMethodsPerActor`"
+											},
+											{
+												"kind": "text",
+												"text": " is a a map where the actor type (eg. 'user') is the key, and an array of supported auth providers as the value."
+											}
+										],
+										"blockTags": [
+											{
+												"tag": "@example",
+												"content": [
+													{
+														"kind": "text",
+														"text": "Some example values of common use cases:\n\nThen, set the configuration in "
+													},
+													{
+														"kind": "code",
+														"text": "`medusa-config.js`"
+													},
+													{
+														"kind": "text",
+														"text": ":\n\n"
+													},
+													{
+														"kind": "code",
+														"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    http: {\n      authMethodsPerActor: {\n       user: ['sso'],\n       customer: [\"emailpass\", \"google\"]\n      },\n    },\n    // ...\n  },\n  // ...\n}\n```"
+													}
+												]
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "array",
+												"elementType": {
+													"type": "intrinsic",
+													"name": "string"
+												}
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										67,
+										68,
+										69,
+										70,
+										71,
+										72,
+										73,
+										74
+									]
+								}
+							]
+						}
+					}
 				}
 			],
 			"groups": [
 				{
 					"title": "Properties",
 					"children": [
-						16339,
-						16340,
-						16341,
-						16342,
-						16343,
-						16344,
-						16345,
-						16346,
-						16347,
-						16349,
-						16354,
-						16361,
-						16362,
-						16363,
-						16364,
-						16365,
-						16366,
-						16367
+						41,
+						42,
+						43,
+						44,
+						46,
+						51,
+						58,
+						59,
+						60,
+						61,
+						62,
+						63,
+						64,
+						65
 					]
 				}
 			]
 		},
 		{
-			"id": 16368,
+			"id": 75,
 			"name": "ConfigModule",
 			"variant": "declaration",
 			"kind": 256,
@@ -1642,18 +2131,29 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "projectConfig",
-						"target": 16369,
+						"target": 76,
 						"tsLinkText": "projectConfig"
 					},
 					{
 						"kind": "text",
-						"text": ": (required): An object that holds general configurations related to the Medusa backend, such as database or CORS configurations.\n- "
+						"text": " (required): An object that holds general configurations related to the Medusa backend, such as database or CORS configurations.\n- "
+					},
+					{
+						"kind": "inline-tag",
+						"tag": "@link",
+						"text": "admin",
+						"target": 77,
+						"tsLinkText": "admin"
+					},
+					{
+						"kind": "text",
+						"text": ": An object that holds admin-related configurations.\n- "
 					},
 					{
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "plugins",
-						"target": 16370,
+						"target": 78,
 						"tsLinkText": "plugins"
 					},
 					{
@@ -1664,7 +2164,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "modules",
-						"target": 16374,
+						"target": 82,
 						"tsLinkText": "modules"
 					},
 					{
@@ -1675,7 +2175,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "featureFlags",
-						"target": 16375,
+						"target": 83,
 						"tsLinkText": "featureFlags"
 					},
 					{
@@ -1684,7 +2184,7 @@
 					},
 					{
 						"kind": "code",
-						"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig,\n  plugins,\n  modules,\n  featureFlags,\n}\n```"
+						"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig,\n  admin,\n  modules,\n  featureFlags,\n}\n```"
 					},
 					{
 						"kind": "text",
@@ -1710,7 +2210,7 @@
 			},
 			"children": [
 				{
-					"id": 16369,
+					"id": 76,
 					"name": "projectConfig",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1725,13 +2225,47 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 16338,
+						"target": 40,
 						"name": "ProjectConfigOptions",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 16370,
+					"id": 77,
+					"name": "admin",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Admin dashboard configurations."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  admin: {\n    backendUrl: process.env.MEDUSA_BACKEND_URL || \"http://localhost:9000\"\n  }\n  // ...\n}\n```"
+									}
+								]
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 26,
+						"name": "AdminOptions",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 78,
 					"name": "plugins",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1799,14 +2333,14 @@
 								{
 									"type": "reflection",
 									"declaration": {
-										"id": 16371,
+										"id": 79,
 										"name": "__type",
 										"variant": "declaration",
 										"kind": 65536,
 										"flags": {},
 										"children": [
 											{
-												"id": 16372,
+												"id": 80,
 												"name": "resolve",
 												"variant": "declaration",
 												"kind": 1024,
@@ -1817,7 +2351,7 @@
 												}
 											},
 											{
-												"id": 16373,
+												"id": 81,
 												"name": "options",
 												"variant": "declaration",
 												"kind": 1024,
@@ -1847,8 +2381,8 @@
 											{
 												"title": "Properties",
 												"children": [
-													16372,
-													16373
+													80,
+													81
 												]
 											}
 										]
@@ -1859,7 +2393,7 @@
 					}
 				},
 				{
-					"id": 16374,
+					"id": 82,
 					"name": "modules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2004,7 +2538,7 @@
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+															"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
 															"qualifiedName": "InternalModuleDeclaration"
 														},
 														"name": "InternalModuleDeclaration",
@@ -2013,7 +2547,7 @@
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+															"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
 															"qualifiedName": "ExternalModuleDeclaration"
 														},
 														"name": "ExternalModuleDeclaration",
@@ -2033,7 +2567,7 @@
 					}
 				},
 				{
-					"id": 16375,
+					"id": 83,
 					"name": "featureFlags",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2111,16 +2645,17 @@
 				{
 					"title": "Properties",
 					"children": [
-						16369,
-						16370,
-						16374,
-						16375
+						76,
+						77,
+						78,
+						82,
+						83
 					]
 				}
 			]
 		},
 		{
-			"id": 16376,
+			"id": 84,
 			"name": "PluginDetails",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2128,14 +2663,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 16377,
+					"id": 85,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 16378,
+							"id": 86,
 							"name": "resolve",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2146,7 +2681,7 @@
 							}
 						},
 						{
-							"id": 16379,
+							"id": 87,
 							"name": "name",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2157,7 +2692,7 @@
 							}
 						},
 						{
-							"id": 16380,
+							"id": 88,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2168,7 +2703,7 @@
 							}
 						},
 						{
-							"id": 16381,
+							"id": 89,
 							"name": "options",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2194,7 +2729,7 @@
 							}
 						},
 						{
-							"id": 16382,
+							"id": 90,
 							"name": "version",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2209,11 +2744,11 @@
 						{
 							"title": "Properties",
 							"children": [
-								16378,
-								16379,
-								16380,
-								16381,
-								16382
+								86,
+								87,
+								88,
+								89,
+								90
 							]
 						}
 					]
@@ -2225,218 +2760,279 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				16333,
-				16338,
-				16368
+				26,
+				35,
+				40,
+				75
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				16376
+				84
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"16332": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"25": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": ""
 		},
-		"16333": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"26": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "AdminOptions"
+		},
+		"27": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.disable"
+		},
+		"28": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.path"
+		},
+		"29": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.outDir"
+		},
+		"30": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.backendUrl"
+		},
+		"31": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.vite"
+		},
+		"32": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type"
+		},
+		"33": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type"
+		},
+		"34": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "config"
+		},
+		"35": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "HttpCompressionOptions"
 		},
-		"16334": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"36": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.enabled"
 		},
-		"16335": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"37": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.level"
 		},
-		"16336": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"38": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.memLevel"
 		},
-		"16337": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"39": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.threshold"
 		},
-		"16338": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"40": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "ProjectConfigOptions"
 		},
-		"16339": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.store_cors"
-		},
-		"16340": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.admin_cors"
-		},
-		"16341": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.auth_cors"
-		},
-		"16342": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.cookie_secret"
-		},
-		"16343": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.jwt_secret"
-		},
-		"16344": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"41": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.database_database"
 		},
-		"16345": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"42": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.database_url"
 		},
-		"16346": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"43": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.database_schema"
 		},
-		"16347": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"44": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.database_logging"
 		},
-		"16349": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"46": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.database_extra"
 		},
-		"16350": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"47": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"16351": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"48": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.ssl"
 		},
-		"16352": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"49": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"16353": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"50": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.rejectUnauthorized"
 		},
-		"16354": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"51": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.database_driver_options"
 		},
-		"16355": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"52": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"16356": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"53": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.connection"
 		},
-		"16357": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"54": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"16358": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"55": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.ssl"
 		},
-		"16359": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"56": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"16360": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"57": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.rejectUnauthorized"
 		},
-		"16361": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"58": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.redis_url"
 		},
-		"16362": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"59": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.redis_prefix"
 		},
-		"16363": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"60": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.redis_options"
 		},
-		"16364": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"61": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.session_options"
 		},
-		"16365": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"62": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.http_compression"
 		},
-		"16366": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"63": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.jobs_batch_size"
 		},
-		"16367": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"64": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.worker_mode"
 		},
-		"16368": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"65": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.http"
+		},
+		"66": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type"
+		},
+		"67": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.jwtSecret"
+		},
+		"68": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.jwtExpiresIn"
+		},
+		"69": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.cookieSecret"
+		},
+		"70": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.authCors"
+		},
+		"71": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.compression"
+		},
+		"72": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.storeCors"
+		},
+		"73": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.adminCors"
+		},
+		"74": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.authMethodsPerActor"
+		},
+		"75": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "ConfigModule"
 		},
-		"16369": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"76": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.projectConfig"
 		},
-		"16370": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"77": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type.admin"
+		},
+		"78": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.plugins"
 		},
-		"16371": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"79": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"16372": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"80": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.resolve"
 		},
-		"16373": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"81": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.options"
 		},
-		"16374": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"82": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.modules"
 		},
-		"16375": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"83": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.featureFlags"
 		},
-		"16376": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"84": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "PluginDetails"
 		},
-		"16377": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"85": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"16378": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"86": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.resolve"
 		},
-		"16379": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"87": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.name"
 		},
-		"16380": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"88": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.id"
 		},
-		"16381": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"89": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.options"
 		},
-		"16382": {
-			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+		"90": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.version"
 		}
 	}
