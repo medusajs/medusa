@@ -1,14 +1,12 @@
+import { LinkDefinition, Modules } from "@medusajs/modules-sdk"
+import { CreateVariantInventoryItemWorkflowInput } from "@medusajs/types/src"
 import {
   WorkflowData,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createInventoryItemsStep } from "../steps"
-
-import { LinkDefinition } from "@medusajs/modules-sdk"
-import { CreateVariantInventoryItemWorkflowInput } from "@medusajs/types/src"
-import { Modules } from "../../../../modules-sdk/src/definitions"
 import { createLinkStep } from "../../common"
+import { createInventoryItemsStep } from "../steps"
 
 export const createInventoryItemsWorkflowId = "create-inventory-items-workflow"
 export const createInventoryItemsWorkflow = createWorkflow(
