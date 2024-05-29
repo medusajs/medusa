@@ -17,7 +17,7 @@ import {
 import { asFunction, asValue } from "awilix"
 import { statSync } from "fs"
 import { readdir } from "fs/promises"
-import { extname, join, resolve } from "path"
+import { join, resolve } from "path"
 
 type ModuleResource = {
   services: Function[]
@@ -208,13 +208,13 @@ export async function loadModuleMigrations(
 async function importAllFromDir(path: string) {
   let filesToLoad: string[] = []
 
-  const excludedExtensionsRegexp = /(\.ts\.map|\.js\.map|\.d\.ts)$/
+  const excludedExtensions = [".ts.map", ".js.map", ".d.ts"]
 
   await readdir(path).then((files) => {
     files.forEach((file) => {
       if (
         file.startsWith("index.") ||
-        excludedExtensionsRegexp.test(extname(file))
+        excludedExtensions.some((ext) => file.endsWith(ext))
       ) {
         return
       }
@@ -246,25 +246,9 @@ async function loadResources(
 ): Promise<ModuleResource> {
   let modulePath = moduleResolution.resolutionPath as string
   let normalizedPath = modulePath
-  /**
-   * If the project is running on ts-node all relative module resolution
-   * will target the src directory and otherwise the dist directory.
-   * If the path is not relative, then we can safely import from it and let the resolution
-   * happen under the hood.
-   */
-  if (/\.\//.test(normalizedPath)) {
-    const sourceDir = process[Symbol.for("ts-node.register.instance")]
-      ? "src"
-      : "dist"
-    normalizedPath = join(process.cwd(), sourceDir, normalizedPath)
-    modulePath = normalizedPath
-  } else {
-    normalizedPath = resolve(normalizedPath)
-  }
-
-  normalizedPath = normalizedPath
     .replace("index.js", "")
     .replace("index.ts", "")
+  normalizedPath = resolve(normalizedPath)
 
   try {
     const defaultOnFail = () => {
