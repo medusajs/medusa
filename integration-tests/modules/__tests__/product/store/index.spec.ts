@@ -451,6 +451,7 @@ medusaIntegrationTestRunner({
               ContainerRegistrationKeys.REMOTE_LINK
             )
 
+            // TODO: Missing API endpoint. Remove this when its available
             await remoteLink.create([
               {
                 [Modules.SALES_CHANNEL]: { sales_channel_id: salesChannel1.id },
@@ -468,6 +469,7 @@ medusaIntegrationTestRunner({
               ContainerRegistrationKeys.REMOTE_LINK
             )
 
+            // TODO: Missing API endpoint. Remove this when its available
             await remoteLink.create([
               {
                 [Modules.PRODUCT]: { variant_id: variant.id },
@@ -514,6 +516,7 @@ medusaIntegrationTestRunner({
               ContainerRegistrationKeys.REMOTE_LINK
             )
 
+            // TODO: Missing API endpoint. Remove this when its available
             await remoteLink.create([
               {
                 [Modules.PRODUCT]: { variant_id: variant.id },
