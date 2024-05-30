@@ -974,6 +974,7 @@ export default class FulfillmentModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
+  @EmitEvents()
   protected async updateServiceZones_(
     data:
       | FulfillmentTypes.UpdateServiceZoneDTO[]
@@ -1083,7 +1084,11 @@ export default class FulfillmentModuleService<
           }
           const existing = geoZonesMap.get(geoZone.id)!
 
-          if (!deepEqualObj(existing, geoZone)) {
+          // If only the id is provided we dont consider it as an update
+          if (
+            Object.keys(geoZone).length > 1 &&
+            !deepEqualObj(existing, geoZone)
+          ) {
             updatedGeoZoneIds.push(geoZone.id)
           }
 

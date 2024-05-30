@@ -5,14 +5,28 @@ import {
   IFulfillmentModuleService,
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
-import { GeoZoneType } from "@medusajs/utils"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
+import { buildExpectedEventMessageShape } from "../../__fixtures__"
 
 jest.setTimeout(100000)
 
 moduleIntegrationTestRunner<IFulfillmentModuleService>({
   moduleName: Modules.FULFILLMENT,
   testSuite: ({ service }) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list service zones with a filter", async function () {
@@ -276,6 +290,14 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                   type: GeoZoneType.COUNTRY,
                   country_code: "fr",
                 },
+                {
+                  type: GeoZoneType.COUNTRY,
+                  country_code: "us",
+                },
+                {
+                  type: GeoZoneType.COUNTRY,
+                  country_code: "uk",
+                },
               ],
             }
 
@@ -283,21 +305,40 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               createData
             )
 
-            const updateData = {
+            const usGeoZone = createdServiceZone.geo_zones.find(
+              (geoZone) => geoZone.country_code === "us"
+            )!
+            const frGeoZone = createdServiceZone.geo_zones.find(
+              (geoZone) => geoZone.country_code === "fr"
+            )!
+            const ukGeoZone = createdServiceZone.geo_zones.find(
+              (geoZone) => geoZone.country_code === "uk"
+            )!
+
+            const updateData: UpdateServiceZoneDTO = {
               name: "updated-service-zone-test",
               geo_zones: [
                 {
-                  id: createdServiceZone.geo_zones[0].id,
+                  id: usGeoZone.id,
                   type: GeoZoneType.COUNTRY,
-                  country_code: "us",
+                  country_code: "es",
                 },
+                {
+                  type: GeoZoneType.COUNTRY,
+                  country_code: "ch",
+                },
+                { id: frGeoZone.id },
               ],
             }
+
+            jest.clearAllMocks()
 
             const updatedServiceZone = await service.updateServiceZones(
               createdServiceZone.id,
               updateData
             )
+
+            expect(updatedServiceZone.geo_zones).toHaveLength(3)
 
             expect(updatedServiceZone).toEqual(
               expect.objectContaining({
@@ -305,13 +346,53 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 name: updateData.name,
                 geo_zones: expect.arrayContaining([
                   expect.objectContaining({
-                    id: updateData.geo_zones[0].id,
-                    type: updateData.geo_zones[0].type,
-                    country_code: updateData.geo_zones[0].country_code,
+                    id: frGeoZone.id,
+                  }),
+                  expect.objectContaining({
+                    id: usGeoZone.id,
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "es",
+                  }),
+                  expect.objectContaining({
+                    id: expect.any(String),
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "ch",
                   }),
                 ]),
               })
             )
+
+            const chGeoZone = updatedServiceZone.geo_zones.find(
+              (geoZone) => geoZone.country_code === "ch"
+            )!
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.geo_zone_deleted,
+                action: "deleted",
+                object: "geo_zone",
+                data: { id: ukGeoZone.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.service_zone_updated,
+                action: "updated",
+                object: "service_zone",
+                data: { id: updatedServiceZone.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.geo_zone_created,
+                action: "created",
+                object: "geo_zone",
+                data: { id: chGeoZone.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.geo_zone_updated,
+                action: "updated",
+                object: "geo_zone",
+                data: { id: usGeoZone.id },
+              }),
+            ])
           })
 
           it("should fail on duplicated service zone name", async function () {
