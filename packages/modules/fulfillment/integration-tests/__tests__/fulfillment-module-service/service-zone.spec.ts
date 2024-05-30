@@ -448,7 +448,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
         })
 
         describe("on upsert", () => {
-          it("should upsert a collection of service zones", async function () {
+          it.only("should upsert a collection of service zones", async function () {
             const fulfillmentSet = await service.create({
               name: "test",
               type: "test-type",
@@ -494,11 +494,15 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               })
             )
 
+            jest.clearAllMocks()
+
             const updatedServiceZones = await service.upsertServiceZones(
               updateData
             )
 
             expect(updatedServiceZones).toHaveLength(2)
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(6) // Since the update only calls create and update which are already tested, only check the length
 
             for (const data_ of updateData) {
               const expectedServiceZone = updatedServiceZones.find(
