@@ -67,7 +67,7 @@ function normalizePath(path: string) {
    * If the path is not relative, then we can safely import from it and let the resolution
    * happen under the hood.
    */
-  if (/\.\//.test(normalizePath)) {
+  if (normalizePath.startsWith("./")) {
     const sourceDir = process[Symbol.for("ts-node.register.instance")]
       ? "src"
       : "dist"
