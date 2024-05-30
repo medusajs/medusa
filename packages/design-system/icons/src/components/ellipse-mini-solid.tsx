@@ -11,7 +11,7 @@ const EllipseMiniSolid = React.forwardRef<SVGSVGElement, IconProps>(
         ref={ref}
         {...props}
       >
-        <circle cx={8} cy={8} r={2} fill={color} />
+        <circle cx={7.5} cy={7.5} r={2} fill={color} />
       </svg>
     )
   }
