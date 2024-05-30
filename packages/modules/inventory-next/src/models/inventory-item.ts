@@ -1,10 +1,4 @@
 import {
-  createPsqlIndexStatementHelper,
-  DALUtils,
-  generateEntityId,
-  Searchable,
-} from "@medusajs/utils"
-import {
   BeforeCreate,
   Collection,
   Entity,
@@ -16,6 +10,12 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import {
+  createPsqlIndexStatementHelper,
+  DALUtils,
+  generateEntityId,
+  Searchable,
+} from "@medusajs/utils"
 
 import { DAL } from "@medusajs/types"
 import { InventoryLevel } from "./inventory-level"

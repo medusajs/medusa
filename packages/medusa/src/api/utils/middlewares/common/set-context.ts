@@ -9,7 +9,7 @@ export function setContext(context: Record<string, any>) {
       let valueToApply = contextValue
 
       if (typeof contextValue === "function") {
-        valueToApply = await contextValue(req)
+        valueToApply = await contextValue(req, ctx)
       }
 
       ctx[contextKey] = valueToApply

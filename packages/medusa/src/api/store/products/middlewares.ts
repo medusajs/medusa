@@ -38,7 +38,11 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
 
           return withInventoryQuantity
         },
-        stock_location_id: async (req: MedusaRequest) => {
+        stock_location_id: async (req: MedusaRequest, ctx) => {
+          if (!ctx.with_inventory_quantity) {
+            return
+          }
+
           const salesChannelId = req.filterableFields.sales_channel_id || []
 
           const entities = await refetchEntities(
@@ -93,7 +97,11 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
 
           return withInventoryQuantity
         },
-        stock_location_id: async (req: MedusaRequest) => {
+        stock_location_id: async (req: MedusaRequest, ctx) => {
+          if (!ctx.with_inventory_quantity) {
+            return
+          }
+
           const salesChannelId = req.filterableFields.sales_channel_id || []
 
           const entities = await refetchEntities(
