@@ -8,7 +8,7 @@ import {
   prepareListQuery,
   prepareRetrieveQuery,
 } from "../../utils/get-query-config"
-import { zodValidator } from "./validate-body"
+import { zodValidator } from "./zod-helper"
 
 /**
  * Normalize an input query, especially from array like query params to an array type
