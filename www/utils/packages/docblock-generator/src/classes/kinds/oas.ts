@@ -729,9 +729,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         statement.getText().includes("AUTHENTICATE = false")
       )
     const isAdminAuthenticated =
-      !isAuthenticationDisabled &&
-      oasPath.startsWith("admin") &&
-      !oasPath.startsWith("admin/auth")
+      !isAuthenticationDisabled && oasPath.startsWith("admin")
     const isStoreAuthenticated =
       !isAuthenticationDisabled && oasPath.startsWith("store/customers/me")
     const isAuthenticated = isAdminAuthenticated || isStoreAuthenticated
