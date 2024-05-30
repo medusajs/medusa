@@ -2413,6 +2413,7 @@ class CartService extends TransactionBaseService {
         currency_code: region.currency_code,
         customer_id: customer_id || cart.customer_id,
         include_discount_prices: true,
+        cart_id: cart.id,
       })
 
     cart.items = (
