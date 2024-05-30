@@ -6,7 +6,6 @@ import {
   ShippingOption,
   ShippingOptionRule,
   ShippingOptionType,
-  ShippingProfile,
 } from "@models"
 import { Context, EventBusTypes } from "@medusajs/types"
 import { CommonEvents, FulfillmentUtils, Modules } from "@medusajs/utils"
@@ -104,6 +103,36 @@ export function buildFulfillmentLabelEvents({
   aggregator.saveRawMessageData(messages)
 }
 
+export function buildFulfillmentEvents({
+  action,
+  fulfillments,
+  sharedContext,
+}: {
+  action: string
+  fulfillments: { id: string }[]
+  sharedContext: Context
+}) {
+  if (!fulfillments.length) {
+    return
+  }
+
+  const aggregator = sharedContext.messageAggregator!
+  const messages: EventBusTypes.RawMessageFormat[] = []
+
+  fulfillments.forEach((fulfillment) => {
+    messages.push({
+      service: Modules.FULFILLMENT,
+      action,
+      context: sharedContext,
+      data: { id: fulfillment.id },
+      eventName: FulfillmentUtils.FulfillmentEvents[`fulfillment_${action}`],
+      object: "fulfillment",
+    })
+  })
+
+  aggregator.saveRawMessageData(messages)
+}
+
 export function buildCreatedFulfillmentEvents({
   fulfillments,
   sharedContext,
@@ -115,22 +144,13 @@ export function buildCreatedFulfillmentEvents({
     return
   }
 
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  let addresses: { id: string }[] = []
-  let items: { id: string }[] = []
-  let labels: { id: string }[] = []
+  const fulfillments_: { id: string }[] = []
+  const addresses: { id: string }[] = []
+  const items: { id: string }[] = []
+  const labels: { id: string }[] = []
 
   fulfillments.forEach((fulfillment) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action: CommonEvents.CREATED,
-      context: sharedContext,
-      data: { id: fulfillment.id },
-      eventName: FulfillmentUtils.FulfillmentEvents.fulfillment_created,
-      object: "fulfillment",
-    })
+    fulfillments_.push({ id: fulfillment.id })
 
     if (fulfillment.delivery_address) {
       addresses.push({ id: fulfillment.delivery_address.id })
@@ -145,31 +165,29 @@ export function buildCreatedFulfillmentEvents({
     }
   })
 
-  aggregator.saveRawMessageData(messages)
+  buildFulfillmentEvents({
+    action: CommonEvents.CREATED,
+    fulfillments: fulfillments_,
+    sharedContext,
+  })
 
-  if (addresses.length) {
-    buildFulfillmentAddressEvents({
-      action: CommonEvents.CREATED,
-      fulfillmentAddresses: addresses,
-      sharedContext,
-    })
-  }
+  buildFulfillmentAddressEvents({
+    action: CommonEvents.CREATED,
+    fulfillmentAddresses: addresses,
+    sharedContext,
+  })
 
-  if (items.length) {
-    buildFulfillmentItemEvents({
-      action: CommonEvents.CREATED,
-      fulfillmentItems: items,
-      sharedContext,
-    })
-  }
+  buildFulfillmentItemEvents({
+    action: CommonEvents.CREATED,
+    fulfillmentItems: items,
+    sharedContext,
+  })
 
-  if (labels.length) {
-    buildFulfillmentLabelEvents({
-      action: CommonEvents.CREATED,
-      fulfillmentLabels: labels,
-      sharedContext,
-    })
-  }
+  buildFulfillmentLabelEvents({
+    action: CommonEvents.CREATED,
+    fulfillmentLabels: labels,
+    sharedContext,
+  })
 }
 
 export function buildShippingProfileEvents({
@@ -178,7 +196,7 @@ export function buildShippingProfileEvents({
   sharedContext,
 }: {
   action: string
-  shippingProfiles: ShippingProfile[]
+  shippingProfiles: { id: string }[]
   sharedContext: Context
 }) {
   if (!shippingProfiles.length) {
@@ -209,7 +227,7 @@ export function buildShippingOptionTypeEvents({
   sharedContext,
 }: {
   action: string
-  shippingOptionTypes: ShippingOptionType[]
+  shippingOptionTypes: { id: string }[]
   sharedContext: Context
 }) {
   if (!shippingOptionTypes.length) {
@@ -240,7 +258,7 @@ export function buildShippingOptionRuleEvents({
   sharedContext,
 }: {
   action: string
-  shippingOptionRules: ShippingOptionRule[]
+  shippingOptionRules: { id: string }[]
   sharedContext: Context
 }) {
   if (!shippingOptionRules.length) {
@@ -265,6 +283,37 @@ export function buildShippingOptionRuleEvents({
   aggregator.saveRawMessageData(messages)
 }
 
+export function buildShippingOptionEvents({
+  action,
+  shippingOptions,
+  sharedContext,
+}: {
+  action: string
+  shippingOptions: { id: string }[]
+  sharedContext: Context
+}) {
+  if (!shippingOptions.length) {
+    return
+  }
+
+  const aggregator = sharedContext.messageAggregator!
+  const messages: EventBusTypes.RawMessageFormat[] = []
+
+  shippingOptions.forEach((shippingOption) => {
+    messages.push({
+      service: Modules.FULFILLMENT,
+      action,
+      context: sharedContext,
+      data: { id: shippingOption.id },
+      eventName:
+        FulfillmentUtils.FulfillmentEvents[`shipping_option_${action}`],
+      object: "shipping_option",
+    })
+  })
+
+  aggregator.saveRawMessageData(messages)
+}
+
 export function buildCreatedShippingOptionEvents({
   shippingOptions,
   sharedContext,
@@ -276,21 +325,12 @@ export function buildCreatedShippingOptionEvents({
     return
   }
 
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  let types: ShippingOptionType[] = []
-  let rules: ShippingOptionRule[] = []
+  const options: { id: string }[] = []
+  const types: ShippingOptionType[] = []
+  const rules: ShippingOptionRule[] = []
 
   shippingOptions.forEach((shippingOption) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action: CommonEvents.CREATED,
-      context: sharedContext,
-      data: { id: shippingOption.id },
-      eventName: FulfillmentUtils.FulfillmentEvents.shipping_option_created,
-      object: "shipping_option",
-    })
+    options.push({ id: shippingOption.id })
 
     if (shippingOption.type) {
       types.push(shippingOption.type)
@@ -301,7 +341,11 @@ export function buildCreatedShippingOptionEvents({
     }
   })
 
-  aggregator.saveRawMessageData(messages)
+  buildShippingOptionEvents({
+    action: CommonEvents.CREATED,
+    shippingOptions,
+    sharedContext,
+  })
 
   buildShippingOptionTypeEvents({
     action: CommonEvents.CREATED,
@@ -322,7 +366,7 @@ export function buildFulfillmentSetEvents({
   sharedContext,
 }: {
   action: string
-  fulfillmentSets: FulfillmentSet[]
+  fulfillmentSets: { id: string }[]
   sharedContext: Context
 }) {
   if (!fulfillmentSets.length) {

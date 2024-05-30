@@ -45,6 +45,7 @@ import {
   buildFulfillmentSetEvents,
   buildGeoZoneEvents,
   buildServiceZoneEvents,
+  buildShippingOptionEvents,
   buildShippingOptionRuleEvents,
   buildShippingProfileEvents,
   isContextValid,
@@ -1233,6 +1234,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ShippingOptionDTO[]>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async updateShippingOptions(
     idOrSelector: string | FulfillmentTypes.FilterableShippingOptionProps,
     data: FulfillmentTypes.UpdateShippingOptionDTO,
@@ -1303,6 +1305,9 @@ export default class FulfillmentModuleService<
     )
 
     const ruleIdsToDelete: string[] = []
+    const updatedRuleIds: string[] = []
+    const existingRuleIds: string[] = []
+
     dataArray.forEach((shippingOption) => {
       if (!shippingOption.rules) {
         return
@@ -1312,6 +1317,8 @@ export default class FulfillmentModuleService<
         shippingOption.id
       )! // Garuantueed to exist since the validation above have been performed
       const existingRules = existingShippingOption.rules
+
+      existingRuleIds.push(...existingRules.map((r) => r.id))
 
       FulfillmentModuleService.validateMissingShippingOptionRules(
         existingShippingOption,
@@ -1329,6 +1336,10 @@ export default class FulfillmentModuleService<
             const existingRule = (existingRulesMap.get(rule.id) ??
               {}) as FulfillmentTypes.UpdateShippingOptionRuleDTO
 
+            if (existingRulesMap.get(rule.id)) {
+              updatedRuleIds.push(rule.id)
+            }
+
             const ruleData: FulfillmentTypes.UpdateShippingOptionRuleDTO = {
               ...existingRule,
               ...rule,
@@ -1343,8 +1354,6 @@ export default class FulfillmentModuleService<
         .filter(Boolean) as FulfillmentTypes.UpdateShippingOptionRuleDTO[]
 
       validateAndNormalizeRules(updatedRules)
-
-      const updatedRuleIds = updatedRules.map((r) => "id" in r && r.id)
 
       const toDeleteRuleIds = arrayDifference(
         updatedRuleIds,
@@ -1365,6 +1374,11 @@ export default class FulfillmentModuleService<
     })
 
     if (ruleIdsToDelete.length) {
+      buildShippingOptionRuleEvents({
+        action: CommonEvents.DELETED,
+        shippingOptionRules: ruleIdsToDelete.map((id) => ({ id })),
+        sharedContext,
+      })
       await this.shippingOptionRuleService_.delete(
         ruleIdsToDelete,
         sharedContext
@@ -1375,6 +1389,36 @@ export default class FulfillmentModuleService<
       dataArray,
       sharedContext
     )
+
+    buildShippingOptionEvents({
+      action: CommonEvents.UPDATED,
+      shippingOptions: updatedShippingOptions,
+      sharedContext,
+    })
+
+    const createdRuleIds = updatedShippingOptions
+      .flatMap((so) =>
+        [...so.rules].map((rule) => {
+          if (existingRuleIds.includes(rule.id)) {
+            return
+          }
+
+          return rule.id
+        })
+      )
+      .filter((id): id is string => !!id)
+
+    buildShippingOptionRuleEvents({
+      action: CommonEvents.CREATED,
+      shippingOptionRules: createdRuleIds.map((id) => ({ id })),
+      sharedContext,
+    })
+
+    buildShippingOptionRuleEvents({
+      action: CommonEvents.UPDATED,
+      shippingOptionRules: updatedRuleIds.map((id) => ({ id })),
+      sharedContext,
+    })
 
     return Array.isArray(data)
       ? updatedShippingOptions
