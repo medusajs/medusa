@@ -2,12 +2,12 @@ import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   createAdminUser,
   adminHeaders,
-} from "../../../helpers/create-admin-user"
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
+  env: {},
   testSuite: ({ dbConnection, getContainer, api }) => {
     let baseCollection
     let baseCollection1
