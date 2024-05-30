@@ -58,7 +58,7 @@ export const registerMedusaModule = (
   return moduleResolutions
 }
 
-function normalizePath(path: string | undefined) {
+function normalizePath(path: string | undefined): string {
   let normalizePath = path
 
   /**
@@ -74,7 +74,7 @@ function normalizePath(path: string | undefined) {
     normalizePath = join(process.cwd(), sourceDir, normalizePath)
   }
 
-  return normalizePath
+  return normalizePath ?? ""
 }
 
 function getCustomModuleResolution(
