@@ -19,25 +19,31 @@ The `providers` option is an array of either tax provider modules, tax plugins, 
 When the Medusa application starts, these providers are registered and can be used to retrieve tax lines.
 
 ```js title="medusa-config.js"
-const modules = {
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
   // ...
-  tax: {
-    resolve: "@medusajs/tax",
-    options: {
-      providers: [
-        {
-          resolve: "my-provider",
-          options: {
-            // ...
+  modules: {
+    [Modules.TAX]: {
+      resolve: "@medusajs/tax",
+      options: {
+        providers: [
+          {
+            resolve: "my-provider",
+            options: {
+              // ...
+            },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-}
+  }
+})
 ```
 
 The objects in the array accept the following properties:
 
-- `resolve`: A string indicating the package name of the tax provider module or the tax plugin, or the path to the file defining the tax provider.
+- `resolve`: A string indicating the package name of the tax provider module or the path to it relative to the `src` directory.
 - `options`: An object of options to pass to the tax provider.

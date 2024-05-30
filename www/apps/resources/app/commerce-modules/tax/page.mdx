@@ -78,21 +78,6 @@ const taxLines = await taxModuleService.getTaxLines(
 
 ## Configure Tax Module
 
-To use the Tax Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.TAX]: true,
-}
-```
-
-### Module Options
-
 Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
 
 ---

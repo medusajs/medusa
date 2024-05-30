@@ -23,15 +23,18 @@ To pass options to a module, add an `options` property to the module’s configu
 For example:
 
 ```js title="medusa-config.js"
-const modules = {
-  helloModuleService: {
-    resolve: "./modules/hello",
-    options: {
-      capitalize: true,
-    },
-  },
+module.exports = defineConfig({
   // ...
-}
+  modules: {
+    helloModuleService: {
+      resolve: "./modules/hello",
+      options: {
+        capitalize: true,
+      },
+    }
+  }
+})
+
 ```
 
 The `options` property’s value is an object. You can pass any properties you want.

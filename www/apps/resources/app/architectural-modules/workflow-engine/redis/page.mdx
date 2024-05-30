@@ -27,7 +27,7 @@ npm install @medusajs/workflow-engine-redis
 Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
 
 export const highlights = [
-  ["8", "redisUrl", "The Redis connection URL."]
+  ["12", "url", "The Redis connection URL."]
 ]
 
 ```js title="medusa-config.js" highlights={highlights}
@@ -35,10 +35,9 @@ const { Modules } = require("@medusajs/modules-sdk")
 
 // ...
 
-module.exports = {
+module.exports = defineConfig({
   // ...
   modules: {
-    // ...
     [Modules.WORKFLOW_ENGINE]: {
       resolve: "@medusajs/workflow-engine-redis",
       options: {
@@ -47,8 +46,8 @@ module.exports = {
         },
       },
     },
-  },
-}
+  }
+})
 ```
 
 ### Environment Variables

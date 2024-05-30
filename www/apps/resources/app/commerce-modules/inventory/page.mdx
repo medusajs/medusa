@@ -66,23 +66,6 @@ const isAvailable =
 
 ---
 
-## Configure Inventory Module
-
-To use the Inventory Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.INVENTORY]: true,
-}
-```
-
----
-
 ## How to Use Inventory Module's Service
 
 You can use the Inventory Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.INVENTORY` imported from `@medusajs/modules-sdk`.

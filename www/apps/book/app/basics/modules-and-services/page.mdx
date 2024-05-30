@@ -62,13 +62,15 @@ The last step is to add the module in Medusa’s configurations.
 
 In `medusa-config.js`, add the module to the `modules` object:
 
-```js title="medusa-config.js" highlights={[["2", "helloModuleService", "The key of the main service to be registered in the Medusa container."]]}
-const modules = {
-  helloModuleService: {
-    resolve: "./modules/hello",
-  },
-  // other modules...
-}
+```js title="medusa-config.js" highlights={[["4", "helloModuleService", "The key of the main service to be registered in the Medusa container."]]}
+module.exports = defineConfig({
+  // ...
+  modules: {
+    helloModuleService: {
+      resolve: "./modules/hello",
+    }
+  }
+})
 ```
 
 Its key (`helloModuleService`) is the name of the module’s main service. It will be registered in the Medusa container with that name.

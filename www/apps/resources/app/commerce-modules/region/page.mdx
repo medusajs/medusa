@@ -67,23 +67,6 @@ const regions = await regionModuleService.create([
 
 ---
 
-## Configure Region Module
-
-To use the Region Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.REGION]: true,
-}
-```
-
----
-
 ## How to Use Region Module's Service
 
 You can use the Region Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.REGION` imported from `@medusajs/modules-sdk`.

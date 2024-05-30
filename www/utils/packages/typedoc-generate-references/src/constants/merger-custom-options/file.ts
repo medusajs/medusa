@@ -61,26 +61,28 @@ const { Modules } = require("@medusajs/modules-sdk")
 
 // ...
 
-const modules = {
+module.exports = defineConfig({
   // ...
-  [Modules.FILE]: {
-    resolve: "@medusajs/file",
-    options: {
-      providers: [
-        {
-          resolve: "./modules/my-file",
-          options: {
-            config: {
-              "my-file": {
-                // provider options...
+  modules: {
+    [Modules.FILE]: {
+      resolve: "@medusajs/file",
+      options: {
+        providers: [
+          {
+            resolve: "./modules/my-file",
+            options: {
+              config: {
+                "my-file": {
+                  // provider options...
+                },
               },
             },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-}
+  }
+})
 \`\`\`
 `,
     ],
