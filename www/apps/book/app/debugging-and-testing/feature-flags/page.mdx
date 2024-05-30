@@ -46,17 +46,17 @@ MEDUSA_FF_TAX_INCLUSIVE_PRICING=true
 
 A feature flag also has an associated key that can be used to toggle its value in Medusa’s configurations.
 
-The configuration object exported in `medusa-config.js` has a `featureFlags` property. Its value is an object where each key is the key of a feature flag, and its value is a boolean indicating whether to enable or disable the flag.
+The configurations exported in `medusa-config.js` has a `featureFlags` property. Its value is an object where each key is the key of a feature flag, and its value is a boolean indicating whether to enable or disable the flag.
 
 For example:
 
 ```js title="medusa-config.js"
-module.exports = {
+module.exports = defineConfig({
   featureFlags: {
     tax_inclusive_pricing: true,
   },
   // ...
-}
+})
 ```
 
 <Note title="Tip">

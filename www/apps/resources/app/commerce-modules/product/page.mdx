@@ -60,23 +60,6 @@ const products = await productService.update([
 
 ---
 
-## Configure Product Module
-
-To use the Product Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.PRODUCT]: true,
-}
-```
-
----
-
 ## How to Use Product Module's Service
 
 You can use the Product Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.PRODUCT` imported from `@medusajs/modules-sdk`.

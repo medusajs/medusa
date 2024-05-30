@@ -729,11 +729,9 @@ class OasKindGenerator extends FunctionKindGenerator {
         statement.getText().includes("AUTHENTICATE = false")
       )
     const isAdminAuthenticated =
-      !isAuthenticationDisabled &&
-      oasPath.startsWith("admin") &&
-      !oasPath.startsWith("admin/auth")
+      !isAuthenticationDisabled && oasPath.startsWith("admin")
     const isStoreAuthenticated =
-      !isAuthenticationDisabled && oasPath.startsWith("store/me")
+      !isAuthenticationDisabled && oasPath.startsWith("store/customers/me")
     const isAuthenticated = isAdminAuthenticated || isStoreAuthenticated
 
     return {
@@ -1601,13 +1599,28 @@ class OasKindGenerator extends FunctionKindGenerator {
    * Check whether a symbol is required.
    *
    * @param symbol - The symbol to check.
+   * @param level - The current recursion level to avoid max-stack error
    * @returns Whether the symbol is required.
    */
-  isRequired(symbol: ts.Symbol): boolean {
+  isRequired(symbol: ts.Symbol, level = 0): boolean {
     let isRequired = true
     const checkNode = (node: ts.Node) => {
-      if (node.kind === ts.SyntaxKind.QuestionToken) {
-        isRequired = false
+      switch (node.kind) {
+        case ts.SyntaxKind.CallExpression:
+          const expression =
+            "expression" in node
+              ? (node.expression as ts.Expression)
+              : undefined
+
+          if (!expression || !("name" in expression)) {
+            break
+          }
+
+          isRequired =
+            (expression.name as ts.Identifier).getText() !== "optional"
+          break
+        case ts.SyntaxKind.QuestionToken:
+          isRequired = false
       }
 
       if (!isRequired) {
@@ -1616,7 +1629,21 @@ class OasKindGenerator extends FunctionKindGenerator {
 
       node.forEachChild(checkNode)
     }
-    symbol.valueDeclaration?.forEachChild(checkNode)
+    if (
+      !symbol.valueDeclaration &&
+      symbol.declarations?.length &&
+      "symbol" in symbol.declarations[0] &&
+      level < this.MAX_LEVEL
+    ) {
+      return this.isRequired(
+        symbol.declarations[0].symbol as ts.Symbol,
+        level + 1
+      )
+    }
+
+    ;(symbol.valueDeclaration || symbol.declarations?.[0])?.forEachChild(
+      checkNode
+    )
 
     return isRequired
   }
