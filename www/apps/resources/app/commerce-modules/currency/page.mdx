@@ -33,23 +33,6 @@ const currency = await currencyModuleService.retrieve(
 
 ---
 
-## Configure Currency Module
-
-To use the Currency Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.CURRENCY]: true,
-}
-```
-
----
-
 ## How to Use Currency Module's Service
 
 You can use the Currency Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.CURRENCY` imported from `@medusajs/modules-sdk`.

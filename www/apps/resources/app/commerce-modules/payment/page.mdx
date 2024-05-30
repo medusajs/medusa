@@ -72,26 +72,6 @@ await paymentModuleService.processEvent({
 
 ## Configure Payment Module
 
-To use the Payment Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.PAYMENT]: {
-    resolve: "@medusajs/payment",
-    options: {
-      // ...
-    },
-  },
-}
-```
-
-### Module Options
-
 Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
 
 ---
