@@ -643,6 +643,7 @@ export default class FulfillmentModuleService<
   }
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createReturnFulfillment(
     data: FulfillmentTypes.CreateFulfillmentDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -672,6 +673,11 @@ export default class FulfillmentModuleService<
       await this.fulfillmentService_.delete(fulfillment.id, sharedContext)
       throw error
     }
+
+    buildCreatedFulfillmentEvents({
+      fulfillments: [fulfillment],
+      sharedContext,
+    })
 
     return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
       fulfillment

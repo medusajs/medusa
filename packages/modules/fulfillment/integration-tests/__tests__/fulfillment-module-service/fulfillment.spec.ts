@@ -205,6 +205,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               })
             )
 
+            jest.clearAllMocks()
+
             const fulfillment = await service.createReturnFulfillment(
               generateCreateFulfillmentData({
                 provider_id: providerId,
@@ -238,6 +240,34 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 ],
               })
             )
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_created,
+                action: "created",
+                object: "fulfillment",
+                data: { id: fulfillment.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_address_created,
+                action: "created",
+                object: "fulfillment_address",
+                data: { id: fulfillment.delivery_address.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_item_created,
+                action: "created",
+                object: "fulfillment_item",
+                data: { id: fulfillment.items[0].id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_label_created,
+                action: "created",
+                object: "fulfillment_label",
+                data: { id: fulfillment.labels[0].id },
+              }),
+            ])
           })
         })
 
