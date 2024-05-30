@@ -25,14 +25,9 @@ jobs:
           node-version: 20
           cache: "yarn"
 
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: docs
-
       - name: Install Workspace dependencies
         working-directory: www
-        run: yarn install
+        run: yarn install --immutable
 
       - name: Build Doc Apps
         working-directory: www
@@ -319,7 +314,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: www
-        run: yarn install
+        run: yarn install -immutable
 
       - name: Run Eslint
         working-directory: www
@@ -340,11 +335,11 @@ jobs:
           fetch-depth: 0
 
       - name: Install Monorepo dependencies
-        run: yarn install
+        run: yarn install -immutable
 
       - name: Install dependencies
         working-directory: www
-        run: yarn install
+        run: yarn install -immutable
 
       - name: Build packages
         working-directory: www

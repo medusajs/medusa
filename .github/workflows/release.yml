@@ -28,8 +28,9 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Install Dependencies
-        run: yarn
+      - name: "Install dependencies"
+        shell: "bash"
+        run: yarn install --immutable
 
       - name: Build packages
         run: yarn build

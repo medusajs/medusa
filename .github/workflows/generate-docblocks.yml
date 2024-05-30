@@ -20,10 +20,10 @@ jobs:
           node-version: 20
 
       - name: Install Dependencies
-        run: yarn
+        run: yarn install --immutable
 
       - name: Install www/utils Dependencies
-        run: yarn
+        run: yarn install --immutable
         working-directory: www/utils
 
       - name: Build packages

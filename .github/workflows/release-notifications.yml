@@ -23,6 +23,10 @@ jobs:
           node-version: 20
           cache: "yarn"
 
+      - name: "Install dependencies"
+        shell: "bash"
+        run: yarn install --immutable
+
       - name: Post to Slack channel
         id: slack
         uses: slackapi/slack-github-action@v1.23.0

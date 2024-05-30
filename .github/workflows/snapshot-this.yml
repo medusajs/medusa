@@ -81,11 +81,10 @@ jobs:
         with:
           node-version: 20
           cache: "yarn"
-
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: snapshot-this
+        
+      - name: "Install dependencies"
+        shell: "bash"
+        run: yarn install --immutable
 
       - name: Build Packages
         shell: "bash"

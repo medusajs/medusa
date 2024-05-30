@@ -5,10 +5,7 @@ inputs:
   node-version:
     description: "Node version"
     required: false
-    default: "16.10.0"
-  cache-extension:
-    description: "Extension for fetching cached dependencies"
-    required: true
+    default: "20"
 
 runs:
   using: "composite"
@@ -23,11 +20,10 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
         cache: "yarn"
-
-    - name: Install dependencies
-      uses: ./.github/actions/cache-deps
-      with:
-        extension: ${{ inputs.cache-extension }}
+    
+    - name: "Install dependencies"
+      shell: "bash"
+      run: yarn install --immutable
 
     - name: Install dev cli
       shell: "bash"

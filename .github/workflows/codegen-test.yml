@@ -28,11 +28,6 @@
 #          node-version: "16.10.0"
 #          cache: "yarn"
 #
-#      - name: Install dependencies
-#        uses: ./.github/actions/cache-deps
-#        with:
-#          extension: codegen
-#
 #      - name: Build Packages - Force
 #        run: yarn build --force
 #

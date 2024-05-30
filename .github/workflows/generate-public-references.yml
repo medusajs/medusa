@@ -31,11 +31,6 @@ jobs:
           node-version: 20
           cache: "yarn"
 
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: reference
-
       - name: Build Packages
         run: yarn build
 
@@ -81,16 +76,14 @@ jobs:
           node-version: 20
           cache: "yarn"
 
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: reference
+      - name: Install Workspace dependencies
+        run: yarn install --immutable
 
       - name: Build Packages
         run: yarn build
 
       - name: Install Workspace dependencies
-        run: yarn install
+        run: yarn install --immutable
         working-directory: www/utils
 
       - name: Build Workspace dependencies

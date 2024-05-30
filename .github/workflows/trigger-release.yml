@@ -45,16 +45,18 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Install Dependencies
-        run: yarn
+      - name: "Install dependencies"
+        shell: "bash"
+        run: yarn install --immutable
 
       - name: Version packages
         run: yarn changeset version --snapshot ${{ github.event.inputs.version || 'preview' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Dependencies
-        run: yarn install --no-immutable
+      - name: "Install dependencies"
+        shell: "bash"
+        run: yarn install --immutable
 
       - name: Build all packages
         run: yarn build

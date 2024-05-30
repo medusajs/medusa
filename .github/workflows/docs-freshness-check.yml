@@ -27,13 +27,8 @@ jobs:
           node-version: 20
           cache: "yarn"
 
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: docs-freshness-check
-
       - name: Install Workspace dependencies
-        run: yarn install
+        run: yarn install --immutable
         working-directory: www/utils
 
       - name: Perform Freshness Check

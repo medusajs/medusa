@@ -22,13 +22,8 @@
 #      - name: Setup Node.js environment
 #        uses: actions/setup-node@v3
 #        with:
-#          node-version: "16.10.0"
+#          node-version: "20"
 #          cache: "yarn"
-#
-#      - name: Install dependencies
-#        uses: ./.github/actions/cache-deps
-#        with:
-#          extension: oas
 #
 #      - name: Build Packages
 #        run: yarn build
