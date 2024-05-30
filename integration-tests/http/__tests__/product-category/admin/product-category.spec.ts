@@ -1,40 +1,51 @@
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import { createAdminUser } from "../../../helpers/create-admin-user"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
-const env = { MEDUSA_FF_MEDUSA_V2: true }
-const adminHeaders = {
-  headers: { "x-medusa-access-token": "test_token" },
-}
-
 medusaIntegrationTestRunner({
-  env,
+  env: {},
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("Product categories - Admin", () => {
-      let container
-
-      beforeAll(async () => {
-        container = getContainer()
-      })
-
       beforeEach(async () => {
-        await createAdminUser(dbConnection, adminHeaders, container)
+        await createAdminUser(dbConnection, adminHeaders, getContainer())
       })
 
       it("should correctly query categories by q", async () => {
-        const productService = container.resolve("productModuleService")
-        const categoryOne = await productService.createCategory({
-          name: "Category One",
-        })
-        const categoryTwo = await productService.createCategory({
-          name: "Category Two",
-          parent_category_id: categoryOne.id,
-        })
-        const categoryThree = await productService.createCategory({
-          name: "Category Three",
-          parent_category_id: categoryTwo.id,
-        })
+        const categoryOne = (
+          await api.post(
+            "/admin/product-categories",
+            {
+              name: "Category One",
+            },
+            adminHeaders
+          )
+        ).data.product_category
+
+        const categoryTwo = (
+          await api.post(
+            "/admin/product-categories",
+            {
+              name: "Category Two",
+              parent_category_id: categoryOne.id,
+            },
+            adminHeaders
+          )
+        ).data.product_category
+
+        const categoryThree = (
+          await api.post(
+            "/admin/product-categories",
+            {
+              name: "Category Three",
+              parent_category_id: categoryTwo.id,
+            },
+            adminHeaders
+          )
+        ).data.product_category
 
         const response = await api.get(
           "/admin/product-categories?q=Category",
