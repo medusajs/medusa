@@ -69,7 +69,6 @@
     "glob": "^7.1.6",
     "ioredis": "^5.2.5",
     "ioredis-mock": "8.4.0",
-    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "medusa-telemetry": "^0.0.17",
     "morgan": "^1.9.1",

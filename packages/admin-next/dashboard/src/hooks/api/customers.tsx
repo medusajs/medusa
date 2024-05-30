@@ -58,7 +58,7 @@ export const useCustomers = (
 
 export const useCreateCustomer = (
   options?: UseMutationOptions<
-    { customer: HttpTypes.AdminCustomer; token: string },
+    { customer: HttpTypes.AdminCustomer },
     Error,
     HttpTypes.AdminCreateCustomer
   >
