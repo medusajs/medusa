@@ -93,7 +93,7 @@ export const wrapVariantsWithInventoryQuantity = async (
       )
 
       // This will give us the maximum deliverable quantities for each inventory item
-      const maxInventoryQuantity = Math.round(
+      const maxInventoryQuantity = Math.floor(
         availableQuantity / requiredQuantity
       )
 
