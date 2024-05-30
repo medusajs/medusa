@@ -128,7 +128,7 @@ The module will hold your custom data models and the service implementing digita
   ```js title="medusa-config.js"
   const modules = {
     digitalProductModuleService: {
-      resolve: "./dist/modules/digital-product"
+      resolve: "./modules/digital-product"
     },
     // ...
   }
@@ -462,7 +462,7 @@ The Medusa application resolves module relationships without creating an actual 
   ```ts title="medusa-config.js"
   const modules = {
     digitalProductModuleService: {
-      resolve: "./dist/modules/digital-product",
+      resolve: "./modules/digital-product",
       definition: {
         isQueryable: true,
         key: "digitalProductModuleService",

@@ -121,7 +121,7 @@ export const serviceHighlights = [
   ```js title="medusa-config.js" highlights={[["5", "ERP_API_KEY", "The environment variable holding the API key of the ERP system."]]}
   const modules = {
     erpModuleService: {
-      resolve: "./dist/modules/erp",
+      resolve: "./modules/erp",
       options: {
         apiKey: process.env.ERP_API_KEY
       }
