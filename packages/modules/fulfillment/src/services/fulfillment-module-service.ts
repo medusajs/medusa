@@ -16,6 +16,7 @@ import {
 import {
   arrayDifference,
   CommonEvents,
+  deepCopy,
   deepEqualObj,
   EmitEvents,
   getSetDifference,
@@ -47,6 +48,7 @@ import {
   buildServiceZoneEvents,
   buildShippingOptionEvents,
   buildShippingOptionRuleEvents,
+  buildShippingOptionTypeEvents,
   buildShippingProfileEvents,
   isContextValid,
   validateAndNormalizeRules,
@@ -1290,13 +1292,13 @@ export default class FulfillmentModuleService<
         id: shippingOptionIds,
       },
       {
-        relations: ["rules"],
+        relations: ["rules", "type"],
         take: shippingOptionIds.length,
       },
       sharedContext
     )
     const existingShippingOptions = new Map(
-      shippingOptions.map((s) => [s.id, s])
+      shippingOptions.map((s) => [s.id, deepCopy(s) as TShippingOptionEntity])
     )
 
     FulfillmentModuleService.validateMissingShippingOptions_(
@@ -1308,14 +1310,21 @@ export default class FulfillmentModuleService<
     const updatedRuleIds: string[] = []
     const existingRuleIds: string[] = []
 
+    const optionTypeDeletedIds: string[] = []
+
     dataArray.forEach((shippingOption) => {
+      const existingShippingOption = existingShippingOptions.get(
+        shippingOption.id
+      )! // Garuantueed to exist since the validation above have been performed
+
+      if (shippingOption.type && !("id" in shippingOption.type)) {
+        optionTypeDeletedIds.push(existingShippingOption.type.id)
+      }
+
       if (!shippingOption.rules) {
         return
       }
 
-      const existingShippingOption = existingShippingOptions.get(
-        shippingOption.id
-      )! // Garuantueed to exist since the validation above have been performed
       const existingRules = existingShippingOption.rules
 
       existingRuleIds.push(...existingRules.map((r) => r.id))
@@ -1390,9 +1399,50 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
+    this.handleShippingOptionUpdateEvents({
+      shippingOptionsData: dataArray,
+      updatedShippingOptions,
+      optionTypeDeletedIds,
+      updatedRuleIds,
+      existingRuleIds,
+      sharedContext,
+    })
+
+    return Array.isArray(data)
+      ? updatedShippingOptions
+      : updatedShippingOptions[0]
+  }
+
+  private handleShippingOptionUpdateEvents({
+    shippingOptionsData,
+    updatedShippingOptions,
+    optionTypeDeletedIds,
+    updatedRuleIds,
+    existingRuleIds,
+    sharedContext,
+  }) {
     buildShippingOptionEvents({
       action: CommonEvents.UPDATED,
       shippingOptions: updatedShippingOptions,
+      sharedContext,
+    })
+
+    buildShippingOptionTypeEvents({
+      action: CommonEvents.DELETED,
+      shippingOptionTypes: optionTypeDeletedIds.map((id) => ({ id })),
+      sharedContext,
+    })
+
+    const createdOptionTypeIds = updatedShippingOptions
+      .filter((so) => {
+        const updateData = shippingOptionsData.find((sod) => sod.id === so.id)
+        return updateData?.type && !("id" in updateData.type)
+      })
+      .map((so) => so.type.id)
+
+    buildShippingOptionTypeEvents({
+      action: CommonEvents.CREATED,
+      shippingOptionTypes: createdOptionTypeIds.map((id) => ({ id })),
       sharedContext,
     })
 
@@ -1419,10 +1469,6 @@ export default class FulfillmentModuleService<
       shippingOptionRules: updatedRuleIds.map((id) => ({ id })),
       sharedContext,
     })
-
-    return Array.isArray(data)
-      ? updatedShippingOptions
-      : updatedShippingOptions[0]
   }
 
   async upsertShippingOptions(

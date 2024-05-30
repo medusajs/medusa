@@ -690,6 +690,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
+            jest.clearAllMocks()
+
             const updatedShippingOption = await service.updateShippingOptions(
               updateData.id!,
               updateData
@@ -747,6 +749,42 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 description: updateData.type.description,
                 label: updateData.type.label,
               })
+            )
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(5)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith(
+              expect.arrayContaining([
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.shipping_option_updated,
+                  action: "updated",
+                  object: "shipping_option",
+                  data: { id: updatedShippingOption.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.shipping_option_type_deleted,
+                  action: "deleted",
+                  object: "shipping_option_type",
+                  data: { id: shippingOption.type.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.shipping_option_type_created,
+                  action: "created",
+                  object: "shipping_option_type",
+                  data: { id: updatedShippingOption.type.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.shipping_option_rule_created,
+                  action: "created",
+                  object: "shipping_option_rule",
+                  data: { id: updatedShippingOption.rules[1].id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.shipping_option_rule_updated,
+                  action: "updated",
+                  object: "shipping_option_rule",
+                  data: { id: updatedShippingOption.rules[0].id },
+                }),
+              ])
             )
           })
 

@@ -448,7 +448,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
         })
 
         describe("on upsert", () => {
-          it.only("should upsert a collection of service zones", async function () {
+          it("should upsert a collection of service zones", async function () {
             const fulfillmentSet = await service.create({
               name: "test",
               type: "test-type",
