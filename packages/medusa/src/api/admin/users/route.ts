@@ -10,7 +10,6 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 import { refetchUser } from "./helpers"
-import { generateJwtToken } from "../../utils/auth/token"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -57,32 +56,13 @@ export const POST = async (
 
   const { result } = await createUserAccountWorkflow(req.scope).run(input)
 
-  const { http } = req.scope.resolve(
-    ContainerRegistrationKeys.CONFIG_MODULE
-  ).projectConfig
-  const { jwtSecret, jwtExpiresIn } = http
-  const token = generateJwtToken(
-    {
-      actor_id: result.id,
-      actor_type: "user",
-      auth_identity_id: req.auth_context.auth_identity_id,
-      app_metadata: {
-        user_id: result.id,
-      },
-    },
-    {
-      secret: jwtSecret,
-      expiresIn: jwtExpiresIn,
-    }
-  )
-
   const user = await refetchUser(
     result.id,
     req.scope,
     req.remoteQueryConfig.fields
   )
 
-  res.status(200).json({ user, token })
+  res.status(200).json({ user })
 }
 
 export const AUTHENTICATE = false

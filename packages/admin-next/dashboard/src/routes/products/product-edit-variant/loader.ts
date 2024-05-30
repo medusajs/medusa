@@ -9,11 +9,7 @@ const queryKey = (id: string) => {
 }
 
 const queryFn = async (id: string) => {
-  const productRes = await client.products.retrieve(id)
-  return {
-    initialData: productRes,
-    isStockAndInventoryEnabled: false,
-  }
+  return await client.products.retrieve(id)
 }
 
 const editProductVariantQuery = (id: string) => ({
