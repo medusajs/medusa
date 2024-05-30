@@ -72,7 +72,7 @@ function updateProductIds({
     return arrayDifference(productIds, discardedProductIds)
   }
 
-  return !input.update.sales_channels ? [] : productIds
+  return !input.update?.sales_channels ? [] : productIds
 }
 
 function prepareSalesChannelLinks({
@@ -97,7 +97,7 @@ function prepareSalesChannelLinks({
       )
   }
 
-  if (input.selector && input.update.sales_channels?.length) {
+  if (input.selector && input.update?.sales_channels?.length) {
     return updatedProducts.flatMap((p) =>
       input.update.sales_channels!.map((channel) => ({
         [Modules.PRODUCT]: {
