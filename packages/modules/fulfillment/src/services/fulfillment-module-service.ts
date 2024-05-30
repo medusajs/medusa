@@ -16,6 +16,7 @@ import {
 import {
   arrayDifference,
   CommonEvents,
+  deepEqualObj,
   EmitEvents,
   getSetDifference,
   InjectManager,
@@ -1022,20 +1023,28 @@ export default class FulfillmentModuleService<
     )
 
     const geoZoneIdsToDelete: string[] = []
+    const existingGeoZoneIds: string[] = []
+    const updatedGeoZoneIds: string[] = []
 
     data_.forEach((serviceZone) => {
       if (serviceZone.geo_zones) {
         const existingServiceZone = serviceZoneMap.get(serviceZone.id!)!
         const existingGeoZones = existingServiceZone.geo_zones
         const updatedGeoZones = serviceZone.geo_zones
+        const existingGeoZoneIdsForServiceZone = existingGeoZones.map(
+          (g) => g.id
+        )
         const toDeleteGeoZoneIds = getSetDifference(
-          new Set(existingGeoZones.map((g) => g.id)),
+          new Set(existingGeoZoneIdsForServiceZone),
           new Set(
             updatedGeoZones
               .map((g) => "id" in g && g.id)
               .filter((id): id is string => !!id)
           )
         )
+
+        existingGeoZoneIds.push(...existingGeoZoneIdsForServiceZone)
+
         if (toDeleteGeoZoneIds.size) {
           geoZoneIdsToDelete.push(...Array.from(toDeleteGeoZoneIds))
         }
@@ -1074,12 +1083,22 @@ export default class FulfillmentModuleService<
           }
           const existing = geoZonesMap.get(geoZone.id)!
 
+          if (!deepEqualObj(existing, geoZone)) {
+            updatedGeoZoneIds.push(geoZone.id)
+          }
+
           return { ...existing, ...geoZone }
         })
       }
     })
 
     if (geoZoneIdsToDelete.length) {
+      buildGeoZoneEvents({
+        action: CommonEvents.DELETED,
+        geoZones: geoZoneIdsToDelete.map((id) => ({ id })),
+        sharedContext,
+      })
+
       await this.geoZoneService_.delete(
         {
           id: geoZoneIdsToDelete,
@@ -1092,6 +1111,32 @@ export default class FulfillmentModuleService<
       data_,
       sharedContext
     )
+
+    buildServiceZoneEvents({
+      action: CommonEvents.UPDATED,
+      serviceZones: updatedServiceZones.map((serviceZone) => ({
+        id: serviceZone.id,
+      })),
+      sharedContext,
+    })
+
+    const createdGeoZoneIds = updatedServiceZones
+      .flatMap((serviceZone) => {
+        return serviceZone.geo_zones.map((g) => g.id)
+      })
+      .filter((id) => !existingGeoZoneIds.includes(id))
+
+    buildGeoZoneEvents({
+      action: CommonEvents.CREATED,
+      geoZones: createdGeoZoneIds.map((id) => ({ id })),
+      sharedContext,
+    })
+
+    buildGeoZoneEvents({
+      action: CommonEvents.UPDATED,
+      geoZones: updatedGeoZoneIds.map((id) => ({ id })),
+      sharedContext,
+    })
 
     return Array.isArray(data) ? updatedServiceZones : updatedServiceZones[0]
   }
