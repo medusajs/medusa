@@ -56,6 +56,7 @@ import {
  *     this.options_ = options
  * 
  *     // assuming you're initializing a client
+ *     this.client = new Client(options)
  *   }
  * 
  *   // ...
