@@ -40,23 +40,6 @@ await customerModuleService.addCustomerToGroup({
 
 ---
 
-## Configure Customer Module
-
-To use the Customer Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.CUSTOMER]: true,
-}
-```
-
----
-
 ## How to Use Customer Module's Service
 
 You can use the Customer Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.CUSTOMER` imported from `@medusajs/modules-sdk`.

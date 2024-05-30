@@ -106,24 +106,6 @@ const fulfillmentSets = await fulfillmentModuleService.create(
 
 ## Configure Fulfillment Module
 
-To use the Fulfillment Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-const modules = {
-  // ...
-  [Modules.FULFILLMENT]: {
-    resolve: "@medusajs/fulfillment",
-    providers: [
-      // ...
-    ],
-  },
-}
-```
-
-### Module Options
-
 Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
 
 ---

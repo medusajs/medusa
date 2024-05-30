@@ -51,23 +51,6 @@ Orders are also scoped to a sales channel due to the relation between the Sales 
 
 ---
 
-## Configure Sales Channel Module
-
-To use the Sales Channel Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.SALES_CHANNEL]: true,
-}
-```
-
----
-
 ## How to Use Sales Channel Module's Service
 
 You can use the Sales Channel Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.SALES_CHANNEL` imported from `@medusajs/modules-sdk`.

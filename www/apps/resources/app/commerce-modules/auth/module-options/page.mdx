@@ -15,35 +15,41 @@ In this document, you'll learn about the options of the Auth Module.
 ## providers
 
 ```js title="medusa-config.js"
-const modules = {
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
   // ...
-  auth: {
-    resolve: "@medusajs/auth",
-    options: {
-      providers: [
-        {
-          name: "emailpass",
-          scopes: {
-            store: {},
-            admin: {},
-          },
-        },
-        {
-          name: "google",
-          scopes: {
-            admin: {
-              clientID: process.env.GOOGLE_CLIENT_ID,
-              clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-              callbackURL: process.env.GOOGLE_CALLBACK_URL,
-              successRedirectUrl:
-                process.env.GOOGLE_SUCCESS_REDIRECT_URL,
+  modules: {
+    [Modules.AUTH]: {
+      resolve: "@medusajs/auth",
+      options: {
+        providers: [
+          {
+            name: "emailpass",
+            scopes: {
+              store: {},
+              admin: {},
             },
           },
-        },
-      ],
-    },
-  },
-}
+          {
+            name: "google",
+            scopes: {
+              admin: {
+                clientID: process.env.GOOGLE_CLIENT_ID,
+                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+                callbackURL: process.env.GOOGLE_CALLBACK_URL,
+                successRedirectUrl:
+                  process.env.GOOGLE_SUCCESS_REDIRECT_URL,
+              },
+            },
+          },
+        ],
+      },
+    }
+  }
+})
 ```
 
 The `providers` option is an array of objects indicating the auth providers to register, their scopes, and configurations.
