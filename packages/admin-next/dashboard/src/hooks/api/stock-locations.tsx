@@ -6,22 +6,20 @@ import {
   useQuery,
 } from "@tanstack/react-query"
 
-import { client } from "../../lib/client"
+import { FetchError } from "@medusajs/js-sdk"
+import { HttpTypes } from "@medusajs/types"
+import { client, sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import {
   CreateFulfillmentSetReq,
   CreateServiceZoneReq,
-  CreateStockLocationReq,
   UpdateServiceZoneReq,
-  UpdateStockLocationReq,
-  UpdateStockLocationSalesChannelsReq,
 } from "../../types/api-payloads"
 import {
   FulfillmentSetDeleteRes,
   ServiceZoneDeleteRes,
   StockLocationDeleteRes,
-  StockLocationListRes,
   StockLocationRes,
 } from "../../types/api-responses"
 
@@ -32,14 +30,19 @@ export const stockLocationsQueryKeys = queryKeysFactory(
 
 export const useStockLocation = (
   id: string,
-  query?: Record<string, any>,
+  query?: HttpTypes.SelectParams,
   options?: Omit<
-    UseQueryOptions<StockLocationRes, Error, StockLocationRes, QueryKey>,
+    UseQueryOptions<
+      { stock_location: HttpTypes.AdminStockLocation },
+      FetchError,
+      { stock_location: HttpTypes.AdminStockLocation },
+      QueryKey
+    >,
     "queryKey" | "queryFn"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.stockLocations.retrieve(id, query),
+    queryFn: () => sdk.admin.stockLocation.retrieve(id, query),
     queryKey: stockLocationsQueryKeys.detail(id, query),
     ...options,
   })
@@ -48,19 +51,23 @@ export const useStockLocation = (
 }
 
 export const useStockLocations = (
-  query?: Record<string, any>,
+  query?: HttpTypes.FindParams & HttpTypes.AdminStockLocationFilters,
   options?: Omit<
     UseQueryOptions<
-      StockLocationListRes,
-      Error,
-      StockLocationListRes,
+      HttpTypes.PaginatedResponse<{
+        stock_locations: HttpTypes.AdminStockLocation[]
+      }>,
+      FetchError,
+      HttpTypes.PaginatedResponse<{
+        stock_locations: HttpTypes.AdminStockLocation[]
+      }>,
       QueryKey
     >,
     "queryKey" | "queryFn"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.stockLocations.list(query),
+    queryFn: () => sdk.admin.stockLocation.list(query),
     queryKey: stockLocationsQueryKeys.list(query),
     ...options,
   })
@@ -69,10 +76,14 @@ export const useStockLocations = (
 }
 
 export const useCreateStockLocation = (
-  options?: UseMutationOptions<StockLocationRes, Error, CreateStockLocationReq>
+  options?: UseMutationOptions<
+    { stock_location: HttpTypes.AdminStockLocation },
+    Error,
+    HttpTypes.AdminCreateStockLocation
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.stockLocations.create(payload),
+    mutationFn: (payload) => sdk.admin.stockLocation.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
@@ -86,10 +97,14 @@ export const useCreateStockLocation = (
 
 export const useUpdateStockLocation = (
   id: string,
-  options?: UseMutationOptions<StockLocationRes, Error, UpdateStockLocationReq>
+  options?: UseMutationOptions<
+    { stock_location: HttpTypes.AdminStockLocation },
+    Error,
+    HttpTypes.AdminUpdateStockLocation
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.stockLocations.update(id, payload),
+    mutationFn: (payload) => sdk.admin.stockLocation.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.details(),
@@ -107,14 +122,14 @@ export const useUpdateStockLocation = (
 export const useUpdateStockLocationSalesChannels = (
   id: string,
   options?: UseMutationOptions<
-    StockLocationRes,
+    { stock_location: HttpTypes.AdminStockLocation },
     Error,
-    UpdateStockLocationSalesChannelsReq
+    HttpTypes.AdminUpdateStockLocationSalesChannels
   >
 ) => {
   return useMutation({
     mutationFn: (payload) =>
-      client.stockLocations.updateSalesChannels(id, payload),
+      sdk.admin.stockLocation.updateSalesChannels(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.details(),

@@ -1,5 +1,5 @@
 import { FetchError } from "@medusajs/js-sdk"
-import { FindParams, HttpTypes, PaginatedResponse } from "@medusajs/types"
+import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -17,6 +17,7 @@ export const collectionsQueryKeys = queryKeysFactory(COLLECTION_QUERY_KEY)
 
 export const useCollection = (
   id: string,
+  query?: HttpTypes.SelectParams,
   options?: Omit<
     UseQueryOptions<
       { collection: HttpTypes.AdminCollection },
@@ -29,7 +30,7 @@ export const useCollection = (
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: collectionsQueryKeys.detail(id),
-    queryFn: async () => sdk.admin.collection.retrieve(id),
+    queryFn: async () => sdk.admin.collection.retrieve(id, query),
     ...options,
   })
 
@@ -37,7 +38,7 @@ export const useCollection = (
 }
 
 export const useCollections = (
-  query?: FindParams & HttpTypes.AdminCollectionFilters,
+  query?: HttpTypes.FindParams & HttpTypes.AdminCollectionFilters,
   options?: Omit<
     UseQueryOptions<
       PaginatedResponse<{ collections: HttpTypes.AdminCollection[] }>,

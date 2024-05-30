@@ -1,4 +1,4 @@
-import { AdminStockLocationResponse } from "@medusajs/types"
+import { BaseStockLocation } from "@medusajs/types"
 import { LoaderFunctionArgs } from "react-router-dom"
 
 import { stockLocationsQueryKeys } from "../../../hooks/api/stock-locations"
@@ -19,7 +19,7 @@ export const locationLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = locationQuery(id!)
 
   return (
-    queryClient.getQueryData<AdminStockLocationResponse>(query.queryKey) ??
+    queryClient.getQueryData<BaseStockLocation>(query.queryKey) ??
     (await queryClient.fetchQuery(query))
   )
 }

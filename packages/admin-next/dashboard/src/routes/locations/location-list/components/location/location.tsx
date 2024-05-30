@@ -6,7 +6,6 @@ import {
 } from "@medusajs/types"
 import { Container, StatusBadge, Text, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { BadgeListSummary } from "../../../../../components/common/badge-list-summary"
@@ -78,7 +77,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
           {t(`location.fulfillmentSet.${type}.title`)}
         </Text>
         <div className="flex-1 text-left">
-          <StatusBadge color={fulfillmentSetExists ? "green" : "red"}>
+          <StatusBadge color={fulfillmentSetExists ? "green" : "grey"}>
             {t(fulfillmentSetExists ? "statuses.enabled" : "statuses.disabled")}
           </StatusBadge>
         </div>
@@ -94,7 +93,6 @@ type LocationProps = {
 function Location(props: LocationProps) {
   const { location } = props
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const prompt = usePrompt()
 
   const { mutateAsync: deleteLocation } = useDeleteStockLocation(location.id)

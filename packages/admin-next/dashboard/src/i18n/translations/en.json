@@ -158,9 +158,6 @@
       "required": "New owner is required."
     }
   },
-  "sales_channels": {
-    "availableIn": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels"
-  },
   "products": {
     "domain": "Products",
     "create": {
@@ -686,12 +683,12 @@
     }
   },
   "location": {
-    "title": "Locations & Shipping",
     "domain": "Location & Shipping",
     "description": "Choose where you ship and how much you charge for shipping at checkout. Define shipping options specific for your locations.",
     "createLocation": "Create location",
     "createLocationDetailsHint": "Specify the details of the location.",
-    "deleteLocation": "Delete location",
+    "connectedToSalesChannels": "Connected to {{to}} out of {{of}} sales channels",
+    "viewInventory": "View inventory",
     "from": "Shipping from",
     "add": "Add shipping",
     "connectProvider": "Connect provider",

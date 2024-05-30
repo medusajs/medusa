@@ -315,4 +315,81 @@ export class Admin {
       )
     },
   }
+
+  public stockLocation = {
+    create: async (
+      body: HttpTypes.AdminCreateStockLocation,
+      query?: HttpTypes.SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{
+        stock_location: HttpTypes.AdminStockLocation
+      }>(`/admin/stock-locations`, {
+        method: "POST",
+        headers,
+        body,
+        query,
+      })
+    },
+    update: async (
+      id: string,
+      body: HttpTypes.AdminUpdateStockLocation,
+      query?: HttpTypes.SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{
+        stock_location: HttpTypes.AdminStockLocation
+      }>(`/admin/stock-locations/${id}`, {
+        method: "POST",
+        headers,
+        body,
+        query,
+      })
+    },
+    list: async (
+      queryParams?: HttpTypes.FindParams & HttpTypes.AdminStockLocationFilters,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<
+        PaginatedResponse<{ stock_locations: HttpTypes.AdminStockLocation[] }>
+      >(`/admin/stock-locations`, {
+        headers,
+        query: queryParams,
+      })
+    },
+    retrieve: async (
+      id: string,
+      query?: HttpTypes.SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{
+        stock_location: HttpTypes.AdminStockLocation
+      }>(`/admin/stock-locations/${id}`, {
+        query,
+        headers,
+      })
+    },
+    delete: async (id: string, headers?: ClientHeaders) => {
+      return this.client.fetch<DeleteResponse<"stock_location">>(
+        `/admin/stock-locations/${id}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      )
+    },
+    updateSalesChannels: async (
+      id: string,
+      body: HttpTypes.AdminUpdateStockLocationSalesChannels,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{
+        stock_location: HttpTypes.AdminStockLocation
+      }>(`/admin/stock-locations/${id}/sales-channels`, {
+        method: "POST",
+        headers,
+        body,
+      })
+    },
+  }
 }

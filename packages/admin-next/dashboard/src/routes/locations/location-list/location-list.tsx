@@ -17,12 +17,24 @@ export function LocationList() {
     ReturnType<typeof shippingListLoader>
   >
 
-  const { stock_locations: stockLocations = [], isPending } = useStockLocations(
+  const {
+    stock_locations: stockLocations = [],
+    isError,
+    error,
+  } = useStockLocations(
     {
       fields: locationListFields,
     },
     { initialData }
   )
+
+  const potentialDate = stockLocations?.[0]?.created_at
+
+  console.log(potentialDate)
+
+  if (isError) {
+    throw error
+  }
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -35,7 +47,7 @@ export function LocationList() {
       })}
       <Container className="flex h-fit items-center justify-between gap-x-4 px-6 py-4">
         <div>
-          <Heading>{t("location.title")}</Heading>
+          <Heading>{t("location.domain")}</Heading>
           <Text className="text-ui-fg-subtle txt-small">
             {t("location.description")}
           </Text>

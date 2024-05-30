@@ -1,10 +1,13 @@
 import {
+  ArchiveBox,
+  CheckMini,
   CurrencyDollar,
   Map,
   PencilSquare,
   Plus,
   Trash,
   TriangleDownMini,
+  XMarkMini,
 } from "@medusajs/icons"
 import {
   FulfillmentSetDTO,
@@ -171,6 +174,10 @@ function ShippingOption({
                 icon: <CurrencyDollar />,
                 to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${option.service_zone_id}/shipping-option/${option.id}/edit-pricing`,
               },
+            ],
+          },
+          {
+            actions: [
               {
                 label: t("actions.delete"),
                 icon: <Trash />,
@@ -343,7 +350,9 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
 
         {/* INFO*/}
         <div className="grow-1 flex flex-1 flex-col">
-          <Text weight="plus">{zone.name}</Text>
+          <Text size="small" leading="compact" weight="plus">
+            {zone.name}
+          </Text>
           <div className="flex items-center gap-2">
             <ListSummary
               variant="base"
@@ -396,6 +405,10 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
                     icon: <Map />,
                     to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit-areas`,
                   },
+                ],
+              },
+              {
+                actions: [
                   {
                     label: t("actions.delete"),
                     icon: <Trash />,
@@ -523,7 +536,11 @@ function FulfillmentSet(props: FulfillmentSetProps) {
                       disabled: !fulfillmentSetExists,
                     },
                     {
-                      icon: <PencilSquare />,
+                      icon: fulfillmentSetExists ? (
+                        <XMarkMini />
+                      ) : (
+                        <CheckMini />
+                      ),
                       label: fulfillmentSetExists
                         ? t("actions.disable")
                         : t("actions.enable"),
@@ -621,6 +638,11 @@ const Actions = ({ location }: { location: StockLocationDTO }) => {
               icon: <PencilSquare />,
               label: t("actions.edit"),
               to: `edit`,
+            },
+            {
+              icon: <ArchiveBox />,
+              label: t("location.viewInventory"),
+              to: `/inventory?location_id=${location.id}`,
             },
           ],
         },

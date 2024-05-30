@@ -1,7 +1,7 @@
 import { Channels, PencilSquare } from "@medusajs/icons"
 import { StockLocationDTO } from "@medusajs/types"
-import { Heading, Text } from "@medusajs/ui"
-import { Trans, useTranslation } from "react-i18next"
+import { Container, Heading, Text } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ListSummary } from "../../../../../components/common/list-summary"
@@ -18,8 +18,8 @@ function LocationsSalesChannelsSection({ location }: Props) {
   const noChannels = !location.sales_channels?.length
 
   return (
-    <div className="shadow-elevation-card-rest bg-ui-bg-base rounded-md p-4">
-      <div className="mb-4 flex items-center justify-between">
+    <Container className="flex flex-col gap-y-4 px-6 py-4">
+      <div className="flex items-center justify-between">
         <Heading level="h2">{t("location.salesChannels.title")}</Heading>
         <ActionMenu
           groups={[
@@ -42,37 +42,25 @@ function LocationsSalesChannelsSection({ location }: Props) {
           </div>
         </div>
         {noChannels ? (
-          <Text size="small" leading="compact" className="text-ui-fg-subtle">
+          <Text size="small" leading="compact">
             {t("location.salesChannels.placeholder")}
           </Text>
         ) : (
           <ListSummary
             n={3}
+            className="text-ui-fg-base"
             inline
             list={location.sales_channels.map((sc) => sc.name)}
           />
         )}
       </div>
-      <Text className="text-ui-fg-subtle mt-4" size="small" leading="compact">
-        <Trans
-          i18nKey="sales_channels.availableIn"
-          values={{
-            x: location.sales_channels.length,
-            y: count,
-          }}
-          components={[
-            <span
-              key="x"
-              className="text-ui-fg-base txt-compact-medium-plus"
-            />,
-            <span
-              key="y"
-              className="text-ui-fg-base txt-compact-medium-plus"
-            />,
-          ]}
-        />
+      <Text className="text-ui-fg-subtle" size="small" leading="compact">
+        {t("location.connectedToSalesChannels", {
+          to: location.sales_channels?.length,
+          of: count,
+        })}
       </Text>
-    </div>
+    </Container>
   )
 }
 
