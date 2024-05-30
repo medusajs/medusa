@@ -60,6 +60,9 @@ export const AdminGetProductOptionsParams = createFindParams({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
     title: z.string().optional(),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
     $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
     $or: z.lazy(() => AdminGetProductsParams.array()).optional(),
   })
