@@ -117,6 +117,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * create an auth identity. It has two methods: `create` to create an auth identity,
    * and `retrieve` to retrieve an auth identity. When you authenticate the user, you can create an auth identity
    * using this service.
+   * @returns {Promise<AuthenticationResponse>} The authentication response.
    * 
    * @privateRemarks
    * TODO add a link to the authentication flow document once it's public.
@@ -235,6 +236,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * create an auth identity. It has two methods: `create` to create an auth identity,
    * and `retrieve` to retrieve an auth identity. When you authenticate the user, you can create an auth identity
    * using this service.
+   * @returns {Promise<AuthenticationResponse>} The authentication response.
    * 
    * @privateRemarks
    * TODO add a link to the authentication flow document once it's public.
