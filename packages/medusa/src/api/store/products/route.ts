@@ -4,6 +4,7 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import { wrapVariantsWithInventoryQuantity } from "./helpers"
 import { StoreGetProductsParamsType } from "./validators"
 
 export const GET = async (
@@ -30,6 +31,13 @@ export const GET = async (
   })
 
   const { rows: products, metadata } = await remoteQuery(queryObject)
+
+  if (req.context?.with_inventory_quantity) {
+    await wrapVariantsWithInventoryQuantity(
+      req,
+      products.map((product) => product.variants).flat(1)
+    )
+  }
 
   res.json({
     products,

@@ -1,6 +1,6 @@
 import { isPresent } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
-import { refetchProduct } from "../helpers"
+import { refetchProduct, wrapVariantsWithInventoryQuantity } from "../helpers"
 import { StoreGetProductsParamsType } from "../validators"
 
 export const GET = async (
@@ -23,6 +23,10 @@ export const GET = async (
     req.scope,
     req.remoteQueryConfig.fields
   )
+
+  if (req.context?.with_inventory_quantity) {
+    await wrapVariantsWithInventoryQuantity(req, product.variants || [])
+  }
 
   res.json({ product })
 }

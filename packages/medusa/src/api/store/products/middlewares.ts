@@ -1,11 +1,14 @@
 import { isPresent, ProductStatus } from "@medusajs/utils"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { MedusaRequest } from "../../../types/routing"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import {
   applyDefaultFilters,
   filterByValidSalesChannels,
   setPricingContext,
 } from "../../utils/middlewares"
+import { setContext } from "../../utils/middlewares/common/set-context"
+import { refetchEntities } from "../../utils/refetch-entity"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
@@ -23,6 +26,31 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listProductQueryConfig
       ),
       filterByValidSalesChannels(),
+      setContext({
+        with_inventory_quantity: async (req: MedusaRequest) => {
+          const withInventoryQuantity = req.remoteQueryConfig.fields.some(
+            (field) => field.includes("variants.inventory_quantity")
+          )
+
+          req.remoteQueryConfig.fields = req.remoteQueryConfig.fields.filter(
+            (field) => !field.includes("variants.inventory_quantity")
+          )
+
+          return withInventoryQuantity
+        },
+        stock_location_id: async (req: MedusaRequest) => {
+          const salesChannelId = req.filterableFields.sales_channel_id || []
+
+          const entities = await refetchEntities(
+            "sales_channel_location",
+            { sales_channel_id: salesChannelId },
+            req.scope,
+            ["stock_location_id"]
+          )
+
+          return entities.map((entity) => entity.stock_location_id)
+        },
+      }),
       maybeApplyLinkFilter({
         entryPoint: "product_sales_channel",
         resourceId: "product_id",
@@ -53,6 +81,31 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveProductQueryConfig
       ),
       filterByValidSalesChannels(),
+      setContext({
+        with_inventory_quantity: async (req: MedusaRequest) => {
+          const withInventoryQuantity = req.remoteQueryConfig.fields.some(
+            (field) => field.includes("inventory_quantity")
+          )
+
+          req.remoteQueryConfig.fields = req.remoteQueryConfig.fields.filter(
+            (field) => !field.includes("inventory_quantity")
+          )
+
+          return withInventoryQuantity
+        },
+        stock_location_id: async (req: MedusaRequest) => {
+          const salesChannelId = req.filterableFields.sales_channel_id || []
+
+          const entities = await refetchEntities(
+            "sales_channel_location",
+            { sales_channel_id: salesChannelId },
+            req.scope,
+            ["stock_location_id"]
+          )
+
+          return entities.map((entity) => entity.stock_location_id)
+        },
+      }),
       maybeApplyLinkFilter({
         entryPoint: "product_sales_channel",
         resourceId: "product_id",

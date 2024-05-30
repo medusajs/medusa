@@ -1,7 +1,7 @@
 import {
+  arrayIntersection,
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-  arrayIntersection,
 } from "@medusajs/utils"
 import { NextFunction } from "express"
 import { MedusaRequest } from "../../types/routing"
@@ -10,6 +10,7 @@ export function maybeApplyLinkFilter({
   entryPoint,
   resourceId,
   filterableField,
+  deleteKey = true,
 }) {
   return async (req: MedusaRequest, _, next: NextFunction) => {
     const filterableFields = req.filterableFields
@@ -24,7 +25,9 @@ export function maybeApplyLinkFilter({
       ? filterFields
       : [filterFields]
 
-    delete filterableFields[filterableField]
+    if (deleteKey) {
+      delete filterableFields[filterableField]
+    }
 
     const remoteQuery = req.scope.resolve(
       ContainerRegistrationKeys.REMOTE_QUERY
