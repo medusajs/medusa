@@ -88,6 +88,7 @@ export type InventoryItemDTO = {
   created_at: string | Date
   updated_at: string | Date
   deleted_at: string | Date | null
+  location_levels?: InventoryLevelDTO[]
 }
 
 /**
@@ -195,6 +196,7 @@ export type InventoryLevelDTO = {
   location_id: string
   stocked_quantity: number
   reserved_quantity: number
+  available_quantity: number
   incoming_quantity: number
   metadata: Record<string, unknown> | null
   created_at: string | Date
