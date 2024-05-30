@@ -57,6 +57,10 @@ export interface MedusaRequest<Body = unknown>
    * An object that carries the context that is used to calculate prices for variants
    */
   pricingContext?: MedusaPricingContext
+  /**
+   * A generic context object that can be used across the request lifecycle
+   */
+  context?: Record<string, any>
 }
 
 export interface AuthContext {
