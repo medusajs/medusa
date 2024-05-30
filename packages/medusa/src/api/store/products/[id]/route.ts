@@ -7,6 +7,16 @@ export const GET = async (
   req: MedusaRequest<StoreGetProductsParamsType>,
   res: MedusaResponse
 ) => {
+  const withInventoryQuantity = req.remoteQueryConfig.fields.some((field) =>
+    field.includes("variants.inventory_quantity")
+  )
+
+  if (withInventoryQuantity) {
+    req.remoteQueryConfig.fields = req.remoteQueryConfig.fields.filter(
+      (field) => !field.includes("variants.inventory_quantity")
+    )
+  }
+
   const filters: object = {
     id: req.params.id,
     ...req.filterableFields,
@@ -24,7 +34,7 @@ export const GET = async (
     req.remoteQueryConfig.fields
   )
 
-  if (req.context?.with_inventory_quantity) {
+  if (withInventoryQuantity) {
     await wrapVariantsWithInventoryQuantity(req, product.variants || [])
   }
 

@@ -13,6 +13,15 @@ export const GET = async (
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const context: object = {}
+  const withInventoryQuantity = req.remoteQueryConfig.fields.some((field) =>
+    field.includes("variants.inventory_quantity")
+  )
+
+  if (withInventoryQuantity) {
+    req.remoteQueryConfig.fields = req.remoteQueryConfig.fields.filter(
+      (field) => !field.includes("variants.inventory_quantity")
+    )
+  }
 
   if (isPresent(req.pricingContext)) {
     context["variants.calculated_price"] = {
@@ -32,7 +41,7 @@ export const GET = async (
 
   const { rows: products, metadata } = await remoteQuery(queryObject)
 
-  if (req.context?.with_inventory_quantity) {
+  if (withInventoryQuantity) {
     await wrapVariantsWithInventoryQuantity(
       req,
       products.map((product) => product.variants).flat(1)

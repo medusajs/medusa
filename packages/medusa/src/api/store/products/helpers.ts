@@ -5,7 +5,7 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest } from "../../../types/routing"
-import { refetchEntity } from "../../utils/refetch-entity"
+import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
 
 export const refetchProduct = async (
   idOrFilter: string | object,
@@ -106,4 +106,25 @@ export const wrapVariantsWithInventoryQuantity = async (
       ? Math.min(...inventoryQuantities)
       : 0
   }
+}
+
+export const maybeApplyStockLocationId = async (req: MedusaRequest, ctx) => {
+  const withInventoryQuantity = req.remoteQueryConfig.fields.some((field) =>
+    field.includes("variants.inventory_quantity")
+  )
+
+  if (!withInventoryQuantity) {
+    return
+  }
+
+  const salesChannelId = req.filterableFields.sales_channel_id || []
+
+  const entities = await refetchEntities(
+    "sales_channel_location",
+    { sales_channel_id: salesChannelId },
+    req.scope,
+    ["stock_location_id"]
+  )
+
+  return entities.map((entity) => entity.stock_location_id)
 }
