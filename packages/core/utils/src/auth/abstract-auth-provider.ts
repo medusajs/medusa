@@ -125,6 +125,13 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * For example, if your authentication provider doesn't require validating a callback:
    * 
    * ```ts
+   * import { 
+   *   AuthIdentityProviderService, 
+   *   AuthenticationInput, 
+   *   AuthenticationResponse
+   * } from "@medusajs/types"
+   * // ...
+   * 
    * class MyAuthProviderService extends AbstractAuthModuleProvider {
    *   // ...
    *   async authenticate(
@@ -175,6 +182,13 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * If your authentication provider requires validating callback:
    * 
    * ```ts
+   * import { 
+   *   AuthIdentityProviderService, 
+   *   AuthenticationInput, 
+   *   AuthenticationResponse
+   * } from "@medusajs/types"
+   * // ...
+   * 
    * class MyAuthProviderService extends AbstractAuthModuleProvider {
    *   // ...
    *   async authenticate(
@@ -226,6 +240,13 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * TODO add a link to the authentication flow document once it's public.
    * 
    * @example
+   * import { 
+   *   AuthIdentityProviderService, 
+   *   AuthenticationInput, 
+   *   AuthenticationResponse
+   * } from "@medusajs/types"
+   * // ...
+   * 
    * class MyAuthProviderService extends AbstractAuthModuleProvider {
    *   // ...
    *   async validateCallback(
