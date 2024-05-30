@@ -6,11 +6,9 @@ import {
   Index,
   JoinColumn,
   OneToOne,
+  Relation,
 } from "typeorm"
-import {
-  DbAwareColumn,
-  resolveDbType
-} from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
@@ -20,7 +18,7 @@ import { Order } from "./order"
 
 /**
  * @enum
- * 
+ *
  * The draft order's status.
  */
 export enum DraftOrderStatus {
@@ -50,7 +48,7 @@ export class DraftOrder extends BaseEntity {
 
   @OneToOne(() => Cart, { onDelete: "CASCADE" })
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart: Relation<Cart>
 
   @Index()
   @Column({ nullable: true })
@@ -58,7 +56,7 @@ export class DraftOrder extends BaseEntity {
 
   @OneToOne(() => Order)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @Column({ nullable: true, type: resolveDbType("timestamptz") })
   canceled_at: Date

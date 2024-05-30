@@ -10,7 +10,7 @@ In this document, you’ll learn about the Redis cache module and how you can in
 
 Medusa’s modular architecture allows developers to extend or replace the logic used for [caching](../overview.mdx). You can create a custom module, or you can use the modules Medusa provides.
 
-One of these modules is the Redis module. This module allows you to utilize Redis for the caching functionality. This document will you guide you through installing the Redis module.
+One of these modules is the Redis Module. This module allows you to utilize Redis for the caching functionality. This document will you guide you through installing the Redis Module.
 
 ---
 

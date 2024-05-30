@@ -1,4 +1,4 @@
-name: Generate Automated Documentation
+name: Generate Automated Documentation (v1)
 on:
   workflow_dispatch:
     inputs:
@@ -24,6 +24,7 @@ jobs:
         with:
           token: ${{ secrets.REFERENCE_PAT }}
           fetch-depth: 0
+          ref: "v1.x"
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
@@ -54,8 +55,59 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: "chore(docs): Generated API Reference"
-          base: "develop"
+          base: "v1.x"
           title: "chore(docs): Updated API Reference"
+          labels: "type: chore"
+          add-paths: www/apps/api-reference/specs
+          branch: "docs/generate-api-ref"
+          branch-suffix: "timestamp"
+  api-v2:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'release' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'api' }}
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.REFERENCE_PAT }}
+          fetch-depth: 0
+          ref: "v1.x"
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.10.0"
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: reference
+
+      - name: Build Packages
+        run: yarn build
+
+      - name: Generate API Reference (v2)
+        run: yarn openapi:generate --v2
+
+      - name: Install and Build docs-util dependencies
+        run: yarn && yarn build
+        working-directory: docs-util
+
+      - name: Generate Changeset
+        run: "yarn generate:changeset"
+        working-directory: docs-util/packages/scripts
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "chore(docs): Generated API Reference (v2)"
+          base: "v1.x"
+          title: "chore(docs): Updated API Reference (v2)"
           labels: "type: chore"
           add-paths: www/apps/api-reference/specs
           branch: "docs/generate-api-ref"
@@ -74,6 +126,7 @@ jobs:
         with:
           token: ${{ secrets.REFERENCE_PAT }}
           fetch-depth: 0
+          ref: "v1.x"
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
@@ -109,7 +162,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: "chore(docs): Generated UI Reference"
-          base: "develop"
+          base: "v1.x"
           title: "chore(docs): Updated UI Reference"
           labels: "type: chore"
           add-paths: www/apps/ui/src/specs

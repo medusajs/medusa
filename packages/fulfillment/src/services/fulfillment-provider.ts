@@ -78,8 +78,8 @@ export default class FulfillmentProviderService extends ModulesSdkUtils.internal
     return await provider.validateFulfillmentData(optionData, data, context)
   }
 
-  async validateOption(data: any) {
-    const provider = this.retrieveProviderRegistration(data.provider_id)
+  async validateOption(providerId: string, data: Record<string, unknown>) {
+    const provider = this.retrieveProviderRegistration(providerId)
     return await provider.validateOption(data)
   }
 

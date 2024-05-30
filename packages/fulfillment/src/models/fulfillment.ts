@@ -7,6 +7,7 @@ import {
 import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Filter,
@@ -93,6 +94,8 @@ export default class Fulfillment {
     columnType: "text",
     fieldName: "provider_id",
     mapToPk: true,
+    nullable: true,
+    onDelete: "set null",
   })
   @FulfillmentProviderIdIndex.MikroORMIndex()
   provider_id: string
@@ -102,6 +105,7 @@ export default class Fulfillment {
     fieldName: "shipping_option_id",
     nullable: true,
     mapToPk: true,
+    onDelete: "set null",
   })
   @FulfillmentShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string | null = null
@@ -115,13 +119,25 @@ export default class Fulfillment {
   @ManyToOne(() => FulfillmentProvider, { persist: false })
   provider: FulfillmentProvider
 
-  @OneToOne()
+  @OneToOne({
+    entity: () => Address,
+    owner: true,
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    nullable: true,
+    onDelete: "cascade",
+  })
   delivery_address!: Address
 
-  @OneToMany(() => FulfillmentItem, (item) => item.fulfillment)
+  @OneToMany(() => FulfillmentItem, (item) => item.fulfillment, {
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    orphanRemoval: true,
+  })
   items = new Collection<FulfillmentItem>(this)
 
-  @OneToMany(() => FulfillmentLabel, (label) => label.fulfillment)
+  @OneToMany(() => FulfillmentLabel, (label) => label.fulfillment, {
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    orphanRemoval: true,
+  })
   labels = new Collection<FulfillmentLabel>(this)
 
   @Property({
@@ -146,12 +162,12 @@ export default class Fulfillment {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ful")
-    this.provider_id ??= this.provider.id
+    this.provider_id ??= this.provider_id ?? this.provider?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ful")
-    this.provider_id ??= this.provider.id
+    this.provider_id ??= this.provider_id ?? this.provider?.id
   }
 }

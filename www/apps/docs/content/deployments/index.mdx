@@ -14,7 +14,7 @@ In this document, you’ll learn about the different ways you can deploy your Me
 A standard Medusa project is made up of the following:
 
 - Medusa backend
-- Medusa admin
+- Medusa Admin
 - One or more storefronts
     
 ![Diagram showcasing the connection between the three deployed components](https://res.cloudinary.com/dza7lstvk/image/upload/v1705999238/Medusa%20Docs/Diagrams/Social_Media_Graphics_2024_options_uxzmlx.jpg)
@@ -27,7 +27,7 @@ This guide details options to consider when deploying each of these components i
 
 You must deploy the Medusa backend before the admin or storefront, as both of them connect to the backend and won’t work without a deployed Medusa backend URL.
 
-![Diagram showcasing how the Medusa admin and its associated services would be deployed](https://res.cloudinary.com/dza7lstvk/image/upload/v1705999287/Medusa%20Docs/Diagrams/Social_Media_Graphics_2024_backend_deployment__1_twbdsd.jpg)
+![Diagram showcasing how the Medusa Admin and its associated services would be deployed](https://res.cloudinary.com/dza7lstvk/image/upload/v1705999287/Medusa%20Docs/Diagrams/Social_Media_Graphics_2024_backend_deployment__1_twbdsd.jpg)
 
 The Medusa backend is a Node.js server. So, it must be deployed to a hosting provider that supports deploying servers, such as Railway, DigitalOcean, AWS, Heroku, etc…
 
@@ -49,11 +49,11 @@ Your backend connects to PostgreSQL and Redis databases. Most hosting providers 
 
 ## Deploying the Medusa Admin
 
-There are two options to deploy the Medusa admin:
+There are two options to deploy the Medusa Admin:
 
 ### Deploy Admin with Backend
 
-Since the Medusa admin is a plugin installed in the backend, you may choose to host it along with the backend. 
+Since the Medusa Admin is a plugin installed in the backend, you may choose to host it along with the backend. 
 
 In this scenario, make sure the hosting provider and plan of your choice provide at least 2GB of RAM, as the admin build requires high RAM usage.
 

@@ -64,7 +64,7 @@ medusaIntegrationTestRunner({
         })
 
         const response = await api.post(
-          `/admin/campaigns/${createdCampaign.id}`,
+          `/admin/campaigns/${createdCampaign.id}?fields=*promotions`,
           {
             name: "test-2",
             campaign_identifier: "test-2",

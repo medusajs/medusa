@@ -1,117 +1,52 @@
 openapi: 3.0.0
 info:
-  version: 1.0.0
+  version: 2.0.0
   title: Medusa Storefront API
   license:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
 tags:
-  - name: Auth
-    description: |
-      Authentication API Routes allow you to manage a customer's session, such as login or log out.
-      You can send authenticated requests for a customer either using the Cookie header or using the JWT Token.
-    externalDocs:
-      description: How to implement customer profiles in your storefront
-      url: https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles
   - name: Carts
-    description: |
-      A cart is a virtual shopping bag that customers can use to add items they want to purchase.
+    description: >
+      A cart is a virtual shopping bag that customers can use to add items they
+      want to purchase.
+
       A cart is then used to checkout and place an order.
     externalDocs:
       description: How to implement cart functionality in your storefront
       url: https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart
+  - name: Currencies
   - name: Customers
-    description: |
-      A customer can register and manage their information such as addresses, orders, payment methods, and more.
+    description: >
+      A customer can register and manage their information such as addresses,
+      orders, payment methods, and more.
     externalDocs:
       description: How to implement customer profiles in your storefront
       url: https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles
-  - name: Gift Cards
-    description: |
-      Customers can use gift cards during checkout to deduct the gift card's balance from the checkout total.
-      The Gift Card API Routes allow retrieving a gift card's details by its code. A gift card can be applied to a cart using the Carts API Routes.
-    externalDocs:
-      description: How to use gift cards in a storefront
-      url: https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards
-  - name: Orders
-    description: |
-      Orders are purchases made by customers, typically through a storefront.
-      Orders are placed and created using the Carts API Routes. The Orders API Routes allow retrieving and claiming orders.
-    externalDocs:
-      description: How to retrieve order details in a storefront
-      url: https://docs.medusajs.com/modules/orders/storefront/retrieve-order-details
-  - name: Order Edits
-    description: |
-      Order edits are changes made to items in an order such as adding, updating their quantity, or deleting them. Order edits are created by the admin.
-      A customer can review order edit requests created by an admin and confirm or decline them.
-    externalDocs:
-      description: How to handle order edits in a storefront
-      url: https://docs.medusajs.com/modules/orders/storefront/handle-order-edits
   - name: Payment Collections
-    description: |
-      A payment collection is useful for managing additional payments, such as for Order Edits, or installment payments.
-  - name: Products
-    description: |
-      Products are saleable items in a store. This also includes [saleable gift cards](https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards) in a store.
-      Using these API Routes, you can filter products by categories, collections, sales channels, and more.
-    externalDocs:
-      description: How to show products in a storefront
-      url: https://docs.medusajs.com/modules/products/storefront/show-products
-  - name: Product Variants
-    description: |
-      Product variants are the actual salable item in your store. Each variant is a combination of the different option values available on the product.
-  - name: Product Categories
-    description: |
-      Products can be categoriezed into categories. A product can be associated more than one category.
-      Using these API Routes, you can list or retrieve a category's details and products.
-    externalDocs:
-      description: How to use product categories in a storefront
-      url: https://docs.medusajs.com/modules/products/storefront/use-categories
-  - name: Product Collections
-    description: |
-      A product collection is used to organize products for different purposes such as marketing or discount purposes. For example, you can create a Summer Collection.
-      Using these API Routes, you can list or retrieve a collection's details and products.
-  - name: Product Tags
-    description: |
-      Product tags are string values that can be used to filter products by.
-      Products can have more than one tag, and products can share tags.
-  - name: Product Types
-    description: |
-      Product types are string values that can be used to filter products by.
-      Products can have more than one tag, and products can share types.
+    description: >
+      A payment collection is useful for managing additional payments, such as
+      for Order Edits, or installment payments.
   - name: Regions
-    description: |
-      Regions are different countries or geographical regions that the commerce store serves customers in.
+    description: >
+      Regions are different countries or geographical regions that the commerce
+      store serves customers in.
+
       Customers can choose what region they're in, which can be used to change the prices shown based on the region and its currency.
     externalDocs:
       description: How to use regions in a storefront
       url: https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions
-  - name: Returns
-    description: |
-      A return can be created by a customer to return items in an order.
-    externalDocs:
-      description: How to create a return in a storefront
-      url: https://docs.medusajs.com/modules/orders/storefront/create-return
-  - name: Return Reasons
-    description: |
-      Return reasons are key-value pairs that are used to specify why an order return is being created.
   - name: Shipping Options
-    description: |
-      A shipping option is used to define the available shipping methods during checkout or when creating a return.
+    description: >
+      A shipping option is used to define the available shipping methods during
+      checkout or when creating a return.
     externalDocs:
       description: Shipping Option architecture
       url: https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-option
-  - name: Swaps
-    description: |
-      A swap is created by a customer or an admin to exchange an item with a new one.
-      Creating a swap implicitely includes creating a return for the item being exchanged.
-    externalDocs:
-      description: How to create a swap in a storefront
-      url: https://docs.medusajs.com/modules/orders/storefront/create-swap
 servers:
   - url: http://localhost:9000
   - url: https://api.medusa-commerce.com
-paths: { }
+paths: {}
 components:
   responses:
     default_error:
@@ -121,9 +56,9 @@ components:
           schema:
             $ref: "#/components/schemas/Error"
           example:
-            code: "unknown_error"
-            message: "An unknown error occurred."
-            type: "unknown_error"
+            code: unknown_error
+            message: An unknown error occurred.
+            type: unknown_error
     invalid_state_error:
       description: Invalid State Error
       content:
@@ -131,9 +66,10 @@ components:
           schema:
             $ref: "#/components/schemas/Error"
           example:
-            code: "unknown_error"
-            message: "The request conflicted with another request. You may retry the request with the provided Idempotency-Key."
-            type: "QueryRunnerAlreadyReleasedError"
+            code: unknown_error
+            message: The request conflicted with another request. You may retry the request
+              with the provided Idempotency-Key.
+            type: QueryRunnerAlreadyReleasedError
     invalid_request_error:
       description: Invalid Request Error
       content:
@@ -141,9 +77,9 @@ components:
           schema:
             $ref: "#/components/schemas/Error"
           example:
-            code: "invalid_request_error"
-            message: "Discount with code TEST already exists."
-            type: "duplicate_error"
+            code: invalid_request_error
+            message: Discount with code TEST already exists.
+            type: duplicate_error
     not_found_error:
       description: Not Found Error
       content:
@@ -151,8 +87,8 @@ components:
           schema:
             $ref: "#/components/schemas/Error"
           example:
-            message: "Entity with id 1 was not found"
-            type: "not_found"
+            message: Entity with id 1 was not found
+            type: not_found
     400_error:
       description: Client Error or Multiple Errors
       content:
@@ -184,7 +120,7 @@ components:
             default_error:
               $ref: "#/components/examples/default_error"
     unauthorized:
-      description: 'User is not authorized. Must log in first'
+      description: User is not authorized. Must log in first
       content:
         text/plain:
           schema:
@@ -192,7 +128,7 @@ components:
             default: Unauthorized
             example: Unauthorized
     incorrect_credentials:
-      description: 'User does not exist or incorrect credentials'
+      description: User does not exist or incorrect credentials
       content:
         text/plain:
           schema:
@@ -203,44 +139,45 @@ components:
     not_allowed_error:
       summary: Not Allowed Error
       value:
-        message: "Discount must be set to dynamic"
-        type: "not_allowed"
+        message: Discount must be set to dynamic
+        type: not_allowed
     invalid_data_error:
       summary: Invalid Data Error
       value:
-        message: "first_name must be a string"
-        type: "invalid_data"
+        message: first_name must be a string
+        type: invalid_data
     multiple_errors:
       summary: Multiple Errors
       value:
-        message: "Provided request body contains errors. Please check the data and retry the request"
+        message: Provided request body contains errors. Please check the data and retry
+          the request
         errors:
-          - message: "first_name must be a string"
-            type: "invalid_data"
-          - message: "Discount must be set to dynamic"
-            type: "not_allowed"
+          - message: first_name must be a string
+            type: invalid_data
+          - message: Discount must be set to dynamic
+            type: not_allowed
     database_error:
       summary: Database Error
       value:
-        code: "api_error"
-        message: "An error occured while hashing password"
-        type: "database_error"
+        code: api_error
+        message: An error occured while hashing password
+        type: database_error
     unexpected_state_error:
       summary: Unexpected State Error
       value:
-        message: "cart.total must be defined"
-        type: "unexpected_state"
+        message: cart.total must be defined
+        type: unexpected_state
     invalid_argument_error:
       summary: Invalid Argument Error
       value:
-        message: "cart.total must be defined"
-        type: "unexpected_state"
+        message: cart.total must be defined
+        type: unexpected_state
     default_error:
       summary: Default Error
       value:
-        code: "unknown_error"
-        message: "An unknown error occurred."
-        type: "unknown_error"
+        code: unknown_error
+        message: An unknown error occurred.
+        type: unknown_error
   securitySchemes:
     jwt_token:
       type: http
@@ -251,37 +188,56 @@ components:
       x-displayName: Cookie Session ID
       in: cookie
       name: connect.sid
-      description: |
+      description: >
         Use a cookie session to send authenticated requests.
+
 
         ### How to Obtain the Cookie Session
 
+
         If you're sending requests through a browser, using JS Client, or using tools like Postman, the cookie session should be automatically set when the customer is logged in.
+
 
         If you're sending requests using cURL, you must set the Session ID in the cookie manually.
 
+
         To do that, send a request to [authenticate the customer](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
 
+
         ```bash
+
         curl -v --location --request POST 'https://medusa-url.com/store/auth' \
+
         --header 'Content-Type: application/json' \
+
         --data-raw '{
           "email": "user@example.com",
           "password": "supersecret"
         }'
+
         ```
+
 
         The headers will be logged in the terminal as well as the response. You should find in the headers a Cookie header similar to this:
 
+
         ```bash
+
         Set-Cookie: connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
+
         ```
+
 
         Copy the value after `connect.sid` (without the `;` at the end) and pass it as a cookie in subsequent requests as the following:
 
+
         ```bash
+
         curl --location --request GET 'https://medusa-url.com/store/customers/me/orders' \
+
         --header 'Cookie: connect.sid={sid}'
+
         ```
-        
+
+
         Where `{sid}` is the value of `connect.sid` that you copied.

@@ -12,11 +12,11 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
-  MapToConfig,
   isString,
   kebabCase,
   lowerCaseFirst,
   mapObjectTo,
+  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
@@ -33,20 +33,53 @@ type BaseMethods =
   | "delete"
   | "softDelete"
   | "restore"
+  | "create"
+  | "update"
 
 const readMethods = ["retrieve", "list", "listAndCount"] as BaseMethods[]
-const writeMethods = ["delete", "softDelete", "restore"] as BaseMethods[]
+const writeMethods = [
+  "delete",
+  "softDelete",
+  "restore",
+  "create",
+  "update",
+] as BaseMethods[]
 
 const methods: BaseMethods[] = [...readMethods, ...writeMethods]
 
+type ModelDTOConfig = {
+  dto: object
+  create?: object
+  update?: object
+}
+type ModelDTOConfigRecord = Record<any, ModelDTOConfig>
+type ModelNamingConfig = {
+  singular?: string
+  plural?: string
+}
+
 type ModelsConfigTemplate = {
-  [ModelName: string]: { singular?: string; plural?: string; dto: object }
+  [ModelName: string]: ModelDTOConfig & ModelNamingConfig
 }
 
 type ExtractSingularName<
   T extends Record<any, any>,
   K = keyof T
 > = T[K] extends { singular?: string } ? T[K]["singular"] : K
+
+type CreateMethodName<
+  TModelDTOConfig extends ModelDTOConfigRecord,
+  TModelName = keyof TModelDTOConfig
+> = TModelDTOConfig[TModelName] extends { create?: object }
+  ? `create${ExtractPluralName<TModelDTOConfig, TModelName>}`
+  : never
+
+type UpdateMethodName<
+  TModelDTOConfig extends ModelDTOConfigRecord,
+  TModelName = keyof TModelDTOConfig
+> = TModelDTOConfig[TModelName] extends { update?: object }
+  ? `update${ExtractPluralName<TModelDTOConfig, TModelName>}`
+  : never
 
 type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
   plural?: string
@@ -100,41 +133,41 @@ export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
 export type AbstractModuleService<
   TContainer,
   TMainModelDTO,
-  TOtherModelNamesAndAssociatedDTO extends ModelsConfigTemplate
+  TModelDTOConfig extends ModelsConfigTemplate
 > = AbstractModuleServiceBase<TContainer, TMainModelDTO> & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `retrieve${ExtractSingularName<
-    TOtherModelNamesAndAssociatedDTO,
-    K
+  [TModelName in keyof TModelDTOConfig as `retrieve${ExtractSingularName<
+    TModelDTOConfig,
+    TModelName
   > &
     string}`]: (
     id: string,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ) => Promise<TOtherModelNamesAndAssociatedDTO[K & string]["dto"]>
+  ) => Promise<TModelDTOConfig[TModelName & string]["dto"]>
 } & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `list${ExtractPluralName<
-    TOtherModelNamesAndAssociatedDTO,
-    K
+  [TModelName in keyof TModelDTOConfig as `list${ExtractPluralName<
+    TModelDTOConfig,
+    TModelName
   > &
     string}`]: (
     filters?: any,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ) => Promise<TOtherModelNamesAndAssociatedDTO[K & string]["dto"][]>
+  ) => Promise<TModelDTOConfig[TModelName & string]["dto"][]>
 } & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `listAndCount${ExtractPluralName<
-    TOtherModelNamesAndAssociatedDTO,
-    K
+  [TModelName in keyof TModelDTOConfig as `listAndCount${ExtractPluralName<
+    TModelDTOConfig,
+    TModelName
   > &
     string}`]: {
     (filters?: any, config?: FindConfig<any>, sharedContext?: Context): Promise<
-      [TOtherModelNamesAndAssociatedDTO[K & string]["dto"][], number]
+      [TModelDTOConfig[TModelName & string]["dto"][], number]
     >
   }
 } & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `delete${ExtractPluralName<
-    TOtherModelNamesAndAssociatedDTO,
-    K
+  [TModelName in keyof TModelDTOConfig as `delete${ExtractPluralName<
+    TModelDTOConfig,
+    TModelName
   > &
     string}`]: {
     (
@@ -143,9 +176,9 @@ export type AbstractModuleService<
     ): Promise<void>
   }
 } & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `softDelete${ExtractPluralName<
-    TOtherModelNamesAndAssociatedDTO,
-    K
+  [TModelName in keyof TModelDTOConfig as `softDelete${ExtractPluralName<
+    TModelDTOConfig,
+    TModelName
   > &
     string}`]: {
     <TReturnableLinkableKeys extends string>(
@@ -155,9 +188,9 @@ export type AbstractModuleService<
     ): Promise<Record<string, string[]> | void>
   }
 } & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `restore${ExtractPluralName<
-    TOtherModelNamesAndAssociatedDTO,
-    K
+  [TModelName in keyof TModelDTOConfig as `restore${ExtractPluralName<
+    TModelDTOConfig,
+    TModelName
   > &
     string}`]: {
     <TReturnableLinkableKeys extends string>(
@@ -165,6 +198,46 @@ export type AbstractModuleService<
       config?: RestoreReturn<TReturnableLinkableKeys>,
       sharedContext?: Context
     ): Promise<Record<string, string[]> | void>
+  }
+} & {
+  [TModelName in keyof TModelDTOConfig as CreateMethodName<
+    TModelDTOConfig,
+    TModelName
+  >]: {
+    (
+      data: TModelDTOConfig[TModelName]["create"][],
+      sharedContext?: Context
+    ): Promise<TModelDTOConfig[TModelName]["dto"][]>
+  }
+} & {
+  [TModelName in keyof TModelDTOConfig as CreateMethodName<
+    TModelDTOConfig,
+    TModelName
+  >]: {
+    (
+      data: TModelDTOConfig[TModelName]["create"],
+      sharedContext?: Context
+    ): Promise<TModelDTOConfig[TModelName]["dto"]>
+  }
+} & {
+  [TModelName in keyof TModelDTOConfig as UpdateMethodName<
+    TModelDTOConfig,
+    TModelName
+  >]: {
+    (
+      data: TModelDTOConfig[TModelName]["update"][],
+      sharedContext?: Context
+    ): Promise<TModelDTOConfig[TModelName]["dto"][]>
+  }
+} & {
+  [TModelName in keyof TModelDTOConfig as UpdateMethodName<
+    TModelDTOConfig,
+    TModelName
+  >]: {
+    (
+      data: TModelDTOConfig[TModelName]["update"],
+      sharedContext?: Context
+    ): Promise<TModelDTOConfig[TModelName]["dto"]>
   }
 }
 
@@ -175,13 +248,11 @@ export type AbstractModuleService<
  *
  * const otherModels = new Set([
  *   Currency,
- *   MoneyAmount,
+ *   Price,
  *   PriceList,
  *   PriceListRule,
  *   PriceListRuleValue,
  *   PriceRule,
- *   PriceSetMoneyAmount,
- *   PriceSetMoneyAmountRules,
  *   PriceSetRuleType,
  *   RuleType,
  * ])
@@ -192,11 +263,7 @@ export type AbstractModuleService<
  *   // The configuration of each entity also accept singular/plural properties, if not provided then it is using english pluralization
  *   {
  *     Currency: { dto: PricingTypes.CurrencyDTO }
- *     MoneyAmount: { dto: PricingTypes.MoneyAmountDTO }
- *     PriceSetMoneyAmount: { dto: PricingTypes.PriceSetMoneyAmountDTO }
- *     PriceSetMoneyAmountRules: {
- *       dto: PricingTypes.PriceSetMoneyAmountRulesDTO
- *     }
+ *     Price: { dto: PricingTypes.PriceDTO }
  *     PriceRule: { dto: PricingTypes.PriceRuleDTO }
  *     RuleType: { dto: PricingTypes.RuleTypeDTO }
  *     PriceList: { dto: PricingTypes.PriceListDTO }
@@ -211,7 +278,7 @@ export type AbstractModuleService<
 export function abstractModuleServiceFactory<
   TContainer,
   TMainModelDTO,
-  TOtherModelNamesAndAssociatedDTO extends ModelsConfigTemplate
+  ModelsConfig extends ModelsConfigTemplate
 >(
   mainModel: Constructor<any>,
   otherModels: ModelConfiguration[],
@@ -220,7 +287,7 @@ export function abstractModuleServiceFactory<
   new (container: TContainer): AbstractModuleService<
     TContainer,
     TMainModelDTO,
-    TOtherModelNamesAndAssociatedDTO
+    ModelsConfig
   >
 } {
   const buildMethodNamesFromModel = (
@@ -302,6 +369,44 @@ export function abstractModuleServiceFactory<
         }
 
         applyMethod(methodImplementation, 2)
+
+        break
+      case "create":
+        methodImplementation = async function <T extends object>(
+          this: AbstractModuleService_,
+          data = [],
+          sharedContext: Context = {}
+        ): Promise<T | T[]> {
+          const serviceData = Array.isArray(data) ? data : [data]
+          const service = this.__container__[serviceRegistrationName]
+          const entities = await service.create(serviceData, sharedContext)
+          const response = Array.isArray(data) ? entities : entities[0]
+
+          return await this.baseRepository_.serialize<T | T[]>(response, {
+            populate: true,
+          })
+        }
+
+        applyMethod(methodImplementation, 1)
+
+        break
+      case "update":
+        methodImplementation = async function <T extends object>(
+          this: AbstractModuleService_,
+          data = [],
+          sharedContext: Context = {}
+        ): Promise<T | T[]> {
+          const serviceData = Array.isArray(data) ? data : [data]
+          const service = this.__container__[serviceRegistrationName]
+          const entities = await service.update(serviceData, sharedContext)
+          const response = Array.isArray(data) ? entities : entities[0]
+
+          return await this.baseRepository_.serialize<T | T[]>(response, {
+            populate: true,
+          })
+        }
+
+        applyMethod(methodImplementation, 1)
 
         break
       case "list":
@@ -400,18 +505,15 @@ export function abstractModuleServiceFactory<
             }))
           )
 
-          let mappedCascadedEntitiesMap
-          if (config.returnLinkableKeys) {
-            // Map internal table/column names to their respective external linkable keys
-            // eg: product.id = product_id, variant.id = variant_id
-            mappedCascadedEntitiesMap = mapObjectTo(
-              cascadedEntitiesMap,
-              entityNameToLinkableKeysMap,
-              {
-                pick: config.returnLinkableKeys,
-              }
-            )
-          }
+          // Map internal table/column names to their respective external linkable keys
+          // eg: product.id = product_id, variant.id = variant_id
+          const mappedCascadedEntitiesMap = mapObjectTo(
+            cascadedEntitiesMap,
+            entityNameToLinkableKeysMap,
+            {
+              pick: config.returnLinkableKeys,
+            }
+          )
 
           return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
         }
@@ -435,17 +537,15 @@ export function abstractModuleServiceFactory<
           ].restore(primaryKeyValues_, sharedContext)
 
           let mappedCascadedEntitiesMap
-          if (config.returnLinkableKeys) {
-            // Map internal table/column names to their respective external linkable keys
-            // eg: product.id = product_id, variant.id = variant_id
-            mappedCascadedEntitiesMap = mapObjectTo(
-              cascadedEntitiesMap,
-              entityNameToLinkableKeysMap,
-              {
-                pick: config.returnLinkableKeys,
-              }
-            )
-          }
+          // Map internal table/column names to their respective external linkable keys
+          // eg: product.id = product_id, variant.id = variant_id
+          mappedCascadedEntitiesMap = mapObjectTo(
+            cascadedEntitiesMap,
+            entityNameToLinkableKeysMap,
+            {
+              pick: config.returnLinkableKeys,
+            }
+          )
 
           return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
         }
@@ -467,11 +567,19 @@ export function abstractModuleServiceFactory<
       this.__container__ = container
       this.baseRepository_ = container.baseRepository
 
-      try {
-        this.eventBusModuleService_ = container.eventBusModuleService
-      } catch {
-        /* ignore */
-      }
+      const hasEventBusModuleService = Object.keys(this.__container__).find(
+        // TODO: Should use ModuleRegistrationName.EVENT_BUS but it would require to move it to the utils package to prevent circular dependencies
+        (key) => key === "eventBusModuleService"
+      )
+      const hasEventBusService = Object.keys(this.__container__).find(
+        (key) => key === "eventBusService"
+      )
+
+      this.eventBusModuleService_ = hasEventBusService
+        ? this.__container__.eventBusService
+        : hasEventBusModuleService
+        ? this.__container__.eventBusModuleService
+        : undefined
     }
 
     protected async emitEvents_(groupedEvents) {
@@ -481,7 +589,7 @@ export function abstractModuleServiceFactory<
 
       const promises: Promise<void>[] = []
       for (const group of Object.keys(groupedEvents)) {
-        promises.push(this.eventBusModuleService_?.emit(groupedEvents[group]))
+        promises.push(this.eventBusModuleService_.emit(groupedEvents[group]))
       }
 
       await Promise.all(promises)
@@ -524,9 +632,5 @@ export function abstractModuleServiceFactory<
 
   return AbstractModuleService_ as unknown as new (
     container: TContainer
-  ) => AbstractModuleService<
-    TContainer,
-    TMainModelDTO,
-    TOtherModelNamesAndAssociatedDTO
-  >
+  ) => AbstractModuleService<TContainer, TMainModelDTO, ModelsConfig>
 }

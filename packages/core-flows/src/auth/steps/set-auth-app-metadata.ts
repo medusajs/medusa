@@ -1,7 +1,7 @@
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-import { IAuthModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IAuthModuleService } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
 
 type StepInput = {

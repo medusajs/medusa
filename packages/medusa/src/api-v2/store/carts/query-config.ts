@@ -4,6 +4,25 @@ export const defaultStoreCartFields = [
   "email",
   "created_at",
   "updated_at",
+  "total",
+  "subtotal",
+  "tax_total",
+  "discount_total",
+  "discount_tax_total",
+  "original_total",
+  "original_tax_total",
+  "item_total",
+  "item_subtotal",
+  "item_tax_total",
+  "original_item_total",
+  "original_item_subtotal",
+  "original_item_tax_total",
+  "shipping_total",
+  "shipping_subtotal",
+  "shipping_tax_total",
+  "original_shipping_tax_total",
+  "original_shipping_tax_subtotal",
+  "original_shipping_total",
   "items.id",
   "items.variant_id",
   "items.product_id",
@@ -66,6 +85,7 @@ export const defaultStoreCartFields = [
   "region.id",
   "region.name",
   "region.currency_code",
+  "region.automatic_taxes",
   "sales_channel_id",
 
   // TODO: To be updated when payment sessions are introduces in the Rest API
@@ -74,38 +94,10 @@ export const defaultStoreCartFields = [
   "payment_collection.payment_sessions",
 ]
 
-export const defaultStoreCartRelations = [
-  "items",
-  "items.tax_lines",
-  "items.adjustments",
-  "region",
-  "customer",
-  "customer.groups",
-  "shipping_address",
-  "billing_address",
-  "shipping_methods",
-  "shipping_methods.tax_lines",
-  "shipping_methods.adjustments",
-]
-
-export const allowedRelations = [
-  "items",
-  "items.tax_lines",
-  "items.adjustments",
-  "region",
-  "customer",
-  "customer.groups",
-  "shipping_address",
-  "billing_address",
-  "shipping_methods",
-  "shipping_methods.tax_lines",
-  "shipping_methods.adjustments",
-  "sales_channel",
-]
+const allowedFields = [...defaultStoreCartFields]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultStoreCartFields,
-  defaultRelations: defaultStoreCartRelations,
-  allowedRelations: defaultStoreCartRelations,
+  defaults: defaultStoreCartFields,
+  allowed: allowedFields,
   isList: false,
 }

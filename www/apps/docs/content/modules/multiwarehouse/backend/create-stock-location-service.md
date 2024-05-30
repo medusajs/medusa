@@ -19,7 +19,7 @@ This guide will only explain what is required to create in your custom stock loc
 
 :::note
 
-It should be noted that the Medusa backend expects the stock location module to have entities for a location and a location address, as it uses the IDs of those entities when orchestrating between different modules and the in the API Routes it exposes. You can learn more about this in the [Stock Location Module Architecture documentation](../stock-location-module.md).
+It should be noted that the Medusa backend expects the Stock Location Module to have entities for a location and a location address, as it uses the IDs of those entities when orchestrating between different modules and the in the API Routes it exposes. You can learn more about this in the [Stock Location Module Architecture documentation](../stock-location-module.md).
 
 :::
 

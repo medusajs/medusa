@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # ShippingOptionService
 
@@ -12,13 +12,13 @@ Provides layer to manipulate profiles.
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new ShippingOptionService"/>
+<TypeList types={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new ShippingOptionService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"providerService_","type":"[FulfillmentProviderService](services.FulfillmentProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionService_","type":"[RegionService](services.RegionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"requirementRepository_","type":"Repository&#60;[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"optionRepository_","type":"Repository&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"methodRepository_","type":"Repository&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter_","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ShippingOptionService"/>
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"providerService_","type":"[FulfillmentProviderService](services.FulfillmentProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionService_","type":"[RegionService](services.RegionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"requirementRepository_","type":"Repository&#60;[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"optionRepository_","type":"Repository&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"methodRepository_","type":"Repository&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter_","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ShippingOptionService"/>
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
@@ -38,21 +38,21 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 ### shouldRetryTransaction\_
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -62,15 +62,15 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 ### validateRequirement\_
 
@@ -78,31 +78,31 @@ Validates a requirement
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"requirement","type":"`ValidateRequirementTypeInput`","description":"the requirement to validate","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"optionId","type":"`undefined` \\| `string`","description":"the id to validate the requirement","optional":false,"defaultValue":"undefined","expandable":false,"children":[]}]}  sectionTitle="validateRequirement_"/>
+<TypeList types={[{"name":"requirement","type":"`ValidateRequirementTypeInput`","description":"the requirement to validate","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"optionId","type":"`undefined` \\| `string`","description":"the id to validate the requirement","optional":false,"defaultValue":"undefined","expandable":false,"children":[]}]}  sectionTitle="validateRequirement_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;","optional":false,"defaultValue":"","description":"a validated shipping requirement","expandable":false,"children":[]}]}  sectionTitle="validateRequirement_"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;","optional":false,"defaultValue":"","description":"a validated shipping requirement","expandable":false,"children":[]}]}  sectionTitle="validateRequirement_"/>
 
 ### list
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","description":"config object","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="list"/>
+<TypeList types={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","description":"config object","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="list"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="list"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="list"/>
 
 ### listAndCount
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","description":"config object","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="listAndCount"/>
+<TypeList types={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","description":"config object","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="listAndCount"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="listAndCount"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="listAndCount"/>
 
 ### retrieve
 
@@ -111,11 +111,11 @@ Throws in case of DB Error and if profile was not found.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"optionId","type":"`any`","description":"the id of the profile to get.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","description":"the options to get a profile","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+<TypeList types={[{"name":"optionId","type":"`any`","description":"the id of the profile to get.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","description":"the options to get a profile","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the profile document.","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the profile document.","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 ### updateShippingMethod
 
@@ -124,11 +124,11 @@ and its methods should be copied to an order/swap entity.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"id","type":"`string`","description":"the id of the shipping method to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`ShippingMethodUpdate`","description":"the values to update the method with","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateShippingMethod"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"the id of the shipping method to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`ShippingMethodUpdate`","description":"the values to update the method with","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateShippingMethod"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;undefined \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting shipping method","expandable":false,"children":[]}]}  sectionTitle="updateShippingMethod"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;undefined \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting shipping method","expandable":false,"children":[]}]}  sectionTitle="updateShippingMethod"/>
 
 ### deleteShippingMethods
 
@@ -136,11 +136,11 @@ Removes a given shipping method
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"shippingMethods","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx) \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]","description":"the shipping method to remove","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="deleteShippingMethods"/>
+<TypeList types={[{"name":"shippingMethods","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx) \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]","description":"the shipping method to remove","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="deleteShippingMethods"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]&#62;","optional":false,"defaultValue":"","description":"removed shipping methods","expandable":false,"children":[]}]}  sectionTitle="deleteShippingMethods"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]&#62;","optional":false,"defaultValue":"","description":"removed shipping methods","expandable":false,"children":[]}]}  sectionTitle="deleteShippingMethods"/>
 
 ### createShippingMethod
 
@@ -148,11 +148,11 @@ Creates a shipping method for a given cart.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"optionId","type":"`string`","description":"the id of the option to use for the method.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"the optional provider data to use.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`CreateShippingMethodDto`","description":"the cart to create the shipping method for.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createShippingMethod"/>
+<TypeList types={[{"name":"optionId","type":"`string`","description":"the id of the option to use for the method.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"the optional provider data to use.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`CreateShippingMethodDto`","description":"the cart to create the shipping method for.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createShippingMethod"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting shipping method.","expandable":false,"children":[]}]}  sectionTitle="createShippingMethod"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting shipping method.","expandable":false,"children":[]}]}  sectionTitle="createShippingMethod"/>
 
 ### validateCartOption
 
@@ -162,21 +162,21 @@ match, or when the shipping option requirements are not satisfied.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"option","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)","description":"the option object to check","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart object to check against","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateCartOption"/>
+<TypeList types={[{"name":"option","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)","description":"the option object to check","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart object to check against","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateCartOption"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;null \\| [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the validated shipping option","expandable":false,"children":[]}]}  sectionTitle="validateCartOption"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;null \\| [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the validated shipping option","expandable":false,"children":[]}]}  sectionTitle="validateCartOption"/>
 
 ### validateAndMutatePrice
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"option","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx) \\| `CreateShippingOptionInput`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"priceInput","type":"`ValidatePriceTypeAndAmountInput`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateAndMutatePrice"/>
+<TypeList types={[{"name":"option","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx) \\| `CreateShippingOptionInput`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"priceInput","type":"`ValidatePriceTypeAndAmountInput`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateAndMutatePrice"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;CreateShippingOptionInput \\| Omit&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx), \"beforeInsert\"&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="validateAndMutatePrice"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;CreateShippingOptionInput \\| Omit&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx), \"beforeInsert\"&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="validateAndMutatePrice"/>
 
 ### create
 
@@ -186,11 +186,11 @@ defaults to false.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"data","type":"`CreateShippingOptionInput`","description":"the data to create shipping options","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
+<TypeList types={[{"name":"data","type":"`CreateShippingOptionInput`","description":"the data to create shipping options","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]}  sectionTitle="create"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 ### validatePriceType\_
 
@@ -198,11 +198,11 @@ Validates a shipping option price
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"priceType","type":"[ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx)","description":"the price to validate","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"option","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)","description":"the option to validate against","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validatePriceType_"/>
+<TypeList types={[{"name":"priceType","type":"[ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx)","description":"the price to validate","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"option","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)","description":"the option to validate against","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validatePriceType_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx)&#62;","optional":false,"defaultValue":"","description":"the validated price","expandable":false,"children":[]}]}  sectionTitle="validatePriceType_"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx)&#62;","optional":false,"defaultValue":"","description":"the validated price","expandable":false,"children":[]}]}  sectionTitle="validatePriceType_"/>
 
 ### update
 
@@ -212,11 +212,11 @@ will throw errors if metadata or product updates are attempted.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"optionId","type":"`string`","description":"the id of the option. Must be a string that\n  can be casted to an ObjectId","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`UpdateShippingOptionInput`","description":"an object with the update values.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
+<TypeList types={[{"name":"optionId","type":"`string`","description":"the id of the option. Must be a string that\n  can be casted to an ObjectId","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`UpdateShippingOptionInput`","description":"an object with the update values.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the update result.","expandable":false,"children":[]}]}  sectionTitle="update"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the update result.","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
 ### delete
 
@@ -224,11 +224,11 @@ Deletes a profile with a given profile id.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"optionId","type":"`string`","description":"the id of the profile to delete. Must be\n  castable as an ObjectId","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"optionId","type":"`string`","description":"the id of the profile to delete. Must be\n  castable as an ObjectId","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void \\| [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 ### addRequirement
 
@@ -237,11 +237,11 @@ is allowed.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"optionId","type":"`string`","description":"the option to add the requirement to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"requirement","type":"[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)","description":"the requirement for the option.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addRequirement"/>
+<TypeList types={[{"name":"optionId","type":"`string`","description":"the option to add the requirement to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"requirement","type":"[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)","description":"the requirement for the option.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addRequirement"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of update","expandable":false,"children":[]}]}  sectionTitle="addRequirement"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of update","expandable":false,"children":[]}]}  sectionTitle="addRequirement"/>
 
 ### removeRequirement
 
@@ -249,21 +249,21 @@ Removes a requirement from a shipping option
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"requirementId","type":"`any`","description":"the id of the requirement to remove","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="removeRequirement"/>
+<TypeList types={[{"name":"requirementId","type":"`any`","description":"the id of the requirement to remove","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="removeRequirement"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of update","expandable":false,"children":[]}]}  sectionTitle="removeRequirement"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void \\| [ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of update","expandable":false,"children":[]}]}  sectionTitle="removeRequirement"/>
 
 ### updateShippingProfile
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"optionIds","type":"`string` \\| `string`[]","description":"ID or IDs of the shipping options to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"profileId","type":"`string`","description":"Shipping profile ID to update the shipping options with","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateShippingProfile"/>
+<TypeList types={[{"name":"optionIds","type":"`string` \\| `string`[]","description":"ID or IDs of the shipping options to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"profileId","type":"`string`","description":"Shipping profile ID to update the shipping options with","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateShippingProfile"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;","optional":false,"defaultValue":"","description":"updated shipping options","expandable":false,"children":[]}]}  sectionTitle="updateShippingProfile"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;","optional":false,"defaultValue":"","description":"updated shipping options","expandable":false,"children":[]}]}  sectionTitle="updateShippingProfile"/>
 
 ### getPrice\_
 
@@ -273,8 +273,8 @@ price type "calculated".
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"option","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)","description":"the shipping option to retrieve the price\n  for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"the shipping data to retrieve the price.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`undefined` \\| [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the context in which the price should be\n  retrieved.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getPrice_"/>
+<TypeList types={[{"name":"option","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)","description":"the shipping option to retrieve the price\n  for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"the shipping data to retrieve the price.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`undefined` \\| [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the context in which the price should be\n  retrieved.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getPrice_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the price of the shipping option.","expandable":false,"children":[]}]}  sectionTitle="getPrice_"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the price of the shipping option.","expandable":false,"children":[]}]}  sectionTitle="getPrice_"/>

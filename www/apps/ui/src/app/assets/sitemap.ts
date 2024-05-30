@@ -2,7 +2,7 @@ import { MetadataRoute } from "next"
 
 import { docsConfig } from "@/config/docs"
 import { absoluteUrl } from "@/lib/absolute-url"
-import { SidebarItemType } from "docs-ui"
+import { SidebarItemType } from "types"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()

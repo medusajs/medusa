@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/payment",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Medusa Payment module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,7 +28,7 @@
     "watch:test": "tsc --build tsconfig.spec.json --watch",
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build && tsc-alias -p tsconfig.json",
     "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
-    "test": "jest --runInBand --bail --forceExit -- src/**/__tests__/**/*.ts",
+    "test": "jest --runInBand --bail --passWithNoTests --forceExit -- src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts",
     "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
     "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial",
@@ -40,7 +40,7 @@
     "@mikro-orm/cli": "5.9.7",
     "cross-env": "^5.2.1",
     "jest": "^29.6.3",
-    "medusa-test-utils": "^1.1.40",
+    "medusa-test-utils": "^1.1.44",
     "rimraf": "^3.0.2",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
@@ -48,15 +48,15 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.12.5",
-    "@medusajs/types": "^1.11.9",
-    "@medusajs/utils": "^1.11.2",
+    "@medusajs/modules-sdk": "^1.12.11",
+    "@medusajs/types": "^1.11.16",
+    "@medusajs/utils": "^1.11.9",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",
     "awilix": "^8.0.0",
     "bignumber.js": "^9.1.2",
-    "dotenv": "^16.1.4",
+    "dotenv": "^16.4.5",
     "knex": "2.4.2"
   }
 }

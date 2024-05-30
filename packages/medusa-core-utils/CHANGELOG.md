@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.2
+
+### Patch Changes
+
+- [#7003](https://github.com/medusajs/medusa/pull/7003) [`c3efac5a0d`](https://github.com/medusajs/medusa/commit/c3efac5a0d6cfa38e1af8d248138fa83934a8ceb) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-core-utils): add missing awilix dependency
+
 ## 1.2.1
 
 ### Patch Changes

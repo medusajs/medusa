@@ -1,30 +1,30 @@
+import { BigNumberInput } from "@medusajs/types"
+
 export type VirtualOrder = {
   items: {
     id: string
-    unit_price: number
-    quantity: number
+    unit_price: BigNumberInput
+    quantity: BigNumberInput
 
     detail: {
       id?: string
-      quantity: number
-      shipped_quantity: number
-      fulfilled_quantity: number
-      return_requested_quantity: number
-      return_received_quantity: number
-      return_dismissed_quantity: number
-      written_off_quantity: number
+      quantity: BigNumberInput
+      shipped_quantity: BigNumberInput
+      fulfilled_quantity: BigNumberInput
+      return_requested_quantity: BigNumberInput
+      return_received_quantity: BigNumberInput
+      return_dismissed_quantity: BigNumberInput
+      written_off_quantity: BigNumberInput
       metadata?: Record<string, unknown>
     }
   }[]
 
   shipping_methods: {
     id: string
-    price: number
+    price: BigNumberInput
   }[]
 
-  summary: {
-    total: number
-  }
+  total: BigNumberInput
 
   metadata?: Record<string, unknown>
 }
@@ -36,23 +36,23 @@ export enum EVENT_STATUS {
 }
 
 export interface OrderSummaryCalculated {
-  currentOrderTotal: number
-  originalOrderTotal: number
-  transactionTotal: number
-  futureDifference: number
-  pendingDifference: number
-  futureTemporaryDifference: number
-  temporaryDifference: number
-  differenceSum: number
+  currentOrderTotal: BigNumberInput
+  originalOrderTotal: BigNumberInput
+  transactionTotal: BigNumberInput
+  futureDifference: BigNumberInput
+  pendingDifference: BigNumberInput
+  futureTemporaryDifference: BigNumberInput
+  temporaryDifference: BigNumberInput
+  differenceSum: BigNumberInput
 }
 
 export interface OrderTransaction {
-  amount: number
+  amount: BigNumberInput
 }
 
 export interface OrderChangeEvent {
   action: string
-  amount?: number
+  amount?: BigNumberInput
 
   reference?: string
   reference_id?: string
@@ -66,7 +66,7 @@ export interface OrderChangeEvent {
   resolve?: {
     group_id?: string
     reference_id?: string
-    amount?: number
+    amount?: BigNumberInput
   }
 }
 
@@ -91,8 +91,8 @@ export interface ActionTypeDefinition {
   versioning?: boolean
   void?: boolean
   commitsAction?: string
-  operation?: (obj: OrderReferences) => number | void
-  revert?: (obj: OrderReferences) => number | void
+  operation?: (obj: OrderReferences) => BigNumberInput | void
+  revert?: (obj: OrderReferences) => BigNumberInput | void
   validate?: (obj: OrderReferences) => void
   [key: string]: unknown
 }

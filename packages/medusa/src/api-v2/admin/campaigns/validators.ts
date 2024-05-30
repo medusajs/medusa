@@ -1,120 +1,55 @@
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
-import {
-  IsArray,
-  IsDateString,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { Transform, Type } from "class-transformer"
-
 import { CampaignBudgetType } from "@medusajs/utils"
-import { transformOptionalDate } from "../../../utils/validators/date-transform"
+import { createFindParams, createSelectParams } from "../../utils/validators"
+import { z } from "zod"
 
-export class AdminGetCampaignsCampaignParams extends FindParams {}
+export const AdminGetCampaignParams = createSelectParams()
 
-export class AdminGetCampaignsParams extends extendedFindParamsMixin({
-  limit: 100,
+export type AdminGetCampaignsParamsType = z.infer<
+  typeof AdminGetCampaignsParams
+>
+export const AdminGetCampaignsParams = createFindParams({
   offset: 0,
-}) {
-  @IsString()
-  @IsOptional()
-  campaign_identifier?: string
+  limit: 50,
+}).merge(
+  z.object({
+    q: z.string().optional(),
+    campaign_identifier: z.string().optional(),
+    currency: z.string().optional(),
+    $and: z.lazy(() => AdminGetCampaignsParams.array()).optional(),
+    $or: z.lazy(() => AdminGetCampaignsParams.array()).optional(),
+  })
+)
 
-  @IsString()
-  @IsOptional()
-  currency?: string
-}
+const CreateCampaignBudget = z.object({
+  type: z.nativeEnum(CampaignBudgetType),
+  limit: z.number(),
+})
 
-export class AdminPostCampaignsReq {
-  @IsNotEmpty()
-  @IsString()
-  name: string
+const UpdateCampaignBudget = z.object({
+  type: z.nativeEnum(CampaignBudgetType).optional(),
+  limit: z.number().optional(),
+})
 
-  @IsOptional()
-  @IsNotEmpty()
-  campaign_identifier?: string
+export type AdminCreateCampaignType = z.infer<typeof AdminCreateCampaign>
+export const AdminCreateCampaign = z.object({
+  name: z.string(),
+  campaign_identifier: z.string(),
+  description: z.string().optional(),
+  currency: z.string().optional(),
+  budget: CreateCampaignBudget.optional(),
+  starts_at: z.coerce.date(),
+  ends_at: z.coerce.date(),
+  promotions: z.array(z.object({ id: z.string() })).optional(),
+})
 
-  @IsOptional()
-  @IsString()
-  description?: string
-
-  @IsOptional()
-  @IsString()
-  currency?: string
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => CampaignBudget)
-  budget?: CampaignBudget
-
-  @IsOptional()
-  @IsDateString()
-  starts_at?: string
-
-  @IsOptional()
-  @IsDateString()
-  ends_at?: string
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => IdObject)
-  promotions?: IdObject[]
-}
-
-export class IdObject {
-  @IsString()
-  @IsNotEmpty()
-  id: string
-}
-
-export class CampaignBudget {
-  @IsOptional()
-  @IsEnum(CampaignBudgetType)
-  type?: CampaignBudgetType
-
-  @IsOptional()
-  @IsNumber()
-  limit?: number
-}
-
-export class AdminPostCampaignsCampaignReq {
-  @IsOptional()
-  @IsString()
-  name?: string
-
-  @IsOptional()
-  @IsNotEmpty()
-  campaign_identifier?: string
-
-  @IsOptional()
-  @IsString()
-  description?: string
-
-  @IsOptional()
-  @IsString()
-  currency?: string
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => CampaignBudget)
-  budget?: CampaignBudget
-
-  @IsOptional()
-  @IsDateString()
-  starts_at?: string
-
-  @IsOptional()
-  @IsDateString()
-  ends_at?: string
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => IdObject)
-  promotions?: IdObject[]
-}
+export type AdminUpdateCampaignType = z.infer<typeof AdminUpdateCampaign>
+export const AdminUpdateCampaign = z.object({
+  name: z.string().optional(),
+  campaign_identifier: z.string().optional(),
+  description: z.string().optional(),
+  currency: z.string().optional(),
+  budget: UpdateCampaignBudget.optional(),
+  starts_at: z.coerce.date().optional(),
+  ends_at: z.coerce.date().optional(),
+  promotions: z.array(z.object({ id: z.string() })).optional(),
+})

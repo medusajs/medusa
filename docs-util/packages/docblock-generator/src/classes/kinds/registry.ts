@@ -53,6 +53,16 @@ class KindsRegistry {
   hasGenerator(node: ts.Node): boolean {
     return this.getKindGenerator(node) !== undefined
   }
+
+  /**
+   * Retrieves a generator by its name attribute.
+   *
+   * @param name - The name of the generator to retrieve.
+   * @returns The generator, if exists.
+   */
+  getKindGeneratorByName(name: string): DefaultKindGenerator | undefined {
+    return this.kindInstances.find((generator) => generator.name === name)
+  }
 }
 
 export default KindsRegistry

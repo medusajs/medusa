@@ -5,6 +5,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  Relation,
   Unique,
 } from "typeorm"
 
@@ -15,7 +16,7 @@ import { Cart } from "./cart"
 
 /**
  * @enum
- * 
+ *
  * The status of a payment session.
  */
 export enum PaymentSessionStatus {
@@ -54,7 +55,7 @@ export class PaymentSession extends BaseEntity {
 
   @ManyToOne(() => Cart, (cart) => cart.payment_sessions)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart: Relation<Cart>
 
   @Index()
   @Column()

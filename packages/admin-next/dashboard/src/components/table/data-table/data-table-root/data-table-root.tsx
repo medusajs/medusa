@@ -182,18 +182,19 @@ export const DataTableRoot = <TData,>({
               {table.getRowModel().rows.map((row) => {
                 const to = navigateTo ? navigateTo(row) : undefined
                 const isRowDisabled = hasSelect && !row.getCanSelect()
+
                 return (
                   <Table.Row
                     key={row.id}
                     data-selected={row.getIsSelected()}
                     className={clx(
                       "transition-fg group/row [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
-                      "[&:has(td_a:focus-visible)_td]:bg-ui-bg-base-pressed",
                       {
                         "cursor-pointer": !!to,
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
                           row.getIsSelected(),
-                        "bg-ui-bg-subtle hover:bg-ui-bg-subtle": isRowDisabled,
+                        "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
+                          isRowDisabled,
                       }
                     )}
                     onClick={to ? () => navigate(to) : undefined}
@@ -212,19 +213,33 @@ export const DataTableRoot = <TData,>({
 
                       const isStickyCell = isSelectCell || isFirstCell
 
+                      /**
+                       * If the table has nested rows, we need to offset the cell padding
+                       * to indicate the depth of the row.
+                       */
+                      const depthOffset =
+                        row.depth > 0 && isFirstCell
+                          ? row.depth * 14 + 24
+                          : undefined
+
                       return (
                         <Table.Cell
                           key={cell.id}
-                          className={clx("has-[a]:cursor-pointer", {
-                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-[:has(td_a:focus)]/row:bg-ui-bg-base-pressed group-hover/row:bg-ui-bg-base-hover transition-fg sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                          className={clx({
+                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-hover/row:bg-ui-bg-base-hover transition-fg sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyCell,
                             "left-[68px]":
                               isStickyCell && hasSelect && !isSelectCell,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell && !isSelectCell,
-                            "bg-ui-bg-subtle hover:bg-ui-bg-subtle":
+                            "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
                               isRowDisabled,
                           })}
+                          style={{
+                            paddingLeft: depthOffset
+                              ? `${depthOffset}px`
+                              : undefined,
+                          }}
                         >
                           {flexRender(
                             cell.column.columnDef.cell,

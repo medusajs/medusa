@@ -1,4 +1,10 @@
-import { isString, MedusaError, pickValueFromObject } from "@medusajs/utils"
+import {
+  isObject,
+  isString,
+  MedusaError,
+  pickValueFromObject,
+  RuleOperator,
+} from "@medusajs/utils"
 
 /**
  * The rule engine here is kept inside the module as of now, but it could be moved
@@ -12,17 +18,6 @@ export type Rule = {
   attribute: string
   operator: Lowercase<keyof typeof RuleOperator>
   value: string | string[] | null
-}
-
-export enum RuleOperator {
-  IN = "in",
-  EQ = "eq",
-  NE = "ne",
-  GT = "gt",
-  GTE = "gte",
-  LT = "lt",
-  LTE = "lte",
-  NIN = "nin",
 }
 
 export const availableOperators = Object.values(RuleOperator)
@@ -79,7 +74,7 @@ export function isContextValid(
   } = {
     someAreValid: false,
   }
-) {
+): boolean {
   const { someAreValid } = options
 
   const loopComparator = someAreValid ? rules.some : rules.every
@@ -103,21 +98,21 @@ export function validateRule(rule: Record<string, unknown>): boolean {
   if (!rule.attribute || !rule.operator || !rule.value) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      "Rule must have an attribute, an operator and contextValue value"
+      "Rule must have an attribute, an operator and a value"
     )
   }
 
   if (!isString(rule.attribute)) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      "Rule attribute must be contextValue string"
+      "Rule attribute must be a string"
     )
   }
 
   if (!isString(rule.operator)) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      "Rule operator must be contextValue string"
+      "Rule operator must be a string"
     )
   }
 
@@ -138,15 +133,33 @@ export function validateRule(rule: Record<string, unknown>): boolean {
       )
     }
   } else {
-    if (!isString(rule.value)) {
+    if (Array.isArray(rule.value) || isObject(rule.value)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Rule value must be a string for the selected operator ${rule.operator}`
+        `Rule value must be a string, bool, number value for the selected operator ${rule.operator}`
       )
     }
   }
 
   return true
+}
+
+export function normalizeRulesValue<T extends Partial<Rule>>(rules: T[]): void {
+  rules.forEach((rule) => {
+    /**
+     * If a string is provided, then we don't want jsonb to convert to the primitive value based on the RFC
+     */
+    if (rule.value === "true" || rule.value === "false") {
+      rule.value = rule.value === "true" ? '"true"' : '"false"'
+    }
+
+    return rule
+  })
+}
+
+export function validateAndNormalizeRules<T extends Partial<Rule>>(rules: T[]) {
+  rules.forEach(validateRule)
+  normalizeRulesValue(rules)
 }
 
 /**

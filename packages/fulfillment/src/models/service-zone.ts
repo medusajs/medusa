@@ -19,7 +19,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import FulfillmentSet from "./fullfilment-set"
+import FulfillmentSet from "./fulfillment-set"
 import GeoZone from "./geo-zone"
 import ShippingOption from "./shipping-option"
 
@@ -65,6 +65,7 @@ export default class ServiceZone {
     type: "text",
     mapToPk: true,
     fieldName: "fulfillment_set_id",
+    onDelete: "cascade",
   })
   @FulfillmentSetIdIndex.MikroORMIndex()
   fulfillment_set_id: string
@@ -80,7 +81,11 @@ export default class ServiceZone {
 
   @OneToMany(
     () => ShippingOption,
-    (shippingOption) => shippingOption.service_zone
+    (shippingOption) => shippingOption.service_zone,
+    {
+      cascade: [Cascade.PERSIST, "soft-remove"] as any,
+      orphanRemoval: true,
+    }
   )
   shipping_options = new Collection<ShippingOption>(this)
 

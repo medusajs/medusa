@@ -187,7 +187,6 @@ const getAuthUserFromJwtToken = (
           return verified as AuthUserDTO
         }
       } catch (err) {
-        console.error(err)
         return null
       }
     }

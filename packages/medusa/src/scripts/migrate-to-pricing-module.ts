@@ -6,7 +6,7 @@ import express from "express"
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
 import { PriceList } from "../models"
-import { CurrencyService, PriceListService } from "../services"
+import { PriceListService } from "../services"
 import { createDefaultRuleTypes } from "./utils/create-default-rule-types"
 import { migrateProductVariantPricing } from "./utils/migrate-money-amounts-to-pricing-module"
 
@@ -109,7 +109,7 @@ const migratePriceLists = async (container: AwilixContainer) => {
         pricingModuleService.addPriceListPrices(
           priceListsToUpdate.map((priceList) => {
             return {
-              priceListId: priceList.id,
+              price_list_id: priceList.id,
               prices: priceList.prices
                 .filter((price) =>
                   variantIdPriceSetIdMap.has(price.variants?.[0]?.id)
@@ -136,7 +136,7 @@ const migratePriceLists = async (container: AwilixContainer) => {
         pricingModuleService.createPriceLists(
           priceListsToCreate.map(
             ({ name: title, prices, customer_groups, ...priceList }) => {
-              const createData: PricingTypes.CreatePriceListDTO = {
+              const createData: any = {
                 ...priceList,
                 title,
               }

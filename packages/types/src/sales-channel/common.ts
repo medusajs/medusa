@@ -61,14 +61,19 @@ export interface SalesChannelDTO {
 export interface FilterableSalesChannelProps
   extends BaseFilterable<FilterableSalesChannelProps> {
   /**
+   * Find sales channels by their name or description through this search term.
+   */
+  q?: string
+
+  /**
    * The IDs to filter the sales channel by.
    */
-  id?: string[]
+  id?: string | string[]
 
   /**
    * Filter sales channels by their names.
    */
-  name?: string[]
+  name?: string | string[]
 
   /**
    * Filter sales channels by whether they're disabled.

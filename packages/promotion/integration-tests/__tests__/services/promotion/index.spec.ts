@@ -1,71 +1,58 @@
-import { createMedusaContainer, PromotionType } from "@medusajs/utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { PromotionService } from "@services"
+import { PromotionType } from "@medusajs/utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { createPromotions } from "../../../__fixtures__/promotion"
-import { MikroOrmWrapper } from "../../../utils"
-import { asValue } from "awilix"
-import ContainerLoader from "../../../../src/loaders/container"
+import { IPromotionModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
-describe("Promotion Service", () => {
-  let service: PromotionService
-  let testManager: SqlEntityManager
-  let repositoryManager: SqlEntityManager
-
-  beforeEach(async () => {
-    await MikroOrmWrapper.setupDatabase()
-    repositoryManager = await MikroOrmWrapper.forkManager()
-    testManager = await MikroOrmWrapper.forkManager()
-
-    const container = createMedusaContainer()
-    container.register("manager", asValue(repositoryManager))
-
-    await ContainerLoader({ container })
-
-    service = container.resolve("promotionService")
-
-    await createPromotions(testManager)
-  })
-
-  afterEach(async () => {
-    await MikroOrmWrapper.clearDatabase()
-  })
-
-  describe("create", () => {
-    it("should throw an error when required params are not passed", async () => {
-      const error = await service
-        .create([
-          {
-            type: PromotionType.STANDARD,
-          } as any,
-        ])
-        .catch((e) => e)
-
-      expect(error.message).toContain(
-        "Value for Promotion.code is required, 'undefined' found"
-      )
-    })
-
-    it("should create a promotion successfully", async () => {
-      await service.create([
-        {
-          code: "PROMOTION_TEST",
-          type: PromotionType.STANDARD,
-        },
-      ])
-
-      const [promotion] = await service.list({
-        code: ["PROMOTION_TEST"],
+moduleIntegrationTestRunner({
+  moduleName: Modules.PROMOTION,
+  testSuite: ({
+    MikroOrmWrapper,
+    service,
+  }: SuiteOptions<IPromotionModuleService>) => {
+    describe("Promotion Service", () => {
+      beforeEach(async () => {
+        await createPromotions(MikroOrmWrapper.forkManager())
       })
 
-      expect(promotion).toEqual(
-        expect.objectContaining({
-          code: "PROMOTION_TEST",
-          is_automatic: false,
-          type: "standard",
+      describe("create", () => {
+        it("should throw an error when required params are not passed", async () => {
+          const error = await service
+            .create([
+              {
+                type: PromotionType.STANDARD,
+              } as any,
+            ])
+            .catch((e) => e)
+
+          expect(error.message).toContain(
+            "Value for Promotion.code is required, 'undefined' found"
+          )
         })
-      )
+
+        it("should create a promotion successfully", async () => {
+          await service.create([
+            {
+              code: "PROMOTION_TEST",
+              type: PromotionType.STANDARD,
+            },
+          ])
+
+          const [promotion] = await service.list({
+            code: ["PROMOTION_TEST"],
+          })
+
+          expect(promotion).toEqual(
+            expect.objectContaining({
+              code: "PROMOTION_TEST",
+              is_automatic: false,
+              type: "standard",
+            })
+          )
+        })
+      })
     })
-  })
+  },
 })

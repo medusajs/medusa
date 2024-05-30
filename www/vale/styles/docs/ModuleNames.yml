@@ -1,0 +1,10 @@
+extends: existence
+message: Consider capitalizing module name.
+level: error
+ignorecase: false
+tokens:
+  - the [a-z]\w+ [mM]odule
+  - the \w+ module
+exceptions:
+  - the custom module
+  - the commerce module

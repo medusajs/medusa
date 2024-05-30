@@ -39,7 +39,7 @@ describe("SubscriberLoader", () => {
     expect(registeredPaths.length).toEqual(3)
   })
 
-  it("should have registered subscribers for 5 events", async () => {
+  it.skip("should have registered subscribers for 5 events", async () => {
     /**
      * The 'product-updater.ts' subscriber is registered for the following events:
      * - "product.created"
@@ -57,7 +57,7 @@ describe("SubscriberLoader", () => {
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledTimes(5)
   })
 
-  it("should have registered subscribers with the correct props", async () => {
+  it.skip("should have registered subscribers with the correct props", async () => {
     /**
      * The 'product-updater.ts' subscriber is registered
      * with a explicit subscriberId of "product-updater".

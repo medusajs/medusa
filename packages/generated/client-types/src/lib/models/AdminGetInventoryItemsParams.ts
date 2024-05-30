@@ -25,6 +25,10 @@ export interface AdminGetInventoryItemsParams {
    */
   q?: string
   /**
+   * Field to sort-order inventory items by.
+   */
+  order?: string
+  /**
    * Filter by location IDs.
    */
   location_id?: Array<string>

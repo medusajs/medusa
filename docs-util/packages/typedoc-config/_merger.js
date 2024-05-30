@@ -71,10 +71,8 @@ module.exports = {
       showCommentsAsHeader: true,
       sections: baseSectionsOptions,
       parameterStyle: "component",
-      parameterComponent: "ParameterTypes",
-      mdxImports: [
-        `import ParameterTypes from "@site/src/components/ParameterTypes"`,
-      ],
+      parameterComponent: "TypeList",
+      mdxImports: [`import TypeList from "@site/src/components/TypeList"`],
     },
     internal: {
       maxLevel: 1,
@@ -231,7 +229,7 @@ npx medusa develop
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: " Reference",
+        suffix: "Reference",
       },
     },
 
@@ -638,7 +636,7 @@ npx medusa develop
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: " Reference",
+        suffix: "Reference",
       },
     },
 
@@ -681,7 +679,7 @@ npx medusa develop
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: " Reference",
+        suffix: "Reference",
       },
     },
 
@@ -780,7 +778,7 @@ npx medusa develop
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: " Reference",
+        suffix: "Reference",
       },
     },
 

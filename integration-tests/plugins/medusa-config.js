@@ -4,7 +4,9 @@ const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_NAME = process.env.DB_TEMP_NAME
 const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
+
 process.env.POSTGRES_URL = DB_URL
+process.env.LOG_LEVEL = "error"
 
 const enableMedusaV2 = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
 
@@ -38,6 +40,8 @@ module.exports = {
     medusa_v2: enableMedusaV2,
   },
   modules: {
+    workflows: true,
+
     [Modules.AUTH]: {
       scope: "internal",
       resources: "shared",
@@ -63,6 +67,11 @@ module.exports = {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/inventory",
+    },
+    [Modules.PRICING]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/pricing",
     },
     [Modules.CACHE]: {
       resolve: "@medusajs/cache-inmemory",

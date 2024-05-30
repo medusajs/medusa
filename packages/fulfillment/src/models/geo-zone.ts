@@ -78,11 +78,11 @@ export default class GeoZone {
     type: "text",
     mapToPk: true,
     fieldName: "service_zone_id",
+    onDelete: "cascade",
   })
   @ServiceZoneIdIndex.MikroORMIndex()
   service_zone_id: string
 
-  // TODO: Do we have an example or idea of what would be stored in this field? like lat/long for example?
   @Property({ columnType: "jsonb", nullable: true })
   postal_expression: Record<string, unknown> | null = null
 

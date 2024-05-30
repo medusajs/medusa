@@ -1,28 +1,19 @@
 import { createPaymentCollectionForCartWorkflow } from "@medusajs/core-flows"
-import { UpdateCartDataDTO } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
-
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
-import { defaultStoreCartFields } from "../../query-config"
+import { refetchCart } from "../../helpers"
+import { StoreUpdateCartType } from "../../validators"
 
 export const POST = async (
-  req: MedusaRequest<UpdateCartDataDTO>,
+  req: MedusaRequest<StoreUpdateCartType>,
   res: MedusaResponse
 ) => {
   const workflow = createPaymentCollectionForCartWorkflow(req.scope)
-
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  let [cart] = await remoteQuery(
-    {
-      cart: {
-        fields: ["id", "currency_code", "region_id", "total"],
-      },
-    },
-    {
-      cart: { id: req.params.id },
-    }
-  )
+  let cart = await refetchCart(req.params.id, req.scope, [
+    "id",
+    "currency_code",
+    "region_id",
+    "total",
+  ])
 
   const { errors } = await workflow.run({
     input: {
@@ -38,13 +29,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const query = remoteQueryObjectFromString({
-    entryPoint: "cart",
-    variables: { id: req.params.id },
-    fields: defaultStoreCartFields,
-  })
-
-  ;[cart] = await remoteQuery(query)
+  cart = await refetchCart(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
   res.status(200).json({ cart })
 }

@@ -20,7 +20,7 @@ export async function GET(request: Request) {
     )
   }
   const baseSpecs = (await OpenAPIParser.parse(
-    path.join(process.cwd(), `specs/${area}/openapi.yaml`)
+    path.join(process.cwd(), "specs", area, "openapi.yaml")
   )) as ExpandedDocument
 
   if (expand) {

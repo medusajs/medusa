@@ -15,6 +15,7 @@ import {
 } from "@medusajs/types"
 import {
   createMedusaContainer,
+  promiseAll,
   simpleHash,
   stringifyCircular,
 } from "@medusajs/utils"
@@ -66,9 +67,12 @@ export type ModuleBootstrapOptions = {
    */
   migrationOnly?: boolean
   /**
-   * Forces the modules bootstrapper to only run the modules loaders and return prematurely
+   * Forces the modules bootstrapper to only run the modules loaders and return prematurely. This
+   * is meant for modules that have data loader. In a test env, in order to clear all data
+   * and load them back, we need to run those loader again
    */
   loaderOnly?: boolean
+  workerMode?: "shared" | "worker" | "server"
 }
 
 export type LinkModuleBootstrapOptions = {
@@ -114,6 +118,39 @@ export class MedusaModule {
         }
       }
     }
+  }
+  public static async onApplicationShutdown(): Promise<void> {
+    await promiseAll(
+      [...MedusaModule.instances_.values()]
+        .map((instances) => {
+          return Object.values(instances).map((instance: IModuleService) => {
+            return instance.__hooks?.onApplicationShutdown
+              ?.bind(instance)()
+              .catch(() => {
+                // The module should handle this and log it
+                return void 0
+              })
+          })
+        })
+        .flat()
+    )
+  }
+
+  public static async onApplicationPrepareShutdown(): Promise<void> {
+    await promiseAll(
+      [...MedusaModule.instances_.values()]
+        .map((instances) => {
+          return Object.values(instances).map((instance: IModuleService) => {
+            return instance.__hooks?.onApplicationPrepareShutdown
+              ?.bind(instance)()
+              .catch(() => {
+                // The module should handle this and log it
+                return void 0
+              })
+          })
+        })
+        .flat()
+    )
   }
 
   public static clearInstances(): void {
@@ -225,6 +262,7 @@ export class MedusaModule {
     injectedDependencies,
     migrationOnly,
     loaderOnly,
+    workerMode,
   }: ModuleBootstrapOptions): Promise<{
     [key: string]: T
   }> {
@@ -245,14 +283,13 @@ export class MedusaModule {
     let finishLoading: any
     let errorLoading: any
 
+    const loadingPromise = new Promise((resolve, reject) => {
+      finishLoading = resolve
+      errorLoading = reject
+    })
+
     if (!loaderOnly) {
-      MedusaModule.loading_.set(
-        hashKey,
-        new Promise((resolve, reject) => {
-          finishLoading = resolve
-          errorLoading = reject
-        })
-      )
+      MedusaModule.loading_.set(hashKey, loadingPromise)
     }
 
     let modDeclaration =
@@ -267,6 +304,7 @@ export class MedusaModule {
         options: declaration?.options ?? declaration,
         alias: declaration?.alias,
         main: declaration?.main,
+        worker_mode: workerMode,
       }
     }
 
@@ -302,7 +340,7 @@ export class MedusaModule {
         moduleResolutions,
         logger: logger_,
         migrationOnly,
-        loaderOnly
+        loaderOnly,
       })
     } catch (err) {
       errorLoading(err)
@@ -312,6 +350,7 @@ export class MedusaModule {
     const services = {}
 
     if (loaderOnly) {
+      finishLoading(services)
       return services
     }
 

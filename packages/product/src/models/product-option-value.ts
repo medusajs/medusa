@@ -1,55 +1,58 @@
-import { DAL } from "@medusajs/types"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
+  Collection,
   Entity,
   Filter,
   Index,
+  ManyToMany,
   ManyToOne,
   OnInit,
-  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { ProductOption, ProductVariant } from "./index"
 
-type OptionalFields =
-  | "allow_backorder"
-  | "manage_inventory"
-  | "option_id"
-  | "variant_id"
-  | DAL.SoftDeletableEntityDateColumns
-type OptionalRelations = "product" | "option" | "variant"
+const optionValueOptionIdIndexName = "IDX_option_value_option_id_unique"
+const optionValueOptionIdIndexStatement = createPsqlIndexStatementHelper({
+  name: optionValueOptionIdIndexName,
+  tableName: "product_option_value",
+  columns: ["option_id", "value"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
 
+optionValueOptionIdIndexStatement.MikroORMIndex()
 @Entity({ tableName: "product_option_value" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductOptionValue {
-  [OptionalProps]?: OptionalFields | OptionalRelations
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
   @Property({ columnType: "text" })
   value: string
 
-  @Property({ columnType: "text", nullable: true })
-  option_id!: string
+  @ManyToOne(() => ProductOption, {
+    columnType: "text",
+    fieldName: "option_id",
+    mapToPk: true,
+    nullable: true,
+    onDelete: "cascade",
+  })
+  option_id: string | null
 
   @ManyToOne(() => ProductOption, {
-    index: "IDX_product_option_value_option_id",
-    fieldName: "option_id",
+    nullable: true,
+    persist: false,
   })
-  option: ProductOption
+  option: ProductOption | null
 
-  @Property({ columnType: "text", nullable: true })
-  variant_id!: string
-
-  @ManyToOne(() => ProductVariant, {
-    onDelete: "cascade",
-    index: "IDX_product_option_value_variant_id",
-    fieldName: "variant_id",
-  })
-  variant: ProductVariant
+  @ManyToMany(() => ProductVariant, (variant) => variant.options)
+  variants = new Collection<ProductVariant>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
@@ -74,13 +77,10 @@ class ProductOptionValue {
   deleted_at?: Date
 
   @OnInit()
+  @BeforeCreate()
   onInit() {
     this.id = generateEntityId(this.id, "optval")
-  }
-
-  @BeforeCreate()
-  beforeCreate() {
-    this.id = generateEntityId(this.id, "optval")
+    this.option_id ??= this.option?.id ?? null
   }
 }
 

@@ -2,7 +2,7 @@
 displayed_sidebar: core
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # ReturnedData
 
@@ -10,4 +10,4 @@ The details of a sent or resent notification.
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"to","type":"`string`","description":"The receiver of the Notification. For example, if you sent an email to the customer then `to` is the email address of the customer.\nIn other cases, it might be a phone number or a username.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"`string`","description":"The status of the sent notification. There are no restriction on the returned status.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The data used to send the Notification. For example, if you sent an order confirmation email to the customer, then the `data` object\nmight include the order items or the subject of the email. This `data` is necessary if the notification is resent later as you can use the same data.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ReturnedData"/>
+<TypeList types={[{"name":"to","type":"`string`","description":"The receiver of the Notification. For example, if you sent an email to the customer then `to` is the email address of the customer.\nIn other cases, it might be a phone number or a username.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"`string`","description":"The status of the sent notification. There are no restriction on the returned status.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The data used to send the Notification. For example, if you sent an order confirmation email to the customer, then the `data` object\nmight include the order items or the subject of the email. This `data` is necessary if the notification is resent later as you can use the same data.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ReturnedData"/>

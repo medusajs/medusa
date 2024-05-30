@@ -215,9 +215,12 @@ describe("/store/carts", () => {
         "/store/orders?display_id=111&email=test@email.com&fields=status,email"
       )
 
-      expect(Object.keys(response.data.order)).toHaveLength(22)
+      expect(Object.keys(response.data.order)).toHaveLength(24)
       expect(Object.keys(response.data.order)).toEqual(
         expect.arrayContaining([
+          "id",
+          "created_at",
+
           // fields
           "status",
           "email",
@@ -252,9 +255,11 @@ describe("/store/carts", () => {
 
       const response = await api.get("/store/orders/order_test?fields=status")
 
-      expect(Object.keys(response.data.order)).toHaveLength(21)
+      expect(Object.keys(response.data.order)).toHaveLength(22)
       expect(Object.keys(response.data.order)).toEqual(
         expect.arrayContaining([
+          "id",
+
           // fields
           "status",
 
@@ -292,6 +297,7 @@ describe("/store/carts", () => {
 
       expect(Object.keys(response.data.order).sort()).toEqual(
         [
+          "id",
           // fields
           "status",
 

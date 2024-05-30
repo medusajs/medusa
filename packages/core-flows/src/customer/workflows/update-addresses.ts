@@ -1,6 +1,7 @@
 import {
   FilterableCustomerAddressProps,
   CustomerAddressDTO,
+  UpdateCustomerAddressDTO,
 } from "@medusajs/types"
 import {
   WorkflowData,
@@ -16,7 +17,7 @@ import {
 
 type WorkflowInput = {
   selector: FilterableCustomerAddressProps
-  update: Partial<CustomerAddressDTO>
+  update: UpdateCustomerAddressDTO
 }
 
 export const updateCustomerAddressesWorkflowId = "update-customer-addresses"

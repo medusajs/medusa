@@ -1,3 +1,4 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { MedusaContainer, Subscriber } from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
 import { readdir } from "fs/promises"
@@ -15,6 +16,7 @@ type SubscriberModule<T> = {
 }
 
 export class SubscriberLoader {
+  protected isV2_: boolean
   protected container_: MedusaContainer
   protected pluginOptions_: Record<string, unknown>
   protected activityId_: string
@@ -32,12 +34,14 @@ export class SubscriberLoader {
     rootDir: string,
     container: MedusaContainer,
     options: Record<string, unknown> = {},
-    activityId: string
+    activityId: string,
+    isV2: boolean = false
   ) {
     this.rootDir_ = rootDir
     this.pluginOptions_ = options
     this.container_ = container
     this.activityId_ = activityId
+    this.isV2_ = isV2
   }
 
   private validateSubscriber(
@@ -181,8 +185,10 @@ export class SubscriberLoader {
     config: SubscriberConfig
     handler: SubscriberHandler<T>
   }) {
-    const eventBusService: EventBusService =
-      this.container_.resolve("eventBusService")
+    const resName = this.isV2_
+      ? ModuleRegistrationName.EVENT_BUS
+      : "eventBusService"
+    const eventBusService: EventBusService = this.container_.resolve(resName)
 
     const { event } = config
 

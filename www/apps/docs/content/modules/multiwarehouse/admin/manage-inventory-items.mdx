@@ -31,7 +31,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 ### Required Module
 
-This guide assumes you have the Inventory module installed on your Medusa backend. If not, you can learn how to install it using [this guide](../install-modules.md#inventory-module).
+This guide assumes you have the Inventory Module installed on your Medusa backend. If not, you can learn how to install it using [this guide](../install-modules.md#inventory-module).
 
 Furthermore, inventory levels are tied to a location ID. So, it’s recommended to use the [Stock Location module](../install-modules.md#stock-location-module) if you don’t have any location logic implemented in place.
 
@@ -568,7 +568,7 @@ You can create a location level by sending a request to the [Create Inventory Le
 
 This API Route requires the inventory item ID as a path parameter. In the request body, it requires the following parameters:
 
-- `location_id`: The ID of the location associated with this location level. This ID is typically available through using the stock location module.
+- `location_id`: The ID of the location associated with this location level. This ID is typically available through using the Stock Location Module.
 - `stocked_quantity`: A number indicating the item’s quantity in stock.
 
 You can also pass other optional request body parameters, as explained in the [API reference](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsinventoryitemlocationlevels).

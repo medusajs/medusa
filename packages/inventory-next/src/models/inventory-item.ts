@@ -3,20 +3,23 @@ import {
   Collection,
   Entity,
   Filter,
-  OnInit,
+  Formula,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
+  Searchable,
 } from "@medusajs/utils"
 
 import { DAL } from "@medusajs/types"
 import { InventoryLevel } from "./inventory-level"
+import { ReservationItem } from "./reservation-item"
 
 const InventoryItemDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "inventory_item",
@@ -60,15 +63,18 @@ export class InventoryItem {
   deleted_at: Date | null = null
 
   @InventoryItemSkuIndex.MikroORMIndex()
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   sku: string | null = null
 
   @Property({ columnType: "text", nullable: true })
   origin_country: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   hs_code: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   mid_code: string | null = null
 
@@ -90,9 +96,11 @@ export class InventoryItem {
   @Property({ columnType: "boolean" })
   requires_shipping: boolean = true
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   description: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   title: string | null = null
 
@@ -104,9 +112,35 @@ export class InventoryItem {
 
   @OneToMany(
     () => InventoryLevel,
-    (inventoryLevel) => inventoryLevel.inventory_item
+    (inventoryLevel) => inventoryLevel.inventory_item,
+    {
+      cascade: ["soft-remove" as any],
+    }
   )
-  inventory_levels = new Collection<InventoryLevel>(this)
+  location_levels = new Collection<InventoryLevel>(this)
+
+  @OneToMany(
+    () => ReservationItem,
+    (reservationItem) => reservationItem.inventory_item,
+    {
+      cascade: ["soft-remove" as any],
+    }
+  )
+  reservation_items = new Collection<ReservationItem>(this)
+
+  @Formula(
+    (item) =>
+      `(SELECT SUM(reserved_quantity) FROM inventory_level il WHERE il.inventory_item_id = ${item}.id)`,
+    { lazy: true, serializer: Number, hidden: true }
+  )
+  reserved_quantity: number
+
+  @Formula(
+    (item) =>
+      `(SELECT SUM(stocked_quantity) FROM inventory_level il WHERE il.inventory_item_id = ${item}.id)`,
+    { lazy: true, serializer: Number, hidden: true }
+  )
+  stocked_quantity: number
 
   @BeforeCreate()
   private beforeCreate(): void {

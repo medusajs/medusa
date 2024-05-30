@@ -41,6 +41,14 @@ export type FlowRegisterStepFailureOptions<TData = unknown> = {
   events?: DistributedTransactionEvents
 }
 
+export type FlowCancelOptions = {
+  transaction?: DistributedTransaction
+  transactionId?: string
+  context?: Context
+  throwOnError?: boolean
+  events?: DistributedTransactionEvents
+}
+
 export type WorkflowResult<TResult = unknown> = {
   errors: TransactionStepError[]
   transaction: DistributedTransaction
@@ -80,6 +88,7 @@ export type ExportedWorkflow<
       TResultOverride extends undefined ? TResult : TResultOverride
     >
   >
+  cancel: (args?: FlowCancelOptions) => Promise<WorkflowResult>
 }
 
 export type MainExportedWorkflow<TData = unknown, TResult = unknown> = {
@@ -88,12 +97,12 @@ export type MainExportedWorkflow<TData = unknown, TResult = unknown> = {
     container?: LoadedModule[] | MedusaContainer
   ): Omit<
     LocalWorkflow,
-    "run" | "registerStepSuccess" | "registerStepFailure"
+    "run" | "registerStepSuccess" | "registerStepFailure" | "cancel"
   > &
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
 
   /**
-   * You can also directly call run, registerStepSuccess and registerStepFailure on the exported workflow
+   * You can also directly call run, registerStepSuccess, registerStepFailure and cancel on the exported workflow
    */
 
   run<TDataOverride = undefined, TResultOverride = undefined>(
@@ -131,6 +140,12 @@ export type MainExportedWorkflow<TData = unknown, TResult = unknown> = {
       TResultOverride extends undefined ? TResult : TResultOverride
     >
   >
+
+  cancel(
+    args?: FlowCancelOptions & {
+      container?: LoadedModule[] | MedusaContainer
+    }
+  ): Promise<WorkflowResult>
 }
 
 function createContextualWorkflowRunner<
@@ -152,7 +167,10 @@ function createContextualWorkflowRunner<
     wrappedInput?: boolean
   }
   container?: LoadedModule[] | MedusaContainer
-}): Omit<LocalWorkflow, "run" | "registerStepSuccess" | "registerStepFailure"> &
+}): Omit<
+  LocalWorkflow,
+  "run" | "registerStepSuccess" | "registerStepFailure" | "cancel"
+> &
   ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride> {
   if (!container) {
     container = MedusaModule.getLoadedModules().map(
@@ -165,18 +183,26 @@ function createContextualWorkflowRunner<
   const originalRun = flow.run.bind(flow)
   const originalRegisterStepSuccess = flow.registerStepSuccess.bind(flow)
   const originalRegisterStepFailure = flow.registerStepFailure.bind(flow)
+  const originalCancel = flow.cancel.bind(flow)
 
   const originalExecution = async (
     method,
-    { throwOnError, resultFrom },
+    { throwOnError, resultFrom, isCancel = false },
     ...args
   ) => {
     const transaction = await method.apply(method, args)
 
-    const errors = transaction.getErrors(TransactionHandlerType.INVOKE)
+    let errors = transaction.getErrors(TransactionHandlerType.INVOKE)
 
     const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
-    if (failedStatus.includes(transaction.getState()) && throwOnError) {
+    const isCancelled =
+      isCancel && transaction.getState() === TransactionState.REVERTED
+
+    if (
+      !isCancelled &&
+      failedStatus.includes(transaction.getState()) &&
+      throwOnError
+    ) {
       const errorMessage = errors
         ?.map((err) => `${err.error?.message}${EOL}${err.error?.stack}`)
         ?.join(`${EOL}`)
@@ -185,7 +211,13 @@ function createContextualWorkflowRunner<
 
     let result
     if (options?.wrappedInput) {
-      result = await resolveValue(resultFrom, transaction.getContext())
+      result = resolveValue(resultFrom, transaction.getContext())
+      if (result instanceof Promise) {
+        result = await result.catch((e) => {
+          errors ??= []
+          errors.push(e)
+        })
+      }
     } else {
       result = transaction.getContext().invoke?.[resultFrom]
     }
@@ -316,6 +348,39 @@ function createContextualWorkflowRunner<
   }
   flow.registerStepFailure = newRegisterStepFailure as any
 
+  const newCancel = async (
+    {
+      transaction,
+      transactionId,
+      context: outerContext,
+      throwOnError,
+      events,
+    }: FlowCancelOptions = {
+      throwOnError: true,
+    }
+  ) => {
+    throwOnError ??= true
+
+    const context = {
+      ...outerContext,
+      transactionId,
+      __type: MedusaContextType,
+    }
+
+    return await originalExecution(
+      originalCancel,
+      {
+        throwOnError,
+        resultFrom: undefined,
+        isCancel: true,
+      },
+      transaction ?? transactionId,
+      context,
+      events
+    )
+  }
+  flow.cancel = newCancel as any
+
   return flow as unknown as LocalWorkflow &
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
 }
@@ -335,7 +400,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
     container?: LoadedModule[] | MedusaContainer
   ): Omit<
     LocalWorkflow,
-    "run" | "registerStepSuccess" | "registerStepFailure"
+    "run" | "registerStepSuccess" | "registerStepFailure" | "cancel"
   > &
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride> {
     return createContextualWorkflowRunner<
@@ -353,11 +418,15 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
   }
 
   const buildRunnerFn = <
-    TAction extends "run" | "registerStepSuccess" | "registerStepFailure",
+    TAction extends
+      | "run"
+      | "registerStepSuccess"
+      | "registerStepFailure"
+      | "cancel",
     TDataOverride,
     TResultOverride
   >(
-    action: "run" | "registerStepSuccess" | "registerStepFailure",
+    action: "run" | "registerStepSuccess" | "registerStepFailure" | "cancel",
     container?: LoadedModule[] | MedusaContainer
   ) => {
     const contextualRunner = createContextualWorkflowRunner<
@@ -463,6 +532,21 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
       TResultOverride
     >(
       "registerStepFailure",
+      container
+    )(inputArgs)
+  }
+
+  exportedWorkflow.cancel = async (
+    args?: FlowCancelOptions & {
+      container?: LoadedModule[] | MedusaContainer
+    }
+  ): Promise<WorkflowResult> => {
+    const container = args?.container
+    delete args?.container
+    const inputArgs = { ...args } as FlowCancelOptions
+
+    return await buildRunnerFn<"cancel", unknown, unknown>(
+      "cancel",
       container
     )(inputArgs)
   }

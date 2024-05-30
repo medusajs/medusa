@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/store/carts POST /store/carts/:id fails to complete cart with items inventory not/partially covered 1`] = `
+exports[` POST /store/carts/:id fails to complete cart with items inventory not/partially covered 1`] = `
 Object {
   "errors": Array [
     Object {
@@ -12,7 +12,7 @@ Object {
 }
 `;
 
-exports[`/store/carts POST /store/carts/:id fails to complete swap cart with items inventory not/partially covered 1`] = `
+exports[` POST /store/carts/:id fails to complete swap cart with items inventory not/partially covered 1`] = `
 Object {
   "errors": Array [
     Object {
@@ -24,7 +24,7 @@ Object {
 }
 `;
 
-exports[`/store/carts shipping address + region updates updates region only - single to multiple countries 1`] = `
+exports[` shipping address + region updates updates region only - single to multiple countries 1`] = `
 Object {
   "address_1": null,
   "address_2": null,

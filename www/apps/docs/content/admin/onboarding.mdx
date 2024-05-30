@@ -8,7 +8,7 @@ In this guide, you’ll learn how to build the onboarding widget available in th
 
 :::note
 
-The onboarding widget is already implemented within the codebase of your Medusa backend. This guide is helpful if you want to understand how it was implemented or you want an example of customizing the Medusa admin and backend.
+The onboarding widget is already implemented within the codebase of your Medusa backend. This guide is helpful if you want to understand how it was implemented or you want an example of customizing the Medusa Admin and backend.
 
 :::
 
@@ -1284,7 +1284,7 @@ Notice that as there are two types of flows, you'll be creating the components f
               {
                 label: "@medusajs/product",
                 language: "tsx",
-                code: `// Install the Product module in a serverless project, such as a Next.js storefront: @medusajs/product\n\nimport {\ninitialize as initializeProductModule,\n} from "@medusajs/product"\n\n// in an async function, or you can use promises\nasync () => {\n  // ...\n  const productService = await initializeProductModule()\n  const products = await productService.list({\n    id: "${data?.product_id}",\n  })\n\n  console.log(products[0])\n}`,
+                code: `// Install the Pricing Module in a serverless project, such as a Next.js storefront: @medusajs/product\n\nimport {\ninitialize as initializeProductModule,\n} from "@medusajs/product"\n\n// in an async function, or you can use promises\nasync () => {\n  // ...\n  const productService = await initializeProductModule()\n  const products = await productService.list({\n    id: "${data?.product_id}",\n  })\n\n  console.log(products[0])\n}`,
               },
             ]} className="my-6">
               <CodeBlock.Header />

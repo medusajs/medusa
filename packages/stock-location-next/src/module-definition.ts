@@ -2,8 +2,8 @@ import * as StockLocationModels from "@models"
 import * as StockLocationRepostiories from "@repositories"
 import * as StockLocationServices from "@services"
 
-import { ModuleExports } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
+import { ModuleExports } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import { StockLocationModuleService } from "@services"
 

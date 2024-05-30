@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # LineItemAdjustmentService
 
@@ -12,13 +12,13 @@ Provides layer to manipulate line item adjustments.
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`LineItemAdjustmentServiceProps`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new LineItemAdjustmentService"/>
+<TypeList types={[{"name":"__namedParameters","type":"`LineItemAdjustmentServiceProps`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new LineItemAdjustmentService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemAdjustmentRepo_","type":"Repository&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountService","type":"[DiscountService](services.DiscountService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="LineItemAdjustmentService"/>
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemAdjustmentRepo_","type":"Repository&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountService","type":"[DiscountService](services.DiscountService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="LineItemAdjustmentService"/>
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
@@ -38,21 +38,21 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 ### shouldRetryTransaction\_
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -62,15 +62,15 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 ### retrieve
 
@@ -78,11 +78,11 @@ Retrieves a line item adjustment by id.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"lineItemAdjustmentId","type":"`string`","description":"the id of the line item adjustment to retrieve","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","description":"the config to retrieve the line item adjustment by","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+<TypeList types={[{"name":"lineItemAdjustmentId","type":"`string`","description":"the id of the line item adjustment to retrieve","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","description":"the config to retrieve the line item adjustment by","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","optional":false,"defaultValue":"","description":"the line item adjustment.","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","optional":false,"defaultValue":"","description":"the line item adjustment.","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 ### create
 
@@ -90,11 +90,11 @@ Creates a line item adjustment
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"data","type":"Partial&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","description":"the line item adjustment to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
+<TypeList types={[{"name":"data","type":"Partial&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","description":"the line item adjustment to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","optional":false,"defaultValue":"","description":"line item adjustment","expandable":false,"children":[]}]}  sectionTitle="create"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","optional":false,"defaultValue":"","description":"line item adjustment","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 ### update
 
@@ -102,11 +102,11 @@ Creates a line item adjustment
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"id","type":"`string`","description":"the line item adjustment id to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"Partial&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","description":"the line item adjustment to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"the line item adjustment id to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"Partial&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","description":"the line item adjustment to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","optional":false,"defaultValue":"","description":"line item adjustment","expandable":false,"children":[]}]}  sectionTitle="update"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","optional":false,"defaultValue":"","description":"line item adjustment","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
 ### list
 
@@ -114,11 +114,11 @@ Lists line item adjustments
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"selector","type":"`FilterableLineItemAdjustmentProps`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","description":"the config to be used for find","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="list"/>
+<TypeList types={[{"name":"selector","type":"`FilterableLineItemAdjustmentProps`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;","description":"the config to be used for find","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="list"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="list"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="list"/>
 
 ### delete
 
@@ -126,11 +126,11 @@ Deletes line item adjustments matching a selector
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"selectorOrIds","type":"`string` \\| `string`[] \\| `FilterableLineItemAdjustmentProps` & `object`","description":"the query object for find or the line item adjustment id","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"selectorOrIds","type":"`string` \\| `string`[] \\| `FilterableLineItemAdjustmentProps` & `object`","description":"the query object for find or the line item adjustment id","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 ### generateAdjustments
 
@@ -138,11 +138,11 @@ Creates adjustment for a line item
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"calculationContextData","type":"`CalculationContextData`","description":"the calculationContextData object holding discounts","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"generatedLineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item for which a line item adjustment might be created","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`AdjustmentContext`","description":"the line item for which a line item adjustment might be created","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="generateAdjustments"/>
+<TypeList types={[{"name":"calculationContextData","type":"`CalculationContextData`","description":"the calculationContextData object holding discounts","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"generatedLineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item for which a line item adjustment might be created","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`AdjustmentContext`","description":"the line item for which a line item adjustment might be created","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="generateAdjustments"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;GeneratedAdjustment[]&#62;","optional":false,"defaultValue":"","description":"a line item adjustment or undefined if no adjustment was created","expandable":false,"children":[]}]}  sectionTitle="generateAdjustments"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;GeneratedAdjustment[]&#62;","optional":false,"defaultValue":"","description":"a line item adjustment or undefined if no adjustment was created","expandable":false,"children":[]}]}  sectionTitle="generateAdjustments"/>
 
 ### createAdjustmentForLineItem
 
@@ -150,11 +150,11 @@ Creates adjustment for a line item
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart object holding discounts","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item for which a line item adjustment might be created","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createAdjustmentForLineItem"/>
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart object holding discounts","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item for which a line item adjustment might be created","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createAdjustmentForLineItem"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[]&#62;","optional":false,"defaultValue":"","description":"a line item adjustment or undefined if no adjustment was created","expandable":false,"children":[]}]}  sectionTitle="createAdjustmentForLineItem"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[]&#62;","optional":false,"defaultValue":"","description":"a line item adjustment or undefined if no adjustment was created","expandable":false,"children":[]}]}  sectionTitle="createAdjustmentForLineItem"/>
 
 ### createAdjustments
 
@@ -162,8 +162,8 @@ Creates adjustment for a line item
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart object holding discounts","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item for which a line item adjustment might be created","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createAdjustments"/>
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart object holding discounts","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item for which a line item adjustment might be created","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createAdjustments"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[] \\| [LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[][]&#62;","optional":false,"defaultValue":"","description":"if a lineItem was given, returns a line item adjustment or undefined if no adjustment was created\notherwise returns an array of line item adjustments for each line item in the cart","expandable":false,"children":[]}]}  sectionTitle="createAdjustments"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[] \\| [LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[][]&#62;","optional":false,"defaultValue":"","description":"if a lineItem was given, returns a line item adjustment or undefined if no adjustment was created\notherwise returns an array of line item adjustments for each line item in the cart","expandable":false,"children":[]}]}  sectionTitle="createAdjustments"/>

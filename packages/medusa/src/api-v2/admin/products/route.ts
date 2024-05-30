@@ -1,33 +1,43 @@
+import { createProductsWorkflow } from "@medusajs/core-flows"
+import { CreateProductDTO } from "@medusajs/types"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-
-import { CreateProductDTO } from "@medusajs/types"
-import { createProductsWorkflow } from "@medusajs/core-flows"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  refetchProduct,
+  remapKeysForProduct,
+  remapProductResponse,
+} from "./helpers"
+import {
+  AdminCreateProductType,
+  AdminGetProductsParamsType,
+} from "./validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetProductsParamsType>,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const selectFields = remapKeysForProduct(req.remoteQueryConfig.fields ?? [])
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "product",
     variables: {
       filters: req.filterableFields,
-      order: req.listConfig.order,
-      skip: req.listConfig.skip,
-      take: req.listConfig.take,
+      ...req.remoteQueryConfig.pagination,
     },
-    fields: req.listConfig.select as string[],
+    fields: selectFields,
   })
 
   const { rows: products, metadata } = await remoteQuery(queryObject)
 
   res.json({
-    products,
+    products: products.map(remapProductResponse),
     count: metadata.count,
     offset: metadata.skip,
     limit: metadata.take,
@@ -35,14 +45,10 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateProductDTO>,
+  req: AuthenticatedMedusaRequest<AdminCreateProductType>,
   res: MedusaResponse
 ) => {
-  const input = [
-    {
-      ...req.validatedBody,
-    },
-  ]
+  const input = [req.validatedBody as CreateProductDTO]
 
   const { result, errors } = await createProductsWorkflow(req.scope).run({
     input: { products: input },
@@ -53,5 +59,10 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ product: result[0] })
+  const product = await refetchProduct(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ product: remapProductResponse(product) })
 }

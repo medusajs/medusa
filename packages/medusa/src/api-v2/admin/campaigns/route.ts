@@ -1,38 +1,42 @@
 import {
   AuthenticatedMedusaRequest,
-  MedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { CreateCampaignDTO, IPromotionModuleService } from "@medusajs/types"
-
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createCampaignsWorkflow } from "@medusajs/core-flows"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { AdminCreateCampaignType } from "./validators"
+import { refetchCampaign } from "./helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const promotionModuleService: IPromotionModuleService = req.scope.resolve(
-    ModuleRegistrationName.PROMOTION
-  )
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const [campaigns, count] = await promotionModuleService.listAndCountCampaigns(
-    req.filterableFields,
-    req.listConfig
-  )
+  const query = remoteQueryObjectFromString({
+    entryPoint: "campaign",
+    variables: {
+      filters: req.filterableFields,
+      ...req.remoteQueryConfig.pagination,
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
 
-  const { limit, offset } = req.validatedQuery
+  const { rows: campaigns, metadata } = await remoteQuery(query)
 
   res.json({
-    count,
     campaigns,
-    offset,
-    limit,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
   })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateCampaignDTO>,
+  req: AuthenticatedMedusaRequest<AdminCreateCampaignType>,
   res: MedusaResponse
 ) => {
   const createCampaigns = createCampaignsWorkflow(req.scope)
@@ -50,5 +54,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ campaign: result[0] })
+  const campaign = await refetchCampaign(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ campaign })
 }

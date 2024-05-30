@@ -1,11 +1,5 @@
 import type { SchemaObject } from "@/types/openapi"
-import dynamic from "next/dynamic"
-import type { TooltipProps } from "docs-ui"
-import { Badge, ExpandableNotice, FeatureFlagNotice, NextLink } from "docs-ui"
-
-const Tooltip = dynamic<TooltipProps>(
-  async () => (await import("docs-ui")).Tooltip
-) as React.FC<TooltipProps>
+import { Badge, ExpandableNotice, FeatureFlagNotice } from "docs-ui"
 
 export type TagOperationParametersNameProps = {
   name: string
@@ -29,7 +23,7 @@ const TagOperationParametersName = ({
       {schema["x-expandable"] && (
         <>
           <br />
-          <ExpandableNotice type="request" link="#expanding-fields" />
+          <ExpandableNotice type="request" link="#expanding-relations" />
         </>
       )}
       {schema["x-featureFlag"] && (
@@ -37,7 +31,7 @@ const TagOperationParametersName = ({
           <br />
           <FeatureFlagNotice
             featureFlag={schema["x-featureFlag"]}
-            type="parameter"
+            type="type"
           />
         </>
       )}

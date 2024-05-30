@@ -1,7 +1,8 @@
-import { EllipsisHorizontal } from "@medusajs/icons"
 import { DropdownMenu, IconButton } from "@medusajs/ui"
-import { ReactNode } from "react"
+
+import { EllipsisHorizontal } from "@medusajs/icons"
 import { Link } from "react-router-dom"
+import { ReactNode } from "react"
 
 type Action = {
   icon: ReactNode

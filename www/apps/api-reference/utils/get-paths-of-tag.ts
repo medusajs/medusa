@@ -15,7 +15,7 @@ export default async function getPathsOfTag(
   area: string
 ): Promise<Document> {
   // get path files
-  const basePath = path.join(process.cwd(), `specs/${area}/paths`)
+  const basePath = path.join(process.cwd(), "specs", area, `paths`)
 
   const files = await fs.readdir(basePath)
 

@@ -1,4 +1,4 @@
-import { PaymentDTO } from "@medusajs/types"
+import { BigNumberInput, PaymentDTO } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { capturePaymentStep } from "../steps/capture-payment"
 
@@ -9,7 +9,7 @@ export const capturePaymentWorkflow = createWorkflow(
     input: WorkflowData<{
       payment_id: string
       captured_by?: string
-      amount?: number
+      amount?: BigNumberInput
     }>
   ): WorkflowData<PaymentDTO> => {
     const payment = capturePaymentStep(input)

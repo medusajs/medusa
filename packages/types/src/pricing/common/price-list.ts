@@ -1,8 +1,11 @@
-import { CreateMoneyAmountDTO, MoneyAmountDTO } from "./money-amount";
-
-import { BaseFilterable } from "../../dal";
-import { PriceSetMoneyAmountDTO } from "./price-set-money-amount";
-import { RuleTypeDTO } from "./rule-type";
+import { BaseFilterable, OperatorMap } from "../../dal"
+import {
+  CreateMoneyAmountDTO,
+  MoneyAmountDTO,
+  UpdateMoneyAmountDTO,
+} from "./money-amount"
+import { PriceDTO } from "./price"
+import { RuleTypeDTO } from "./rule-type"
 
 /**
  * @enum
@@ -71,7 +74,7 @@ export interface PriceListDTO {
    *
    * @expandable
    */
-  price_set_money_amounts?: PriceSetMoneyAmountDTO[]
+  prices?: PriceDTO[]
   /**
    * The associated money amounts.
    *
@@ -106,7 +109,18 @@ export interface PriceListDTO {
  *
  * The prices associated with a price list.
  */
-export interface PriceListPriceDTO extends CreateMoneyAmountDTO {
+export interface CreatePriceListPriceDTO extends CreateMoneyAmountDTO {
+  /**
+   * The ID of the associated price set.
+   */
+  price_set_id: string
+  /**
+   * The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.
+   */
+  rules?: CreatePriceSetPriceRules
+}
+
+export interface UpdatePriceListPriceDTO extends UpdateMoneyAmountDTO {
   /**
    * The ID of the associated price set.
    */
@@ -152,11 +166,11 @@ export interface CreatePriceListDTO {
   /**
    * The price list is enabled starting from this date.
    */
-  starts_at?: Date | string | null
+  starts_at?: string | null
   /**
    * The price list expires after this date.
    */
-  ends_at?: Date | string | null
+  ends_at?: string | null
   /**
    * The price list's status.
    */
@@ -176,7 +190,7 @@ export interface CreatePriceListDTO {
   /**
    * The prices associated with the price list.
    */
-  prices?: PriceListPriceDTO[]
+  prices?: CreatePriceListPriceDTO[]
 }
 
 /**
@@ -200,11 +214,11 @@ export interface UpdatePriceListDTO {
   /**
    * The price list is enabled starting from this date.
    */
-  starts_at?: Date | string | null
+  starts_at?: string | null
   /**
    * The price list expires after this date.
    */
-  ends_at?: Date | string | null
+  ends_at?: string | null
   /**
    * The price list's status.
    */
@@ -227,17 +241,21 @@ export interface UpdatePriceListDTO {
 export interface FilterablePriceListProps
   extends BaseFilterable<FilterablePriceListProps> {
   /**
+   * Find price lists by title or description through this search term.
+   */
+  q?: string
+  /**
    * The IDs to filter price lists by
    */
-  id?: string[]
+  id?: string | string[]
   /**
    * The start dates to filter price lists by.
    */
-  starts_at?: string[]
+  starts_at?: OperatorMap<string>
   /**
    * The end dates to filter price lists by.
    */
-  ends_at?: string[]
+  ends_at?: OperatorMap<string>
   /**
    * The statuses to filter price lists by.
    */
@@ -412,23 +430,39 @@ export interface AddPriceListPricesDTO {
   /**
    * The ID of the price list to add prices to.
    */
-  priceListId: string
+  price_list_id: string
   /**
    * The prices to add.
    */
-  prices: PriceListPriceDTO[]
+  prices: CreatePriceListPriceDTO[]
 }
 
 /**
  * @interface
  *
- * The rules to add to a price list.
+ * The prices to be added to a price list.
+ */
+export interface UpdatePriceListPricesDTO {
+  /**
+   * The ID of the price list to add prices to.
+   */
+  price_list_id: string
+  /**
+   * The prices to add.
+   */
+  prices: UpdatePriceListPriceDTO[]
+}
+
+/**
+ * @interface
+ *
+ * The rules to set in a price list.
  */
 export interface SetPriceListRulesDTO {
   /**
-   * The ID of the price list to add rules to.
+   * The ID of the price list to set its rules.
    */
-  priceListId: string
+  price_list_id: string
   /**
    * The rules to add to the price list. Each key of the object is a rule type's `rule_attribute`, and its value
    * is the value(s) of the rule.
@@ -445,7 +479,7 @@ export interface RemovePriceListRulesDTO {
   /**
    * The ID of the price list to remove rules from.
    */
-  priceListId: string
+  price_list_id: string
   /**
    * The rules to remove from the price list. Each item being a rule type's `rule_attribute`.
    */

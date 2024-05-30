@@ -1,7 +1,7 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IStoreModuleService } from "@medusajs/types"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -57,7 +57,7 @@ medusaIntegrationTestRunner({
         )
 
         await service.delete(createdStore.id)
-        const listedStores = await api.get(`/admin/stores`, adminHeaders)
+        const listedStores = await api.get(`/admin/stores?id=${createdStore.id}`, adminHeaders)
         expect(listedStores.data.stores).toHaveLength(0)
       })
     })

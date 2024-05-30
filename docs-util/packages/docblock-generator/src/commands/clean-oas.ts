@@ -15,7 +15,8 @@ import GeneratorEventManager from "../classes/helpers/generator-event-manager.js
 import { parse, stringify } from "yaml"
 import OasSchemaHelper from "../classes/helpers/oas-schema.js"
 import { DEFAULT_OAS_RESPONSES } from "../constants.js"
-import { OpenApiDocument } from "../types/index.js"
+import { OpenApiDocument, OpenApiSchema } from "../types/index.js"
+import { OpenAPIV3 } from "openapi-types"
 
 const OAS_PREFIX_REGEX = /@oas \[(?<method>(get|post|delete))\] (?<path>.+)/
 
@@ -37,6 +38,28 @@ export default async function () {
   areas.forEach((area) => {
     tags.set(area, new Set<string>())
   })
+
+  const testAndFindReferenceSchema = (
+    nestedSchema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject
+  ) => {
+    if (oasSchemaHelper.isRefObject(nestedSchema)) {
+      referencedSchemas.add(
+        oasSchemaHelper.normalizeSchemaName(nestedSchema.$ref)
+      )
+    } else {
+      findReferencedSchemas(nestedSchema)
+    }
+  }
+
+  const findReferencedSchemas = (schema: OpenApiSchema) => {
+    if (schema.properties) {
+      Object.values(schema.properties).forEach(testAndFindReferenceSchema)
+    } else if (schema.oneOf || schema.allOf || schema.anyOf) {
+      Object.values((schema.oneOf || schema.allOf || schema.anyOf)!).forEach(
+        testAndFindReferenceSchema
+      )
+    }
+  }
 
   console.log("Cleaning OAS files...")
 
@@ -143,10 +166,8 @@ export default async function () {
           const requestBodySchema =
             oas.requestBody.content[Object.keys(oas.requestBody.content)[0]]
               .schema
-          if (oasSchemaHelper.isRefObject(requestBodySchema)) {
-            referencedSchemas.add(
-              oasSchemaHelper.normalizeSchemaName(requestBodySchema.$ref)
-            )
+          if (requestBodySchema) {
+            testAndFindReferenceSchema(requestBodySchema)
           }
         }
       }
@@ -162,10 +183,8 @@ export default async function () {
           } else if (responseObj.content) {
             const responseBodySchema =
               responseObj.content[Object.keys(responseObj.content)[0]].schema
-            if (oasSchemaHelper.isRefObject(responseBodySchema)) {
-              referencedSchemas.add(
-                oasSchemaHelper.normalizeSchemaName(responseBodySchema.$ref)
-              )
+            if (responseBodySchema) {
+              testAndFindReferenceSchema(responseBodySchema)
             }
           }
         }
@@ -244,15 +263,7 @@ export default async function () {
     }
 
     // collect referenced schemas
-    if (parsedSchema.schema.properties) {
-      Object.values(parsedSchema.schema.properties).forEach((property) => {
-        if (oasSchemaHelper.isRefObject(property)) {
-          referencedSchemas.add(
-            oasSchemaHelper.normalizeSchemaName(property.$ref)
-          )
-        }
-      })
-    }
+    findReferencedSchemas(parsedSchema.schema)
   })
 
   // clean up schemas

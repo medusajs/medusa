@@ -1,6 +1,6 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ICustomerModuleService } from "@medusajs/types"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 type DeleteCustomerStepInput = string[]
 

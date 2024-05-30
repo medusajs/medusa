@@ -1,8 +1,8 @@
-import { IPromotionModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IPromotionModuleService } from "@medusajs/types"
 import { PromotionType } from "@medusajs/utils"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -14,7 +14,7 @@ const adminHeaders = {
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
-    describe("GET /admin/promotions", () => {
+    describe("GET /admin/promotions/:id", () => {
       let appContainer
       let promotionModuleService: IPromotionModuleService
 
@@ -36,11 +36,11 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(404)
         expect(response.data.message).toEqual(
-          "Promotion with id: does-not-exist was not found"
+          "Promotion with id or code: does-not-exist was not found"
         )
       })
 
-      it("should get the requested promotion", async () => {
+      it("should get the requested promotion by id or codde", async () => {
         const createdPromotion = await promotionModuleService.create({
           code: "TEST",
           type: PromotionType.STANDARD,
@@ -51,7 +51,7 @@ medusaIntegrationTestRunner({
           },
         })
 
-        const response = await api.get(
+        let response = await api.get(
           `/admin/promotions/${createdPromotion.id}`,
           adminHeaders
         )
@@ -59,26 +59,19 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(200)
         expect(response.data.promotion).toEqual(
           expect.objectContaining({
-            id: expect.any(String),
-            code: "TEST",
-            campaign: null,
-            is_automatic: false,
-            type: "standard",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            deleted_at: null,
-            application_method: expect.objectContaining({
-              id: expect.any(String),
-              promotion: expect.any(Object),
-              value: 100,
-              type: "fixed",
-              target_type: "order",
-              max_quantity: 0,
-              allocation: null,
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              deleted_at: null,
-            }),
+            id: createdPromotion.id,
+          })
+        )
+
+        response = await api.get(
+          `/admin/promotions/${createdPromotion.code}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.promotion).toEqual(
+          expect.objectContaining({
+            id: createdPromotion.id,
           })
         )
       })

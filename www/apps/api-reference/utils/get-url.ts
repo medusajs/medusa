@@ -1,5 +1,5 @@
-import getBaseUrl from "./get-base-url"
+import { config } from "../config"
 
 export default function getUrl(area: string, tagName?: string): string {
-  return `${getBaseUrl()}/api/${area}#${tagName}`
+  return `${config.baseUrl}/api/${area}#${tagName}`
 }

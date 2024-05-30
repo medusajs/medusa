@@ -20,8 +20,10 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   protected readonly moduleOptions_: EventBusRedisModuleOptions
   // eslint-disable-next-line max-len
   protected readonly moduleDeclaration_: InternalModuleDeclaration
+  protected readonly eventBusRedisConnection_: Redis
 
   protected queue_: Queue
+  protected bullWorker_: Worker
 
   constructor(
     { logger, eventBusRedisConnection }: InjectedDependencies,
@@ -31,6 +33,8 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     // @ts-ignore
     // eslint-disable-next-line prefer-rest-params
     super(...arguments)
+
+    this.eventBusRedisConnection_ = eventBusRedisConnection
 
     this.moduleOptions_ = moduleOptions
     this.logger_ = logger
@@ -42,11 +46,29 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     })
 
     // Register our worker to handle emit calls
-    new Worker(moduleOptions.queueName ?? "events-queue", this.worker_, {
-      prefix: `${this.constructor.name}`,
-      ...(moduleOptions.workerOptions ?? {}),
-      connection: eventBusRedisConnection,
-    })
+    const shouldStartWorker = moduleDeclaration.worker_mode !== "server"
+    if (shouldStartWorker) {
+      this.bullWorker_ = new Worker(
+        moduleOptions.queueName ?? "events-queue",
+        this.worker_,
+        {
+          prefix: `${this.constructor.name}`,
+          ...(moduleOptions.workerOptions ?? {}),
+          connection: eventBusRedisConnection,
+        }
+      )
+    }
+  }
+
+  __hooks = {
+    onApplicationShutdown: async () => {
+      await this.queue_.close()
+      // eslint-disable-next-line max-len
+      this.eventBusRedisConnection_.disconnect()
+    },
+    onApplicationPrepareShutdown: async () => {
+      await this.bullWorker_?.close()
+    },
   }
 
   /**
@@ -197,7 +219,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
       job.data.completedSubscriberIds = updatedCompletedSubscribers
 
-      await job.update(job.data)
+      await job.updateData(job.data)
 
       const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
 

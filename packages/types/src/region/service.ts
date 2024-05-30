@@ -8,10 +8,10 @@ import {
   RegionCountryDTO,
   RegionDTO,
 } from "./common"
-import { CreateRegionDTO, UpsertRegionDTO, UpdateRegionDTO } from "./mutations"
+import { CreateRegionDTO, UpdateRegionDTO, UpsertRegionDTO } from "./mutations"
 
 /**
- * The main service interface for the region module.
+ * The main service interface for the Region Module.
  */
 export interface IRegionModuleService extends IModuleService {
   /**
@@ -22,7 +22,18 @@ export interface IRegionModuleService extends IModuleService {
    * @returns {Promise<RegionDTO[]>} The created regions.
    *
    * @example
-   * {example-code}
+   * const region = await regionModuleService.create([
+   *   {
+   *     name: "Europe",
+   *     currency_code: "eur",
+   *     countries: ["dk", "de", "fr"],
+   *   },
+   *   {
+   *     name: "United States of America",
+   *     currency_code: "usd",
+   *     countries: ["us"],
+   *   },
+   * ])
    */
   create(data: CreateRegionDTO[], sharedContext?: Context): Promise<RegionDTO[]>
 
@@ -34,39 +45,62 @@ export interface IRegionModuleService extends IModuleService {
    * @returns {Promise<RegionDTO>} The created region.
    *
    * @example
-   * {example-code}
+   * const region = await regionModuleService.create({
+   *   name: "Europe",
+   *   currency_code: "eur",
+   *   countries: ["dk", "de", "fr"],
+   * })
    */
   create(data: CreateRegionDTO, sharedContext?: Context): Promise<RegionDTO>
 
   /**
-   * This method updates existing regions, or creates new ones if they don't exist.
+   * This method updates or creates regions if they don't exist.
    *
-   * @param {UpsertRegionDTO[]} data - The attributes to update or create in each region.
-   * @returns {Promise<RegionDTO[]>} The updated and created regions.
+   * @param {UpsertRegionDTO[]} data - The attributes in the regions to be created or updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<RegionDTO[]>} The created or updated regions.
    *
    * @example
-   * {example-code}
+   * const region = await regionModuleService.upsert([
+   *   {
+   *     id: "reg_123",
+   *     automatic_taxes: false,
+   *   },
+   *   {
+   *     name: "Europe",
+   *     currency_code: "eur",
+   *   },
+   * ])
    */
   upsert(data: UpsertRegionDTO[], sharedContext?: Context): Promise<RegionDTO[]>
 
   /**
-   * This method updates an existing region, or creates a new one if it doesn't exist.
+   * This method updates or creates a region if it doesn't exist.
    *
-   * @param {UpsertRegionDTO} data - The attributes to update or create for the region.
-   * @returns {Promise<RegionDTO>} The updated or created region.
+   * @param {UpsertRegionDTO} data - The attributes in the region to be created or updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<RegionDTO>} The created or updated region.
    *
    * @example
-   * {example-code}
+   * const region = await regionModuleService.upsert({
+   *   id: "reg_123",
+   *   automatic_taxes: false,
+   * })
    */
   upsert(data: UpsertRegionDTO, sharedContext?: Context): Promise<RegionDTO>
 
   /**
    * This method updates an existing region.
    *
-   * @param {string} id - The region's ID.
-   * @param {UpdatableRegionFields} data - The details to update in the region.
+   * @param {string} id - The ID of the region.
+   * @param {UpdateRegionDTO} data - The attributes to update in the region.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RegionDTO>} The updated region.
+   *
+   * @example
+   * const region = await regionModuleService.update("reg_123", {
+   *   automatic_taxes: false,
+   * })
    */
   update(
     id: string,
@@ -77,13 +111,20 @@ export interface IRegionModuleService extends IModuleService {
   /**
    * This method updates existing regions.
    *
-   * @param {FilterableRegionProps} selector - The filters to specify which regions should be updated.
-   * @param {UpdateRegionDTO} data - The details to update in the regions.
+   * @param {FilterableRegionProps} selector - The filters to apply on the retrieved regions.
+   * @param {UpdateRegionDTO} data - The attributes to update in the region.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RegionDTO[]>} The updated regions.
    *
    * @example
-   * {example-code}
+   * const region = await regionModuleService.update(
+   *   {
+   *     name: "Europe",
+   *   },
+   *   {
+   *     automatic_taxes: false,
+   *   }
+   * )
    */
   update(
     selector: FilterableRegionProps,
@@ -94,12 +135,12 @@ export interface IRegionModuleService extends IModuleService {
   /**
    * This method deletes regions by their IDs.
    *
-   * @param {string[]} ids - The list of IDs of regions to delete.
+   * @param {string[]} ids - The IDs of the region.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the regions are deleted.
    *
    * @example
-   * {example-code}
+   * await regionModuleService.delete(["reg_123", "reg_321"])
    */
   delete(ids: string[], sharedContext?: Context): Promise<void>
 
@@ -111,33 +152,33 @@ export interface IRegionModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the region is deleted.
    *
    * @example
-   * {example-code}
+   * await regionModuleService.delete("reg_123")
    */
   delete(id: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method retrieves a region by its ID.
    *
-   * @param {string} id - The ID of the retrieve.
+   * @param {string} id - The ID of the region.
    * @param {FindConfig<RegionDTO>} config - The configurations determining how the region is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a region.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RegionDTO>} The retrieved region.
    *
    * @example
-   * A simple example that retrieves a {type name} by its ID:
+   * A simple example that retrieves a region by its ID:
    *
    * ```ts
-   * {example-code}
+   * const region = await regionModuleService.retrieve("reg_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * {example-code}
+   * const region = await regionModuleService.retrieve("reg_123", {
+   *   relations: ["countries"],
+   * })
    * ```
-   *
-   *
    */
   retrieve(
     id: string,
@@ -148,32 +189,48 @@ export interface IRegionModuleService extends IModuleService {
   /**
    * This method retrieves a paginated list of regions based on optional filters and configuration.
    *
-   * @param {FilterableRegionProps} filters - The filters to apply on the retrieved region.
+   * @param {FilterableRegionProps} filters - The filters to apply on the retrieved regions.
    * @param {FindConfig<RegionDTO>} config - The configurations determining how the region is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a region.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RegionDTO[]>} The list of regions.
    *
    * @example
-   * To retrieve a list of {type name} using their IDs:
+   * To retrieve a list of regions using their IDs:
    *
    * ```ts
-   * {example-code}
+   * const regions = await regionModuleService.list({
+   *   id: ["reg_123", "reg_321"],
+   * })
    * ```
    *
-   * To specify relations that should be retrieved within the {type name}:
+   * To specify relations that should be retrieved within the regions:
    *
    * ```ts
-   * {example-code}
+   * const regions = await regionModuleService.list(
+   *   {
+   *     id: ["reg_123", "reg_321"],
+   *   },
+   *   {
+   *     relations: ["countries"],
+   *   }
+   * )
    * ```
    *
-   * By default, only the first `{default limit}` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * {example-code}
+   * const regions = await regionModuleService.list(
+   *   {
+   *     id: ["reg_123", "reg_321"],
+   *   },
+   *   {
+   *     relations: ["countries"],
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
    * ```
-   *
-   *
    */
   list(
     filters?: FilterableRegionProps,
@@ -184,32 +241,51 @@ export interface IRegionModuleService extends IModuleService {
   /**
    * This method retrieves a paginated list of regions along with the total count of available regions satisfying the provided filters.
    *
-   * @param {FilterableRegionProps} filters - The filters to apply on the retrieved region.
+   * @param {FilterableRegionProps} filters - The filters to apply on the retrieved regions.
    * @param {FindConfig<RegionDTO>} config - The configurations determining how the region is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a region.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<[RegionDTO[], number]>} The list of regions along with their total count.
    *
    * @example
-   * To retrieve a list of {type name} using their IDs:
+   * To retrieve a list of regions using their IDs:
    *
    * ```ts
-   * {example-code}
+   * const [regions, count] =
+   *   await regionModuleService.listAndCount({
+   *     id: ["reg_123", "reg_321"],
+   *   })
    * ```
    *
-   * To specify relations that should be retrieved within the {type name}:
+   * To specify relations that should be retrieved within the regions:
    *
    * ```ts
-   * {example-code}
+   * const [regions, count] =
+   *   await regionModuleService.listAndCount(
+   *     {
+   *       id: ["reg_123", "reg_321"],
+   *     },
+   *     {
+   *       relations: ["countries"],
+   *     }
+   *   )
    * ```
    *
-   * By default, only the first `{default limit}` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * {example-code}
+   * const [regions, count] =
+   * await regionModuleService.listAndCount(
+   *   {
+   *     id: ["reg_123", "reg_321"],
+   *   },
+   *   {
+   *     relations: ["countries"],
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
    * ```
-   *
-   *
    */
   listAndCount(
     filters?: FilterableRegionProps,
@@ -218,28 +294,32 @@ export interface IRegionModuleService extends IModuleService {
   ): Promise<[RegionDTO[], number]>
 
   /**
-   * This method retrieves a country by its ID.
+   * This method retrieves a country by its 2 character ISO code.
    *
-   * @param {string} countryId - The country's ID.
-   * @param {FindConfig<RegionCountryDTO>} config - The configurations determining how the region country is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a region country.
+   * @param {string} countryId - The country's ID, which is the 2 character ISO code.
+   * @param {FindConfig<RegionCountryDTO>} config - The configurations determining how the country is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a country.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RegionCountryDTO>} The retrieved country.
    *
    * @example
-   * A simple example that retrieves a {type name} by its ID:
+   * A simple example that retrieves a country by its 2 character ISO code:
    *
    * ```ts
-   * {example-code}
+   * const country =
+   *   await regionModuleService.retrieveCountry("us")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * {example-code}
+   * const country = await regionModuleService.retrieveCountry(
+   *   "us",
+   *   {
+   *     relations: ["region"],
+   *   }
+   * )
    * ```
-   *
-   *
    */
   retrieveCountry(
     countryId: string,
@@ -250,32 +330,48 @@ export interface IRegionModuleService extends IModuleService {
   /**
    * This method retrieves a paginated list of countries based on optional filters and configuration.
    *
-   * @param {FilterableRegionCountryProps} filters - The filters to apply on the retrieved region country.
-   * @param {FindConfig<RegionCountryDTO>} config - The configurations determining how the region country is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a region country.
+   * @param {FilterableRegionCountryProps} filters - The filters to apply on the retrieved countries.
+   * @param {FindConfig<RegionCountryDTO>} config - The configurations determining how the country is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a country.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RegionCountryDTO[]>} The list of countries.
    *
    * @example
-   * To retrieve a list of {type name} using their IDs:
+   * To retrieve a list of countries using their IDs:
    *
    * ```ts
-   * {example-code}
+   * const countries = await regionModuleService.listCountries({
+   *   iso_2: ["us", "eur"],
+   * })
    * ```
    *
-   * To specify relations that should be retrieved within the {type name}:
+   * To specify relations that should be retrieved within the countries:
    *
    * ```ts
-   * {example-code}
+   * const countries = await regionModuleService.listCountries(
+   *   {
+   *     iso_2: ["us", "eur"],
+   *   },
+   *   {
+   *     relations: ["region"],
+   *   }
+   * )
    * ```
    *
-   * By default, only the first `{default limit}` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * {example-code}
+   * const countries = await regionModuleService.listCountries(
+   *   {
+   *     iso_2: ["us", "eur"],
+   *   },
+   *   {
+   *     relations: ["region"],
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
    * ```
-   *
-   *
    */
   listCountries(
     filters?: FilterableRegionCountryProps,
@@ -286,32 +382,51 @@ export interface IRegionModuleService extends IModuleService {
   /**
    * This method retrieves a paginated list of countries along with the total count of available countries satisfying the provided filters.
    *
-   * @param {FilterableRegionCountryProps} filters - The filters to apply on the retrieved region country.
-   * @param {FindConfig<RegionCountryDTO>} config - The configurations determining how the region country is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a region country.
+   * @param {FilterableRegionCountryProps} filters - The filters to apply on the retrieved countries.
+   * @param {FindConfig<RegionCountryDTO>} config - The configurations determining how the country is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a country.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<[RegionCountryDTO[], number]>} The list of countries along with their total count.
    *
    * @example
-   * To retrieve a list of {type name} using their IDs:
+   * To retrieve a list of countries using their IDs:
    *
    * ```ts
-   * {example-code}
+   * const [countries, count] =
+   *   await regionModuleService.listAndCountCountries({
+   *     iso_2: ["us", "eur"],
+   *   })
    * ```
    *
-   * To specify relations that should be retrieved within the {type name}:
+   * To specify relations that should be retrieved within the countries:
    *
    * ```ts
-   * {example-code}
+   * const [countries, count] =
+   *   await regionModuleService.listAndCountCountries(
+   *     {
+   *       iso_2: ["us", "eur"],
+   *     },
+   *     {
+   *       relations: ["region"],
+   *     }
+   *   )
    * ```
    *
-   * By default, only the first `{default limit}` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * {example-code}
+   * const [countries, count] =
+   *   await regionModuleService.listAndCountCountries(
+   *     {
+   *       iso_2: ["us", "eur"],
+   *     },
+   *     {
+   *       relations: ["region"],
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
    * ```
-   *
-   *
    */
   listAndCountCountries(
     filters?: FilterableRegionCountryProps,
@@ -320,15 +435,21 @@ export interface IRegionModuleService extends IModuleService {
   ): Promise<[RegionCountryDTO[], number]>
 
   /**
-   * This method soft deletes regions by their IDs.
+   * This method soft deletes a region by its IDs.
    *
-   * @param {string[]} regionIds - The list of IDs of regions to soft delete.
+   * @param {string[]} regionIds - The regions' IDs.
    * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void | Record<string, string[]>>} Resolves successfully when the regions are soft-deleted.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated country.
+   * The object's keys are the ID attribute names of the region entity's relations, such as `country_id`, and its value is an array of strings, each being the ID of a record associated
+   * with the region through this relation, such as the IDs of associated countries.
+   *
+   * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * {example-code}
+   * await regionModuleService.softDelete(["reg_123", "reg_321"], {
+   *   returnLinkableKeys: ["country_id"],
+   * })
    */
   softDelete<TReturnableLinkableKeys extends string = string>(
     regionIds: string[],
@@ -339,17 +460,21 @@ export interface IRegionModuleService extends IModuleService {
   /**
    * This method restores soft deleted regions by their IDs.
    *
-   * @param {string[]} regionIds - The list of IDs of regions to restore.
-   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with each of the regions. You can pass to its `returnLinkableKeys`
-   * property any of the regions's relation attribute names, such as `country`.
+   * @param {string[]} regionIds - The regions' IDs.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with each of the region. You can pass to its `returnLinkableKeys`
+   * property any of the region's relation attribute names, such as `countries`.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were restored, such as the ID of associated country.
-   * The object's keys are the ID attribute names of the regions entity's relations, such as `country`,
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were restored, such as the ID of associated countries.
+   * The object's keys are the ID attribute names of the region entity's relations, such as `country_id`,
    * and its value is an array of strings, each being the ID of the record associated with the region through this relation,
-   * such as the IDs of associated country.
+   * such as the IDs of associated countries.
+   *
+   * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * {example-code}
+   * await regionModuleService.restore(["reg_123", "reg_321"], {
+   *   returnLinkableKeys: ["country_id"],
+   * })
    */
   restore<TReturnableLinkableKeys extends string = string>(
     regionIds: string[],

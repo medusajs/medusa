@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # PaymentCollectionService
 
@@ -10,13 +10,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new PaymentCollectionService"/>
+<TypeList types={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new PaymentCollectionService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events.CREATED","type":"`string`","description":"","optional":false,"defaultValue":"\"payment-collection.created\"","expandable":false,"children":[]},{"name":"Events.UPDATED","type":"`string`","description":"","optional":false,"defaultValue":"\"payment-collection.updated\"","expandable":false,"children":[]},{"name":"Events.DELETED","type":"`string`","description":"","optional":false,"defaultValue":"\"payment-collection.deleted\"","expandable":false,"children":[]},{"name":"Events.PAYMENT_AUTHORIZED","type":"`string`","description":"","optional":false,"defaultValue":"\"payment-collection.payment_authorized\"","expandable":false,"children":[]},{"name":"eventBusService_","type":"[EventBusService](services.EventBusService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"paymentProviderService_","type":"[PaymentProviderService](services.PaymentProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerService_","type":"[CustomerService](services.CustomerService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"paymentCollectionRepository_","type":"Repository&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="PaymentCollectionService"/>
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events.CREATED","type":"`string`","description":"","optional":false,"defaultValue":"\"payment-collection.created\"","expandable":false,"children":[]},{"name":"Events.UPDATED","type":"`string`","description":"","optional":false,"defaultValue":"\"payment-collection.updated\"","expandable":false,"children":[]},{"name":"Events.DELETED","type":"`string`","description":"","optional":false,"defaultValue":"\"payment-collection.deleted\"","expandable":false,"children":[]},{"name":"Events.PAYMENT_AUTHORIZED","type":"`string`","description":"","optional":false,"defaultValue":"\"payment-collection.payment_authorized\"","expandable":false,"children":[]},{"name":"eventBusService_","type":"[EventBusService](services.EventBusService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"paymentProviderService_","type":"[PaymentProviderService](services.PaymentProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerService_","type":"[CustomerService](services.CustomerService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"paymentCollectionRepository_","type":"Repository&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="PaymentCollectionService"/>
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
@@ -36,21 +36,21 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 ### shouldRetryTransaction\_
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -60,15 +60,15 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 ### retrieve
 
@@ -76,11 +76,11 @@ Retrieves a payment collection by id.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","description":"the config to retrieve the payment collection","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+<TypeList types={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","description":"the config to retrieve the payment collection","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection.","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection.","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 ### create
 
@@ -88,11 +88,11 @@ Creates a new payment collection.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"data","type":"`CreatePaymentCollectionInput`","description":"info to create the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
+<TypeList types={[{"name":"data","type":"`CreatePaymentCollectionInput`","description":"info to create the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection created.","expandable":false,"children":[]}]}  sectionTitle="create"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection created.","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 ### update
 
@@ -100,11 +100,11 @@ Updates a payment collection.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"DeepPartial&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","description":"info to be updated","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
+<TypeList types={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"DeepPartial&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","description":"info to be updated","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection updated.","expandable":false,"children":[]}]}  sectionTitle="update"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection updated.","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
 ### delete
 
@@ -112,21 +112,21 @@ Deletes a payment collection.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection to be removed","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection to be removed","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;undefined \\| [PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection removed.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;undefined \\| [PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection removed.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 ### isValidTotalAmount
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sessionsInput","type":"`PaymentCollectionsSessionsBatchInput`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="isValidTotalAmount"/>
+<TypeList types={[{"name":"total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sessionsInput","type":"`PaymentCollectionsSessionsBatchInput`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="isValidTotalAmount"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="isValidTotalAmount"/>
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="isValidTotalAmount"/>
 
 ### setPaymentSessionsBatch
 
@@ -134,11 +134,11 @@ Manages multiple payment sessions of a payment collection.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentCollectionOrId","type":"`string` \\| [PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)","description":"the id of the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sessionsInput","type":"`PaymentCollectionsSessionsBatchInput`[]","description":"array containing payment session info","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerId","type":"`string`","description":"the id of the customer","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="setPaymentSessionsBatch"/>
+<TypeList types={[{"name":"paymentCollectionOrId","type":"`string` \\| [PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)","description":"the id of the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sessionsInput","type":"`PaymentCollectionsSessionsBatchInput`[]","description":"array containing payment session info","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerId","type":"`string`","description":"the id of the customer","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="setPaymentSessionsBatch"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection and its payment sessions.","expandable":false,"children":[]}]}  sectionTitle="setPaymentSessionsBatch"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection and its payment sessions.","expandable":false,"children":[]}]}  sectionTitle="setPaymentSessionsBatch"/>
 
 ### setPaymentSession
 
@@ -146,11 +146,11 @@ Manages a single payment sessions of a payment collection.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sessionInput","type":"`PaymentCollectionsSessionsInput`","description":"object containing payment session info","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerId","type":"`string`","description":"the id of the customer","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="setPaymentSession"/>
+<TypeList types={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sessionInput","type":"`PaymentCollectionsSessionsInput`","description":"object containing payment session info","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerId","type":"`string`","description":"the id of the customer","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="setPaymentSession"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection and its payment session.","expandable":false,"children":[]}]}  sectionTitle="setPaymentSession"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection and its payment session.","expandable":false,"children":[]}]}  sectionTitle="setPaymentSession"/>
 
 ### refreshPaymentSession
 
@@ -158,11 +158,11 @@ Removes and recreate a payment session of a payment collection.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sessionId","type":"`string`","description":"the id of the payment session to be replaced","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerId","type":"`string`","description":"the id of the customer","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="refreshPaymentSession"/>
+<TypeList types={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sessionId","type":"`string`","description":"the id of the payment session to be replaced","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerId","type":"`string`","description":"the id of the customer","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="refreshPaymentSession"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","optional":false,"defaultValue":"","description":"the new payment session created.","expandable":false,"children":[]}]}  sectionTitle="refreshPaymentSession"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","optional":false,"defaultValue":"","description":"the new payment session created.","expandable":false,"children":[]}]}  sectionTitle="refreshPaymentSession"/>
 
 ### markAsAuthorized
 
@@ -170,11 +170,11 @@ Marks a payment collection as authorized bypassing the payment flow.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="markAsAuthorized"/>
+<TypeList types={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="markAsAuthorized"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment session authorized.","expandable":false,"children":[]}]}  sectionTitle="markAsAuthorized"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment session authorized.","expandable":false,"children":[]}]}  sectionTitle="markAsAuthorized"/>
 
 ### authorizePaymentSessions
 
@@ -182,8 +182,8 @@ Authorizes the payment sessions of a payment collection.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sessionIds","type":"`string`[]","description":"array of payment session ids to be authorized","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"additional data required by payment providers","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="authorizePaymentSessions"/>
+<TypeList types={[{"name":"paymentCollectionId","type":"`string`","description":"the id of the payment collection","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sessionIds","type":"`string`[]","description":"array of payment session ids to be authorized","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"additional data required by payment providers","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="authorizePaymentSessions"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection and its payment session.","expandable":false,"children":[]}]}  sectionTitle="authorizePaymentSessions"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection and its payment session.","expandable":false,"children":[]}]}  sectionTitle="authorizePaymentSessions"/>

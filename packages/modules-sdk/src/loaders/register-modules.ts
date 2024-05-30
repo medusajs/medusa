@@ -1,13 +1,14 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
+  MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleDefinition,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
 
-import { isObject } from "@medusajs/utils"
+import { isObject, isString } from "@medusajs/utils"
 import resolveCwd from "resolve-cwd"
 import { ModulesDefinition } from "../definitions"
 
@@ -23,10 +24,6 @@ export const registerMedusaModule = (
   const moduleResolutions = {} as Record<string, ModuleResolution>
 
   const modDefinition = definition ?? ModulesDefinition[moduleKey]
-
-  if (modDefinition === undefined) {
-    throw new Error(`Module: ${moduleKey} is not defined.`)
-  }
 
   const modDeclaration =
     moduleDeclaration ??
@@ -44,6 +41,14 @@ export const registerMedusaModule = (
     throw new Error("External Modules are not supported yet.")
   }
 
+  if (modDefinition === undefined) {
+    moduleResolutions[moduleKey] = getCustomModuleResolution(
+      moduleKey,
+      moduleDeclaration as InternalModuleDeclaration
+    )
+    return moduleResolutions
+  }
+
   moduleResolutions[moduleKey] = getInternalModuleResolution(
     modDefinition,
     moduleDeclaration as InternalModuleDeclaration,
@@ -51,6 +56,43 @@ export const registerMedusaModule = (
   )
 
   return moduleResolutions
+}
+
+function getCustomModuleResolution(
+  key: string,
+  moduleConfig: InternalModuleDeclaration | string
+): ModuleResolution {
+  const resolutionPath = resolveCwd(
+    isString(moduleConfig) ? moduleConfig : (moduleConfig.resolve as string)
+  )
+
+  const conf = isObject(moduleConfig)
+    ? moduleConfig
+    : ({} as InternalModuleDeclaration)
+
+  const dependencies = conf?.dependencies ?? []
+
+  return {
+    resolutionPath,
+    definition: {
+      key,
+      label: `Custom: ${key}`,
+      isRequired: false,
+      defaultPackage: "",
+      dependencies,
+      registrationName: key,
+      defaultModuleDeclaration: {
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+        scope: MODULE_SCOPE.INTERNAL,
+      },
+    },
+    moduleDeclaration: {
+      resources: conf?.resources ?? MODULE_RESOURCE_TYPE.SHARED,
+      scope: MODULE_SCOPE.INTERNAL,
+    },
+    dependencies,
+    options: conf?.options ?? {},
+  }
 }
 
 export const registerMedusaLinkModule = (
@@ -89,14 +131,14 @@ function getInternalModuleResolution(
     }
   }
 
-  const isObj = typeof moduleConfig === "object"
+  const isObj = isObject(moduleConfig)
   let resolutionPath = definition.defaultPackage
 
   // If user added a module and it's overridable, we resolve that instead
-  const isString = typeof moduleConfig === "string"
-  if (isString || (isObj && moduleConfig.resolve)) {
+  const isStr = isString(moduleConfig)
+  if (isStr || (isObj && moduleConfig.resolve)) {
     resolutionPath = !moduleExports
-      ? resolveCwd(isString ? moduleConfig : (moduleConfig.resolve as string))
+      ? resolveCwd(isStr ? moduleConfig : (moduleConfig.resolve as string))
       : // Explicitly assign an empty string, later, we will check if the value is exactly false.
         // This allows to continue the module loading while using the module exports instead of re importing the module itself during the process.
         ""

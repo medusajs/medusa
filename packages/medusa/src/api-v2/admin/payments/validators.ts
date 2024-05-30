@@ -1,58 +1,58 @@
-import { Type } from "class-transformer"
-import { IsInt, IsOptional, ValidateNested } from "class-validator"
+import { z } from "zod"
 import {
-  DateComparisonOperator,
-  FindParams,
-  extendedFindParamsMixin,
-} from "../../../types/common"
-import { IsType } from "../../../utils"
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
-export class AdminGetPaymentsPaymentParams extends FindParams {}
+export type AdminGetPaymentParamsType = z.infer<typeof AdminGetPaymentParams>
+export const AdminGetPaymentParams = createSelectParams()
 
-export class AdminGetPaymentsParams extends extendedFindParamsMixin({
+export type AdminGetPaymentsParamsType = z.infer<typeof AdminGetPaymentsParams>
+export const AdminGetPaymentsParams = createFindParams({
   limit: 20,
   offset: 0,
-}) {
-  /**
-   * IDs to filter users by.
-   */
-  @IsOptional()
-  @IsType([String, [String]])
-  id?: string | string[]
+}).merge(
+  z.object({
+    q: z.string().optional(),
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
+    $and: z.lazy(() => AdminGetPaymentsParams.array()).optional(),
+    $or: z.lazy(() => AdminGetPaymentsParams.array()).optional(),
+  })
+)
 
-  /**
-   * Date filters to apply on the users' `update_at` date.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateComparisonOperator)
-  updated_at?: DateComparisonOperator
+export type AdminGetPaymentProvidersParamsType = z.infer<
+  typeof AdminGetPaymentProvidersParams
+>
+export const AdminGetPaymentProvidersParams = createFindParams({
+  limit: 20,
+  offset: 0,
+}).merge(
+  z.object({
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    is_enabled: z.boolean().optional(),
+    $and: z.lazy(() => AdminGetPaymentProvidersParams.array()).optional(),
+    $or: z.lazy(() => AdminGetPaymentProvidersParams.array()).optional(),
+  })
+)
 
-  /**
-   * Date filters to apply on the customer users' `created_at` date.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateComparisonOperator)
-  created_at?: DateComparisonOperator
+export type AdminCreatePaymentCaptureType = z.infer<
+  typeof AdminCreatePaymentCapture
+>
+export const AdminCreatePaymentCapture = z
+  .object({
+    amount: z.number().optional(),
+  })
+  .strict()
 
-  /**
-   * Date filters to apply on the users' `deleted_at` date.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateComparisonOperator)
-  deleted_at?: DateComparisonOperator
-}
-
-export class AdminPostPaymentsCapturesReq {
-  @IsInt()
-  @IsOptional()
-  amount?: number
-}
-
-export class AdminPostPaymentsRefundsReq {
-  @IsInt()
-  @IsOptional()
-  amount?: number
-}
+export type AdminCreatePaymentRefundType = z.infer<
+  typeof AdminCreatePaymentRefund
+>
+export const AdminCreatePaymentRefund = z
+  .object({
+    amount: z.number().optional(),
+  })
+  .strict()

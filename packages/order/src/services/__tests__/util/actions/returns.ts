@@ -125,7 +125,8 @@ describe("Order Return - Actions", function () {
       actions,
     })
 
-    expect(changes.order.items).toEqual([
+    const toJson = JSON.parse(JSON.stringify(changes.order.items))
+    expect(toJson).toEqual([
       {
         id: "1",
         quantity: 1,
@@ -148,7 +149,7 @@ describe("Order Return - Actions", function () {
           quantity: 2,
           shipped_quantity: 1,
           fulfilled_quantity: 1,
-          return_requested_quantity: 1,
+          return_requested_quantity: "1",
           return_received_quantity: 0,
           return_dismissed_quantity: 0,
           written_off_quantity: 0,
@@ -162,7 +163,7 @@ describe("Order Return - Actions", function () {
           quantity: 3,
           shipped_quantity: 3,
           fulfilled_quantity: 3,
-          return_requested_quantity: 2,
+          return_requested_quantity: "2",
           return_received_quantity: 0,
           return_dismissed_quantity: 0,
           written_off_quantity: 0,
@@ -253,7 +254,10 @@ describe("Order Return - Actions", function () {
       ],
     })
 
-    expect(receivedChanges.order.items).toEqual([
+    const toJsonReceived = JSON.parse(
+      JSON.stringify(receivedChanges.order.items)
+    )
+    expect(toJsonReceived).toEqual([
       {
         id: "1",
         quantity: 1,
@@ -276,7 +280,7 @@ describe("Order Return - Actions", function () {
           quantity: 2,
           shipped_quantity: 1,
           fulfilled_quantity: 1,
-          return_requested_quantity: 1,
+          return_requested_quantity: "1",
           return_received_quantity: 0,
           return_dismissed_quantity: 0,
           written_off_quantity: 0,
@@ -290,9 +294,9 @@ describe("Order Return - Actions", function () {
           quantity: 3,
           shipped_quantity: 3,
           fulfilled_quantity: 3,
-          return_requested_quantity: 0,
-          return_received_quantity: 1,
-          return_dismissed_quantity: 1,
+          return_requested_quantity: "0",
+          return_received_quantity: "1",
+          return_dismissed_quantity: "1",
           written_off_quantity: 0,
         },
       },

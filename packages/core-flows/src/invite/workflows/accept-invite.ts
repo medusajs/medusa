@@ -1,14 +1,13 @@
-import { UserDTO } from "@medusajs/types"
+import { InviteWorkflow, UserDTO } from "@medusajs/types"
 import {
   WorkflowData,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createUsersStep } from "../../user"
-import { validateTokenStep } from "../steps/validate-token"
 import { setAuthAppMetadataStep } from "../../auth"
-import { InviteWorkflow } from "@medusajs/types"
+import { createUsersStep } from "../../user"
 import { deleteInvitesStep } from "../steps"
+import { validateTokenStep } from "../steps/validate-token"
 
 export const acceptInviteWorkflowId = "accept-invite-workflow"
 export const acceptInviteWorkflow = createWorkflow(
@@ -16,7 +15,6 @@ export const acceptInviteWorkflow = createWorkflow(
   (
     input: WorkflowData<InviteWorkflow.AcceptInviteWorkflowInputDTO>
   ): WorkflowData<UserDTO[]> => {
-    // validate token
     const invite = validateTokenStep(input.invite_token)
 
     const createUserInput = transform(
@@ -25,7 +23,7 @@ export const acceptInviteWorkflow = createWorkflow(
         return [
           {
             ...input.user,
-            email: invite.email,
+            email: input.user.email ?? invite.email,
           },
         ]
       }

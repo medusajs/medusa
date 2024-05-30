@@ -1,9 +1,9 @@
+import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
 import {
   AbstractAuthModuleProvider,
   MedusaError,
   isString,
 } from "@medusajs/utils"
-import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
 
 import { AuthUserService } from "@services"
 import Scrypt from "scrypt-kdf"

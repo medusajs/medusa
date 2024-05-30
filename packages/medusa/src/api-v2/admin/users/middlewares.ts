@@ -1,40 +1,48 @@
 import * as QueryConfig from "./query-config"
 
-import { transformBody, transformQuery } from "../../../api/middlewares"
 import {
-  AdminCreateUserRequest,
+  AdminCreateUser,
+  AdminGetUserParams,
   AdminGetUsersParams,
-  AdminGetUsersUserParams,
-  AdminUpdateUserRequest,
+  AdminUpdateUser,
 } from "./validators"
 
 import { MiddlewareRoute } from "../../../types/middlewares"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformQuery } from "../../utils/validate-query"
+import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: ["ALL"],
-    matcher: "/admin/users*",
-    middlewares: [authenticate("admin", ["bearer", "session"])],
-  },
   {
     method: ["GET"],
     matcher: "/admin/users",
     middlewares: [
-      transformQuery(AdminGetUsersParams, QueryConfig.listTransformQueryConfig),
+      authenticate("admin", ["bearer", "session"]),
+      validateAndTransformQuery(
+        AdminGetUsersParams,
+        QueryConfig.listTransformQueryConfig
+      ),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/users",
-    middlewares: [transformBody(AdminCreateUserRequest)],
+    middlewares: [
+      authenticate("admin", ["bearer", "session"], { allowUnregistered: true }),
+      validateAndTransformBody(AdminCreateUser),
+      validateAndTransformQuery(
+        AdminGetUserParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["GET"],
     matcher: "/admin/users/:id",
     middlewares: [
-      transformQuery(
-        AdminGetUsersUserParams,
+      authenticate("admin", ["bearer", "session"]),
+      validateAndTransformQuery(
+        AdminGetUserParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -43,8 +51,9 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/users/me",
     middlewares: [
-      transformQuery(
-        AdminGetUsersUserParams,
+      authenticate("admin", ["bearer", "session"]),
+      validateAndTransformQuery(
+        AdminGetUserParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -52,6 +61,18 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/users/:id",
-    middlewares: [transformBody(AdminUpdateUserRequest)],
+    middlewares: [
+      authenticate("admin", ["bearer", "session"]),
+      validateAndTransformBody(AdminUpdateUser),
+      validateAndTransformQuery(
+        AdminGetUserParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/users/:id",
+    middlewares: [authenticate("admin", ["bearer", "session"])],
   },
 ]

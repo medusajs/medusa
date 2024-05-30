@@ -1,9 +1,9 @@
-import { WorkflowTypes } from "@medusajs/types"
 import {
   Handlers,
   updateProducts,
   UpdateProductsActions,
 } from "@medusajs/core-flows"
+import { WorkflowTypes } from "@medusajs/types"
 import { pipe } from "@medusajs/workflows-sdk"
 import path from "path"
 
@@ -86,7 +86,9 @@ describe.skip("UpdateProduct workflow", function () {
       {
         action: "fail_step",
         handlerType: "invoke",
-        error: new Error(`Failed to update products`),
+        error: expect.objectContaining({
+          message: `Failed to update products`,
+        }),
       },
     ])
 

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/region",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Medusa Region module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,7 +28,7 @@
     "watch:test": "tsc --build tsconfig.spec.json --watch",
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build && tsc-alias -p tsconfig.json",
     "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
-    "test": "jest --runInBand --bail --forceExit -- src/**/__tests__/**/*.ts",
+    "test": "jest --runInBand --passWithNoTests --bail --forceExit -- src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts",
     "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
     "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial",
@@ -48,14 +48,14 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.12.4",
-    "@medusajs/types": "^1.11.8",
-    "@medusajs/utils": "^1.11.1",
+    "@medusajs/modules-sdk": "^1.12.11",
+    "@medusajs/types": "^1.11.16",
+    "@medusajs/utils": "^1.11.9",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",
     "awilix": "^8.0.0",
-    "dotenv": "^16.1.4",
+    "dotenv": "^16.4.5",
     "knex": "2.4.2"
   }
 }

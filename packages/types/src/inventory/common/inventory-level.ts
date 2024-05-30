@@ -1,76 +1,92 @@
-import { NumericalComparisonOperator } from "../../common"
+import { BaseFilterable, OperatorMap } from "../../dal"
 
 /**
- * @schema InventoryLevelDTO
- * type: object
- * required:
- *   - inventory_item_id
- *   - location_id
- *   - stocked_quantity
- *   - reserved_quantity
- *   - incoming_quantity
- * properties:
- *   location_id:
- *     description: the item location ID
- *     type: string
- *   stocked_quantity:
- *     description: the total stock quantity of an inventory item at the given location ID
- *     type: number
- *   reserved_quantity:
- *     description: the reserved stock quantity of an inventory item at the given location ID
- *     type: number
- *   incoming_quantity:
- *     description: the incoming stock quantity of an inventory item at the given location ID
- *     type: number
- *   metadata:
- *     type: object
- *     description: An optional key-value map with additional details
- *     example: {car: "white"}
- *   created_at:
- *     type: string
- *     description: "The date with timezone at which the resource was created."
- *     format: date-time
- *   updated_at:
- *     type: string
- *     description: "The date with timezone at which the resource was updated."
- *     format: date-time
- *   deleted_at:
- *     type: string
- *     description: "The date with timezone at which the resource was deleted."
- *     format: date-time
+ * The inventory level details.
  */
 export interface InventoryLevelDTO {
+  /**
+   * The ID of the inventory level.
+   */
   id: string
+
+  /**
+   * The associated inventory item's ID.
+   */
   inventory_item_id: string
+
+  /**
+   * The associated location's ID.
+   */
   location_id: string
+
+  /**
+   * The stocked quantity of the inventory level.
+   */
   stocked_quantity: number
+
+  /**
+   * The reserved quantity of the inventory level.
+   */
   reserved_quantity: number
+
+  /**
+   * The incoming quantity of the inventory level.
+   */
   incoming_quantity: number
+
+  /**
+   * The available quantity of the inventory level.
+   */
+  available_quantity: number
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata: Record<string, unknown> | null
+
+  /**
+   * The creation date of the inventory level.
+   */
   created_at: string | Date
+
+  /**
+   * The update date of the inventory level.
+   */
   updated_at: string | Date
+
+  /**
+   * The deletion date of the inventory level.
+   */
   deleted_at: string | Date | null
 }
 
-export interface FilterableInventoryLevelProps {
+/**
+ * The filters to apply on the retrieved inventory levels.
+ */
+export interface FilterableInventoryLevelProps
+  extends BaseFilterable<FilterableInventoryLevelProps> {
   /**
    * Filter inventory levels by the ID of their associated inventory item.
    */
   inventory_item_id?: string | string[]
+
   /**
    * Filter inventory levels by the ID of their associated inventory location.
    */
   location_id?: string | string[]
+
   /**
    * Filters to apply on inventory levels' `stocked_quantity` attribute.
    */
-  stocked_quantity?: number | NumericalComparisonOperator
+  stocked_quantity?: number | OperatorMap<Number>
+
   /**
    * Filters to apply on inventory levels' `reserved_quantity` attribute.
    */
-  reserved_quantity?: number | NumericalComparisonOperator
+  reserved_quantity?: number | OperatorMap<Number>
+
   /**
    * Filters to apply on inventory levels' `incoming_quantity` attribute.
    */
-  incoming_quantity?: number | NumericalComparisonOperator
+  incoming_quantity?: number | OperatorMap<Number>
 }

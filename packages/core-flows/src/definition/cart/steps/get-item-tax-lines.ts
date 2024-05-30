@@ -1,3 +1,4 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CartLineItemDTO,
   CartShippingMethodDTO,
@@ -9,25 +10,39 @@ import {
   TaxableItemDTO,
   TaxableShippingDTO,
 } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-import { ModuleRegistrationName } from "../../../../../modules-sdk/dist"
 
 interface StepInput {
   cart: CartWorkflowDTO
   items: CartLineItemDTO[]
   shipping_methods: CartShippingMethodDTO[]
+  force_tax_calculation?: boolean
 }
 
 function normalizeTaxModuleContext(
-  cart: CartWorkflowDTO
+  cart: CartWorkflowDTO,
+  forceTaxCalculation: boolean
 ): TaxCalculationContext | null {
   const address = cart.shipping_address
+  const shouldCalculateTax = forceTaxCalculation || cart.region?.automatic_taxes
 
-  if (!address || !address.country_code) {
+  if (!shouldCalculateTax) {
     return null
   }
 
-  let customer = cart.customer
+  if (forceTaxCalculation && !address?.country_code) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `country code is required to calculate taxes`
+    )
+  }
+
+  if (!address?.country_code) {
+    return null
+  }
+
+  const customer = cart.customer
     ? {
         id: cart.customer.id,
         email: cart.customer.email,
@@ -83,12 +98,18 @@ export const getItemTaxLinesStepId = "get-item-tax-lines"
 export const getItemTaxLinesStep = createStep(
   getItemTaxLinesStepId,
   async (data: StepInput, { container }) => {
-    const { cart, items, shipping_methods: shippingMethods } = data
+    const {
+      cart,
+      items,
+      shipping_methods: shippingMethods,
+      force_tax_calculation: forceTaxCalculation = false,
+    } = data
+
     const taxService = container.resolve<ITaxModuleService>(
       ModuleRegistrationName.TAX
     )
 
-    const taxContext = normalizeTaxModuleContext(cart)
+    const taxContext = normalizeTaxModuleContext(cart, forceTaxCalculation)
 
     if (!taxContext) {
       return new StepResponse({

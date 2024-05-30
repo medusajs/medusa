@@ -1,18 +1,18 @@
 import * as defaultProviders from "@providers"
 
 import {
-  asClass,
-  AwilixContainer,
-  ClassOrFunctionReturning,
-  Constructor,
-  Resolver,
-} from "awilix"
-import {
   AuthModuleProviderConfig,
   AuthProviderScope,
   LoaderOptions,
   ModulesSdkTypes,
 } from "@medusajs/types"
+import {
+  AwilixContainer,
+  ClassOrFunctionReturning,
+  Constructor,
+  Resolver,
+  asClass,
+} from "awilix"
 
 type AuthModuleProviders = {
   providers: AuthModuleProviderConfig[]

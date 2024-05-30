@@ -1,11 +1,12 @@
-import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
+  AdminGetStoreParams,
   AdminGetStoresParams,
-  AdminGetStoresStoreParams,
-  AdminPostStoresStoreReq,
+  AdminUpdateStore,
 } from "./validators"
 
 export const adminStoreRoutesMiddlewares: MiddlewareRoute[] = [
@@ -18,7 +19,7 @@ export const adminStoreRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/stores",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetStoresParams,
         QueryConfig.listTransformQueryConfig
       ),
@@ -28,8 +29,8 @@ export const adminStoreRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/stores/:id",
     middlewares: [
-      transformQuery(
-        AdminGetStoresStoreParams,
+      validateAndTransformQuery(
+        AdminGetStoreParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -37,6 +38,12 @@ export const adminStoreRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/stores/:id",
-    middlewares: [transformBody(AdminPostStoresStoreReq)],
+    middlewares: [
+      validateAndTransformBody(AdminUpdateStore),
+      validateAndTransformQuery(
+        AdminGetStoreParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
 ]

@@ -2,7 +2,7 @@ import type { MDXComponents } from "mdx/types"
 import Security from "./Security"
 import type { OpenAPIV3 } from "openapi-types"
 import H2 from "./H2"
-import { CodeMdx, Kbd, NextLink } from "docs-ui"
+import { Link, MDXComponents as UiMDXComponents } from "docs-ui"
 
 export type ScopeType = {
   specs?: OpenAPIV3.Document
@@ -11,11 +11,12 @@ export type ScopeType = {
 
 const getCustomComponents = (scope?: ScopeType): MDXComponents => {
   return {
+    ...UiMDXComponents,
     Security: () => <Security specs={scope?.specs} />,
-    code: CodeMdx,
-    a: NextLink,
-    h2: (props) => <H2 addToSidebar={scope?.addToSidebar} {...props} />,
-    kbd: Kbd,
+    a: Link,
+    h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
+      <H2 addToSidebar={scope?.addToSidebar} {...props} />
+    ),
   }
 }
 

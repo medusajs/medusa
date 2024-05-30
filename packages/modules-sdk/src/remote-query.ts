@@ -4,15 +4,17 @@ import {
   toRemoteJoinerQuery,
 } from "@medusajs/orchestration"
 import {
+  JoinerArgument,
   JoinerRelationship,
   JoinerServiceConfig,
   LoadedModule,
   ModuleJoinerConfig,
   RemoteExpandProperty,
+  RemoteJoinerOptions,
   RemoteJoinerQuery,
+  RemoteNestedExpands,
 } from "@medusajs/types"
 import { isString, toPascalCase } from "@medusajs/utils"
-
 import { MedusaModule } from "./medusa-module"
 
 export class RemoteQuery {
@@ -78,41 +80,55 @@ export class RemoteQuery {
   }
 
   public static getAllFieldsAndRelations(
-    data: any,
+    expand: RemoteExpandProperty | RemoteNestedExpands[number],
     prefix = "",
-    args: Record<string, unknown[]> = {}
+    args: JoinerArgument = {} as JoinerArgument
   ): {
-    select: string[]
+    select?: string[]
     relations: string[]
-    args: Record<string, unknown[]>
+    args: JoinerArgument
   } {
+    expand = JSON.parse(JSON.stringify(expand))
+
     let fields: Set<string> = new Set()
     let relations: string[] = []
 
-    data.fields?.forEach((field: string) => {
-      fields.add(prefix ? `${prefix}.${field}` : field)
-    })
-    args[prefix] = data.args
+    let shouldSelectAll = false
 
-    if (data.expands) {
-      for (const property in data.expands) {
-        const newPrefix = prefix ? `${prefix}.${property}` : property
-
-        relations.push(newPrefix)
-        fields.delete(newPrefix)
-
-        const result = RemoteQuery.getAllFieldsAndRelations(
-          data.expands[property],
-          newPrefix,
-          args
-        )
-
-        result.select.forEach(fields.add, fields)
-        relations = relations.concat(result.relations)
+    for (const field of expand.fields ?? []) {
+      if (field === "*") {
+        shouldSelectAll = true
+        break
       }
+      fields.add(prefix ? `${prefix}.${field}` : field)
     }
 
-    return { select: [...fields], relations, args }
+    args[prefix] = expand.args
+
+    for (const property in expand.expands ?? {}) {
+      const newPrefix = prefix ? `${prefix}.${property}` : property
+
+      relations.push(newPrefix)
+      fields.delete(newPrefix)
+
+      const result = RemoteQuery.getAllFieldsAndRelations(
+        expand.expands![property],
+        newPrefix,
+        args
+      )
+
+      result.select?.forEach(fields.add, fields)
+      relations = relations.concat(result.relations)
+    }
+
+    const allFields = Array.from(fields)
+    const select =
+      allFields.length && !shouldSelectAll
+        ? allFields
+        : shouldSelectAll
+        ? undefined
+        : []
+    return { select, relations, args }
   }
 
   private hasPagination(options: { [attr: string]: unknown }): boolean {
@@ -165,6 +181,7 @@ export class RemoteQuery {
       "offset",
       "cursor",
       "sort",
+      "order",
       "withDeleted",
     ]
     const availableOptionsAlias = new Map([
@@ -174,7 +191,9 @@ export class RemoteQuery {
 
     for (const arg of expand.args || []) {
       if (arg.name === "filters" && arg.value) {
-        filters = { ...arg.value }
+        filters = { ...filters, ...arg.value }
+      } else if (arg.name === "context" && arg.value) {
+        filters["context"] = arg.value
       } else if (availableOptions.includes(arg.name)) {
         const argName = availableOptionsAlias.has(arg.name)
           ? availableOptionsAlias.get(arg.name)!
@@ -223,7 +242,8 @@ export class RemoteQuery {
 
   public async query(
     query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
+    variables?: Record<string, unknown>,
+    options?: RemoteJoinerOptions
   ): Promise<any> {
     let finalQuery: RemoteJoinerQuery = query as RemoteJoinerQuery
 
@@ -233,6 +253,6 @@ export class RemoteQuery {
       finalQuery = toRemoteJoinerQuery(query, variables)
     }
 
-    return await this.remoteJoiner.query(finalQuery)
+    return await this.remoteJoiner.query(finalQuery, options)
   }
 }

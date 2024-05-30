@@ -1,5 +1,8 @@
-import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { simpleSalesChannelFactory } from "../../../../factories"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
+import productSeeder from "../../../../helpers/product-seeder"
+import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 
 jest.setTimeout(50000)
 
@@ -16,7 +19,8 @@ const env = {
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
-    describe("/admin/products", () => {
+    // TODO: unskip this when there is a module compatible productSeeder
+    describe.skip("/admin/products", () => {
       let medusaContainer
 
       beforeAll(async () => {
@@ -26,13 +30,13 @@ medusaIntegrationTestRunner({
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, medusaContainer)
 
-        // await productSeeder(dbConnection)
-        // await createDefaultRuleTypes(medusaContainer)
-        // await simpleSalesChannelFactory(dbConnection, {
-        //   name: "Default channel",
-        //   id: "default-channel",
-        //   is_default: true,
-        // })
+        await productSeeder(dbConnection)
+        await createDefaultRuleTypes(medusaContainer)
+        await simpleSalesChannelFactory(dbConnection, {
+          name: "Default channel",
+          id: "default-channel",
+          is_default: true,
+        })
       })
 
       describe("POST /admin/products", () => {
@@ -40,29 +44,29 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test",
             description: "test-product-description",
-            // type: { value: "test-type" },
+            type: { value: "test-type" },
             images: ["test-image.png", "test-image-2.png"],
-            // collection_id: "test-collection",
-            // tags: [{ value: "123" }, { value: "456" }],
+            collection_id: "test-collection",
+            tags: [{ value: "123" }, { value: "456" }],
             // options: [{ title: "size" }, { title: "color" }],
             variants: [
               {
                 title: "Test variant",
                 inventory_quantity: 10,
-                // prices: [
-                //   {
-                //     currency_code: "usd",
-                //     amount: 100,
-                //   },
-                //   {
-                //     currency_code: "eur",
-                //     amount: 45,
-                //   },
-                //   {
-                //     currency_code: "dkk",
-                //     amount: 30,
-                //   },
-                // ],
+                prices: [
+                  {
+                    currency_code: "usd",
+                    amount: 100,
+                  },
+                  {
+                    currency_code: "eur",
+                    amount: 45,
+                  },
+                  {
+                    currency_code: "dkk",
+                    amount: 30,
+                  },
+                ],
                 // options: [{ value: "large" }, { value: "green" }],
               },
             ],
@@ -106,8 +110,6 @@ medusaIntegrationTestRunner({
               }),
             ])
           )
-
-          console.log(response?.data.product)
 
           expect(response?.data.product.variants).toEqual(
             expect.arrayContaining([
@@ -219,16 +221,16 @@ medusaIntegrationTestRunner({
             title: "Test",
             discountable: false,
             description: "test-product-description",
-            // type: { value: "test-type" },
+            type: { value: "test-type" },
             images: ["test-image.png", "test-image-2.png"],
-            // collection_id: "test-collection",
-            // tags: [{ value: "123" }, { value: "456" }],
+            collection_id: "test-collection",
+            tags: [{ value: "123" }, { value: "456" }],
             // options: [{ title: "size" }, { title: "color" }],
             variants: [
               {
                 title: "Test variant",
                 inventory_quantity: 10,
-                // prices: [{ currency_code: "usd", amount: 100 }],
+                prices: [{ currency_code: "usd", amount: 100 }],
                 // options: [{ value: "large" }, { value: "green" }],
               },
             ],
@@ -252,22 +254,22 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test product - 1",
             description: "test-product-description 1",
-            // type: { value: "test-type 1" },
+            type: { value: "test-type 1" },
             images: ["test-image.png", "test-image-2.png"],
-            // collection_id: "test-collection",
-            // tags: [{ value: "123" }, { value: "456" }],
+            collection_id: "test-collection",
+            tags: [{ value: "123" }, { value: "456" }],
             // options: [{ title: "size" }, { title: "color" }],
             variants: [
               {
                 title: "Test variant 1",
                 inventory_quantity: 10,
-                // prices: [{ currency_code: "usd", amount: 100 }],
+                prices: [{ currency_code: "usd", amount: 100 }],
                 // options: [{ value: "large" }, { value: "green" }],
               },
               {
                 title: "Test variant 2",
                 inventory_quantity: 10,
-                // prices: [{ currency_code: "usd", amount: 100 }],
+                prices: [{ currency_code: "usd", amount: 100 }],
                 // options: [{ value: "large" }, { value: "green" }],
               },
             ],
@@ -316,7 +318,7 @@ medusaIntegrationTestRunner({
             variants: [
               {
                 title: "Test variant",
-                // prices: [{ currency_code: "usd", amount: 100 }],
+                prices: [{ currency_code: "usd", amount: 100 }],
                 // options: [{ value: "100" }],
               },
             ],
@@ -344,22 +346,22 @@ medusaIntegrationTestRunner({
             {
               title: "Test product - 1",
               description: "test-product-description 1",
-              // type: { value: "test-type 1" },
+              type: { value: "test-type 1" },
               images: ["test-image.png", "test-image-2.png"],
-              // collection_id: "test-collection",
-              // tags: [{ value: "123" }, { value: "456" }],
+              collection_id: "test-collection",
+              tags: [{ value: "123" }, { value: "456" }],
               // options: [{ title: "size" }, { title: "color" }],
               variants: [
                 {
                   title: "Test variant 1",
                   inventory_quantity: 10,
-                  // prices: [{ currency_code: "usd", amount: 100 }],
+                  prices: [{ currency_code: "usd", amount: 100 }],
                   // options: [{ value: "large" }, { value: "green" }],
                 },
                 {
                   title: "Test variant 2",
                   inventory_quantity: 10,
-                  // prices: [{ currency_code: "usd", amount: 100 }],
+                  prices: [{ currency_code: "usd", amount: 100 }],
                   // options: [{ value: "large" }, { value: "green" }],
                 },
               ],

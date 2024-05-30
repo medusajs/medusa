@@ -1,5 +1,6 @@
 import type { FulfillmentStatus } from "@medusajs/medusa"
 import { useTranslation } from "react-i18next"
+import { getOrderFulfillmentStatus } from "../../../../../lib/order-helpers"
 import { StatusCell } from "../../common/status-cell"
 
 type FulfillmentStatusCellProps = {
@@ -11,26 +12,7 @@ export const FulfillmentStatusCell = ({
 }: FulfillmentStatusCellProps) => {
   const { t } = useTranslation()
 
-  const [label, color] = {
-    not_fulfilled: [t("orders.fulfillment.status.notFulfilled"), "red"],
-    partially_fulfilled: [
-      t("orders.fulfillment.status.partiallyFulfilled"),
-      "orange",
-    ],
-    fulfilled: [t("orders.fulfillment.status.fulfilled"), "green"],
-    partially_shipped: [
-      t("orders.fulfillment.status.partiallyShipped"),
-      "orange",
-    ],
-    shipped: [t("orders.fulfillment.status.shipped"), "green"],
-    partially_returned: [
-      t("orders.fulfillment.status.partiallyReturned"),
-      "orange",
-    ],
-    returned: [t("orders.fulfillment.status.returned"), "green"],
-    canceled: [t("orders.fulfillment.status.canceled"), "red"],
-    requires_action: [t("orders.fulfillment.status.requiresAction"), "orange"],
-  }[status] as [string, "red" | "orange" | "green"]
+  const { label, color } = getOrderFulfillmentStatus(t, status)
 
   return <StatusCell color={color}>{label}</StatusCell>
 }

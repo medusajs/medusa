@@ -81,7 +81,7 @@ DATABASE_SCHEMA=public
 1. Change `APP_KEYS`, `API_TOKEN_SALT`, `JWT_SECRET`, and `ADMIN_JWT_SECRET` to a random and unique string. These keys are used by Strapi to sign session cookies, generate API tokens, and more.
 2. Change `MEDUSA_STRAPI_SECRET` to a random unique string. The value of this environment variable is used later in your Medusa configurations.
 3. Change `MEDUSA_BACKEND_URL` to the URL of your Medusa backend. If you’re running it locally, it should be `http://localhost:9000`.
-4. Change `MEDUSA_BACKEND_ADMIN` to the URL of your Medusa admin. If you’re running it locally, it should be `http://localhost:7001`.
+4. Change `MEDUSA_BACKEND_ADMIN` to the URL of your Medusa Admin. If you’re running it locally, it should be `http://localhost:7001`.
 5. Change the following environment variables to define the Strapi super user:
     1. `SUPERUSER_EMAIL`: the super user’s email. By default, it’s `support@medusa-commerce.com`.
     2. `SUPERUSER_USERNAME`: the super user’s username. By default, it’s `SuperUser`.
@@ -209,7 +209,7 @@ info:    Strapi Subscriber Initialized
 
 ### Two-Way Syncing
 
-To test syncing data from Medusa to Strapi, try creating or updating a product either using the Medusa admin or the [REST APIs](https://docs.medusajs.com/api/admin#products_postproducts). This triggers the associated event in Medusa, which makes the updates in Strapi.
+To test syncing data from Medusa to Strapi, try creating or updating a product either using the Medusa Admin or the [REST APIs](https://docs.medusajs.com/api/admin#products_postproducts). This triggers the associated event in Medusa, which makes the updates in Strapi.
 
 :::tip
 

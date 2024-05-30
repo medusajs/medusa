@@ -1,4 +1,4 @@
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # BaseRepositoryService
 
@@ -8,7 +8,7 @@ ORM directly and allows to switch to another ORM without changing the business l
 
 ## Type parameters
 
-<ParameterTypes parameters={[{"name":"T","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="BaseRepositoryService"/>
+<TypeList types={[{"name":"T","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="BaseRepositoryService"/>
 
 ## Methods
 
@@ -16,46 +16,46 @@ ORM directly and allows to switch to another ORM without changing the business l
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TManager","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="transaction"/>
+<TypeList types={[{"name":"TManager","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="transaction"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"task","type":"(`transactionManager`: TManager) => Promise&#60;any&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"isolationLevel","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transaction","type":"TManager","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"context.isolationLevel","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"context.transaction","type":"TManager","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"context.enableNestedTransactions","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="transaction"/>
+<TypeList types={[{"name":"task","type":"(`transactionManager`: TManager) => Promise&#60;any&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"isolationLevel","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transaction","type":"TManager","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"context.isolationLevel","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"context.transaction","type":"TManager","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"context.enableNestedTransactions","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="transaction"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="transaction"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="transaction"/>
 
 ### getFreshManager
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TManager","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getFreshManager"/>
+<TypeList types={[{"name":"TManager","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getFreshManager"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"TManager","type":"TManager","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getFreshManager"/>
+<TypeList types={[{"name":"TManager","type":"TManager","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getFreshManager"/>
 
 ### getActiveManager
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TManager","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getActiveManager"/>
+<TypeList types={[{"name":"TManager","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getActiveManager"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"TManager","type":"TManager","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getActiveManager"/>
+<TypeList types={[{"name":"TManager","type":"TManager","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getActiveManager"/>
 
 ### serialize
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TOutput","type":"`object` \\| `object`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="serialize"/>
+<TypeList types={[{"name":"TOutput","type":"`object` \\| `object`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="serialize"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"data","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`any`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="serialize"/>
+<TypeList types={[{"name":"data","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`any`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="serialize"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TOutput&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"TOutput","type":"TOutput","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="serialize"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TOutput&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"TOutput","type":"TOutput","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="serialize"/>

@@ -1323,12 +1323,15 @@ describe("/admin/price-lists", () => {
     it("should delete all the prices that are part of the price list for the specified product", async () => {
       const api = useApi()
 
-      response = await api.get("/admin/price-lists/test-list", adminReqConfig)
+      let response = await api.get(
+        "/admin/price-lists/test-list",
+        adminReqConfig
+      )
 
       expect(response.status).toBe(200)
       expect(response.data.price_list.prices.length).toBe(3)
 
-      let response = await api.delete(
+      response = await api.delete(
         `/admin/price-lists/test-list/products/${product1.id}/prices`,
         adminReqConfig
       )
@@ -1353,13 +1356,16 @@ describe("/admin/price-lists", () => {
     it("should delete all the prices that are part of the price list for the specified variant", async () => {
       const api = useApi()
 
-      response = await api.get("/admin/price-lists/test-list", adminReqConfig)
+      let response = await api.get(
+        "/admin/price-lists/test-list",
+        adminReqConfig
+      )
 
       expect(response.status).toBe(200)
       expect(response.data.price_list.prices.length).toBe(3)
 
       const variant = product2.variants[0]
-      let response = await api.delete(
+      response = await api.delete(
         `/admin/price-lists/test-list/variants/${variant.id}/prices`,
         adminReqConfig
       )

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.20.2",
+  "version": "1.20.6",
   "description": "Building blocks for digital commerce",
   "main": "dist/index.js",
   "bin": "./cli.js",
@@ -22,7 +22,9 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "^1.11.12",
+    "@medusajs/types": "^1.11.16",
+    "@swc/core": "^1.4.8",
+    "@swc/jest": "^0.2.36",
     "@types/express": "^4.17.17",
     "@types/ioredis": "^4.28.10",
     "@types/jsonwebtoken": "^8.5.9",
@@ -31,7 +33,8 @@
     "@types/papaparse": "^5.3.7",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
-    "medusa-interfaces": "^1.3.8",
+    "medusa-interfaces": "^1.3.9",
+    "medusa-test-utils": "^1.1.44",
     "rimraf": "^5.0.1",
     "supertest": "^4.0.2",
     "ts-jest": "^25.5.1",
@@ -43,24 +46,24 @@
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "serve": "node dist/app.js",
-    "test": "jest --runInBand --bail --detectOpenHandles --forceExit"
+    "test": "jest --silent --bail --maxWorkers=50% --forceExit"
   },
   "peerDependencies": {
     "medusa-interfaces": "^1.3.7",
     "typeorm": "^0.3.16"
   },
   "dependencies": {
-    "@medusajs/core-flows": "^0.0.6",
-    "@medusajs/link-modules": "^0.2.8",
+    "@medusajs/core-flows": "^0.0.9",
+    "@medusajs/link-modules": "^0.2.11",
     "@medusajs/medusa-cli": "^1.3.22",
-    "@medusajs/modules-sdk": "^1.12.8",
-    "@medusajs/orchestration": "^0.5.4",
-    "@medusajs/utils": "^1.11.5",
-    "@medusajs/workflows-sdk": "^0.1.3",
+    "@medusajs/modules-sdk": "^1.12.11",
+    "@medusajs/orchestration": "^0.5.7",
+    "@medusajs/utils": "^1.11.9",
+    "@medusajs/workflows-sdk": "^0.1.6",
     "awilix": "^8.0.0",
     "body-parser": "^1.19.0",
     "boxen": "^5.0.1",
-    "bullmq": "^3.5.6",
+    "bullmq": "^5.4.2",
     "chokidar": "^3.4.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -80,9 +83,8 @@
     "iso8601-duration": "^1.3.0",
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
-    "medusa-core-utils": "^1.2.1",
+    "medusa-core-utils": "^1.2.2",
     "medusa-telemetry": "^0.0.17",
-    "medusa-test-utils": "^1.1.41",
     "morgan": "^1.9.1",
     "multer": "^1.4.5-lts.1",
     "node-schedule": "^2.1.1",
@@ -100,7 +102,8 @@
     "scrypt-kdf": "^2.0.1",
     "ulid": "^2.3.0",
     "uuid": "^9.0.0",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "zod": "^3.22.4"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e"
 }

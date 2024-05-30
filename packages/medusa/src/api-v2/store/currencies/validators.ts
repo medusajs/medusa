@@ -1,30 +1,19 @@
-import { Type } from "class-transformer"
-import { IsOptional, IsString, ValidateNested } from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+import { createFindParams, createSelectParams } from "../../utils/validators"
+import { z } from "zod"
 
-export class StoreGetCurrenciesCurrencyParams extends FindParams {}
-/**
- * Parameters used to filter and configure the pagination of the retrieved currencies.
- */
-export class StoreGetCurrenciesParams extends extendedFindParamsMixin({
-  limit: 50,
+export const StoreGetCurrencyParams = createSelectParams()
+
+export type StoreGetCurrenciesParamsType = z.infer<
+  typeof StoreGetCurrenciesParams
+>
+export const StoreGetCurrenciesParams = createFindParams({
   offset: 0,
-}) {
-  /**
-   * Search parameter for currencies.
-   */
-  @IsString({ each: true })
-  @IsOptional()
-  code?: string | string[]
-
-  // Additional filters from BaseFilterable
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => StoreGetCurrenciesParams)
-  $and?: StoreGetCurrenciesParams[]
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => StoreGetCurrenciesParams)
-  $or?: StoreGetCurrenciesParams[]
-}
+  limit: 50,
+}).merge(
+  z.object({
+    q: z.string().optional(),
+    code: z.union([z.string(), z.array(z.string())]).optional(),
+    $and: z.lazy(() => StoreGetCurrenciesParams.array()).optional(),
+    $or: z.lazy(() => StoreGetCurrenciesParams.array()).optional(),
+  })
+)

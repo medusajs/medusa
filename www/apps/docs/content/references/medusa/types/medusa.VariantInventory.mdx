@@ -2,7 +2,7 @@
 displayed_sidebar: homepage
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # VariantInventory
 
@@ -10,4 +10,4 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"id","type":"`string`","description":"the ID of the variant","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"inventory","type":"[ResponseInventoryItem](medusa.ResponseInventoryItem.mdx)[]","description":"The inventory details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channel_availability","type":"`object`[]","description":"Details about the variant's inventory availability in sales channels.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"channel_name","type":"`string`","description":"Sales channel's name","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"channel_id","type":"`string`","description":"Sales channel's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"available_quantity","type":"`number`","description":"Available quantity in the sales channel","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="VariantInventory"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"the ID of the variant","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"inventory","type":"[ResponseInventoryItem](medusa.ResponseInventoryItem.mdx)[]","description":"The inventory details.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channel_availability","type":"`object`[]","description":"Details about the variant's inventory availability in sales channels.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"channel_name","type":"`string`","description":"Sales channel's name","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"channel_id","type":"`string`","description":"Sales channel's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"available_quantity","type":"`number`","description":"Available quantity in the sales channel","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="VariantInventory"/>

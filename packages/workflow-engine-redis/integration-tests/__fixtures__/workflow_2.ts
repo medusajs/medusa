@@ -25,8 +25,6 @@ const step_1 = createStep(
 const step_2 = createStep(
   "step_2",
   jest.fn((input, context) => {
-    console.log("triggered async request", context.metadata.idempotency_key)
-
     if (input) {
       return new StepResponse({ notAsyncResponse: input.hey })
     }

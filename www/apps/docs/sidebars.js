@@ -1970,6 +1970,11 @@ module.exports = {
           ],
         },
         {
+          type: "doc",
+          id: "development/worker-mode/index",
+          label: "Worker Mode",
+        },
+        {
           type: "category",
           label: "Feature Flag",
           items: [
@@ -2176,6 +2181,11 @@ module.exports = {
       type: "category",
       label: "Medusa Backend",
       items: [
+        {
+          type: "doc",
+          id: "troubleshooting/mime-error",
+          label: "Mime Error",
+        },
         {
           type: "doc",
           id: "troubleshooting/eaddrinuse",

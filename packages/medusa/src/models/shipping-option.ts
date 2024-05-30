@@ -7,21 +7,22 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from "typeorm"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { Region } from "./region"
 import { ShippingOptionRequirement } from "./shipping-option-requirement"
 import { ShippingProfile } from "./shipping-profile"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 /**
  * @enum
- * 
+ *
  * The type of the shipping option price.
  */
 export enum ShippingOptionPriceType {
@@ -47,7 +48,7 @@ export class ShippingOption extends SoftDeletableEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region: Relation<Region>
 
   @Index()
   @Column()
@@ -55,7 +56,7 @@ export class ShippingOption extends SoftDeletableEntity {
 
   @ManyToOne(() => ShippingProfile)
   @JoinColumn({ name: "profile_id" })
-  profile: ShippingProfile
+  profile: Relation<ShippingProfile>
 
   @Index()
   @Column()
@@ -63,7 +64,7 @@ export class ShippingOption extends SoftDeletableEntity {
 
   @ManyToOne(() => FulfillmentProvider)
   @JoinColumn({ name: "provider_id" })
-  provider: FulfillmentProvider
+  provider: Relation<FulfillmentProvider>
 
   @DbAwareColumn({ type: "enum", enum: ShippingOptionPriceType })
   price_type: ShippingOptionPriceType
@@ -80,7 +81,7 @@ export class ShippingOption extends SoftDeletableEntity {
   @OneToMany(() => ShippingOptionRequirement, (req) => req.shipping_option, {
     cascade: ["insert"],
   })
-  requirements: ShippingOptionRequirement[]
+  requirements: Relation<ShippingOptionRequirement>[]
 
   @DbAwareColumn({ type: "jsonb" })
   data: Record<string, unknown>

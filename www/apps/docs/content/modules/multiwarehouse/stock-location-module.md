@@ -1,16 +1,16 @@
 ---
-description: "In this document, you’ll learn about the inventory module, how it works, and its relation to other processes in your commerce application."
+description: "In this document, you’ll learn about the Inventory Module, how it works, and its relation to other processes in your commerce application."
 ---
 
 # Stock Location Module
 
-In this document, you’ll learn about the Stock Location module and how it works.
+In this document, you’ll learn about the Stock Location Module and how it works.
 
 ## Overview
 
-A stock location indicates a physical address that stock-kept items can be stored in. The Stock Location module handles functionalities related to managing stock locations and their addresses.
+A stock location indicates a physical address that stock-kept items can be stored in. The Stock Location Module handles functionalities related to managing stock locations and their addresses.
 
-Medusa's Stock Location module is a standalone module that can be used in any commerce application, not just in a Medusa backend. This document gives a general overview of how the stock location module is designed, and highlights how the Medusa core orchestrates relations around this module when it's used with the Medusa backend.
+Medusa's Stock Location module is a standalone module that can be used in any commerce application, not just in a Medusa backend. This document gives a general overview of how the Stock Location Module is designed, and highlights how the Medusa core orchestrates relations around this module when it's used with the Medusa backend.
 
 ---
 
@@ -30,7 +30,7 @@ The `StockLocationAddress` entity belongs to the `StockLocation` entity. It is u
 
 ## How the Module Integrates into Medusa
 
-This section explains how the Medusa backend uses the stock location module along with its entities and other modules.
+This section explains how the Medusa backend uses the Stock Location Module along with its entities and other modules.
 
 ### Entities Relation Overview
 
@@ -48,7 +48,7 @@ The Medusa backend also orchestrates between different modules. The [Inventory M
 - `InventoryLevel`: This entity is used to indicate the stocked quantity of an inventory item in a stock location. As explained in the [Inventory Module documentation](./inventory-module.md#inventorylevel), the `InventoryLevel` entity has an attribute `location_id`.
 - `ReservationItem`: This entity is used to indicate the reserved quantity of an inventory item in a stock location. As explained in the [Inventory Module documentation](./inventory-module.md#reservationitem), the `ReservationItem` entity has an attribute `location_id`.
 
-When both modules are used within the Medusa backend, the Medusa backend bridges between these modules by passing the ID of a `StockLocation` from the stock location module to the inventory module, and the inventory module uses the ID in its entities.
+When both modules are used within the Medusa backend, the Medusa backend bridges between these modules by passing the ID of a `StockLocation` from the Stock Location Module to the Inventory Module, and the Inventory Module uses the ID in its entities.
 
 ### Relation to SalesChannel
 
@@ -58,6 +58,6 @@ As the `StockLocation` and `SalesChannel` entities are available in separate mod
 
 This relation is used across the Medusa backend and within checkout and order workflows:
 
-- When checking the availability of an inventory item during checkout, the Medusa backend retrieves the location IDs that are associated with the cart’s sales channel using the `SalesChannelLocation`, then passes it along to the inventory module to perform the quantity check.
-- When an order is placed, the Medusa backend retrieves the location IDs that are associated with the cart’s sales channel using the `SalesChannelLocation` entity, and passes it to the inventory module that reserves the ordered quantity of the inventory item from that location. The admin can later change the stock location if necessary.
-- When an item in an order is fulfilled, the admin chooses a stock location to fulfill the item from. Similarly, when an item in an order is returned, the admin can choose a stock location to return the item to. The Medusa backend then passes the ID of the location from the stock module to the inventory module to perform inventory management functionalities.
+- When checking the availability of an inventory item during checkout, the Medusa backend retrieves the location IDs that are associated with the cart’s sales channel using the `SalesChannelLocation`, then passes it along to the Inventory Module to perform the quantity check.
+- When an order is placed, the Medusa backend retrieves the location IDs that are associated with the cart’s sales channel using the `SalesChannelLocation` entity, and passes it to the Inventory Module that reserves the ordered quantity of the inventory item from that location. The admin can later change the stock location if necessary.
+- When an item in an order is fulfilled, the admin chooses a stock location to fulfill the item from. Similarly, when an item in an order is returned, the admin can choose a stock location to return the item to. The Medusa backend then passes the ID of the location from the Stock Location Module to the Inventory Module to perform inventory management functionalities.

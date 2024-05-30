@@ -84,6 +84,13 @@ export function generateEntity(
     filters: {
       [SoftDeletableFilterKey]: mikroOrmSoftDeletableFilterOptions,
     },
+    hooks: {
+      beforeUpdate: [
+        (args) => {
+          args.entity.updated_at = new Date()
+        },
+      ],
+    },
     indexes: [
       {
         properties: ["id"],

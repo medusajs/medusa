@@ -8,6 +8,7 @@ import { shouldHaveCustomNamespace } from "../../utils/medusa-react-utils.js"
  */
 class SourceFileKindGenerator extends DefaultKindGenerator<ts.SourceFile> {
   protected allowedKinds: ts.SyntaxKind[] = [ts.SyntaxKind.SourceFile]
+  public name = "source-file"
 
   /**
    * Retrieve the docblock of a source file.
@@ -16,12 +17,12 @@ class SourceFileKindGenerator extends DefaultKindGenerator<ts.SourceFile> {
    * @param {GetDocBlockOptions} options - The formatting options.
    * @returns {string} The node's docblock.
    */
-  getDocBlock(
+  async getDocBlock(
     node: ts.SourceFile | ts.Node,
     options?: GetDocBlockOptions
-  ): string {
+  ): Promise<string> {
     if (!this.isAllowed(node)) {
-      return super.getDocBlock(node, options)
+      return await super.getDocBlock(node, options)
     }
 
     if (shouldHaveCustomNamespace(node)) {

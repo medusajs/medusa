@@ -1,12 +1,10 @@
 "use client"
 
 import {
-  AiAssistantProvider,
   AnalyticsProvider,
   ColorModeProvider,
   MobileProvider,
   ModalProvider,
-  NavbarProvider,
   PageLoadingProvider,
   ScrollControllerProvider,
 } from "docs-ui"
@@ -27,11 +25,9 @@ const Providers = ({ children }: ProvidersProps) => {
             <BaseSpecsProvider>
               <ScrollControllerProvider scrollableSelector="#main">
                 <SidebarProvider>
-                  <NavbarProvider>
-                    <SearchProvider>
-                      <MobileProvider>{children}</MobileProvider>
-                    </SearchProvider>
-                  </NavbarProvider>
+                  <SearchProvider>
+                    <MobileProvider>{children}</MobileProvider>
+                  </SearchProvider>
                 </SidebarProvider>
               </ScrollControllerProvider>
             </BaseSpecsProvider>

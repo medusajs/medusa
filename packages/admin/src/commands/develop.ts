@@ -26,6 +26,7 @@ export default async function develop({ backend, path, port }: DevelopArgs) {
       develop: {
         port: port || config.develop.port,
         open: config.develop.open,
+        host: config.develop.host,
         allowedHosts: config.develop.allowedHosts,
         webSocketURL: config.develop.webSocketURL,
       },

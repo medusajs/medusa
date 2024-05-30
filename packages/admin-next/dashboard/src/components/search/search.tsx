@@ -111,7 +111,7 @@ const useLinks = (): CommandGroupProps[] => {
             label: t("salesChannels.domain"),
           },
           {
-            label: t("apiKeyManagement.domain"),
+            label: t("apiKeyManagement.domainTitle"),
           },
         ],
       },

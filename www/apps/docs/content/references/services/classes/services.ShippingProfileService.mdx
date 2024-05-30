@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # ShippingProfileService
 
@@ -14,13 +14,13 @@ Provides layer to manipulate profiles.
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new ShippingProfileService"/>
+<TypeList types={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new ShippingProfileService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productService_","type":"[ProductService](services.ProductService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shippingOptionService_","type":"[ShippingOptionService](services.ShippingOptionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customShippingOptionService_","type":"[CustomShippingOptionService](services.CustomShippingOptionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shippingProfileRepository_","type":"Repository&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productRepository_","type":"Repository&#60;[Product](../../entities/classes/entities.Product.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter_","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ShippingProfileService"/>
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productService_","type":"[ProductService](services.ProductService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shippingOptionService_","type":"[ShippingOptionService](services.ShippingOptionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customShippingOptionService_","type":"[CustomShippingOptionService](services.CustomShippingOptionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shippingProfileRepository_","type":"Repository&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productRepository_","type":"Repository&#60;[Product](../../entities/classes/entities.Product.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter_","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ShippingProfileService"/>
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
@@ -40,21 +40,21 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 ### shouldRetryTransaction\_
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -64,35 +64,35 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 ### list
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","description":"the config object for find","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="list"/>
+<TypeList types={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","description":"the config object for find","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="list"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="list"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="list"/>
 
 ### getMapProfileIdsByProductIds
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"productIds","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getMapProfileIdsByProductIds"/>
+<TypeList types={[{"name":"productIds","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getMapProfileIdsByProductIds"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Map&#60;string, string&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getMapProfileIdsByProductIds"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Map&#60;string, string&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getMapProfileIdsByProductIds"/>
 
 ### retrieve
 
@@ -101,27 +101,27 @@ Throws in case of DB Error and if profile was not found.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"profileId","type":"`string`","description":"the id of the profile to get.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","description":"options opf the query.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+<TypeList types={[{"name":"profileId","type":"`string`","description":"the id of the profile to get.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","description":"options opf the query.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the profile document.","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the profile document.","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 ### retrieveForProducts
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"productIds","type":"`string` \\| `string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="retrieveForProducts"/>
+<TypeList types={[{"name":"productIds","type":"`string` \\| `string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="retrieveForProducts"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieveForProducts"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieveForProducts"/>
 
 ### retrieveDefault
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;null \\| [ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieveDefault"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;null \\| [ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieveDefault"/>
 
 ### createDefault
 
@@ -129,7 +129,7 @@ Creates a default shipping profile, if this does not already exist.
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the shipping profile","expandable":false,"children":[]}]}  sectionTitle="createDefault"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the shipping profile","expandable":false,"children":[]}]}  sectionTitle="createDefault"/>
 
 ### retrieveGiftCardDefault
 
@@ -137,7 +137,7 @@ Retrieves the default gift card profile
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;null \\| [ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the shipping profile for gift cards","expandable":false,"children":[]}]}  sectionTitle="retrieveGiftCardDefault"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;null \\| [ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the shipping profile for gift cards","expandable":false,"children":[]}]}  sectionTitle="retrieveGiftCardDefault"/>
 
 ### createGiftCardDefault
 
@@ -146,7 +146,7 @@ exists.
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the shipping profile","expandable":false,"children":[]}]}  sectionTitle="createGiftCardDefault"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the shipping profile","expandable":false,"children":[]}]}  sectionTitle="createGiftCardDefault"/>
 
 ### create
 
@@ -154,11 +154,11 @@ Creates a new shipping profile.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"profile","type":"`CreateShippingProfile`","description":"the shipping profile to create from","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
+<TypeList types={[{"name":"profile","type":"`CreateShippingProfile`","description":"the shipping profile to create from","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]}  sectionTitle="create"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 ### update
 
@@ -168,11 +168,11 @@ will throw errors if metadata or product updates are attempted.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"profileId","type":"`string`","description":"the id of the profile. Must be a string that\n  can be casted to an ObjectId","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`UpdateShippingProfile`","description":"an object with the update values.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
+<TypeList types={[{"name":"profileId","type":"`string`","description":"the id of the profile. Must be a string that\n  can be casted to an ObjectId","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`UpdateShippingProfile`","description":"an object with the update values.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the update result.","expandable":false,"children":[]}]}  sectionTitle="update"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the update result.","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
 ### delete
 
@@ -180,21 +180,21 @@ Deletes a profile with a given profile id.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"profileId","type":"`string`","description":"the id of the profile to delete. Must be\n  castable as an ObjectId","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"profileId","type":"`string`","description":"the id of the profile to delete. Must be\n  castable as an ObjectId","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 ### addProduct
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"profileId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productId","type":"`string` \\| `string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addProduct"/>
+<TypeList types={[{"name":"profileId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productId","type":"`string` \\| `string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addProduct"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="addProduct"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="addProduct"/>
 
 #### Deprecated
 
@@ -206,11 +206,11 @@ Adds a product or an array of products to the profile.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"profileId","type":"`string`","description":"the profile to add the products to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productId","type":"`string` \\| `string`[]","description":"the ID of the product or multiple products to add.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addProducts"/>
+<TypeList types={[{"name":"profileId","type":"`string`","description":"the profile to add the products to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productId","type":"`string` \\| `string`[]","description":"the ID of the product or multiple products to add.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addProducts"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of update","expandable":false,"children":[]}]}  sectionTitle="addProducts"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of update","expandable":false,"children":[]}]}  sectionTitle="addProducts"/>
 
 ### removeProducts
 
@@ -218,11 +218,11 @@ Removes a product or an array of products from the profile.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"profileId","type":"`null` \\| `string`","description":"the profile to add the products to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productId","type":"`string` \\| `string`[]","description":"the ID of the product or multiple products to add.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="removeProducts"/>
+<TypeList types={[{"name":"profileId","type":"`null` \\| `string`","description":"the profile to add the products to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productId","type":"`string` \\| `string`[]","description":"the ID of the product or multiple products to add.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="removeProducts"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of update","expandable":false,"children":[]}]}  sectionTitle="removeProducts"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void \\| [ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of update","expandable":false,"children":[]}]}  sectionTitle="removeProducts"/>
 
 ### addShippingOption
 
@@ -231,11 +231,11 @@ fulfill the products in the products field.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"profileId","type":"`string`","description":"the profile to apply the shipping option to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"optionId","type":"`string` \\| `string`[]","description":"the ID of the option or multiple options to add to the profile","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addShippingOption"/>
+<TypeList types={[{"name":"profileId","type":"`string`","description":"the profile to apply the shipping option to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"optionId","type":"`string` \\| `string`[]","description":"the ID of the option or multiple options to add to the profile","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addShippingOption"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the model update operation","expandable":false,"children":[]}]}  sectionTitle="addShippingOption"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the model update operation","expandable":false,"children":[]}]}  sectionTitle="addShippingOption"/>
 
 ### fetchCartOptions
 
@@ -244,11 +244,11 @@ validates all options that are available for the cart.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cart","type":"`any`","description":"the cart object to find shipping options for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="fetchCartOptions"/>
+<TypeList types={[{"name":"cart","type":"`any`","description":"the cart object to find shipping options for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="fetchCartOptions"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;","optional":false,"defaultValue":"","description":"a list of the available shipping options","expandable":false,"children":[]}]}  sectionTitle="fetchCartOptions"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;","optional":false,"defaultValue":"","description":"a list of the available shipping options","expandable":false,"children":[]}]}  sectionTitle="fetchCartOptions"/>
 
 ### getProfilesInCart
 
@@ -256,8 +256,8 @@ Returns a list of all the productIds in the cart.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to extract products from","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProfilesInCart"/>
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to extract products from","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getProfilesInCart"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;string[]&#62;","optional":false,"defaultValue":"","description":"a list of product ids","expandable":false,"children":[]}]}  sectionTitle="getProfilesInCart"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string[]&#62;","optional":false,"defaultValue":"","description":"a list of product ids","expandable":false,"children":[]}]}  sectionTitle="getProfilesInCart"/>

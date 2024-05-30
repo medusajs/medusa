@@ -47,3 +47,9 @@ export enum PromotionActions {
   REMOVE = "remove",
   REPLACE = "replace",
 }
+
+export enum RuleType {
+  RULES = "rules",
+  TARGET_RULES = "target_rules",
+  BUY_RULES = "buy_rules",
+}
