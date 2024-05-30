@@ -425,7 +425,6 @@ export const mainServiceHighlights = [
   Then, run the migrations of the module:
   
   ```bash npm2yarn
-  npm run build
   npx medusa migrations run
   ```
 
@@ -506,10 +505,9 @@ export const userSubscriberHighlights = [
   - Create a store for that user using the Store Module.
   - Create a relationship between the user and the store by creating a `StoreUser` record.
   
-  To test it out, run the `build` command and use the `medusa user` command to create a user:
+  To test it out, use the `medusa user` command to create a user:
   
   ```bash npm2yarn
-  npm run build
   npx medusa user -e my-admin@medusa-test.com -p supersecret
   ```
   
