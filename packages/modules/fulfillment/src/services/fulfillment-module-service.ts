@@ -16,7 +16,6 @@ import {
 import {
   arrayDifference,
   CommonEvents,
-  deepCopy,
   deepEqualObj,
   EmitEvents,
   getSetDifference,
@@ -286,11 +285,6 @@ export default class FulfillmentModuleService<
   > {
     const createdFulfillmentSets = await this.create_(data, sharedContext)
 
-    buildCreatedFulfillmentSetEvents({
-      fulfillmentSets: createdFulfillmentSets,
-      sharedContext,
-    })
-
     const returnedFulfillmentSets = Array.isArray(data)
       ? createdFulfillmentSets
       : createdFulfillmentSets[0]
@@ -328,6 +322,11 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
+    buildCreatedFulfillmentSetEvents({
+      fulfillmentSets: createdFulfillmentSets,
+      sharedContext,
+    })
+
     return createdFulfillmentSets
   }
 
@@ -355,11 +354,6 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    buildCreatedServiceZoneEvents({
-      serviceZones: createdServiceZones,
-      sharedContext,
-    })
-
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
     >(Array.isArray(data) ? createdServiceZones : createdServiceZones[0])
@@ -386,7 +380,17 @@ export default class FulfillmentModuleService<
       }
     }
 
-    return await this.serviceZoneService_.create(data_, sharedContext)
+    const createdServiceZones = await this.serviceZoneService_.create(
+      data_,
+      sharedContext
+    )
+
+    buildCreatedServiceZoneEvents({
+      serviceZones: createdServiceZones,
+      sharedContext,
+    })
+
+    return createdServiceZones
   }
 
   createShippingOptions(
@@ -413,11 +417,6 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    buildCreatedShippingOptionEvents({
-      shippingOptions: createdShippingOptions,
-      sharedContext,
-    })
-
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
     >(Array.isArray(data) ? createdShippingOptions : createdShippingOptions[0])
@@ -441,7 +440,17 @@ export default class FulfillmentModuleService<
       validateAndNormalizeRules(rules as Record<string, unknown>[])
     }
 
-    return await this.shippingOptionService_.create(data_, sharedContext)
+    const createdSO = await this.shippingOptionService_.create(
+      data_,
+      sharedContext
+    )
+
+    buildCreatedShippingOptionEvents({
+      shippingOptions: createdSO,
+      sharedContext,
+    })
+
+    return createdSO
   }
 
   createShippingProfiles(
@@ -935,6 +944,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ServiceZoneDTO[]>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async updateServiceZones(
     idOrSelector: string | FulfillmentTypes.FilterableServiceZoneProps,
     data: FulfillmentTypes.UpdateServiceZoneDTO,
@@ -977,7 +987,6 @@ export default class FulfillmentModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  @EmitEvents()
   protected async updateServiceZones_(
     data:
       | FulfillmentTypes.UpdateServiceZoneDTO[]
@@ -1159,11 +1168,12 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ServiceZoneDTO[]>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async upsertServiceZones(
     data:
       | FulfillmentTypes.UpsertServiceZoneDTO
       | FulfillmentTypes.UpsertServiceZoneDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<
     FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
   > {
@@ -1204,9 +1214,11 @@ export default class FulfillmentModuleService<
         forCreate,
         sharedContext
       )
+
       const toPush = Array.isArray(createdServiceZones)
         ? createdServiceZones
         : [createdServiceZones]
+
       created.push(...toPush)
     }
 
@@ -1215,9 +1227,11 @@ export default class FulfillmentModuleService<
         forUpdate,
         sharedContext
       )
+
       const toPush = Array.isArray(updatedServiceZones)
         ? updatedServiceZones
         : [updatedServiceZones]
+
       updated.push(...toPush)
     }
 
@@ -1298,7 +1312,7 @@ export default class FulfillmentModuleService<
       sharedContext
     )
     const existingShippingOptions = new Map(
-      shippingOptions.map((s) => [s.id, deepCopy(s) as TShippingOptionEntity])
+      shippingOptions.map((s) => [s.id, s])
     )
 
     FulfillmentModuleService.validateMissingShippingOptions_(
@@ -1481,6 +1495,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async upsertShippingOptions(
     data:
       | FulfillmentTypes.UpsertShippingOptionDTO[]
