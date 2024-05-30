@@ -1,17 +1,14 @@
-import {
-  CreateProductWorkflowInputDTO,
-  PricingTypes,
-  ProductTypes,
-} from "@medusajs/types"
-import { isPresent } from "@medusajs/utils"
+import { ProductTypes } from "@medusajs/types"
 import {
   WorkflowData,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { associateProductsWithSalesChannelsStep } from "../../sales-channel"
 import { createProductsStep } from "../steps/create-products"
-import { createProductVariantsWorkflow } from "./create-product-variants"
+import { createVariantPricingLinkStep } from "../steps/create-variant-pricing-link"
+import { createPriceSetsStep } from "../../pricing"
+import { associateProductsWithSalesChannelsStep } from "../../sales-channel"
+import { CreateProductWorkflowInputDTO } from "@medusajs/types"
 
 type WorkflowInput = {
   products: CreateProductWorkflowInputDTO[]
@@ -28,7 +25,10 @@ export const createProductsWorkflow = createWorkflow(
       data.input.products.map((p) => ({
         ...p,
         sales_channels: undefined,
-        variants: undefined,
+        variants: p.variants?.map((v) => ({
+          ...v,
+          prices: undefined,
+        })),
       }))
     )
 
@@ -50,30 +50,52 @@ export const createProductsWorkflow = createWorkflow(
 
     associateProductsWithSalesChannelsStep({ links: salesChannelLinks })
 
-    const variantsInput = transform({ input, createdProducts }, (data) => {
-      // TODO: Move this to a unified place for all product workflow types
-      const productVariants: (ProductTypes.CreateProductVariantDTO & {
-        prices?: PricingTypes.CreateMoneyAmountDTO[]
-      })[] = []
-
-      data.createdProducts.forEach((product, i) => {
-        const inputProduct = data.input.products[i]
-
-        for (const inputVariant of inputProduct.variants || []) {
-          isPresent(inputVariant) &&
-            productVariants.push({
-              product_id: product.id,
-              ...inputVariant,
-            })
-        }
-      })
-
-      return {
-        input: { product_variants: productVariants },
+    // Note: We rely on the same order of input and output when creating products here, ensure this always holds true
+    const variantsWithAssociatedPrices = transform(
+      { input, createdProducts },
+      (data) => {
+        return data.createdProducts
+          .map((p, i) => {
+            const inputProduct = data.input.products[i]
+            return p.variants?.map((v, j) => ({
+              ...v,
+              prices: inputProduct?.variants?.[j]?.prices ?? [],
+            }))
+          })
+          .flat()
       }
-    })
+    )
 
-    createProductVariantsWorkflow.runAsStep(variantsInput)
+    const pricesToCreate = transform({ variantsWithAssociatedPrices }, (data) =>
+      data.variantsWithAssociatedPrices.map((v) => ({
+        prices: v.prices ?? [],
+      }))
+    )
+
+    const createdPriceSets = createPriceSetsStep(pricesToCreate)
+
+    const variantAndPriceSets = transform(
+      { variantsWithAssociatedPrices, createdPriceSets },
+      (data) =>
+        data.variantsWithAssociatedPrices.map((variant, i) => ({
+          variant: variant,
+          price_set: data.createdPriceSets[i],
+        }))
+    )
+
+    const variantAndPriceSetLinks = transform(
+      { variantAndPriceSets },
+      (data) => {
+        return {
+          links: data.variantAndPriceSets.map((entry) => ({
+            variant_id: entry.variant.id,
+            price_set_id: entry.price_set.id,
+          })),
+        }
+      }
+    )
+
+    createVariantPricingLinkStep(variantAndPriceSetLinks)
 
     return createdProducts
   }
