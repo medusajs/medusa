@@ -318,7 +318,7 @@ In this document, you’ll find common examples of how you can use the Inventory
     res.json({
       is_available: await inventoryModuleService.confirmInventory(
         request.body.inventory_item_id,
-        request.body.location_id,
+        [request.body.location_id],
         request.body.required_quantity
       ),
     })
@@ -343,7 +343,7 @@ In this document, you’ll find common examples of how you can use the Inventory
     return NextResponse.json({
       is_available: await inventoryModuleService.confirmInventory(
         body.inventory_item_id,
-        body.location_id,
+        [body.location_id],
         body.required_quantity
       ),
     })
@@ -569,4 +569,4 @@ In this document, you’ll find common examples of how you can use the Inventory
 
 ## More Examples
 
-The [module interface reference](/references/inventory-next) provides a reference to all the methods available for use with examples for each.
+The [Inventory Module's main service reference](/references/inventory-next) provides a reference to all the methods available for use with examples for each.

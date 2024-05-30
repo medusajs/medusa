@@ -8,7 +8,7 @@ In this document, you’ll learn about tax lines in a cart and how to retrieve t
 
 ## What are Tax Lines?
 
-A tax line indicates the tax rate of a line item or a shipping method. The `LineItemTaxLine` data model represents a line item’s tax line, and the `ShippingMethodTaxLine` data model represents a shipping method’s tax line.
+A tax line indicates the tax rate of a line item or a shipping method. The [LineItemTaxLine data model](/references/cart/models/LineItemTaxLine) represents a line item’s tax line, and the [ShippingMethodTaxLine data model](/references/cart/models/ShippingMethodTaxLine) represents a shipping method’s tax line.
 
 ![A diagram showcasing the relation between other data models and the tax line models](https://res.cloudinary.com/dza7lstvk/image/upload/v1711534431/Medusa%20Resources/cart-tax-lines_oheaq6.jpg)
 
@@ -34,7 +34,7 @@ The following diagram is a simplified showcase of how a subtotal is calculated f
 
 ## Retrieving Tax Lines
 
-When using the Cart and Tax modules together, such as in the Medusa application, you can use the `getTaxLines` method of the Tax Module’s main service. It retrieves the tax lines for a cart’s line items and shipping methods.
+When using the Cart and Tax modules together, you can use the `getTaxLines` method of the Tax Module’s main service. It retrieves the tax lines for a cart’s line items and shipping methods.
 
 ```ts
 // retrieve the cart

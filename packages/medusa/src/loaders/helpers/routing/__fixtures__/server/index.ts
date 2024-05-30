@@ -6,10 +6,10 @@ import {
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
+  generateJwtToken,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import express from "express"
-import jwt from "jsonwebtoken"
 import querystring from "querystring"
 import supertest from "supertest"
 import apiLoader from "../../../../api"
@@ -121,7 +121,7 @@ export const createServer = async (rootDir) => {
       )
       headers.Cookie = headers.Cookie || ""
       if (opts.adminSession) {
-        const token = jwt.sign(
+        const token = generateJwtToken(
           {
             actor_id: opts.adminSession.userId || opts.adminSession.jwt?.userId,
             actor_type: "user",
@@ -130,14 +130,17 @@ export const createServer = async (rootDir) => {
                 opts.adminSession.userId || opts.adminSession.jwt?.userId,
             },
           },
-          config.projectConfig.http.jwtSecret!
+          {
+            secret: config.projectConfig.http.jwtSecret!,
+            expiresIn: "1d",
+          }
         )
 
         headers.Authorization = `Bearer ${token}`
       }
 
       if (opts.clientSession) {
-        const token = jwt.sign(
+        const token = generateJwtToken(
           {
             actor_id:
               opts.clientSession.customer_id ||
@@ -149,7 +152,7 @@ export const createServer = async (rootDir) => {
                 opts.clientSession.jwt?.customer_id,
             },
           },
-          config.projectConfig.http.jwtSecret!
+          { secret: config.projectConfig.http.jwtSecret!, expiresIn: "1d" }
         )
 
         headers.Authorization = `Bearer ${token}`

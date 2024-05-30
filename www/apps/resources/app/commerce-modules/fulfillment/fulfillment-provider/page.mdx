@@ -1,25 +1,27 @@
 export const metadata = {
-  title: `Fulfillment Provider`,
+  title: `Fulfillment Provider Module`,
 }
 
 # {metadata.title}
 
-In this document, you’ll learn what a fulfillment provider is.
+In this document, you’ll learn what a fulfillment provider module is.
 
-## What’s a Fulfillment Provider?
+## What’s a Fulfillment Provider Module?
 
-A fulfillment provider implements the functionality of fulfilling items, typically using a third-party integration. It’s represented by the `FulfillmentProvider` data model.
+A fulfillment provider module handles fulfilling items, typically using a third-party integration.
 
----
-
-## How to Create a Fulfillment Provider?
-
-A fulfillment provider is a TypeScript or JavaScript class that extends the `AbstractFulfillmentProviderService` class imported from `@medusajs/utils`. You can create it part of your Medusa application codebase, in a plugin, or in a provider module.
+Fulfillment provider modules are stored and represented by the [FulfillmentProvider data model](/references/fulfillment/models/FulfillmentProvider).
 
 ---
 
 ## Configure Fulfillment Providers
 
-The Fulfillment Module accepts a `providers` option that allows you to register providers in your application. When the Medusa application starts, it registers these modules and adds records of the `FulfillmentProvider` for them.
+The Fulfillment Module accepts a `providers` option that allows you to register providers in your application.
 
 Learn more about the `providers` option in [this documentation](../module-options/page.mdx).
+
+---
+
+## How to Create a Fulfillment Provider?
+
+Refer to [this guide](/references/fulfillment/provider) to learn how to create a fulfillment provider module.

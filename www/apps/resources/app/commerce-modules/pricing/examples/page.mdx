@@ -11,7 +11,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 ## Create a Price Set
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -47,7 +47,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -89,7 +89,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 ## List Price Sets
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -110,7 +110,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -136,7 +136,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 ## Retrieve a Price Set by its ID
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -159,7 +159,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -196,7 +196,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 ## Create a Rule Type
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -210,16 +210,17 @@ In this document, you’ll find common examples of how you can use the Pricing M
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
 
-    const priceSet = await pricingModuleService.retrieve(
-      request.params.id
-    )
+    const ruleType = await pricingModuleService.createRuleTypes([{
+      name: "Customer Group",
+      rule_attribute: "customer_group_id",
+    }])
 
-    res.json({ price_set: priceSet })
+    res.json({ rule_type: ruleType })
   }
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -228,23 +229,17 @@ In this document, you’ll find common examples of how you can use the Pricing M
     initialize as initializePricingModule,
   } from "@medusajs/pricing"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
-  }
-
-  export async function GET(
-    request: Request,
-    { params }: ContextType
+  export async function POST(
+    request: Request
   ) {
     const pricingModuleService = await initializePricingModule()
 
-    const priceSet = await pricingModuleService.retrieve(
-      params.id
-    )
+    const ruleType = await pricingModuleService.createRuleTypes([{
+      name: "Customer Group",
+      rule_attribute: "customer_group_id",
+    }])
 
-    return NextResponse.json({ price_set: priceSet })
+    return NextResponse.json({ rule_type: ruleType })
   }
   ```
 
@@ -256,7 +251,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 ## Add Prices with Rules
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -288,7 +283,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -326,7 +321,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 ## Create Price List
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -369,7 +364,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -415,7 +410,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 ## Calculate Prices For a Currency
 
 <CodeTabs groupId="app-type">
-  <CodeTab label="medusa" value="Medusa API Router">
+  <CodeTab value="medusa" label="Medusa API Router">
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
@@ -445,7 +440,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
   ```
 
   </CodeTab>
-  <CodeTab label="nextjs" value="Next.js App Router">
+  <CodeTab value="nextjs" label="Next.js App Router">
 
   ```ts
   import { NextResponse } from "next/server"
@@ -486,4 +481,4 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
 ## More Examples
 
-The [module interface reference](/references/pricing) provides a reference to all the methods available for use with examples for each.
+The [Pricing Module's main service reference](/references/pricing) provides a reference to all the methods available for use with examples for each.

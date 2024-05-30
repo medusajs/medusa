@@ -1,8 +1,8 @@
+import { IInventoryServiceNext, IStockLocationService } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { IInventoryServiceNext, IStockLocationService } from "@medusajs/types"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createAdminUser } from "../../../helpers/create-admin-user"
@@ -751,7 +751,10 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const response = await api.get(`/admin/inventory-items`, adminHeaders)
+          const response = await api.get(
+            `/admin/inventory-items?location_levels[location_id]=${location1}`,
+            adminHeaders
+          )
 
           expect(response.data.inventory_items).toHaveLength(1)
           expect(response.data.inventory_items[0]).toEqual(
