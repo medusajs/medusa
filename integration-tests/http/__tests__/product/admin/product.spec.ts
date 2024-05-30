@@ -915,7 +915,6 @@ medusaIntegrationTestRunner({
             )
           ).data.sales_channel
 
-          // Currently the product update doesn't support managing sales channels
           const newProduct = (
             await api.post(
               "/admin/products",
@@ -2612,6 +2611,72 @@ medusaIntegrationTestRunner({
               (v) => v.id === baseProduct.variants[0].id
             )?.title
           ).toEqual("Updated variant")
+        })
+
+        it("removes options not present in update", async () => {
+          const baseVariant = baseProduct.variants[0]
+          const updatedProduct = (
+            await api.post(
+              `/admin/products/${baseProduct.id}/variants/${baseVariant.id}`,
+              {
+                title: "Updated variant",
+                options: {
+                  size: "small",
+                },
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          expect(
+            updatedProduct.variants.find((v) => v.id === baseVariant.id).options
+          ).toEqual([
+            expect.objectContaining({
+              option: expect.objectContaining({
+                title: "size",
+              }),
+              value: "small",
+            }),
+          ])
+        })
+
+        it("updates multiple options in the same call", async () => {
+          const baseVariant = baseProduct.variants[0]
+          const updatedProduct = (
+            await api.post(
+              `/admin/products/${baseProduct.id}/variants/${baseVariant.id}`,
+              {
+                title: "Updated variant",
+                options: {
+                  size: "small",
+                  color: "green",
+                },
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          const updatedOptions = updatedProduct.variants.find(
+            (v) => v.id === baseVariant.id
+          ).options
+
+          expect(updatedOptions).toHaveLength(2)
+          expect(updatedOptions).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                option: expect.objectContaining({
+                  title: "size",
+                }),
+                value: "small",
+              }),
+              expect.objectContaining({
+                option: expect.objectContaining({
+                  title: "color",
+                }),
+                value: "green",
+              }),
+            ])
+          )
         })
       })
 
