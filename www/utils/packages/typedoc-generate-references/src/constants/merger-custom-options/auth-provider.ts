@@ -62,7 +62,7 @@ const modules = {
     options: {
       providers: [
         {
-          resolve: "./dist/modules/my-auth",
+          resolve: "./modules/my-auth",
           options: {
             config: {
               "my-auth": {

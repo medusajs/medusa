@@ -77,7 +77,7 @@ const modules = {
     options: {
       providers: [
         {
-          resolve: "./dist/modules/my-notification",
+          resolve: "./modules/my-notification",
           options: {
             config: {
               "my-notification": {

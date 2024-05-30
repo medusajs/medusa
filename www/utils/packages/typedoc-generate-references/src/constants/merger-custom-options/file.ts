@@ -68,7 +68,7 @@ const modules = {
     options: {
       providers: [
         {
-          resolve: "./dist/modules/my-file",
+          resolve: "./modules/my-file",
           options: {
             config: {
               "my-file": {
