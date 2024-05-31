@@ -1,5 +1,27 @@
 import { Context, EventBusTypes } from "@medusajs/types"
 
+/**
+ * Factory function to create event builders for different entities
+ *
+ * @example
+ * const createdFulfillment = eventBuilderFactory({
+ *   service: Modules.FULFILLMENT,
+ *   action: CommonEvents.CREATED,
+ *   object: "fulfillment",
+ *   eventsEnum: FulfillmentEvents,
+ * })
+ *
+ * createdFulfillment({
+ *   data,
+ *   sharedContext,
+ * })
+ *
+ * @param isMainEntity
+ * @param action
+ * @param object
+ * @param eventsEnum
+ * @param service
+ */
 export function eventBuilderFactory({
   isMainEntity,
   action,
