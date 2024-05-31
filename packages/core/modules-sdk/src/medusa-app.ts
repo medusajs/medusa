@@ -85,16 +85,6 @@ export async function loadModules(
       let declaration: any = {}
       let definition: Partial<ModuleDefinition> | undefined = undefined
 
-      if (!isObject(mod) && typeof mod !== "boolean") {
-        throw new Error(
-          `Invalid module configuration for ${moduleName}. Expected boolean or a module configuration object, got ${typeof mod}. Check your medusa-config file.`
-        )
-      }
-
-      if (!mod) {
-        return
-      }
-
       if (isObject(mod)) {
         const mod_ = mod as unknown as InternalModuleDeclaration
         path = mod_.resolve ?? MODULE_PACKAGE_NAMES[moduleName]
