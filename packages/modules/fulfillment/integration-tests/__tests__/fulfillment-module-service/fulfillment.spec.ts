@@ -440,6 +440,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 shipping_option_id: shippingOption.id,
               })
             )
+
+            jest.clearAllMocks()
           })
 
           it("should cancel a fulfillment successfully", async () => {
@@ -452,6 +454,16 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(result.canceled_at).not.toBeNull()
             expect(idempotentResult.canceled_at).not.toBeNull()
             expect(idempotentResult.canceled_at).toEqual(result.canceled_at)
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
+            expect(eventBusEmitSpy).toHaveBeenNthCalledWith(1, [
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_updated,
+                action: "updated",
+                object: "fulfillment",
+                data: { id: fulfillment.id },
+              }),
+            ])
           })
 
           it("should fail to cancel a fulfillment that is already shipped", async () => {

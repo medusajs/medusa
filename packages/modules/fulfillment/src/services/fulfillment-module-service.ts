@@ -1825,6 +1825,7 @@ export default class FulfillmentModuleService<
   }
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async cancelFulfillment(
     id: string,
     @MedusaContext() sharedContext: Context = {}
@@ -1857,6 +1858,12 @@ export default class FulfillmentModuleService<
         },
         sharedContext
       )
+
+      buildFulfillmentEvents({
+        action: CommonEvents.UPDATED,
+        fulfillments: [{ id }],
+        sharedContext,
+      })
     }
 
     const result = await this.baseRepository_.serialize(fulfillment)
