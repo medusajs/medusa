@@ -3,11 +3,8 @@ const DEFAULT_PROPERTIES = [
   "status",
   "created_at",
   "email",
-  // "fulfillment_status", // -> TODO replacement for this
-  // "payment_status", // -> TODO replacement for this
   "display_id",
   "currency_code",
-  // --- TOTALS ---
   "total",
   "subtotal",
   "discounts_total",
@@ -25,6 +22,11 @@ const DEFAULT_RELATIONS = [
   "*promotion",
   "*fulfillments",
   "*fulfillments.items",
+  "*payment_collections",
+  // TODO: Add back when payments are working
+  // "*payment_collections.payments",
+  // "*payment_collections.payments.refunds",
+  // "*payment_collections.payments.captures",
 ]
 
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(
