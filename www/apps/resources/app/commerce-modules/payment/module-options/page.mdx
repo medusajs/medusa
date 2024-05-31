@@ -104,31 +104,32 @@ When the Medusa application starts, these providers are registered and can be us
 For example:
 
 ```js title="medusa-config.js"
-const modules = {
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
   // ...
-  payment: {
-    resolve: "@medusajs/payment",
-    options: {
-      providers: [
-        {
-          resolve: "@medusajs/payment-stripe",
-          options: {
-            // ...
+  modules: {
+    [Modules.PAYMENT]: {
+      resolve: "@medusajs/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/payment-stripe",
+            options: {
+              // ...
+            },
           },
-        },
-        {
-          resolve: "medusa-payment-paypal",
-          options: {
-            // ...
-          },
-        },
-      ],
+        ],
+      },
     },
-  },
-}
+  }
+})
 ```
 
 The `providers` option is an array of objects that accept the following properties:
 
-- `resolve`: A string indicating the package name of the payment provider module or the payment plugin, or the path to the file defining the payment provider.
-- `options`: An optional object of options to pass to the payment provider.
+- `resolve`: A string indicating the package name of the payment provider module or the path to it relative to the `src` directory.
+- `options`: An optional object of the payment provider module's options. The object must have the following property:
+  - `config`: An object whose key is the ID of the payment provider, and its value is an object of options to pass to the provider module.

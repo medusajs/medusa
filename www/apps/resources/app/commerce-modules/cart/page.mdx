@@ -63,23 +63,6 @@ When used with their respective modules and other commerce modules, you benefit 
 
 ---
 
-## Configure Cart Module
-
-To use the Cart Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.CART]: true,
-}
-```
-
----
-
 ## How to Use Cart Module's Service
 
 You can use the Cart Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.CART` imported from `@medusajs/modules-sdk`.

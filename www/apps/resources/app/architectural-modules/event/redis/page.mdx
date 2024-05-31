@@ -31,7 +31,7 @@ npm install @medusajs/event-redis
 Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
 
 export const highlights = [
-  ["8", "redisUrl", "The Redis connection URL."]
+  ["11", "redisUrl", "The Redis connection URL."]
 ]
 
 ```js title="medusa-config.js"
@@ -39,18 +39,17 @@ const { Modules } = require("@medusajs/modules-sdk")
 
 // ...
 
-module.exports = {
+module.exports = defineConfig({
   // ...
   modules: {
-    // ...
     [Modules.EVENT_BUS]: {
       resolve: "@medusajs/event-redis",
       options: { 
         redisUrl: process.env.EVENTS_REDIS_URL,
       },
     },
-  },
-}
+  }
+})
 ```
 
 ### Environment Variables

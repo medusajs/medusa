@@ -2,8 +2,10 @@ import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
   ApplicationMethodType,
+  BigNumber,
   isDefined,
   isPresent,
+  MathBN,
   MedusaError,
   PromotionType,
 } from "@medusajs/utils"
@@ -36,14 +38,14 @@ export function validateApplicationMethodAttributes(
   const targetType = data.target_type || applicationMethod?.target_type
   const type = data.type || applicationMethod?.type
   const applicationMethodType = data.type || applicationMethod?.type
-  const value = data.value || applicationMethod.value
+  const value = new BigNumber(data.value ?? applicationMethod.value ?? 0)
   const maxQuantity = data.max_quantity || applicationMethod.max_quantity
   const allocation = data.allocation || applicationMethod.allocation
   const allTargetTypes: string[] = Object.values(ApplicationMethodTargetType)
 
   if (
     type === ApplicationMethodType.PERCENTAGE &&
-    (typeof value !== "number" || value <= 0 || value > 100)
+    (MathBN.lte(value, 0) || MathBN.gt(value, 100))
   ) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,

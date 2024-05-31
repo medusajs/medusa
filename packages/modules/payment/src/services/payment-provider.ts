@@ -1,4 +1,5 @@
 import {
+  BigNumberInput,
   Context,
   CreatePaymentProviderDTO,
   CreatePaymentProviderSession,
@@ -184,7 +185,7 @@ export default class PaymentProviderService {
 
   async refundPayment(
     input: PaymentProviderDataInput,
-    amount: number
+    amount: BigNumberInput
   ): Promise<Record<string, unknown>> {
     const provider = this.retrieveProvider(input.provider_id)
 

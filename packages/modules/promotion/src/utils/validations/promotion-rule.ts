@@ -1,10 +1,10 @@
 import { PromotionRuleDTO, PromotionRuleOperatorValues } from "@medusajs/types"
 import {
+  MedusaError,
+  PromotionRuleOperator,
   isPresent,
   isString,
-  MedusaError,
   pickValueFromObject,
-  PromotionRuleOperator,
 } from "@medusajs/utils"
 import { CreatePromotionRuleDTO } from "@types"
 

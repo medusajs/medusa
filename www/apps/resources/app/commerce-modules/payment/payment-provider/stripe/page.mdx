@@ -39,30 +39,36 @@ npm install @medusajs/payment-stripe
 Next, add the module to the array of providers passed to the Payment Module:
 
 ```js title="medusa-config.js"
-const modules = {
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
   // ...
-  payment: {
-    resolve: "@medusajs/payment",
-    options: {
-      providers: [
-        {
-          resolve: "@medusajs/payment-stripe",
-          options: {
-            config: {
-              stripe: {
-                credentials: {
-                  usd: {
-                    apiKey: process.env.STRIPE_USD_API_KEY,
+  modules: {
+    [Modules.PAYMENT]: {
+      resolve: "@medusajs/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/payment-stripe",
+            options: {
+              config: {
+                stripe: {
+                  credentials: {
+                    usd: {
+                      apiKey: process.env.STRIPE_USD_API_KEY,
+                    },
                   },
-                },
+                }
               }
-            }
+            },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-}
+  }
+})
 ```
 
 ### Environment Variables
