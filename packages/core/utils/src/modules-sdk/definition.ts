@@ -8,8 +8,7 @@ import type {
   IEventBusModuleService,
   IFileModuleService,
   IFulfillmentModuleService,
-  IInventoryService,
-  ILinkModule,
+  IInventoryServiceNext,
   INotificationModuleService,
   IOrderModuleService,
   IPaymentModuleService,
@@ -18,10 +17,11 @@ import type {
   IPromotionModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
-  IStockLocationService,
+  IStockLocationServiceNext,
   IStoreModuleService,
   ITaxModuleService,
   IUserModuleService,
+  IWorkflowEngineService,
 } from "@medusajs/types"
 
 export enum Modules {
@@ -84,7 +84,7 @@ declare module "@medusajs/types" {
     [ModuleRegistrationName.CART]: ICartModuleService
     [ModuleRegistrationName.CUSTOMER]: ICustomerModuleService
     [ModuleRegistrationName.EVENT_BUS]: IEventBusModuleService
-    [ModuleRegistrationName.INVENTORY]: IInventoryService
+    [ModuleRegistrationName.INVENTORY]: IInventoryServiceNext
     [ModuleRegistrationName.PAYMENT]: IPaymentModuleService
     [ModuleRegistrationName.PRICING]: IPricingModuleService
     [ModuleRegistrationName.PRODUCT]: IProductModuleService
@@ -92,9 +92,9 @@ declare module "@medusajs/types" {
     [ModuleRegistrationName.SALES_CHANNEL]: ISalesChannelModuleService
     [ModuleRegistrationName.TAX]: ITaxModuleService
     [ModuleRegistrationName.FULFILLMENT]: IFulfillmentModuleService
-    [ModuleRegistrationName.STOCK_LOCATION]: IStockLocationService
+    [ModuleRegistrationName.STOCK_LOCATION]: IStockLocationServiceNext
     [ModuleRegistrationName.USER]: IUserModuleService
-    [ModuleRegistrationName.WORKFLOW_ENGINE]: any
+    [ModuleRegistrationName.WORKFLOW_ENGINE]: IWorkflowEngineService
     [ModuleRegistrationName.REGION]: IRegionModuleService
     [ModuleRegistrationName.ORDER]: IOrderModuleService
     [ModuleRegistrationName.API_KEY]: IApiKeyModuleService

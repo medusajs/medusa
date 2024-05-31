@@ -16,7 +16,7 @@ import { IModuleService } from "../modules-sdk"
 export interface IUserModuleService extends IModuleService {
   /**
    * This method validates that a token belongs to an invite and returns that invite.
-   * 
+   *
    * An error is thrown if the invite has expired or no invite matches the token.
    *
    * @param {string} token - The token to validate

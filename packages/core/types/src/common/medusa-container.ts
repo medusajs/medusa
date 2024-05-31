@@ -16,7 +16,7 @@ export type MedusaContainer<Cradle extends object = ModuleImplementations> =
       key: K,
       resolveOptions?: ResolveOptions
     ): Cradle[K]
-    resolve<T = unknown>(key: string, resolveOptions?: ResolveOptions): T
+    resolve<T>(key: string, resolveOptions?: ResolveOptions): T
 
     /**
      * @ignore
