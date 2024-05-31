@@ -58,13 +58,17 @@ export const createProductsWorkflow = createWorkflow(
 
       data.createdProducts.forEach((product, i) => {
         const inputProduct = data.input.products[i]
+        let rank = 0
 
         for (const inputVariant of inputProduct.variants || []) {
           isPresent(inputVariant) &&
             productVariants.push({
+              variant_rank: rank,
               product_id: product.id,
               ...inputVariant,
             })
+
+          rank += 1
         }
       })
 

@@ -1201,6 +1201,10 @@ export interface CreateProductVariantDTO {
    */
   allow_backorder?: boolean
   /**
+   * The rank of the variant to preserve ordering
+   */
+  variant_rank?: number
+  /**
    *  Whether the product variant's inventory should be managed by the core system.
    */
   manage_inventory?: boolean

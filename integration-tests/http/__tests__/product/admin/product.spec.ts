@@ -1,8 +1,8 @@
-import {
-  createAdminUser,
-  adminHeaders,
-} from "../../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -1262,14 +1262,16 @@ medusaIntegrationTestRunner({
           expect(response.data.product).toEqual(
             expect.objectContaining({
               title: "Test product - 1",
-              variants: [
+              variants: expect.arrayContaining([
                 expect.objectContaining({
                   title: "Test variant 1",
+                  variant_rank: 0,
                 }),
                 expect.objectContaining({
                   title: "Test variant 2",
+                  variant_rank: 1,
                 }),
-              ],
+              ]),
             })
           )
         })
