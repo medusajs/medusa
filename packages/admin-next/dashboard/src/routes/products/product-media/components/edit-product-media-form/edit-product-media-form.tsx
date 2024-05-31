@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CheckMini, Spinner, ThumbnailBadge } from "@medusajs/icons"
 import { Image, Product } from "@medusajs/medusa"
-import { Button, CommandBar, Tooltip, clx } from "@medusajs/ui"
+import { Button, CommandBar, Tooltip, clx, toast } from "@medusajs/ui"
 import { AnimatePresence, motion } from "framer-motion"
 import { Fragment, useCallback, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
@@ -19,6 +19,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
+import { sdk } from "../../../../../lib/client"
 
 type ProductMediaViewProps = {
   product: Product
@@ -73,7 +74,7 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
     keyName: "field_id",
   })
 
-  const { mutateAsync, isLoading } = useUpdateProduct(product.id)
+  const { mutateAsync, isPending } = useUpdateProduct(product.id)
 
   const handleSubmit = form.handleSubmit(async ({ media }) => {
     const urls = media.map((m) => m.url)
@@ -85,20 +86,17 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
     if (filesToUpload.length) {
       const files = filesToUpload.map((m) => m.file) as File[]
 
-      // TODO: Implement upload to Medusa
-      // const uploads = await client.admin.uploads
-      //   .create(files)
-      //   .then((res) => {
-      //     return res.uploads
-      //   })
-      //   .catch((_err) => {
-      //     // Show error message
-      //     return null
-      //   })
-
-      const uploads = files.map((file) => ({
-        url: URL.createObjectURL(file),
-      }))
+      const uploads = await sdk.admin.uploads
+        .create({ files })
+        .then((res) => {
+          return res.files
+        })
+        .catch(() => {
+          form.setError("media", {
+            type: "invalid_file",
+            message: t("products.media.failedToUpload"),
+          })
+        })
 
       if (!uploads) {
         return
@@ -116,7 +114,7 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
 
     await mutateAsync(
       {
-        images: urls,
+        images: urls.map((url) => ({ url })),
         // Set thumbnail to empty string if no thumbnail is selected, as the API does not accept null
         thumbnail: thumbnail || "",
       },
@@ -216,7 +214,7 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
                 {t("products.media.galleryLabel")}
               </Link>
             </Button>
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>
