@@ -30,7 +30,7 @@ export const useServiceZone = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => sdk.admin.serviceZone.retrieve(id, query),
+    queryFn: () => sdk.admin.fulfillmentSet.retrieve(id, query),
     queryKey: fulfillmentSetsQueryKeys.detail(id, query),
     ...options,
   })
