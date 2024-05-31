@@ -1,6 +1,18 @@
 import { useTranslation } from "react-i18next"
-import { FileType, FileUpload } from "../../../components/common/file-upload"
-import { Form } from "../../../components/common/form"
+import { Form } from "../../../../../components/common/form"
+import {
+  FileType,
+  FileUpload,
+} from "../../../../../components/common/file-upload"
+import { UseFormReturn } from "react-hook-form"
+import {
+  EditProductMediaSchemaType,
+  ProductCreateSchemaType,
+} from "../../../product-create/types"
+import { MediaSchema } from "../../../product-create/constants"
+import { z } from "zod"
+
+type Media = z.infer<typeof MediaSchema>
 
 const SUPPORTED_FORMATS = [
   "image/jpeg",
@@ -24,8 +36,10 @@ export const UploadMediaFormItem = ({
   form,
   append,
 }: {
-  form: any
-  append: any
+  form:
+    | UseFormReturn<ProductCreateSchemaType>
+    | UseFormReturn<EditProductMediaSchemaType>
+  append: (value: Media) => void
 }) => {
   const { t } = useTranslation()
 
@@ -51,7 +65,9 @@ export const UploadMediaFormItem = ({
 
   return (
     <Form.Field
-      control={form.control}
+      control={
+        form.control as UseFormReturn<EditProductMediaSchemaType>["control"]
+      }
       name="media"
       render={() => {
         return (
@@ -73,6 +89,7 @@ export const UploadMediaFormItem = ({
                       return
                     }
 
+                    // TODO: For now all files that get uploaded are not thumbnails, revisit this logic
                     files.forEach((f) => append({ ...f, isThumbnail: false }))
                   }}
                 />

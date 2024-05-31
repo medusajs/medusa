@@ -12,10 +12,14 @@ import {
 } from "../../../../../components/route-modal"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { sdk } from "../../../../../lib/client"
-import { UploadMediaFormItem } from "../../../common/upload-media-form-item"
-import { MediaSchema } from "../../../product-create/constants"
+import {
+  EditProductMediaSchema,
+  MediaSchema,
+} from "../../../product-create/constants"
 import { HttpTypes } from "@medusajs/types"
-import { MediaGrid } from "../../../common/media-grid-view"
+import { MediaGrid } from "../../../common/components/media-grid-view"
+import { UploadMediaFormItem } from "../../../common/components/upload-media-form-item"
+import { EditProductMediaSchemaType } from "../../../product-create/types"
 
 type ProductMediaViewProps = {
   product: HttpTypes.AdminProduct
@@ -23,16 +27,12 @@ type ProductMediaViewProps = {
 
 type Media = z.infer<typeof MediaSchema>
 
-const EditProductMediaSchema = z.object({
-  media: z.array(MediaSchema),
-})
-
 export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
   const [selection, setSelection] = useState<Record<string, true>>({})
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const form = useForm<z.infer<typeof EditProductMediaSchema>>({
+  const form = useForm<EditProductMediaSchemaType>({
     defaultValues: {
       media: getDefaultValues(product.images, product.thumbnail),
     },

@@ -88,6 +88,10 @@ export const ProductCreateSchema = z
     }
   })
 
+export const EditProductMediaSchema = z.object({
+  media: z.array(MediaSchema),
+})
+
 export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
   z.infer<typeof ProductCreateSchema>
 > = {

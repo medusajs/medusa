@@ -2,9 +2,9 @@ import { CommandBar, Heading } from "@medusajs/ui"
 import { UseFormReturn, useFieldArray } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { ProductCreateSchemaType } from "../../../../types"
-import { UploadMediaFormItem } from "../../../../../common/upload-media-form-item"
-import { MediaGrid } from "../../../../../common/media-grid-view"
+import { MediaGrid } from "../../../../../common/components/media-grid-view"
 import { useCallback, useState } from "react"
+import { UploadMediaFormItem } from "../../../../../common/components/upload-media-form-item"
 
 type ProductCreateMediaSectionProps = {
   form: UseFormReturn<ProductCreateSchemaType>
