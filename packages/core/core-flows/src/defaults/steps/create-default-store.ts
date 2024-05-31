@@ -20,10 +20,6 @@ export const createDefaultStoreStep = createStep(
      * @todo
      * Seems like we are missing an integration test when the
      * following conditional as true.
-     *
-     * As per types, the result from "createStoresWorkflow.run" was
-     * an array of "StoreDTO", whereas we needed just "StoreDTO" at
-     * top-level.
      */
     if (!store) {
       const stores = await createStoresWorkflow(container).run({
@@ -39,7 +35,12 @@ export const createDefaultStoreStep = createStep(
         },
       })
 
-      store = stores[0]
+      /**
+       * As per types, the result from "createStoresWorkflow.run" was
+       * an array of "StoreDTO". But at runtime it turns out to be
+       * a "StoreDTO"
+       */
+      store = stores as unknown as StoreDTO
       shouldDelete = true
     }
 
