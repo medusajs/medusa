@@ -2,6 +2,7 @@ import {
   BaseHttpFilterableWithDeletedAt,
   BaseSoftDeletableHttpEntity,
 } from "../base"
+import { DeleteResponse, PaginatedResponse } from "../common"
 import { AdminFulfillmentSet } from "../fulfillment-set"
 import { AdminSalesChannel } from "../sales-channel"
 
@@ -119,3 +120,15 @@ export interface AdminCreateStockLocationFulfillmentSet {
   name: string
   type: string
 }
+
+export interface AdminStockLocationResponse {
+  stock_location: AdminStockLocation
+}
+
+export interface AdminStockLocationListResponse
+  extends PaginatedResponse<{
+    stock_locations: AdminStockLocation[]
+  }> {}
+
+export interface AdminStockLocationDeleteResponse
+  extends DeleteResponse<"stock_location"> {}

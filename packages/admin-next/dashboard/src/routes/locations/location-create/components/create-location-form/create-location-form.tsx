@@ -3,13 +3,16 @@ import { Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
+import { Metadata } from "../../../../../components/forms/metadata"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useCreateStockLocation } from "../../../../../hooks/api/stock-locations"
+import { metadataFormSchema } from "../../../../../lib/validation"
 
 const CreateLocationSchema = zod.object({
   name: zod.string().min(1),
@@ -21,8 +24,9 @@ const CreateLocationSchema = zod.object({
     postal_code: zod.string().optional(),
     province: zod.string().optional(),
     company: zod.string().optional(),
-    phone: zod.string().optional(), // TODO: Add validation
+    phone: zod.string().optional(),
   }),
+  metadata: metadataFormSchema,
 })
 
 export const CreateLocationForm = () => {
@@ -42,6 +46,15 @@ export const CreateLocationForm = () => {
         postal_code: "",
         province: "",
       },
+      metadata: [
+        {
+          key: "",
+          value: "",
+          isInitial: true,
+          isDeleted: false,
+          isIgnored: false,
+        },
+      ],
     },
     resolver: zodResolver(CreateLocationSchema),
   })
@@ -49,24 +62,30 @@ export const CreateLocationForm = () => {
   const { mutateAsync, isPending } = useCreateStockLocation()
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         name: values.name,
         address: values.address,
-      })
+      },
+      {
+        onSuccess: ({ stock_location }) => {
+          toast.success(t("general.success"), {
+            description: t("locations.toast.create"),
+            dismissable: true,
+            dismissLabel: t("actions.close"),
+          })
 
-      handleSuccess("/settings/locations")
-
-      toast.success(t("general.success"), {
-        description: t("locations.toast.create"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+          handleSuccess(`/settings/locations/${stock_location.id}`)
+        },
+        onError: (e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissable: true,
+            dismissLabel: t("actions.close"),
+          })
+        },
+      }
+    )
   })
 
   return (
@@ -239,6 +258,8 @@ export const CreateLocationForm = () => {
                   }}
                 />
               </div>
+              <Divider />
+              <Metadata form={form} />
             </div>
           </div>
         </RouteFocusModal.Body>

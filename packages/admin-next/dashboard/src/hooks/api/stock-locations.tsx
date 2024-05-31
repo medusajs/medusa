@@ -8,18 +8,9 @@ import {
 
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
-import { client, sdk } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import {
-  CreateServiceZoneReq,
-  UpdateServiceZoneReq,
-} from "../../types/api-payloads"
-import {
-  FulfillmentSetDeleteRes,
-  ServiceZoneDeleteRes,
-  StockLocationRes,
-} from "../../types/api-responses"
 
 const STOCK_LOCATIONS_QUERY_KEY = "stock_locations" as const
 export const stockLocationsQueryKeys = queryKeysFactory(
@@ -31,9 +22,9 @@ export const useStockLocation = (
   query?: HttpTypes.SelectParams,
   options?: Omit<
     UseQueryOptions<
-      { stock_location: HttpTypes.AdminStockLocation },
+      HttpTypes.AdminStockLocationResponse,
       FetchError,
-      { stock_location: HttpTypes.AdminStockLocation },
+      HttpTypes.AdminStockLocationResponse,
       QueryKey
     >,
     "queryKey" | "queryFn"
@@ -52,13 +43,9 @@ export const useStockLocations = (
   query?: HttpTypes.FindParams & HttpTypes.AdminStockLocationFilters,
   options?: Omit<
     UseQueryOptions<
-      HttpTypes.PaginatedResponse<{
-        stock_locations: HttpTypes.AdminStockLocation[]
-      }>,
+      HttpTypes.AdminStockLocationListResponse,
       FetchError,
-      HttpTypes.PaginatedResponse<{
-        stock_locations: HttpTypes.AdminStockLocation[]
-      }>,
+      HttpTypes.AdminStockLocationListResponse,
       QueryKey
     >,
     "queryKey" | "queryFn"
@@ -75,7 +62,7 @@ export const useStockLocations = (
 
 export const useCreateStockLocation = (
   options?: UseMutationOptions<
-    { stock_location: HttpTypes.AdminStockLocation },
+    HttpTypes.AdminStockLocationResponse,
     Error,
     HttpTypes.AdminCreateStockLocation
   >
@@ -96,7 +83,7 @@ export const useCreateStockLocation = (
 export const useUpdateStockLocation = (
   id: string,
   options?: UseMutationOptions<
-    { stock_location: HttpTypes.AdminStockLocation },
+    HttpTypes.AdminStockLocationResponse,
     Error,
     HttpTypes.AdminUpdateStockLocation
   >
@@ -120,7 +107,7 @@ export const useUpdateStockLocation = (
 export const useUpdateStockLocationSalesChannels = (
   id: string,
   options?: UseMutationOptions<
-    { stock_location: HttpTypes.AdminStockLocation },
+    HttpTypes.AdminStockLocationResponse,
     Error,
     HttpTypes.AdminUpdateStockLocationSalesChannels
   >
@@ -144,7 +131,7 @@ export const useUpdateStockLocationSalesChannels = (
 export const useDeleteStockLocation = (
   id: string,
   options?: UseMutationOptions<
-    HttpTypes.DeleteResponse<"stock_location">,
+    HttpTypes.AdminStockLocationDeleteResponse,
     FetchError,
     void
   >
@@ -168,7 +155,7 @@ export const useDeleteStockLocation = (
 export const useCreateStockLocationFulfillmentSet = (
   locationId: string,
   options?: UseMutationOptions<
-    { stock_location: HttpTypes.AdminStockLocation },
+    HttpTypes.AdminStockLocationResponse,
     Error,
     HttpTypes.AdminCreateStockLocationFulfillmentSet
   >
@@ -183,93 +170,6 @@ export const useCreateStockLocationFulfillmentSet = (
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.details(),
       })
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
-}
-
-export const useCreateServiceZone = (
-  locationId: string,
-  fulfillmentSetId: string,
-  options?: UseMutationOptions<StockLocationRes, Error, CreateServiceZoneReq>
-) => {
-  return useMutation({
-    mutationFn: (payload) =>
-      client.stockLocations.createServiceZone(fulfillmentSetId, payload),
-    onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.lists(),
-      })
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
-}
-
-export const useUpdateServiceZone = (
-  fulfillmentSetId: string,
-  serviceZoneId: string,
-  options?: UseMutationOptions<StockLocationRes, Error, UpdateServiceZoneReq>
-) => {
-  return useMutation({
-    mutationFn: (payload) =>
-      client.stockLocations.updateServiceZone(
-        fulfillmentSetId,
-        serviceZoneId,
-        payload
-      ),
-    onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.lists(),
-      })
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
-}
-
-export const useDeleteFulfillmentSet = (
-  setId: string,
-  options?: UseMutationOptions<FulfillmentSetDeleteRes, Error, void>
-) => {
-  return useMutation({
-    mutationFn: () => client.stockLocations.deleteFulfillmentSet(setId),
-    onSuccess: (data: any, variables: any, context: any) => {
-      queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.lists(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.details(),
-      })
-
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
-}
-
-export const useDeleteServiceZone = (
-  setId: string,
-  zoneId: string,
-  options?: UseMutationOptions<ServiceZoneDeleteRes, Error, void>
-) => {
-  return useMutation({
-    mutationFn: () => client.stockLocations.deleteServiceZone(setId, zoneId),
-    onSuccess: (data: any, variables: any, context: any) => {
-      queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.lists(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.details(),
-      })
-
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

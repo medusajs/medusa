@@ -724,7 +724,9 @@ export const RouteMap: RouteObject[] = [
                       {
                         path: "service-zones/create",
                         lazy: () =>
-                          import("../../routes/locations/service-zone-create"),
+                          import(
+                            "../../routes/locations/location-create-service-zone"
+                          ),
                       },
                       {
                         path: "service-zone/:zone_id",

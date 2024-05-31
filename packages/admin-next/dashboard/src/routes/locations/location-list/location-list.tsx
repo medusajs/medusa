@@ -4,7 +4,7 @@ import { Link, Outlet, useLoaderData } from "react-router-dom"
 
 import { useStockLocations } from "../../../hooks/api/stock-locations"
 import Location from "./components/location/location"
-import { locationListFields } from "./const"
+import { LOCATION_LIST_FIELDS } from "./constants"
 import { shippingListLoader } from "./loader"
 
 import after from "virtual:medusa/widgets/location/list/after"
@@ -23,7 +23,7 @@ export function LocationList() {
     error,
   } = useStockLocations(
     {
-      fields: locationListFields,
+      fields: LOCATION_LIST_FIELDS,
     },
     { initialData }
   )

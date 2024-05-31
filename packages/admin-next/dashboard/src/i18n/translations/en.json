@@ -716,9 +716,6 @@
       "salesChannels": "Connected Sales Channels",
       "delete": "Delete shipping",
       "disableWarning": "Are you sure that you wnat to disable \"{{name}}\"? This will delete all assocciated service zones and shipping options.",
-      "create": {
-        "title": "Add service zone for {{fulfillmentSet}}"
-      },
       "toast": {
         "disable": "\"{{name}}\" disabled"
       },
@@ -736,10 +733,8 @@
     },
     "serviceZone": {
       "create": {
-        "title": "Add service zone for {{fulfillmentSet}}",
-        "subtitle": "Service zone",
-        "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone. ",
-        "zoneName": "Zone name"
+        "title": "Add Service Zone for {{fulfillmentSet}}",
+        "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone. "
       },
       "edit": {
         "title": "Edit Service Zone"

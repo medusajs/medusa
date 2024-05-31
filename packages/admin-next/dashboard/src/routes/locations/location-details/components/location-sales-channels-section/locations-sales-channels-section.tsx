@@ -1,19 +1,22 @@
 import { Channels, PencilSquare } from "@medusajs/icons"
-import { StockLocationDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { IconAvatar } from "../../../../../components/common/icon-avatar"
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
 
-type Props = {
-  location: StockLocationDTO
+type LocationsSalesChannelsSectionProps = {
+  location: HttpTypes.AdminStockLocation
 }
 
-function LocationsSalesChannelsSection({ location }: Props) {
+function LocationsSalesChannelsSection({
+  location,
+}: LocationsSalesChannelsSectionProps) {
   const { t } = useTranslation()
-  const { count } = useSalesChannels()
+  const { count } = useSalesChannels({ limit: 1, fields: "id" })
 
   const noChannels = !location.sales_channels?.length
 
@@ -36,11 +39,9 @@ function LocationsSalesChannelsSection({ location }: Props) {
         />
       </div>
       <div className="grid grid-cols-[28px_1fr] items-center gap-x-3">
-        <div className="bg-ui-bg-base shadow-borders-base flex size-7 items-center justify-center rounded-md">
-          <div className="bg-ui-bg-component flex size-6 items-center justify-center rounded-[4px]">
-            <Channels className="text-ui-fg-subtle" />
-          </div>
-        </div>
+        <IconAvatar>
+          <Channels className="text-ui-fg-subtle" />
+        </IconAvatar>
         {noChannels ? (
           <Text size="small" leading="compact">
             {t("location.salesChannels.placeholder")}
@@ -50,7 +51,7 @@ function LocationsSalesChannelsSection({ location }: Props) {
             n={3}
             className="text-ui-fg-base"
             inline
-            list={location.sales_channels.map((sc) => sc.name)}
+            list={location.sales_channels?.map((sc) => sc.name) ?? []}
           />
         )}
       </div>

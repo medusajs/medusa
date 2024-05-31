@@ -16,41 +16,102 @@ export const fulfillmentSetsQueryKeys = queryKeysFactory(
   FULFILLMENT_SETS_QUERY_KEY
 )
 
-export const useServiceZone = (
+export const useDeleteFulfillmentSet = (
   id: string,
+  options?: Omit<
+    UseMutationOptions<
+      HttpTypes.AdminFulfillmentSetsDeleteResponse,
+      FetchError,
+      void
+    >,
+    "mutationFn"
+  >
+) => {
+  return useMutation({
+    mutationFn: () => sdk.admin.fulfillmentSet.delete(id),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: fulfillmentSetsQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useFulfillmentSetServiceZone = (
+  fulfillmentSetId: string,
+  serviceZoneId: string,
   query?: HttpTypes.SelectParams,
   options?: Omit<
     UseQueryOptions<
-      { service_zone: HttpTypes.AdminServiceZone },
+      HttpTypes.AdminServiceZoneResponse,
       FetchError,
-      { service_zone: HttpTypes.AdminServiceZone },
+      HttpTypes.AdminServiceZoneResponse,
       QueryKey
     >,
     "queryKey" | "queryFn"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => sdk.admin.fulfillmentSet.retrieve(id, query),
-    queryKey: fulfillmentSetsQueryKeys.detail(id, query),
+    queryFn: () =>
+      sdk.admin.fulfillmentSet.retrieveServiceZone(
+        fulfillmentSetId,
+        serviceZoneId,
+        query
+      ),
+    queryKey: fulfillmentSetsQueryKeys.detail(fulfillmentSetId, query),
     ...options,
   })
 
   return { ...data, ...rest }
 }
 
-export const useCreateServiceZone = (
+export const useCreateFulfillmentSetServiceZone = (
+  fulfillmentSetId: string,
   options?: Omit<
     UseMutationOptions<
-      { service_zone: HttpTypes.AdminServiceZone },
+      HttpTypes.AdminServiceZoneResponse,
       FetchError,
-      HttpTypes.AdminCreateServiceZone,
+      HttpTypes.AdminCreateFulfillmentSetServiceZone,
       QueryKey
     >,
     "mutationFn"
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => sdk.admin.serviceZone.create(payload),
+    mutationFn: (payload) =>
+      sdk.admin.fulfillmentSet.createServiceZone(fulfillmentSetId, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: fulfillmentSetsQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDeleteFulfillmentServiceZone = (
+  fulfillmentSetId: string,
+  serviceZoneId: string,
+  options?: Omit<
+    UseMutationOptions<
+      HttpTypes.AdminServiceZoneDeleteResponse,
+      FetchError,
+      void
+    >,
+    "mutationFn"
+  >
+) => {
+  return useMutation({
+    mutationFn: () =>
+      sdk.admin.fulfillmentSet.deleteServiceZone(
+        fulfillmentSetId,
+        serviceZoneId
+      ),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: fulfillmentSetsQueryKeys.lists(),

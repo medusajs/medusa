@@ -326,14 +326,15 @@ export class Admin {
       query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{
-        stock_location: HttpTypes.AdminStockLocation
-      }>(`/admin/stock-locations`, {
-        method: "POST",
-        headers,
-        body,
-        query,
-      })
+      return this.client.fetch<HttpTypes.AdminStockLocationResponse>(
+        `/admin/stock-locations`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
     },
     update: async (
       id: string,
@@ -341,42 +342,43 @@ export class Admin {
       query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{
-        stock_location: HttpTypes.AdminStockLocation
-      }>(`/admin/stock-locations/${id}`, {
-        method: "POST",
-        headers,
-        body,
-        query,
-      })
+      return this.client.fetch<HttpTypes.AdminStockLocationResponse>(
+        `/admin/stock-locations/${id}`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
     },
     list: async (
       queryParams?: HttpTypes.FindParams & HttpTypes.AdminStockLocationFilters,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<
-        HttpTypes.PaginatedResponse<{
-          stock_locations: HttpTypes.AdminStockLocation[]
-        }>
-      >(`/admin/stock-locations`, {
-        headers,
-        query: queryParams,
-      })
+      return this.client.fetch<HttpTypes.AdminStockLocationListResponse>(
+        `/admin/stock-locations`,
+        {
+          headers,
+          query: queryParams,
+        }
+      )
     },
     retrieve: async (
       id: string,
       query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{
-        stock_location: HttpTypes.AdminStockLocation
-      }>(`/admin/stock-locations/${id}`, {
-        query,
-        headers,
-      })
+      return this.client.fetch<HttpTypes.AdminStockLocationResponse>(
+        `/admin/stock-locations/${id}`,
+        {
+          query,
+          headers,
+        }
+      )
     },
     delete: async (id: string, headers?: ClientHeaders) => {
-      return this.client.fetch<HttpTypes.DeleteResponse<"stock_location">>(
+      return this.client.fetch<HttpTypes.AdminStockLocationDeleteResponse>(
         `/admin/stock-locations/${id}`,
         {
           method: "DELETE",
@@ -390,14 +392,15 @@ export class Admin {
       query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{
-        stock_location: HttpTypes.AdminStockLocation
-      }>(`/admin/stock-locations/${id}/sales-channels`, {
-        method: "POST",
-        headers,
-        body,
-        query,
-      })
+      return this.client.fetch<HttpTypes.AdminStockLocationResponse>(
+        `/admin/stock-locations/${id}/sales-channels`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
     },
     createFulfillmentSet: async (
       id: string,
@@ -405,25 +408,35 @@ export class Admin {
       query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{
-        stock_location: HttpTypes.AdminStockLocation
-      }>(`/admin/stock-locations/${id}/fulfillment-sets`, {
-        method: "POST",
-        headers,
-        body,
-        query,
-      })
+      return this.client.fetch<HttpTypes.AdminStockLocationResponse>(
+        `/admin/stock-locations/${id}/fulfillment-sets`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
     },
   }
 
   public fulfillmentSet = {
+    delete: async (id: string, headers?: ClientHeaders) => {
+      return this.client.fetch<HttpTypes.AdminFulfillmentSetDeleteResponse>(
+        `/admin/fulfillment-sets/${id}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      )
+    },
     retrieveServiceZone: async (
       fulfillmentSetId: string,
       serviceZoneId: string,
       query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{ service_zone: HttpTypes.AdminServiceZone }>(
+      return this.client.fetch<HttpTypes.AdminServiceZoneResponse>(
         `/admin/fulfillment-sets/${fulfillmentSetId}/service-zone/${serviceZoneId}`,
         {
           query,
@@ -437,14 +450,15 @@ export class Admin {
       query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{
-        service_zone: HttpTypes.AdminServiceZone
-      }>(`/admin/fulfillment-sets/${id}/service-zones`, {
-        method: "POST",
-        headers,
-        body,
-        query,
-      })
+      return this.client.fetch<HttpTypes.AdminServiceZoneResponse>(
+        `/admin/fulfillment-sets/${id}/service-zones`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
     },
     updateServiceZone: async (
       fulfillmentSetId: string,
@@ -453,15 +467,26 @@ export class Admin {
       query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{
-        service_zone: HttpTypes.AdminServiceZone
-      }>(
+      return this.client.fetch<HttpTypes.AdminServiceZoneResponse>(
         `/admin/fulfillment-sets/${fulfillmentSetId}/service-zones/${serviceZoneId}`,
         {
           method: "POST",
           headers,
           body,
           query,
+        }
+      )
+    },
+    deleteServiceZone: async (
+      fulfillmentSetId: string,
+      serviceZoneId: string,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.AdminServiceZoneDeleteResponse>(
+        `/admin/fulfillment-sets/${fulfillmentSetId}/service-zones/${serviceZoneId}`,
+        {
+          method: "DELETE",
+          headers,
         }
       )
     },

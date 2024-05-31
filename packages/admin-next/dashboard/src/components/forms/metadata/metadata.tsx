@@ -1,8 +1,7 @@
-import { useEffect } from "react"
-import { useTranslation } from "react-i18next"
-import { Alert, Button, Input, Text } from "@medusajs/ui"
 import { Trash } from "@medusajs/icons"
+import { Alert, Button, Input, Text } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 
 import { MetadataField } from "../../../lib/metadata"
 

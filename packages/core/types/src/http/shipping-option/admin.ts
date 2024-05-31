@@ -1,5 +1,6 @@
 import { ShippingOptionPriceType } from "../../fulfillment"
 import { BaseSoftDeletableHttpEntity } from "../base"
+import { PaginatedResponse } from "../common"
 import { AdminFulfillmentProvider } from "../fulfillment"
 import { AdminServiceZone } from "../fulfillment-set"
 import { AdminPriceSetPrice } from "../pricing"
@@ -34,3 +35,12 @@ export interface AdminShippingOption extends BaseSoftDeletableHttpEntity {
   rules: AdminShippingOptionRule[]
   prices: AdminPriceSetPrice[]
 }
+
+export interface AdminShippingOptionResponse {
+  shipping_option: AdminShippingOption
+}
+
+export interface AdminShippingOptionListResponse
+  extends PaginatedResponse<{
+    shipping_options: AdminShippingOption[]
+  }> {}

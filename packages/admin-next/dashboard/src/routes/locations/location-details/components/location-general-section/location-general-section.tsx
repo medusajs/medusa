@@ -9,12 +9,7 @@ import {
   TriangleDownMini,
   XMarkMini,
 } from "@medusajs/icons"
-import {
-  FulfillmentSetDTO,
-  HttpTypes,
-  ServiceZoneDTO,
-  ShippingOptionDTO,
-} from "@medusajs/types"
+import { HttpTypes, ServiceZoneDTO, ShippingOptionDTO } from "@medusajs/types"
 import {
   Badge,
   Button,
@@ -33,13 +28,16 @@ import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Divider } from "../../../../../components/common/divider"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
+import { IconAvatar } from "../../../../../components/common/icon-avatar"
 import { LinkButton } from "../../../../../components/common/link-button"
 import { ListSummary } from "../../../../../components/common/list-summary"
+import {
+  useDeleteFulfillmentServiceZone,
+  useDeleteFulfillmentSet,
+} from "../../../../../hooks/api/fulfillment-sets"
 import { useDeleteShippingOption } from "../../../../../hooks/api/shipping-options"
 import {
   useCreateStockLocationFulfillmentSet,
-  useDeleteFulfillmentSet,
-  useDeleteServiceZone,
   useDeleteStockLocation,
 } from "../../../../../hooks/api/stock-locations"
 import { getFormattedAddress } from "../../../../../lib/addresses"
@@ -272,7 +270,7 @@ function ServiceZoneOptions({
 }
 
 type ServiceZoneProps = {
-  zone: ServiceZoneDTO
+  zone: HttpTypes.AdminServiceZone
   locationId: string
   fulfillmentSetId: string
 }
@@ -282,7 +280,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   const prompt = usePrompt()
   const [open, setOpen] = useState(false)
 
-  const { mutateAsync: deleteZone } = useDeleteServiceZone(
+  const { mutateAsync: deleteZone } = useDeleteFulfillmentServiceZone(
     fulfillmentSetId,
     zone.id
   )
@@ -301,21 +299,22 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
       return
     }
 
-    try {
-      await deleteZone()
-
-      toast.success(t("general.success"), {
-        description: t("location.serviceZone.toast.delete", {
-          name: zone.name,
-        }),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await deleteZone(undefined, {
+      onError: (e) => {
+        toast.error(t("general.error"), {
+          description: e.message,
+          dismissLabel: t("actions.close"),
+        })
+      },
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("location.serviceZone.toast.delete", {
+            name: zone.name,
+          }),
+          dismissLabel: t("actions.close"),
+        })
+      },
+    })
   }
 
   const countries = useMemo(() => {
@@ -324,7 +323,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
       .map((g) => g.country_code)
       .map((code) => staticCountries.find((c) => c.iso_2 === code))
       .sort((c1, c2) => c1.name.localeCompare(c2.name))
-  }, zone.geo_zones)
+  }, [zone.geo_zones])
 
   const [shippingOptionsCount, returnOptionsCount] = useMemo(() => {
     const optionsCount = zone.shipping_options.filter(
@@ -342,11 +341,9 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
     <div className="flex flex-col">
       <div className="flex flex-row items-center justify-between gap-x-4 px-6 py-4">
         {/* ICON*/}
-        <div className="shadow-borders-base flex size-7 items-center justify-center rounded-md">
-          <div className="bg-ui-bg-field flex size-6 items-center justify-center rounded-[4px]">
-            <Map className="text-ui-fg-subtle" />
-          </div>
-        </div>
+        <IconAvatar>
+          <Map />
+        </IconAvatar>
 
         {/* INFO*/}
         <div className="grow-1 flex flex-1 flex-col">
@@ -437,7 +434,7 @@ enum FulfillmentSetType {
 }
 
 type FulfillmentSetProps = {
-  fulfillmentSet?: FulfillmentSetDTO
+  fulfillmentSet?: HttpTypes.AdminFulfillmentSet
   locationName: string
   locationId: string
   type: FulfillmentSetType
@@ -454,27 +451,30 @@ function FulfillmentSet(props: FulfillmentSetProps) {
 
   const hasServiceZones = !!fulfillmentSet?.service_zones.length
 
-  const { mutateAsync: createFulfillmentSet, isPending: isLoading } =
+  const { mutateAsync: createFulfillmentSet } =
     useCreateStockLocationFulfillmentSet(locationId)
 
   const { mutateAsync: deleteFulfillmentSet } = useDeleteFulfillmentSet(
-    fulfillmentSet?.id
+    fulfillmentSet?.id!
   )
 
   const handleCreate = async () => {
-    try {
-      await createFulfillmentSet({
+    await createFulfillmentSet(
+      {
         name: `${locationName} ${
           type === FulfillmentSetType.Pickup ? "pick up" : type
         }`,
         type,
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onError: (e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissLabel: t("actions.close"),
+          })
+        },
+      }
+    )
   }
 
   const handleDelete = async () => {
@@ -491,21 +491,24 @@ function FulfillmentSet(props: FulfillmentSetProps) {
       return
     }
 
-    try {
-      await deleteFulfillmentSet()
-
-      toast.success(t("general.success"), {
-        description: t("location.fulfillmentSet.toast.disable", {
-          name: fulfillmentSet?.name,
-        }),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await deleteFulfillmentSet(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("location.fulfillmentSet.toast.disable", {
+            name: fulfillmentSet?.name,
+          }),
+          dismissable: true,
+          dismissLabel: t("actions.close"),
+        })
+      },
+      onError: (e) => {
+        toast.error(t("general.error"), {
+          description: e.message,
+          dismissable: true,
+          dismissLabel: t("actions.close"),
+        })
+      },
+    })
   }
 
   return (

@@ -1,5 +1,6 @@
 import { GeoZoneType } from "../../fulfillment"
 import { BaseSoftDeletableHttpEntity } from "../base"
+import { DeleteResponse } from "../common"
 import { AdminShippingOption } from "../shipping-option"
 
 export interface AdminGeoZone extends BaseSoftDeletableHttpEntity {
@@ -47,6 +48,9 @@ export interface AdminServiceZone extends BaseSoftDeletableHttpEntity {
 export interface AdminServiceZoneResponse {
   service_zone: AdminServiceZone
 }
+
+export interface AdminServiceZoneDeleteResponse
+  extends DeleteResponse<"service_zone", AdminFulfillmentSet> {}
 
 export interface AdminFulfillmentSet extends BaseSoftDeletableHttpEntity {
   /**
@@ -193,3 +197,6 @@ export interface AdminUpdateFulfillmentSetServiceZone {
    */
   geo_zones?: AdminUpdateFulfillmentSetServiceZoneGeoZone[]
 }
+
+export interface AdminFulfillmentSetDeleteResponse
+  extends DeleteResponse<"fulfillment_set"> {}

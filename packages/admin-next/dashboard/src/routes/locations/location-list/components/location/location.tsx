@@ -1,9 +1,5 @@
 import { Buildings, PencilSquare, Trash } from "@medusajs/icons"
-import {
-  FulfillmentSetDTO,
-  SalesChannelDTO,
-  StockLocationDTO,
-} from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Container, StatusBadge, Text, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
@@ -14,7 +10,7 @@ import { useDeleteStockLocation } from "../../../../../hooks/api/stock-locations
 import { getFormattedAddress } from "../../../../../lib/addresses"
 
 type SalesChannelsProps = {
-  salesChannels?: SalesChannelDTO[]
+  salesChannels?: HttpTypes.AdminSalesChannel[] | null
 }
 
 function SalesChannels(props: SalesChannelsProps) {
@@ -55,7 +51,7 @@ enum FulfillmentSetType {
 }
 
 type FulfillmentSetProps = {
-  fulfillmentSet?: FulfillmentSetDTO
+  fulfillmentSet?: HttpTypes.AdminFulfillmentSet
   type: FulfillmentSetType
 }
 
@@ -87,7 +83,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
 }
 
 type LocationProps = {
-  location: StockLocationDTO
+  location: HttpTypes.AdminStockLocation
 }
 
 function Location(props: LocationProps) {
@@ -111,35 +107,34 @@ function Location(props: LocationProps) {
       return
     }
 
-    try {
-      await deleteLocation()
-
-      toast.success(t("general.success"), {
-        description: t("location.deleteLocation.success", {
-          name: location.name,
-        }),
-        dismissLabel: t("general.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await deleteLocation(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("location.deleteLocation.success", {
+            name: location.name,
+          }),
+          dismissLabel: t("general.close"),
+        })
+      },
+      onError: (e) => {
+        toast.error(t("general.error"), {
+          description: e.message,
+          dismissLabel: t("actions.close"),
+        })
+      },
+    })
   }
 
   return (
     <Container className="flex flex-col divide-y p-0">
       <div className="px-6 py-4">
         <div className="flex flex-row items-center justify-between gap-x-4">
-          {/* ICON*/}
           <div className="shadow-borders-base flex size-7 items-center justify-center rounded-md">
             <div className="bg-ui-bg-field flex size-6 items-center justify-center rounded-[4px]">
               <Buildings className="text-ui-fg-subtle" />
             </div>
           </div>
 
-          {/* LOCATION INFO*/}
           <div className="grow-1 flex flex-1 flex-col">
             <Text weight="plus">{location.name}</Text>
             <Text className="text-ui-fg-subtle txt-small">
@@ -147,7 +142,6 @@ function Location(props: LocationProps) {
             </Text>
           </div>
 
-          {/* ACTION*/}
           <div className="flex grow-0 items-center gap-4">
             <ActionMenu
               groups={[
