@@ -1274,6 +1274,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               value: "updated-test",
             }
 
+            jest.clearAllMocks()
+
             const updatedRule = await service.updateShippingOptionRules(
               updateData
             )
@@ -1286,6 +1288,15 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 value: updateData.value,
               })
             )
+
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.shipping_option_rule_updated,
+                action: "updated",
+                object: "shipping_option_rule",
+                data: { id: updatedRule.id },
+              }),
+            ])
           })
 
           it("should fail to update a non-existent shipping option rule", async () => {

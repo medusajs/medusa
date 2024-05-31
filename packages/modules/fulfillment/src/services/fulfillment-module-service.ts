@@ -569,12 +569,6 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    buildShippingOptionRuleEvents({
-      action: CommonEvents.CREATED,
-      shippingOptionRules: createdShippingOptionRules,
-      sharedContext,
-    })
-
     return await this.baseRepository_.serialize<
       | FulfillmentTypes.ShippingOptionRuleDTO
       | FulfillmentTypes.ShippingOptionRuleDTO[]
@@ -600,7 +594,18 @@ export default class FulfillmentModuleService<
 
     validateAndNormalizeRules(data_ as unknown as Record<string, unknown>[])
 
-    return await this.shippingOptionRuleService_.create(data_, sharedContext)
+    const createdSORules = await this.shippingOptionRuleService_.create(
+      data_,
+      sharedContext
+    )
+
+    buildShippingOptionRuleEvents({
+      action: CommonEvents.CREATED,
+      shippingOptionRules: createdSORules.map((sor) => ({ id: sor.id })),
+      sharedContext,
+    })
+
+    return createdSORules
   }
 
   @InjectManager("baseRepository_")
@@ -1580,6 +1585,7 @@ export default class FulfillmentModuleService<
   ): Promise<
     FulfillmentTypes.ShippingProfileDTO | FulfillmentTypes.ShippingProfileDTO[]
   > {
+    // TODO: should we implement that or can we get rid of the profiles concept entirely and link to the so instead?
     return []
   }
 
@@ -1593,6 +1599,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.GeoZoneDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async updateGeoZones(
     data:
       | FulfillmentTypes.UpdateGeoZoneDTO
@@ -1608,9 +1615,17 @@ export default class FulfillmentModuleService<
     FulfillmentModuleService.validateGeoZones(data_)
 
     const updatedGeoZones = await this.geoZoneService_.update(
-      data,
+      data_,
       sharedContext
     )
+
+    buildGeoZoneEvents({
+      action: CommonEvents.UPDATED,
+      geoZones: updatedGeoZones.map((geoZone) => ({
+        id: geoZone.id,
+      })),
+      sharedContext,
+    })
 
     const serialized = await this.baseRepository_.serialize<
       FulfillmentTypes.GeoZoneDTO[]
@@ -1629,6 +1644,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ShippingOptionRuleDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async updateShippingOptionRules(
     data:
       | FulfillmentTypes.UpdateShippingOptionRuleDTO[]
@@ -1666,6 +1682,14 @@ export default class FulfillmentModuleService<
 
     const updatedShippingOptionRules =
       await this.shippingOptionRuleService_.update(data_, sharedContext)
+
+    buildShippingOptionRuleEvents({
+      action: CommonEvents.UPDATED,
+      shippingOptionRules: updatedShippingOptionRules.map((rule) => ({
+        id: rule.id,
+      })),
+      sharedContext,
+    })
 
     return Array.isArray(data)
       ? updatedShippingOptionRules
