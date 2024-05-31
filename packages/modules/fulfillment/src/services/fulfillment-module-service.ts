@@ -21,6 +21,8 @@ import {
   getSetDifference,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
+  isPresent,
   isString,
   MedusaContext,
   MedusaError,
@@ -42,6 +44,8 @@ import {
   buildCreatedFulfillmentEvents,
   buildCreatedFulfillmentSetEvents,
   buildCreatedServiceZoneEvents,
+  buildFulfillmentEvents,
+  buildFulfillmentLabelEvents,
   buildFulfillmentSetEvents,
   buildGeoZoneEvents,
   buildServiceZoneEvents,
@@ -1696,23 +1700,128 @@ export default class FulfillmentModuleService<
       : updatedShippingOptionRules[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
+  @EmitEvents()
   async updateFulfillment(
     id: string,
     data: FulfillmentTypes.UpdateFulfillmentDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.FulfillmentDTO> {
-    const fulfillment = await this.fulfillmentService_.update(
-      { id, ...data },
+    const fulfillment = await this.updateFulfillment_(id, data, sharedContext)
+
+    return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
+      fulfillment
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async updateFulfillment_(
+    id: string,
+    data: FulfillmentTypes.UpdateFulfillmentDTO,
+    @MedusaContext() sharedContext: Context
+  ): Promise<TFulfillmentEntity> {
+    const existingFulfillment: TFulfillmentEntity =
+      await this.fulfillmentService_.retrieve(
+        id,
+        {
+          relations: ["items", "labels"],
+        },
+        sharedContext
+      )
+
+    const updatedLabelIds: string[] = []
+    let deletedLabelIds: string[] = []
+
+    const existingLabelIds = existingFulfillment.labels.map((label) => label.id)
+
+    /**
+     * @note
+     * Since the relation is a one to many, the deletion, update and creation of labels
+     * is handled b the orm. That means that we dont have to perform any manual deletions or update.
+     * For some reason we use to have upsert and replace handled manually but we could simplify all that just like
+     * we do below which will create the label, update some and delete the one that does not exists in the new data.
+     *
+     * There is a bit of logic as we need to reassign the data of those we want to keep
+     * and we also need to emit the events later on.
+     */
+    if (isDefined(data.labels) && isPresent(data.labels)) {
+      const dataLabelIds: string[] = data.labels
+        .filter((label): label is { id: string } => "id" in label)
+        .map((label) => label.id)
+
+      deletedLabelIds = arrayDifference(existingLabelIds, dataLabelIds)
+
+      for (let label of data.labels) {
+        if ("id" in label) {
+          const existingLabel = existingFulfillment.labels.find(
+            ({ id }) => id === label.id
+          )!
+
+          if (
+            !existingLabel ||
+            Object.keys(label).length === 1 ||
+            deepEqualObj(existingLabel, label)
+          ) {
+            continue
+          }
+
+          updatedLabelIds.push(label.id)
+          const labelData = { ...label }
+          Object.assign(label, existingLabel, labelData)
+        }
+      }
+    }
+
+    const [fulfillment] = await this.fulfillmentService_.update(
+      [{ id, ...data }],
       sharedContext
     )
 
-    const serialized =
-      await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
-        fulfillment
-      )
+    this.handleFulfillmentUpdateEvents(
+      fulfillment,
+      existingLabelIds,
+      updatedLabelIds,
+      deletedLabelIds,
+      sharedContext
+    )
 
-    return Array.isArray(serialized) ? serialized[0] : serialized
+    return fulfillment
+  }
+
+  private handleFulfillmentUpdateEvents(
+    fulfillment: Fulfillment,
+    existingLabelIds: string[],
+    updatedLabelIds: string[],
+    deletedLabelIds: string[],
+    sharedContext: Context
+  ) {
+    buildFulfillmentEvents({
+      action: CommonEvents.UPDATED,
+      fulfillments: [{ id: fulfillment.id }],
+      sharedContext,
+    })
+
+    buildFulfillmentLabelEvents({
+      action: CommonEvents.DELETED,
+      fulfillmentLabels: deletedLabelIds.map((id) => ({ id })),
+      sharedContext,
+    })
+
+    buildFulfillmentLabelEvents({
+      action: CommonEvents.UPDATED,
+      fulfillmentLabels: updatedLabelIds.map((id) => ({ id })),
+      sharedContext,
+    })
+
+    const createdLabels = fulfillment.labels.filter((label) => {
+      return !existingLabelIds.includes(label.id)
+    })
+
+    buildFulfillmentLabelEvents({
+      action: CommonEvents.CREATED,
+      fulfillmentLabels: createdLabels.map((label) => ({ id: label.id })),
+      sharedContext,
+    })
   }
 
   @InjectManager("baseRepository_")

@@ -1,6 +1,9 @@
 import { resolve } from "path"
 import { Modules } from "@medusajs/modules-sdk"
-import { IFulfillmentModuleService } from "@medusajs/types"
+import {
+  IFulfillmentModuleService,
+  UpdateFulfillmentDTO,
+} from "@medusajs/types"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
@@ -266,6 +269,141 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "created",
                 object: "fulfillment_label",
                 data: { id: fulfillment.labels[0].id },
+              }),
+            ])
+          })
+        })
+
+        describe("on update", () => {
+          it("should update a fulfillment", async () => {
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+            })
+            const serviceZone = await service.createServiceZones({
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+            })
+
+            const shippingOption = await service.createShippingOptions(
+              generateCreateShippingOptionsData({
+                provider_id: providerId,
+                service_zone_id: serviceZone.id,
+                shipping_profile_id: shippingProfile.id,
+              })
+            )
+
+            const fulfillment = await service.createFulfillment(
+              generateCreateFulfillmentData({
+                provider_id: providerId,
+                shipping_option_id: shippingOption.id,
+                labels: [
+                  {
+                    tracking_number: "test-tracking-number-1",
+                    tracking_url: "test-tracking-url-1",
+                    label_url: "test-label-url-1",
+                  },
+                  {
+                    tracking_number: "test-tracking-number-2",
+                    tracking_url: "test-tracking-url-2",
+                    label_url: "test-label-url-2",
+                  },
+                  {
+                    tracking_number: "test-tracking-number-3",
+                    tracking_url: "test-tracking-url-3",
+                    label_url: "test-label-url-3",
+                  },
+                ],
+              })
+            )
+
+            const label1 = fulfillment.labels.find(
+              (l) => l.tracking_number === "test-tracking-number-1"
+            )!
+            const label2 = fulfillment.labels.find(
+              (l) => l.tracking_number === "test-tracking-number-2"
+            )!
+            const label3 = fulfillment.labels.find(
+              (l) => l.tracking_number === "test-tracking-number-3"
+            )!
+
+            const updateData: UpdateFulfillmentDTO = {
+              id: fulfillment.id,
+              labels: [
+                { id: label1.id },
+                { ...label2, label_url: "updated-test-label-url-2" },
+                {
+                  tracking_number: "test-tracking-number-4",
+                  tracking_url: "test-tracking-url-4",
+                  label_url: "test-label-url-4",
+                },
+              ],
+            }
+
+            jest.clearAllMocks()
+
+            const updatedFulfillment = await service.updateFulfillment(
+              fulfillment.id,
+              updateData
+            )
+
+            const label4 = updatedFulfillment.labels.find(
+              (l) => l.tracking_number === "test-tracking-number-4"
+            )!
+
+            expect(updatedFulfillment.labels).toHaveLength(3)
+            expect(updatedFulfillment).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                labels: expect.arrayContaining([
+                  expect.objectContaining({
+                    tracking_number: "test-tracking-number-1",
+                    tracking_url: "test-tracking-url-1",
+                    label_url: "test-label-url-1",
+                  }),
+                  expect.objectContaining({
+                    tracking_number: "test-tracking-number-2",
+                    tracking_url: "test-tracking-url-2",
+                    label_url: "updated-test-label-url-2",
+                  }),
+                  expect.objectContaining({
+                    tracking_number: "test-tracking-number-4",
+                    tracking_url: "test-tracking-url-4",
+                    label_url: "test-label-url-4",
+                  }),
+                ]),
+              })
+            )
+
+            expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_updated,
+                action: "updated",
+                object: "fulfillment",
+                data: { id: updatedFulfillment.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_label_deleted,
+                action: "deleted",
+                object: "fulfillment_label",
+                data: { id: label3.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_label_updated,
+                action: "updated",
+                object: "fulfillment_label",
+                data: { id: label2.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.fulfillment_label_created,
+                action: "created",
+                object: "fulfillment_label",
+                data: { id: label4.id },
               }),
             ])
           })
