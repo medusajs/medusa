@@ -4,9 +4,8 @@ import {
 } from "../../../../../types/routing"
 import {
   IWorkflowEngineService,
-  WorkflowOrchestratorTypes,
-} from "@medusajs/workflows-sdk"
-
+  WorkflowOrchestratorRunDTO,
+} from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { AdminCreateWorkflowsRunType } from "../../validators"
 
@@ -28,7 +27,7 @@ export const POST = async (
     context: {
       requestId: req.requestId,
     },
-  } as WorkflowOrchestratorTypes.WorkflowOrchestratorRunDTO
+  } as WorkflowOrchestratorRunDTO
 
   const { acknowledgement } = await workflowEngineService.run(
     workflow_id,

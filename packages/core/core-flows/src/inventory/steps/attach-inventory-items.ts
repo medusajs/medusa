@@ -20,7 +20,7 @@ export const attachInventoryItemToVariants = createStep(
       .filter(({ tag }) => !!tag)
       .map(({ inventoryItemId, tag }) => ({
         productService: {
-          variant_id: tag,
+          variant_id: tag!,
         },
         inventoryService: {
           inventory_item_id: inventoryItemId,
