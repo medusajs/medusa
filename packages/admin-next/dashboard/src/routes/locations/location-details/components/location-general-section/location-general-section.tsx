@@ -11,9 +11,9 @@ import {
 } from "@medusajs/icons"
 import {
   FulfillmentSetDTO,
+  HttpTypes,
   ServiceZoneDTO,
   ShippingOptionDTO,
-  StockLocationDTO,
 } from "@medusajs/types"
 import {
   Badge,
@@ -37,7 +37,7 @@ import { LinkButton } from "../../../../../components/common/link-button"
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { useDeleteShippingOption } from "../../../../../hooks/api/shipping-options"
 import {
-  useCreateFulfillmentSet,
+  useCreateStockLocationFulfillmentSet,
   useDeleteFulfillmentSet,
   useDeleteServiceZone,
   useDeleteStockLocation,
@@ -51,7 +51,7 @@ import {
 } from "../../../../../lib/shipping-options"
 
 type LocationGeneralSectionProps = {
-  location: StockLocationDTO
+  location: HttpTypes.AdminStockLocation
 }
 
 export const LocationGeneralSection = ({
@@ -455,7 +455,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
   const hasServiceZones = !!fulfillmentSet?.service_zones.length
 
   const { mutateAsync: createFulfillmentSet, isPending: isLoading } =
-    useCreateFulfillmentSet(locationId)
+    useCreateStockLocationFulfillmentSet(locationId)
 
   const { mutateAsync: deleteFulfillmentSet } = useDeleteFulfillmentSet(
     fulfillmentSet?.id
@@ -592,7 +592,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
   )
 }
 
-const Actions = ({ location }: { location: StockLocationDTO }) => {
+const Actions = ({ location }: { location: HttpTypes.AdminStockLocation }) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { mutateAsync } = useDeleteStockLocation(location.id)
@@ -614,19 +614,21 @@ const Actions = ({ location }: { location: StockLocationDTO }) => {
       return
     }
 
-    try {
-      await mutateAsync(undefined)
-      toast.success(t("general.success"), {
-        description: t("location.toast.delete"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
-    navigate("/settings/locations", { replace: true })
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("location.toast.delete"),
+          dismissLabel: t("actions.close"),
+        })
+        navigate("/settings/locations", { replace: true })
+      },
+      onError: (e) => {
+        toast.error(t("general.error"), {
+          description: e.message,
+          dismissLabel: t("actions.close"),
+        })
+      },
+    })
   }
 
   return (

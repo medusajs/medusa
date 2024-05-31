@@ -2,7 +2,7 @@ import { DeleteResponse } from "../../common"
 import { AdminFulfillmentAddressResponse } from "./fulfillment-address"
 import { AdminFulfillmentItemResponse } from "./fulfillment-item"
 import { AdminFulfillmentLabelResponse } from "./fulfillment-label"
-import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
+import { AdminFulfillmentProvider } from "./fulfillment-provider"
 
 export interface AdminFulfillmentResponse {
   id: string
@@ -15,7 +15,7 @@ export interface AdminFulfillmentResponse {
   provider_id: string
   shipping_option_id: string | null
   metadata: Record<string, unknown> | null
-  provider: AdminFulfillmentProviderResponse
+  provider: AdminFulfillmentProvider
   delivery_address: AdminFulfillmentAddressResponse
   items: AdminFulfillmentItemResponse[]
   labels: AdminFulfillmentLabelResponse[]

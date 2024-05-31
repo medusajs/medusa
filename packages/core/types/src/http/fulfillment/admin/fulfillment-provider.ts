@@ -1,8 +1,5 @@
-export interface AdminFulfillmentProviderResponse {
-  id: string
+import { BaseSoftDeletableHttpEntity } from "../../base"
+
+export interface AdminFulfillmentProvider extends BaseSoftDeletableHttpEntity {
   name: string
-  metadata: Record<string, unknown> | null
-  created_at: Date
-  updated_at: Date
-  deleted_at: Date | null
 }

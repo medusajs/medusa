@@ -7,11 +7,14 @@ import {
   geoZoneZipSchema,
 } from "./validators/geo-zone"
 
-export const AdminServiceZonesParams = createFindParams()
 export type AdminServiceZonesParamsType = z.infer<
   typeof AdminServiceZonesParams
 >
+export const AdminServiceZonesParams = createFindParams()
 
+export type AdminCreateFulfillmentSetServiceZonesType = z.infer<
+  typeof AdminCreateFulfillmentSetServiceZonesSchema
+>
 export const AdminCreateFulfillmentSetServiceZonesSchema = z
   .object({
     name: z.string(),
@@ -28,6 +31,9 @@ export const AdminCreateFulfillmentSetServiceZonesSchema = z
   })
   .strict()
 
+export type AdminUpdateFulfillmentSetServiceZonesType = z.infer<
+  typeof AdminUpdateFulfillmentSetServiceZonesSchema
+>
 export const AdminUpdateFulfillmentSetServiceZonesSchema = z
   .object({
     name: z.string().optional(),
@@ -44,6 +50,9 @@ export const AdminUpdateFulfillmentSetServiceZonesSchema = z
   })
   .strict()
 
+export type AdminFulfillmentSetParamsType = z.infer<
+  typeof AdminFulfillmentSetParams
+>
 export const AdminFulfillmentSetParams = createFindParams({
   limit: 20,
   offset: 0,
@@ -58,13 +67,3 @@ export const AdminFulfillmentSetParams = createFindParams({
     deleted_at: createOperatorMap().optional(),
   })
 )
-
-export type AdminCreateFulfillmentSetServiceZonesType = z.infer<
-  typeof AdminCreateFulfillmentSetServiceZonesSchema
->
-export type AdminUpdateFulfillmentSetServiceZonesType = z.infer<
-  typeof AdminUpdateFulfillmentSetServiceZonesSchema
->
-export type AdminFulfillmentSetParamsType = z.infer<
-  typeof AdminFulfillmentSetParams
->

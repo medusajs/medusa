@@ -12,14 +12,12 @@ import { client, sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import {
-  CreateFulfillmentSetReq,
   CreateServiceZoneReq,
   UpdateServiceZoneReq,
 } from "../../types/api-payloads"
 import {
   FulfillmentSetDeleteRes,
   ServiceZoneDeleteRes,
-  StockLocationDeleteRes,
   StockLocationRes,
 } from "../../types/api-responses"
 
@@ -145,10 +143,14 @@ export const useUpdateStockLocationSalesChannels = (
 
 export const useDeleteStockLocation = (
   id: string,
-  options?: UseMutationOptions<StockLocationDeleteRes, Error, void>
+  options?: UseMutationOptions<
+    HttpTypes.DeleteResponse<"stock_location">,
+    FetchError,
+    void
+  >
 ) => {
   return useMutation({
-    mutationFn: () => client.stockLocations.delete(id),
+    mutationFn: () => sdk.admin.stockLocation.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
@@ -163,13 +165,17 @@ export const useDeleteStockLocation = (
   })
 }
 
-export const useCreateFulfillmentSet = (
+export const useCreateStockLocationFulfillmentSet = (
   locationId: string,
-  options?: UseMutationOptions<StockLocationRes, Error, CreateFulfillmentSetReq>
+  options?: UseMutationOptions<
+    { stock_location: HttpTypes.AdminStockLocation },
+    Error,
+    HttpTypes.AdminCreateStockLocationFulfillmentSet
+  >
 ) => {
   return useMutation({
     mutationFn: (payload) =>
-      client.stockLocations.createFulfillmentSet(locationId, payload),
+      sdk.admin.stockLocation.createFulfillmentSet(locationId, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
@@ -207,7 +213,6 @@ export const useCreateServiceZone = (
 export const useUpdateServiceZone = (
   fulfillmentSetId: string,
   serviceZoneId: string,
-  locationId: string,
   options?: UseMutationOptions<StockLocationRes, Error, UpdateServiceZoneReq>
 ) => {
   return useMutation({

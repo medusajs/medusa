@@ -2,7 +2,7 @@ import {
   BaseHttpFilterableWithDeletedAt,
   BaseSoftDeletableHttpEntity,
 } from "../base"
-import { FulfillmentSetResponse } from "../fulfillment"
+import { AdminFulfillmentSet } from "../fulfillment-set"
 import { AdminSalesChannel } from "../sales-channel"
 
 export interface AdminStockLocationAddress extends BaseSoftDeletableHttpEntity {
@@ -60,7 +60,7 @@ export interface AdminStockLocation extends BaseSoftDeletableHttpEntity {
   /**
    * The fulfillment sets associated with the stock location.
    */
-  fulfillment_sets: FulfillmentSetResponse[]
+  fulfillment_sets: AdminFulfillmentSet[]
 }
 
 export interface AdminUpsertStockLocationAddress {
@@ -113,4 +113,9 @@ export interface AdminUpdateStockLocationSalesChannels {
    * An array of sales channel IDs to remove their association with the stock location.
    */
   remove?: string[]
+}
+
+export interface AdminCreateStockLocationFulfillmentSet {
+  name: string
+  type: string
 }

@@ -1,10 +1,4 @@
-import {
-  DeleteResponse,
-  FindParams,
-  HttpTypes,
-  PaginatedResponse,
-  SelectParams,
-} from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -17,7 +11,7 @@ export class Admin {
   public region = {
     create: async (
       body: HttpTypes.AdminCreateRegion,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return await this.client.fetch<{ region: HttpTypes.AdminRegion }>(
@@ -33,7 +27,7 @@ export class Admin {
     update: async (
       id: string,
       body: HttpTypes.AdminUpdateRegion,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return await this.client.fetch<{ region: HttpTypes.AdminRegion }>(
@@ -47,11 +41,11 @@ export class Admin {
       )
     },
     list: async (
-      queryParams?: FindParams & HttpTypes.AdminRegionFilters,
+      queryParams?: HttpTypes.FindParams & HttpTypes.AdminRegionFilters,
       headers?: ClientHeaders
     ) => {
       return await this.client.fetch<
-        PaginatedResponse<{ regions: HttpTypes.AdminRegion[] }>
+        HttpTypes.PaginatedResponse<{ regions: HttpTypes.AdminRegion[] }>
       >(`/admin/regions`, {
         query: queryParams,
         headers,
@@ -59,7 +53,7 @@ export class Admin {
     },
     retrieve: async (
       id: string,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return await this.client.fetch<{ region: HttpTypes.AdminRegion }>(
@@ -71,7 +65,7 @@ export class Admin {
       )
     },
     delete: async (id: string, headers?: ClientHeaders) => {
-      return await this.client.fetch<DeleteResponse<"region">>(
+      return await this.client.fetch<HttpTypes.DeleteResponse<"region">>(
         `/admin/regions/${id}`,
         {
           method: "DELETE",
@@ -84,7 +78,7 @@ export class Admin {
   public invites = {
     accept: async (
       input: HttpTypes.AdminAcceptInvite & { invite_token: string },
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       const { invite_token, ...rest } = input
@@ -100,7 +94,7 @@ export class Admin {
     },
     create: async (
       body: HttpTypes.AdminCreateInvite,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return await this.client.fetch<{ invite: HttpTypes.AdminInviteResponse }>(
@@ -115,7 +109,7 @@ export class Admin {
     },
     retrieve: async (
       id: string,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return await this.client.fetch<{ invite: HttpTypes.AdminInviteResponse }>(
@@ -126,9 +120,14 @@ export class Admin {
         }
       )
     },
-    list: async (queryParams?: FindParams, headers?: ClientHeaders) => {
+    list: async (
+      queryParams?: HttpTypes.FindParams,
+      headers?: ClientHeaders
+    ) => {
       return await this.client.fetch<
-        PaginatedResponse<{ invites: HttpTypes.AdminInviteResponse[] }>
+        HttpTypes.PaginatedResponse<{
+          invites: HttpTypes.AdminInviteResponse[]
+        }>
       >(`/admin/invites`, {
         headers,
         query: queryParams,
@@ -143,7 +142,7 @@ export class Admin {
       )
     },
     delete: async (id: string, headers?: ClientHeaders) => {
-      return await this.client.fetch<DeleteResponse<"invite">>(
+      return await this.client.fetch<HttpTypes.DeleteResponse<"invite">>(
         `/admin/invites/${id}`,
         {
           method: "DELETE",
@@ -156,7 +155,7 @@ export class Admin {
   public products = {
     create: async (
       body: HttpTypes.AdminCreateProduct,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return await this.client.fetch<{ product: HttpTypes.AdminProduct }>(
@@ -174,7 +173,7 @@ export class Admin {
   public customer = {
     create: async (
       body: HttpTypes.AdminCreateCustomer,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<{
@@ -190,7 +189,7 @@ export class Admin {
     update: async (
       id: string,
       body: HttpTypes.AdminUpdateCustomer,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<{ customer: HttpTypes.AdminCustomer }>(
@@ -204,11 +203,11 @@ export class Admin {
       )
     },
     list: async (
-      queryParams?: FindParams & HttpTypes.AdminCollectionFilters,
+      queryParams?: HttpTypes.FindParams & HttpTypes.AdminCollectionFilters,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<
-        PaginatedResponse<{ customers: HttpTypes.AdminCustomer[] }>
+        HttpTypes.PaginatedResponse<{ customers: HttpTypes.AdminCustomer[] }>
       >(`/admin/customers`, {
         headers,
         query: queryParams,
@@ -216,7 +215,7 @@ export class Admin {
     },
     retrieve: async (
       id: string,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<{ customer: HttpTypes.AdminCustomer }>(
@@ -228,7 +227,7 @@ export class Admin {
       )
     },
     delete: async (id: string, headers?: ClientHeaders) => {
-      return this.client.fetch<DeleteResponse<"customer">>(
+      return this.client.fetch<HttpTypes.DeleteResponse<"customer">>(
         `/admin/customers/${id}`,
         {
           method: "DELETE",
@@ -241,7 +240,7 @@ export class Admin {
   public collection = {
     create: async (
       body: HttpTypes.AdminCreateCollection,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<{ collection: HttpTypes.AdminCollection }>(
@@ -257,7 +256,7 @@ export class Admin {
     update: async (
       id: string,
       body: HttpTypes.AdminUpdateCollection,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<{ collection: HttpTypes.AdminCollection }>(
@@ -270,9 +269,14 @@ export class Admin {
         }
       )
     },
-    list: async (queryParams?: FindParams, headers?: ClientHeaders) => {
+    list: async (
+      queryParams?: HttpTypes.FindParams,
+      headers?: ClientHeaders
+    ) => {
       return this.client.fetch<
-        PaginatedResponse<{ collections: HttpTypes.AdminCollection[] }>
+        HttpTypes.PaginatedResponse<{
+          collections: HttpTypes.AdminCollection[]
+        }>
       >(`/admin/collections`, {
         headers,
         query: queryParams,
@@ -280,7 +284,7 @@ export class Admin {
     },
     retrieve: async (
       id: string,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<{ collection: HttpTypes.AdminCollection }>(
@@ -292,7 +296,7 @@ export class Admin {
       )
     },
     delete: async (id: string, headers?: ClientHeaders) => {
-      return this.client.fetch<DeleteResponse<"collection">>(
+      return this.client.fetch<HttpTypes.DeleteResponse<"collection">>(
         `/admin/collections/${id}`,
         {
           method: "DELETE",
@@ -351,7 +355,9 @@ export class Admin {
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<
-        PaginatedResponse<{ stock_locations: HttpTypes.AdminStockLocation[] }>
+        HttpTypes.PaginatedResponse<{
+          stock_locations: HttpTypes.AdminStockLocation[]
+        }>
       >(`/admin/stock-locations`, {
         headers,
         query: queryParams,
@@ -370,7 +376,7 @@ export class Admin {
       })
     },
     delete: async (id: string, headers?: ClientHeaders) => {
-      return this.client.fetch<DeleteResponse<"stock_location">>(
+      return this.client.fetch<HttpTypes.DeleteResponse<"stock_location">>(
         `/admin/stock-locations/${id}`,
         {
           method: "DELETE",
@@ -381,6 +387,7 @@ export class Admin {
     updateSalesChannels: async (
       id: string,
       body: HttpTypes.AdminUpdateStockLocationSalesChannels,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<{
@@ -389,7 +396,74 @@ export class Admin {
         method: "POST",
         headers,
         body,
+        query,
       })
+    },
+    createFulfillmentSet: async (
+      id: string,
+      body: HttpTypes.AdminCreateStockLocationFulfillmentSet,
+      query?: HttpTypes.SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{
+        stock_location: HttpTypes.AdminStockLocation
+      }>(`/admin/stock-locations/${id}/fulfillment-sets`, {
+        method: "POST",
+        headers,
+        body,
+        query,
+      })
+    },
+  }
+
+  public fulfillmentSet = {
+    retrieveServiceZone: async (
+      fulfillmentSetId: string,
+      serviceZoneId: string,
+      query?: HttpTypes.SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ service_zone: HttpTypes.AdminServiceZone }>(
+        `/admin/fulfillment-sets/${fulfillmentSetId}/service-zone/${serviceZoneId}`,
+        {
+          query,
+          headers,
+        }
+      )
+    },
+    createServiceZone: async (
+      id: string,
+      body: HttpTypes.AdminCreateFulfillmentSetServiceZone,
+      query?: HttpTypes.SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{
+        service_zone: HttpTypes.AdminServiceZone
+      }>(`/admin/fulfillment-sets/${id}/service-zones`, {
+        method: "POST",
+        headers,
+        body,
+        query,
+      })
+    },
+    updateServiceZone: async (
+      fulfillmentSetId: string,
+      serviceZoneId: string,
+      body: HttpTypes.AdminUpdateFulfillmentSetServiceZone,
+      query?: HttpTypes.SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{
+        service_zone: HttpTypes.AdminServiceZone
+      }>(
+        `/admin/fulfillment-sets/${fulfillmentSetId}/service-zones/${serviceZoneId}`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
     },
   }
 }

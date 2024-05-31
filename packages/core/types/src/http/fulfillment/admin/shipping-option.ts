@@ -1,13 +1,13 @@
 import { ShippingOptionPriceType } from "../../../fulfillment"
-import { AdminServiceZoneResponse } from "./service-zone"
-import { AdminShippingOptionTypeResponse } from "./shipping-option-type"
-import { AdminShippingOptionRuleResponse } from "./shipping-option-rule"
-import { AdminShippingProfileResponse } from "./shipping-profile"
-import { AdminFulfillmentProviderResponse } from "./fulfillment-provider"
-import { AdminPriceSetPriceResponse } from "../../pricing"
 import { DeleteResponse, PaginatedResponse } from "../../common"
+import { AdminPriceSetPrice } from "../../pricing"
+import { AdminFulfillmentProvider } from "./fulfillment-provider"
+import { AdminServiceZoneResponse } from "./service-zone"
+import { AdminShippingOptionRuleResponse } from "./shipping-option-rule"
+import { AdminShippingOptionTypeResponse } from "./shipping-option-type"
+import { AdminShippingProfileResponse } from "./shipping-profile"
 
-interface AdminShippingOptionResponse {
+export interface AdminShippingOptionResponse {
   id: string
   name: string
   price_type: ShippingOptionPriceType
@@ -19,10 +19,10 @@ interface AdminShippingOptionResponse {
   metadata: Record<string, unknown> | null
   service_zone: AdminServiceZoneResponse
   shipping_profile: AdminShippingProfileResponse
-  provider: AdminFulfillmentProviderResponse
+  provider: AdminFulfillmentProvider
   type: AdminShippingOptionTypeResponse
   rules: AdminShippingOptionRuleResponse[]
-  prices: AdminPriceSetPriceResponse[]
+  prices: AdminPriceSetPrice[]
   created_at: Date
   updated_at: Date
   deleted_at: Date | null

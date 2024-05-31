@@ -1,7 +1,6 @@
-export interface AdminPriceSetPriceResponse {
-  id: string
+import { BaseHttpEntity } from "../base"
+
+export interface AdminPriceSetPrice extends Omit<BaseHttpEntity, "metadata"> {
   amount: number
   currency_code: string
-  created_at: string
-  updated_at: string
 }
