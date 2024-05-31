@@ -74,7 +74,7 @@ export const createProductVariantsWorkflow = createWorkflow(
       (data) => {
         return data.variantAndPriceSets.map((variantAndPriceSet) => ({
           ...variantAndPriceSet.variant,
-          ...variantAndPriceSet.price_set,
+          prices: variantAndPriceSet?.price_set?.prices || [],
         }))
       }
     )

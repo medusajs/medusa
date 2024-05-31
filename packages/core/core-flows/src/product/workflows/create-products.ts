@@ -73,8 +73,25 @@ export const createProductsWorkflow = createWorkflow(
       }
     })
 
-    createProductVariantsWorkflow.runAsStep(variantsInput)
+    const createdVariants =
+      createProductVariantsWorkflow.runAsStep(variantsInput)
 
-    return createdProducts
+    return transform({ createdVariants, input, createdProducts }, (data) => {
+      const variantMap: Record<string, ProductTypes.ProductVariantDTO[]> = {}
+
+      for (const variant of data.createdVariants) {
+        const array = variantMap[variant.product_id!] || []
+
+        array.push(variant)
+
+        variantMap[variant.product_id!] = array
+      }
+
+      for (const product of data.createdProducts) {
+        product.variants = variantMap[product.id] || []
+      }
+
+      return data.createdProducts
+    })
   }
 )
