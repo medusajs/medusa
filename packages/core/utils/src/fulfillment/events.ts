@@ -1,4 +1,5 @@
 import { buildEventNamesFromEntityName } from "../event-bus"
+import { Modules } from "../modules-sdk"
 
 const eventBaseNames: [
   "fulfillmentSet",
@@ -26,4 +27,7 @@ const eventBaseNames: [
   "fulfillmentLabel",
 ]
 
-export const FulfillmentEvents = buildEventNamesFromEntityName(eventBaseNames)
+export const FulfillmentEvents = buildEventNamesFromEntityName(
+  eventBaseNames,
+  Modules.FULFILLMENT
+)
