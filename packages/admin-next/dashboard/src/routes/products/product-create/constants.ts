@@ -2,6 +2,13 @@ import { z } from "zod"
 import { decorateVariantsWithDefaultValues } from "./utils.ts"
 import { optionalInt } from "../../../lib/validation.ts"
 
+export const MediaSchema = z.object({
+  id: z.string().optional(),
+  url: z.string(),
+  isThumbnail: z.boolean(),
+  file: z.any().nullable(), // File
+})
+
 export const ProductCreateSchema = z
   .object({
     title: z.string().min(1),
@@ -69,8 +76,7 @@ export const ProductCreateSchema = z
         })
       )
       .min(1),
-    images: z.array(z.string()).optional(),
-    thumbnail: z.string().optional(),
+    media: z.array(MediaSchema).optional(),
   })
   .superRefine((data, ctx) => {
     if (data.variants.every((v) => !v.should_create)) {
@@ -107,8 +113,7 @@ export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
     },
   ]),
   enable_variants: false,
-  images: [],
-  thumbnail: "",
+  media: [],
   categories: [],
   collection_id: "",
   description: "",
