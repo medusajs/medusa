@@ -82,14 +82,8 @@ jobs:
           node-version: 20
           cache: "yarn"
 
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: snapshot-this
-
-      - name: Build Packages
-        shell: "bash"
-        run: yarn build
+      - name: Install Dependencies
+        run: yarn
 
       - name: Create an .npmrc
         env:
@@ -99,14 +93,24 @@ jobs:
             //registry.npmjs.org/:_authToken=$NPM_TOKEN
           EOF
 
+      - name: Version packages
+        run: yarn changeset version --snapshot snapshot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Dependencies
+        run: yarn install --no-immutable
+  
+      - name: Build all packages
+        run: yarn build
+        
       - name: Create and publish snapshot release
         uses: actions/github-script@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
-            await exec.exec('yarn run changeset version --snapshot snapshot')
-            const {stdout} = await exec.getExecOutput('yarn run release:snapshot')
+            const {stdout} = await exec.getExecOutput('yarn changeset publish --no-git-tags --snapshot --tag snapshot')
             const newTags = Array
               .from(stdout.matchAll(/New tag:\s+([^\s\n]+)/g))
               .map(([_, tag]) => tag)

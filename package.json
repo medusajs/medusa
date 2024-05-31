@@ -67,9 +67,6 @@
     "test:integration:modules": "turbo run test:integration:chunk --concurrency=50% --no-daemon --no-cache --force --filter=integration-tests-modules",
     "openapi:generate": "yarn ./packages/cli/oas/oas-github-ci run ci --with-full-file",
     "medusa-oas": "yarn ./packages/cli/oas/medusa-oas-cli run medusa-oas",
-    "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",
-    "release:next": "chgstangeset publish --no-git-tags --snapshot --tag next",
-    "version:next": "changeset version --snapshot next",
     "release": "changeset publish",
     "version": "changeset version && yarn install --no-immutable"
   },
