@@ -1752,23 +1752,25 @@ export default class FulfillmentModuleService<
       deletedLabelIds = arrayDifference(existingLabelIds, dataLabelIds)
 
       for (let label of data.labels) {
-        if ("id" in label) {
-          const existingLabel = existingFulfillment.labels.find(
-            ({ id }) => id === label.id
-          )!
-
-          if (
-            !existingLabel ||
-            Object.keys(label).length === 1 ||
-            deepEqualObj(existingLabel, label)
-          ) {
-            continue
-          }
-
-          updatedLabelIds.push(label.id)
-          const labelData = { ...label }
-          Object.assign(label, existingLabel, labelData)
+        if (!("id" in label)) {
+          continue
         }
+
+        const existingLabel = existingFulfillment.labels.find(
+          ({ id }) => id === label.id
+        )!
+
+        if (
+          !existingLabel ||
+          Object.keys(label).length === 1 ||
+          deepEqualObj(existingLabel, label)
+        ) {
+          continue
+        }
+
+        updatedLabelIds.push(label.id)
+        const labelData = { ...label }
+        Object.assign(label, existingLabel, labelData)
       }
     }
 
