@@ -7,130 +7,168 @@ import {
   ShippingOptionRule,
   ShippingOptionType,
 } from "@models"
-import { Context, EventBusTypes } from "@medusajs/types"
-import { CommonEvents, FulfillmentUtils, Modules } from "@medusajs/utils"
+import { Context } from "@medusajs/types"
+import {
+  CommonEvents,
+  eventBuilderFactory,
+  FulfillmentEvents,
+  Modules,
+} from "@medusajs/utils"
 
-export function buildFulfillmentAddressEvents({
-  action,
-  fulfillmentAddresses,
-  sharedContext,
-}: {
-  action: string
-  fulfillmentAddresses: { id: string }[]
-  sharedContext: Context
-}) {
-  if (!fulfillmentAddresses.length) {
-    return
-  }
-
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  fulfillmentAddresses.forEach((fulfillmentAddress) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action,
-      context: sharedContext,
-      data: { id: fulfillmentAddress.id },
-      eventName:
-        FulfillmentUtils.FulfillmentEvents[`fulfillment_address_${action}`],
-      object: "fulfillment_address",
-    })
-  })
-
-  aggregator.saveRawMessageData(messages)
-}
-
-export function buildFulfillmentItemEvents({
-  action,
-  fulfillmentItems,
-  sharedContext,
-}: {
-  action: string
-  fulfillmentItems: { id: string }[]
-  sharedContext: Context
-}) {
-  if (!fulfillmentItems.length) {
-    return
-  }
-
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  fulfillmentItems.forEach((fulfillmentItem) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action,
-      context: sharedContext,
-      data: { id: fulfillmentItem.id },
-      eventName:
-        FulfillmentUtils.FulfillmentEvents[`fulfillment_item_${action}`],
-      object: "fulfillment_item",
-    })
-  })
-
-  aggregator.saveRawMessageData(messages)
-}
-
-export function buildFulfillmentLabelEvents({
-  action,
-  fulfillmentLabels,
-  sharedContext,
-}: {
-  action: string
-  fulfillmentLabels: { id: string }[]
-  sharedContext: Context
-}) {
-  if (!fulfillmentLabels.length) {
-    return
-  }
-
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  fulfillmentLabels.forEach((fulfillmentLabel) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action,
-      context: sharedContext,
-      data: { id: fulfillmentLabel.id },
-      eventName:
-        FulfillmentUtils.FulfillmentEvents[`fulfillment_label_${action}`],
-      object: "fulfillment_label",
-    })
-  })
-
-  aggregator.saveRawMessageData(messages)
-}
-
-export function buildFulfillmentEvents({
-  action,
-  fulfillments,
-  sharedContext,
-}: {
-  action: string
-  fulfillments: { id: string }[]
-  sharedContext: Context
-}) {
-  if (!fulfillments.length) {
-    return
-  }
-
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  fulfillments.forEach((fulfillment) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action,
-      context: sharedContext,
-      data: { id: fulfillment.id },
-      eventName: FulfillmentUtils.FulfillmentEvents[`fulfillment_${action}`],
-      object: "fulfillment",
-    })
-  })
-
-  aggregator.saveRawMessageData(messages)
+export const eventBuilders = {
+  createdFulfillment: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.CREATED,
+    object: "fulfillment",
+    eventsEnum: FulfillmentEvents,
+  }),
+  updatedFulfillment: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.UPDATED,
+    object: "fulfillment",
+    eventsEnum: FulfillmentEvents,
+  }),
+  createdFulfillmentAddress: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.CREATED,
+    object: "fulfillment_address",
+    eventsEnum: FulfillmentEvents,
+  }),
+  createdFulfillmentItem: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.CREATED,
+    object: "fulfillment_item",
+    eventsEnum: FulfillmentEvents,
+  }),
+  createdFulfillmentLabel: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.CREATED,
+    object: "fulfillment_label",
+    eventsEnum: FulfillmentEvents,
+  }),
+  updatedFulfillmentLabel: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.UPDATED,
+    object: "fulfillment_label",
+    eventsEnum: FulfillmentEvents,
+  }),
+  deletedFulfillmentLabel: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.DELETED,
+    object: "fulfillment_label",
+    eventsEnum: FulfillmentEvents,
+  }),
+  createdShippingProfile: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.CREATED,
+    object: "shipping_profile",
+    eventsEnum: FulfillmentEvents,
+  }),
+  createdShippingOptionType: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.CREATED,
+    object: "shipping_option_type",
+    eventsEnum: FulfillmentEvents,
+  }),
+  updatedShippingOptionType: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.UPDATED,
+    object: "shipping_option_type",
+    eventsEnum: FulfillmentEvents,
+  }),
+  deletedShippingOptionType: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.DELETED,
+    object: "shipping_option_type",
+    eventsEnum: FulfillmentEvents,
+  }),
+  createdShippingOptionRule: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.CREATED,
+    object: "shipping_option_rule",
+    eventsEnum: FulfillmentEvents,
+  }),
+  updatedShippingOptionRule: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.UPDATED,
+    object: "shipping_option_rule",
+    eventsEnum: FulfillmentEvents,
+  }),
+  deletedShippingOptionRule: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.DELETED,
+    object: "shipping_option_rule",
+    eventsEnum: FulfillmentEvents,
+  }),
+  createdShippingOption: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.CREATED,
+    object: "shipping_option",
+    eventsEnum: FulfillmentEvents,
+  }),
+  updatedShippingOption: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.UPDATED,
+    object: "shipping_option",
+    eventsEnum: FulfillmentEvents,
+  }),
+  createdFulfillmentSet: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.CREATED,
+    object: "fulfillment_set",
+    isMainEntity: true,
+    eventsEnum: FulfillmentEvents,
+  }),
+  updatedFulfillmentSet: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.UPDATED,
+    object: "fulfillment_set",
+    isMainEntity: true,
+    eventsEnum: FulfillmentEvents,
+  }),
+  deletedFulfillmentSet: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.DELETED,
+    object: "fulfillment_set",
+    isMainEntity: true,
+    eventsEnum: FulfillmentEvents,
+  }),
+  createdServiceZone: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.CREATED,
+    object: "service_zone",
+    eventsEnum: FulfillmentEvents,
+  }),
+  updatedServiceZone: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.UPDATED,
+    object: "service_zone",
+    eventsEnum: FulfillmentEvents,
+  }),
+  deletedServiceZone: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.DELETED,
+    object: "service_zone",
+    eventsEnum: FulfillmentEvents,
+  }),
+  createdGeoZone: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.CREATED,
+    object: "geo_zone",
+    eventsEnum: FulfillmentEvents,
+  }),
+  updatedGeoZone: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.UPDATED,
+    object: "geo_zone",
+    eventsEnum: FulfillmentEvents,
+  }),
+  deletedGeoZone: eventBuilderFactory({
+    service: Modules.FULFILLMENT,
+    action: CommonEvents.DELETED,
+    object: "geo_zone",
+    eventsEnum: FulfillmentEvents,
+  }),
 }
 
 export function buildCreatedFulfillmentEvents({
@@ -165,153 +203,10 @@ export function buildCreatedFulfillmentEvents({
     }
   })
 
-  buildFulfillmentEvents({
-    action: CommonEvents.CREATED,
-    fulfillments: fulfillments_,
-    sharedContext,
-  })
-
-  buildFulfillmentAddressEvents({
-    action: CommonEvents.CREATED,
-    fulfillmentAddresses: addresses,
-    sharedContext,
-  })
-
-  buildFulfillmentItemEvents({
-    action: CommonEvents.CREATED,
-    fulfillmentItems: items,
-    sharedContext,
-  })
-
-  buildFulfillmentLabelEvents({
-    action: CommonEvents.CREATED,
-    fulfillmentLabels: labels,
-    sharedContext,
-  })
-}
-
-export function buildShippingProfileEvents({
-  action,
-  shippingProfiles,
-  sharedContext,
-}: {
-  action: string
-  shippingProfiles: { id: string }[]
-  sharedContext: Context
-}) {
-  if (!shippingProfiles.length) {
-    return
-  }
-
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  shippingProfiles.forEach((shippingOptionType) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action,
-      context: sharedContext,
-      data: { id: shippingOptionType.id },
-      eventName:
-        FulfillmentUtils.FulfillmentEvents[`shipping_profile_${action}`],
-      object: "shipping_profile",
-    })
-  })
-
-  aggregator.saveRawMessageData(messages)
-}
-
-export function buildShippingOptionTypeEvents({
-  action,
-  shippingOptionTypes,
-  sharedContext,
-}: {
-  action: string
-  shippingOptionTypes: { id: string }[]
-  sharedContext: Context
-}) {
-  if (!shippingOptionTypes.length) {
-    return
-  }
-
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  shippingOptionTypes.forEach((shippingOptionType) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action,
-      context: sharedContext,
-      data: { id: shippingOptionType.id },
-      eventName:
-        FulfillmentUtils.FulfillmentEvents[`shipping_option_type_${action}`],
-      object: "shipping_option_type",
-    })
-  })
-
-  aggregator.saveRawMessageData(messages)
-}
-
-export function buildShippingOptionRuleEvents({
-  action,
-  shippingOptionRules,
-  sharedContext,
-}: {
-  action: string
-  shippingOptionRules: { id: string }[]
-  sharedContext: Context
-}) {
-  if (!shippingOptionRules.length) {
-    return
-  }
-
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  shippingOptionRules.forEach((shippingOptionType) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action,
-      context: sharedContext,
-      data: { id: shippingOptionType.id },
-      eventName:
-        FulfillmentUtils.FulfillmentEvents[`shipping_option_rule_${action}`],
-      object: "shipping_option_rule",
-    })
-  })
-
-  aggregator.saveRawMessageData(messages)
-}
-
-export function buildShippingOptionEvents({
-  action,
-  shippingOptions,
-  sharedContext,
-}: {
-  action: string
-  shippingOptions: { id: string }[]
-  sharedContext: Context
-}) {
-  if (!shippingOptions.length) {
-    return
-  }
-
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  shippingOptions.forEach((shippingOption) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action,
-      context: sharedContext,
-      data: { id: shippingOption.id },
-      eventName:
-        FulfillmentUtils.FulfillmentEvents[`shipping_option_${action}`],
-      object: "shipping_option",
-    })
-  })
-
-  aggregator.saveRawMessageData(messages)
+  eventBuilders.createdFulfillment({ data: fulfillments_, sharedContext })
+  eventBuilders.createdFulfillmentAddress({ data: addresses, sharedContext })
+  eventBuilders.createdFulfillmentItem({ data: items, sharedContext })
+  eventBuilders.createdFulfillmentLabel({ data: labels, sharedContext })
 }
 
 export function buildCreatedShippingOptionEvents({
@@ -341,113 +236,9 @@ export function buildCreatedShippingOptionEvents({
     }
   })
 
-  buildShippingOptionEvents({
-    action: CommonEvents.CREATED,
-    shippingOptions,
-    sharedContext,
-  })
-
-  buildShippingOptionTypeEvents({
-    action: CommonEvents.CREATED,
-    shippingOptionTypes: types,
-    sharedContext,
-  })
-
-  buildShippingOptionRuleEvents({
-    action: CommonEvents.CREATED,
-    shippingOptionRules: rules,
-    sharedContext,
-  })
-}
-
-export function buildFulfillmentSetEvents({
-  action,
-  fulfillmentSets,
-  sharedContext,
-}: {
-  action: string
-  fulfillmentSets: { id: string }[]
-  sharedContext: Context
-}) {
-  if (!fulfillmentSets.length) {
-    return
-  }
-
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  fulfillmentSets.forEach((fulfillmentSet) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action,
-      context: sharedContext,
-      data: { id: fulfillmentSet.id },
-      eventName: FulfillmentUtils.FulfillmentEvents[action],
-      object: "fulfillment_set",
-    })
-  })
-
-  aggregator.saveRawMessageData(messages)
-}
-
-export function buildServiceZoneEvents({
-  action,
-  serviceZones,
-  sharedContext,
-}: {
-  action: string
-  serviceZones: { id: string }[]
-  sharedContext: Context
-}) {
-  if (!serviceZones.length) {
-    return
-  }
-
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  serviceZones.forEach((serviceZone) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action,
-      context: sharedContext,
-      data: { id: serviceZone.id },
-      eventName: FulfillmentUtils.FulfillmentEvents[`service_zone_${action}`],
-      object: "service_zone",
-    })
-  })
-
-  aggregator.saveRawMessageData(messages)
-}
-
-export function buildGeoZoneEvents({
-  action,
-  geoZones,
-  sharedContext,
-}: {
-  action: string
-  geoZones: { id: string }[]
-  sharedContext: Context
-}) {
-  if (!geoZones.length) {
-    return
-  }
-
-  const aggregator = sharedContext.messageAggregator!
-  const messages: EventBusTypes.RawMessageFormat[] = []
-
-  geoZones.forEach((geoZone) => {
-    messages.push({
-      service: Modules.FULFILLMENT,
-      action,
-      context: sharedContext,
-      data: { id: geoZone.id },
-      eventName: FulfillmentUtils.FulfillmentEvents[`geo_zone_${action}`],
-      object: "geo_zone",
-    })
-  })
-
-  aggregator.saveRawMessageData(messages)
+  eventBuilders.createdShippingOption({ data: options, sharedContext })
+  eventBuilders.createdShippingOptionType({ data: types, sharedContext })
+  eventBuilders.createdShippingOptionRule({ data: rules, sharedContext })
 }
 
 export function buildCreatedFulfillmentSetEvents({
@@ -471,11 +262,7 @@ export function buildCreatedFulfillmentSetEvents({
     serviceZones.push(...fulfillmentSet.service_zones)
   })
 
-  buildFulfillmentSetEvents({
-    action: CommonEvents.CREATED,
-    fulfillmentSets,
-    sharedContext,
-  })
+  eventBuilders.createdFulfillmentSet({ data: fulfillmentSets, sharedContext })
 
   buildCreatedServiceZoneEvents({ serviceZones, sharedContext })
 }
@@ -501,15 +288,6 @@ export function buildCreatedServiceZoneEvents({
     geoZones.push(...serviceZone.geo_zones)
   })
 
-  buildServiceZoneEvents({
-    action: CommonEvents.CREATED,
-    serviceZones,
-    sharedContext,
-  })
-
-  buildGeoZoneEvents({
-    action: CommonEvents.CREATED,
-    geoZones,
-    sharedContext,
-  })
+  eventBuilders.createdServiceZone({ data: serviceZones, sharedContext })
+  eventBuilders.createdGeoZone({ data: geoZones, sharedContext })
 }

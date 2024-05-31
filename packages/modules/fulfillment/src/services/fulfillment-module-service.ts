@@ -15,7 +15,6 @@ import {
 } from "@medusajs/types"
 import {
   arrayDifference,
-  CommonEvents,
   deepEqualObj,
   EmitEvents,
   getSetDifference,
@@ -44,15 +43,7 @@ import {
   buildCreatedFulfillmentEvents,
   buildCreatedFulfillmentSetEvents,
   buildCreatedServiceZoneEvents,
-  buildFulfillmentEvents,
-  buildFulfillmentLabelEvents,
-  buildFulfillmentSetEvents,
-  buildGeoZoneEvents,
-  buildServiceZoneEvents,
-  buildShippingOptionEvents,
-  buildShippingOptionRuleEvents,
-  buildShippingOptionTypeEvents,
-  buildShippingProfileEvents,
+  eventBuilders,
   isContextValid,
   validateAndNormalizeRules,
 } from "@utils"
@@ -481,9 +472,8 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    buildShippingProfileEvents({
-      action: CommonEvents.CREATED,
-      shippingProfiles: createdShippingProfiles,
+    eventBuilders.createdShippingProfile({
+      data: createdShippingProfiles,
       sharedContext,
     })
 
@@ -537,9 +527,8 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    buildGeoZoneEvents({
-      action: CommonEvents.CREATED,
-      geoZones: createdGeoZones,
+    eventBuilders.createdGeoZone({
+      data: createdGeoZones,
       sharedContext,
     })
 
@@ -603,9 +592,8 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    buildShippingOptionRuleEvents({
-      action: CommonEvents.CREATED,
-      shippingOptionRules: createdSORules.map((sor) => ({ id: sor.id })),
+    eventBuilders.createdShippingOptionRule({
+      data: createdSORules.map((sor) => ({ id: sor.id })),
       sharedContext,
     })
 
@@ -875,14 +863,12 @@ export default class FulfillmentModuleService<
     })
 
     if (serviceZoneIdsToDelete.length) {
-      buildServiceZoneEvents({
-        action: CommonEvents.DELETED,
-        serviceZones: serviceZoneIdsToDelete.map((id) => ({ id })),
+      eventBuilders.deletedServiceZone({
+        data: serviceZoneIdsToDelete.map((id) => ({ id })),
         sharedContext,
       })
-      buildGeoZoneEvents({
-        action: CommonEvents.DELETED,
-        geoZones: geoZoneIdsToDelete.map((id) => ({ id })),
+      eventBuilders.deletedGeoZone({
+        data: geoZoneIdsToDelete.map((id) => ({ id })),
         sharedContext,
       })
 
@@ -907,9 +893,8 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    buildFulfillmentSetEvents({
-      action: CommonEvents.UPDATED,
-      fulfillmentSets: updatedFulfillmentSets,
+    eventBuilders.updatedFulfillmentSet({
+      data: updatedFulfillmentSets,
       sharedContext,
     })
 
@@ -925,14 +910,12 @@ export default class FulfillmentModuleService<
       )
       .filter((id) => !existingGeoZoneIds.includes(id))
 
-    buildServiceZoneEvents({
-      action: CommonEvents.CREATED,
-      serviceZones: createdServiceZoneIds.map((id) => ({ id })),
+    eventBuilders.createdServiceZone({
+      data: createdServiceZoneIds.map((id) => ({ id })),
       sharedContext,
     })
-    buildGeoZoneEvents({
-      action: CommonEvents.CREATED,
-      geoZones: createdGeoZoneIds.map((id) => ({ id })),
+    eventBuilders.createdGeoZone({
+      data: createdGeoZoneIds.map((id) => ({ id })),
       sharedContext,
     })
 
@@ -1119,9 +1102,8 @@ export default class FulfillmentModuleService<
     })
 
     if (geoZoneIdsToDelete.length) {
-      buildGeoZoneEvents({
-        action: CommonEvents.DELETED,
-        geoZones: geoZoneIdsToDelete.map((id) => ({ id })),
+      eventBuilders.deletedGeoZone({
+        data: geoZoneIdsToDelete.map((id) => ({ id })),
         sharedContext,
       })
 
@@ -1138,11 +1120,8 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    buildServiceZoneEvents({
-      action: CommonEvents.UPDATED,
-      serviceZones: updatedServiceZones.map((serviceZone) => ({
-        id: serviceZone.id,
-      })),
+    eventBuilders.updatedServiceZone({
+      data: updatedServiceZones,
       sharedContext,
     })
 
@@ -1152,15 +1131,12 @@ export default class FulfillmentModuleService<
       })
       .filter((id) => !existingGeoZoneIds.includes(id))
 
-    buildGeoZoneEvents({
-      action: CommonEvents.CREATED,
-      geoZones: createdGeoZoneIds.map((id) => ({ id })),
+    eventBuilders.createdGeoZone({
+      data: createdGeoZoneIds.map((id) => ({ id })),
       sharedContext,
     })
-
-    buildGeoZoneEvents({
-      action: CommonEvents.UPDATED,
-      geoZones: updatedGeoZoneIds.map((id) => ({ id })),
+    eventBuilders.updatedGeoZone({
+      data: updatedGeoZoneIds.map((id) => ({ id })),
       sharedContext,
     })
 
@@ -1406,11 +1382,11 @@ export default class FulfillmentModuleService<
     })
 
     if (ruleIdsToDelete.length) {
-      buildShippingOptionRuleEvents({
-        action: CommonEvents.DELETED,
-        shippingOptionRules: ruleIdsToDelete.map((id) => ({ id })),
+      eventBuilders.deletedShippingOptionRule({
+        data: ruleIdsToDelete.map((id) => ({ id })),
         sharedContext,
       })
+
       await this.shippingOptionRuleService_.delete(
         ruleIdsToDelete,
         sharedContext
@@ -1444,15 +1420,12 @@ export default class FulfillmentModuleService<
     existingRuleIds,
     sharedContext,
   }) {
-    buildShippingOptionEvents({
-      action: CommonEvents.UPDATED,
-      shippingOptions: updatedShippingOptions,
+    eventBuilders.updatedShippingOption({
+      data: updatedShippingOptions,
       sharedContext,
     })
-
-    buildShippingOptionTypeEvents({
-      action: CommonEvents.DELETED,
-      shippingOptionTypes: optionTypeDeletedIds.map((id) => ({ id })),
+    eventBuilders.deletedShippingOptionType({
+      data: optionTypeDeletedIds.map((id) => ({ id })),
       sharedContext,
     })
 
@@ -1463,9 +1436,8 @@ export default class FulfillmentModuleService<
       })
       .map((so) => so.type.id)
 
-    buildShippingOptionTypeEvents({
-      action: CommonEvents.CREATED,
-      shippingOptionTypes: createdOptionTypeIds.map((id) => ({ id })),
+    eventBuilders.createdShippingOptionType({
+      data: createdOptionTypeIds.map((id) => ({ id })),
       sharedContext,
     })
 
@@ -1481,15 +1453,12 @@ export default class FulfillmentModuleService<
       )
       .filter((id): id is string => !!id)
 
-    buildShippingOptionRuleEvents({
-      action: CommonEvents.CREATED,
-      shippingOptionRules: createdRuleIds.map((id) => ({ id })),
+    eventBuilders.createdShippingOptionRule({
+      data: createdRuleIds.map((id) => ({ id })),
       sharedContext,
     })
-
-    buildShippingOptionRuleEvents({
-      action: CommonEvents.UPDATED,
-      shippingOptionRules: updatedRuleIds.map((id) => ({ id })),
+    eventBuilders.updatedShippingOptionRule({
+      data: updatedRuleIds.map((id) => ({ id })),
       sharedContext,
     })
   }
@@ -1623,11 +1592,8 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    buildGeoZoneEvents({
-      action: CommonEvents.UPDATED,
-      geoZones: updatedGeoZones.map((geoZone) => ({
-        id: geoZone.id,
-      })),
+    eventBuilders.updatedGeoZone({
+      data: updatedGeoZones,
       sharedContext,
     })
 
@@ -1687,11 +1653,8 @@ export default class FulfillmentModuleService<
     const updatedShippingOptionRules =
       await this.shippingOptionRuleService_.update(data_, sharedContext)
 
-    buildShippingOptionRuleEvents({
-      action: CommonEvents.UPDATED,
-      shippingOptionRules: updatedShippingOptionRules.map((rule) => ({
-        id: rule.id,
-      })),
+    eventBuilders.updatedShippingOptionRule({
+      data: updatedShippingOptionRules.map((rule) => ({ id: rule.id })),
       sharedContext,
     })
 
@@ -1797,21 +1760,18 @@ export default class FulfillmentModuleService<
     deletedLabelIds: string[],
     sharedContext: Context
   ) {
-    buildFulfillmentEvents({
-      action: CommonEvents.UPDATED,
-      fulfillments: [{ id: fulfillment.id }],
+    eventBuilders.updatedFulfillment({
+      data: [{ id: fulfillment.id }],
       sharedContext,
     })
 
-    buildFulfillmentLabelEvents({
-      action: CommonEvents.DELETED,
-      fulfillmentLabels: deletedLabelIds.map((id) => ({ id })),
+    eventBuilders.deletedFulfillmentLabel({
+      data: deletedLabelIds.map((id) => ({ id })),
       sharedContext,
     })
 
-    buildFulfillmentLabelEvents({
-      action: CommonEvents.UPDATED,
-      fulfillmentLabels: updatedLabelIds.map((id) => ({ id })),
+    eventBuilders.updatedFulfillmentLabel({
+      data: updatedLabelIds.map((id) => ({ id })),
       sharedContext,
     })
 
@@ -1819,9 +1779,8 @@ export default class FulfillmentModuleService<
       return !existingLabelIds.includes(label.id)
     })
 
-    buildFulfillmentLabelEvents({
-      action: CommonEvents.CREATED,
-      fulfillmentLabels: createdLabels.map((label) => ({ id: label.id })),
+    eventBuilders.createdFulfillmentLabel({
+      data: createdLabels.map((label) => ({ id: label.id })),
       sharedContext,
     })
   }
@@ -1861,9 +1820,8 @@ export default class FulfillmentModuleService<
         sharedContext
       )
 
-      buildFulfillmentEvents({
-        action: CommonEvents.UPDATED,
-        fulfillments: [{ id }],
+      eventBuilders.updatedFulfillment({
+        data: [{ id }],
         sharedContext,
       })
     }
