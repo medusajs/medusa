@@ -13,10 +13,9 @@ export default async ({
   // TODO: Add default logger to the container when running tests
   const logger =
     container.resolve<Logger>(ContainerRegistrationKeys.LOGGER) ?? console
-  const {
-    currencyService_,
-  }: { currencyService_: ModulesSdkTypes.InternalModuleService<Currency> } =
-    container.resolve(ModuleRegistrationName.CURRENCY)
+  const { currencyService_ } = container.resolve<{
+    currencyService_: ModulesSdkTypes.InternalModuleService<Currency>
+  }>(ModuleRegistrationName.CURRENCY)
 
   try {
     const normalizedCurrencies = Object.values(defaultCurrencies).map((c) => ({

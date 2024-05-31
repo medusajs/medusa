@@ -57,8 +57,8 @@ export default class PaymentProviderService {
 
   @InjectManager("paymentProviderRepository_")
   async list(
-    filters: FilterablePaymentProviderProps,
-    config: FindConfig<PaymentProviderDTO>,
+    filters?: FilterablePaymentProviderProps,
+    config?: FindConfig<PaymentProviderDTO>,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentProvider[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<PaymentProvider>(
