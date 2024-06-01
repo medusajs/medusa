@@ -1,5 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { FulfillmentDTO, OrderDTO, OrderWorkflow } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
   createStep,
@@ -32,6 +33,13 @@ const validateOrder = createStep(
     if (!fulfillment) {
       throw new Error(
         `Fulfillment with id ${input.fulfillment_id} not found in the order`
+      )
+    }
+
+    if (fulfillment.shipped_at) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `The fulfillment has already been shipped. Shipped fulfillments cannot be canceled`
       )
     }
 
@@ -117,7 +125,7 @@ export const cancelOrderFulfillmentWorkflow = createWorkflow(
       return order.fulfillments.find((f) => f.id === input.fulfillment_id)!
     })
 
-    const cancelledFulfillment = cancelFulfillmentWorkflow.runAsStep({
+    cancelFulfillmentWorkflow.runAsStep({
       input: {
         id: input.fulfillment_id,
       },
