@@ -130,12 +130,10 @@ class ProductVariant {
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
 
-  // TODO: replace with BigNumber, or in this case a normal int should work
   @Property({
-    columnType: "numeric",
+    columnType: "integer",
     nullable: true,
     default: 0,
-    serializer: optionalNumericSerializer,
   })
   variant_rank?: number | null
 
