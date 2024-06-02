@@ -7,7 +7,7 @@ export const convertRecordsToLinkDefinition = (
   service: LoadedModule
 ): LinkDefinition[] => {
   const linkRelations = service.__joinerConfig.relationships || []
-  const linkExtraFields = service.__joinerConfig.extraFields || []
+  const linkDataFields = service.__joinerConfig.extraDataFields || []
 
   const results: LinkDefinition[] = []
 
@@ -22,8 +22,8 @@ export const convertRecordsToLinkDefinition = (
 
     const data: LinkDefinition["data"] = {}
 
-    for (const extraField of linkExtraFields) {
-      data[extraField] = link[extraField]
+    for (const dataField of linkDataFields) {
+      data[dataField] = link[dataField]
     }
 
     if (isPresent(data)) {

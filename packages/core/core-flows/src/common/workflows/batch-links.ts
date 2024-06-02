@@ -5,9 +5,9 @@ import {
   createWorkflow,
   parallelize,
 } from "@medusajs/workflows-sdk"
-import { createLinkStep } from "../steps/create-remote-links"
+import { createRemoteLinkStep } from "../steps/create-remote-links"
 import { dismissRemoteLinkStep } from "../steps/dismiss-remote-links"
-import { updateLinksStep } from "../steps/update-remote-links"
+import { updateRemoteLinksStep } from "../steps/update-remote-links"
 
 export const batchLinksWorkflowId = "batch-links"
 export const batchLinksWorkflow = createWorkflow(
@@ -18,8 +18,8 @@ export const batchLinksWorkflow = createWorkflow(
     >
   ) => {
     const [created, updated, deleted] = parallelize(
-      createLinkStep(input.create || []),
-      updateLinksStep(input.update || []),
+      createRemoteLinkStep(input.create || []),
+      updateRemoteLinksStep(input.update || []),
       dismissRemoteLinkStep(input.delete || [])
     )
 

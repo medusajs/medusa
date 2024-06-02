@@ -9,7 +9,13 @@ export function getModuleService(
 
   delete joinerConfig_.databaseConfig
 
-  joinerConfig_.extraFields = Object.keys(databaseConfig.extraFields || {})
+  // If extraDataFields is not defined, pick the fields to populate and validate from the
+  // database config if any fields are provided.
+  if (typeof joinerConfig_.extraDataFields === "undefined") {
+    joinerConfig_.extraDataFields = Object.keys(
+      databaseConfig.extraDataFields || {}
+    )
+  }
 
   return class LinkService extends LinkModuleService<unknown> {
     override __joinerConfig(): ModuleJoinerConfig {
