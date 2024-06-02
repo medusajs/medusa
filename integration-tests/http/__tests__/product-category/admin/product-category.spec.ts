@@ -1,5 +1,3 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -10,7 +8,6 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let appContainer
     let productCategory
     let productCategory1
     let productCategory2
@@ -21,15 +18,8 @@ medusaIntegrationTestRunner({
     let productCategoryChild2
     let productCategoryChild3
 
-    let productModuleService: IProductModuleService
-
     beforeEach(async () => {
-      appContainer = getContainer()
-
-      productModuleService = appContainer.resolve(
-        ModuleRegistrationName.PRODUCT
-      )
-
+      const appContainer = getContainer()
       await createAdminUser(dbConnection, adminHeaders, appContainer)
     })
 
