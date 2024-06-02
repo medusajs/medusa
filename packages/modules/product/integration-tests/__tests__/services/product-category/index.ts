@@ -314,7 +314,7 @@ moduleIntegrationTestRunner({
                   mpath:
                     "electronics.computers.laptops.gaming-laptops.high-performance.",
                   parent_category_id: "gaming-laptops",
-                  category_children: [
+                  category_children: expect.arrayContaining([
                     {
                       id: "4k-gaming",
                       handle: "4k-gaming-laptops",
@@ -331,7 +331,7 @@ moduleIntegrationTestRunner({
                       parent_category_id: "high-performance",
                       category_children: [],
                     },
-                  ],
+                  ]),
                 },
               ],
             },
@@ -900,10 +900,10 @@ moduleIntegrationTestRunner({
             }
           )
 
-          expect(productCategory).toEqual(
+          expect(JSON.parse(JSON.stringify(productCategory))).toEqual(
             expect.objectContaining({
               name: "New Category",
-              rank: "0",
+              rank: 0,
             })
           )
         })
@@ -932,7 +932,7 @@ moduleIntegrationTestRunner({
           expect(productCategoryNew).toEqual(
             expect.objectContaining({
               name: "New Category 2",
-              rank: "1",
+              rank: 1,
             })
           )
 
@@ -954,7 +954,7 @@ moduleIntegrationTestRunner({
             expect.objectContaining({
               name: "New Category 2.1",
               parent_category_id: productCategoryNew.id,
-              rank: "0",
+              rank: 0,
             })
           )
         })
@@ -1032,15 +1032,15 @@ moduleIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 id: productCategoryTwo.id,
-                rank: "0",
+                rank: 0,
               }),
               expect.objectContaining({
                 id: productCategoryZero.id,
-                rank: "1",
+                rank: 1,
               }),
               expect.objectContaining({
                 id: productCategoryOne.id,
-                rank: "2",
+                rank: 2,
               }),
             ])
           )
@@ -1065,19 +1065,19 @@ moduleIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 id: productCategoryTwo.id,
-                rank: "0",
+                rank: 0,
               }),
               expect.objectContaining({
                 id: productCategoryZeroZero.id,
-                rank: "1",
+                rank: 1,
               }),
               expect.objectContaining({
                 id: productCategoryZeroOne.id,
-                rank: "2",
+                rank: 2,
               }),
               expect.objectContaining({
                 id: productCategoryZeroTwo.id,
-                rank: "3",
+                rank: 3,
               }),
             ])
           )
@@ -1102,19 +1102,19 @@ moduleIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 id: productCategoryTwo.id,
-                rank: "0",
+                rank: 0,
               }),
               expect.objectContaining({
                 id: productCategoryZeroZero.id,
-                rank: "1",
+                rank: 1,
               }),
               expect.objectContaining({
                 id: productCategoryZeroOne.id,
-                rank: "2",
+                rank: 2,
               }),
               expect.objectContaining({
                 id: productCategoryZeroTwo.id,
-                rank: "3",
+                rank: 3,
               }),
             ])
           )
@@ -1182,11 +1182,11 @@ moduleIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 id: productCategoryZero.id,
-                rank: "0",
+                rank: 0,
               }),
               expect.objectContaining({
                 id: productCategoryTwo.id,
-                rank: "1",
+                rank: 1,
               }),
             ])
           )

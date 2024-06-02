@@ -164,7 +164,11 @@ export class Client {
       }
       // We use `headers.set` in order to ensure headers are overwritten in a case-insensitive manner.
       Object.entries(customHeaders).forEach(([key, value]) => {
-        headers.set(key, value)
+        if (value === null) {
+          headers.delete(key)
+        } else {
+          headers.set(key, value)
+        }
       })
 
       let normalizedInput: RequestInfo | URL = input

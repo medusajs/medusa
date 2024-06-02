@@ -6,6 +6,11 @@ import { castNumber } from "../../../lib/cast-number.ts"
 export const normalizeProductFormValues = (
   values: ProductCreateSchemaType & { status: CreateProductDTO["status"] }
 ) => {
+  const thumbnail = values.media?.find((media) => media.isThumbnail)?.url
+  const images = values.media
+    ?.filter((media) => !media.isThumbnail)
+    .map((media) => ({ url: media.url }))
+
   return {
     status: values.status,
     is_giftcard: false,
@@ -15,9 +20,7 @@ export const normalizeProductFormValues = (
     sales_channels: values?.sales_channels?.length
       ? values.sales_channels?.map((sc) => ({ id: sc.id }))
       : undefined,
-    images: values.images?.length
-      ? values.images.map((url) => ({ url }))
-      : undefined,
+    images,
     collection_id: values.collection_id || undefined,
     categories: values.categories.map((id) => ({ id })),
     type_id: values.type_id || undefined,
@@ -26,7 +29,7 @@ export const normalizeProductFormValues = (
     material: values.material || undefined,
     mid_code: values.mid_code || undefined,
     hs_code: values.hs_code || undefined,
-    thumbnail: values.thumbnail || undefined,
+    thumbnail,
     title: values.title,
     subtitle: values.subtitle || undefined,
     description: values.description || undefined,

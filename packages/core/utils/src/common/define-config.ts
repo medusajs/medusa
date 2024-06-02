@@ -117,6 +117,13 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
     ...config.modules,
   }
 
+  // Remove any modules set to false
+  Object.keys(modules).forEach((key) => {
+    if (modules[key] === false) {
+      delete modules[key]
+    }
+  })
+
   return {
     projectConfig,
     featureFlags,
