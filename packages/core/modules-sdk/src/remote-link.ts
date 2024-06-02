@@ -7,6 +7,7 @@ import {
 import { isObject, promiseAll, toPascalCase } from "@medusajs/utils"
 import { Modules } from "./definitions"
 import { MedusaModule } from "./medusa-module"
+import { convertRecordsToLinkDefinition } from "./utils/convert-data-to-link-definition"
 import { linkingErrorMessage } from "./utils/linking-error"
 
 export type DeleteEntityInput = {
@@ -16,7 +17,8 @@ export type RestoreEntityInput = DeleteEntityInput
 
 export type LinkDefinition = {
   [moduleName: string]: {
-    [fieldName: string]: string
+    // TODO: changing this to any temporarily as the "data" attribute is not being picked up correctly
+    [fieldName: string]: any
   }
 } & {
   data?: Record<string, unknown>
@@ -452,5 +454,73 @@ export class RemoteLink {
     removedServices: DeleteEntityInput
   ): Promise<[CascadeError[] | null, RestoredIds]> {
     return await this.executeCascade(removedServices, "restore")
+  }
+
+  async list(
+    link: LinkDefinition | LinkDefinition[],
+    options?: { asLinkDefinition?: boolean }
+  ): Promise<(object | LinkDefinition)[]> {
+    const allLinks = Array.isArray(link) ? link : [link]
+    // TODO: create a generic function that builds a serviceLinkMap based on data
+    const serviceLinks = new Map<string, object[]>()
+
+    for (const rel of allLinks) {
+      const mods = Object.keys(rel).filter((mod) => mod !== "data")
+
+      if (mods.length > 2) {
+        throw new Error(`Only two modules can be linked.`)
+      }
+
+      const [moduleA, moduleB] = mods
+      const pk = Object.keys(rel[moduleA])
+      const moduleAKey = pk.join(",")
+      const moduleBKey = Object.keys(rel[moduleB]).join(",")
+
+      const service = this.getLinkModule(
+        moduleA,
+        moduleAKey,
+        moduleB,
+        moduleBKey
+      )
+
+      if (!service) {
+        throw new Error(
+          linkingErrorMessage({
+            moduleA,
+            moduleAKey,
+            moduleB,
+            moduleBKey,
+            type: "link",
+          })
+        )
+      } else if (!serviceLinks.has(service.__definition.key)) {
+        serviceLinks.set(service.__definition.key, [])
+      }
+
+      serviceLinks.get(service.__definition.key)?.push({
+        ...rel[moduleA],
+        ...rel[moduleB],
+      })
+    }
+
+    const promises: Promise<object[]>[] = []
+
+    for (const [serviceName, filters] of serviceLinks) {
+      const service = this.modulesMap.get(serviceName)!
+
+      promises.push(
+        service
+          .list({ $or: filters })
+          .then((links: any[]) =>
+            options?.asLinkDefinition
+              ? convertRecordsToLinkDefinition(links, service)
+              : links
+          )
+      )
+    }
+
+    const links = (await promiseAll(promises)).flat()
+
+    return links
   }
 }

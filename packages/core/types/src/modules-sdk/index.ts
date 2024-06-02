@@ -137,6 +137,7 @@ export type ModuleJoinerConfig = Omit<
    */
   schema?: string
   relationships?: ModuleJoinerRelationship[]
+  extraFields?: string[]
   extends?: {
     serviceName: string
     fieldAlias?: Record<

@@ -1,8 +1,8 @@
-import {
-  createAdminUser,
-  adminHeaders,
-} from "../../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -2867,6 +2867,298 @@ medusaIntegrationTestRunner({
               { id: "tag4", usage_count: "1", value: "1234" },
             ])
           )
+        })
+      })
+
+      describe("POST /admin/products/:id/variants/:variant_id/inventory-items", () => {
+        it("should throw an error when required attributes are not passed", async () => {
+          const { response } = await api
+            .post(
+              `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}/inventory-items`,
+              {},
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data).toEqual({
+            type: "invalid_data",
+            message:
+              "Invalid request: Field 'required_quantity' is required; Field 'inventory_item_id' is required",
+          })
+        })
+
+        it("successfully adds inventory item to a variant", async () => {
+          const inventoryItem = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "12345" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          const res = await api.post(
+            `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}/inventory-items?fields=inventory_items.inventory.*,inventory_items.*`,
+            {
+              inventory_item_id: inventoryItem.id,
+              required_quantity: 5,
+            },
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.variant.inventory_items[0]).toEqual(
+            expect.objectContaining({
+              required_quantity: 5,
+              inventory_item_id: inventoryItem.id,
+            })
+          )
+        })
+      })
+
+      describe("POST /admin/products/:id/variants/:variant_id/inventory-items/:inventory_id", () => {
+        let inventoryItem
+
+        beforeEach(async () => {
+          inventoryItem = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "12345" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          await api.post(
+            `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}/inventory-items`,
+            {
+              inventory_item_id: inventoryItem.id,
+              required_quantity: 5,
+            },
+            adminHeaders
+          )
+        })
+
+        it("should throw an error when required attributes are not passed", async () => {
+          const { response } = await api
+            .post(
+              `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}/inventory-items/${inventoryItem.id}`,
+              {},
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data).toEqual({
+            type: "invalid_data",
+            message: "Invalid request: Field 'required_quantity' is required",
+          })
+        })
+
+        it("successfully updates an inventory item link to a variant", async () => {
+          const res = await api.post(
+            `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}/inventory-items/${inventoryItem.id}?fields=inventory_items.inventory.*,inventory_items.*`,
+            { required_quantity: 10 },
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.variant.inventory_items)
+          expect(res.data.variant.inventory_items).toEqual([
+            expect.objectContaining({
+              required_quantity: 10,
+              inventory_item_id: inventoryItem.id,
+            }),
+          ])
+        })
+      })
+
+      describe("DELETE /admin/products/:id/variants/:variant_id/inventory-items/:inventory_id", () => {
+        let inventoryItem
+
+        beforeEach(async () => {
+          inventoryItem = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "12345" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          await api.post(
+            `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}/inventory-items`,
+            {
+              inventory_item_id: inventoryItem.id,
+              required_quantity: 5,
+            },
+            adminHeaders
+          )
+        })
+
+        it("successfully deletes an inventory item link from a variant", async () => {
+          await api.post(
+            `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}/inventory-items`,
+            { inventory_item_id: inventoryItem.id, required_quantity: 5 },
+            adminHeaders
+          )
+
+          const res = await api.delete(
+            `/admin/products/${baseProduct.id}/variants/${baseProduct.variants[0].id}/inventory-items/${inventoryItem.id}?fields=inventory_items.inventory.*,inventory_items.*`,
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.parent.inventory_items)
+          expect(res.data.parent.inventory_items).toEqual([])
+        })
+      })
+
+      describe("POST /admin/products/:id/variants/:variant_id/inventory-items/batch", () => {
+        let inventoryItemToUpdate
+        let inventoryItemToDelete
+        let inventoryItemToCreate
+        let inventoryProduct
+        let inventoryVariant1
+        let inventoryVariant2
+        let inventoryVariant3
+
+        beforeEach(async () => {
+          inventoryProduct = (
+            await api.post(
+              "/admin/products",
+              {
+                title: "product 1",
+                variants: [
+                  {
+                    title: "variant 1",
+                    prices: [{ currency_code: "usd", amount: 100 }],
+                  },
+                  {
+                    title: "variant 2",
+                    prices: [{ currency_code: "usd", amount: 100 }],
+                  },
+                  {
+                    title: "variant 3",
+                    prices: [{ currency_code: "usd", amount: 100 }],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          inventoryVariant1 = inventoryProduct.variants[0]
+          inventoryVariant2 = inventoryProduct.variants[1]
+          inventoryVariant3 = inventoryProduct.variants[2]
+
+          inventoryItemToCreate = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "to-create" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          inventoryItemToUpdate = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "to-update" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          inventoryItemToDelete = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "to-delete" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          await api.post(
+            `/admin/products/${baseProduct.id}/variants/${inventoryVariant1.id}/inventory-items`,
+            {
+              inventory_item_id: inventoryItemToUpdate.id,
+              required_quantity: 5,
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/products/${baseProduct.id}/variants/${inventoryVariant2.id}/inventory-items`,
+            {
+              inventory_item_id: inventoryItemToDelete.id,
+              required_quantity: 10,
+            },
+            adminHeaders
+          )
+        })
+
+        it("successfully creates, updates and deletes an inventory item link from a variant", async () => {
+          const res = await api.post(
+            `/admin/products/${baseProduct.id}/variants/inventory-items/batch`,
+            {
+              create: [
+                {
+                  required_quantity: 15,
+                  inventory_item_id: inventoryItemToCreate.id,
+                  variant_id: inventoryVariant3.id,
+                },
+              ],
+              update: [
+                {
+                  required_quantity: 25,
+                  inventory_item_id: inventoryItemToUpdate.id,
+                  variant_id: inventoryVariant1.id,
+                },
+              ],
+              delete: [
+                {
+                  inventory_item_id: inventoryItemToDelete.id,
+                  variant_id: inventoryVariant2.id,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+
+          const createdLinkVariant = (
+            await api.get(
+              `/admin/products/${baseProduct.id}/variants/${inventoryVariant3.id}?fields=inventory_items.inventory.*,inventory_items.*`,
+              adminHeaders
+            )
+          ).data.variant
+
+          expect(createdLinkVariant.inventory_items[0]).toEqual(
+            expect.objectContaining({
+              required_quantity: 15,
+              inventory_item_id: inventoryItemToCreate.id,
+            })
+          )
+
+          const updatedLinkVariant = (
+            await api.get(
+              `/admin/products/${baseProduct.id}/variants/${inventoryVariant1.id}?fields=inventory_items.inventory.*,inventory_items.*`,
+              adminHeaders
+            )
+          ).data.variant
+
+          expect(updatedLinkVariant.inventory_items[0]).toEqual(
+            expect.objectContaining({
+              required_quantity: 25,
+              inventory_item_id: inventoryItemToUpdate.id,
+            })
+          )
+
+          const deletedLinkVariant = (
+            await api.get(
+              `/admin/products/${baseProduct.id}/variants/${inventoryVariant2.id}?fields=inventory_items.inventory.*,inventory_items.*`,
+              adminHeaders
+            )
+          ).data.variant
+
+          expect(deletedLinkVariant.inventory_items).toHaveLength(0)
         })
       })
     })
