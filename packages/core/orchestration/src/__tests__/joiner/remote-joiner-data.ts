@@ -793,7 +793,7 @@ describe("RemoteJoiner", () => {
       fields: ["id", "name", "email"],
     }
 
-    expect(newJoiner.query(queryWithAlias)).rejects.toThrowError(
+    await expect(newJoiner.query(queryWithAlias)).rejects.toThrowError(
       `Service with alias "user" was not found.`
     )
   })
@@ -825,6 +825,8 @@ describe("RemoteJoiner", () => {
       throwIfKeyNotFound: true,
     })
 
-    expect(dataNotFound).rejects.toThrowError("order id not found: ord_1234556")
+    await expect(dataNotFound).rejects.toThrowError(
+      "order id not found: ord_1234556"
+    )
   })
 })

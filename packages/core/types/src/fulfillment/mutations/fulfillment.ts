@@ -110,5 +110,8 @@ export interface UpdateFulfillmentDTO {
   /**
    * The labels associated with the fulfillment.
    */
-  labels?: Omit<CreateFulfillmentLabelDTO, "fulfillment_id">[]
+  labels?: (
+    | Omit<CreateFulfillmentLabelDTO, "fulfillment_id">
+    | { id: string }
+  )[]
 }

@@ -110,7 +110,7 @@ describe("modules loader", () => {
       },
     }
 
-    expect(
+    await expect(
       moduleLoader({ container, moduleResolutions, logger })
     ).rejects.toThrow("Loaders for module TestService failed: loader")
   })
@@ -136,7 +136,7 @@ describe("modules loader", () => {
       },
     }
 
-    expect(
+    await expect(
       moduleLoader({ container, moduleResolutions, logger })
     ).rejects.toThrow(
       "No service found in module TestService. Make sure your module exports a service."
@@ -165,7 +165,7 @@ describe("modules loader", () => {
       },
     }
 
-    expect(
+    await expect(
       moduleLoader({ container, moduleResolutions, logger })
     ).rejects.toThrow(
       "No service found in module TestService. Make sure your module exports a service."
