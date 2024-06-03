@@ -734,6 +734,33 @@ export interface IInventoryServiceNext extends IModuleService {
   ): Promise<void>
 
   /**
+   * This method is used to restore the reservation items associated with a line item or multiple line items that were deleted.
+   *
+   * @param {string | string[]} lineItemId - The ID(s) of the line item(s).
+   * @param {SharedContext} context - A context used to share re9sources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the reservation items are successfully deleted.
+   *
+   * @example
+   * import {
+   *   initialize as initializeInventoryModule,
+   * } from "@medusajs/inventory"
+   *
+   * async function restoreReservationItemsByLineItem (
+   *   lineItemIds: string[]
+   * ) {
+   *   const inventoryModule = await initializeInventoryModule({})
+   *
+   *   await inventoryModule.restoreReservationItemsByLineItem(
+   *     lineItemIds
+   *   )
+   * }
+   */
+  restoreReservationItemsByLineItem(
+    lineItemId: string | string[],
+    context?: Context
+  ): Promise<void>
+
+  /**
    * This method deletes reservation items by their IDs.
    *
    * @param {string | string[]} reservationItemId - The reservation items' IDs.

@@ -9,6 +9,11 @@ export const createRemoteLinkStep = createStep(
     const link = container.resolve<RemoteLink>(
       ContainerRegistrationKeys.REMOTE_LINK
     )
+
+    if (!data.length) {
+      return new StepResponse([], [])
+    }
+
     await link.create(data)
 
     return new StepResponse(data, data)
