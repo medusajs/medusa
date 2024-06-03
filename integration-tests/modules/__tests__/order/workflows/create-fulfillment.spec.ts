@@ -17,7 +17,6 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  RuleOperator,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
@@ -145,7 +144,7 @@ async function prepareDataFixtures({ container }) {
 
   const shippingOptionData: FulfillmentWorkflow.CreateShippingOptionsWorkflowInput =
     {
-      name: "Return shipping option",
+      name: "Shipping option",
       price_type: "flat",
       service_zone_id: serviceZone.id,
       shipping_profile_id: shippingProfile.id,
@@ -163,13 +162,6 @@ async function prepareDataFixtures({ container }) {
         {
           region_id: region.id,
           amount: 100,
-        },
-      ],
-      rules: [
-        {
-          attribute: "is_return",
-          operator: RuleOperator.EQ,
-          value: '"true"',
         },
       ],
     }

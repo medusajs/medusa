@@ -2,12 +2,13 @@ import { z } from "zod"
 
 export const createBatchBody = (
   createValidator: z.ZodType,
-  updateValidator: z.ZodType
+  updateValidator: z.ZodType,
+  deleteValidator: z.ZodType = z.string()
 ) => {
   return z.object({
     create: z.array(createValidator).optional(),
     update: z.array(updateValidator).optional(),
-    delete: z.array(z.string()).optional(),
+    delete: z.array(deleteValidator).optional(),
   })
 }
 
