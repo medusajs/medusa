@@ -1,5 +1,5 @@
 import { LinkDefinition, RemoteLink } from "@medusajs/modules-sdk"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 
@@ -12,6 +12,11 @@ export const createRemoteLinkStep = createStep(
     const link = container.resolve<RemoteLink>(
       ContainerRegistrationKeys.REMOTE_LINK
     )
+
+    if (!data.length) {
+      return new StepResponse([], [])
+    }
+
     await link.create(data)
 
     return new StepResponse(data, data)
