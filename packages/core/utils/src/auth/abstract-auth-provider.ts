@@ -109,8 +109,8 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
   /**
    * This method authenticates the user.
    * 
-   * If the authentication requires an action to perform with a third-party service, such as login with
-   * a social account, you can continue the authentication using the {@link validateCallback} method.
+   * The authentication happens either by directly authenticating or returning a redirect URL to continue 
+   * the authentication with a third party provider.
    * 
    * @param {AuthenticationInput} data - The details of the authentication request.
    * @param {AuthIdentityProviderService} authIdentityProviderService - The service used to retrieve or 
