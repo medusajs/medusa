@@ -40,7 +40,7 @@ function prepareUpdateProductInput({
 }): UpdateProductsStepInput {
   if ("products" in input) {
     if (!input.products.length) {
-      return {} as UpdateProductsStepInput
+      return { products: [] }
     }
 
     return {
