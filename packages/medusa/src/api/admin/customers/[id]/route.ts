@@ -2,6 +2,7 @@ import {
   deleteCustomersWorkflow,
   updateCustomersWorkflow,
 } from "@medusajs/core-flows"
+import { AdminCustomer } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -9,7 +10,6 @@ import {
 } from "../../../../types/routing"
 import { refetchCustomer } from "../helpers"
 import { AdminUpdateCustomerType } from "../validators"
-import { AdminCustomer } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

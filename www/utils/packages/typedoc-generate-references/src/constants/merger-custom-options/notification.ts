@@ -78,7 +78,7 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "./dist/modules/my-notification",
+            resolve: "./modules/my-notification",
             options: {
               config: {
                 "my-notification": {
