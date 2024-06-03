@@ -4,7 +4,7 @@ import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
 import { createStep } from "@medusajs/workflows-sdk"
 
 type StepInput = {
-  payment_ids: string | string[]
+  paymentIds: string | string[]
 }
 
 export const cancelPaymentStepId = "cancel-payment-step"
@@ -16,16 +16,16 @@ export const cancelPaymentStep = createStep(
       ModuleRegistrationName.PAYMENT
     )
 
-    const payment_ids = Array.isArray(input.payment_ids)
-      ? input.payment_ids
-      : [input.payment_ids]
+    const paymentIds = Array.isArray(input.paymentIds)
+      ? input.paymentIds
+      : [input.paymentIds]
 
     const promises: Promise<any>[] = []
-    for (const payment_id of payment_ids) {
+    for (const id of paymentIds) {
       promises.push(
-        paymentModule.cancelPayment(payment_id).catch((e) => {
+        paymentModule.cancelPayment(id).catch((e) => {
           logger.error(
-            `Error was thrown trying to cancel payment - ${payment_id} - ${e}`
+            `Error was thrown trying to cancel payment - ${id} - ${e}`
           )
         })
       )
