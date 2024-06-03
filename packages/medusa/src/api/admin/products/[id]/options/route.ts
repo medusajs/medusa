@@ -22,9 +22,7 @@ export const GET = async (
     entryPoint: "product_option",
     variables: {
       filters: { ...req.filterableFields, product_id: productId },
-      order: req.listConfig.order,
-      skip: req.listConfig.skip,
-      take: req.listConfig.take,
+      ...req.remoteQueryConfig.pagination,
     },
     fields: req.remoteQueryConfig.fields,
   })

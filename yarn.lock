@@ -19864,6 +19864,42 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"integration-tests-http@workspace:integration-tests/http":
+  version: 0.0.0-use.local
+  resolution: "integration-tests-http@workspace:integration-tests/http"
+  dependencies:
+    "@medusajs/api-key": "workspace:^"
+    "@medusajs/auth": "workspace:*"
+    "@medusajs/cache-inmemory": "workspace:*"
+    "@medusajs/customer": "workspace:^"
+    "@medusajs/event-bus-local": "workspace:*"
+    "@medusajs/fulfillment": "workspace:^"
+    "@medusajs/fulfillment-manual": "workspace:^"
+    "@medusajs/inventory-next": "workspace:^"
+    "@medusajs/medusa": "workspace:*"
+    "@medusajs/modules-sdk": "workspace:^"
+    "@medusajs/pricing": "workspace:^"
+    "@medusajs/product": "workspace:^"
+    "@medusajs/promotion": "workspace:^"
+    "@medusajs/region": "workspace:^"
+    "@medusajs/stock-location-next": "workspace:^"
+    "@medusajs/store": "workspace:^"
+    "@medusajs/tax": "workspace:^"
+    "@medusajs/types": "workspace:^"
+    "@medusajs/user": "workspace:^"
+    "@medusajs/utils": "workspace:^"
+    "@medusajs/workflow-engine-inmemory": "workspace:*"
+    "@swc/core": ^1.4.8
+    "@swc/jest": ^0.2.36
+    faker: ^5.5.3
+    jest: ^26.6.3
+    jest-environment-node: 26.6.2
+    medusa-test-utils: "workspace:*"
+    pg: ^8.11.0
+    typescript: ^4.1.3
+  languageName: unknown
+  linkType: soft
+
 "integration-tests-modules@workspace:integration-tests/modules":
   version: 0.0.0-use.local
   resolution: "integration-tests-modules@workspace:integration-tests/modules"

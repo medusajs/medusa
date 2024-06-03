@@ -55,26 +55,28 @@ const { Modules } = require("@medusajs/modules-sdk")
 
 // ...
 
-const modules = {
+module.exports = defineConfig({
   // ...
-  [Modules.AUTH]: {
-    resolve: "@medusajs/auth",
-    options: {
-      providers: [
-        {
-          resolve: "./dist/modules/my-auth",
-          options: {
-            config: {
-              "my-auth": {
-                // provider options...
+  modules: {
+    [Modules.AUTH]: {
+      resolve: "@medusajs/auth",
+      options: {
+        providers: [
+          {
+            resolve: "./modules/my-auth",
+            options: {
+              config: {
+                "my-auth": {
+                  // provider options...
+                },
               },
             },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-}
+  }
+})
 \`\`\`
 `,
     ],

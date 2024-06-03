@@ -20,6 +20,8 @@ import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-form"
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
 import { isFetchError } from "../../../../../lib/is-fetch-error"
+import { sdk } from "../../../../../lib/client"
+import { HttpTypes } from "@medusajs/types"
 
 enum Tab {
   DETAILS = "details",
@@ -90,13 +92,41 @@ export const ProductCreateForm = ({
 
       const isDraftSubmission = submitter.dataset.name === SAVE_DRAFT_BUTTON
 
-      const payload = { ...values }
+      const media = values.media || []
+      const payload = { ...values, media: undefined }
 
+      let uploadedMedia: (HttpTypes.AdminFile & { isThumbnail: boolean })[] = []
       try {
+        if (media.length) {
+          const thumbnailReq = media.find((m) => m.isThumbnail)
+          const otherMediaReq = media.filter((m) => !m.isThumbnail)
+
+          const fileReqs = []
+          if (thumbnailReq) {
+            fileReqs.push(
+              sdk.admin.uploads
+                .create({ files: [thumbnailReq.file] })
+                .then((r) => r.files.map((f) => ({ ...f, isThumbnail: true })))
+            )
+          }
+          if (otherMediaReq?.length) {
+            fileReqs.push(
+              sdk.admin.uploads
+                .create({
+                  files: otherMediaReq.map((m) => m.file),
+                })
+                .then((r) => r.files.map((f) => ({ ...f, isThumbnail: false })))
+            )
+          }
+
+          uploadedMedia = (await Promise.all(fileReqs)).flat()
+        }
+
         const { product } = await mutateAsync(
           normalizeProductFormValues({
             // TODO: workflow should handle inventory creation
             ...payload,
+            media: uploadedMedia,
             status: (isDraftSubmission ? "draft" : "published") as any,
           })
         )

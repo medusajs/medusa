@@ -1,5 +1,5 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { CreateStoreDTO, IStoreModuleService } from "@medusajs/types"
+import { CreateStoreDTO, IStoreModuleService, StoreDTO } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { createStoresWorkflow } from "../../store"
 
@@ -16,8 +16,13 @@ export const createDefaultStoreStep = createStep(
     let shouldDelete = false
     let [store] = await storeService.list({}, { take: 1 })
 
+    /**
+     * @todo
+     * Seems like we are missing an integration test when the
+     * following conditional as true.
+     */
     if (!store) {
-      store = await createStoresWorkflow(container).run({
+      const stores = await createStoresWorkflow(container).run({
         input: {
           stores: [
             {
@@ -30,6 +35,12 @@ export const createDefaultStoreStep = createStep(
         },
       })
 
+      /**
+       * As per types, the result from "createStoresWorkflow.run" was
+       * an array of "StoreDTO". But at runtime it turns out to be
+       * a "StoreDTO"
+       */
+      store = stores as unknown as StoreDTO
       shouldDelete = true
     }
 

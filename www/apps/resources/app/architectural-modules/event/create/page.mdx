@@ -107,13 +107,19 @@ To use your Event Module, add it to the `modules` object exported as part of the
 For example:
 
 ```js title="medusa-config.js"
-const modules = {
-  // other modules...
-  eventBus: {
-    resolve: "./dist/modules/my-event/index.ts",
-    options: {
-      // any necessary options
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [Modules.EVENT_BUS]: {
+      resolve: "./modules/my-event",
+      options: { 
+        // any options
+      },
     },
-  },
-}
+  }
+})
 ```

@@ -21,30 +21,36 @@ When the Medusa application starts, these providers are registered and can be us
 For example:
 
 ```js title="medusa-config.js"
-const modules = {
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
   // ...
-  fulfillment: {
-    resolve: "@medusajs/fulfillment",
-    options: {
-      providers: [
-        {
-          resolve: `@medusajs/fulfillment-manual`,
-          options: {
-            config: {
-              manual: {
-                // provider options...
+  modules: {
+    [Modules.FULFILLMENT]: {
+      resolve: "@medusajs/fulfillment",
+      options: {
+        providers: [
+          {
+            resolve: `@medusajs/fulfillment-manual`,
+            options: {
+              config: {
+                manual: {
+                  // provider options...
+                }
               }
             }
-          }
-        },
-      ],
+          },
+        ],
+      },
     },
-  },
-}
+  }
+})
 ```
 
 The `providers` option is an array of objects that accept the following properties:
 
-- `resolve`: A string indicating either the package name  of the fulfillment provider module or the path to it.
+- `resolve`: A string indicating either the package name  of the fulfillment provider module or the path to it relative to the `src` directory.
 - `options`: An optional object of the fulfillment provider module's options. The object must have the following property:
   - `config`: An object whose key is the ID of the fulfillment provider, and its value is an object of options to pass to the provider module.

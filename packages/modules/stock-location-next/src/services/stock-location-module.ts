@@ -6,7 +6,6 @@ import {
   ModuleJoinerConfig,
   StockLocationAddressInput,
   StockLocationTypes,
-  UpdateStockLocationInput,
   ModulesSdkTypes,
   DAL,
   IStockLocationServiceNext,
