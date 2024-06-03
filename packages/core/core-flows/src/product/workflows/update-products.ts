@@ -1,18 +1,18 @@
 import { updateProductsStep } from "../steps/update-products"
 
-import {
-  dismissRemoteLinkStep,
-  createLinkStep,
-  useRemoteQueryStep,
-} from "../../common"
-import { arrayDifference } from "@medusajs/utils"
 import { Modules } from "@medusajs/modules-sdk"
 import { ProductTypes } from "@medusajs/types"
+import { arrayDifference } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
+import {
+  createRemoteLinkStep,
+  dismissRemoteLinkStep,
+  useRemoteQueryStep,
+} from "../../common"
 
 type UpdateProductsStepInputSelector = {
   selector: ProductTypes.FilterableProductProps
@@ -72,7 +72,7 @@ function updateProductIds({
     return arrayDifference(productIds, discardedProductIds)
   }
 
-  return !input.update.sales_channels ? [] : productIds
+  return !input.update?.sales_channels ? [] : productIds
 }
 
 function prepareSalesChannelLinks({
@@ -97,7 +97,7 @@ function prepareSalesChannelLinks({
       )
   }
 
-  if (input.selector && input.update.sales_channels?.length) {
+  if (input.selector && input.update?.sales_channels?.length) {
     return updatedProducts.flatMap((p) =>
       input.update.sales_channels!.map((channel) => ({
         [Modules.PRODUCT]: {
@@ -161,7 +161,7 @@ export const updateProductsWorkflow = createWorkflow(
       prepareSalesChannelLinks
     )
 
-    createLinkStep(salesChannelLinks)
+    createRemoteLinkStep(salesChannelLinks)
 
     return updatedProducts
   }

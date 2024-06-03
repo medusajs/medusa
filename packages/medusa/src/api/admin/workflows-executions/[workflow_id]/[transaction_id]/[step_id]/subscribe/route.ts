@@ -1,9 +1,9 @@
+import { IWorkflowEngineService } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
 
-import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export const GET = async (

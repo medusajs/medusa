@@ -17,6 +17,6 @@ export const createUsersStep = createStep(
       return
     }
     const service = container.resolve(ModuleRegistrationName.USER)
-    await service.delete(createdUsers)
+    await service.delete(createdUsers.map((user) => user.id))
   }
 )

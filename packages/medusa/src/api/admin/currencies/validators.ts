@@ -8,7 +8,7 @@ export type AdminGetCurrenciesParamsType = z.infer<
 >
 export const AdminGetCurrenciesParams = createFindParams({
   offset: 0,
-  limit: 50,
+  limit: 200,
 }).merge(
   z.object({
     q: z.string().optional(),

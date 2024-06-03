@@ -6,7 +6,9 @@ import {
   filterByValidSalesChannels,
   setPricingContext,
 } from "../../utils/middlewares"
+import { setContext } from "../../utils/middlewares/common/set-context"
 import { validateAndTransformQuery } from "../../utils/validate-query"
+import { maybeApplyStockLocationId } from "./helpers"
 import * as QueryConfig from "./query-config"
 import {
   StoreGetProductsParams,
@@ -23,6 +25,9 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listProductQueryConfig
       ),
       filterByValidSalesChannels(),
+      setContext({
+        stock_location_id: maybeApplyStockLocationId,
+      }),
       maybeApplyLinkFilter({
         entryPoint: "product_sales_channel",
         resourceId: "product_id",
@@ -53,6 +58,9 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveProductQueryConfig
       ),
       filterByValidSalesChannels(),
+      setContext({
+        stock_location_id: maybeApplyStockLocationId,
+      }),
       maybeApplyLinkFilter({
         entryPoint: "product_sales_channel",
         resourceId: "product_id",

@@ -1,7 +1,8 @@
-import { PromotionTypes } from "@medusajs/types"
+import { BigNumberInput, PromotionTypes } from "@medusajs/types"
 import {
   ApplicationMethodTargetType,
   ComputedActions,
+  MathBN,
   MedusaError,
   PromotionType,
   isPresent,
@@ -13,7 +14,7 @@ import { computeActionForBudgetExceeded } from "./usage"
 export function getComputedActionsForBuyGet(
   promotion: PromotionTypes.PromotionDTO,
   itemsContext: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS],
-  methodIdPromoValueMap: Map<string, number>
+  methodIdPromoValueMap: Map<string, BigNumberInput>
 ): PromotionTypes.ComputeActions[] {
   const buyRulesMinQuantity =
     promotion.application_method?.buy_rules_min_quantity
@@ -33,14 +34,16 @@ export function getComputedActionsForBuyGet(
     return []
   }
 
-  const validQuantity = itemsContext
-    .filter((item) => areRulesValidForContext(buyRules, item))
-    .reduce((acc, next) => acc + next.quantity, 0)
+  const validQuantity = MathBN.sum(
+    ...itemsContext
+      .filter((item) => areRulesValidForContext(buyRules, item))
+      .map((item) => item.quantity)
+  )
 
   if (
     !buyRulesMinQuantity ||
     !applyToQuantity ||
-    buyRulesMinQuantity > validQuantity
+    MathBN.gt(buyRulesMinQuantity, validQuantity)
   ) {
     return []
   }
@@ -49,21 +52,24 @@ export function getComputedActionsForBuyGet(
     .filter((item) => areRulesValidForContext(targetRules, item))
     .filter((item) => isPresent(item.subtotal) && isPresent(item.quantity))
     .sort((a, b) => {
-      const aPrice = a.subtotal / a.quantity
-      const bPrice = b.subtotal / b.quantity
+      const aPrice = MathBN.div(a.subtotal, a.quantity)
+      const bPrice = MathBN.div(b.subtotal, b.quantity)
 
-      return bPrice - aPrice
+      return MathBN.lt(bPrice, aPrice) ? -1 : 1
     })
 
-  let remainingQtyToApply = applyToQuantity
+  let remainingQtyToApply = MathBN.convert(applyToQuantity)
 
   for (const method of validItemsForTargetRules) {
     const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
-    const multiplier = Math.min(method.quantity, remainingQtyToApply)
-    const amount = (method.subtotal / method.quantity) * multiplier
-    const newRemainingQtyToApply = remainingQtyToApply - multiplier
+    const multiplier = MathBN.min(method.quantity, remainingQtyToApply)
+    const amount = MathBN.mult(
+      MathBN.div(method.subtotal, method.quantity),
+      multiplier
+    )
+    const newRemainingQtyToApply = MathBN.sub(remainingQtyToApply, multiplier)
 
-    if (newRemainingQtyToApply < 0 || amount <= 0) {
+    if (MathBN.lt(newRemainingQtyToApply, 0) || MathBN.lte(amount, 0)) {
       break
     } else {
       remainingQtyToApply = newRemainingQtyToApply
@@ -80,7 +86,7 @@ export function getComputedActionsForBuyGet(
       continue
     }
 
-    methodIdPromoValueMap.set(method.id, appliedPromoValue + amount)
+    methodIdPromoValueMap.set(method.id, MathBN.add(appliedPromoValue, amount))
 
     computedActions.push({
       action: ComputedActions.ADD_ITEM_ADJUSTMENT,

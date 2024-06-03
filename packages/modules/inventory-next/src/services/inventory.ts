@@ -15,11 +15,11 @@ import {
   InjectManager,
   InjectTransactionManager,
   InventoryEvents,
+  isDefined,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isDefined,
-  isString,
   partitionArray,
   promiseAll,
 } from "@medusajs/utils"
@@ -198,11 +198,10 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       created.map((reservationItem) => ({
         eventName: InventoryEvents.reservation_item_created,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.CREATED,
-          object: "reservation-item",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.CREATED,
+        object: "reservation-item",
+        context,
         data: { id: reservationItem.id },
       }))
     )
@@ -297,11 +296,10 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       result.map((inventoryItem) => ({
         eventName: InventoryEvents.created,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.CREATED,
-          object: "inventory-item",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.CREATED,
+        object: "inventory-item",
+        context,
         data: { id: inventoryItem.id },
       }))
     )
@@ -349,11 +347,10 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       created.map((inventoryLevel) => ({
         eventName: InventoryEvents.inventory_level_created,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.CREATED,
-          object: "inventory-level",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.CREATED,
+        object: "inventory-level",
+        context,
         data: { id: inventoryLevel.id },
       }))
     )
@@ -408,11 +405,10 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       result.map((inventoryItem) => ({
         eventName: InventoryEvents.updated,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.UPDATED,
-          object: "inventory-item",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.UPDATED,
+        object: "inventory-item",
+        context,
         data: { id: inventoryItem.id },
       }))
     )
@@ -448,11 +444,10 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       result[0].map((inventoryLevel) => ({
         eventName: InventoryEvents.inventory_level_deleted,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.DELETED,
-          object: "inventory-level",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.DELETED,
+        object: "inventory-level",
+        context,
         data: { id: inventoryLevel.id },
       }))
     )
@@ -480,11 +475,10 @@ export default class InventoryModuleService<
 
     context.messageAggregator?.saveRawMessageData({
       eventName: InventoryEvents.inventory_level_deleted,
-      metadata: {
-        service: this.constructor.name,
-        action: CommonEvents.DELETED,
-        object: "inventory-level",
-      },
+      service: this.constructor.name,
+      action: CommonEvents.DELETED,
+      object: "inventory-level",
+      context,
       data: { id: inventoryLevel.id },
     })
 
@@ -521,11 +515,10 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       levels.map((inventoryLevel) => ({
         eventName: InventoryEvents.inventory_level_updated,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.UPDATED,
-          object: "inventory-level",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.UPDATED,
+        object: "inventory-level",
+        context,
         data: { id: inventoryLevel.id },
       }))
     )
@@ -606,11 +599,10 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       result.map((reservationItem) => ({
         eventName: InventoryEvents.inventory_level_updated,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.UPDATED,
-          object: "reservation-item",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.UPDATED,
+        object: "reservation-item",
+        context,
         data: { id: reservationItem.id },
       }))
     )
@@ -738,11 +730,10 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       reservations.map((reservationItem) => ({
         eventName: InventoryEvents.reservation_item_deleted,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.DELETED,
-          object: "reservation-item",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.DELETED,
+        object: "reservation-item",
+        context,
         data: { id: reservationItem.id },
       }))
     )
@@ -781,11 +772,10 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       reservations.map((reservationItem) => ({
         eventName: InventoryEvents.reservation_item_deleted,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.DELETED,
-          object: "reservation-item",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.DELETED,
+        object: "reservation-item",
+        context,
         data: { id: reservationItem.id },
       }))
     )
@@ -851,11 +841,10 @@ export default class InventoryModuleService<
 
       context.messageAggregator?.saveRawMessageData({
         eventName: InventoryEvents.inventory_level_updated,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.UPDATED,
-          object: "inventory-level",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.UPDATED,
+        object: "inventory-level",
+        context,
         data: { id: result.id },
       })
     }

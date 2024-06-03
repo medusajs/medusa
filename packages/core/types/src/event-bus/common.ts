@@ -1,3 +1,5 @@
+import { Context } from "../shared-context"
+
 export type Subscriber<T = unknown> = (
   data: T,
   eventName: string
@@ -39,13 +41,12 @@ export type Message<T = unknown> = {
   options?: Record<string, unknown>
 }
 
-export type MessageFormat<T = unknown> = {
+export type RawMessageFormat<T = any> = {
   eventName: string
-  metadata: {
-    service: string
-    action: string
-    object: string
-    eventGroupId?: string
-  }
-  data: T | T[]
+  data: T
+  service: string
+  object: string
+  action?: string
+  context?: Pick<Context, "eventGroupId">
+  options?: Record<string, any>
 }

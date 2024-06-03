@@ -4,6 +4,7 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import { wrapVariantsWithInventoryQuantity } from "./helpers"
 import { StoreGetProductsParamsType } from "./validators"
 
 export const GET = async (
@@ -12,6 +13,15 @@ export const GET = async (
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const context: object = {}
+  const withInventoryQuantity = req.remoteQueryConfig.fields.some((field) =>
+    field.includes("variants.inventory_quantity")
+  )
+
+  if (withInventoryQuantity) {
+    req.remoteQueryConfig.fields = req.remoteQueryConfig.fields.filter(
+      (field) => !field.includes("variants.inventory_quantity")
+    )
+  }
 
   if (isPresent(req.pricingContext)) {
     context["variants.calculated_price"] = {
@@ -30,6 +40,13 @@ export const GET = async (
   })
 
   const { rows: products, metadata } = await remoteQuery(queryObject)
+
+  if (withInventoryQuantity) {
+    await wrapVariantsWithInventoryQuantity(
+      req,
+      products.map((product) => product.variants).flat(1)
+    )
+  }
 
   res.json({
     products,

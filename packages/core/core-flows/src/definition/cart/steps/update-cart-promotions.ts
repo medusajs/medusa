@@ -83,6 +83,7 @@ export const updateCartPromotionsStep = createStep(
       : []
 
     return new StepResponse(null, {
+      // @ts-expect-error
       createdLinkIds: createdLinks.map((link) => link.id),
       dismissedLinks: linksToDismiss,
     })
@@ -95,6 +96,7 @@ export const updateCartPromotionsStep = createStep(
     }
 
     if (revertData?.createdLinkIds?.length) {
+      // @ts-expect-error
       await remoteLink.delete(revertData.createdLinkIds)
     }
   }

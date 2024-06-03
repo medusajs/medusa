@@ -1,12 +1,11 @@
-import { Product } from "@medusajs/medusa"
-
 import { useSearchParams } from "react-router-dom"
 import { EditProductMediaForm } from "../edit-product-media-form"
 import { ProductMediaGallery } from "../product-media-gallery"
 import { ProductMediaViewContext } from "./product-media-view-context"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductMediaViewProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 enum View {
@@ -45,7 +44,7 @@ export const ProductMediaView = ({ product }: ProductMediaViewProps) => {
   )
 }
 
-const renderView = (view: View, product: Product) => {
+const renderView = (view: View, product: HttpTypes.AdminProduct) => {
   switch (view) {
     case View.GALLERY:
       return <ProductMediaGallery product={product} />

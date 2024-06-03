@@ -152,14 +152,20 @@ To use your Cache Module, add it to the `modules` object exported as part of the
 For example:
 
 ```js title="medusa-config.js"
-const modules = {
-  // other modules...
-  cacheService: {
-    resolve: "./dist/modules/my-cache/index.ts",
-    options: {
-      // any necessary options
-      ttl: 30,
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [Modules.CACHE]: {
+      resolve: "./modules/my-cache",
+      options: {
+        // any options
+        ttl: 30,
+      },
     },
-  },
-}
+  }
+})
 ```

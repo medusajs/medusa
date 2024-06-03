@@ -35,10 +35,13 @@ Only one provider can be defined for a channel.
 </Note>
 
 ```js title="medusa-config.js"
-module.exports = {
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
   // ...
   modules: {
-    // ...
     [Modules.NOTIFICATION]: {
       resolve: "@medusajs/notification",
       options: {
@@ -59,8 +62,8 @@ module.exports = {
         ],
       },
     },
-  },
-}
+  }
+})
 ```
 
 ### Environment Variables

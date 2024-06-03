@@ -27,7 +27,7 @@ By default, admin users and customers can login with all installed auth provider
 To limit the auth providers that used for admin users and customers, use the [authMethodsPerActor option](/references/medusa-config#http-authMethodsPerActor-1-3) in Medusa's configurations:
 
 ```js title="medusa-config.js"
-module.exports = {
+module.exports = defineConfig({
   projectConfig: {
     http: {
       authMethodsPerActor: {
@@ -38,7 +38,7 @@ module.exports = {
     },
     // ...
   }
-}
+})
 ```
 
 ---

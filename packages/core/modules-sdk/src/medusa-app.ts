@@ -1,10 +1,13 @@
+import type { Knex } from "knex"
 import { mergeTypeDefs } from "@graphql-tools/merge"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import { RemoteFetchDataCallback } from "@medusajs/orchestration"
-import {
+import type {
+  ConfigModule,
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   LoadedModule,
+  Logger,
   MedusaContainer,
   ModuleDefinition,
   ModuleExports,
@@ -35,6 +38,16 @@ import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
+
+declare module "@medusajs/types" {
+  export interface ModuleImplementations {
+    [ContainerRegistrationKeys.REMOTE_LINK]: RemoteLink
+    [ContainerRegistrationKeys.CONFIG_MODULE]: ConfigModule
+    [ContainerRegistrationKeys.PG_CONNECTION]: Knex<any>
+    [ContainerRegistrationKeys.REMOTE_QUERY]: RemoteQueryFunction
+    [ContainerRegistrationKeys.LOGGER]: Logger
+  }
+}
 
 export type RunMigrationFn = (
   options?: ModuleServiceInitializeOptions,
