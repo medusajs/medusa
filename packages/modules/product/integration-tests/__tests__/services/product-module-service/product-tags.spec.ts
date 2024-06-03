@@ -251,12 +251,9 @@ moduleIntegrationTestRunner({
         const tagId = "tag-1"
 
         it("should update the value of the tag successfully", async () => {
-          await service.updateTags([
-            {
-              id: tagId,
-              value: "UK",
-            },
-          ])
+          await service.updateTags(tagId, {
+            value: "UK",
+          })
 
           const productTag = await service.retrieveTag(tagId)
 
@@ -267,18 +264,15 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.updateTags([
-              {
-                id: "does-not-exist",
-                value: "UK",
-              },
-            ])
+            await service.updateTags("does-not-exist", {
+              value: "UK",
+            })
           } catch (e) {
             error = e
           }
 
           expect(error.message).toEqual(
-            'ProductTag with id "does-not-exist" not found'
+            "ProductTag with id: does-not-exist was not found"
           )
         })
       })
