@@ -94,12 +94,10 @@ type ShippingOptionProps = {
   option: HttpTypes.AdminShippingOption
   fulfillmentSetId: string
   locationId: string
-  isReturn?: boolean
 }
 
 function ShippingOption({
   option,
-  isReturn,
   fulfillmentSetId,
   locationId,
 }: ShippingOptionProps) {
@@ -256,7 +254,6 @@ function ServiceZoneOptions({
             {returnOptions.map((o) => (
               <ShippingOption
                 key={o.id}
-                isReturn
                 option={o}
                 locationId={locationId}
                 fulfillmentSetId={fulfillmentSetId}
@@ -288,7 +285,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("location.serviceZone.deleteWarning", {
+      description: t("location.serviceZone.delete.warning", {
         name: zone.name,
       }),
       confirmText: t("actions.delete"),
@@ -308,7 +305,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
       },
       onSuccess: () => {
         toast.success(t("general.success"), {
-          description: t("location.serviceZone.toast.delete", {
+          description: t("location.serviceZone.delete.successToast", {
             name: zone.name,
           }),
           dismissLabel: t("actions.close"),
@@ -456,7 +453,6 @@ type FulfillmentSetProps = {
 function FulfillmentSet(props: FulfillmentSetProps) {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const navigate = useNavigate()
 
   const { fulfillmentSet, locationName, locationId, type } = props
 
@@ -493,10 +489,10 @@ function FulfillmentSet(props: FulfillmentSetProps) {
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("location.fulfillmentSet.disableWarning", {
+      description: t(`location.fulfillmentSet.${type}.disable.warning`, {
         name: fulfillmentSet?.name,
       }),
-      confirmText: t("actions.delete"),
+      confirmText: t("actions.disable"),
       cancelText: t("actions.cancel"),
     })
 
@@ -507,9 +503,12 @@ function FulfillmentSet(props: FulfillmentSetProps) {
     await deleteFulfillmentSet(undefined, {
       onSuccess: () => {
         toast.success(t("general.success"), {
-          description: t("location.fulfillmentSet.toast.disable", {
-            name: fulfillmentSet?.name,
-          }),
+          description: t(
+            `location.fulfillmentSet.${type}.disable.successToast`,
+            {
+              name: fulfillmentSet?.name,
+            }
+          ),
           dismissable: true,
           dismissLabel: t("actions.close"),
         })
@@ -562,7 +561,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
       <div className="flex flex-col divide-y">
         <div className="flex items-center justify-between px-6 py-4">
           <Text size="large" weight="plus" className="flex-1" as="div">
-            {t(`location.fulfillmentSet.${type}.offers`)}
+            {t(`location.fulfillmentSet.${type}.header`)}
           </Text>
           <div className="flex items-center gap-4">
             <StatusBadge color={fulfillmentSetExists ? "green" : "red"}>
@@ -614,7 +613,7 @@ const Actions = ({ location }: { location: HttpTypes.AdminStockLocation }) => {
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("location.deleteLocationWarning", {
+      description: t("location.delete.description", {
         name: location.name,
       }),
       verificationText: location.name,
@@ -630,7 +629,9 @@ const Actions = ({ location }: { location: HttpTypes.AdminStockLocation }) => {
     await mutateAsync(undefined, {
       onSuccess: () => {
         toast.success(t("general.success"), {
-          description: t("location.toast.delete"),
+          description: t("location.delete.successToast", {
+            name: location.name,
+          }),
           dismissLabel: t("actions.close"),
         })
         navigate("/settings/locations", { replace: true })

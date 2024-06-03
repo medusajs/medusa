@@ -694,13 +694,10 @@
     "from": "Shipping from",
     "add": "Add shipping",
     "connectProvider": "Connect provider",
-    "addZone": "Add shipping zone",
-    "enablePickup": "Enable pickup",
-    "enableDelivery": "Enable delivery",
-    "deleteLocation": {
+    "delete": {
       "label": "Delete Location",
-      "confirm": "Are you sure you want to delete {{name}} location",
-      "success": "{{name}} location successfully deleted"
+      "description": "Are you sure you want to delete the location \"{{name}}\"? This action cannot be undone.",
+      "successToast": "{{name}} location successfully deleted"
     },
     "noRecords": {
       "action": "Add Location",
@@ -717,40 +714,46 @@
       "placeholder": "Not covered by any shipping zones.",
       "salesChannels": "Connected Sales Channels",
       "delete": "Delete shipping",
-      "disableWarning": "Are you sure that you wnat to disable \"{{name}}\"? This will delete all assocciated service zones and shipping options.",
-      "toast": {
-        "disable": "\"{{name}}\" disabled"
-      },
       "addZone": "Add service zone",
       "pickup": {
-        "title": "Pick up",
-        "enable": "Enable pickup",
-        "offers": "Offers pick up in"
+        "header": "Offers pick up in",
+        "disable": {
+          "warning": "Are you sure you want to disable pick up for \"{{name}}\"? This will also delete all assocciated service zones and shipping options.",
+          "successToast": "Pick up for \"{{name}}\" was successfully disabled."
+        },
+        "enable": {
+          "successToast": "Pick up for \"{{name}}\" was successfully enabled."
+        }
       },
       "delivery": {
-        "title": "Shipping",
-        "enable": "Enable delivery",
-        "offers": "Offers shippping to"
+        "header": "Offers shippping to",
+        "disable": {
+          "warning": "Are you sure you want to disable delivery for \"{{name}}\"? This will also delete all assocciated service zones and shipping options.",
+          "successToast": "Delivery for \"{{name}}\" was successfully disabled."
+        },
+        "enable": {
+          "successToast": "Delivery for \"{{name}}\" was successfully enabled."
+        }
       }
     },
     "serviceZone": {
       "create": {
         "title": "Add Service Zone for {{fulfillmentSet}}",
         "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone.",
-        "successToast": "Service zone {{name}} was successfully created."
+        "successToast": "Service zone \"{{name}}\" was successfully created."
       },
       "edit": {
         "title": "Edit Service Zone"
+      },
+      "delete": {
+        "warning": "Are you sure you want to delete the service zone \"{{name}}\"? This will also delete all assocciated shipping options.",
+        "successToast": "Service zone \"{{name}}\" was successfully deleted."
       },
       "manageAreas": {
         "header": "Manage Areas for {{name}}",
         "label": "Areas in this service zone",
         "hint": "Select the geographical areas that should be covered by this service zone.",
         "action": "Manage areas"
-      },
-      "deleteWarning": "Are you sure you want to delete \"{{name}}\". This will also delete all assocciated shipping options.",
-      "toast": {
-        "delete": "Zone \"{{name}}\" deleted successfully."
       },
       "editPrices": "Edit prices",
       "editOption": "Edit option",
