@@ -63,7 +63,7 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "./dist/modules/my-fulfillment",
+            resolve: "./modules/my-fulfillment",
             options: {
               config: {
                 "my-fulfillment": {

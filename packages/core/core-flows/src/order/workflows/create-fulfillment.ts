@@ -4,6 +4,7 @@ import {
   FulfillmentWorkflow,
   OrderDTO,
   OrderWorkflow,
+  ReservationItemDTO,
 } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
@@ -13,7 +14,7 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createLinkStep, useRemoteQueryStep } from "../../common"
+import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
 import { adjustInventoryLevelsStep } from "../../inventory"
 import {
@@ -70,6 +71,7 @@ function prepareFulfillmentData({
   order,
   input,
   shippingOption,
+  reservations,
 }: {
   order: OrderDTO
   input: OrderWorkflow.CreateOrderFulfillmentWorkflowInput
@@ -78,15 +80,21 @@ function prepareFulfillmentData({
     provider_id: string
     service_zone: { fulfillment_set: { location?: { id: string } } }
   }
+  reservations: ReservationItemDTO[]
 }) {
   const inputItems = input.items
   const orderItemsMap = new Map<string, Required<OrderDTO>["items"][0]>(
     order.items!.map((i) => [i.id, i])
   )
+  const reservationItemMap = new Map<string, ReservationItemDTO>(
+    reservations.map((r) => [r.line_item_id as string, r])
+  )
   const fulfillmentItems = inputItems.map((i) => {
     const orderItem = orderItemsMap.get(i.id)!
+    const reservation = reservationItemMap.get(i.id)!
     return {
       line_item_id: i.id,
+      inventory_item_id: reservation.inventory_item_id,
       quantity: i.quantity,
       title: orderItem.variant_title ?? orderItem.title,
       sku: orderItem.variant_sku || "",
@@ -118,7 +126,7 @@ function prepareFulfillmentData({
   }
 }
 
-function prepareInventoryReservations({ reservations, order, input }) {
+function prepareInventoryUpdate({ reservations, order, input }) {
   if (!reservations || !reservations.length) {
     throw new Error(
       `No stock reservation found for items ${input.items.map((i) => i.id)}`
@@ -215,8 +223,27 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }).config({ name: "get-shipping-option" })
 
+    const lineItemIds = transform({ order }, ({ order }) => {
+      return order.items?.map((i) => i.id)
+    })
+    const reservations = useRemoteQueryStep({
+      entry_point: "reservations",
+      fields: [
+        "id",
+        "line_item_id",
+        "quantity",
+        "inventory_item_id",
+        "location_id",
+      ],
+      variables: {
+        filter: {
+          line_item_id: lineItemIds,
+        },
+      },
+    }).config({ name: "get-reservations" })
+
     const fulfillmentData = transform(
-      { order, input, shippingOption },
+      { order, input, shippingOption, reservations },
       prepareFulfillmentData
     )
 
@@ -240,30 +267,11 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         ]
       }
     )
-    createLinkStep(link)
-
-    const lineItemIds = transform({ order }, ({ order }) => {
-      return order.items?.map((i) => i.id)
-    })
-    const reservations = useRemoteQueryStep({
-      entry_point: "reservations",
-      fields: [
-        "id",
-        "line_item_id",
-        "quantity",
-        "inventory_item_id",
-        "location_id",
-      ],
-      variables: {
-        filter: {
-          line_item_id: lineItemIds,
-        },
-      },
-    }).config({ name: "get-reservations" })
+    createRemoteLinkStep(link)
 
     const { toDelete, toUpdate, inventoryAdjustment } = transform(
       { order, reservations, input },
-      prepareInventoryReservations
+      prepareInventoryUpdate
     )
 
     parallelize(
