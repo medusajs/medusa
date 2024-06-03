@@ -8,6 +8,7 @@ export type BadgeVariant =
   | "blue"
   | "red"
   | "neutral"
+  | "code"
 
 export type BadgeProps = {
   className?: string
@@ -31,6 +32,9 @@ export const Badge = ({ className, variant, children }: BadgeProps) => {
           "bg-medusa-tag-red-bg text-medusa-tag-red-text border-medusa-tag-red-border",
         variant === "neutral" &&
           "bg-medusa-tag-neutral-bg text-medusa-tag-neutral-text border-medusa-tag-neutral-border",
+        variant === "code" &&
+          "bg-medusa-contrast-bg-subtle text-medusa-contrast-fg-secondary border-medusa-contrast-border-bot",
+        // needed for tailwind utilities
         "badge",
         className
       )}

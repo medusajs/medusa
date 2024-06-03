@@ -32,9 +32,10 @@ export const Card = ({
     <div
       className={clsx(
         "bg-medusa-bg-subtle w-full rounded",
-        "shadow-card-rest dark:shadow-card-rest-dark py-docs_0.75 relative px-docs_1",
-        "flex items-start gap-docs_1 transition-shadow",
-        href && "hover:shadow-card-hover dark:hover:shadow-card-hover-dark",
+        "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark p-docs_0.75 relative",
+        "flex items-start gap-docs_0.75 transition-shadow",
+        href &&
+          "hover:shadow-elevation-card-hover dark:hover:shadow-elevation-card-hover-dark",
         className
       )}
     >

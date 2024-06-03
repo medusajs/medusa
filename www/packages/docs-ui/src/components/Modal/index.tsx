@@ -101,7 +101,7 @@ export const Modal = ({
         className={clsx(
           "bg-medusa-bg-base rounded-docs_sm",
           "border-medusa-border-base border border-solid",
-          "shadow-modal dark:shadow-modal-dark",
+          "shadow-elevation-modal dark:shadow-elevation-modal-dark",
           "w-[90%] md:h-auto md:w-[75%] lg:w-[560px]",
           modalContainerClassName
         )}

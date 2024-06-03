@@ -122,7 +122,7 @@ export const Search = ({
             formRef={searchBoxRef}
           />
           <Button
-            variant="clear"
+            variant="transparent"
             className={clsx(
               "bg-medusa-bg-base block md:hidden",
               "border-0 border-solid",
