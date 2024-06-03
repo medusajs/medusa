@@ -5,6 +5,7 @@ import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 type DismissRemoteLinksStepInput = LinkDefinition | LinkDefinition[]
 
+// TODO: add ability for this step to restore links from only foreign keys
 export const dismissRemoteLinkStepId = "dismiss-remote-links"
 export const dismissRemoteLinkStep = createStep(
   dismissRemoteLinkStepId,

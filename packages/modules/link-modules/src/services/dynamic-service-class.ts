@@ -1,4 +1,5 @@
 import { Constructor, ILinkModule, ModuleJoinerConfig } from "@medusajs/types"
+import { isDefined } from "@medusajs/utils"
 import { LinkModuleService } from "@services"
 
 export function getModuleService(
@@ -11,9 +12,9 @@ export function getModuleService(
 
   // If extraDataFields is not defined, pick the fields to populate and validate from the
   // database config if any fields are provided.
-  if (typeof joinerConfig_.extraDataFields === "undefined") {
+  if (!isDefined(joinerConfig_.extraDataFields)) {
     joinerConfig_.extraDataFields = Object.keys(
-      databaseConfig.extraDataFields || {}
+      databaseConfig.extraFields || {}
     )
   }
 

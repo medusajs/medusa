@@ -191,7 +191,7 @@ medusaIntegrationTestRunner({
 
             expect(errors).toEqual([
               {
-                action: "update-links-step",
+                action: "update-remote-links-step",
                 handlerType: "invoke",
                 error: expect.objectContaining({
                   message: `Could not find all existing links from data`,
