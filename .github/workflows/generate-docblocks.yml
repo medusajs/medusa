@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js 20
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 21
 
       - name: Install Dependencies
         run: yarn
@@ -73,7 +73,7 @@ jobs:
       - name: Setup Node.js 20
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 21
 
       - name: Install Dependencies
         run: yarn

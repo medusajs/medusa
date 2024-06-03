@@ -5,7 +5,7 @@ inputs:
   node-version:
     description: "Node version"
     required: false
-    default: "16.10.0"
+    default: "21.1.0"
   cache-extension:
     description: "Extension for fetching cached dependencies"
     required: true

@@ -36,7 +36,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 21
           cache: "yarn"
 
       - name: Assert changed
@@ -158,74 +158,74 @@ jobs:
           DB_USERNAME: postgres
 
   integration-tests-http-matrix:
-   needs: setup
-   name: Shard (${{ matrix.chunk }}) HTTP Integration Tests
-   runs-on: ubuntu-latest
-   strategy:
-     fail-fast: false
-     matrix:
-       chunk: ${{ fromJSON(needs.setup.outputs.http-matrix) }}
-   env:
-     TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-     TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-  
-   services:
-     redis:
-       image: redis
-       options: >-
-         --health-cmd "redis-cli ping"
-         --health-interval 1s
-         --health-timeout 10s
-         --health-retries 10
-       ports:
-         - 6379:6379
-     postgres:
-       image: postgres
-       env:
-         POSTGRES_PASSWORD: postgres
-         POSTGRES_USER: postgres
-       options: >-
-         --health-cmd pg_isready
-         --health-interval 1s
-         --health-timeout 10s
-         --health-retries 10
-       ports:
-         - 5432:5432
+    needs: setup
+    name: Shard (${{ matrix.chunk }}) HTTP Integration Tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        chunk: ${{ fromJSON(needs.setup.outputs.http-matrix) }}
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
-   steps:
-     - name: Checkout
-       uses: actions/checkout@v3
-       with:
-         fetch-depth: 0
-  
-     - name: Install dependencies
-       uses: ./.github/actions/cache-deps
-       with:
-         extension: pipeline
-  
-     - name: Run HTTP integration tests
-       run: yarn test:integration:http
-       env:
-         DB_USERNAME: postgres
-         DB_PASSWORD: postgres
-         NODE_OPTIONS: "--max_old_space_size=4096"
-         CHUNK: ${{ matrix.chunk }}
-         CHUNKS: ${{ needs.setup.outputs.http-chunks }}
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 1s
+          --health-timeout 10s
+          --health-retries 10
+        ports:
+          - 6379:6379
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 1s
+          --health-timeout 10s
+          --health-retries 10
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
+
+      - name: Run HTTP integration tests
+        run: yarn test:integration:http
+        env:
+          DB_USERNAME: postgres
+          DB_PASSWORD: postgres
+          NODE_OPTIONS: "--max_old_space_size=4096"
+          CHUNK: ${{ matrix.chunk }}
+          CHUNKS: ${{ needs.setup.outputs.http-chunks }}
 
   integration-tests-http:
-   if: ${{ always() }}
-   runs-on: ubuntu-latest
-   needs: integration-tests-http-matrix
-   steps:
-     - run: exit 1
-       if: >-
-         ${{
-              contains(needs.integration-tests-http-matrix.result, 'failure')
-           || contains(needs.integration-tests-http-matrix.result, 'cancelled')
-           || contains(needs.integration-tests-http-matrix.result, 'skipped')
-         }}
-     - run: exit 0
-       if: ${{ contains(needs.integration-tests-http-matrix.result, 'success') }}
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    needs: integration-tests-http-matrix
+    steps:
+      - run: exit 1
+        if: >-
+          ${{
+               contains(needs.integration-tests-http-matrix.result, 'failure')
+            || contains(needs.integration-tests-http-matrix.result, 'cancelled')
+            || contains(needs.integration-tests-http-matrix.result, 'skipped')
+          }}
+      - run: exit 0
+        if: ${{ contains(needs.integration-tests-http-matrix.result, 'success') }}
 
   unit-tests:
     if: ${{ always() }}

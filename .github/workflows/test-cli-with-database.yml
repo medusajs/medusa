@@ -45,7 +45,7 @@ jobs:
         uses: ./.github/actions/setup-server
         with:
           cache-extension: "cli-test"
-          node-version: 20
+          node-version: 21
 
       - name: Install Medusa cli
         run: npm i -g @medusajs/medusa-cli@preview
