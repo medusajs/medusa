@@ -22,16 +22,23 @@ export const registerMedusaModule = (
 ): Record<string, ModuleResolution> => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
 
-  const modDefinition = definition ??
-    ModulesDefinition[moduleKey] ?? {
-      key: moduleKey,
-      registrationName: moduleKey,
-      label: upperCaseFirst(moduleKey),
-    }
+  const isCustomModule = !definition && !ModulesDefinition[moduleKey]
+
+  let customModuleConfig
+  if (isCustomModule) {
+    customModuleConfig = getCustomModuleResolution(
+      moduleKey,
+      moduleDeclaration as Partial<
+        InternalModuleDeclaration | ExternalModuleDeclaration
+      >
+    )
+  }
+
+  let modDefinition =
+    definition ?? ModulesDefinition[moduleKey] ?? customModuleConfig.definition
 
   const modDeclaration =
-    moduleDeclaration ??
-    (modDefinition?.defaultModuleDeclaration as InternalModuleDeclaration)
+    moduleDeclaration ?? modDefinition?.defaultModuleDeclaration
 
   if (modDeclaration !== false && !modDeclaration) {
     throw new Error(`Module: ${moduleKey} has no declaration.`)
@@ -49,11 +56,8 @@ export const registerMedusaModule = (
     return moduleResolutions
   }
 
-  if (modDefinition === undefined) {
-    moduleResolutions[moduleKey] = getCustomModuleResolution(
-      moduleKey,
-      moduleDeclaration as InternalModuleDeclaration
-    )
+  if (isCustomModule) {
+    moduleResolutions[moduleKey] = customModuleConfig
     return moduleResolutions
   }
 
@@ -87,39 +91,58 @@ function normalizePath(path: string | undefined): string {
 
 function getCustomModuleResolution(
   key: string,
-  moduleConfig: InternalModuleDeclaration | string
+  moduleConfig?:
+    | Partial<InternalModuleDeclaration>
+    | Partial<ExternalModuleDeclaration>
 ): ModuleResolution {
+  const conf = isObject(moduleConfig) ? moduleConfig : {}
+
+  const confExt_ = conf as ExternalModuleDeclaration
+  if (confExt_?.scope === MODULE_SCOPE.EXTERNAL || confExt_?.server) {
+    return {
+      definition: {
+        key,
+        registrationName: key,
+        label: `Custom: ${upperCaseFirst(key)}`,
+        defaultPackage: "",
+        defaultModuleDeclaration: {
+          resources: MODULE_RESOURCE_TYPE.SHARED,
+          scope: MODULE_SCOPE.INTERNAL,
+        },
+      },
+      moduleDeclaration: {
+        scope: MODULE_SCOPE.EXTERNAL,
+        server: confExt_?.server!,
+      } as ExternalModuleDeclaration,
+    }
+  }
+
+  const conf_ = conf as InternalModuleDeclaration
+  const dependencies: any = conf_?.dependencies ?? []
+
   const originalPath = normalizePath(
-    (isString(moduleConfig) ? moduleConfig : moduleConfig.resolve) as string
+    (isString(moduleConfig) ? moduleConfig : conf_?.resolve) as string
   )
   const resolutionPath = resolveCwd(originalPath)
-
-  const conf = isObject(moduleConfig)
-    ? moduleConfig
-    : ({} as InternalModuleDeclaration)
-
-  const dependencies = conf?.dependencies ?? []
 
   return {
     resolutionPath,
     definition: {
       key,
-      label: `Custom: ${key}`,
-      isRequired: false,
-      defaultPackage: "",
-      dependencies,
       registrationName: key,
+      label: `Custom: ${upperCaseFirst(key)}`,
+      defaultPackage: "",
       defaultModuleDeclaration: {
         resources: MODULE_RESOURCE_TYPE.SHARED,
         scope: MODULE_SCOPE.INTERNAL,
       },
     },
     moduleDeclaration: {
-      resources: conf?.resources ?? MODULE_RESOURCE_TYPE.SHARED,
+      resources: conf_?.resources ?? MODULE_RESOURCE_TYPE.SHARED,
       scope: MODULE_SCOPE.INTERNAL,
     },
     dependencies,
-    options: conf?.options ?? {},
+    options: conf_?.options ?? {},
   }
 }
 

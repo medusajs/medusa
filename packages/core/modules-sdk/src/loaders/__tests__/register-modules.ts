@@ -62,7 +62,7 @@ describe("module definitions loader", () => {
         resolutionPath: "@medusajs/test-service-resolved",
         definition: expect.objectContaining({
           key: "customModulesABC",
-          label: "Custom: customModulesABC",
+          label: "Custom: CustomModulesABC",
           registrationName: "customModulesABC",
         }),
         moduleDeclaration: {
@@ -234,6 +234,79 @@ describe("module definitions loader", () => {
           },
         })
       )
+    })
+
+    it("Resolves a pre existent module as external", () => {
+      Object.assign(ModulesDefinition, {
+        [defaultDefinition.key]: defaultDefinition,
+      })
+
+      const res = registerMedusaModule(defaultDefinition.key, {
+        scope: MODULE_SCOPE.EXTERNAL,
+        server: {
+          type: "http",
+          url: "http://localhost:3008",
+          options: {
+            token: "123abc==",
+          },
+        },
+      })
+
+      expect(res).toEqual({
+        testService: {
+          resolutionPath: false,
+          definition: {
+            key: "testService",
+            registrationName: "testService",
+            defaultPackage: "@medusajs/test-service",
+            label: "TestService",
+            isRequired: false,
+            defaultModuleDeclaration: {
+              scope: "internal",
+              resources: "shared",
+            },
+          },
+          moduleDeclaration: {
+            scope: "external",
+            server: {
+              type: "http",
+              url: "http://localhost:3008",
+              options: {
+                token: "123abc==",
+              },
+            },
+          },
+        },
+      })
+    })
+
+    it("Resolves a custom external module", () => {
+      const res = registerMedusaModule("customExternalModule", {
+        scope: MODULE_SCOPE.EXTERNAL,
+        server: {
+          type: "http",
+          url: "http://localhost:3000",
+        },
+      })
+
+      expect(res).toEqual({
+        customExternalModule: {
+          resolutionPath: false,
+          definition: expect.objectContaining({
+            key: "customExternalModule",
+            registrationName: "customExternalModule",
+            label: "Custom: CustomExternalModule",
+            defaultPackage: "",
+          }),
+          moduleDeclaration: {
+            scope: "external",
+            server: {
+              type: "http",
+              url: "http://localhost:3000",
+            },
+          },
+        },
+      })
     })
   })
 })

@@ -78,7 +78,7 @@ export type ExternalModuleDeclaration = {
 }
 
 export type ModuleResolution = {
-  resolutionPath: string | false
+  resolutionPath?: string | false
   definition: ModuleDefinition
   options?: Record<string, unknown>
   dependencies?: string[]
