@@ -102,15 +102,9 @@ export function createWorkflow<
 
   const handlers: WorkflowHandler = new Map()
 
-  if (WorkflowManager.getWorkflow(name)) {
-    WorkflowManager.unregister(name)
-  }
-
-  WorkflowManager.register(name, undefined, handlers, options)
-
   const context: CreateWorkflowComposerContext = {
     workflowId: name,
-    flow: WorkflowManager.getTransactionDefinition(name),
+    flow: WorkflowManager.getEmptyTransactionDefinition(),
     handlers,
     hooks_: [],
     hooksCallback_: {},
@@ -141,7 +135,7 @@ export function createWorkflow<
 
   delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
 
-  WorkflowManager.update(name, context.flow, handlers, options)
+  WorkflowManager.register(name, context.flow, handlers, options)
 
   const workflow = exportWorkflow<TData, TResult>(
     name,
