@@ -59,6 +59,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     const entityIdKey = `${actor_type}_id`
     const entityId = authIdentity.app_metadata?.[entityIdKey]
     const { jwtSecret, jwtExpiresIn } = http
+
     const token = generateJwtToken(
       {
         actor_id: entityId,
