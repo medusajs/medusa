@@ -1,6 +1,6 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { UserDTO } from "@medusajs/types"
-import { Container, Heading, Text, clx, usePrompt } from "@medusajs/ui"
+import { Container, Heading, Text, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -69,17 +69,11 @@ export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
           ]}
         />
       </div>
-      <div className="grid grid-cols-2 items-center px-6 py-4">
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.name")}
         </Text>
-        <Text
-          size="small"
-          leading="compact"
-          className={clx({
-            "text-ui-fg-subtle": !name,
-          })}
-        >
+        <Text size="small" leading="compact">
           {name ?? "-"}
         </Text>
       </div>

@@ -1,3 +1,4 @@
+import { BatchMethodRequest } from "@medusajs/types"
 import { ProductStatus } from "@medusajs/utils"
 import { z } from "zod"
 import { GetProductsParams } from "../../utils/common-validators"
@@ -60,6 +61,9 @@ export const AdminGetProductOptionsParams = createFindParams({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
     title: z.string().optional(),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
     $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
     $or: z.lazy(() => AdminGetProductsParams.array()).optional(),
   })
@@ -232,3 +236,56 @@ export const AdminBatchUpdateProduct = AdminUpdateProduct.extend({
 // @ValidateNested({ each: true })
 // @IsArray()
 // categories?: ProductProductCategoryReq[]
+
+export const AdminCreateVariantInventoryItem = z.object({
+  required_quantity: z.number(),
+  inventory_item_id: z.string(),
+})
+export type AdminCreateVariantInventoryItemType = z.infer<
+  typeof AdminCreateVariantInventoryItem
+>
+
+export const AdminUpdateVariantInventoryItem = z.object({
+  required_quantity: z.number(),
+})
+export type AdminUpdateVariantInventoryItemType = z.infer<
+  typeof AdminUpdateVariantInventoryItem
+>
+
+export const AdminBatchCreateVariantInventoryItem = z
+  .object({
+    required_quantity: z.number(),
+    inventory_item_id: z.string(),
+    variant_id: z.string(),
+  })
+  .strict()
+export type AdminBatchCreateVariantInventoryItemType = z.infer<
+  typeof AdminBatchCreateVariantInventoryItem
+>
+
+export const AdminBatchUpdateVariantInventoryItem = z
+  .object({
+    required_quantity: z.number(),
+    inventory_item_id: z.string(),
+    variant_id: z.string(),
+  })
+  .strict()
+export type AdminBatchUpdateVariantInventoryItemType = z.infer<
+  typeof AdminBatchUpdateVariantInventoryItem
+>
+
+export const AdminBatchDeleteVariantInventoryItem = z
+  .object({
+    inventory_item_id: z.string(),
+    variant_id: z.string(),
+  })
+  .strict()
+export type AdminBatchDeleteVariantInventoryItemType = z.infer<
+  typeof AdminBatchDeleteVariantInventoryItem
+>
+
+export type AdminBatchVariantInventoryItemsType = BatchMethodRequest<
+  AdminBatchCreateVariantInventoryItemType,
+  AdminBatchUpdateVariantInventoryItemType,
+  AdminBatchDeleteVariantInventoryItemType
+>

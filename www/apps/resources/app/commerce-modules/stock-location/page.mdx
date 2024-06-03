@@ -42,23 +42,6 @@ const stockLocation = await stockLocationModuleService.update(
 
 ---
 
-## Configure Stock Location Module
-
-To use the Stock Location Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.STOCK_LOCATION]: true,
-}
-```
-
----
-
 ## How to Use Stock Location Module's Service
 
 You can use the Stock Location Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.STOCK_LOCATION` imported from `@medusajs/modules-sdk`.

@@ -63,6 +63,7 @@
     "test:chunk": "./scripts/run-workspace-unit-tests-in-chunks.sh",
     "test:integration:packages": "turbo run test:integration --concurrency=50% --no-daemon --no-cache --force --filter='./packages/*' --filter='./packages/core/*' --filter='./packages/cli/*' --filter='./packages/modules/*' --filter='./packages/modules/providers/*'",
     "test:integration:api": "turbo run test:integration:chunk --concurrency=50% --no-daemon --no-cache --force --filter=integration-tests-api",
+    "test:integration:http": "turbo run test:integration:chunk --concurrency=50% --no-daemon --no-cache --force --filter=integration-tests-http",
     "test:integration:modules": "turbo run test:integration:chunk --concurrency=50% --no-daemon --no-cache --force --filter=integration-tests-modules",
     "openapi:generate": "yarn ./packages/cli/oas/oas-github-ci run ci --with-full-file",
     "medusa-oas": "yarn ./packages/cli/oas/medusa-oas-cli run medusa-oas",

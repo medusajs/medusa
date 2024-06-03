@@ -125,14 +125,14 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     databaseName: process.env.DATABASE_DATABASE ||
+   *     databaseName: process.env.DATABASE_NAME || 
    *       "medusa-store",
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   databaseName?: string
@@ -164,13 +164,13 @@ export type ProjectConfigOptions = {
    * Then, use the value in `medusa-config.js`:
    *
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
    *     databaseUrl: process.env.DATABASE_URL,
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   databaseUrl?: string
@@ -179,14 +179,14 @@ export type ProjectConfigOptions = {
    * The database schema to connect to. This is not required to provide if you’re using the default schema, which is `public`.
    *
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
    *     databaseSchema: process.env.DATABASE_SCHEMA ||
    *       "custom",
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   databaseSchema?: string
@@ -202,15 +202,13 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     databaseLogging: [
-   *       "query", "error",
-   *     ],
+   *     databaseLogging: ["query", "error"]
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   databaseLogging?: LoggerOptions
@@ -233,16 +231,14 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     databaseExtra:
-   *       process.env.NODE_ENV !== "development"
-   *         ? { ssl: { rejectUnauthorized: false } }
-   *         : {},
+   *     databaseExtra: process.env.NODE_ENV !== "development" ?
+   *       { ssl: { rejectUnauthorized: false } } : {}
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   databaseExtra?: Record<string, unknown> & {
@@ -266,16 +262,14 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     databaseDriverOptions:
-   *       process.env.NODE_ENV !== "development"
-   *         ? { connection: { ssl: { rejectUnauthorized: false } } }
-   *         : {},
+   *     databaseDriverOptions: process.env.NODE_ENV !== "development" ?
+   *       { ssl: { rejectUnauthorized: false } } : {}
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   databaseDriverOptions?: Record<string, unknown> & {
@@ -311,14 +305,14 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     redisUrl: process.env.REDIS_URL ||
+   *     redisUrl: process.env.REDIS_URL || 
    *       "redis://localhost:6379",
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   redisUrl?: string
@@ -330,14 +324,13 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     redisPrefix: process.env.REDIS_PREFIX ||
-   *       "medusa:",
+   *     redisPrefix: process.env.REDIS_URL || "medusa:",
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   redisPrefix?: string
@@ -348,16 +341,16 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
    *     redisOptions: {
-   *       connectionName: process.env.REDIS_CONNECTION_NAME ||
+   *       connectionName: process.env.REDIS_CONNECTION_NAME || 
    *         "medusa",
-   *     },
+   *     }
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   redisOptions?: RedisOptions
@@ -367,16 +360,15 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
    *     sessionOptions: {
-   *       name: process.env.SESSION_NAME ||
-   *         "custom",
-   *     },
+   *       name: process.env.SESSION_NAME || "custom",
+   *     }
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   sessionOptions?: SessionOptions
@@ -387,21 +379,7 @@ export type ProjectConfigOptions = {
    *
    * If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`.
    *
-   * @example
-   * ```js title="medusa-config.js"
-   * module.exports = {
-   *   projectConfig: {
-   *     httpCompression: {
-   *       enabled: true,
-   *       level: 6,
-   *       memLevel: 8,
-   *       threshold: 1024,
-   *     },
-   *     // ...
-   *   },
-   *   // ...
-   * }
-   * ```
+   * @ignore
    *
    * @deprecated use {@link http }'s `compression` property instead.
    *
@@ -413,13 +391,13 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
    *     jobsBatchSize: 100
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   jobsBatchSize?: number
@@ -435,13 +413,13 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
    *     workerMode: "shared"
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   workerMode?: "shared" | "worker" | "server"
@@ -451,16 +429,18 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
    *     http: {
-   *       cookieSecret: "some-super-secret",
-   *       compression: { ... },
+   *       cookieSecret: "supersecret",
+   *       compression: {
+   *         // ...
+   *       }
    *     }
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   http: {
@@ -472,14 +452,15 @@ export type ProjectConfigOptions = {
      *
      * @example
      * ```js title="medusa-config.js"
-     * module.exports = {
+     * module.exports = defineConfig({
      *   projectConfig: {
      *     http: {
-     *       cookieSecret: "supersecret"
+     *       jwtSecret: "supersecret",
      *     }
+     *     // ...
      *   },
      *   // ...
-     * }
+     * })
      * ```
      */
     jwtSecret?: string
@@ -488,14 +469,15 @@ export type ProjectConfigOptions = {
      *
      * @example
      * ```js title="medusa-config.js"
-     * module.exports = {
+     * module.exports = defineConfig({
      *   projectConfig: {
      *     http: {
      *       jwtExpiresIn: "2d"
      *     }
+     *     // ...
      *   },
      *   // ...
-     * }
+     * })
      * ```
      */
     jwtExpiresIn?: string
@@ -507,15 +489,15 @@ export type ProjectConfigOptions = {
      *
      * @example
      * ```js title="medusa-config.js"
-     * module.exports = {
+     * module.exports = defineConfig({
      *   projectConfig: {
      *     http: {
-     *      cookieSecret: "supersecret"
+     *       cookieSecret: "supersecret"
      *     }
      *     // ...
      *   },
      *   // ...
-     * }
+     * })
      * ```
      */
     cookieSecret?: string
@@ -546,7 +528,7 @@ export type ProjectConfigOptions = {
      * Then, set the configuration in `medusa-config.js`:
      *
      * ```js title="medusa-config.js"
-     * module.exports = {
+     * module.exports = defineConfig({
      *   projectConfig: {
      *     http: {
      *       authCors: process.env.AUTH_CORS
@@ -554,13 +536,13 @@ export type ProjectConfigOptions = {
      *     // ...
      *   },
      *   // ...
-     * }
+     * })
      * ```
      *
      * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
      *
      * ```js title="medusa-config.js"
-     * module.exports = {
+     * module.exports = defineConfig({
      *   projectConfig: {
      *     http: {
      *       authCors: "/http:\\/\\/localhost:700\\d+$/",
@@ -568,7 +550,7 @@ export type ProjectConfigOptions = {
      *     // ...
      *   },
      *   // ...
-     * }
+     * })
      * ```
      */
     authCors: string
@@ -583,20 +565,20 @@ export type ProjectConfigOptions = {
      *
      * @example
      * ```js title="medusa-config.js"
-     * module.exports = {
+     * module.exports = defineConfig({
      *   projectConfig: {
      *     http: {
      *       compression: {
      *         enabled: true,
      *         level: 6,
      *         memLevel: 8,
-     *         threshold: 1024,
+     *         threshold: 1024
      *       }
-     *     },
+     *     }
      *     // ...
      *   },
      *   // ...
-     * }
+     * })
      * ```
      */
     compression?: HttpCompressionOptions
@@ -627,7 +609,7 @@ export type ProjectConfigOptions = {
      * Then, set the configuration in `medusa-config.js`:
      *
      * ```js title="medusa-config.js"
-     * module.exports = {
+     * module.exports = defineConfig({
      *   projectConfig: {
      *     http: {
      *       storeCors: process.env.STORE_CORS,
@@ -635,13 +617,13 @@ export type ProjectConfigOptions = {
      *     // ...
      *   },
      *   // ...
-     * }
+     * })
      * ```
      *
      * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
      *
      * ```js title="medusa-config.js"
-     * module.exports = {
+     * module.exports = defineConfig({
      *   projectConfig: {
      *     http: {
      *       storeCors: "/vercel\\.app$/",
@@ -649,7 +631,7 @@ export type ProjectConfigOptions = {
      *     // ...
      *   },
      *   // ...
-     * }
+     * })
      * ```
      */
     storeCors: string
@@ -681,7 +663,7 @@ export type ProjectConfigOptions = {
      * Then, set the configuration in `medusa-config.js`:
      *
      * ```js title="medusa-config.js"
-     * module.exports = {
+     * module.exports = defineConfig({
      *   projectConfig: {
      *     http: {
      *       adminCors: process.env.ADMIN_CORS,
@@ -689,21 +671,21 @@ export type ProjectConfigOptions = {
      *     // ...
      *   },
      *   // ...
-     * }
+     * })
      * ```
      *
      * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
      *
      * ```js title="medusa-config.js"
-     * module.exports = {
+     * module.exports = defineConfig({
      *   projectConfig: {
      *     http: {
-     *       adminCors: process.env.ADMIN_CORS,
+     *       adminCors: "/vercel\\.app$/",
      *     }
      *     // ...
      *   },
      *   // ...
-     * }
+     * })
      * ```
      */
     adminCors: string
@@ -721,18 +703,18 @@ export type ProjectConfigOptions = {
      * Then, set the configuration in `medusa-config.js`:
      *
      * ```js title="medusa-config.js"
-     * module.exports = {
+     * module.exports = defineConfig({
      *   projectConfig: {
      *     http: {
      *       authMethodsPerActor: {
-     *        user: ['sso'],
-     *        customer: ["emailpass", "google"]
-     *       },
-     *     },
+     *         user: ["email"],
+     *         customer: ["emailpas", "google"]
+     *       }
+     *     }
      *     // ...
      *   },
      *   // ...
-     * }
+     * })
      * ```
      */
     authMethodsPerActor?: Record<string, string[]>
@@ -755,12 +737,20 @@ export type ProjectConfigOptions = {
  * For example:
  *
  * ```js title="medusa-config.js"
- * module.exports = {
- *   projectConfig,
- *   admin,
- *   modules,
- *   featureFlags,
- * }
+ * module.exports = defineConfig({
+ *   projectConfig: {
+ *     // ...
+ *   },
+ *   admin: {
+ *     // ...
+ *   },
+ *   modules: {
+ *     // ...
+ *   },
+ *   featureFlags: {
+ *     // ...
+ *   }
+ * })
  * ```
  *
  * ---
@@ -785,12 +775,13 @@ export type ConfigModule = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   admin: {
-   *     backendUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
-   *   }
+   *     backendUrl: process.env.MEDUSA_BACKEND_URL || 
+   *       "http://localhost:9000"
+   *   },
    *   // ...
-   * }
+   * })
    * ```
    */
   admin?: AdminOptions
@@ -825,6 +816,11 @@ export type ConfigModule = {
    *   // ...
    * }
    * ```
+   * 
+   * @ignore
+   * 
+   * @privateRemarks
+   * Added the `@\ignore` tag for now so it's not generated in the main docs until we figure out what to do with plugins
    */
   plugins: (
     | {
@@ -840,35 +836,24 @@ export type ConfigModule = {
    *
    * Aside from installing the module with NPM, you must add it to the exported object in `medusa-config.js`.
    *
-   * The keys of the `modules` configuration object refer to the type of module. Its value can be one of the following:
+   * The keys of the `modules` configuration object refer to the module's registration name. Its value can be one of the following:
    *
-   * 1. A boolean value indicating whether the module type is enabled;
-   * 2. Or a string value indicating the name of the module to be used for the module type. This can be used if the module does not require any options;
-   * 3. Or an object having the following properties, but typically you would mainly use the `resolve` and `options` properties only:
-   *     1. `resolve`: a string indicating the name of the module.
-   *     2. `options`: an object indicating the options to pass to the module. These options vary for each module, and you should refer to the module’s documentation for details on them.
-   *     3. `resources`: a string indicating whether the module shares the dependency container with the Medusa core. Its value can either be `shared` or `isolated`. Refer to the [Modules documentation](https://docs.medusajs.com/development/modules/create#module-scope) for more details.
-   *     4. `alias`: a string indicating a unique alias to register the module under. Other modules can’t use the same alias.
-   *     5. `main`: a boolean value indicating whether this module is the main registered module. This is useful when an alias is used.
+   * 1. A boolean value indicating whether the module type is enabled. This is only supported for Medusa's commerce and architectural modules;
+   * 2. Or an object having the following properties:
+   *     1. `resolve`: a string indicating the path to the module relative to `src`, or the module's NPM package name.
+   *     2. `options`: (optional) an object indicating the options to pass to the module.
+   *     3. `definition`: (optional) an object of extra configurations, such as `isQueryable` used when a module has relationships.
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   modules: {
-   *     eventBus: {
-   *       resolve: "@medusajs/event-bus-local",
-   *     },
-   *     cacheService: {
-   *       resolve: "@medusajs/cache-redis",
-   *       options: {
-   *         redisUrl: process.env.CACHE_REDIS_URL,
-   *         ttl: 30,
-   *       },
-   *     },
-   *     // ...
-   *   },
+   *     helloModuleService: {
+   *       resolve: "./modules/hello"
+   *     }
+   *   }
    *   // ...
-   * }
+   * })
    * ```
    */
   modules?: Record<
@@ -882,26 +867,24 @@ export type ConfigModule = {
    * You can specify whether a feature should or shouldn’t be used in your backend by enabling its feature flag. Feature flags can be enabled through either environment
    * variables or through this configuration exported in `medusa-config.js`.
    *
-   * If you want to use the environment variables method, learn more about it in the [Feature Flags documentation](https://docs.medusajs.com/development/feature-flags/toggle#method-one-using-environment-variables).
-   *
    * The `featureFlags` configuration is an object. Its properties are the names of the feature flags. Each property’s value is a boolean indicating whether the feature flag is enabled.
    *
-   * You can find available feature flags and their key name [here](https://github.com/medusajs/medusa/tree/master/packages/medusa/src/loaders/feature-flags).
+   * You can find available feature flags and their key name [here](https://github.com/medusajs/medusa/tree/develop/packages/medusa/src/loaders/feature-flags).
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   featureFlags: {
    *     product_categories: true,
    *     // ...
-   *   },
+   *   }
    *   // ...
-   * }
+   * })
    * ```
    *
    * :::note
    *
-   * After enabling a feature flag, make sure to [run migrations](https://docs.medusajs.com/development/entities/migrations/overview#migrate-command) as it may require making changes to the database.
+   * After enabling a feature flag, make sure to run migrations as it may require making changes to the database.
    *
    * :::
    */

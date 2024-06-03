@@ -70,27 +70,29 @@ const { Modules } = require("@medusajs/modules-sdk")
 
 // ...
 
-const modules = {
+module.exports = defineConfig({
   // ...
-  [Modules.NOTIFICATION]: {
-    resolve: "@medusajs/notification",
-    options: {
-      providers: [
-        {
-          resolve: "./dist/modules/my-notification",
-          options: {
-            config: {
-              "my-notification": {
-                channels: ["email"],
-                // provider options...
+  modules: {
+    [Modules.NOTIFICATION]: {
+      resolve: "@medusajs/notification",
+      options: {
+        providers: [
+          {
+            resolve: "./modules/my-notification",
+            options: {
+              config: {
+                "my-notification": {
+                  channels: ["email"],
+                  // provider options...
+                },
               },
             },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-}
+  }
+})
 \`\`\`
 `,
     ],

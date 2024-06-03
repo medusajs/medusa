@@ -1,10 +1,12 @@
 import {
   ApplicationMethodAllocationValues,
+  BigNumberInput,
   PromotionTypes,
 } from "@medusajs/types"
 import {
   ApplicationMethodAllocation,
   ComputedActions,
+  MathBN,
   MedusaError,
   ApplicationMethodTargetType as TargetType,
   calculateAdjustmentAmountFromPromotion,
@@ -68,7 +70,7 @@ function applyPromotionToItems(
   items:
     | PromotionTypes.ComputeActionContext[TargetType.ITEMS]
     | PromotionTypes.ComputeActionContext[TargetType.SHIPPING_METHODS],
-  appliedPromotionsMap: Map<string, number>,
+  appliedPromotionsMap: Map<string, BigNumberInput>,
   allocationOverride?: ApplicationMethodAllocationValues
 ): PromotionTypes.ComputeActions[] {
   const { application_method: applicationMethod } = promotion
@@ -81,13 +83,16 @@ function applyPromotionToItems(
   const isTargetLineItems = target === TargetType.ITEMS
   const isTargetOrder = target === TargetType.ORDER
 
-  let lineItemsTotal = 0
+  let lineItemsTotal = MathBN.convert(0)
 
   if (allocation === ApplicationMethodAllocation.ACROSS) {
     lineItemsTotal = applicableItems.reduce(
       (acc, item) =>
-        acc + item.subtotal - (appliedPromotionsMap.get(item.id) ?? 0),
-      0
+        MathBN.sub(
+          MathBN.add(acc, item.subtotal),
+          appliedPromotionsMap.get(item.id) ?? 0
+        ),
+      MathBN.convert(0)
     )
   }
 
@@ -113,7 +118,7 @@ function applyPromotionToItems(
       lineItemsTotal
     )
 
-    if (amount <= 0) {
+    if (MathBN.lte(amount, 0)) {
       continue
     }
 
@@ -128,7 +133,7 @@ function applyPromotionToItems(
       continue
     }
 
-    appliedPromotionsMap.set(item.id, appliedPromoValue + amount)
+    appliedPromotionsMap.set(item.id, MathBN.add(appliedPromoValue, amount))
 
     if (isTargetLineItems || isTargetOrder) {
       computedActions.push({

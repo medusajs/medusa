@@ -6,6 +6,7 @@ import {
   ModuleResolution,
 } from "@medusajs/types"
 import { isObject, isString, upperCaseFirst } from "@medusajs/utils"
+import { join } from "path"
 import resolveCwd from "resolve-cwd"
 import { ModulesDefinition } from "../definitions"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../types"
@@ -65,13 +66,33 @@ export const registerMedusaModule = (
   return moduleResolutions
 }
 
+function normalizePath(path: string | undefined): string {
+  let normalizePath = path
+
+  /**
+   * If the project is running on ts-node all relative module resolution
+   * will target the src directory and otherwise the dist directory.
+   * If the path is not relative, then we can safely import from it and let the resolution
+   * happen under the hood.
+   */
+  if (normalizePath?.startsWith("./")) {
+    const sourceDir = process[Symbol.for("ts-node.register.instance")]
+      ? "src"
+      : "dist"
+    normalizePath = join(process.cwd(), sourceDir, normalizePath)
+  }
+
+  return normalizePath ?? ""
+}
+
 function getCustomModuleResolution(
   key: string,
   moduleConfig: InternalModuleDeclaration | string
 ): ModuleResolution {
-  const resolutionPath = resolveCwd(
-    isString(moduleConfig) ? moduleConfig : (moduleConfig.resolve as string)
+  const originalPath = normalizePath(
+    (isString(moduleConfig) ? moduleConfig : moduleConfig.resolve) as string
   )
+  const resolutionPath = resolveCwd(originalPath)
 
   const conf = isObject(moduleConfig)
     ? moduleConfig
@@ -144,9 +165,10 @@ function getInternalModuleResolution(
   // If user added a module and it's overridable, we resolve that instead
   const isStr = isString(moduleConfig)
   if (isStr || (isObj && moduleConfig.resolve)) {
-    resolutionPath = resolveCwd(
-      isStr ? moduleConfig : (moduleConfig.resolve as string)
+    const originalPath = normalizePath(
+      (isString(moduleConfig) ? moduleConfig : moduleConfig.resolve) as string
     )
+    resolutionPath = resolveCwd(originalPath)
   }
 
   const moduleDeclaration = isObj ? moduleConfig : {}

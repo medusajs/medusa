@@ -5,6 +5,7 @@ export const defaultAdminCustomerGroupFields = [
   "created_at",
   "updated_at",
   "deleted_at",
+  "metadata",
 ]
 
 export const retrieveTransformQueryConfig = {

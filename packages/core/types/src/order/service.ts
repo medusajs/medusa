@@ -29,6 +29,7 @@ import {
 } from "./common"
 import {
   CancelOrderChangeDTO,
+  CancelOrderFulfillmentDTO,
   ConfirmOrderChangeDTO,
   CreateOrderAddressDTO,
   CreateOrderAdjustmentDTO,
@@ -1490,9 +1491,17 @@ export interface IOrderModuleService extends IModuleService {
   completeOrder(orderId: string[], sharedContext?: Context): Promise<OrderDTO[]>
   completeOrder(orderId: string, sharedContext?: Context): Promise<OrderDTO>
 
+  cancel(orderId: string[], sharedContext?: Context): Promise<OrderDTO[]>
+  cancel(orderId: string, sharedContext?: Context): Promise<OrderDTO>
+
   // Bundled flows
   registerFulfillment(
     data: RegisterOrderFulfillmentDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  cancelFulfillment(
+    data: CancelOrderFulfillmentDTO,
     sharedContext?: Context
   ): Promise<void>
 
@@ -1505,6 +1514,13 @@ export interface IOrderModuleService extends IModuleService {
     returnData: CreateOrderReturnDTO,
     sharedContext?: Context
   ): Promise<void>
+
+  /*
+  cancelReturn(
+    returnData: CancelOrderReturnDTO,
+    sharedContext?: Context
+  ): Promise<void>
+  */
 
   receiveReturn(
     returnData: ReceiveOrderReturnDTO,

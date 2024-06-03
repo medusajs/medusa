@@ -2,6 +2,7 @@ import {
   deleteRegionsWorkflow,
   updateRegionsWorkflow,
 } from "@medusajs/core-flows"
+import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -18,6 +19,14 @@ export const GET = async (
     req.scope,
     req.remoteQueryConfig.fields
   )
+
+  if (!region) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Region with id: ${req.params.id} not found`
+    )
+  }
+
   res.status(200).json({ region })
 }
 

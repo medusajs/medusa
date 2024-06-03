@@ -14,6 +14,7 @@ import {
 } from "@medusajs/types"
 import {
   arrayDifference,
+  getDuplicates,
   InjectManager,
   InjectTransactionManager,
   isString,
@@ -22,7 +23,6 @@ import {
   ModulesSdkUtils,
   promiseAll,
   removeUndefined,
-  getDuplicates,
 } from "@medusajs/utils"
 
 import { Country, Region } from "@models"

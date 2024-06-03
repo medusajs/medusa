@@ -1,3 +1,4 @@
+import { cancelOrderWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -15,7 +16,13 @@ export const GET = async (
 
   const variables = { id: req.params.id }
 
-  // TODO: cancel order - v1.x - packages/medusa/src/api/routes/admin/orders/cancel-order.ts
+  const input = {
+    order_id: req.params.id,
+  }
+
+  await cancelOrderWorkflow(req.scope).run({
+    input,
+  })
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "order",

@@ -1,18 +1,18 @@
 import { updateProductsStep } from "../steps/update-products"
 
-import {
-  dismissRemoteLinkStep,
-  createLinkStep,
-  useRemoteQueryStep,
-} from "../../common"
-import { arrayDifference } from "@medusajs/utils"
 import { Modules } from "@medusajs/modules-sdk"
 import { ProductTypes } from "@medusajs/types"
+import { arrayDifference } from "@medusajs/utils"
 import {
-  WorkflowData,
   createWorkflow,
   transform,
+  WorkflowData,
 } from "@medusajs/workflows-sdk"
+import {
+  createRemoteLinkStep,
+  dismissRemoteLinkStep,
+  useRemoteQueryStep,
+} from "../../common"
 
 type UpdateProductsStepInputSelector = {
   selector: ProductTypes.FilterableProductProps
@@ -39,6 +39,10 @@ function prepareUpdateProductInput({
   input: WorkflowInput
 }): UpdateProductsStepInput {
   if ("products" in input) {
+    if (!input.products.length) {
+      return { products: [] }
+    }
+
     return {
       products: input.products.map((p) => ({
         ...p,
@@ -72,7 +76,7 @@ function updateProductIds({
     return arrayDifference(productIds, discardedProductIds)
   }
 
-  return !input.update.sales_channels ? [] : productIds
+  return !input.update?.sales_channels ? [] : productIds
 }
 
 function prepareSalesChannelLinks({
@@ -83,6 +87,10 @@ function prepareSalesChannelLinks({
   input: WorkflowInput
 }): Record<string, Record<string, any>>[] {
   if ("products" in input) {
+    if (!input.products.length) {
+      return []
+    }
+
     return input.products
       .filter((p) => p.sales_channels)
       .flatMap((p) =>
@@ -97,7 +105,7 @@ function prepareSalesChannelLinks({
       )
   }
 
-  if (input.selector && input.update.sales_channels?.length) {
+  if (input.selector && input.update?.sales_channels?.length) {
     return updatedProducts.flatMap((p) =>
       input.update.sales_channels!.map((channel) => ({
         [Modules.PRODUCT]: {
@@ -121,6 +129,10 @@ function prepareToDeleteLinks({
     sales_channel_id: string
   }[]
 }) {
+  if (!currentLinks.length) {
+    return []
+  }
+
   return currentLinks.map(({ product_id, sales_channel_id }) => ({
     [Modules.PRODUCT]: {
       product_id,
@@ -161,7 +173,7 @@ export const updateProductsWorkflow = createWorkflow(
       prepareSalesChannelLinks
     )
 
-    createLinkStep(salesChannelLinks)
+    createRemoteLinkStep(salesChannelLinks)
 
     return updatedProducts
   }

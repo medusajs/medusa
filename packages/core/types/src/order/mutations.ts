@@ -368,7 +368,7 @@ export interface UpdateOrderItemWithSelectorDTO {
 
 /** ORDER bundled action flows  */
 
-export interface RegisterOrderFulfillmentDTO {
+interface BaseOrderBundledActionsDTO {
   order_id: string
   description?: string
   internal_note?: string
@@ -384,54 +384,23 @@ export interface RegisterOrderFulfillmentDTO {
   metadata?: Record<string, unknown> | null
 }
 
-export interface RegisterOrderShipmentDTO {
-  order_id: string
-  description?: string
-  internal_note?: string
-  reference?: string
-  reference_id?: string
-  created_by?: string
-  items: {
-    id: string
-    quantity: BigNumberInput
-    internal_note?: string
-    metadata?: Record<string, unknown> | null
-  }[]
-  metadata?: Record<string, unknown> | null
-}
+export interface RegisterOrderFulfillmentDTO
+  extends BaseOrderBundledActionsDTO {}
 
-export interface CreateOrderReturnDTO {
-  order_id: string
-  description?: string
-  reference?: string
-  reference_id?: string
-  internal_note?: string
-  created_by?: string
+export interface CancelOrderFulfillmentDTO extends BaseOrderBundledActionsDTO {}
+
+export interface RegisterOrderShipmentDTO extends BaseOrderBundledActionsDTO {}
+
+export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   shipping_method: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
-  items: {
-    id: string
-    quantity: BigNumberInput
-    internal_note?: string
-    metadata?: Record<string, unknown> | null
-  }[]
-  metadata?: Record<string, unknown> | null
 }
 
-export interface ReceiveOrderReturnDTO {
+export interface CancelOrderReturnDTO {
   order_id: string
-  description?: string
-  internal_note?: string
-  reference?: string
-  reference_id?: string
-  created_by?: string
-  items: {
-    id: string
-    quantity: BigNumberInput
-    internal_note?: string
-    metadata?: Record<string, unknown> | null
-  }[]
-  metadata?: Record<string, unknown> | null
+  return_id: string
 }
+
+export interface ReceiveOrderReturnDTO extends BaseOrderBundledActionsDTO {}
 
 /** ORDER bundled action flows */
 

@@ -96,7 +96,7 @@ moduleIntegrationTestRunner({
             quantity: 3,
           })
 
-          expect(reserveMoreThanInStock).rejects.toThrow(
+          await expect(reserveMoreThanInStock).rejects.toThrow(
             `Not enough stock available for item ${inventoryItem.id} at location location-1`
           )
 
@@ -415,7 +415,7 @@ moduleIntegrationTestRunner({
           ])
         })
 
-        it("deleted reseravation items by line item", async () => {
+        it("deleted reseravation items by line item and restore them", async () => {
           const reservationsPreDeleted = await service.listReservationItems({
             line_item_id: "line-item-id",
           })
@@ -440,6 +440,25 @@ moduleIntegrationTestRunner({
           })
 
           expect(reservationsPostDeleted).toEqual([])
+
+          await service.restoreReservationItemsByLineItem("line-item-id")
+
+          const reservationsPostRestored = await service.listReservationItems({
+            line_item_id: "line-item-id",
+          })
+
+          expect(reservationsPostRestored).toEqual([
+            expect.objectContaining({
+              location_id: "location-1",
+              quantity: 2,
+              line_item_id: "line-item-id",
+            }),
+            expect.objectContaining({
+              location_id: "location-1",
+              quantity: 2,
+              line_item_id: "line-item-id",
+            }),
+          ])
         })
 
         it("adjusts inventory levels accordingly when removing reservations by line item", async () => {
