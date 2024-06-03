@@ -136,6 +136,29 @@ export type ModulesResponse = {
   resolution: string | false
 }[]
 
+type ExtraFieldType =
+  | "date"
+  | "time"
+  | "datetime"
+  | "bigint"
+  | "blob"
+  | "uint8array"
+  | "array"
+  | "enumArray"
+  | "enum"
+  | "json"
+  | "integer"
+  | "smallint"
+  | "tinyint"
+  | "mediumint"
+  | "float"
+  | "double"
+  | "boolean"
+  | "decimal"
+  | "string"
+  | "uuid"
+  | "text"
+
 export type ModuleJoinerConfig = Omit<
   JoinerServiceConfig,
   "serviceName" | "primaryKeys" | "relationships" | "extends"
@@ -172,6 +195,11 @@ export type ModuleJoinerConfig = Omit<
    * If true it expands a RemoteQuery property but doesn't create a pivot table
    */
   isReadOnlyLink?: boolean
+  /**
+   * Fields that will be part of the link record aside from the primary keys that can be updated
+   * If not explicitly defined, this array will be populated by databaseConfig.extraFields
+   */
+  extraDataFields?: string[]
   databaseConfig?: {
     /**
      * Name of the pivot table. If not provided it is auto generated
@@ -184,28 +212,7 @@ export type ModuleJoinerConfig = Omit<
     extraFields?: Record<
       string,
       {
-        type:
-          | "date"
-          | "time"
-          | "datetime"
-          | "bigint"
-          | "blob"
-          | "uint8array"
-          | "array"
-          | "enumArray"
-          | "enum"
-          | "json"
-          | "integer"
-          | "smallint"
-          | "tinyint"
-          | "mediumint"
-          | "float"
-          | "double"
-          | "boolean"
-          | "decimal"
-          | "string"
-          | "uuid"
-          | "text"
+        type: ExtraFieldType
         defaultValue?: string
         nullable?: boolean
         /**
