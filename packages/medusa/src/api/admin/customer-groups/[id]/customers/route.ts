@@ -5,10 +5,6 @@ import {
 } from "../../../../../types/routing"
 
 import { LinkMethodRequest } from "@medusajs/types/src"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
 import { refetchCustomerGroup } from "../../helpers"
 
 export const POST = async (
@@ -33,29 +29,4 @@ export const POST = async (
     req.remoteQueryConfig.fields
   )
   res.status(200).json({ customer_group: customerGroup })
-}
-
-export const GET = async (
-  req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
-) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "customer",
-    variables: {
-      filters: { groups: req.params.id, ...req.filterableFields },
-      ...req.remoteQueryConfig.pagination,
-    },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const { rows: customers, metadata } = await remoteQuery(queryObject)
-
-  res.status(200).json({
-    customers,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
-  })
 }

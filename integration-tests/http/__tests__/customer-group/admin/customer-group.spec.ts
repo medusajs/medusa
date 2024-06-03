@@ -152,6 +152,8 @@ medusaIntegrationTestRunner({
       })
     })
 
+    // BREAKING: This endpoint has been removed in favor of `GET /admin/customers?customer_group_id=...`
+    //  Keeping this test to keep a record of it
     describe("GET /admin/customer-groups/{id}/customers", () => {
       it("should list customers in group and count", async () => {
         await api.post(
@@ -161,7 +163,7 @@ medusaIntegrationTestRunner({
         )
 
         const response = await api.get(
-          `/admin/customer-groups/${group.id}/customers`,
+          `/admin/customers?groups=${group.id}`,
           adminHeaders
         )
 
