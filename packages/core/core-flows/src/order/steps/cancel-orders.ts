@@ -6,9 +6,9 @@ type CompleteOrdersStepInput = {
   orderIds: string[]
 }
 
-export const completeOrdersStepId = "complete-orders"
-export const completeOrdersStep = createStep(
-  completeOrdersStepId,
+export const cancelOrdersStepId = "cancel-orders"
+export const cancelOrdersStep = createStep(
+  cancelOrdersStepId,
   async (data: CompleteOrdersStepInput, { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
@@ -23,20 +23,21 @@ export const completeOrdersStep = createStep(
       }
     )
 
-    const completed = await service.completeOrder(data.orderIds)
+    const canceled = await service.cancel(data.orderIds)
     return new StepResponse(
-      completed,
-      completed.map((order) => {
+      canceled,
+      canceled.map((order) => {
         const prevData = orders.find((o) => o.id === order.id)!
         return {
           id: order.id,
           status: prevData.status,
+          canceled_at: null,
         }
       })
     )
   },
-  async (completed, { container }) => {
-    if (!completed?.length) {
+  async (canceled, { container }) => {
+    if (!canceled?.length) {
       return
     }
 
@@ -44,6 +45,6 @@ export const completeOrdersStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await service.update(completed)
+    await service.update(canceled)
   }
 )

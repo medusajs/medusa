@@ -1,5 +1,6 @@
 import {
   cancelOrderFulfillmentWorkflow,
+  cancelOrderWorkflow,
   createOrderFulfillmentWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
@@ -328,7 +329,30 @@ medusaIntegrationTestRunner({
         orderService = container.resolve(ModuleRegistrationName.ORDER)
       })
 
-      it("should create a order fulfillment and cancel it", async () => {
+      it("should cancel an order", async () => {
+        const order = await createOrderFixture({ container, product, location })
+
+        // Create a fulfillment
+        const createOrderFulfillmentData: OrderWorkflow.CreateOrderFulfillmentWorkflowInput =
+          {
+            order_id: order.id,
+            created_by: "user_1",
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+              },
+            ],
+            no_notification: false,
+            location_id: undefined,
+          }
+
+        await createOrderFulfillmentWorkflow(container).run({
+          input: createOrderFulfillmentData,
+        })
+      })
+
+      it("should fail to cancel an order that has fulfilled items", async () => {
         const order = await createOrderFixture({ container, product, location })
 
         // Create a fulfillment
@@ -350,6 +374,18 @@ medusaIntegrationTestRunner({
           input: createOrderFulfillmentData,
         })
 
+        await expect(
+          cancelOrderWorkflow(container).run({
+            input: {
+              order_id: order.id,
+            },
+          })
+        ).rejects.toMatchObject({
+          message:
+            "All fulfillments must be canceled before canceling an order",
+        })
+
+        // Cancel the fulfillment
         const remoteQuery = container.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
@@ -358,76 +394,42 @@ medusaIntegrationTestRunner({
           variables: {
             id: order.id,
           },
-          fields: [
-            "*",
-            "items.*",
-            "shipping_methods.*",
-            "total",
-            "item_total",
-            "fulfillments.*",
-          ],
+          fields: ["id", "fulfillments.id"],
         })
 
         const [orderFulfill] = await remoteQuery(remoteQueryObject)
-
-        expect(orderFulfill.fulfillments).toHaveLength(1)
-        expect(orderFulfill.items[0].detail.fulfilled_quantity).toEqual(1)
-
-        const inventoryModule = container.resolve(
-          ModuleRegistrationName.INVENTORY
-        )
-        const reservation = await inventoryModule.listReservationItems({
-          line_item_id: order.items![0].id,
-        })
-        expect(reservation).toHaveLength(0)
-
-        const stockAvailability = await inventoryModule.retrieveStockedQuantity(
-          inventoryItem.id,
-          [location.id]
-        )
-        expect(stockAvailability).toEqual(1)
-
-        // Cancel the fulfillment
-        const cancelFulfillmentData: OrderWorkflow.CancelOrderFulfillmentWorkflowInput =
-          {
-            order_id: order.id,
-            fulfillment_id: orderFulfill.fulfillments[0].id,
-            no_notification: false,
-          }
-
         await cancelOrderFulfillmentWorkflow(container).run({
-          input: cancelFulfillmentData,
+          input: {
+            order_id: orderFulfill.id,
+            fulfillment_id: orderFulfill.fulfillments[0].id,
+          },
         })
 
-        const remoteQueryObjectFulfill = remoteQueryObjectFromString({
+        await cancelOrderWorkflow(container).run({
+          input: {
+            order_id: order.id,
+          },
+        })
+
+        const finalOrderQuery = remoteQueryObjectFromString({
           entryPoint: "order",
           variables: {
             id: order.id,
           },
-          fields: [
-            "*",
-            "items.*",
-            "shipping_methods.*",
-            "total",
-            "item_total",
-            "fulfillments.*",
-          ],
+          fields: ["status", "fulfillments.canceled_at"],
         })
+        const [finalOrder] = await remoteQuery(finalOrderQuery)
 
-        const [orderFulfillAfterCancelled] = await remoteQuery(
-          remoteQueryObjectFulfill
+        expect(finalOrder).toEqual(
+          expect.objectContaining({
+            status: "canceled",
+            fulfillments: [
+              expect.objectContaining({
+                canceled_at: expect.any(Date),
+              }),
+            ],
+          })
         )
-
-        expect(orderFulfillAfterCancelled.fulfillments).toHaveLength(1)
-        expect(
-          orderFulfillAfterCancelled.items[0].detail.fulfilled_quantity
-        ).toEqual(0)
-
-        const stockAvailabilityAfterCancelled =
-          await inventoryModule.retrieveStockedQuantity(inventoryItem.id, [
-            location.id,
-          ])
-        expect(stockAvailabilityAfterCancelled).toEqual(2)
       })
     })
   },
