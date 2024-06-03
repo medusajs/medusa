@@ -280,10 +280,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/auth/persisting-auth-user/page.mdx",
-    "pathname": "/commerce-modules/auth/persisting-auth-user"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/user-creation/page.mdx",
     "pathname": "/commerce-modules/auth/user-creation"
   },
@@ -392,8 +388,8 @@ export const filesMap = [
     "pathname": "/commerce-modules/fulfillment/relations-to-other-modules"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/shipping-options/page.mdx",
-    "pathname": "/commerce-modules/fulfillment/shipping-options"
+    "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/shipping-option/page.mdx",
+    "pathname": "/commerce-modules/fulfillment/shipping-option"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/inventory/concepts/page.mdx",
@@ -438,10 +434,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/order-change/page.mdx",
     "pathname": "/commerce-modules/order/order-change"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/order/order-items/page.mdx",
-    "pathname": "/commerce-modules/order/order-items"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/order-versioning/page.mdx",
@@ -548,6 +540,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/pricing/price-calculation"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/pricing/price-rules/page.mdx",
+    "pathname": "/commerce-modules/pricing/price-rules"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/pricing/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/pricing/relations-to-other-modules"
   },
@@ -574,6 +570,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/promotion/actions/page.mdx",
     "pathname": "/commerce-modules/promotion/actions"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/promotion/application-method/page.mdx",
+    "pathname": "/commerce-modules/promotion/application-method"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/promotion/campaign/page.mdx",
+    "pathname": "/commerce-modules/promotion/campaign"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/promotion/concepts/page.mdx",
@@ -1176,8 +1180,8 @@ export const filesMap = [
     "pathname": "/references/auth/IMessageAggregator/methods/auth.IMessageAggregator.saveRawMessageData"
   },
   {
-    "filePath": "/www/apps/resources/references/auth/interfaces/auth.AuthUserDTO/page.mdx",
-    "pathname": "/references/auth/interfaces/auth.AuthUserDTO"
+    "filePath": "/www/apps/resources/references/auth/interfaces/auth.AuthIdentityDTO/page.mdx",
+    "pathname": "/references/auth/interfaces/auth.AuthIdentityDTO"
   },
   {
     "filePath": "/www/apps/resources/references/auth/interfaces/auth.AuthenticationInput/page.mdx",
@@ -1196,12 +1200,12 @@ export const filesMap = [
     "pathname": "/references/auth/interfaces/auth.Context"
   },
   {
-    "filePath": "/www/apps/resources/references/auth/interfaces/auth.CreateAuthUserDTO/page.mdx",
-    "pathname": "/references/auth/interfaces/auth.CreateAuthUserDTO"
+    "filePath": "/www/apps/resources/references/auth/interfaces/auth.CreateAuthIdentityDTO/page.mdx",
+    "pathname": "/references/auth/interfaces/auth.CreateAuthIdentityDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/auth/interfaces/auth.FilterableAuthUserProps/page.mdx",
-    "pathname": "/references/auth/interfaces/auth.FilterableAuthUserProps"
+    "filePath": "/www/apps/resources/references/auth/interfaces/auth.FilterableAuthIdentityProps/page.mdx",
+    "pathname": "/references/auth/interfaces/auth.FilterableAuthIdentityProps"
   },
   {
     "filePath": "/www/apps/resources/references/auth/interfaces/auth.FindConfig/page.mdx",
@@ -1232,8 +1236,8 @@ export const filesMap = [
     "pathname": "/references/auth/interfaces/auth.MessageAggregatorFormat"
   },
   {
-    "filePath": "/www/apps/resources/references/auth/interfaces/auth.UpdateAuthUserDTO/page.mdx",
-    "pathname": "/references/auth/interfaces/auth.UpdateAuthUserDTO"
+    "filePath": "/www/apps/resources/references/auth/interfaces/auth.UpdateAuthIdentityDTO/page.mdx",
+    "pathname": "/references/auth/interfaces/auth.UpdateAuthIdentityDTO"
   },
   {
     "filePath": "/www/apps/resources/references/auth/types/auth.JoinerRelationship/page.mdx",
@@ -1260,8 +1264,12 @@ export const filesMap = [
     "pathname": "/references/auth/types/auth.ModuleJoinerRelationship"
   },
   {
-    "filePath": "/www/apps/resources/references/auth_models/classes/auth_models.AuthUser/page.mdx",
-    "pathname": "/references/auth_models/classes/auth_models.AuthUser"
+    "filePath": "/www/apps/resources/references/auth_models/classes/auth_models.AuthIdentity/page.mdx",
+    "pathname": "/references/auth_models/classes/auth_models.AuthIdentity"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth_provider/classes/auth_provider.AbstractAuthModuleProvider/page.mdx",
+    "pathname": "/references/auth_provider/classes/auth_provider.AbstractAuthModuleProvider"
   },
   {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.addLineItemAdjustments/page.mdx",
@@ -2850,6 +2858,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/fulfillment_models/classes/fulfillment_models.ShippingProfile/page.mdx",
     "pathname": "/references/fulfillment_models/classes/fulfillment_models.ShippingProfile"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment_provider/classes/fulfillment_provider.AbstractFulfillmentProviderService/page.mdx",
+    "pathname": "/references/fulfillment_provider/classes/fulfillment_provider.AbstractFulfillmentProviderService"
   },
   {
     "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.adjustInventory/page.mdx",
@@ -5808,6 +5820,10 @@ export const filesMap = [
     "pathname": "/references/medusa/types/medusa.payload"
   },
   {
+    "filePath": "/www/apps/resources/references/medusa_config/interfaces/medusa_config.AdminOptions/page.mdx",
+    "pathname": "/references/medusa_config/interfaces/medusa_config.AdminOptions"
+  },
+  {
     "filePath": "/www/apps/resources/references/medusa_config/interfaces/medusa_config.ConfigModule/page.mdx",
     "pathname": "/references/medusa_config/interfaces/medusa_config.ConfigModule"
   },
@@ -6252,6 +6268,10 @@ export const filesMap = [
     "pathname": "/references/modules/auth_models"
   },
   {
+    "filePath": "/www/apps/resources/references/modules/auth_provider/page.mdx",
+    "pathname": "/references/modules/auth_provider"
+  },
+  {
     "filePath": "/www/apps/resources/references/modules/cart/page.mdx",
     "pathname": "/references/modules/cart"
   },
@@ -6286,6 +6306,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/modules/fulfillment_models/page.mdx",
     "pathname": "/references/modules/fulfillment_models"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/fulfillment_provider/page.mdx",
+    "pathname": "/references/modules/fulfillment_provider"
   },
   {
     "filePath": "/www/apps/resources/references/modules/inventory_next/page.mdx",

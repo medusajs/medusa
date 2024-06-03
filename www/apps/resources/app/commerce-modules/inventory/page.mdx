@@ -8,12 +8,6 @@ export const metadata = {
 
 The Inventory Module is the `@medusajs/inventory-next` NPM package that provides inventory-related features in your Medusa and Node.js applications.
 
-<Note>
-
-This module is an updated version of the [Inventory Module part of the multi-warehouse feature](../../modules/multiwarehouse/inventory-module.md). In Medusa V2, the previous version of the module will no longer be in use.
-
-</Note>
-
 ## Features
 
 ### Inventory Items Management
@@ -59,7 +53,7 @@ const reservationItem =
 
 ### Check Inventory Availability
 
-Check whether an inventory item has the necessary quantity for purchase. Any reserved quantity is considered unavailable, even if the inventory item's quantity hasn't been adjusted yet.
+Check whether an inventory item has the necessary quantity for purchase. Any reserved quantity is considered unavailable.
 
 ```ts
 const isAvailable =
@@ -68,21 +62,6 @@ const isAvailable =
     [locationId],
     neededQuantity
   )
-```
-
----
-
-## Configure Inventory Module
-
-After installing the `@medusajs/inventory-next` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const modules = {
-  // ...
-  inventoryService: {
-    resolve: "@medusajs/inventory-next",
-  },
-}
 ```
 
 ---
@@ -142,9 +121,11 @@ For example:
   import { IInventoryService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const inventoryModuleService: IInventoryService =
-      context.container.resolve(ModuleRegistrationName.INVENTORY)
+      container.resolve(ModuleRegistrationName.INVENTORY)
 
     const inventoryItems =
       await inventoryModuleService.list({})

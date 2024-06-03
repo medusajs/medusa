@@ -1,0 +1,118 @@
+---
+slug: /references/auth/provider
+---
+
+import { TypeList } from "docs-ui"
+
+# How to Create an Auth Provider Module
+
+In this document, you’ll learn how to create an auth provider module and the methods you must implement in its main service.
+
+---
+
+## 1. Create Module Directory
+
+Start by creating a new directory for your module. For example, `src/modules/my-auth`.
+
+---
+
+## 2. Create the Auth Provider Service
+
+Create the file `src/modules/my-auth/service.ts` that holds the module's main service. It must extend the `AbstractAuthModuleProvider` class imported from `@medusajs/utils`:
+
+```ts title="src/modules/my-auth/service.ts"
+import { AbstractAuthModuleProvider } from "@medusajs/utils"
+
+class MyAuthProviderService extends AbstractAuthModuleProvider {
+  // TODO implement methods
+}
+
+export default MyAuthProviderService
+```
+
+### constructor
+
+#### Parameters
+
+<TypeList types={[{"name":"__namedParameters","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"displayName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"config.provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config.displayName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new AbstractAuthModuleProvider"/>
+
+### provider
+
+#### Returns
+
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="provider"/>
+
+### displayName
+
+#### Returns
+
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="displayName"/>
+
+### authenticate
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"[AuthenticationInput](../../../auth/interfaces/auth.AuthenticationInput/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"URL of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, string>`","description":"Headers of incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`Record<string, string>`","description":"Query params of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`Record<string, string>`","description":"Body of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"protocol","type":"`string`","description":"Protocol of the incoming authentication request (For example, `https`).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"authIdentityProviderService","type":"`AuthIdentityProviderService`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="authenticate"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthenticationResponse](../../../auth/interfaces/auth.AuthenticationResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthenticationResponse","type":"[AuthenticationResponse](../../../auth/interfaces/auth.AuthenticationResponse/page.mdx)","optional":false,"defaultValue":"","description":"The details of the authentication response.","expandable":false,"children":[{"name":"success","type":"`boolean`","description":"Whether the authentication was successful.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"authIdentity","type":"`any`","description":"The authenticated user's details.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"error","type":"`string`","description":"If an error occurs during the authentication process,\nwhether within the Auth Module or a third-party provider,\nthe error message is set in this field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location","type":"`string`","description":"The URL to redirect to for further authentication action\nwith a third-party provider. This takes precedence before\nthe `success` field.\n\nSo, after checking that authentication is successful,\nyou should check whether this field is defined and, if so, redirect to the\nspecified location.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"successRedirectUrl","type":"`string`","description":"Some authentication providers support redirecting to a specified URL on\nsuccess. In those cases, the URL to redirect to is set in this field.\n\nSo, if `success` is true, there's no `location` set, and this field\nis set, you can redirect to this URL.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="authenticate"/>
+
+### validateCallback
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"[AuthenticationInput](../../../auth/interfaces/auth.AuthenticationInput/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"URL of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, string>`","description":"Headers of incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`Record<string, string>`","description":"Query params of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`Record<string, string>`","description":"Body of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"protocol","type":"`string`","description":"Protocol of the incoming authentication request (For example, `https`).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"authIdentityProviderService","type":"`AuthIdentityProviderService`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateCallback"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthenticationResponse](../../../auth/interfaces/auth.AuthenticationResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthenticationResponse","type":"[AuthenticationResponse](../../../auth/interfaces/auth.AuthenticationResponse/page.mdx)","optional":false,"defaultValue":"","description":"The details of the authentication response.","expandable":false,"children":[{"name":"success","type":"`boolean`","description":"Whether the authentication was successful.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"authIdentity","type":"`any`","description":"The authenticated user's details.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"error","type":"`string`","description":"If an error occurs during the authentication process,\nwhether within the Auth Module or a third-party provider,\nthe error message is set in this field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location","type":"`string`","description":"The URL to redirect to for further authentication action\nwith a third-party provider. This takes precedence before\nthe `success` field.\n\nSo, after checking that authentication is successful,\nyou should check whether this field is defined and, if so, redirect to the\nspecified location.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"successRedirectUrl","type":"`string`","description":"Some authentication providers support redirecting to a specified URL on\nsuccess. In those cases, the URL to redirect to is set in this field.\n\nSo, if `success` is true, there's no `location` set, and this field\nis set, you can redirect to this URL.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="validateCallback"/>
+
+---
+
+## 3. Create Module Definition File
+
+Create the file `src/modules/my-auth/index.ts` with the following content:
+
+```ts title="src/modules/my-auth/index.ts"
+import MyAuthProviderService from "./service"
+
+export default {
+  service: MyAuthProviderService,
+}
+```
+
+This exports the module's definition, indicating that the `MyAuthProviderService` is the main service of the module.
+
+---
+
+## 4. Use Module
+
+To use your Auth Provider Module, add it to the `providers` array of the Auth Module:
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+const modules = {
+  // ...
+  [Modules.AUTH]: {
+    resolve: "@medusajs/auth",
+    options: {
+      providers: [
+        {
+          resolve: "./dist/modules/my-auth",
+          options: {
+            config: {
+              "my-auth": {
+                // provider options...
+              },
+            },
+          },
+        },
+      ],
+    },
+  },
+}
+```

@@ -1,5 +1,5 @@
 import { PencilSquare, Plus, Trash } from "@medusajs/icons"
-import { ProductCollectionDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
@@ -8,19 +8,15 @@ import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useUpdateCollectionProducts } from "../../../../../hooks/api/collections"
-import {
-  productsQueryKeys,
-  useProducts,
-} from "../../../../../hooks/api/products"
+import { useProducts } from "../../../../../hooks/api/products"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { queryClient } from "../../../../../lib/query-client"
 import { ExtendedProductDTO } from "../../../../../types/api-responses"
 
 type CollectionProductSectionProps = {
-  collection: ProductCollectionDTO
+  collection: HttpTypes.AdminCollection
 }
 
 const PAGE_SIZE = 10
@@ -60,7 +56,7 @@ export const CollectionProductSection = ({
 
   const prompt = usePrompt()
 
-  const { mutateAsync } = useUpdateCollectionProducts(collection.id)
+  const { mutateAsync } = useUpdateCollectionProducts(collection.id!)
 
   const handleRemove = async (selection: Record<string, boolean>) => {
     const ids = Object.keys(selection)
@@ -78,18 +74,19 @@ export const CollectionProductSection = ({
       return
     }
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         remove: ids,
-      })
-
-      queryClient.invalidateQueries(productsQueryKeys.lists())
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onError: (e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissLabel: t("actions.close"),
+          })
+        },
+      }
+    )
   }
 
   if (isError) {
@@ -162,18 +159,20 @@ const ProductActions = ({
     if (!res) {
       return
     }
-    try {
-      await mutateAsync({
-        remove: [product.id],
-      })
 
-      queryClient.invalidateQueries(productsQueryKeys.lists())
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await mutateAsync(
+      {
+        remove: [product.id],
+      },
+      {
+        onError: (e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissLabel: t("actions.close"),
+          })
+        },
+      }
+    )
   }
 
   return (

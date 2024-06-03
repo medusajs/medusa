@@ -16,15 +16,15 @@ Each tax region has a default tax rate. This tax rate is applied to all taxable 
 
 Tax regions can have parent tax regions. To inherit the tax rates of the parent tax region, set the `is_combinable` of the child’s tax rates to `true`.
 
-Then, when tax rates are retrieved for a taxable item in the child region, both the child and the parent tax regions’ applicable rates are returned. Otherwise, only the child tax region’s applicable rates are returned.
+Then, when tax rates are retrieved for a taxable item in the child region, both the child and the parent tax regions’ applicable rates are returned.
 
 ---
 
-## What are Tax Rules?
+## Override Tax Rates with Rules
 
-You can also create tax rates that override the default for specific conditions or rules. For example, the default tax rate is 10%, but for products of type “Shirt” is %15.
+You can create tax rates that override the default for specific conditions or rules. For example, the default tax rate is 10%, but for products of type “Shirt” is %15.
 
-A tax region can have multiple tax rates, and each tax rate can have multiple tax rules. The `TaxRateRule` data model represents a tax rate’s rule.
+A tax region can have multiple tax rates, and each tax rate can have multiple tax rules. The [TaxRateRule data model](/references/tax/models/TaxRateRule) represents a tax rate’s rule.
 
 ![A diagram showcasing the relation between TaxRegion, TaxRate, and TaxRateRule](https://res.cloudinary.com/dza7lstvk/image/upload/v1711462167/Medusa%20Resources/tax-rate-rule_enzbp2.jpg)
 

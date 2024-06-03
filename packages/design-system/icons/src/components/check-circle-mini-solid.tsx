@@ -5,18 +5,23 @@ const CheckCircleMiniSolid = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
-          fill={color}
-          fillRule="evenodd"
-          d="M10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm3.235-7.934a.75.75 0 0 0-1.248-.832l-2.626 3.939L7.92 9.73a.75.75 0 1 0-1.06 1.06l2.088 2.09a.75.75 0 0 0 1.155-.115l3.133-4.7Z"
-          clipRule="evenodd"
-        />
+        <g clipPath="url(#a)">
+          <path
+            fill={color}
+            d="M7.5.389C3.58.389.389 3.579.389 7.5s3.19 7.111 7.111 7.111 7.111-3.19 7.111-7.111S11.421.389 7.5.389m3.416 5.074-3.778 4.889a.67.67 0 0 1-.502.258h-.025a.67.67 0 0 1-.496-.22l-2-2.222a.668.668 0 0 1 .992-.893l1.465 1.629 3.29-4.257a.667.667 0 0 1 1.055.815z"
+          />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

@@ -179,7 +179,6 @@ export class Admin {
     ) => {
       return this.client.fetch<{
         customer: HttpTypes.AdminCustomer
-        token: string
       }>(`/admin/customers`, {
         method: "POST",
         headers,
@@ -203,7 +202,10 @@ export class Admin {
         }
       )
     },
-    list: async (queryParams?: FindParams, headers?: ClientHeaders) => {
+    list: async (
+      queryParams?: FindParams & HttpTypes.AdminCollectionFilters,
+      headers?: ClientHeaders
+    ) => {
       return this.client.fetch<
         PaginatedResponse<{ customers: HttpTypes.AdminCustomer[] }>
       >(`/admin/customers`, {
@@ -232,6 +234,145 @@ export class Admin {
           headers,
         }
       )
+    },
+  }
+
+  public collection = {
+    create: async (
+      body: HttpTypes.AdminCreateCollection,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ collection: HttpTypes.AdminCollection }>(
+        `/admin/collections`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+    update: async (
+      id: string,
+      body: HttpTypes.AdminUpdateCollection,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ collection: HttpTypes.AdminCollection }>(
+        `/admin/collections/${id}`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+    list: async (queryParams?: FindParams, headers?: ClientHeaders) => {
+      return this.client.fetch<
+        PaginatedResponse<{ collections: HttpTypes.AdminCollection[] }>
+      >(`/admin/collections`, {
+        headers,
+        query: queryParams,
+      })
+    },
+    retrieve: async (
+      id: string,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ collection: HttpTypes.AdminCollection }>(
+        `/admin/collections/${id}`,
+        {
+          query,
+          headers,
+        }
+      )
+    },
+    delete: async (id: string, headers?: ClientHeaders) => {
+      return this.client.fetch<DeleteResponse<"collection">>(
+        `/admin/collections/${id}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      )
+    },
+    updateProducts: async (
+      id: string,
+      body: HttpTypes.AdminUpdateCollectionProducts,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ collection: HttpTypes.AdminCollection }>(
+        `/admin/collections/${id}/products`,
+        {
+          method: "POST",
+          headers,
+          body,
+        }
+      )
+    },
+  }
+
+  public uploads = {
+    // Note: The creation/upload flow be made more advanced, with support for streaming and progress, but for now we keep it simple
+    create: async (
+      body: HttpTypes.AdminUploadFile,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      const form = new FormData()
+      if (body instanceof FileList) {
+        Array.from(body).forEach((file) => {
+          form.append("files", file)
+        })
+      } else {
+        body.files.forEach((file) => {
+          form.append(
+            "files",
+            "content" in file
+              ? new Blob([file.content], {
+                  type: "text/plain",
+                })
+              : file,
+            file.name
+          )
+        })
+      }
+
+      return this.client.fetch<{ files: HttpTypes.AdminFile[] }>(
+        `/admin/uploads`,
+        {
+          method: "POST",
+          headers: {
+            ...headers,
+            // Let the browser determine the content type.
+            "content-type": null,
+          },
+          body: form,
+          query,
+        }
+      )
+    },
+    retrieve: async (
+      id: string,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{ file: HttpTypes.AdminFile }>(
+        `/admin/uploads/${id}`,
+        {
+          query,
+          headers,
+        }
+      )
+    },
+    delete: async (id: string, headers?: ClientHeaders) => {
+      return this.client.fetch<DeleteResponse<"file">>(`/admin/uploads/${id}`, {
+        method: "DELETE",
+        headers,
+      })
     },
   }
 }

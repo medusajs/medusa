@@ -204,7 +204,7 @@ export function EditShippingOptionsPricingForm({
       await mutateAsync({
         prices: [...currencyPrices, ...regionPrices],
       })
-      toast.error(t("general.success"), {
+      toast.success(t("general.success"), {
         dismissLabel: t("general.close"),
       })
       handleSuccess()

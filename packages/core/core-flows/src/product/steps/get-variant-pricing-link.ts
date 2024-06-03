@@ -26,12 +26,15 @@ export const getVariantPricingLinkStep = createStep(
       "variant_id",
       Modules.PRICING,
       "price_set_id"
-    )
+    )!
 
-    const existingItems = await linkService.list(
+    const existingItems = (await linkService.list(
       { variant_id: data.ids },
       { select: ["variant_id", "price_set_id"] }
-    )
+    )) as {
+      variant_id: string
+      price_set_id: string
+    }[]
 
     if (existingItems.length !== data.ids.length) {
       const missing = arrayDifference(

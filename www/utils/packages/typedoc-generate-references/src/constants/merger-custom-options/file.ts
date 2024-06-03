@@ -1,16 +1,12 @@
 import { FormattingOptionsType } from "types"
 
 const fileOptions: FormattingOptionsType = {
-  "^file": {
-    frontmatterData: {
-      displayed_sidebar: "core",
-    },
-  },
   "^file/.*AbstractFileProviderService": {
     reflectionGroups: {
       Properties: false,
+      Constructors: false,
     },
-    reflectionDescription: `In this document, you’ll learn how to create a file provider module and the methods you must implement in it.`,
+    reflectionDescription: `In this document, you’ll learn how to create a file provider module and the methods you must implement in its main service.`,
     frontmatterData: {
       slug: "/references/file-provider-module",
     },
@@ -25,9 +21,7 @@ const fileOptions: FormattingOptionsType = {
 Start by creating a new directory for your module. For example, \`src/modules/my-file\`.`,
       `## 2. Create the File Provider Service
 
-Create the file \`src/modules/my-file/service.ts\` that holds the implementation of the file service.
-
-The File Provider Module's main service must extend the \`AbstractFileProviderService\` class imported from \`@medusajs/utils\`:
+Create the file \`src/modules/my-file/service.ts\` that holds the implementation of the module's main service. It must extend the \`AbstractFileProviderService\` class imported from \`@medusajs/utils\`:
 
 \`\`\`ts title="src/modules/my-file/service.ts"
 import { AbstractFileProviderService } from "@medusajs/utils"
@@ -68,26 +62,28 @@ const { Modules } = require("@medusajs/modules-sdk")
 
 // ...
 
-const modules = {
+module.exports = defineConfig({
   // ...
-  [Modules.FILE]: {
-    resolve: "@medusajs/file",
-    options: {
-      providers: [
-        {
-          resolve: "./dist/modules/my-file",
-          options: {
-            config: {
-              "my-file": {
-                // provider options...
+  modules: {
+    [Modules.FILE]: {
+      resolve: "@medusajs/file",
+      options: {
+        providers: [
+          {
+            resolve: "./modules/my-file",
+            options: {
+              config: {
+                "my-file": {
+                  // provider options...
+                },
               },
             },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-}
+  }
+})
 \`\`\`
 `,
     ],

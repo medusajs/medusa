@@ -5,7 +5,7 @@
     "outDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
-    "module": "ES2020",
+    "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

@@ -1,12 +1,12 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { ProductCollectionDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, Text, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteCollection } from "../../../../../hooks/api/collections"
 
 type CollectionGeneralSectionProps = {
-  collection: ProductCollectionDTO
+  collection: HttpTypes.AdminCollection
 }
 
 export const CollectionGeneralSection = ({
@@ -15,7 +15,7 @@ export const CollectionGeneralSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useDeleteCollection(collection.id)
+  const { mutateAsync } = useDeleteCollection(collection.id!)
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -44,6 +44,7 @@ export const CollectionGeneralSection = ({
                   icon: <PencilSquare />,
                   label: t("actions.edit"),
                   to: `/collections/${collection.id}/edit`,
+                  disabled: !collection.id,
                 },
               ],
             },
@@ -53,6 +54,7 @@ export const CollectionGeneralSection = ({
                   icon: <Trash />,
                   label: t("actions.delete"),
                   onClick: handleDelete,
+                  disabled: !collection.id,
                 },
               ],
             },

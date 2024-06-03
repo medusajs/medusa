@@ -12,32 +12,17 @@ import { RuleTypeDTO } from "./rule-type"
  *
  * The price list's status.
  */
-export enum PriceListStatus {
-  /**
-   * The price list is enabled and its prices can be used.
-   */
-  ACTIVE = "active",
-  /**
-   * The price list is disabled, meaning its prices can't be used yet.
-   */
-  DRAFT = "draft",
-}
+export type PriceListStatus = "active" | "draft"
 
 /**
  * @enum
  *
  * The price list's type.
+ * "sale" - The price list's prices are used for a sale.
+ * "override" - The price list's prices override original prices. This affects the calculated price of associated price sets.
  */
-export enum PriceListType {
-  /**
-   * The price list's prices are used for a sale.
-   */
-  SALE = "sale",
-  /**
-   * The price list's prices override original prices. This affects the calculated price of associated price sets.
-   */
-  OVERRIDE = "override",
-}
+
+export type PriceListType = "sale" | "override"
 
 /**
  * @interface

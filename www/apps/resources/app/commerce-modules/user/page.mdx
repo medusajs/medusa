@@ -8,8 +8,6 @@ export const metadata = {
 
 The User Module is the `@medusajs/user` NPM package that provides user-related features in your Medusa and Node.js applications.
 
----
-
 ## Features
 
 ### User Management
@@ -40,22 +38,6 @@ await userModuleService.refreshInviteTokens([invite.id])
 ---
 
 ## Configure User Module
-
-After installing the `@medusajs/user` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const modules = {
-  // ...
-  user: {
-    resolve: "@medusajs/user",
-    options: {
-      jwt_secret: process.env.JWT_SECRET,
-    },
-  },
-}
-```
-
-### Module Options
 
 Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
 
@@ -114,11 +96,14 @@ For example:
   import { IUserModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const userModuleService: IUserModuleService =
-      context.container.resolve(
+      container.resolve(
         ModuleRegistrationName.USER
       )
+      
     const users = await userModuleService.list()
   })
   ```

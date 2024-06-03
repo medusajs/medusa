@@ -74,13 +74,13 @@
         },
         "rank": {
           "name": "rank",
-          "type": "numeric",
+          "type": "integer",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "default": "0",
-          "mappedType": "decimal"
+          "mappedType": "integer"
         },
         "parent_category_id": {
           "name": "parent_category_id",
@@ -1378,13 +1378,13 @@
         },
         "variant_rank": {
           "name": "variant_rank",
-          "type": "numeric",
+          "type": "integer",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "default": "0",
-          "mappedType": "decimal"
+          "mappedType": "integer"
         },
         "product_id": {
           "name": "product_id",

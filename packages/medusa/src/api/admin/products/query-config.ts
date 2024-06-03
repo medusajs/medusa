@@ -44,7 +44,7 @@ export const retrieveOptionConfig = {
 }
 
 export const listOptionConfig = {
-  ...retrieveVariantConfig,
+  ...retrieveOptionConfig,
   defaultLimit: 50,
   isList: true,
 }

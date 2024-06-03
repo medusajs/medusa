@@ -1,5 +1,7 @@
 import { FormattingOptionsType } from "types"
+import authProviderOptions from "./auth-provider.js"
 import fileOptions from "./file.js"
+import fulfillmentProviderOptions from "./fulfillment-provider.js"
 import jsClientOptions from "./js-client.js"
 import medusaConfigOptions from "./medusa-config.js"
 import medusaReactOptions from "./medusa-react.js"
@@ -11,7 +13,9 @@ import taxProviderOptions from "./tax-provider.js"
 import workflowsOptions from "./workflows.js"
 
 const mergerCustomOptions: FormattingOptionsType = {
+  ...authProviderOptions,
   ...fileOptions,
+  ...fulfillmentProviderOptions,
   ...jsClientOptions,
   ...medusaConfigOptions,
   ...medusaReactOptions,

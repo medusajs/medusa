@@ -12,7 +12,7 @@ export async function moduleProviderLoader({
   registerServiceFn?: (
     klass,
     container: MedusaContainer,
-    pluginDetails: any
+    moduleDetails: any
   ) => Promise<void>
 }) {
   if (!providers?.length) {
@@ -20,8 +20,8 @@ export async function moduleProviderLoader({
   }
 
   await promiseAll(
-    providers.map(async (pluginDetails) => {
-      await loadModuleProvider(container, pluginDetails, registerServiceFn)
+    providers.map(async (moduleDetails) => {
+      await loadModuleProvider(container, moduleDetails, registerServiceFn)
     })
   )
 }
@@ -29,11 +29,11 @@ export async function moduleProviderLoader({
 export async function loadModuleProvider(
   container: MedusaContainer,
   provider: ModuleProvider,
-  registerServiceFn?: (klass, container, pluginDetails) => Promise<void>
+  registerServiceFn?: (klass, container, moduleDetails) => Promise<void>
 ) {
   let loadedProvider: any
 
-  const pluginName = provider.resolve ?? provider.provider_name ?? ""
+  const moduleName = provider.resolve ?? provider.provider_name ?? ""
 
   try {
     loadedProvider = provider.resolve
@@ -43,7 +43,7 @@ export async function loadModuleProvider(
     }
   } catch (error) {
     throw new Error(
-      `Unable to find plugin ${pluginName} -- perhaps you need to install its package?`
+      `Unable to find module ${moduleName} -- perhaps you need to install its package?`
     )
   }
 
@@ -51,7 +51,7 @@ export async function loadModuleProvider(
 
   if (!loadedProvider?.services?.length) {
     throw new Error(
-      `No services found in plugin ${provider.resolve} -- make sure your plugin has a default export of services.`
+      `${provider.resolve} doesn't seem to have a main service exported -- make sure your module has a default export of a service.`
     )
   }
 

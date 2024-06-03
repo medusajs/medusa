@@ -1,0 +1,90 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Application Method`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn what an application method is.
+
+## What is an Application Method?
+
+The [ApplicationMethod data model](/references/promotion/models/ApplicationMethod) defines how a promotion is applied:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+      
+      Field
+      
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+      
+      Purpose
+      
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `type`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Does the promotion discount a fixed amount or a percentage?
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `target_type`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Is the promotion applied on a cart item, shipping method, or the entire order?
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `allocation`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Is the discounted amount applied on each item or split between the applicable items?
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Target Promotion Rules
+
+When the promotion is applied to a cart item or a shipping method, you can restrict which items/shipping methods the promotion is applied to.
+
+The `ApplicationMethod` data model has a collection of `PromotionRule` records to restrict which items or shipping methods the promotion applies to. The `target_rules` field represents this relation. 
+
+![A diagram showcasing the target_rules relation between the ApplicationMethod and PromotionRule data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709898273/Medusa%20Resources/application-method-target-rules_hqaymz.jpg)
+
+In this example, the promotion is only applied on products in the cart having the SKU `SHIRT`.
+
+---
+
+## Buy Promotion Rules
+
+When the promotion’s type is `buyget`, you must specify the “buy X” condition. For example, a cart must have two shirts before the promotion can be applied.
+
+The application method has a collection of `PromotionRule` items to define the “buy X” rule. The `buy_rules` field represents this relation. 
+
+![A diagram showcasing the buy_rules relation between the ApplicationMethod and PromotionRule data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709898453/Medusa%20Resources/application-method-buy-rules_djjuhw.jpg)
+
+In this example, the cart must have two products with the SKU `SHIRT` for the promotion to be applied.

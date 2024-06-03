@@ -8,7 +8,6 @@ import {
   CreateFulfillmentSetDTO,
   CreateInviteDTO,
   CreatePriceListDTO,
-  CreateProductCollectionDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
   CreateSalesChannelDTO,
@@ -20,7 +19,6 @@ import {
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
   UpdatePriceListDTO,
-  UpdateProductCollectionDTO,
   UpdatePromotionDTO,
   UpdatePromotionRuleDTO,
   UpdateSalesChannelDTO,
@@ -62,22 +60,32 @@ export type UpdateStockLocationSalesChannelsReq = {
 }
 export type CreateFulfillmentSetReq = CreateFulfillmentSetDTO
 export type CreateServiceZoneReq = CreateServiceZoneDTO
-export type UpdateServiceZoneReq = UpdateServiceZoneDTO
+export type UpdateServiceZoneReq =
+  | UpdateServiceZoneDTO
 
-// Shipping Options
-export type CreateShippingOptionReq = CreateShippingOptionDTO
-export type UpdateShippingOptionReq = UpdateShippingOptionDTO
+  // Shipping Options
+  | { region_id: string; amount: number }
+export type CreateShippingOptionReq = CreateShippingOptionDTO & {
+  /**
+   * The shipping option pricing
+   */
+  prices: (
+    | { currency_code: string; amount: number }
+    | { region_id: string; amount: number }
+  )[]
+}
+export type UpdateShippingOptionReq = UpdateShippingOptionDTO & {
+  /**
+   * The shipping option pricing
+   */
+  prices: (
+    | { currency_code: string; amount: number; id?: string }
+    | { region_id: string; amount: number; id?: string }
+  )[]
+}
 
 // Shipping Profile
 export type CreateShippingProfileReq = CreateShippingProfileDTO
-
-// Product Collections
-export type CreateProductCollectionReq = CreateProductCollectionDTO
-export type UpdateProductCollectionReq = UpdateProductCollectionDTO
-export type UpdateProductCollectionProductsReq = {
-  add?: string[]
-  remove?: string[]
-}
 
 // Price Lists
 export type CreatePriceListReq = CreatePriceListDTO

@@ -78,55 +78,10 @@ medusaIntegrationTestRunner({
             )
             .catch((e) => e.response)
 
-          const errorsFields = [
-            {
-              code: "invalid_type",
-              expected: "string",
-              received: "undefined",
-              path: ["service_zone_id"],
-              message: "Required",
-            },
-            {
-              code: "invalid_type",
-              expected: "string",
-              received: "undefined",
-              path: ["shipping_profile_id"],
-              message: "Required",
-            },
-            {
-              expected: "'calculated' | 'flat'",
-              received: "undefined",
-              code: "invalid_type",
-              path: ["price_type"],
-              message: "Required",
-            },
-            {
-              code: "invalid_type",
-              expected: "string",
-              received: "undefined",
-              path: ["provider_id"],
-              message: "Required",
-            },
-            {
-              code: "invalid_type",
-              expected: "object",
-              received: "undefined",
-              path: ["type"],
-              message: "Required",
-            },
-            {
-              code: "invalid_type",
-              expected: "array",
-              received: "undefined",
-              path: ["prices"],
-              message: "Required",
-            },
-          ]
-
           expect(err.status).toEqual(400)
           expect(err.data).toEqual({
             type: "invalid_data",
-            message: `Invalid request body: ${JSON.stringify(errorsFields)}`,
+            message: `Invalid request: Field 'service_zone_id' is required; Field 'shipping_profile_id' is required; Field 'price_type' is required`,
           })
         })
 

@@ -120,19 +120,27 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { 
+    AuthenticatedMedusaRequest, 
+    MedusaResponse
+  } from "@medusajs/medusa"
   import { IApiKeyModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { 
+    ModuleRegistrationName
+  } from "@medusajs/modules-sdk"
 
   export async function POST(
-    request: MedusaRequest,
+    request: AuthenticatedMedusaRequest,
     res: MedusaResponse
   ) {
     const apiKeyModuleService: IApiKeyModuleService =
       request.scope.resolve(ModuleRegistrationName.API_KEY)
 
     const revokedKey = await apiKeyModuleService.revoke(
-      request.params.id
+      request.params.id,
+      {
+        revoked_by: request.auth_context.actor_id
+      }
     )
 
     res.json({
@@ -154,6 +162,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
   type ContextType = {
     params: {
       id: string
+      user_id: string
     }
   }
 
@@ -163,7 +172,12 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
   ) {
     const apiKeyModuleService = await initializeApiKeyModule()
 
-    const revokedKey = await apiKeyModuleService.revoke(params.id)
+    const revokedKey = await apiKeyModuleService.revoke(
+      params.id,
+      {
+        revoked_by: params.user_id
+      }
+    )
 
     return NextResponse.json({
       api_key: revokedKey,
@@ -176,7 +190,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
 
 ---
 
-## Verify Token
+## Verify or Authenticate Token
 
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
@@ -194,7 +208,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
       request.scope.resolve(ModuleRegistrationName.API_KEY)
 
     const authenticatedToken =
-      await apiKeyModuleService.authenticate(request.params.id)
+      await apiKeyModuleService.authenticate(request.params.token)
 
     res.json({
       is_authenticated: !!authenticatedToken,
@@ -214,7 +228,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
 
   type ContextType = {
     params: {
-      id: string
+      token: string
     }
   }
 
@@ -225,7 +239,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const apiKeyModuleService = await initializeApiKeyModule()
 
     const authenticatedToken =
-      await apiKeyModuleService.authenticate(request.params.id)
+      await apiKeyModuleService.authenticate(request.params.token)
 
     return NextResponse.json({
       is_authenticated: !!authenticatedToken,
@@ -244,19 +258,25 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { 
+    AuthenticatedMedusaRequest, 
+    MedusaResponse
+  } from "@medusajs/medusa"
   import { IApiKeyModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
   export async function POST(
-    request: MedusaRequest,
+    request: AuthenticatedMedusaRequest,
     res: MedusaResponse
   ) {
     const apiKeyModuleService: IApiKeyModuleService =
       request.scope.resolve(ModuleRegistrationName.API_KEY)
 
     const revokedKey = await apiKeyModuleService.revoke(
-      request.params.id
+      request.params.id,
+      {
+        revoked_by: request.auth_context.actor_id
+      }
     )
 
     const newKey = await apiKeyModuleService.create({
@@ -284,6 +304,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
   type ContextType = {
     params: {
       id: string
+      user_id: string
     }
   }
 
@@ -293,7 +314,9 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
   ) {
     const apiKeyModuleService = await initializeApiKeyModule()
 
-    const revokedKey = await apiKeyModuleService.revoke(params.id)
+    const revokedKey = await apiKeyModuleService.revoke(params.id, {
+      revoked_by: params.user_id
+    })
 
     const newKey = await apiKeyModuleService.create({
       title: revokedKey.title,
@@ -314,4 +337,4 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
 
 ## More Examples
 
-The [module interface reference](/references/api-key) provides a reference to all the methods available for use with examples for each.
+The [API Key Module's main service reference](/references/api-key) provides a reference to all the methods available for use with examples for each.
