@@ -69,7 +69,9 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
         },
       },
       {
+        // @ts-expect-error
         secret: jwtSecret,
+        // @ts-expect-error
         expiresIn: jwtExpiresIn,
       }
     )
