@@ -114,7 +114,7 @@ export const cancelOrderWorkflow = createWorkflow(
     })
     deleteReservationsByLineItemsStep(lineItemIds)
 
-    const payment_ids = transform({ order }, ({ order }) => {
+    const paymentIds = transform({ order }, ({ order }) => {
       return deepFlatMap(
         order,
         "payment_collections.payments",
@@ -123,7 +123,7 @@ export const cancelOrderWorkflow = createWorkflow(
         }
       )
     })
-    cancelPaymentStep({ payment_ids })
+    cancelPaymentStep({ paymentIds })
 
     cancelOrdersStep({ orderIds: [order.id] })
   }
