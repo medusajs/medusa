@@ -108,7 +108,7 @@ export const CampaignSection = ({ campaign }: { campaign: CampaignDTO }) => {
             to: `/promotions/${id}/add-to-campaign`,
             label: "Add to Campaign",
           }}
-          buttonVariant="transparentIconLeft"
+          buttonVariant="transparent"
         />
       )}
     </Container>

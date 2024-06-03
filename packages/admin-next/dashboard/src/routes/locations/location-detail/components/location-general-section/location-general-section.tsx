@@ -1,18 +1,15 @@
 import {
   ArchiveBox,
-  CheckMini,
   CurrencyDollar,
   Map,
   PencilSquare,
   Plus,
   Trash,
   TriangleDownMini,
-  XMarkMini,
 } from "@medusajs/icons"
-import { HttpTypes, ServiceZoneDTO, ShippingOptionDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import {
   Badge,
-  Button,
   Container,
   Heading,
   IconButton,
@@ -41,7 +38,10 @@ import {
   useDeleteStockLocation,
 } from "../../../../../hooks/api/stock-locations"
 import { getFormattedAddress } from "../../../../../lib/addresses"
-import { countries as staticCountries } from "../../../../../lib/countries"
+import {
+  StaticCountry,
+  countries as staticCountries,
+} from "../../../../../lib/countries"
 import { formatProvider } from "../../../../../lib/format-provider"
 import {
   isOptionEnabledInStore,
@@ -91,7 +91,7 @@ export const LocationGeneralSection = ({
 }
 
 type ShippingOptionProps = {
-  option: ShippingOptionDTO
+  option: HttpTypes.AdminShippingOption
   fulfillmentSetId: string
   locationId: string
   isReturn?: boolean
@@ -190,7 +190,7 @@ function ShippingOption({
 }
 
 type ServiceZoneOptionsProps = {
-  zone: ServiceZoneDTO
+  zone: HttpTypes.AdminServiceZone
   locationId: string
   fulfillmentSetId: string
 }
@@ -211,7 +211,7 @@ function ServiceZoneOptions({
   return (
     <div>
       <Divider variant="dashed" />
-      <div className="flex flex-col px-6 py-4">
+      <div className="flex flex-col gap-y-4 px-6 py-4">
         <div className="item-center flex justify-between">
           <span className="text-ui-fg-subtle txt-small self-center font-medium">
             {t("location.serviceZone.shippingOptions")}
@@ -224,7 +224,7 @@ function ServiceZoneOptions({
         </div>
 
         {!!shippingOptions.length && (
-          <div className="shadow-elevation-card-rest bg-ui-bg-subtle mt-4 grid divide-y rounded-md">
+          <div className="shadow-elevation-card-rest bg-ui-bg-subtle grid divide-y rounded-md">
             {shippingOptions.map((o) => (
               <ShippingOption
                 key={o.id}
@@ -239,7 +239,7 @@ function ServiceZoneOptions({
 
       <Divider variant="dashed" />
 
-      <div className="flex flex-col px-6 py-4">
+      <div className="flex flex-col gap-y-4 px-6 py-4">
         <div className="item-center flex justify-between">
           <span className="text-ui-fg-subtle txt-small self-center font-medium">
             {t("location.serviceZone.returnOptions")}
@@ -252,7 +252,7 @@ function ServiceZoneOptions({
         </div>
 
         {!!returnOptions.length && (
-          <div className="shadow-elevation-card-rest bg-ui-bg-subtle grid divide-y rounded-md pt-4">
+          <div className="shadow-elevation-card-rest bg-ui-bg-subtle grid divide-y rounded-md">
             {returnOptions.map((o) => (
               <ShippingOption
                 key={o.id}
@@ -318,11 +318,27 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   }
 
   const countries = useMemo(() => {
-    return zone.geo_zones
-      .filter((g) => g.type === "country")
-      .map((g) => g.country_code)
-      .map((code) => staticCountries.find((c) => c.iso_2 === code))
-      .sort((c1, c2) => c1.name.localeCompare(c2.name))
+    const countryGeoZones = zone.geo_zones.filter((g) => g.type === "country")
+
+    const countries = countryGeoZones
+      .map(({ country_code }) =>
+        staticCountries.find((c) => c.iso_2 === country_code)
+      )
+      .filter((c) => !!c) as StaticCountry[]
+
+    if (
+      process.env.NODE_ENV === "development" &&
+      countryGeoZones.length !== countries.length
+    ) {
+      console.warn(
+        "Some countries are missing in the static countries list",
+        countryGeoZones
+          .filter((g) => !countries.find((c) => c.iso_2 === g.country_code))
+          .map((g) => g.country_code)
+      )
+    }
+
+    return countries.sort((c1, c2) => c1.name.localeCompare(c2.name))
   }, [zone.geo_zones])
 
   const [shippingOptionsCount, returnOptionsCount] = useMemo(() => {
@@ -340,12 +356,10 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   return (
     <div className="flex flex-col">
       <div className="flex flex-row items-center justify-between gap-x-4 px-6 py-4">
-        {/* ICON*/}
         <IconAvatar>
           <Map />
         </IconAvatar>
 
-        {/* INFO*/}
         <div className="grow-1 flex flex-1 flex-col">
           <Text size="small" leading="compact" weight="plus">
             {zone.name}
@@ -374,7 +388,6 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
           </div>
         </div>
 
-        {/* ACTION*/}
         <div className="flex grow-0 items-center gap-4">
           <IconButton
             size="small"
@@ -398,7 +411,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
                     to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit`,
                   },
                   {
-                    label: t("location.serviceZone.areas.manage"),
+                    label: t("location.serviceZone.manageAreas.action"),
                     icon: <Map />,
                     to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit-areas`,
                   },
@@ -511,6 +524,39 @@ function FulfillmentSet(props: FulfillmentSetProps) {
     })
   }
 
+  const groups = fulfillmentSet
+    ? [
+        {
+          actions: [
+            {
+              icon: <Plus />,
+              label: t("location.fulfillmentSet.addZone"),
+              to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: t("actions.disable"),
+              onClick: handleDelete,
+            },
+          ],
+        },
+      ]
+    : [
+        {
+          actions: [
+            {
+              icon: <Plus />,
+              label: t("actions.enable"),
+              onClick: handleCreate,
+            },
+          ],
+        },
+      ]
+
   return (
     <Container className="p-0">
       <div className="flex flex-col divide-y">
@@ -525,56 +571,20 @@ function FulfillmentSet(props: FulfillmentSetProps) {
               )}
             </StatusBadge>
 
-            <ActionMenu
-              groups={[
-                {
-                  actions: [
-                    {
-                      icon: <Plus />,
-                      label: t("location.fulfillmentSet.addZone"),
-                      onClick: () =>
-                        navigate(
-                          `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`
-                        ),
-                      disabled: !fulfillmentSetExists,
-                    },
-                    {
-                      icon: fulfillmentSetExists ? (
-                        <XMarkMini />
-                      ) : (
-                        <CheckMini />
-                      ),
-                      label: fulfillmentSetExists
-                        ? t("actions.disable")
-                        : t("actions.enable"),
-                      onClick: fulfillmentSetExists
-                        ? handleDelete
-                        : handleCreate,
-                    },
-                  ],
-                },
-              ]}
-            />
+            <ActionMenu groups={groups} />
           </div>
         </div>
 
         {fulfillmentSetExists && !hasServiceZones && (
-          <div className="text-ui-fg-muted txt-medium flex flex-col items-center justify-center gap-y-4 py-8">
+          <div className="flex items-center justify-center py-8 pt-6">
             <NoRecords
               message={t("location.fulfillmentSet.placeholder")}
               className="h-fit"
+              action={{
+                to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`,
+                label: t("location.fulfillmentSet.addZone"),
+              }}
             />
-
-            <Button
-              variant="secondary"
-              onClick={() =>
-                navigate(
-                  `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`
-                )
-              }
-            >
-              {t("location.fulfillmentSet.addZone")}
-            </Button>
           </div>
         )}
 

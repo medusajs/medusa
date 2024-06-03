@@ -1,195 +1,80 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import {
-    ColumnDef,
-    createColumnHelper,
-    RowSelectionState,
-} from "@tanstack/react-table"
+import { HttpTypes } from "@medusajs/types"
+import { Button, Heading, toast } from "@medusajs/ui"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
-import * as zod from "zod"
-
-import { XMarkMini } from "@medusajs/icons"
-import { HttpTypes, ServiceZoneDTO } from "@medusajs/types"
-import {
-    Alert,
-    Badge,
-    Button,
-    Checkbox,
-    Heading,
-    IconButton,
-    Text,
-    toast,
-} from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { z } from "zod"
 
-import { useEffect, useMemo, useState } from "react"
 import { SplitView } from "../../../../../components/layout/split-view"
 import {
-    RouteFocusModal,
-    useRouteModal,
+  RouteFocusModal,
+  useRouteModal,
 } from "../../../../../components/route-modal"
-import { DataTable } from "../../../../../components/table/data-table"
-import { useUpdateServiceZone } from "../../../../../hooks/api/stock-locations"
-import { useDataTable } from "../../../../../hooks/use-data-table"
-import { countries as staticCountries } from "../../../../../lib/countries"
-import { useCountries } from "../../../../regions/common/hooks/use-countries"
-import { useCountryTableColumns } from "../../../../regions/common/hooks/use-country-table-columns"
-import { useCountryTableQuery } from "../../../../regions/common/hooks/use-country-table-query"
+import { useUpdateFulfillmentSetServiceZone } from "../../../../../hooks/api/fulfillment-sets"
+import { countries } from "../../../../../lib/countries"
+import { GeoZoneForm } from "../../../common/components/geo-zone-form"
 
-const PREFIX = "ac"
-const PAGE_SIZE = 50
-
-const ConditionsFooter = ({ onSave }: { onSave: () => void }) => {
-  const { t } = useTranslation()
-
-  return (
-    <div className="flex items-center justify-end gap-x-2 border-t p-4">
-      <SplitView.Close type="button" asChild>
-        <Button variant="secondary" size="small">
-          {t("actions.cancel")}
-        </Button>
-      </SplitView.Close>
-      <Button size="small" type="button" onClick={onSave}>
-        {t("actions.select")}
-      </Button>
-    </div>
-  )
-}
-
-const EditeServiceZoneSchema = zod.object({
-  countries: zod.array(zod.string().length(2)).min(1),
+const EditeServiceZoneSchema = z.object({
+  countries: z
+    .array(z.object({ iso_2: z.string().min(2), display_name: z.string() }))
+    .min(1),
 })
 
 type EditServiceZoneAreasFormProps = {
   fulfillmentSetId: string
   locationId: string
-  zone: ServiceZoneDTO
+  zone: HttpTypes.AdminServiceZone
 }
 
 export function EditServiceZoneAreasForm({
   fulfillmentSetId,
-  locationId,
   zone,
 }: EditServiceZoneAreasFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [open, setOpen] = useState(false)
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>(
-    zone.geo_zones
-      .map((z) => z.country_code)
-      .reduce((acc, v) => {
-        acc[v] = true
-        return acc
-      }, {})
-  )
 
-  const form = useForm<zod.infer<typeof EditeServiceZoneSchema>>({
+  const form = useForm<z.infer<typeof EditeServiceZoneSchema>>({
     defaultValues: {
-      countries: zone.geo_zones.map((z) => z.country_code),
+      countries: zone.geo_zones.map((z) => {
+        const country = countries.find((c) => c.iso_2 === z.country_code)
+
+        return {
+          iso_2: z.country_code,
+          display_name: country?.display_name || z.country_code.toUpperCase(),
+        }
+      }),
     },
     resolver: zodResolver(EditeServiceZoneSchema),
   })
 
   const { mutateAsync: editServiceZone, isPending: isLoading } =
-    useUpdateServiceZone(fulfillmentSetId, zone.id, locationId)
+    useUpdateFulfillmentSetServiceZone(fulfillmentSetId, zone.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    try {
-      await editServiceZone({
-        geo_zones: data.countries.map((iso2) => ({
-          country_code: iso2,
+    await editServiceZone(
+      {
+        geo_zones: data.countries.map(({ iso_2 }) => ({
+          country_code: iso_2,
           type: "country",
         })),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("general.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          handleSuccess()
+        },
+        onError: (e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissLabel: t("general.close"),
+          })
+        },
+      }
+    )
 
     handleSuccess()
   })
-
-  const handleOpenChange = (open: boolean) => {
-    setOpen(open)
-  }
-
-  const { searchParams, raw } = useCountryTableQuery({
-    pageSize: PAGE_SIZE,
-    prefix: PREFIX,
-  })
-  const { countries, count } = useCountries({
-    countries: staticCountries.map((c, i) => ({
-      display_name: c.display_name,
-      name: c.name,
-      id: i as any,
-      iso_2: c.iso_2,
-      iso_3: c.iso_3,
-      num_code: c.num_code,
-      region_id: null,
-      region: {} as HttpTypes.AdminRegion,
-    })),
-    ...searchParams,
-  })
-
-  const columns = useColumns()
-
-  const { table } = useDataTable({
-    data: countries || [],
-    columns,
-    count,
-    enablePagination: true,
-    enableRowSelection: true,
-    getRowId: (row) => row.iso_2,
-    pageSize: PAGE_SIZE,
-    rowSelection: {
-      state: rowSelection,
-      updater: setRowSelection,
-    },
-    prefix: PREFIX,
-  })
-
-  const countriesWatch = form.watch("countries")
-
-  const onCountriesSave = () => {
-    form.setValue("countries", Object.keys(rowSelection))
-    setOpen(false)
-  }
-
-  const removeCountry = (iso2: string) => {
-    const state = { ...rowSelection }
-    delete state[iso2]
-    setRowSelection(state)
-
-    form.setValue(
-      "countries",
-      countriesWatch.filter((c) => c !== iso2)
-    )
-  }
-
-  const clearAll = () => {
-    setRowSelection({})
-    form.setValue("countries", [])
-  }
-
-  const selectedCountries = useMemo(() => {
-    return staticCountries.filter((c) => c.iso_2 in rowSelection)
-  }, [countriesWatch])
-
-  useEffect(() => {
-    // set selected rows from form state on open
-    if (open) {
-      setRowSelection(
-        countriesWatch.reduce((acc, c) => {
-          acc[c] = true
-          return acc
-        }, {})
-      )
-    }
-  }, [open])
-
-  const showAreasError =
-    form.formState.errors["countries"]?.type === "too_small"
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -210,132 +95,28 @@ export function EditServiceZoneAreasForm({
           </div>
         </RouteFocusModal.Header>
 
-        <RouteFocusModal.Body className="m-auto flex h-full w-full  flex-col items-center divide-y overflow-hidden">
-          <SplitView open={open} onOpenChange={handleOpenChange}>
-            <SplitView.Content className="mx-auto max-w-[720px]">
-              <div className="container w-fit px-1 py-8">
-                <Heading className="mt-8 text-2xl">
-                  {t("location.serviceZone.editAreasTitle", {
-                    zone: zone.name,
-                  })}
-                </Heading>
-              </div>
-
-              <div className="container flex items-center justify-between py-8 pr-1">
-                <div>
-                  <Text weight="plus">
-                    {t("location.serviceZone.areas.title")}
-                  </Text>
-                  <Text className="text-ui-fg-subtle mt-2">
-                    {t("location.serviceZone.areas.description")}
-                  </Text>
+        <RouteFocusModal.Body className="flex flex-col overflow-hidden">
+          <SplitView open={open} onOpenChange={setOpen}>
+            <SplitView.Content>
+              <div className="flex flex-col items-center p-16">
+                <div className="flex w-full max-w-[720px] flex-col gap-y-8">
+                  <Heading>
+                    {t("location.serviceZone.manageAreas.header", {
+                      name: zone.name,
+                    })}
+                  </Heading>
+                  <GeoZoneForm form={form} onOpenChange={setOpen} />
                 </div>
-                <Button
-                  onClick={() => setOpen(true)}
-                  variant="secondary"
-                  type="button"
-                >
-                  {t("location.serviceZone.areas.manage")}
-                </Button>
               </div>
-              {!!selectedCountries.length && (
-                <div className="flex flex-wrap items-center gap-4">
-                  {selectedCountries.map((c) => (
-                    <Badge
-                      key={c.iso_2}
-                      className="text-ui-fg-subtle txt-small flex items-center gap-1 divide-x pr-0"
-                    >
-                      {c.display_name}
-                      <IconButton
-                        type="button"
-                        onClick={() => removeCountry(c.iso_2)}
-                        className="text-ui-fg-subtle p-0 px-1 pt-[1px]"
-                        variant="transparent"
-                      >
-                        <XMarkMini />
-                      </IconButton>
-                    </Badge>
-                  ))}
-                  <Button
-                    type="button"
-                    onClick={clearAll}
-                    variant="transparent"
-                    className="txt-small text-ui-fg-muted font-medium"
-                  >
-                    {t("actions.clearAll")}
-                  </Button>
-                </div>
-              )}
-              {showAreasError && (
-                <Alert dismissible variant="error">
-                  {t("location.serviceZone.areas.error")}
-                </Alert>
-              )}
             </SplitView.Content>
-            <SplitView.Drawer>
-              <div className="flex size-full flex-col overflow-hidden">
-                <DataTable
-                  table={table}
-                  columns={columns}
-                  pageSize={PAGE_SIZE}
-                  count={count}
-                  search
-                  pagination
-                  layout="fill"
-                  orderBy={["name", "code"]}
-                  queryObject={raw}
-                  prefix={PREFIX}
-                />
-                <ConditionsFooter onSave={onCountriesSave} />
-              </div>
-            </SplitView.Drawer>
+            <GeoZoneForm.AreaDrawer
+              form={form}
+              open={open}
+              onOpenChange={setOpen}
+            />
           </SplitView>
         </RouteFocusModal.Body>
       </form>
     </RouteFocusModal.Form>
   )
-}
-
-const columnHelper = createColumnHelper<HttpTypes.AdminRegionCountry>()
-
-const useColumns = () => {
-  const base = useCountryTableColumns()
-
-  return useMemo(
-    () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          const isPreselected = !row.getCanSelect()
-
-          return (
-            <Checkbox
-              checked={row.getIsSelected() || isPreselected}
-              disabled={isPreselected}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
-      ...base,
-    ],
-    [base]
-  ) as ColumnDef<HttpTypes.AdminRegionCountry>[]
 }

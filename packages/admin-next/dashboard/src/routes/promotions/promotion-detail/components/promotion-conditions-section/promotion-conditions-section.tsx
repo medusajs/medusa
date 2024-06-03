@@ -13,17 +13,17 @@ type RuleProps = {
 
 function RuleBlock({ rule }: RuleProps) {
   return (
-    <div className="bg-ui-bg-subtle shadow-borders-base flex justify-around rounded-md p-2 align-center">
-      <div className="flex text-ui-fg-subtle txt-compact-xsmall whitespace-nowrap items-center">
+    <div className="bg-ui-bg-subtle shadow-borders-base align-center flex justify-around rounded-md p-2">
+      <div className="text-ui-fg-subtle txt-compact-xsmall flex items-center whitespace-nowrap">
         <Badge
           size="2xsmall"
           key="rule-attribute"
-          className="mx-1 txt-compact-xsmall-plus tag-neutral-text truncate inline-block"
+          className="txt-compact-xsmall-plus tag-neutral-text mx-1 inline-block truncate"
         >
           {rule.attribute_label}
         </Badge>
 
-        <span className="mx-1 txt-compact-2xsmall inline-block">
+        <span className="txt-compact-2xsmall mx-1 inline-block">
           {rule.operator_label}
         </span>
 
@@ -79,7 +79,7 @@ export const PromotionConditionsSection = ({
             title="No records yet."
             message="Please check back later or add a target condition today"
             action={{ to: "/promotions", label: "Add condition" }}
-            buttonVariant="transparentIconLeft"
+            buttonVariant="transparent"
           />
         )}
 

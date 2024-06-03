@@ -152,8 +152,12 @@ function Location(props: LocationProps) {
                       icon: <PencilSquare />,
                       to: `/settings/locations/${location.id}/edit`,
                     },
+                  ],
+                },
+                {
+                  actions: [
                     {
-                      label: t("location.deleteLocation.label"),
+                      label: t("actions.delete"),
                       icon: <Trash />,
                       onClick: handleDelete,
                     },

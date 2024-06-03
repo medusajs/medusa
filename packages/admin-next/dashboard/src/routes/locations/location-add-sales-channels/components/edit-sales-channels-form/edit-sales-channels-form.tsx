@@ -1,7 +1,6 @@
-import { SalesChannel } from "@medusajs/medusa"
-import { SalesChannelDTO, StockLocationDTO } from "@medusajs/types"
-import { keepPreviousData } from "@tanstack/react-query"
+import { HttpTypes } from "@medusajs/types"
 import { Button, Checkbox } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -14,15 +13,15 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
+import { useUpdateStockLocationSalesChannels } from "../../../../../hooks/api/stock-locations"
 import { useSalesChannelTableColumns } from "../../../../../hooks/table/columns/use-sales-channel-table-columns"
 import { useSalesChannelTableFilters } from "../../../../../hooks/table/filters/use-sales-channel-table-filters"
 import { useSalesChannelTableQuery } from "../../../../../hooks/table/query/use-sales-channel-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
-import { useUpdateStockLocationSalesChannels } from "../../../../../hooks/api/stock-locations"
 
 type EditSalesChannelsFormProps = {
-  location: StockLocationDTO & { sales_channels: SalesChannelDTO[] }
+  location: HttpTypes.AdminStockLocation
 }
 
 const EditSalesChannelsSchema = zod.object({
@@ -97,14 +96,14 @@ export const LocationEditSalesChannelsForm = ({
     useUpdateStockLocationSalesChannels(location.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const originalIds = location.sales_channels.map((sc) => sc.id)
+    const originalIds = location.sales_channels?.map((sc) => sc.id)
 
     const arr = data.sales_channels ?? []
 
     await mutateAsync(
       {
-        add: arr.filter((i) => !originalIds.includes(i)),
-        remove: originalIds.filter((i) => !arr.includes(i)),
+        add: arr.filter((i) => !originalIds?.includes(i)),
+        remove: originalIds?.filter((i) => !arr.includes(i)),
       },
       {
         onSuccess: () => {
@@ -153,7 +152,7 @@ export const LocationEditSalesChannelsForm = ({
   )
 }
 
-const columnHelper = createColumnHelper<SalesChannel>()
+const columnHelper = createColumnHelper<HttpTypes.AdminSalesChannel>()
 
 const useColumns = () => {
   const columns = useSalesChannelTableColumns()

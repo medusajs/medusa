@@ -702,7 +702,7 @@ export const RouteMap: RouteObject[] = [
               },
               {
                 path: ":location_id",
-                lazy: () => import("../../routes/locations/location-details"),
+                lazy: () => import("../../routes/locations/location-detail"),
                 handle: {
                   crumb: (data: StockLocationRes) => data.stock_location.name,
                 },

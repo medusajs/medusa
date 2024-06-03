@@ -12,13 +12,12 @@ import {
   ProgressTabs,
   RadioGroup,
   Select,
-  Switch,
-  Text,
-  clx,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
+import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
+import { SwitchBox } from "../../../../../components/forms/switch-box"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -48,7 +47,7 @@ type StepStatus = {
 const CreateShippingOptionSchema = zod.object({
   name: zod.string().min(1),
   price_type: zod.nativeEnum(ShippingAllocation),
-  enabled_in_store: zod.boolean().optional(),
+  enabled_in_store: zod.boolean(),
   shipping_profile_id: zod.string(),
   provider_id: zod.string().min(1),
   region_prices: zod.record(zod.string(), zod.string().optional()),
@@ -213,15 +212,12 @@ export function CreateShippingOptionsForm({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
+      <ProgressTabs
+        value={tab}
         className="flex h-full flex-col overflow-hidden"
-        onSubmit={handleSubmit}
+        onValueChange={(tab) => onTabChange(tab as Tab)}
       >
-        <ProgressTabs
-          value={tab}
-          className="h-full"
-          onValueChange={(tab) => onTabChange(tab as Tab)}
-        >
+        <form className="flex h-full flex-col" onSubmit={handleSubmit}>
           <RouteFocusModal.Header>
             <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 min-w-0 flex-1 border-l">
               <ProgressTabs.Trigger
@@ -276,97 +272,86 @@ export function CreateShippingOptionsForm({
             </div>
           </RouteFocusModal.Header>
 
-          <RouteFocusModal.Body
-            className={clx(
-              "flex h-full w-fit flex-col items-center divide-y overflow-hidden",
-              { "mx-auto": tab === Tab.DETAILS }
-            )}
-          >
-            <ProgressTabs.Content value={Tab.DETAILS} className="h-full w-full">
-              <div className="container mx-auto w-[720px] px-1 py-8">
-                <Heading className="mb-12 mt-8 text-2xl">
-                  {t(
-                    `location.${
-                      isReturn ? "returnOptions" : "shippingOptions"
-                    }.create.title`,
-                    {
-                      zone: zone.name,
-                    }
-                  )}
-                </Heading>
+          <RouteFocusModal.Body className="size-full overflow-hidden">
+            <ProgressTabs.Content
+              value={Tab.DETAILS}
+              className="size-full overflow-y-auto"
+            >
+              <div className="flex flex-1 flex-col items-center overflow-y-auto">
+                <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
+                  <Heading>
+                    {t(
+                      `location.shippingOptions.create.${
+                        isReturn ? "headerReturn" : "headerOutbound"
+                      }`,
+                      {
+                        zone: zone.name,
+                      }
+                    )}
+                  </Heading>
 
-                {!isReturn && (
-                  <div>
-                    <Text weight="plus">
-                      {t("location.shippingOptions.create.subtitle")}
-                    </Text>
-                    <Text className="text-ui-fg-subtle mb-8 mt-2">
-                      {t("location.shippingOptions.create.description")}
-                    </Text>
-                  </div>
-                )}
-
-                <Form.Field
-                  control={form.control}
-                  name="price_type"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label>
-                          {t("location.shippingOptions.create.allocation")}
-                        </Form.Label>
-                        <Form.Control>
-                          <RadioGroup
-                            className="flex justify-between gap-4"
-                            {...field}
-                            onValueChange={field.onChange}
-                          >
-                            <RadioGroup.ChoiceBox
-                              className="flex-1"
-                              value={ShippingAllocation.FlatRate}
-                              label={t("location.shippingOptions.create.fixed")}
-                              description={t(
-                                "location.shippingOptions.create.fixedDescription"
-                              )}
-                            />
-                            <RadioGroup.ChoiceBox
-                              className="flex-1"
-                              value={ShippingAllocation.Calculated}
-                              label={t(
-                                "location.shippingOptions.create.calculated"
-                              )}
-                              description={t(
-                                "location.shippingOptions.create.calculatedDescription"
-                              )}
-                            />
-                          </RadioGroup>
-                        </Form.Control>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-
-                <div className="mt-8 max-w-[50%] pr-2 ">
                   <Form.Field
                     control={form.control}
-                    name="name"
+                    name="price_type"
                     render={({ field }) => {
                       return (
                         <Form.Item>
-                          <Form.Label>{t("fields.name")}</Form.Label>
+                          <Form.Label>
+                            {t("location.shippingOptions.create.allocation")}
+                          </Form.Label>
                           <Form.Control>
-                            <Input {...field} />
+                            <RadioGroup
+                              className="grid grid-cols-1 gap-4 md:grid-cols-2"
+                              {...field}
+                              onValueChange={field.onChange}
+                            >
+                              <RadioGroup.ChoiceBox
+                                className="flex-1"
+                                value={ShippingAllocation.FlatRate}
+                                label={t(
+                                  "location.shippingOptions.create.fixed"
+                                )}
+                                description={t(
+                                  "location.shippingOptions.create.fixedDescription"
+                                )}
+                              />
+                              <RadioGroup.ChoiceBox
+                                className="flex-1"
+                                value={ShippingAllocation.Calculated}
+                                label={t(
+                                  "location.shippingOptions.create.calculated"
+                                )}
+                                description={t(
+                                  "location.shippingOptions.create.calculatedDescription"
+                                )}
+                              />
+                            </RadioGroup>
                           </Form.Control>
                           <Form.ErrorMessage />
                         </Form.Item>
                       )
                     }}
                   />
-                </div>
 
-                <div className="flex flex-col divide-y">
-                  <div className="mt-4 grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <Form.Field
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label>{t("fields.name")}</Form.Label>
+                            <Form.Control>
+                              <Input {...field} />
+                            </Form.Control>
+                            <Form.ErrorMessage />
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <Form.Field
                       control={form.control}
                       name="shipping_profile_id"
@@ -429,34 +414,17 @@ export function CreateShippingOptionsForm({
                       }}
                     />
                   </div>
-                  <div className="mt-8 pt-8">
-                    <Form.Field
-                      control={form.control}
-                      name="enabled_in_store"
-                      render={({ field: { value, onChange, ...field } }) => (
-                        <Form.Item>
-                          <div className="flex items-center justify-between">
-                            <Form.Label>
-                              {t("location.shippingOptions.create.enable")}
-                            </Form.Label>
-                            <Form.Control>
-                              <Switch
-                                {...field}
-                                checked={!!value}
-                                onCheckedChange={onChange}
-                              />
-                            </Form.Control>
-                          </div>
-                          <Form.Hint className="!mt-1">
-                            {t(
-                              "location.shippingOptions.create.enableDescription"
-                            )}
-                          </Form.Hint>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )}
-                    />
-                  </div>
+
+                  <Divider />
+
+                  <SwitchBox
+                    control={form.control}
+                    name="enabled_in_store"
+                    label={t("location.shippingOptions.create.enable")}
+                    description={t(
+                      "location.shippingOptions.create.enableDescription"
+                    )}
+                  />
                 </div>
               </div>
             </ProgressTabs.Content>
@@ -469,8 +437,8 @@ export function CreateShippingOptionsForm({
               <CreateShippingOptionsPricesForm form={form} />
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
-        </ProgressTabs>
-      </form>
+        </form>
+      </ProgressTabs>
     </RouteFocusModal.Form>
   )
 }

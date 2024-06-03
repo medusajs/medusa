@@ -742,6 +742,12 @@
       "edit": {
         "title": "Edit Service Zone"
       },
+      "manageAreas": {
+        "header": "Manage Areas for {{name}}",
+        "label": "Areas in this service zone",
+        "hint": "Select the geographical areas that should be covered by this service zone.",
+        "action": "Manage areas"
+      },
       "deleteWarning": "Are you sure you want to delete \"{{name}}\". This will also delete all assocciated shipping options.",
       "toast": {
         "delete": "Zone \"{{name}}\" deleted successfully."
@@ -755,19 +761,12 @@
       "shippingOptionsPlaceholder": "Not covered by any shipping options.",
       "addOption": "Add option",
       "shippingOptions": "Shipping options",
-      "returnOptions": "Return options",
-      "areas": {
-        "title": "Areas affected by this rule",
-        "description": "Select the geographical areas where this shipping zone should apply.",
-        "manage": "Manage areas",
-        "error": "Please select at least one country for this service zone."
-      }
+      "returnOptions": "Return options"
     },
     "shippingOptions": {
       "create": {
-        "title": "Create a shipping option for {{zone}}",
-        "subtitle": "General information",
-        "description": "To start selling, all you need is a name and a price",
+        "headerOutbound": "Create a shipping option for {{zone}}",
+        "headerReturn": "Create a return option for {{zone}}",
         "details": "Details",
         "pricing": "Pricing",
         "allocation": "Shipping amount",

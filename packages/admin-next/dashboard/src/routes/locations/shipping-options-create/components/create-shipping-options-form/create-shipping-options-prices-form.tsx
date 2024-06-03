@@ -5,13 +5,14 @@ import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { CurrencyCell } from "../../../../../components/grid/grid-cells/common/currency-cell"
+import { createDataGridHelper } from "../../../../../components/data-grid/utils"
 import { DataGrid } from "../../../../../components/grid/data-grid"
+import { CurrencyCell } from "../../../../../components/grid/grid-cells/common/currency-cell"
 import { DataGridMeta } from "../../../../../components/grid/types"
 import { useCurrencies } from "../../../../../hooks/api/currencies"
-import { ExtendedProductDTO } from "../../../../../types/api-responses"
 import { useRegions } from "../../../../../hooks/api/regions"
 import { useStore } from "../../../../../hooks/api/store"
+import { ExtendedProductDTO } from "../../../../../types/api-responses"
 
 const PricingCreateSchemaType = zod.record(
   zod.object({
@@ -94,6 +95,8 @@ export const CreateShippingOptionsPricesForm = ({
   )
 }
 
+const helper = createDataGridHelper()
+
 const columnHelper = createColumnHelper<
   ExtendedProductDTO | ProductVariantDTO
 >()
@@ -134,9 +137,14 @@ const useColumns = ({
             cell: ({ row, table }) => {
               return (
                 <CurrencyCell
-                  currency={currencies.find(
-                    (c) => c.code === region.currency_code
-                  )}
+                  currency={
+                    currencies.find((c) => c.code === region.currency_code) || {
+                      code: "USD",
+                      symbol: "$",
+                      name: "US Dollar",
+                      symbol_native: "$",
+                    }
+                  }
                   meta={table.options.meta as DataGridMeta<any>}
                   field={`region_prices.${region.id}`}
                 />

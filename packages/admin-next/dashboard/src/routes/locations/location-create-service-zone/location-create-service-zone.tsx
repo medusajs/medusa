@@ -1,4 +1,4 @@
-import { useLoaderData, useParams } from "react-router-dom"
+import { json, useLoaderData, useParams } from "react-router-dom"
 
 import { RouteFocusModal } from "../../../components/route-modal"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
@@ -26,7 +26,10 @@ export function LocationCreateServiceZone() {
   const ready = !isPending && !!fulfillmentSet
 
   if (!fulfillmentSet) {
-    throw new Error("Fulfillment set doesn't exist")
+    throw json(
+      { message: `Fulfillment set with ID: ${fset_id} was not found.` },
+      404
+    )
   }
 
   if (isError) {
@@ -35,7 +38,12 @@ export function LocationCreateServiceZone() {
 
   return (
     <RouteFocusModal>
-      {ready && <CreateServiceZoneForm fulfillmentSet={fulfillmentSet} />}
+      {ready && (
+        <CreateServiceZoneForm
+          fulfillmentSet={fulfillmentSet}
+          locationId={location_id!}
+        />
+      )}
     </RouteFocusModal>
   )
 }

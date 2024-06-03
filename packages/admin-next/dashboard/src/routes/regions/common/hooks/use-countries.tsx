@@ -1,5 +1,5 @@
+import { HttpTypes, RegionCountryDTO } from "@medusajs/types"
 import { json } from "react-router-dom"
-import { RegionCountryDTO } from "@medusajs/types"
 
 const acceptedOrderKeys = ["name", "code"]
 
@@ -14,7 +14,7 @@ export const useCountries = ({
   limit,
   offset = 0,
 }: {
-  countries: RegionCountryDTO[]
+  countries: Omit<HttpTypes.AdminRegionCountry, "id">[]
   limit: number
   offset?: number
   order?: string
@@ -27,7 +27,6 @@ export const useCountries = ({
     const key = order.replace("-", "")
 
     if (!acceptedOrderKeys.includes(key)) {
-      console.log("The key ${key} is not a valid order key")
       throw json(`The key ${key} is not a valid order key`, 500)
     }
 
@@ -51,8 +50,8 @@ export const useCountries = ({
     const query = q.toLowerCase()
     const results = countries.filter(
       (c) =>
-        c.name.toLowerCase().includes(query) ||
-        c.iso_2.toLowerCase().includes(query)
+        c.name!.toLowerCase().includes(query) ||
+        c.iso_2!.toLowerCase().includes(query)
     )
     return {
       countries: results,

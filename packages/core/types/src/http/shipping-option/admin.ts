@@ -16,7 +16,7 @@ export interface AdminShippingOptionType extends BaseSoftDeletableHttpEntity {
 export interface AdminShippingOptionRule extends BaseSoftDeletableHttpEntity {
   attribute: string
   operator: string
-  value: { value: string | string[] } | null
+  value: string | string[] | null
   shipping_option_id: string
 }
 

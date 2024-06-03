@@ -43,25 +43,28 @@ type NoRecordsProps = {
   title?: string
   message?: string
   className?: string
-  buttonVariant?: string
+  buttonVariant?: "default" | "transparent"
 } & ActionProps
 
 const DefaultButton = ({ action }: ActionProps) =>
   action && (
-    <Link to={action.to}>
-      <Button variant="secondary" size="small">
-        {action.label}
-      </Button>
-    </Link>
+    <Button variant="secondary" size="small" asChild>
+      <Link to={action.to}>{action.label}</Link>
+    </Button>
   )
 
-const TransparentIconLeftButton = ({ action }: ActionProps) =>
+const TransparentButton = ({ action }: ActionProps) =>
   action && (
-    <Link to={action.to}>
-      <Button variant="transparent" className="text-ui-fg-interactive">
+    <Button
+      variant="transparent"
+      size="small"
+      className="text-ui-fg-interactive"
+      asChild
+    >
+      <Link to={action.to}>
         <PlusMini /> {action.label}
-      </Button>
-    </Link>
+      </Link>
+    </Button>
   )
 
 export const NoRecords = ({
@@ -76,26 +79,26 @@ export const NoRecords = ({
   return (
     <div
       className={clx(
-        "flex h-[400px] w-full flex-col items-center justify-center gap-y-6",
+        "flex h-[400px] w-full flex-col items-center justify-center gap-y-4",
         className
       )}
     >
-      <div className="flex flex-col items-center gap-y-2">
+      <div className="flex flex-col items-center gap-y-3">
         <ExclamationCircle />
 
-        <Text size="small" leading="compact" weight="plus">
-          {title ?? t("general.noRecordsTitle")}
-        </Text>
+        <div className="flex flex-col items-center gap-y-1">
+          <Text size="small" leading="compact" weight="plus">
+            {title ?? t("general.noRecordsTitle")}
+          </Text>
 
-        <Text size="small" className="text-ui-fg-muted">
-          {message ?? t("general.noRecordsMessage")}
-        </Text>
+          <Text size="small" className="text-ui-fg-muted">
+            {message ?? t("general.noRecordsMessage")}
+          </Text>
+        </div>
       </div>
 
       {buttonVariant === "default" && <DefaultButton action={action} />}
-      {buttonVariant === "transparentIconLeft" && (
-        <TransparentIconLeftButton action={action} />
-      )}
+      {buttonVariant === "transparent" && <TransparentButton action={action} />}
     </div>
   )
 }
