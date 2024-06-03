@@ -323,7 +323,7 @@ export class Admin {
     // Note: The creation/upload flow be made more advanced, with support for streaming and progress, but for now we keep it simple
     create: async (
       body: HttpTypes.AdminUploadFile,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       const form = new FormData()
@@ -361,7 +361,7 @@ export class Admin {
     },
     retrieve: async (
       id: string,
-      query?: SelectParams,
+      query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<{ file: HttpTypes.AdminFile }>(
@@ -373,10 +373,13 @@ export class Admin {
       )
     },
     delete: async (id: string, headers?: ClientHeaders) => {
-      return this.client.fetch<DeleteResponse<"file">>(`/admin/uploads/${id}`, {
-        method: "DELETE",
-        headers,
-      })
+      return this.client.fetch<HttpTypes.DeleteResponse<"file">>(
+        `/admin/uploads/${id}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      )
     },
   }
 
