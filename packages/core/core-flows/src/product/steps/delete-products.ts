@@ -10,7 +10,10 @@ export const deleteProductsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.softDelete(ids)
+    if (ids?.length) {
+      await service.softDelete(ids)
+    }
+
     return new StepResponse(void 0, ids)
   },
   async (prevIds, { container }) => {
