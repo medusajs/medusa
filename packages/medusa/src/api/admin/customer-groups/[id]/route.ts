@@ -1,12 +1,13 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../types/routing"
-import {
   deleteCustomerGroupsWorkflow,
   updateCustomerGroupsWorkflow,
 } from "@medusajs/core-flows"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 
+import { MedusaError } from "@medusajs/utils"
 import { refetchCustomerGroup } from "../helpers"
 import { AdminUpdateCustomerGroupType } from "../validators"
 
@@ -20,6 +21,13 @@ export const GET = async (
     req.remoteQueryConfig.fields
   )
 
+  if (!customerGroup) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Customer group with id: ${req.params.id} not found`
+    )
+  }
+
   res.status(200).json({ customer_group: customerGroup })
 }
 
@@ -27,8 +35,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateCustomerGroupType>,
   res: MedusaResponse
 ) => {
-  const updateGroups = updateCustomerGroupsWorkflow(req.scope)
-  await updateGroups.run({
+  await updateCustomerGroupsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody,

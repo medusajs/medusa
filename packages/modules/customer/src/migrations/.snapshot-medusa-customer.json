@@ -388,7 +388,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "text"
         },
         "metadata": {
@@ -445,6 +445,16 @@
       "name": "customer_group",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_customer_group_name_unique",
+          "columnNames": [
+            "name"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_customer_group_name_unique\" ON \"customer_group\" (name) WHERE deleted_at IS NULL"
+        },
         {
           "keyName": "customer_group_pkey",
           "columnNames": [
