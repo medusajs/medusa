@@ -1,9 +1,9 @@
-import { CommonEvents } from "../event-bus"
+import { buildEventNamesFromEntityName } from "../event-bus"
+import { Modules } from "../modules-sdk"
+
+const eventBaseNames: ["user", "invite"] = ["user", "invite"]
 
 export const UserEvents = {
-  created: "user." + CommonEvents.CREATED,
-  updated: "user." + CommonEvents.UPDATED,
-  invite_created: "invite." + CommonEvents.CREATED,
-  invite_updated: "invite." + CommonEvents.UPDATED,
-  invite_token_generated: "invite.token_generated",
+  ...buildEventNamesFromEntityName(eventBaseNames, Modules.USER),
+  invite_token_generated: `${Modules.USER}.user.invite.token_generated`,
 }
