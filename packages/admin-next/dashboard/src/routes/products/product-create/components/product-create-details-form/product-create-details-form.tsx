@@ -6,6 +6,7 @@ import { Divider } from "../../../../../components/common/divider"
 import { ProductCreateSchemaType } from "../../types"
 import { ProductCreateGeneralSection } from "./components/product-create-details-general-section"
 import { ProductCreateVariantsSection } from "./components/product-create-details-variant-section"
+import { ProductCreateMediaSection } from "./components/product-create-details-media-section"
 
 type ProductAttributesProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -19,6 +20,8 @@ export const ProductCreateDetailsForm = ({ form }: ProductAttributesProps) => {
         <ProductCreateGeneralSection form={form} />
         <Divider />
         <ProductCreateVariantsSection form={form} />
+        <Divider />
+        <ProductCreateMediaSection form={form} />
       </div>
     </div>
   )

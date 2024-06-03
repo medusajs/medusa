@@ -1,4 +1,4 @@
-import { BaseFilterable, OperatorMap } from "@medusajs/types"
+import { BaseFilterable, OperatorMap } from "../dal"
 
 export interface WorkflowExecutionDTO {
   id: string

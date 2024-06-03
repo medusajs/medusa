@@ -89,7 +89,7 @@ OrderChangeProcessing.registerActionType(
       if (!existing) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Reference ID "${refId}" not found.`
+          `Item ID "${refId}" not found.`
         )
       }
 

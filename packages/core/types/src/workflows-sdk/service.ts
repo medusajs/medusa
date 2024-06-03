@@ -1,10 +1,6 @@
-import {
-  ContainerLike,
-  Context,
-  FindConfig,
-  IModuleService,
-} from "@medusajs/types"
-import { ReturnWorkflow, UnwrapWorkflowInputDataType } from "../utils/composer"
+import { ContainerLike, FindConfig } from "../common"
+import { IModuleService } from "../modules-sdk"
+import { Context } from "../shared-context"
 import {
   FilterableWorkflowExecutionProps,
   WorkflowExecutionDTO,
@@ -55,14 +51,7 @@ export interface IWorkflowEngineService extends IModuleService {
     sharedContext?: Context
   ): Promise<[WorkflowExecutionDTO[], number]>
 
-  run<
-    TWorkflow extends ReturnWorkflow<any, any, any> = ReturnWorkflow<
-      any,
-      any,
-      any
-    >,
-    TData = UnwrapWorkflowInputDataType<TWorkflow>
-  >(
+  run(
     workflowId: string,
     options?: WorkflowOrchestratorRunDTO,
     sharedContext?: Context

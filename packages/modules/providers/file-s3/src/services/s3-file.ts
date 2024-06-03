@@ -99,6 +99,7 @@ export class S3FileService extends AbstractFileProviderService {
       // protected private_secret_access_key_: string
 
       // ACL: options.acl ?? (options.isProtected ? "private" : "public-read"),
+      ACL: "public-read",
       Bucket: this.config_.bucket,
       Body: content,
       Key: fileKey,

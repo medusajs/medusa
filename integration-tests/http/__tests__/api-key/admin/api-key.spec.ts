@@ -1,26 +1,18 @@
 import { ApiKeyType, ContainerRegistrationKeys } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import { createAdminUser } from "../../../helpers/create-admin-user"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
-const env = { MEDUSA_FF_MEDUSA_V2: true }
-const adminHeaders = {
-  headers: { "x-medusa-access-token": "test_token" },
-}
-
 medusaIntegrationTestRunner({
-  env,
+  env: {},
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("API Keys - Admin", () => {
-      let container
-
-      beforeAll(async () => {
-        container = getContainer()
-      })
-
       beforeEach(async () => {
-        await createAdminUser(dbConnection, adminHeaders, container)
+        await createAdminUser(dbConnection, adminHeaders, getContainer())
       })
 
       it("should correctly implement the entire lifecycle of an api key", async () => {
@@ -70,7 +62,7 @@ medusaIntegrationTestRunner({
         expect(revoked.data.api_key).toEqual(
           expect.objectContaining({
             id: created.data.api_key.id,
-            revoked_by: "admin_user",
+            revoked_by: expect.stringMatching(/^user_*/),
           })
         )
         expect(revoked.data.api_key.revoked_at).toBeTruthy()
@@ -432,19 +424,14 @@ medusaIntegrationTestRunner({
 
         expect(deletedApiKeys.data.api_keys).toHaveLength(0)
 
-        const remoteQuery = container.resolve(
-          ContainerRegistrationKeys.REMOTE_QUERY
-        )
+        const fetchedSalesChannel = (
+          await api.get(
+            `/admin/sales-channels/${sales_channel.id}?fields=*publishable_api_keys`,
+            adminHeaders
+          )
+        ).data.sales_channel
 
-        // Not the prettiest, but an easy way to check if the link was removed
-        const channels = await remoteQuery({
-          publishable_api_key_sales_channels: {
-            __args: { sales_channel_id: [sales_channel.id] },
-            fields: ["id", "sales_channel_id", "publishable_key_id"],
-          },
-        })
-
-        expect(channels).toHaveLength(0)
+        expect(fetchedSalesChannel.publishable_api_keys).toEqual([])
       })
     })
   },

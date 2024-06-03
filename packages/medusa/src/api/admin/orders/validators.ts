@@ -79,3 +79,12 @@ export const AdminOrderCreateShipment = z.object({
 export type AdminOrderCreateShipmentType = z.infer<
   typeof AdminOrderCreateShipment
 >
+
+export const AdminOrderCancelFulfillment = z.object({
+  fulfillment_id: z.string(),
+  no_notification: z.boolean().optional(),
+})
+
+export type AdminOrderCancelFulfillmentType = z.infer<
+  typeof AdminOrderCancelFulfillment
+>

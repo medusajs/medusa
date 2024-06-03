@@ -21,7 +21,7 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createLinkStep, useRemoteQueryStep } from "../../common"
+import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createReturnFulfillmentWorkflow } from "../../fulfillment"
 import { updateOrderTaxLinesStep } from "../steps"
 import { createReturnStep } from "../steps/create-return"
@@ -326,6 +326,6 @@ export const createReturnOrderWorkflow = createWorkflow(
         ]
       }
     )
-    createLinkStep(link)
+    createRemoteLinkStep(link)
   }
 )
