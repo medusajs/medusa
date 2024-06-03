@@ -5,9 +5,14 @@ import {
   IPricingModuleService,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+  SuiteOptions,
+} from "medusa-test-utils"
 import { PriceSetRuleType } from "../../../../src"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
+import { CommonEvents, PricingEvents, composeMessage } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
@@ -32,6 +37,16 @@ moduleIntegrationTestRunner({
     MikroOrmWrapper,
     service,
   }: SuiteOptions<IPricingModuleService>) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("PricingModule Service - PriceSet", () => {
       beforeEach(async () => {
         const testManager = await MikroOrmWrapper.forkManager()
@@ -390,7 +405,7 @@ moduleIntegrationTestRunner({
           )
         })
 
-        it("should create a price set with rule types and money amounts", async () => {
+        it.only("should create a price set with rule types and money amounts", async () => {
           const [priceSet] = await service.create([
             {
               rules: [{ rule_attribute: "region_id" }],
@@ -422,6 +437,34 @@ moduleIntegrationTestRunner({
               ],
             })
           )
+
+          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
+          expect(eventBusEmitSpy).toHaveBeenCalledWith([
+            composeMessage(PricingEvents.price_set_created, {
+              service: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price_set",
+              data: { id: priceSet.id },
+            }),
+            composeMessage(PricingEvents.price_created, {
+              service: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price",
+              data: { id: priceSet.prices![0].id },
+            }),
+            composeMessage(PricingEvents.price_rule_created, {
+              service: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price_rule",
+              data: {},
+            }),
+            composeMessage(PricingEvents.price_set_rule_type_created, {
+              service: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price_set_rule_type",
+              data: { id: priceSet.rule_types![0].id },
+            }),
+          ])
         })
 
         it("should create a price set with money amounts with and without rules", async () => {

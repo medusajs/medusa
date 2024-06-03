@@ -21,6 +21,7 @@ import {
 import {
   arrayDifference,
   deduplicate,
+  EmitEvents,
   generateEntityId,
   groupBy,
   InjectManager,
@@ -47,11 +48,11 @@ import {
 } from "@models"
 
 import { PriceListService, RuleTypeService } from "@services"
-import { validatePriceListDates } from "@utils"
-import { UpdatePriceSetInput } from "src/types/services"
+import { validatePriceListDates, eventBuilders } from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { PriceListIdPrefix } from "../models/price-list"
 import { PriceSetIdPrefix } from "../models/price-set"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -326,6 +327,7 @@ export default class PricingModuleService<
   ): Promise<PriceSetDTO[]>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async create(
     data: PricingTypes.CreatePriceSetDTO | PricingTypes.CreatePriceSetDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -366,7 +368,7 @@ export default class PricingModuleService<
   ): Promise<PriceSetDTO | PriceSetDTO[]> {
     const input = Array.isArray(data) ? data : [data]
     const forUpdate = input.filter(
-      (priceSet): priceSet is UpdatePriceSetInput => !!priceSet.id
+      (priceSet): priceSet is ServiceTypes.UpdatePriceSetInput => !!priceSet.id
     )
     const forCreate = input.filter(
       (priceSet): priceSet is CreatePriceSetDTO => !priceSet.id
@@ -404,7 +406,7 @@ export default class PricingModuleService<
     data: PricingTypes.UpdatePriceSetDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PriceSetDTO | PriceSetDTO[]> {
-    let normalizedInput: UpdatePriceSetInput[] = []
+    let normalizedInput: ServiceTypes.UpdatePriceSetInput[] = []
     if (isString(idOrSelector)) {
       // Check if the ID exists, it will throw if not.
       await this.priceSetService_.retrieve(idOrSelector, {}, sharedContext)
@@ -431,7 +433,7 @@ export default class PricingModuleService<
   }
 
   private async normalizeUpdateData(
-    data: UpdatePriceSetInput[],
+    data: ServiceTypes.UpdatePriceSetInput[],
     sharedContext
   ) {
     const ruleAttributes = data
@@ -480,7 +482,7 @@ export default class PricingModuleService<
 
   @InjectTransactionManager("baseRepository_")
   protected async update_(
-    data: UpdatePriceSetInput[],
+    data: ServiceTypes.UpdatePriceSetInput[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PriceSet[]> {
     // TODO: We are not handling rule types, rules, etc. here, add support after data models are finalized
@@ -626,6 +628,7 @@ export default class PricingModuleService<
   }
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createPriceLists(
     data: PricingTypes.CreatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -862,11 +865,58 @@ export default class PricingModuleService<
       sharedContext
     )
 
+    const eventsData = createdPriceSets.reduce(
+      (eventsData, priceSet) => {
+        eventsData.priceSets.push({
+          id: priceSet.id,
+        })
+
+        priceSet.prices.map((price) => {
+          eventsData.prices.push({
+            id: price.id,
+          })
+          price.price_rules.map((priceRule) => {
+            eventsData.priceRules.push({
+              id: priceRule.id,
+            })
+          })
+        })
+
+        return eventsData
+      },
+      {
+        priceSets: [],
+        priceRules: [],
+        prices: [],
+      } as {
+        priceSets: { id: string }[]
+        priceRules: { id: string }[]
+        prices: { id: string }[]
+      }
+    )
+
+    eventBuilders.createdPriceSet({
+      data: eventsData.priceSets,
+      sharedContext,
+    })
+    eventBuilders.createdPrice({
+      data: eventsData.prices,
+      sharedContext,
+    })
+    eventBuilders.createdPriceRule({
+      data: eventsData.priceRules,
+      sharedContext,
+    })
+
     if (ruleSetRuleTypeToCreateMap.size) {
-      await this.priceSetRuleTypeService_.create(
+      const priceSetRuleTypes = await this.priceSetRuleTypeService_.create(
         Array.from(ruleSetRuleTypeToCreateMap.values()),
         sharedContext
       )
+      eventBuilders.createdPriceSetRuleType({
+        data: priceSetRuleTypes,
+        sharedContext,
+      })
     }
 
     return createdPriceSets
@@ -1124,10 +1174,73 @@ export default class PricingModuleService<
       }
     )
 
-    return await this.priceListService_.create(
+    const priceLists = await this.priceListService_.create(
       priceListsToCreate,
       sharedContext
     )
+
+    /**
+     * Preparing data for emitting events
+     */
+    const eventsData = priceLists.reduce(
+      (eventsData, priceList) => {
+        eventsData.priceList.push({
+          id: priceList.id,
+        })
+
+        priceList.price_list_rules.map((listRule) => {
+          eventsData.priceListRules.push({
+            id: listRule.id,
+          })
+        })
+
+        priceList.prices.map((price) => {
+          eventsData.prices.push({
+            id: price.id,
+          })
+          price.price_rules.map((priceRule) => {
+            eventsData.priceRules.push({
+              id: priceRule.id,
+            })
+          })
+        })
+
+        return eventsData
+      },
+      {
+        priceList: [],
+        priceListRules: [],
+        priceRules: [],
+        prices: [],
+      } as {
+        priceList: { id: string }[]
+        priceListRules: { id: string }[]
+        priceRules: { id: string }[]
+        prices: { id: string }[]
+      }
+    )
+
+    /**
+     * Emitting events for all created entities
+     */
+    eventBuilders.createdPriceList({
+      data: eventsData.priceList,
+      sharedContext,
+    })
+    eventBuilders.createdPriceListRule({
+      data: eventsData.priceListRules,
+      sharedContext,
+    })
+    eventBuilders.createdPrice({
+      data: eventsData.prices,
+      sharedContext,
+    })
+    eventBuilders.createdPriceRule({
+      data: eventsData.priceRules,
+      sharedContext,
+    })
+
+    return priceLists
   }
 
   @InjectTransactionManager("baseRepository_")
