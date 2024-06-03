@@ -405,7 +405,7 @@ moduleIntegrationTestRunner({
           )
         })
 
-        it.only("should create a price set with rule types and money amounts", async () => {
+        it("should create a price set with rule types and money amounts", async () => {
           const [priceSet] = await service.create([
             {
               rules: [{ rule_attribute: "region_id" }],

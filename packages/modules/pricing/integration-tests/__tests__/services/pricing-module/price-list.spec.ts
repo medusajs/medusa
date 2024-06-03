@@ -1,8 +1,13 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+  SuiteOptions,
+} from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceSets } from "../../../__fixtures__/price-set"
+import { CommonEvents, composeMessage, PricingEvents } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
@@ -12,6 +17,16 @@ moduleIntegrationTestRunner({
     MikroOrmWrapper,
     service,
   }: SuiteOptions<IPricingModuleService>) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("PriceList Service", () => {
       beforeEach(async () => {
         const testManager = await MikroOrmWrapper.forkManager()
@@ -395,13 +410,13 @@ moduleIntegrationTestRunner({
           )
         })
 
-        it("should create a priceList successfully", async () => {
+        it.only("should create a priceList successfully", async () => {
           const [created] = await service.createPriceLists([
             {
               title: "test",
               description: "test",
-              starts_at: new Date("10/01/2023"),
-              ends_at: new Date("10/30/2023"),
+              starts_at: new Date("10/01/2023").toISOString(),
+              ends_at: new Date("10/30/2023").toISOString(),
               rules: {
                 customer_group_id: [
                   "vip-customer-group-id",
@@ -486,6 +501,40 @@ moduleIntegrationTestRunner({
                   ]),
                 }),
               ]),
+            })
+          )
+
+          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
+          expect(eventBusEmitSpy.mock.calls[0][0][0]).toEqual(
+            composeMessage(PricingEvents.price_list_created, {
+              service: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price_list",
+              data: { id: priceList.id },
+            })
+          )
+          expect(eventBusEmitSpy.mock.calls[0][0][1]).toEqual(
+            composeMessage(PricingEvents.price_list_rule_created, {
+              service: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price_list_rule",
+              data: { id: priceList.price_list_rules?.[0].id },
+            })
+          )
+          expect(eventBusEmitSpy.mock.calls[0][0][2]).toEqual(
+            composeMessage(PricingEvents.price_list_rule_created, {
+              service: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price_list_rule",
+              data: { id: priceList.price_list_rules?.[1].id },
+            })
+          )
+          expect(eventBusEmitSpy.mock.calls[0][0][3]).toEqual(
+            composeMessage(PricingEvents.price_created, {
+              service: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price",
+              data: { id: priceList.prices![0].id },
             })
           )
         })
