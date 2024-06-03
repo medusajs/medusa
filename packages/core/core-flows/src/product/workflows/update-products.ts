@@ -2,7 +2,7 @@ import { updateProductsStep } from "../steps/update-products"
 
 import { Modules } from "@medusajs/modules-sdk"
 import { ProductTypes } from "@medusajs/types"
-import { arrayDifference } from "@medusajs/utils"
+import { arrayDifference, isPresent } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
@@ -38,6 +38,12 @@ function prepareUpdateProductInput({
 }: {
   input: WorkflowInput
 }): UpdateProductsStepInput {
+  if (!isPresent(input)) {
+    return {
+      products: [],
+    }
+  }
+
   if ("products" in input) {
     return {
       products: input.products.map((p) => ({
@@ -138,7 +144,7 @@ export const updateProductsWorkflow = createWorkflow(
     input: WorkflowData<WorkflowInput>
   ): WorkflowData<ProductTypes.ProductDTO[]> => {
     // TODO: Delete price sets for removed variants
-
+    // TODO: exit early if nothing is passed in
     const toUpdateInput = transform({ input }, prepareUpdateProductInput)
     const updatedProducts = updateProductsStep(toUpdateInput)
     const updatedProductIds = transform(
