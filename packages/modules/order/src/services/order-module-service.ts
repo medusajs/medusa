@@ -2753,10 +2753,55 @@ export default class OrderModuleService<
     }
 
     await this.orderService_.update(
+      orderIds.map((id) => {
+        return {
+          id,
+          status: OrderStatus.COMPLETED,
+        }
+      }),
+      sharedContext
+    )
+
+    return Array.isArray(orderId) ? orders : orders[0]
+  }
+
+  async cancel(
+    orderId: string,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO>
+  async cancel(
+    orderId: string[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async cancel(
+    orderId: string | string[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO | OrderTypes.OrderDTO[]> {
+    const orderIds = Array.isArray(orderId) ? orderId : [orderId]
+    const orders = await this.list(
       {
         id: orderIds,
-        status: OrderStatus.COMPLETED,
       },
+      {},
+      sharedContext
+    )
+
+    const canceled_at = new Date()
+    for (const order of orders) {
+      order.status = OrderStatus.CANCELED
+      order.canceled_at = canceled_at
+    }
+
+    await this.orderService_.update(
+      orderIds.map((id) => {
+        return {
+          id,
+          status: OrderStatus.CANCELED,
+          canceled_at,
+        }
+      }),
       sharedContext
     )
 

@@ -1,4 +1,5 @@
 export * from "./archive-orders"
+export * from "./cancel-orders"
 export * from "./complete-orders"
 export * from "./create-orders"
 export * from "./get-item-tax-lines"

@@ -22,14 +22,9 @@ export const POST = async (
     order_id: req.params.id,
   }
 
-  const { errors } = await cancelOrderFulfillmentWorkflow(req.scope).run({
+  await cancelOrderFulfillmentWorkflow(req.scope).run({
     input,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "order",
