@@ -6,4 +6,4 @@ export const ContainerRegistrationKeys = {
   REMOTE_QUERY: "remoteQuery",
   REMOTE_LINK: "remoteLink",
   FEATURE_FLAG_ROUTER: "featureFlagRouter",
-}
+} as const

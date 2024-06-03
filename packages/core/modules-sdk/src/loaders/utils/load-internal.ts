@@ -1,5 +1,6 @@
 import {
   Constructor,
+  IModuleService,
   InternalModuleDeclaration,
   Logger,
   MedusaContainer,
@@ -158,9 +159,9 @@ export async function loadInternalModule(
 
   if (loaderOnly) {
     // The expectation is only to run the loader as standalone, so we do not need to register the service and we need to cleanup all services
-    const service = container.resolve(registrationName)
-    await service.__hooks?.onApplicationPrepareShutdown()
-    await service.__hooks?.onApplicationShutdown()
+    const service = container.resolve<IModuleService>(registrationName)
+    await service.__hooks?.onApplicationPrepareShutdown?.()
+    await service.__hooks?.onApplicationShutdown?.()
   }
 }
 

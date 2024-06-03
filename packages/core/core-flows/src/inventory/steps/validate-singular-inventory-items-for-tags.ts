@@ -1,11 +1,5 @@
-import {
-  ContainerRegistrationKeys,
-  MedusaError,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-
-import { InventoryNext } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
 
 export const validateInventoryItemsForCreateStepId =
@@ -25,7 +19,7 @@ export const validateInventoryItemsForCreate = createStep(
       "variant_id",
       Modules.INVENTORY,
       "inventory_item_id"
-    )
+    )!
 
     const existingItems = await linkService.list(
       { variant_id: input.map((i) => i.tag) },
@@ -33,10 +27,12 @@ export const validateInventoryItemsForCreate = createStep(
     )
 
     if (existingItems.length) {
+      // @ts-expect-error
+      const ids = existingItems.map((i) => i.variant_id).join(", ")
+
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
-        "Inventory items already exist for variants with ids: " +
-          existingItems.map((i) => i.variant_id).join(", ")
+        `Inventory items already exist for variants with ids: ${ids}`
       )
     }
 

@@ -1,4 +1,4 @@
-import { Modules } from "@medusajs/modules-sdk"
+import { Modules, RemoteLink } from "@medusajs/modules-sdk"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
