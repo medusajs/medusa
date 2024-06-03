@@ -72,7 +72,7 @@ export const useCreateFulfillmentSetServiceZone = (
   fulfillmentSetId: string,
   options?: Omit<
     UseMutationOptions<
-      HttpTypes.AdminServiceZoneResponse,
+      HttpTypes.AdminFulfillmentSetResponse,
       FetchError,
       HttpTypes.AdminCreateFulfillmentSetServiceZone,
       QueryKey
@@ -83,6 +83,37 @@ export const useCreateFulfillmentSetServiceZone = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.fulfillmentSet.createServiceZone(fulfillmentSetId, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: fulfillmentSetsQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useUpdateFulfillmentSetServiceZone = (
+  fulfillmentSetId: string,
+  serviceZoneId: string,
+  options?: Omit<
+    UseMutationOptions<
+      HttpTypes.AdminFulfillmentSetResponse,
+      FetchError,
+      HttpTypes.AdminUpdateFulfillmentSetServiceZone,
+      QueryKey
+    >,
+    "mutationFn"
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      sdk.admin.fulfillmentSet.updateServiceZone(
+        fulfillmentSetId,
+        serviceZoneId,
+        payload
+      ),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: fulfillmentSetsQueryKeys.lists(),

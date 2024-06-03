@@ -1,18 +1,19 @@
-import { ServiceZoneDTO } from "@medusajs/types"
-import { Alert, Button, Input, Text, toast } from "@medusajs/ui"
+import { HttpTypes } from "@medusajs/types"
+import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
+import { InlineTip } from "../../../../../components/common/inline-tip"
 import {
-    RouteDrawer,
-    useRouteModal,
+  RouteDrawer,
+  useRouteModal,
 } from "../../../../../components/route-modal"
-import { useUpdateServiceZone } from "../../../../../hooks/api/stock-locations"
+import { useUpdateFulfillmentSetServiceZone } from "../../../../../hooks/api/fulfillment-sets"
 
 type EditServiceZoneFormProps = {
-  zone: ServiceZoneDTO
+  zone: HttpTypes.AdminServiceZone
   fulfillmentSetId: string
   locationId: string
 }
@@ -35,11 +36,8 @@ export const EditServiceZoneForm = ({
     },
   })
 
-  const { mutateAsync, isPending: isLoading } = useUpdateServiceZone(
-    fulfillmentSetId,
-    zone.id,
-    locationId
-  )
+  const { mutateAsync, isPending: isLoading } =
+    useUpdateFulfillmentSetServiceZone(fulfillmentSetId, zone.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
@@ -52,7 +50,7 @@ export const EditServiceZoneForm = ({
             // description: t("regions.toast.edit"),
             dismissLabel: t("actions.close"),
           })
-          handleSuccess()
+          handleSuccess(`/settings/locations/${locationId}`)
         },
         onError: (e) => {
           toast.error(t("general.error"), {
@@ -86,14 +84,9 @@ export const EditServiceZoneForm = ({
                 }}
               />
             </div>
-            <Alert>
-              <Text weight="plus">
-                {t("location.serviceZone.create.subtitle")}
-              </Text>
-              <Text className="text-ui-fg-subtle mt-2">
-                {t("location.serviceZone.create.description")}
-              </Text>
-            </Alert>
+            <InlineTip label={"Info"}>
+              {t("location.serviceZone.create.description")}
+            </InlineTip>
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>

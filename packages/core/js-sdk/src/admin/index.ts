@@ -450,7 +450,7 @@ export class Admin {
       query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<HttpTypes.AdminServiceZoneResponse>(
+      return this.client.fetch<HttpTypes.AdminFulfillmentSetResponse>(
         `/admin/fulfillment-sets/${id}/service-zones`,
         {
           method: "POST",
@@ -467,7 +467,7 @@ export class Admin {
       query?: HttpTypes.SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<HttpTypes.AdminServiceZoneResponse>(
+      return this.client.fetch<HttpTypes.AdminFulfillmentSetResponse>(
         `/admin/fulfillment-sets/${fulfillmentSetId}/service-zones/${serviceZoneId}`,
         {
           method: "POST",

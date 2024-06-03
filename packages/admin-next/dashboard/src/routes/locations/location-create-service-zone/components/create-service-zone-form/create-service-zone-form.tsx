@@ -66,11 +66,12 @@ export function CreateServiceZoneForm({
     replace([])
   }
 
-  const { mutateAsync: createServiceZone, isPending: isLoading } =
-    useCreateFulfillmentSetServiceZone(fulfillmentSet.id)
+  const { mutateAsync, isPending } = useCreateFulfillmentSetServiceZone(
+    fulfillmentSet.id
+  )
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await createServiceZone(
+    await mutateAsync(
       {
         name: data.name,
         geo_zones: data.countries.map(({ iso_2 }) => ({
@@ -79,9 +80,11 @@ export function CreateServiceZoneForm({
         })),
       },
       {
-        onSuccess: ({ service_zone }) => {
+        onSuccess: () => {
           toast.success(t("general.success"), {
-            description: `Created service zone ${service_zone.name}`,
+            description: t("location.serviceZone.create.successToast", {
+              name: data.name,
+            }),
             dismissable: true,
             dismissLabel: t("general.close"),
           })
@@ -112,7 +115,7 @@ export function CreateServiceZoneForm({
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button type="submit" size="small" isLoading={isLoading}>
+            <Button type="submit" size="small" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

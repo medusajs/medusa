@@ -734,7 +734,8 @@
     "serviceZone": {
       "create": {
         "title": "Add Service Zone for {{fulfillmentSet}}",
-        "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone. "
+        "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone.",
+        "successToast": "Service zone {{name}} was successfully created."
       },
       "edit": {
         "title": "Edit Service Zone"

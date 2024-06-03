@@ -735,7 +735,7 @@ export const RouteMap: RouteObject[] = [
                             path: "edit",
                             lazy: () =>
                               import(
-                                "../../routes/locations/service-zone-edit"
+                                "../../routes/locations/location-edit-service-zone"
                               ),
                           },
                           {

@@ -6,7 +6,7 @@ import { RouteDrawer } from "../../../components/route-modal"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
 import { EditServiceZoneForm } from "./components/edit-region-form"
 
-export const ServiceZoneEdit = () => {
+export const LocationEditServiceZone = () => {
   const { t } = useTranslation()
   const { location_id, fset_id, zone_id } = useParams()
 
