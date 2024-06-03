@@ -115,7 +115,7 @@ export default class GeoZone {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, " fgz")
+    this.id = generateEntityId(this.id, "fgz")
     this.service_zone_id ??= this.service_zone?.id
   }
 

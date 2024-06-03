@@ -9,8 +9,7 @@ export type ProviderFileResultDTO = {
    */
   url: string
   /**
-   * The file's key. This key is used in other operations,
-   * such as deleting a file.
+   * The file's key.
    */
   key: string
 }
@@ -68,12 +67,6 @@ export type ProviderUploadFileDTO = {
   content: string
 }
 
-/**
- * ## Overview
- *
- * File provider interface for the file module.
- *
- */
 export interface IFileProvider {
   /**
    * This method is used to upload a file
