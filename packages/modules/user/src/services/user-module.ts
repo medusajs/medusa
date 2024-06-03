@@ -1,19 +1,19 @@
 import {
   Context,
   DAL,
+  IEventBusModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
-  UserTypes,
   ModulesSdkTypes,
-  IEventBusModuleService,
+  UserTypes,
 } from "@medusajs/types"
 import {
+  CommonEvents,
   EmitEvents,
+  InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  InjectManager,
-  CommonEvents,
   UserEvents,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
@@ -94,11 +94,10 @@ export default class UserModuleService<
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
         eventName: UserEvents.invite_token_generated,
-        metadata: {
-          service: this.constructor.name,
-          action: "token_generated",
-          object: "invite",
-        },
+        service: this.constructor.name,
+        action: "token_generated",
+        object: "invite",
+        context: sharedContext,
         data: { id: invite.id },
       }))
     )
@@ -150,11 +149,10 @@ export default class UserModuleService<
     sharedContext.messageAggregator?.saveRawMessageData(
       users.map((user) => ({
         eventName: UserEvents.created,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.CREATED,
-          object: "user",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.CREATED,
+        object: "user",
+        context: sharedContext,
         data: { id: user.id },
       }))
     )
@@ -190,11 +188,10 @@ export default class UserModuleService<
     sharedContext.messageAggregator?.saveRawMessageData(
       updatedUsers.map((user) => ({
         eventName: UserEvents.updated,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.UPDATED,
-          object: "user",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.UPDATED,
+        object: "user",
+        context: sharedContext,
         data: { id: user.id },
       }))
     )
@@ -230,11 +227,10 @@ export default class UserModuleService<
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
         eventName: UserEvents.invite_created,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.CREATED,
-          object: "invite",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.CREATED,
+        object: "invite",
+        context: sharedContext,
         data: { id: invite.id },
       }))
     )
@@ -242,11 +238,10 @@ export default class UserModuleService<
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
         eventName: UserEvents.invite_token_generated,
-        metadata: {
-          service: this.constructor.name,
-          action: "token_generated",
-          object: "invite",
-        },
+        service: this.constructor.name,
+        action: "token_generated",
+        object: "invite",
+        context: sharedContext,
         data: { id: invite.id },
       }))
     )
@@ -301,11 +296,10 @@ export default class UserModuleService<
     sharedContext.messageAggregator?.saveRawMessageData(
       serializedInvites.map((invite) => ({
         eventName: UserEvents.invite_updated,
-        metadata: {
-          service: this.constructor.name,
-          action: CommonEvents.UPDATED,
-          object: "invite",
-        },
+        service: this.constructor.name,
+        action: CommonEvents.UPDATED,
+        object: "invite",
+        context: sharedContext,
         data: { id: invite.id },
       }))
     )

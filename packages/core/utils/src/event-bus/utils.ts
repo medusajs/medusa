@@ -58,7 +58,8 @@ type ReturnType<TNames extends string[]> = TNames extends [
  * @param names
  */
 export function buildEventNamesFromEntityName<TNames extends string[]>(
-  names: TNames
+  names: TNames,
+  prefix?: string
 ): ReturnType<TNames> {
   const events = {}
 
@@ -69,16 +70,15 @@ export function buildEventNamesFromEntityName<TNames extends string[]>(
 
     if (i === 0) {
       for (const event of Object.values(CommonEvents) as string[]) {
-        events[event] = `${kebabCaseName}.${event}`
+        events[event] = `${prefix ? prefix + "." : ""}${kebabCaseName}.${event}`
       }
       continue
     }
 
     for (const event of Object.values(CommonEvents) as string[]) {
-      events[`${snakedCaseName}_${event}`] =
-        `${kebabCaseName}.${event}` as `${KebabCase<
-          typeof name
-        >}.${typeof event}`
+      events[`${snakedCaseName}_${event}`] = `${
+        prefix ? prefix + "." : ""
+      }${kebabCaseName}.${event}` as `${KebabCase<typeof name>}.${typeof event}`
     }
   }
 
