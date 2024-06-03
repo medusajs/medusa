@@ -15,10 +15,6 @@ export class MedusaWorkflow {
   > = {}
 
   static registerWorkflow(workflowId, exportedWorkflow) {
-    if (workflowId in MedusaWorkflow.workflows) {
-      throw new Error(`Workflow with id ${workflowId} already registered.`)
-    }
-
     MedusaWorkflow.workflows[workflowId] = exportedWorkflow
   }
 
