@@ -2,15 +2,16 @@ import {
   deleteSalesChannelsWorkflow,
   updateSalesChannelsWorkflow,
 } from "@medusajs/core-flows"
+import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
+import { refetchSalesChannel } from "../helpers"
 import {
   AdminGetSalesChannelParamsType,
   AdminUpdateSalesChannelType,
 } from "../validators"
-import { refetchSalesChannel } from "../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetSalesChannelParamsType>,
@@ -21,6 +22,13 @@ export const GET = async (
     req.scope,
     req.remoteQueryConfig.fields
   )
+
+  if (!salesChannel) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Sales channel with id: ${req.params.id} not found`
+    )
+  }
 
   res.json({ sales_channel: salesChannel })
 }
