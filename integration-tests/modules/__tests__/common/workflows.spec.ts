@@ -8,13 +8,12 @@ import {
 } from "@medusajs/core-flows"
 import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
-import { createAdminUser } from "../../../helpers/create-admin-user"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
-
-export const adminHeaders = {
-  headers: { "x-medusa-access-token": "test_token" },
-}
 
 medusaIntegrationTestRunner({
   env: {},
