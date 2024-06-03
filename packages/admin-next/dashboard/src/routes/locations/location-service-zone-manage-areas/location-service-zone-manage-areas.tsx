@@ -1,10 +1,10 @@
 import { json, useParams } from "react-router-dom"
 
 import { RouteFocusModal } from "../../../components/route-modal"
-import { EditServiceZoneAreasForm } from "./components/edit-region-areas-form"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
+import { EditServiceZoneAreasForm } from "./components/edit-region-areas-form"
 
-export const ServiceZoneAreasEdit = () => {
+export const LocationServiceZoneManageAreas = () => {
   const { location_id, fset_id, zone_id } = useParams()
 
   const { stock_location, isPending, isError, error } = useStockLocation(
@@ -36,8 +36,8 @@ export const ServiceZoneAreasEdit = () => {
       {!isPending && zone && (
         <EditServiceZoneAreasForm
           zone={zone}
-          fulfillmentSetId={fset_id}
-          locationId={location_id}
+          fulfillmentSetId={fset_id!}
+          locationId={location_id!}
         />
       )}
     </RouteFocusModal>

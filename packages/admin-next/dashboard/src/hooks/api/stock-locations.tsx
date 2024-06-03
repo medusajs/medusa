@@ -63,14 +63,14 @@ export const useStockLocations = (
 export const useCreateStockLocation = (
   options?: UseMutationOptions<
     HttpTypes.AdminStockLocationResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminCreateStockLocation
   >
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.stockLocation.create(payload),
-    onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
       })
 
@@ -84,17 +84,17 @@ export const useUpdateStockLocation = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminStockLocationResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateStockLocation
   >
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.stockLocation.update(id, payload),
-    onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.details(),
       })
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
       })
 
@@ -108,20 +108,21 @@ export const useUpdateStockLocationSalesChannels = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminStockLocationResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateStockLocationSalesChannels
   >
 ) => {
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.stockLocation.updateSalesChannels(id, payload),
-    onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.details(),
       })
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -138,11 +139,11 @@ export const useDeleteStockLocation = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.stockLocation.delete(id),
-    onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
       })
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.detail(id),
       })
 
@@ -156,20 +157,21 @@ export const useCreateStockLocationFulfillmentSet = (
   locationId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminStockLocationResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminCreateStockLocationFulfillmentSet
   >
 ) => {
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.stockLocation.createFulfillmentSet(locationId, payload),
-    onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
       })
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.details(),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

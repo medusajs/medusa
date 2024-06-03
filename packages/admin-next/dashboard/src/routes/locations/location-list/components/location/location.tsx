@@ -8,6 +8,7 @@ import { BadgeListSummary } from "../../../../../components/common/badge-list-su
 import { LinkButton } from "../../../../../components/common/link-button"
 import { useDeleteStockLocation } from "../../../../../hooks/api/stock-locations"
 import { getFormattedAddress } from "../../../../../lib/addresses"
+import { FulfillmentSetType } from "../../../common/constants"
 
 type SalesChannelsProps = {
   salesChannels?: HttpTypes.AdminSalesChannel[] | null
@@ -45,11 +46,6 @@ function SalesChannels(props: SalesChannelsProps) {
   )
 }
 
-enum FulfillmentSetType {
-  Delivery = "delivery",
-  Pickup = "pickup",
-}
-
 type FulfillmentSetProps = {
   fulfillmentSet?: HttpTypes.AdminFulfillmentSet
   type: FulfillmentSetType
@@ -70,7 +66,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
           className="text-ui-fg-subtle flex-1"
           as="div"
         >
-          {t(`location.fulfillmentSet.${type}.title`)}
+          {t(`location.fulfillmentSet.${type}.header`)}
         </Text>
         <div className="flex-1 text-left">
           <StatusBadge color={fulfillmentSetExists ? "green" : "grey"}>
@@ -96,7 +92,7 @@ function Location(props: LocationProps) {
   const handleDelete = async () => {
     const result = await prompt({
       title: t("general.areYouSure"),
-      description: t("location.deleteLocation.confirm", {
+      description: t("location.delete.description", {
         name: location.name,
       }),
       confirmText: t("actions.remove"),
@@ -110,7 +106,7 @@ function Location(props: LocationProps) {
     await deleteLocation(undefined, {
       onSuccess: () => {
         toast.success(t("general.success"), {
-          description: t("location.deleteLocation.success", {
+          description: t("location.delete.successToast", {
             name: location.name,
           }),
           dismissLabel: t("general.close"),

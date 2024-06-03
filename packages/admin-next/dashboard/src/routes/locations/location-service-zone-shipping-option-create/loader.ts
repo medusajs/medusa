@@ -1,19 +1,18 @@
 import { LoaderFunctionArgs } from "react-router-dom"
 
+import { HttpTypes } from "@medusajs/types"
 import { stockLocationsQueryKeys } from "../../../hooks/api/stock-locations"
-import { client } from "../../../lib/client"
+import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
-import { StockLocationRes } from "../../../types/api-responses"
+import { LOC_CREATE_SHIPPING_OPTION_FIELDS } from "./constants"
 
 const fulfillmentSetCreateQuery = (id: string) => ({
   queryKey: stockLocationsQueryKeys.detail(id, {
-    fields:
-      "*fulfillment_sets,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options",
+    fields: LOC_CREATE_SHIPPING_OPTION_FIELDS,
   }),
   queryFn: async () =>
-    client.stockLocations.retrieve(id, {
-      fields:
-        "*fulfillment_sets,*fulfillment_sets.service_zones,*fulfillment_sets.service_zones.shipping_options",
+    sdk.admin.stockLocation.retrieve(id, {
+      fields: LOC_CREATE_SHIPPING_OPTION_FIELDS,
     }),
 })
 
@@ -22,7 +21,8 @@ export const stockLocationLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = fulfillmentSetCreateQuery(id!)
 
   return (
-    queryClient.getQueryData<StockLocationRes>(query.queryKey) ??
-    (await queryClient.fetchQuery(query))
+    queryClient.getQueryData<HttpTypes.AdminStockLocationResponse>(
+      query.queryKey
+    ) ?? (await queryClient.fetchQuery(query))
   )
 }

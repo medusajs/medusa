@@ -742,7 +742,7 @@ export const RouteMap: RouteObject[] = [
                             path: "edit-areas",
                             lazy: () =>
                               import(
-                                "../../routes/locations/service-zone-areas-edit"
+                                "../../routes/locations/location-service-zone-manage-areas"
                               ),
                           },
                           {
@@ -752,7 +752,7 @@ export const RouteMap: RouteObject[] = [
                                 path: "create",
                                 lazy: () =>
                                   import(
-                                    "../../routes/locations/shipping-options-create"
+                                    "../../routes/locations/location-service-zone-shipping-option-create"
                                   ),
                               },
                               {
@@ -762,7 +762,7 @@ export const RouteMap: RouteObject[] = [
                                     path: "edit",
                                     lazy: () =>
                                       import(
-                                        "../../routes/locations/shipping-option-edit"
+                                        "../../routes/locations/location-service-zone-shipping-option-edit"
                                       ),
                                   },
                                   {

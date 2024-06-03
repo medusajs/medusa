@@ -1,10 +1,10 @@
 import { FetchError } from "@medusajs/js-sdk"
 import { LoaderFunctionArgs, redirect } from "react-router-dom"
 
+import { HttpTypes } from "@medusajs/types"
 import { stockLocationsQueryKeys } from "../../../hooks/api/stock-locations"
 import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
-import { StockLocationListRes } from "../../../types/api-responses"
 import { LOCATION_LIST_FIELDS } from "./constants"
 
 const shippingListQuery = () => ({
@@ -29,7 +29,8 @@ export const shippingListLoader = async (_: LoaderFunctionArgs) => {
   const query = shippingListQuery()
 
   return (
-    queryClient.getQueryData<StockLocationListRes>(query.queryKey) ??
-    (await queryClient.fetchQuery(query))
+    queryClient.getQueryData<HttpTypes.AdminStockLocationListResponse>(
+      query.queryKey
+    ) ?? (await queryClient.fetchQuery(query))
   )
 }

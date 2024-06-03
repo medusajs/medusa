@@ -1,19 +1,20 @@
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { json, useParams, useSearchParams } from "react-router-dom"
+import { json, useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/route-modal"
 import { useShippingOptions } from "../../../hooks/api/shipping-options"
 import { EditShippingOptionForm } from "./components/edit-region-form"
 
-export const ShippingOptionEdit = () => {
+export const LocationServiceZoneShippingOptionEdit = () => {
   const { t } = useTranslation()
-  const [searchParams] = useSearchParams()
 
   const { location_id, fset_id, zone_id, so_id } = useParams()
-  const isReturn = searchParams.has("is_return")
 
-  const { shipping_options, isPending, isError, error } = useShippingOptions()
+  const { shipping_options, isPending, isError, error } = useShippingOptions({
+    id: fset_id,
+    service_zone_id: zone_id!,
+  })
 
   const shippingOption = shipping_options?.find((so) => so.id === so_id)
 
@@ -31,12 +32,12 @@ export const ShippingOptionEdit = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("location.shippingOptions.edit.title")}</Heading>
+        <Heading>{t("location.shippingOptions.edit.header")}</Heading>
       </RouteDrawer.Header>
       {!isPending && shippingOption && (
         <EditShippingOptionForm
           shippingOption={shippingOption}
-          isReturn={isReturn}
+          locationId={location_id!}
         />
       )}
     </RouteDrawer>

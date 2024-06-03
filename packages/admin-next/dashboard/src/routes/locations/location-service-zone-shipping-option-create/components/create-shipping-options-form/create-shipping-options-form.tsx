@@ -3,7 +3,7 @@ import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import * as zod from "zod"
 
-import { ServiceZoneDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import {
   Button,
   Heading,
@@ -12,12 +12,13 @@ import {
   ProgressTabs,
   RadioGroup,
   Select,
+  toast,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
-import { SwitchBox } from "../../../../../components/forms/switch-box"
+import { SwitchBox } from "../../../../../components/common/switch-box"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -28,16 +29,12 @@ import { useCreateShippingOptions } from "../../../../../hooks/api/shipping-opti
 import { useShippingProfiles } from "../../../../../hooks/api/shipping-profiles"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
+import { ShippingOptionPriceType } from "../../../common/constants"
 import { CreateShippingOptionsPricesForm } from "./create-shipping-options-prices-form"
 
 enum Tab {
   DETAILS = "details",
   PRICING = "pricing",
-}
-
-enum ShippingAllocation {
-  FlatRate = "flat",
-  Calculated = "calculated",
 }
 
 type StepStatus = {
@@ -46,7 +43,7 @@ type StepStatus = {
 
 const CreateShippingOptionSchema = zod.object({
   name: zod.string().min(1),
-  price_type: zod.nativeEnum(ShippingAllocation),
+  price_type: zod.nativeEnum(ShippingOptionPriceType),
   enabled_in_store: zod.boolean(),
   shipping_profile_id: zod.string(),
   provider_id: zod.string().min(1),
@@ -55,13 +52,15 @@ const CreateShippingOptionSchema = zod.object({
 })
 
 type CreateShippingOptionFormProps = {
-  zone: ServiceZoneDTO
+  zone: HttpTypes.AdminServiceZone
+  locationId: string
   isReturn?: boolean
 }
 
 export function CreateShippingOptionsForm({
   zone,
   isReturn,
+  locationId,
 }: CreateShippingOptionFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -79,7 +78,7 @@ export function CreateShippingOptionsForm({
   const form = useForm<zod.infer<typeof CreateShippingOptionSchema>>({
     defaultValues: {
       name: "",
-      price_type: ShippingAllocation.FlatRate,
+      price_type: ShippingOptionPriceType.FlatRate,
       enabled_in_store: true,
       shipping_profile_id: "",
       provider_id: "",
@@ -90,7 +89,7 @@ export function CreateShippingOptionsForm({
   })
 
   const isCalculatedPriceType =
-    form.watch("price_type") === ShippingAllocation.Calculated
+    form.watch("price_type") === ShippingOptionPriceType.Calculated
 
   const { mutateAsync: createShippingOption, isPending: isLoading } =
     useCreateShippingOptions()
@@ -128,34 +127,54 @@ export function CreateShippingOptionsForm({
       })
       .filter((o) => !!o.amount)
 
-    await createShippingOption({
-      name: data.name,
-      price_type: data.price_type,
-      service_zone_id: zone.id,
-      shipping_profile_id: data.shipping_profile_id,
-      provider_id: data.provider_id,
-      prices: [...currencyPrices, ...regionPrices],
-      rules: [
-        {
-          value: isReturn ? '"true"' : '"false"', // we want JSONB saved as string
-          attribute: "is_return",
-          operator: "eq",
+    await createShippingOption(
+      {
+        name: data.name,
+        price_type: data.price_type,
+        service_zone_id: zone.id,
+        shipping_profile_id: data.shipping_profile_id,
+        provider_id: data.provider_id,
+        prices: [...currencyPrices, ...regionPrices],
+        rules: [
+          {
+            value: isReturn ? '"true"' : '"false"', // we want JSONB saved as string
+            attribute: "is_return",
+            operator: "eq",
+          },
+          {
+            value: data.enabled_in_store ? '"true"' : '"false"', // we want JSONB saved as string
+            attribute: "enabled_in_store",
+            operator: "eq",
+          },
+        ],
+        type: {
+          // TODO: FETCH TYPES
+          label: "Type label",
+          description: "Type description",
+          code: "type-code",
         },
-        {
-          value: data.enabled_in_store ? '"true"' : '"false"', // we want JSONB saved as string
-          attribute: "enabled_in_store",
-          operator: "eq",
-        },
-      ],
-      type: {
-        // TODO: FETCH TYPES
-        label: "Type label",
-        description: "Type description",
-        code: "type-code",
       },
-    })
+      {
+        onSuccess: ({ shipping_option }) => {
+          toast.success(t("general.success"), {
+            description: t("location.shippingOptions.create.successToast", {
+              name: shipping_option.name,
+            }),
+            dismissable: true,
+            dismissLabel: t("general.close"),
+          })
 
-    handleSuccess()
+          handleSuccess(`/settings/locations/${locationId}`)
+        },
+        onError: (e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissable: true,
+            dismissLabel: t("actions.close"),
+          })
+        },
+      }
+    )
   })
 
   const [status, setStatus] = React.useState<StepStatus>({
@@ -281,8 +300,8 @@ export function CreateShippingOptionsForm({
                 <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
                   <Heading>
                     {t(
-                      `location.shippingOptions.create.${
-                        isReturn ? "headerReturn" : "headerOutbound"
+                      `location.shippingOptions.create.header.${
+                        isReturn ? "return" : "outbound"
                       }`,
                       {
                         zone: zone.name,
@@ -307,7 +326,7 @@ export function CreateShippingOptionsForm({
                             >
                               <RadioGroup.ChoiceBox
                                 className="flex-1"
-                                value={ShippingAllocation.FlatRate}
+                                value={ShippingOptionPriceType.FlatRate}
                                 label={t(
                                   "location.shippingOptions.create.fixed"
                                 )}
@@ -317,7 +336,7 @@ export function CreateShippingOptionsForm({
                               />
                               <RadioGroup.ChoiceBox
                                 className="flex-1"
-                                value={ShippingAllocation.Calculated}
+                                value={ShippingOptionPriceType.Calculated}
                                 label={t(
                                   "location.shippingOptions.create.calculated"
                                 )}

@@ -47,6 +47,7 @@ import {
   isOptionEnabledInStore,
   isReturnOption,
 } from "../../../../../lib/shipping-options"
+import { FulfillmentSetType } from "../../../common/constants"
 
 type LocationGeneralSectionProps = {
   location: HttpTypes.AdminStockLocation
@@ -143,10 +144,10 @@ function ShippingOption({
   return (
     <div className="flex items-center justify-between px-3 py-2">
       <div className="flex-1">
-        <span className="txt-small font-medium">
+        <Text size="small" weight="plus">
           {option.name} - {option.shipping_profile.name} (
           {formatProvider(option.provider_id)})
-        </span>
+        </Text>
       </div>
       <Badge
         className="mr-4"
@@ -436,11 +437,6 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
       )}
     </div>
   )
-}
-
-enum FulfillmentSetType {
-  Delivery = "delivery",
-  Pickup = "pickup",
 }
 
 type FulfillmentSetProps = {

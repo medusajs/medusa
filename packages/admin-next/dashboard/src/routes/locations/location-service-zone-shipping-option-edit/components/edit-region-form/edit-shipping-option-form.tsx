@@ -1,4 +1,4 @@
-import { ShippingOptionDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Button, Input, RadioGroup, Select, Switch, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -15,28 +15,24 @@ import { useShippingProfiles } from "../../../../../hooks/api/shipping-profiles"
 import { pick } from "../../../../../lib/common"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { isOptionEnabledInStore } from "../../../../../lib/shipping-options"
-
-enum ShippingAllocation {
-  FlatRate = "flat",
-  Calculated = "calculated",
-}
+import { ShippingOptionPriceType } from "../../../common/constants"
 
 type EditShippingOptionFormProps = {
-  isReturn?: boolean
-  shippingOption: ShippingOptionDTO
+  locationId: string
+  shippingOption: HttpTypes.AdminShippingOption
 }
 
 const EditShippingOptionSchema = zod.object({
   name: zod.string().min(1),
-  price_type: zod.nativeEnum(ShippingAllocation),
+  price_type: zod.nativeEnum(ShippingOptionPriceType),
   enabled_in_store: zod.boolean().optional(),
   shipping_profile_id: zod.string(),
   provider_id: zod.string(),
 })
 
 export const EditShippingOptionForm = ({
+  locationId,
   shippingOption,
-  isReturn,
 }: EditShippingOptionFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -52,7 +48,7 @@ export const EditShippingOptionForm = ({
   const form = useForm<zod.infer<typeof EditShippingOptionSchema>>({
     defaultValues: {
       name: shippingOption.name,
-      price_type: shippingOption.price_type as ShippingAllocation,
+      price_type: shippingOption.price_type as ShippingOptionPriceType,
       enabled_in_store: isOptionEnabledInStore(shippingOption),
       shipping_profile_id: shippingOption.shipping_profile_id,
       provider_id: shippingOption.provider_id,
@@ -93,7 +89,7 @@ export const EditShippingOptionForm = ({
           toast.success(t("general.success"), {
             dismissLabel: t("actions.close"),
           })
-          handleSuccess()
+          handleSuccess(`/settings/locations/${locationId}`)
         },
         onError: (e) => {
           toast.error(t("general.error"), {
@@ -124,7 +120,7 @@ export const EditShippingOptionForm = ({
                         <RadioGroup {...field} onValueChange={field.onChange}>
                           <RadioGroup.ChoiceBox
                             className="flex-1"
-                            value={ShippingAllocation.FlatRate}
+                            value={ShippingOptionPriceType.FlatRate}
                             label={t("location.shippingOptions.create.fixed")}
                             description={t(
                               "location.shippingOptions.create.fixedDescription"
@@ -132,7 +128,7 @@ export const EditShippingOptionForm = ({
                           />
                           <RadioGroup.ChoiceBox
                             className="flex-1"
-                            value={ShippingAllocation.Calculated}
+                            value={ShippingOptionPriceType.Calculated}
                             label={t(
                               "location.shippingOptions.create.calculated"
                             )}

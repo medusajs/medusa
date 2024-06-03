@@ -56,7 +56,6 @@
     "react-hook-form": "7.49.1",
     "react-i18next": "13.5.0",
     "react-jwt": "^1.2.0",
-    "react-resizable-panels": "^2.0.16",
     "react-router-dom": "6.20.1",
     "zod": "3.22.4"
   },

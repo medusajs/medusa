@@ -1,3 +1,5 @@
+import { FetchError } from "@medusajs/js-sdk"
+import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   useMutation,
@@ -6,18 +8,10 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query"
 
-import { client } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
-import {
-  CreateShippingOptionReq,
-  UpdateShippingOptionReq,
-} from "../../types/api-payloads"
-import {
-  ShippingOptionDeleteRes,
-  ShippingOptionRes,
-} from "../../types/api-responses"
-import { stockLocationsQueryKeys } from "./stock-locations"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { stockLocationsQueryKeys } from "./stock-locations"
 
 const SHIPPING_OPTIONS_QUERY_KEY = "shipping_options" as const
 export const shippingOptionsQueryKeys = queryKeysFactory(
@@ -25,14 +19,19 @@ export const shippingOptionsQueryKeys = queryKeysFactory(
 )
 
 export const useShippingOptions = (
-  query?: Record<string, any>,
+  query?: HttpTypes.FindParams & HttpTypes.AdminShippingOptionFilters,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminShippingOptionListResponse,
+      FetchError,
+      HttpTypes.AdminShippingOptionListResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.shippingOptions.list(query),
+    queryFn: () => sdk.admin.shippingOption.list(query),
     queryKey: shippingOptionsQueryKeys.list(query),
     ...options,
   })
@@ -42,20 +41,21 @@ export const useShippingOptions = (
 
 export const useCreateShippingOptions = (
   options?: UseMutationOptions<
-    ShippingOptionRes,
-    Error,
-    CreateShippingOptionReq
+    HttpTypes.AdminShippingOptionResponse,
+    FetchError,
+    HttpTypes.AdminCreateShippingOption
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.shippingOptions.create(payload),
-    onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
+    mutationFn: (payload) => sdk.admin.shippingOption.create(payload),
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.all,
       })
-      queryClient.invalidateQueries({
-        queryKey: shippingOptionsQueryKeys.all,
+      await queryClient.invalidateQueries({
+        queryKey: shippingOptionsQueryKeys.lists(),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -65,20 +65,21 @@ export const useCreateShippingOptions = (
 export const useUpdateShippingOptions = (
   id: string,
   options?: UseMutationOptions<
-    ShippingOptionRes,
-    Error,
-    UpdateShippingOptionReq
+    HttpTypes.AdminShippingOptionResponse,
+    FetchError,
+    HttpTypes.AdminUpdateShippingOption
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.shippingOptions.update(id, payload),
-    onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
+    mutationFn: (payload) => sdk.admin.shippingOption.update(id, payload),
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.all,
       })
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: shippingOptionsQueryKeys.all,
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -86,16 +87,20 @@ export const useUpdateShippingOptions = (
 }
 
 export const useDeleteShippingOption = (
-  optionId: string,
-  options?: UseMutationOptions<ShippingOptionDeleteRes, Error, void>
+  id: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminShippingOptionDeleteResponse,
+    FetchError,
+    void
+  >
 ) => {
   return useMutation({
-    mutationFn: () => client.shippingOptions.delete(optionId),
-    onSuccess: (data: any, variables: any, context: any) => {
-      queryClient.invalidateQueries({
+    mutationFn: () => sdk.admin.shippingOption.delete(id),
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.all,
       })
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: shippingOptionsQueryKeys.all,
       })
 

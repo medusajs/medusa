@@ -28,10 +28,6 @@ export function LocationList() {
     { initialData }
   )
 
-  const potentialDate = stockLocations?.[0]?.created_at
-
-  console.log(potentialDate)
-
   if (isError) {
     throw error
   }

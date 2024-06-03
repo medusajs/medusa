@@ -554,4 +554,72 @@ export class Admin {
       )
     },
   }
+
+  public shippingOption = {
+    create: async (
+      body: HttpTypes.AdminCreateShippingOption,
+      query?: HttpTypes.SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.AdminShippingOptionResponse>(
+        `/admin/shipping-options`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+    update: async (
+      id: string,
+      body: HttpTypes.AdminUpdateShippingOption,
+      query?: HttpTypes.SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.AdminShippingOptionResponse>(
+        `/admin/shipping-options/${id}`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+    list: async (
+      queryParams?: HttpTypes.FindParams & HttpTypes.AdminShippingOptionFilters,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.AdminShippingOptionListResponse>(
+        `/admin/shipping-options`,
+        {
+          headers,
+          query: queryParams,
+        }
+      )
+    },
+    retrieve: async (
+      id: string,
+      query?: HttpTypes.SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.AdminShippingOptionResponse>(
+        `/admin/shipping-options/${id}`,
+        {
+          query,
+          headers,
+        }
+      )
+    },
+    delete: async (id: string, headers?: ClientHeaders) => {
+      return this.client.fetch<HttpTypes.AdminShippingOptionDeleteResponse>(
+        `/admin/shipping-options/${id}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      )
+    },
+  }
 }

@@ -761,15 +761,16 @@
       "optionsLength_other": "shipping options",
       "returnOptionsLength_one": "return option",
       "returnOptionsLength_other": "return options",
-      "shippingOptionsPlaceholder": "Not covered by any shipping options.",
       "addOption": "Add option",
       "shippingOptions": "Shipping options",
       "returnOptions": "Return options"
     },
     "shippingOptions": {
       "create": {
-        "headerOutbound": "Create a shipping option for {{zone}}",
-        "headerReturn": "Create a return option for {{zone}}",
+        "header": {
+          "outbound": "Create a shipping option for {{zone}}",
+          "return": "Create a return option for {{zone}}"
+        },
         "details": "Details",
         "pricing": "Pricing",
         "allocation": "Shipping amount",
@@ -779,17 +780,18 @@
         "enableDescription": "Enable or disable the shipping option visiblity in store",
         "calculated": "Calculated",
         "calculatedDescription": "Shipping option's price is calculated by the fulfillment provider.",
-        "profile": "Shipping profile"
+        "profile": "Shipping profile",
+        "successToast": "Shipping option \"{{name}}\" was successfully created."
       },
-      "deleteWarning": "Are you sure you want to delete \"{{name}}\"?",
-      "toast": {
-        "delete": "Shipping option \"{{name}}\" deleted successfully."
-      },
-      "inStore": "Store",
       "edit": {
-        "title": "Edit Shipping Option",
+        "header": "Edit Shipping Option",
         "provider": "Fulfillment provider"
-      }
+      },
+      "delete": {
+        "warning": "Are you sure you want to delete the shipping option \"{{name}}\"?",
+        "successToast": "Shipping option \"{{name}}\" was successfully deleted."
+      },
+      "inStore": "Store"
     },
     "returnOptions": {
       "create": {
@@ -1360,21 +1362,6 @@
       "productOverridesHeader": "Products",
       "productTypeOverridesHeader": "Product Types",
       "shippingOptionOverridesHeader": "Shipping Options"
-    }
-  },
-  "locations": {
-    "domain": "Locations",
-    "editLocation": "Edit location",
-    "addSalesChannels": "Add sales channels",
-    "noLocationsFound": "No locations found",
-    "selectLocations": "Select locations that stock the item.",
-    "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
-    "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
-    "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location.",
-    "toast": {
-      "create": "Location created sucessfully",
-      "update": "Location updated sucessfully",
-      "removeChannel": "Sales channel removed sucessfully"
     }
   },
   "reservations": {
