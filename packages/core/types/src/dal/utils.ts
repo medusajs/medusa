@@ -104,14 +104,9 @@ export type FilterQuery<T = any, Prev extends number = 3> = Prev extends never
         : never
     }
 
-declare enum QueryOrder {
-  ASC = "ASC",
-  DESC = "DESC",
-  asc = "asc",
-  desc = "desc",
-}
+declare type QueryOrder = "ASC" | "DESC" | "asc" | "desc"
 
-type QueryOrderKeysFlat = QueryOrder | 1 | -1 | keyof typeof QueryOrder
+type QueryOrderKeysFlat = QueryOrder | 1 | -1
 type QueryOrderKeys<T> = QueryOrderKeysFlat | QueryOrderMap<T>
 type QueryOrderMap<T> = {
   [K in keyof T as ExcludeFunctions<T, K>]?: QueryOrderKeys<

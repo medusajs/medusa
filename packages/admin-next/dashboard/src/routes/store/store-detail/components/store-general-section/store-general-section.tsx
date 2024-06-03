@@ -2,8 +2,8 @@ import { PencilSquare } from "@medusajs/icons"
 import { Badge, Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { ExtendedStoreDTO } from "../../../../../types/api-responses"
 import { useRegion } from "../../../../../hooks/api/regions"
+import { ExtendedStoreDTO } from "../../../../../types/api-responses"
 
 type StoreGeneralSectionProps = {
   store: ExtendedStoreDTO
@@ -39,7 +39,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           ]}
         />
       </div>
-      <div className="grid grid-cols-2 px-6 py-4">
+      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.name")}
         </Text>
@@ -47,11 +47,11 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           {store.name}
         </Text>
       </div>
-      {store.default_currency && (
-        <div className="grid grid-cols-2 px-6 py-4">
-          <Text size="small" leading="compact" weight="plus">
-            {t("store.defaultCurrency")}
-          </Text>
+      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("store.defaultCurrency")}
+        </Text>
+        {store.default_currency ? (
           <div className="flex items-center gap-x-2">
             <Badge size="2xsmall">
               {store.default_currency.code.toUpperCase()}
@@ -60,21 +60,22 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
               {store.default_currency.name}
             </Text>
           </div>
-        </div>
-      )}
-
-      {region && (
-        <div className="grid grid-cols-2 px-6 py-4">
-          <Text size="small" leading="compact" weight="plus">
-            {t("store.defaultRegion")}
+        ) : (
+          <Text size="small" leading="compact">
+            -
           </Text>
-          <div className="flex items-center gap-x-2">
-            <Text size="small" leading="compact">
-              {region.name}
-            </Text>
-          </div>
+        )}
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("store.defaultRegion")}
+        </Text>
+        <div className="flex items-center gap-x-2">
+          <Text size="small" leading="compact">
+            {region?.name || "-"}
+          </Text>
         </div>
-      )}
+      </div>
     </Container>
   )
 }

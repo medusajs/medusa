@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { BadgeListSummary } from "../../../../../components/common/badge-list-summary"
 import { useDeleteStockLocation } from "../../../../../hooks/api/stock-locations"
-import { countries } from "../../../../../lib/countries"
+import { getFormattedAddress } from "../../../../../lib/addresses"
 
 type SalesChannelsProps = {
   salesChannels?: SalesChannelDTO[]
@@ -150,18 +150,12 @@ function Location(props: LocationProps) {
           <div className="grow-1 flex flex-1 flex-col">
             <Text weight="plus">{location.name}</Text>
             <Text className="text-ui-fg-subtle txt-small">
-              {location.address?.city},{" "}
-              {
-                countries.find(
-                  (c) =>
-                    location.address?.country_code.toLowerCase() === c.iso_2
-                )?.display_name
-              }
+              {getFormattedAddress({ address: location.address }).join(", ")}
             </Text>
           </div>
 
           {/* ACTION*/}
-          <div className="flex h-[12px] grow-0 items-center gap-4 divide-x overflow-hidden">
+          <div className="flex grow-0 items-center gap-4 overflow-hidden">
             <ActionMenu
               groups={[
                 {
@@ -180,8 +174,9 @@ function Location(props: LocationProps) {
                 },
               ]}
             />
+            <div className="bg-ui-border-strong h-[12px] w-[1px]" />
             <Button
-              className="text-ui-fg-interactive rounded-none pl-5 hover:bg-transparent active:bg-transparent"
+              className="text-ui-fg-interactive -ml-1 rounded-none"
               onClick={() => navigate(`/settings/locations/${location.id}`)}
               variant="transparent"
             >

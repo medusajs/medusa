@@ -61,14 +61,9 @@ export const CreateReservationForm = () => {
     resolver: zodResolver(CreateReservationSchema),
   })
 
-  const { inventory_items } = useInventoryItems(
-    {
-      q: inventorySearch,
-    },
-    {
-      enabled: !!inventorySearch,
-    }
-  )
+  const { inventory_items } = useInventoryItems({
+    q: inventorySearch,
+  })
 
   const inventoryItemId = form.watch("inventory_item_id")
   const selectedInventoryItem = inventory_items?.find(
@@ -174,12 +169,12 @@ export const CreateReservationForm = () => {
                       <Form.Label>{t("fields.location")}</Form.Label>
                       <Form.Control>
                         <Combobox
-                          disabled={!!selectedInventoryItem}
                           value={value}
                           onChange={(v) => {
                             onChange(v)
                           }}
                           {...field}
+                          disabled={!inventoryItemId}
                           options={(stock_locations ?? []).map(
                             (stockLocation) => ({
                               label: stockLocation.name,
@@ -214,7 +209,7 @@ export const CreateReservationForm = () => {
                 title={t("inventory.available")}
                 value={
                   selectedLocationLevel
-                    ? selectedLocationLevel.available_quantity - quantity
+                    ? selectedLocationLevel.available_quantity - (quantity || 0)
                     : "-"
                 }
               />
@@ -233,7 +228,7 @@ export const CreateReservationForm = () => {
                           placeholder={t(
                             "inventory.reservation.quantityPlaceholder"
                           )}
-                          min={0}
+                          min={1}
                           max={
                             selectedLocationLevel
                               ? selectedLocationLevel.available_quantity
@@ -250,6 +245,7 @@ export const CreateReservationForm = () => {
                             }
                           }}
                           {...field}
+                          disabled={!inventoryItemId || !locationId}
                         />
                       </Form.Control>
                       <Form.ErrorMessage />
@@ -268,6 +264,7 @@ export const CreateReservationForm = () => {
                     <Form.Control>
                       <Textarea
                         {...field}
+                        disabled={!inventoryItemId || !locationId}
                         placeholder={t(
                           "inventory.reservation.descriptionPlaceholder"
                         )}

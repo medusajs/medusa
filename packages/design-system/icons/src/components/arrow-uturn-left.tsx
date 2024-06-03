@@ -5,19 +5,27 @@ const ArrowUturnLeft = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M7.667 12.333 3.001 7.667m0 0 4.666-4.666M3.001 7.667h9.332a4.666 4.666 0 1 1 0 9.332H10"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="M1.5 5.056h8.667a3.333 3.333 0 0 1 0 6.666H6.833" />
+          <path d="M4.611 8.167 1.5 5.056l3.111-3.112" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

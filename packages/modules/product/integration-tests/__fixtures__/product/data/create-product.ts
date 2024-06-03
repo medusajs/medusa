@@ -1,4 +1,5 @@
 import { ProductTypes } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
 import { Image } from "@models"
 import faker from "faker"
 
@@ -19,7 +20,7 @@ export const buildProductOnlyData = ({
   discountable?: boolean
   thumbnail?: string
   images?: { id?: string; url: string }[]
-  status?: ProductTypes.ProductStatus
+  status?: ProductStatus
 } = {}) => {
   return {
     title: title ?? faker.commerce.productName(),
@@ -28,7 +29,7 @@ export const buildProductOnlyData = ({
     is_giftcard: is_giftcard ?? false,
     discountable: discountable ?? true,
     thumbnail: thumbnail as string,
-    status: status ?? ProductTypes.ProductStatus.PUBLISHED,
+    status: status ?? ProductStatus.PUBLISHED,
     images: (images ?? []) as Image[],
   }
 }
@@ -58,7 +59,7 @@ export const buildProductAndRelationsData = ({
     is_giftcard: is_giftcard ?? false,
     discountable: discountable ?? true,
     thumbnail: thumbnail as string,
-    status: status ?? ProductTypes.ProductStatus.PUBLISHED,
+    status: status ?? ProductStatus.PUBLISHED,
     images: (images ?? []) as Image[],
     type_id,
     tags: tags ?? [{ value: "tag-1" }],

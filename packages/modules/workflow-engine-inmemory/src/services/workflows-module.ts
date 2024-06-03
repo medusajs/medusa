@@ -2,9 +2,11 @@ import {
   Context,
   DAL,
   FindConfig,
+  IWorkflowEngineService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
+  WorkflowsSdkTypes,
 } from "@medusajs/types"
 import {
   InjectManager,
@@ -14,10 +16,8 @@ import {
   MedusaError,
 } from "@medusajs/utils"
 import type {
-  IWorkflowEngineService,
   ReturnWorkflow,
   UnwrapWorkflowInputDataType,
-  WorkflowOrchestratorTypes,
 } from "@medusajs/workflows-sdk"
 import { WorkflowOrchestratorService } from "@services"
 import { joinerConfig } from "../joiner-config"
@@ -58,9 +58,9 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
           workflow_id: string
           transaction_id: string
         },
-    config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
+    config: FindConfig<WorkflowsSdkTypes.WorkflowExecutionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<WorkflowOrchestratorTypes.WorkflowExecutionDTO> {
+  ): Promise<WorkflowsSdkTypes.WorkflowExecutionDTO> {
     const objValue = isString(idOrObject)
       ? { id: idOrObject }
       : {
@@ -84,7 +84,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     }
 
     // eslint-disable-next-line max-len
-    return await this.baseRepository_.serialize<WorkflowOrchestratorTypes.WorkflowExecutionDTO>(
+    return await this.baseRepository_.serialize<WorkflowsSdkTypes.WorkflowExecutionDTO>(
       wfExecution[0],
       {
         populate: true,
@@ -94,10 +94,10 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
 
   @InjectManager("baseRepository_")
   async listWorkflowExecution(
-    filters: WorkflowOrchestratorTypes.FilterableWorkflowExecutionProps = {},
-    config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
+    filters: WorkflowsSdkTypes.FilterableWorkflowExecutionProps = {},
+    config: FindConfig<WorkflowsSdkTypes.WorkflowExecutionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<WorkflowOrchestratorTypes.WorkflowExecutionDTO[]> {
+  ): Promise<WorkflowsSdkTypes.WorkflowExecutionDTO[]> {
     if (filters.transaction_id) {
       if (Array.isArray(filters.transaction_id)) {
         filters.transaction_id = {
@@ -121,7 +121,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     )
 
     return await this.baseRepository_.serialize<
-      WorkflowOrchestratorTypes.WorkflowExecutionDTO[]
+      WorkflowsSdkTypes.WorkflowExecutionDTO[]
     >(wfExecutions, {
       populate: true,
     })
@@ -129,10 +129,10 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
 
   @InjectManager("baseRepository_")
   async listAndCountWorkflowExecution(
-    filters: WorkflowOrchestratorTypes.FilterableWorkflowExecutionProps = {},
-    config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
+    filters: WorkflowsSdkTypes.FilterableWorkflowExecutionProps = {},
+    config: FindConfig<WorkflowsSdkTypes.WorkflowExecutionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[WorkflowOrchestratorTypes.WorkflowExecutionDTO[], number]> {
+  ): Promise<[WorkflowsSdkTypes.WorkflowExecutionDTO[], number]> {
     if (filters.transaction_id) {
       if (Array.isArray(filters.transaction_id)) {
         filters.transaction_id = {
@@ -158,7 +158,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
 
     return [
       await this.baseRepository_.serialize<
-        WorkflowOrchestratorTypes.WorkflowExecutionDTO[]
+        WorkflowsSdkTypes.WorkflowExecutionDTO[]
       >(wfExecutions, {
         populate: true,
       }),
@@ -169,7 +169,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
   @InjectSharedContext()
   async run<TWorkflow extends string | ReturnWorkflow<any, any, any>>(
     workflowIdOrWorkflow: TWorkflow,
-    options: WorkflowOrchestratorTypes.WorkflowOrchestratorRunDTO<
+    options: WorkflowsSdkTypes.WorkflowOrchestratorRunDTO<
       TWorkflow extends ReturnWorkflow<any, any, any>
         ? UnwrapWorkflowInputDataType<TWorkflow>
         : unknown

@@ -16,6 +16,12 @@ For production, it’s recommended to use modules like [Redis Cache Module](../r
 
 ## Install the In-Memory Cache Module
 
+<Note>
+
+The In-Memory Cache Module is installed by default in your application.
+
+</Note>
+
 To install the In-Memory Cache Module, run the following command in the directory of your Medusa application:
 
 ```bash npm2yarn
@@ -29,18 +35,17 @@ const { Modules } = require("@medusajs/modules-sdk")
 
 // ...
 
-module.exports = {
+module.exports = defineConfig({
   // ...
   modules: {
-    // ...
     [Modules.CACHE]: {
       resolve: "@medusajs/cache-inmemory",
       options: {
         // optional options
       },
     },
-  },
-}
+  }
+})
 ```
 
 ### In-Memory Cache Module Options

@@ -1,23 +1,24 @@
 import {
   Constructor,
+  IModuleService,
   InternalModuleDeclaration,
   Logger,
   MedusaContainer,
-  MODULE_RESOURCE_TYPE,
   ModuleExports,
   ModuleLoaderFunction,
   ModuleResolution,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  createMedusaContainer,
   MedusaModuleType,
   ModulesSdkUtils,
+  createMedusaContainer,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 import { statSync } from "fs"
 import { readdir } from "fs/promises"
 import { join, resolve } from "path"
+import { MODULE_RESOURCE_TYPE } from "../../types"
 
 type ModuleResource = {
   services: Function[]
@@ -158,9 +159,9 @@ export async function loadInternalModule(
 
   if (loaderOnly) {
     // The expectation is only to run the loader as standalone, so we do not need to register the service and we need to cleanup all services
-    const service = container.resolve(registrationName)
-    await service.__hooks?.onApplicationPrepareShutdown()
-    await service.__hooks?.onApplicationShutdown()
+    const service = container.resolve<IModuleService>(registrationName)
+    await service.__hooks?.onApplicationPrepareShutdown?.()
+    await service.__hooks?.onApplicationShutdown?.()
   }
 }
 
@@ -208,17 +209,24 @@ export async function loadModuleMigrations(
 async function importAllFromDir(path: string) {
   let filesToLoad: string[] = []
 
+  const excludedExtensions = [".ts.map", ".js.map", ".d.ts"]
+
   await readdir(path).then((files) => {
     files.forEach((file) => {
-      if (file !== "index.js" && file.endsWith(".js")) {
-        const filePath = join(path, file)
-        const stats = statSync(filePath)
+      if (
+        file.startsWith("index.") ||
+        excludedExtensions.some((ext) => file.endsWith(ext))
+      ) {
+        return
+      }
 
-        if (stats.isDirectory()) {
-          // TODO: should we handle that? dont think so but I put that here for discussion
-        } else if (stats.isFile()) {
-          filesToLoad.push(filePath)
-        }
+      const filePath = join(path, file)
+      const stats = statSync(filePath)
+
+      if (stats.isDirectory()) {
+        // TODO: should we handle that? dont think so but I put that here for discussion
+      } else if (stats.isFile()) {
+        filesToLoad.push(filePath)
       }
     })
 
@@ -237,8 +245,10 @@ async function loadResources(
   moduleResolution: ModuleResolution,
   logger: Logger
 ): Promise<ModuleResource> {
-  const modulePath = moduleResolution.resolutionPath as string
-  let normalizedPath = modulePath.replace("index.js", "")
+  let modulePath = moduleResolution.resolutionPath as string
+  let normalizedPath = modulePath
+    .replace("index.js", "")
+    .replace("index.ts", "")
   normalizedPath = resolve(normalizedPath)
 
   try {

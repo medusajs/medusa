@@ -1,7 +1,8 @@
-import { Address } from "@medusajs/medusa"
+import { AddressDTO } from "@medusajs/types"
+
 import { countries } from "./countries"
 
-export const isSameAddress = (a: Address | null, b: Address | null) => {
+export const isSameAddress = (a: AddressDTO | null, b: AddressDTO | null) => {
   if (!a || !b) {
     return false
   }
@@ -21,7 +22,7 @@ export const isSameAddress = (a: Address | null, b: Address | null) => {
 export const getFormattedAddress = ({
   address,
 }: {
-  address?: Partial<Address> | null
+  address?: Partial<AddressDTO> | null
 }) => {
   if (!address) {
     return []

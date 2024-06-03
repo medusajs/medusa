@@ -5,8 +5,8 @@ const XMark = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,7 @@ const XMark = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M5 15 15 5M5 5l10 10"
+          d="m11.25 3.75-7.5 7.5M3.75 3.75l7.5 7.5"
         />
       </svg>
     )

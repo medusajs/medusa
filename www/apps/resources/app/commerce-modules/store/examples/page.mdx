@@ -243,7 +243,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
     const storeModuleService: IStoreModuleService =
       request.scope.resolve(ModuleRegistrationName.STORE)
 
-    await storeModuleService.delete(request.params.id)
+    await storeModuleService.delete("store_123")
 
     res.status(200)
   }
@@ -259,19 +259,13 @@ In this guide, you’ll find common examples of how you can use the Store Module
     initialize as initializeStoreModule,
   } from "@medusajs/store"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
-  }
-
   export async function DELETE(
     request: Request,
     { params }: ContextType
   ) {
     const storeModuleService = await initializeStoreModule()
 
-    await storeModuleService.delete(params.id)
+    await storeModuleService.delete("store_123")
   }
   ```
 
@@ -282,5 +276,5 @@ In this guide, you’ll find common examples of how you can use the Store Module
 
 ## More Examples
 
-The [Store Module interface reference](/references/store) provides a reference to all the methods available for use with examples for each.
+The [Store Module's main service reference](/references/store) provides a reference to all the methods available for use with examples for each.
 

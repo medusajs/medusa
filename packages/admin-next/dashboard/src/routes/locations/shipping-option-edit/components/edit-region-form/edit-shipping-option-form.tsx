@@ -70,7 +70,7 @@ export const EditShippingOptionForm = ({
 
     const storeRule = rules.find((r) => r.attribute === "enabled_in_store")
     if (!storeRule) {
-      // NOTE: should always exist sice we always create this rule when we create a shipping option
+      // NOTE: should always exist since we always create this rule when we create a shipping option
       rules.push({
         value: values.enabled_in_store ? "true" : "false",
         attribute: "enabled_in_store",
@@ -248,7 +248,7 @@ export const EditShippingOptionForm = ({
                         </div>
                         <Form.Hint className="!mt-1">
                           {t(
-                            "shipping.shippingOptions.create.enableDescription"
+                            "location.shippingOptions.create.enableDescription"
                           )}
                         </Form.Hint>
                         <Form.ErrorMessage />

@@ -27,7 +27,7 @@ type Options = {
 }
 
 const isWorkerMode = (configModule) => {
-  return configModule.projectConfig.worker_mode === "worker"
+  return configModule.projectConfig.workerMode === "worker"
 }
 
 async function subscribersLoader(
@@ -160,6 +160,7 @@ export default async ({
 
     await promiseAll([
       container.dispose(),
+      // @ts-expect-error "Do we want to call `client.destroy` "
       pgConnection?.context?.destroy(),
       entrypointsShutdown(),
     ])

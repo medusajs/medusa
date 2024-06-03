@@ -1,5 +1,10 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ApiKeyType, ProductStatus } from "@medusajs/utils"
+import {
+  ApiKeyType,
+  ContainerRegistrationKeys,
+  Modules,
+  ProductStatus,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
@@ -89,6 +94,7 @@ medusaIntegrationTestRunner({
             variants: [
               {
                 title: "test variant 1",
+                manage_inventory: true,
                 prices: [{ amount: 3000, currency_code: "usd" }],
               },
             ],
@@ -96,7 +102,9 @@ medusaIntegrationTestRunner({
           ;[product2, [variant2]] = await createProducts({
             title: "test product 2 uniquely",
             status: ProductStatus.PUBLISHED,
-            variants: [{ title: "test variant 2", prices: [] }],
+            variants: [
+              { title: "test variant 2", manage_inventory: false, prices: [] },
+            ],
           })
           ;[product3, [variant3]] = await createProducts({
             title: "product not in price list",
@@ -355,6 +363,215 @@ medusaIntegrationTestRunner({
               }),
             ])
           )
+        })
+
+        describe("with inventory items", () => {
+          let location1
+          let location2
+          let inventoryItem1
+          let inventoryItem2
+          let salesChannel1
+          let publishableKey1
+
+          beforeEach(async () => {
+            location1 = (
+              await api.post(
+                `/admin/stock-locations`,
+                { name: "test location" },
+                adminHeaders
+              )
+            ).data.stock_location
+
+            location2 = (
+              await api.post(
+                `/admin/stock-locations`,
+                { name: "test location 2" },
+                adminHeaders
+              )
+            ).data.stock_location
+
+            salesChannel1 = await createSalesChannel(
+              { name: "sales channel test" },
+              [product.id, product2.id]
+            )
+
+            const api1Res = await api.post(
+              `/admin/api-keys`,
+              { title: "Test publishable KEY", type: ApiKeyType.PUBLISHABLE },
+              adminHeaders
+            )
+
+            publishableKey1 = api1Res.data.api_key
+
+            await api.post(
+              `/admin/api-keys/${publishableKey1.id}/sales-channels`,
+              { add: [salesChannel1.id] },
+              adminHeaders
+            )
+
+            inventoryItem1 = (
+              await api.post(
+                `/admin/inventory-items`,
+                { sku: "test-sku" },
+                adminHeaders
+              )
+            ).data.inventory_item
+
+            inventoryItem2 = (
+              await api.post(
+                `/admin/inventory-items`,
+                { sku: "test-sku-2" },
+                adminHeaders
+              )
+            ).data.inventory_item
+
+            inventoryItem1 = (
+              await api.post(
+                `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
+                {
+                  location_id: location1.id,
+                  stocked_quantity: 20,
+                },
+                adminHeaders
+              )
+            ).data.inventory_item
+
+            inventoryItem2 = (
+              await api.post(
+                `/admin/inventory-items/${inventoryItem2.id}/location-levels`,
+                {
+                  location_id: location2.id,
+                  stocked_quantity: 30,
+                },
+                adminHeaders
+              )
+            ).data.inventory_item
+
+            const remoteLink = appContainer.resolve(
+              ContainerRegistrationKeys.REMOTE_LINK
+            )
+
+            // TODO: Missing API endpoint. Remove this when its available
+            await remoteLink.create([
+              {
+                [Modules.SALES_CHANNEL]: { sales_channel_id: salesChannel1.id },
+                [Modules.STOCK_LOCATION]: { stock_location_id: location1.id },
+              },
+              {
+                [Modules.SALES_CHANNEL]: { sales_channel_id: salesChannel1.id },
+                [Modules.STOCK_LOCATION]: { stock_location_id: location2.id },
+              },
+            ])
+          })
+
+          it("should list all inventory items for a variant", async () => {
+            const remoteLink = appContainer.resolve(
+              ContainerRegistrationKeys.REMOTE_LINK
+            )
+
+            // TODO: Missing API endpoint. Remove this when its available
+            await remoteLink.create([
+              {
+                [Modules.PRODUCT]: { variant_id: variant.id },
+                [Modules.INVENTORY]: { inventory_item_id: inventoryItem1.id },
+                data: { required_quantity: 20 },
+              },
+              {
+                [Modules.PRODUCT]: { variant_id: variant.id },
+                [Modules.INVENTORY]: { inventory_item_id: inventoryItem2.id },
+                data: { required_quantity: 20 },
+              },
+            ])
+
+            let response = await api.get(
+              `/store/products?sales_channel_id[]=${salesChannel1.id}&fields=variants.inventory_items.inventory.location_levels.*`,
+              { headers: { "x-publishable-api-key": publishableKey1.token } }
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.count).toEqual(2)
+            expect(response.data.products).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  id: product.id,
+                  variants: expect.arrayContaining([
+                    expect.objectContaining({
+                      inventory_items: expect.arrayContaining([
+                        expect.objectContaining({
+                          inventory_item_id: inventoryItem1.id,
+                        }),
+                        expect.objectContaining({
+                          inventory_item_id: inventoryItem2.id,
+                        }),
+                      ]),
+                    }),
+                  ]),
+                }),
+              ])
+            )
+          })
+
+          it("should return inventory quantity when variant's manage_inventory is true", async () => {
+            const remoteLink = appContainer.resolve(
+              ContainerRegistrationKeys.REMOTE_LINK
+            )
+
+            // TODO: Missing API endpoint. Remove this when its available
+            await remoteLink.create([
+              {
+                [Modules.PRODUCT]: { variant_id: variant.id },
+                [Modules.INVENTORY]: { inventory_item_id: inventoryItem1.id },
+                data: { required_quantity: 20 },
+              },
+              {
+                [Modules.PRODUCT]: { variant_id: variant.id },
+                [Modules.INVENTORY]: { inventory_item_id: inventoryItem2.id },
+                data: { required_quantity: 20 },
+              },
+            ])
+
+            let response = await api.get(
+              `/store/products?sales_channel_id[]=${salesChannel1.id}&fields=%2bvariants.inventory_quantity`,
+              {
+                headers: { "x-publishable-api-key": publishableKey1.token },
+              }
+            )
+
+            const product1Res = response.data.products.find(
+              (p) => p.id === product.id
+            )
+
+            const product2Res = response.data.products.find(
+              (p) => p.id === product2.id
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.count).toEqual(2)
+            expect(product1Res).toEqual(
+              expect.objectContaining({
+                id: product.id,
+                variants: expect.arrayContaining([
+                  expect.objectContaining({
+                    inventory_quantity: 1,
+                    manage_inventory: true,
+                  }),
+                ]),
+              })
+            )
+            expect(product2Res).toEqual(
+              expect.objectContaining({
+                id: product2.id,
+                variants: expect.arrayContaining([
+                  expect.objectContaining({
+                    manage_inventory: false,
+                  }),
+                ]),
+              })
+            )
+            expect(product2Res.variants[0].inventory_quantity).toEqual(
+              undefined
+            )
+          })
         })
       })
 

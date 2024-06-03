@@ -40,21 +40,6 @@ await customerModuleService.addCustomerToGroup({
 
 ---
 
-## Configure Customer Module
-
-After installing the `@medusajs/customer` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const modules = {
-  // ...
-  customer: {
-    resolve: "@medusajs/customer",
-  },
-}
-```
-
----
-
 ## How to Use Customer Module's Service
 
 You can use the Customer Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.CUSTOMER` imported from `@medusajs/modules-sdk`.
@@ -108,9 +93,11 @@ For example:
   import { ICustomerModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const customerModuleService: ICustomerModuleService =
-      context.container.resolve(ModuleRegistrationName.PRODUCT)
+      container.resolve(ModuleRegistrationName.CUSTOMER)
 
     const customers = await customerModuleService.list()
   })

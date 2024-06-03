@@ -1,5 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
+import { IProductModuleService } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
 import { Product, ProductVariant } from "@models"
 
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
@@ -22,7 +23,7 @@ moduleIntegrationTestRunner({
         productOne = await service.create({
           id: "product-1",
           title: "product 1",
-          status: ProductTypes.ProductStatus.PUBLISHED,
+          status: ProductStatus.PUBLISHED,
           options: [
             {
               title: "size",
@@ -38,7 +39,7 @@ moduleIntegrationTestRunner({
         productTwo = await service.create({
           id: "product-2",
           title: "product 2",
-          status: ProductTypes.ProductStatus.PUBLISHED,
+          status: ProductStatus.PUBLISHED,
         })
 
         variantOne = await service.createVariants({

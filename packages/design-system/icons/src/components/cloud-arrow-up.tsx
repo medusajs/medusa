@@ -5,19 +5,27 @@ const CloudArrowUp = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M10 13.75V8.125m0 0 2.5 2.5m-2.5-2.5-2.5 2.5M5.625 16.25A3.75 3.75 0 0 1 4.45 8.937a4.375 4.375 0 0 1 8.527-1.941 2.5 2.5 0 0 1 3.132 3.207A3.127 3.127 0 0 1 15 16.25H5.625Z"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="M10.167 11.722h.444a3.333 3.333 0 0 0 3.333-3.333 3.324 3.324 0 0 0-2.476-3.208C11.303 3.124 9.6 1.5 7.5 1.5a4 4 0 0 0-4 4c0 .311.044.61.11.9a2.66 2.66 0 0 0 .112 5.322h1.111" />
+          <path d="m5.5 8.833 2-2 2 2M7.5 6.833v7.2" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

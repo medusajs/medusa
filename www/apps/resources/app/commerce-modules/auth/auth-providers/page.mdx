@@ -6,34 +6,43 @@ export const metadata = {
 
 In this document, you’ll learn how the Auth Module handles authentication using providers.
 
-## What's an Auth Provider?
+## What's an Auth Provider Module?
 
-An auth provider is a TypeScript or JavaScript class used to authenticate customers and users. Each provider implements the authentication logic based on its purpose.
+An auth provider module handles authenticating customers and users, either using custom logic or by integrating a third-party service.
 
-For example, the `emailpass` provider authenticates a user using their email and password, whereas the `google` provider authenticates users using their Google account.
+For example, the EmailPass Auth Provider Module authenticates a user using their email and password, whereas the Google Auth Provider Module authenticates users using their Google account.
+
+<Note type="check">
+
+Support for the Google Auth Provider Module is coming soon.
+
+</Note>
 
 ---
 
-## The Auth Provider Class
+## Configure Auth Provider Modules
 
-An auth provider implements the `AbstractAuthModuleProvider` class imported from the `@medusajs/utils` package. The provider must implement the `authenticate` method that authenticates a user.
+By default, admin users and customers can login with all installed auth provider moduless.
 
-When you call the `authenticate` method of the Auth Module's main service (`IAuthModuleService`), the method resolves the specified provider and calls its `authenticate` method passing it the second parameter it received:
+To limit the auth providers that used for admin users and customers, use the [authMethodsPerActor option](/references/medusa-config#http-authMethodsPerActor-1-3) in Medusa's configurations:
 
-```ts
-const data = await authModuleService.authenticate(
-    "emailpass",
-    // passed to auth provider
-    {
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      authMethodsPerActor: {
+        user: ["google"],
+        customer: ["emailpass"]
+      },
       // ...
-    }
-  )
+    },
+    // ...
+  }
+})
 ```
 
-It also returns the same data returned by the auth provider.
+---
 
-<Note>
+## How to Create an Auth Provider Module
 
-Learn about the parameters and return type of the `IAuthModuleService`'s `authenticate` method in [this reference](/references/auth/authenticate).
-
-</Note>
+Refer to [this guide](/references/auth/provider) to learn how to create an auth provider module.

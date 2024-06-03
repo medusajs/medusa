@@ -349,7 +349,6 @@ export class Store {
     ) => {
       return this.client.fetch<{
         customer: HttpTypes.StoreCustomer
-        token: string
       }>(`/store/customers`, {
         method: "POST",
         headers,

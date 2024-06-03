@@ -5,8 +5,8 @@ const Link = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
@@ -16,7 +16,14 @@ const Link = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M10.992 7.24a3.75 3.75 0 0 1 1.035 6.037l-3.75 3.75a3.75 3.75 0 0 1-5.304-5.304l1.465-1.464m11.125-.518 1.464-1.464a3.75 3.75 0 0 0-5.304-5.304l-3.75 3.75a3.75 3.75 0 0 0 1.035 6.037"
+          d="M7.056 5.568c-.313.15-.607.354-.865.614l-.01.009a3.14 3.14 0 0 0 0 4.444l1.934 1.933a3.14 3.14 0 0 0 4.445 0l.008-.008a3.14 3.14 0 0 0 0-4.445l-.827-.828"
+        />
+        <path
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="M7.944 9.432c.313-.15.607-.354.865-.614l.01-.009a3.14 3.14 0 0 0 0-4.444L6.884 2.432a3.14 3.14 0 0 0-4.445 0l-.008.009a3.14 3.14 0 0 0 0 4.444l.827.828"
         />
       </svg>
     )
