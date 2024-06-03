@@ -21,7 +21,7 @@ describe("modules loader", () => {
   it("should register the provider service", async () => {
     const moduleProviders = [
       {
-        resolve: "@plugins/default",
+        resolve: "@providers/default",
         options: {},
       },
     ]
@@ -46,7 +46,7 @@ describe("modules loader", () => {
     }
     const moduleProviders = [
       {
-        resolve: "@plugins/default",
+        resolve: "@providers/default",
         options: {},
       },
     ]
@@ -65,7 +65,7 @@ describe("modules loader", () => {
   it("should log the errors if no service is defined", async () => {
     const moduleProviders = [
       {
-        resolve: "@plugins/no-service",
+        resolve: "@providers/no-service",
         options: {},
       },
     ]
@@ -74,7 +74,7 @@ describe("modules loader", () => {
       await moduleProviderLoader({ container, providers: moduleProviders })
     } catch (error) {
       expect(error.message).toBe(
-        "No services found in plugin @plugins/no-service -- make sure your plugin has a default export of services."
+        "@providers/no-service doesn't seem to have a main service exported -- make sure your module has a default export of a service."
       )
     }
   })
@@ -82,7 +82,7 @@ describe("modules loader", () => {
   it("should throw if no default export is defined", async () => {
     const moduleProviders = [
       {
-        resolve: "@plugins/no-default",
+        resolve: "@providers/no-default",
         options: {},
       },
     ]
@@ -91,7 +91,7 @@ describe("modules loader", () => {
       await moduleProviderLoader({ container, providers: moduleProviders })
     } catch (error) {
       expect(error.message).toBe(
-        "No services found in plugin @plugins/no-default -- make sure your plugin has a default export of services."
+        "@providers/no-default doesn't seem to have a main service exported -- make sure your module has a default export of a service."
       )
     }
   })

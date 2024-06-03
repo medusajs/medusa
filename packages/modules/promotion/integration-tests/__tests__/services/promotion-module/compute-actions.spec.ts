@@ -1,7 +1,7 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import { ApplicationMethodType, PromotionType } from "@medusajs/utils"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createDefaultPromotion } from "../../../__fixtures__/promotion"
 
@@ -177,7 +177,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -278,7 +278,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -391,7 +391,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -453,7 +453,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -514,7 +514,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -578,7 +578,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -679,7 +679,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -792,7 +792,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -854,7 +854,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -911,7 +911,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -977,7 +977,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1050,7 +1050,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1150,7 +1150,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1262,7 +1262,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1323,7 +1323,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -1379,7 +1379,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -1442,7 +1442,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1515,7 +1515,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1614,7 +1614,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1725,7 +1725,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_cotton_tshirt",
@@ -1798,7 +1798,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -1854,7 +1854,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -1919,7 +1919,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -1992,7 +1992,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2069,7 +2069,7 @@ moduleIntegrationTestRunner({
               { prevent_auto_promotions: true }
             )
 
-            expect(result).toEqual([])
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
           })
 
           it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
@@ -2156,7 +2156,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2262,7 +2262,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2320,7 +2320,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -2373,7 +2373,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -2436,7 +2436,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2509,7 +2509,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2586,7 +2586,7 @@ moduleIntegrationTestRunner({
               { prevent_auto_promotions: true }
             )
 
-            expect(result).toEqual([])
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
           })
 
           it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
@@ -2674,7 +2674,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2786,7 +2786,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -2856,7 +2856,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -2909,7 +2909,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -2973,17 +2973,17 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
-                amount: 166.66666666666669,
+                amount: 166.66666666666666,
                 code: "PROMOTION_TEST",
               },
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_standard",
-                amount: 33.33333333333333,
+                amount: 33.333333333333336,
                 code: "PROMOTION_TEST",
               },
             ])
@@ -3045,17 +3045,17 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
-                amount: 166.66666666666669,
+                amount: 166.66666666666666,
                 code: "PROMOTION_TEST",
               },
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_standard",
-                amount: 33.33333333333333,
+                amount: 33.333333333333336,
                 code: "PROMOTION_TEST",
               },
             ])
@@ -3143,17 +3143,17 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
-                amount: 166.66666666666669,
+                amount: 166.66666666666666,
                 code: "PROMOTION_TEST",
               },
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_standard",
-                amount: 33.33333333333333,
+                amount: 33.333333333333336,
                 code: "PROMOTION_TEST",
               },
               {
@@ -3253,7 +3253,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -3310,7 +3310,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -3362,7 +3362,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -3424,7 +3424,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -3496,7 +3496,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -3594,7 +3594,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -3704,7 +3704,7 @@ moduleIntegrationTestRunner({
               }
             )
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addShippingMethodAdjustment",
                 shipping_method_id: "shipping_method_express",
@@ -3767,7 +3767,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -3819,7 +3819,7 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            expect(result).toEqual([
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
             ])
           })
@@ -3877,7 +3877,7 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "addItemAdjustment",
               item_id: "item_cotton_tshirt",
@@ -3944,7 +3944,7 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "addItemAdjustment",
               item_id: "item_cotton_tshirt",
@@ -4031,7 +4031,7 @@ moduleIntegrationTestRunner({
             }
           )
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "addItemAdjustment",
               item_id: "item_cotton_tshirt",
@@ -4130,7 +4130,7 @@ moduleIntegrationTestRunner({
             }
           )
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "addItemAdjustment",
               item_id: "item_cotton_tshirt",
@@ -4215,7 +4215,7 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "removeItemAdjustment",
               adjustment_id: "test-adjustment",
@@ -4302,7 +4302,7 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "removeShippingMethodAdjustment",
               adjustment_id: "test-adjustment",
@@ -4311,13 +4311,13 @@ moduleIntegrationTestRunner({
             {
               action: "addShippingMethodAdjustment",
               shipping_method_id: "shipping_method_express",
-              amount: 166.66666666666669,
+              amount: 166.66666666666666,
               code: "PROMOTION_TEST",
             },
             {
               action: "addShippingMethodAdjustment",
               shipping_method_id: "shipping_method_standard",
-              amount: 33.33333333333333,
+              amount: 33.333333333333336,
               code: "PROMOTION_TEST",
             },
           ])
@@ -4408,7 +4408,7 @@ moduleIntegrationTestRunner({
             context
           )
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "addItemAdjustment",
               item_id: "item_cotton_tshirt2",
@@ -4501,7 +4501,7 @@ moduleIntegrationTestRunner({
             context
           )
 
-          expect(result).toEqual([])
+          expect(JSON.parse(JSON.stringify(result))).toEqual([])
         })
 
         it("should compute actions for multiple items when conditions for target qty exceed one item", async () => {
@@ -4588,7 +4588,7 @@ moduleIntegrationTestRunner({
             context
           )
 
-          expect(result).toEqual([
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
             {
               action: "addItemAdjustment",
               item_id: "item_cotton_tshirt2",
@@ -4688,7 +4688,7 @@ moduleIntegrationTestRunner({
             context
           )
 
-          expect(result).toEqual([])
+          expect(JSON.parse(JSON.stringify(result))).toEqual([])
         })
       })
     })

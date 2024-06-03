@@ -75,23 +75,6 @@ const newKey = await apiKeyModuleService.create({
 
 ---
 
-## Configure API Key Module
-
-To use the API Key Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.API_KEY]: true,
-}
-```
-
----
-
 ## How to Use API Key Module's Service
 
 You can use the API Key Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.API_KEY` imported from `@medusajs/modules-sdk`.

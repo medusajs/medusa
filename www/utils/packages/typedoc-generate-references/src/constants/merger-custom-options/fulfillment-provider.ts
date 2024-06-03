@@ -55,26 +55,28 @@ const { Modules } = require("@medusajs/modules-sdk")
 
 // ...
 
-const modules = {
+module.exports = defineConfig({
   // ...
-  [Modules.FULFILLMENT]: {
-    resolve: "@medusajs/fulfillment",
-    options: {
-      providers: [
-        {
-          resolve: "./dist/modules/my-fulfillment",
-          options: {
-            config: {
-              "my-fulfillment": {
-                // provider options...
+  modules: {
+    [Modules.FULFILLMENT]: {
+      resolve: "@medusajs/fulfillment",
+      options: {
+        providers: [
+          {
+            resolve: "./modules/my-fulfillment",
+            options: {
+              config: {
+                "my-fulfillment": {
+                  // provider options...
+                },
               },
             },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-}
+  }
+})
 \`\`\`
 `,
     ],

@@ -78,16 +78,22 @@ export const updateProductVariantsWorkflow = createWorkflow(
         }
 
         if ("product_variants" in data.input) {
-          return data.variantPriceSetLinks.map((link) => {
-            const variant = (data.input as any).product_variants.find(
-              (v) => v.id === link.variant_id
-            )
+          return data.variantPriceSetLinks
+            .map((link) => {
+              if (!("product_variants" in data.input)) {
+                return
+              }
 
-            return {
-              id: link.price_set_id,
-              prices: variant.prices,
-            } as PricingTypes.UpsertPriceSetDTO
-          })
+              const variant = data.input.product_variants.find(
+                (v) => v.id === link.variant_id
+              )!
+
+              return {
+                id: link.price_set_id,
+                prices: variant.prices,
+              } as PricingTypes.UpsertPriceSetDTO
+            })
+            .filter(Boolean)
         }
 
         return {

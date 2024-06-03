@@ -100,23 +100,6 @@ await orderModuleService.confirmOrderChange("ord_123")
 
 ---
 
-## Configure Order Module
-
-To use the Order Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.ORDER]: true,
-}
-```
-
----
-
 ## How to Use Order Module's Service
 
 You can use the Order Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.ORDER` imported from `@medusajs/modules-sdk`.

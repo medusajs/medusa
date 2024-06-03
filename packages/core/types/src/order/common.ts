@@ -8,6 +8,7 @@ export type ChangeActionType =
   | "CANCEL"
   | "CANCEL_RETURN"
   | "FULFILL_ITEM"
+  | "CANCEL_ITEM_FULFILLMENT"
   | "ITEM_ADD"
   | "ITEM_REMOVE"
   | "RECEIVE_DAMAGED_RETURN_ITEM"

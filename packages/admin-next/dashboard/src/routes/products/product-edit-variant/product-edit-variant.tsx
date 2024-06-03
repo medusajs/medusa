@@ -3,12 +3,12 @@ import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { json, useLoaderData, useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/route-modal"
+import { useProduct } from "../../../hooks/api/products"
 import { ProductEditVariantForm } from "./components/product-edit-variant-form"
 import { editProductVariantLoader } from "./loader"
-import { useProduct } from "../../../hooks/api/products"
 
 export const ProductEditVariant = () => {
-  const loaderData = useLoaderData() as Awaited<
+  const initialData = useLoaderData() as Awaited<
     ReturnType<typeof editProductVariantLoader>
   >
 
@@ -16,7 +16,7 @@ export const ProductEditVariant = () => {
   const { id, variant_id } = useParams()
 
   const { product, isLoading, isError, error } = useProduct(id!, undefined, {
-    initialData: loaderData?.initialData,
+    initialData,
   })
 
   const variant = product?.variants.find(
@@ -45,7 +45,6 @@ export const ProductEditVariant = () => {
         <ProductEditVariantForm
           product={product}
           variant={variant as unknown as ProductVariant}
-          isStockAndInventoryEnabled={loaderData?.isStockAndInventoryEnabled}
         />
       )}
     </RouteDrawer>

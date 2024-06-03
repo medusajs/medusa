@@ -17,16 +17,15 @@ You configure allowed origins for Store and Admin API Routes using the `storeCor
 For example:
 
 ```js title="medusa-config.js"
-module.exports = {
+module.exports = defineConfig({
   projectConfig: {
     http: {
-      adminCors: "http://localhost:7001",
       storeCors: "http://localhost:8000",
+      adminCors: "http://localhost:7001",
       // ...
-    }
-  },
-  // ...
-}
+    },
+  }
+})
 ```
 
 This allows the `http://localhost:7001` origin to access the Admin API Routes, and the `http://localhost:8000` origin to access Store API Routes.
