@@ -68,7 +68,11 @@ class ProductCategory {
   @Property({ columnType: "boolean", default: false })
   is_internal?: boolean
 
-  @Property({ columnType: "numeric", nullable: false, default: 0 })
+  @Property({
+    columnType: "integer",
+    nullable: false,
+    default: 0,
+  })
   rank?: number
 
   @ManyToOne(() => ProductCategory, {

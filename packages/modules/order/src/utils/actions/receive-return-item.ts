@@ -95,7 +95,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RECEIVE_RETURN_ITEM, {
     if (!existing) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Reference ID "${refId}" not found.`
+        `Item ID "${refId}" not found.`
       )
     }
 
