@@ -14,7 +14,7 @@ export interface SuiteOptions<TService = unknown> {
   }
 }
 
-export function moduleIntegrationTestRunner({
+export function moduleIntegrationTestRunner<TService = any>({
   moduleName,
   moduleModels,
   moduleOptions = {},
@@ -34,7 +34,7 @@ export function moduleIntegrationTestRunner({
   injectedDependencies?: Record<string, any>
   resolve?: string
   debug?: boolean
-  testSuite: <TService = unknown>(options: SuiteOptions<TService>) => void
+  testSuite: (options: SuiteOptions<TService>) => void
 }) {
   const moduleSdkImports = require("@medusajs/modules-sdk")
 
@@ -111,7 +111,7 @@ export function moduleIntegrationTestRunner({
       schema,
       clientUrl: dbConfig.clientUrl,
     },
-  } as SuiteOptions
+  } as SuiteOptions<TService>
 
   const beforeEach_ = async () => {
     await MikroOrmWrapper.setupDatabase()

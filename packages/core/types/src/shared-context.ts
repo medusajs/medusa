@@ -30,8 +30,8 @@ export interface IMessageAggregator {
   clearMessages(): void
   saveRawMessageData<T>(
     messageData:
-      | EventBusTypes.MessageFormat<T>
-      | EventBusTypes.MessageFormat<T>[],
+      | EventBusTypes.RawMessageFormat<T>
+      | EventBusTypes.RawMessageFormat<T>[],
     options?: Record<string, unknown>
   ): void
 }

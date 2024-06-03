@@ -1,14 +1,14 @@
-import * as QueryConfig from "./query-config"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
+import { createLinkBody } from "../../utils/validators"
+import * as QueryConfig from "./query-config"
 import {
   AdminCreateCustomerGroup,
   AdminGetCustomerGroupParams,
   AdminGetCustomerGroupsParams,
   AdminUpdateCustomerGroup,
 } from "./validators"
-import { validateAndTransformBody } from "../../utils/validate-body"
-import { createLinkBody } from "../../utils/validators"
 
 export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
   {
