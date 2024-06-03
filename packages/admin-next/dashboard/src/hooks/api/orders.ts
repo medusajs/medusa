@@ -1,7 +1,14 @@
-import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query"
+import {
+  QueryKey,
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  UseQueryOptions,
+} from "@tanstack/react-query"
 
-import { client } from "../../lib/client"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { client } from "../../lib/client"
 
 const ORDERS_QUERY_KEY = "orders" as const
 export const ordersQueryKeys = queryKeysFactory(ORDERS_QUERY_KEY)
@@ -37,4 +44,38 @@ export const useOrders = (
   })
 
   return { ...data, ...rest }
+}
+
+export const useCreateOrderFulfillment = (
+  orderId: string,
+  options?: UseMutationOptions<any, Error, any>
+) => {
+  return useMutation({
+    mutationFn: (payload: any) =>
+      client.orders.createFulfillment(orderId, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useCancelOrderFulfillment = (
+  orderId: string,
+  fulfillmentId: string,
+  options?: UseMutationOptions<any, Error, any>
+) => {
+  return useMutation({
+    mutationFn: () => client.orders.cancelFulfillment(orderId, fulfillmentId),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
 }
