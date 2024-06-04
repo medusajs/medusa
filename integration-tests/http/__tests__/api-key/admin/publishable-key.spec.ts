@@ -16,6 +16,7 @@ medusaIntegrationTestRunner({
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, getContainer())
 
+        // BREAKING: Before the ID of the token was used in request headers, now there is a separate `token` field that should be used
         pubKey1 = (
           await api.post(
             "/admin/api-keys",
@@ -33,7 +34,7 @@ medusaIntegrationTestRunner({
         ).data.api_key
       })
 
-      // BREAKING: The URL changed from /admin/api-keys to /admin/api-keys, as well as the response field
+      // BREAKING: The URL changed from /admin/publishable-api-keys to /admin/api-keys, as well as the response field
       describe("GET /admin/api-keys/:id", () => {
         it("retrieve a publishable key by id ", async () => {
           const response = await api.get(
