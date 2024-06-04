@@ -27,10 +27,7 @@ export const NavbarMobileMenu = ({
             {...menuButton}
             buttonProps={{
               ...(menuButton.buttonProps || {}),
-              className: clsx(
-                menuButton.buttonProps?.className,
-                "!border-none !bg-transparent !bg-no-image !shadow-none"
-              ),
+              variant: "transparent",
             }}
           />
           <NavbarLogo
@@ -42,8 +39,7 @@ export const NavbarMobileMenu = ({
             <NavbarSearchModalOpener />
             <NavbarColorModeToggle
               buttonProps={{
-                className:
-                  "!border-none !bg-transparent !bg-no-image !shadow-none ml-docs_1",
+                variant: "transparent",
               }}
             />
           </div>

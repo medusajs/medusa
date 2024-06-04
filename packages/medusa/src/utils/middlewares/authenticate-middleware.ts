@@ -1,5 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ApiKeyDTO, ConfigModule, IApiKeyModuleService } from "@medusajs/types"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { NextFunction, RequestHandler } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import {
@@ -8,7 +9,6 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "../../types/routing"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 const SESSION_AUTH = "session"
 const BEARER_AUTH = "bearer"
