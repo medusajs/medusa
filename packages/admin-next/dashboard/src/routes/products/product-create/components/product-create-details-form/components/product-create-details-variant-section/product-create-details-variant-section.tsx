@@ -8,6 +8,7 @@ import {
   IconButton,
   Input,
   Label,
+  Switch,
   Text,
   clx,
 } from "@medusajs/ui"
@@ -365,6 +366,9 @@ export const ProductCreateVariantsSection = ({
                                   {...form.register(
                                     `options.${index}.title` as const
                                   )}
+                                  placeholder={t(
+                                    "products.fields.options.optionTitlePlaceholder"
+                                  )}
                                 />
                                 <div className="flex items-center px-2 py-1.5">
                                   <Label
@@ -394,6 +398,9 @@ export const ProductCreateVariantsSection = ({
                                         {...field}
                                         variant="contrast"
                                         onChange={handleValueChange}
+                                        placeholder={t(
+                                          "products.fields.options.variantionsPlaceholder"
+                                        )}
                                       />
                                     )
                                   }}
