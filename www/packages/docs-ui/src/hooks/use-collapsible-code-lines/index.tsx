@@ -8,10 +8,8 @@ import {
   TokenOutputProps,
 } from "prism-react-renderer"
 import React, { useCallback, useMemo } from "react"
-import {
-  CodeBlockCollapsibleLines,
-  CodeBlockCollapsibleLinesProps,
-} from "../../components/CodeBlock/CollapsibleLines"
+import { CodeBlockCollapsibleLines } from "../../components/CodeBlock/Collapsible/Lines"
+import { useCollapsible } from "../use-collapsible"
 
 export type HighlightProps = {
   getLineProps: (input: LineInputProps) => LineOutputProps
@@ -25,16 +23,13 @@ export type CollapsibleCodeLines = {
     highlightProps: HighlightProps,
     lineNumberOffset?: number
   ) => React.ReactNode
-  collapsibleLinesProps?: Omit<
-    CodeBlockCollapsibleLinesProps,
-    "children" | "type"
-  >
 }
+
+export type CollapsedCodeLinesPosition = "start" | "end"
 
 export const useCollapsibleCodeLines = ({
   collapsibleLinesStr,
   getLines,
-  collapsibleLinesProps = {},
 }: CollapsibleCodeLines) => {
   const collapsedRange:
     | {
@@ -63,21 +58,28 @@ export const useCollapsibleCodeLines = ({
     }
   }, [collapsibleLinesStr])
 
+  const type: CollapsedCodeLinesPosition | undefined = useMemo(() => {
+    if (!collapsedRange) {
+      return undefined
+    }
+    return collapsedRange.start === 1 ? "start" : "end"
+  }, [collapsedRange])
+
+  const collapsibleHookResult = useCollapsible({
+    unmountOnExit: false,
+    translateEnabled: false,
+    heightAnimation: true,
+  })
+
   const getCollapsedLinesElm = useCallback(
     ({
       tokens,
-      type,
       highlightProps,
     }: {
       tokens: Token[][]
-      type: "start" | "end"
       highlightProps: HighlightProps
     }) => {
-      if (
-        !collapsedRange ||
-        (type === "start" && collapsedRange.start !== 1) ||
-        (type === "end" && collapsedRange.end !== tokens.length)
-      ) {
+      if (!collapsedRange || !type) {
         return <></>
       }
 
@@ -90,12 +92,12 @@ export const useCollapsibleCodeLines = ({
       )
 
       return (
-        <CodeBlockCollapsibleLines {...collapsibleLinesProps} type={type}>
+        <CodeBlockCollapsibleLines {...collapsibleHookResult} type={type}>
           {getLines(lines, highlightProps, startIndex)}
         </CodeBlockCollapsibleLines>
       )
     },
-    [collapsedRange]
+    [collapsedRange, collapsibleHookResult]
   )
 
   const getNonCollapsedLinesElm = useCallback(
@@ -122,11 +124,13 @@ export const useCollapsibleCodeLines = ({
         isCollapseBeginning ? collapsedRange.end : 0
       )
     },
-    [collapsedRange]
+    [collapsedRange, collapsibleHookResult]
   )
 
   return {
     getCollapsedLinesElm,
     getNonCollapsedLinesElm,
+    type,
+    ...collapsibleHookResult,
   }
 }

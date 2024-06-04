@@ -3,12 +3,18 @@
 import React, { useState } from "react"
 import { CSSTransition } from "react-transition-group"
 
-type CollapsibleProps = {
+export type CollapsibleProps = {
   initialValue?: boolean
   heightAnimation?: boolean
   translateEnabled?: boolean
   onClose?: () => void
   unmountOnExit?: boolean
+}
+
+export type CollapsibleReturn = {
+  getCollapsibleElms: (children: React.ReactNode) => React.JSX.Element
+  collapsed: boolean
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const useCollapsible = ({
@@ -17,7 +23,7 @@ export const useCollapsible = ({
   translateEnabled = true,
   onClose,
   unmountOnExit = true,
-}: CollapsibleProps) => {
+}: CollapsibleProps): CollapsibleReturn => {
   const [collapsed, setCollapsed] = useState(initialValue)
 
   const getCollapsibleElms = (children: React.ReactNode) => (

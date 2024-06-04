@@ -12,6 +12,8 @@ export type CodeBlockActionsProps = {
   source: string
   isSingleLine?: boolean
   inHeader: boolean
+  inInnerCode?: boolean
+  isCollapsed: boolean
   canShowApiTesting?: boolean
   blockStyle: CodeBlockStyle
   onApiTesting: React.Dispatch<React.SetStateAction<boolean>>
@@ -22,6 +24,8 @@ export type CodeBlockActionsProps = {
 export const CodeBlockActions = ({
   source,
   inHeader,
+  inInnerCode = false,
+  isCollapsed,
   isSingleLine = false,
   canShowApiTesting = false,
   blockStyle,
@@ -45,65 +49,81 @@ export const CodeBlockActions = ({
   return (
     <div
       className={clsx(
-        "absolute hidden md:flex md:justify-end",
-        "xs:rounded xs:absolute xs:right-0 xs:top-0 xs:w-[calc(10%+24px)] xs:h-full xs:bg-transparent",
+        "absolute hidden md:block",
+        "xs:rounded xs:absolute xs:right-0 xs:top-0 xs:w-[calc(17%+10px)] xs:h-full",
         !inHeader && [
-          "md:right-docs_0.5",
-          isSingleLine && "md:top-docs_0.25",
-          !isSingleLine && "md:top-docs_0.5",
+          inInnerCode &&
+            "xs:bg-subtle-code-fade-right-to-left dark:xs:bg-subtle-code-fade-right-to-left-dark",
+          !inInnerCode &&
+            "xs:bg-base-code-fade-right-to-left dark:xs:bg-base-code-fade-right-to-left-dark",
         ],
-        inHeader && "md:right-docs_1 md:top-docs_0.5"
+        inHeader && "xs:bg-transparent"
       )}
     >
-      {canShowApiTesting && (
-        <Tooltip
-          text="Test API"
-          tooltipClassName="font-base"
-          className={clsx(
-            "h-fit",
-            !inHeader && "p-[6px]",
-            inHeader && "px-[6px] pb-[6px]"
-          )}
-        >
-          <PlaySolid
-            className={clsx("cursor-pointer", iconColor)}
-            onClick={() => onApiTesting(true)}
-          />
-        </Tooltip>
-      )}
-      {!noReport && (
-        <Tooltip
-          text="Report Issue"
-          tooltipClassName="font-base"
-          className={clsx(
-            "h-fit",
-            !inHeader && "p-[6px]",
-            inHeader && "px-[6px] pb-[6px]"
-          )}
-        >
-          <Link
-            href={`${GITHUB_ISSUES_PREFIX}&title=${encodeURIComponent(
-              `Docs(Code Issue): `
-            )}`}
-            target="_blank"
+      <div
+        className={clsx(
+          "md:flex md:justify-end",
+          !inHeader && [
+            "md:pr-docs_0.5",
+            isCollapsed && "md:pt-docs_2.5",
+            !isCollapsed && [
+              isSingleLine && "md:pt-docs_0.25",
+              !isSingleLine && "md:pt-docs_0.5",
+            ],
+          ],
+          inHeader && "md:pr-docs_1 md:pt-docs_0.5"
+        )}
+      >
+        {canShowApiTesting && (
+          <Tooltip
+            text="Test API"
+            tooltipClassName="font-base"
             className={clsx(
-              "bg-transparent border-none cursor-pointer rounded",
-              "[&:not(:first-child)]:ml-docs_0.5",
-              "inline-flex justify-center items-center invisible xs:visible"
+              "h-fit",
+              !inHeader && "p-[6px]",
+              inHeader && "px-[6px] pb-[6px]"
             )}
-            rel="noreferrer"
           >
-            <ExclamationCircle className={clsx(iconColor)} />
-          </Link>
-        </Tooltip>
-      )}
-      {!noCopy && (
-        <CodeBlockCopyAction
-          source={source}
-          inHeader={inHeader}
-          iconColor={iconColor}
-        />
-      )}
+            <PlaySolid
+              className={clsx("cursor-pointer", iconColor)}
+              onClick={() => onApiTesting(true)}
+            />
+          </Tooltip>
+        )}
+        {!noReport && (
+          <Tooltip
+            text="Report Issue"
+            tooltipClassName="font-base"
+            className={clsx(
+              "h-fit",
+              !inHeader && "p-[6px]",
+              inHeader && "px-[6px] pb-[6px]"
+            )}
+          >
+            <Link
+              href={`${GITHUB_ISSUES_PREFIX}&title=${encodeURIComponent(
+                `Docs(Code Issue): `
+              )}`}
+              target="_blank"
+              className={clsx(
+                "bg-transparent border-none cursor-pointer rounded",
+                "[&:not(:first-child)]:ml-docs_0.5",
+                "inline-flex justify-center items-center invisible xs:visible"
+              )}
+              rel="noreferrer"
+            >
+              <ExclamationCircle className={clsx(iconColor)} />
+            </Link>
+          </Tooltip>
+        )}
+        {!noCopy && (
+          <CodeBlockCopyAction
+            source={source}
+            inHeader={inHeader}
+            iconColor={iconColor}
+          />
+        )}
+      </div>
     </div>
   )
 }

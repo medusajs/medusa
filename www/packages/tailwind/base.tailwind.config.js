@@ -176,6 +176,11 @@ module.exports = {
               top: "var(--docs-contrast-border-top)",
               bot: "var(--docs-contrast-border-bot)",
             },
+            // not in UI but necessary for show more button
+            button: {
+              DEFAULT: "#3D3D3F",
+              hover: "#505052",
+            },
           },
         },
         /* docs defaults */
@@ -257,7 +262,13 @@ module.exports = {
       },
       backgroundImage: {
         "code-fade-top-to-bottom": `linear-gradient(180deg, #27272A 0%, rgba(39, 39, 42, 0.00) 100%)`,
-        "code-fade-bottom-to-top": `linear-gradient(180deg, #27272A 0%, rgba(39, 39, 42, 0.00) 100%)`,
+        "code-fade-bottom-to-top": `linear-gradient(180deg, rgba(39, 39, 42, 0.00) 0%, #27272A 100%)`,
+        "base-code-fade-right-to-left": `linear-gradient(90deg, #18181b7d, #18181B)`,
+        "subtle-code-fade-right-to-left": `linear-gradient(90deg, #27272aa3, #27272A)`,
+        "code-fade-top-to-bottom-dark": `linear-gradient(180deg, #2F2F32 0%, rgba(47, 47, 50, 0.00) 100%)`,
+        "code-fade-bottom-to-top-dark": `linear-gradient(180deg, rgba(47, 47, 50, 0.00) 0%, #2F2F32 100%)`,
+        "base-code-fade-right-to-left-dark": `linear-gradient(90deg, #27272aa3, #27272A)`,
+        "subtle-code-fade-right-to-left-dark": `linear-gradient(90deg, #30303380, #303033)`,
       },
       screens: {
         xs: "576px",
