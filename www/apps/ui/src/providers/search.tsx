@@ -53,7 +53,8 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           ),
           title: "AI Assistant",
           badge: {
-            variant: "purple",
+            variant: "blue",
+            badgeType: "shaded",
             children: "Beta",
           },
         },

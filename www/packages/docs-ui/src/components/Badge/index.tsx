@@ -1,5 +1,6 @@
 import React from "react"
 import clsx from "clsx"
+import { ShadedBgIcon } from "../.."
 
 export type BadgeVariant =
   | "purple"
@@ -10,16 +11,26 @@ export type BadgeVariant =
   | "neutral"
   | "code"
 
+export type BadgeType = "default" | "shaded"
+
 export type BadgeProps = {
   className?: string
   variant: BadgeVariant
+  badgeType?: BadgeType
 } & React.HTMLAttributes<HTMLSpanElement>
 
-export const Badge = ({ className, variant, children }: BadgeProps) => {
+export const Badge = ({
+  className,
+  variant,
+  badgeType = "default",
+  children,
+}: BadgeProps) => {
   return (
     <span
       className={clsx(
-        "text-compact-x-small-plus px-docs_0.25 py-0 rounded-docs_sm border border-solid text-center",
+        "text-compact-x-small-plus text-center",
+        badgeType === "default" &&
+          "px-docs_0.25 py-0 rounded-docs_sm border border-solid",
         variant === "purple" &&
           "bg-medusa-tag-purple-bg text-medusa-tag-purple-text border-medusa-tag-purple-border",
         variant === "orange" &&
@@ -34,12 +45,21 @@ export const Badge = ({ className, variant, children }: BadgeProps) => {
           "bg-medusa-tag-neutral-bg text-medusa-tag-neutral-text border-medusa-tag-neutral-border",
         variant === "code" &&
           "bg-medusa-contrast-bg-subtle text-medusa-contrast-fg-secondary border-medusa-contrast-border-bot",
+        badgeType === "shaded" && "px-[3px] !bg-transparent relative",
         // needed for tailwind utilities
         "badge",
         className
       )}
     >
-      {children}
+      {badgeType === "shaded" && (
+        <ShadedBgIcon
+          variant={variant}
+          className={clsx("absolute top-0 left-0 w-full h-full")}
+        />
+      )}
+      <span className={clsx(badgeType === "shaded" && "relative z-[1]")}>
+        {children}
+      </span>
     </span>
   )
 }
