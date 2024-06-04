@@ -389,7 +389,7 @@ export interface FilterablePaymentProps
   /**
    * Filter the payments by the ID of their associated payment session.
    */
-  session_id?: string | string[] | OperatorMap<string>
+  payment_session_id?: string | string[] | OperatorMap<string>
 
   /**
    * Filter the payments by the ID of their associated customer.
@@ -574,7 +574,7 @@ export interface PaymentProviderDTO {
 export interface FilterablePaymentProviderProps
   extends BaseFilterable<PaymentProviderDTO> {
   /**
-   * The IDs to filter the payment collection by.
+   * The IDs to filter the payment provider by.
    */
   id?: string | string[] | OperatorMap<string | string[]>
 

@@ -36,7 +36,7 @@ export const TypeList = ({
   return (
     <div
       className={clsx(
-        "bg-docs-bg-surface shadow-card-rest rounded my-docs_1",
+        "bg-docs-bg-surface shadow-elevation-card-rest rounded my-docs_1",
         className
       )}
       {...props}

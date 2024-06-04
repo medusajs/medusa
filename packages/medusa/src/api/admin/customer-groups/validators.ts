@@ -1,9 +1,9 @@
+import { z } from "zod"
 import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
-import { z } from "zod"
 
 export type AdminGetCustomerGroupParamsType = z.infer<
   typeof AdminGetCustomerGroupParams
@@ -58,6 +58,7 @@ export type AdminCreateCustomerGroupType = z.infer<
 >
 export const AdminCreateCustomerGroup = z.object({
   name: z.string(),
+  metadata: z.record(z.any()).optional(),
 })
 
 export type AdminUpdateCustomerGroupType = z.infer<
@@ -65,4 +66,5 @@ export type AdminUpdateCustomerGroupType = z.infer<
 >
 export const AdminUpdateCustomerGroup = z.object({
   name: z.string(),
+  metadata: z.record(z.any()).optional(),
 })

@@ -69,7 +69,7 @@ medusaIntegrationTestRunner({
           { throwIfKeyNotFound: true }
         )
 
-        expect(getNonExistingRegion).rejects.toThrow(
+        await expect(getNonExistingRegion).rejects.toThrow(
           "region id not found: region_123"
         )
       })
@@ -113,7 +113,7 @@ medusaIntegrationTestRunner({
         ])
 
         // Validate all relations, including the link
-        expect(
+        await expect(
           remoteQuery(
             {
               region: {
@@ -136,7 +136,7 @@ medusaIntegrationTestRunner({
         )
 
         // Only validate the relations with Payment. It doesn't fail because the link didn't return any data
-        expect(
+        await expect(
           remoteQuery(
             {
               region: {
@@ -157,7 +157,7 @@ medusaIntegrationTestRunner({
         ).resolves.toHaveLength(1)
 
         // The link exists, but the payment doesn't
-        expect(
+        await expect(
           remoteQuery(
             {
               region: {
@@ -180,7 +180,7 @@ medusaIntegrationTestRunner({
         )
 
         // everything is fine
-        expect(
+        await expect(
           remoteQuery(
             {
               region: {
