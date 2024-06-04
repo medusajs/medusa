@@ -1,7 +1,7 @@
 "use client"
 
 import {
-  AiAssistantCommandIcon,
+  AiAssistantIcon,
   AiAssistantProvider,
   SearchProvider as UiSearchProvider,
   searchFiltersV1,
@@ -40,7 +40,7 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
       commands={[
         {
           name: "ai-assistant",
-          icon: <AiAssistantCommandIcon />,
+          icon: <AiAssistantIcon />,
           component: (
             <AiAssistantProvider
               apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
