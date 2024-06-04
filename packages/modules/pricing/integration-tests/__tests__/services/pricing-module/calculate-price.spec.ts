@@ -299,7 +299,7 @@ moduleIntegrationTestRunner({
             {}
           )
 
-          expect(result).rejects.toThrow(
+          await expect(result).rejects.toThrow(
             "Method calculatePrices requires currency_code in the pricing context"
           )
 
@@ -308,7 +308,7 @@ moduleIntegrationTestRunner({
             { context: { region_id: "DE" } }
           )
 
-          expect(result).rejects.toThrow(
+          await expect(result).rejects.toThrow(
             "Method calculatePrices requires currency_code in the pricing context"
           )
         })

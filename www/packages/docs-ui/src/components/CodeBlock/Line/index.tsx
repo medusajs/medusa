@@ -21,7 +21,6 @@ type CodeBlockLineProps = {
   highlights?: Highlight[]
   lineNumber: number
   showLineNumber: boolean
-  bgColorClassName: string
   lineNumberColorClassName: string
   noLineNumbers?: boolean
 } & Pick<RenderProps, "getLineProps" | "getTokenProps">
@@ -33,7 +32,6 @@ export const CodeBlockLine = ({
   getLineProps,
   getTokenProps,
   showLineNumber,
-  bgColorClassName,
   lineNumberColorClassName,
 }: CodeBlockLineProps) => {
   const lineProps = getLineProps({ line, key: lineNumber })
@@ -204,10 +202,9 @@ export const CodeBlockLine = ({
   }) => (
     <span
       className={clsx(
-        // TODO change code colors and class names based on figma colors
         isHighlighted && [
-          "lg:py-px lg:px-[6px] lg:border-medusa-code-icon lg:rounded-docs_sm",
-          "lg:bg-medusa-code-border lg:cursor-pointer",
+          "lg:py-px lg:px-[6px] lg:border-medusa-contrast-border-top lg:rounded-docs_sm",
+          "lg:bg-medusa-contrast-bg-highlight lg:cursor-pointer",
         ]
       )}
     >
@@ -235,7 +232,7 @@ export const CodeBlockLine = ({
       {...lineProps}
       className={clsx(
         "table-row",
-        isHighlightedLine && "bg-medusa-code-bg-header",
+        isHighlightedLine && "bg-medusa-contrast-bg-highlight",
         lineProps.className
       )}
     >
@@ -244,7 +241,6 @@ export const CodeBlockLine = ({
           className={clsx(
             "mr-docs_1 table-cell select-none",
             "sticky left-0 w-[1%] px-docs_1 text-right",
-            bgColorClassName,
             lineNumberColorClassName
           )}
         >

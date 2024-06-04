@@ -24,14 +24,9 @@ export const POST = async (
     labels: req.validatedBody.labels ?? [],
   }
 
-  const { errors } = await createOrderShipmentWorkflow(req.scope).run({
+  await createOrderShipmentWorkflow(req.scope).run({
     input,
-    throwOnError: false,
   })
-
-  if (Array.isArray(errors) && errors[0]) {
-    throw errors[0].error
-  }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "order",

@@ -7,20 +7,25 @@ import { createBatchBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
 import { maybeApplyPriceListsFilter } from "./utils"
 import {
-  AdminGetProductsParams,
+  AdminBatchCreateVariantInventoryItem,
+  AdminBatchDeleteVariantInventoryItem,
+  AdminBatchUpdateProduct,
+  AdminBatchUpdateProductVariant,
+  AdminBatchUpdateVariantInventoryItem,
   AdminCreateProduct,
   AdminCreateProductOption,
   AdminCreateProductVariant,
+  AdminCreateVariantInventoryItem,
+  AdminGetProductOptionParams,
+  AdminGetProductOptionsParams,
+  AdminGetProductParams,
+  AdminGetProductsParams,
+  AdminGetProductVariantParams,
+  AdminGetProductVariantsParams,
   AdminUpdateProduct,
   AdminUpdateProductOption,
-  AdminGetProductParams,
-  AdminGetProductVariantsParams,
-  AdminGetProductVariantParams,
   AdminUpdateProductVariant,
-  AdminGetProductOptionsParams,
-  AdminGetProductOptionParams,
-  AdminBatchUpdateProduct,
-  AdminBatchUpdateProductVariant,
+  AdminUpdateVariantInventoryItem,
 } from "./validators"
 
 export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
@@ -240,6 +245,59 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformQuery(
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
+      ),
+    ],
+  },
+
+  // Variant inventory item endpoints
+  {
+    method: ["POST"],
+    matcher: "/admin/products/:id/variants/inventory-items/batch",
+    middlewares: [
+      validateAndTransformBody(
+        createBatchBody(
+          AdminBatchCreateVariantInventoryItem,
+          AdminBatchUpdateVariantInventoryItem,
+          AdminBatchDeleteVariantInventoryItem
+        )
+      ),
+      validateAndTransformQuery(
+        AdminGetProductVariantParams,
+        QueryConfig.retrieveVariantConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/products/:id/variants/:variant_id/inventory-items",
+    middlewares: [
+      validateAndTransformBody(AdminCreateVariantInventoryItem),
+      validateAndTransformQuery(
+        AdminGetProductVariantParams,
+        QueryConfig.retrieveVariantConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher:
+      "/admin/products/:id/variants/:variant_id/inventory-items/:inventory_item_id",
+    middlewares: [
+      validateAndTransformBody(AdminUpdateVariantInventoryItem),
+      validateAndTransformQuery(
+        AdminGetProductVariantParams,
+        QueryConfig.retrieveVariantConfig
+      ),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher:
+      "/admin/products/:id/variants/:variant_id/inventory-items/:inventory_item_id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetProductVariantParams,
+        QueryConfig.retrieveVariantConfig
       ),
     ],
   },
