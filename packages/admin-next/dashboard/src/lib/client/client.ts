@@ -39,7 +39,7 @@ export const client = {
   salesChannels: salesChannels,
   shippingOptions: shippingOptions,
   shippingProfiles: shippingProfiles,
-  tags: tags,
+  productTags: tags,
   users: users,
   orders: orders,
   taxes: taxes,
