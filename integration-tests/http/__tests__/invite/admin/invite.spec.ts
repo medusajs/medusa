@@ -90,13 +90,14 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should fail to accept an invite given an invalid token (unauthorized endpoint)", async () => {
+      it("should fail to accept an invite given an invalid token", async () => {
         expect.assertions(2)
         const signup = await api.post("/auth/user/emailpass", {
           email: "test@medusa-commerce.com",
           password: "secret_password",
         })
 
+        // Some malformed token
         const token =
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnZpdGVfaWQiOiJpbnZpdGVfMDFGSFFWNlpBOERRRlgySjM3UVo5SjZTOTAiLCJyb2xlIjoiYWRtaW4iLCJ1c2VyX2VtYWlsIjoic2ZAc2RmLmNvbSIsImlhdCI6MTYzMzk2NDAyMCwiZXhwIjoxNjM0NTY4ODIwfQ.ZsmDvunBxhRW1iRqvfEfWixJLZ1zZVzaEYST38Vbl00"
 
