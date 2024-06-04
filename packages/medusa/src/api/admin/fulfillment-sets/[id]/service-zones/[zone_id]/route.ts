@@ -121,6 +121,6 @@ export const DELETE = async (
     id: zone_id,
     object: "service_zone",
     deleted: true,
-    parent: fulfillmentSet,
+    parent: fulfillmentSet as unknown as HttpTypes.AdminFulfillmentSet,
   })
 }
