@@ -5,6 +5,7 @@ import { ProductTypes } from "@medusajs/types"
 import { arrayDifference } from "@medusajs/utils"
 import {
   createWorkflow,
+  parallelize,
   transform,
   WorkflowData,
 } from "@medusajs/workflows-sdk"
@@ -166,14 +167,15 @@ export const updateProductsWorkflow = createWorkflow(
 
     const toDeleteLinks = transform({ currentLinks }, prepareToDeleteLinks)
 
-    dismissRemoteLinkStep(toDeleteLinks)
-
     const salesChannelLinks = transform(
       { input, updatedProducts },
       prepareSalesChannelLinks
     )
 
-    createRemoteLinkStep(salesChannelLinks)
+    parallelize(
+      dismissRemoteLinkStep(toDeleteLinks),
+      createRemoteLinkStep(salesChannelLinks)
+    )
 
     return updatedProducts
   }
