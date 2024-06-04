@@ -77,6 +77,10 @@ export class WorkflowManager {
     return new OrchestratorBuilder(workflow.flow_)
   }
 
+  static getEmptyTransactionDefinition(): OrchestratorBuilder {
+    return new OrchestratorBuilder()
+  }
+
   static register(
     workflowId: string,
     flow: TransactionStepsDefinition | OrchestratorBuilder | undefined,
@@ -101,11 +105,9 @@ export class WorkflowManager {
         : true
 
       if (!areStepsEqual) {
-        if (process.env.MEDUSA_FF_MEDUSA_V2 == "true") {
-          throw new Error(
-            `Workflow with id "${workflowId}" and step definition already exists.`
-          )
-        }
+        throw new Error(
+          `Workflow with id "${workflowId}" and step definition already exists.`
+        )
       }
     }
 
