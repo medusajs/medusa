@@ -1,11 +1,11 @@
 import { acceptInviteWorkflow } from "@medusajs/core-flows"
 import { InviteWorkflow } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
 import { AdminInviteAcceptType } from "../validators"
-import { MedusaError } from "@medusajs/utils"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminInviteAcceptType>,
