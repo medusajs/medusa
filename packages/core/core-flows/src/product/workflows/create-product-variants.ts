@@ -59,7 +59,7 @@ const buildLinksToCreate = (data: {
     if (!hasInventoryItems) {
       const inventoryItem = data.inventoryIndexMap[index]
 
-      linksToCreate.push(buildLink(variant.id, inventoryItem.id))
+      linksToCreate.push(buildLink(variant.id, inventoryItem.id, 1))
 
       continue
     }
