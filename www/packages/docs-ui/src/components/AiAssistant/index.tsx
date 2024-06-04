@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from "react"
 import {
-  AiAssistantCommandIcon,
   Badge,
   Button,
   InputText,
@@ -12,6 +11,7 @@ import {
   SearchHitGroupName,
   Tooltip,
   Link,
+  AiAssistantIcon,
 } from "@/components"
 import { useAiAssistant, useSearch } from "@/providers"
 import { ArrowUturnLeft, XMarkMini } from "@medusajs/icons"
@@ -300,7 +300,7 @@ export const AiAssistant = () => {
         )}
       >
         <Button
-          variant="clear"
+          variant="transparent"
           onClick={() => setCommand(null)}
           className="text-medusa-fg-subtle p-[5px]"
         >
@@ -320,7 +320,7 @@ export const AiAssistant = () => {
           disabled={loading}
         />
         <Button
-          variant="clear"
+          variant="transparent"
           onClick={() => {
             setQuestion("")
             inputRef.current?.focus()
@@ -395,7 +395,7 @@ export const AiAssistant = () => {
               "flex items-center gap-docs_0.75 text-compact-small-plus"
             )}
           >
-            <AiAssistantCommandIcon />
+            <AiAssistantIcon />
             <span className="text-medusa-fg-subtle">Medusa AI Assistant</span>
             <Badge variant="purple">Beta</Badge>
           </div>
