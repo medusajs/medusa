@@ -8,6 +8,7 @@ import {
 } from "../../../types/routing"
 
 import { createStockLocationsWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import { refetchStockLocation } from "./helpers"
 import {
   AdminCreateStockLocationType,
@@ -17,7 +18,7 @@ import {
 // Create stock location
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateStockLocationType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminStockLocationResponse>
 ) => {
   const { result } = await createStockLocationsWorkflow(req.scope).run({
     input: { locations: [req.validatedBody] },
@@ -34,7 +35,7 @@ export const POST = async (
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetStockLocationsParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminStockLocationListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 

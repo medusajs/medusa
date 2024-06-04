@@ -1,4 +1,5 @@
 import { createShipmentWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -8,7 +9,7 @@ import { AdminCreateShipmentType } from "../../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateShipmentType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminFulfillmentResponse>
 ) => {
   const { id } = req.params
 

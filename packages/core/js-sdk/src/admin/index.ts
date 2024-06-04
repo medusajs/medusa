@@ -555,6 +555,22 @@ export class Admin {
     },
   }
 
+  public fulfillmentProvider = {
+    list: async (
+      queryParams?: HttpTypes.FindParams &
+        HttpTypes.AdminFulfillmentProviderFilters,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.AdminFulfillmentProviderListResponse>(
+        `/admin/fulfillment-providers`,
+        {
+          headers,
+          query: queryParams,
+        }
+      )
+    },
+  }
+
   public shippingOption = {
     create: async (
       body: HttpTypes.AdminCreateShippingOption,

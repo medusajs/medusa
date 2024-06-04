@@ -1,8 +1,5 @@
 import { createShippingProfilesWorkflow } from "@medusajs/core-flows"
-import {
-  AdminShippingProfileResponse,
-  AdminShippingProfilesResponse,
-} from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -11,15 +8,15 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
+import { refetchShippingProfile } from "./helpers"
 import {
   AdminCreateShippingProfileType,
   AdminGetShippingProfilesParamsType,
 } from "./validators"
-import { refetchShippingProfile } from "./helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateShippingProfileType>,
-  res: MedusaResponse<AdminShippingProfileResponse>
+  res: MedusaResponse<HttpTypes.AdminShippingProfileResponse>
 ) => {
   const shippingProfilePayload = req.validatedBody
 
@@ -38,7 +35,7 @@ export const POST = async (
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetShippingProfilesParamsType>,
-  res: MedusaResponse<AdminShippingProfilesResponse>
+  res: MedusaResponse<HttpTypes.AdminShippingProfileListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 

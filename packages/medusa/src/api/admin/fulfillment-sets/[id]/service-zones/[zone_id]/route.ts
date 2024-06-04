@@ -4,9 +4,8 @@ import {
 } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
-  AdminFulfillmentSetResponse,
-  AdminServiceZoneDeleteResponse,
   AdminServiceZoneResponse,
+  HttpTypes,
   IFulfillmentModuleService,
 } from "@medusajs/types"
 import {
@@ -49,7 +48,7 @@ export const GET = async (
 
 export const POST = async (
   req: MedusaRequest<AdminUpdateFulfillmentSetServiceZonesType>,
-  res: MedusaResponse<AdminFulfillmentSetResponse>
+  res: MedusaResponse<HttpTypes.AdminFulfillmentSetResponse>
 ) => {
   const fulfillmentModuleService = req.scope.resolve<IFulfillmentModuleService>(
     ModuleRegistrationName.FULFILLMENT
@@ -94,7 +93,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<AdminServiceZoneDeleteResponse>
+  res: MedusaResponse<HttpTypes.AdminServiceZoneDeleteResponse>
 ) => {
   const { id, zone_id } = req.params
 
@@ -120,7 +119,7 @@ export const DELETE = async (
 
   res.status(200).json({
     id: zone_id,
-    object: "service-zone",
+    object: "service_zone",
     deleted: true,
     parent: fulfillmentSet,
   })

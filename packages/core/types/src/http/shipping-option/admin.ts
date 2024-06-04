@@ -5,7 +5,7 @@ import {
   BaseSoftDeletableHttpEntity,
 } from "../base"
 import { DeleteResponse, PaginatedResponse } from "../common"
-import { AdminFulfillmentProvider } from "../fulfillment"
+import { AdminFulfillmentProvider } from "../fulfillment-provider"
 import { AdminServiceZone } from "../fulfillment-set"
 import { AdminPriceSetPrice } from "../pricing"
 import { AdminShippingProfile } from "../shipping-profile"

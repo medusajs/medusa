@@ -1,4 +1,4 @@
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId, Searchable } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -9,6 +9,7 @@ import {
 
 @Entity()
 export default class FulfillmentProvider {
+  @Searchable()
   @PrimaryKey({ columnType: "text" })
   id: string
 

@@ -6,10 +6,10 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { AdminFulfillmentProvidersParamsType } from "./validators"
+import { AdminGetFulfillmentProvidersParamsType } from "./validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminFulfillmentProvidersParamsType>,
+  req: AuthenticatedMedusaRequest<AdminGetFulfillmentProvidersParamsType>,
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

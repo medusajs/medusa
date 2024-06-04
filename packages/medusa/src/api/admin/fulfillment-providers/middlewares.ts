@@ -1,7 +1,7 @@
 import { MiddlewareRoute } from "../../../types/middlewares"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
-import { AdminFulfillmentProvidersParams } from "./validators"
+import { AdminGetFulfillmentProvidersParams } from "./validators"
 
 export const adminFulfillmentProvidersRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -9,7 +9,7 @@ export const adminFulfillmentProvidersRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/fulfillment-providers",
     middlewares: [
       validateAndTransformQuery(
-        AdminFulfillmentProvidersParams,
+        AdminGetFulfillmentProvidersParams,
         QueryConfig.listTransformQueryConfig
       ),
     ],
