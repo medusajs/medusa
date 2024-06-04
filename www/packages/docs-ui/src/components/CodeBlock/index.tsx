@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import clsx from "clsx"
 import { Highlight, HighlightProps, themes, Token } from "prism-react-renderer"
 import { ApiRunner } from "@/components"
@@ -76,6 +76,9 @@ export const CodeBlock = ({
 
   const { colorMode } = useColorMode()
   const [showTesting, setShowTesting] = useState(false)
+  const codeContainerRef = useRef<HTMLDivElement>(null)
+  const codeRef = useRef<HTMLElement>(null)
+  const [scrollable, setScrollable] = useState(false)
   const hasInnerCodeBlock = useMemo(
     () => hasTabs || title.length > 0,
     [hasTabs, title]
@@ -180,17 +183,18 @@ export const CodeBlock = ({
     lineNumberOffset = 0
   ) =>
     tokens.map((line, i) => {
+      const offsettedLineNumber = i + lineNumberOffset
       const highlightedLines = transformedHighlights.filter(
-        (highlight) => highlight.line - 1 === i
+        (highlight) => highlight.line - 1 === offsettedLineNumber
       )
 
       return (
         <CodeBlockLine
           line={line}
-          lineNumber={i + lineNumberOffset}
+          lineNumber={offsettedLineNumber}
           highlights={highlightedLines}
           showLineNumber={!noLineNumbers && tokens.length > 1}
-          key={i}
+          key={offsettedLineNumber}
           lineNumberColorClassName={lineNumbersColor}
           lineNumberBgClassName={innerBgColor}
           {...highlightProps}
@@ -208,6 +212,16 @@ export const CodeBlock = ({
     getLines,
   })
 
+  useEffect(() => {
+    if (!codeContainerRef.current || !codeRef.current) {
+      return
+    }
+
+    setScrollable(
+      codeContainerRef.current.scrollWidth < codeRef.current.clientWidth
+    )
+  }, [codeContainerRef.current, codeRef.current])
+
   const actionsProps: Omit<CodeBlockActionsProps, "inHeader"> = useMemo(
     () => ({
       source,
@@ -218,6 +232,7 @@ export const CodeBlock = ({
       noCopy,
       isCollapsed: collapsibleType !== undefined && collapsibleResult.collapsed,
       inInnerCode: hasInnerCodeBlock,
+      showGradientBg: scrollable,
     }),
     [
       source,
@@ -229,6 +244,7 @@ export const CodeBlock = ({
       collapsibleType,
       collapsibleResult,
       hasInnerCodeBlock,
+      scrollable,
     ]
   )
 
@@ -292,6 +308,7 @@ export const CodeBlock = ({
             }) => (
               <div
                 className={clsx(innerBorderClasses, innerBgColor, "relative")}
+                ref={codeContainerRef}
               >
                 {collapsibleType === "start" && (
                   <>
@@ -327,6 +344,7 @@ export const CodeBlock = ({
                       tokens.length > 1 && "py-docs_0.75",
                       tokens.length <= 1 && "!py-[6px] px-docs_0.5"
                     )}
+                    ref={codeRef}
                   >
                     {collapsibleType === "start" &&
                       getCollapsedLinesElm({

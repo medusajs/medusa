@@ -12,6 +12,7 @@ export type CodeBlockActionsProps = {
   source: string
   isSingleLine?: boolean
   inHeader: boolean
+  showGradientBg?: boolean
   inInnerCode?: boolean
   isCollapsed: boolean
   canShowApiTesting?: boolean
@@ -24,6 +25,7 @@ export type CodeBlockActionsProps = {
 export const CodeBlockActions = ({
   source,
   inHeader,
+  showGradientBg = true,
   inInnerCode = false,
   isCollapsed,
   isSingleLine = false,
@@ -50,19 +52,25 @@ export const CodeBlockActions = ({
     <div
       className={clsx(
         "absolute hidden md:block",
-        "xs:rounded xs:absolute xs:right-0 xs:top-0 xs:w-[calc(17%+10px)] xs:h-full",
-        !inHeader && [
-          inInnerCode &&
-            "xs:bg-subtle-code-fade-right-to-left dark:xs:bg-subtle-code-fade-right-to-left-dark",
-          !inInnerCode &&
-            "xs:bg-base-code-fade-right-to-left dark:xs:bg-base-code-fade-right-to-left-dark",
-        ],
-        inHeader && "xs:bg-transparent"
+        "xs:rounded xs:absolute xs:right-0 xs:top-0 xs:w-[calc(17%+10px)] xs:h-full"
       )}
     >
       <div
         className={clsx(
-          "md:flex md:justify-end",
+          !inHeader &&
+            showGradientBg && [
+              inInnerCode &&
+                "xs:bg-subtle-code-fade-right-to-left dark:xs:bg-subtle-code-fade-right-to-left-dark",
+              !inInnerCode &&
+                "xs:bg-base-code-fade-right-to-left dark:xs:bg-base-code-fade-right-to-left-dark",
+            ],
+          (inHeader || !showGradientBg) && "xs:bg-transparent",
+          "z-[9] w-full h-full absolute top-0 left-0"
+        )}
+      />
+      <div
+        className={clsx(
+          "md:flex md:justify-end z-[11] relative",
           !inHeader && [
             "md:pr-docs_0.5",
             isCollapsed && "md:pt-docs_2.5",

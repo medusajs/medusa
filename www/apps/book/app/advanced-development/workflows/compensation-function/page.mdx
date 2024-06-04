@@ -12,7 +12,7 @@ Errors can occur in a workflow. To avoid data inconsistency, define a function t
 
 For example:
 
-```ts title="src/workflows/hello-world.ts" highlights={[["16"], ["17"], ["18"]]}
+```ts title="src/workflows/hello-world.ts" highlights={[["16"], ["17"], ["18"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
 // other imports...
 import { 
   createStep,
@@ -52,7 +52,7 @@ const step2 = createStep(
 
 2. Use the steps in a workflow. For example:
 
-```ts title="src/workflows/hello-world.ts"
+```ts title="src/workflows/hello-world.ts" collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import {
   // other imports...
   createWorkflow,
@@ -81,7 +81,7 @@ export default myWorkflow
 
 3. Execute the workflow from a resource, such as an API route:
 
-```ts title="src/api/store/workflow/route.ts"
+```ts title="src/api/store/workflow/route.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import type {
   MedusaRequest,
   MedusaResponse,

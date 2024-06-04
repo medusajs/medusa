@@ -27,7 +27,7 @@ export const CodeBlockCollapsibleButton = ({
       {type === "start" && (
         <Button
           className={clsx(
-            "font-base w-full p-docs_0.5 !shadow-none",
+            "font-base w-full p-docs_0.5 !shadow-none z-10",
             "bg-medusa-contrast-button hover:bg-medusa-contrast-button-hover",
             "txt-compact-xsmall text-medusa-contrast-fg-secondary",
             type === "start" && "rounded-t-docs_DEFAULT rounded-b-none",
@@ -41,7 +41,7 @@ export const CodeBlockCollapsibleButton = ({
       {type === "end" && (
         <Button
           className={clsx(
-            "font-base w-full p-docs_0.5 !shadow-none",
+            "font-base w-full p-docs_0.5 !shadow-none z-10",
             "bg-medusa-contrast-button hover:bg-medusa-contrast-button-hover",
             "txt-compact-xsmall text-medusa-contrast-fg-secondary",
             "rounded-t-none rounded-b-docs_DEFAULT",
