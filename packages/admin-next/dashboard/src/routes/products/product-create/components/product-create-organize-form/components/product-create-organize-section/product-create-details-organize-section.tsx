@@ -1,9 +1,10 @@
-import { Button, Heading, Switch } from "@medusajs/ui"
+import { Button, Heading } from "@medusajs/ui"
 import { UseFormReturn, useFieldArray } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 
 import { ChipGroup } from "../../../../../../../components/common/chip-group"
 import { Form } from "../../../../../../../components/common/form"
+import { SwitchBox } from "../../../../../../../components/common/switch-box"
 import { Combobox } from "../../../../../../../components/inputs/combobox"
 import { useComboboxData } from "../../../../../../../hooks/use-combobox-data"
 import { client, sdk } from "../../../../../../../lib/client"
@@ -54,36 +55,12 @@ export const ProductCreateOrganizationSection = ({
   return (
     <div id="organize" className="flex flex-col gap-y-8">
       <Heading>{t("products.organization")}</Heading>
-      <div className="grid grid-cols-1 gap-x-4">
-        <Form.Field
-          control={form.control}
-          name="discountable"
-          render={({ field: { value, onChange, ...field } }) => {
-            return (
-              <Form.Item>
-                <div className="shadow-elevation-card-rest bg-ui-bg-field flex flex-row gap-x-4 rounded-xl p-2">
-                  <Form.Control>
-                    <Switch
-                      {...field}
-                      checked={!!value}
-                      onCheckedChange={onChange}
-                      className="mt-1"
-                    />
-                  </Form.Control>
-                  <div className="flex flex-col">
-                    <Form.Label>
-                      {t("products.fields.discountable.label")}
-                    </Form.Label>
-                    <Form.Hint>
-                      {t("products.fields.discountable.hint")}
-                    </Form.Hint>
-                  </div>
-                </div>
-              </Form.Item>
-            )
-          }}
-        />
-      </div>
+      <SwitchBox
+        control={form.control}
+        name="discountable"
+        label={t("products.fields.discountable.label")}
+        description={t("products.fields.discountable.hint")}
+      />
       <div className="grid grid-cols-2 gap-x-4">
         <Form.Field
           control={form.control}
