@@ -1,23 +1,44 @@
 import { Modules } from "@medusajs/modules-sdk"
-import { IProductModuleService } from "@medusajs/types"
-import { ProductStatus } from "@medusajs/utils"
-import { Product, ProductVariant } from "@models"
+import {
+  CreateProductDTO,
+  CreateProductVariantDTO,
+  IProductModuleService,
+  ProductDTO,
+  ProductVariantDTO,
+} from "@medusajs/types"
+import {
+  CommonEvents,
+  composeMessage,
+  ProductEvents,
+  ProductStatus,
+} from "@medusajs/utils"
 
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+  SuiteOptions,
+} from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
 moduleIntegrationTestRunner({
   moduleName: Modules.PRODUCT,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IProductModuleService>) => {
+  testSuite: ({ service }: SuiteOptions<IProductModuleService>) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("ProductModuleService product variants", () => {
-      let variantOne: ProductVariant
-      let variantTwo: ProductVariant
-      let productOne: Product
-      let productTwo: Product
+      let variantOne: ProductVariantDTO
+      let variantTwo: ProductVariantDTO
+      let productOne: ProductDTO
+      let productTwo: ProductDTO
 
       beforeEach(async () => {
         productOne = await service.create({
@@ -34,26 +55,26 @@ moduleIntegrationTestRunner({
               values: ["red", "blue"],
             },
           ],
-        })
+        } as CreateProductDTO)
 
         productTwo = await service.create({
           id: "product-2",
           title: "product 2",
           status: ProductStatus.PUBLISHED,
-        })
+        } as CreateProductDTO)
 
         variantOne = await service.createVariants({
           id: "test-1",
           title: "variant 1",
           product_id: productOne.id,
           options: { size: "large" },
-        })
+        } as CreateProductVariantDTO)
 
         variantTwo = await service.createVariants({
           id: "test-2",
           title: "variant",
           product_id: productTwo.id,
-        })
+        } as CreateProductVariantDTO)
       })
 
       describe("listAndCountVariants", () => {
@@ -238,6 +259,42 @@ moduleIntegrationTestRunner({
           expect(error.message).toEqual(
             `Cannot update non-existing variants with ids: does-not-exist`
           )
+        })
+      })
+
+      describe("createVariants", () => {
+        it("should create variants successfully", async () => {
+          jest.clearAllMocks()
+
+          const data: CreateProductVariantDTO = {
+            title: "variant 3",
+            product_id: productOne.id,
+            options: { size: "small" },
+          }
+
+          const variant = await service.createVariants(data)
+
+          expect(variant).toEqual(
+            expect.objectContaining({
+              title: "variant 3",
+              product_id: productOne.id,
+              options: expect.arrayContaining([
+                expect.objectContaining({
+                  value: "small",
+                }),
+              ]),
+            })
+          )
+
+          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
+          expect(eventBusEmitSpy).toHaveBeenCalledWith([
+            composeMessage(ProductEvents.product_variant_created, {
+              data: { id: variant.id },
+              object: "product_variant",
+              service: Modules.PRODUCT,
+              action: CommonEvents.CREATED,
+            }),
+          ])
         })
       })
 

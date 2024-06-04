@@ -22,9 +22,12 @@ import { ProductCategoryService, ProductService } from "@services"
 
 import {
   arrayDifference,
+  EmitEvents,
   InjectManager,
   InjectTransactionManager,
+  isPresent,
   isString,
+  isValidHandle,
   kebabCase,
   MedusaContext,
   MedusaError,
@@ -32,9 +35,7 @@ import {
   ProductStatus,
   promiseAll,
   removeUndefined,
-  isValidHandle,
   toHandle,
-  isPresent,
 } from "@medusajs/utils"
 import {
   ProductCategoryEventData,
@@ -50,6 +51,7 @@ import {
   UpdateTypeInput,
 } from "../types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
+import { eventBuilders } from "../utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -127,7 +129,6 @@ export default class ProductModuleService<
   protected readonly productService_: ProductService<TProduct>
   // eslint-disable-next-line max-len
   protected readonly productVariantService_: ModulesSdkTypes.InternalModuleService<TProductVariant>
-
   // eslint-disable-next-line max-len
   protected readonly productCategoryService_: ProductCategoryService<TProductCategory>
   // eslint-disable-next-line max-len
@@ -192,6 +193,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductVariantDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createVariants(
     data:
       | ProductTypes.CreateProductVariantDTO[]
@@ -219,7 +221,7 @@ export default class ProductModuleService<
     if (data.some((v) => !v.product_id)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Tried to create variants without specifying a product_id"
+        "Unable to create variants without specifying a product_id"
       )
     }
 
@@ -237,10 +239,17 @@ export default class ProductModuleService<
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(data, productOptions)
 
-    return await this.productVariantService_.create(
+    const createdVariants = await this.productVariantService_.create(
       productVariantsWithOptions,
       sharedContext
     )
+
+    eventBuilders.createdProductVariant({
+      data: createdVariants,
+      sharedContext,
+    })
+
+    return createdVariants
   }
 
   async upsertVariants(
