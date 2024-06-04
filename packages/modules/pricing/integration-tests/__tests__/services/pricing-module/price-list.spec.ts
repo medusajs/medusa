@@ -410,7 +410,7 @@ moduleIntegrationTestRunner({
           )
         })
 
-        it.only("should create a priceList successfully", async () => {
+        it("should create a priceList successfully", async () => {
           const [created] = await service.createPriceLists([
             {
               title: "test",

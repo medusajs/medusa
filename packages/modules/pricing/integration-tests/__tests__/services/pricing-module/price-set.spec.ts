@@ -652,7 +652,7 @@ moduleIntegrationTestRunner({
       })
 
       describe("addPrices", () => {
-        it("should add prices to existing price set", async () => {
+        it.only("should add prices to existing price set", async () => {
           await service.addPrices([
             {
               priceSetId: "price-set-1",
@@ -668,7 +668,7 @@ moduleIntegrationTestRunner({
 
           const [priceSet] = await service.list(
             { id: ["price-set-1"] },
-            { relations: ["prices"] }
+            { relations: ["prices", "prices.price_rules"] }
           )
 
           expect(priceSet).toEqual(
@@ -680,6 +680,24 @@ moduleIntegrationTestRunner({
                   currency_code: "USD",
                 }),
               ]),
+            })
+          )
+
+          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(2)
+          expect(eventBusEmitSpy.mock.calls[0][0][0]).toEqual(
+            composeMessage(PricingEvents.price_created, {
+              service: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price",
+              data: { id: priceSet.prices![1].id },
+            })
+          )
+          expect(eventBusEmitSpy.mock.calls[0][0][1]).toEqual(
+            composeMessage(PricingEvents.price_rule_created, {
+              service: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price_rule",
+              data: { id: priceSet.prices![1].price_rules[0].id },
             })
           )
         })

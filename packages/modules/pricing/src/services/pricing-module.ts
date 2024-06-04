@@ -562,6 +562,7 @@ export default class PricingModuleService<
   ): Promise<PricingTypes.PriceSetDTO[]>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async addPrices(
     data: AddPricesDTO | AddPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -1071,12 +1072,53 @@ export default class PricingModuleService<
             price_set_id: priceSetId,
             title: "test", // TODO: accept title
             rules_count: numberOfRules,
-            priceRules,
+            price_rules: priceRules,
           }
         })
     )
 
-    await this.priceService_.create(pricesToCreate, sharedContext)
+    const prices = await this.priceService_.create(
+      pricesToCreate,
+      sharedContext
+    )
+
+    /**
+     * Preparing data for emitting events
+     */
+    const eventsData = prices.reduce(
+      (eventsData, price) => {
+        eventsData.prices.push({
+          id: price.id,
+        })
+        price.price_rules.map((priceRule) => {
+          eventsData.priceRules.push({
+            id: priceRule.id,
+          })
+        })
+        return eventsData
+      },
+      {
+        priceRules: [],
+        prices: [],
+      } as {
+        priceRules: { id: string }[]
+        prices: { id: string }[]
+      }
+    )
+
+    /**
+     * Emitting events for all created entities
+     */
+    eventBuilders.createdPrice({
+      data: eventsData.prices,
+      sharedContext,
+    })
+    eventBuilders.createdPriceRule({
+      data: eventsData.priceRules,
+      sharedContext,
+    })
+
+    return prices
   }
 
   @InjectTransactionManager("baseRepository_")
