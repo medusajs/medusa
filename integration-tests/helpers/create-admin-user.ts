@@ -47,4 +47,6 @@ export const createAdminUser = async (
   )
 
   adminHeaders.headers["authorization"] = `Bearer ${token}`
+
+  return { user }
 }

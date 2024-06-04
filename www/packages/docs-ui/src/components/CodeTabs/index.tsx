@@ -2,6 +2,7 @@
 
 import React, { Children, useCallback, useEffect, useMemo, useRef } from "react"
 import {
+  Badge,
   BaseTabType,
   CodeBlockProps,
   CodeBlockStyle,
@@ -9,7 +10,6 @@ import {
   useTabs,
 } from "../.."
 import clsx from "clsx"
-import { CodeBlockHeader } from "../CodeBlock/Header"
 
 type CodeTab = BaseTabType & {
   codeProps: CodeBlockProps
@@ -28,7 +28,6 @@ export const CodeTabs = ({
   children,
   className,
   group = "client",
-  title,
   blockStyle = "loud",
 }: CodeTabProps) => {
   const { colorMode } = useColorMode()
@@ -59,8 +58,9 @@ export const CodeTabs = ({
           ...codeBlock,
           props: {
             ...codeBlock.props,
-            title: undefined,
-            className: clsx("!mt-0 !rounded-t-none", codeBlock.props.className),
+            badgeLabel: undefined,
+            hasTabs: true,
+            className: clsx("!my-0", codeBlock.props.className),
           },
         },
       })
@@ -78,6 +78,28 @@ export const CodeTabs = ({
   const codeTabSelectorRef = useRef<HTMLSpanElement | null>(null)
   const codeTabsWrapperRef = useRef<HTMLDivElement | null>(null)
 
+  const bgColor = useMemo(
+    () =>
+      clsx(
+        blockStyle === "loud" && "bg-medusa-contrast-bg-base",
+        blockStyle === "subtle" && [
+          colorMode === "light" && "bg-medusa-bg-component",
+          colorMode === "dark" && "bg-medusa-code-bg-header",
+        ]
+      ),
+    [blockStyle, colorMode]
+  )
+
+  const boxShadow = useMemo(
+    () =>
+      clsx(
+        blockStyle === "loud" &&
+          "shadow-elevation-code-block dark:shadow-elevation-code-block-dark",
+        blockStyle === "subtle" && "shadow-none"
+      ),
+    [blockStyle]
+  )
+
   const changeTabSelectorCoordinates = useCallback(
     (selectedTabElm: HTMLElement) => {
       if (!codeTabSelectorRef?.current || !codeTabsWrapperRef?.current) {
@@ -90,9 +112,11 @@ export const CodeTabs = ({
         selectedTabsCoordinates.left - tabsWrapperCoordinates.left
       }px`
       codeTabSelectorRef.current.style.width = `${selectedTabsCoordinates.width}px`
-      codeTabSelectorRef.current.style.height = `${selectedTabsCoordinates.height}px`
+      if (blockStyle !== "loud") {
+        codeTabSelectorRef.current.style.height = `${selectedTabsCoordinates.height}px`
+      }
     },
-    []
+    [blockStyle]
   )
 
   useEffect(() => {
@@ -111,34 +135,39 @@ export const CodeTabs = ({
   return (
     <div
       className={clsx(
-        "relative my-docs_1 w-full max-w-full overflow-auto",
+        "my-docs_1 w-full max-w-full",
+        "rounded-docs_lg",
+        bgColor,
+        boxShadow,
         className
       )}
-      ref={codeTabsWrapperRef}
     >
-      <span
+      <div
         className={clsx(
-          "xs:absolute xs:border xs:border-solid",
-          "xs:transition-all xs:duration-200 xs:ease-ease xs:top-[13px] xs:rounded-full",
-          blockStyle === "loud" && [
-            colorMode === "light" &&
-              "xs:border-medusa-code-border xs:bg-medusa-code-bg-base",
-            colorMode === "dark" &&
-              "xs:border-medusa-border-base xs:bg-medusa-bg-component",
-          ],
-          blockStyle === "subtle" && [
-            colorMode === "light" &&
-              "xs:border-medusa-border-base xs:bg-medusa-bg-base",
-            colorMode === "dark" &&
-              "xs:border-medusa-code-border xs:bg-medusa-code-bg-base",
-          ]
+          "flex gap-docs_0.75 relative",
+          "pt-[10px] px-docs_1 pb-px",
+          blockStyle === "loud" &&
+            selectedTab?.codeProps.title &&
+            "border border-solid border-b border-medusa-contrast-border-bot"
         )}
-        ref={codeTabSelectorRef}
-      ></span>
-      <CodeBlockHeader title={selectedTab?.codeProps?.title || title}>
+        ref={codeTabsWrapperRef}
+      >
+        <span
+          className={clsx(
+            "xs:absolute xs:transition-all xs:duration-200 xs:ease-ease xs:bottom-0",
+            blockStyle === "loud" && "bg-medusa-contrast-fg-primary h-px",
+            blockStyle === "subtle" && [
+              colorMode === "light" &&
+                "xs:border-medusa-border-base xs:bg-medusa-bg-base",
+              colorMode === "dark" &&
+                "xs:border-medusa-code-border xs:bg-medusa-code-bg-base",
+            ]
+          )}
+          ref={codeTabSelectorRef}
+        ></span>
         <ul
           className={clsx(
-            "!list-none flex gap-docs_0.25 items-center",
+            "!list-none flex gap-docs_0.75 items-center",
             "p-0 mb-0"
           )}
         >
@@ -164,7 +193,12 @@ export const CodeTabs = ({
             )
           })}
         </ul>
-      </CodeBlockHeader>
+        {selectedTab?.codeProps.badgeLabel && (
+          <Badge variant={selectedTab?.codeProps.badgeColor || "code"}>
+            {selectedTab.codeProps.badgeLabel}
+          </Badge>
+        )}
+      </div>
       {selectedTab?.codeBlock}
     </div>
   )

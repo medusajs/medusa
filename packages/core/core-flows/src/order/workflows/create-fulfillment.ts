@@ -4,6 +4,7 @@ import {
   FulfillmentWorkflow,
   OrderDTO,
   OrderWorkflow,
+  ReservationItemDTO,
 } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
@@ -13,7 +14,7 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createLinkStep, useRemoteQueryStep } from "../../common"
+import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
 import { adjustInventoryLevelsStep } from "../../inventory"
 import {
@@ -70,6 +71,7 @@ function prepareFulfillmentData({
   order,
   input,
   shippingOption,
+  reservations,
 }: {
   order: OrderDTO
   input: OrderWorkflow.CreateOrderFulfillmentWorkflowInput
@@ -78,15 +80,21 @@ function prepareFulfillmentData({
     provider_id: string
     service_zone: { fulfillment_set: { location?: { id: string } } }
   }
+  reservations: ReservationItemDTO[]
 }) {
   const inputItems = input.items
   const orderItemsMap = new Map<string, Required<OrderDTO>["items"][0]>(
     order.items!.map((i) => [i.id, i])
   )
+  const reservationItemMap = new Map<string, ReservationItemDTO>(
+    reservations.map((r) => [r.line_item_id as string, r])
+  )
   const fulfillmentItems = inputItems.map((i) => {
     const orderItem = orderItemsMap.get(i.id)!
+    const reservation = reservationItemMap.get(i.id)!
     return {
       line_item_id: i.id,
+      inventory_item_id: reservation?.inventory_item_id,
       quantity: i.quantity,
       title: orderItem.variant_title ?? orderItem.title,
       sku: orderItem.variant_sku || "",
@@ -106,6 +114,9 @@ function prepareFulfillmentData({
     )
   }
 
+  const shippingAddress = order.shipping_address ?? { id: undefined }
+  delete shippingAddress.id
+
   return {
     input: {
       location_id: locationId,
@@ -113,18 +124,12 @@ function prepareFulfillmentData({
       shipping_option_id: shippingOption.id,
       items: fulfillmentItems,
       labels: [] as FulfillmentWorkflow.CreateFulfillmentLabelWorkflowDTO[], // TODO: shipping labels
-      delivery_address: order.shipping_address ?? ({} as any),
+      delivery_address: shippingAddress as any,
     },
   }
 }
 
-function prepareInventoryReservations({ reservations, order, input }) {
-  if (!reservations || !reservations.length) {
-    throw new Error(
-      `No stock reservation found for items ${input.items.map((i) => i.id)}`
-    )
-  }
-
+function prepareInventoryUpdate({ reservations, order, input }) {
   const reservationMap = reservations.reduce((acc, reservation) => {
     acc[reservation.line_item_id as string] = reservation
     return acc
@@ -149,6 +154,15 @@ function prepareInventoryReservations({ reservations, order, input }) {
 
   for (const item of order.items) {
     const reservation = reservationMap[item.id]
+    if (!reservation) {
+      if (item.manage_inventory) {
+        throw new Error(
+          `No stock reservation found for item ${item.id} - ${item.title} (${item.variant_title})`
+        )
+      }
+      continue
+    }
+
     const inputQuantity = inputItemsMap[item.id]?.quantity ?? item.quantity
 
     const quantity = reservation.quantity - inputQuantity
@@ -191,6 +205,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         "region_id",
         "currency_code",
         "items.*",
+        "items.variant.manage_inventory",
         "shipping_address.*",
         "shipping_methods.shipping_option_id", // TODO: which shipping method to use when multiple?
       ],
@@ -215,33 +230,6 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }).config({ name: "get-shipping-option" })
 
-    const fulfillmentData = transform(
-      { order, input, shippingOption },
-      prepareFulfillmentData
-    )
-
-    const fulfillment = createFulfillmentWorkflow.runAsStep(fulfillmentData)
-
-    const registerOrderFulfillmentData = transform(
-      { order, fulfillment, input },
-      prepareRegisterOrderFulfillmentData
-    )
-
-    registerOrderFulfillmentStep(registerOrderFulfillmentData)
-
-    const link = transform(
-      { order_id: input.order_id, fulfillment },
-      (data) => {
-        return [
-          {
-            [Modules.ORDER]: { order_id: data.order_id },
-            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
-          },
-        ]
-      }
-    )
-    createLinkStep(link)
-
     const lineItemIds = transform({ order }, ({ order }) => {
       return order.items?.map((i) => i.id)
     })
@@ -261,12 +249,38 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       },
     }).config({ name: "get-reservations" })
 
+    const fulfillmentData = transform(
+      { order, input, shippingOption, reservations },
+      prepareFulfillmentData
+    )
+
+    const fulfillment = createFulfillmentWorkflow.runAsStep(fulfillmentData)
+
+    const registerOrderFulfillmentData = transform(
+      { order, fulfillment, input },
+      prepareRegisterOrderFulfillmentData
+    )
+
+    const link = transform(
+      { order_id: input.order_id, fulfillment },
+      (data) => {
+        return [
+          {
+            [Modules.ORDER]: { order_id: data.order_id },
+            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
+          },
+        ]
+      }
+    )
+
     const { toDelete, toUpdate, inventoryAdjustment } = transform(
       { order, reservations, input },
-      prepareInventoryReservations
+      prepareInventoryUpdate
     )
 
     parallelize(
+      registerOrderFulfillmentStep(registerOrderFulfillmentData),
+      createRemoteLinkStep(link),
       updateReservationsStep(toUpdate),
       deleteReservationsStep(toDelete),
       adjustInventoryLevelsStep(inventoryAdjustment)

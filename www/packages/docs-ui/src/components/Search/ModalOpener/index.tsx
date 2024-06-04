@@ -47,7 +47,7 @@ export const SearchModalOpener = ({
   return (
     <>
       {isMobile && (
-        <Button variant="clear" onClick={handleOpen}>
+        <Button variant="transparent" onClick={handleOpen}>
           <MagnifyingGlass className="text-medusa-fg-muted" />
         </Button>
       )}

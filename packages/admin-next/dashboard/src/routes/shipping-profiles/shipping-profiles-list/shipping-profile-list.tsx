@@ -7,7 +7,7 @@ import before from "virtual:medusa/widgets/shipping_profile/list/before"
 
 export const ShippingProfileList = () => {
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col gap-y-3">
       {before.widgets.map((w, i) => {
         return (
           <div key={i}>

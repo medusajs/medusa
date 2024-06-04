@@ -1,14 +1,10 @@
 import { FormattingOptionsType } from "types"
 
 const notificationOptions: FormattingOptionsType = {
-  "^notification": {
-    frontmatterData: {
-      displayed_sidebar: "core",
-    },
-  },
   "^notification/.*AbstractNotificationProviderService": {
     reflectionGroups: {
       Properties: false,
+      Constructors: false,
     },
     reflectionDescription: `In this document, you’ll learn how to create a notification provider module and the methods you must implement in it.`,
     frontmatterData: {
@@ -70,27 +66,29 @@ const { Modules } = require("@medusajs/modules-sdk")
 
 // ...
 
-const modules = {
+module.exports = defineConfig({
   // ...
-  [Modules.NOTIFICATION]: {
-    resolve: "@medusajs/notification",
-    options: {
-      providers: [
-        {
-          resolve: "./dist/modules/my-notification",
-          options: {
-            config: {
-              "my-notification": {
-                channels: ["email"],
-                // provider options...
+  modules: {
+    [Modules.NOTIFICATION]: {
+      resolve: "@medusajs/notification",
+      options: {
+        providers: [
+          {
+            resolve: "./modules/my-notification",
+            options: {
+              config: {
+                "my-notification": {
+                  channels: ["email"],
+                  // provider options...
+                },
               },
             },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-}
+  }
+})
 \`\`\`
 `,
     ],

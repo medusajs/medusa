@@ -2143,6 +2143,40 @@ export default class OrderModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
+  async cancelFulfillment(
+    data: OrderTypes.CancelOrderFulfillmentDTO,
+    sharedContext?: Context
+  ): Promise<void> {
+    const items = data.items.map((item) => {
+      return {
+        action: ChangeActionType.CANCEL_ITEM_FULFILLMENT,
+        internal_note: item.internal_note,
+        reference: data.reference,
+        reference_id: data.reference_id,
+        details: {
+          reference_id: item.id,
+          quantity: item.quantity,
+          metadata: item.metadata,
+        },
+      }
+    })
+
+    const change = await this.createOrderChange_(
+      {
+        order_id: data.order_id,
+        description: data.description,
+        internal_note: data.internal_note,
+        created_by: data.created_by,
+        metadata: data.metadata,
+        actions: items,
+      },
+      sharedContext
+    )
+
+    await this.confirmOrderChange(change[0].id, sharedContext)
+  }
+
+  @InjectTransactionManager("baseRepository_")
   async registerShipment(
     data: OrderTypes.RegisterOrderShipmentDTO,
     sharedContext?: Context
@@ -2719,10 +2753,55 @@ export default class OrderModuleService<
     }
 
     await this.orderService_.update(
+      orderIds.map((id) => {
+        return {
+          id,
+          status: OrderStatus.COMPLETED,
+        }
+      }),
+      sharedContext
+    )
+
+    return Array.isArray(orderId) ? orders : orders[0]
+  }
+
+  async cancel(
+    orderId: string,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO>
+  async cancel(
+    orderId: string[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async cancel(
+    orderId: string | string[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO | OrderTypes.OrderDTO[]> {
+    const orderIds = Array.isArray(orderId) ? orderId : [orderId]
+    const orders = await this.list(
       {
         id: orderIds,
-        status: OrderStatus.COMPLETED,
       },
+      {},
+      sharedContext
+    )
+
+    const canceled_at = new Date()
+    for (const order of orders) {
+      order.status = OrderStatus.CANCELED
+      order.canceled_at = canceled_at
+    }
+
+    await this.orderService_.update(
+      orderIds.map((id) => {
+        return {
+          id,
+          status: OrderStatus.CANCELED,
+          canceled_at,
+        }
+      }),
       sharedContext
     )
 

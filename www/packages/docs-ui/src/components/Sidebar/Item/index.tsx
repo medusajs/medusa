@@ -57,18 +57,15 @@ export const SidebarItem = ({
   const classNames = useMemo(
     () =>
       clsx(
-        "flex items-center justify-between gap-docs_0.5 rounded-docs_sm px-docs_0.5 py-[6px] hover:no-underline",
-        "border",
+        "flex items-center justify-between gap-docs_0.5 rounded-docs_xs px-docs_0.5 py-[6px]",
+        "hover:no-underline hover:bg-medusa-bg-component-hover",
         !canHaveTitleStyling && "text-compact-small-plus text-medusa-fg-subtle",
         canHaveTitleStyling &&
           "text-compact-x-small-plus text-medusa-fg-muted uppercase",
+        !item.path && "cursor-default",
         item.path !== undefined &&
-          active && ["!text-medusa-fg-base bg-medusa-bg-base-pressed"],
-        (item.path === undefined || !active) && "border-transparent",
-        item.path !== undefined && active && " border-medusa-border-base",
-        item.path !== undefined &&
-          !active &&
-          "hover:bg-medusa-bg-base-hover border-transparent"
+          active &&
+          "text-medusa-fg-base bg-medusa-bg-component-hover"
       ),
     [canHaveTitleStyling, active, item.path]
   )

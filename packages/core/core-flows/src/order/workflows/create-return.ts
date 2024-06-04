@@ -19,9 +19,10 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createLinkStep, useRemoteQueryStep } from "../../common"
+import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createReturnFulfillmentWorkflow } from "../../fulfillment"
 import { updateOrderTaxLinesStep } from "../steps"
 import { createReturnStep } from "../steps/create-return"
@@ -295,18 +296,6 @@ export const createReturnOrderWorkflow = createWorkflow(
       prepareShippingMethodData
     )
 
-    createReturnStep({
-      order_id: input.order_id,
-      items: input.items,
-      shipping_method: shippingMethodData,
-      created_by: input.created_by,
-    })
-
-    updateOrderTaxLinesStep({
-      order_id: input.order_id,
-      shipping_methods: [shippingMethodData as any], // The types does not seems correct in that step and expect too many things compared to the actual needs
-    })
-
     const fulfillmentData = transform(
       { order, input, returnShippingOption },
       prepareFulfillmentData
@@ -326,6 +315,19 @@ export const createReturnOrderWorkflow = createWorkflow(
         ]
       }
     )
-    createLinkStep(link)
+
+    parallelize(
+      createReturnStep({
+        order_id: input.order_id,
+        items: input.items,
+        shipping_method: shippingMethodData,
+        created_by: input.created_by,
+      }),
+      updateOrderTaxLinesStep({
+        order_id: input.order_id,
+        shipping_methods: [shippingMethodData as any], // The types does not seems correct in that step and expect too many things compared to the actual needs
+      }),
+      createRemoteLinkStep(link)
+    )
   }
 )

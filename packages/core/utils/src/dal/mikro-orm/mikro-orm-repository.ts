@@ -180,18 +180,7 @@ export class MikroOrmBaseRepository<T extends object = object>
     idsOrFilter: string[] | InternalFilterQuery,
     sharedContext: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
-    // TODO handle composite keys
-    const isArray = Array.isArray(idsOrFilter)
-    const filter =
-      isArray || isString(idsOrFilter)
-        ? {
-            id: {
-              $in: isArray ? idsOrFilter : [idsOrFilter],
-            },
-          }
-        : idsOrFilter
-
-    const query = buildQuery(filter, {
+    const query = buildQuery(idsOrFilter, {
       withDeleted: true,
     })
 
@@ -761,6 +750,27 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       return orderedEntities
     }
 
+    async restore(
+      filters:
+        | string
+        | string[]
+        | (FilterQuery<T> & BaseFilterable<FilterQuery<T>>)
+        | (FilterQuery<T> & BaseFilterable<FilterQuery<T>>)[],
+      sharedContext: Context = {}
+    ): Promise<[T[], Record<string, unknown[]>]> {
+      if (Array.isArray(filters) && !filters.filter(Boolean).length) {
+        return [[], {}]
+      }
+
+      if (!filters) {
+        return [[], {}]
+      }
+
+      const normalizedFilters = this.normalizeFilters(filters)
+
+      return await super.restore(normalizedFilters, sharedContext)
+    }
+
     async softDelete(
       filters:
         | string
@@ -769,6 +779,26 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         | (FilterQuery<T> & BaseFilterable<FilterQuery<T>>)[],
       sharedContext: Context = {}
     ): Promise<[T[], Record<string, unknown[]>]> {
+      if (Array.isArray(filters) && !filters.filter(Boolean).length) {
+        return [[], {}]
+      }
+
+      if (!filters) {
+        return [[], {}]
+      }
+
+      const normalizedFilters = this.normalizeFilters(filters)
+
+      return await super.softDelete(normalizedFilters, sharedContext)
+    }
+
+    private normalizeFilters(
+      filters:
+        | string
+        | string[]
+        | (FilterQuery<T> & BaseFilterable<FilterQuery<T>>)
+        | (FilterQuery<T> & BaseFilterable<FilterQuery<T>>)[]
+    ) {
       const primaryKeys =
         MikroOrmAbstractBaseRepository_.retrievePrimaryKeys(entity)
 
@@ -784,7 +814,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         }),
       }
 
-      return await super.softDelete(normalizedFilters, sharedContext)
+      return normalizedFilters
     }
   }
 

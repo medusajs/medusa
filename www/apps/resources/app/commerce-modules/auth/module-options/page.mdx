@@ -23,9 +23,11 @@ For example:
 ```js title="medusa-config.js"
 const { Modules } = require("@medusajs/modules-sdk")
 
-const modules = {
+// ...
+
+module.exports = defineConfig({
   // ...
-  [Module.AUTH]: {
+  modules: {
     resolve: "@medusajs/auth",
     options: {
       providers: [
@@ -42,7 +44,7 @@ const modules = {
       ],
     },
   },
-}
+})
 ```
 
 The `providers` option is an array of objects that accept the following properties:

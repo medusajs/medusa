@@ -125,7 +125,7 @@ export const SelectDropdown = ({
         className={clsx(
           "p-docs_0.25 mb-0 w-full overflow-auto rounded-docs_DEFAULT",
           "bg-medusa-bg-base text-medusa-fg-base",
-          "shadow-flyout dark:shadow-flyout-dark list-none"
+          "shadow-elevation-flyout dark:shadow-elevation-flyout-dark list-none"
         )}
       >
         {addAll &&

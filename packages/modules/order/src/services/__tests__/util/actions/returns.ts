@@ -95,7 +95,7 @@ describe("Order Return - Actions", function () {
         order: originalOrder,
         actions,
       })
-    }).toThrow(`Reference ID "333" not found.`)
+    }).toThrow(`Item ID "333" not found.`)
   })
 
   it("should validate return received", function () {

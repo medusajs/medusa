@@ -210,6 +210,7 @@
       "uploadImagesLabel": "Upload images",
       "uploadImagesHint": "Drag and drop images here or click to upload.",
       "invalidFileType": "'{{name}}' is not a supported file type. Supported file types are: {{types}}.",
+      "failedToUpload": "Failed to upload the added media. Please try again.",
       "deleteWarning_one": "You are about to delete {{count}} image. This action cannot be undone.",
       "deleteWarning_other": "You are about to delete {{count}} images. This action cannot be undone.",
       "deleteWarningWithThumbnail_one": "You are about to delete {{count}} image including the thumbnail. This action cannot be undone.",
@@ -244,7 +245,8 @@
         "tooltip": "The handle is used to reference the product in your storefront. If not specified, the handle will be generated from the product title."
       },
       "description": {
-        "label": "Description"
+        "label": "Description",
+        "hint": "Give your product a short and clear description.<0/>120-160 characters is the recommended length for search engines."
       },
       "discountable": {
         "label": "Discountable",
@@ -289,7 +291,9 @@
         "hint": "Options are used to define the color, size, etc. of the product",
         "add": "Add option",
         "optionTitle": "Option title",
-        "variations": "Variations (comma-separated)"
+        "optionTitlePlaceholder": "Color",
+        "variations": "Variations (comma-separated)",
+        "variantionsPlaceholder": "Red, Blue, Green"
       },
       "variants": {
         "label": "Product variants",

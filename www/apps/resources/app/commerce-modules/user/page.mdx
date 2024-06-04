@@ -39,26 +39,6 @@ await userModuleService.refreshInviteTokens([invite.id])
 
 ## Configure User Module
 
-To use the User Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.USER]: {
-    resolve: "@medusajs/user",
-    options: {
-      jwt_secret: process.env.JWT_SECRET ?? "supersecret",
-    },
-  },
-}
-```
-
-### Module Options
-
 Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
 
 ---

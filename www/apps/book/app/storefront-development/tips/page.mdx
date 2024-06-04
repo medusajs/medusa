@@ -29,15 +29,15 @@ The Medusa application’s API routes are guarded by a CORS middleware. Make sur
 For example:
 
 ```js title="medusa-config.js"
-module.exports = {
+module.exports = defineConfig({
   projectConfig: {
     http: {
       storeCors: "http://localhost:3000",
       // ...
     }
-  },
+  }
   // ...
-}
+})
 ```
 
 ---

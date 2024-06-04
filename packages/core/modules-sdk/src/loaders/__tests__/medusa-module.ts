@@ -280,7 +280,7 @@ describe("Medusa Modules", () => {
       } as InternalModuleDeclaration,
     })
 
-    expect(moduleC).rejects.toThrow(
+    await expect(moduleC).rejects.toThrow(
       "Module moduleKey already have a 'main' registered."
     )
   })
@@ -314,7 +314,7 @@ describe("Medusa Modules", () => {
       } as InternalModuleDeclaration,
     })
 
-    expect(moduleC).rejects.toThrow(
+    await expect(moduleC).rejects.toThrow(
       "Module moduleKey already registed as 'module_alias'. Please choose a different alias."
     )
   })

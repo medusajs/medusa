@@ -209,22 +209,24 @@ This creates a relationship to the `Product` data model of the Product Module us
 
 ### 2. Adjust Module Configuration
 
-To use relationships in a module, adjust its configuration object passed to the `modules` object in `medusa-config.js`:
+To use relationships in a module, adjust its configuration object passed to `modules` in `medusa-config.js`:
 
 export const configHighlights = [
   ["7", "isQueryable", "Enable this property to use relationships in a module."]
 ]
 
 ```js title="medusa-config.js" highlights={configHighlights}
-const modules = {
-  helloModuleService: {
-    // ...
-    definition: {
-      isQueryable: true,
-    },
-  },
+module.exports = defineConfig({
   // ...
-}
+  modules: {
+    helloModuleService: {
+      // ...
+      definition: {
+        isQueryable: true
+      }
+    }
+  }
+})
 ```
 
 Enabling the `isQueryable` property is required to use relationships in a module.

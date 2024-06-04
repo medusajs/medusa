@@ -72,23 +72,6 @@ const campaign = await promotionModuleService.createCampaigns(
 
 ---
 
-## Configure Promotion Module
-
-To use the Promotion Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.PROMOTION]: true,
-}
-```
-
----
-
 ## How to Use the Promotion Module's Service
 
 You can use the Promotion Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.PROMOTION` imported from `@medusajs/modules-sdk`.

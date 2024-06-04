@@ -410,7 +410,9 @@ moduleIntegrationTestRunner({
           confirmed_by: "cx_agent_123",
         })
 
-        expect(service.confirmOrderChange(orderChange.id)).rejects.toThrowError(
+        await expect(
+          service.confirmOrderChange(orderChange.id)
+        ).rejects.toThrowError(
           `Order Change cannot be modified: ${orderChange.id}`
         )
 
@@ -579,9 +581,9 @@ moduleIntegrationTestRunner({
           canceled_by: "cx_agent_123",
         })
 
-        expect(service.cancelOrderChange(orderChange.id)).rejects.toThrowError(
-          "Order Change cannot be modified"
-        )
+        await expect(
+          service.cancelOrderChange(orderChange.id)
+        ).rejects.toThrowError("Order Change cannot be modified")
 
         await service.declineOrderChange({
           id: orderChange2.id,
@@ -589,7 +591,7 @@ moduleIntegrationTestRunner({
           declined_reason: "changed my mind",
         })
 
-        expect(
+        await expect(
           service.declineOrderChange(orderChange2.id)
         ).rejects.toThrowError("Order Change cannot be modified")
 

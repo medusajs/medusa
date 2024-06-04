@@ -8,6 +8,7 @@ export type ChangeActionType =
   | "CANCEL"
   | "CANCEL_RETURN"
   | "FULFILL_ITEM"
+  | "CANCEL_ITEM_FULFILLMENT"
   | "ITEM_ADD"
   | "ITEM_REMOVE"
   | "RECEIVE_DAMAGED_RETURN_ITEM"
@@ -874,6 +875,10 @@ export interface OrderDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
+  /**
+   * When the order was canceled.
+   */
+  canceled_at?: string | Date
   /**
    * When the order was created.
    */

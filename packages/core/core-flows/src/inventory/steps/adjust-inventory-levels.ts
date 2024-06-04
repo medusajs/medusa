@@ -42,6 +42,20 @@ export const adjustInventoryLevelsStep = createStep(
 
     const inventoryService = container.resolve(ModuleRegistrationName.INVENTORY)
 
-    await inventoryService.adjustInventory(adjustedLevels)
+    /**
+     * @todo
+     * The method "adjustInventory" was broken, it was receiving the
+     * "inventoryItemId" and "locationId" as snake case, whereas
+     * the expected object needed these properties as camelCase
+     */
+    await inventoryService.adjustInventory(
+      adjustedLevels.map((level) => {
+        return {
+          inventoryItemId: level.inventory_item_id,
+          locationId: level.location_id,
+          adjustment: level.adjustment,
+        }
+      })
+    )
   }
 )

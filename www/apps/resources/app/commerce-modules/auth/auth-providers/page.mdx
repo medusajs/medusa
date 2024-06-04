@@ -27,7 +27,7 @@ By default, users of all actor types can authenticate with all installed auth pr
 To restrict the auth providers used for actor types, use the [authMethodsPerActor option](/references/medusa-config#http-authMethodsPerActor-1-3) in Medusa's configurations:
 
 ```js title="medusa-config.js"
-module.exports = {
+module.exports = defineConfig({
   projectConfig: {
     http: {
       authMethodsPerActor: {
@@ -38,7 +38,7 @@ module.exports = {
     },
     // ...
   }
-}
+})
 ```
 
 <Note title="Important">

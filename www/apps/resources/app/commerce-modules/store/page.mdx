@@ -40,23 +40,6 @@ const stores = await storeModuleService.create([
 
 ---
 
-## Configure Store Module
-
-To use the Store Module, enable it in the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
-
-// ...
-
-const modules = {
-  // ...
-  [Modules.STORE]: true,
-}
-```
-
----
-
 ## How to Use Store Module's Service
 
 You can use the Store Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.STORE` imported from `@medusajs/modules-sdk`.

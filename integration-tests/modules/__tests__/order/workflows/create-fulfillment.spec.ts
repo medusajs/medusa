@@ -1,4 +1,5 @@
 import {
+  cancelOrderFulfillmentWorkflow,
   createOrderFulfillmentWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
@@ -16,7 +17,6 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  RuleOperator,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
@@ -96,6 +96,11 @@ async function prepareDataFixtures({ container }) {
           title: "Test variant",
           sku: "test-variant",
         },
+        {
+          title: "Test variant no inventory management",
+          sku: "test-variant-no-inventory",
+          manage_inventory: false,
+        },
       ],
     },
   ])
@@ -144,7 +149,7 @@ async function prepareDataFixtures({ container }) {
 
   const shippingOptionData: FulfillmentWorkflow.CreateShippingOptionsWorkflowInput =
     {
-      name: "Return shipping option",
+      name: "Shipping option",
       price_type: "flat",
       service_zone_id: serviceZone.id,
       shipping_profile_id: shippingProfile.id,
@@ -162,13 +167,6 @@ async function prepareDataFixtures({ container }) {
         {
           region_id: region.id,
           amount: 100,
-        },
-      ],
-      rules: [
-        {
-          attribute: "is_return",
-          operator: RuleOperator.EQ,
-          value: '"true"',
         },
       ],
     }
@@ -235,7 +233,15 @@ async function createOrderFixture({ container, product, location }) {
             provider_id: "coupon_kings",
           },
         ],
-      } as any,
+      },
+      {
+        title: product.title,
+        variant_sku: product.variants[1].sku,
+        variant_title: product.variants[1].title,
+        variant_id: product.variants[1].id,
+        quantity: 1,
+        unit_price: 200,
+      },
     ],
     transactions: [
       {
@@ -289,6 +295,7 @@ async function createOrderFixture({ container, product, location }) {
   })
 
   const inventoryModule = container.resolve(ModuleRegistrationName.INVENTORY)
+
   const reservation = await inventoryModule.createReservationItems([
     {
       line_item_id: order.items![0].id,
@@ -314,7 +321,7 @@ medusaIntegrationTestRunner({
       container = getContainer()
     })
 
-    describe("Create order fulfillment workflow", () => {
+    describe("Order fulfillment workflow", () => {
       let shippingOption: ShippingOptionDTO
       let region: RegionDTO
       let location: StockLocationDTO
@@ -335,9 +342,11 @@ medusaIntegrationTestRunner({
         orderService = container.resolve(ModuleRegistrationName.ORDER)
       })
 
-      it("should create a order fulfillment", async () => {
+      it("should create a order fulfillment and cancel it", async () => {
         const order = await createOrderFixture({ container, product, location })
-        const createReturnOrderData: OrderWorkflow.CreateOrderFulfillmentWorkflowInput =
+
+        // Create a fulfillment
+        const createOrderFulfillmentData: OrderWorkflow.CreateOrderFulfillmentWorkflowInput =
           {
             order_id: order.id,
             created_by: "user_1",
@@ -352,7 +361,124 @@ medusaIntegrationTestRunner({
           }
 
         await createOrderFulfillmentWorkflow(container).run({
-          input: createReturnOrderData,
+          input: createOrderFulfillmentData,
+        })
+
+        const remoteQuery = container.resolve(
+          ContainerRegistrationKeys.REMOTE_QUERY
+        )
+        const remoteQueryObject = remoteQueryObjectFromString({
+          entryPoint: "order",
+          variables: {
+            id: order.id,
+          },
+          fields: [
+            "*",
+            "items.*",
+            "shipping_methods.*",
+            "total",
+            "item_total",
+            "fulfillments.*",
+          ],
+        })
+
+        const [orderFulfill] = await remoteQuery(remoteQueryObject)
+
+        expect(orderFulfill.fulfillments).toHaveLength(1)
+        expect(orderFulfill.items[0].detail.fulfilled_quantity).toEqual(1)
+
+        const inventoryModule = container.resolve(
+          ModuleRegistrationName.INVENTORY
+        )
+        const reservation = await inventoryModule.listReservationItems({
+          line_item_id: order.items![0].id,
+        })
+        expect(reservation).toHaveLength(0)
+
+        const stockAvailability = await inventoryModule.retrieveStockedQuantity(
+          inventoryItem.id,
+          [location.id]
+        )
+        expect(stockAvailability).toEqual(1)
+
+        // Cancel the fulfillment
+        const cancelFulfillmentData: OrderWorkflow.CancelOrderFulfillmentWorkflowInput =
+          {
+            order_id: order.id,
+            fulfillment_id: orderFulfill.fulfillments[0].id,
+            no_notification: false,
+          }
+
+        await cancelOrderFulfillmentWorkflow(container).run({
+          input: cancelFulfillmentData,
+        })
+
+        const remoteQueryObjectFulfill = remoteQueryObjectFromString({
+          entryPoint: "order",
+          variables: {
+            id: order.id,
+          },
+          fields: [
+            "*",
+            "items.*",
+            "shipping_methods.*",
+            "total",
+            "item_total",
+            "fulfillments.*",
+          ],
+        })
+
+        const [orderFulfillAfterCancelled] = await remoteQuery(
+          remoteQueryObjectFulfill
+        )
+
+        expect(orderFulfillAfterCancelled.fulfillments).toHaveLength(1)
+        expect(
+          orderFulfillAfterCancelled.items[0].detail.fulfilled_quantity
+        ).toEqual(0)
+
+        const stockAvailabilityAfterCancelled =
+          await inventoryModule.retrieveStockedQuantity(inventoryItem.id, [
+            location.id,
+          ])
+        expect(stockAvailabilityAfterCancelled).toEqual(2)
+      })
+
+      it("should revert an order fulfillment when it fails and recreate it when tried again", async () => {
+        const order = await createOrderFixture({ container, product, location })
+
+        // Create a fulfillment
+        const createOrderFulfillmentData: OrderWorkflow.CreateOrderFulfillmentWorkflowInput =
+          {
+            order_id: order.id,
+            created_by: "user_1",
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+              },
+            ],
+            no_notification: false,
+            location_id: undefined,
+          }
+
+        const worflow = createOrderFulfillmentWorkflow(container)
+        worflow.addAction("fail", {
+          invoke: () => {
+            throw new Error("Fulfillment failed")
+          },
+        })
+
+        await worflow
+          .run({
+            input: createOrderFulfillmentData,
+          })
+          .catch(() => void 0)
+
+        worflow.deleteAction("fail")
+
+        await worflow.run({
+          input: createOrderFulfillmentData,
         })
 
         const remoteQuery = container.resolve(

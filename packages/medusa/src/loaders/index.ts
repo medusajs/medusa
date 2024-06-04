@@ -160,6 +160,7 @@ export default async ({
 
     await promiseAll([
       container.dispose(),
+      // @ts-expect-error "Do we want to call `client.destroy` "
       pgConnection?.context?.destroy(),
       entrypointsShutdown(),
     ])

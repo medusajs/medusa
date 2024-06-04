@@ -9,6 +9,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     const { provider } = req.params
 
     const options: PaymentModuleOptions =
+      // @ts-expect-error "Not sure if .options exists on a module"
       req.scope.resolve(ModuleRegistrationName.PAYMENT).options || {}
 
     const event = {

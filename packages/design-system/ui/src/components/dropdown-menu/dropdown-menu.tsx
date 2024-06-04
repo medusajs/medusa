@@ -103,7 +103,7 @@ const Content = React.forwardRef<
         align={align}
         collisionPadding={collisionPadding}
         className={clx(
-          "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] min-w-[220px] overflow-hidden rounded-lg p-1",
+          "bg-ui-bg-component text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] min-w-[220px] overflow-hidden rounded-lg p-1",
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
           className
         )}
@@ -124,7 +124,10 @@ const Item = React.forwardRef<
   <Primitives.Item
     ref={ref}
     className={clx(
-      "bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none",
+      "bg-ui-bg-component text-ui-fg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors",
+      "focus-visible:bg-ui-bg-component-hover",
+      "active:bg-ui-bg-component-pressed",
+      "data-[disabled]:text-ui-fg-disabled data-[disabled]:pointer-events-none",
       className
     )}
     {...props}
@@ -142,13 +145,17 @@ const CheckboxItem = React.forwardRef<
   <Primitives.CheckboxItem
     ref={ref}
     className={clx(
-      "focus-visible:bg-ui-bg-base-pressed hover:bg-ui-bg-base-hover text-ui-fg-base data-[disabled]:text-ui-fg-disabled relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-9 pr-2 text-sm outline-none transition-colors data-[disabled]:pointer-events-none",
+      "bg-ui-bg-component text-ui-fg-base relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-[31px] pr-2 txt-compact-small outline-none transition-colors",
+      "focus-visible:bg-ui-bg-component-pressed",
+      "active:bg-ui-bg-component-pressed",
+      "data-[disabled]:text-ui-fg-disabled data-[disabled]:pointer-events-none",
+      "data-[state=checked]:txt-compact-small-plus",
       className
     )}
     checked={checked}
     {...props}
   >
-    <span className="absolute left-3 flex h-5 w-5 items-center justify-center">
+    <span className="absolute left-2 flex size-[15px] items-center justify-center">
       <Primitives.ItemIndicator>
         <CheckMini />
       </Primitives.ItemIndicator>
@@ -168,12 +175,16 @@ const RadioItem = React.forwardRef<
   <Primitives.RadioItem
     ref={ref}
     className={clx(
-      "focus-visible:bg-ui-bg-base-pressed hover:bg-ui-base-hover bg-ui-bg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-9 pr-2 text-sm outline-none transition-colors data-[disabled]:pointer-events-none data-[state=checked]:font-medium data-[disabled]:opacity-50",
+      "bg-ui-bg-component txt-compact-small relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-[31px] pr-2 outline-none transition-colors",
+      "focus-visible:bg-ui-bg-component-hover",
+      "active:bg-ui-bg-component-pressed",
+      "data-[disabled]:text-ui-fg-disabled data-[disabled]:pointer-events-none",
+      "data-[state=checked]:txt-compact-small-plus",
       className
     )}
     {...props}
   >
-    <span className="absolute left-3 flex h-5 w-5 items-center justify-center">
+    <span className="absolute left-2 flex size-[15px] items-center justify-center">
       <Primitives.ItemIndicator>
         <EllipseMiniSolid className="text-ui-fg-base" />
       </Primitives.ItemIndicator>
@@ -207,7 +218,7 @@ const Separator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Primitives.Separator
     ref={ref}
-    className={clx("bg-ui-border-base -mx-1 my-1 h-px", className)}
+    className={clx("bg-ui-border-component -mx-1 my-1 h-0.5 border-t border-t-ui-border-menu-top border-b border-b-ui-border-menu-bot", className)}
     {...props}
   />
 ))

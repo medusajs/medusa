@@ -59,5 +59,6 @@ export const POST = async (
     req.scope,
     req.remoteQueryConfig.fields
   )
+
   res.status(200).json({ product: remapProductResponse(product) })
 }
