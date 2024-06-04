@@ -60,6 +60,7 @@ export const ProductCreateOrganizationSection = ({
         name="discountable"
         label={t("products.fields.discountable.label")}
         description={t("products.fields.discountable.hint")}
+        optional
       />
       <div className="grid grid-cols-2 gap-x-4">
         <Form.Field
