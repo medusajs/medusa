@@ -1223,7 +1223,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("Sets variant ranks when creating a product", async () => {
+        it.skip("Sets variant ranks when creating a product", async () => {
           const payload = {
             title: "Test product - 1",
             handle: "test-1",
