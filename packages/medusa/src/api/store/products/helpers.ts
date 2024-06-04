@@ -87,8 +87,8 @@ export const wrapVariantsWithInventoryQuantity = async (
 
     for (const link of links) {
       const requiredQuantity = link.required_quantity
-      const availableQuantity = (link.inventory.location_levels || []).reduce(
-        (sum, level) => sum + level.available_quantity || 0,
+      const availableQuantity = (link.inventory?.location_levels || []).reduce(
+        (sum, level) => sum + (level?.available_quantity || 0),
         0
       )
 
