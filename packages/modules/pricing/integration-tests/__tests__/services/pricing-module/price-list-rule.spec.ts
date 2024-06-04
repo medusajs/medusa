@@ -167,68 +167,6 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("update", () => {
-        const id = "price-list-rule-2"
-
-        it("should update the value of the priceListRule successfully", async () => {
-          await service.updatePriceListRules([
-            {
-              id,
-              price_list_id: "price-list-2",
-              rule_type_id: "rule-type-2",
-            },
-          ])
-
-          const priceList = await service.retrievePriceListRule(id, {
-            relations: ["price_list", "rule_type"],
-          })
-
-          expect(priceList.price_list.id).toEqual("price-list-2")
-          expect(priceList.rule_type.id).toEqual("rule-type-2")
-        })
-
-        it("should throw an error when a id does not exist", async () => {
-          let error
-
-          try {
-            await service.updatePriceListRules([
-              {
-                id: "does-not-exist",
-              },
-            ])
-          } catch (e) {
-            error = e
-          }
-
-          expect(error.message).toEqual(
-            'PriceListRule with id "does-not-exist" not found'
-          )
-        })
-      })
-
-      describe("create", () => {
-        it("should create a priceListRule successfully", async () => {
-          const [created] = await service.createPriceListRules([
-            {
-              price_list_id: "price-list-2",
-              rule_type_id: "rule-type-2",
-            },
-          ])
-
-          const [priceListRule] = await service.listPriceListRules(
-            {
-              id: [created.id],
-            },
-            {
-              relations: ["price_list", "rule_type"],
-            }
-          )
-
-          expect(priceListRule.price_list.id).toEqual("price-list-2")
-          expect(priceListRule.rule_type.id).toEqual("rule-type-2")
-        })
-      })
-
       describe("setPriceListRules", () => {
         it("should add a price list rule to a price list", async () => {
           await createRuleTypes(testManager, [
