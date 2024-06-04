@@ -19,7 +19,7 @@ type WorkflowInput = {
   } & {
     inventory_items?: {
       inventory_item_id: string
-      required_quantity: number
+      required_quantity?: number
     }[]
   })[]
 }
@@ -73,7 +73,7 @@ const buildLinksToCreate = (data: {
         buildLink(
           variant.id,
           inventoryInput.inventory_item_id,
-          inventoryInput.required_quantity
+          inventoryInput.required_quantity ?? 1
         )
       )
     }
