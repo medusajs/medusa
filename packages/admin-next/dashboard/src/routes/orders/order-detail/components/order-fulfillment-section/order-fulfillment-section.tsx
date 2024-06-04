@@ -1,9 +1,10 @@
-import { XCircle } from "@medusajs/icons"
+import { Buildings, XCircle } from "@medusajs/icons"
 import {
-  LineItem,
-  Fulfillment as MedusaFulfillment,
-  Order,
-} from "@medusajs/medusa"
+  AdminOrder,
+  FulfillmentDTO,
+  OrderLineItemDTO,
+  ProductVariantDTO,
+} from "@medusajs/types"
 import {
   Container,
   Copy,
@@ -11,20 +12,22 @@ import {
   StatusBadge,
   Text,
   Tooltip,
+  toast,
   usePrompt,
 } from "@medusajs/ui"
 import { format } from "date-fns"
-import { useAdminCancelFulfillment, useAdminStockLocation } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
+import { useCancelFulfillment } from "../../../../../hooks/api/fulfillment"
+import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 
 type OrderFulfillmentSectionProps = {
-  order: Order
+  order: AdminOrder
 }
 
 export const OrderFulfillmentSection = ({
@@ -36,7 +39,7 @@ export const OrderFulfillmentSection = ({
     <div className="flex flex-col gap-y-2">
       <UnfulfilledItemBreakdown order={order} />
       {fulfillments.map((f, index) => (
-        <Fulfillment key={f.id} index={index} order={order} fulfillment={f} />
+        <Fulfillment key={f.id} index={index} fulfillment={f} order={order} />
       ))}
     </div>
   )
@@ -46,7 +49,7 @@ const UnfulfilledItem = ({
   item,
   currencyCode,
 }: {
-  item: LineItem
+  item: OrderLineItemDTO & { variant: ProductVariantDTO }
   currencyCode: string
 }) => {
   return (
@@ -84,7 +87,10 @@ const UnfulfilledItem = ({
         </div>
         <div className="flex items-center justify-end">
           <Text>
-            <span className="tabular-nums">{item.quantity}</span>x
+            <span className="tabular-nums">
+              {item.quantity - item.detail.fulfilled_quantity}
+            </span>
+            x
           </Text>
         </div>
         <div className="flex items-center justify-end">
@@ -97,19 +103,12 @@ const UnfulfilledItem = ({
   )
 }
 
-const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
+const UnfulfilledItemBreakdown = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
-  const fulfillmentItems = order.fulfillments?.map((f) =>
-    f.items.map((i) => ({ id: i.item_id, quantity: i.quantity }))
-  )
-
   // Create an array of order items that haven't been fulfilled or at least not fully fulfilled
-  const unfulfilledItems = order.items.filter(
-    (i) =>
-      !fulfillmentItems?.some((fi) =>
-        fi.some((f) => f.id === i.id && f.quantity === i.quantity)
-      )
+  const unfulfilledItems = order.items!.filter(
+    (i) => i.detail.fulfilled_quantity < i.quantity
   )
 
   if (!unfulfilledItems.length) {
@@ -122,9 +121,21 @@ const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
         <Heading level="h2">{t("orders.fulfillment.unfulfilledItems")}</Heading>
         <div className="flex items-center gap-x-4">
           <StatusBadge color="red" className="text-nowrap">
-            {t("orders.fulfillment.awaitingFullfillmentBadge")}
+            {t("orders.fulfillment.awaitingFulfillmentBadge")}
           </StatusBadge>
-          <ActionMenu groups={[]} />
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("orders.fulfillment.fulfillItems"),
+                    icon: <Buildings />,
+                    to: `/orders/${order.id}/fulfillment`,
+                  },
+                ],
+              },
+            ]}
+          />
         </div>
       </div>
       <div>
@@ -145,8 +156,8 @@ const Fulfillment = ({
   order,
   index,
 }: {
-  fulfillment: MedusaFulfillment
-  order: Order
+  fulfillment: FulfillmentDTO
+  order: AdminOrder
   index: number
 }) => {
   const { t } = useTranslation()
@@ -154,7 +165,7 @@ const Fulfillment = ({
 
   const showLocation = !!fulfillment.location_id
 
-  const { stock_location, isError, error } = useAdminStockLocation(
+  const { stock_location, isError, error } = useStockLocation(
     fulfillment.location_id!,
     {
       enabled: showLocation,
@@ -175,11 +186,14 @@ const Fulfillment = ({
     statusTimestamp = fulfillment.shipped_at
   }
 
-  const { mutateAsync } = useAdminCancelFulfillment(order.id)
+  const { mutateAsync } = useCancelFulfillment(fulfillment.id)
 
   const handleCancel = async () => {
     if (fulfillment.shipped_at) {
-      // TODO: When we have implemented Toasts we should show an error toast here
+      toast.warning(t("general.warning"), {
+        description: t("orders.fulfillment.toast.fulfillmentShipped"),
+        dismissLabel: t("actions.close"),
+      })
       return
     }
 
@@ -191,7 +205,19 @@ const Fulfillment = ({
     })
 
     if (res) {
-      await mutateAsync(fulfillment.id)
+      try {
+        await mutateAsync(fulfillment.id)
+
+        toast.success(t("general.success"), {
+          description: t("orders.fulfillment.toast.canceled"),
+          dismissLabel: t("actions.close"),
+        })
+      } catch (e) {
+        toast.error(t("general.error"), {
+          description: e.message,
+          dismissLabel: t("actions.close"),
+        })
+      }
     }
   }
 
@@ -226,6 +252,7 @@ const Fulfillment = ({
                     label: t("actions.cancel"),
                     icon: <XCircle />,
                     onClick: handleCancel,
+                    disabled: !!fulfillment.canceled_at,
                   },
                 ],
               },
@@ -239,9 +266,9 @@ const Fulfillment = ({
         </Text>
         <ul>
           {fulfillment.items.map((f_item) => (
-            <li key={f_item.item_id}>
+            <li key={f_item.line_item_id}>
               <Text size="small" leading="compact">
-                {f_item.item.quantity}x {f_item.item.title}
+                {f_item.quantity}x {f_item.title}
               </Text>
             </li>
           ))}

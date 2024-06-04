@@ -343,7 +343,7 @@ interface SingleProps extends PickerProps {
   onChange?: (date: Date | undefined) => void
 }
 
-const SingleDatePicker = ({
+const SingleDatePicker = React.forwardRef<HTMLButtonElement, SingleProps>(({
   defaultValue,
   value,
   size = "base",
@@ -355,7 +355,7 @@ const SingleDatePicker = ({
   placeholder,
   translations,
   ...props
-}: SingleProps) => {
+}, ref) => {
   const [open, setOpen] = React.useState(false)
   const [date, setDate] = React.useState<Date | undefined>(
     value ?? defaultValue ?? undefined
@@ -480,7 +480,7 @@ const SingleDatePicker = ({
   }
 
   return (
-    <Primitives.Root open={open} onOpenChange={onOpenChange}>
+    <Primitives.Root modal open={open} onOpenChange={onOpenChange}>
       <Display
         placeholder={placeholder}
         disabled={disabled}
@@ -490,6 +490,7 @@ const SingleDatePicker = ({
         aria-label={props["aria-label"]}
         aria-labelledby={props["aria-labelledby"]}
         size={size}
+        ref={ref}
       >
         {formattedDate}
       </Display>
@@ -554,7 +555,7 @@ const SingleDatePicker = ({
       </Flyout>
     </Primitives.Root>
   )
-}
+})
 
 interface RangeProps extends PickerProps {
   presets?: DateRangePreset[]
@@ -563,7 +564,7 @@ interface RangeProps extends PickerProps {
   onChange?: (dateRange: DateRange | undefined) => void
 }
 
-const RangeDatePicker = ({
+const RangeDatePicker = React.forwardRef<HTMLButtonElement, RangeProps>(({
   /**
    * The date range selected by default.
    */
@@ -587,7 +588,7 @@ const RangeDatePicker = ({
   placeholder,
   translations,
   ...props
-}: RangeProps) => {
+}, ref) => {
   const [open, setOpen] = React.useState(false)
   const [range, setRange] = React.useState<DateRange | undefined>(
     value ?? defaultValue ?? undefined
@@ -756,7 +757,7 @@ const RangeDatePicker = ({
   }
 
   return (
-    <Primitives.Root open={open} onOpenChange={onOpenChange}>
+    <Primitives.Root modal open={open} onOpenChange={onOpenChange}>
       <Display
         placeholder={placeholder}
         disabled={disabled}
@@ -766,6 +767,7 @@ const RangeDatePicker = ({
         aria-label={props["aria-label"]}
         aria-labelledby={props["aria-labelledby"]}
         size={size}
+        ref={ref}
       >
         {displayRange}
       </Display>
@@ -858,7 +860,7 @@ const RangeDatePicker = ({
       </Flyout>
     </Primitives.Root>
   )
-}
+})
 
 /**
  * @interface
@@ -1031,22 +1033,23 @@ const validatePresets = (
  * This component is based on the [Calendar](https://docs.medusajs.com/ui/components/calendar)
  * component and [Radix UI Popover](https://www.radix-ui.com/primitives/docs/components/popover).
  */
-const DatePicker = ({
+const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(({
   /**
    * The date picker's mode.
    */
   mode = "single",
   ...props
-}: DatePickerProps) => {
+}, ref) => {
   if (props.presets) {
     validatePresets(props.presets, props)
   }
 
   if (mode === "single") {
-    return <SingleDatePicker {...(props as SingleProps)} />
+    return <SingleDatePicker ref={ref} {...(props as SingleProps)} />
   }
 
-  return <RangeDatePicker {...(props as RangeProps)} />
-}
+  return <RangeDatePicker ref={ref} {...(props as RangeProps)} />
+})
+DatePicker.displayName = "DatePicker"
 
 export { DatePicker }

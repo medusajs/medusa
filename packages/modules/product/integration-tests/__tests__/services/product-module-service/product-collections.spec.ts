@@ -1,9 +1,13 @@
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import { Product, ProductCollection } from "@models"
-import { MockEventBusService } from "medusa-test-utils"
-import { createCollections } from "../../../__fixtures__/product"
 import { Modules } from "@medusajs/modules-sdk"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { IProductModuleService } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
+import { Product, ProductCollection } from "@models"
+import {
+  MockEventBusService,
+  SuiteOptions,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
+import { createCollections } from "../../../__fixtures__/product"
 
 jest.setTimeout(30000)
 
@@ -29,13 +33,13 @@ moduleIntegrationTestRunner({
         productOne = testManager.create(Product, {
           id: "product-1",
           title: "product 1",
-          status: ProductTypes.ProductStatus.PUBLISHED,
+          status: ProductStatus.PUBLISHED,
         })
 
         productTwo = testManager.create(Product, {
           id: "product-2",
           title: "product 2",
-          status: ProductTypes.ProductStatus.PUBLISHED,
+          status: ProductStatus.PUBLISHED,
         })
 
         const productCollectionsData = [
@@ -364,6 +368,73 @@ moduleIntegrationTestRunner({
           expect(error.message).toEqual(
             "ProductCollection with id: does-not-exist was not found"
           )
+        })
+
+        it("should dissociate existing products when new products are synced", async () => {
+          await service.upsertCollections([
+            {
+              id: collectionId,
+              product_ids: [productOne.id, productTwo.id],
+            },
+          ])
+
+          /**
+           * Another upsert should remove the first productOne
+           */
+          await service.upsertCollections([
+            {
+              id: collectionId,
+              product_ids: [productTwo.id],
+            },
+          ])
+
+          const productCollection = await service.retrieveCollection(
+            collectionId,
+            {
+              select: ["products.id"],
+              relations: ["products"],
+            }
+          )
+
+          expect(productCollection.products).toHaveLength(1)
+          expect(productCollection).toEqual(
+            expect.objectContaining({
+              products: expect.arrayContaining([
+                expect.objectContaining({
+                  id: productTwo.id,
+                }),
+              ]),
+            })
+          )
+        })
+
+        it("should dissociate all existing products", async () => {
+          await service.upsertCollections([
+            {
+              id: collectionId,
+              product_ids: [productOne.id, productTwo.id],
+            },
+          ])
+
+          /**
+           * Another upsert should remove the first productOne
+           */
+          await service.upsertCollections([
+            {
+              id: collectionId,
+              product_ids: [],
+            },
+          ])
+
+          const productCollection = await service.retrieveCollection(
+            collectionId,
+            {
+              select: ["products.id"],
+              relations: ["products"],
+            }
+          )
+
+          expect(productCollection.products).toHaveLength(0)
         })
       })
 

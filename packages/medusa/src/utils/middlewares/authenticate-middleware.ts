@@ -1,27 +1,30 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ApiKeyDTO, AuthUserDTO, IApiKeyModuleService } from "@medusajs/types"
-import { stringEqualsOrRegexMatch } from "@medusajs/utils"
+import { ApiKeyDTO, ConfigModule, IApiKeyModuleService } from "@medusajs/types"
 import { NextFunction, RequestHandler } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import {
+  AuthContext,
   AuthenticatedMedusaRequest,
   MedusaRequest,
   MedusaResponse,
 } from "../../types/routing"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 const SESSION_AUTH = "session"
 const BEARER_AUTH = "bearer"
 const API_KEY_AUTH = "api-key"
 
+// This is the only hard-coded actor type, as API keys have special handling for now. We could also generalize API keys to carry the actor type with them.
+const ADMIN_ACTOR_TYPE = "user"
+
 type AuthType = typeof SESSION_AUTH | typeof BEARER_AUTH | typeof API_KEY_AUTH
 
 type MedusaSession = {
-  auth_user: AuthUserDTO
-  scope: string
+  auth_context: AuthContext
 }
 
 export const authenticate = (
-  authScope: string | RegExp,
+  actorType: string | string[],
   authType: AuthType | AuthType[],
   options: { allowUnauthenticated?: boolean; allowUnregistered?: boolean } = {}
 ): RequestHandler => {
@@ -31,62 +34,60 @@ export const authenticate = (
     next: NextFunction
   ): Promise<void> => {
     const authTypes = Array.isArray(authType) ? authType : [authType]
+    const actorTypes = Array.isArray(actorType) ? actorType : [actorType]
+    const req_ = req as AuthenticatedMedusaRequest
 
     // We only allow authenticating using a secret API key on the admin
-    if (authTypes.includes(API_KEY_AUTH) && isAdminScope(authScope)) {
+    const isExclusivelyUser =
+      actorTypes.length === 1 && actorTypes[0] === ADMIN_ACTOR_TYPE
+
+    if (authTypes.includes(API_KEY_AUTH) && isExclusivelyUser) {
       const apiKey = await getApiKeyInfo(req)
       if (apiKey) {
-        ;(req as AuthenticatedMedusaRequest).auth = {
+        req_.auth_context = {
           actor_id: apiKey.id,
-          auth_user_id: "",
+          actor_type: "api-key",
+          auth_identity_id: "",
           app_metadata: {},
-          // TODO: Add more limited scope once we have support for it in the API key module
-          scope: "admin",
         }
 
         return next()
       }
     }
 
-    let authUser: AuthUserDTO | null = getAuthUserFromSession(
+    // We try to extract the auth context either from the session or from a JWT token
+    let authContext: AuthContext | null = getAuthContextFromSession(
       req.session,
       authTypes,
-      authScope
+      actorTypes
     )
 
-    if (!authUser) {
-      const { jwt_secret } = req.scope.resolve("configModule").projectConfig
-      authUser = getAuthUserFromJwtToken(
+    if (!authContext) {
+      const { http } = req.scope.resolve<ConfigModule>(
+        ContainerRegistrationKeys.CONFIG_MODULE
+      ).projectConfig
+
+      authContext = getAuthContextFromJwtToken(
         req.headers.authorization,
-        jwt_secret,
+        http.jwtSecret!,
         authTypes,
-        authScope
+        actorTypes
       )
     }
 
-    const isMedusaScope = isAdminScope(authScope) || isStoreScope(authScope)
-
-    const isRegistered =
-      !isMedusaScope ||
-      (authUser?.app_metadata?.user_id &&
-        stringEqualsOrRegexMatch(authScope, "admin")) ||
-      (authUser?.app_metadata?.customer_id &&
-        stringEqualsOrRegexMatch(authScope, "store"))
-
-    if (
-      authUser &&
-      (isRegistered || (!isRegistered && options.allowUnregistered))
-    ) {
-      ;(req as AuthenticatedMedusaRequest).auth = {
-        actor_id: getActorId(authUser, authScope) as string, // TODO: fix types for auth_users not in the medusa system
-        auth_user_id: authUser.id,
-        app_metadata: authUser.app_metadata,
-        scope: authUser.scope,
-      }
-
+    // If the entity is authenticated, and it is a registered actor we can continue
+    if (authContext?.actor_id) {
+      req_.auth_context = authContext
       return next()
     }
 
+    // If the entity is authenticated, but there is no registered actor yet, we can continue (eg. in the case of a user invite) if allow unregistered is set
+    if (authContext?.auth_identity_id && options.allowUnregistered) {
+      req_.auth_context = authContext
+      return next()
+    }
+
+    // If we allow unauthenticated requests (i.e public endpoints), just continue
     if (options.allowUnauthenticated) {
       return next()
     }
@@ -138,31 +139,32 @@ const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {
   }
 }
 
-const getAuthUserFromSession = (
+const getAuthContextFromSession = (
   session: Partial<MedusaSession> = {},
   authTypes: AuthType[],
-  authScope: string | RegExp
-): AuthUserDTO | null => {
+  actorTypes: string[]
+): AuthContext | null => {
   if (!authTypes.includes(SESSION_AUTH)) {
     return null
   }
 
   if (
-    session.auth_user &&
-    stringEqualsOrRegexMatch(authScope, session.auth_user.scope)
+    session.auth_context &&
+    (actorTypes.includes("*") ||
+      actorTypes.includes(session.auth_context.actor_type))
   ) {
-    return session.auth_user
+    return session.auth_context
   }
 
   return null
 }
 
-const getAuthUserFromJwtToken = (
+const getAuthContextFromJwtToken = (
   authHeader: string | undefined,
   jwtSecret: string,
   authTypes: AuthType[],
-  authScope: string | RegExp
-): AuthUserDTO | null => {
+  actorTypes: string[]
+): AuthContext | null => {
   if (!authTypes.includes(BEARER_AUTH)) {
     return null
   }
@@ -183,8 +185,11 @@ const getAuthUserFromJwtToken = (
       // verify token and set authUser
       try {
         const verified = jwt.verify(token, jwtSecret) as JwtPayload
-        if (stringEqualsOrRegexMatch(authScope, verified.scope)) {
-          return verified as AuthUserDTO
+        if (
+          actorTypes.includes("*") ||
+          actorTypes.includes(verified.actor_type)
+        ) {
+          return verified as AuthContext
         }
       } catch (err) {
         return null
@@ -193,27 +198,4 @@ const getAuthUserFromJwtToken = (
   }
 
   return null
-}
-
-const getActorId = (
-  authUser: AuthUserDTO,
-  scope: string | RegExp
-): string | undefined => {
-  if (stringEqualsOrRegexMatch(scope, "admin")) {
-    return authUser.app_metadata.user_id as string
-  }
-
-  if (stringEqualsOrRegexMatch(scope, "store")) {
-    return authUser.app_metadata.customer_id as string
-  }
-
-  return undefined
-}
-
-const isAdminScope = (authScope: string | RegExp): boolean => {
-  return stringEqualsOrRegexMatch(authScope, "admin")
-}
-
-const isStoreScope = (authScope: string | RegExp): boolean => {
-  return stringEqualsOrRegexMatch(authScope, "store")
 }

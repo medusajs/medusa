@@ -1,7 +1,8 @@
 import { ConfigModule } from "@medusajs/types"
 import { transformFile } from "@swc/core"
-import { getConfigFile } from "medusa-core-utils"
-import fs from "node:fs/promises"
+import { getConfigFile } from "@medusajs/utils"
+import { existsSync } from "node:fs"
+import { copyFile, mkdir, readdir, rm, writeFile } from "node:fs/promises"
 import path from "path"
 
 type BuildArgs = {
@@ -21,12 +22,12 @@ const COMPILE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx"]
 const IGNORE_EXTENSIONS = [".md"]
 
 async function clean(path: string) {
-  await fs.rm(path, { recursive: true }).catch(() => {})
+  await rm(path, { recursive: true }).catch(() => {})
 }
 
 async function findFiles(dir: string): Promise<string[]> {
   try {
-    const files = await fs.readdir(dir, { withFileTypes: true })
+    const files = await readdir(dir, { withFileTypes: true })
     const paths = await Promise.all(
       files.map(async (file) => {
         const res = path.join(dir, file.name)
@@ -64,16 +65,16 @@ const writeToOut = async (
 ) => {
   const outputPath = getOutputPath(file, config)
 
-  await fs.mkdir(outputPath.replace(/\/[^/]+$/, ""), { recursive: true })
-  await fs.writeFile(outputPath, content)
+  await mkdir(outputPath.replace(/\/[^/]+$/, ""), { recursive: true })
+  await writeFile(outputPath, content)
 }
 
 async function copyToOut(file: string, config: FileConfig) {
   const outputPath = getOutputPath(file, config)
   const dirNameRegex = new RegExp("\\" + path.sep + "([^\\" + path.sep + "]+)$")
 
-  await fs.mkdir(outputPath.replace(dirNameRegex, ""), { recursive: true })
-  await fs.copyFile(file, outputPath)
+  await mkdir(outputPath.replace(dirNameRegex, ""), { recursive: true })
+  await copyFile(file, outputPath)
 }
 
 const medusaTransform = async (file: string) => {
@@ -96,6 +97,8 @@ const medusaTransform = async (file: string) => {
         transform: {
           decoratorMetadata: true,
         },
+        target: "es2021",
+        externalHelpers: true,
       },
     })
     await writeToOut(file, output.code, {
@@ -131,10 +134,19 @@ export default async function ({ directory }: BuildArgs) {
 
   await Promise.all(files.map(medusaTransform))
 
+  const sources: string[] = []
+
+  const projectSource = path.join(directory, "src", "admin")
+
+  if (existsSync(projectSource)) {
+    sources.push(projectSource)
+  }
+
   const adminOptions = {
     disable: false,
     path: "/app" as const,
     outDir: "./build",
+    sources,
     ...configModule.admin,
   }
 

@@ -3,7 +3,6 @@ import {
   FilterableStockLocationProps,
   StockLocationDTO,
   UpdateStockLocationInput,
-  UpdateStockLocationNextInput,
   UpsertStockLocationInput,
 } from "./common"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
@@ -283,7 +282,7 @@ export interface IStockLocationServiceNext extends IModuleService {
    * @example
    * await stockLocationModuleService.delete("sloc_123")
    */
-  delete(id: string, context?: Context): Promise<void>
+  delete(id: string | string[], context?: Context): Promise<void>
 
   /**
    * This method soft deletes stock locations by their IDs.

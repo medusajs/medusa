@@ -1,11 +1,10 @@
+import { Modules } from "@medusajs/modules-sdk"
+import { IProductModuleService } from "@medusajs/types"
+import { ProductStatus } from "@medusajs/utils"
 import { Product } from "@models"
 import { ProductTagService } from "@services"
-
-import { ProductTypes } from "@medusajs/types"
-import { createProductAndTags } from "../../../__fixtures__/product"
-import { Modules } from "@medusajs/modules-sdk"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { IProductModuleService } from "@medusajs/types"
+import { createProductAndTags } from "../../../__fixtures__/product"
 
 jest.setTimeout(30000)
 
@@ -27,7 +26,7 @@ moduleIntegrationTestRunner({
         {
           id: "test-1",
           title: "product 1",
-          status: ProductTypes.ProductStatus.PUBLISHED,
+          status: ProductStatus.PUBLISHED,
           tags: [
             {
               id: "tag-1",
@@ -38,7 +37,7 @@ moduleIntegrationTestRunner({
         {
           id: "test-2",
           title: "product",
-          status: ProductTypes.ProductStatus.PUBLISHED,
+          status: ProductStatus.PUBLISHED,
           tags: [
             {
               id: "tag-2",

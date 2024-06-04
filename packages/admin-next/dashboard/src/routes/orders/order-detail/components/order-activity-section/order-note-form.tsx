@@ -1,17 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowUpCircleSolid } from "@medusajs/icons"
-import { Order } from "@medusajs/medusa"
 import { IconButton } from "@medusajs/ui"
-import { useAdminCreateNote } from "medusa-react"
 import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
+import { AdminOrder } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../components/common/form"
 
 type OrderNoteFormProps = {
-  order: Order
+  order: AdminOrder
 }
 
 const OrderNoteSchema = z.object({
@@ -29,7 +28,7 @@ export const OrderNoteForm = ({ order }: OrderNoteFormProps) => {
     resolver: zodResolver(OrderNoteSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminCreateNote()
+  const { mutateAsync, isLoading } = {}
 
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(

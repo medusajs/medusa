@@ -7,6 +7,7 @@ import {
 import { isObject, promiseAll, toPascalCase } from "@medusajs/utils"
 import { Modules } from "./definitions"
 import { MedusaModule } from "./medusa-module"
+import { convertRecordsToLinkDefinition } from "./utils/convert-data-to-link-definition"
 import { linkingErrorMessage } from "./utils/linking-error"
 
 export type DeleteEntityInput = {
@@ -14,9 +15,10 @@ export type DeleteEntityInput = {
 }
 export type RestoreEntityInput = DeleteEntityInput
 
-type LinkDefinition = {
+export type LinkDefinition = {
   [moduleName: string]: {
-    [fieldName: string]: string
+    // TODO: changing this to any temporarily as the "data" attribute is not being picked up correctly
+    [fieldName: string]: any
   }
 } & {
   data?: Record<string, unknown>
@@ -39,6 +41,14 @@ type CascadeError = {
   method: String
   args: any
   error: Error
+}
+
+type LinkDataConfig = {
+  moduleA: string
+  moduleB: string
+  primaryKeys: string[]
+  moduleAKey: string
+  moduleBKey: string
 }
 
 export class RemoteLink {
@@ -325,6 +335,48 @@ export class RemoteLink {
     return [errors.length ? errors : null, result]
   }
 
+  private getLinkModuleOrThrow(link: LinkDefinition): LoadedLinkModule {
+    const mods = Object.keys(link).filter((attr) => attr !== "data")
+
+    if (mods.length > 2) {
+      throw new Error(`Only two modules can be linked.`)
+    }
+
+    const { moduleA, moduleB, moduleAKey, moduleBKey } =
+      this.getLinkDataConfig(link)
+    const service = this.getLinkModule(moduleA, moduleAKey, moduleB, moduleBKey)
+
+    if (!service) {
+      throw new Error(
+        linkingErrorMessage({
+          moduleA,
+          moduleAKey,
+          moduleB,
+          moduleBKey,
+          type: "link",
+        })
+      )
+    }
+
+    return service
+  }
+
+  private getLinkDataConfig(link: LinkDefinition): LinkDataConfig {
+    const moduleNames = Object.keys(link).filter((attr) => attr !== "data")
+    const [moduleA, moduleB] = moduleNames
+    const primaryKeys = Object.keys(link[moduleA])
+    const moduleAKey = primaryKeys.join(",")
+    const moduleBKey = Object.keys(link[moduleB]).join(",")
+
+    return {
+      moduleA,
+      moduleB,
+      primaryKeys,
+      moduleAKey,
+      moduleBKey,
+    }
+  }
+
   async create(link: LinkDefinition | LinkDefinition[]): Promise<unknown[]> {
     const allLinks = Array.isArray(link) ? link : [link]
     const serviceLinks = new Map<
@@ -332,114 +384,72 @@ export class RemoteLink {
       [string | string[], string, Record<string, unknown>?][]
     >()
 
-    for (const rel of allLinks) {
-      const extraFields = rel.data
-      delete rel.data
+    for (const link of allLinks) {
+      const service = this.getLinkModuleOrThrow(link)
+      const { moduleA, moduleB, moduleBKey, primaryKeys } =
+        this.getLinkDataConfig(link)
 
-      const mods = Object.keys(rel)
-      if (mods.length > 2) {
-        throw new Error(`Only two modules can be linked.`)
-      }
-
-      const [moduleA, moduleB] = mods
-      const pk = Object.keys(rel[moduleA])
-      const moduleAKey = pk.join(",")
-      const moduleBKey = Object.keys(rel[moduleB]).join(",")
-
-      const service = this.getLinkModule(
-        moduleA,
-        moduleAKey,
-        moduleB,
-        moduleBKey
-      )
-
-      if (!service) {
-        throw new Error(
-          linkingErrorMessage({
-            moduleA,
-            moduleAKey,
-            moduleB,
-            moduleBKey,
-            type: "link",
-          })
-        )
-      } else if (!serviceLinks.has(service.__definition.key)) {
+      if (!serviceLinks.has(service.__definition.key)) {
         serviceLinks.set(service.__definition.key, [])
       }
 
       const pkValue =
-        pk.length === 1 ? rel[moduleA][pk[0]] : pk.map((k) => rel[moduleA][k])
+        primaryKeys.length === 1
+          ? link[moduleA][primaryKeys[0]]
+          : primaryKeys.map((k) => link[moduleA][k])
 
-      const fields: unknown[] = [pkValue, rel[moduleB][moduleBKey]]
-      if (isObject(extraFields)) {
-        fields.push(extraFields)
+      const fields: unknown[] = [pkValue, link[moduleB][moduleBKey]]
+
+      if (isObject(link.data)) {
+        fields.push(link.data)
       }
 
       serviceLinks.get(service.__definition.key)?.push(fields as any)
     }
 
     const promises: Promise<unknown[]>[] = []
+
     for (const [serviceName, links] of serviceLinks) {
       const service = this.modulesMap.get(serviceName)!
+
       promises.push(service.create(links))
     }
 
-    const created = await promiseAll(promises)
-    return created.flat()
+    return (await promiseAll(promises)).flat()
   }
 
   async dismiss(link: LinkDefinition | LinkDefinition[]): Promise<unknown[]> {
     const allLinks = Array.isArray(link) ? link : [link]
     const serviceLinks = new Map<string, [string | string[], string][]>()
 
-    for (const rel of allLinks) {
-      const mods = Object.keys(rel)
-      if (mods.length > 2) {
-        throw new Error(`Only two modules can be linked.`)
-      }
+    for (const link of allLinks) {
+      const service = this.getLinkModuleOrThrow(link)
+      const { moduleA, moduleB, moduleBKey, primaryKeys } =
+        this.getLinkDataConfig(link)
 
-      const [moduleA, moduleB] = mods
-      const pk = Object.keys(rel[moduleA])
-      const moduleAKey = pk.join(",")
-      const moduleBKey = Object.keys(rel[moduleB]).join(",")
-
-      const service = this.getLinkModule(
-        moduleA,
-        moduleAKey,
-        moduleB,
-        moduleBKey
-      )
-
-      if (!service) {
-        throw new Error(
-          linkingErrorMessage({
-            moduleA,
-            moduleAKey,
-            moduleB,
-            moduleBKey,
-            type: "dismiss",
-          })
-        )
-      } else if (!serviceLinks.has(service.__definition.key)) {
+      if (!serviceLinks.has(service.__definition.key)) {
         serviceLinks.set(service.__definition.key, [])
       }
 
       const pkValue =
-        pk.length === 1 ? rel[moduleA][pk[0]] : pk.map((k) => rel[moduleA][k])
+        primaryKeys.length === 1
+          ? link[moduleA][primaryKeys[0]]
+          : primaryKeys.map((k) => link[moduleA][k])
 
       serviceLinks
         .get(service.__definition.key)
-        ?.push([pkValue, rel[moduleB][moduleBKey]])
+        ?.push([pkValue, link[moduleB][moduleBKey]] as any)
     }
 
     const promises: Promise<unknown[]>[] = []
+
     for (const [serviceName, links] of serviceLinks) {
       const service = this.modulesMap.get(serviceName)!
+
       promises.push(service.dismiss(links))
     }
 
-    const created = await promiseAll(promises)
-    return created.flat()
+    return (await promiseAll(promises)).flat()
   }
 
   async delete(
@@ -452,5 +462,46 @@ export class RemoteLink {
     removedServices: DeleteEntityInput
   ): Promise<[CascadeError[] | null, RestoredIds]> {
     return await this.executeCascade(removedServices, "restore")
+  }
+
+  async list(
+    link: LinkDefinition | LinkDefinition[],
+    options?: { asLinkDefinition?: boolean }
+  ): Promise<(object | LinkDefinition)[]> {
+    const allLinks = Array.isArray(link) ? link : [link]
+    const serviceLinks = new Map<string, object[]>()
+
+    for (const link of allLinks) {
+      const service = this.getLinkModuleOrThrow(link)
+      const { moduleA, moduleB, moduleBKey, primaryKeys } =
+        this.getLinkDataConfig(link)
+
+      if (!serviceLinks.has(service.__definition.key)) {
+        serviceLinks.set(service.__definition.key, [])
+      }
+
+      serviceLinks.get(service.__definition.key)?.push({
+        ...link[moduleA],
+        ...link[moduleB],
+      })
+    }
+
+    const promises: Promise<object[]>[] = []
+
+    for (const [serviceName, filters] of serviceLinks) {
+      const service = this.modulesMap.get(serviceName)!
+
+      promises.push(
+        service
+          .list({ $or: filters })
+          .then((links: any[]) =>
+            options?.asLinkDefinition
+              ? convertRecordsToLinkDefinition(links, service)
+              : links
+          )
+      )
+    }
+
+    return (await promiseAll(promises)).flat()
   }
 }

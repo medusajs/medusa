@@ -10,7 +10,6 @@ type CloneRepoOptions = {
   repoUrl?: string
   abortController?: AbortController
   verbose?: boolean
-  v2?: boolean
 }
 
 const DEFAULT_REPO = "https://github.com/medusajs/medusa-starter-default"
@@ -21,13 +20,10 @@ export default async function cloneRepo({
   repoUrl,
   abortController,
   verbose = false,
-  v2 = false,
 }: CloneRepoOptions) {
   await execute(
     [
-      `git clone ${repoUrl || DEFAULT_REPO}${
-        v2 ? ` -b ${V2_BRANCH}` : ""
-      } ${directoryName}`,
+      `git clone ${repoUrl || DEFAULT_REPO} -b ${V2_BRANCH} ${directoryName}`,
       {
         signal: abortController?.signal,
       },
@@ -42,14 +38,12 @@ export async function runCloneRepo({
   abortController,
   spinner,
   verbose = false,
-  v2 = false,
 }: {
   projectName: string
   repoUrl: string
   abortController: AbortController
   spinner: Ora
   verbose?: boolean
-  v2?: boolean
 }) {
   try {
     await cloneRepo({
@@ -57,7 +51,6 @@ export async function runCloneRepo({
       repoUrl,
       abortController,
       verbose,
-      v2,
     })
 
     deleteGitDirectory(projectName)
@@ -76,6 +69,11 @@ export async function runCloneRepo({
 
 function deleteGitDirectory(projectDirectory: string) {
   fs.rmSync(path.join(projectDirectory, ".git"), {
+    recursive: true,
+    force: true,
+  })
+
+  fs.rmSync(path.join(projectDirectory, ".github"), {
     recursive: true,
     force: true,
   })

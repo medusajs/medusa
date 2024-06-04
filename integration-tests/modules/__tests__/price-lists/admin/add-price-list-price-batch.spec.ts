@@ -1,17 +1,13 @@
+import { IPricingModuleService } from "@medusajs/types"
+import { PriceListStatus, PriceListType } from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   simpleProductFactory,
   simpleRegionFactory,
 } from "../../../../factories"
-
-import {
-  IPricingModuleService,
-  PriceListStatus,
-  PriceListType,
-} from "@medusajs/types"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 

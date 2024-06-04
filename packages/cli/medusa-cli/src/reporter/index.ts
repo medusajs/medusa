@@ -1,13 +1,13 @@
+import { track } from "medusa-telemetry"
+import ora from "ora"
 import stackTrace from "stack-trace"
 import { ulid } from "ulid"
 import winston from "winston"
-import ora from "ora"
-import { track } from "medusa-telemetry"
 
-import { panicHandler } from "./panic-handler"
 import * as Transport from "winston-transport"
+import { panicHandler } from "./panic-handler"
 
-const LOG_LEVEL = process.env.LOG_LEVEL || "silly"
+const LOG_LEVEL = process.env.LOG_LEVEL || "info"
 const LOG_FILE = process.env.LOG_FILE || ""
 const NODE_ENV = process.env.NODE_ENV || "development"
 const IS_DEV = NODE_ENV.startsWith("dev")
@@ -30,7 +30,7 @@ if (!IS_DEV) {
 if (LOG_FILE) {
   transports.push(
     new winston.transports.File({
-      filename: LOG_FILE
+      filename: LOG_FILE,
     })
   )
 }
@@ -172,7 +172,7 @@ export class Reporter {
    *   message to log the error under; or an error object.
    * @param {Error?} error - an error object to log message with
    */
-  error = (messageOrError, error = null) => {
+  error = (messageOrError, error: any = null) => {
     let message = messageOrError
     if (typeof messageOrError === "object") {
       message = messageOrError.message

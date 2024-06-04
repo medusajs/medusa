@@ -1,6 +1,5 @@
 module.exports = {
   root: true,
-  parser: "@babel/eslint-parser",
   parserOptions: {
     requireConfigFile: false,
     ecmaFeatures: {
@@ -84,6 +83,7 @@ module.exports = {
 
           "./packages/admin-next/dashboard/tsconfig.json",
           "./packages/admin-next/admin-sdk/tsconfig.json",
+          "./packages/admin-next/admin-shared/tsconfig.json",
           "./packages/admin-next/admin-vite-plugin/tsconfig.json",
 
           "./packages/inventory/tsconfig.spec.json",
@@ -100,6 +100,7 @@ module.exports = {
           "./packages/core/orchestration/tsconfig.json",
           "./packages/core/workflows-sdk/tsconfig.spec.json",
           "./packages/core/modules-sdk/tsconfig.spec.json",
+          "./packages/core/js-sdk/tsconfig.spec.json",
           "./packages/core/types/tsconfig.spec.json",
           "./packages/core/utils/tsconfig.spec.json",
           "./packages/core/medusa-test-utils/tsconfig.spec.json",

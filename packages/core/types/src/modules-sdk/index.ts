@@ -24,16 +24,6 @@ export type LogLevel =
   | "migration"
 export type LoggerOptions = boolean | "all" | LogLevel[]
 
-export enum MODULE_SCOPE {
-  INTERNAL = "internal",
-  EXTERNAL = "external",
-}
-
-export enum MODULE_RESOURCE_TYPE {
-  SHARED = "shared",
-  ISOLATED = "isolated",
-}
-
 export type CustomModuleDefinition = {
   key?: string
   registrationName?: string
@@ -43,8 +33,8 @@ export type CustomModuleDefinition = {
 }
 
 export type InternalModuleDeclaration = {
-  scope: MODULE_SCOPE.INTERNAL
-  resources: MODULE_RESOURCE_TYPE
+  scope: "internal"
+  resources: "shared" | "isolated"
   dependencies?: string[]
   definition?: CustomModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   resolve?: string | ModuleExports
@@ -61,7 +51,7 @@ export type InternalModuleDeclaration = {
 }
 
 export type ExternalModuleDeclaration = {
-  scope: MODULE_SCOPE.EXTERNAL
+  scope: "external"
   definition?: CustomModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   server?: {
     type: "http"
@@ -138,6 +128,29 @@ export type ModulesResponse = {
   resolution: string | false
 }[]
 
+type ExtraFieldType =
+  | "date"
+  | "time"
+  | "datetime"
+  | "bigint"
+  | "blob"
+  | "uint8array"
+  | "array"
+  | "enumArray"
+  | "enum"
+  | "json"
+  | "integer"
+  | "smallint"
+  | "tinyint"
+  | "mediumint"
+  | "float"
+  | "double"
+  | "boolean"
+  | "decimal"
+  | "string"
+  | "uuid"
+  | "text"
+
 export type ModuleJoinerConfig = Omit<
   JoinerServiceConfig,
   "serviceName" | "primaryKeys" | "relationships" | "extends"
@@ -174,6 +187,11 @@ export type ModuleJoinerConfig = Omit<
    * If true it expands a RemoteQuery property but doesn't create a pivot table
    */
   isReadOnlyLink?: boolean
+  /**
+   * Fields that will be part of the link record aside from the primary keys that can be updated
+   * If not explicitly defined, this array will be populated by databaseConfig.extraFields
+   */
+  extraDataFields?: string[]
   databaseConfig?: {
     /**
      * Name of the pivot table. If not provided it is auto generated
@@ -186,28 +204,7 @@ export type ModuleJoinerConfig = Omit<
     extraFields?: Record<
       string,
       {
-        type:
-          | "date"
-          | "time"
-          | "datetime"
-          | "bigint"
-          | "blob"
-          | "uint8array"
-          | "array"
-          | "enumArray"
-          | "enum"
-          | "json"
-          | "integer"
-          | "smallint"
-          | "tinyint"
-          | "mediumint"
-          | "float"
-          | "double"
-          | "boolean"
-          | "decimal"
-          | "string"
-          | "uuid"
-          | "text"
+        type: ExtraFieldType
         defaultValue?: string
         nullable?: boolean
         /**
@@ -220,10 +217,6 @@ export type ModuleJoinerConfig = Omit<
 }
 
 export declare type ModuleJoinerRelationship = JoinerRelationship & {
-  /**
-   * If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more "internal" services
-   */
-  isInternalService?: boolean
   /**
    * If true, the link joiner will cascade deleting the relationship
    */

@@ -27,7 +27,7 @@ npm install @medusajs/cache-redis
 Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
 
 export const highlights = [
-  ["12", "redisUrl", "The Redis connection URL."]
+  ["11", "redisUrl", "The Redis connection URL."]
 ]
 
 ```js title="medusa-config.js" highlights={highlights}
@@ -35,18 +35,17 @@ const { Modules } = require("@medusajs/modules-sdk")
 
 // ...
 
-module.exports = {
+module.exports = defineConfig({
   // ...
   modules: {
-    // ...
     [Modules.CACHE]: {
       resolve: "@medusajs/cache-redis",
       options: { 
         redisUrl: process.env.CACHE_REDIS_URL,
       },
     },
-  },
-}
+  }
+})
 ```
 
 ### Environment Variables

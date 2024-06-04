@@ -103,10 +103,6 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Module's Container",
             },
             {
-              path: "/advanced-development/modules/connection-loader",
-              title: "Database Connection Loader",
-            },
-            {
               path: "/advanced-development/modules/service-factory",
               title: "Service Factory",
             },
@@ -129,6 +125,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
             {
               path: "/advanced-development/modules/link-modules",
               title: "Link Modules",
+            },
+            {
+              path: "/advanced-development/modules/remote-link",
+              title: "Remote Link",
             },
           ],
         },
@@ -201,6 +201,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
           ],
         },
         {
+          path: "/advanced-development/custom-cli-scripts",
+          title: "Custom CLI Scripts",
+        },
+        {
           path: "/advanced-development/admin",
           title: "Admin Development",
           children: [
@@ -213,16 +217,8 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Admin UI Routes",
             },
             {
-              path: "/advanced-development/admin/setting-pages",
-              title: "Admin Setting Pages",
-            },
-            {
               path: "/advanced-development/admin/tips",
               title: "Tips",
-            },
-            {
-              path: "/advanced-development/admin/onboarding-example",
-              title: "Example: Onboarding Widget",
             },
           ],
         },
@@ -243,26 +239,8 @@ export const sidebar = sidebarAttachHrefCommonOptions(
       ],
     },
     {
-      path: "/architectural-concepts",
-      title: "Architectural Concepts",
-      children: [
-        {
-          path: "/architectural-concepts/architectural-modules",
-          title: "Architectural Modules",
-        },
-        {
-          path: "/architectural-concepts/cache-module",
-          title: "Cache Module",
-        },
-        {
-          path: "/architectural-concepts/event-module",
-          title: "Event Module",
-        },
-        {
-          path: "/architectural-concepts/file-module",
-          title: "File Module",
-        },
-      ],
+      path: "/architectural-concepts/architectural-modules",
+      title: "Architectural Modules",
     },
     {
       path: "/debugging-and-testing",

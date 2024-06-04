@@ -64,11 +64,12 @@ To test out your scheduled job:
 1. Uncomment the following line in the `medusa-config.js` file:
 
 ```js title="medusa-config.js"
-const projectConfig = {
-  // ...
-  // Uncomment the following lines to enable REDIS
-  redis_url: REDIS_URL,
-}
+module.exports = defineConfig({
+  projectConfig: {
+    redisUrl: REDIS_URL
+    // ...
+  }
+})
 ```
 
 2. Start the Medusa application:

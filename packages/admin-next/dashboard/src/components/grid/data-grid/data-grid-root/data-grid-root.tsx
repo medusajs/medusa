@@ -29,7 +29,7 @@ type FieldCoordinates = {
 
 export interface DataGridRootProps<
   TData,
-  TFieldValues extends FieldValues = FieldValues,
+  TFieldValues extends FieldValues = FieldValues
 > {
   data?: TData[]
   columns: ColumnDef<TData>[]
@@ -39,9 +39,13 @@ export interface DataGridRootProps<
 
 const ROW_HEIGHT = 40
 
+/**
+ * TODO: THIS IS OLD DATAGRID COMPONENT - REMOVE THIS AFTER ALL TABLE HAVE BEEN MIGRATED TO THE NEW DATAGRIDROOT FROM ../../data-grid
+ */
+
 export const DataGridRoot = <
   TData,
-  TFieldValues extends FieldValues = FieldValues,
+  TFieldValues extends FieldValues = FieldValues
 >({
   data = [],
   columns,

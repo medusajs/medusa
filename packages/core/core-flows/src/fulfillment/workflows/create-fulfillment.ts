@@ -8,6 +8,8 @@ export const createFulfillmentWorkflow = createWorkflow(
   (
     input: WorkflowData<FulfillmentWorkflow.CreateFulfillmentWorkflowInput>
   ): WorkflowData<FulfillmentDTO> => {
-    return createFulfillmentStep(input)
+    const fulfillment = createFulfillmentStep(input)
+
+    return fulfillment
   }
 )

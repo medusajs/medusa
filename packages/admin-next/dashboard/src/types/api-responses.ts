@@ -6,6 +6,7 @@ import {
   CampaignDTO,
   CurrencyDTO,
   CustomerGroupDTO,
+  FulfillmentDTO,
   FulfillmentProviderDTO,
   InventoryNext,
   InviteDTO,
@@ -18,7 +19,7 @@ import {
   ProductTypeDTO,
   ProductVariantDTO,
   PromotionDTO,
-  RegionDTO,
+  PromotionRuleDTO,
   SalesChannelDTO,
   ShippingOptionDTO,
   ShippingProfileDTO,
@@ -29,7 +30,7 @@ import {
 } from "@medusajs/types"
 
 import { ProductTagDTO } from "@medusajs/types/dist/product"
-import { WorkflowExecutionDTO } from "../v2-routes/workflow-executions/types"
+import { WorkflowExecutionDTO } from "../routes/workflow-executions/types"
 
 type ListRes = {
   count: number
@@ -52,7 +53,7 @@ export type PromotionListRes = { promotions: PromotionDTO[] } & ListRes
 export type PromotionRuleAttributesListRes = { attributes: Record<any, any>[] }
 export type PromotionRuleOperatorsListRes = { operators: Record<any, any>[] }
 export type PromotionRuleValuesListRes = { values: Record<any, any>[] }
-export type PromotionRulesListRes = { rules: Record<any, any>[] }
+export type PromotionRulesListRes = { rules: PromotionRuleDTO[] }
 export type PromotionDeleteRes = DeleteRes
 
 // Users
@@ -68,10 +69,10 @@ export type ExtendedStoreDTO = StoreDTO & {
 export type StoreRes = { store: ExtendedStoreDTO }
 export type StoreListRes = { stores: ExtendedStoreDTO[] } & ListRes
 
-// Regions
-export type RegionRes = { region: RegionDTO }
-export type RegionListRes = { regions: RegionDTO[] } & ListRes
-export type RegionDeleteRes = DeleteRes
+// Fulfillments
+export type FulfillmentRes = { fulfillment: FulfillmentDTO }
+export type FulfillmentListRes = { fulfillments: FulfillmentDTO[] } & ListRes
+export type FulfillmentDeleteRes = DeleteRes
 
 // Reservations
 export type ReservationRes = { reservation: InventoryNext.ReservationItemDTO }
@@ -170,13 +171,6 @@ export type WorkflowExecutionRes = { workflow_execution: WorkflowExecutionDTO }
 export type WorkflowExecutionListRes = {
   workflow_executions: WorkflowExecutionDTO[]
 } & ListRes
-
-// Product Collections
-export type ProductCollectionRes = { collection: ProductCollectionDTO }
-export type ProductCollectionListRes = {
-  collections: ProductCollectionDTO[]
-} & ListRes
-export type ProductCollectionDeleteRes = DeleteRes
 
 // Taxes
 export type TaxRegionDeleteRes = DeleteRes

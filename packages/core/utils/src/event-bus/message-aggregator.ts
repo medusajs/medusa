@@ -1,11 +1,12 @@
 import {
+  Context,
   EventBusTypes,
   IMessageAggregator,
   Message,
   MessageAggregatorFormat,
 } from "@medusajs/types"
 
-import { buildEventMessages } from "./build-event-messages"
+import { composeMessage } from "./build-event-messages"
 
 export class MessageAggregator implements IMessageAggregator {
   private messages: Message[]
@@ -28,11 +29,25 @@ export class MessageAggregator implements IMessageAggregator {
 
   saveRawMessageData<T>(
     messageData:
-      | EventBusTypes.MessageFormat<T>
-      | EventBusTypes.MessageFormat<T>[],
-    options?: Record<string, unknown>
+      | EventBusTypes.RawMessageFormat<T>
+      | EventBusTypes.RawMessageFormat<T>[],
+    {
+      options,
+      sharedContext,
+    }: { options?: Record<string, unknown>; sharedContext?: Context } = {}
   ): void {
-    this.save(buildEventMessages(messageData, options))
+    const messages = Array.isArray(messageData) ? messageData : [messageData]
+    const composedMessages = messages.map((message) => {
+      return composeMessage(message.eventName, {
+        data: message.data,
+        service: message.service,
+        object: message.object,
+        action: message.action,
+        options,
+        context: sharedContext,
+      })
+    })
+    this.save(composedMessages)
   }
 
   getMessages(format?: MessageAggregatorFormat): {

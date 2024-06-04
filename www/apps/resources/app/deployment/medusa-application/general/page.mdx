@@ -32,13 +32,13 @@ Make sure the `start` script in your `package.json` runs migrations, the `build`
 
 ## Set SSL Database Option
 
-In production, it’s recommended to set the [database_extra option](/medusa-configurations) in `medusa-config.js` to disable the `ssl.rejectUnauthorized` option:
+In production, it’s recommended to set the [databaseExtra option](/references/medusa-config#databaseExtra) in `medusa-config.js` to disable the `ssl.rejectUnauthorized` option:
 
 ```js title="medusa-config.js" highlights={[["4"]]}
 module.exports = {
   projectConfig: {
     // ...
-    database_extra: process.env.NODE_ENV !== "development" ?
+    databaseExtra: process.env.NODE_ENV !== "development" ?
       {
         ssl: {
           rejectUnauthorized: false,
@@ -151,7 +151,7 @@ After you’ve deployed your Medusa application, you can test it out in differen
 
 ## Set Up CORS Configuration
 
-To connect your storefront and, if deployed separately, your admin dashboard to your deployed Medusa application, set up the [admin_cors](/medusa-configurations#admin_cors) and [store_cors](/medusa-configurations#store_cors) configurations in `medusa-config.js`.
+To connect your storefront and, if deployed separately, your admin dashboard to your deployed Medusa application, set up the [adminCors](/references/medusa-config#adminCors) and [storeCors](/references/medusa-config#storeCors) properties of the `http` configuration in `medusa-config.js`.
 
 ---
 

@@ -4,14 +4,30 @@ export const metadata = {
 
 # {metadata.title}
 
-When Commerce Modules are used together in a Medusa application, the Medusa application handles building the relations between these modules.
+This document showcases the link modules defined between the Stock Location Module and other commerce modules.
 
-This document showcases the relation between the Stock Location Module and other Commerce Modules.
+## Fulfillment Module
+
+A fulfillment set can be conditioned to a specific stock location. Medusa defines a link module that builds a relationship between the `FulfillmentSet` and `StockLocation` data models.
+
+![A diagram showcasing an example of how data models from the Fulfillment and Stock Location modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1712567101/Medusa%20Resources/fulfillment-stock-location_nlkf7e.jpg)
+
+---
 
 ## Inventory Module
 
-Reservation items and inventory items are associated with a location. The Medusa application forms a relation between the `ReservationItem` and `StockLocation` data models, and the `InventoryLevel` and `StockLocation` data models.
+Reservation items and inventory items are associated with a location. Medusa defines a link module that builds a relationship between the `ReservationItem` and `StockLocation` data models, and the `InventoryLevel` and `StockLocation` data models.
 
-![A diagram showcasing an example of how resources from the Stock Location and Inventory modules are linked.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709716521/Medusa%20Resources/stock-location-inventory_logsrt.jpg)
+![A diagram showcasing an example of how resources from the Stock Location and Inventory modules are linked.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709660383/Medusa%20Resources/inventory-stock-location_yp26k3.jpg)
 
 With this relation, stock and reserved quantity is specific to a location, providing you with more flexibility. The location can be as simple as having only a name, and more flexible by adding more address details to it.
+
+---
+
+## Sales Channel Module
+
+A stock location is associated with a sales channel. This scopes inventory quantities associated with that stock location by the associated sales channel.
+
+Medusa defines a link module that builds a relationship between the `SalesChannel` and `StockLocation` data models.
+
+![A diagram showcasing an example of how resources from the Sales Channel and Stock Location modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716796872/Medusa%20Resources/sales-channel-location_cqrih1.jpg)

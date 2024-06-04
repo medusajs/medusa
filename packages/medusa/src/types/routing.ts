@@ -57,17 +57,22 @@ export interface MedusaRequest<Body = unknown>
    * An object that carries the context that is used to calculate prices for variants
    */
   pricingContext?: MedusaPricingContext
+  /**
+   * A generic context object that can be used across the request lifecycle
+   */
+  context?: Record<string, any>
+}
+
+export interface AuthContext {
+  actor_id: string
+  actor_type: string
+  auth_identity_id: string
+  app_metadata: Record<string, unknown>
 }
 
 export interface AuthenticatedMedusaRequest<Body = never>
   extends MedusaRequest<Body> {
-  user: { customer_id?: string; userId?: string } // TODO: Remove this property when v2 is released
-  auth: {
-    actor_id: string
-    auth_user_id: string
-    app_metadata: Record<string, any>
-    scope: string
-  }
+  auth_context: AuthContext
 }
 
 export type MedusaResponse<Body = unknown> = Response<Body>

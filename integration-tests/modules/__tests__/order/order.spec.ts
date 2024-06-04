@@ -25,7 +25,6 @@ jest.setTimeout(50000)
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
 medusaIntegrationTestRunner({
-  debug: true,
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
     let appContainer
@@ -155,6 +154,9 @@ medusaIntegrationTestRunner({
           version: 1,
           display_id: 1,
           payment_collections: [],
+          payment_status: "not_paid",
+          fulfillments: [],
+          fulfillment_status: "not_fulfilled",
           summary: expect.objectContaining({
             // TODO: add all summary fields
           }),

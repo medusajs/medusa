@@ -196,7 +196,97 @@ moduleIntegrationTestRunner({
         const createdOrder = await service.create(input)
 
         const serializedOrder = JSON.parse(JSON.stringify(createdOrder))
+
         expect(serializedOrder).toEqual(expectation)
+      })
+
+      it("should create an order, shipping method and items. Including taxes and adjustments associated with them and add new transactions", async function () {
+        const inpCopy = JSON.parse(JSON.stringify(input))
+        inpCopy.transactions.push({
+          amount: 10,
+          currency_code: "USD",
+        })
+        const created = await service.create(inpCopy)
+
+        const refund = await service.addTransactions([
+          {
+            order_id: created.id,
+            amount: -20,
+            currency_code: "USD",
+          },
+        ])
+
+        const serializedOrder = JSON.parse(
+          JSON.stringify(
+            await service.retrieve(created.id, {
+              select: ["id", "summary"],
+            })
+          )
+        )
+
+        expect(serializedOrder.summary).toEqual(
+          expect.objectContaining({
+            paid_total: 68,
+            refunded_total: 20,
+          })
+        )
+
+        await service.softDeleteTransactions(refund[0].id)
+
+        const serializedOrder2 = JSON.parse(
+          JSON.stringify(
+            await service.retrieve(created.id, {
+              select: ["id", "summary"],
+            })
+          )
+        )
+
+        expect(serializedOrder2.summary).toEqual(
+          expect.objectContaining({
+            paid_total: 68,
+            refunded_total: 0,
+          })
+        )
+
+        await service.addTransactions([
+          {
+            order_id: created.id,
+            amount: -50,
+            currency_code: "USD",
+          },
+        ])
+
+        const serializedOrder3 = JSON.parse(
+          JSON.stringify(
+            await service.retrieve(created.id, {
+              select: ["id", "summary"],
+            })
+          )
+        )
+
+        expect(serializedOrder3.summary).toEqual(
+          expect.objectContaining({
+            paid_total: 68,
+            refunded_total: 50,
+          })
+        )
+
+        await service.restoreTransactions(refund[0].id)
+
+        const serializedOrder4 = JSON.parse(
+          JSON.stringify(
+            await service.retrieve(created.id, {
+              select: ["id", "summary"],
+            })
+          )
+        )
+
+        expect(serializedOrder4.summary).toEqual(
+          expect.objectContaining({
+            paid_total: 68,
+            refunded_total: 70,
+          })
+        )
       })
 
       it("should transform requested fields and relations to match the db schema and return the order", async function () {
@@ -327,209 +417,6 @@ moduleIntegrationTestRunner({
           }
         )
         expect(orders4.length).toEqual(0)
-      })
-
-      it("should create an order, fulfill, ship and return the items", async function () {
-        const createdOrder = await service.create(input)
-
-        // Fullfilment
-        await service.registerFulfillment({
-          order_id: createdOrder.id,
-          items: createdOrder.items!.map((item) => {
-            return {
-              id: item.id,
-              quantity: item.quantity,
-            }
-          }),
-        })
-
-        let getOrder = await service.retrieve(createdOrder.id, {
-          select: [
-            "id",
-            "version",
-            "items.id",
-            "items.quantity",
-            "items.detail.id",
-            "items.detail.version",
-            "items.detail.quantity",
-            "items.detail.shipped_quantity",
-            "items.detail.fulfilled_quantity",
-          ],
-          relations: ["items", "items.detail"],
-        })
-
-        let serializedOrder = JSON.parse(JSON.stringify(getOrder))
-
-        expect(serializedOrder).toEqual(
-          expect.objectContaining({
-            version: 2,
-            items: [
-              expect.objectContaining({
-                quantity: 1,
-                detail: expect.objectContaining({
-                  version: 2,
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 0,
-                }),
-              }),
-              expect.objectContaining({
-                quantity: 2,
-                detail: expect.objectContaining({
-                  version: 2,
-                  quantity: 2,
-                  fulfilled_quantity: 2,
-                  shipped_quantity: 0,
-                }),
-              }),
-              expect.objectContaining({
-                quantity: 1,
-                detail: expect.objectContaining({
-                  version: 2,
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 0,
-                }),
-              }),
-            ],
-          })
-        )
-
-        // Shipment
-        await service.registerShipment({
-          order_id: createdOrder.id,
-          reference: Modules.FULFILLMENT,
-          shipping_method: createdOrder.shipping_methods![0].id,
-          items: createdOrder.items!.map((item) => {
-            return {
-              id: item.id,
-              quantity: item.quantity,
-            }
-          }),
-        })
-
-        getOrder = await service.retrieve(createdOrder.id, {
-          select: [
-            "id",
-            "version",
-            "items.id",
-            "items.quantity",
-            "items.detail.id",
-            "items.detail.version",
-            "items.detail.quantity",
-            "items.detail.shipped_quantity",
-            "items.detail.fulfilled_quantity",
-          ],
-          relations: ["items", "items.detail"],
-        })
-
-        serializedOrder = JSON.parse(JSON.stringify(getOrder))
-
-        expect(serializedOrder).toEqual(
-          expect.objectContaining({
-            version: 3,
-            items: [
-              expect.objectContaining({
-                quantity: 1,
-                detail: expect.objectContaining({
-                  version: 3,
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 1,
-                }),
-              }),
-              expect.objectContaining({
-                quantity: 2,
-                detail: expect.objectContaining({
-                  version: 3,
-                  quantity: 2,
-                  fulfilled_quantity: 2,
-                  shipped_quantity: 2,
-                }),
-              }),
-              expect.objectContaining({
-                quantity: 1,
-                detail: expect.objectContaining({
-                  version: 3,
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 1,
-                }),
-              }),
-            ],
-          })
-        )
-
-        // Return
-        await service.createReturn({
-          order_id: createdOrder.id,
-          reference: Modules.FULFILLMENT,
-          description: "Return all the items",
-          internal_note: "user wants to return all items",
-          shipping_method: createdOrder.shipping_methods![0].id,
-          items: createdOrder.items!.map((item) => {
-            return {
-              id: item.id,
-              quantity: item.quantity,
-            }
-          }),
-        })
-
-        getOrder = await service.retrieve(createdOrder.id, {
-          select: [
-            "id",
-            "version",
-            "items.id",
-            "items.quantity",
-            "items.detail.id",
-            "items.detail.version",
-            "items.detail.quantity",
-            "items.detail.shipped_quantity",
-            "items.detail.fulfilled_quantity",
-            "items.detail.return_requested_quantity",
-          ],
-          relations: ["items", "items.detail"],
-        })
-
-        serializedOrder = JSON.parse(JSON.stringify(getOrder))
-
-        expect(serializedOrder).toEqual(
-          expect.objectContaining({
-            version: 4,
-            items: [
-              expect.objectContaining({
-                quantity: 1,
-                detail: expect.objectContaining({
-                  version: 4,
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 1,
-                  return_requested_quantity: 1,
-                }),
-              }),
-              expect.objectContaining({
-                quantity: 2,
-                detail: expect.objectContaining({
-                  version: 4,
-                  quantity: 2,
-                  fulfilled_quantity: 2,
-                  shipped_quantity: 2,
-                  return_requested_quantity: 2,
-                }),
-              }),
-              expect.objectContaining({
-                quantity: 1,
-                detail: expect.objectContaining({
-                  version: 4,
-                  quantity: 1,
-                  fulfilled_quantity: 1,
-                  shipped_quantity: 1,
-                  return_requested_quantity: 1,
-                }),
-              }),
-            ],
-          })
-        )
       })
     })
   },

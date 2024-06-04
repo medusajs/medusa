@@ -14,5 +14,5 @@ export * from "./utils"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger
-  eventBusService?: IEventBusModuleService
+  eventBusModuleService?: IEventBusModuleService
 }

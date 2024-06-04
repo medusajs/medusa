@@ -5,10 +5,16 @@ import {
 import {
   WorkflowData,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
-import { addToCartStep, refreshCartShippingMethodsStep } from "../steps"
+import {
+  createLineItemsStep,
+  getLineItemActionsStep,
+  refreshCartShippingMethodsStep,
+  updateLineItemsStep,
+} from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { validateVariantPricesStep } from "../steps/validate-variant-prices"
@@ -78,7 +84,25 @@ export const addToCartWorkflow = createWorkflow(
       return items
     })
 
-    const items = addToCartStep({ items: lineItems })
+    const { itemsToCreate = [], itemsToUpdate = [] } = getLineItemActionsStep({
+      id: input.cart.id,
+      items: lineItems,
+    })
+
+    const [createdItems, updatedItems] = parallelize(
+      createLineItemsStep({
+        id: input.cart.id,
+        items: itemsToCreate,
+      }),
+      updateLineItemsStep({
+        id: input.cart.id,
+        items: itemsToUpdate,
+      })
+    )
+
+    const items = transform({ createdItems, updatedItems }, (data) => {
+      return [...(data.createdItems || []), ...(data.updatedItems || [])]
+    })
 
     const cart = useRemoteQueryStep({
       entry_point: "cart",
@@ -88,9 +112,7 @@ export const addToCartWorkflow = createWorkflow(
     }).config({ name: "refetch–cart" })
 
     refreshCartShippingMethodsStep({ cart })
-    // TODO: since refreshCartShippingMethodsStep potentially removes cart shipping methods, we need the updated cart here
-    // for the following 2 steps as they act upon final cart shape
-    updateTaxLinesStep({ cart_or_cart_id: cart, items })
+    updateTaxLinesStep({ cart_or_cart_id: input.cart.id, items })
     refreshCartPromotionsStep({ id: input.cart.id })
     refreshPaymentCollectionForCartStep({ cart_id: input.cart.id })
 

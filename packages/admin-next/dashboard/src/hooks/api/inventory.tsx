@@ -1,25 +1,25 @@
 import { AdminInventoryItemResponse, InventoryNext } from "@medusajs/types"
 import {
-  InventoryItemDeleteRes,
-  InventoryItemListRes,
-  InventoryItemLocationLevelsRes,
-  InventoryItemRes,
-} from "../../types/api-responses"
-import {
-  InventoryItemLocationBatch,
-  UpdateInventoryItemReq,
-  UpdateInventoryLevelReq,
-} from "../../types/api-payloads"
-import {
   QueryKey,
   UseMutationOptions,
   UseQueryOptions,
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
+import {
+  InventoryItemLocationBatch,
+  UpdateInventoryItemReq,
+  UpdateInventoryLevelReq,
+} from "../../types/api-payloads"
+import {
+  InventoryItemDeleteRes,
+  InventoryItemListRes,
+  InventoryItemLocationLevelsRes,
+  InventoryItemRes,
+} from "../../types/api-responses"
 
 import { client } from "../../lib/client"
-import { queryClient } from "../../lib/medusa"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 
 const INVENTORY_ITEMS_QUERY_KEY = "inventory_items" as const

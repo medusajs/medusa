@@ -1,31 +1,31 @@
-import ts, { SyntaxKind } from "typescript"
-import FunctionKindGenerator, {
-  FunctionNode,
-  FunctionOrVariableNode,
-  VariableNode,
-} from "./function.js"
-import { GeneratorOptions, GetDocBlockOptions } from "./default.js"
+import { readFileSync, writeFileSync } from "fs"
+import { OpenAPIV3 } from "openapi-types"
 import { basename, join } from "path"
+import pluralize from "pluralize"
+import ts, { SyntaxKind } from "typescript"
+import { capitalize, kebabToTitle, wordsToKebab } from "utils"
+import { parse, stringify } from "yaml"
+import { DEFAULT_OAS_RESPONSES } from "../../constants.js"
 import {
   OpenApiDocument,
   OpenApiOperation,
   OpenApiSchema,
 } from "../../types/index.js"
-import { OpenAPIV3 } from "openapi-types"
-import { parse, stringify } from "yaml"
-import { GeneratorEvent } from "../helpers/generator-event-manager.js"
-import { readFileSync, writeFileSync } from "fs"
-import OasExamplesGenerator from "../examples/oas.js"
-import pluralize from "pluralize"
-import getOasOutputBasePath from "../../utils/get-oas-output-base-path.js"
-import parseOas, { ExistingOas } from "../../utils/parse-oas.js"
-import OasSchemaHelper, { ParsedSchema } from "../helpers/oas-schema.js"
 import formatOas from "../../utils/format-oas.js"
-import { DEFAULT_OAS_RESPONSES } from "../../constants.js"
-import { capitalize, kebabToTitle, wordsToKebab } from "utils"
-import SchemaFactory from "../helpers/schema-factory.js"
-import isZodObject from "../../utils/is-zod-object.js"
 import getCorrectZodTypeName from "../../utils/get-correct-zod-type-name.js"
+import getOasOutputBasePath from "../../utils/get-oas-output-base-path.js"
+import isZodObject from "../../utils/is-zod-object.js"
+import parseOas, { ExistingOas } from "../../utils/parse-oas.js"
+import OasExamplesGenerator from "../examples/oas.js"
+import { GeneratorEvent } from "../helpers/generator-event-manager.js"
+import OasSchemaHelper, { ParsedSchema } from "../helpers/oas-schema.js"
+import SchemaFactory from "../helpers/schema-factory.js"
+import { GeneratorOptions, GetDocBlockOptions } from "./default.js"
+import FunctionKindGenerator, {
+  FunctionNode,
+  FunctionOrVariableNode,
+  VariableNode,
+} from "./function.js"
 
 export const API_ROUTE_PARAM_REGEX = /\[(.+?)\]/g
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
@@ -251,6 +251,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     const { queryParameters, requestSchema } = this.getRequestParameters({
       node,
       tagName,
+      methodName,
     })
 
     oas.parameters?.push(...queryParameters)
@@ -259,8 +260,8 @@ class OasKindGenerator extends FunctionKindGenerator {
         content: {
           "application/json": {
             schema:
-              this.oasSchemaHelper.schemaToReference(requestSchema) ||
-              requestSchema,
+              this.oasSchemaHelper.namedSchemaToReference(requestSchema) ||
+              this.oasSchemaHelper.schemaChildrenToRefs(requestSchema),
           },
         },
       }
@@ -334,8 +335,8 @@ class OasKindGenerator extends FunctionKindGenerator {
       ;(oas.responses[responseStatus] as OpenAPIV3.ResponseObject).content = {
         "application/json": {
           schema:
-            this.oasSchemaHelper.schemaToReference(responseSchema) ||
-            responseSchema,
+            this.oasSchemaHelper.namedSchemaToReference(responseSchema) ||
+            this.oasSchemaHelper.schemaChildrenToRefs(responseSchema),
         },
       }
     }
@@ -442,6 +443,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     const { queryParameters, requestSchema } = this.getRequestParameters({
       node,
       tagName,
+      methodName,
     })
 
     // update query parameters
@@ -460,7 +462,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       newSchema: requestSchema,
     })
 
-    if (!updatedRequestSchema && existingRequestBodySchema) {
+    if (!updatedRequestSchema) {
       // if there's no request schema, remove it from the OAS
       delete oas.requestBody
     } else {
@@ -468,10 +470,11 @@ class OasKindGenerator extends FunctionKindGenerator {
       oas.requestBody = {
         content: {
           "application/json": {
-            schema: updatedRequestSchema
-              ? this.oasSchemaHelper.schemaToReference(updatedRequestSchema) ||
+            schema:
+              this.oasSchemaHelper.namedSchemaToReference(
                 updatedRequestSchema
-              : updatedRequestSchema,
+              ) ||
+              this.oasSchemaHelper.schemaChildrenToRefs(updatedRequestSchema),
           },
         },
       }
@@ -493,8 +496,10 @@ class OasKindGenerator extends FunctionKindGenerator {
           content: {
             "application/json": {
               schema:
-                this.oasSchemaHelper.schemaToReference(newResponseSchema) ||
-                newResponseSchema,
+                this.oasSchemaHelper.namedSchemaToReference(
+                  newResponseSchema
+                ) ||
+                this.oasSchemaHelper.schemaChildrenToRefs(newResponseSchema),
             },
           },
         },
@@ -530,8 +535,10 @@ class OasKindGenerator extends FunctionKindGenerator {
         content: {
           "application/json": {
             schema: updatedResponseSchema
-              ? this.oasSchemaHelper.schemaToReference(updatedResponseSchema) ||
-                updatedResponseSchema
+              ? this.oasSchemaHelper.namedSchemaToReference(
+                  updatedResponseSchema
+                ) ||
+                this.oasSchemaHelper.schemaChildrenToRefs(updatedResponseSchema)
               : updatedResponseSchema,
           },
         },
@@ -630,12 +637,9 @@ class OasKindGenerator extends FunctionKindGenerator {
     normalized: string
   } {
     const filePath = node.getSourceFile().fileName
-    const oasPath = (
-      filePath.includes("/api-v2/")
-        ? filePath.substring(filePath.indexOf("/api-v2/"))
-        : filePath.substring(filePath.indexOf("/api/"))
-    )
-      .replace(/^\/api(-v2)?\//, "")
+    const oasPath = filePath
+      .substring(filePath.indexOf("/api/"))
+      .replace(/^\/api\//, "")
       .replace(`/${basename(filePath)}`, "")
     const normalizedOasPath = `/${oasPath.replaceAll(
       API_ROUTE_PARAM_REGEX,
@@ -725,11 +729,9 @@ class OasKindGenerator extends FunctionKindGenerator {
         statement.getText().includes("AUTHENTICATE = false")
       )
     const isAdminAuthenticated =
-      !isAuthenticationDisabled &&
-      oasPath.startsWith("admin") &&
-      !oasPath.startsWith("admin/auth")
+      !isAuthenticationDisabled && oasPath.startsWith("admin")
     const isStoreAuthenticated =
-      !isAuthenticationDisabled && oasPath.startsWith("store/me")
+      !isAuthenticationDisabled && oasPath.startsWith("store/customers/me")
     const isAuthenticated = isAdminAuthenticated || isStoreAuthenticated
 
     return {
@@ -1034,11 +1036,16 @@ class OasKindGenerator extends FunctionKindGenerator {
   getRequestParameters({
     node,
     tagName,
+    methodName,
   }: {
     /**
      * The node to retrieve its request parameters.
      */
     node: FunctionNode
+    /**
+     * The HTTP method name of the function.
+     */
+    methodName: string
     /**
      * The tag's name.
      */
@@ -1100,13 +1107,46 @@ class OasKindGenerator extends FunctionKindGenerator {
           typeReferenceNode: node.parameters[0].type,
           itemType: requestTypeArguments[0],
         })
-        requestSchema = this.typeToSchema({
+        const parameterSchema = this.typeToSchema({
           itemType: requestTypeArguments[0],
           descriptionOptions: {
             parentName: tagName,
           },
           zodObjectTypeName: zodObjectTypeName,
         })
+
+        // If function is a GET function, add the type parameter to the
+        // query parameters instead of request parameters.
+        if (methodName === "get") {
+          if (parameterSchema.type === "object" && parameterSchema.properties) {
+            Object.entries(parameterSchema.properties).forEach(
+              ([key, propertySchema]) => {
+                if ("$ref" in propertySchema) {
+                  return
+                }
+
+                // check if parameter is already added
+                const isAdded = parameters.some((param) => param.name === key)
+
+                if (isAdded) {
+                  return
+                }
+
+                parameters.push(
+                  this.getParameterObject({
+                    name: key,
+                    type: "query",
+                    description: propertySchema.description,
+                    required: parameterSchema.required?.includes(key) || false,
+                    schema: propertySchema,
+                  })
+                )
+              }
+            )
+          }
+        } else if (methodName !== "delete") {
+          requestSchema = parameterSchema
+        }
       }
     }
 
@@ -1488,13 +1528,16 @@ class OasKindGenerator extends FunctionKindGenerator {
               : undefined,
           required:
             requiredProperties.length > 0 ? requiredProperties : undefined,
-          properties,
+        }
+
+        if (Object.values(properties).length) {
+          objSchema.properties = properties
         }
 
         if (objSchema["x-schemaName"]) {
           // add object to schemas to be created
           // if necessary
-          this.oasSchemaHelper.schemaToReference(objSchema)
+          this.oasSchemaHelper.namedSchemaToReference(objSchema)
         }
 
         return objSchema
@@ -1556,13 +1599,28 @@ class OasKindGenerator extends FunctionKindGenerator {
    * Check whether a symbol is required.
    *
    * @param symbol - The symbol to check.
+   * @param level - The current recursion level to avoid max-stack error
    * @returns Whether the symbol is required.
    */
-  isRequired(symbol: ts.Symbol): boolean {
+  isRequired(symbol: ts.Symbol, level = 0): boolean {
     let isRequired = true
     const checkNode = (node: ts.Node) => {
-      if (node.kind === ts.SyntaxKind.QuestionToken) {
-        isRequired = false
+      switch (node.kind) {
+        case ts.SyntaxKind.CallExpression:
+          const expression =
+            "expression" in node
+              ? (node.expression as ts.Expression)
+              : undefined
+
+          if (!expression || !("name" in expression)) {
+            break
+          }
+
+          isRequired =
+            (expression.name as ts.Identifier).getText() !== "optional"
+          break
+        case ts.SyntaxKind.QuestionToken:
+          isRequired = false
       }
 
       if (!isRequired) {
@@ -1571,7 +1629,21 @@ class OasKindGenerator extends FunctionKindGenerator {
 
       node.forEachChild(checkNode)
     }
-    symbol.valueDeclaration?.forEachChild(checkNode)
+    if (
+      !symbol.valueDeclaration &&
+      symbol.declarations?.length &&
+      "symbol" in symbol.declarations[0] &&
+      level < this.MAX_LEVEL
+    ) {
+      return this.isRequired(
+        symbol.declarations[0].symbol as ts.Symbol,
+        level + 1
+      )
+    }
+
+    ;(symbol.valueDeclaration || symbol.declarations?.[0])?.forEachChild(
+      checkNode
+    )
 
     return isRequired
   }
@@ -1773,7 +1845,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     if (!oldSchemaObj && newSchemaObj) {
       return newSchemaObj
-    } else if (oldSchemaObj && !newSchemaObj) {
+    } else if (!newSchemaObj) {
       return undefined
     }
 
@@ -1796,7 +1868,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     if (oldSchemaObj!.type === "object") {
       if (!oldSchemaObj?.properties && newSchemaObj?.properties) {
         oldSchemaObj!.properties = newSchemaObj.properties
-      } else if (oldSchemaObj?.properties && !newSchemaObj?.properties) {
+      } else if (!newSchemaObj?.properties) {
         delete oldSchemaObj!.properties
       } else {
         // update existing properties
@@ -1887,7 +1959,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     // load base oas files
     const areaYamlPath = join(
       this.baseOutputPath,
-      "base-v2",
+      "base",
       `${area}.oas.base.yaml`
     )
     const areaYaml = parse(

@@ -36,6 +36,11 @@ export interface CampaignBudgetDTO {
    *
    */
   used?: number
+
+  /**
+   * The currency of the campaign.
+   */
+  currency_code?: string
 }
 
 /**

@@ -1,58 +1,65 @@
 import {
   AuthenticationInput,
   AuthenticationResponse,
+  AuthIdentityProviderService,
   AuthTypes,
-  AuthUserDTO,
   Context,
-  CreateAuthUserDTO,
   DAL,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-  UpdateAuthUserDTO,
 } from "@medusajs/types"
 
-import { AuthUser } from "@models"
+import { AuthIdentity } from "@models"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 import {
-  AbstractAuthModuleProvider,
   InjectManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
+import AuthProviderService from "./auth-provider"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  authUserService: ModulesSdkTypes.InternalModuleService<any>
+  authIdentityService: ModulesSdkTypes.InternalModuleService<any>
+  authProviderService: AuthProviderService
 }
 
-const generateMethodForModels = [AuthUser]
+const generateMethodForModels = [AuthIdentity]
 
-export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
+export default class AuthModuleService<
+    TAuthIdentity extends AuthIdentity = AuthIdentity
+  >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
-    AuthTypes.AuthUserDTO,
+    AuthTypes.AuthIdentityDTO,
     {
-      AuthUser: { dto: AuthUserDTO }
+      AuthIdentity: { dto: AuthTypes.AuthIdentityDTO }
     }
-  >(AuthUser, generateMethodForModels, entityNameToLinkableKeysMap)
+  >(AuthIdentity, generateMethodForModels, entityNameToLinkableKeysMap)
   implements AuthTypes.IAuthModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected authUserService_: ModulesSdkTypes.InternalModuleService<TAuthUser>
+  protected authIdentityService_: ModulesSdkTypes.InternalModuleService<TAuthIdentity>
+  protected readonly authProviderService_: AuthProviderService
 
   constructor(
-    { authUserService, baseRepository }: InjectedDependencies,
+    {
+      authIdentityService,
+      authProviderService,
+      baseRepository,
+    }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
     super(...arguments)
 
     this.baseRepository_ = baseRepository
-    this.authUserService_ = authUserService
+    this.authIdentityService_ = authIdentityService
+    this.authProviderService_ = authProviderService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -60,21 +67,27 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
   }
 
   create(
-    data: CreateAuthUserDTO[],
+    data: AuthTypes.CreateAuthIdentityDTO[],
     sharedContext?: Context
-  ): Promise<AuthUserDTO[]>
+  ): Promise<AuthTypes.AuthIdentityDTO[]>
 
-  create(data: CreateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
+  create(
+    data: AuthTypes.CreateAuthIdentityDTO,
+    sharedContext?: Context
+  ): Promise<AuthTypes.AuthIdentityDTO>
 
   @InjectManager("baseRepository_")
   async create(
-    data: CreateAuthUserDTO[] | CreateAuthUserDTO,
+    data: AuthTypes.CreateAuthIdentityDTO[] | AuthTypes.CreateAuthIdentityDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]> {
-    const authUsers = await this.authUserService_.create(data, sharedContext)
+  ): Promise<AuthTypes.AuthIdentityDTO | AuthTypes.AuthIdentityDTO[]> {
+    const authIdentities = await this.authIdentityService_.create(
+      data,
+      sharedContext
+    )
 
-    return await this.baseRepository_.serialize<AuthTypes.AuthUserDTO[]>(
-      authUsers,
+    return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO[]>(
+      authIdentities,
       {
         populate: true,
       }
@@ -82,22 +95,28 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
   }
 
   update(
-    data: UpdateAuthUserDTO[],
+    data: AuthTypes.UpdateAuthIdentityDTO[],
     sharedContext?: Context
-  ): Promise<AuthUserDTO[]>
+  ): Promise<AuthTypes.AuthIdentityDTO[]>
 
-  update(data: UpdateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
+  update(
+    data: AuthTypes.UpdateAuthIdentityDTO,
+    sharedContext?: Context
+  ): Promise<AuthTypes.AuthIdentityDTO>
 
   // TODO: should be pluralized, see convention about the methods naming or the abstract module service interface definition @engineering
   @InjectManager("baseRepository_")
   async update(
-    data: UpdateAuthUserDTO | UpdateAuthUserDTO[],
+    data: AuthTypes.UpdateAuthIdentityDTO | AuthTypes.UpdateAuthIdentityDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]> {
-    const updatedUsers = await this.authUserService_.update(data, sharedContext)
+  ): Promise<AuthTypes.AuthIdentityDTO | AuthTypes.AuthIdentityDTO[]> {
+    const updatedUsers = await this.authIdentityService_.update(
+      data,
+      sharedContext
+    )
 
     const serializedUsers = await this.baseRepository_.serialize<
-      AuthTypes.AuthUserDTO[]
+      AuthTypes.AuthIdentityDTO[]
     >(updatedUsers, {
       populate: true,
     })
@@ -105,34 +124,16 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
-  protected getRegisteredAuthenticationProvider(
-    provider: string,
-    { authScope }: AuthenticationInput
-  ): AbstractAuthModuleProvider {
-    let containerProvider: AbstractAuthModuleProvider
-    try {
-      containerProvider = this.__container__[`auth_provider_${provider}`]
-    } catch (error) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `AuthenticationProvider: ${provider} wasn't registered in the module. Have you configured your options correctly?`
-      )
-    }
-
-    return containerProvider.withScope(authScope)
-  }
-
   async authenticate(
     provider: string,
     authenticationData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     try {
-      const registeredProvider = this.getRegisteredAuthenticationProvider(
+      return await this.authProviderService_.authenticate(
         provider,
-        authenticationData
+        authenticationData,
+        this.getAuthIdentityProviderService()
       )
-
-      return await registeredProvider.authenticate(authenticationData)
     } catch (error) {
       return { success: false, error: error.message }
     }
@@ -143,14 +144,49 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
     authenticationData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     try {
-      const registeredProvider = this.getRegisteredAuthenticationProvider(
+      return await this.authProviderService_.validateCallback(
         provider,
-        authenticationData
+        authenticationData,
+        this.getAuthIdentityProviderService()
       )
-
-      return await registeredProvider.validateCallback(authenticationData)
     } catch (error) {
       return { success: false, error: error.message }
+    }
+  }
+
+  getAuthIdentityProviderService(): AuthIdentityProviderService {
+    return {
+      retrieve: async ({ entity_id, provider }) => {
+        const authIdentities = await this.authIdentityService_.list({
+          entity_id,
+          provider,
+        })
+
+        if (!authIdentities.length) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `AuthIdentity with entity_id "${entity_id}" not found`
+          )
+        }
+
+        if (authIdentities.length > 1) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Multiple authIdentities found for entity_id "${entity_id}"`
+          )
+        }
+
+        return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
+          authIdentities[0]
+        )
+      },
+      create: async (data: AuthTypes.CreateAuthIdentityDTO) => {
+        const createdAuthIdentity = await this.authIdentityService_.create(data)
+
+        return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
+          createdAuthIdentity
+        )
+      },
     }
   }
 }

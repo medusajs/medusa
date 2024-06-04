@@ -12,5 +12,5 @@ export interface CreateShipmentWorkflowInput {
   /**
    * The labels associated with the fulfillment.
    */
-  labels?: CreateFulfillmentLabelWorkflowDTO[]
+  labels: CreateFulfillmentLabelWorkflowDTO[]
 }

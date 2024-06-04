@@ -21,7 +21,6 @@ export const updateCartPromotionsStep = createStep(
   updateCartPromotionsStepId,
   async (data: StepInput, { container }) => {
     const { promo_codes = [], id, action = PromotionActions.ADD } = data
-
     const remoteLink = container.resolve(LinkModuleUtils.REMOTE_LINK)
     const remoteQuery = container.resolve(LinkModuleUtils.REMOTE_QUERY)
     const promotionService = container.resolve<IPromotionModuleService>(
@@ -75,20 +74,16 @@ export const updateCartPromotionsStep = createStep(
       }
     }
 
-    const linksToDismissPromise = linksToDismiss.length
-      ? remoteLink.dismiss(linksToDismiss)
-      : []
+    if (linksToDismiss.length) {
+      await remoteLink.dismiss(linksToDismiss)
+    }
 
-    const linksToCreatePromise = linksToCreate.length
-      ? remoteLink.create(linksToCreate)
+    const createdLinks = linksToCreate.length
+      ? await remoteLink.create(linksToCreate)
       : []
-
-    const [_, createdLinks] = await Promise.all([
-      linksToDismissPromise,
-      linksToCreatePromise,
-    ])
 
     return new StepResponse(null, {
+      // @ts-expect-error
       createdLinkIds: createdLinks.map((link) => link.id),
       dismissedLinks: linksToDismiss,
     })
@@ -101,6 +96,7 @@ export const updateCartPromotionsStep = createStep(
     }
 
     if (revertData?.createdLinkIds?.length) {
+      // @ts-expect-error
       await remoteLink.delete(revertData.createdLinkIds)
     }
   }

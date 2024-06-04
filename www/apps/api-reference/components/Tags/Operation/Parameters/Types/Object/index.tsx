@@ -114,7 +114,7 @@ const TagOperationParametersObject = ({
     )
   }
 
-  if (!schema.properties) {
+  if (!schema.properties || !Object.values(schema.properties).length) {
     return getPropertyDescriptionElm()
   }
 

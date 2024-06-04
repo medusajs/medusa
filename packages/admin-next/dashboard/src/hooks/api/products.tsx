@@ -1,14 +1,19 @@
 import {
   QueryKey,
-  UseMutationOptions,
-  UseQueryOptions,
   useMutation,
+  UseMutationOptions,
   useQuery,
+  UseQueryOptions,
 } from "@tanstack/react-query"
-import { client } from "../../lib/client"
+import { client, sdk } from "../../lib/client"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { ProductDeleteRes, ProductRes } from "../../types/api-responses"
-import { queryClient } from "../../lib/medusa"
+import {
+  ProductDeleteRes,
+  ProductListRes,
+  ProductRes,
+} from "../../types/api-responses"
+import { HttpTypes } from "@medusajs/types"
 
 const PRODUCTS_QUERY_KEY = "products" as const
 export const productsQueryKeys = queryKeysFactory(PRODUCTS_QUERY_KEY)
@@ -110,7 +115,7 @@ export const useProductVariants = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => client.products.listVariants(productId, query),
-    queryKey: variantsQueryKeys.list(query),
+    queryKey: variantsQueryKeys.list({ productId, ...query }),
     ...options,
   })
 
@@ -148,6 +153,25 @@ export const useUpdateProductVariant = (
       queryClient.invalidateQueries({
         queryKey: variantsQueryKeys.detail(variantId),
       })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useUpdateProductVariantsBatch = (
+  productId: string,
+  options?: UseMutationOptions<any, Error, any>
+) => {
+  return useMutation({
+    mutationFn: (payload: any) =>
+      client.products.updateVariantsBatch(productId, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: productsQueryKeys.detail(productId),
       })
@@ -200,7 +224,7 @@ export const useProduct = (
 export const useProducts = (
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<ProductListRes, Error, ProductListRes, QueryKey>,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -214,10 +238,14 @@ export const useProducts = (
 }
 
 export const useCreateProduct = (
-  options?: UseMutationOptions<ProductRes, Error, any>
+  options?: UseMutationOptions<
+    { product: HttpTypes.AdminProduct },
+    Error,
+    HttpTypes.AdminCreateProduct
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload: any) => client.products.create(payload),
+    mutationFn: (payload: any) => sdk.admin.products.create(payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)

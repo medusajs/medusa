@@ -1,19 +1,12 @@
-import { RouteObject } from "react-router-dom"
+import routes from "virtual:medusa/routes/pages"
 
-// import settings from "medusa-admin:settings/pages"
+import { createRouteMap, settingsRouteRegex } from "../../lib/extension-helpers"
+
+const pages = routes.pages
+  .filter((ext) => settingsRouteRegex.test(ext.path))
+  .map((ext) => ext)
 
 /**
- * UI Settings extensions.
+ * Settings Route extensions.
  */
-
-export const SettingsExtensions: RouteObject[] = []
-
-// export const SettingsExtensions: RouteObject[] = settings.pages.map((ext) => {
-//   return {
-//     path: `/settings${ext.path}`,
-//     async lazy() {
-//       const { default: Component } = await import(/* @vite-ignore */ ext.file)
-//       return { Component }
-//     },
-//   }
-// })
+export const SettingsExtensions = createRouteMap(pages, "/settings")

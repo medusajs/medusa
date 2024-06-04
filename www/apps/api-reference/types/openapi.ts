@@ -118,3 +118,7 @@ export type ExpandedDocument = Document & {
 export type TagObject = OpenAPIV3.TagObject & {
   "x-associatedSchema"?: OpenAPIV3.ReferenceObject
 }
+
+export type ParsedPathItemObject = OpenAPIV3.PathItemObject<Operation> & {
+  operationPath?: string
+}

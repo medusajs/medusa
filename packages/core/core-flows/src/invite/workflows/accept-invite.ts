@@ -4,10 +4,10 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { setAuthAppMetadataStep } from "../../auth"
 import { createUsersStep } from "../../user"
 import { deleteInvitesStep } from "../steps"
 import { validateTokenStep } from "../steps/validate-token"
+import { setAuthAppMetadataStep } from "../../auth"
 
 export const acceptInviteWorkflowId = "accept-invite-workflow"
 export const acceptInviteWorkflow = createWorkflow(
@@ -35,14 +35,13 @@ export const acceptInviteWorkflow = createWorkflow(
       const createdUser = users[0]
 
       return {
-        authUserId: input.auth_user_id,
-        key: "user_id",
+        authIdentityId: input.auth_identity_id,
+        actorType: "user",
         value: createdUser.id,
       }
     })
 
     setAuthAppMetadataStep(authUserInput)
-
     deleteInvitesStep([invite.id])
 
     return users

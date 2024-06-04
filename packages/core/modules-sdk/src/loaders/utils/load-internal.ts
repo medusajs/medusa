@@ -1,23 +1,24 @@
 import {
   Constructor,
+  IModuleService,
   InternalModuleDeclaration,
   Logger,
   MedusaContainer,
-  MODULE_RESOURCE_TYPE,
   ModuleExports,
   ModuleLoaderFunction,
   ModuleResolution,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  createMedusaContainer,
   MedusaModuleType,
   ModulesSdkUtils,
+  createMedusaContainer,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
-import { join, resolve } from "path"
 import { statSync } from "fs"
 import { readdir } from "fs/promises"
+import { join, resolve } from "path"
+import { MODULE_RESOURCE_TYPE } from "../../types"
 
 type ModuleResource = {
   services: Function[]
@@ -90,7 +91,7 @@ export async function loadInternalModule(
 
     return {
       error: new Error(
-        "No service found in module. Make sure your module exports a service."
+        `No service found in module ${resolution?.definition?.label}. Make sure your module exports a service.`
       ),
     }
   }
@@ -158,9 +159,9 @@ export async function loadInternalModule(
 
   if (loaderOnly) {
     // The expectation is only to run the loader as standalone, so we do not need to register the service and we need to cleanup all services
-    const service = container.resolve(registrationName)
-    await service.__hooks?.onApplicationPrepareShutdown()
-    await service.__hooks?.onApplicationShutdown()
+    const service = container.resolve<IModuleService>(registrationName)
+    await service.__hooks?.onApplicationPrepareShutdown?.()
+    await service.__hooks?.onApplicationShutdown?.()
   }
 }
 
@@ -187,7 +188,7 @@ export async function loadModuleMigrations(
       const migrationScriptOptions = {
         moduleName: resolution.definition.key,
         models: moduleResources.models,
-        pathToMigrations: moduleResources.normalizedPath + "/dist/migrations",
+        pathToMigrations: moduleResources.normalizedPath + "/migrations",
       }
 
       runMigrations ??= ModulesSdkUtils.buildMigrationScript(
@@ -208,17 +209,24 @@ export async function loadModuleMigrations(
 async function importAllFromDir(path: string) {
   let filesToLoad: string[] = []
 
+  const excludedExtensions = [".ts.map", ".js.map", ".d.ts"]
+
   await readdir(path).then((files) => {
     files.forEach((file) => {
-      if (file !== "index.js" && file.endsWith(".js")) {
-        const filePath = join(path, file)
-        const stats = statSync(filePath)
+      if (
+        file.startsWith("index.") ||
+        excludedExtensions.some((ext) => file.endsWith(ext))
+      ) {
+        return
+      }
 
-        if (stats.isDirectory()) {
-          // TODO: should we handle that? dont think so but I put that here for discussion
-        } else if (stats.isFile()) {
-          filesToLoad.push(filePath)
-        }
+      const filePath = join(path, file)
+      const stats = statSync(filePath)
+
+      if (stats.isDirectory()) {
+        // TODO: should we handle that? dont think so but I put that here for discussion
+      } else if (stats.isFile()) {
+        filesToLoad.push(filePath)
       }
     })
 
@@ -237,8 +245,10 @@ async function loadResources(
   moduleResolution: ModuleResolution,
   logger: Logger
 ): Promise<ModuleResource> {
-  const modulePath = moduleResolution.resolutionPath as string
-  let normalizedPath = modulePath.replace("dist/", "").replace("index.js", "")
+  let modulePath = moduleResolution.resolutionPath as string
+  let normalizedPath = modulePath
+    .replace("index.js", "")
+    .replace("index.ts", "")
   normalizedPath = resolve(normalizedPath)
 
   try {
@@ -248,13 +258,11 @@ async function loadResources(
 
     const [moduleService, services, models, repositories] = await Promise.all([
       import(modulePath).then((moduleExports) => moduleExports.default.service),
-      importAllFromDir(resolve(normalizedPath, "dist", "services")).catch(
+      importAllFromDir(resolve(normalizedPath, "services")).catch(
         defaultOnFail
       ),
-      importAllFromDir(resolve(normalizedPath, "dist", "models")).catch(
-        defaultOnFail
-      ),
-      importAllFromDir(resolve(normalizedPath, "dist", "repositories")).catch(
+      importAllFromDir(resolve(normalizedPath, "models")).catch(defaultOnFail),
+      importAllFromDir(resolve(normalizedPath, "repositories")).catch(
         defaultOnFail
       ),
     ])
@@ -277,7 +285,7 @@ async function loadResources(
       repositories: potentialRepositories,
       services: potentialServices,
       moduleResolution,
-      migrationPath: normalizedPath + "/dist/migrations",
+      migrationPath: normalizedPath + "/migrations",
     })
 
     return {
@@ -286,7 +294,7 @@ async function loadResources(
       repositories: potentialRepositories,
       loaders: finalLoaders,
       moduleService,
-      normalizedPath
+      normalizedPath,
     }
   } catch (e) {
     logger.warn(
@@ -363,7 +371,7 @@ function prepareLoaders({
     const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
       moduleName: moduleResolution.definition.key,
       moduleModels: models,
-      migrationsPath: migrationPath, //normalizedPath + "/dist/migrations",
+      migrationsPath: migrationPath,
     })
     finalLoaders.push(connectionLoader)
   }

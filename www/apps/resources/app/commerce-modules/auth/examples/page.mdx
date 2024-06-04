@@ -36,7 +36,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService: IAuthModuleService =
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
-    const { success, authUser, location, error } =
+    const { success, authIdentity, location, error } =
       await authModuleService.authenticate("emailpass", {
         url: req.url,
         headers: req.headers,
@@ -55,9 +55,9 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
       return
     }
 
-    const { jwt_secret } =
-      req.scope.resolve("configModule").projectConfig
-    const token = jwt.sign(authUser, jwt_secret)
+    const { jwtSecret } =
+      req.scope.resolve("configModule").projectConfig.http
+    const token = jwt.sign(authIdentity, jwtSecret)
 
     res.status(200).json({ token })
   }
@@ -77,7 +77,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService = await initializeAuthModule()
     const url = new URL(request.url)
 
-    const { success, authUser, location, error } =
+    const { success, authIdentity, location, error } =
       await authModuleService.authenticate("emailpass", {
         url: request.url,
         headers: Object.fromEntries(request.headers),
@@ -96,7 +96,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
       return
     }
 
-    const token = jwt.sign(authUser, "supersecret")
+    const token = jwt.sign(authIdentity, "supersecret")
 
     return NextResponse.json({
       token,
@@ -139,7 +139,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService: IAuthModuleService =
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
-    const { success, authUser, error, successRedirectUrl } =
+    const { success, authIdentity, error, successRedirectUrl } =
       await authModuleService.validateCallback("google", {
         url: req.url,
         headers: req.headers,
@@ -153,9 +153,9 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
       throw new MedusaError(MedusaError.Types.UNAUTHORIZED, error)
     }
 
-    const { jwt_secret } =
-      req.scope.resolve("configModule").projectConfig
-    const token = jwt.sign(authUser, jwt_secret)
+    const { jwtSecret } =
+      req.scope.resolve("configModule").projectConfig.http
+    const token = jwt.sign(authIdentity, jwtSecret)
 
     if (successRedirectUrl) {
       const url = new URL(successRedirectUrl!)
@@ -182,7 +182,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService = await initializeAuthModule()
     const url = new URL(request.url)
 
-    const { success, authUser, location, error } =
+    const { success, authIdentity, location, error } =
       await authModuleService.authenticate("google", {
         url: request.url,
         headers: Object.fromEntries(request.headers),
@@ -196,7 +196,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
       throw new Error(error)
     }
 
-    const token = jwt.sign(authUser, "supersecret")
+    const token = jwt.sign(authIdentity, "supersecret")
 
     if (successRedirectUrl) {
       const url = new URL(successRedirectUrl!)
@@ -218,7 +218,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
 
 ---
 
-## Create Auth User
+## Create Auth Identity
 
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
@@ -235,13 +235,13 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService: IAuthModuleService =
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
-    const authUser = await authModuleService.create({
+    const authIdentity = await authModuleService.create({
       provider: "emailpass",
       entity_id: "user@example.com",
       scope: "admin",
     })
 
-    res.json({ auth_user: authUser })
+    res.json({ auth_identity: authIdentity })
   }
   ```
 
@@ -258,14 +258,14 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
   export async function POST(request: Request) {
     const authModuleService = await initializeAuthModule()
 
-    const authUser = await authModuleService.create({
+    const authIdentity = await authModuleService.create({
       provider: "emailpass",
       entity_id: "user@example.com",
       scope: "admin",
     })
 
     return NextResponse.json({
-      auth_user: authUser,
+      auth_identity: authIdentity,
     })
   }
   ```
@@ -275,7 +275,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
 
 ---
 
-## List Auth Users
+## List Auth Identities
 
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
@@ -293,7 +293,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
     res.json({
-      auth_users: await authModuleService.list(),
+      auth_identitys: await authModuleService.list(),
     })
   }
   ```
@@ -312,7 +312,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService = await initializeAuthModule()
 
     return NextResponse.json({
-      auth_users: await authModuleService.list(),
+      auth_identities: await authModuleService.list(),
     })
   }
   ```
@@ -322,7 +322,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
 
 ---
 
-## Update an Auth User
+## Update an Auth Identity
 
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
@@ -339,7 +339,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService: IAuthModuleService =
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
-    const authUser = await authModuleService.update({
+    const authIdentity = await authModuleService.update({
       id: "authusr_123",
       provider_metadata: {
         test: true,
@@ -347,7 +347,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     })
 
     res.json({
-      auth_user: authUser,
+      auth_identity: authIdentity,
     })
   }
   ```
@@ -374,7 +374,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
   ) {
     const authModuleService = await initializeAuthModule()
 
-    const authUser = await authModuleService.update({
+    const authIdentity = await authModuleService.update({
       id: "authusr_123",
       provider_metadata: {
         test: true,
@@ -382,7 +382,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     })
 
     return NextResponse.json({
-      auth_users: await authModuleService.list(),
+      auth_identitys: await authModuleService.list(),
     })
   }
   ```
@@ -392,7 +392,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
 
 ---
 
-## Delete an Auth User
+## Delete an Auth Identity
 
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
@@ -448,4 +448,4 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
 
 ## More Examples
 
-The [module interface reference](/references/auth) provides a reference to all the methods available for use with examples for each.
+The [Auth Module's main service reference](/references/auth) provides a reference to all the methods available for use with examples for each.

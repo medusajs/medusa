@@ -14,10 +14,10 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js 18
+      - name: Setup Node.js 20
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install Dependencies
         run: yarn
@@ -29,10 +29,10 @@ jobs:
       - name: Build packages
         run: yarn build
         working-directory: www/utils
-      
+
       - name: Check Commit
         id: check-commit
-        run: 'yarn check:release-commit ${{ github.sha }}'
+        run: "yarn check:release-commit ${{ github.sha }}"
         working-directory: www/utils/packages/scripts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -70,10 +70,10 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js 18
+      - name: Setup Node.js 20
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install Dependencies
         run: yarn
@@ -85,10 +85,10 @@ jobs:
       - name: Build packages
         run: yarn build
         working-directory: www/utils
-      
+
       - name: Check Commit
         id: check-commit
-        run: 'yarn check:release-commit ${{ github.sha }}'
+        run: "yarn check:release-commit ${{ github.sha }}"
         working-directory: www/utils/packages/scripts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -97,7 +97,7 @@ jobs:
 
       - name: Run docblock generator
         if: steps.check-commit.outputs.is_release_commit == 'true'
-        run: "yarn start run ../../../../packages/medusa/src/api-v2 --type oas && yarn start clean:oas"
+        run: "yarn start run ../../../../packages/medusa/src/api --type oas && yarn start clean:oas"
         working-directory: www/utils/packages/docblock-generator
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

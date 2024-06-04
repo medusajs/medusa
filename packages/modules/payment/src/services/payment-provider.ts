@@ -1,4 +1,5 @@
 import {
+  BigNumberInput,
   Context,
   CreatePaymentProviderDTO,
   CreatePaymentProviderSession,
@@ -22,10 +23,10 @@ import {
   InjectTransactionManager,
   isPaymentProviderError,
   MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { PaymentProvider } from "@models"
-import { MedusaError } from "medusa-core-utils"
 import { EOL } from "os"
 
 type InjectedDependencies = {
@@ -56,8 +57,8 @@ export default class PaymentProviderService {
 
   @InjectManager("paymentProviderRepository_")
   async list(
-    filters: FilterablePaymentProviderProps,
-    config: FindConfig<PaymentProviderDTO>,
+    filters?: FilterablePaymentProviderProps,
+    config?: FindConfig<PaymentProviderDTO>,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentProvider[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<PaymentProvider>(
@@ -184,7 +185,7 @@ export default class PaymentProviderService {
 
   async refundPayment(
     input: PaymentProviderDataInput,
-    amount: number
+    amount: BigNumberInput
   ): Promise<Record<string, unknown>> {
     const provider = this.retrieveProvider(input.provider_id)
 

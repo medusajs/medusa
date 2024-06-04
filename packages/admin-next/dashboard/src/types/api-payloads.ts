@@ -5,14 +5,11 @@
 import {
   CreateApiKeyDTO,
   CreateCampaignDTO,
-  CreateCustomerDTO,
   CreateFulfillmentSetDTO,
   CreateInviteDTO,
   CreatePriceListDTO,
-  CreateProductCollectionDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
-  CreateRegionDTO,
   CreateSalesChannelDTO,
   CreateServiceZoneDTO,
   CreateShippingOptionDTO,
@@ -21,12 +18,9 @@ import {
   InventoryNext,
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
-  UpdateCustomerDTO,
   UpdatePriceListDTO,
-  UpdateProductCollectionDTO,
   UpdatePromotionDTO,
   UpdatePromotionRuleDTO,
-  UpdateRegionDTO,
   UpdateSalesChannelDTO,
   UpdateServiceZoneDTO,
   UpdateShippingOptionDTO,
@@ -38,20 +32,12 @@ import {
 // Auth
 export type EmailPassReq = { email: string; password: string }
 
-// Regions
-export type CreateRegionReq = CreateRegionDTO
-export type UpdateRegionReq = UpdateRegionDTO
-
 // Stores
 export type UpdateStoreReq = UpdateStoreDTO
 
 // API Keys
 export type CreateApiKeyReq = CreateApiKeyDTO
 export type UpdateApiKeyReq = UpdateApiKeyDTO
-
-// Customers
-export type CreateCustomerReq = CreateCustomerDTO
-export type UpdateCustomerReq = Omit<UpdateCustomerDTO, "id">
 
 // Sales Channels
 export type CreateSalesChannelReq = CreateSalesChannelDTO
@@ -74,22 +60,32 @@ export type UpdateStockLocationSalesChannelsReq = {
 }
 export type CreateFulfillmentSetReq = CreateFulfillmentSetDTO
 export type CreateServiceZoneReq = CreateServiceZoneDTO
-export type UpdateServiceZoneReq = UpdateServiceZoneDTO
+export type UpdateServiceZoneReq =
+  | UpdateServiceZoneDTO
 
-// Shipping Options
-export type CreateShippingOptionReq = CreateShippingOptionDTO
-export type UpdateShippingOptionReq = UpdateShippingOptionDTO
+  // Shipping Options
+  | { region_id: string; amount: number }
+export type CreateShippingOptionReq = CreateShippingOptionDTO & {
+  /**
+   * The shipping option pricing
+   */
+  prices: (
+    | { currency_code: string; amount: number }
+    | { region_id: string; amount: number }
+  )[]
+}
+export type UpdateShippingOptionReq = UpdateShippingOptionDTO & {
+  /**
+   * The shipping option pricing
+   */
+  prices: (
+    | { currency_code: string; amount: number; id?: string }
+    | { region_id: string; amount: number; id?: string }
+  )[]
+}
 
 // Shipping Profile
 export type CreateShippingProfileReq = CreateShippingProfileDTO
-
-// Product Collections
-export type CreateProductCollectionReq = CreateProductCollectionDTO
-export type UpdateProductCollectionReq = UpdateProductCollectionDTO
-export type UpdateProductCollectionProductsReq = {
-  add?: string[]
-  remove?: string[]
-}
 
 // Price Lists
 export type CreatePriceListReq = CreatePriceListDTO

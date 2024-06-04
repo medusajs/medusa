@@ -6,7 +6,6 @@ import {
   MedusaContainer,
   PaymentProviderError,
   PaymentProviderSessionResponse,
-  PaymentSessionStatus,
   ProviderWebhookPayload,
   UpdatePaymentProviderSession,
   WebhookActionResult,
@@ -16,9 +15,10 @@ import {
   BigNumber,
   MedusaError,
   PaymentActions,
+  PaymentSessionStatus,
+  isDefined,
   isPaymentProviderError,
 } from "@medusajs/utils"
-import { isDefined } from "medusa-core-utils"
 
 import { CreatePaymentProviderSession } from "@medusajs/types"
 import {

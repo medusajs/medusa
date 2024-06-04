@@ -8,7 +8,7 @@ In this document, you’ll learn what a payment is and how it's created, capture
 
 ## What's a Payment?
 
-When a payment session is authorized, a payment, represented by the `Payment` data model, is created. This payment is an authorized amount that’s later captured or refunded.
+When a payment session is authorized, a payment, represented by the [Payment data model](/references/payment/models/Payment), is created. This payment can later be captured or refunded.
 
 A payment carries along many of the data and relations of a payment session:
 
@@ -20,7 +20,7 @@ A payment carries along many of the data and relations of a payment session:
 
 ## Capture Payments
 
-When a payment is captured, a capture, represented by the `Capture` data model, is created. It holds details related to the capture, such as the amount, the capture date, and more.
+When a payment is captured, a capture, represented by the [Capture data model](/references/payment/models/Capture), is created. It holds details related to the capture, such as the amount, the capture date, and more.
 
 The payment can also be captured incrementally, each time a capture record is created for that amount.
 
@@ -30,8 +30,8 @@ The payment can also be captured incrementally, each time a capture record is cr
 
 ## Refund Payments
 
-An amount of a payment can be refunded if it’s already captured. Once it’s refunded, a refund, represented by the `Refund` data model, is created. It holds details related to the refund, such as the amount, refund date, and more.
+When a payment is refunded, a refund, represented by the [Refund data model](/references/payment/models/Refund), is created. It holds details related to the refund, such as the amount, refund date, and more.
 
-A payment can be refunded multiple times, and each time a refund record is created for that refund.
+A payment can be refunded multiple times, and each time a refund record is created.
 
 ![A diagram showcasing how a payment's multiple refunds are stored](https://res.cloudinary.com/dza7lstvk/image/upload/v1711565555/Medusa%20Resources/payment-refund_lgfvyy.jpg)

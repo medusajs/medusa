@@ -20,7 +20,7 @@ export const InputText = ({
     <input
       {...props}
       className={clsx(
-        "bg-medusa-bg-field shadow-button-secondary dark:shadow-button-secondary-dark",
+        "bg-medusa-bg-field shadow-border-base dark:shadow-border-base-dark",
         "border-medusa-border-base rounded-docs_sm border border-solid",
         "px-docs_0.75 py-[9px]",
         "hover:bg-medusa-bg-field-hover",

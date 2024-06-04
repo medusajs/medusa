@@ -1,9 +1,11 @@
-import { Buildings, PencilSquare, ArrowUturnLeft } from "@medusajs/icons"
-import { LineItem, Order } from "@medusajs/medusa"
-import { ReservationItemDTO } from "@medusajs/types"
+import {
+  AdminOrder,
+  OrderLineItemDTO,
+  ReservationItemDTO,
+} from "@medusajs/types"
 import { Container, Copy, Heading, StatusBadge, Text } from "@medusajs/ui"
-import { useAdminReservations } from "medusa-react"
 import { useTranslation } from "react-i18next"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import {
@@ -12,7 +14,7 @@ import {
 } from "../../../../../lib/money-amount-helpers"
 
 type OrderSummarySectionProps = {
-  order: Order
+  order: AdminOrder
 }
 
 export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
@@ -26,7 +28,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   )
 }
 
-const Header = ({ order }: { order: Order }) => {
+const Header = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   return (
@@ -36,21 +38,21 @@ const Header = ({ order }: { order: Order }) => {
         groups={[
           {
             actions: [
-              {
-                label: t("orders.summary.editItems"),
-                to: `/orders/${order.id}/edit`,
-                icon: <PencilSquare />,
-              },
-              {
-                label: t("orders.summary.allocateItems"),
-                to: "#", // TODO: Open modal to allocate items
-                icon: <Buildings />,
-              },
-              {
-                label: t("orders.summary.requestReturn"),
-                to: `/orders/${order.id}/returns`,
-                icon: <ArrowUturnLeft />,
-              },
+              // {
+              //   label: t("orders.summary.editItems"),
+              //   to: `/orders/${order.id}/edit`,
+              //   icon: <PencilSquare />,
+              // },
+              // {
+              //   label: t("orders.summary.allocateItems"),
+              //   to: "#", // TODO: Open modal to allocate items
+              //   icon: <Buildings />,
+              // },
+              // {
+              //   label: t("orders.summary.requestReturn"),
+              //   to: `/orders/${order.id}/returns`,
+              //   icon: <ArrowUturnLeft />,
+              // },
             ],
           },
         ]}
@@ -64,7 +66,7 @@ const Item = ({
   currencyCode,
   reservation,
 }: {
-  item: LineItem
+  item: OrderLineItemDTO
   currencyCode: string
   reservation?: ReservationItemDTO | null
 }) => {
@@ -86,14 +88,14 @@ const Item = ({
           >
             {item.title}
           </Text>
-          {item.variant.sku && (
+          {item.variant_sku && (
             <div className="flex items-center gap-x-1">
-              <Text size="small">{item.variant.sku}</Text>
-              <Copy content={item.variant.sku} className="text-ui-fg-muted" />
+              <Text size="small">{item.variant_sku}</Text>
+              <Copy content={item.variant_sku} className="text-ui-fg-muted" />
             </div>
           )}
           <Text size="small">
-            {item.variant.options.map((o) => o.value).join(" · ")}
+            {item.variant?.options.map((o) => o.value).join(" · ")}
           </Text>
         </div>
       </div>
@@ -130,28 +132,28 @@ const Item = ({
   )
 }
 
-const ItemBreakdown = ({ order }: { order: Order }) => {
-  const { reservations, isError, error } = useAdminReservations({
-    line_item_id: order.items.map((i) => i.id),
-  })
+const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
+  // const { reservations, isError, error } = useAdminReservations({
+  //   line_item_id: order.items.map((i) => i.id),
+  // })
 
-  if (isError) {
-    throw error
-  }
+  // if (isError) {
+  //   throw error
+  // }
 
   return (
     <div>
       {order.items.map((item) => {
-        const reservation = reservations
-          ? reservations.find((r) => r.line_item_id === item.id)
-          : null
+        // const reservation = reservations
+        //   ? reservations.find((r) => r.line_item_id === item.id)
+        //   : null
 
         return (
           <Item
             key={item.id}
             item={item}
             currencyCode={order.currency_code}
-            reservation={reservation}
+            reservation={null /* TODO: fetch reservation for this item */}
           />
         )
       })}
@@ -185,7 +187,7 @@ const Cost = ({
   </div>
 )
 
-const CostBreakdown = ({ order }: { order: Order }) => {
+const CostBreakdown = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   return (
@@ -197,11 +199,12 @@ const CostBreakdown = ({ order }: { order: Order }) => {
       />
       <Cost
         label={t("fields.discount")}
-        secondaryValue={
-          order.discounts.length > 0
-            ? order.discounts.map((d) => d.code).join(", ")
-            : "-"
-        }
+        // TODO: ORDER<>DISCOUNTS link
+        // secondaryValue={
+        //   order.discounts.length > 0
+        //     ? order.discounts.map((d) => d.code).join(", ")
+        //     : "-"
+        // }
         value={
           order.discount_total > 0
             ? `- ${getLocaleAmount(order.discount_total, order.currency_code)}`
@@ -210,13 +213,15 @@ const CostBreakdown = ({ order }: { order: Order }) => {
       />
       <Cost
         label={t("fields.shipping")}
-        secondaryValue={order.shipping_methods
-          .map((sm) => sm.shipping_option.name)
-          .join(", ")}
+        // TODO: ORDER<>SHIPPING link
+        // secondaryValue={order.shipping_methods
+        //   .map((sm) => sm.shipping_option.name)
+        //   .join(", ")}
         value={getLocaleAmount(order.shipping_total, order.currency_code)}
       />
       <Cost
         label={t("fields.tax")}
+        // TODO: TAX_RATE is missing on order
         secondaryValue={`${order.tax_rate || 0}%`}
         value={
           order.tax_total
@@ -228,7 +233,7 @@ const CostBreakdown = ({ order }: { order: Order }) => {
   )
 }
 
-const Total = ({ order }: { order: Order }) => {
+const Total = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   return (

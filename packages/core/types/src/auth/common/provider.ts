@@ -12,7 +12,7 @@ export type AuthenticationResponse = {
   /**
    * The authenticated user's details.
    */
-  authUser?: any
+  authIdentity?: any
 
   /**
    * If an error occurs during the authentication process,
@@ -45,31 +45,6 @@ export type AuthenticationResponse = {
 /**
  * @interface
  *
- * The configurations of the `providers` option
- * passed to the Auth Module.
- */
-export type AuthModuleProviderConfig = {
-  /**
-   * The provider's name.
-   */
-  name: string
-
-  /**
-   * The scopes configuration of that provider.
-   */
-  scopes: Record<string, AuthProviderScope>
-}
-
-/**
- * @interface
- *
- * The scope configurations of an auth provider.
- */
-export type AuthProviderScope = Record<string, unknown>
-
-/**
- * @interface
- *
  * The data passed to the auth provider when authenticating a user
  * or validating a callback.
  */
@@ -77,30 +52,25 @@ export type AuthenticationInput = {
   /**
    * URL of the incoming authentication request.
    */
-  url: string
+  url?: string
 
   /**
    * Headers of incoming authentication request.
    */
-  headers: Record<string, string>
+  headers?: Record<string, string>
 
   /**
    *  Query params of the incoming authentication request.
    */
-  query: Record<string, string>
+  query?: Record<string, string>
 
   /**
    * Body of the incoming authentication request.
    */
-  body: Record<string, string>
-
-  /**
-   * Scope for the authentication request.
-   */
-  authScope: string
+  body?: Record<string, string>
 
   /**
    * Protocol of the incoming authentication request (For example, `https`).
    */
-  protocol: string
+  protocol?: string
 }

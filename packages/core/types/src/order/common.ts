@@ -1,6 +1,22 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
+import { FulfillmentDTO } from "../fulfillment"
+import { PaymentCollectionDTO } from "../payment"
 import { BigNumberRawValue, BigNumberValue } from "../totals"
+
+export type ChangeActionType =
+  | "CANCEL"
+  | "CANCEL_RETURN"
+  | "FULFILL_ITEM"
+  | "CANCEL_ITEM_FULFILLMENT"
+  | "ITEM_ADD"
+  | "ITEM_REMOVE"
+  | "RECEIVE_DAMAGED_RETURN_ITEM"
+  | "RECEIVE_RETURN_ITEM"
+  | "RETURN_ITEM"
+  | "SHIPPING_ADD"
+  | "SHIP_ITEM"
+  | "WRITE_OFF_ITEM"
 
 export type OrderSummaryDTO = {
   total: BigNumberValue
@@ -25,6 +41,9 @@ export type OrderSummaryDTO = {
 
   balance: BigNumberValue
   future_balance: BigNumberValue
+
+  paid_total: BigNumberValue
+  refunded_total: BigNumberValue
 }
 
 export interface OrderAdjustmentLineDTO {
@@ -776,6 +795,14 @@ export interface OrderItemDTO {
   updated_at: Date
 }
 
+type OrderStatus =
+  | "pending"
+  | "completed"
+  | "draft"
+  | "archived"
+  | "canceled"
+  | "requires_action"
+
 export interface OrderDTO {
   /**
    * The ID of the order.
@@ -785,6 +812,10 @@ export interface OrderDTO {
    * The version of the order.
    */
   version: number
+  /**
+   * The status of the order.
+   */
+  status: OrderStatus
   /**
    * The ID of the region the order belongs to.
    */
@@ -844,6 +875,10 @@ export interface OrderDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
+  /**
+   * When the order was canceled.
+   */
+  canceled_at?: string | Date
   /**
    * When the order was created.
    */
@@ -1074,6 +1109,35 @@ export interface OrderDTO {
   raw_original_shipping_tax_total: BigNumberRawValue
 }
 
+type PaymentStatus =
+  | "not_paid"
+  | "awaiting"
+  | "authorized"
+  | "partially_authorized"
+  | "captured"
+  | "partially_captured"
+  | "partially_refunded"
+  | "refunded"
+  | "canceled"
+  | "requires_action"
+
+type FulfillmentStatus =
+  | "not_fulfilled"
+  | "partially_fulfilled"
+  | "fulfilled"
+  | "partially_shipped"
+  | "shipped"
+  | "partially_delivered"
+  | "delivered"
+  | "canceled"
+
+export interface OrderDetailDTO extends OrderDTO {
+  payment_collections: PaymentCollectionDTO[]
+  payment_status: PaymentStatus
+  fulfillments: FulfillmentDTO[]
+  fulfillment_status: FulfillmentStatus
+}
+
 export interface OrderChangeDTO {
   /**
    * The ID of the order change
@@ -1187,7 +1251,7 @@ export interface OrderChangeActionDTO {
   /**
    * The action of the order change action
    */
-  action: string
+  action: ChangeActionType
   /**
    * The details of the order change action
    */
@@ -1241,10 +1305,6 @@ export interface OrderTransactionDTO {
    * The ID of the reference
    */
   reference_id: string
-  /**
-   * The metadata of the transaction
-   */
-  metadata: Record<string, unknown> | null
   /**
    * When the transaction was created
    */

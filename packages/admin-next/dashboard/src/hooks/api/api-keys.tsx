@@ -1,3 +1,4 @@
+import { AdminApiKeyListResponse, AdminApiKeyResponse } from "@medusajs/types"
 import {
   MutationOptions,
   QueryKey,
@@ -7,11 +8,10 @@ import {
   useQuery,
 } from "@tanstack/react-query"
 import { client } from "../../lib/client"
-import { queryClient } from "../../lib/medusa"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { CreateApiKeyReq, UpdateApiKeyReq } from "../../types/api-payloads"
 import { ApiKeyDeleteRes } from "../../types/api-responses"
-import { AdminApiKeyResponse, AdminApiKeyListResponse } from "@medusajs/types"
 import { salesChannelsQueryKeys } from "./sales-channels"
 
 const API_KEYS_QUERY_KEY = "api_keys" as const

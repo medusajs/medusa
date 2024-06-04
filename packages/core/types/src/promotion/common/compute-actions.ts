@@ -1,3 +1,5 @@
+import { BigNumberInput } from "../../totals"
+
 /**
  * A compute action informs you what adjustment must be made to a cart item or shipping method.
  */
@@ -48,7 +50,7 @@ export interface AddItemAdjustmentAction {
   /**
    * The amount to remove off the item's total.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * The promotion's code.
@@ -103,7 +105,7 @@ export interface AddShippingMethodAdjustment {
   /**
    * The amount to remove off the shipping method's total.
    */
-  amount: number
+  amount: BigNumberInput
 
   /**
    * The promotion's code.
@@ -163,12 +165,12 @@ export interface ComputeActionItemLine extends Record<string, unknown> {
   /**
    * The quantity of the line item.
    */
-  quantity: number
+  quantity: BigNumberInput
 
   /**
    * The subtotal of the line item.
    */
-  subtotal: number
+  subtotal: BigNumberInput
 
   /**
    * The adjustments applied before on the line item.
@@ -188,7 +190,7 @@ export interface ComputeActionShippingLine extends Record<string, unknown> {
   /**
    * The subtotal of the shipping method.
    */
-  subtotal: number
+  subtotal: BigNumberInput
 
   /**
    * The adjustments applied before on the shipping method.
@@ -200,6 +202,11 @@ export interface ComputeActionShippingLine extends Record<string, unknown> {
  * The context provided when computing actions of promotions.
  */
 export interface ComputeActionContext extends Record<string, unknown> {
+  /**
+   * The cart's currency
+   */
+  currency_code: string
+
   /**
    * The cart's line items.
    */

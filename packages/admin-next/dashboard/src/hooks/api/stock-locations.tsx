@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-query"
 
 import { client } from "../../lib/client"
-import { queryClient } from "../../lib/medusa"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import {
   CreateFulfillmentSetReq,
@@ -24,7 +24,6 @@ import {
   StockLocationListRes,
   StockLocationRes,
 } from "../../types/api-responses"
-import { salesChannelsQueryKeys } from "./sales-channels"
 
 const STOCK_LOCATIONS_QUERY_KEY = "stock_locations" as const
 export const stockLocationsQueryKeys = queryKeysFactory(

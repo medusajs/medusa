@@ -1,5 +1,8 @@
-import { AdminGetPromotionsParams } from "@medusajs/medusa"
-
+import {
+  AdminGetPromotionsParams,
+  AdminGetPromotionsRuleValueParams,
+} from "@medusajs/medusa"
+import { AdminRuleValueOptionsListResponse } from "@medusajs/types"
 import {
   BatchAddPromotionRulesReq,
   BatchRemovePromotionRulesReq,
@@ -13,7 +16,6 @@ import {
   PromotionRes,
   PromotionRuleAttributesListRes,
   PromotionRuleOperatorsListRes,
-  PromotionRuleValuesListRes,
 } from "../../types/api-responses"
 import { deleteRequest, getRequest, postRequest } from "./common"
 
@@ -79,7 +81,7 @@ async function removePromotionRules(
   )
 }
 
-async function listPromotionRules(id: string, ruleType: string) {
+async function listPromotionRules(id: string | null, ruleType: string) {
   return getRequest<PromotionRuleAttributesListRes>(
     `/admin/promotions/${id}/${ruleType}`
   )
@@ -91,9 +93,14 @@ async function listPromotionRuleAttributes(ruleType: string) {
   )
 }
 
-async function listPromotionRuleValues(ruleType: string, ruleValue: string) {
-  return getRequest<PromotionRuleValuesListRes>(
-    `/admin/promotions/rule-value-options/${ruleType}/${ruleValue}`
+async function listPromotionRuleValues(
+  ruleType: string,
+  ruleValue: string,
+  query?: AdminGetPromotionsRuleValueParams
+) {
+  return getRequest<AdminRuleValueOptionsListResponse>(
+    `/admin/promotions/rule-value-options/${ruleType}/${ruleValue}`,
+    query
   )
 }
 

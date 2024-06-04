@@ -8,8 +8,6 @@ export const metadata = {
 
 The Cart Module is the `@medusajs/cart` NPM package that provides cart-related features in your Medusa and Node.js applications.
 
----
-
 ## Features
 
 ### Cart Management
@@ -62,21 +60,6 @@ When used with their respective modules and other commerce modules, you benefit 
 - Checking product availability in a sales channel.
 - Retrieving pricing per region.
 - Applying promotions based on the customer's group.
-
----
-
-## Configure Cart Module
-
-After installing the `@medusajs/cart` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const modules = {
-  // ...
-  cart: {
-    resolve: "@medusajs/cart",
-  },
-}
-```
 
 ---
 
@@ -134,11 +117,14 @@ For example:
   import { ICartModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const cartModuleService: ICartModuleService =
-      context.container.resolve(
+      container.resolve(
         ModuleRegistrationName.CART
       )
+    
     const carts = await cartModuleService.list()
   })
   ```

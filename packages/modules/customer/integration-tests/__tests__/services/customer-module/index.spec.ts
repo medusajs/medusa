@@ -38,6 +38,93 @@ moduleIntegrationTestRunner({
           )
         })
 
+        it("should create two customers with the same email but one has an account", async () => {
+          const customerData = {
+            company_name: "Acme Corp",
+            first_name: "John",
+            last_name: "Doe",
+            email: "john.doe@acmecorp.com",
+            phone: "123456789",
+            created_by: "admin",
+            metadata: { membership: "gold" },
+          }
+          const customerData2 = {
+            ...customerData,
+            has_account: true,
+          }
+          const [customer, customer2] = await service.create([
+            customerData,
+            customerData2,
+          ])
+
+          expect(customer).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              company_name: "Acme Corp",
+              first_name: "John",
+              last_name: "Doe",
+              email: "john.doe@acmecorp.com",
+              phone: "123456789",
+              created_by: "admin",
+              metadata: expect.objectContaining({ membership: "gold" }),
+            })
+          )
+          expect(customer2).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              company_name: "Acme Corp",
+              first_name: "John",
+              last_name: "Doe",
+              email: "john.doe@acmecorp.com",
+              phone: "123456789",
+              created_by: "admin",
+              metadata: expect.objectContaining({ membership: "gold" }),
+              has_account: true,
+            })
+          )
+        })
+
+        it("should fail to create a duplicated guest customers", async () => {
+          const customerData = {
+            company_name: "Acme Corp",
+            first_name: "John",
+            last_name: "Doe",
+            email: "john.doe@acmecorp.com",
+            phone: "123456789",
+            created_by: "admin",
+            metadata: { membership: "gold" },
+          }
+
+          const err = await service
+            .create([customerData, customerData])
+            .catch((err) => err)
+
+          expect(err.message).toBe(
+            "Customer with email: john.doe@acmecorp.com, has_account: false, already exists."
+          )
+        })
+
+        it("should fail to create a duplicated customers", async () => {
+          const customerData = {
+            company_name: "Acme Corp",
+            first_name: "John",
+            last_name: "Doe",
+            email: "john.doe@acmecorp.com",
+            phone: "123456789",
+            created_by: "admin",
+            metadata: { membership: "gold" },
+            has_account: true,
+          }
+
+          const err = await service
+            .create([customerData, customerData])
+            .catch((err) => err)
+
+          expect(err.message).toBe(
+            "Customer with email: john.doe@acmecorp.com, has_account: true, already exists."
+          )
+        })
+
         it("should create address", async () => {
           const customerData = {
             company_name: "Acme Corp",

@@ -8,13 +8,11 @@ export const metadata = {
 
 The Tax Module is the `@medusajs/tax` NPM package that provides tax-related features in your Medusa and Node.js applications.
 
----
-
 ## Features
 
 ### Tax Settings Per Region
 
-Set different tax settings for each region. This is especially useful with the [Region Module](../region/page.mdx).
+Set different tax settings for each tax region.
 
 ```ts
 const taxRegion = await taxModuleService.createTaxRegions({
@@ -80,19 +78,6 @@ const taxLines = await taxModuleService.getTaxLines(
 
 ## Configure Tax Module
 
-After installing the `@medusajs/tax` package in your Medusa application, add it to the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js"
-const modules = {
-  // ...
-  tax: {
-    resolve: "@medusajs/tax",
-  },
-}
-```
-
-### Module Options
-
 Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
 
 ---
@@ -151,11 +136,14 @@ For example:
   import { ITaxModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep("step-1", async (_, context) => {
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
     const taxModuleService: ITaxModuleService =
-      context.container.resolve(
+      container.resolve(
         ModuleRegistrationName.TAX
       )
+
     const taxRegions = await taxModuleService.listTaxRegions()
   })
   ```

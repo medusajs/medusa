@@ -40,18 +40,16 @@ The Medusa application resolves these relationships while maintaining isolation 
 
 Consider you’re creating a data model that adds custom fields associated with a product:
 
-```ts title="src/modules/hello/models/custom-product-data.ts" highlights={[["19"]]}
-import { generateEntityId } from "@medusajs/utils"
+```ts title="src/modules/hello/models/custom-product-data.ts" highlights={[["17"]]}
+import { BaseEntity } from "@medusajs/utils"
 import { 
-  BeforeCreate, 
   Entity, 
-  OnInit, 
   PrimaryKey, 
   Property,
 } from "@mikro-orm/core"
 
 @Entity()
-export class CustomProductData {
+export class CustomProductData extends BaseEntity {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -60,16 +58,6 @@ export class CustomProductData {
 
   @Property({ columnType: "text", nullable: true })
   product_id?: string
-
-  @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "cpd")
-  }
-
-  @OnInit()
-  OnInit() {
-    this.id = generateEntityId(this.id, "cpd")
-  }
 }
 ```
 
@@ -81,7 +69,6 @@ When you add a new data model, make sure to:
 
 - [Create a migration for it.](../../../basics/data-models/page.mdx#create-a-migration)
 - [Add it to the second parameter of the main service's factory function.](../service-factory/page.mdx#abstractModuleServiceFactory-parameters)
-- Add it to the [container](../container/page.mdx) and [connection](../connection-loader/page.mdx) loaders.
 
 </Note>
 
@@ -115,7 +102,6 @@ class HelloModuleService extends ModulesSdkUtils
     __joinerConfig(): ModuleJoinerConfig {
       return {
         serviceName: "helloModuleService",
-        primaryKeys: ["id"],
         alias: [
           {
             name: ["my_custom"],
@@ -158,12 +144,6 @@ This creates a relationship to the `Product` data model of the Product Module us
     type: "`string`",
     optional: false,
     description: "The name of your module (as added in `medusa-config.js`)."
-  },
-  {
-    name: "primaryKeys",
-    type: "`string[]`",
-    optional: false,
-    description: "The primary key field names used in your module's data models.",
   },
   {
     name: "alias",
@@ -229,49 +209,27 @@ This creates a relationship to the `Product` data model of the Product Module us
 
 ### 2. Adjust Module Configuration
 
-To use relationships in a module, adjust its configuration object passed to the `modules` object in `medusa-config.js`:
+To use relationships in a module, adjust its configuration object passed to `modules` in `medusa-config.js`:
 
 export const configHighlights = [
   ["7", "isQueryable", "Enable this property to use relationships in a module."]
 ]
 
 ```js title="medusa-config.js" highlights={configHighlights}
-const modules = {
-  helloModuleService: {
-    // ...
-    definition: {
-      key: "helloModuleService",
-      registrationName: "helloModuleService",
-      isQueryable: true,
-    },
-  },
+module.exports = defineConfig({
   // ...
-}
+  modules: {
+    helloModuleService: {
+      // ...
+      definition: {
+        isQueryable: true
+      }
+    }
+  }
+})
 ```
 
 Enabling the `isQueryable` property is required to use relationships in a module.
-
-The `definition` property’s value is an object that accepts the following properties, among others:
-
-<TypeList types={[
-  {
-    name: "key",
-    type: "`string`",
-    optional: false,
-    description: "The module's key in the `modules` object."
-  },
-  {
-    name: "registrationName",
-    type: "`string`",
-    optional: false,
-    description: "The name that the main service is registered under in the Medusa container. It’s recommended to be the same as `key`'s value.",
-  },
-  {
-    name: "isQueryable",
-    type: "`boolean`",
-    description: "Whether the module is queryable. This must be enabled to allow a module to have relationships."
-  }
-]} sectionTitle="Adjust Module Configuration" />
 
 ---
 

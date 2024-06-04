@@ -19,7 +19,7 @@ export default async ({ container }: LoaderOptions): Promise<void> => {
     }))
 
     const resp = await countryService_.upsert(normalizedCountries)
-    logger.info(`Loaded ${resp.length} countries`)
+    logger.debug(`Loaded ${resp.length} countries`)
   } catch (error) {
     logger.warn(
       `Failed to load countries, skipping loader. Original error: ${error.message}`

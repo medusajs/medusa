@@ -2,14 +2,13 @@ import {
   MedusaApp,
   MedusaAppMigrateDown,
   MedusaAppMigrateUp,
+  MedusaAppOptions,
   MedusaAppOutput,
-  MedusaModule,
-  MODULE_PACKAGE_NAMES,
-  Modules,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
 import {
   CommonTypes,
+  ConfigModule,
   InternalModuleDeclaration,
   LoadedModule,
   MedusaContainer,
@@ -22,7 +21,6 @@ import {
 } from "@medusajs/utils"
 
 import { asValue } from "awilix"
-import { remoteQueryFetchData } from "../utils/remote-query-fetch-data"
 
 export function mergeDefaultModules(
   modulesConfig: CommonTypes.ConfigModule["modules"]
@@ -63,11 +61,13 @@ async function runMedusaAppMigrations({
   configModule,
   container,
   revert = false,
+  linkModules,
 }: {
   configModule: {
     modules?: CommonTypes.ConfigModule["modules"]
     projectConfig: CommonTypes.ConfigModule["projectConfig"]
   }
+  linkModules?: MedusaAppOptions["linkModules"]
   container: MedusaContainer
   revert?: boolean
 }): Promise<void> {
@@ -85,9 +85,9 @@ async function runMedusaAppMigrations({
       clientUrl:
         injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]?.client
           ?.config?.connection?.connectionString ??
-        configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_driver_options,
-      debug: !!(configModule.projectConfig.database_logging ?? false),
+        configModule.projectConfig.databaseUrl,
+      driverOptions: configModule.projectConfig.databaseDriverOptions,
+      debug: !!(configModule.projectConfig.databaseLogging ?? false),
     },
   }
   const configModules = mergeDefaultModules(configModule.modules)
@@ -95,16 +95,16 @@ async function runMedusaAppMigrations({
   if (revert) {
     await MedusaAppMigrateDown({
       modulesConfig: configModules,
-      remoteFetchData: remoteQueryFetchData(container),
       sharedContainer: container,
+      linkModules,
       sharedResourcesConfig,
       injectedDependencies,
     })
   } else {
     await MedusaAppMigrateUp({
       modulesConfig: configModules,
-      remoteFetchData: remoteQueryFetchData(container),
       sharedContainer: container,
+      linkModules,
       sharedResourcesConfig,
       injectedDependencies,
     })
@@ -113,6 +113,7 @@ async function runMedusaAppMigrations({
 
 export async function migrateMedusaApp({
   configModule,
+  linkModules,
   container,
 }: {
   configModule: {
@@ -120,15 +121,18 @@ export async function migrateMedusaApp({
     projectConfig: CommonTypes.ConfigModule["projectConfig"]
   }
   container: MedusaContainer
+  linkModules?: MedusaAppOptions["linkModules"]
 }): Promise<void> {
   await runMedusaAppMigrations({
     configModule,
     container,
+    linkModules,
   })
 }
 
 export async function revertMedusaApp({
   configModule,
+  linkModules,
   container,
 }: {
   configModule: {
@@ -136,24 +140,23 @@ export async function revertMedusaApp({
     projectConfig: CommonTypes.ConfigModule["projectConfig"]
   }
   container: MedusaContainer
+  linkModules?: MedusaAppOptions["linkModules"]
 }): Promise<void> {
   await runMedusaAppMigrations({
     configModule,
     container,
     revert: true,
+    linkModules,
   })
 }
 
 export const loadMedusaApp = async (
   {
-    configModule,
     container,
+    linkModules,
   }: {
-    configModule: {
-      modules?: CommonTypes.ConfigModule["modules"]
-      projectConfig: CommonTypes.ConfigModule["projectConfig"]
-    }
     container: MedusaContainer
+    linkModules?: MedusaAppOptions["linkModules"]
   },
   config = { registerInContainer: true }
 ): Promise<MedusaAppOutput> => {
@@ -166,11 +169,15 @@ export const loadMedusaApp = async (
     ),
   }
 
+  const configModule: ConfigModule = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
+
   const sharedResourcesConfig = {
     database: {
-      clientUrl: configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_driver_options,
-      debug: !!(configModule.projectConfig.database_logging ?? false),
+      clientUrl: configModule.projectConfig.databaseUrl,
+      driverOptions: configModule.projectConfig.databaseDriverOptions,
+      debug: !!(configModule.projectConfig.databaseLogging ?? false),
     },
   }
 
@@ -180,36 +187,13 @@ export const loadMedusaApp = async (
   const configModules = mergeDefaultModules(configModule.modules)
 
   const medusaApp = await MedusaApp({
-    workerMode: configModule.projectConfig.worker_mode,
+    workerMode: configModule.projectConfig.workerMode,
     modulesConfig: configModules,
-    remoteFetchData: remoteQueryFetchData(container),
     sharedContainer: container,
+    linkModules,
     sharedResourcesConfig,
     injectedDependencies,
   })
-
-  // TODO: Remove this and make it more dynamic on ensuring all modules are loaded.
-  const requiredModuleKeys = [Modules.PRODUCT, Modules.PRICING]
-
-  const missingPackages: string[] = []
-
-  for (const requiredModuleKey of requiredModuleKeys) {
-    const isModuleInstalled = MedusaModule.isInstalled(requiredModuleKey)
-
-    if (!isModuleInstalled) {
-      missingPackages.push(
-        MODULE_PACKAGE_NAMES[requiredModuleKey] || requiredModuleKey
-      )
-    }
-  }
-
-  if (missingPackages.length) {
-    throw new Error(
-      `Medusa requires the following packages/module registration: (${missingPackages.join(
-        ", "
-      )})`
-    )
-  }
 
   if (!config.registerInContainer) {
     return medusaApp
@@ -251,6 +235,7 @@ export const loadMedusaApp = async (
  */
 export async function runModulesLoader({
   configModule,
+  linkModules,
   container,
 }: {
   configModule: {
@@ -258,6 +243,7 @@ export async function runModulesLoader({
     projectConfig: CommonTypes.ConfigModule["projectConfig"]
   }
   container: MedusaContainer
+  linkModules?: MedusaAppOptions["linkModules"]
 }): Promise<void> {
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
@@ -270,9 +256,9 @@ export async function runModulesLoader({
 
   const sharedResourcesConfig = {
     database: {
-      clientUrl: configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_driver_options,
-      debug: !!(configModule.projectConfig.database_logging ?? false),
+      clientUrl: configModule.projectConfig.databaseUrl,
+      driverOptions: configModule.projectConfig.databaseDriverOptions,
+      debug: !!(configModule.projectConfig.databaseLogging ?? false),
     },
   }
 
@@ -280,8 +266,8 @@ export async function runModulesLoader({
 
   await MedusaApp({
     modulesConfig: configModules,
-    remoteFetchData: remoteQueryFetchData(container),
     sharedContainer: container,
+    linkModules,
     sharedResourcesConfig,
     injectedDependencies,
     loaderOnly: true,

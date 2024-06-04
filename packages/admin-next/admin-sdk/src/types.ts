@@ -1,4 +1,6 @@
 import { AdminOptions } from "@medusajs/types"
 
 export type BundlerOptions = Required<Pick<AdminOptions, "outDir" | "path">> &
-  Pick<AdminOptions, "vite">
+  Pick<AdminOptions, "vite" | "backendUrl"> & {
+    sources?: string[]
+  }

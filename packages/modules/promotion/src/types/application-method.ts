@@ -2,6 +2,7 @@ import {
   ApplicationMethodAllocationValues,
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
+  BigNumberInput,
   PromotionDTO,
 } from "@medusajs/types"
 
@@ -11,21 +12,23 @@ export interface CreateApplicationMethodDTO {
   type: ApplicationMethodTypeValues
   target_type: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
-  value?: number
+  value?: BigNumberInput
+  currency_code: string
   promotion: Promotion | string | PromotionDTO
-  max_quantity?: number | null
-  buy_rules_min_quantity?: number | null
-  apply_to_quantity?: number | null
+  max_quantity?: BigNumberInput | null
+  buy_rules_min_quantity?: BigNumberInput | null
+  apply_to_quantity?: BigNumberInput | null
 }
 
 export interface UpdateApplicationMethodDTO {
-  id: string
+  id?: string
   type?: ApplicationMethodTypeValues
   target_type?: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
-  value?: number
+  value?: BigNumberInput
+  currency_code?: string
   promotion?: Promotion | string | PromotionDTO
-  max_quantity?: number | null
-  buy_rules_min_quantity?: number | null
-  apply_to_quantity?: number | null
+  max_quantity?: BigNumberInput | null
+  buy_rules_min_quantity?: BigNumberInput | null
+  apply_to_quantity?: BigNumberInput | null
 }

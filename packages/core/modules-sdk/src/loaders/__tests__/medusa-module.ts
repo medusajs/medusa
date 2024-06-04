@@ -1,11 +1,8 @@
-import {
-  InternalModuleDeclaration,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-} from "@medusajs/types"
+import { InternalModuleDeclaration } from "@medusajs/types"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../../types"
 
-import { MedusaModule } from "../../medusa-module"
 import { asValue } from "awilix"
+import { MedusaModule } from "../../medusa-module"
 
 const mockRegisterMedusaModule = jest.fn().mockImplementation(() => {
   return {
@@ -283,7 +280,7 @@ describe("Medusa Modules", () => {
       } as InternalModuleDeclaration,
     })
 
-    expect(moduleC).rejects.toThrow(
+    await expect(moduleC).rejects.toThrow(
       "Module moduleKey already have a 'main' registered."
     )
   })
@@ -317,7 +314,7 @@ describe("Medusa Modules", () => {
       } as InternalModuleDeclaration,
     })
 
-    expect(moduleC).rejects.toThrow(
+    await expect(moduleC).rejects.toThrow(
       "Module moduleKey already registed as 'module_alias'. Please choose a different alias."
     )
   })

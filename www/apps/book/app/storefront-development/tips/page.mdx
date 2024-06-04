@@ -24,18 +24,20 @@ To send requests from the storefront to the Medusa application’s Store API Rou
 
 ## Configure CORS
 
-The Medusa application’s API routes are guarded by a CORS middleware. Make sure to set the `store_cors` configuration of your Medusa application to the storefront’s URL.
+The Medusa application’s API routes are guarded by a CORS middleware. Make sure to set the `storeCors` property of the `http` configuration in `medusa-config.js` to the storefront’s URL.
 
 For example:
 
 ```js title="medusa-config.js"
-module.exports = {
+module.exports = defineConfig({
   projectConfig: {
-    store_cors: "http://localhost:3000",
-    // ...
-  },
+    http: {
+      storeCors: "http://localhost:3000",
+      // ...
+    }
+  }
   // ...
-}
+})
 ```
 
 ---

@@ -21,6 +21,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
+    "@medusajs/types": "^1.11.16",
     "@types/express": "^4.17.17",
     "cross-env": "^5.2.1",
     "express": "^4.18.2",
@@ -30,12 +31,13 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/types": "^1.11.16",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",
     "awilix": "^8.0.1",
     "bignumber.js": "^9.1.2",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
     "knex": "2.4.2",
     "ulid": "^2.3.0"
   },

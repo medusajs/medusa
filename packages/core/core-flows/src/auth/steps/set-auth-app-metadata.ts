@@ -5,8 +5,8 @@ import { IAuthModuleService } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
 
 type StepInput = {
-  authUserId: string
-  key: string
+  authIdentityId: string
+  actorType: string
   value: string
 }
 
@@ -18,21 +18,25 @@ export const setAuthAppMetadataStep = createStep(
       ModuleRegistrationName.AUTH
     )
 
-    const authUser = await service.retrieve(data.authUserId)
+    const key = `${data.actorType}_id`
+    const authIdentity = await service.retrieve(data.authIdentityId)
 
-    const appMetadata = authUser.app_metadata || {}
-    if (isDefined(appMetadata[data.key])) {
-      throw new Error(`Key ${data.key} already exists in app metadata`)
+    const appMetadata = authIdentity.app_metadata || {}
+    if (isDefined(appMetadata[key])) {
+      throw new Error(`Key ${key} already exists in app metadata`)
     }
 
-    appMetadata[data.key] = data.value
+    appMetadata[key] = data.value
 
     await service.update({
-      id: authUser.id,
+      id: authIdentity.id,
       app_metadata: appMetadata,
     })
 
-    return new StepResponse(authUser, { id: authUser.id, key: data.key })
+    return new StepResponse(authIdentity, {
+      id: authIdentity.id,
+      key: key,
+    })
   },
   async (idAndKey, { container }) => {
     if (!idAndKey) {
@@ -45,15 +49,15 @@ export const setAuthAppMetadataStep = createStep(
       ModuleRegistrationName.AUTH
     )
 
-    const authUser = await service.retrieve(id)
+    const authIdentity = await service.retrieve(id)
 
-    const appMetadata = authUser.app_metadata || {}
+    const appMetadata = authIdentity.app_metadata || {}
     if (isDefined(appMetadata[key])) {
       delete appMetadata[key]
     }
 
     await service.update({
-      id: authUser.id,
+      id: authIdentity.id,
       app_metadata: appMetadata,
     })
   }

@@ -1,4 +1,3 @@
-import chalk from "chalk"
 import fs from "fs"
 import path from "path"
 import { Ora } from "ora"
@@ -9,12 +8,15 @@ import ProcessManager from "./process-manager.js"
 import { clearProject } from "./clear-project.js"
 import type { Client } from "pg"
 
+const ADMIN_EMAIL = "admin@medusa-test.com"
+// TODO remove preview links once we move to main docs
+const STORE_CORS = "http://localhost:8000,https://docs.medusajs.com,https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app,https://medusa-resources-git-docs-v2-medusajs.vercel.app"
+const ADMIN_CORS = "http://localhost:7000,http://localhost:7001,https://docs.medusajs.com,https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app,https://medusa-resources-git-docs-v2-medusajs.vercel.app"
+const DEFAULT_REDIS_URL = "redis://localhost:6379"
+
 type PrepareOptions = {
   directory: string
   dbConnectionString: string
-  admin?: {
-    email: string
-  }
   seed?: boolean
   boilerplate?: boolean
   spinner: Ora
@@ -26,13 +28,11 @@ type PrepareOptions = {
   nextjsDirectory?: string
   client: Client | null
   verbose?: boolean
-  v2?: boolean
 }
 
 export default async ({
   directory,
   dbConnectionString,
-  admin,
   seed,
   boilerplate,
   spinner,
@@ -44,7 +44,6 @@ export default async ({
   nextjsDirectory = "",
   client,
   verbose = false,
-  v2 = false,
 }: PrepareOptions) => {
   // initialize execution options
   const execOptions = {
@@ -72,17 +71,18 @@ export default async ({
   // initialize the invite token to return
   let inviteToken: string | undefined = undefined
 
+  // add environment variables
+  let env = `MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=${STORE_CORS}${EOL}ADMIN_CORS=${ADMIN_CORS}${EOL}REDIS_URL=${DEFAULT_REDIS_URL}${EOL}JWT_SECRET=supersecret${EOL}COOKIE_SECRET=supersecret`
+
   if (!skipDb) {
-    let env = `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}${EOL}MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=http://localhost:8000,http://localhost:7001`
-    if (v2) {
-      env += `${EOL}POSTGRES_URL=${dbConnectionString}`
-    }
-    if (nextjsDirectory) {
-      env += `${EOL}MEDUSA_ADMIN_ONBOARDING_NEXTJS_DIRECTORY=${nextjsDirectory}`
-    }
-    // add connection string to project
-    fs.appendFileSync(path.join(directory, `.env`), env)
+    env += `${EOL}DATABASE_URL=${dbConnectionString}${EOL}POSTGRES_URL=${dbConnectionString}`
   }
+
+  if (nextjsDirectory) {
+    env += `${EOL}MEDUSA_ADMIN_ONBOARDING_NEXTJS_DIRECTORY=${nextjsDirectory}`
+  }
+  
+  fs.appendFileSync(path.join(directory, `.env`), env)
 
   factBoxOptions.interval = displayFactBox({
     ...factBoxOptions,
@@ -154,7 +154,7 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         const proc = await execute(
-          ["npx @medusajs/medusa-cli@latest migrations run", npxOptions],
+          ["npx medusa migrations run", npxOptions],
           { verbose, needOutput: true }
         )
 
@@ -164,7 +164,7 @@ export default async ({
           let errorOccurred = false
           try {
             const migrations = await client.query(
-              `SELECT * FROM "${v2 ? "mikro_orm_migrations" : "migrations"}"`
+              `SELECT * FROM "mikro_orm_migrations"`
             )
             errorOccurred = migrations.rowCount == 0
           } catch (e) {
@@ -191,7 +191,7 @@ export default async ({
     })
   }
 
-  if (admin && !skipDb && migrations && !v2) {
+  if (!skipDb && migrations) {
     // create admin user
     factBoxOptions.interval = displayFactBox({
       ...factBoxOptions,
@@ -202,7 +202,7 @@ export default async ({
       process: async () => {
         const proc = await execute(
           [
-            `npx @medusajs/medusa-cli@latest user -e ${admin.email} --invite`,
+            `npx medusa user -e ${ADMIN_EMAIL} --invite`,
             npxOptions,
           ],
           { verbose, needOutput: true }
@@ -223,70 +223,34 @@ export default async ({
   }
 
   if (!skipDb && migrations) {
-    if (seed || !boilerplate) {
-      factBoxOptions.interval = displayFactBox({
-        ...factBoxOptions,
-        title: "Seeding database...",
-      })
+    // TODO for now we just seed the default data
+    // we should add onboarding seeding again if it makes
+    // since once we re-introduce the onboarding flow.
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      title: "Seeding database...",
+    })
 
-      // check if a seed file exists in the project
-      if (!fs.existsSync(path.join(directory, "data", "seed.json"))) {
-        spinner
-          ?.warn(
-            chalk.yellow(
-              "Seed file was not found in the project. Skipping seeding..."
-            )
-          )
-          .start()
-        return inviteToken
-      }
+    await processManager.runProcess({
+      process: async () => {
+        try {
+          await execute([`yarn seed`, execOptions], { verbose })
+        } catch (e) {
+          // yarn isn't available
+          // use npm
+          await execute([`npm run seed`, execOptions], { verbose })
+        }
+      },
+      ignoreERESOLVE: true,
+    })
 
-      await processManager.runProcess({
-        process: async () => {
-          await execute(
-            [
-              `npx @medusajs/medusa-cli@latest seed --seed-file=${path.join(
-                "data",
-                "seed.json"
-              )}`,
-              npxOptions,
-            ],
-            { verbose }
-          )
-        },
-      })
-
-      displayFactBox({
-        ...factBoxOptions,
-        message: "Seeded database with demo data",
-      })
-    } else if (
-      fs.existsSync(path.join(directory, "data", "seed-onboarding.json"))
-    ) {
-      // seed the database with onboarding seed
-      factBoxOptions.interval = displayFactBox({
-        ...factBoxOptions,
-        title: "Finish preparation...",
-      })
-
-      await processManager.runProcess({
-        process: async () => {
-          await execute(
-            [
-              `npx @medusajs/medusa-cli@latest seed --seed-file=${path.join(
-                "data",
-                "seed-onboarding.json"
-              )}`,
-              npxOptions,
-            ],
-            { verbose }
-          )
-        },
-      })
-    }
-
-    displayFactBox({ ...factBoxOptions, message: "Finished Preparation" })
+    displayFactBox({
+      ...factBoxOptions,
+      message: "Seeded database with demo data",
+    })
   }
+
+  displayFactBox({ ...factBoxOptions, message: "Finished Preparation" })
 
   return inviteToken
 }

@@ -1,24 +1,26 @@
+import { VIRTUAL_MODULES } from "@medusajs/admin-shared"
 import path from "path"
 import { Config } from "tailwindcss"
 import type { InlineConfig } from "vite"
-import { nodePolyfills } from "vite-plugin-node-polyfills"
 
 import { BundlerOptions } from "../types"
 
 export async function getViteConfig(
   options: BundlerOptions
 ): Promise<InlineConfig> {
-  const { searchForWorkspaceRoot } = await import("vite")
+  const { searchForWorkspaceRoot, mergeConfig } = await import("vite")
   const { default: react } = await import("@vitejs/plugin-react")
-  const { default: inject } = await import("@medusajs/admin-vite-plugin")
+  const { default: medusa } = await import("@medusajs/admin-vite-plugin")
 
   const getPort = await import("get-port")
   const hmrPort = await getPort.default()
 
   const root = path.resolve(__dirname, "./")
 
-  return {
-    root: path.resolve(__dirname, "./"),
+  const backendUrl = options.backendUrl ?? ""
+
+  const baseConfig: InlineConfig = {
+    root,
     base: options.path,
     build: {
       emptyOutDir: true,
@@ -26,24 +28,15 @@ export async function getViteConfig(
     },
     optimizeDeps: {
       include: ["@medusajs/dashboard", "react-dom/client"],
+      exclude: VIRTUAL_MODULES,
     },
     define: {
       __BASE__: JSON.stringify(options.path),
-      /**
-       * TODO: Accept backend url from config to support hosting the admin elsewhere.
-       * The empty string should be the default value, as that ensures that requests
-       * are made to the server that serves the admin dashboard.
-       */
-      __BACKEND_URL__: JSON.stringify(""),
+      __BACKEND_URL__: JSON.stringify(backendUrl),
     },
     server: {
-      open: true,
       fs: {
-        allow: [
-          searchForWorkspaceRoot(process.cwd()),
-          path.resolve(__dirname, "../../medusa"),
-          path.resolve(__dirname, "../../app"),
-        ],
+        allow: [searchForWorkspaceRoot(process.cwd())],
       },
       hmr: {
         port: hmrPort,
@@ -54,28 +47,29 @@ export async function getViteConfig(
       postcss: {
         plugins: [
           require("tailwindcss")({
-            config: createTailwindConfig(root),
+            config: createTailwindConfig(root, options.sources),
           }),
         ],
       },
     },
-    /**
-     * TODO: Remove polyfills, they are currently only required for the
-     * `axios` dependency in the dashboard. Once we have the new SDK,
-     * we should remove this, and leave it up to the user to include
-     * polyfills if they need them.
-     */
     plugins: [
       react(),
-      inject(),
-      nodePolyfills({
-        include: ["crypto", "util", "stream"],
+      medusa({
+        sources: options.sources,
       }),
     ],
   }
+
+  if (options.vite) {
+    const customConfig = options.vite(baseConfig)
+
+    return mergeConfig(baseConfig, customConfig)
+  }
+
+  return baseConfig
 }
 
-function createTailwindConfig(entry: string) {
+function createTailwindConfig(entry: string, sources: string[] = []) {
   const root = path.join(entry, "**/*.{js,ts,jsx,tsx}")
   const html = path.join(entry, "index.html")
 
@@ -101,9 +95,11 @@ function createTailwindConfig(entry: string) {
     // ignore
   }
 
+  const extensions = sources.map((s) => path.join(s, "**/*.{js,ts,jsx,tsx}"))
+
   const config: Config = {
     presets: [require("@medusajs/ui-preset")],
-    content: [html, root, dashboard, ui],
+    content: [html, root, dashboard, ui, ...extensions],
     darkMode: "class",
   }
 

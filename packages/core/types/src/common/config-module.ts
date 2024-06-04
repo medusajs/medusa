@@ -29,13 +29,19 @@ export type AdminOptions = {
    */
   path?: `/${string}`
   /**
-   * The directory where the admin build is output. This is where the build process will place the generated files.
+   * The directory where the admin build is output. This is where the build process places the generated files.
    * The default value is `./build`.
    */
   outDir?: string
   /**
+   * The URL of your Medusa backend. Defaults to an empty string, which means requests will hit the same server that serves the dashboard.
+   */
+  backendUrl?: string
+  /**
    * Configure the Vite configuration for the admin dashboard. This function receives the default Vite configuration
    * and returns the modified configuration. The default value is `undefined`.
+   *
+   * @privateRemarks TODO Add example
    */
   vite?: (config: InlineConfig) => InlineConfig
 }
@@ -67,7 +73,7 @@ type SessionOptions = {
    */
   saveUninitialized?: boolean
   /**
-   * The secret to sign the session ID cookie. By default, the value of `cookie_secret` is used.
+   * The secret to sign the session ID cookie. By default, the value of `http.cookieSecret` is used.
    * Refer to [express-session’s documentation](https://www.npmjs.com/package/express-session#secret) for details.
    */
   secret?: string
@@ -112,211 +118,24 @@ export type HttpCompressionOptions = {
  */
 export type ProjectConfigOptions = {
   /**
-   * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
-   *
-   * `store_cors` is a string used to specify the accepted URLs or patterns for store API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.
-   *
-   * Every origin in that list must either be:
-   *
-   * 1. A URL. For example, `http://localhost:8000`. The URL must not end with a backslash;
-   * 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
-   *
-   * @example
-   * Some example values of common use cases:
-   *
-   * ```bash
-   * # Allow different ports locally starting with 800
-   * STORE_CORS=/http:\/\/localhost:800\d+$/
-   *
-   * # Allow any origin ending with vercel.app. For example, storefront.vercel.app
-   * STORE_CORS=/vercel\.app$/
-   *
-   * # Allow all HTTP requests
-   * STORE_CORS=/http:\/\/.+/
-   * ```
-   *
-   * Then, set the configuration in `medusa-config.js`:
-   *
-   * ```js title="medusa-config.js"
-   * module.exports = {
-   *   projectConfig: {
-   *     store_cors: process.env.STORE_CORS,
-   *     // ...
-   *   },
-   *   // ...
-   * }
-   * ```
-   *
-   * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
-   *
-   * ```js title="medusa-config.js"
-   * module.exports = {
-   *   projectConfig: {
-   *     store_cors: "/vercel\\.app$/",
-   *     // ...
-   *   },
-   *   // ...
-   * }
-   * ```
-   */
-  store_cors?: string
-  /**
-   * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
-   *
-   * `admin_cors` is a string used to specify the accepted URLs or patterns for admin API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.
-   *
-   * Every origin in that list must either be:
-   *
-   * 1. A URL. For example, `http://localhost:7001`. The URL must not end with a backslash;
-   * 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
-   *
-   * @example
-   * Some example values of common use cases:
-   *
-   * ```bash
-   * # Allow different ports locally starting with 700
-   * ADMIN_CORS=/http:\/\/localhost:700\d+$/
-   *
-   * # Allow any origin ending with vercel.app. For example, admin.vercel.app
-   * ADMIN_CORS=/vercel\.app$/
-   *
-   * # Allow all HTTP requests
-   * ADMIN_CORS=/http:\/\/.+/
-   * ```
-   *
-   * Then, set the configuration in `medusa-config.js`:
-   *
-   * ```js title="medusa-config.js"
-   * module.exports = {
-   *   projectConfig: {
-   *     admin_cors: process.env.ADMIN_CORS,
-   *     // ...
-   *   },
-   *   // ...
-   * }
-   * ```
-   *
-   * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
-   *
-   * ```js title="medusa-config.js"
-   * module.exports = {
-   *   projectConfig: {
-   *     admin_cors: "/http:\\/\\/localhost:700\\d+$/",
-   *     // ...
-   *   },
-   *   // ...
-   * }
-   * ```
-   */
-  admin_cors?: string
-  /**
-   * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
-   *
-   * `auth_cors` is a string used to specify the accepted URLs or patterns for API Routes starting with `/auth`. It can either be one accepted origin, or a comma-separated list of accepted origins.
-   *
-   * Every origin in that list must either be:
-   *
-   * 1. A URL. For example, `http://localhost:7001`. The URL must not end with a backslash;
-   * 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
-   *
-   * @example
-   * Some example values of common use cases:
-   *
-   * ```bash
-   * # Allow different ports locally starting with 700
-   * AUTH_CORS=/http:\/\/localhost:700\d+$/
-   *
-   * # Allow any origin ending with vercel.app. For example, admin.vercel.app
-   * AUTH_CORS=/vercel\.app$/
-   *
-   * # Allow all HTTP requests
-   * AUTH_CORS=/http:\/\/.+/
-   * ```
-   *
-   * Then, set the configuration in `medusa-config.js`:
-   *
-   * ```js title="medusa-config.js"
-   * module.exports = {
-   *   projectConfig: {
-   *     auth_cors: process.env.AUTH_CORS,
-   *     // ...
-   *   },
-   *   // ...
-   * }
-   * ```
-   *
-   * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
-   *
-   * ```js title="medusa-config.js"
-   * module.exports = {
-   *   projectConfig: {
-   *     auth_cors: "/http:\\/\\/localhost:700\\d+$/",
-   *     // ...
-   *   },
-   *   // ...
-   * }
-   * ```
-   */
-  auth_cors?: string
-  /**
-   * A random string used to create cookie tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
-   *
-   * In a development environment, if this option is not set, the default secret is `supersecret` However, in production, if this configuration is not set, an error is thrown and
-   * the backend crashes.
-   *
-   * @example
-   * ```js title="medusa-config.js"
-   * module.exports = {
-   *   projectConfig: {
-   *     cookie_secret: process.env.COOKIE_SECRET ||
-   *       "supersecret",
-   *     // ...
-   *   },
-   *   // ...
-   * }
-   * ```
-   */
-  cookie_secret?: string
-
-  /**
-   * A random string used to create authentication tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
-   *
-   * In a development environment, if this option is not set the default secret is `supersecret` However, in production, if this configuration is not set an error, an
-   * error is thrown and the backend crashes.
-   *
-   * @example
-   * ```js title="medusa-config.js"
-   * module.exports = {
-   *   projectConfig: {
-   *     jwt_secret: process.env.JWT_SECRET ||
-   *       "supersecret",
-   *     // ...
-   *   },
-   *   // ...
-   * }
-   * ```
-   */
-  jwt_secret?: string
-
-  /**
-   * The name of the database to connect to. If specified in `database_url`, then it’s not required to include it.
+   * The name of the database to connect to. If specified in `databaseUrl`, then it’s not required to include it.
    *
    * Make sure to create the PostgreSQL database before using it. You can check how to create a database in
    * [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     database_database: process.env.DATABASE_DATABASE ||
+   *     databaseName: process.env.DATABASE_NAME || 
    *       "medusa-store",
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
-  database_database?: string
+  databaseName?: string
 
   /**
    * The connection URL of the database. The format of the connection URL for PostgreSQL is:
@@ -345,31 +164,32 @@ export type ProjectConfigOptions = {
    * Then, use the value in `medusa-config.js`:
    *
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     database_url: process.env.DATABASE_URL,
+   *     databaseUrl: process.env.DATABASE_URL,
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
-  database_url?: string
+  databaseUrl?: string
+
   /**
    * The database schema to connect to. This is not required to provide if you’re using the default schema, which is `public`.
    *
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     database_schema: process.env.DATABASE_SCHEMA ||
+   *     databaseSchema: process.env.DATABASE_SCHEMA ||
    *       "custom",
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
-  database_schema?: string
+  databaseSchema?: string
 
   /**
    * This configuration specifies what database messages to log. Its value can be one of the following:
@@ -382,27 +202,25 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     database_logging: [
-   *       "query", "error",
-   *     ],
+   *     databaseLogging: ["query", "error"]
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
-  database_logging: LoggerOptions
+  databaseLogging?: LoggerOptions
 
   /**
    * @ignore
    * @deprecated
    *
-   * @privateRemark
+   * @privateRemarks
    * only postgres is supported, so this config has no effect
    */
-  database_type?: string
+  databaseType?: string
 
   /**
    * An object that includes additional configurations to pass to the database connection. You can pass any configuration. One defined configuration to pass is
@@ -413,19 +231,17 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     database_extra:
-   *       process.env.NODE_ENV !== "development"
-   *         ? { ssl: { rejectUnauthorized: false } }
-   *         : {},
+   *     databaseExtra: process.env.NODE_ENV !== "development" ?
+   *       { ssl: { rejectUnauthorized: false } } : {}
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
-  database_extra?: Record<string, unknown> & {
+  databaseExtra?: Record<string, unknown> & {
     /**
      * Configure support for TLS/SSL connection
      */
@@ -446,19 +262,17 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     database_driver_options:
-   *       process.env.NODE_ENV !== "development"
-   *         ? { connection: { ssl: { rejectUnauthorized: false } } }
-   *         : {},
+   *     databaseDriverOptions: process.env.NODE_ENV !== "development" ?
+   *       { ssl: { rejectUnauthorized: false } } : {}
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
-  database_driver_options?: Record<string, unknown> & {
+  databaseDriverOptions?: Record<string, unknown> & {
     connection?: {
       /**
        * Configure support for TLS/SSL connection
@@ -491,17 +305,17 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     redis_url: process.env.REDIS_URL ||
+   *     redisUrl: process.env.REDIS_URL || 
    *       "redis://localhost:6379",
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
-  redis_url?: string
+  redisUrl?: string
 
   /**
    * The prefix set on all keys stored in Redis. The default value is `sess:`.
@@ -510,17 +324,16 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     redis_prefix: process.env.REDIS_PREFIX ||
-   *       "medusa:",
+   *     redisPrefix: process.env.REDIS_URL || "medusa:",
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
-  redis_prefix?: string
+  redisPrefix?: string
 
   /**
    * An object of options to pass ioredis. You can refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions)
@@ -528,80 +341,66 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     redis_options: {
-   *       connectionName: process.env.REDIS_CONNECTION_NAME ||
+   *     redisOptions: {
+   *       connectionName: process.env.REDIS_CONNECTION_NAME || 
    *         "medusa",
-   *     },
+   *     }
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
-  redis_options?: RedisOptions
+  redisOptions?: RedisOptions
 
   /**
    * An object of options to pass to [express-session](https://www.npmjs.com/package/express-session).
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     session_options: {
-   *       name: process.env.SESSION_NAME ||
-   *         "custom",
-   *     },
+   *     sessionOptions: {
+   *       name: process.env.SESSION_NAME || "custom",
+   *     }
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
-  session_options?: SessionOptions
+  sessionOptions?: SessionOptions
 
   /**
    * Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
    * However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
    *
-   * Its value is an object that has the following properties:
-   *
    * If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`.
    *
-   * @example
-   * ```js title="medusa-config.js"
-   * module.exports = {
-   *   projectConfig: {
-   *     http_compression: {
-   *       enabled: true,
-   *       level: 6,
-   *       memLevel: 8,
-   *       threshold: 1024,
-   *     },
-   *     // ...
-   *   },
-   *   // ...
-   * }
-   * ```
+   * @ignore
+   *
+   * @deprecated use {@link http }'s `compression` property instead.
+   *
    */
-  http_compression?: HttpCompressionOptions
+  httpCompression?: HttpCompressionOptions
 
   /**
    * Configure the number of staged jobs that are polled from the database. Default is `1000`.
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     jobs_batch_size: 100
+   *     jobsBatchSize: 100
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
-  jobs_batch_size?: number
+  jobsBatchSize?: number
 
   /**
    * Configure the application's worker mode. Default is `shared`.
@@ -614,16 +413,312 @@ export type ProjectConfigOptions = {
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   projectConfig: {
-   *     worker_mode: "shared"
+   *     workerMode: "shared"
    *     // ...
    *   },
    *   // ...
-   * }
+   * })
    * ```
    */
-  worker_mode?: "shared" | "worker" | "server"
+  workerMode?: "shared" | "worker" | "server"
+
+  /**
+   * Configure the application's http-specific settings
+   *
+   * @example
+   * ```js title="medusa-config.js"
+   * module.exports = defineConfig({
+   *   projectConfig: {
+   *     http: {
+   *       cookieSecret: "supersecret",
+   *       compression: {
+   *         // ...
+   *       }
+   *     }
+   *     // ...
+   *   },
+   *   // ...
+   * })
+   * ```
+   */
+  http: {
+    /**
+     * A random string used to create authentication tokens in the http layer. Although this configuration option is not required, it’s highly recommended to set it for better security.
+     *
+     * In a development environment, if this option is not set the default secret is `supersecret` However, in production, if this configuration is not set an error, an
+     * error is thrown and the backend crashes.
+     *
+     * @example
+     * ```js title="medusa-config.js"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       jwtSecret: "supersecret",
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    jwtSecret?: string
+    /**
+     * The expiration time for the JWT token. If not provided, the default value is `24h`.
+     *
+     * @example
+     * ```js title="medusa-config.js"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       jwtExpiresIn: "2d"
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    jwtExpiresIn?: string
+    /**
+     * A random string used to create cookie tokens in the http layer. Although this configuration option is not required, it’s highly recommended to set it for better security.
+     *
+     * In a development environment, if this option is not set, the default secret is `supersecret` However, in production, if this configuration is not set, an error is thrown and
+     * the backend crashes.
+     *
+     * @example
+     * ```js title="medusa-config.js"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       cookieSecret: "supersecret"
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    cookieSecret?: string
+    /**
+     * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
+     *
+     * `cors` is a string used to specify the accepted URLs or patterns for API Routes starting with `/auth`. It can either be one accepted origin, or a comma-separated list of accepted origins.
+     *
+     * Every origin in that list must either be:
+     *
+     * 1. A URL. For example, `http://localhost:7001`. The URL must not end with a backslash;
+     * 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
+     *
+     * @example
+     * Some example values of common use cases:
+     *
+     * ```bash
+     * # Allow different ports locally starting with 700
+     * AUTH_CORS=/http:\/\/localhost:700\d+$/
+     *
+     * # Allow any origin ending with vercel.app. For example, admin.vercel.app
+     * AUTH_CORS=/vercel\.app$/
+     *
+     * # Allow all HTTP requests
+     * AUTH_CORS=/http:\/\/.+/
+     * ```
+     *
+     * Then, set the configuration in `medusa-config.js`:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       authCors: process.env.AUTH_CORS
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     *
+     * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       authCors: "/http:\\/\\/localhost:700\\d+$/",
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    authCors: string
+    /**
+     *
+     * Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
+     * However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
+     *
+     * Its value is an object that has the following properties:
+     *
+     * If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`.
+     *
+     * @example
+     * ```js title="medusa-config.js"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       compression: {
+     *         enabled: true,
+     *         level: 6,
+     *         memLevel: 8,
+     *         threshold: 1024
+     *       }
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    compression?: HttpCompressionOptions
+    /**
+     * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
+     *
+     * `store_cors` is a string used to specify the accepted URLs or patterns for store API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.
+     *
+     * Every origin in that list must either be:
+     *
+     * 1. A URL. For example, `http://localhost:8000`. The URL must not end with a backslash;
+     * 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
+     *
+     * @example
+     * Some example values of common use cases:
+     *
+     * ```bash
+     * # Allow different ports locally starting with 800
+     * STORE_CORS=/http:\/\/localhost:800\d+$/
+     *
+     * # Allow any origin ending with vercel.app. For example, storefront.vercel.app
+     * STORE_CORS=/vercel\.app$/
+     *
+     * # Allow all HTTP requests
+     * STORE_CORS=/http:\/\/.+/
+     * ```
+     *
+     * Then, set the configuration in `medusa-config.js`:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       storeCors: process.env.STORE_CORS,
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     *
+     * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       storeCors: "/vercel\\.app$/",
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    storeCors: string
+
+    /**
+     * The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
+     *
+     * `admin_cors` is a string used to specify the accepted URLs or patterns for admin API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.
+     *
+     * Every origin in that list must either be:
+     *
+     * 1. A URL. For example, `http://localhost:7001`. The URL must not end with a backslash;
+     * 2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
+     *
+     * @example
+     * Some example values of common use cases:
+     *
+     * ```bash
+     * # Allow different ports locally starting with 700
+     * ADMIN_CORS=/http:\/\/localhost:700\d+$/
+     *
+     * # Allow any origin ending with vercel.app. For example, admin.vercel.app
+     * ADMIN_CORS=/vercel\.app$/
+     *
+     * # Allow all HTTP requests
+     * ADMIN_CORS=/http:\/\/.+/
+     * ```
+     *
+     * Then, set the configuration in `medusa-config.js`:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       adminCors: process.env.ADMIN_CORS,
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     *
+     * If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       adminCors: "/vercel\\.app$/",
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    adminCors: string
+
+    /**
+     * Optionally you can specify the supported authentication providers per actor type (such as user, customer, or any custom actors).
+     * For example, you only want to allow SSO logins for `users` to the admin, while you want to allow email/password logins for `customers` to the storefront.
+     *
+     * `authMethodsPerActor` is a a map where the actor type (eg. 'user') is the key, and an array of supported auth providers as the value.
+     *
+     *
+     * @example
+     * Some example values of common use cases:
+     *
+     * Then, set the configuration in `medusa-config.js`:
+     *
+     * ```js title="medusa-config.js"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       authMethodsPerActor: {
+     *         user: ["email"],
+     *         customer: ["emailpas", "google"]
+     *       }
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    authMethodsPerActor?: Record<string, string[]>
+  }
 }
 
 /**
@@ -633,7 +728,8 @@ export type ProjectConfigOptions = {
  *
  * `medusa-config.js` exports an object having the following properties:
  *
- * - {@link ConfigModule.projectConfig | projectConfig}: (required): An object that holds general configurations related to the Medusa backend, such as database or CORS configurations.
+ * - {@link ConfigModule.projectConfig | projectConfig} (required): An object that holds general configurations related to the Medusa backend, such as database or CORS configurations.
+ * - {@link ConfigModule.admin | admin}: An object that holds admin-related configurations.
  * - {@link ConfigModule.plugins | plugins}: An array of plugin configurations that defines what plugins are installed and optionally specifies each of their configurations.
  * - {@link ConfigModule.modules | modules}: An object that defines what modules are installed and optionally specifies each of their configurations.
  * - {@link ConfigModule.featureFlags | featureFlags}: An object that enables or disables features guarded by a feature flag.
@@ -641,12 +737,20 @@ export type ProjectConfigOptions = {
  * For example:
  *
  * ```js title="medusa-config.js"
- * module.exports = {
- *   projectConfig,
- *   plugins,
- *   modules,
- *   featureFlags,
- * }
+ * module.exports = defineConfig({
+ *   projectConfig: {
+ *     // ...
+ *   },
+ *   admin: {
+ *     // ...
+ *   },
+ *   modules: {
+ *     // ...
+ *   },
+ *   featureFlags: {
+ *     // ...
+ *   }
+ * })
  * ```
  *
  * ---
@@ -668,6 +772,17 @@ export type ConfigModule = {
 
   /**
    * Admin dashboard configurations.
+   *
+   * @example
+   * ```js title="medusa-config.js"
+   * module.exports = defineConfig({
+   *   admin: {
+   *     backendUrl: process.env.MEDUSA_BACKEND_URL || 
+   *       "http://localhost:9000"
+   *   },
+   *   // ...
+   * })
+   * ```
    */
   admin?: AdminOptions
 
@@ -701,6 +816,11 @@ export type ConfigModule = {
    *   // ...
    * }
    * ```
+   * 
+   * @ignore
+   * 
+   * @privateRemarks
+   * Added the `@\ignore` tag for now so it's not generated in the main docs until we figure out what to do with plugins
    */
   plugins: (
     | {
@@ -716,35 +836,24 @@ export type ConfigModule = {
    *
    * Aside from installing the module with NPM, you must add it to the exported object in `medusa-config.js`.
    *
-   * The keys of the `modules` configuration object refer to the type of module. Its value can be one of the following:
+   * The keys of the `modules` configuration object refer to the module's registration name. Its value can be one of the following:
    *
-   * 1. A boolean value indicating whether the module type is enabled;
-   * 2. Or a string value indicating the name of the module to be used for the module type. This can be used if the module does not require any options;
-   * 3. Or an object having the following properties, but typically you would mainly use the `resolve` and `options` properties only:
-   *     1. `resolve`: a string indicating the name of the module.
-   *     2. `options`: an object indicating the options to pass to the module. These options vary for each module, and you should refer to the module’s documentation for details on them.
-   *     3. `resources`: a string indicating whether the module shares the dependency container with the Medusa core. Its value can either be `shared` or `isolated`. Refer to the [Modules documentation](https://docs.medusajs.com/development/modules/create#module-scope) for more details.
-   *     4. `alias`: a string indicating a unique alias to register the module under. Other modules can’t use the same alias.
-   *     5. `main`: a boolean value indicating whether this module is the main registered module. This is useful when an alias is used.
+   * 1. A boolean value indicating whether the module type is enabled. This is only supported for Medusa's commerce and architectural modules;
+   * 2. Or an object having the following properties:
+   *     1. `resolve`: a string indicating the path to the module relative to `src`, or the module's NPM package name.
+   *     2. `options`: (optional) an object indicating the options to pass to the module.
+   *     3. `definition`: (optional) an object of extra configurations, such as `isQueryable` used when a module has relationships.
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   modules: {
-   *     eventBus: {
-   *       resolve: "@medusajs/event-bus-local",
-   *     },
-   *     cacheService: {
-   *       resolve: "@medusajs/cache-redis",
-   *       options: {
-   *         redisUrl: process.env.CACHE_REDIS_URL,
-   *         ttl: 30,
-   *       },
-   *     },
-   *     // ...
-   *   },
+   *     helloModuleService: {
+   *       resolve: "./modules/hello"
+   *     }
+   *   }
    *   // ...
-   * }
+   * })
    * ```
    */
   modules?: Record<
@@ -758,26 +867,24 @@ export type ConfigModule = {
    * You can specify whether a feature should or shouldn’t be used in your backend by enabling its feature flag. Feature flags can be enabled through either environment
    * variables or through this configuration exported in `medusa-config.js`.
    *
-   * If you want to use the environment variables method, learn more about it in the [Feature Flags documentation](https://docs.medusajs.com/development/feature-flags/toggle#method-one-using-environment-variables).
-   *
    * The `featureFlags` configuration is an object. Its properties are the names of the feature flags. Each property’s value is a boolean indicating whether the feature flag is enabled.
    *
-   * You can find available feature flags and their key name [here](https://github.com/medusajs/medusa/tree/master/packages/medusa/src/loaders/feature-flags).
+   * You can find available feature flags and their key name [here](https://github.com/medusajs/medusa/tree/develop/packages/medusa/src/loaders/feature-flags).
    *
    * @example
    * ```js title="medusa-config.js"
-   * module.exports = {
+   * module.exports = defineConfig({
    *   featureFlags: {
    *     product_categories: true,
    *     // ...
-   *   },
+   *   }
    *   // ...
-   * }
+   * })
    * ```
    *
    * :::note
    *
-   * After enabling a feature flag, make sure to [run migrations](https://docs.medusajs.com/development/entities/migrations/overview#migrate-command) as it may require making changes to the database.
+   * After enabling a feature flag, make sure to run migrations as it may require making changes to the database.
    *
    * :::
    */

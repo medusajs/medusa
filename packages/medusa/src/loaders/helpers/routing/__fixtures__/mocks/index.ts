@@ -1,14 +1,19 @@
+import { ConfigModule } from "@medusajs/types"
+
 export const customersGlobalMiddlewareMock = jest.fn()
 export const customersCreateMiddlewareMock = jest.fn()
 export const storeGlobalMiddlewareMock = jest.fn()
 
-export const config = {
+export const config: ConfigModule = {
   projectConfig: {
-    store_cors: "http://localhost:8000",
-    admin_cors: "http://localhost:7001",
-    database_logging: false,
-    jwt_secret: "supersecret",
-    cookie_secret: "superSecret",
+    databaseLogging: false,
+    http: {
+      authCors: "http://localhost:9000",
+      storeCors: "http://localhost:8000",
+      adminCors: "http://localhost:7001",
+      jwtSecret: "supersecret",
+      cookieSecret: "superSecret",
+    },
   },
   featureFlags: {},
   plugins: [],

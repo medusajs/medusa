@@ -4,7 +4,6 @@ import path from "path"
 import resolveCwd from "resolve-cwd"
 
 import { didYouMean } from "./did-you-mean"
-import { getLocalMedusaVersion } from "./util/version"
 
 import { newStarter } from "./commands/new"
 import reporter from "./reporter"
@@ -118,6 +117,10 @@ function buildLocalCommands(cli, isLocalProject) {
             type: `boolean`,
             describe: `Install Medusa with the V2 feature flag enabled. WARNING: Medusa V2 is still in development and shouldn't be used in production.`,
             default: false,
+          })
+          .option(`branch`, {
+            type: `string`,
+            describe: `The branch of the git repository to clone.`,
           }),
       desc: `Create a new Medusa project.`,
       handler: handlerP(newStarter),
@@ -321,6 +324,19 @@ function buildLocalCommands(cli, isLocalProject) {
         })
       ),
     })
+    .command({
+      command: `exec [file] [args..]`,
+      desc: `Run a function defined in a file.`,
+      handler: handlerP(
+        getCommandHandler(`exec`, (args, cmd) => {
+          cmd(args)
+          // Return an empty promise to prevent handlerP from exiting early.
+          // The development server shouldn't ever exit until the user directly
+          // kills it so this is fine.
+          return new Promise((resolve) => {})
+        })
+      ),
+    })
 }
 
 function isLocalMedusaProject() {
@@ -345,7 +361,17 @@ function getVersionInfo() {
   const { version } = require(`../package.json`)
   const isMedusaProject = isLocalMedusaProject()
   if (isMedusaProject) {
-    let medusaVersion = getLocalMedusaVersion()
+    let medusaVersion = ""
+    try {
+      medusaVersion = require(path.join(
+        process.cwd(),
+        `node_modules`,
+        `@medusajs/medusa`,
+        `package.json`
+      )).version
+    } catch (e) {
+      /* noop */
+    }
 
     if (!medusaVersion) {
       medusaVersion = `unknown`

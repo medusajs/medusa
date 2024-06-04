@@ -20,8 +20,7 @@ describe("SubscriberLoader", () => {
     const paths = await new SubscriberLoader(
       rootDir,
       containerMock as unknown as MedusaContainer,
-      pluginOptions,
-      "id-load-subscribers"
+      pluginOptions
     ).load()
 
     if (paths) {

@@ -1,11 +1,11 @@
-import {
-  CreatePaymentProviderDTO,
-  LoaderOptions
-} from "@medusajs/types"
+import { CreatePaymentProviderDTO, LoaderOptions } from "@medusajs/types"
+import { PaymentProviderService } from "@services"
 
 export default async ({ container }: LoaderOptions): Promise<void> => {
-  const providersToLoad = container.resolve("payment_providers")
-  const paymentProviderService = container.resolve("paymentProviderService")
+  const providersToLoad = container.resolve<string[]>("payment_providers")
+  const paymentProviderService = container.resolve<PaymentProviderService>(
+    "paymentProviderService"
+  )
 
   const providers = await paymentProviderService.list({
     id: providersToLoad,

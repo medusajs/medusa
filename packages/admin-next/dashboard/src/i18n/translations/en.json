@@ -81,7 +81,8 @@
     "download": "Download",
     "clearAll": "Clear all",
     "apply": "Apply",
-    "add": "Add"
+    "add": "Add",
+    "select": "Select"
   },
   "filters": {
     "date": {
@@ -163,17 +164,28 @@
   "products": {
     "domain": "Products",
     "create": {
-      "header": "Create Product",
-      "hint": "Create a new product to sell in your store.",
+      "header": "General",
       "tabs": {
         "details": "Details",
-        "variants": "Variants"
+        "organize": "Organize",
+        "variants": "Variants",
+        "inventory": "Inventory kits"
+      },
+      "errors": {
+        "variants": "Please select at least one variant.",
+        "options": "Please create at least one option."
+      },
+      "inventory": {
+        "heading": "Inventory kits",
+        "label": "Inventory kit"
       },
       "variants": {
         "header": "Variants",
+        "subHeadingTitle": "Yes, this is a product with variants",
+        "subHeadingDescription": "When unchecked we will create a default variant for you",
         "productVariants": {
           "label": "Product variants",
-          "hint": "Variants left unchecked won't be created. This ranking will affect how the variants are ranked in your frontend.",
+          "hint": "This ranking will affect how the variants are ranked in your frontend.",
           "alert": "Add options to create variants."
         },
         "productOptions": {
@@ -198,6 +210,7 @@
       "uploadImagesLabel": "Upload images",
       "uploadImagesHint": "Drag and drop images here or click to upload.",
       "invalidFileType": "'{{name}}' is not a supported file type. Supported file types are: {{types}}.",
+      "failedToUpload": "Failed to upload the added media. Please try again.",
       "deleteWarning_one": "You are about to delete {{count}} image. This action cannot be undone.",
       "deleteWarning_other": "You are about to delete {{count}} images. This action cannot be undone.",
       "deleteWarningWithThumbnail_one": "You are about to delete {{count}} image including the thumbnail. This action cannot be undone.",
@@ -414,6 +427,12 @@
       "hint": "Create a new customer to manage their details.",
       "successToast": "Customer {{email}} was successfully created."
     },
+    "groups": {
+      "label": "Customer groups",
+      "remove": "Are you sure you want to remove the customer from \"{{name}}\" customer group?",
+      "removeMany": "Are you sure you want to customer from following customer groups: {{groups}}?",
+      "alreadyAddedTooltip": "The customer is already in this customer group."
+    },
     "edit": {
       "header": "Edit Customer",
       "emailDisabledTooltip": "The email address cannot be changed for registered customers.",
@@ -428,7 +447,9 @@
       "guest": "Guest",
       "registered": "Registered",
       "groups": "Groups"
-    }
+    },
+    "registered": "Registered",
+    "guest": "Guest"
   },
   "customerGroups": {
     "domain": "Customer Groups",
@@ -528,8 +549,21 @@
       "unfulfilledItems": "Unfulfilled Items",
       "statusLabel": "Fulfillment status",
       "statusTitle": "Fulfillment Status",
+      "fulfillItems": "Fulfill items",
+      "awaitingFulfillmentBadge": "Awaiting fulfillment",
       "awaitingFullfillmentBadge": "Awaiting fulfillment",
       "number": "Fulfillment #{{number}}",
+      "itemsToFulfill": "Items to fulfill",
+      "create": "Create Fulfillment",
+      "available": "Available",
+      "inStock": "In stock",
+      "itemsToFulfillDesc": "Choose items and quantities to fulfill",
+      "locationDescription": "Choose which location you want to fulfill items from.",
+      "error": {
+        "wrongQuantity": "Only one item is available for fulfillment",
+        "wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",
+        "noItems": "No items to fulfill."
+      },
       "status": {
         "notFulfilled": "Not fulfilled",
         "partiallyFulfilled": "Partially fulfilled",
@@ -542,6 +576,7 @@
         "requiresAction": "Requires action"
       },
       "toast": {
+        "created": "Fulfillment created successfully",
         "canceled": "Fulfillment successfully canceled",
         "fulfillmentShipped": "Cannot cancel an already shipped fulfillment"
       },
@@ -652,8 +687,8 @@
       "invalidEmail": "Email must be a valid email address."
     }
   },
-  "shipping": {
-    "title": "Location & Shipping",
+  "location": {
+    "title": "Locations & Shipping",
     "domain": "Location & Shipping",
     "description": "Choose where you ship and how much you charge for shipping at checkout. Define shipping options specific for your locations.",
     "createLocation": "Create location",
@@ -913,6 +948,9 @@
   },
   "promotions": {
     "domain": "Promotions",
+    "sections": {
+      "details": "Promotion Details"
+    },
     "fields": {
       "method": "Method",
       "type": "Type",
@@ -922,6 +960,9 @@
       "allocation": "Allocation",
       "addCondition": "Add condition",
       "clearAll": "Clear all",
+      "amount": {
+        "tooltip": "Select the currency code to enable setting the amount"
+      },
       "conditions": {
         "rules": {
           "title": "Who can use this code?",
@@ -955,6 +996,9 @@
     },
     "addToCampaign": {
       "title": "Add Promotion To Campaign"
+    },
+    "campaign_currency": {
+      "tooltip": "Currency is carried over from the promotion. Change it on the promotions tab."
     },
     "form": {
       "required": "Required",
@@ -1060,8 +1104,12 @@
       "identifier": "Identifier",
       "start_date": "Start date",
       "end_date": "End date",
-      "total_spend": "Total spend",
-      "budget_limit": "Budget limit"
+      "total_spend": "Budget spent",
+      "total_used": "Budget used",
+      "budget_limit": "Budget limit",
+      "campaign_id": {
+        "hint": "A list of campaigns with the same currency code as the promotion"
+      }
     },
     "budget": {
       "create": {
@@ -1092,6 +1140,8 @@
         "description": "You are about to remove {{count}} promotion(s) from the campaign. This action cannot be undone."
       },
       "alreadyAdded": "This promotion has already been added to the campaign.",
+      "alreadyAddedDiffCampaign": "This promotion has already been added to a different campaign ({{name}}).",
+      "currencyMismatch": "Currency of the promotion and campaign doesn't match",
       "toast": {
         "success": "Successfully added {{count}} promotion(s) to campaign"
       }
@@ -1414,6 +1464,7 @@
     "fields": {
       "lastUsedAtLabel": "Last used at",
       "revokedByLabel": "Revoked by",
+      "revokedAtLabel": "Revoked at",
       "createdByLabel": "Created by"
     }
   },
@@ -1521,6 +1572,9 @@
     "lastName": "Last Name",
     "firstName": "First Name",
     "title": "Title",
+    "customTitle": "Custom title",
+    "manageInventory": "Manage inventory",
+    "inventoryKit": "Inventory kit",
     "description": "Description",
     "email": "Email",
     "password": "Password",
@@ -1540,7 +1594,6 @@
     "tags": "Tags",
     "type": "Type",
     "reason": "Reason",
-    "note": "Note",
     "none": "none",
     "all": "all",
     "percentage": "Percentage",

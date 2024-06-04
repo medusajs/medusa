@@ -47,17 +47,20 @@ export default class CampaignBudget {
   })
   campaign: Campaign | null = null
 
+  @Property({ columnType: "text", nullable: true })
+  currency_code: string | null = null
+
   @MikroOrmBigNumberProperty({ nullable: true })
   limit: BigNumber | number | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   raw_limit: BigNumberRawValue | null = null
 
-  @MikroOrmBigNumberProperty({ nullable: true })
-  used: BigNumber | number | null = null
+  @MikroOrmBigNumberProperty({ default: 0 })
+  used: BigNumber | number = 0
 
-  @Property({ columnType: "jsonb", nullable: true })
-  raw_used: BigNumberRawValue | null = null
+  @Property({ columnType: "jsonb" })
+  raw_used: BigNumberRawValue
 
   @Property({
     onCreate: () => new Date(),

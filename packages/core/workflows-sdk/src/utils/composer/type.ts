@@ -201,7 +201,7 @@ export type ReturnWorkflow<
     runAsStep: ({
       input,
     }: {
-      input: TData
+      input: TData | WorkflowData<TData>
     }) => ReturnType<StepFunction<TData, TResult>>
     run: <TDataOverride = undefined, TResultOverride = undefined>(
       ...args: Parameters<

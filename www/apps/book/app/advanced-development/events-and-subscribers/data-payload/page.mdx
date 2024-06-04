@@ -15,8 +15,9 @@ The object that the subscriber function receives as a parameter has a `data` pro
 For example:
 
 export const highlights = [
-  ["8", "", "The event's data payload."],
-  ["9", "{ id: string }", "The type of expected data payloads."]
+  ["7", "", "The event's data payload."],
+  ["8", "{ id: string }", "The type of expected data payloads."],
+  ["9", '"data" in data ? data.data.id : data.id', "The payload data is either in `data.data` or directly in `data`."]
 ]
 
 ```ts title="src/subscribers/product-created.ts" highlights={highlights}
@@ -28,7 +29,8 @@ import {
 export default async function productCreateHandler({
   data,
 }: SubscriberArgs<{ id: string }>) {
-  console.log(`The product ${data.id} was created`)
+  const productId = "data" in data ? data.data.id : data.id
+  console.log(`The product ${productId} was created`)
 }
 
 export const config: SubscriberConfig = {

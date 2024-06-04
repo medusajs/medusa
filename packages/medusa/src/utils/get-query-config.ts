@@ -4,7 +4,7 @@ import {
   stringToSelectRelationObject,
 } from "@medusajs/utils"
 import { pick } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { MedusaError, isDefined } from "@medusajs/utils"
 import { RequestQueryFields } from "@medusajs/types"
 import { FindConfig, QueryConfig } from "../types/common"
 
@@ -90,7 +90,6 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
     }
   })
 
-  const allAllowedFields = new Set(allowedFields) // In case there is no allowedFields, allow all fields
   const notAllowedFields: string[] = []
 
   if (allowedFields.length) {

@@ -1,12 +1,7 @@
-import {
-  Logger,
-  MedusaContainer,
-  MODULE_SCOPE,
-  ModuleResolution,
-} from "@medusajs/types"
-
+import { Logger, MedusaContainer, ModuleResolution } from "@medusajs/types"
 import { asValue } from "awilix"
 import { EOL } from "os"
+import { MODULE_SCOPE } from "../types"
 import { loadInternalModule } from "./utils"
 
 export const moduleLoader = async ({
@@ -33,16 +28,10 @@ export const moduleLoader = async ({
 
     if (registrationResult?.error) {
       const { error } = registrationResult
-      if (resolution.definition.isRequired) {
-        logger?.error(
-          `Could not resolve required module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
-        )
-        throw error
-      }
-
-      logger?.warn(
+      logger?.error(
         `Could not resolve module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
       )
+      throw error
     }
   }
 }

@@ -1,5 +1,4 @@
 import express from "express"
-import { IdMap } from "medusa-test-utils"
 import { resolve } from "path"
 import {
   config,
@@ -32,7 +31,7 @@ describe("RoutesLoader", function () {
       const res = await request("GET", "/admin/orders/1000", {
         adminSession: {
           jwt: {
-            userId: IdMap.getId("admin_user"),
+            userId: "admin_user",
           },
         },
       })
@@ -45,7 +44,7 @@ describe("RoutesLoader", function () {
       const res = await request("POST", "/admin/orders/1000", {
         adminSession: {
           jwt: {
-            userId: IdMap.getId("admin_user"),
+            userId: "admin_user",
           },
         },
       })
@@ -132,7 +131,7 @@ describe("RoutesLoader", function () {
       const res = await request("GET", "/admin/protected", {
         adminSession: {
           jwt: {
-            userId: IdMap.getId("admin_user"),
+            userId: "admin_user",
           },
         },
       })
@@ -153,33 +152,6 @@ describe("RoutesLoader", function () {
 
       expect(res.status).toBe(200)
       expect(res.text).toBe("GET /admin/unprotected")
-    })
-
-    it("should return 200 when customer is authenticated", async () => {
-      const res = await request("GET", "/store/me/protected", {
-        clientSession: {
-          jwt: {
-            customer_id: IdMap.getId("lebron"),
-          },
-        },
-      })
-
-      expect(res.status).toBe(200)
-      expect(res.text).toBe("GET /store/protected")
-    })
-
-    it("should return 401 when customer is not authenticated", async () => {
-      const res = await request("GET", "/store/me/protected")
-
-      expect(res.status).toBe(401)
-      expect(res.text).toBe("Unauthorized")
-    })
-
-    it("should return 200 when customer route is opted out of authentication", async () => {
-      const res = await request("GET", "/store/me/unprotected")
-
-      expect(res.status).toBe(200)
-      expect(res.text).toBe("GET /store/unprotected")
     })
 
     it("should return the error as JSON when an error is thrown with default error handling", async () => {

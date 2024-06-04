@@ -190,10 +190,8 @@ export interface CustomFindOptions<TModel, InKeys extends keyof TModel> {
  * @ignore
  */
 export type QueryConfig<TEntity extends BaseEntity> = {
-  defaultFields?: (keyof TEntity | string)[]
-  defaultRelations?: string[]
-  allowedFields?: string[]
-  allowedRelations?: string[]
+  deafults?: (keyof TEntity | string)[]
+  allowed?: (keyof TEntity | string)[]
   defaultLimit?: number
   isList?: boolean
 }
@@ -231,48 +229,6 @@ export type RequestQueryFields = {
    * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
    */
   order?: string
-}
-
-/**
- * @interface
- *
- * Fields included in the response if it's paginated.
- */
-export type PaginatedResponse<T = unknown> = {
-  /**
-   * The limit applied on the retrieved items.
-   */
-  limit: number
-
-  /**
-   * The number of items skipped before retrieving the list of items.
-   */
-  offset: number
-
-  /**
-   * The total count of items.
-   */
-  count: number
-} & T
-
-/**
- * The fields returned in the response of a DELETE request.
- */
-export type DeleteResponse<T = string> = {
-  /**
-   * The ID of the item that was deleted.
-   */
-  id: string
-
-  /**
-   * The type of the item that was deleted.
-   */
-  object: T
-
-  /**
-   * Whether the item was deleted successfully.
-   */
-  deleted: boolean
 }
 
 /**
@@ -371,156 +327,6 @@ export interface NumericalComparisonOperator {
    * The filtered number must be less than or equal to this value.
    */
   lte?: number
-}
-
-/**
- * Address fields used when creating/updating an address.
- */
-export interface AddressPayload {
-  /**
-   * First name
-   */
-  first_name?: string
-
-  /**
-   * Last name
-   */
-  last_name?: string
-
-  /**
-   * Phone Number
-   */
-  phone?: string
-
-  /**
-   * Holds custom data in key-value pairs.
-   */
-  metadata?: Record<string, unknown>
-
-  /**
-   * Company
-   */
-  company?: string
-
-  /**
-   * Address line 1
-   */
-  address_1?: string
-
-  /**
-   * Address line 2
-   */
-  address_2?: string
-
-  /**
-   * City
-   */
-  city?: string
-
-  /**
-   * The 2 character ISO code of the country in lower case
-   */
-  country_code?: string
-
-  /**
-   * Province
-   */
-  province?: string
-
-  /**
-   * Postal Code
-   */
-  postal_code?: string
-}
-
-/**
- * Address fields used when creating an address.
- */
-export interface AddressCreatePayload {
-  /**
-   * First name
-   */
-  first_name: string
-
-  /**
-   * Last name
-   */
-  last_name: string
-
-  /**
-   * Phone Number
-   */
-  phone: string
-
-  /**
-   * Holds custom data in key-value pairs.
-   */
-  metadata: object
-
-  /**
-   * Company
-   */
-  company: string
-
-  /**
-   * Address line 1
-   */
-  address_1: string
-
-  /**
-   * Address line 2
-   */
-  address_2: string
-
-  /**
-   * City
-   */
-  city: string
-
-  /**
-   * The 2 character ISO code of the country in lower case
-   */
-  country_code: string
-
-  /**
-   * Province
-   */
-  province: string
-
-  /**
-   * Postal Code
-   */
-  postal_code: string
-}
-
-/**
- * Parameters that can be used to configure how data is retrieved.
- */
-export interface FindParams {
-  /**
-   * Comma-separated relations that should be expanded in the returned data.
-   */
-  expand?: string
-
-  /**
-   *Comma-separated fields that should be included in the returned data.
-   */
-  fields?: string
-}
-
-/**
- * Parameters that can be used to configure how a list of data is paginated.
- */
-export interface FindPaginationParams {
-  /**
-   * The number of items to skip when retrieving a list.
-   */
-  offset?: number
-
-  /**
-   * Limit the number of items returned in the list.
-   */
-  limit?: number
 }
 
 /**
