@@ -9,6 +9,7 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
@@ -112,7 +113,6 @@ export const cancelOrderWorkflow = createWorkflow(
     const lineItemIds = transform({ order }, ({ order }) => {
       return order.items?.map((i) => i.id)
     })
-    deleteReservationsByLineItemsStep(lineItemIds)
 
     const paymentIds = transform({ order }, ({ order }) => {
       return deepFlatMap(
@@ -123,8 +123,11 @@ export const cancelOrderWorkflow = createWorkflow(
         }
       )
     })
-    cancelPaymentStep({ paymentIds })
 
-    cancelOrdersStep({ orderIds: [order.id] })
+    parallelize(
+      deleteReservationsByLineItemsStep(lineItemIds),
+      cancelPaymentStep({ paymentIds }),
+      cancelOrdersStep({ orderIds: [order.id] })
+    )
   }
 )

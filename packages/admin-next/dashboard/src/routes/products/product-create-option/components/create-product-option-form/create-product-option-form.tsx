@@ -64,7 +64,7 @@ export const CreateProductOptionForm = ({
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
-        <RouteDrawer.Body className="flex flex-1 flex-col gap-y-8 overflow-auto">
+        <RouteDrawer.Body className="flex flex-1 flex-col gap-y-4 overflow-auto">
           <Form.Field
             control={form.control}
             name="title"
@@ -75,7 +75,12 @@ export const CreateProductOptionForm = ({
                     {t("products.fields.options.optionTitle")}
                   </Form.Label>
                   <Form.Control>
-                    <Input {...field} />
+                    <Input
+                      {...field}
+                      placeholder={t(
+                        "products.fields.options.optionTitlePlaceholder"
+                      )}
+                    />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>
@@ -92,7 +97,12 @@ export const CreateProductOptionForm = ({
                     {t("products.fields.options.variations")}
                   </Form.Label>
                   <Form.Control>
-                    <ChipInput {...field} />
+                    <ChipInput
+                      {...field}
+                      placeholder={t(
+                        "products.fields.options.variantionsPlaceholder"
+                      )}
+                    />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>

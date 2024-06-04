@@ -1823,36 +1823,6 @@ medusaIntegrationTestRunner({
             )
           ).data.sales_channel
 
-          product = (
-            await api.post(
-              "/admin/products",
-              {
-                title: "Test fixture",
-                tags: [{ value: "123" }, { value: "456" }],
-                options: [
-                  { title: "size", values: ["large", "small"] },
-                  { title: "color", values: ["green"] },
-                ],
-                variants: [
-                  {
-                    title: "Test variant",
-                    prices: [
-                      {
-                        currency_code: "usd",
-                        amount: 100,
-                      },
-                    ],
-                    options: {
-                      size: "large",
-                      color: "green",
-                    },
-                  },
-                ],
-              },
-              adminHeaders
-            )
-          ).data.product
-
           stockLocation = (
             await api.post(
               `/admin/stock-locations`,
@@ -1902,20 +1872,41 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          await remoteLinkService.create([
-            {
-              [Modules.STOCK_LOCATION]: { stock_location_id: stockLocation.id },
-              [Modules.FULFILLMENT]: { fulfillment_set_id: fulfillmentSet.id },
-            },
-            {
-              [Modules.PRODUCT]: {
-                variant_id: product.variants[0].id,
+          product = (
+            await api.post(
+              "/admin/products",
+              {
+                title: "Test fixture",
+                tags: [{ value: "123" }, { value: "456" }],
+                options: [
+                  { title: "size", values: ["large", "small"] },
+                  { title: "color", values: ["green"] },
+                ],
+                variants: [
+                  {
+                    title: "Test variant",
+                    inventory_items: [
+                      {
+                        inventory_item_id: inventoryItem.id,
+                        required_quantity: 1,
+                      },
+                    ],
+                    prices: [
+                      {
+                        currency_code: "usd",
+                        amount: 100,
+                      },
+                    ],
+                    options: {
+                      size: "large",
+                      color: "green",
+                    },
+                  },
+                ],
               },
-              [Modules.INVENTORY]: {
-                inventory_item_id: inventoryItem.id,
-              },
-            },
-          ])
+              adminHeaders
+            )
+          ).data.product
 
           shippingOption = (
             await api.post(
