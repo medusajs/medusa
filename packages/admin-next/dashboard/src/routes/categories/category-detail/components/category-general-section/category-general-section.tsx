@@ -1,3 +1,4 @@
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { AdminProductCategoryResponse } from "@medusajs/types"
 import { Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -29,7 +30,28 @@ export const CategoryGeneralSection = ({
               {internalProps.label}
             </StatusBadge>
           </div>
-          <ActionMenu groups={[]} />
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.edit"),
+                    icon: <PencilSquare />,
+                    to: "edit",
+                  },
+                ],
+              },
+              {
+                actions: [
+                  {
+                    label: t("actions.delete"),
+                    icon: <Trash />,
+                    onClick: () => console.log("Delete"),
+                  },
+                ],
+              },
+            ]}
+          />
         </div>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 gap-3 px-6 py-4">

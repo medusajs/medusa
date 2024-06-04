@@ -9,9 +9,9 @@ import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useCategories } from "../../../../../hooks/api/categories"
-import { useCategoryTableColumns } from "../../../../../hooks/table/columns/use-category-table-columns"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useCategoryTableQuery } from "../../../common/hooks/use-category-table-query"
+import { useCategoryTableColumns } from "./use-category-table-columns"
+import { useCategoryTableQuery } from "./use-category-table-query"
 
 const PAGE_SIZE = 20
 
