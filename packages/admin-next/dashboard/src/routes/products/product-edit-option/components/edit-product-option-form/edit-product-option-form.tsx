@@ -4,7 +4,9 @@ import { Button, Input } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
+
 import { Form } from "../../../../../components/common/form"
+import { ChipInput } from "../../../../../components/inputs/chip-input"
 import {
   RouteDrawer,
   useRouteModal,
@@ -34,7 +36,7 @@ export const CreateProductOptionForm = ({
     resolver: zodResolver(CreateProductOptionSchema),
   })
 
-  const { mutateAsync, isLoading } = useUpdateProductOption(
+  const { mutateAsync, isPending } = useUpdateProductOption(
     option.product_id,
     option.id
   )
@@ -59,7 +61,7 @@ export const CreateProductOptionForm = ({
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
-        <RouteDrawer.Body className="flex flex-1 flex-col gap-y-8 overflow-auto">
+        <RouteDrawer.Body className="flex flex-1 flex-col gap-y-4 overflow-auto">
           <Form.Field
             control={form.control}
             name="title"
@@ -80,21 +82,14 @@ export const CreateProductOptionForm = ({
           <Form.Field
             control={form.control}
             name="values"
-            render={({ field: { value, onChange, ...field } }) => {
+            render={({ field: { ...field } }) => {
               return (
                 <Form.Item>
                   <Form.Label>
                     {t("products.fields.options.variations")}
                   </Form.Label>
                   <Form.Control>
-                    <Input
-                      {...field}
-                      value={(value ?? []).join(",")}
-                      onChange={(e) => {
-                        const val = e.target.value
-                        onChange(val.split(",").map((v) => v.trim()))
-                      }}
-                    />
+                    <ChipInput {...field} />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>
@@ -109,7 +104,7 @@ export const CreateProductOptionForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button type="submit" size="small" isLoading={isLoading}>
+            <Button type="submit" size="small" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

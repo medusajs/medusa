@@ -64,7 +64,7 @@ export const CreateProductOptionForm = ({
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
-        <RouteDrawer.Body className="flex flex-1 flex-col gap-y-8 overflow-auto">
+        <RouteDrawer.Body className="flex flex-1 flex-col gap-y-4 overflow-auto">
           <Form.Field
             control={form.control}
             name="title"
