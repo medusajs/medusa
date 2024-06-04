@@ -27,16 +27,12 @@ type WorkflowInput = {
 const buildLink = (
   variant_id: string,
   inventory_item_id: string,
-  required_quantity?: number
+  required_quantity: number
 ) => {
   const link: LinkDefinition = {
     [Modules.PRODUCT]: { variant_id },
     [Modules.INVENTORY]: { inventory_item_id: inventory_item_id },
     data: { required_quantity: required_quantity },
-  }
-
-  if (required_quantity) {
-    link.data = { required_quantity: required_quantity }
   }
 
   return link
