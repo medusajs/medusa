@@ -100,6 +100,7 @@ export const ProductCreateOrganizationSection = ({
                     options={types.options}
                     searchValue={types.searchValue}
                     onSearchValueChange={types.onSearchValueChange}
+                    fetchNextPage={types.fetchNextPage}
                   />
                 </Form.Control>
               </Form.Item>
@@ -121,6 +122,7 @@ export const ProductCreateOrganizationSection = ({
                     options={collections.options}
                     searchValue={collections.searchValue}
                     onSearchValueChange={collections.onSearchValueChange}
+                    fetchNextPage={collections.fetchNextPage}
                   />
                 </Form.Control>
               </Form.Item>
