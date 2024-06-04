@@ -661,46 +661,6 @@ export default class PricingModuleService<
   }
 
   @InjectManager("baseRepository_")
-  @EmitEvents()
-  async createPriceListRules(
-    data: PricingTypes.CreatePriceListRuleDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceListRuleDTO[]> {
-    const priceLists = await this.createPriceListRules_(data, sharedContext)
-
-    return await this.baseRepository_.serialize<
-      PricingTypes.PriceListRuleDTO[]
-    >(priceLists, {
-      populate: true,
-    })
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async createPriceListRules_(
-    data: PricingTypes.CreatePriceListRuleDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    return await this.priceListRuleService_.create(data, sharedContext)
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async updatePriceListRules(
-    data: PricingTypes.UpdatePriceListRuleDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceListRuleDTO[]> {
-    const priceLists = await this.priceListRuleService_.update(
-      data,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<
-      PricingTypes.PriceListRuleDTO[]
-    >(priceLists, {
-      populate: true,
-    })
-  }
-
-  @InjectManager("baseRepository_")
   async updatePriceListPrices(
     data: PricingTypes.UpdatePriceListPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
