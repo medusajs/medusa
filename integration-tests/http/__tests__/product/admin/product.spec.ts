@@ -1744,6 +1744,165 @@ medusaIntegrationTestRunner({
             })
           )
         })
+
+        it("creates product with variant inventory kits", async () => {
+          const inventoryItem1 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-1" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          const inventoryItem2 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-2" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          const inventoryItem3 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-3" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          const payload = {
+            title: "Test product - 1",
+            handle: "test-1",
+            variants: [
+              {
+                title: "Custom inventory 1",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                manage_inventory: true,
+                inventory_items: [
+                  {
+                    inventory_item_id: inventoryItem1.id,
+                    required_quantity: 4,
+                  },
+                ],
+              },
+              {
+                title: "No inventory",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                manage_inventory: false,
+              },
+              {
+                title: "Default Inventory",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                manage_inventory: true,
+              },
+              {
+                title: "Custom inventory 2",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                manage_inventory: true,
+                inventory_items: [
+                  {
+                    inventory_item_id: inventoryItem2.id,
+                    required_quantity: 5,
+                  },
+                  {
+                    inventory_item_id: inventoryItem3.id,
+                    required_quantity: 6,
+                  },
+                ],
+              },
+            ],
+          }
+
+          const response = await api
+            .post(
+              "/admin/products?fields=%2bvariants.inventory_items.inventory.*,%2bvariants.inventory_items.*",
+              payload,
+              adminHeaders
+            )
+            .catch((err) => {
+              console.log(err)
+            })
+
+          expect(response.status).toEqual(200)
+          expect(response.data.product).toEqual(
+            expect.objectContaining({
+              title: "Test product - 1",
+              variants: expect.arrayContaining([
+                expect.objectContaining({
+                  title: "Custom inventory 1",
+                  manage_inventory: true,
+                  inventory_items: [
+                    expect.objectContaining({
+                      required_quantity: 4,
+                      inventory_item_id: inventoryItem1.id,
+                    }),
+                  ],
+                }),
+                expect.objectContaining({
+                  title: "No inventory",
+                  manage_inventory: false,
+                  inventory_items: [],
+                }),
+                expect.objectContaining({
+                  title: "Default Inventory",
+                  manage_inventory: true,
+                  inventory_items: [
+                    expect.objectContaining({
+                      required_quantity: 1,
+                      inventory_item_id: expect.any(String),
+                    }),
+                  ],
+                }),
+                expect.objectContaining({
+                  title: "Custom inventory 2",
+                  manage_inventory: true,
+                  inventory_items: expect.arrayContaining([
+                    expect.objectContaining({
+                      required_quantity: 5,
+                      inventory_item_id: inventoryItem2.id,
+                    }),
+                    expect.objectContaining({
+                      required_quantity: 6,
+                      inventory_item_id: inventoryItem3.id,
+                    }),
+                  ]),
+                }),
+              ]),
+            })
+          )
+        })
+
+        it("should throw an error when inventory item does not exist", async () => {
+          const payload = {
+            title: "Test product - 1",
+            handle: "test-1",
+            variants: [
+              {
+                title: "Custom inventory 1",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                manage_inventory: true,
+                inventory_items: [
+                  {
+                    inventory_item_id: "does-not-exist",
+                    required_quantity: 4,
+                  },
+                ],
+              },
+            ],
+          }
+
+          const error = await api
+            .post("/admin/products", payload, adminHeaders)
+            .catch((err) => err)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data).toEqual(
+            expect.objectContaining({
+              type: "invalid_data",
+              message: "Inventory Items with ids: does-not-exist was not found",
+            })
+          )
+        })
       })
 
       describe("DELETE /admin/products/:id/options/:option_id", () => {
@@ -2908,11 +3067,14 @@ medusaIntegrationTestRunner({
           )
 
           expect(res.status).toEqual(200)
-          expect(res.data.variant.inventory_items[0]).toEqual(
-            expect.objectContaining({
-              required_quantity: 5,
-              inventory_item_id: inventoryItem.id,
-            })
+          expect(res.data.variant.inventory_items).toHaveLength(2)
+          expect(res.data.variant.inventory_items).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                required_quantity: 5,
+                inventory_item_id: inventoryItem.id,
+              }),
+            ])
           )
         })
       })
@@ -2963,13 +3125,15 @@ medusaIntegrationTestRunner({
           )
 
           expect(res.status).toEqual(200)
-          expect(res.data.variant.inventory_items)
-          expect(res.data.variant.inventory_items).toEqual([
-            expect.objectContaining({
-              required_quantity: 10,
-              inventory_item_id: inventoryItem.id,
-            }),
-          ])
+          expect(res.data.variant.inventory_items).toHaveLength(2)
+          expect(res.data.variant.inventory_items).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                required_quantity: 10,
+                inventory_item_id: inventoryItem.id,
+              }),
+            ])
+          )
         })
       })
 
@@ -3008,8 +3172,10 @@ medusaIntegrationTestRunner({
           )
 
           expect(res.status).toEqual(200)
-          expect(res.data.parent.inventory_items)
-          expect(res.data.parent.inventory_items).toEqual([])
+          expect(res.data.parent.inventory_items).toHaveLength(1)
+          expect(res.data.parent.inventory_items[0].id).not.toBe(
+            inventoryItem.id
+          )
         })
       })
 
@@ -3131,11 +3297,14 @@ medusaIntegrationTestRunner({
             )
           ).data.variant
 
-          expect(createdLinkVariant.inventory_items[0]).toEqual(
-            expect.objectContaining({
-              required_quantity: 15,
-              inventory_item_id: inventoryItemToCreate.id,
-            })
+          expect(createdLinkVariant.inventory_items).toHaveLength(2)
+          expect(createdLinkVariant.inventory_items).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                required_quantity: 15,
+                inventory_item_id: inventoryItemToCreate.id,
+              }),
+            ])
           )
 
           const updatedLinkVariant = (
@@ -3145,11 +3314,14 @@ medusaIntegrationTestRunner({
             )
           ).data.variant
 
-          expect(updatedLinkVariant.inventory_items[0]).toEqual(
-            expect.objectContaining({
-              required_quantity: 25,
-              inventory_item_id: inventoryItemToUpdate.id,
-            })
+          expect(updatedLinkVariant.inventory_items).toHaveLength(2)
+          expect(updatedLinkVariant.inventory_items).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                required_quantity: 25,
+                inventory_item_id: inventoryItemToUpdate.id,
+              }),
+            ])
           )
 
           const deletedLinkVariant = (
@@ -3159,7 +3331,10 @@ medusaIntegrationTestRunner({
             )
           ).data.variant
 
-          expect(deletedLinkVariant.inventory_items).toHaveLength(0)
+          expect(deletedLinkVariant.inventory_items).toHaveLength(1)
+          expect(deletedLinkVariant.inventory_items[0].id).not.toEqual(
+            inventoryItemToDelete.id
+          )
         })
       })
     })

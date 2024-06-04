@@ -34,12 +34,6 @@ export type ProviderSendNotificationResultsDTO = {
   id?: string
 }
 
-/**
- * ## Overview
- *
- * Notification provider interface for the notification module.
- *
- */
 export interface INotificationProvider {
   /**
    * This method is used to send a notification.

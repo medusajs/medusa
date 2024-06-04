@@ -1,14 +1,10 @@
 import { FormattingOptionsType } from "types"
 
 const notificationOptions: FormattingOptionsType = {
-  "^notification": {
-    frontmatterData: {
-      displayed_sidebar: "core",
-    },
-  },
   "^notification/.*AbstractNotificationProviderService": {
     reflectionGroups: {
       Properties: false,
+      Constructors: false,
     },
     reflectionDescription: `In this document, you’ll learn how to create a notification provider module and the methods you must implement in it.`,
     frontmatterData: {
