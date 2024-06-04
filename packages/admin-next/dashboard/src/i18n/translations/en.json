@@ -289,7 +289,9 @@
         "hint": "Options are used to define the color, size, etc. of the product",
         "add": "Add option",
         "optionTitle": "Option title",
-        "variations": "Variations (comma-separated)"
+        "optionTitlePlaceholder": "Color",
+        "variations": "Variations (comma-separated)",
+        "variantionsPlaceholder": "Red, Blue, Green"
       },
       "variants": {
         "label": "Product variants",
