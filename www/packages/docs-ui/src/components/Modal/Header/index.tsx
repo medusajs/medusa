@@ -20,7 +20,7 @@ export const ModalHeader = ({ title }: ModalHeaderProps) => {
     >
       <span className={clsx("text-medusa-fg-base text-h2")}>{title}</span>
       <Button
-        variant="clear"
+        variant="transparent"
         className="cursor-pointer"
         onClick={() => closeModal()}
       >
