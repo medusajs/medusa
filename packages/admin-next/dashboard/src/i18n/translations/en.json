@@ -195,14 +195,6 @@
       },
       "successToast": "Product {{title}} was successfully created."
     },
-    "edit": {
-      "organization": {
-        "header": "Edit Organization",
-        "toasts": {
-          "success": "Successfully updated the organization of \"{{title}}\"."
-        }
-      }
-    },
     "deleteWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
     "variants": "Variants",
     "attributes": "Attributes",
@@ -341,6 +333,12 @@
       "create": {
         "header": "Create Option",
         "successToast": "Option {{title}} was successfully created."
+      }
+    },
+    "organization": {
+      "header": "Edit Organization",
+      "toasts": {
+        "success": "Successfully updated the organization of {{title}}."
       }
     },
     "toasts": {
