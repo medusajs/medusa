@@ -1,10 +1,15 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+  SuiteOptions,
+} from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { CommonEvents, composeMessage, PricingEvents } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
@@ -14,6 +19,16 @@ moduleIntegrationTestRunner({
     MikroOrmWrapper,
     service,
   }: SuiteOptions<IPricingModuleService>) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("PriceListRule Service", () => {
       let testManager: SqlEntityManager
       beforeEach(async () => {
@@ -207,7 +222,7 @@ moduleIntegrationTestRunner({
       })
 
       describe("create", () => {
-        it("should create a priceListRule successfully", async () => {
+        it.only("should create a priceListRule successfully", async () => {
           const [created] = await service.createPriceListRules([
             {
               price_list_id: "price-list-2",
@@ -226,6 +241,16 @@ moduleIntegrationTestRunner({
 
           expect(priceListRule.price_list.id).toEqual("price-list-2")
           expect(priceListRule.rule_type.id).toEqual("rule-type-2")
+
+          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
+          expect(eventBusEmitSpy.mock.calls[0][0][0]).toEqual(
+            composeMessage(PricingEvents.price_list_rule_attached, {
+              service: Modules.PRICING,
+              action: CommonEvents.ATTACHED,
+              object: "price_list_rule",
+              data: { id: priceListRule.id },
+            })
+          )
         })
       })
 

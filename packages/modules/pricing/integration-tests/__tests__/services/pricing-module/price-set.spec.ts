@@ -652,7 +652,7 @@ moduleIntegrationTestRunner({
       })
 
       describe("addPrices", () => {
-        it.only("should add prices to existing price set", async () => {
+        it("should add prices to existing price set", async () => {
           await service.addPrices([
             {
               priceSetId: "price-set-1",

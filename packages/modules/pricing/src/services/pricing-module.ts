@@ -654,6 +654,7 @@ export default class PricingModuleService<
   }
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createPriceListRules(
     data: PricingTypes.CreatePriceListRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -672,7 +673,31 @@ export default class PricingModuleService<
     data: PricingTypes.CreatePriceListRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    return await this.priceListRuleService_.create(data, sharedContext)
+    const priceListsRules = await this.priceListRuleService_.create(
+      data,
+      sharedContext
+    )
+
+    const eventsData = priceListsRules.reduce(
+      (eventsData, priceListRule) => {
+        eventsData.priceListRules.push({
+          id: priceListRule.id,
+        })
+        return eventsData
+      },
+      {
+        priceListRules: [],
+      } as {
+        priceListRules: { id: string }[]
+      }
+    )
+
+    eventBuilders.attachedPriceListRule({
+      data: eventsData.priceListRules,
+      sharedContext,
+    })
+
+    return priceListsRules
   }
 
   @InjectTransactionManager("baseRepository_")

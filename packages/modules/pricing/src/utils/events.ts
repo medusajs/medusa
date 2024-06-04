@@ -43,4 +43,10 @@ export const eventBuilders = {
     object: "price_list_rule",
     eventsEnum: PricingEvents,
   }),
+  attachedPriceListRule: eventBuilderFactory({
+    service: Modules.PRICING,
+    action: CommonEvents.ATTACHED,
+    object: "price_list_rule",
+    eventsEnum: PricingEvents,
+  }),
 }
