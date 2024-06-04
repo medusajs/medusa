@@ -1,8 +1,7 @@
 import { Modules } from "@medusajs/modules-sdk"
-import { IProductModuleService } from "@medusajs/types"
+import { IProductModuleService, ModulesSdkTypes } from "@medusajs/types"
 import { ProductStatus } from "@medusajs/utils"
-import { Product } from "@models"
-import { ProductTagService } from "@services"
+import { Product, ProductTag } from "@models"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { createProductAndTags } from "../../../__fixtures__/product"
 
@@ -16,7 +15,7 @@ moduleIntegrationTestRunner({
   }: SuiteOptions<IProductModuleService>) => {
     describe("ProductTag Service", () => {
       let data!: Product[]
-      let service: ProductTagService
+      let service: ModulesSdkTypes.InternalModuleService<ProductTag>
 
       beforeEach(() => {
         service = medusaApp.modules["productService"].productTagService_
