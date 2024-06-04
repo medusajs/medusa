@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product } from "@medusajs/medusa"
-import { Button, Select } from "@medusajs/ui"
+import { Button, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -10,11 +10,10 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useCategories } from "../../../../../hooks/api/categories"
-import { useCollections } from "../../../../../hooks/api/collections"
-import { useProductTypes } from "../../../../../hooks/api/product-types"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
-import { useTags } from "../../../../../hooks/api/tags"
+import { useComboboxData } from "../../../../../hooks/use-combobox-data"
+import { client, sdk } from "../../../../../lib/client"
+import { CategoryCombobox } from "../../../common/components/category-combobox"
 
 type ProductOrganizationFormProps = {
   product: Product
@@ -23,8 +22,8 @@ type ProductOrganizationFormProps = {
 const ProductOrganizationSchema = zod.object({
   type_id: zod.string().optional(),
   collection_id: zod.string().optional(),
-  category_ids: zod.array(zod.string()).optional(),
-  tags: zod.array(zod.string()).optional(),
+  category_ids: zod.array(zod.string()),
+  tag_ids: zod.array(zod.string()),
 })
 
 export const ProductOrganizationForm = ({
@@ -32,37 +31,73 @@ export const ProductOrganizationForm = ({
 }: ProductOrganizationFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const { product_types, isLoading: isLoadingTypes } = useProductTypes()
-  const { product_tags, isLoading: isLoadingTags } = useTags()
-  const { collections, isLoading: isLoadingCollections } = useCollections()
-  const { product_categories, isLoading: isLoadingCategories } = useCategories()
+
+  const collections = useComboboxData({
+    queryKey: ["product_collections"],
+    queryFn: sdk.admin.collection.list,
+    getOptions: (data) =>
+      data.collections.map((collection) => ({
+        label: collection.title!,
+        value: collection.id!,
+      })),
+  })
+
+  const types = useComboboxData({
+    queryKey: ["product_types"],
+    queryFn: client.productTypes.list,
+    getOptions: (data) =>
+      data.product_types.map((type) => ({
+        label: type.value,
+        value: type.id,
+      })),
+  })
+
+  const tags = useComboboxData({
+    queryKey: ["product_tags"],
+    queryFn: client.tags.list,
+    getOptions: (data) =>
+      data.tags.map((tag) => ({
+        label: tag.value,
+        value: tag.id,
+      })),
+  })
 
   const form = useForm<zod.infer<typeof ProductOrganizationSchema>>({
     defaultValues: {
-      type_id: product.type_id || undefined,
-      collection_id: product.collection_id || undefined,
-      category_ids: product.categories?.map((c) => c.id) || undefined,
-      tags: product.tags?.map((t) => t.id) || undefined,
+      type_id: product.type_id || "",
+      collection_id: product.collection_id || "",
+      category_ids: product.categories?.map((c) => c.id) || [],
+      tag_ids: product.tags?.map((t) => t.id) || [],
     },
     resolver: zodResolver(ProductOrganizationSchema),
   })
 
-  const { mutateAsync, isLoading } = useUpdateProduct(product.id)
+  const { mutateAsync, isPending } = useUpdateProduct(product.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       {
         type_id: data.type_id || undefined,
         collection_id: data.collection_id || undefined,
-        category_ids: data.category_ids || undefined,
+        categories: data.category_ids.map((id) => ({ id })) || undefined,
         tags:
-          data.tags?.map((t) => {
+          data.tag_ids?.map((t) => {
             t
           }) || undefined,
       },
       {
         onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t("products.edit.organization.toasts.success"),
+          })
           handleSuccess()
+        },
+        onError: (error) => {
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissable: true,
+            dismissLabel: t("actions.close"),
+          })
         },
       }
     )
@@ -72,34 +107,26 @@ export const ProductOrganizationForm = ({
     <RouteDrawer.Form form={form}>
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteDrawer.Body>
-          <div className="flex h-full flex-col gap-y-8">
+          <div className="flex h-full flex-col gap-y-4">
             <Form.Field
               control={form.control}
               name="type_id"
-              render={({ field: { onChange, ...field } }) => {
+              render={({ field }) => {
                 return (
                   <Form.Item>
                     <Form.Label optional>
                       {t("products.fields.type.label")}
                     </Form.Label>
                     <Form.Control>
-                      <Select
-                        disabled={isLoadingTypes}
+                      <Combobox
                         {...field}
-                        onValueChange={onChange}
-                      >
-                        <Select.Trigger ref={field.ref}>
-                          <Select.Value />
-                        </Select.Trigger>
-                        <Select.Content>
-                          {(product_types ?? []).map((type) => (
-                            <Select.Item key={type.id} value={type.id}>
-                              {type.value}
-                            </Select.Item>
-                          ))}
-                        </Select.Content>
-                      </Select>
+                        options={types.options}
+                        searchValue={types.searchValue}
+                        onSearchValueChange={types.onSearchValueChange}
+                        fetchNextPage={types.fetchNextPage}
+                      />
                     </Form.Control>
+                    <Form.ErrorMessage />
                   </Form.Item>
                 )
               }}
@@ -107,33 +134,22 @@ export const ProductOrganizationForm = ({
             <Form.Field
               control={form.control}
               name="collection_id"
-              render={({ field: { onChange, ...field } }) => {
+              render={({ field }) => {
                 return (
                   <Form.Item>
                     <Form.Label optional>
                       {t("products.fields.collection.label")}
                     </Form.Label>
                     <Form.Control>
-                      <Select
-                        disabled={isLoadingCollections}
+                      <Combobox
                         {...field}
-                        onValueChange={onChange}
-                      >
-                        <Select.Trigger ref={field.ref}>
-                          <Select.Value />
-                        </Select.Trigger>
-                        <Select.Content>
-                          {(collections ?? []).map((collection) => (
-                            <Select.Item
-                              key={collection.id}
-                              value={collection.id}
-                            >
-                              {collection.title}
-                            </Select.Item>
-                          ))}
-                        </Select.Content>
-                      </Select>
+                        options={collections.options}
+                        searchValue={collections.searchValue}
+                        onSearchValueChange={collections.onSearchValueChange}
+                        fetchNextPage={collections.fetchNextPage}
+                      />
                     </Form.Control>
+                    <Form.ErrorMessage />
                   </Form.Item>
                 )
               }}
@@ -148,22 +164,16 @@ export const ProductOrganizationForm = ({
                       {t("products.fields.categories.label")}
                     </Form.Label>
                     <Form.Control>
-                      <Combobox
-                        disabled={isLoadingCategories}
-                        options={(product_categories ?? []).map((category) => ({
-                          label: category.name,
-                          value: category.id,
-                        }))}
-                        {...field}
-                      />
+                      <CategoryCombobox {...field} />
                     </Form.Control>
+                    <Form.ErrorMessage />
                   </Form.Item>
                 )
               }}
             />
             <Form.Field
               control={form.control}
-              name="tags"
+              name="tag_ids"
               render={({ field }) => {
                 return (
                   <Form.Item>
@@ -172,14 +182,15 @@ export const ProductOrganizationForm = ({
                     </Form.Label>
                     <Form.Control>
                       <Combobox
-                        disabled={isLoadingTags}
-                        options={(product_tags ?? []).map((tag) => ({
-                          label: tag.value,
-                          value: tag.id,
-                        }))}
                         {...field}
+                        multiple
+                        options={tags.options}
+                        searchValue={tags.searchValue}
+                        onSearchValueChange={tags.onSearchValueChange}
+                        fetchNextPage={tags.fetchNextPage}
                       />
                     </Form.Control>
+                    <Form.ErrorMessage />
                   </Form.Item>
                 )
               }}
@@ -193,7 +204,7 @@ export const ProductOrganizationForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

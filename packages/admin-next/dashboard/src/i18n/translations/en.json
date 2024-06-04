@@ -195,13 +195,20 @@
       },
       "successToast": "Product {{title}} was successfully created."
     },
+    "edit": {
+      "organization": {
+        "header": "Edit Organization",
+        "toasts": {
+          "success": "Successfully updated the organization of \"{{title}}\"."
+        }
+      }
+    },
     "deleteWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
     "variants": "Variants",
     "attributes": "Attributes",
     "editProduct": "Edit Product",
     "editAttributes": "Edit Attributes",
     "organization": "Organize",
-    "editOrganization": "Edit Organization",
     "editOptions": "Edit Options",
     "editPrices": "Edit prices",
     "media": {
