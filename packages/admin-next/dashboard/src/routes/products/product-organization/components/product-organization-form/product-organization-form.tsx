@@ -54,9 +54,9 @@ export const ProductOrganizationForm = ({
 
   const tags = useComboboxData({
     queryKey: ["product_tags"],
-    queryFn: client.tags.list,
+    queryFn: client.productTags.list,
     getOptions: (data) =>
-      data.product_tags?.map((tag) => ({
+      data.product_tags.map((tag) => ({
         label: tag.value,
         value: tag.id,
       })),
@@ -88,7 +88,7 @@ export const ProductOrganizationForm = ({
       {
         onSuccess: ({ product }) => {
           toast.success(t("general.success"), {
-            description: t("products.organization.toasts.success", {
+            description: t("products.organization.edit.toasts.success", {
               title: product.title,
             }),
           })
