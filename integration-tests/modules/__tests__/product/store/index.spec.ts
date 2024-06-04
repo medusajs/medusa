@@ -317,7 +317,7 @@ medusaIntegrationTestRunner({
 
             expect(error.response.status).toEqual(400)
             expect(error.response.data).toEqual({
-              message: `Invalid sales channel filters provided - does-not-exist`,
+              message: `Requested sales channel is not part of the publishable key mappings`,
               type: "invalid_data",
             })
           })
@@ -331,7 +331,7 @@ medusaIntegrationTestRunner({
 
             expect(error.response.status).toEqual(400)
             expect(error.response.data).toEqual({
-              message: `Invalid sales channel filters provided - ${salesChannel2.id}`,
+              message: `Requested sales channel is not part of the publishable key mappings`,
               type: "invalid_data",
             })
           })
