@@ -181,6 +181,7 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
           name={name}
           ref={innerRef}
           placeholder={chips.length === 0 ? placeholder : undefined}
+          autoComplete="off"
         />
       </div>
     )
