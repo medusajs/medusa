@@ -80,3 +80,22 @@ export const useCancelOrderFulfillment = (
     ...options,
   })
 }
+
+export const useCancelOrder = (
+  orderId: string,
+  options?: UseMutationOptions<any, Error, any>
+) => {
+  return useMutation({
+    mutationFn: () => client.orders.cancel(orderId),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.lists(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}

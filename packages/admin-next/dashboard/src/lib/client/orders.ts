@@ -14,6 +14,10 @@ async function listOrders(query?: Record<string, any>) {
   return getRequest<OrderListRes, Record<string, any>>(`/admin/orders`, query)
 }
 
+async function cancelOrder(orderId: string) {
+  return postRequest<FulfillmentRes>(`/admin/orders/${orderId}/cancel`)
+}
+
 async function createFulfillment(
   orderId: string,
   payload: CreateFulfillmentDTO
@@ -37,6 +41,7 @@ async function cancelFulfillment(
 
 export const orders = {
   list: listOrders,
+  cancel: cancelOrder,
   retrieve: retrieveOrder,
   createFulfillment,
   cancelFulfillment,

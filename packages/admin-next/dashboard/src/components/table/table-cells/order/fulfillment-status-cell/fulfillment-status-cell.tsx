@@ -1,4 +1,4 @@
-import type { FulfillmentStatus } from "@medusajs/medusa"
+import { FulfillmentStatus } from "@medusajs/medusa"
 import { useTranslation } from "react-i18next"
 import { getOrderFulfillmentStatus } from "../../../../../lib/order-helpers"
 import { StatusCell } from "../../common/status-cell"
