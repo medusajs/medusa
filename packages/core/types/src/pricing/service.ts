@@ -1650,48 +1650,6 @@ export interface IPricingModuleService extends IModuleService {
   ): Promise<[PriceListRuleDTO[], number]>
 
   /**
-   * This method is used to create price list rules.
-   *
-   * @param {CreatePriceListRuleDTO[]} data - The price list rules to create.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceListRuleDTO[]>} The created price list rules.
-   *
-   * @example
-   * const priceListRules =
-   *   await pricingModuleService.createPriceListRules([
-   *     {
-   *       rule_type_id: "rul-typ_123",
-   *       price_list_id: "plist_123",
-   *     },
-   *   ])
-   */
-  createPriceListRules(
-    data: CreatePriceListRuleDTO[],
-    sharedContext?: Context
-  ): Promise<PriceListRuleDTO[]>
-
-  /**
-   * This method is used to update price list rules.
-   *
-   * @param {UpdatePriceListRuleDTO[]} data - The attributes to update for each price list rule. The price list rule is identified by the `id` property.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceListRuleDTO[]>} The updated price list rules.
-   *
-   * @example
-   * const priceListRules =
-   *   await pricingModuleService.updatePriceListRules([
-   *     {
-   *       id: "plrule_123",
-   *       rule_type_id: "rul-typ_123",
-   *     },
-   *   ])
-   */
-  updatePriceListRules(
-    data: UpdatePriceListRuleDTO[],
-    sharedContext?: Context
-  ): Promise<PriceListRuleDTO[]>
-
-  /**
    * This method is used to delete price list rules.
    *
    * @param {string[]} priceListRuleIds - The IDs of the price list rules to delete.
