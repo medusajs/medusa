@@ -1,3 +1,4 @@
+import { WorkflowManager } from "@medusajs/orchestration"
 import { promiseAll } from "@medusajs/utils"
 import {
   createStep,
@@ -14,6 +15,7 @@ jest.setTimeout(30000)
 const afterEach_ = () => {
   jest.clearAllMocks()
   MedusaWorkflow.workflows = {}
+  WorkflowManager.unregisterAll()
 }
 
 describe("Workflow composer", function () {
@@ -1971,5 +1973,53 @@ describe("Workflow composer", function () {
 
     expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
     expect(mockCompensateSte1.mock.calls[0][0]).toEqual({ data: "data" })
+  })
+
+  it("should throw if the same workflow is defined using different steps", async () => {
+    const step1 = createStep("step1", () => {
+      return new StepResponse({
+        obj: {
+          nested: "nested",
+        },
+      })
+    })
+
+    const step2 = createStep("step2", () => {
+      return new StepResponse({
+        obj: "returned from 2**",
+      })
+    })
+
+    const step3 = createStep("step3", () => {
+      return new StepResponse({
+        obj: "returned from 3**",
+      })
+    })
+
+    createWorkflow("workflow1", function () {
+      const { obj } = step1()
+      const s2 = step2()
+
+      return [{ step1_nested_obj: obj.nested }, s2]
+    })
+
+    expect(() =>
+      createWorkflow("workflow1", function () {
+        const { obj } = step1()
+        const s2 = step2()
+        step3()
+
+        return [{ step1_nested_obj: obj.nested }, s2]
+      })
+    ).toThrowError(
+      `Workflow with id "workflow1" and step definition already exists.`
+    )
+
+    createWorkflow("workflow1", function () {
+      const { obj } = step1()
+      const s2 = step2()
+
+      return [{ step1_nested_obj: obj.nested }, s2]
+    })
   })
 })
