@@ -9,6 +9,7 @@ import {
   AdminCreateShippingProfile,
   AdminGetShippingProfileParams,
   AdminGetShippingProfilesParams,
+  AdminUpdateShippingProfile,
 } from "./validators"
 
 export const adminShippingProfilesMiddlewares: MiddlewareRoute[] = [
@@ -30,6 +31,17 @@ export const adminShippingProfilesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformQuery(
         AdminGetShippingProfilesParams,
         listTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/shipping-profiles/:id",
+    middlewares: [
+      validateAndTransformBody(AdminUpdateShippingProfile),
+      validateAndTransformQuery(
+        AdminGetShippingProfileParams,
+        retrieveTransformQueryConfig
       ),
     ],
   },
