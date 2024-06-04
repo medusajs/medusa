@@ -24,9 +24,14 @@ async function createFulfillment(
   )
 }
 
-async function cancelFulfillment(orderId: string, fulfillmentId: string) {
+async function cancelFulfillment(
+  orderId: string,
+  fulfillmentId: string,
+  payload: { no_notification?: boolean }
+) {
   return postRequest<FulfillmentRes>(
-    `/admin/orders/${orderId}/fulfillments/${fulfillmentId}/cancel`
+    `/admin/orders/${orderId}/fulfillments/${fulfillmentId}/cancel`,
+    payload
   )
 }
 

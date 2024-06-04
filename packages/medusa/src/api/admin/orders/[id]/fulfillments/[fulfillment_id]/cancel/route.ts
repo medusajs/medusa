@@ -20,6 +20,7 @@ export const POST = async (
   const input = {
     ...req.validatedBody,
     order_id: req.params.id,
+    fulfillment_id: req.params.fulfillment_id,
   }
 
   const { errors } = await cancelOrderFulfillmentWorkflow(req.scope).run({

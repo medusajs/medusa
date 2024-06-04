@@ -206,7 +206,7 @@ const Fulfillment = ({
 
     if (res) {
       try {
-        await mutateAsync(fulfillment.id)
+        await mutateAsync()
 
         toast.success(t("general.success"), {
           description: t("orders.fulfillment.toast.canceled"),

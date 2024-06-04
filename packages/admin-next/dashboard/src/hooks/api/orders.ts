@@ -69,7 +69,8 @@ export const useCancelOrderFulfillment = (
   options?: UseMutationOptions<any, Error, any>
 ) => {
   return useMutation({
-    mutationFn: () => client.orders.cancelFulfillment(orderId, fulfillmentId),
+    mutationFn: (payload: { no_notification?: boolean }) =>
+      client.orders.cancelFulfillment(orderId, fulfillmentId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
