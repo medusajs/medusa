@@ -56,7 +56,7 @@ export const ProductOrganizationForm = ({
     queryKey: ["product_tags"],
     queryFn: client.tags.list,
     getOptions: (data) =>
-      data.tags.map((tag) => ({
+      data.product_tags?.map((tag) => ({
         label: tag.value,
         value: tag.id,
       })),

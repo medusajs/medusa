@@ -200,7 +200,6 @@
     "attributes": "Attributes",
     "editProduct": "Edit Product",
     "editAttributes": "Edit Attributes",
-    "organization": "Organize",
     "editOptions": "Edit Options",
     "editPrices": "Edit prices",
     "media": {
@@ -336,9 +335,12 @@
       }
     },
     "organization": {
-      "header": "Edit Organization",
-      "toasts": {
-        "success": "Successfully updated the organization of {{title}}."
+      "header": "Organize",
+      "edit": {
+        "header": "Edit Organization",
+        "toasts": {
+          "success": "Successfully updated the organization of {{title}}."
+        }
       }
     },
     "toasts": {
