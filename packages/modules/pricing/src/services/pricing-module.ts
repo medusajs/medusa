@@ -338,7 +338,14 @@ export default class PricingModuleService<
     // TODO: Remove the need to refetch the data here
     const dbPriceSets = await this.list(
       { id: priceSets.map((p) => p.id) },
-      { relations: ["rule_types", "prices", "price_rules"] },
+      {
+        relations: [
+          "rule_types",
+          "prices",
+          "price_rules",
+          "prices.price_rules",
+        ],
+      },
       sharedContext
     )
 
@@ -673,31 +680,7 @@ export default class PricingModuleService<
     data: PricingTypes.CreatePriceListRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const priceListsRules = await this.priceListRuleService_.create(
-      data,
-      sharedContext
-    )
-
-    const eventsData = priceListsRules.reduce(
-      (eventsData, priceListRule) => {
-        eventsData.priceListRules.push({
-          id: priceListRule.id,
-        })
-        return eventsData
-      },
-      {
-        priceListRules: [],
-      } as {
-        priceListRules: { id: string }[]
-      }
-    )
-
-    eventBuilders.attachedPriceListRule({
-      data: eventsData.priceListRules,
-      sharedContext,
-    })
-
-    return priceListsRules
+    return await this.priceListRuleService_.create(data, sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -736,6 +719,7 @@ export default class PricingModuleService<
   }
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async addPriceListPrices(
     data: PricingTypes.AddPriceListPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -935,14 +919,10 @@ export default class PricingModuleService<
     })
 
     if (ruleSetRuleTypeToCreateMap.size) {
-      const priceSetRuleTypes = await this.priceSetRuleTypeService_.create(
+      await this.priceSetRuleTypeService_.create(
         Array.from(ruleSetRuleTypeToCreateMap.values()),
         sharedContext
       )
-      eventBuilders.createdPriceSetRuleType({
-        data: priceSetRuleTypes,
-        sharedContext,
-      })
     }
 
     return createdPriceSets
@@ -1687,7 +1667,44 @@ export default class PricingModuleService<
       pricesToCreate.push(...priceListPricesToCreate)
     }
 
-    return await this.priceService_.create(pricesToCreate, sharedContext)
+    const createdPrices = await this.priceService_.create(
+      pricesToCreate,
+      sharedContext
+    )
+
+    const eventsData = createdPrices.reduce(
+      (eventsData, price) => {
+        eventsData.prices.push({
+          id: price.id,
+        })
+
+        price.price_rules.map((priceRule) => {
+          eventsData.priceRules.push({
+            id: priceRule.id,
+          })
+        })
+
+        return eventsData
+      },
+      {
+        priceRules: [],
+        prices: [],
+      } as {
+        priceRules: { id: string }[]
+        prices: { id: string }[]
+      }
+    )
+
+    eventBuilders.createdPrice({
+      data: eventsData.prices,
+      sharedContext,
+    })
+    eventBuilders.createdPriceRule({
+      data: eventsData.priceRules,
+      sharedContext,
+    })
+
+    return createdPrices
   }
 
   @InjectTransactionManager("baseRepository_")

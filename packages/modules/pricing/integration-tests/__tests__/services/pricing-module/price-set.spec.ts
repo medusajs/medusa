@@ -438,33 +438,39 @@ moduleIntegrationTestRunner({
             })
           )
 
-          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
-          expect(eventBusEmitSpy).toHaveBeenCalledWith([
+          const [priceRules] = await service.listPriceRules({
+            price_set_id: [priceSet.id],
+          })
+
+          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(3)
+          expect(eventBusEmitSpy.mock.calls[0][0][0]).toEqual(
             composeMessage(PricingEvents.price_set_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_set",
               data: { id: priceSet.id },
-            }),
+            })
+          )
+
+          expect(eventBusEmitSpy.mock.calls[0][0][1]).toEqual(
             composeMessage(PricingEvents.price_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price",
               data: { id: priceSet.prices![0].id },
-            }),
+            })
+          )
+
+          expect(eventBusEmitSpy.mock.calls[0][0][2]).toEqual(
             composeMessage(PricingEvents.price_rule_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_rule",
-              data: {},
-            }),
-            composeMessage(PricingEvents.price_set_rule_type_created, {
-              service: Modules.PRICING,
-              action: CommonEvents.CREATED,
-              object: "price_set_rule_type",
-              data: { id: priceSet.rule_types![0].id },
-            }),
-          ])
+              data: {
+                id: priceRules.id,
+              },
+            })
+          )
         })
 
         it("should create a price set with money amounts with and without rules", async () => {

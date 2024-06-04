@@ -858,6 +858,24 @@ moduleIntegrationTestRunner({
               price_list_rules: [],
             })
           )
+
+          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(2)
+          expect(eventBusEmitSpy.mock.calls[0][0][0]).toEqual(
+            composeMessage(PricingEvents.price_created, {
+              service: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price",
+              data: { id: priceList.prices![0].id },
+            })
+          )
+          expect(eventBusEmitSpy.mock.calls[0][0][1]).toEqual(
+            composeMessage(PricingEvents.price_rule_created, {
+              service: Modules.PRICING,
+              action: CommonEvents.CREATED,
+              object: "price_rule",
+              data: { id: priceList.prices![0].price_rules![0].id },
+            })
+          )
         })
       })
 

@@ -222,7 +222,7 @@ moduleIntegrationTestRunner({
       })
 
       describe("create", () => {
-        it.only("should create a priceListRule successfully", async () => {
+        it("should create a priceListRule successfully", async () => {
           const [created] = await service.createPriceListRules([
             {
               price_list_id: "price-list-2",
@@ -241,16 +241,6 @@ moduleIntegrationTestRunner({
 
           expect(priceListRule.price_list.id).toEqual("price-list-2")
           expect(priceListRule.rule_type.id).toEqual("rule-type-2")
-
-          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
-          expect(eventBusEmitSpy.mock.calls[0][0][0]).toEqual(
-            composeMessage(PricingEvents.price_list_rule_attached, {
-              service: Modules.PRICING,
-              action: CommonEvents.ATTACHED,
-              object: "price_list_rule",
-              data: { id: priceListRule.id },
-            })
-          )
         })
       })
 
