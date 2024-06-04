@@ -33,12 +33,11 @@ const PROMOTIONS_QUERY_KEY = "promotions" as const
 export const promotionsQueryKeys = {
   ...queryKeysFactory(PROMOTIONS_QUERY_KEY),
   // TODO: handle invalidations properly
-  listRules: (id: string | null, ruleType: string, promotionType?: string) => [
-    PROMOTIONS_QUERY_KEY,
-    id,
-    ruleType,
-    promotionType,
-  ],
+  listRules: (
+    id: string | null,
+    ruleType: string,
+    query?: Record<string, string>
+  ) => [PROMOTIONS_QUERY_KEY, id, ruleType, query],
   listRuleAttributes: (ruleType: string, promotionType?: string) => [
     PROMOTIONS_QUERY_KEY,
     ruleType,
@@ -72,7 +71,7 @@ export const usePromotion = (
 export const usePromotionRules = (
   id: string | null,
   ruleType: string,
-  promotionType?: string,
+  query?: Record<string, string>,
   options?: Omit<
     UseQueryOptions<
       AdminPromotionRuleListResponse,
@@ -84,9 +83,8 @@ export const usePromotionRules = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryKey: promotionsQueryKeys.listRules(id, ruleType, promotionType),
-    queryFn: async () =>
-      client.promotions.listRules(id, ruleType, promotionType),
+    queryKey: promotionsQueryKeys.listRules(id, ruleType, query),
+    queryFn: async () => client.promotions.listRules(id, ruleType, query),
     ...options,
   })
 

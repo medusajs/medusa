@@ -64,7 +64,7 @@ export const EditRulesForm = ({
       <form onSubmit={handleFormSubmit} className="flex h-full flex-col">
         <RouteDrawer.Body>
           <RulesFormField
-            form={form as any}
+            form={form}
             ruleType={ruleType}
             setRulesToRemove={setRulesToRemove}
             rulesToRemove={rulesToRemove}

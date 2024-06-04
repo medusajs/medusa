@@ -59,15 +59,19 @@ export const RulesFormField = ({
     keyName: scope,
   })
 
-  const watchType = useWatch({
+  const promotionType: string = useWatch({
     control: form.control,
     name: "type",
   })
 
+  const query: Record<string, string> = promotionType
+    ? { promotion_type: promotionType }
+    : {}
+
   const { rules, isLoading } = usePromotionRules(
     promotionId || null,
     ruleType,
-    watchType
+    query
   )
 
   useEffect(() => {
@@ -79,14 +83,14 @@ export const RulesFormField = ({
       replace(generateRuleAttributes(rules) as any)
     }
 
-    if (ruleType === "rules" && watchType === "standard") {
+    if (ruleType === "rules" && promotionType === "standard") {
       form.resetField("application_method.buy_rules")
       form.resetField("application_method.target_rules")
     }
 
     if (
       ["buy-rules", "target-rules"].includes(ruleType) &&
-      watchType === "standard"
+      promotionType === "standard"
     ) {
       form.resetField(scope)
       replace([])
@@ -94,7 +98,7 @@ export const RulesFormField = ({
 
     if (
       ["buy-rules", "target-rules"].includes(ruleType) &&
-      watchType === "buyget"
+      promotionType === "buyget"
     ) {
       form.resetField(scope)
       const rulesToAppend = promotionId
@@ -103,7 +107,7 @@ export const RulesFormField = ({
 
       replace(generateRuleAttributes(rulesToAppend) as any)
     }
-  }, [watchType, isLoading])
+  }, [promotionType, isLoading])
 
   return (
     <div className="flex flex-col">

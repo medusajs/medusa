@@ -711,14 +711,16 @@ export const CreatePromotionForm = () => {
               <Divider />
 
               {!isTypeStandard && (
-                <RulesFormField
-                  form={form}
-                  ruleType={"buy-rules"}
-                  scope="application_method.buy_rules"
-                />
-              )}
+                <>
+                  <RulesFormField
+                    form={form}
+                    ruleType={"buy-rules"}
+                    scope="application_method.buy_rules"
+                  />
 
-              <Divider />
+                  <Divider />
+                </>
+              )}
 
               <RulesFormField
                 form={form}
