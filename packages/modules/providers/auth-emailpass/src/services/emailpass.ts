@@ -59,7 +59,6 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     try {
       authIdentity = await authIdentityService.retrieve({
         entity_id: email,
-        provider: this.provider,
       })
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
@@ -67,15 +66,10 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         const passwordHash = await Scrypt.kdf(password, config)
 
         const createdAuthIdentity = await authIdentityService.create({
-          provider_identities: [
-            {
-              entity_id: email,
-              provider: this.provider,
-              provider_metadata: {
-                password: passwordHash.toString("base64"),
-              },
-            },
-          ],
+          entity_id: email,
+          provider_metadata: {
+            password: passwordHash.toString("base64"),
+          },
         })
 
         const copy = JSON.parse(JSON.stringify(createdAuthIdentity))

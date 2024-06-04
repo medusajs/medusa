@@ -2,17 +2,17 @@ import {
   AuthIdentityDTO,
   AuthenticationInput,
   AuthenticationResponse,
-  CreateAuthIdentityDTO,
 } from "./common"
 
 // This interface currently won't allow for linking multiple providers to a single auth entity. That flow is more complex and not supported yet.
 export interface AuthIdentityProviderService {
   // The provider is injected by the auth identity module
-  retrieve: (selector: {
+  retrieve: (selector: { entity_id: string }) => Promise<AuthIdentityDTO>
+  create: (data: {
     entity_id: string
-    provider: string
+    provider_metadata?: Record<string, unknown>
+    user_metadata?: Record<string, unknown>
   }) => Promise<AuthIdentityDTO>
-  create: (data: CreateAuthIdentityDTO) => Promise<AuthIdentityDTO>
 }
 
 /**

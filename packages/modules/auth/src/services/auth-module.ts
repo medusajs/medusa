@@ -139,7 +139,7 @@ export default class AuthModuleService<
       return await this.authProviderService_.authenticate(
         provider,
         authenticationData,
-        this.getAuthIdentityProviderService()
+        this.getAuthIdentityProviderService(provider)
       )
     } catch (error) {
       return { success: false, error: error.message }
@@ -154,16 +154,18 @@ export default class AuthModuleService<
       return await this.authProviderService_.validateCallback(
         provider,
         authenticationData,
-        this.getAuthIdentityProviderService()
+        this.getAuthIdentityProviderService(provider)
       )
     } catch (error) {
       return { success: false, error: error.message }
     }
   }
 
-  getAuthIdentityProviderService(): AuthIdentityProviderService {
+  getAuthIdentityProviderService(
+    provider: string
+  ): AuthIdentityProviderService {
     return {
-      retrieve: async ({ entity_id, provider }) => {
+      retrieve: async ({ entity_id }) => {
         const authIdentities = await this.authIdentityService_.list(
           {
             provider_identities: {
@@ -194,8 +196,26 @@ export default class AuthModuleService<
           authIdentities[0]
         )
       },
-      create: async (data: AuthTypes.CreateAuthIdentityDTO) => {
-        const createdAuthIdentity = await this.authIdentityService_.create(data)
+
+      create: async (data: {
+        entity_id: string
+        provider_metadata?: Record<string, unknown>
+        user_metadata?: Record<string, unknown>
+      }) => {
+        const normalizedRequest = {
+          provider_identities: [
+            {
+              entity_id: data.entity_id,
+              provider_metadata: data.provider_metadata,
+              user_metadata: data.user_metadata,
+              provider,
+            },
+          ],
+        }
+
+        const createdAuthIdentity = await this.authIdentityService_.create(
+          normalizedRequest
+        )
 
         return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
           createdAuthIdentity

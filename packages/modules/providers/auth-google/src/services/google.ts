@@ -130,18 +130,12 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
     try {
       authIdentity = await authIdentityService.retrieve({
         entity_id,
-        provider: this.provider,
       })
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
         const createdAuthIdentity = await authIdentityService.create({
-          provider_identities: [
-            {
-              entity_id,
-              provider: this.provider,
-              user_metadata: userMetadata,
-            },
-          ],
+          entity_id,
+          user_metadata: userMetadata,
         })
         authIdentity = createdAuthIdentity
       } else {
