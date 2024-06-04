@@ -72,7 +72,12 @@ export const CreateProductOptionForm = ({
                     {t("products.fields.options.optionTitle")}
                   </Form.Label>
                   <Form.Control>
-                    <Input {...field} />
+                    <Input
+                      {...field}
+                      placeholder={t(
+                        "products.fields.options.optionTitlePlaceholder"
+                      )}
+                    />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>
@@ -89,7 +94,12 @@ export const CreateProductOptionForm = ({
                     {t("products.fields.options.variations")}
                   </Form.Label>
                   <Form.Control>
-                    <ChipInput {...field} />
+                    <ChipInput
+                      {...field}
+                      placeholder={t(
+                        "products.fields.options.variantionsPlaceholder"
+                      )}
+                    />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>
