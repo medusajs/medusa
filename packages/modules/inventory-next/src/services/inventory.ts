@@ -15,11 +15,11 @@ import {
   InjectManager,
   InjectTransactionManager,
   InventoryEvents,
-  isDefined,
-  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  isDefined,
+  isString,
   partitionArray,
   promiseAll,
 } from "@medusajs/utils"
@@ -782,6 +782,43 @@ export default class InventoryModuleService<
   }
 
   /**
+   * Deletes reservation items by line item
+   * @param lineItemId - the id of the line item associated with the reservation item
+   * @param context
+   */
+
+  @InjectTransactionManager("baseRepository_")
+  @EmitEvents()
+  async restoreReservationItemsByLineItem(
+    lineItemId: string | string[],
+    @MedusaContext() context: Context = {}
+  ): Promise<void> {
+    const reservations: InventoryNext.ReservationItemDTO[] =
+      await this.listReservationItems({ line_item_id: lineItemId }, {}, context)
+
+    await this.reservationItemService_.restore(
+      { line_item_id: lineItemId },
+      context
+    )
+
+    await this.adjustInventoryLevelsForReservationsRestore(
+      reservations,
+      context
+    )
+
+    context.messageAggregator?.saveRawMessageData(
+      reservations.map((reservationItem) => ({
+        eventName: InventoryEvents.reservation_item_created,
+        service: this.constructor.name,
+        action: CommonEvents.CREATED,
+        object: "reservation-item",
+        context,
+        data: { id: reservationItem.id },
+      }))
+    )
+  }
+
+  /**
    * Adjusts the inventory level for a given inventory item and location.
    * @param inventoryItemId - the id of the inventory item
    * @param locationId - the id of the location
@@ -1040,6 +1077,30 @@ export default class InventoryModuleService<
     reservations: ReservationItemDTO[],
     context: Context
   ): Promise<void> {
+    await this.adjustInventoryLevelsForReservations_(
+      reservations,
+      true,
+      context
+    )
+  }
+
+  private async adjustInventoryLevelsForReservationsRestore(
+    reservations: ReservationItemDTO[],
+    context: Context
+  ): Promise<void> {
+    await this.adjustInventoryLevelsForReservations_(
+      reservations,
+      false,
+      context
+    )
+  }
+
+  private async adjustInventoryLevelsForReservations_(
+    reservations: ReservationItemDTO[],
+    isDelete: boolean,
+    context: Context
+  ): Promise<void> {
+    const multiplier = isDelete ? -1 : 1
     const inventoryLevels = await this.ensureInventoryLevels(
       reservations.map((r) => ({
         inventory_item_id: r.inventory_item_id,
@@ -1055,8 +1116,8 @@ export default class InventoryModuleService<
       const inventoryLevelMap = acc.get(curr.inventory_item_id) ?? new Map()
 
       const adjustment = inventoryLevelMap.has(curr.location_id)
-        ? inventoryLevelMap.get(curr.location_id) - curr.quantity
-        : -curr.quantity
+        ? inventoryLevelMap.get(curr.location_id) + curr.quantity * multiplier
+        : curr.quantity * multiplier
 
       inventoryLevelMap.set(curr.location_id, adjustment)
       acc.set(curr.inventory_item_id, inventoryLevelMap)

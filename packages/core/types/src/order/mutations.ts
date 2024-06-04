@@ -395,6 +395,11 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   shipping_method: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
 }
 
+export interface CancelOrderReturnDTO {
+  order_id: string
+  return_id: string
+}
+
 export interface ReceiveOrderReturnDTO extends BaseOrderBundledActionsDTO {}
 
 /** ORDER bundled action flows */

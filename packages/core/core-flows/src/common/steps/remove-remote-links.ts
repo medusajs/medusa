@@ -1,5 +1,5 @@
 import { DeleteEntityInput, RemoteLink } from "@medusajs/modules-sdk"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 
@@ -10,6 +10,11 @@ export const removeRemoteLinkStep = createStep(
   removeRemoteLinkStepId,
   async (data: RemoveRemoteLinksStepInput, { container }) => {
     const entries = Array.isArray(data) ? data : [data]
+
+    if (!entries.length) {
+      return new StepResponse(void 0)
+    }
+
     const grouped: DeleteEntityInput = {}
 
     for (const entry of entries) {
