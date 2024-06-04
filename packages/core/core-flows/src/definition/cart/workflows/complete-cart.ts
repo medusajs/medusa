@@ -2,6 +2,7 @@ import { OrderDTO } from "@medusajs/types"
 import {
   WorkflowData,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
@@ -62,14 +63,15 @@ export const completeCartWorkflow = createWorkflow(
       },
     })
 
-    reserveInventoryStep(formatedInventoryItems)
-
-    const finalCart = useRemoteQueryStep({
-      entry_point: "cart",
-      fields: completeCartFields,
-      variables: { id: input.id },
-      list: false,
-    }).config({ name: "final-cart" })
+    const [, finalCart] = parallelize(
+      reserveInventoryStep(formatedInventoryItems),
+      useRemoteQueryStep({
+        entry_point: "cart",
+        fields: completeCartFields,
+        variables: { id: input.id },
+        list: false,
+      }).config({ name: "final-cart" })
+    )
 
     const order = createOrderFromCartStep({ cart: finalCart })
 

@@ -96,7 +96,8 @@ medusaIntegrationTestRunner({
               )
             ).data.variant
 
-            expect(updatedVariant.inventory_items).toHaveLength(0)
+            // The default inventory item remains that was created as a part of create product
+            expect(updatedVariant.inventory_items).toHaveLength(1)
           })
         })
       })
@@ -159,11 +160,14 @@ medusaIntegrationTestRunner({
               )
             ).data.variant
 
-            expect(updatedVariant.inventory_items).toEqual([
-              expect.objectContaining({
-                required_quantity: originalQuantity,
-              }),
-            ])
+            expect(updatedVariant.inventory_items).toHaveLength(2)
+            expect(updatedVariant.inventory_items).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  required_quantity: originalQuantity,
+                }),
+              ])
+            )
           })
 
           it("should throw an error when a link is not found", async () => {
@@ -258,11 +262,14 @@ medusaIntegrationTestRunner({
               )
             ).data.variant
 
-            expect(updatedVariant.inventory_items).toEqual([
-              expect.objectContaining({
-                required_quantity: originalQuantity,
-              }),
-            ])
+            expect(updatedVariant.inventory_items).toHaveLength(2)
+            expect(updatedVariant.inventory_items).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  required_quantity: originalQuantity,
+                }),
+              ])
+            )
           })
 
           it("should pass dismiss step if link not found if next step throws error", async () => {
@@ -304,7 +311,7 @@ medusaIntegrationTestRunner({
               )
             ).data.variant
 
-            expect(updatedVariant.inventory_items).toEqual([])
+            expect(updatedVariant.inventory_items).toHaveLength(1)
           })
         })
       })

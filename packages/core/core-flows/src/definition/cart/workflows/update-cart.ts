@@ -80,16 +80,17 @@ export const updateCartWorkflow = createWorkflow(
       list: false,
     }).config({ name: "refetch–cart" })
 
-    refreshCartShippingMethodsStep({ cart })
-    updateTaxLinesStep({ cart_or_cart_id: carts[0].id })
-    refreshCartPromotionsStep({
-      id: input.id,
-      promo_codes: input.promo_codes,
-      action: PromotionActions.REPLACE,
-    })
-
-    refreshPaymentCollectionForCartStep({
-      cart_id: input.id,
-    })
+    parallelize(
+      refreshCartShippingMethodsStep({ cart }),
+      updateTaxLinesStep({ cart_or_cart_id: carts[0].id }),
+      refreshCartPromotionsStep({
+        id: input.id,
+        promo_codes: input.promo_codes,
+        action: PromotionActions.REPLACE,
+      }),
+      refreshPaymentCollectionForCartStep({
+        cart_id: input.id,
+      })
+    )
   }
 )

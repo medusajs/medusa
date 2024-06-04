@@ -60,18 +60,16 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       removeLineItemAdjustmentsStep({ lineItemAdjustmentIdsToRemove }),
       removeShippingMethodAdjustmentsStep({
         shippingMethodAdjustmentIdsToRemove,
+      }),
+      createLineItemAdjustmentsStep({ lineItemAdjustmentsToCreate }),
+      createShippingMethodAdjustmentsStep({
+        shippingMethodAdjustmentsToCreate,
+      }),
+      updateCartPromotionsStep({
+        id: input.cartId,
+        promo_codes: computedPromotionCodes,
+        action: PromotionActions.REPLACE,
       })
     )
-
-    parallelize(
-      createLineItemAdjustmentsStep({ lineItemAdjustmentsToCreate }),
-      createShippingMethodAdjustmentsStep({ shippingMethodAdjustmentsToCreate })
-    )
-
-    updateCartPromotionsStep({
-      id: input.cartId,
-      promo_codes: computedPromotionCodes,
-      action: PromotionActions.REPLACE,
-    })
   }
 )
