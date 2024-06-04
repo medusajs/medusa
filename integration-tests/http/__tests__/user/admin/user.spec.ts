@@ -1,170 +1,82 @@
-const jwt = require("jsonwebtoken")
-
-const { medusaIntegrationTestRunner } = require("medusa-test-utils")
-const {
-  createAdminUser,
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
   adminHeaders,
-} = require("../../../helpers/create-admin-user")
-const { breaking } = require("../../../helpers/breaking")
-const { ModuleRegistrationName } = require("@medusajs/modules-sdk")
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
 
-let userSeeder = {}
-let simpleAnalyticsConfigFactory = {}
-
 medusaIntegrationTestRunner({
-  // env: { MEDUSA_FF_MEDUSA_V2: true },
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let container
-    let userModuleService
-
-    beforeAll(() => {
-      userSeeder = require("../../../helpers/user-seeder")
-      simpleAnalyticsConfigFactory = require("../../../factories/simple-analytics-config-factory")
-    })
+    let user
 
     beforeEach(async () => {
-      container = getContainer()
+      const container = getContainer()
+      const { user: adminUser } = await createAdminUser(
+        dbConnection,
+        adminHeaders,
+        container
+      )
 
-      userModuleService = container.resolve(ModuleRegistrationName.USER)
-
-      await createAdminUser(dbConnection, adminHeaders, container)
+      user = adminUser
     })
 
     describe("GET /admin/users/:id", () => {
-      beforeEach(async () => {
-        await breaking(async () => {
-          await userSeeder(dbConnection)
-        })
-      })
-
       it("should return user by id", async () => {
-        const response = await api.get("/admin/users/admin_user", adminHeaders)
-
-        const v1Response = {
-          id: "admin_user",
-          email: "admin@medusa.js",
-          api_token: "test_token",
-          role: "admin",
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-        }
+        const response = await api.get(`/admin/users/${user.id}`, adminHeaders)
 
         const v2Response = {
-          id: "admin_user",
+          id: user.id,
           email: "admin@medusa.js",
           created_at: expect.any(String),
           updated_at: expect.any(String),
         }
 
+        // BREAKING: V2 users do not have role + api_token
         expect(response.status).toEqual(200)
-        expect(response.data.user).toEqual(
-          expect.objectContaining(
-            breaking(
-              () => v1Response,
-              () => v2Response
-            )
-          )
-        )
+        expect(response.data.user).toEqual(expect.objectContaining(v2Response))
       })
     })
 
     describe("GET /admin/users", () => {
-      beforeEach(async () => {
-        await breaking(
-          async () => {
-            await userSeeder(dbConnection)
-          },
-          async () => {
-            await userModuleService.create({
-              id: "member-user",
-              email: "member@test.com",
-              first_name: "member",
-              last_name: "user",
-            })
-          }
-        )
-      })
-
       it("should list users", async () => {
         const response = await api
           .get("/admin/users", adminHeaders)
-          .catch((err) => {
-            console.log(err)
-          })
 
         expect(response.status).toEqual(200)
-
-        const v1Response = [
-          expect.objectContaining({
-            id: "admin_user",
-            email: "admin@medusa.js",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            api_token: "test_token",
-            role: "admin",
-          }),
-          expect.objectContaining({
-            id: "member-user",
-            email: "member@test.com",
-            first_name: "member",
-            last_name: "user",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            role: "member",
-          }),
-        ]
 
         const v2Response = [
           expect.objectContaining({
-            id: "admin_user",
+            id: user.id,
             email: "admin@medusa.js",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          }),
-          expect.objectContaining({
-            id: "member-user",
-            email: "member@test.com",
-            first_name: "member",
-            last_name: "user",
             created_at: expect.any(String),
             updated_at: expect.any(String),
           }),
         ]
 
-        expect(response.data.users).toEqual(
-          expect.arrayContaining(
-            breaking(
-              () => v1Response,
-              () => v2Response
-            )
-          )
-        )
+        expect(response.data.users).toEqual(v2Response)
       })
 
       it("should list users that match the free text search", async () => {
-        const response = await api.get("/admin/users?q=member", adminHeaders)
+        const emptyResponse = await api.get(
+          "/admin/users?q=member",
+          adminHeaders
+        )
 
-        expect(response.status).toEqual(200)
+        expect(emptyResponse.status).toEqual(200)
+        expect(emptyResponse.data.users.length).toEqual(0)
+
+        const response = await api.get("/admin/users?q=user", adminHeaders)
 
         expect(response.data.users.length).toEqual(1)
-        expect(response.data.users).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              id: "member-user",
-              email: "member@test.com",
-              first_name: "member",
-              last_name: "user",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              ...breaking(
-                () => ({ role: "member" }),
-                () => ({})
-              ),
-            }),
-          ])
-        )
+        expect(response.data.users).toEqual([
+          expect.objectContaining({
+            id: user.id,
+            email: "admin@medusa.js",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          }),
+        ])
       })
     })
 
@@ -172,64 +84,41 @@ medusaIntegrationTestRunner({
       let token
 
       beforeEach(async () => {
-        token = await breaking(
-          () => null,
-          async () => {
-            const emailPassResponse = await api.post("/auth/user/emailpass", {
-              email: "test@test123.com",
-              password: "test123",
-            })
-
-            return emailPassResponse.data.token
-          }
-        )
+        token = (
+          await api.post("/auth/user/emailpass", {
+            email: "test@test123.com",
+            password: "test123",
+          })
+        ).data.token
       })
 
+      // BREAKING: V2 users do not require a role
+      //   We should probably remove this endpoint?
       it("should create a user", async () => {
         const payload = {
           email: "test@test123.com",
-          ...breaking(
-            () => ({ role: "member", password: "test123" }),
-            () => ({})
-          ),
         }
 
         // In V2, the flow to create an authenticated user depends on the token or session of a previously created auth user
-        const headers = breaking(
-          () => adminHeaders,
-          () => {
-            return {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          }
-        )
+        const headers = {
+          headers: { Authorization: `Bearer ${token}` },
+        }
 
-        const response = await api
-          .post("/admin/users", payload, headers)
-          .catch((err) => console.log(err))
+        const response = await api.post("/admin/users", payload, headers)
 
         expect(response.status).toEqual(200)
         expect(response.data.user).toEqual(
           expect.objectContaining({
-            id: expect.stringMatching(
-              breaking(
-                () => /^usr_*/,
-                () => /^user_*/
-              )
-            ),
+            id: expect.stringMatching(/^user_*/),
             created_at: expect.any(String),
             updated_at: expect.any(String),
             email: "test@test123.com",
-            ...breaking(
-              () => ({ role: "member" }),
-              () => ({})
-            ),
           })
         )
       })
 
       // V2 only test
-      it.skip("should throw, if session/bearer auth is present for existing user", async () => {
+      it("should throw, if session/bearer auth is present for existing user", async () => {
         const emailPassResponse = await api.post("/auth/user/emailpass", {
           email: "test@test123.com",
           password: "test123",
@@ -241,24 +130,26 @@ medusaIntegrationTestRunner({
           headers: { Authorization: `Bearer ${token}` },
         })
 
-        // Create user
-        const res = await api
-          .post(
-            "/admin/users",
-            {
-              email: "test@test123.com",
-            },
-            headers(token)
-          )
-          .catch((err) => console.log(err))
+        const res = await api.post(
+          "/admin/users",
+          {
+            email: "test@test123.com",
+          },
+          headers(token)
+        )
+
+        const authenticated = await api.post("/auth/user/emailpass", {
+          email: "test@test123.com",
+          password: "test123",
+        })
 
         const payload = {
           email: "different@email.com",
         }
 
-        const { response: errorResponse } = await api
-          .post("/admin/users", payload, headers(res.data.token))
-          .catch((err) => err)
+        const errorResponse = await api
+          .post("/admin/users", payload, headers(authenticated.data.token))
+          .catch((err) => err.response)
 
         expect(errorResponse.status).toEqual(400)
         expect(errorResponse.data.message).toEqual(
@@ -268,70 +159,28 @@ medusaIntegrationTestRunner({
     })
 
     describe("POST /admin/users/:id", () => {
-      beforeEach(async () => {
-        await breaking(
-          async () => {
-            await userSeeder(dbConnection)
-          },
-          async () => {
-            await userModuleService.create([
-              {
-                id: "member-user",
-                email: "member@test.com",
-                first_name: "member",
-                last_name: "user",
-              },
-            ])
-          }
-        )
-      })
-
       it("should update a user", async () => {
-        const updateResponse = await api
-          .post(
-            "/admin/users/member-user",
-            { first_name: "karl" },
+        const updateResponse = (
+          await api.post(
+            `/admin/users/${user.id}`,
+            { first_name: "John", last_name: "Doe" },
             adminHeaders
           )
-          .catch((err) => console.log(err.response.data.message))
+        ).data.user
 
-        expect(updateResponse.status).toEqual(200)
-        expect(updateResponse.data.user).toEqual(
+        expect(updateResponse).toEqual(
           expect.objectContaining({
-            id: "member-user",
+            id: user.id,
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            email: "member@test.com",
-            first_name: "karl",
-            last_name: "user",
-            ...breaking(
-              () => ({ role: "member" }),
-              () => ({})
-            ),
+            first_name: "John",
+            last_name: "Doe",
           })
         )
       })
     })
 
     describe("DELETE /admin/users", () => {
-      beforeEach(async () => {
-        await breaking(
-          async () => {
-            await userSeeder(dbConnection)
-          },
-          async () => {
-            await userModuleService.create([
-              {
-                id: "member-user",
-                email: "member@test.com",
-                first_name: "member",
-                last_name: "user",
-              },
-            ])
-          }
-        )
-      })
-
       it("Deletes a user", async () => {
         const userId = "member-user"
 
@@ -352,9 +201,9 @@ medusaIntegrationTestRunner({
       it.skip("Deletes a user and their analytics config", async () => {
         const userId = "member-user"
 
-        await simpleAnalyticsConfigFactory(dbConnection, {
-          user_id: userId,
-        })
+        // await simpleAnalyticsConfigFactory(dbConnection, {
+        //   user_id: userId,
+        // })
 
         const response = await api.delete(
           `/admin/users/${userId}`,
@@ -389,7 +238,7 @@ medusaIntegrationTestRunner({
     })
 
     // TODO: Migrate when implemented in 2.0
-    describe("POST /admin/users/reset-password + POST /admin/users/password-token", () => {
+    describe.skip("POST /admin/users/reset-password + POST /admin/users/password-token", () => {
       let user
       beforeEach(async () => {
         const response = await api
