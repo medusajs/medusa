@@ -86,9 +86,11 @@ export const ProductOrganizationForm = ({
           }) || undefined,
       },
       {
-        onSuccess: () => {
+        onSuccess: ({ product }) => {
           toast.success(t("general.success"), {
-            description: t("products.edit.organization.toasts.success"),
+            description: t("products.edit.organization.toasts.success", {
+              title: product.title,
+            }),
           })
           handleSuccess()
         },

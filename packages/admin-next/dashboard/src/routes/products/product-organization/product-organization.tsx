@@ -4,13 +4,16 @@ import { useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/route-modal"
 import { useProduct } from "../../../hooks/api/products"
+import { PRODUCT_DETAIL_FIELDS } from "../product-detail/constants"
 import { ProductOrganizationForm } from "./components/product-organization-form"
 
 export const ProductOrganization = () => {
   const { id } = useParams()
   const { t } = useTranslation()
 
-  const { product, isLoading, isError, error } = useProduct(id!)
+  const { product, isLoading, isError, error } = useProduct(id!, {
+    fields: PRODUCT_DETAIL_FIELDS,
+  })
 
   if (isError) {
     throw error
