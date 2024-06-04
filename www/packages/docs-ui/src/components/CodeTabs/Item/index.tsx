@@ -29,35 +29,23 @@ export const CodeTab = ({
     <li>
       <button
         className={clsx(
-          "text-compact-small-plus xs:border-0 py-docs_0.25 px-docs_0.75 relative rounded-full border",
+          "text-compact-x-small-plus font-base xs:border-0 pb-docs_0.5 relative",
           !isSelected && [
-            "text-medusa-code-text-subtle border-transparent",
-            blockStyle === "loud" && [
-              colorMode === "light" &&
-                "text-medusa-code-text-subtle hover:bg-medusa-code-bg-base",
-              colorMode === "dark" &&
-                "text-medusa-fg-muted hover:bg-medusa-bg-component",
-            ],
+            blockStyle === "loud" && "text-medusa-contrast-fg-secondary",
             blockStyle === "subtle" && [
               colorMode === "light" &&
                 "text-medusa-fg-subtle hover:bg-medusa-bg-base",
               colorMode === "dark" &&
-                "text-medusa-code-text-subtle hover:bg-medusa-code-bg-base",
+                "text-medusa-contrast-fg-secondary hover:bg-medusa-code-bg-base",
             ],
           ],
           isSelected && [
-            "xs:!bg-transparent",
-            blockStyle === "loud" && [
-              colorMode === "light" &&
-                "border-medusa-code-border text-medusa-code-text-base",
-              colorMode === "dark" &&
-                "border-medusa-border-base text-medusa-fg-base",
-            ],
+            blockStyle === "loud" && "text-medusa-contrast-fg-primary",
             blockStyle === "subtle" && [
               colorMode === "light" &&
-                "xs:border-medusa-border-base text-medusa-code-text-base",
+                "xs:border-medusa-border-base text-medusa-contrast-fg-primary",
               colorMode === "dark" &&
-                "xs:border-medusa-code-border text-medusa-code-text-base",
+                "xs:border-medusa-code-border text-medusa-contrast-fg-primary",
             ],
           ]
         )}

@@ -1,9 +1,9 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 type StepInput = {
-  ids: string[]
+  ids?: string[]
 }
 
 export const getProductsStepId = "get-products"
@@ -13,6 +13,10 @@ export const getProductsStep = createStep(
     const service = container.resolve<IProductModuleService>(
       ModuleRegistrationName.PRODUCT
     )
+
+    if (!data.ids?.length) {
+      return new StepResponse([], [])
+    }
 
     const products = await service.list(
       { id: data.ids },

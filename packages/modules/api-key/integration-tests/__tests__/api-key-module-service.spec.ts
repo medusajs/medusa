@@ -1,11 +1,11 @@
-import crypto from "crypto"
 import { Modules } from "@medusajs/modules-sdk"
 import { IApiKeyModuleService } from "@medusajs/types"
 import { ApiKeyType } from "@medusajs/utils"
+import crypto from "crypto"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import {
-  createSecretKeyFixture,
   createPublishableKeyFixture,
+  createSecretKeyFixture,
 } from "../__fixtures__"
 
 jest.setTimeout(100000)
@@ -88,7 +88,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should only allow creating one active token", async function () {
-          expect(
+          await expect(
             service.create([createSecretKeyFixture, createSecretKeyFixture])
           ).rejects.toThrow(
             "You can only create one secret key at a time. You tried to create 2 secret keys."

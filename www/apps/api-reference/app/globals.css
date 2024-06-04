@@ -44,7 +44,7 @@
   }
 
   pre *::selection {
-    @apply !bg-medusa-code-text-highlight;
+    @apply !bg-medusa-contrast-bg-highlight;
   }
 
   body[data-modal="opened"] {

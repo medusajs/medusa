@@ -3,6 +3,10 @@ import {
   CreateCountryGeoZoneDTO,
   CreateProvinceGeoZoneDTO,
   CreateZipGeoZoneDTO,
+  UpdateCityGeoZoneDTO,
+  UpdateCountryGeoZoneDTO,
+  UpdateProvinceGeoZoneDTO,
+  UpdateZipGeoZoneDTO,
 } from "./geo-zone"
 
 /**
@@ -52,6 +56,10 @@ export interface UpdateServiceZoneDTO {
     | Omit<CreateProvinceGeoZoneDTO, "service_zone_id">
     | Omit<CreateCityGeoZoneDTO, "service_zone_id">
     | Omit<CreateZipGeoZoneDTO, "service_zone_id">
+    | UpdateCountryGeoZoneDTO
+    | UpdateProvinceGeoZoneDTO
+    | UpdateCityGeoZoneDTO
+    | UpdateZipGeoZoneDTO
     | {
         /**
          * The ID of the geo zone.

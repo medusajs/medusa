@@ -46,14 +46,6 @@ export interface CreateShippingOptionDTO {
    * The shipping option rules associated with the shipping option.
    */
   rules?: Omit<CreateShippingOptionRuleDTO, "shipping_option_id">[]
-
-  /**
-   * The shipping option pricing
-   */
-  prices: (
-    | { currency_code: string; amount: number }
-    | { region_id: string; amount: number }
-  )[]
 }
 
 /**
@@ -119,14 +111,6 @@ export interface UpdateShippingOptionDTO {
          */
         id: string
       }
-  )[]
-
-  /**
-   * The shipping option pricing
-   */
-  prices: (
-    | { currency_code: string; amount: number; id?: string }
-    | { region_id: string; amount: number; id?: string }
   )[]
 }
 

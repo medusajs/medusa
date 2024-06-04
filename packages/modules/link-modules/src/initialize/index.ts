@@ -1,8 +1,8 @@
 import {
   InternalModuleDeclaration,
+  MedusaModule,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-  MedusaModule,
   ModuleRegistrationName,
 } from "@medusajs/modules-sdk"
 import {
@@ -16,6 +16,7 @@ import {
   ModuleServiceInitializeOptions,
 } from "@medusajs/types"
 import {
+  arrayDifference,
   ContainerRegistrationKeys,
   lowerCaseFirst,
   simpleHash,
@@ -50,7 +51,9 @@ export const initialize = async (
   )
 
   for (const linkDefinition of allLinksToLoad) {
-    const definition = JSON.parse(JSON.stringify(linkDefinition))
+    const definition: ModuleJoinerConfig = JSON.parse(
+      JSON.stringify(linkDefinition)
+    )
 
     const [primary, foreign] = definition.relationships ?? []
 
@@ -63,6 +66,24 @@ export const initialize = async (
       !definition.isReadOnlyLink
     ) {
       throw new Error(`Foreign key cannot be a composed key.`)
+    }
+
+    if (Array.isArray(definition.extraDataFields)) {
+      const extraDataFields = definition.extraDataFields
+      const definedDbFields = Object.keys(
+        definition.databaseConfig?.extraFields || {}
+      )
+      const difference = arrayDifference(extraDataFields, definedDbFields)
+
+      if (difference.length) {
+        throw new Error(
+          `extraDataFields (fieldNames: ${difference.join(
+            ","
+          )}) need to be configured under databaseConfig (serviceName: ${
+            definition.serviceName
+          }).`
+        )
+      }
     }
 
     const serviceKey = !definition.isReadOnlyLink
@@ -112,7 +133,10 @@ export const initialize = async (
       logger,
     })
 
-    definition.alias ??= []
+    if (!Array.isArray(definition.alias)) {
+      definition.alias = definition.alias ? [definition.alias] : []
+    }
+
     for (const alias of definition.alias) {
       alias.args ??= {}
 
