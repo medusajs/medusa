@@ -22,6 +22,18 @@ To send requests from the storefront to the Medusa application’s Store API Rou
 
 ---
 
+## Install Types Package
+
+The `@medusajs/types` package provide API routes' request and response types.
+
+If you're not using the JS Client or Medusa React, install `@medusajs/types` to use the correct request and response types:
+
+```bash npm2yarn
+npm install @medusajs/types@preview
+```
+
+---
+
 ## Configure CORS
 
 The Medusa application’s API routes are guarded by a CORS middleware. Make sure to set the `storeCors` property of the `http` configuration in `medusa-config.js` to the storefront’s URL.

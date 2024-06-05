@@ -1,0 +1,42 @@
+export const metadata = {
+  title: `Store and Retrieve Region`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to store a customer's region's ID and retrieve the selected region.
+
+## Store Selected Region ID
+
+When the customer selects their region, for example, from a dropdown, store that region's ID in the `localstorage`.
+
+For example:
+
+```ts
+localStorage.setItem("region_id", region.id)
+```
+
+Then, you retrieve it later using the `localSorage.getItem` method later:
+
+```ts
+const regionId = localStorage.getItem("region_id")
+```
+
+---
+
+## Retrieve Selected Region
+
+To retrieve the selected region, use the [Retrieve Region API route](!api!/store#regions_getregionsid):
+
+```ts
+const regionId = localStorage.getItem("region_id")
+
+fetch(`http://localhost:9000/store/regions/${regionId}`, {
+  credentials: "include"
+})
+.then((res) => res.json())
+.then(({ region }) => {
+  // do something with region.
+  console.log(region)
+})
+```
