@@ -448,7 +448,7 @@ medusaIntegrationTestRunner({
 
       it("list sales channels from the publishable api key with free text search filter", async () => {
         const response = await api.get(
-          `/admin/sales-channels?q=2&publishable_api_key=${pubKey1.id}`,
+          `/admin/sales-channels?q=2&publishable_key_id=${pubKey1.id}`,
           adminHeaders
         )
 
