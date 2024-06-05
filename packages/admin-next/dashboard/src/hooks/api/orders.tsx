@@ -8,7 +8,7 @@ import {
 
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { client } from "../../lib/client"
+import { sdk } from "../../lib/client"
 
 const ORDERS_QUERY_KEY = "orders" as const
 export const ordersQueryKeys = queryKeysFactory(ORDERS_QUERY_KEY)
@@ -22,7 +22,7 @@ export const useOrder = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: async () => client.orders.retrieve(id, query),
+    queryFn: async () => sdk.admin.order.retrieve(id, query),
     queryKey: ordersQueryKeys.detail(id, query),
     ...options,
   })
@@ -38,7 +38,7 @@ export const useOrders = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: async () => client.orders.list(query),
+    queryFn: async () => sdk.admin.order.list(query),
     queryKey: ordersQueryKeys.list(query),
     ...options,
   })
@@ -52,7 +52,7 @@ export const useCreateOrderFulfillment = (
 ) => {
   return useMutation({
     mutationFn: (payload: any) =>
-      client.orders.createFulfillment(orderId, payload),
+      sdk.admin.order.createFulfillment(orderId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
@@ -70,7 +70,7 @@ export const useCancelOrderFulfillment = (
 ) => {
   return useMutation({
     mutationFn: (payload: { no_notification?: boolean }) =>
-      client.orders.cancelFulfillment(orderId, fulfillmentId, payload),
+      sdk.admin.order.cancelFulfillment(orderId, fulfillmentId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
@@ -86,7 +86,7 @@ export const useCancelOrder = (
   options?: UseMutationOptions<any, Error, any>
 ) => {
   return useMutation({
-    mutationFn: () => client.orders.cancel(orderId),
+    mutationFn: () => sdk.admin.order.cancel(orderId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),

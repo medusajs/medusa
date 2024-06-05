@@ -14,22 +14,22 @@ import { useTranslation } from "react-i18next"
 
 import { HttpTypes } from "@medusajs/types"
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
-import { DataGrid } from "../../../../../components/grid/data-grid/index.ts"
-import { CurrencyCell } from "../../../../../components/grid/grid-cells/common/currency-cell/index.ts"
-import { DataGridMeta } from "../../../../../components/grid/types.ts"
+import { DataGrid } from "../../../../../components/grid/data-grid/index"
+import { CurrencyCell } from "../../../../../components/grid/grid-cells/common/currency-cell/index"
+import { DataGridMeta } from "../../../../../components/grid/types"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal/index.ts"
-import { useCurrencies } from "../../../../../hooks/api/currencies.tsx"
-import { useRegions } from "../../../../../hooks/api/regions.tsx"
-import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options.ts"
-import { useStore } from "../../../../../hooks/api/store.tsx"
+} from "../../../../../components/route-modal/index"
+import { useCurrencies } from "../../../../../hooks/api/currencies"
+import { useRegions } from "../../../../../hooks/api/regions"
+import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options"
+import { useStore } from "../../../../../hooks/api/store"
 import {
   getDbAmount,
   getPresentationalAmount,
-} from "../../../../../lib/money-amount-helpers.ts"
-import { ExtendedProductDTO } from "../../../../../types/api-responses.ts"
+} from "../../../../../lib/money-amount-helpers"
+import { ExtendedProductDTO } from "../../../../../types/api-responses"
 
 const getInitialCurrencyPrices = (prices: PriceDTO[]) => {
   const ret: Record<string, number> = {}
