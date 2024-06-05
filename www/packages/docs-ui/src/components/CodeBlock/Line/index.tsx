@@ -22,6 +22,7 @@ type CodeBlockLineProps = {
   lineNumber: number
   showLineNumber: boolean
   lineNumberColorClassName: string
+  lineNumberBgClassName: string
   noLineNumbers?: boolean
 } & Pick<RenderProps, "getLineProps" | "getTokenProps">
 
@@ -33,6 +34,7 @@ export const CodeBlockLine = ({
   getTokenProps,
   showLineNumber,
   lineNumberColorClassName,
+  lineNumberBgClassName,
 }: CodeBlockLineProps) => {
   const lineProps = getLineProps({ line, key: lineNumber })
 
@@ -241,7 +243,8 @@ export const CodeBlockLine = ({
           className={clsx(
             "mr-docs_1 table-cell select-none",
             "sticky left-0 w-[1%] px-docs_1 text-right",
-            lineNumberColorClassName
+            lineNumberColorClassName,
+            lineNumberBgClassName
           )}
         >
           {lineNumber + 1}
