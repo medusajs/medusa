@@ -42,6 +42,16 @@ export const ProductCreateOrganizationSection = ({
       })),
   })
 
+  const tags = useComboboxData({
+    queryKey: ["product_tags"],
+    queryFn: client.productTags.list,
+    getOptions: (data) =>
+      data.product_tags.map((tag) => ({
+        label: tag.value,
+        value: tag.id,
+      })),
+  })
+
   const { fields, remove, replace } = useFieldArray({
     control: form.control,
     name: "sales_channels",
@@ -54,7 +64,7 @@ export const ProductCreateOrganizationSection = ({
 
   return (
     <div id="organize" className="flex flex-col gap-y-8">
-      <Heading>{t("products.organization")}</Heading>
+      <Heading>{t("products.organization.header")}</Heading>
       <SwitchBox
         control={form.control}
         name="discountable"
@@ -62,7 +72,7 @@ export const ProductCreateOrganizationSection = ({
         description={t("products.fields.discountable.hint")}
         optional
       />
-      <div className="grid grid-cols-2 gap-x-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Form.Field
           control={form.control}
           name="type_id"
@@ -78,8 +88,10 @@ export const ProductCreateOrganizationSection = ({
                     options={types.options}
                     searchValue={types.searchValue}
                     onSearchValueChange={types.onSearchValueChange}
+                    fetchNextPage={types.fetchNextPage}
                   />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
@@ -99,14 +111,16 @@ export const ProductCreateOrganizationSection = ({
                     options={collections.options}
                     searchValue={collections.searchValue}
                     onSearchValueChange={collections.onSearchValueChange}
+                    fetchNextPage={collections.fetchNextPage}
                   />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
         />
       </div>
-      <div className="grid grid-cols-2 gap-x-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Form.Field
           control={form.control}
           name="categories"
@@ -119,6 +133,30 @@ export const ProductCreateOrganizationSection = ({
                 <Form.Control>
                   <CategoryCombobox {...field} />
                 </Form.Control>
+                <Form.ErrorMessage />
+              </Form.Item>
+            )
+          }}
+        />
+        <Form.Field
+          control={form.control}
+          name="tags"
+          render={({ field }) => {
+            return (
+              <Form.Item>
+                <Form.Label optional>
+                  {t("products.fields.tags.label")}
+                </Form.Label>
+                <Form.Control>
+                  <Combobox
+                    {...field}
+                    options={tags.options}
+                    searchValue={tags.searchValue}
+                    onSearchValueChange={tags.onSearchValueChange}
+                    fetchNextPage={tags.fetchNextPage}
+                  />
+                </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}

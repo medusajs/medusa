@@ -1,15 +1,19 @@
 "use client"
 
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import clsx from "clsx"
-import { HighlightProps, Highlight, themes } from "prism-react-renderer"
+import { Highlight, HighlightProps, themes, Token } from "prism-react-renderer"
 import { ApiRunner } from "@/components"
 import { useColorMode } from "@/providers"
 import { CodeBlockHeader, CodeBlockHeaderMeta } from "./Header"
 import { CodeBlockLine } from "./Line"
 import { ApiAuthType, ApiDataOptions, ApiMethod } from "types"
 import { CSSTransition } from "react-transition-group"
+import { useCollapsibleCodeLines } from "../.."
+import { HighlightProps as CollapsibleHighlightProps } from "@/hooks"
 import { CodeBlockActions, CodeBlockActionsProps } from "./Actions"
+import { CodeBlockCollapsibleButton } from "./Collapsible/Button"
+import { CodeBlockCollapsibleFade } from "./Collapsible/Fade"
 
 export type Highlight = {
   line: number
@@ -32,6 +36,8 @@ export type CodeBlockMetaFields = {
   noCopy?: boolean
   noReport?: boolean
   noLineNumbers?: boolean
+  collapsibleLines?: string
+  expandButtonLabel?: string
 } & CodeBlockHeaderMeta
 
 export type CodeBlockStyle = "loud" | "subtle"
@@ -60,6 +66,8 @@ export const CodeBlock = ({
   noReport = false,
   noLineNumbers = false,
   children,
+  collapsibleLines,
+  expandButtonLabel,
   ...rest
 }: CodeBlockProps) => {
   if (!source && typeof children === "string") {
@@ -68,6 +76,9 @@ export const CodeBlock = ({
 
   const { colorMode } = useColorMode()
   const [showTesting, setShowTesting] = useState(false)
+  const codeContainerRef = useRef<HTMLDivElement>(null)
+  const codeRef = useRef<HTMLElement>(null)
+  const [scrollable, setScrollable] = useState(false)
   const hasInnerCodeBlock = useMemo(
     () => hasTabs || title.length > 0,
     [hasTabs, title]
@@ -107,7 +118,7 @@ export const CodeBlock = ({
   const borderColor = useMemo(
     () =>
       clsx(
-        blockStyle === "loud" && "border-transparent",
+        blockStyle === "loud" && "border-0",
         blockStyle === "subtle" && [
           colorMode === "light" && "border-medusa-border-base",
           colorMode === "dark" && "border-medusa-code-border",
@@ -158,10 +169,6 @@ export const CodeBlock = ({
     return lowerLang === "json" ? "plain" : lowerLang
   }, [lang])
 
-  if (!source.length) {
-    return <></>
-  }
-
   const transformedHighlights: Highlight[] = highlights
     .filter((highlight) => highlight.length !== 0)
     .map((highlight) => ({
@@ -170,13 +177,79 @@ export const CodeBlock = ({
       tooltipText: highlight.length >= 3 ? highlight[2] : undefined,
     }))
 
-  const actionsProps: Omit<CodeBlockActionsProps, "inHeader"> = {
-    source,
-    canShowApiTesting,
-    onApiTesting: setShowTesting,
-    blockStyle,
-    noReport,
-    noCopy,
+  const getLines = (
+    tokens: Token[][],
+    highlightProps: CollapsibleHighlightProps,
+    lineNumberOffset = 0
+  ) =>
+    tokens.map((line, i) => {
+      const offsettedLineNumber = i + lineNumberOffset
+      const highlightedLines = transformedHighlights.filter(
+        (highlight) => highlight.line - 1 === offsettedLineNumber
+      )
+
+      return (
+        <CodeBlockLine
+          line={line}
+          lineNumber={offsettedLineNumber}
+          highlights={highlightedLines}
+          showLineNumber={!noLineNumbers && tokens.length > 1}
+          key={offsettedLineNumber}
+          lineNumberColorClassName={lineNumbersColor}
+          lineNumberBgClassName={innerBgColor}
+          {...highlightProps}
+        />
+      )
+    })
+
+  const {
+    getCollapsedLinesElm,
+    getNonCollapsedLinesElm,
+    type: collapsibleType,
+    ...collapsibleResult
+  } = useCollapsibleCodeLines({
+    collapsibleLinesStr: collapsibleLines,
+    getLines,
+  })
+
+  useEffect(() => {
+    if (!codeContainerRef.current || !codeRef.current) {
+      return
+    }
+
+    setScrollable(
+      codeContainerRef.current.scrollWidth < codeRef.current.clientWidth
+    )
+  }, [codeContainerRef.current, codeRef.current])
+
+  const actionsProps: Omit<CodeBlockActionsProps, "inHeader"> = useMemo(
+    () => ({
+      source,
+      canShowApiTesting,
+      onApiTesting: setShowTesting,
+      blockStyle,
+      noReport,
+      noCopy,
+      isCollapsed: collapsibleType !== undefined && collapsibleResult.collapsed,
+      inInnerCode: hasInnerCodeBlock,
+      showGradientBg: scrollable,
+    }),
+    [
+      source,
+      canShowApiTesting,
+      setShowTesting,
+      blockStyle,
+      noReport,
+      noCopy,
+      collapsibleType,
+      collapsibleResult,
+      hasInnerCodeBlock,
+      scrollable,
+    ]
+  )
+
+  if (!source.length) {
+    return <></>
   }
 
   return (
@@ -233,12 +306,30 @@ export const CodeBlock = ({
               tokens,
               ...rest
             }) => (
-              <div className={clsx(innerBorderClasses, innerBgColor)}>
+              <div
+                className={clsx(innerBorderClasses, innerBgColor, "relative")}
+                ref={codeContainerRef}
+              >
+                {collapsibleType === "start" && (
+                  <>
+                    <CodeBlockCollapsibleButton
+                      type={collapsibleType}
+                      expandButtonLabel={expandButtonLabel}
+                      className={innerBorderClasses}
+                      {...collapsibleResult}
+                    />
+                    <CodeBlockCollapsibleFade
+                      type={collapsibleType}
+                      collapsed={collapsibleResult.collapsed}
+                      hasHeader={hasInnerCodeBlock}
+                    />
+                  </>
+                )}
                 <pre
                   style={{ ...style, fontStretch: "100%" }}
                   className={clsx(
                     "relative !my-0 break-words bg-transparent !outline-none",
-                    "overflow-auto break-words p-0",
+                    "overflow-auto break-words p-0 pr-docs_0.25",
                     "rounded-docs_DEFAULT",
                     !hasInnerCodeBlock &&
                       tokens.length <= 1 &&
@@ -253,24 +344,22 @@ export const CodeBlock = ({
                       tokens.length > 1 && "py-docs_0.75",
                       tokens.length <= 1 && "!py-[6px] px-docs_0.5"
                     )}
+                    ref={codeRef}
                   >
-                    {tokens.map((line, i) => {
-                      const highlightedLines = transformedHighlights.filter(
-                        (highlight) => highlight.line - 1 === i
-                      )
-
-                      return (
-                        <CodeBlockLine
-                          line={line}
-                          lineNumber={i}
-                          highlights={highlightedLines}
-                          showLineNumber={!noLineNumbers && tokens.length > 1}
-                          key={i}
-                          lineNumberColorClassName={lineNumbersColor}
-                          {...rest}
-                        />
-                      )
+                    {collapsibleType === "start" &&
+                      getCollapsedLinesElm({
+                        tokens,
+                        highlightProps: rest,
+                      })}
+                    {getNonCollapsedLinesElm({
+                      tokens,
+                      highlightProps: rest,
                     })}
+                    {collapsibleType === "end" &&
+                      getCollapsedLinesElm({
+                        tokens,
+                        highlightProps: rest,
+                      })}
                   </code>
                 </pre>
                 {!title && (
@@ -279,6 +368,21 @@ export const CodeBlock = ({
                     inHeader={false}
                     isSingleLine={tokens.length <= 1}
                   />
+                )}
+                {collapsibleType === "end" && (
+                  <>
+                    <CodeBlockCollapsibleFade
+                      type={collapsibleType}
+                      collapsed={collapsibleResult.collapsed}
+                      hasHeader={hasInnerCodeBlock}
+                    />
+                    <CodeBlockCollapsibleButton
+                      type={collapsibleType}
+                      expandButtonLabel={expandButtonLabel}
+                      className={innerBorderClasses}
+                      {...collapsibleResult}
+                    />
+                  </>
                 )}
               </div>
             )}

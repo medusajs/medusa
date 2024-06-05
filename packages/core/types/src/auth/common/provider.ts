@@ -1,3 +1,5 @@
+import { AuthIdentityDTO } from "./auth-identity"
+
 /**
  * @interface
  *
@@ -12,7 +14,7 @@ export type AuthenticationResponse = {
   /**
    * The authenticated user's details.
    */
-  authIdentity?: any
+  authIdentity?: AuthIdentityDTO
 
   /**
    * If an error occurs during the authentication process,
