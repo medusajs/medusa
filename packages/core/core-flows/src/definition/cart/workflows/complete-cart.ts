@@ -7,7 +7,6 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
-import { linkOrderAndPaymentCollectionsStep } from "../../../order/steps"
 import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-payment-session"
 import { createOrderFromCartStep, validateCartPaymentsStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
@@ -76,23 +75,20 @@ export const completeCartWorkflow = createWorkflow(
 
     const order = createOrderFromCartStep({ cart: finalCart })
 
-    const linkOrderPaymentCollection = transform({ order, cart }, (data) => ({
-      links: [
+    parallelize(
+      createRemoteLinkStep([
         {
-          order_id: data.order.id,
-          payment_collection_id: data.cart.payment_collection.id,
+          [Modules.ORDER]: { order_id: order.id },
+          [Modules.CART]: { cart_id: finalCart.id },
         },
-      ],
-    }))
-
-    linkOrderAndPaymentCollectionsStep(linkOrderPaymentCollection)
-
-    createRemoteLinkStep([
-      {
-        [Modules.ORDER]: { order_id: order.id },
-        [Modules.CART]: { cart_id: finalCart.id },
-      },
-    ])
+        {
+          [Modules.ORDER]: { order_id: order.id },
+          [Modules.PAYMENT]: {
+            payment_collection_id: cart.payment_collection.id,
+          },
+        },
+      ])
+    )
 
     return order
   }
