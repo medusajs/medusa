@@ -469,6 +469,10 @@ export const RouteMap: RouteObject[] = [
                 lazy: () => import("../../routes/inventory/inventory-list"),
               },
               {
+                path: "create",
+                lazy: () => import("../../routes/inventory/inventory-create"),
+              },
+              {
                 path: ":id",
                 lazy: () => import("../../routes/inventory/inventory-detail"),
                 handle: {

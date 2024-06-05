@@ -392,6 +392,11 @@
     "associatedVariants": "Associated variants",
     "manageLocations": "Manage locations",
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
+    "create": {
+      "title": "Add item",
+      "details": "Details",
+      "availability": "Availability"
+    },
     "reservation": {
       "header": "Reservation of {{itemName}}",
       "editItemDetails": "Edit item details",
