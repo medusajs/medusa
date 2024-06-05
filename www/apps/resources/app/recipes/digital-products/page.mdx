@@ -126,12 +126,14 @@ The module will hold your custom data models and the service implementing digita
   Finally, add the module to `medusa-config.js` into the `modules` object:
   
   ```js title="medusa-config.js"
-  const modules = {
-    digitalProductModuleService: {
-      resolve: "./modules/digital-product"
-    },
+  module.exports = defineConfig({
     // ...
-  }
+    modules: {
+      digitalProductModuleService: {
+        resolve: "./modules/digital-product"
+      }
+    }
+  })
   ```
 
 </Details>
@@ -459,17 +461,17 @@ The Medusa application resolves module relationships without creating an actual 
   Next, change the module’s entry in the `modules` object in `medusa-config.js` to the following:
   
   ```ts title="medusa-config.js"
-  const modules = {
-    digitalProductModuleService: {
-      resolve: "./modules/digital-product",
-      definition: {
-        isQueryable: true,
-        key: "digitalProductModuleService",
-        registrationName: "digitalProductModuleService"
-      }
-    },
+  module.exports = defineConfig({
     // ...
-  }
+    modules: {
+      digitalProductModuleService: {
+        resolve: "./modules/digital-product",
+        definition: {
+          isQueryable: true
+        }
+      }
+    }
+  })
   ```
 
 </Details>
@@ -559,9 +561,9 @@ To utilize the relationship to the Product Module, you use the remote query to f
   }
   
   export type CreateProductMediaWorkflowInput = 
-      CreateProductMediaDTO & {
-        product?: CreateProductWorkflowInputDTO
-      }
+    CreateProductMediaDTO & {
+      product?: CreateProductWorkflowInputDTO
+    }
 
   ```
   
@@ -827,14 +829,15 @@ To utilize the relationship to the Product Module, you use the remote query to f
         "type",
         "file_key",
         "mime_type",
-        "variant.*"
+        "variant.*",
+        "variant.product.*"
       ],
     })
   
     const result = await remoteQuery(query)
   
     res.json({
-      digital_products: result
+      product_medias: result
     })
   }
   ```
@@ -881,101 +884,53 @@ In your customizations, you send requests to the API routes you created to creat
 <Details summaryContent="Example: Digital Products Page in Admin">
 
   In this example, you’ll add a single page that lists the digital products and allows you to create a new one. The implementation will be minimal for the purpose of simplicity, so you can elaborate on it based on your use case.
-      
-  Before starting off, make sure to install the necessary dependencies in your Medusa application project:
 
-  ```bash npm2yarn
-  npm install medusa-react @tanstack/react-query@4.22 @medusajs/ui
-  ```
+  To create the UI route, create the file `src/admin/routes/product-media/page.tsx` with the following content:
 
-  This installs the necessary packages to use the Medusa React client and the [Medusa UI package](https://docs.medusajs.com/ui).
-
-  You also need to create types for the expected requests and responses of the API Routes you created. This is helpful when using Medusa React’s custom hooks. To do that, create the file `src/types/product-media.ts` with the following content:
-
-  ```ts title="src/types/product-media.ts" badgeLabel="Medusa Application"
+  ```tsx title="src/admin/routes/product-media/page.tsx" badgeLabel="Medusa Application" collapsibleLines="1-13" expandButtonLabel="Show Imports"
+  import { defineRouteConfig } from "@medusajs/admin-shared";
+  import { useEffect, useState } from "react";
   import { 
-    MediaType, 
-    ProductMedia, 
-  } from "../models/product-media"
-
-  export type ListProductMediasRequest = {
-    // no expected parameters
-  };
-
-  export type ListProductMediasResponse = {
-    product_medias: ProductMedia[]
-    count: number
-  };
-
-  export type CreateProductMediaRequest = {
-    variant_id: string
-    name: string
-    file_key: string
-    type?: MediaType
-    mime_type: string
-  };
-
-  export type CreateProductMediaResponse = {
-    product_media: ProductMedia
-  };
-  ```
-
-  You can now create your admin UI route. To do that, create the file `src/admin/routes/product-media/page.tsx` with the following content:
-
-  ```tsx title="src/admin/routes/product-media/page.tsx" badgeLabel="Medusa Application" collapsibleLines="1-18" expandButtonLabel="Show Imports"
-  import { RouteConfig } from "@medusajs/admin"
-  import { DocumentText } from "@medusajs/icons"
-  import { useAdminCustomQuery } from "medusa-react"
-  import { 
-    ListProductMediasRequest, 
-    ListProductMediasResponse,
-  } from "../../../types/product-media"
-  import { 
-    Button, 
     Container, 
-    Drawer, 
     Heading, 
     Table,
   } from "@medusajs/ui"
+  import { PhotoSolid } from "@medusajs/icons"
+  import { ProductMediaDTO } from "../../../types/digital-product/product-media"
   import { Link } from "react-router-dom"
-  import { RouteProps } from "@medusajs/admin-ui"
   import ProductMediaCreateForm 
     from "../../components/product-media/CreateForm"
 
-  const ProductMediaListPage = (props: RouteProps) => {
-    const { data, isLoading } = useAdminCustomQuery<
-      ListProductMediasRequest, 
-      ListProductMediasResponse
-    >(
-      "/product-media",
-      ["product-media"]
-    )
+  const ProductMediaListPage = () => {
+    const [loading, setLoading] = useState(true)
+    const [productMedias, setProductMedias] = useState<ProductMediaDTO[]>([])
+
+    useEffect(() => {
+      if (!loading) {
+        return
+      }
+
+      fetch(`/admin/digital-products`, {
+        credentials: "include",
+      })
+      .then((response) => response.json())
+      .then(({ product_medias }) => {
+        setProductMedias(product_medias)
+        setLoading(false)
+      })
+    }, [loading])
 
     return (
       <Container>
         <div className="flex justify-between mb-4">
           <Heading level="h1">Digital Products</Heading>
-          <Drawer>
-            <Drawer.Trigger>
-              <Button>Create</Button>
-            </Drawer.Trigger>
-            <Drawer.Content>
-              <Drawer.Header>
-                <Drawer.Title>
-                  Create Digital Product
-                </Drawer.Title>
-              </Drawer.Header>
-              <Drawer.Body>
-                <ProductMediaCreateForm {...props} />
-              </Drawer.Body>
-            </Drawer.Content>
-          </Drawer>
+          <ProductMediaCreateForm onCreate={() => setLoading(true)} />
         </div>
-        {isLoading && <div>Loading...</div>}
-        {data && !data.product_medias.length && (
+        {loading && <div>Loading...</div>}
+        {!loading && !productMedias.length && (
           <div>No Digital Products</div>
         )}
-        {data && data.product_medias.length > 0 && (
+        {!loading && productMedias.length > 0 && (
           <Table>
             <Table.Header>
               <Table.Row>
@@ -988,23 +943,23 @@ In your customizations, you send requests to the API routes you created to creat
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {data.product_medias.map((product_media) => (
+              {productMedias.map((product_media) => (
                 <Table.Row key={product_media.id}>
                   <Table.Cell>
-                    {product_media.variant.product.title}
+                    {product_media.variant?.product.title}
                   </Table.Cell>
                   <Table.Cell>
-                    {product_media.variant.title}
+                    {product_media.variant?.title}
                   </Table.Cell>
                   <Table.Cell>
                     {product_media.file_key}
                   </Table.Cell>
                   <Table.Cell>
-                    <Link to={`/a/products/${
+                    {product_media.variant && <Link to={`/products/${
                       product_media.variant.product_id
                     }`}>
                       View Product
-                    </Link>
+                    </Link>}
                   </Table.Cell>
                 </Table.Row>
               ))}
@@ -1015,47 +970,38 @@ In your customizations, you send requests to the API routes you created to creat
     )
   }
 
-  export const config: RouteConfig = {
-    link: {
+  export const config = defineRouteConfig({
       label: "Digital Products",
-      icon: DocumentText,
-    },
-  }
+      icon: PhotoSolid,
+    })
 
   export default ProductMediaListPage
   ```
 
-  This UI route will show under the sidebar with the label “Digital Products”. In the page, you use the `useAdminCustomQuery` hook imported from `medusa-react` to send a request to your custom “list digital products” API Route.
+  This UI route will show under the sidebar with the label “Digital Products”. In the page, you use the `/admin/digital-products` API route to retrieve and display the product medias.
 
-  In the page, you’ll show the list of digital products in a table, if there are any. You’ll also show a button that opens a drawer to the side of the page.
+  You also render a `ProductMediaCreateForm` component that implements the Create Digital Product form.
 
-  In the drawer, you show the Create Digital Product form. To create this form, create the file `src/admin/components/product-media/CreateForm/index.tsx` with the following content:
+  To create this form, create the file `src/admin/components/product-media/CreateForm/index.tsx` with the following content:
 
-  ```tsx title="src/admin/components/product-media/CreateForm/index.tsx" badgeLabel="Medusa Application" collapsibleLines="1-20" expandButtonLabel="Show Imports"
+  ```tsx title="src/admin/components/product-media/CreateForm/index.tsx" badgeLabel="Medusa Application" collapsibleLines="1-11" expandButtonLabel="Show Imports"
   import { useState } from "react"
-  import { MediaType } from "../../../../models/product-media"
-  import { 
-    useAdminCreateProduct, 
-    useAdminCustomPost, 
-    useAdminUploadProtectedFile,
-  } from "medusa-react"
-  import { 
-    CreateProductMediaRequest, 
-    CreateProductMediaResponse, 
-  } from "../../../../types/product-media"
+  import { redirect } from "react-router-dom"
   import { 
     Button, 
     Container, 
     Input, 
     Label, 
     Select,
+    Drawer
   } from "@medusajs/ui"
-  import { RouteProps } from "@medusajs/admin-ui"
-  import { useNavigate } from "react-router-dom"
 
-  const ProductMediaCreateForm = ({
-    notify,
-  }: RouteProps) => {
+  type Props = {
+    onCreate: () => void
+  }
+
+  const ProductMediaCreateForm = ({ onCreate }: Props) => {
+    const [open, setOpen] = useState(false)
     const [productName, setProductName] = useState("")
     const [
       productVariantName, 
@@ -1064,149 +1010,142 @@ In your customizations, you send requests to the API routes you created to creat
     const [name, setName] = useState("")
     const [type, setType] = useState("main")
     const [file, setFile] = useState<File>()
+    const [loading, setLoading] = useState(false)
 
-    const createProduct = useAdminCreateProduct()
-    const uploadFile = useAdminUploadProtectedFile()
-    const { 
-      mutate: createDigitalProduct,
-      isLoading,
-    } = useAdminCustomPost<
-      CreateProductMediaRequest,
-      CreateProductMediaResponse
-    >(
-      "/product-media",
-      ["product-media"]
-    )
-
-    const navigate = useNavigate()
-
-    const handleSubmit = (
-      e: React.FormEvent<HTMLFormElement>
-    ) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      
-      createProduct.mutate({
-        title: productName,
-        is_giftcard: false,
-        discountable: false,
-        options: [
-          {
-            title: "Digital Product",
+      setLoading(true)
+
+      const formData = new FormData()
+      formData.append("files", file);
+
+      // upload file
+      fetch(`/admin/uploads`, {
+        method: "POST",
+        credentials: "include",
+        body: formData
+      })
+      .then((res) => res.json())
+      .then(({ files }) => {
+        // create digital product
+        fetch(`/admin/digital-products`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
           },
-        ],
-        variants: [
-          {
-            title: productVariantName,
-            options: [
-              {
-                value: name, // can also be the file name
-              },
-            ],
-            // for simplicity, prices are omitted from form.
-            // Those can be edited from the product's page.
-            prices: [],
-          },
-        ],
-      }, {
-        onSuccess: ({ product }) => {
-          // upload file
-          uploadFile.mutate(file, {
-            onSuccess: ({ uploads }) => {
-              if (!("key" in uploads[0])) {
-                return
-              }
-              // create the digital product
-              createDigitalProduct({
-                variant_id: product.variants[0].id,
-                name,
-                file_key: uploads[0].key as string,
-                type: type as MediaType,
-                mime_type: file.type,
-              }, {
-                onSuccess: () => {
-                  notify.success(
-                    "Success", 
-                    "Digital Product Created Successfully"
-                  )
-                  navigate("/a/product-media")
-                },
-              })
-            },
+          body: JSON.stringify({
+            name,
+            file_key: files[0].id,
+            type,
+            mime_type: file.type,
+            product: {
+              title: productName,
+              variants: [
+                {
+                  title: name
+                }
+              ]
+            }
           })
-        },
+        })
+        .then((res) => res.json())
+        .then(() => {
+          setOpen(false)
+          setLoading(false)
+          onCreate()
+        })
+        .catch((e) => {
+          console.error(e)
+          setLoading(false)
+        })
+      })
+      .catch((e) => {
+        console.error(e)
+        setLoading(false)
       })
     }
 
     return (
-      <Container>
-        <form 
-          onSubmit={handleSubmit} 
-          className="flex flex-col gap-4"
-        >
-          <div className="flex gap-4 items-center">
-            <Label>Product Name</Label>
-            <Input 
-              type="text" 
-              placeholder="Product Name" 
-              value={productName} 
-              onChange={(e) => setProductName(e.target.value)}
-            />
-          </div>
-          <div className="flex gap-4 items-center">
-            <Label>Product Variant Name</Label>
-            <Input 
-              type="text" 
-              placeholder="Product Variant" 
-              value={productVariantName} 
-              onChange={(e) => 
-                setProductVariantName(e.target.value)
-              }
-            />
-          </div>
-          <div className="flex gap-4 items-center">
-            <Label>Media Name</Label>
-            <Input 
-              type="text" 
-              placeholder="Media Name" 
-              value={name} 
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="flex gap-4 items-center">
-            <Label>Type</Label>
-            <Select onValueChange={setType} value={type}>
-              <Select.Trigger>
-                <Select.Value placeholder="Type" />
-              </Select.Trigger>
-              <Select.Content className="z-50">
-                <Select.Item value={"main"}>
-                  Main
-                </Select.Item>
-                <Select.Item value={"preview"}>
-                  Preview
-                </Select.Item>
-              </Select.Content>
-            </Select>
-          </div>
-          <div className="flex gap-4 items-center">
-            <Label>File</Label>
-            <Input 
-              type="file" 
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-          </div>
-          <Button 
-            variant="primary" 
-            type="submit" 
-            isLoading={
-              createProduct.isLoading || 
-              uploadFile.isLoading || 
-              isLoading
-            }>
-            Create
-          </Button>
-        </form>
-      </Container>
+      <Drawer open={open} onOpenChange={setOpen}>
+        <Drawer.Trigger>
+          <Button onClick={() => setOpen(true)}>Create</Button>
+        </Drawer.Trigger>
+        <Drawer.Content>
+          <Drawer.Header>
+            <Drawer.Title>
+              Create Digital Product
+            </Drawer.Title>
+          </Drawer.Header>
+          <Drawer.Body>
+          <Container>
+            <form 
+              onSubmit={handleSubmit} 
+              className="flex flex-col gap-4"
+            >
+              <div className="flex gap-4 items-center">
+                <Label>Product Name</Label>
+                <Input 
+                  type="text" 
+                  placeholder="Product Name" 
+                  value={productName} 
+                  onChange={(e) => setProductName(e.target.value)}
+                />
+              </div>
+              <div className="flex gap-4 items-center">
+                <Label>Product Variant Name</Label>
+                <Input 
+                  type="text" 
+                  placeholder="Product Variant" 
+                  value={productVariantName} 
+                  onChange={(e) => 
+                    setProductVariantName(e.target.value)
+                  }
+                />
+              </div>
+              <div className="flex gap-4 items-center">
+                <Label>Media Name</Label>
+                <Input 
+                  type="text" 
+                  placeholder="Media Name" 
+                  value={name} 
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className="flex gap-4 items-center">
+                <Label>Type</Label>
+                <Select onValueChange={setType} value={type}>
+                  <Select.Trigger>
+                    <Select.Value placeholder="Type" />
+                  </Select.Trigger>
+                  <Select.Content className="z-50">
+                    <Select.Item value={"main"}>
+                      Main
+                    </Select.Item>
+                    <Select.Item value={"preview"}>
+                      Preview
+                    </Select.Item>
+                  </Select.Content>
+                </Select>
+              </div>
+              <div className="flex gap-4 items-center">
+                <Label>File</Label>
+                <Input 
+                  type="file" 
+                  onChange={(e) => setFile(e.target.files[0])}
+                />
+              </div>
+              <Button 
+                variant="primary" 
+                type="submit" 
+                isLoading={loading}>
+                Create
+              </Button>
+            </form>
+          </Container>
+        </Drawer.Body>
+      </Drawer.Content>
+    </Drawer>
     )
   }
 
@@ -1215,11 +1154,15 @@ In your customizations, you send requests to the API routes you created to creat
 
   In this component, you create a form that accepts basic information needed to create the digital product. This form only accepts one file for one variant for simplicity purposes. You can expand on this based on your use case.
 
-  Notice that an alternative approach would be to inject a widget to the Product Details page and allow users to upload the files from there. It depends on whether you’re only supporting Digital Products or you want the distinction between them, as done here.
+  <Note>
 
-  When the user submits the form, you first create a product with a variant. Then, you upload the file using the [Upload Protected File API Route](https://docs.medusajs.com/api/admin#uploads_postuploadsprotected). Finally, you create the digital product using the custom API Route you created.
+  An alternative approach would be to inject a widget to the Product Details page and allow users to upload the files from there. It depends on whether you’re only supporting Digital Products or you want the distinction between them, as done here.
 
-  The product’s details can still be edited from the same Products interface, similar to regular products. You can edit its price, add more variants, and more.
+  </Note>
+
+  When the user submits the form, you first upload the file using the [Upload Protected File API Route](!api!/admin#uploads_postuploads). Then, you create the digital product using the custom API Route you created.
+
+  The product’s details can still be edited from the product's page, similar to regular products. You can edit its price, add more variants, and more.
 
   To test it out, run the `dev` command:
 
