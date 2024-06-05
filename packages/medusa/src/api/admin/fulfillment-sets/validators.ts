@@ -44,8 +44,6 @@ export const AdminUpdateFulfillmentSetServiceZonesSchema = z
   })
   .strict()
 
-createSelectParams()
-
 export const AdminFulfillmentSetParams = createSelectParams()
 
 export type AdminCreateFulfillmentSetServiceZonesType = z.infer<
