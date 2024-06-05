@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { createFindParams, createOperatorMap } from "../../utils/validators"
+import { createSelectParams } from "../../utils/validators"
 import {
   geoZoneCitySchema,
   geoZoneCountrySchema,
@@ -7,7 +7,7 @@ import {
   geoZoneZipSchema,
 } from "./validators/geo-zone"
 
-export const AdminServiceZonesParams = createFindParams()
+export const AdminServiceZonesParams = createSelectParams()
 export type AdminServiceZonesParamsType = z.infer<
   typeof AdminServiceZonesParams
 >
@@ -44,20 +44,9 @@ export const AdminUpdateFulfillmentSetServiceZonesSchema = z
   })
   .strict()
 
-export const AdminFulfillmentSetParams = createFindParams({
-  limit: 20,
-  offset: 0,
-}).merge(
-  z.object({
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    name: z.union([z.string(), z.array(z.string())]).optional(),
-    type: z.union([z.string(), z.array(z.string())]).optional(),
-    service_zone_id: z.union([z.string(), z.array(z.string())]).optional(),
-    created_at: createOperatorMap().optional(),
-    updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
-  })
-)
+createSelectParams()
+
+export const AdminFulfillmentSetParams = createSelectParams()
 
 export type AdminCreateFulfillmentSetServiceZonesType = z.infer<
   typeof AdminCreateFulfillmentSetServiceZonesSchema

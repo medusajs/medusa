@@ -14,11 +14,6 @@ export const retrieveTransformQueryConfig = {
   isList: false,
 }
 
-export const listTransformQueryConfig = {
-  ...retrieveTransformQueryConfig,
-  isList: true,
-}
-
 export const retrieveServiceZoneTransformQueryConfig = {
   defaults: [
     "id",
