@@ -2,7 +2,7 @@
 
 import {
   SearchProvider as UiSearchProvider,
-  AiAssistantCommandIcon,
+  AiAssistantIcon,
   AiAssistantProvider,
   searchFiltersV1,
 } from "docs-ui"
@@ -48,7 +48,7 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
       commands={[
         {
           name: "ai-assistant",
-          icon: <AiAssistantCommandIcon />,
+          icon: <AiAssistantIcon />,
           component: (
             <AiAssistantProvider
               apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
@@ -61,8 +61,9 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           ),
           title: "AI Assistant",
           badge: {
-            variant: "purple",
+            variant: "blue",
             children: "Beta",
+            badgeType: "shaded",
           },
         },
       ]}

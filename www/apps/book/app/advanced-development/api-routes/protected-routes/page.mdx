@@ -57,7 +57,7 @@ You can access the logged-in customer’s ID in all API routes starting with `/s
 
 For example:
 
-```ts title="src/api/store/customers/me/custom/route.ts" highlights={[["16", "", "Access the logged-in customer's ID."]]}
+```ts title="src/api/store/customers/me/custom/route.ts" highlights={[["16", "", "Access the logged-in customer's ID."]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -90,7 +90,7 @@ You can access the logged-in admin user’s ID in all API Routes starting with `
 
 For example:
 
-```ts title="src/api/admin/custom/route.ts" highlights={[["16", "req.user.userId", "Access the logged-in admin user's ID."]]}
+```ts title="src/api/admin/custom/route.ts" highlights={[["16", "req.user.userId", "Access the logged-in admin user's ID."]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -125,12 +125,11 @@ To protect custom API Routes that don’t start with `/store/customers/me` or `/
 For example:
 
 export const highlights = [
-  ["11", "authenticate", "Only authenticated admin users can access routes starting with `/custom/admin`"],
-  ["17", "authenticate", "Only authenticated customers can access routes starting with `/custom/customers`"]
+  ["8", "authenticate", "Only authenticated admin users can access routes starting with `/custom/admin`"],
+  ["14", "authenticate", "Only authenticated customers can access routes starting with `/custom/customers`"]
 ]
 
 ```ts title="src/api/middlewares.ts" highlights={highlights}
-// TODO update import
 import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {

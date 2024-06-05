@@ -10,7 +10,7 @@ import {
   ModulesSdkTypes,
 } from "@medusajs/types"
 
-import { AuthIdentity } from "@models"
+import { AuthIdentity, ProviderIdentity } from "@models"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
@@ -21,34 +21,40 @@ import {
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import AuthProviderService from "./auth-provider"
+import { populate } from "dotenv"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   authIdentityService: ModulesSdkTypes.InternalModuleService<any>
+  providerIdentityService: ModulesSdkTypes.InternalModuleService<any>
   authProviderService: AuthProviderService
 }
 
-const generateMethodForModels = [AuthIdentity]
+const generateMethodForModels = [AuthIdentity, ProviderIdentity]
 
 export default class AuthModuleService<
-    TAuthIdentity extends AuthIdentity = AuthIdentity
+    TAuthIdentity extends AuthIdentity = AuthIdentity,
+    TProviderIdentity extends ProviderIdentity = ProviderIdentity
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
     AuthTypes.AuthIdentityDTO,
     {
       AuthIdentity: { dto: AuthTypes.AuthIdentityDTO }
+      ProviderIdentity: { dto: AuthTypes.ProviderIdentityDTO }
     }
   >(AuthIdentity, generateMethodForModels, entityNameToLinkableKeysMap)
   implements AuthTypes.IAuthModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected authIdentityService_: ModulesSdkTypes.InternalModuleService<TAuthIdentity>
+  protected providerIdentityService_: ModulesSdkTypes.InternalModuleService<TProviderIdentity>
   protected readonly authProviderService_: AuthProviderService
 
   constructor(
     {
       authIdentityService,
+      providerIdentityService,
       authProviderService,
       baseRepository,
     }: InjectedDependencies,
@@ -60,6 +66,7 @@ export default class AuthModuleService<
     this.baseRepository_ = baseRepository
     this.authIdentityService_ = authIdentityService
     this.authProviderService_ = authProviderService
+    this.providerIdentityService_ = providerIdentityService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -132,7 +139,7 @@ export default class AuthModuleService<
       return await this.authProviderService_.authenticate(
         provider,
         authenticationData,
-        this.getAuthIdentityProviderService()
+        this.getAuthIdentityProviderService(provider)
       )
     } catch (error) {
       return { success: false, error: error.message }
@@ -147,20 +154,29 @@ export default class AuthModuleService<
       return await this.authProviderService_.validateCallback(
         provider,
         authenticationData,
-        this.getAuthIdentityProviderService()
+        this.getAuthIdentityProviderService(provider)
       )
     } catch (error) {
       return { success: false, error: error.message }
     }
   }
 
-  getAuthIdentityProviderService(): AuthIdentityProviderService {
+  getAuthIdentityProviderService(
+    provider: string
+  ): AuthIdentityProviderService {
     return {
-      retrieve: async ({ entity_id, provider }) => {
-        const authIdentities = await this.authIdentityService_.list({
-          entity_id,
-          provider,
-        })
+      retrieve: async ({ entity_id }) => {
+        const authIdentities = await this.authIdentityService_.list(
+          {
+            provider_identities: {
+              entity_id,
+              provider,
+            },
+          },
+          {
+            relations: ["provider_identities"],
+          }
+        )
 
         if (!authIdentities.length) {
           throw new MedusaError(
@@ -180,8 +196,26 @@ export default class AuthModuleService<
           authIdentities[0]
         )
       },
-      create: async (data: AuthTypes.CreateAuthIdentityDTO) => {
-        const createdAuthIdentity = await this.authIdentityService_.create(data)
+
+      create: async (data: {
+        entity_id: string
+        provider_metadata?: Record<string, unknown>
+        user_metadata?: Record<string, unknown>
+      }) => {
+        const normalizedRequest = {
+          provider_identities: [
+            {
+              entity_id: data.entity_id,
+              provider_metadata: data.provider_metadata,
+              user_metadata: data.user_metadata,
+              provider,
+            },
+          ],
+        }
+
+        const createdAuthIdentity = await this.authIdentityService_.create(
+          normalizedRequest
+        )
 
         return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
           createdAuthIdentity
