@@ -13,6 +13,6 @@ export default async function orderNotifier({
 }
 
 export const config: SubscriberConfig = {
-  event: ["order.placed", "order.cancelled", "order.completed"],
+  event: ["order.placed", "order.canceled", "order.completed"],
   context: { subscriberId: "order-notifier" },
 }

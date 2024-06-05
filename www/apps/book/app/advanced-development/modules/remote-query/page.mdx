@@ -28,7 +28,7 @@ export const exampleHighlights = [
   ["27", "remoteQuery", "Run the query using the remote query."]
 ]
 
-```ts title="src/api/store/query/route.ts" highlights={exampleHighlights} apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/query"
+```ts title="src/api/store/query/route.ts" highlights={exampleHighlights} apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/query" collapsibleLines="1-12" expandButtonLabel="Show Imports"
 import { 
   MedusaRequest, 
   MedusaResponse,
@@ -210,7 +210,7 @@ The remote query function alternatively accepts a string with GraphQL syntax as 
 
     ### Basic GraphQL usage
 
-    ```ts title="src/api/store/query/route.ts" apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/query"
+    ```ts title="src/api/store/query/route.ts" apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/query" collapsibleLines="1-10" expandButtonLabel="Show Imports"
     import { 
       MedusaRequest, 
       MedusaResponse,

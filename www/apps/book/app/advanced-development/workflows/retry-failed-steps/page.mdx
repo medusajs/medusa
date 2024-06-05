@@ -12,7 +12,7 @@ By default, when an error occurs in a step, the step and the workflow fail, and 
 
 You can configure the step to retry on failure. The `createStep` function can accept a configuration object instead of the step’s name as a first parameter:
 
-```ts title="src/workflows/hello-world.ts" highlights={[["10"]]}
+```ts title="src/workflows/hello-world.ts" highlights={[["10"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import { 
   createStep, 
   StepResponse, 

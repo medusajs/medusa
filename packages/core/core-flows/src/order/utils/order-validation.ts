@@ -5,7 +5,7 @@ export function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
   if (order.status === OrderStatus.CANCELED) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `Order with id ${order.id} has been cancelled.`
+      `Order with id ${order.id} has been canceled.`
     )
   }
 }

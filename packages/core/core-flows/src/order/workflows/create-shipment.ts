@@ -4,6 +4,7 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
@@ -95,15 +96,16 @@ export const createOrderShipmentWorkflow = createWorkflow(
       }
     })
 
-    createShipmentWorkflow.runAsStep({
-      input: fulfillmentData,
-    })
-
     const shipmentData = transform(
       { order, input },
       prepareRegisterShipmentData
     )
 
-    registerOrderShipmentStep(shipmentData)
+    parallelize(
+      createShipmentWorkflow.runAsStep({
+        input: fulfillmentData,
+      }),
+      registerOrderShipmentStep(shipmentData)
+    )
   }
 )

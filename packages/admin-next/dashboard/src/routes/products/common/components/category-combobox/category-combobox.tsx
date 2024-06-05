@@ -156,7 +156,7 @@ export const CategoryCombobox = forwardRef<
   }
 
   return (
-    <Popover.Root open={open} onOpenChange={handleOpenChange}>
+    <Popover.Root modal open={open} onOpenChange={handleOpenChange}>
       <Popover.Trigger asChild>
         <div
           className={clx(

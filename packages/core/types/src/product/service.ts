@@ -31,6 +31,7 @@ import {
   UpsertProductCollectionDTO,
   UpsertProductDTO,
   UpsertProductOptionDTO,
+  UpsertProductTagDTO,
   UpsertProductTypeDTO,
   UpsertProductVariantDTO,
 } from "./common"
@@ -512,19 +513,16 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<[ProductTagDTO[], number]>
 
   /**
-   * This method is used to create product tags.
+   * This method is used to create a product tag.
    *
-   * @param {CreateProductTagDTO[]} data - The product tags to create.
+   * @param {CreateProductTagDTO[]} data - The product tags to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductTagDTO[]>} The list of product tags.
+   * @return {Promise<ProductTagDTO[]>} The list of created product tags.
    *
    * @example
-   * const tags = await productModuleService.createTags([
+   * const productTags = await productModuleService.createTags([
    *   {
-   *     value: "Clothes",
-   *   },
-   *   {
-   *     value: "Accessories",
+   *     value: "digital",
    *   },
    * ])
    */
@@ -534,29 +532,111 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<ProductTagDTO[]>
 
   /**
-   * This method is used to update existing product tags.
+   * This method is used to create a product tag.
    *
-   * @param {UpdateProductTagDTO[]} data - The product tags to be updated, each having the attributes that should be updated in a product tag.
+   * @param {CreateProductTagDTO} data - The product tag to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductTagDTO[]>} The list of updated product tags.
+   * @returns {Promise<ProductTagDTO>} The created product tag.
    *
    * @example
-   * const productTags = await productModule.updateTags([
+   * const productTag = await productModuleService.createTags({
+   *   value: "digital",
+   * })
+   *
+   */
+  createTags(
+    data: CreateProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTagDTO>
+
+  /**
+   * This method updates existing tags, or creates new ones if they don't exist.
+   *
+   * @param {UpsertProductTagDTO[]} data - The attributes to update or create for each tag.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO[]>} The updated and created tags.
+   *
+   * @example
+   * const productTags = await productModuleService.upsertTags([
    *   {
-   *     id,
-   *     value
-   *   }
+   *     id: "ptag_123",
+   *     metadata: {
+   *       test: true,
+   *     },
+   *   },
+   *   {
+   *     value: "Digital",
+   *   },
    * ])
+   */
+  upsertTags(
+    data: UpsertProductTagDTO[],
+    sharedContext?: Context
+  ): Promise<ProductTagDTO[]>
+
+  /**
+   * This method updates an existing tag, or creates a new one if it doesn't exist.
    *
-   * @ignore
+   * @param {UpsertProductTagDTO} data - The attributes to update or create for the tag.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO>} The updated or created tag.
    *
-   * @privateRemarks
-   * This method needs an update as it doesn't allow passing an ID of the tag to update
-   * So, for now, we've added the `@\ignore` tag to not show it in the generated docs.
-   * Once fixed, the `@\ignore` tag (and this comment) can be removed safely.
+   * @example
+   * const productTag = await productModuleService.upsertTags({
+   *   id: "ptag_123",
+   *   metadata: {
+   *     test: true,
+   *   },
+   * })
+   */
+  upsertTags(
+    data: UpsertProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTagDTO>
+
+  /**
+   * This method is used to update a tag.
+   *
+   * @param {string} id - The ID of the tag to be updated.
+   * @param {UpdateProductTagDTO} data - The attributes of the tag to be updated
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO>} The updated tag.
+   *
+   * @example
+   * const productTag = await productModuleService.updateTags(
+   *   "ptag_123",
+   *   {
+   *     value: "Digital",
+   *   }
+   * )
    */
   updateTags(
-    data: UpdateProductTagDTO[],
+    id: string,
+    data: UpdateProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTagDTO>
+
+  /**
+   * This method is used to update a list of tags matching the specified filters.
+   *
+   * @param {FilterableProductTagProps} selector - The filters specifying which tags to update.
+   * @param {UpdateProductTagDTO} data - The attributes to be updated on the selected tags
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO[]>} The updated tags.
+   *
+   * @example
+   * const productTags = await productModuleService.updateTags(
+   *   {
+   *     id: ["ptag_123", "ptag_321"],
+   *   },
+   *   {
+   *     value: "Digital",
+   *   }
+   * )
+   */
+  updateTags(
+    selector: FilterableProductTagProps,
+    data: UpdateProductTagDTO,
     sharedContext?: Context
   ): Promise<ProductTagDTO[]>
 
@@ -574,6 +654,58 @@ export interface IProductModuleService extends IModuleService {
    * ])
    */
   deleteTags(productTagIds: string[], sharedContext?: Context): Promise<void>
+
+  /**
+   * This method is used to delete tags. Unlike the {@link delete} method, this method won't completely remove the tag. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
+   *
+   * The soft-deleted tags can be restored using the {@link restore} method.
+   *
+   * @param {string[]} tagIds - The IDs of the tags to soft-delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to soft delete along with the each of the tags. You can pass to its `returnLinkableKeys`
+   * property any of the tag's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were also soft deleted. The object's keys are the ID attribute names of the tag entity's relations, and its value is an array of strings, each being the ID of a record associated with the tag through this relation.
+   *
+   * If there are no related records, the promise resolved to `void`.
+   *
+   * @example
+   * await productModuleService.softDeleteTags([
+   *   "ptag_123",
+   *   "ptag_321",
+   * ])
+   */
+  softDeleteTags<TReturnableLinkableKeys extends string = string>(
+    tagIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore tags which were deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} tagIds - The IDs of the tags to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to restore along with each of the tags. You can pass to its `returnLinkableKeys`
+   * property any of the tag's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the tag entity's relations, and its value is an array of strings, each being the ID of the record associated with the tag through this relation.
+   *
+   * If there are no related records that were restored, the promise resolved to `void`.
+   *
+   * @example
+   * await productModuleService.restoreTags([
+   *   "ptag_123",
+   *   "ptag_321",
+   * ])
+   */
+  restoreTags<TReturnableLinkableKeys extends string = string>(
+    tagIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   /**
    * This method is used to retrieve a product type by its ID.

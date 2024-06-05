@@ -1,5 +1,6 @@
 import { createCustomersWorkflow } from "@medusajs/core-flows"
 
+import { AdminCustomer, PaginatedResponse } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -8,9 +9,8 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { AdminCreateCustomerType } from "./validators"
 import { refetchCustomer } from "./helpers"
-import { AdminCustomer, PaginatedResponse } from "@medusajs/types"
+import { AdminCreateCustomerType } from "./validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

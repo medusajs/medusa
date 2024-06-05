@@ -11,13 +11,6 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 
 /**
- * @ignore
- */
-export type JWTGenerationOptions = {
-  expiresIn?: string | number
-}
-
-/**
  * The main service interface for the Auth Module.
  */
 export interface IAuthModuleService extends IModuleService {
@@ -196,12 +189,16 @@ export interface IAuthModuleService extends IModuleService {
    * @example
    * const authIdentities = await authModuleService.create([
    *   {
-   *     provider: "emailpass",
-   *     entity_id: "user@example.com",
+   *     provider_identities: [{
+   *      provider: "emailpass",
+   *      entity_id: "user@example.com",
+   *     }]
    *   },
    *   {
-   *     provider: "google",
-   *     entity_id: "user@gmail.com",
+   *     provider_identities: [{
+   *      provider: "google",
+   *      entity_id: "user@gmail.com",
+   *     }]
    *   },
    * ])
    */
@@ -219,8 +216,10 @@ export interface IAuthModuleService extends IModuleService {
    *
    * @example
    * const authIdentity = await authModuleService.create({
-   *   provider: "emailpass",
-   *   entity_id: "user@example.com",
+   *     provider_identities: [{
+   *      provider: "emailpass",
+   *      entity_id: "user@example.com",
+   *     }]
    * })
    */
   create(

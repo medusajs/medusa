@@ -24,7 +24,7 @@ export const refetchEntities = async (
     delete filters.context
   }
 
-  let variables = { filters, ...context, ...pagination }
+  const variables = { filters, ...context, ...pagination }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint,

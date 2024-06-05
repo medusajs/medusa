@@ -22,7 +22,7 @@ describe("Email password auth provider", () => {
   it("return error if email is not passed", async () => {
     const resp = await emailpassService.authenticate(
       { body: { password: "otherpass" } },
-      {}
+      {} as any
     )
 
     expect(resp).toEqual({
@@ -34,7 +34,7 @@ describe("Email password auth provider", () => {
   it("return error if password is not passed", async () => {
     const resp = await emailpassService.authenticate(
       { body: { email: "test@admin.com" } },
-      {}
+      {} as any
     )
 
     expect(resp).toEqual({
@@ -50,18 +50,22 @@ describe("Email password auth provider", () => {
     const authServiceSpies = {
       retrieve: jest.fn().mockImplementation(() => {
         return {
-          entity_id: "test@admin.com",
-          provider: "emailpass",
-          provider_metadata: {
-            password: passwordHash.toString("base64"),
-          },
+          provider_identities: [
+            {
+              entity_id: "test@admin.com",
+              provider: "emailpass",
+              provider_metadata: {
+                password: passwordHash.toString("base64"),
+              },
+            },
+          ],
         }
       }),
     }
 
     const resp = await emailpassService.authenticate(
       { body: { email: "test@admin.com", password: "otherpass" } },
-      authServiceSpies
+      authServiceSpies as any
     )
 
     expect(authServiceSpies.retrieve).toHaveBeenCalled()
@@ -78,18 +82,22 @@ describe("Email password auth provider", () => {
     const authServiceSpies = {
       retrieve: jest.fn().mockImplementation(() => {
         return {
-          entity_id: "test@admin.com",
-          provider: "emailpass",
-          provider_metadata: {
-            password: passwordHash.toString("base64"),
-          },
+          provider_identities: [
+            {
+              entity_id: "test@admin.com",
+              provider: "emailpass",
+              provider_metadata: {
+                password: passwordHash.toString("base64"),
+              },
+            },
+          ],
         }
       }),
     }
 
     const resp = await emailpassService.authenticate(
       { body: { email: "test@admin.com", password: "somepass" } },
-      authServiceSpies
+      authServiceSpies as any
     )
 
     expect(authServiceSpies.retrieve).toHaveBeenCalled()
@@ -97,8 +105,12 @@ describe("Email password auth provider", () => {
       expect.objectContaining({
         success: true,
         authIdentity: expect.objectContaining({
-          entity_id: "test@admin.com",
-          provider_metadata: {},
+          provider_identities: [
+            expect.objectContaining({
+              entity_id: "test@admin.com",
+              provider_metadata: {},
+            }),
+          ],
         }),
       })
     )
@@ -111,11 +123,15 @@ describe("Email password auth provider", () => {
       }),
       create: jest.fn().mockImplementation(() => {
         return {
-          entity_id: "test@admin.com",
-          provider: "emailpass",
-          provider_metadata: {
-            password: "somehash",
-          },
+          provider_identities: [
+            {
+              entity_id: "test@admin.com",
+              provider: "emailpass",
+              provider_metadata: {
+                password: "somehash",
+              },
+            },
+          ],
         }
       }),
     }
@@ -128,7 +144,7 @@ describe("Email password auth provider", () => {
     expect(authServiceSpies.retrieve).toHaveBeenCalled()
     expect(authServiceSpies.create).toHaveBeenCalled()
 
-    expect(resp.authIdentity).toEqual(
+    expect(resp.authIdentity?.provider_identities?.[0]).toEqual(
       expect.objectContaining({
         entity_id: "test@admin.com",
         provider_metadata: {},

@@ -14,6 +14,6 @@ export const retrieveTransformQueryConfig = {
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
-  defaultLimit: 50,
+  defaultLimit: 200,
   isList: true,
 }

@@ -876,6 +876,10 @@ export interface OrderDTO {
    */
   metadata?: Record<string, unknown> | null
   /**
+   * When the order was canceled.
+   */
+  canceled_at?: string | Date
+  /**
    * When the order was created.
    */
   created_at?: string | Date

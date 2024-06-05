@@ -39,3 +39,14 @@ export const AdminCreateShippingProfile = z
     metadata: z.record(z.string(), z.unknown()).optional(),
   })
   .strict()
+
+export type AdminUpdateShippingProfileType = z.infer<
+  typeof AdminUpdateShippingProfile
+>
+export const AdminUpdateShippingProfile = z
+  .object({
+    name: z.string().optional(),
+    type: z.string().optional(),
+    metadata: z.record(z.string(), z.unknown()).optional().nullable(),
+  })
+  .strict()

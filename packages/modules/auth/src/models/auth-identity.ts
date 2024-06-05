@@ -1,50 +1,45 @@
 import {
   BeforeCreate,
+  Collection,
   Entity,
   OnInit,
-  OptionalProps,
+  OneToMany,
   PrimaryKey,
   Property,
-  Unique,
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
-
-type OptionalFields = "provider_metadata" | "app_metadata" | "user_metadata"
+import ProviderIdentity from "./provider-identity"
 
 @Entity()
-@Unique({
-  properties: ["provider", "entity_id"],
-  name: "IDX_auth_identity_provider_entity_id",
-})
 export default class AuthIdentity {
-  [OptionalProps]: OptionalFields
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text" })
-  entity_id: string
-
-  @Property({ columnType: "text" })
-  provider: string
-
-  @Property({ columnType: "jsonb", nullable: true })
-  user_metadata: Record<string, unknown> | null
+  @OneToMany(() => ProviderIdentity, (o) => o.auth_identity)
+  provider_identities = new Collection<ProviderIdentity>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   app_metadata: Record<string, unknown> | null
 
-  @Property({ columnType: "jsonb", nullable: true })
-  provider_metadata: Record<string, unknown> | null = null
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
 
   @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "authid")
-  }
-
   @OnInit()
-  onInit() {
+  onCreate() {
     this.id = generateEntityId(this.id, "authid")
   }
 }
