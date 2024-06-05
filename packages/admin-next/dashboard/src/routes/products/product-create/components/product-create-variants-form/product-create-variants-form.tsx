@@ -20,11 +20,10 @@ type ProductCreateVariantsFormProps = {
 export const ProductCreateVariantsForm = ({
   form,
 }: ProductCreateVariantsFormProps) => {
-  const { regions } = useRegions()
+  const { regions } = useRegions({ limit: 9999 })
 
   const { store, isPending, isError, error } = useStore({
     fields: "supported_currency_codes",
-    limit: 9999,
   })
 
   const variants = useWatch({
