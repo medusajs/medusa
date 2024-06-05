@@ -218,7 +218,11 @@
       "galleryLabel": "Gallery",
       "downloadImageLabel": "Download current image",
       "deleteImageLabel": "Delete current image",
-      "noMediaLabel": "The product has no associated media."
+      "emptyState": {
+        "header": "No media yet",
+        "description": "Add media to the product to showcase it in your storefront.",
+        "action": "Add media"
+      }
     },
     "discountableHint": "When unchecked discounts will not be applied to this product.",
     "noSalesChannels": "Not available in any sales channels",
