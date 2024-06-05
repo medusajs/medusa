@@ -5,6 +5,7 @@ import {
   FilterQuery as InternalFilterQuery,
   FindConfig,
   ModulesSdkTypes,
+  PerformedActions,
   UpsertWithReplaceConfig,
 } from "@medusajs/types"
 import { EntitySchema } from "@mikro-orm/core"
@@ -493,12 +494,12 @@ export function internalModuleServiceFactory<
       data: any[],
       config?: UpsertWithReplaceConfig<TEntity>,
       sharedContext?: Context
-    ): Promise<TEntity[]>
+    ): Promise<{ entities: TEntity[]; performedActions: PerformedActions }>
     upsertWithReplace(
       data: any,
       config?: UpsertWithReplaceConfig<TEntity>,
       sharedContext?: Context
-    ): Promise<TEntity>
+    ): Promise<{ entities: TEntity; performedActions: PerformedActions }>
 
     @InjectTransactionManager(propertyRepositoryName)
     async upsertWithReplace(
@@ -507,14 +508,18 @@ export function internalModuleServiceFactory<
         relations: [],
       },
       @MedusaContext() sharedContext: Context = {}
-    ): Promise<TEntity | TEntity[]> {
+    ): Promise<{
+      entities: TEntity | TEntity[]
+      performedActions: PerformedActions
+    }> {
       const data_ = Array.isArray(data) ? data : [data]
-      const entities = await this[propertyRepositoryName].upsertWithReplace(
-        data_,
-        config,
-        sharedContext
-      )
-      return Array.isArray(data) ? entities : entities[0]
+      const { entities, performedActions } = await this[
+        propertyRepositoryName
+      ].upsertWithReplace(data_, config, sharedContext)
+      return {
+        entities: Array.isArray(data) ? entities : entities[0],
+        performedActions,
+      }
     }
   }
 
