@@ -442,8 +442,9 @@ moduleIntegrationTestRunner({
             price_set_id: [priceSet.id],
           })
 
-          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(3)
-          expect(eventBusEmitSpy.mock.calls[0][0][0]).toEqual(
+          const events = eventBusEmitSpy.mock.calls[0][0]
+          expect(events).toHaveLength(3)
+          expect(events[0]).toEqual(
             composeMessage(PricingEvents.price_set_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
@@ -452,7 +453,7 @@ moduleIntegrationTestRunner({
             })
           )
 
-          expect(eventBusEmitSpy.mock.calls[0][0][1]).toEqual(
+          expect(events[1]).toEqual(
             composeMessage(PricingEvents.price_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
@@ -461,7 +462,7 @@ moduleIntegrationTestRunner({
             })
           )
 
-          expect(eventBusEmitSpy.mock.calls[0][0][2]).toEqual(
+          expect(events[2]).toEqual(
             composeMessage(PricingEvents.price_rule_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
@@ -689,8 +690,9 @@ moduleIntegrationTestRunner({
             })
           )
 
-          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(2)
-          expect(eventBusEmitSpy.mock.calls[0][0][0]).toEqual(
+          const events = eventBusEmitSpy.mock.calls[0][0]
+          expect(events).toHaveLength(2)
+          expect(events[0]).toEqual(
             composeMessage(PricingEvents.price_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
@@ -698,7 +700,7 @@ moduleIntegrationTestRunner({
               data: { id: priceSet.prices![1].id },
             })
           )
-          expect(eventBusEmitSpy.mock.calls[0][0][1]).toEqual(
+          expect(events[1]).toEqual(
             composeMessage(PricingEvents.price_rule_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,

@@ -504,8 +504,9 @@ moduleIntegrationTestRunner({
             })
           )
 
-          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
-          expect(eventBusEmitSpy.mock.calls[0][0][0]).toEqual(
+          const events = eventBusEmitSpy.mock.calls[0][0]
+          expect(events).toHaveLength(4)
+          expect(events[0]).toEqual(
             composeMessage(PricingEvents.price_list_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
@@ -513,7 +514,7 @@ moduleIntegrationTestRunner({
               data: { id: priceList.id },
             })
           )
-          expect(eventBusEmitSpy.mock.calls[0][0][1]).toEqual(
+          expect(events[1]).toEqual(
             composeMessage(PricingEvents.price_list_rule_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
@@ -521,7 +522,7 @@ moduleIntegrationTestRunner({
               data: { id: priceList.price_list_rules?.[0].id },
             })
           )
-          expect(eventBusEmitSpy.mock.calls[0][0][2]).toEqual(
+          expect(events[2]).toEqual(
             composeMessage(PricingEvents.price_list_rule_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
@@ -529,7 +530,7 @@ moduleIntegrationTestRunner({
               data: { id: priceList.price_list_rules?.[1].id },
             })
           )
-          expect(eventBusEmitSpy.mock.calls[0][0][3]).toEqual(
+          expect(events[3]).toEqual(
             composeMessage(PricingEvents.price_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
@@ -859,8 +860,10 @@ moduleIntegrationTestRunner({
             })
           )
 
-          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(2)
-          expect(eventBusEmitSpy.mock.calls[0][0][0]).toEqual(
+          const events = eventBusEmitSpy.mock.calls[0][0]
+
+          expect(events).toHaveLength(2)
+          expect(events[0]).toEqual(
             composeMessage(PricingEvents.price_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
@@ -868,7 +871,7 @@ moduleIntegrationTestRunner({
               data: { id: priceList.prices![0].id },
             })
           )
-          expect(eventBusEmitSpy.mock.calls[0][0][1]).toEqual(
+          expect(events[1]).toEqual(
             composeMessage(PricingEvents.price_rule_created, {
               service: Modules.PRICING,
               action: CommonEvents.CREATED,
