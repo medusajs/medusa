@@ -75,20 +75,18 @@ export const completeCartWorkflow = createWorkflow(
 
     const order = createOrderFromCartStep({ cart: finalCart })
 
-    parallelize(
-      createRemoteLinkStep([
-        {
-          [Modules.ORDER]: { order_id: order.id },
-          [Modules.CART]: { cart_id: finalCart.id },
+    createRemoteLinkStep([
+      {
+        [Modules.ORDER]: { order_id: order.id },
+        [Modules.CART]: { cart_id: finalCart.id },
+      },
+      {
+        [Modules.ORDER]: { order_id: order.id },
+        [Modules.PAYMENT]: {
+          payment_collection_id: cart.payment_collection.id,
         },
-        {
-          [Modules.ORDER]: { order_id: order.id },
-          [Modules.PAYMENT]: {
-            payment_collection_id: cart.payment_collection.id,
-          },
-        },
-      ])
-    )
+      },
+    ])
 
     return order
   }
