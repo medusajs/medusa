@@ -9,6 +9,7 @@ import { ProductOptionSection } from "./components/product-option-section"
 import { ProductOrganizationSection } from "./components/product-organization-section"
 import { ProductSalesChannelSection } from "./components/product-sales-channel-section"
 import { ProductVariantSection } from "./components/product-variant-section"
+import { PRODUCT_DETAIL_FIELDS } from "./constants"
 import { productLoader } from "./loader"
 
 import after from "virtual:medusa/widgets/product/details/after"
@@ -16,16 +17,19 @@ import before from "virtual:medusa/widgets/product/details/before"
 import sideAfter from "virtual:medusa/widgets/product/details/side/after"
 import sideBefore from "virtual:medusa/widgets/product/details/side/before"
 
-// TODO: Use product domain translations only
 export const ProductDetail = () => {
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof productLoader>
   >
 
   const { id } = useParams()
-  const { product, isLoading, isError, error } = useProduct(id!, undefined, {
-    initialData: initialData,
-  })
+  const { product, isLoading, isError, error } = useProduct(
+    id!,
+    { fields: PRODUCT_DETAIL_FIELDS },
+    {
+      initialData: initialData,
+    }
+  )
 
   if (isLoading || !product) {
     return <div>Loading...</div>

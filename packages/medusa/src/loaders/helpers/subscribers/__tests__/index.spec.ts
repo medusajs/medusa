@@ -81,7 +81,7 @@ describe("SubscriberLoader", () => {
     )
 
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledWith(
-      "order.cancelled",
+      "order.canceled",
       expect.any(Function),
       {
         subscriberId: "order-notifier",

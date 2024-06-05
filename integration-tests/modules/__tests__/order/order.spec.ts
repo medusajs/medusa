@@ -25,7 +25,6 @@ jest.setTimeout(50000)
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
 medusaIntegrationTestRunner({
-  debug: true,
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
     let appContainer

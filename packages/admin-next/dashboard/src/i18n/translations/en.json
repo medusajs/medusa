@@ -206,8 +206,6 @@
     "attributes": "Attributes",
     "editProduct": "Edit Product",
     "editAttributes": "Edit Attributes",
-    "organization": "Organize",
-    "editOrganization": "Edit Organization",
     "editOptions": "Edit Options",
     "editPrices": "Edit prices",
     "media": {
@@ -297,7 +295,9 @@
         "hint": "Options are used to define the color, size, etc. of the product",
         "add": "Add option",
         "optionTitle": "Option title",
-        "variations": "Variations (comma-separated)"
+        "optionTitlePlaceholder": "Color",
+        "variations": "Variations (comma-separated)",
+        "variantionsPlaceholder": "Red, Blue, Green"
       },
       "variants": {
         "label": "Product variants",
@@ -340,6 +340,15 @@
       "create": {
         "header": "Create Option",
         "successToast": "Option {{title}} was successfully created."
+      }
+    },
+    "organization": {
+      "header": "Organize",
+      "edit": {
+        "header": "Edit Organization",
+        "toasts": {
+          "success": "Successfully updated the organization of {{title}}."
+        }
       }
     },
     "toasts": {

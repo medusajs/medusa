@@ -4,9 +4,9 @@ import { Modules } from "@medusajs/modules-sdk"
 import { ProductTypes } from "@medusajs/types"
 import { arrayDifference } from "@medusajs/utils"
 import {
-  WorkflowData,
   createWorkflow,
   transform,
+  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import {
   createRemoteLinkStep,
@@ -39,6 +39,10 @@ function prepareUpdateProductInput({
   input: WorkflowInput
 }): UpdateProductsStepInput {
   if ("products" in input) {
+    if (!input.products.length) {
+      return { products: [] }
+    }
+
     return {
       products: input.products.map((p) => ({
         ...p,
@@ -83,6 +87,10 @@ function prepareSalesChannelLinks({
   input: WorkflowInput
 }): Record<string, Record<string, any>>[] {
   if ("products" in input) {
+    if (!input.products.length) {
+      return []
+    }
+
     return input.products
       .filter((p) => p.sales_channels)
       .flatMap((p) =>
@@ -121,6 +129,10 @@ function prepareToDeleteLinks({
     sales_channel_id: string
   }[]
 }) {
+  if (!currentLinks.length) {
+    return []
+  }
+
   return currentLinks.map(({ product_id, sales_channel_id }) => ({
     [Modules.PRODUCT]: {
       product_id,
@@ -154,12 +166,12 @@ export const updateProductsWorkflow = createWorkflow(
 
     const toDeleteLinks = transform({ currentLinks }, prepareToDeleteLinks)
 
-    dismissRemoteLinkStep(toDeleteLinks)
-
     const salesChannelLinks = transform(
       { input, updatedProducts },
       prepareSalesChannelLinks
     )
+
+    dismissRemoteLinkStep(toDeleteLinks)
 
     createRemoteLinkStep(salesChannelLinks)
 

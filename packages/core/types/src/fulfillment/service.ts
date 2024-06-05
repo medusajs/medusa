@@ -40,7 +40,7 @@ import {
   UpsertShippingOptionDTO,
 } from "./mutations"
 import { CreateFulfillmentDTO } from "./mutations/fulfillment"
-import { CreateShippingProfileDTO } from "./mutations/shipping-profile"
+import { CreateShippingProfileDTO, UpsertShippingProfileDTO } from "./mutations/shipping-profile"
 
 /**
  * The main service interface for the Fulfillment Module.
@@ -1649,7 +1649,8 @@ export interface IFulfillmentModuleService extends IModuleService {
   /**
    * This method updates existing shipping profiles.
    *
-   * @param {CreateShippingProfileDTO[]} data - The shipping profiles to be created.
+   * @param {UpdateShippingProfileDTO} data - The shipping profiles update data.
+   * @param {FilterableShippingProfileProps} selector - The selector of shipping profiles to update
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ShippingProfileDTO[]>} The updated shipping profiles.
    *
@@ -1667,14 +1668,16 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   ])
    */
   updateShippingProfiles(
-    data: UpdateShippingProfileDTO[],
+    selector: FilterableShippingProfileProps,
+    data: UpdateShippingProfileDTO,
     sharedContext?: Context
   ): Promise<ShippingProfileDTO[]>
 
   /**
    * This method updates an existing shipping profiles.
    *
-   * @param {CreateShippingProfileDTO} data - The shipping profile to be created.
+   * @param {string} id - The shipping profile to be updated.
+   * @param {UpdateShippingProfileDTO} data - The shipping profile to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ShippingProfileDTO>} The updated shipping profiles.
    *
@@ -1686,6 +1689,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   })
    */
   updateShippingProfiles(
+    id: string,
     data: UpdateShippingProfileDTO,
     sharedContext?: Context
   ): Promise<ShippingProfileDTO>
@@ -1718,6 +1722,51 @@ export interface IFulfillmentModuleService extends IModuleService {
    * )
    */
   deleteShippingProfiles(id: string, sharedContext?: Context): Promise<void>
+
+  /**
+   * This method updates existing shipping profiles, or creates new ones if they don't exist.
+   *
+   * @param {UpdateShippingProfileDTO[]} data - The attributes to update or create for each profile.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO[]>} The updated and created profiles.
+   *
+   * @example
+   * const productTags = await productModuleService.upsertShippingProfiles([
+   *   {
+   *     id: "id_1234",
+   *     metadata: {
+   *       test: true,
+   *     },
+   *   },
+   *   {
+   *     name: "Digital",
+   *   },
+   * ])
+   */
+  upsertShippingProfiles(
+    data: UpsertShippingProfileDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingProfileDTO[]>
+
+  /**
+   * This method updates an existing shipping profile, or creates a new one if it doesn't exist.
+   *
+   * @param {UpdateShippingProfileDTO} data - The attributes to update or create for the profile.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO>} The updated or created profile.
+   *
+   * @example
+   * const productTag = await productModuleService.upsertShippingProfiles({
+   *   id: "id_1234",
+   *   metadata: {
+   *     test: true,
+   *   },
+   * })
+   */
+  upsertShippingProfiles(
+    data: UpsertShippingProfileDTO,
+    sharedContext?: Context
+  ): Promise<ShippingProfileDTO>
 
   /**
    * This method soft deletes shipping profiles by their IDs.

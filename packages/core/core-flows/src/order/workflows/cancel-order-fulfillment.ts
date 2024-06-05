@@ -5,6 +5,7 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
@@ -125,24 +126,26 @@ export const cancelOrderFulfillmentWorkflow = createWorkflow(
       return order.fulfillments.find((f) => f.id === input.fulfillment_id)!
     })
 
-    cancelFulfillmentWorkflow.runAsStep({
-      input: {
-        id: input.fulfillment_id,
-      },
-    })
-
     const cancelOrderFulfillmentData = transform(
       { order, fulfillment },
       prepareCancelOrderFulfillmentData
     )
-
-    cancelOrderFulfillmentStep(cancelOrderFulfillmentData)
 
     const { inventoryAdjustment } = transform(
       { order, fulfillment },
       prepareInventoryUpdate
     )
 
-    adjustInventoryLevelsStep(inventoryAdjustment)
+    parallelize(
+      cancelOrderFulfillmentStep(cancelOrderFulfillmentData),
+      adjustInventoryLevelsStep(inventoryAdjustment)
+    )
+
+    // last step because there is no compensation for this step
+    cancelFulfillmentWorkflow.runAsStep({
+      input: {
+        id: input.fulfillment_id,
+      },
+    })
   }
 )

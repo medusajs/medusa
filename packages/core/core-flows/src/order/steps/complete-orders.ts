@@ -14,13 +14,23 @@ export const completeOrdersStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
+    const orders = await service.list(
+      {
+        id: data.orderIds,
+      },
+      {
+        select: ["id", "status"],
+      }
+    )
+
     const completed = await service.completeOrder(data.orderIds)
     return new StepResponse(
       completed,
-      completed.map((store) => {
+      completed.map((order) => {
+        const prevData = orders.find((o) => o.id === order.id)!
         return {
-          id: store.id,
-          status: store.status,
+          id: order.id,
+          status: prevData.status,
         }
       })
     )

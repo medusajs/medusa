@@ -80,9 +80,8 @@ describe("WorkflowManager", () => {
     expect(wf).toEqual(["create-product", "broken-delivery", "deliver-product"])
   })
 
-  it("should NOT throw when registering a workflow with an existing id in Medusa V1", () => {
-    let err
-    try {
+  it("should throw when registering a workflow with an existing id and different definition", () => {
+    const exec = () =>
       WorkflowManager.register(
         "create-product",
         {
@@ -96,38 +95,8 @@ describe("WorkflowManager", () => {
         },
         handlers
       )
-    } catch (e) {
-      err = e
-    }
 
-    expect(err).toBeUndefined()
-  })
-
-  it("should throw when registering a workflow with an existing id in Medusa V2", () => {
-    let err
-    const env = process.env.MEDUSA_FF_MEDUSA_V2
-    process.env.MEDUSA_FF_MEDUSA_V2 = "true"
-    try {
-      WorkflowManager.register(
-        "create-product",
-        {
-          action: "foo",
-          next: {
-            action: "bar",
-            next: {
-              action: "xor",
-            },
-          },
-        },
-        handlers
-      )
-    } catch (e) {
-      err = e
-    }
-    process.env.MEDUSA_FF_MEDUSA_V2 = env
-
-    expect(err).toBeDefined()
-    expect(err.message).toBe(
+    expect(exec).toThrowError(
       `Workflow with id "create-product" and step definition already exists.`
     )
   })
@@ -135,8 +104,6 @@ describe("WorkflowManager", () => {
   it("should not throw when registering a workflow with an existing id but identical definition", () => {
     let err
 
-    const env = process.env.MEDUSA_FF_MEDUSA_V2
-    process.env.MEDUSA_FF_MEDUSA_V2 = "true"
     try {
       WorkflowManager.register(
         "create-product",
@@ -151,7 +118,6 @@ describe("WorkflowManager", () => {
     } catch (e) {
       err = e
     }
-    process.env.MEDUSA_FF_MEDUSA_V2 = env
 
     expect(err).not.toBeDefined()
   })

@@ -47,6 +47,7 @@ import {
   UpdateProductInput,
   UpdateProductOptionInput,
   UpdateProductVariantInput,
+  UpdateTagInput,
   UpdateTypeInput,
 } from "../types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
@@ -384,30 +385,114 @@ export default class ProductModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
-  async createTags(
+  createTags(
     data: ProductTypes.CreateProductTagDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<ProductTypes.ProductTagDTO[]> {
-    const productTags = await this.productTagService_.create(
-      data,
-      sharedContext
-    )
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO[]>
+  createTags(
+    data: ProductTypes.CreateProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO>
 
-    return await this.baseRepository_.serialize(productTags)
+  @InjectManager("baseRepository_")
+  async createTags(
+    data: ProductTypes.CreateProductTagDTO[] | ProductTypes.CreateProductTagDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductTypes.ProductTagDTO[] | ProductTypes.ProductTagDTO> {
+    const input = Array.isArray(data) ? data : [data]
+
+    const tags = await this.productTagService_.create(input, sharedContext)
+
+    const createdTags = await this.baseRepository_.serialize<
+      ProductTypes.ProductTagDTO[]
+    >(tags)
+
+    return Array.isArray(data) ? createdTags : createdTags[0]
   }
 
+  async upsertTags(
+    data: ProductTypes.UpsertProductTagDTO[],
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO[]>
+  async upsertTags(
+    data: ProductTypes.UpsertProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO>
+
   @InjectTransactionManager("baseRepository_")
-  async updateTags(
-    data: ProductTypes.UpdateProductTagDTO[],
+  async upsertTags(
+    data: ProductTypes.UpsertProductTagDTO[] | ProductTypes.UpsertProductTagDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<ProductTypes.ProductTagDTO[]> {
-    const productTags = await this.productTagService_.update(
-      data,
+  ): Promise<ProductTypes.ProductTagDTO[] | ProductTypes.ProductTagDTO> {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter((tag): tag is UpdateTagInput => !!tag.id)
+    const forCreate = input.filter(
+      (tag): tag is ProductTypes.CreateProductTagDTO => !tag.id
+    )
+
+    let created: ProductTag[] = []
+    let updated: ProductTag[] = []
+
+    if (forCreate.length) {
+      created = await this.productTagService_.create(forCreate, sharedContext)
+    }
+    if (forUpdate.length) {
+      updated = await this.productTagService_.update(forUpdate, sharedContext)
+    }
+
+    const result = [...created, ...updated]
+    const allTags = await this.baseRepository_.serialize<
+      ProductTypes.ProductTagDTO[] | ProductTypes.ProductTagDTO
+    >(result)
+
+    return Array.isArray(data) ? allTags : allTags[0]
+  }
+
+  updateTags(
+    id: string,
+    data: ProductTypes.UpdateProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO>
+  updateTags(
+    selector: ProductTypes.FilterableProductTagProps,
+    data: ProductTypes.UpdateProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO[]>
+
+  @InjectManager("baseRepository_")
+  async updateTags(
+    idOrSelector: string | ProductTypes.FilterableProductTagProps,
+    data: ProductTypes.UpdateProductTagDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductTypes.ProductTagDTO[] | ProductTypes.ProductTagDTO> {
+    let normalizedInput: UpdateTagInput[] = []
+    if (isString(idOrSelector)) {
+      // Check if the tag exists in the first place
+      await this.productTagService_.retrieve(idOrSelector, {}, sharedContext)
+      normalizedInput = [{ id: idOrSelector, ...data }]
+    } else {
+      const tags = await this.productTagService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+
+      normalizedInput = tags.map((tag) => ({
+        id: tag.id,
+        ...data,
+      }))
+    }
+
+    const tags = await this.productTagService_.update(
+      normalizedInput,
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(productTags)
+    const updatedTags = await this.baseRepository_.serialize<
+      ProductTypes.ProductTagDTO[]
+    >(tags)
+
+    return isString(idOrSelector) ? updatedTags[0] : updatedTags
   }
 
   createTypes(

@@ -1,17 +1,8 @@
-import {
-  Context,
-  CreateInventoryLevelInput,
-  DAL,
-  SharedContext,
-} from "@medusajs/types"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import { Context } from "@medusajs/types"
+import { ModulesSdkUtils } from "@medusajs/utils"
 
-import { InventoryLevel } from "../models/inventory-level"
 import { InventoryLevelRepository } from "@repositories"
+import { InventoryLevel } from "../models/inventory-level"
 
 type InjectedDependencies = {
   inventoryLevelRepository: InventoryLevelRepository

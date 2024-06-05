@@ -5,7 +5,7 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { validateShipmentStep } from "../steps"
-import { updateFulfillmentWorkflowStep } from "../steps/update-fulfillment-workflow"
+import { updateFulfillmentWorkflow } from "./update-fulfillment"
 
 export const createShipmentWorkflowId = "create-shipment-workflow"
 export const createShipmentWorkflow = createWorkflow(
@@ -20,6 +20,8 @@ export const createShipmentWorkflow = createWorkflow(
       shipped_at: new Date(),
     }))
 
-    updateFulfillmentWorkflowStep(update)
+    updateFulfillmentWorkflow.runAsStep({
+      input: update,
+    })
   }
 )

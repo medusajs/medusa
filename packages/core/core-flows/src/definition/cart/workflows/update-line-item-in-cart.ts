@@ -2,6 +2,7 @@ import { UpdateLineItemInCartWorkflowInputDTO } from "@medusajs/types"
 import {
   WorkflowData,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
@@ -86,9 +87,11 @@ export const updateLineItemInCartWorkflow = createWorkflow(
       list: false,
     }).config({ name: "refetch–cart" })
 
-    refreshCartShippingMethodsStep({ cart })
-    refreshCartPromotionsStep({ id: input.cart.id })
-    refreshPaymentCollectionForCartStep({ cart_id: input.cart.id })
+    parallelize(
+      refreshCartShippingMethodsStep({ cart }),
+      refreshCartPromotionsStep({ id: input.cart.id }),
+      refreshPaymentCollectionForCartStep({ cart_id: input.cart.id })
+    )
 
     const updatedItem = transform({ result }, (data) => data.result?.[0])
 

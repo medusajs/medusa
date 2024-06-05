@@ -1,6 +1,7 @@
 import {
   WorkflowData,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
@@ -78,10 +79,13 @@ export const addShippingMethodToWorkflow = createWorkflow(
     const shippingMethods = addShippingMethodToCartStep({
       shipping_methods: shippingMethodInput,
     })
-    refreshCartPromotionsStep({ id: input.cart_id })
-    updateTaxLinesStep({
-      cart_or_cart_id: input.cart_id,
-      shipping_methods: shippingMethods,
-    })
+
+    parallelize(
+      refreshCartPromotionsStep({ id: input.cart_id }),
+      updateTaxLinesStep({
+        cart_or_cart_id: input.cart_id,
+        shipping_methods: shippingMethods,
+      })
+    )
   }
 )
