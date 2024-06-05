@@ -84,10 +84,11 @@ async function removePromotionRules(
 async function listPromotionRules(
   id: string | null,
   ruleType: string,
-  promotionType?: string
+  query?: Record<string, string>
 ) {
   return getRequest<PromotionRuleAttributesListRes>(
-    `/admin/promotions/${id}/${ruleType}?promotion_type=${promotionType}`
+    `/admin/promotions/${id}/${ruleType}`,
+    query
   )
 }
 

@@ -40,7 +40,7 @@ export const EditRulesWrapper = ({
   )
 
   const { mutateAsync: updatePromotionRules, isPending } =
-    usePromotionUpdateRules(promotion.id, ruleType, promotion.type)
+    usePromotionUpdateRules(promotion.id, ruleType)
 
   const handleSubmit = (rulesToRemove?: { id: string }[]) => {
     return async function (data: { rules: PromotionRuleResponse[] }) {

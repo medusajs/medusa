@@ -71,7 +71,10 @@ export const RulesFormField = ({
   const { rules, isLoading } = usePromotionRules(
     promotionId || null,
     ruleType,
-    query
+    query,
+    {
+      enabled: !!promotionType,
+    }
   )
 
   useEffect(() => {
