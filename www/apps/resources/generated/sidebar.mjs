@@ -37,8 +37,8 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/api-key/tokens",
-                "title": "Tokens",
+                "path": "/commerce-modules/api-key/concepts",
+                "title": "API Key Concepts",
                 "children": []
               },
               {
@@ -862,6 +862,20 @@ export const generatedSidebar = [
             "path": "/commerce-modules/currency/examples",
             "title": "Examples",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Concepts",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/currency/relations-to-other-modules",
+                "title": "Relation to Modules",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,
@@ -5071,6 +5085,20 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "title": "Concepts",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/store/relations-to-other-modules",
+                "title": "Relation to Modules",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "title": "References",
             "children": [
               {
@@ -5236,7 +5264,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/commerce-modules/tax/tax-calculation-with-provider",
-                "title": "Tax Calculation",
+                "title": "Tax Calculation and Providers",
                 "children": []
               }
             ]
@@ -5246,13 +5274,6 @@ export const generatedSidebar = [
             "isPathHref": true,
             "title": "References",
             "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/tax/provider",
-                "title": "Tax Provider Reference",
-                "children": []
-              },
               {
                 "loaded": true,
                 "isPathHref": true,
@@ -7141,28 +7162,6 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/troubleshooting/cors-errors",
                 "title": "CORS Errors",
-                "children": []
-              }
-            ]
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "title": "Medusa Admin",
-            "hasTitleStyling": true,
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/troubleshooting/admin-sign-in",
-                "title": "Signing In",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/troubleshooting/admin-custom-hooks-error",
-                "title": "Custom Hooks Error",
                 "children": []
               }
             ]

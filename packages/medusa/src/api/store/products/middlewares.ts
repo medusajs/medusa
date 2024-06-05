@@ -14,6 +14,7 @@ import {
   StoreGetProductsParams,
   StoreGetProductsParamsType,
 } from "./validators"
+import { applyParamsAsFilters } from "../../utils/middlewares/common/apply-params-as-filters"
 
 export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -57,6 +58,7 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
         StoreGetProductsParams,
         QueryConfig.retrieveProductQueryConfig
       ),
+      applyParamsAsFilters({ id: "id" }),
       filterByValidSalesChannels(),
       setContext({
         stock_location_id: maybeApplyStockLocationId,

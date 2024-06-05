@@ -46,7 +46,7 @@ export const updateProductHighlights = [
   ["39", "", "Revert the product’s data using the `previousProductData` passed from the step to the compensation function."]
 ]
 
-```ts title="src/workflows/update-product-erp/steps/update-product.ts" highlights={updateProductHighlights}
+```ts title="src/workflows/update-product-erp/steps/update-product.ts" highlights={updateProductHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import {
   createStep,
   StepResponse,
@@ -145,7 +145,7 @@ export const updateErpHighlights = [
   ["37", "updateProductErpData", "Revert the product's data in the ERP system to its previous state using the `previousErpData`."]
 ]
 
-```ts title="src/workflows/update-product-erp/steps/update-erp.ts" highlights={updateErpHighlights}
+```ts title="src/workflows/update-product-erp/steps/update-erp.ts" highlights={updateErpHighlights} collapsibleLines="1-8" expandButtonLabel="Show Imports"
 import {
   createStep,
   StepResponse,
@@ -208,7 +208,7 @@ With the steps ready, you'll create the workflow that runs these steps to update
 
 Change the content of `src/workflows/update-product-erp/index.ts` to the following:
 
-```ts title="src/workflows/update-product-erp/index.ts"
+```ts title="src/workflows/update-product-erp/index.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import { createWorkflow } from "@medusajs/workflows-sdk"
 import { UpdateProductDTO, ProductDTO } from "@medusajs/types"
 import updateProduct from "./steps/update-product"

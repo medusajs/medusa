@@ -13,22 +13,31 @@ moduleIntegrationTestRunner({
   }: SuiteOptions<IAuthModuleService>) => {
     describe("AuthModuleService - AuthIdentity", () => {
       beforeEach(async () => {
-        await createAuthIdentities(MikroOrmWrapper.forkManager())
+        await createAuthIdentities(service)
       })
 
       describe("listAuthIdentities", () => {
         it("should list authIdentities", async () => {
-          const authIdentities = await service.list()
+          const authIdentities = await service.list(
+            {},
+            { relations: ["provider_identities"] }
+          )
 
           expect(authIdentities).toEqual([
             expect.objectContaining({
-              provider: "store",
+              provider_identities: [
+                expect.objectContaining({ provider: "store" }),
+              ],
             }),
             expect.objectContaining({
-              provider: "manual",
+              provider_identities: [
+                expect.objectContaining({ provider: "manual" }),
+              ],
             }),
             expect.objectContaining({
-              provider: "manual",
+              provider_identities: [
+                expect.objectContaining({ provider: "manual" }),
+              ],
             }),
           ])
         })
@@ -47,7 +56,9 @@ moduleIntegrationTestRunner({
 
         it("should list authIdentities by provider", async () => {
           const authIdentities = await service.list({
-            provider: "manual",
+            provider_identities: {
+              provider: "manual",
+            },
           })
 
           expect(authIdentities).toEqual([
@@ -63,25 +74,34 @@ moduleIntegrationTestRunner({
 
       describe("listAndCountAuthIdentities", () => {
         it("should list and count authIdentities", async () => {
-          const [authIdentities, count] = await service.listAndCount()
+          const [authIdentities, count] = await service.listAndCount(
+            {},
+            { relations: ["provider_identities"] }
+          )
 
           expect(count).toEqual(3)
           expect(authIdentities).toEqual([
             expect.objectContaining({
-              provider: "store",
+              provider_identities: [
+                expect.objectContaining({ provider: "store" }),
+              ],
             }),
             expect.objectContaining({
-              provider: "manual",
+              provider_identities: [
+                expect.objectContaining({ provider: "manual" }),
+              ],
             }),
             expect.objectContaining({
-              provider: "manual",
+              provider_identities: [
+                expect.objectContaining({ provider: "manual" }),
+              ],
             }),
           ])
         })
 
         it("should listAndCount authIdentities by provider_id", async () => {
           const [authIdentities, count] = await service.listAndCount({
-            provider: "manual",
+            provider_identities: { provider: "manual" },
           })
 
           expect(count).toEqual(2)
@@ -131,7 +151,11 @@ moduleIntegrationTestRunner({
               id: "test-id-1",
             })
           )
-          expect(authIdentity["password_hash"]).toEqual(undefined)
+          expect(
+            authIdentity.provider_identities?.[0].provider_metadata?.[
+              "password_hash"
+            ]
+          ).toEqual(undefined)
         })
 
         it("should throw an error when a authIdentityId is not provided", async () => {
@@ -196,14 +220,14 @@ moduleIntegrationTestRunner({
           await service.update([
             {
               id,
-              provider_metadata: { email: "test@email.com" },
+              app_metadata: { email: "test@email.com" },
             },
           ])
 
           const [authIdentity] = await service.list({ id: [id] })
           expect(authIdentity).toEqual(
             expect.objectContaining({
-              provider_metadata: { email: "test@email.com" },
+              app_metadata: { email: "test@email.com" },
             })
           )
         })
@@ -214,8 +238,12 @@ moduleIntegrationTestRunner({
           await service.create([
             {
               id: "test",
-              provider: "manual",
-              entity_id: "test",
+              provider_identities: [
+                {
+                  provider: "manual",
+                  entity_id: "test",
+                },
+              ],
             },
           ])
 

@@ -14,18 +14,18 @@ import {
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import {
-  arrayDifference,
-  deepEqualObj,
   EmitEvents,
-  getSetDifference,
   InjectManager,
   InjectTransactionManager,
-  isDefined,
-  isPresent,
-  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  arrayDifference,
+  deepEqualObj,
+  getSetDifference,
+  isDefined,
+  isPresent,
+  isString,
   promiseAll,
 } from "@medusajs/utils"
 import {
@@ -49,8 +49,8 @@ import {
 } from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { UpdateShippingOptionsInput } from "../types/service"
-import FulfillmentProviderService from "./fulfillment-provider"
 import { buildCreatedShippingOptionEvents } from "../utils/events"
+import FulfillmentProviderService from "./fulfillment-provider"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -1541,25 +1541,106 @@ export default class FulfillmentModuleService<
   }
 
   updateShippingProfiles(
-    data: FulfillmentTypes.UpdateShippingProfileDTO[],
+    selector: FulfillmentTypes.FilterableShippingProfileProps,
+    data: FulfillmentTypes.UpdateShippingProfileDTO,
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingProfileDTO[]>
   updateShippingProfiles(
+    id: string,
     data: FulfillmentTypes.UpdateShippingProfileDTO,
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingProfileDTO>
 
   @InjectTransactionManager("baseRepository_")
   async updateShippingProfiles(
-    data:
-      | FulfillmentTypes.UpdateShippingProfileDTO
-      | FulfillmentTypes.UpdateShippingProfileDTO[],
+    idOrSelector: string | FulfillmentTypes.FilterableShippingProfileProps,
+    data: FulfillmentTypes.UpdateShippingProfileDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     FulfillmentTypes.ShippingProfileDTO | FulfillmentTypes.ShippingProfileDTO[]
   > {
-    // TODO: should we implement that or can we get rid of the profiles concept entirely and link to the so instead?
-    return []
+    let normalizedInput: ({
+      id: string
+    } & FulfillmentTypes.UpdateShippingProfileDTO)[] = []
+    if (isString(idOrSelector)) {
+      await this.shippingProfileService_.retrieve(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+      normalizedInput = [{ id: idOrSelector, ...data }]
+    } else {
+      const profiles = await this.shippingProfileService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+
+      normalizedInput = profiles.map((profile) => ({
+        id: profile.id,
+        ...data,
+      }))
+    }
+
+    const profiles = await this.shippingProfileService_.update(
+      normalizedInput,
+      sharedContext
+    )
+
+    const updatedProfiles = await this.baseRepository_.serialize<
+      FulfillmentTypes.ShippingProfileDTO[]
+    >(profiles)
+
+    return isString(idOrSelector) ? updatedProfiles[0] : updatedProfiles
+  }
+
+  async upsertShippingProfiles(
+    data: FulfillmentTypes.UpsertShippingProfileDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingProfileDTO[]>
+  async upsertShippingProfiles(
+    data: FulfillmentTypes.UpsertShippingProfileDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingProfileDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async upsertShippingProfiles(
+    data:
+      | FulfillmentTypes.UpsertShippingProfileDTO[]
+      | FulfillmentTypes.UpsertShippingProfileDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    FulfillmentTypes.ShippingProfileDTO[] | FulfillmentTypes.ShippingProfileDTO
+  > {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter((prof) => !!prof.id)
+    const forCreate = input.filter(
+      (prof): prof is FulfillmentTypes.CreateShippingProfileDTO => !prof.id
+    )
+
+    let created: ShippingProfile[] = []
+    let updated: ShippingProfile[] = []
+
+    if (forCreate.length) {
+      created = await this.shippingProfileService_.create(
+        forCreate,
+        sharedContext
+      )
+    }
+    if (forUpdate.length) {
+      updated = await this.shippingProfileService_.update(
+        forUpdate,
+        sharedContext
+      )
+    }
+
+    const result = [...created, ...updated]
+    const allProfiles = await this.baseRepository_.serialize<
+      | FulfillmentTypes.ShippingProfileDTO[]
+      | FulfillmentTypes.ShippingProfileDTO
+    >(result)
+
+    return Array.isArray(data) ? allProfiles : allProfiles[0]
   }
 
   updateGeoZones(
