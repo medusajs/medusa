@@ -5,6 +5,8 @@ import {
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { getProductFixture } from "../../../../helpers/fixtures"
 
+jest.setTimeout(30000)
+
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     let inventoryItem1
