@@ -74,12 +74,12 @@ By implementing the subscription logic within your application, you have full co
 
 Implementing the logic depends on your use case, but you'll mainly implement the following:
 
-1. Create a subscriber that listens to the `order.created` event to save the subscription details or perform other actions.
+1. Create a subscriber that listens to the `order.placed` event to save the subscription details or perform other actions.
 2. Create a scheduled job that checks daily for subscriptions that need renewal.
 
 <Note type="soon">
 
-- The `order.created` event isn't emitted yet.
+- The `order.placed` event isn't emitted yet.
 - Scheduled jobs are coming soon.
 
 </Note>

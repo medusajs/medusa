@@ -750,11 +750,11 @@ export const productRoutesHighlights = [
 
 <Note type="soon">
 
-While this section showcases the implementation, the `order.created` event is still not emitted in Medusa V2.
+While this section showcases the implementation, the `order.placed` event is still not emitted in Medusa V2.
 
 </Note>
 
-An order may contain items from different stores. To ensure that users can only view and manage their orders, create a subscriber that listens to the `order.created` event and handles splitting the order into multiple orders based on the items’ stores.
+An order may contain items from different stores. To ensure that users can only view and manage their orders, create a subscriber that listens to the `order.placed` event and handles splitting the order into multiple orders based on the items’ stores.
 
 <Card
   href="/v2/basics/events-and-subscribers"
@@ -874,11 +874,11 @@ export const orderSubscriberHighlights = [
   }
   
   export const config: SubscriberConfig = {
-    event: "order.created",
+    event: "order.placed",
   }
   ```
   
-  This adds a subscriber to the `order.created` event. In the subscriber, you:
+  This adds a subscriber to the `order.placed` event. In the subscriber, you:
   
   - Loop over the created order’s items.
   - Group the items by their store ID.

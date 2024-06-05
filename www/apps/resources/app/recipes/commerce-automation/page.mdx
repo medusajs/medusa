@@ -734,11 +734,11 @@ export const syncProductsWorkflowHighlight = [
 
 Using Medusa's architecture and commerce features, you can automate a large amount of order management functionalities.
 
-To handle events within an order flow and automate actions, create a subscriber. For example, create a subscriber that listens to the `order.created` event and automatically creates a fulfillment if predefined conditions are met.
+To handle events within an order flow and automate actions, create a subscriber. For example, create a subscriber that listens to the `order.placed` event and automatically creates a fulfillment if predefined conditions are met.
 
 <Note type="soon">
 
-The `order.created` event is currently not emitted.
+The `order.placed` event is currently not emitted.
 
 </Note>
 
@@ -808,12 +808,12 @@ Medusa's commerce modules provide the necessary features to implement this use c
 
 For example, to group customers with over twenty orders:
 
-1. Create a subscriber that listens to the `order.created` event.
+1. Create a subscriber that listens to the `order.placed` event.
 2. If the customer has more than 20 orders, add them to the VIP customer group.
 
 <Note type="soon">
 
-The `order.created` event is currently not emitted.
+The `order.placed` event is currently not emitted.
 
 </Note>
 
@@ -843,11 +843,11 @@ The `order.created` event is currently not emitted.
 
 <Details summaryContent="Example: Add customer to VIP group">
 
-  Here’s an example of a subscriber that listens to the `order.created` event and checks whether the customer should be added to the VIP customer group based on their number of orders:
+  Here’s an example of a subscriber that listens to the `order.placed` event and checks whether the customer should be added to the VIP customer group based on their number of orders:
 
   <Note type="soon">
 
-  The `order.created` event is currently not emitted.
+  The `order.placed` event is currently not emitted.
 
   </Note>
 
@@ -917,7 +917,7 @@ The `order.created` event is currently not emitted.
   }
 
   export const config: SubscriberConfig = {
-    event: "order.created",
+    event: "order.placed",
   }
   ```
 

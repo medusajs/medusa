@@ -97,11 +97,11 @@ If you store the personalized data using a custom module:
 
 - Create a custom API Route that handles saving the personalization data.
 - Call that API Route from the storefront after adding the item to the cart.
-- Listen to the `order.created` event to attach the personalized data to the Order Module's `LineItem` data model.
+- Listen to the `order.placed` event to attach the personalized data to the Order Module's `LineItem` data model.
 
 <Note type="soon">
 
-The `order.created` event is currently not emitted.
+The `order.placed` event is currently not emitted.
 
 </Note>
 
