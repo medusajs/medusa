@@ -90,6 +90,17 @@
           "default": "now()",
           "mappedType": "datetime"
         },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
         "revoked_by": {
           "name": "revoked_by",
           "type": "text",

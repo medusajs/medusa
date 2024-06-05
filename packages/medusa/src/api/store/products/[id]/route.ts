@@ -2,6 +2,7 @@ import { isPresent } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 import { refetchProduct, wrapVariantsWithInventoryQuantity } from "../helpers"
 import { StoreGetProductsParamsType } from "../validators"
+import { MedusaError } from "@medusajs/utils"
 
 export const GET = async (
   req: MedusaRequest<StoreGetProductsParamsType>,
@@ -33,6 +34,13 @@ export const GET = async (
     req.scope,
     req.remoteQueryConfig.fields
   )
+
+  if (!product) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Product with id: ${req.params.id} was not found`
+    )
+  }
 
   if (withInventoryQuantity) {
     await wrapVariantsWithInventoryQuantity(req, product.variants || [])

@@ -1,4 +1,5 @@
 import { CartDTO, CreateCartWorkflowInputDTO } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
@@ -20,7 +21,6 @@ import { productVariantsFields } from "../utils/fields"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
-import { MedusaError } from "@medusajs/utils"
 
 // TODO: The createCartWorkflow are missing the following steps:
 // - Refresh/delete shipping methods (fulfillment module)
@@ -140,14 +140,16 @@ export const createCartWorkflow = createWorkflow(
     const carts = createCartsStep([cartToCreate])
     const cart = transform({ carts }, (data) => data.carts?.[0])
 
-    refreshCartPromotionsStep({
-      id: cart.id,
-      promo_codes: input.promo_codes,
-    })
-    updateTaxLinesStep({ cart_or_cart_id: cart.id })
-    refreshPaymentCollectionForCartStep({
-      cart_id: cart.id,
-    })
+    parallelize(
+      refreshCartPromotionsStep({
+        id: cart.id,
+        promo_codes: input.promo_codes,
+      }),
+      updateTaxLinesStep({ cart_or_cart_id: cart.id }),
+      refreshPaymentCollectionForCartStep({
+        cart_id: cart.id,
+      })
+    )
 
     return cart
   }

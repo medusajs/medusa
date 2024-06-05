@@ -1,39 +1,47 @@
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
-    adminHeaders,
-    createAdminUser,
+  adminHeaders,
+  createAdminUser,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(60000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
-    beforeAll(() => {})
+    let salesChannel1
+    let salesChannel2
 
     beforeEach(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      salesChannel1 = (
+        await api.post(
+          "/admin/sales-channels",
+          {
+            name: "test name",
+            description: "test description",
+          },
+          adminHeaders
+        )
+      ).data.sales_channel
+
+      salesChannel2 = (
+        await api.post(
+          "/admin/sales-channels",
+          {
+            name: "test name 2",
+            description: "test description 2",
+          },
+          adminHeaders
+        )
+      ).data.sales_channel
     })
 
     describe("GET /admin/sales-channels/:id", () => {
-      let salesChannel
-
-      beforeEach(async () => {
-        salesChannel = (
-          await api.post(
-            "/admin/sales-channels",
-            {
-              name: "test name",
-              description: "test description",
-            },
-            adminHeaders
-          )
-        ).data.sales_channel
-      })
-
       it("should retrieve the requested sales channel", async () => {
         const response = await api.get(
-          `/admin/sales-channels/${salesChannel.id}`,
+          `/admin/sales-channels/${salesChannel1.id}`,
           adminHeaders
         )
 
@@ -42,8 +50,8 @@ medusaIntegrationTestRunner({
         expect(response.data.sales_channel).toEqual(
           expect.objectContaining({
             id: expect.any(String),
-            name: salesChannel.name,
-            description: salesChannel.description,
+            name: salesChannel1.name,
+            description: salesChannel1.description,
             created_at: expect.any(String),
             updated_at: expect.any(String),
           })
@@ -52,33 +60,6 @@ medusaIntegrationTestRunner({
     })
 
     describe("GET /admin/sales-channels", () => {
-      let salesChannel1
-      let salesChannel2
-
-      beforeEach(async () => {
-        salesChannel1 = (
-          await api.post(
-            "/admin/sales-channels",
-            {
-              name: "test name",
-              description: "test description",
-            },
-            adminHeaders
-          )
-        ).data.sales_channel
-
-        salesChannel2 = (
-          await api.post(
-            "/admin/sales-channels",
-            {
-              name: "test name 2",
-              description: "test description 2",
-            },
-            adminHeaders
-          )
-        ).data.sales_channel
-      })
-
       it("should list the sales channel", async () => {
         const response = await api.get(`/admin/sales-channels`, adminHeaders)
 
@@ -183,21 +164,6 @@ medusaIntegrationTestRunner({
     })
 
     describe("POST /admin/sales-channels/:id", () => {
-      let sc
-
-      beforeEach(async () => {
-        sc = (
-          await api.post(
-            "/admin/sales-channels",
-            {
-              name: "test name",
-              description: "test description",
-            },
-            adminHeaders
-          )
-        ).data.sales_channel
-      })
-
       it("updates sales channel properties", async () => {
         const payload = {
           name: "updated name",
@@ -206,7 +172,7 @@ medusaIntegrationTestRunner({
         }
 
         const response = await api.post(
-          `/admin/sales-channels/${sc.id}`,
+          `/admin/sales-channels/${salesChannel1.id}`,
           payload,
           adminHeaders
         )
@@ -279,46 +245,19 @@ medusaIntegrationTestRunner({
     })
 
     describe("DELETE /admin/sales-channels/:id", () => {
-      let salesChannel
-      let salesChannel2
-
-      beforeEach(async () => {
-        salesChannel = (
-          await api.post(
-            "/admin/sales-channels",
-            {
-              name: "test name",
-              description: "test description",
-            },
-            adminHeaders
-          )
-        ).data.sales_channel
-
-        salesChannel2 = (
-          await api.post(
-            "/admin/sales-channels",
-            {
-              name: "test name 2",
-              description: "test description 2",
-            },
-            adminHeaders
-          )
-        ).data.sales_channel
-      })
-
       it("should delete the requested sales channel", async () => {
         const toDelete = (
           await api.get(
-            `/admin/sales-channels/${salesChannel.id}`,
+            `/admin/sales-channels/${salesChannel1.id}`,
             adminHeaders
           )
         ).data.sales_channel
 
-        expect(toDelete.id).toEqual(salesChannel.id)
+        expect(toDelete.id).toEqual(salesChannel1.id)
         expect(toDelete.deleted_at).toEqual(null)
 
         const response = await api.delete(
-          `/admin/sales-channels/${salesChannel.id}`,
+          `/admin/sales-channels/${salesChannel1.id}`,
           adminHeaders
         )
 
@@ -331,13 +270,13 @@ medusaIntegrationTestRunner({
 
         await api
           .get(
-            `/admin/sales-channels/${salesChannel.id}?fields=id,deleted_at`,
+            `/admin/sales-channels/${salesChannel1.id}?fields=id,deleted_at`,
             adminHeaders
           )
           .catch((err) => {
             expect(err.response.data.type).toEqual("not_found")
             expect(err.response.data.message).toEqual(
-              `Sales channel with id: ${salesChannel.id} not found`
+              `Sales channel with id: ${salesChannel1.id} not found`
             )
           })
       })
@@ -356,13 +295,13 @@ medusaIntegrationTestRunner({
         await api.post(
           `/admin/stock-locations/${location.id}/sales-channels`,
           {
-            add: [salesChannel.id, salesChannel2.id],
+            add: [salesChannel1.id, salesChannel2.id],
           },
           adminHeaders
         )
 
         await api.delete(
-          `/admin/sales-channels/${salesChannel.id}`,
+          `/admin/sales-channels/${salesChannel1.id}`,
           adminHeaders
         )
 
@@ -381,21 +320,8 @@ medusaIntegrationTestRunner({
       // BREAKING CHANGE: Endpoint has changed
       // from: /admin/sales-channels/:id/products/batch
       // to: /admin/sales-channels/:id/products
-
-      let salesChannel
       let product
       beforeEach(async () => {
-        salesChannel = (
-          await api.post(
-            "/admin/sales-channels",
-            {
-              name: "test name",
-              description: "test description",
-            },
-            adminHeaders
-          )
-        ).data.sales_channel
-
         product = (
           await api.post(
             "/admin/products",
@@ -409,7 +335,7 @@ medusaIntegrationTestRunner({
 
       it("should add products to a sales channel", async () => {
         const response = await api.post(
-          `/admin/sales-channels/${salesChannel.id}/products`,
+          `/admin/sales-channels/${salesChannel1.id}/products`,
           { add: [product.id] },
           adminHeaders
         )
@@ -449,7 +375,7 @@ medusaIntegrationTestRunner({
 
       it("should remove products from a sales channel", async () => {
         await api.post(
-          `/admin/sales-channels/${salesChannel.id}/products`,
+          `/admin/sales-channels/${salesChannel1.id}/products`,
           { add: [product.id] },
           adminHeaders
         )
@@ -474,7 +400,7 @@ medusaIntegrationTestRunner({
         )
 
         const response = await api.post(
-          `/admin/sales-channels/${salesChannel.id}/products`,
+          `/admin/sales-channels/${salesChannel1.id}/products`,
           { remove: [product.id] },
           adminHeaders
         )
@@ -499,7 +425,50 @@ medusaIntegrationTestRunner({
         expect(product.sales_channels.length).toBe(0)
       })
     })
-    // DELETED TESTS:
+
+    describe("Sales channels with publishable key", () => {
+      let pubKey1
+      beforeEach(async () => {
+        pubKey1 = (
+          await api.post(
+            "/admin/api-keys",
+            { title: "sample key", type: "publishable" },
+            adminHeaders
+          )
+        ).data.api_key
+
+        await api.post(
+          `/admin/api-keys/${pubKey1.id}/sales-channels`,
+          {
+            add: [salesChannel1.id, salesChannel2.id],
+          },
+          adminHeaders
+        )
+      })
+
+      it("list sales channels from the publishable api key with free text search filter", async () => {
+        const response = await api.get(
+          `/admin/sales-channels?q=2&publishable_api_key=${pubKey1.id}`,
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.sales_channels.length).toEqual(1)
+        expect(response.data.sales_channels).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: salesChannel2.id,
+              deleted_at: null,
+              name: "test name 2",
+              description: "test description 2",
+              is_disabled: false,
+            }),
+          ])
+        )
+      })
+    })
+
+    // BREAKING: DELETED TESTS:
     // - POST /admin/products/:id
     //    - Mutation sales channels on products
     // - POST /admin/products
