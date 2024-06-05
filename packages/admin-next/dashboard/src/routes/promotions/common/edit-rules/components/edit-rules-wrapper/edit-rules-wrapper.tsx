@@ -46,12 +46,12 @@ export const EditRulesWrapper = ({
     return async function (data: { rules: PromotionRuleResponse[] }) {
       const applicationMethodData: Record<any, any> = {}
       const { rules: allRules = [] } = data
-      const diguisedRules = allRules.filter((rule) => rule.disguised)
+      const disguisedRules = allRules.filter((rule) => rule.disguised)
 
       // For all the rules that were disguised, convert them to actual values in the
       // database, they are currently all under application_method. If more of these are coming
       // up, abstract this away.
-      for (const rule of diguisedRules) {
+      for (const rule of disguisedRules) {
         applicationMethodData[rule.attribute] = getRuleValue(rule)
       }
 
