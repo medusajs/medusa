@@ -498,13 +498,14 @@ export default class PricingModuleService<
     const normalizedData = await this.normalizeUpdateData(data, sharedContext)
 
     const prices = normalizedData.flatMap((priceSet) => priceSet.prices || [])
-    const upsertedPrices = await this.priceService_.upsertWithReplace(
-      prices,
-      {
-        relations: ["price_rules"],
-      },
-      sharedContext
-    )
+    const { entities: upsertedPrices } =
+      await this.priceService_.upsertWithReplace(
+        prices,
+        {
+          relations: ["price_rules"],
+        },
+        sharedContext
+      )
 
     const priceSetsToUpsert = normalizedData.map((priceSet) => {
       const { prices, ...rest } = priceSet
@@ -520,11 +521,14 @@ export default class PricingModuleService<
       }
     })
 
-    return await this.priceSetService_.upsertWithReplace(
-      priceSetsToUpsert,
-      { relations: ["prices"] },
-      sharedContext
-    )
+    const { entities: priceSets } =
+      await this.priceSetService_.upsertWithReplace(
+        priceSetsToUpsert,
+        { relations: ["prices"] },
+        sharedContext
+      )
+
+    return priceSets
   }
 
   async addRules(
