@@ -91,7 +91,7 @@ export const restockModelHighlights = [
   ["20", "sales_channel_id", "The ID of the sales channel the customer is viewing the product variant from."]
 ]
 
-  ```ts title="src/modules/restock-notification/models/restock-notification.ts" highlights={restockModelHighlights}
+  ```ts title="src/modules/restock-notification/models/restock-notification.ts" highlights={restockModelHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
   import { BaseEntity } from "@medusajs/utils"
   import { 
     Entity, 
@@ -174,7 +174,7 @@ export const restockModuleService = [
   ["61", "create", "Implement the method to create a restock notification."]
 ]
 
-  ```ts title="src/modules/restock-notification/service.ts" highlights={restockModuleService}
+  ```ts title="src/modules/restock-notification/service.ts" highlights={restockModuleService} collapsibleLines="1-5" expandButtonLabel="Show Imports"
   import { Modules, ModulesSdkUtils } from "@medusajs/utils"
   import { RestockNotification } from "./models/restock-notification"
   import { ModuleJoinerConfig, ModulesSdkTypes } from "@medusajs/types"
@@ -288,7 +288,7 @@ export const restockModuleService = [
 
   Create the file `src/api/store/restock-notification/route.ts` with the following content:
 
-  ```ts title="src/api/store/restock-notification/route.ts"
+  ```ts title="src/api/store/restock-notification/route.ts" collapsibleLines="1-10" expandButtonLabel="Show Imports"
   import type { 
     MedusaRequest, 
     MedusaResponse
@@ -347,10 +347,10 @@ export const subscriberHighlights = [
   ["131", "delete", "Delete the restock notification to not send the notification again."]
 ]
 
-  ```ts title="src/subscribers/inventory-item-update.ts" highlights={subscriberHighlights}
-  import {
+  ```ts title="src/subscribers/inventory-item-update.ts" highlights={subscriberHighlights} collapsibleLines="1-23" expandButtonLabel="Show Imports"
+  import type {
     SubscriberArgs,
-    type SubscriberConfig,
+    SubscriberConfig,
   } from "@medusajs/medusa"
   import { 
     IInventoryServiceNext, 
@@ -849,10 +849,10 @@ The `order.created` event is currently not emitted.
 
   </Note>
 
-  ```ts title="src/subscribers/add-custom-to-vip.ts"
-  import {
+  ```ts title="src/subscribers/add-custom-to-vip.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
+  import type {
     SubscriberArgs,
-    type SubscriberConfig,
+    SubscriberConfig,
   } from "@medusajs/medusa"
   import { 
     ModuleRegistrationName
@@ -978,7 +978,7 @@ export const newsletterHighlights = [
   ["60", "update", "Update the store's `last_newsletter_send_date` field with the current date."]
 ]
 
-  ```ts title="src/subscribers/send-products-newsletter.ts" highlights={newsletterHighlights}
+  ```ts title="src/subscribers/send-products-newsletter.ts" highlights={newsletterHighlights} collapsibleLines="1-16" expandButtonLabel="Show Imports"
   import type {
     SubscriberArgs,
     SubscriberConfig,

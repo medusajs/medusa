@@ -173,7 +173,7 @@ export const workflowHighlights = [
   ["54", "update", "Update the product in Medusa to remove the ERP product's ID."]
 ]
 
-    ```ts title="src/workflows/create-product.ts" highlights={workflowHighlights}
+    ```ts title="src/workflows/create-product.ts" highlights={workflowHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
     import {
       createStep,
       StepResponse,
@@ -254,9 +254,9 @@ export const workflowHighlights = [
     Then, create the subscriber at `src/subscribers/create-product.ts`:
 
     ```ts title="src/subscribers/create-product.ts"
-    import { 
-      type SubscriberConfig, 
-      type SubscriberArgs,
+    import type { 
+      SubscriberConfig, 
+      SubscriberArgs,
     } from "@medusajs/medusa"
     import createProductWorkflow from "../workflows/create-product"
 
@@ -303,7 +303,7 @@ For example, suppose an administrator changes the product data in the ERP system
 
     For example, create the file `src/api/webhooks/erp/update/route.ts` with the following content:
 
-    ```ts title="src/api/webhooks/erp/update/route.ts"
+    ```ts title="src/api/webhooks/erp/update/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
     import { 
       MedusaRequest, 
       MedusaResponse, 

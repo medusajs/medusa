@@ -229,7 +229,7 @@ export const mainServiceHighlights = [
   ["150", "createStoreOrder", "Method to create a `StoreOrder`."]
 ]
   
-  ```ts title="src/modules/marketplace/service.ts" highlights={mainServiceHighlights}
+  ```ts title="src/modules/marketplace/service.ts" highlights={mainServiceHighlights} collapsibleLines="1-17" expandButtonLabel="Show Imports"
   import { ModulesSdkUtils, Modules } from "@medusajs/utils"
   import StoreUser from "./models/store-user";
   import StoreProduct from "./models/store-product";
@@ -456,7 +456,7 @@ export const userSubscriberHighlights = [
   ["30", "", "Create a relationship between the user and the store by creating a `StoreUser` record."]
 ]
   
-  ```ts title="src/subscribers/user-created.ts" highlights={userSubscriberHighlights}
+  ```ts title="src/subscribers/user-created.ts" highlights={userSubscriberHighlights} collapsibleLines="1-8" expandButtonLabel="Show Imports"
   import { SubscriberArgs, type SubscriberConfig } from "@medusajs/medusa"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
   import { 
@@ -539,7 +539,7 @@ export const productSubscriberHighlights = [
   ["27", "", "Create a relationship between the product and the store by creating a `StoreProduct` record."]
 ]
     
-  ```ts title="src/subscribers/product-created.ts" highlights={productSubscriberHighlights}
+  ```ts title="src/subscribers/product-created.ts" highlights={productSubscriberHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
   import { SubscriberArgs, type SubscriberConfig } from "@medusajs/medusa"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
   import { 
@@ -641,7 +641,7 @@ export const productRoutesHighlights = [
   ["49", "", "Retrieve the products using remote query."]
 ]
     
-  ```ts title="src/api/admin/marketplace/products/route.ts" highlights={productRoutesHighlights}
+  ```ts title="src/api/admin/marketplace/products/route.ts" highlights={productRoutesHighlights} collapsibleLines="1-13" expandButtonLabel="Show Imports"
   import { 
     AuthenticatedMedusaRequest, 
     MedusaResponse
@@ -774,7 +774,7 @@ export const orderSubscriberHighlights = [
   ["91", "parent_order_id", "The `parent_order_id` field in the `StoreOrder` data model points to the original order."]
 ]
     
-  ```ts title="src/subscribers/order-created.ts" highlights={orderSubscriberHighlights}
+  ```ts title="src/subscribers/order-created.ts" highlights={orderSubscriberHighlights} collapsibleLines="1-13" expandButtonLabel="Show Imports"
   import type { 
     SubscriberArgs, 
     SubscriberConfig
@@ -923,7 +923,7 @@ export const orderRoutesHighlights = [
   ["41", "", "Retrieve the orders using remote query."]
 ]
     
-  ```ts title="src/api/admin/marketplace/orders/route.ts" highlights={orderRoutesHighlights}
+  ```ts title="src/api/admin/marketplace/orders/route.ts" highlights={orderRoutesHighlights} collapsibleLines="1-12" expandButtonLabel="Show Imports"
   import { 
     AuthenticatedMedusaRequest, 
     MedusaResponse

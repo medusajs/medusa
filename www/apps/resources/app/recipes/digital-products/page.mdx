@@ -230,7 +230,7 @@ To represent a digital product, it's recommended to create a data model that has
   }
   ```
   
-  To run the migrations, run the `build` command, then the `migrations run` command:
+  To run the migrations, run the `migrations run` command:
   
   ```bash npm2yarn
   npx medusa migrations run
@@ -307,7 +307,7 @@ Medusa facilitates implementing data-management features by providing a service 
   
   Then, change the content of `src/modules/digital-product/service.ts` to the following:
   
-  ```ts title="src/modules/digital-product/service.ts"
+  ```ts title="src/modules/digital-product/service.ts" collapsibleLines="1-8" expandButtonLabel="Show Imports"
   import { ProductMedia } from "./models/product-media"
   import { ModulesSdkUtils } from "@medusajs/utils"
   import { ModulesSdkTypes } from "@medusajs/types"
@@ -405,7 +405,7 @@ The Medusa application resolves module relationships without creating an actual 
   
   To do that, add the following `__joinerConfig` method to the `DigitalProductModuleService`:
   
-  ```ts title="src/modules/digital-product/service.ts"
+  ```ts title="src/modules/digital-product/service.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
   // other imports...
   import { ModuleJoinerConfig } from "@medusajs/types"
   import { Modules } from "@medusajs/modules-sdk"
@@ -567,7 +567,7 @@ To utilize the relationship to the Product Module, you use the remote query to f
   
   Then, create the file `src/workflows/digital-product/create.ts` with the following content:
   
-  ```ts title="src/workflows/digital-product/create.ts"
+  ```ts title="src/workflows/digital-product/create.ts" collapsibleLines="1-20" expandButtonLabel="Show Imports"
   import { 
     createWorkflow,
     WorkflowData,
@@ -685,7 +685,7 @@ To utilize the relationship to the Product Module, you use the remote query to f
   
   Finally, create the `src/api/admin/digital-products/route.ts` file with the following content:
   
-  ```ts title="src/api/admin/digital-products/route.ts"
+  ```ts title="src/api/admin/digital-products/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
   import {
     MedusaRequest,
     MedusaResponse
@@ -801,7 +801,7 @@ To utilize the relationship to the Product Module, you use the remote query to f
   
   To do that, add the following to `src/api/admin/digital-products/route.ts`:
   
-  ```ts title="src/api/admin/digital-products/route.ts"
+  ```ts title="src/api/admin/digital-products/route.ts" collapsibleLines="1-9" expandButtonLabel="Show Imports"
   // other imports...
   import { RemoteQueryFunction } from "@medusajs/modules-sdk"
   import { 
@@ -922,7 +922,7 @@ In your customizations, you send requests to the API routes you created to creat
 
   You can now create your admin UI route. To do that, create the file `src/admin/routes/product-media/page.tsx` with the following content:
 
-  ```tsx title="src/admin/routes/product-media/page.tsx" badgeLabel="Medusa Application"
+  ```tsx title="src/admin/routes/product-media/page.tsx" badgeLabel="Medusa Application" collapsibleLines="1-18" expandButtonLabel="Show Imports"
   import { RouteConfig } from "@medusajs/admin"
   import { DocumentText } from "@medusajs/icons"
   import { useAdminCustomQuery } from "medusa-react"
@@ -1031,7 +1031,7 @@ In your customizations, you send requests to the API routes you created to creat
 
   In the drawer, you show the Create Digital Product form. To create this form, create the file `src/admin/components/product-media/CreateForm/index.tsx` with the following content:
 
-  ```tsx title="src/admin/components/product-media/CreateForm/index.tsx" badgeLabel="Medusa Application"
+  ```tsx title="src/admin/components/product-media/CreateForm/index.tsx" badgeLabel="Medusa Application" collapsibleLines="1-20" expandButtonLabel="Show Imports"
   import { useState } from "react"
   import { MediaType } from "../../../../models/product-media"
   import { 
@@ -1265,7 +1265,7 @@ In the subscriber, you can send a notification, such as an email, to the custome
 
   Here’s an example of a subscriber that retrieves the download links and sends them to the customer using the installed notification provider module:
       
-  ```ts title="src/subscribers/handle-order.ts" badgeLabel="Medusa Application"
+  ```ts title="src/subscribers/handle-order.ts" badgeLabel="Medusa Application" collapsibleLines="1-15" expandButtonLabel="Show Imports"
   import { 
     type SubscriberConfig, 
     type SubscriberArgs,
@@ -1376,7 +1376,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
     
   Create the file `src/api/store/digital-products/route.ts` with the following content:
 
-  ```ts title="src/api/store/product-media/route.ts" badgeLabel="Medusa Application"
+  ```ts title="src/api/store/product-media/route.ts" badgeLabel="Medusa Application" collapsibleLines="1-13" expandButtonLabel="Show Imports"
   import type { 
     MedusaRequest, 
     MedusaResponse,
@@ -1436,7 +1436,6 @@ To implement this, create a storefront API Route that allows you to fetch the di
   First, if you're using TypeScript for your development, create the file `src/types/product-media.ts` with the following content:
 
   ```ts title="src/types/product-media.ts" badgeLabel="Storefront" badgeColor="blue"
-
   import { Product } from "@medusajs/medusa"
   import { ProductVariant } from "@medusajs/product"
 
@@ -1465,11 +1464,12 @@ To implement this, create a storefront API Route that allows you to fetch the di
   export type DigitalProductVariant = ProductVariant & {
     product_medias?: ProductMedia
   }
+
   ```
 
   Then, add in `src/lib/data/index.ts` a new function that retrieves the product media of the product variant being viewed:
 
-  ```ts title="src/lib/data/index.ts" badgeLabel="Storefront" badgeColor="blue"
+  ```ts title="src/lib/data/index.ts" badgeLabel="Storefront" badgeColor="blue" collapsibleLines="1-7" expandButtonLabel="Show Imports"
   import { 
     ProductMedia,
   } from "types/product-media"
@@ -1580,13 +1580,12 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   Finally, add the button as one of the product actions defined in `src/modules/products/components/product-actions/index.tsx`. These are the actions shown to the customer in the product details page:
 
-  ```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+  ```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue" collapsibleLines="1-6" expandButtonLabel="Show Imports"
   // other imports...
   import { useState, useEffect } from "react"
   import ProductMediaPreview from "../product-media-preview"
   import { getProductMediaPreviewByVariant } from "@lib/data"
   import { ProductMedia } from "types/product-media"
-
 
   const ProductActions: React.FC<ProductActionsProps> = ({
     product,
@@ -1764,7 +1763,7 @@ When a customer purchases a digital product, the shipping form shown during chec
 
   The checkout flow is managed by a checkout context defined in `src/lib/context/checkout-context.tsx`. Change the content of the file to the following:
 
-  ```tsx title="src/lib/context/checkout-context.tsx" badgeLabel="Storefront" badgeColor="blue"
+  ```tsx title="src/lib/context/checkout-context.tsx" badgeLabel="Storefront" badgeColor="blue" collapsibleLines="1-27" expandButtonLabel="Show Imports"
   "use client"
 
   import { medusaClient } from "@lib/config"
@@ -2189,7 +2188,7 @@ When a customer purchases a digital product, the shipping form shown during chec
 
   Next, change the content of `src/modules/checkout/components/shipping-address/index.tsx` to remove the unnecessary address fields:
 
-  ```tsx title="src/modules/checkout/components/shipping-address/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+  ```tsx title="src/modules/checkout/components/shipping-address/index.tsx" badgeLabel="Storefront" badgeColor="blue" collapsibleLines="1-10" expandButtonLabel="Show Imports"
   import { CheckoutFormValues } from "@lib/context/checkout-context"
   import { emailRegex } from "@lib/util/regex"
   import ConnectForm from "@modules/common/components/connect-form"
@@ -2436,7 +2435,7 @@ After the customer purchases the digital product you can show a download button 
     
   You’ll implement this logic in a workflow. Create the file `src/workflows/digital-product/get-url.ts` with the following content:
 
-  ```ts title="src/api/store/product-media/download/route.ts" badgeLabel="Medusa Application"
+  ```ts title="src/api/store/product-media/download/route.ts" badgeLabel="Medusa Application" collapsibleLines="1-14" expandButtonLabel="Show Imports"
   import { 
     createWorkflow,
     transform,
@@ -2580,12 +2579,14 @@ After the customer purchases the digital product you can show a download button 
   
   Then, create the file `src/api/store/digital-products/download/[variant_id]/route.ts` in the Medusa backend with the following content:
 
-  ```ts title="src/api/store/digital-products/download/[variant_id]/route.ts"
+  ```ts title="src/api/store/digital-products/download/[variant_id]/route.ts" collapsibleLines="1-8" expandButtonLabel="Show Imports"
   import type { 
     MedusaRequest, 
     MedusaResponse, 
   } from "@medusajs/medusa"
-  import { getPurchasedProductMediaUrlWorkflow } from "../../../../../workflows/digital-product/get-url"
+  import { 
+    getPurchasedProductMediaUrlWorkflow
+  } from "../../../../../workflows/digital-product/get-url"
   
   export const GET = async (
     req: MedusaRequest, 
@@ -2606,7 +2607,7 @@ After the customer purchases the digital product you can show a download button 
   
   Then, add the `authenticate` middleware to this API Route in `src/api/middlewares.ts`:
   
-  ```tsx
+  ```ts title="src/api/middlewares.ts"
   import {
     type MiddlewaresConfig, 
     authenticate
@@ -2699,7 +2700,7 @@ After the customer purchases the digital product you can show a download button 
 
   For example, you can change the `src/modules/order/components/item/index.tsx` file that handles showing each of the order's items in the order confirmation page to include a new download button if the customer is logged-in:
 
-  ```tsx title="src/modules/order/components/item/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+  ```tsx title="src/modules/order/components/item/index.tsx" badgeLabel="Storefront" badgeColor="blue" collapsibleLines="1-8" expandButtonLabel="Show Imports"
   import { LineItem, Region } from "@medusajs/medusa"
   import { Button, Table, Text, clx } from "@medusajs/ui"
   import LineItemOptions from "@modules/common/components/line-item-options"
