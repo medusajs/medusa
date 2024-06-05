@@ -47,11 +47,14 @@ export const OrderCart: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.CART,
+      fieldAlias: {
+        order: "order_link.order",
+      },
       relationship: {
         serviceName: LINKS.OrderCart,
         primaryKey: "cart_id",
         foreignKey: "id",
-        alias: "cart_link",
+        alias: "order_link",
       },
     },
   ],
