@@ -261,8 +261,6 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       prepareRegisterOrderFulfillmentData
     )
 
-    registerOrderFulfillmentStep(registerOrderFulfillmentData)
-
     const link = transform(
       { order_id: input.order_id, fulfillment },
       (data) => {
@@ -274,7 +272,6 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         ]
       }
     )
-    createRemoteLinkStep(link)
 
     const { toDelete, toUpdate, inventoryAdjustment } = transform(
       { order, reservations, input },
@@ -282,6 +279,8 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
     )
 
     parallelize(
+      registerOrderFulfillmentStep(registerOrderFulfillmentData),
+      createRemoteLinkStep(link),
       updateReservationsStep(toUpdate),
       deleteReservationsStep(toDelete),
       adjustInventoryLevelsStep(inventoryAdjustment)

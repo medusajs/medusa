@@ -1,5 +1,9 @@
 import { LinkWorkflowInput } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  createWorkflow,
+  parallelize,
+} from "@medusajs/workflows-sdk"
 import {
   addCampaignPromotionsStep,
   removeCampaignPromotionsStep,
@@ -10,7 +14,9 @@ export const addOrRemoveCampaignPromotionsWorkflowId =
 export const addOrRemoveCampaignPromotionsWorkflow = createWorkflow(
   addOrRemoveCampaignPromotionsWorkflowId,
   (input: WorkflowData<LinkWorkflowInput>): WorkflowData<void> => {
-    addCampaignPromotionsStep(input)
-    removeCampaignPromotionsStep(input)
+    parallelize(
+      addCampaignPromotionsStep(input),
+      removeCampaignPromotionsStep(input)
+    )
   }
 )

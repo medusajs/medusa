@@ -27,6 +27,8 @@ medusaIntegrationTestRunner({
       let variant2
       let variant3
       let variant4
+      let inventoryItem1
+      let inventoryItem2
 
       const createProducts = async (data) => {
         const response = await api.post(
@@ -88,6 +90,21 @@ medusaIntegrationTestRunner({
 
       describe("GET /store/products", () => {
         beforeEach(async () => {
+          inventoryItem1 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "test-sku" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          inventoryItem2 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "test-sku-2" },
+              adminHeaders
+            )
+          ).data.inventory_item
           ;[product, [variant]] = await createProducts({
             title: "test product 1",
             status: ProductStatus.PUBLISHED,
@@ -95,6 +112,16 @@ medusaIntegrationTestRunner({
               {
                 title: "test variant 1",
                 manage_inventory: true,
+                inventory_items: [
+                  {
+                    inventory_item_id: inventoryItem1.id,
+                    required_quantity: 20,
+                  },
+                  {
+                    inventory_item_id: inventoryItem2.id,
+                    required_quantity: 20,
+                  },
+                ],
                 prices: [{ amount: 3000, currency_code: "usd" }],
               },
             ],
@@ -290,7 +317,7 @@ medusaIntegrationTestRunner({
 
             expect(error.response.status).toEqual(400)
             expect(error.response.data).toEqual({
-              message: `Invalid sales channel filters provided - does-not-exist`,
+              message: `Requested sales channel is not part of the publishable key mappings`,
               type: "invalid_data",
             })
           })
@@ -304,7 +331,7 @@ medusaIntegrationTestRunner({
 
             expect(error.response.status).toEqual(400)
             expect(error.response.data).toEqual({
-              message: `Invalid sales channel filters provided - ${salesChannel2.id}`,
+              message: `Requested sales channel is not part of the publishable key mappings`,
               type: "invalid_data",
             })
           })
@@ -368,8 +395,6 @@ medusaIntegrationTestRunner({
         describe("with inventory items", () => {
           let location1
           let location2
-          let inventoryItem1
-          let inventoryItem2
           let salesChannel1
           let publishableKey1
 
@@ -409,43 +434,23 @@ medusaIntegrationTestRunner({
               adminHeaders
             )
 
-            inventoryItem1 = (
-              await api.post(
-                `/admin/inventory-items`,
-                { sku: "test-sku" },
-                adminHeaders
-              )
-            ).data.inventory_item
+            await api.post(
+              `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
+              {
+                location_id: location1.id,
+                stocked_quantity: 20,
+              },
+              adminHeaders
+            )
 
-            inventoryItem2 = (
-              await api.post(
-                `/admin/inventory-items`,
-                { sku: "test-sku-2" },
-                adminHeaders
-              )
-            ).data.inventory_item
-
-            inventoryItem1 = (
-              await api.post(
-                `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
-                {
-                  location_id: location1.id,
-                  stocked_quantity: 20,
-                },
-                adminHeaders
-              )
-            ).data.inventory_item
-
-            inventoryItem2 = (
-              await api.post(
-                `/admin/inventory-items/${inventoryItem2.id}/location-levels`,
-                {
-                  location_id: location2.id,
-                  stocked_quantity: 30,
-                },
-                adminHeaders
-              )
-            ).data.inventory_item
+            await api.post(
+              `/admin/inventory-items/${inventoryItem2.id}/location-levels`,
+              {
+                location_id: location2.id,
+                stocked_quantity: 30,
+              },
+              adminHeaders
+            )
 
             const remoteLink = appContainer.resolve(
               ContainerRegistrationKeys.REMOTE_LINK
@@ -465,24 +470,6 @@ medusaIntegrationTestRunner({
           })
 
           it("should list all inventory items for a variant", async () => {
-            const remoteLink = appContainer.resolve(
-              ContainerRegistrationKeys.REMOTE_LINK
-            )
-
-            // TODO: Missing API endpoint. Remove this when its available
-            await remoteLink.create([
-              {
-                [Modules.PRODUCT]: { variant_id: variant.id },
-                [Modules.INVENTORY]: { inventory_item_id: inventoryItem1.id },
-                data: { required_quantity: 20 },
-              },
-              {
-                [Modules.PRODUCT]: { variant_id: variant.id },
-                [Modules.INVENTORY]: { inventory_item_id: inventoryItem2.id },
-                data: { required_quantity: 20 },
-              },
-            ])
-
             let response = await api.get(
               `/store/products?sales_channel_id[]=${salesChannel1.id}&fields=variants.inventory_items.inventory.location_levels.*`,
               { headers: { "x-publishable-api-key": publishableKey1.token } }
@@ -512,29 +499,21 @@ medusaIntegrationTestRunner({
           })
 
           it("should return inventory quantity when variant's manage_inventory is true", async () => {
-            const remoteLink = appContainer.resolve(
-              ContainerRegistrationKeys.REMOTE_LINK
+            await api.post(
+              `/admin/products/${product.id}/variants/${variant.id}/inventory-items`,
+              { required_quantity: 20, inventory_item_id: inventoryItem1.id },
+              adminHeaders
             )
 
-            // TODO: Missing API endpoint. Remove this when its available
-            await remoteLink.create([
-              {
-                [Modules.PRODUCT]: { variant_id: variant.id },
-                [Modules.INVENTORY]: { inventory_item_id: inventoryItem1.id },
-                data: { required_quantity: 20 },
-              },
-              {
-                [Modules.PRODUCT]: { variant_id: variant.id },
-                [Modules.INVENTORY]: { inventory_item_id: inventoryItem2.id },
-                data: { required_quantity: 20 },
-              },
-            ])
+            await api.post(
+              `/admin/products/${product.id}/variants/${variant.id}/inventory-items`,
+              { required_quantity: 20, inventory_item_id: inventoryItem2.id },
+              adminHeaders
+            )
 
             let response = await api.get(
               `/store/products?sales_channel_id[]=${salesChannel1.id}&fields=%2bvariants.inventory_quantity`,
-              {
-                headers: { "x-publishable-api-key": publishableKey1.token },
-              }
+              { headers: { "x-publishable-api-key": publishableKey1.token } }
             )
 
             const product1Res = response.data.products.find(

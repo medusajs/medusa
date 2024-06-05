@@ -1,12 +1,13 @@
+import { Modules } from "@medusajs/modules-sdk"
 import {
   WorkflowData,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { Modules } from "@medusajs/modules-sdk"
+import { removeRemoteLinkStep } from "../../common"
 import { deleteProductsStep } from "../steps/delete-products"
 import { getProductsStep } from "../steps/get-products"
-import { removeRemoteLinkStep } from "../../common"
 
 type WorkflowInput = { ids: string[] }
 
@@ -21,14 +22,16 @@ export const deleteProductsWorkflow = createWorkflow(
         .map((variant) => variant.id)
     })
 
-    removeRemoteLinkStep({
-      [Modules.PRODUCT]: { variant_id: variantsToBeDeleted },
-    }).config({ name: "remove-variant-link-step" })
+    const [, deletedProduct] = parallelize(
+      removeRemoteLinkStep({
+        [Modules.PRODUCT]: {
+          variant_id: variantsToBeDeleted,
+          product_id: input.ids,
+        },
+      }).config({ name: "remove-product-variant-link-step" }),
+      deleteProductsStep(input.ids)
+    )
 
-    removeRemoteLinkStep({
-      [Modules.PRODUCT]: { product_id: input.ids },
-    }).config({ name: "remove-product-link-step" })
-
-    return deleteProductsStep(input.ids)
+    return deletedProduct
   }
 )
