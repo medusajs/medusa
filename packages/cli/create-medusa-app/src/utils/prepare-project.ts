@@ -84,6 +84,9 @@ export default async ({
   
   fs.appendFileSync(path.join(directory, `.env`), env)
 
+  // create upload directory
+  fs.mkdirSync(path.join(directory, "uploads"))
+
   factBoxOptions.interval = displayFactBox({
     ...factBoxOptions,
     spinner,
