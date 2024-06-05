@@ -1,3 +1,5 @@
+export * from "./use-collapsible"
+export * from "./use-collapsible-code-lines"
 export * from "./use-copy"
 export * from "./use-current-learning-path"
 export * from "./use-is-browser"
