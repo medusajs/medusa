@@ -411,15 +411,17 @@ export const mainServiceHighlights = [
   To use the module, add it to the `modules` object in `medusa-config.js`:
   
   ```js title="medusa-config.js"
-  const modules = {
-    marketplaceModuleService: {
-      resolve: "./modules/marketplace",
-      definition: {
-        isQueryable: true
-      }
-    },
+  module.exports = defineConfig({
     // ...
-  }
+    modules: {
+      marketplaceModuleService: {
+        resolve: "./modules/marketplace",
+        definition: {
+          isQueryable: true
+        }
+      },
+    }
+  })
   ```
   
   Then, run the migrations of the module:

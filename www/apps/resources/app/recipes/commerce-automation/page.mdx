@@ -267,15 +267,17 @@ export const restockModuleService = [
   Finally, add the module to the `modules` object in `medusa-config.js`:
 
   ```js title="medusa-config.js"
-  const modules = {
-    "restockNotificationModuleService": {
-      resolve: "./modules/restock-notification",
-      definition: {
-        isQueryable: true
-      }
-    },
+  module.exports = defineConfig({
     // ...
-  }
+    modules: {
+      "restockNotificationModuleService": {
+        resolve: "./modules/restock-notification",
+        definition: {
+          isQueryable: true
+        }
+      },
+    }
+  })
   ```
 
   You can now run the module's migrations with the following command:

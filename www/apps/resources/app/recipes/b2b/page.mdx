@@ -375,15 +375,17 @@ export const mainServiceHighlights = [
   Finally, add the module to the `modules` object in `medusa-config.js`:
 
   ```js title="medusa-config.js"
-  const modules = {
-    b2bModuleService: {
-      resolve: "./modules/b2b",
-      definition: {
-        isQueryable: true
-      }
-    },
+  module.exports = defineConfig({
     // ...
-  }
+    modules: {
+      b2bModuleService: {
+        resolve: "./modules/b2b",
+        definition: {
+          isQueryable: true
+        }
+      },
+    }
+  })
   ```
 
   You can now run migrations with the following commands:
