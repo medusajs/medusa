@@ -1,11 +1,12 @@
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import FormData from "form-data"
 import fs from "fs/promises"
+import os from "os"
 import path from "path"
 import {
   adminHeaders,
   createAdminUser,
-} from "../../../helpers/create-admin-user"
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
 
@@ -27,24 +28,16 @@ const getUploadReq = (files: { name: string; content: string }[]) => {
 }
 
 medusaIntegrationTestRunner({
-  env: {
-    MEDUSA_FF_MEDUSA_V2: true,
-  },
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let appContainer
-    beforeAll(() => {})
     afterAll(async () => {
-      await fs.rm(path.join(process.cwd(), "uploads"), { recursive: true })
+      await fs.rm(path.join(os.tmpdir(), "uploads"), { recursive: true })
     })
 
     beforeEach(async () => {
-      appContainer = getContainer()
-      await createAdminUser(dbConnection, adminHeaders, appContainer)
+      await createAdminUser(dbConnection, adminHeaders, getContainer())
     })
 
     describe("POST /admin/uploads", () => {
-      beforeEach(async () => {})
-
       it("uploads a single file successfully", async () => {
         const { form, meta } = getUploadReq([
           { name: "first.jpeg", content: "first content" },
