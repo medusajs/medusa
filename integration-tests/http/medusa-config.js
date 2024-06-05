@@ -1,4 +1,7 @@
 const { defineConfig, Modules } = require("@medusajs/utils")
+const os = require("os")
+const path = require("path")
+
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -30,6 +33,22 @@ module.exports = defineConfig({
       /** @type {import('@medusajs/fulfillment').FulfillmentModuleOptions} */
       options: {
         providers: [customFulfillmentProvider],
+      },
+    },
+    [Modules.FILE]: {
+      resolve: "@medusajs/file",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/file-local-next",
+            options: {
+              config: {
+                // This is the directory where we can reliably write in CI environments
+                local: { upload_dir: path.join(os.tmpdir(), "uploads") },
+              },
+            },
+          },
+        ],
       },
     },
   },
