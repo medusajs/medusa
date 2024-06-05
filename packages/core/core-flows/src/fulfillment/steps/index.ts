@@ -12,5 +12,7 @@ export * from "./delete-shipping-option-rules"
 export * from "./delete-shipping-options"
 export * from "./set-shipping-options-prices"
 export * from "./update-fulfillment"
+export * from "./update-shipping-profiles"
 export * from "./upsert-shipping-options"
 export * from "./validate-shipment"
+
