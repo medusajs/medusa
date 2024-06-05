@@ -18,6 +18,7 @@ import {
   remapProductResponse,
 } from "../helpers"
 import { AdminUpdateProductType } from "../validators"
+import { MedusaError } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -35,6 +36,9 @@ export const GET = async (
   })
 
   const [product] = await remoteQuery(queryObject)
+  if (!product) {
+    throw new MedusaError(MedusaError.Types.NOT_FOUND, "Product not found")
+  }
 
   res.status(200).json({ product: remapProductResponse(product) })
 }

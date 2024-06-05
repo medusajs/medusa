@@ -84,7 +84,7 @@ const Chip = ({ index, className, children }: ChipProps) => {
         className
       )}
     >
-      <span className="txt-compact-small-plus flex items-center justify-center px-2 py-1">
+      <span className="txt-compact-small-plus text-ui-fg-subtle flex items-center justify-center px-2 py-1">
         {children}
       </span>
       {!!onRemove && (

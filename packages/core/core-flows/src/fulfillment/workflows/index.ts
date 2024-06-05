@@ -12,3 +12,5 @@ export * from "./delete-shipping-options"
 export * from "./update-fulfillment"
 export * from "./update-service-zones"
 export * from "./update-shipping-options"
+export * from "./update-shipping-profiles"
+

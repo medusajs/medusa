@@ -12,28 +12,27 @@ The remote link is a class with utility methods to manage links defined by the l
 
 For example:
 
-```ts
+```ts collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import { 
   MedusaRequest, 
   MedusaResponse,
 } from "@medusajs/medusa"
 import { 
-	ModuleRegistrationName, 
-	RemoteLink,
-} from "@medusajs/modules-sdk"
-import { 
-	ContainerRegistrationKeys,
+  ContainerRegistrationKeys,
 } from "@medusajs/utils"
+import { 
+  RemoteLink,
+} from "@medusajs/modules-sdk"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-	const remoteLink: RemoteLink = req.scope.resolve(
-	  ContainerRegistrationKeys.REMOTE_LINK
-	)
-	
-	// ...
+  const remoteLink: RemoteLink = req.scope.resolve(
+    ContainerRegistrationKeys.REMOTE_LINK
+  )
+    
+  // ...
 }
 ```
 
