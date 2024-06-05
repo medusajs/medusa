@@ -1,15 +1,10 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  MockEventBusService,
-  moduleIntegrationTestRunner,
-  SuiteOptions,
-} from "medusa-test-utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
-import { CommonEvents, composeMessage, PricingEvents } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
@@ -19,16 +14,6 @@ moduleIntegrationTestRunner({
     MikroOrmWrapper,
     service,
   }: SuiteOptions<IPricingModuleService>) => {
-    let eventBusEmitSpy
-
-    beforeEach(() => {
-      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
     describe("PriceListRule Service", () => {
       let testManager: SqlEntityManager
       beforeEach(async () => {

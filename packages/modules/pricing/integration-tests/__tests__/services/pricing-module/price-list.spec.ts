@@ -795,6 +795,8 @@ moduleIntegrationTestRunner({
             },
           ])
 
+          jest.clearAllMocks()
+
           await service.addPriceListPrices([
             {
               price_list_id: "price-list-1",
