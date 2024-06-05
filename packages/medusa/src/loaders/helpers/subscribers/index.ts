@@ -216,6 +216,7 @@ export class SubscriberLoader {
       await readdir(this.rootDir_)
       hasSubscriberDir = true
     } catch (err) {
+      logger.debug(`No subscriber directory found in ${this.rootDir_}`)
       hasSubscriberDir = false
     }
 

@@ -1,11 +1,12 @@
 import { OrderDTO } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../../common"
+import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { linkOrderAndPaymentCollectionsStep } from "../../../order/steps"
 import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-payment-session"
 import { createOrderFromCartStep, validateCartPaymentsStep } from "../steps"
@@ -85,6 +86,13 @@ export const completeCartWorkflow = createWorkflow(
     }))
 
     linkOrderAndPaymentCollectionsStep(linkOrderPaymentCollection)
+
+    createRemoteLinkStep([
+      {
+        [Modules.ORDER]: { order_id: order.id },
+        [Modules.CART]: { cart_id: finalCart.id },
+      },
+    ])
 
     return order
   }

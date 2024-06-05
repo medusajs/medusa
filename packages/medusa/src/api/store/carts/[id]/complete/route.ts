@@ -1,11 +1,12 @@
 import { completeCartWorkflow } from "@medusajs/core-flows"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
+import { prepareRetrieveQuery } from "../../../../../utils/get-query-config"
+import { refetchEntity } from "../../../../utils/refetch-entity"
 import { refetchOrder } from "../../../orders/helpers"
 import { refetchCart } from "../../helpers"
 import { defaultStoreCartFields } from "../../query-config"
 import { StoreCompleteCartType } from "../../validators"
-import { prepareRetrieveQuery } from "../../../../../utils/get-query-config"
 
 export const POST = async (
   req: MedusaRequest<StoreCompleteCartType>,
@@ -13,10 +14,24 @@ export const POST = async (
 ) => {
   const cart_id = req.params.id
 
+  const eventBusModule = req.scope.resolve(ModuleRegistrationName.EVENT_BUS)
+
   const { errors, result } = await completeCartWorkflow(req.scope).run({
     input: { id: cart_id },
     context: { transactionId: cart_id },
     throwOnError: false,
+    events: {
+      onFinish: async () => {
+        const result = await refetchEntity(
+          "order_cart",
+          { cart_id },
+          req.scope,
+          ["order_id", "cart_id"]
+        )
+
+        await eventBusModule.emit("order.placed", { id: result.order_id })
+      },
+    },
   })
 
   // When an error occurs on the workflow, its potentially got to with cart validations, payments
