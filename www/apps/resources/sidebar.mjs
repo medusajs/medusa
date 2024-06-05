@@ -1695,6 +1695,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
+    title: "Storefront Development",
+    hasTitleStyling: true,
+    isChildSidebar: true,
+    children: [
+      {
+        path: "/storefront-development/tips",
+        title: "Tips",
+      },
+    ],
+  },
+  {
     title: "Configurations",
     hasTitleStyling: true,
     children: [
