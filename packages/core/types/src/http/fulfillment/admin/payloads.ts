@@ -33,9 +33,9 @@ export interface AdminCreateFulfillment {
   delivery_address: AdminFulfillmentDeliveryAddress
   items: AdminCreateFulfillmentItem[]
   labels: AdminCreateFulfillmentLabel[]
-  // Validator requires an empty object for the order field
-  // seems like an issue with the validator but including it here
-  // to make the type match the validator.
+  // TODO: Validator requires an empty object for the order field.
+  // This is a temporary solution until the order field is
+  // removed or typed correctly.
   order: Record<string, unknown>
   order_id: string
   metadata?: Record<string, unknown> | null
