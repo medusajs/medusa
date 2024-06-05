@@ -20,7 +20,7 @@ When retrieving or listing records of that data model, records having their `del
 
 To create a soft-deletable model, first, add the following filter decorator to the data model class:
 
-```ts title="src/module/hello/models/my-soft-deletable.ts" highlights={[["7"]]}
+```ts title="src/module/hello/models/my-soft-deletable.ts" highlights={[["7"]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 // other imports...
 import { Entity, Filter } from "@mikro-orm/core"
 import { DALUtils } from "@medusajs/utils"

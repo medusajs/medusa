@@ -9,6 +9,7 @@ import {
 
 import { refetchApiKey } from "../helpers"
 import { AdminUpdateApiKeyType } from "../validators"
+import { MedusaError } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -19,6 +20,13 @@ export const GET = async (
     req.scope,
     req.remoteQueryConfig.fields
   )
+
+  if (!apiKey) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `API Key with id: ${req.params.id} was not found`
+    )
+  }
 
   res.status(200).json({ api_key: apiKey })
 }

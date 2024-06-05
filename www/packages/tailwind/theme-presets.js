@@ -196,7 +196,7 @@ const dark = {
   "--docs-contrast-bg-base": "rgba(39, 39, 42, 1)",
   "--docs-contrast-bg-base-pressed": "rgba(113, 113, 122, 1)",
   "--docs-contrast-bg-base-hover": "rgba(82, 82, 91, 1)",
-  "--docs-contrast-bg-subtle": "rgba(255, 255, 255, 0.04)",
+  "--docs-contrast-bg-subtle": "rgba(47, 47, 50, 1)",
   "--docs-contrast-bg-highlight": "rgba(82, 82, 91, 1)",
   "--docs-contrast-bg-alpha": "rgba(63, 63, 70, 0.9)",
   "--docs-contrast-fg-primary": "rgba(250, 250, 250, 1)",
