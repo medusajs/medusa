@@ -1,5 +1,9 @@
 import { completeCartWorkflow } from "@medusajs/core-flows"
-import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
+import {
+  MedusaError,
+  ModuleRegistrationName,
+  TransactionState,
+} from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { prepareRetrieveQuery } from "../../../../../utils/get-query-config"
 import { refetchEntity } from "../../../../utils/refetch-entity"
@@ -21,7 +25,14 @@ export const POST = async (
     context: { transactionId: cart_id },
     throwOnError: false,
     events: {
-      onFinish: async () => {
+      onFinish: async ({ transaction }) => {
+        const state = transaction.getState()
+
+        // We only want to emit the order.placed event if the workflow completed
+        if (state !== TransactionState.DONE) {
+          return
+        }
+
         const result = await refetchEntity(
           "order_cart",
           { cart_id },
