@@ -1,50 +1,51 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
-  IFulfillmentModuleService,
-  IStockLocationServiceNext,
-} from "@medusajs/types"
-import {
   adminHeaders,
   createAdminUser,
-} from "../../../helpers/create-admin-user"
+} from "../../../../helpers/create-admin-user"
+import { IFulfillmentModuleService } from "@medusajs/types"
 
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  env: {
-    MEDUSA_FF_MEDUSA_V2: true,
-  },
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let appContainer
-    let service: IStockLocationServiceNext
+    let fulfillmentSet1
 
     beforeEach(async () => {
-      appContainer = getContainer()
+      await createAdminUser(dbConnection, adminHeaders, getContainer())
 
-      await createAdminUser(dbConnection, adminHeaders, appContainer)
+      // fulfillmentSet1 = (
+      //   await api.post(
+      //     "/admin/fulfillment-sets",
+      //     {
+      //       name: "Test fulfillment set",
+      //       type: "pickup",
+      //     },
+      //     adminHeaders
+      //   )
+      // ).data.fulfillment_set
 
-      service = appContainer.resolve(ModuleRegistrationName.STOCK_LOCATION)
+      // TODO: Add support for creating fulfillment sets through HTTP
+      const fulfillmentModule: IFulfillmentModuleService =
+        getContainer().resolve(ModuleRegistrationName.FULFILLMENT)
+
+      fulfillmentSet1 = await fulfillmentModule.create({
+        name: "Test fulfillment set",
+        type: "pickup",
+      })
     })
 
     describe("POST /admin/fulfillment-sets/:id", () => {
       it("should delete a fulfillment set", async () => {
-        const fulfillmentService: IFulfillmentModuleService =
-          appContainer.resolve(ModuleRegistrationName.FULFILLMENT)
-
-        const set = await fulfillmentService.create({
-          name: "Test fulfillment set",
-          type: "pickup",
-        })
-
         const deleteResponse = await api.delete(
-          `/admin/fulfillment-sets/${set.id}`,
+          `/admin/fulfillment-sets/${fulfillmentSet1.id}`,
           adminHeaders
         )
 
         expect(deleteResponse.data).toEqual({
-          id: set.id,
+          id: fulfillmentSet1.id,
           object: "fulfillment_set",
           deleted: true,
         })
@@ -288,74 +289,9 @@ medusaIntegrationTestRunner({
           )
           .catch((err) => err.response)
 
-        const expectedErrors = [
-          {
-            code: "invalid_union",
-            unionErrors: [
-              {
-                issues: [
-                  {
-                    received: "region",
-                    code: "invalid_literal",
-                    expected: "country",
-                    path: ["geo_zones", 2, "type"],
-                    message: 'Invalid literal value, expected "country"',
-                  },
-                ],
-                name: "ZodError",
-              },
-              {
-                issues: [
-                  {
-                    received: "region",
-                    code: "invalid_literal",
-                    expected: "province",
-                    path: ["geo_zones", 2, "type"],
-                    message: 'Invalid literal value, expected "province"',
-                  },
-                ],
-                name: "ZodError",
-              },
-              {
-                issues: [
-                  {
-                    received: "region",
-                    code: "invalid_literal",
-                    expected: "city",
-                    path: ["geo_zones", 2, "type"],
-                    message: 'Invalid literal value, expected "city"',
-                  },
-                ],
-                name: "ZodError",
-              },
-              {
-                issues: [
-                  {
-                    received: "region",
-                    code: "invalid_literal",
-                    expected: "zip",
-                    path: ["geo_zones", 2, "type"],
-                    message: 'Invalid literal value, expected "zip"',
-                  },
-                  {
-                    code: "invalid_type",
-                    expected: "object",
-                    received: "undefined",
-                    path: ["geo_zones", 2, "postal_expression"],
-                    message: "Required",
-                  },
-                ],
-                name: "ZodError",
-              },
-            ],
-            path: ["geo_zones", 2],
-            message: "Invalid input",
-          },
-        ]
-
         expect(errorResponse.status).toEqual(400)
         expect(errorResponse.data.message).toContain(
-          `Invalid request body: ${JSON.stringify(expectedErrors)}`
+          `Invalid request: Field 'geo_zones, 2, type' is required`
         )
       })
 

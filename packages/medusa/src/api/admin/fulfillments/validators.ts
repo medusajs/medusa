@@ -32,6 +32,12 @@ export const AdminCreateFulfillment = z.object({
   labels: z.array(AdminCreateFulfillmentLabel),
   order: z.object({}),
   order_id: z.string(),
+  shipping_option_id: z.string().optional(),
+  data: z.record(z.unknown()).optional().nullable(),
+  packed_at: z.coerce.date().optional().nullable(),
+  shipped_at: z.coerce.date().optional().nullable(),
+  delivered_at: z.coerce.date().optional().nullable(),
+  canceled_at: z.coerce.date().optional().nullable(),
   metadata: z.record(z.unknown()).optional().nullable(),
 })
 

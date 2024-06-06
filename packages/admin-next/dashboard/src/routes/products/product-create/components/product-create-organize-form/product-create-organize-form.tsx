@@ -1,12 +1,8 @@
-import { Heading } from "@medusajs/ui"
 import { useState } from "react"
 import { UseFormReturn } from "react-hook-form"
-import { useTranslation } from "react-i18next"
 
-import { Divider } from "../../../../../components/common/divider"
 import { SplitView } from "../../../../../components/layout/split-view"
 import { ProductCreateSchemaType } from "../../types"
-import { ProductCreateAttributeSection } from "./components/product-create-organize-attribute-section"
 import { ProductCreateDetailsContext } from "./components/product-create-organize-context"
 import { ProductCreateOrganizationSection } from "./components/product-create-organize-section"
 import { ProductCreateSalesChannelDrawer } from "./components/product-create-sales-channel-drawer"
@@ -28,9 +24,9 @@ export const ProductCreateOrganizeForm = ({ form }: ProductAttributesProps) => {
             <div className="flex w-full max-w-[720px] flex-col gap-y-8">
               <ProductCreateOrganizationSection form={form} />
 
-              {/*TODO: WHERE DO WE SET PRODUCT ATTRIBUTES? -> the plan is to moved that to Inventory UI */}
-              {/*<Divider />*/}
-              {/*<ProductCreateAttributeSection form={form} />*/}
+              {/* TODO: WHERE DO WE SET PRODUCT ATTRIBUTES? -> the plan is to moved that to Inventory UI */}
+              {/* <Divider />*/}
+              {/* <ProductCreateAttributeSection form={form} />*/}
             </div>
           </div>
         </SplitView.Content>

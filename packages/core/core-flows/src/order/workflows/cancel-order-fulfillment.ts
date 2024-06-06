@@ -87,11 +87,14 @@ function prepareInventoryUpdate({
   }[] = []
 
   for (const item of fulfillment.items) {
-    inventoryAdjustment.push({
-      inventory_item_id: item.inventory_item_id as string,
-      location_id: fulfillment.location_id,
-      adjustment: item.quantity,
-    })
+    // if this is `null` this means that item is from variant that has `manage_inventory` false
+    if (item.inventory_item_id) {
+      inventoryAdjustment.push({
+        inventory_item_id: item.inventory_item_id as string,
+        location_id: fulfillment.location_id,
+        adjustment: item.quantity,
+      })
+    }
   }
 
   return {

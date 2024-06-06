@@ -1,10 +1,12 @@
 import { PencilSquare, ThumbnailBadge } from "@medusajs/icons"
 import { Product } from "@medusajs/medusa"
 import {
+  Button,
   Checkbox,
   CommandBar,
   Container,
   Heading,
+  Text,
   Tooltip,
   clx,
   usePrompt,
@@ -97,7 +99,7 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
           ]}
         />
       </div>
-      {media && (
+      {media.length > 0 ? (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-4 px-6 py-4">
           {media.map((i, index) => {
             const isSelected = selection[i.id]
@@ -137,6 +139,27 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
               </div>
             )
           })}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center gap-y-4 pb-8 pt-6">
+          <div className="flex flex-col items-center">
+            <Text
+              size="small"
+              leading="compact"
+              weight="plus"
+              className="text-ui-fg-subtle"
+            >
+              {t("products.media.emptyState.header")}
+            </Text>
+            <Text size="small" className="text-ui-fg-muted">
+              {t("products.media.emptyState.description")}
+            </Text>
+          </div>
+          <Button size="small" variant="secondary" asChild>
+            <Link to="media?view=edit">
+              {t("products.media.emptyState.action")}
+            </Link>
+          </Button>
         </div>
       )}
       <CommandBar open={!!Object.keys(selection).length}>
