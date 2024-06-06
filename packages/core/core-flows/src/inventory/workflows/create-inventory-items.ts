@@ -19,18 +19,17 @@ interface WorkflowInput {
 }
 
 const buildLocationLevelMapAndItemData = (data: WorkflowInput) => {
+  data.items = data.items ?? []
   const inventoryItems: InventoryNext.CreateInventoryItemInput[] = []
   // Keep an index to location levels mapping to inject the created inventory item
   // id into the location levels workflow input
   const locationLevelMap: Record<number, LocationLevelWithoutInventory[]> = {}
-  let index = 0
 
-  for (const { location_levels, ...inventoryItem } of data.items || []) {
+  data.items.forEach(({ location_levels, ...inventoryItem }, index) => {
     locationLevelMap[index] = location_levels?.length ? location_levels : []
-    inventoryItems.push(inventoryItem)
 
-    index += 1
-  }
+    inventoryItems.push(inventoryItem)
+  })
 
   return {
     locationLevelMap,
@@ -47,18 +46,16 @@ const buildInventoryLevelsInput = (data: {
 
   // The order of the input is critical to accurately create location levels for
   // the right inventory item
-  for (const item of data.items || []) {
+  data.items.forEach((item, index) => {
     const locationLevels = data.locationLevelMap[index] || []
 
-    for (const locationLevel of locationLevels) {
+    locationLevels.forEach((locationLevel) =>
       inventoryLevels.push({
         ...locationLevel,
         inventory_item_id: item.id,
       })
-    }
-
-    index += 1
-  }
+    )
+  })
 
   return {
     input: {

@@ -96,7 +96,7 @@ medusaIntegrationTestRunner({
 
         const res = await api
           .post(
-            `/admin/reservations?field=inventory_item.location_levels.*`,
+            `/admin/reservations?fields=*inventory_item.location_levels`,
             payload,
             adminHeaders
           )

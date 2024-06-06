@@ -615,7 +615,7 @@ medusaIntegrationTestRunner({
 
         it("should create inventory items along with location levels", async () => {
           const response = await api.post(
-            `/admin/inventory-items?fields=%2blocation_levels.*`,
+            `/admin/inventory-items?fields=*location_levels`,
             {
               sku: "test-sku",
               location_levels: [

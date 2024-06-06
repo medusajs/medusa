@@ -685,7 +685,7 @@ export default class InventoryModuleService<
     if (diff.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Reservation item with id ${ids} not found`
+        `Reservation item with id ${diff.join(", ")} not found`
       )
     }
 
