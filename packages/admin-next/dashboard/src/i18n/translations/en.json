@@ -76,6 +76,7 @@
     "back": "Back",
     "close": "Close",
     "continue": "Continue",
+    "reset": "Reset",
     "confirm": "Confirm",
     "edit": "Edit",
     "download": "Download",
@@ -217,7 +218,11 @@
       "galleryLabel": "Gallery",
       "downloadImageLabel": "Download current image",
       "deleteImageLabel": "Delete current image",
-      "noMediaLabel": "The product has no associated media."
+      "emptyState": {
+        "header": "No media yet",
+        "description": "Add media to the product to showcase it in your storefront.",
+        "action": "Add media"
+      }
     },
     "discountableHint": "When unchecked discounts will not be applied to this product.",
     "noSalesChannels": "Not available in any sales channels",
@@ -568,6 +573,7 @@
       "inStock": "In stock",
       "itemsToFulfillDesc": "Choose items and quantities to fulfill",
       "locationDescription": "Choose which location you want to fulfill items from.",
+      "sendNotificationHint": "Notify customers about the created fulfillment.",
       "error": {
         "wrongQuantity": "Only one item is available for fulfillment",
         "wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",

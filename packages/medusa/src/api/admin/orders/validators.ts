@@ -81,7 +81,6 @@ export type AdminOrderCreateShipmentType = z.infer<
 >
 
 export const AdminOrderCancelFulfillment = z.object({
-  fulfillment_id: z.string(),
   no_notification: z.boolean().optional(),
 })
 

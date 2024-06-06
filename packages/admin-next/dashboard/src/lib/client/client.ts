@@ -8,7 +8,6 @@ import { fulfillmentProviders } from "./fulfillment-providers"
 import { fulfillments } from "./fulfillments"
 import { inventoryItems } from "./inventory"
 import { invites } from "./invites"
-import { orders } from "./orders"
 import { payments } from "./payments"
 import { priceLists } from "./price-lists"
 import { productTypes } from "./product-types"
@@ -41,7 +40,6 @@ export const client = {
   shippingProfiles: shippingProfiles,
   productTags: tags,
   users: users,
-  orders: orders,
   taxes: taxes,
   invites: invites,
   inventoryItems: inventoryItems,
