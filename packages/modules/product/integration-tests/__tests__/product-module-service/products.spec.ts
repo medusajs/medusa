@@ -12,23 +12,22 @@ import { UpdateProductInput } from "@types"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-  SuiteOptions,
 } from "medusa-test-utils"
-import { createCollections, createTypes } from "../../../__fixtures__/product"
-import { createProductCategories } from "../../../__fixtures__/product-category"
-import { buildProductAndRelationsData } from "../../../__fixtures__/product/data/create-product"
+import {
+  buildProductAndRelationsData,
+  createCollections,
+  createTypes,
+} from "../../__fixtures__/product"
+import { createProductCategories } from "../../__fixtures__/product-category"
 
 jest.setTimeout(300000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IProductModuleService>({
   moduleName: Modules.PRODUCT,
   injectedDependencies: {
     eventBusModuleService: new MockEventBusService(),
   },
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IProductModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("ProductModuleService products", function () {
       let productCollectionOne: ProductCollection
       let productCollectionTwo: ProductCollection
