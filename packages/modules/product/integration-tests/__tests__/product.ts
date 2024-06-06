@@ -6,33 +6,34 @@ import {
   createImages,
   createProductAndTags,
   createProductVariants,
-} from "../../../__fixtures__/product"
+} from "../__fixtures__/product"
 
 import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService, ProductDTO } from "@medusajs/types"
-import { ProductStatus, kebabCase } from "@medusajs/utils"
+import { kebabCase, ProductStatus } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductService } from "@services"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
-import { createProductCategories } from "../../../__fixtures__/product-category"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { createProductCategories } from "../__fixtures__/product-category"
 import {
   categoriesData,
   productsData,
   variantsData,
-} from "../../../__fixtures__/product/data"
+} from "../__fixtures__/product/data"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+type Service = IProductModuleService & {
+  productService_: ProductService
+}
+
+moduleIntegrationTestRunner<Service>({
   moduleName: Modules.PRODUCT,
-  testSuite: ({
-    MikroOrmWrapper,
-    medusaApp,
-  }: SuiteOptions<IProductModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service: moduleService }) => {
     let service: ProductService
 
     beforeEach(() => {
-      service = medusaApp.modules["productService"].productService_
+      service = moduleService.productService_
     })
 
     describe("Product Service", () => {

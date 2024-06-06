@@ -263,6 +263,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductVariantDTO>
 
   @InjectTransactionManager("baseRepository_")
+  @EmitEvents()
   async upsertVariants(
     data:
       | ProductTypes.UpsertProductVariantDTO[]
@@ -309,6 +310,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductVariantDTO[]>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async updateVariants(
     idOrSelector: string | ProductTypes.FilterableProductVariantProps,
     data: ProductTypes.UpdateProductVariantDTO,
@@ -382,7 +384,7 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    const { entities: productVariants } =
+    const { entities: productVariants, performedActions } =
       await this.productVariantService_.upsertWithReplace(
         ProductModuleService.assignOptionsToVariants(
           variantsWithProductId,
@@ -393,6 +395,19 @@ export default class ProductModuleService<
         },
         sharedContext
       )
+
+    eventBuilders.createdProductVariant({
+      data: performedActions.created[ProductVariant.name] ?? [],
+      sharedContext,
+    })
+    eventBuilders.updatedProductVariant({
+      data: performedActions.updated[ProductVariant.name] ?? [],
+      sharedContext,
+    })
+    eventBuilders.deletedProductVariant({
+      data: performedActions.deleted[ProductVariant.name] ?? [],
+      sharedContext,
+    })
 
     return productVariants
   }

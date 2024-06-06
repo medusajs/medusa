@@ -1,16 +1,13 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
 import { ProductType } from "@models"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IProductModuleService>({
   moduleName: Modules.PRODUCT,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IProductModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("ProductModuleService product types", () => {
       let typeOne: ProductType
       let typeTwo: ProductType

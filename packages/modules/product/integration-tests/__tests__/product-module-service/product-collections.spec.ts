@@ -4,22 +4,18 @@ import { ProductStatus } from "@medusajs/utils"
 import { Product, ProductCollection } from "@models"
 import {
   MockEventBusService,
-  SuiteOptions,
   moduleIntegrationTestRunner,
 } from "medusa-test-utils"
-import { createCollections } from "../../../__fixtures__/product"
+import { createCollections } from "../../__fixtures__/product"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IProductModuleService>({
   moduleName: Modules.PRODUCT,
   injectedDependencies: {
     eventBusModuleService: new MockEventBusService(),
   },
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IProductModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("ProductModuleService product collections", () => {
       let productOne: Product
       let productTwo: Product

@@ -4,23 +4,19 @@ import { ProductStatus } from "@medusajs/utils"
 import { Product, ProductCategory } from "@models"
 import {
   MockEventBusService,
-  SuiteOptions,
   moduleIntegrationTestRunner,
 } from "medusa-test-utils"
-import { createProductCategories } from "../../../__fixtures__/product-category"
-import { productCategoriesRankData } from "../../../__fixtures__/product-category/data"
+import { createProductCategories } from "../../__fixtures__/product-category"
+import { productCategoriesRankData } from "../../__fixtures__/product-category/data"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IProductModuleService>({
   moduleName: Modules.PRODUCT,
   injectedDependencies: {
     eventBusModuleService: new MockEventBusService(),
   },
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IProductModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("ProductModuleService product categories", () => {
       let productOne: Product
       let productTwo: Product

@@ -16,14 +16,13 @@ import {
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-  SuiteOptions,
 } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IProductModuleService>({
   moduleName: Modules.PRODUCT,
-  testSuite: ({ service }: SuiteOptions<IProductModuleService>) => {
+  testSuite: ({ service }) => {
     let eventBusEmitSpy
 
     beforeEach(() => {
@@ -75,6 +74,8 @@ moduleIntegrationTestRunner({
           title: "variant",
           product_id: productTwo.id,
         } as CreateProductVariantDTO)
+
+        jest.clearAllMocks()
       })
 
       describe("listAndCountVariants", () => {
@@ -204,6 +205,16 @@ moduleIntegrationTestRunner({
 
           const productVariant = await service.retrieveVariant(variantOne.id)
           expect(productVariant.title).toEqual("new test")
+
+          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
+          expect(eventBusEmitSpy).toHaveBeenCalledWith([
+            composeMessage(ProductEvents.product_variant_updated, {
+              data: { id: variantOne.id },
+              object: "product_variant",
+              service: Modules.PRODUCT,
+              action: CommonEvents.UPDATED,
+            }),
+          ])
         })
 
         it("should upsert the options of a variant successfully", async () => {
@@ -224,6 +235,16 @@ moduleIntegrationTestRunner({
               }),
             ])
           )
+
+          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
+          expect(eventBusEmitSpy).toHaveBeenCalledWith([
+            composeMessage(ProductEvents.product_variant_updated, {
+              data: { id: variantOne.id },
+              object: "product_variant",
+              service: Modules.PRODUCT,
+              action: CommonEvents.UPDATED,
+            }),
+          ])
         })
 
         it("should do a partial update on the options of a variant successfully", async () => {
