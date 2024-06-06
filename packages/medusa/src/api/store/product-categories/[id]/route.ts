@@ -19,11 +19,11 @@ export const GET = async (
     req.remoteQueryConfig.pagination
   )
 
-  if (!category) {
+  if (!category?.length) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
       `Product category with id: ${req.params.id} was not found`
     )
   }
-  res.json({ product_category: category })
+  res.json({ product_category: category[0] })
 }
