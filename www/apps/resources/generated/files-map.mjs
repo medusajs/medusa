@@ -864,6 +864,10 @@ export const filesMap = [
     "pathname": "/storefront-development/products"
   },
   {
+    "filePath": "/www/apps/resources/app/storefront-development/products/price/page.mdx",
+    "pathname": "/storefront-development/products/price"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/products/retrieve/page.mdx",
     "pathname": "/storefront-development/products/retrieve"
   },

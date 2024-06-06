@@ -7017,6 +7017,13 @@ export const generatedSidebar = [
             "path": "/storefront-development/products/variants",
             "title": "Select a Variant",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/products/price",
+            "title": "Retrieve Variant Prices",
+            "children": []
           }
         ]
       }

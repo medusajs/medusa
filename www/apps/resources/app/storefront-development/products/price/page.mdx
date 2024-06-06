@@ -37,12 +37,12 @@ export const priceHighlights = [
   ["28", "queryParams", "Build the pricing query parameters."],
   ["60", "formatPrice", "A utility function to format an amount with its currency."],
   ["61", `"en-US"`, "If you use a different locale change it here."],
-  ["68", "variantPrice", "Assign the variant to compute its price, which is either the selected or cheapest variant."]
+  ["68", "variantPrice", "Assign the variant to compute its price, which is either the selected or cheapest variant."],
   ["70", "selectedVariant", "Use the selected variant for pricing."],
   ["73", "", "If there isn't a selected variant, retrieve the variant with the cheapest price."],
   ["81", "price", "Compute the price of the selected or cheapest variant."],
-  ["135", "", "If there's a computed price but no selected variant, show a `From` prefix to the price."],
-  ["136", "price", "Display the computedd price."]
+  ["125", "", "If there's a computed price but no selected variant, show a `From` prefix to the price."],
+  ["126", "price", "Display the computed price."]
 ]
 
 ```tsx highlights={priceHighlights}
@@ -211,7 +211,20 @@ const formatPrice = (amount: number): string => {
 
 ## Show Product Variant's Sale Price
 
-```tsx
+To check if a product variant's price is a sale price, check whether the variant's `calculated_price.calculated_price.price_list_type` field is equal to `sale`.
+
+In that case, the original price is in the variant's `calculated_price.original_amount` field.
+
+For example, in a React-based storefront:
+
+export const saleHighlights = [
+  ["12", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
+  ["90", "isSale", "Determine whether the price is a sale price based on the value of the variant's `calculated_price.calculated_price.price_list_type` field."],
+  ["99", "originalPrice", "Retrieve the original price from the variant's `calculated_price.original_amount` field if the price is a sale price."],
+  ["144", "", "If the price is a sale price, show that to the customer along with the original price."]
+]
+
+```tsx highlights={saleHighlights}
 "use client" // include with Next.js 13+
 
 import { useEffect, useMemo, useState } from "react"
@@ -310,6 +323,15 @@ export default function Product({ params: { id } }: Params) {
     return variantPrice.calculated_price.calculated_price.price_list_type === "sale"
   }, [variantPrice])
 
+  const originalPrice = useMemo(() => {
+    if (!isSale) {
+      return
+    }
+
+    // @ts-ignore
+    return formatPrice(variantPrice.calculated_price.original_amount)
+  }, [isSale, variantPrice])
+
   return (
     <div>
       {loading && <span>Loading...</span>}
@@ -340,12 +362,14 @@ export default function Product({ params: { id } }: Params) {
               ))}
             </ul>
           )}
-          {selectedVariant && <span>Selected Variant: {selectedVariant.id}</span>}
+          {selectedVariant && (
+            <span>Selected Variant: {selectedVariant.id}</span>
+          )}
           {price && (
             <span>
-              {isSale && "SALE"}
               {!selectedVariant && "From: "}
               {price}
+              {isSale && `SALE - Original Price: ${originalPrice}`}
             </span>
           )}
           {product.images?.map((image) => (
@@ -357,3 +381,9 @@ export default function Product({ params: { id } }: Params) {
   )
 }
 ```
+
+In this example, you:
+
+- Define an `isSale` memo variable that determines whether the chosen variant's price is a sale price. You do that by checking if the value of the variant's `calculated_price.calculated_price.price_list_type` field is `sale`.
+- Define an `originalPrice` memo variable that, if `isSale` is enabled, has the formatted original price of the chosen variant. The variant's original price is in the `calculated_price.original_amount` field.
+- If `isSale` is enabled, show a message to the customer indicating that this product is on sale along with the original price.

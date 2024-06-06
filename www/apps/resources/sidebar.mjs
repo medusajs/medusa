@@ -1734,6 +1734,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             path: "/storefront-development/products/variants",
             title: "Select a Variant",
           },
+          {
+            path: "/storefront-development/products/price",
+            title: "Retrieve Variant Prices",
+          },
         ],
       },
     ],
