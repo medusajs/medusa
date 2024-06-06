@@ -401,7 +401,10 @@
       "title": "Add item",
       "details": "Details",
       "availability": "Availability",
-      "locations": "Locations"
+      "locations": "Locations",
+      "attributes": "Attributes",
+      "requiresShipping": "Requires shipping",
+      "requiresShippingHint": "Does the inventory item require shipping?"
     },
     "reservation": {
       "header": "Reservation of {{itemName}}",

@@ -10,6 +10,8 @@ import {
   ProgressTabs,
   clx,
   Input,
+  Textarea,
+  Switch,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
@@ -24,6 +26,7 @@ import { Combobox } from "../../../../../components/inputs/combobox"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { client } from "../../../../../lib/client"
 import { z } from "zod"
+import { CountrySelect } from "../../../../../components/inputs/country-select"
 
 enum Tab {
   DETAILS = "details",
@@ -35,7 +38,7 @@ type StepStatus = {
 }
 
 const CreateInventoryItemSchema = zod.object({
-  title: z.string().optional(),
+  title: z.string().min(1),
 
   sku: z.string().optional(),
   hs_code: z.string().optional(),
@@ -77,6 +80,17 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
     defaultValues: {
       title: "",
       sku: "",
+      hs_code: "",
+      weight: "",
+      length: "",
+      height: "",
+      width: "",
+      origin_country: "",
+      mid_code: "",
+      material: "",
+      description: "",
+      requires_shipping: true,
+      thumbnail: "",
     },
     resolver: zodResolver(CreateInventoryItemSchema),
   })
@@ -236,6 +250,60 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
                       }}
                     />
 
+                    <div className="col-span-2">
+                      <Form.Field
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => {
+                          return (
+                            <Form.Item>
+                              <Form.Label optional>
+                                {t("products.fields.description.label")}
+                              </Form.Label>
+                              <Form.Control>
+                                <Textarea
+                                  {...field}
+                                  placeholder="The item description"
+                                />
+                              </Form.Control>
+                            </Form.Item>
+                          )
+                        }}
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <Form.Field
+                        control={form.control}
+                        name="requires_shipping"
+                        render={({ field: { value, onChange, ...field } }) => {
+                          return (
+                            <Form.Item>
+                              <div className="flex flex-col gap-y-1">
+                                <div className="flex items-center justify-between">
+                                  <Form.Label>
+                                    {t("inventory.create.requiresShipping")}
+                                  </Form.Label>
+                                  <Form.Control>
+                                    <Switch
+                                      checked={value}
+                                      onCheckedChange={(checked) =>
+                                        onChange(!!checked)
+                                      }
+                                      {...field}
+                                    />
+                                  </Form.Control>
+                                </div>
+                                <Form.Hint>
+                                  {t("inventory.create.requiresShippingHint")}
+                                </Form.Hint>
+                              </div>
+                              <Form.ErrorMessage />
+                            </Form.Item>
+                          )
+                        }}
+                      />
+                    </div>
+
                     {/*<Form.Field*/}
                     {/*  className="col-span-1"*/}
                     {/*  control={form.control}*/}
@@ -268,6 +336,164 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
                   <Heading level="h3" className="my-6">
                     {t("inventory.create.attributes")}
                   </Heading>
+
+                  <div className="grid grid-cols-1 gap-x-4 gap-y-8 lg:grid-cols-2">
+                    <Form.Field
+                      control={form.control}
+                      name="width"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("products.fields.width.label")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Input
+                                {...field}
+                                type="number"
+                                min={0}
+                                placeholder="100"
+                              />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+
+                    <Form.Field
+                      control={form.control}
+                      name="length"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("products.fields.length.label")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Input
+                                {...field}
+                                type="number"
+                                min={0}
+                                placeholder="100"
+                              />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+
+                    <Form.Field
+                      control={form.control}
+                      name="height"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("products.fields.height.label")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Input
+                                {...field}
+                                type="number"
+                                min={0}
+                                placeholder="100"
+                              />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+
+                    <Form.Field
+                      control={form.control}
+                      name="weight"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("products.fields.weight.label")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Input
+                                {...field}
+                                type="number"
+                                min={0}
+                                placeholder="100"
+                              />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+
+                    <Form.Field
+                      control={form.control}
+                      name="mid_code"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("products.fields.mid_code.label")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Input {...field} />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+
+                    <Form.Field
+                      control={form.control}
+                      name="hs_code"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("products.fields.hs_code.label")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Input {...field} />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+
+                    <Form.Field
+                      control={form.control}
+                      name="origin_country"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("products.fields.countryOrigin.label")}
+                            </Form.Label>
+                            <Form.Control>
+                              <CountrySelect {...field} />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+
+                    <Form.Field
+                      control={form.control}
+                      name="material"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("products.fields.material.label")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Input {...field} />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </ProgressTabs.Content>
