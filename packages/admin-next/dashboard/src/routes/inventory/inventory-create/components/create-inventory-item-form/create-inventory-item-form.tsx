@@ -23,6 +23,7 @@ import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { client } from "../../../../../lib/client"
+import { z } from "zod"
 
 enum Tab {
   DETAILS = "details",
@@ -34,8 +35,21 @@ type StepStatus = {
 }
 
 const CreateInventoryItemSchema = zod.object({
-  title: zod.string().min(1),
-  sku: zod.string().min(1),
+  title: z.string().optional(),
+
+  sku: z.string().optional(),
+  hs_code: z.string().optional(),
+  weight: z.number().optional(),
+  length: z.number().optional(),
+  height: z.number().optional(),
+  width: z.number().optional(),
+  origin_country: z.string().optional(),
+  mid_code: z.string().optional(),
+  material: z.string().optional(),
+  description: z.string().optional(),
+  requires_shipping: z.boolean().optional(),
+  thumbnail: z.string().optional(),
+  // metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 type CreateInventoryItemFormProps = {}
