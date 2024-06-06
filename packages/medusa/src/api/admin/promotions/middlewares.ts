@@ -1,4 +1,5 @@
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { unlessPath } from "../../utils/unless-path"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import { createBatchBody } from "../../utils/validators"
@@ -62,9 +63,12 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/promotions/:id/:rule_type",
     middlewares: [
-      validateAndTransformQuery(
-        AdminGetPromotionRuleTypeParams,
-        QueryConfig.retrieveTransformQueryConfig
+      unlessPath(
+        /.*\/promotions\/rule-attribute-options/,
+        validateAndTransformQuery(
+          AdminGetPromotionRuleTypeParams,
+          QueryConfig.retrieveTransformQueryConfig
+        )
       ),
     ],
   },
@@ -115,6 +119,16 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformQuery(
         AdminGetPromotionsRuleValueParams,
         QueryConfig.listRuleValueTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/promotions/rule-attribute-options/:rule_type",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetPromotionRuleParams,
+        QueryConfig.listRuleTransformQueryConfig
       ),
     ],
   },

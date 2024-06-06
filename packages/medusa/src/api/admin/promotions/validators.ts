@@ -54,7 +54,11 @@ export const AdminGetPromotionRuleParams = z.object({
 export type AdminGetPromotionRuleTypeParamsType = z.infer<
   typeof AdminGetPromotionRuleTypeParams
 >
-export const AdminGetPromotionRuleTypeParams = createSelectParams()
+export const AdminGetPromotionRuleTypeParams = createSelectParams().merge(
+  z.object({
+    promotion_type: z.string().optional(),
+  })
+)
 
 export type AdminGetPromotionsRuleValueParamsType = z.infer<
   typeof AdminGetPromotionsRuleValueParams
