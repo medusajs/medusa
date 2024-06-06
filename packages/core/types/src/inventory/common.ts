@@ -145,6 +145,7 @@ export type ReservationItemDTO = {
   line_item_id?: string | null
   description?: string | null
   created_by?: string | null
+  allow_backorder?: boolean
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date

@@ -18,6 +18,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  arrayDifference,
   isDefined,
   isString,
   partitionArray,
@@ -151,6 +152,63 @@ export default class InventoryModuleService<
     return inventoryLevels
   }
 
+  // reserved_quantity should solely be handled through creating & updating reservation items
+  // We sanitize the inputs here to prevent that from being used to update it
+  private sanitizeInventoryLevelInput<TDTO = unknown>(
+    input: (TDTO & {
+      reserved_quantity?: number
+    })[]
+  ): TDTO[] {
+    return input.map((input) => {
+      const { reserved_quantity, ...validInput } = input
+
+      return validInput as TDTO
+    })
+  }
+
+  private sanitizeInventoryItemInput<TDTO = unknown>(
+    input: (TDTO & {
+      location_levels?: object[]
+    })[]
+  ): TDTO[] {
+    return input.map((input) => {
+      const { location_levels, ...validInput } = input
+
+      return validInput as TDTO
+    })
+  }
+
+  private async ensureInventoryAvailability(
+    data: {
+      allow_backorder: boolean
+      inventory_item_id: string
+      location_id: string
+      quantity: number
+    }[],
+    context: Context
+  ) {
+    const checkLevels = data.map(async (reservation) => {
+      if (!!reservation.allow_backorder) {
+        return
+      }
+
+      const available = await this.retrieveAvailableQuantity(
+        reservation.inventory_item_id,
+        [reservation.location_id],
+        context
+      )
+
+      if (available < reservation.quantity) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Not enough stock available for item ${reservation.inventory_item_id} at location ${reservation.location_id}`
+        )
+      }
+    })
+
+    await promiseAll(checkLevels)
+  }
+
   async createReservationItems(
     input: InventoryNext.CreateReservationItemInput[],
     context?: Context
@@ -171,27 +229,12 @@ export default class InventoryModuleService<
     InventoryNext.ReservationItemDTO[] | InventoryNext.ReservationItemDTO
   > {
     const toCreate = Array.isArray(input) ? input : [input]
+    const sanitized = toCreate.map((d) => ({
+      ...d,
+      allow_backorder: d.allow_backorder || false,
+    }))
 
-    const checkLevels = toCreate.map(async (item) => {
-      if (!!item.allow_backorder) {
-        return
-      }
-
-      const available = await this.retrieveAvailableQuantity(
-        item.inventory_item_id,
-        [item.location_id],
-        context
-      )
-
-      if (available < item.quantity) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Not enough stock available for item ${item.inventory_item_id} at location ${item.location_id}`
-        )
-      }
-    })
-
-    await promiseAll(checkLevels)
+    await this.ensureInventoryAvailability(sanitized, context)
 
     const created = await this.createReservationItems_(toCreate, context)
 
@@ -289,8 +332,9 @@ export default class InventoryModuleService<
   ): Promise<
     InventoryNext.InventoryItemDTO | InventoryNext.InventoryItemDTO[]
   > {
-    const toCreate = Array.isArray(input) ? input : [input]
-
+    const toCreate = this.sanitizeInventoryItemInput(
+      Array.isArray(input) ? input : [input]
+    )
     const result = await this.createInventoryItems_(toCreate, context)
 
     context.messageAggregator?.saveRawMessageData(
@@ -340,7 +384,9 @@ export default class InventoryModuleService<
   ): Promise<
     InventoryNext.InventoryLevelDTO[] | InventoryNext.InventoryLevelDTO
   > {
-    const toCreate = Array.isArray(input) ? input : [input]
+    const toCreate = this.sanitizeInventoryLevelInput(
+      Array.isArray(input) ? input : [input]
+    )
 
     const created = await this.createInventoryLevels_(toCreate, context)
 
@@ -398,7 +444,9 @@ export default class InventoryModuleService<
   ): Promise<
     InventoryNext.InventoryItemDTO | InventoryNext.InventoryItemDTO[]
   > {
-    const updates = Array.isArray(input) ? input : [input]
+    const updates = this.sanitizeInventoryItemInput(
+      Array.isArray(input) ? input : [input]
+    )
 
     const result = await this.updateInventoryItems_(updates, context)
 
@@ -508,7 +556,9 @@ export default class InventoryModuleService<
   ): Promise<
     InventoryNext.InventoryLevelDTO | InventoryNext.InventoryLevelDTO[]
   > {
-    const input = Array.isArray(updates) ? updates : [updates]
+    const input = this.sanitizeInventoryLevelInput(
+      Array.isArray(updates) ? updates : [updates]
+    )
 
     const levels = await this.updateInventoryLevels_(input, context)
 
@@ -593,7 +643,6 @@ export default class InventoryModuleService<
     InventoryNext.ReservationItemDTO | InventoryNext.ReservationItemDTO[]
   > {
     const update = Array.isArray(input) ? input : [input]
-
     const result = await this.updateReservationItems_(update, context)
 
     context.messageAggregator?.saveRawMessageData(
@@ -621,26 +670,47 @@ export default class InventoryModuleService<
     input: (InventoryNext.UpdateReservationItemInput & { id: string })[],
     @MedusaContext() context: Context = {}
   ): Promise<TReservationItem[]> {
+    const ids = input.map((u) => u.id)
     const reservationItems = await this.listReservationItems(
-      { id: input.map((u) => u.id) },
+      { id: ids },
       {},
       context
     )
+
+    const diff = arrayDifference(
+      ids,
+      reservationItems.map((i) => i.id)
+    )
+
+    if (diff.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Reservation item with id ${diff.join(", ")} not found`
+      )
+    }
 
     const reservationMap: Map<string, ReservationItemDTO> = new Map(
       reservationItems.map((r) => [r.id, r])
     )
 
+    const availabilityData = input.map((data) => {
+      const reservation = reservationMap.get(data.id)!
+
+      return {
+        ...data,
+        quantity: data.quantity ?? reservation.quantity,
+        allow_backorder:
+          data.allow_backorder || reservation.allow_backorder || false,
+        inventory_item_id: reservation.inventory_item_id,
+        location_id: data.location_id ?? reservation.location_id,
+      }
+    })
+
+    await this.ensureInventoryAvailability(availabilityData, context)
+
     const adjustments: Map<string, Map<string, number>> = input.reduce(
       (acc, update) => {
-        const reservation = reservationMap.get(update.id)
-        if (!reservation) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Reservation item with id ${update.id} not found`
-          )
-        }
-
+        const reservation = reservationMap.get(update.id)!
         const locationMap = acc.get(reservation.inventory_item_id) ?? new Map()
 
         if (
@@ -676,6 +746,7 @@ export default class InventoryModuleService<
         }
 
         acc.set(reservation.inventory_item_id, locationMap)
+
         return acc
       },
       new Map()
