@@ -24,7 +24,7 @@ export const ProductCreateOrganizationSection = ({
 
   const collections = useComboboxData({
     queryKey: ["product_collections"],
-    queryFn: sdk.admin.collection.list,
+    queryFn: sdk.admin.productCollection.list,
     getOptions: (data) =>
       data.collections.map((collection) => ({
         label: collection.title!,

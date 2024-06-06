@@ -55,7 +55,7 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
     let uploaded: HttpTypes.AdminFile[] = []
 
     if (filesToUpload.length) {
-      const { files: uploads } = await sdk.admin.uploads
+      const { files: uploads } = await sdk.admin.upload
         .create({ files: filesToUpload.map((m) => m.file) })
         .catch(() => {
           form.setError("media", {
