@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs } from "react-router-dom"
 
 import { ordersQueryKeys } from "../../../hooks/api/orders"
-import { client } from "../../../lib/client"
+import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
 import { OrderRes } from "../../../types/api-responses"
 import { DEFAULT_FIELDS } from "./constants"
@@ -9,7 +9,7 @@ import { DEFAULT_FIELDS } from "./constants"
 const orderDetailQuery = (id: string) => ({
   queryKey: ordersQueryKeys.detail(id),
   queryFn: async () =>
-    client.orders.retrieve(id, {
+    sdk.admin.order.retrieve(id, {
       fields: DEFAULT_FIELDS,
     }),
 })
