@@ -2,6 +2,7 @@ import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
+  Searchable,
   ShippingOptionPriceType,
 } from "@medusajs/utils"
 
@@ -68,6 +69,7 @@ export default class ShippingOption {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   name: string
 

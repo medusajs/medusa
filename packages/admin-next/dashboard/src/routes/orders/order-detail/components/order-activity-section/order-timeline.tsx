@@ -10,6 +10,7 @@ import { AdminOrder } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { useDate } from "../../../../../hooks/use-date"
+import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 
 type OrderTimelineProps = {
   order: AdminOrder
@@ -365,8 +366,9 @@ const FulfillmentCreatedBody = ({
 }) => {
   const { t } = useTranslation()
 
-  const { stock_location, isLoading, isError, error } = useAdminStockLocation(
+  const { stock_location, isLoading, isError, error } = useStockLocation(
     fulfillment.location_id!,
+    undefined,
     {
       enabled: !!fulfillment.location_id,
     }

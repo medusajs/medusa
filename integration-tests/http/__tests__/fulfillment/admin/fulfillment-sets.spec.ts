@@ -1,9 +1,9 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IFulfillmentModuleService } from "@medusajs/types"
 import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
-import { IFulfillmentModuleService } from "@medusajs/types"
 
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 
@@ -211,7 +211,7 @@ medusaIntegrationTestRunner({
         expect(deleteResponse.data).toEqual(
           expect.objectContaining({
             id: serviceZoneId,
-            object: "service-zone",
+            object: "service_zone",
             deleted: true,
             parent: expect.objectContaining({
               id: fulfillmentSetId,
