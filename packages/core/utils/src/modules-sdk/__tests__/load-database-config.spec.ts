@@ -111,6 +111,28 @@ describe("loadDatabaseConfig", function () {
     })
   })
 
+  it("should return the local configuration using the options", function () {
+    process.env.POSTGRES_URL = "postgres://localhost:5432/medusa"
+    const options = {
+      database: {
+        clientUrl: "postgres://127.0.0.1:5432/medusa-test",
+      },
+    }
+
+    let config = loadDatabaseConfig("product", options)
+
+    expect(config).toEqual({
+      clientUrl: options.database.clientUrl,
+      driverOptions: {
+        connection: {
+          ssl: false,
+        },
+      },
+      debug: false,
+      schema: "",
+    })
+  })
+
   it("should return the remote configuration using the options", function () {
     process.env.POSTGRES_URL = "postgres://localhost:5432/medusa"
     const options = {
