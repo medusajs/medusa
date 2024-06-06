@@ -1,22 +1,18 @@
 import {
-  AdminShippingOptionDeleteResponse,
-  AdminShippingOptionRetrieveResponse,
-  FulfillmentWorkflow,
-} from "@medusajs/types"
-import { AdminUpdateShippingOptionType } from "../validators"
-import {
   deleteShippingOptionsWorkflow,
   updateShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
+import { FulfillmentWorkflow, HttpTypes } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
 import { refetchShippingOption } from "../helpers"
+import { AdminUpdateShippingOptionType } from "../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateShippingOptionType>,
-  res: MedusaResponse<AdminShippingOptionRetrieveResponse>
+  res: MedusaResponse<HttpTypes.AdminShippingOptionResponse>
 ) => {
   const shippingOptionPayload = req.validatedBody
 
@@ -43,7 +39,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<AdminShippingOptionDeleteResponse>
+  res: MedusaResponse<HttpTypes.AdminShippingOptionDeleteResponse>
 ) => {
   const shippingOptionId = req.params.id
 

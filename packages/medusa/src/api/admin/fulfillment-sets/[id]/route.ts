@@ -1,5 +1,5 @@
-import { AdminFulfillmentSetsDeleteResponse } from "@medusajs/types"
 import { deleteFulfillmentSetsWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 
 import {
   AuthenticatedMedusaRequest,
@@ -8,7 +8,7 @@ import {
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<AdminFulfillmentSetsDeleteResponse>
+  res: MedusaResponse<HttpTypes.AdminFulfillmentSetDeleteResponse>
 ) => {
   const { id } = req.params
 
