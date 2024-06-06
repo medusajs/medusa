@@ -4,7 +4,7 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type CancelOrderFulfillmentStepInput = CancelOrderFulfillmentDTO
 
-export const cancelOrderFulfillmentStepId = "cancel-order-fullfillment"
+export const cancelOrderFulfillmentStepId = "cancel-order-fulfillment"
 export const cancelOrderFulfillmentStep = createStep(
   cancelOrderFulfillmentStepId,
   async (data: CancelOrderFulfillmentStepInput, { container }) => {

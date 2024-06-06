@@ -21,10 +21,10 @@ import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
-import { useCancelFulfillment } from "../../../../../hooks/api/fulfillment"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
+import { useCancelOrderFulfillment } from "../../../../../hooks/api/orders"
 
 type OrderFulfillmentSectionProps = {
   order: AdminOrder
@@ -186,7 +186,7 @@ const Fulfillment = ({
     statusTimestamp = fulfillment.shipped_at
   }
 
-  const { mutateAsync } = useCancelFulfillment(fulfillment.id)
+  const { mutateAsync } = useCancelOrderFulfillment(order.id, fulfillment.id)
 
   const handleCancel = async () => {
     if (fulfillment.shipped_at) {
@@ -206,7 +206,7 @@ const Fulfillment = ({
 
     if (res) {
       try {
-        await mutateAsync(fulfillment.id)
+        await mutateAsync()
 
         toast.success(t("general.success"), {
           description: t("orders.fulfillment.toast.canceled"),

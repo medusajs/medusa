@@ -174,21 +174,16 @@ medusaIntegrationTestRunner({
 
     describe("POST /admin/customers", () => {
       it("should create a customer", async () => {
-        const response = await api
-          .post(
-            "/admin/customers",
-            {
-              first_name: "newf",
-              last_name: "newl",
-              email: "new@email.com",
-              password: "newpassword",
-              metadata: { foo: "bar" },
-            },
-            adminHeaders
-          )
-          .catch((err) => {
-            console.log(err)
-          })
+        const response = await api.post(
+          "/admin/customers",
+          {
+            first_name: "newf",
+            last_name: "newl",
+            email: "new@email.com",
+            metadata: { foo: "bar" },
+          },
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.customer).toEqual(
