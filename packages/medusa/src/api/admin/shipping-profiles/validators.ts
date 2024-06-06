@@ -18,6 +18,7 @@ export const AdminGetShippingProfilesParams = createFindParams({
   offset: 0,
 }).merge(
   z.object({
+    id: z.union([z.string(), z.array(z.string())]).optional(),
     q: z.string().optional(),
     type: z.string().optional(),
     name: z.string().optional(),
