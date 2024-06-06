@@ -422,6 +422,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductTagDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createTags(
     data: ProductTypes.CreateProductTagDTO[] | ProductTypes.CreateProductTagDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -433,6 +434,11 @@ export default class ProductModuleService<
     const createdTags = await this.baseRepository_.serialize<
       ProductTypes.ProductTagDTO[]
     >(tags)
+
+    eventBuilders.createdProductTag({
+      data: createdTags,
+      sharedContext,
+    })
 
     return Array.isArray(data) ? createdTags : createdTags[0]
   }
@@ -447,6 +453,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductTagDTO>
 
   @InjectTransactionManager("baseRepository_")
+  @EmitEvents()
   async upsertTags(
     data: ProductTypes.UpsertProductTagDTO[] | ProductTypes.UpsertProductTagDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -462,9 +469,17 @@ export default class ProductModuleService<
 
     if (forCreate.length) {
       created = await this.productTagService_.create(forCreate, sharedContext)
+      eventBuilders.createdProductTag({
+        data: created,
+        sharedContext,
+      })
     }
     if (forUpdate.length) {
       updated = await this.productTagService_.update(forUpdate, sharedContext)
+      eventBuilders.updatedProductTag({
+        data: updated,
+        sharedContext,
+      })
     }
 
     const result = [...created, ...updated]
@@ -487,6 +502,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductTagDTO[]>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async updateTags(
     idOrSelector: string | ProductTypes.FilterableProductTagProps,
     data: ProductTypes.UpdateProductTagDTO,
@@ -518,6 +534,11 @@ export default class ProductModuleService<
     const updatedTags = await this.baseRepository_.serialize<
       ProductTypes.ProductTagDTO[]
     >(tags)
+
+    eventBuilders.updatedProductTag({
+      data: updatedTags,
+      sharedContext,
+    })
 
     return isString(idOrSelector) ? updatedTags[0] : updatedTags
   }

@@ -1,14 +1,32 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
-import { ProductStatus } from "@medusajs/utils"
+import {
+  CommonEvents,
+  composeMessage,
+  ProductEvents,
+  ProductStatus,
+} from "@medusajs/utils"
 import { Product, ProductTag } from "@models"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+} from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
 moduleIntegrationTestRunner<IProductModuleService>({
   moduleName: Modules.PRODUCT,
   testSuite: ({ MikroOrmWrapper, service }) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("ProductModuleService product tags", () => {
       let tagOne: ProductTag
       let tagTwo: ProductTag
@@ -255,6 +273,16 @@ moduleIntegrationTestRunner<IProductModuleService>({
           const productTag = await service.retrieveTag(tagId)
 
           expect(productTag.value).toEqual("UK")
+
+          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
+          expect(eventBusEmitSpy).toHaveBeenCalledWith([
+            composeMessage(ProductEvents.product_tag_updated, {
+              data: { id: productTag.id },
+              object: "product_tag",
+              service: Modules.PRODUCT,
+              action: CommonEvents.UPDATED,
+            }),
+          ])
         })
 
         it("should throw an error when an id does not exist", async () => {
@@ -276,7 +304,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("createTags", () => {
         it("should create a tag successfully", async () => {
-          const res = await service.createTags([
+          await service.createTags([
             {
               value: "UK",
             },
@@ -287,6 +315,76 @@ moduleIntegrationTestRunner<IProductModuleService>({
           })
 
           expect(productTag[0]?.value).toEqual("UK")
+
+          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
+          expect(eventBusEmitSpy).toHaveBeenCalledWith([
+            composeMessage(ProductEvents.product_tag_created, {
+              data: { id: productTag[0].id },
+              object: "product_tag",
+              service: Modules.PRODUCT,
+              action: CommonEvents.CREATED,
+            }),
+          ])
+        })
+      })
+
+      describe("upsertTags", () => {
+        it("should upsert tags successfully", async () => {
+          await service.createTags([
+            {
+              value: "UK",
+            },
+          ])
+
+          let productTags = await service.listTags({
+            value: "UK",
+          })
+
+          const tagsData = [
+            {
+              ...productTags[0],
+              value: "updated",
+            },
+            {
+              value: "new",
+            },
+          ]
+
+          jest.clearAllMocks()
+
+          await service.upsertTags(tagsData)
+
+          productTags = await service.listTags()
+
+          expect(productTags).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                value: "updated",
+              }),
+              expect.objectContaining({
+                value: "new",
+              }),
+            ])
+          )
+
+          const newTag = productTags.find((t) => t.value === "new")!
+          const updatedTag = productTags.find((t) => t.value === "updated")!
+
+          expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(2)
+          expect(eventBusEmitSpy).toHaveBeenCalledWith([
+            composeMessage(ProductEvents.product_tag_created, {
+              data: { id: newTag.id },
+              object: "product_tag",
+              service: Modules.PRODUCT,
+              action: CommonEvents.CREATED,
+            }),
+            composeMessage(ProductEvents.product_tag_updated, {
+              data: { id: updatedTag.id },
+              object: "product_tag",
+              service: Modules.PRODUCT,
+              action: CommonEvents.UPDATED,
+            }),
+          ])
         })
       })
     })
