@@ -20,7 +20,6 @@ import { shippingProfiles } from "./shipping-profiles"
 import { stockLocations } from "./stock-locations"
 import { stores } from "./stores"
 import { tags } from "./tags"
-import { taxes } from "./taxes"
 import { users } from "./users"
 import { workflowExecutions } from "./workflow-executions"
 
@@ -40,7 +39,6 @@ export const client = {
   shippingProfiles: shippingProfiles,
   productTags: tags,
   users: users,
-  taxes: taxes,
   invites: invites,
   inventoryItems: inventoryItems,
   reservations: reservations,
