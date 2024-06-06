@@ -112,7 +112,7 @@ describe("zodValidator", () => {
     expect(errorMessage).toContain("Invalid request: Field 'id' is required")
   })
 
-  it("should allow for non-strict parsing", async () => {
+  it("should apply strict by default", async () => {
     const schema = z.object({
       id: z.string(),
     })
@@ -123,12 +123,12 @@ describe("zodValidator", () => {
       company: "Stark Industries",
     }
 
-    const validated = await zodValidator(schema, toValidate)
+    const errorMessage = await zodValidator(schema, toValidate).catch(
+      (e) => e.message
+    )
 
-    expect(JSON.stringify(validated)).toBe(
-      JSON.stringify({
-        id: "1",
-      })
+    expect(errorMessage).toBe(
+      "Invalid request: Unrecognized fields: 'name, company'"
     )
   })
 })
