@@ -1,0 +1,359 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Retrieve Product Variant's Prices in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to show a product's variants' prices in the storefront, including handling sale prices.
+
+## Pricing Parameters
+
+When you retrieve products either with the [List Products] or [Retrieve Products] API routes, you must pass at least one of the following query parameters to retrieve the correct product variant price:
+
+- `region_id`: The ID of the customer's region.
+- `currency_code`: The currency code the customer is viewing prices in.
+- `customer_id`: The ID of the customer viewing the prices. This is useful when you have a promotion or price list overriding a product's price for specific customer groups.
+- `customer_group_id`: The ID of the group of the customer viewing the prices. This is useful when you have a promotion or price list overriding a product's price for specific customer groups.
+
+Also, you must include in the beginning of the `fields` query parameter the value `*variants.calculated_price`.
+
+<Note type="check">
+
+The examples in this guide only pass the `region_id` query parameter. Learn how to store and retrieve the customer's region in the [Regions guides](../../regions/page.mdx).
+
+</Note>
+
+---
+
+## Show Product Variant's Price
+
+The following React-based storefront example retrieves the product's price based on the selected variant:
+
+export const priceHighlights = [
+  ["12", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
+  ["19", "region", "The Regions guides cover how to store and retrieve regions. It's omitted here for simplicity."],
+  ["28", "queryParams", "Build the pricing query parameters."],
+  ["60", "formatPrice", "A utility function to format an amount with its currency."],
+  ["61", `"en-US"`, "If you use a different locale change it here."],
+  ["68", "variantPrice", "Assign the variant to compute its price, which is either the selected or cheapest variant."]
+  ["70", "selectedVariant", "Use the selected variant for pricing."],
+  ["73", "", "If there isn't a selected variant, retrieve the variant with the cheapest price."],
+  ["81", "price", "Compute the price of the selected or cheapest variant."],
+  ["135", "", "If there's a computed price but no selected variant, show a `From` prefix to the price."],
+  ["136", "price", "Display the computedd price."]
+]
+
+```tsx highlights={priceHighlights}
+"use client" // include with Next.js 13+
+
+import { useEffect, useMemo, useState } from "react"
+import { HttpTypes } from "@medusajs/types"
+
+type Params = {
+  params: {
+    id: string
+  }
+}
+
+export default function Product({ params: { id } }: Params) {
+  const [loading, setLoading] = useState(true)
+  const [product, setProduct] = useState<
+    HttpTypes.StoreProduct | undefined
+  >()
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
+  // TODO assuming you have the region stored/retrieved somewhere
+  const region = {
+    // ...
+  }
+
+  useEffect(() => {
+    if (!loading) {
+      return 
+    }
+
+    const queryParams = new URLSearchParams({
+      fields: `*variants.calculated_price`,
+      region_id: region.id
+    })
+
+    fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
+      credentials: "include",
+      headers: {
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
+      }
+    })
+    .then((res) => res.json())
+    .then(({ product: dataProduct }) => {
+      setProduct(dataProduct)
+      setLoading(false)
+    })
+  }, [loading])
+
+  const selectedVariant = useMemo(() => {
+    if (
+      !product?.variants ||
+      !product.options || 
+      Object.keys(selectedOptions).length !== product.options?.length
+    ) {
+      return
+    }
+
+    return product.variants.find((variant) => variant.options?.every(
+      (optionValue) => optionValue.value === selectedOptions[optionValue.option_id!]
+    ))
+  }, [selectedOptions, product])
+
+  const formatPrice = (amount: number): string => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: region.currency_code,
+    })
+    .format(amount)
+  }
+
+  const variantPrice = useMemo(() => {
+    if (selectedVariant) {
+      return selectedVariant
+    }
+
+    return product?.variants?.sort((a: any, b: any) => {
+      return (
+        a.calculated_price.calculated_amount -
+        b.calculated_price.calculated_amount
+      )
+    })[0]
+  }, [selectedVariant, product])
+
+  const price = useMemo(() => {
+    if (!variantPrice) {
+      return
+    }
+
+    // @ts-ignore
+    return formatPrice(variantPrice.calculated_price.calculated_amount)
+  }, [variantPrice])
+
+  return (
+    <div>
+      {loading && <span>Loading...</span>}
+      {product && (
+        <>
+          <h1>{product.title}</h1>
+          {(product.options?.length || 0) > 0 && (
+            <ul>
+              {product.options!.map((option) => (
+                <li key={option.id}>
+                  {option.title}
+                  {option.values?.map((optionValue) => (
+                    <button 
+                      key={optionValue.id}
+                      onClick={() => {
+                        setSelectedOptions((prev) => {
+                          return {
+                            ...prev,
+                            [option.id!]: optionValue.value!
+                          }
+                        })
+                      }}
+                    >
+                      {optionValue.value}
+                    </button>
+                  ))}
+                </li>
+              ))}
+            </ul>
+          )}
+          {selectedVariant && (
+            <span>Selected Variant: {selectedVariant.id}</span>
+          )}
+          {price && (
+            <span>
+              {!selectedVariant && "From: "}
+              {price}
+            </span>
+          )}
+          {product.images?.map((image) => (
+            <img src={image.url} key={image.id} />
+          ))}
+        </>
+      )}
+    </div>
+  )
+}
+```
+
+In the example above, you:
+
+- Pass the pricing query parameters to the request retrieving the product. This retrieves for every variant a new `calculated_price` field holding details about the variant's price.
+- Choose the variant to show its price:
+    - If there's a selected variant, choose it.
+    - If there isn't a selected variant, retrieve and choose the variant with the cheapest price.
+- Format the price based on the chosen variant in the previous step. The variant's `calculated_price.calculated_amount` field is used.
+- Display the formatted price to the customer. If there isn't a select variant, show a `From` label to indicate that the price shown is the cheapest.
+
+### Price Formatting
+
+To format the price, use JavaScript's [NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) utility. You pass it the amount and the currency code (which you retrieve from the customer's region):
+
+```ts
+const formatPrice = (amount: number): string => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: region.currency_code,
+  })
+  .format(amount)
+}
+```
+
+---
+
+## Show Product Variant's Sale Price
+
+```tsx
+"use client" // include with Next.js 13+
+
+import { useEffect, useMemo, useState } from "react"
+import { HttpTypes } from "@medusajs/types"
+
+type Params = {
+  params: {
+    id: string
+  }
+}
+
+export default function Product({ params: { id } }: Params) {
+  const [loading, setLoading] = useState(true)
+  const [product, setProduct] = useState<
+    HttpTypes.StoreProduct | undefined
+  >()
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
+  // TODO assuming you have the region stored/retrieved somewhere
+  const region = {
+    // ...
+  }
+
+  useEffect(() => {
+    if (!loading) {
+      return 
+    }
+
+    const queryParams = new URLSearchParams({
+      fields: `*variants.calculated_price`,
+      region_id: region.id
+    })
+
+    fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
+      credentials: "include",
+      headers: {
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
+      }
+    })
+    .then((res) => res.json())
+    .then(({ product: dataProduct }) => {
+      setProduct(dataProduct)
+      setLoading(false)
+    })
+  }, [loading])
+
+  const selectedVariant = useMemo(() => {
+    if (
+      !product?.variants ||
+      !product.options || 
+      Object.keys(selectedOptions).length !== product.options?.length
+    ) {
+      return
+    }
+
+    return product.variants.find((variant) => variant.options?.every(
+      (optionValue) => optionValue.value === selectedOptions[optionValue.option_id!]
+    ))
+  }, [selectedOptions, product])
+
+  const formatPrice = (amount: number): string => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: region.currency_code,
+    })
+    .format(amount)
+  }
+
+  const variantPrice = useMemo(() => {
+    if (selectedVariant) {
+      return selectedVariant
+    }
+
+    return product?.variants?.sort((a: any, b: any) => {
+      return (
+        a.calculated_price.calculated_amount -
+        b.calculated_price.calculated_amount
+      )
+    })[0]
+  }, [selectedVariant, product])
+
+  const price = useMemo(() => {
+    if (!variantPrice) {
+      return
+    }
+
+    // @ts-ignore
+    return formatPrice(variantPrice.calculated_price.calculated_amount)
+  }, [variantPrice])
+
+  const isSale = useMemo(() => {
+    if (!variantPrice) {
+      return false
+    }
+
+    // @ts-ignore
+    return variantPrice.calculated_price.calculated_price.price_list_type === "sale"
+  }, [variantPrice])
+
+  return (
+    <div>
+      {loading && <span>Loading...</span>}
+      {product && (
+        <>
+          <h1>{product.title}</h1>
+          {(product.options?.length || 0) > 0 && (
+            <ul>
+              {product.options!.map((option) => (
+                <li key={option.id}>
+                  {option.title}
+                  {option.values?.map((optionValue) => (
+                    <button 
+                      key={optionValue.id}
+                      onClick={() => {
+                        setSelectedOptions((prev) => {
+                          return {
+                            ...prev,
+                            [option.id!]: optionValue.value!
+                          }
+                        })
+                      }}
+                    >
+                      {optionValue.value}
+                    </button>
+                  ))}
+                </li>
+              ))}
+            </ul>
+          )}
+          {selectedVariant && <span>Selected Variant: {selectedVariant.id}</span>}
+          {price && (
+            <span>
+              {isSale && "SALE"}
+              {!selectedVariant && "From: "}
+              {price}
+            </span>
+          )}
+          {product.images?.map((image) => (
+            <img src={image.url} key={image.id} />
+          ))}
+        </>
+      )}
+    </div>
+  )
+}
+```

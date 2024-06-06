@@ -856,6 +856,22 @@ export const filesMap = [
     "pathname": "/storefront-development"
   },
   {
+    "filePath": "/www/apps/resources/app/storefront-development/products/list/page.mdx",
+    "pathname": "/storefront-development/products/list"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/page.mdx",
+    "pathname": "/storefront-development/products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/retrieve/page.mdx",
+    "pathname": "/storefront-development/products/retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/variants/page.mdx",
+    "pathname": "/storefront-development/products/variants"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/regions/list/page.mdx",
     "pathname": "/storefront-development/regions/list"
   },

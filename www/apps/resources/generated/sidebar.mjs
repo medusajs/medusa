@@ -6990,6 +6990,35 @@ export const generatedSidebar = [
             "children": []
           }
         ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/storefront-development/products",
+        "title": "Products",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/products/list",
+            "title": "List Products",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/products/retrieve",
+            "title": "Retrieve a Product",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/products/variants",
+            "title": "Select a Variant",
+            "children": []
+          }
+        ]
       }
     ]
   },

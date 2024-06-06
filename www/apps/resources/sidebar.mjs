@@ -1718,6 +1718,24 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
         ],
       },
+      {
+        path: "/storefront-development/products",
+        title: "Products",
+        children: [
+          {
+            path: "/storefront-development/products/list",
+            title: "List Products",
+          },
+          {
+            path: "/storefront-development/products/retrieve",
+            title: "Retrieve a Product",
+          },
+          {
+            path: "/storefront-development/products/variants",
+            title: "Select a Variant",
+          },
+        ],
+      },
     ],
   },
   {
