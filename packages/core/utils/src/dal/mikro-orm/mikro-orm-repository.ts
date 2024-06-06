@@ -4,6 +4,7 @@ import {
   DAL,
   FilterQuery,
   FilterQuery as InternalFilterQuery,
+  PerformedActions,
   RepositoryService,
   RepositoryTransformOptions,
   UpsertWithReplaceConfig,
@@ -147,7 +148,7 @@ export class MikroOrmBaseRepository<T extends object = object>
       relations: [],
     },
     context: Context = {}
-  ): Promise<T[]> {
+  ): Promise<{ entities: T[]; performedActions: PerformedActions }> {
     throw new Error("Method not implemented.")
   }
 
@@ -457,10 +458,17 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         relations: [],
       },
       context: Context = {}
-    ): Promise<T[]> {
-      if (!data.length) {
-        return []
+    ): Promise<{ entities: T[]; performedActions: PerformedActions }> {
+      const performedActions: PerformedActions = {
+        created: {},
+        updated: {},
+        deleted: {},
       }
+
+      if (!data.length) {
+        return { entities: [], performedActions }
+      }
+
       // We want to convert a potential ORM model to a POJO
       const normalizedData: any[] = await this.serialize(data)
 
@@ -507,11 +515,12 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
         return mainEntity
       })
 
-      const upsertedTopLevelEntities = await this.upsertMany_(
-        manager,
-        entity.name,
-        toUpsert
-      )
+      let {
+        orderedEntities: upsertedTopLevelEntities,
+        performedActions: performedActions_,
+      } = await this.upsertMany_(manager, entity.name, toUpsert)
+
+      this.mergePerformedActions(performedActions, performedActions_)
 
       await promiseAll(
         upsertedTopLevelEntities
@@ -534,12 +543,15 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
                 return
               }
 
-              reconstructedEntry[relationName] =
+              const { entities, performedActions: performedActions_ } =
                 await this.assignCollectionRelation_(
                   manager,
                   { ...originalEntry, id: (entityEntry as any).id },
                   relation
                 )
+
+              this.mergePerformedActions(performedActions, performedActions_)
+              reconstructedEntry[relationName] = entities
               return
             })
           })
@@ -551,7 +563,21 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       //   manager.create(entity, r, { persist: false })
       // )
 
-      return reconstructedResponse
+      return { entities: reconstructedResponse, performedActions }
+    }
+
+    private mergePerformedActions(
+      performedActions: PerformedActions,
+      newPerformedActions: PerformedActions
+    ) {
+      Object.entries(newPerformedActions).forEach(([action, entities]) => {
+        Object.entries(entities as Record<string, any[]>).forEach(
+          ([entityName, entityData]) => {
+            performedActions[action][entityName] ??= []
+            performedActions[action][entityName].push(...entityData)
+          }
+        )
+      })
     }
 
     // FUTURE: We can make this performant by only aggregating the operations, but only executing them at the end.
@@ -559,11 +585,18 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       manager: SqlEntityManager,
       data: T,
       relation: EntityProperty
-    ) {
+    ): Promise<{ entities: any[]; performedActions: PerformedActions }> {
       const dataForRelation = data[relation.name]
+
+      const performedActions: PerformedActions = {
+        created: {},
+        updated: {},
+        deleted: {},
+      }
+
       // If the field is not set, we ignore it. Null and empty arrays are a valid input and are handled below
       if (dataForRelation === undefined) {
-        return undefined
+        return { entities: [], performedActions }
       }
 
       // Make sure the data is correctly initialized with IDs before using it
@@ -580,10 +613,16 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
             [parentPivotColumn]: (data as any).id,
           })
 
-          return normalizedData
+          return { entities: normalizedData, performedActions }
         }
 
-        await this.upsertMany_(manager, relation.type, normalizedData, true)
+        const { performedActions: performedActions_ } = await this.upsertMany_(
+          manager,
+          relation.type,
+          normalizedData,
+          true
+        )
+        this.mergePerformedActions(performedActions, performedActions_)
 
         const pivotData = normalizedData.map((currModel) => {
           return {
@@ -602,7 +641,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
           },
         })
 
-        return normalizedData
+        return { entities: normalizedData, performedActions }
       }
 
       if (relation.reference === ReferenceType.ONE_TO_MANY) {
@@ -622,18 +661,38 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
             })
           })
 
-          await this.upsertMany_(manager, relation.type, normalizedData)
+          const { performedActions: performedActions_ } =
+            await this.upsertMany_(manager, relation.type, normalizedData)
+          this.mergePerformedActions(performedActions, performedActions_)
         }
+
+        const toDeleteEntities = await manager.find<any>(
+          relation.type,
+          {
+            id: { $nin: normalizedData.map((d: any) => d.id) },
+          },
+          {
+            fields: ["id"],
+          }
+        )
+        const toDeleteIds = toDeleteEntities.map((d: any) => d.id)
 
         await manager.nativeDelete(relation.type, {
           ...joinColumnsConstraints,
-          id: { $nin: normalizedData.map((d: any) => d.id) },
+          id: { $in: toDeleteIds },
         })
 
-        return normalizedData
+        if (toDeleteEntities.length) {
+          performedActions.deleted[relation.type] ??= []
+          performedActions.deleted[relation.type].push(
+            ...toDeleteEntities.map((d) => ({ id: d.id }))
+          )
+        }
+
+        return { entities: normalizedData, performedActions }
       }
 
-      return normalizedData
+      return { entities: normalizedData, performedActions }
     }
 
     protected handleRelationAssignment_(
@@ -714,7 +773,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       entityName: string,
       entries: any[],
       skipUpdate: boolean = false
-    ) {
+    ): Promise<{ orderedEntities: any[]; performedActions: PerformedActions }> {
       const selectQb = manager.qb(entityName)
       const existingEntities: any[] = await selectQb.select("*").where({
         id: { $in: entries.map((d) => d.id) },
@@ -726,6 +785,12 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
 
       const orderedEntities: T[] = []
 
+      const performedActions = {
+        created: {},
+        updated: {},
+        deleted: {},
+      }
+
       await promiseAll(
         entries.map(async (data) => {
           const existingEntity = existingEntitiesMap.get(data.id)
@@ -735,19 +800,31 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
               return
             }
             await manager.nativeUpdate(entityName, { id: data.id }, data)
+            performedActions.updated[entityName] ??= []
+            performedActions.updated[entityName].push({ id: data.id })
           } else {
             const qb = manager.qb(entityName)
             if (skipUpdate) {
-              await qb.insert(data).onConflict().ignore().execute()
+              const res = await qb
+                .insert(data)
+                .onConflict()
+                .ignore()
+                .execute("all", true)
+              if (res) {
+                performedActions.created[entityName] ??= []
+                performedActions.created[entityName].push({ id: data.id })
+              }
             } else {
               await manager.insert(entityName, data)
+              performedActions.created[entityName] ??= []
+              performedActions.created[entityName].push({ id: data.id })
               // await manager.insert(entityName, data)
             }
           }
         })
       )
 
-      return orderedEntities
+      return { orderedEntities, performedActions }
     }
 
     async restore(

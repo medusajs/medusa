@@ -7,6 +7,7 @@ import {
   AdminCompleteOrder,
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
+  AdminOrderCancelFulfillment,
   AdminOrderCreateFulfillment,
 } from "./validators"
 
@@ -78,9 +79,9 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/orders/:id/fulfillments/cancel",
+    matcher: "/admin/orders/:id/fulfillments/:fulfillment_id/cancel",
     middlewares: [
-      // validateAndTransformBody(),
+      validateAndTransformBody(AdminOrderCancelFulfillment),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig

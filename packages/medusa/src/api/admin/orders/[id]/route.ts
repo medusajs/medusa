@@ -12,8 +12,8 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const worklow = getOrderDetailWorkflow(req.scope)
-  const { result } = await worklow.run({
+  const workflow = getOrderDetailWorkflow(req.scope)
+  const { result } = await workflow.run({
     input: {
       fields: req.remoteQueryConfig.fields,
       order_id: req.params.id,

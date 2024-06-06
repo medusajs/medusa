@@ -3,6 +3,7 @@ import { Customer } from "./customer"
 import { Fulfillment } from "./fulfillment"
 import { FulfillmentSet } from "./fulfillment-set"
 import { Invite } from "./invite"
+import { Order } from "./order"
 import { Product } from "./product"
 import { ProductCollection } from "./product-collection"
 import { Region } from "./region"
@@ -25,6 +26,7 @@ export class Admin {
   public fulfillment: Fulfillment
   public shippingOption: ShippingOption
   public shippingProfile: ShippingProfile
+  public order: Order
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -39,5 +41,6 @@ export class Admin {
     this.fulfillment = new Fulfillment(client)
     this.shippingOption = new ShippingOption(client)
     this.shippingProfile = new ShippingProfile(client)
+    this.order = new Order(client)
   }
 }
