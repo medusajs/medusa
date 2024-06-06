@@ -85,62 +85,6 @@ yarn medusa-oas oas --force
 
 ---
 
-### Command - `client`
-
-Will generate API client files from a given OAS file.
-
-#### `--src-file <path>`
-
-Specify the path to the OAS JSON file.
-
-```bash
-yarn medusa-oas client --src-file ./store.oas.json`
-```
-
-#### `--name <name>`
-
-Namespace for the generated client. Usually `admin` or `store`.
-
-```bash
-yarn medusa-oas client --name admin`
-```
-
-#### `--out-dir <path>`
-
-Specify in which directory should the files be outputted. Accepts relative and absolute path.
-If the directory doesn't exist, it will be created. Defaults to `./`.
-
-```bash
-yarn medusa-oas client --out-dir ./client`
-```
-
-#### `--type <type>`
-
-Client component types to generate. Accepts `all`, `types`, `client`, `hooks`.
-Defaults to `all`.
-
-```bash
-yarn medusa-oas client --type types`
-```
-
-#### `--client-packages <name>`
-
-Replace relative import statements by client package name. Mandatory when using `--type hooks`.
-
-```bash
-yarn medusa-oas client --client-packages @medusajs/medusa-js`
-```
-
-#### `--clean`
-
-Delete destination directory content before generating client.
-
-```bash
-yarn medusa-oas client --clean
-```
-
----
-
 ### Command - `docs`
 
 Will sanitize OAS for use with Redocly's API documentation viewer.
@@ -180,7 +124,7 @@ yarn medusa-oas docs --src-file ./store.oas.json --dry-run
 
 #### `--clean`
 
-Delete destination directory content before generating client.
+Delete destination directory content before generating the docs.
 
 ```bash
 yarn medusa-oas docs --src-file ./store.oas.json --clean
