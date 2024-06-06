@@ -14,9 +14,9 @@ export interface AdminTaxRate {
   tax_region_id: string
   is_combinable: boolean
   is_default: boolean
-  created_at: string | Date
-  updated_at: string | Date
-  deleted_at: Date | null
+  created_at: string
+  updated_at: string
+  deleted_at: null
   created_by: string | null
   tax_region: AdminTaxRegion
   rules: AdminTaxRateRule[]

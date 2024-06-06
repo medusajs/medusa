@@ -12,9 +12,9 @@ export interface AdminTaxRegion {
   is_combinable: boolean
   is_default: boolean
   parent_id: string | null
-  created_at: string | Date
-  updated_at: string | Date
-  deleted_at: Date | null
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
   created_by: string | null
   tax_rates: AdminTaxRate[]
   parent: AdminTaxRegion

@@ -1,4 +1,4 @@
-import { HttpTypes, SelectParams } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -13,7 +13,7 @@ export class TaxRegion {
 
   async create(
     body: HttpTypes.AdminCreateTaxRegion,
-    query?: SelectParams,
+    query?: HttpTypes.SelectParams,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminTaxRegionResponse>(
@@ -37,7 +37,11 @@ export class TaxRegion {
     )
   }
 
-  async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
+  async retrieve(
+    id: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
     return await this.client.fetch<HttpTypes.AdminTaxRegionResponse>(
       `${taxRegionUrl}/${id}`,
       {
