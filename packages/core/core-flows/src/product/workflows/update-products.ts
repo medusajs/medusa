@@ -166,12 +166,12 @@ export const updateProductsWorkflow = createWorkflow(
 
     const toDeleteLinks = transform({ currentLinks }, prepareToDeleteLinks)
 
-    dismissRemoteLinkStep(toDeleteLinks)
-
     const salesChannelLinks = transform(
       { input, updatedProducts },
       prepareSalesChannelLinks
     )
+
+    dismissRemoteLinkStep(toDeleteLinks)
 
     createRemoteLinkStep(salesChannelLinks)
 

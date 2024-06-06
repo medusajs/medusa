@@ -75,7 +75,7 @@ export const AiAssistantThreadItemActions = ({
 const ActionButton = ({ children, className, ...props }: ButtonProps) => {
   return (
     <Button
-      variant="clear"
+      variant="transparent"
       className={clsx(
         "text-medusa-fg-muted hover:text-medusa-fg-subtle",
         "hover:bg-medusa-bg-subtle-hover",

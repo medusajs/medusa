@@ -40,7 +40,7 @@ The Medusa application resolves these relationships while maintaining isolation 
 
 Consider you’re creating a data model that adds custom fields associated with a product:
 
-```ts title="src/modules/hello/models/custom-product-data.ts" highlights={[["17"]]}
+```ts title="src/modules/hello/models/custom-product-data.ts" highlights={[["17"]]} collapsibleLines="1-8" expandButtonLabel="Show Imports"
 import { BaseEntity } from "@medusajs/utils"
 import { 
   Entity, 
@@ -83,7 +83,7 @@ export const relationshipsHighlight = [
   ["42", "foreignKey", "The name of the field in your data models referencing the other module’s model."],
 ]
 
-```ts title="src/modules/hello/service.ts" highlights={relationshipsHighlight}
+```ts title="src/modules/hello/service.ts" highlights={relationshipsHighlight} collapsibleLines="1-6" expandButtonLabel="Show Imports"
 // other imports...
 import { MyCustom } from "./models/custom-product-data"
 import { CustomProductData } from "./models/custom-product-data"

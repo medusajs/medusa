@@ -18,7 +18,7 @@ export const LearningPathIcon = ({
   return (
     <div
       className={clsx(
-        "rounded-full shadow-card-rest dark:shadow-card-rest-dark w-docs_3 h-docs_3 bg-medusa-bg-base",
+        "rounded-full shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark w-docs_3 h-docs_3 bg-medusa-bg-base",
         "flex justify-center items-center flex-none",
         className
       )}

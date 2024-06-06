@@ -30,13 +30,13 @@ export const SearchSuggestions = ({ suggestions }: SearchSuggestionsProps) => {
               onClick={() => setCommand(command)}
               key={index}
               tabIndex={index}
-              className="gap-docs_0.75"
+              className="justify-between"
             >
-              <>
+              <span className="flex gap-docs_0.75">
                 {command.icon}
                 <span>{command.title}</span>
-                {command.badge && <Badge {...command.badge} />}
-              </>
+              </span>
+              {command.badge && <Badge {...command.badge} />}
             </SearchSuggestionItem>
           ))}
         </>

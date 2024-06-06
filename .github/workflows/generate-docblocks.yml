@@ -41,7 +41,7 @@ jobs:
 
       - name: Run docblock generator
         if: steps.check-commit.outputs.is_release_commit == 'true'
-        run: "yarn start run:release"
+        run: "yarn start run:release --type docs"
         working-directory: www/utils/packages/docblock-generator
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -62,6 +62,7 @@ jobs:
           title: "chore(docs): Generated TSDocs"
           body: "This PR holds all generated TSDocs for the upcoming release."
           branch: "chore/generate-tsdocs"
+          branch-suffix: "timestamp"
           add-paths: packages/**
   generate-oas:
     name: Generated OAS PR
@@ -113,4 +114,5 @@ jobs:
           title: "chore(docs): Generated OAS"
           body: "This PR holds all generated OAS for the upcoming release."
           branch: "chore/generate-oas"
+          branch-suffix: "timestamp"
           add-paths: www/utils/generated/oas-output/**

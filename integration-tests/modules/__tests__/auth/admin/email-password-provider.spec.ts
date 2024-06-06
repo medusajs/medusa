@@ -41,11 +41,15 @@ medusaIntegrationTestRunner({
         )
 
         await authService.create({
-          provider: "emailpass",
-          entity_id: email,
-          provider_metadata: {
-            password: passwordHash,
-          },
+          provider_identities: [
+            {
+              provider: "emailpass",
+              entity_id: email,
+              provider_metadata: {
+                password: passwordHash,
+              },
+            },
+          ],
         })
 
         const response = await api
@@ -72,11 +76,15 @@ medusaIntegrationTestRunner({
         )
 
         await authService.create({
-          provider: "emailpass",
-          entity_id: email,
-          provider_metadata: {
-            password: passwordHash,
-          },
+          provider_identities: [
+            {
+              provider: "emailpass",
+              entity_id: email,
+              provider_metadata: {
+                password: passwordHash,
+              },
+            },
+          ],
         })
 
         const error = await api

@@ -111,10 +111,12 @@ export const addToCartWorkflow = createWorkflow(
       list: false,
     }).config({ name: "refetch–cart" })
 
-    refreshCartShippingMethodsStep({ cart })
-    updateTaxLinesStep({ cart_or_cart_id: input.cart.id, items })
-    refreshCartPromotionsStep({ id: input.cart.id })
-    refreshPaymentCollectionForCartStep({ cart_id: input.cart.id })
+    parallelize(
+      refreshCartShippingMethodsStep({ cart }),
+      updateTaxLinesStep({ cart_or_cart_id: input.cart.id, items }),
+      refreshCartPromotionsStep({ id: input.cart.id }),
+      refreshPaymentCollectionForCartStep({ cart_id: input.cart.id })
+    )
 
     return items
   }

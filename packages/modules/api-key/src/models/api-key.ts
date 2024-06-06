@@ -65,6 +65,14 @@ export default class ApiKey {
   })
   created_at: Date
 
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at?: Date
+
   @Property({ columnType: "text", nullable: true })
   revoked_by: string | null = null
 

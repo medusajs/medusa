@@ -6,6 +6,9 @@ export class Migration20240205025928 extends Migration {
       'create table if not exists "auth_identity" ("id" text not null, "entity_id" text not null, "provider" text not null, "user_metadata" jsonb null, "app_metadata" jsonb null, "provider_metadata" jsonb null, constraint "auth_identity_pkey" primary key ("id"));'
     )
     this.addSql(
+      'alter table "auth_identity" drop constraint if exists "IDX_auth_identity_provider_entity_id"'
+    )
+    this.addSql(
       'alter table "auth_identity" add constraint "IDX_auth_identity_provider_entity_id" unique ("provider", "entity_id");'
     )
 

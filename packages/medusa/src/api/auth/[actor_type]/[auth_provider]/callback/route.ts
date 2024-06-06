@@ -45,7 +45,9 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     await service.validateCallback(auth_provider, authData)
 
   const entityIdKey = `${actor_type}_id`
-  const entityId = authIdentity.app_metadata?.[entityIdKey]
+  const entityId = authIdentity?.app_metadata?.[entityIdKey] as
+    | string
+    | undefined
   if (success) {
     const { http } = req.scope.resolve(
       ContainerRegistrationKeys.CONFIG_MODULE
@@ -54,9 +56,9 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     const { jwtSecret, jwtExpiresIn } = http
     const token = generateJwtToken(
       {
-        actor_id: entityId,
+        actor_id: entityId ?? "",
         actor_type,
-        auth_identity_id: authIdentity.id,
+        auth_identity_id: authIdentity?.id ?? "",
         app_metadata: {
           [entityIdKey]: entityId,
         },

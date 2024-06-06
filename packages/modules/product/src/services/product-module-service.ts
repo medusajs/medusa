@@ -48,6 +48,7 @@ import {
   UpdateProductInput,
   UpdateProductOptionInput,
   UpdateProductVariantInput,
+  UpdateTagInput,
   UpdateTypeInput,
 } from "../types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
@@ -381,42 +382,129 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return this.productVariantService_.upsertWithReplace(
-      ProductModuleService.assignOptionsToVariants(
-        variantsWithProductId,
-        productOptions
-      ),
-      {
-        relations: ["options"],
-      },
-      sharedContext
-    )
+    const { entities: productVariants } =
+      await this.productVariantService_.upsertWithReplace(
+        ProductModuleService.assignOptionsToVariants(
+          variantsWithProductId,
+          productOptions
+        ),
+        {
+          relations: ["options"],
+        },
+        sharedContext
+      )
+
+    return productVariants
   }
 
-  @InjectTransactionManager("baseRepository_")
-  async createTags(
+  createTags(
     data: ProductTypes.CreateProductTagDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<ProductTypes.ProductTagDTO[]> {
-    const productTags = await this.productTagService_.create(
-      data,
-      sharedContext
-    )
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO[]>
+  createTags(
+    data: ProductTypes.CreateProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO>
 
-    return await this.baseRepository_.serialize(productTags)
+  @InjectManager("baseRepository_")
+  async createTags(
+    data: ProductTypes.CreateProductTagDTO[] | ProductTypes.CreateProductTagDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductTypes.ProductTagDTO[] | ProductTypes.ProductTagDTO> {
+    const input = Array.isArray(data) ? data : [data]
+
+    const tags = await this.productTagService_.create(input, sharedContext)
+
+    const createdTags = await this.baseRepository_.serialize<
+      ProductTypes.ProductTagDTO[]
+    >(tags)
+
+    return Array.isArray(data) ? createdTags : createdTags[0]
   }
 
+  async upsertTags(
+    data: ProductTypes.UpsertProductTagDTO[],
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO[]>
+  async upsertTags(
+    data: ProductTypes.UpsertProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO>
+
   @InjectTransactionManager("baseRepository_")
-  async updateTags(
-    data: ProductTypes.UpdateProductTagDTO[],
+  async upsertTags(
+    data: ProductTypes.UpsertProductTagDTO[] | ProductTypes.UpsertProductTagDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<ProductTypes.ProductTagDTO[]> {
-    const productTags = await this.productTagService_.update(
-      data,
+  ): Promise<ProductTypes.ProductTagDTO[] | ProductTypes.ProductTagDTO> {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter((tag): tag is UpdateTagInput => !!tag.id)
+    const forCreate = input.filter(
+      (tag): tag is ProductTypes.CreateProductTagDTO => !tag.id
+    )
+
+    let created: ProductTag[] = []
+    let updated: ProductTag[] = []
+
+    if (forCreate.length) {
+      created = await this.productTagService_.create(forCreate, sharedContext)
+    }
+    if (forUpdate.length) {
+      updated = await this.productTagService_.update(forUpdate, sharedContext)
+    }
+
+    const result = [...created, ...updated]
+    const allTags = await this.baseRepository_.serialize<
+      ProductTypes.ProductTagDTO[] | ProductTypes.ProductTagDTO
+    >(result)
+
+    return Array.isArray(data) ? allTags : allTags[0]
+  }
+
+  updateTags(
+    id: string,
+    data: ProductTypes.UpdateProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO>
+  updateTags(
+    selector: ProductTypes.FilterableProductTagProps,
+    data: ProductTypes.UpdateProductTagDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO[]>
+
+  @InjectManager("baseRepository_")
+  async updateTags(
+    idOrSelector: string | ProductTypes.FilterableProductTagProps,
+    data: ProductTypes.UpdateProductTagDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductTypes.ProductTagDTO[] | ProductTypes.ProductTagDTO> {
+    let normalizedInput: UpdateTagInput[] = []
+    if (isString(idOrSelector)) {
+      // Check if the tag exists in the first place
+      await this.productTagService_.retrieve(idOrSelector, {}, sharedContext)
+      normalizedInput = [{ id: idOrSelector, ...data }]
+    } else {
+      const tags = await this.productTagService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+
+      normalizedInput = tags.map((tag) => ({
+        id: tag.id,
+        ...data,
+      }))
+    }
+
+    const tags = await this.productTagService_.update(
+      normalizedInput,
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(productTags)
+    const updatedTags = await this.baseRepository_.serialize<
+      ProductTypes.ProductTagDTO[]
+    >(tags)
+
+    return isString(idOrSelector) ? updatedTags[0] : updatedTags
   }
 
   createTypes(
@@ -735,11 +823,14 @@ export default class ProductModuleService<
       } as UpdateProductOptionInput
     })
 
-    return await this.productOptionService_.upsertWithReplace(
-      normalizedInput,
-      { relations: ["values"] },
-      sharedContext
-    )
+    const { entities: productOptions } =
+      await this.productOptionService_.upsertWithReplace(
+        normalizedInput,
+        { relations: ["values"] },
+        sharedContext
+      )
+
+    return productOptions
   }
 
   createCollections(
@@ -789,11 +880,14 @@ export default class ProductModuleService<
 
     // It's safe to use upsertWithReplace here since we only have product IDs and the only operation to do is update the product
     // with the collection ID
-    return await this.productCollectionService_.upsertWithReplace(
-      normalizedInput,
-      { relations: ["products"] },
-      sharedContext
-    )
+    const { entities: productCollections } =
+      await this.productCollectionService_.upsertWithReplace(
+        normalizedInput,
+        { relations: ["products"] },
+        sharedContext
+      )
+
+    return productCollections
   }
 
   async upsertCollections(
@@ -1203,13 +1297,14 @@ export default class ProductModuleService<
       })
     )
 
-    const productData = await this.productService_.upsertWithReplace(
-      normalizedInput,
-      {
-        relations: ["images", "tags", "categories"],
-      },
-      sharedContext
-    )
+    const { entities: productData } =
+      await this.productService_.upsertWithReplace(
+        normalizedInput,
+        {
+          relations: ["images", "tags", "categories"],
+        },
+        sharedContext
+      )
 
     await promiseAll(
       // Note: It's safe to rely on the order here as `upsertWithReplace` preserves the order of the input
@@ -1219,7 +1314,7 @@ export default class ProductModuleService<
         upsertedProduct.variants = []
 
         if (product.options?.length) {
-          upsertedProduct.options =
+          const { entities: productOptions } =
             await this.productOptionService_.upsertWithReplace(
               product.options?.map((option) => ({
                 ...option,
@@ -1228,10 +1323,11 @@ export default class ProductModuleService<
               { relations: ["values"] },
               sharedContext
             )
+          upsertedProduct.options = productOptions
         }
 
         if (product.variants?.length) {
-          upsertedProduct.variants =
+          const { entities: productVariants } =
             await this.productVariantService_.upsertWithReplace(
               ProductModuleService.assignOptionsToVariants(
                 product.variants?.map((v) => ({
@@ -1243,6 +1339,7 @@ export default class ProductModuleService<
               { relations: ["options"] },
               sharedContext
             )
+          upsertedProduct.variants = productVariants
         }
       })
     )
@@ -1266,13 +1363,14 @@ export default class ProductModuleService<
       })
     )
 
-    const productData = await this.productService_.upsertWithReplace(
-      normalizedInput,
-      {
-        relations: ["images", "tags", "categories"],
-      },
-      sharedContext
-    )
+    const { entities: productData } =
+      await this.productService_.upsertWithReplace(
+        normalizedInput,
+        {
+          relations: ["images", "tags", "categories"],
+        },
+        sharedContext
+      )
 
     // There is more than 1-level depth of relations here, so we need to handle the options and variants manually
     await promiseAll(
@@ -1282,7 +1380,7 @@ export default class ProductModuleService<
         let allOptions: any[] = []
 
         if (product.options?.length) {
-          upsertedProduct.options =
+          const { entities: productOptions } =
             await this.productOptionService_.upsertWithReplace(
               product.options?.map((option) => ({
                 ...option,
@@ -1291,6 +1389,7 @@ export default class ProductModuleService<
               { relations: ["values"] },
               sharedContext
             )
+          upsertedProduct.options = productOptions
 
           // Since we handle the options and variants outside of the product upsert, we need to clean up manually
           await this.productOptionService_.delete(
@@ -1315,7 +1414,7 @@ export default class ProductModuleService<
         }
 
         if (product.variants?.length) {
-          upsertedProduct.variants =
+          const { entities: productVariants } =
             await this.productVariantService_.upsertWithReplace(
               ProductModuleService.assignOptionsToVariants(
                 product.variants?.map((v) => ({
@@ -1327,6 +1426,7 @@ export default class ProductModuleService<
               { relations: ["options"] },
               sharedContext
             )
+          upsertedProduct.variants = productVariants
 
           await this.productVariantService_.delete(
             {
