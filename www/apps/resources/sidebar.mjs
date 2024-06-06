@@ -1738,6 +1738,16 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             path: "/storefront-development/products/price",
             title: "Retrieve Variant Prices",
           },
+          {
+            path: "/storefront-development/products/categories",
+            title: "Categories",
+            children: [
+              {
+                path: "/storefront-development/products/categories/list",
+                title: "List Categories",
+              },
+            ],
+          },
         ],
       },
     ],
