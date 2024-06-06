@@ -1,28 +1,29 @@
 import { ProductCategoryService } from "@services"
 
 import { Modules } from "@medusajs/modules-sdk"
-import { IProductModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { createProductCategories } from "../../../__fixtures__/product-category"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { createProductCategories } from "../__fixtures__/product-category"
 import {
   eletronicsCategoriesData,
   productCategoriesData,
   productCategoriesRankData,
-} from "../../../__fixtures__/product-category/data"
+} from "../__fixtures__/product-category/data"
+import { IProductModuleService } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+type Service = IProductModuleService & {
+  productCategoryService_: ProductCategoryService
+}
+
+moduleIntegrationTestRunner<Service>({
   moduleName: Modules.PRODUCT,
-  testSuite: ({
-    MikroOrmWrapper,
-    medusaApp,
-  }: SuiteOptions<IProductModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service: moduleService }) => {
     describe("Product category Service", () => {
       let service: ProductCategoryService
 
       beforeEach(() => {
-        service = medusaApp.modules["productService"].productCategoryService_
+        service = moduleService.productCategoryService_
       })
 
       describe("list", () => {

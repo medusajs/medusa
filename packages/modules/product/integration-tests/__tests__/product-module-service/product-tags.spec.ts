@@ -2,16 +2,13 @@ import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
 import { ProductStatus } from "@medusajs/utils"
 import { Product, ProductTag } from "@models"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IProductModuleService>({
   moduleName: Modules.PRODUCT,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IProductModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("ProductModuleService product tags", () => {
       let tagOne: ProductTag
       let tagTwo: ProductTag
