@@ -59,19 +59,19 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
   const { handleSuccess } = useRouteModal()
   const [tab, setTab] = React.useState<Tab>(Tab.DETAILS)
 
-  const { stock_locations } = useStockLocations({
-    limit: 1000,
-  })
+  // const { stock_locations } = useStockLocations({
+  //   limit: 1000,
+  // })
 
-  const locations = useComboboxData({
-    queryKey: ["locations"],
-    queryFn: client.stockLocations.list,
-    getOptions: (data) =>
-      data.stock_locations.map((location) => ({
-        label: location.name,
-        value: location.id,
-      })),
-  })
+  // const locations = useComboboxData({
+  //   queryKey: ["locations"],
+  //   queryFn: client.stockLocations.list,
+  //   getOptions: (data) =>
+  //     data.stock_locations.map((location) => ({
+  //       label: location.name,
+  //       value: location.id,
+  //     })),
+  // })
 
   const form = useForm<zod.infer<typeof CreateInventoryItemSchema>>({
     defaultValues: {
@@ -209,7 +209,10 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
                           <Form.Item>
                             <Form.Label>{t("fields.title")}</Form.Label>
                             <Form.Control>
-                              <Input {...field} />
+                              <Input
+                                {...field}
+                                placeholder={t("fields.title")}
+                              />
                             </Form.Control>
                             <Form.ErrorMessage />
                           </Form.Item>
@@ -225,7 +228,7 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
                           <Form.Item>
                             <Form.Label>{t("fields.sku")}</Form.Label>
                             <Form.Control>
-                              <Input {...field} />
+                              <Input {...field} placeholder="sku-123" />
                             </Form.Control>
                             <Form.ErrorMessage />
                           </Form.Item>
@@ -233,34 +236,38 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
                       }}
                     />
 
-                    <Form.Field
-                      className="col-span-1"
-                      control={form.control}
-                      name="location_ids"
-                      render={({ field }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label optional>
-                              {t("inventory.create.locations")}
-                            </Form.Label>
-                            <Form.Control>
-                              <Combobox
-                                {...field}
-                                multiple
-                                options={locations.options}
-                                searchValue={locations.searchValue}
-                                onSearchValueChange={
-                                  locations.onSearchValueChange
-                                }
-                                fetchNextPage={locations.fetchNextPage}
-                              />
-                            </Form.Control>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
-                    />
+                    {/*<Form.Field*/}
+                    {/*  className="col-span-1"*/}
+                    {/*  control={form.control}*/}
+                    {/*  name="location_ids"*/}
+                    {/*  render={({ field }) => {*/}
+                    {/*    return (*/}
+                    {/*      <Form.Item>*/}
+                    {/*        <Form.Label optional>*/}
+                    {/*          {t("inventory.create.locations")}*/}
+                    {/*        </Form.Label>*/}
+                    {/*        <Form.Control>*/}
+                    {/*          <Combobox*/}
+                    {/*            {...field}*/}
+                    {/*            multiple*/}
+                    {/*            options={locations.options}*/}
+                    {/*            searchValue={locations.searchValue}*/}
+                    {/*            onSearchValueChange={*/}
+                    {/*              locations.onSearchValueChange*/}
+                    {/*            }*/}
+                    {/*            fetchNextPage={locations.fetchNextPage}*/}
+                    {/*          />*/}
+                    {/*        </Form.Control>*/}
+                    {/*        <Form.ErrorMessage />*/}
+                    {/*      </Form.Item>*/}
+                    {/*    )*/}
+                    {/*  }}*/}
+                    {/*/>*/}
                   </div>
+
+                  <Heading level="h3" className="my-6">
+                    {t("inventory.create.attributes")}
+                  </Heading>
                 </div>
               </div>
             </ProgressTabs.Content>

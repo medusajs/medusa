@@ -400,7 +400,8 @@
     "create": {
       "title": "Add item",
       "details": "Details",
-      "availability": "Availability"
+      "availability": "Availability",
+      "locations": "Locations"
     },
     "reservation": {
       "header": "Reservation of {{itemName}}",
