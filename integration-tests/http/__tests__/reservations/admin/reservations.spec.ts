@@ -88,15 +88,24 @@ medusaIntegrationTestRunner({
 
       it("should throw if available quantity is less than reservation quantity", async () => {
         const payload = {
-          quantity: 100000,
+          quantity: 10000,
           inventory_item_id: inventoryItem1.id,
           line_item_id: "line-item-id",
           location_id: stockLocation1.id,
         }
 
         const res = await api
-          .post(`/admin/reservations`, payload, adminHeaders)
+          .post(
+            `/admin/reservations?field=inventory_item.location_levels.*`,
+            payload,
+            adminHeaders
+          )
           .catch((err) => err)
+
+        const res1 = await api.get(
+          `/admin/inventory-items/${inventoryItem1.id}`,
+          adminHeaders
+        )
 
         expect(res.response.status).toBe(400)
         expect(res.response.data).toEqual({
@@ -133,8 +142,7 @@ medusaIntegrationTestRunner({
         reservationId = reservationResponse.data.reservation.id
       })
 
-      // TODO: Implement this on the module
-      it.skip("should throw if available quantity is less than reservation quantity", async () => {
+      it("should throw if available quantity is less than reservation quantity", async () => {
         const payload = { quantity: 100000 }
         const res = await api
           .post(`/admin/reservations/${reservationId}`, payload, adminHeaders)

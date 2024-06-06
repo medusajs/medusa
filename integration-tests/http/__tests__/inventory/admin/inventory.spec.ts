@@ -612,6 +612,38 @@ medusaIntegrationTestRunner({
             })
           )
         })
+
+        it("should create inventory items along with location levels", async () => {
+          const response = await api.post(
+            `/admin/inventory-items?%2blocation_levels.*`,
+            {
+              sku: "test-sku",
+              location_levels: [
+                {
+                  location_id: stockLocation1.id,
+                  stocked_quantity: 20,
+                  incoming_quantity: 40,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.inventory_item).toEqual(
+            expect.objectContaining({
+              sku: "test-sku",
+              location_levels: [
+                expect.objectContaining({
+                  id: expect.any(String),
+                  inventory_item_id: expect.any(String),
+                  stocked_quantity: 20,
+                  incoming_quantity: 40,
+                }),
+              ],
+            })
+          )
+        })
       })
 
       describe("POST /admin/inventory-items/:id", () => {
