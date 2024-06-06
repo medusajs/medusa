@@ -14,7 +14,6 @@ export const useCustomerTableFilters = (
   const { customer_groups } = useCustomerGroups(
     {
       limit: 1000,
-      expand: "",
     },
     {
       enabled: !isGroupsExcluded,

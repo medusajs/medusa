@@ -167,6 +167,7 @@ const Fulfillment = ({
 
   const { stock_location, isError, error } = useStockLocation(
     fulfillment.location_id!,
+    undefined,
     {
       enabled: showLocation,
     }

@@ -40,7 +40,6 @@ export const client = {
   shippingProfiles: shippingProfiles,
   productTags: tags,
   users: users,
-  orders: orders,
   taxes: taxes,
   invites: invites,
   inventoryItems: inventoryItems,
