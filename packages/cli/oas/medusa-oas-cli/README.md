@@ -123,14 +123,6 @@ Defaults to `all`.
 yarn medusa-oas client --type types`
 ```
 
-#### `--types-packages <name>`
-
-Replace relative import statements by types package name. Mandatory when using `--type client` or `--type hooks`.
-
-```bash
-yarn medusa-oas client --types-packages @medusajs/client-types`
-```
-
 #### `--client-packages <name>`
 
 Replace relative import statements by client package name. Mandatory when using `--type hooks`.
