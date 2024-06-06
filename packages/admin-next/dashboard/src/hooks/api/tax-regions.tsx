@@ -1,8 +1,4 @@
-import { AdminCreateTaxRegion } from "@medusajs/medusa"
-import {
-  AdminTaxRegionListResponse,
-  AdminTaxRegionResponse,
-} from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -10,10 +6,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { client } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { TaxRegionDeleteRes } from "../../types/api-responses"
 
 const TAX_REGIONS_QUERY_KEY = "tax_regions" as const
 export const taxRegionsQueryKeys = queryKeysFactory(TAX_REGIONS_QUERY_KEY)
@@ -23,9 +18,9 @@ export const useTaxRegion = (
   query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<
-      AdminTaxRegionResponse,
+      HttpTypes.AdminTaxRegionResponse,
       Error,
-      AdminTaxRegionResponse,
+      HttpTypes.AdminTaxRegionResponse,
       QueryKey
     >,
     "queryFn" | "queryKey"
@@ -33,7 +28,7 @@ export const useTaxRegion = (
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: taxRegionsQueryKeys.detail(id),
-    queryFn: async () => client.taxes.retrieveTaxRegion(id, query),
+    queryFn: async () => sdk.admin.taxRegion.retrieve(id, query),
     ...options,
   })
 
@@ -44,16 +39,16 @@ export const useTaxRegions = (
   query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<
-      AdminTaxRegionListResponse,
+      HttpTypes.AdminTaxRegionListResponse,
       Error,
-      AdminTaxRegionListResponse,
+      HttpTypes.AdminTaxRegionListResponse,
       QueryKey
     >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.taxes.listTaxRegions(query),
+    queryFn: () => sdk.admin.taxRegion.list(query),
     queryKey: taxRegionsQueryKeys.list(query),
     ...options,
   })
@@ -63,13 +58,13 @@ export const useTaxRegions = (
 
 export const useCreateTaxRegion = (
   options?: UseMutationOptions<
-    AdminTaxRegionResponse,
+    HttpTypes.AdminTaxRegionResponse,
     Error,
-    AdminCreateTaxRegion
+    HttpTypes.AdminCreateTaxRegion
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.taxes.createTaxRegion(payload),
+    mutationFn: (payload) => sdk.admin.taxRegion.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.all })
       options?.onSuccess?.(data, variables, context)
@@ -80,10 +75,14 @@ export const useCreateTaxRegion = (
 
 export const useDeleteTaxRegion = (
   id: string,
-  options?: UseMutationOptions<TaxRegionDeleteRes, Error, void>
+  options?: UseMutationOptions<
+    HttpTypes.AdminTaxRegionDeleteResponse,
+    Error,
+    void
+  >
 ) => {
   return useMutation({
-    mutationFn: () => client.taxes.deleteTaxRegion(id),
+    mutationFn: () => sdk.admin.taxRegion.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.lists() })
       queryClient.invalidateQueries({

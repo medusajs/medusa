@@ -94,14 +94,14 @@ export const ProductCreateForm = () => {
           const fileReqs = []
           if (thumbnailReq) {
             fileReqs.push(
-              sdk.admin.uploads
+              sdk.admin.upload
                 .create({ files: [thumbnailReq.file] })
                 .then((r) => r.files.map((f) => ({ ...f, isThumbnail: true })))
             )
           }
           if (otherMediaReq?.length) {
             fileReqs.push(
-              sdk.admin.uploads
+              sdk.admin.upload
                 .create({
                   files: otherMediaReq.map((m) => m.file),
                 })

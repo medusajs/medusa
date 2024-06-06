@@ -10,13 +10,11 @@ export const useOrderTableFilters = (): Filter[] => {
   const { regions } = useRegions({
     limit: 1000,
     fields: "id,name",
-    expand: "",
   })
 
   const { sales_channels } = useSalesChannels({
     limit: 1000,
     fields: "id,name",
-    expand: "",
   })
 
   let filters: Filter[] = []

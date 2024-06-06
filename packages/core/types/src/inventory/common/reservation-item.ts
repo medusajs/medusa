@@ -38,6 +38,11 @@ export interface ReservationItemDTO {
   description?: string | null
 
   /**
+   * Allow backorder of the item. If true, it won't check inventory levels before reserving it.
+   */
+  allow_backorder?: boolean
+
+  /**
    * The created by of the reservation item.
    */
   created_by?: string | null

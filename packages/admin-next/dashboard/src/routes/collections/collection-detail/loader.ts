@@ -7,7 +7,7 @@ import { queryClient } from "../../../lib/query-client"
 
 const collectionDetailQuery = (id: string) => ({
   queryKey: collectionsQueryKeys.detail(id),
-  queryFn: async () => sdk.admin.collection.retrieve(id),
+  queryFn: async () => sdk.admin.productCollection.retrieve(id),
 })
 
 export const collectionLoader = async ({ params }: LoaderFunctionArgs) => {

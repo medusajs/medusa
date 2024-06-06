@@ -18,6 +18,10 @@ export interface UpdateReservationItemInput {
    */
   description?: string
   /**
+   * Allow backorder of the item. If true, it won't check inventory levels before reserving it.
+   */
+  allow_backorder?: boolean
+  /**
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null

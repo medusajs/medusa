@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { OptionalBooleanValidator } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -22,6 +23,7 @@ export const AdminGetSalesChannelsParams = createFindParams({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     name: z.union([z.string(), z.array(z.string())]).optional(),
     description: z.string().optional(),
+    is_disabled: OptionalBooleanValidator,
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
@@ -47,7 +49,7 @@ export type AdminUpdateSalesChannelType = z.infer<
 >
 export const AdminUpdateSalesChannel = z.object({
   name: z.string().optional(),
-  description: z.string().optional(),
+  description: z.string().nullable().optional(),
   is_disabled: z.boolean().optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
 })

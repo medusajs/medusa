@@ -1109,7 +1109,7 @@ export interface OrderDTO {
   raw_original_shipping_tax_total: BigNumberRawValue
 }
 
-type PaymentStatus =
+export type PaymentStatus =
   | "not_paid"
   | "awaiting"
   | "authorized"
@@ -1121,7 +1121,7 @@ type PaymentStatus =
   | "canceled"
   | "requires_action"
 
-type FulfillmentStatus =
+export type FulfillmentStatus =
   | "not_fulfilled"
   | "partially_fulfilled"
   | "fulfilled"

@@ -22,6 +22,7 @@ import { ProductCategoryService, ProductService } from "@services"
 
 import {
   arrayDifference,
+  EmitEvents,
   InjectManager,
   InjectTransactionManager,
   isPresent,
@@ -51,6 +52,7 @@ import {
   UpdateTypeInput,
 } from "../types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
+import { eventBuilders } from "../utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -128,7 +130,6 @@ export default class ProductModuleService<
   protected readonly productService_: ProductService<TProduct>
   // eslint-disable-next-line max-len
   protected readonly productVariantService_: ModulesSdkTypes.InternalModuleService<TProductVariant>
-
   // eslint-disable-next-line max-len
   protected readonly productCategoryService_: ProductCategoryService<TProductCategory>
   // eslint-disable-next-line max-len
@@ -193,6 +194,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductVariantDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createVariants(
     data:
       | ProductTypes.CreateProductVariantDTO[]
@@ -220,7 +222,7 @@ export default class ProductModuleService<
     if (data.some((v) => !v.product_id)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Tried to create variants without specifying a product_id"
+        "Unable to create variants without specifying a product_id"
       )
     }
 
@@ -238,10 +240,17 @@ export default class ProductModuleService<
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(data, productOptions)
 
-    return await this.productVariantService_.create(
+    const createdVariants = await this.productVariantService_.create(
       productVariantsWithOptions,
       sharedContext
     )
+
+    eventBuilders.createdProductVariant({
+      data: createdVariants,
+      sharedContext,
+    })
+
+    return createdVariants
   }
 
   async upsertVariants(
@@ -254,6 +263,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductVariantDTO>
 
   @InjectTransactionManager("baseRepository_")
+  @EmitEvents()
   async upsertVariants(
     data:
       | ProductTypes.UpsertProductVariantDTO[]
@@ -300,6 +310,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductVariantDTO[]>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async updateVariants(
     idOrSelector: string | ProductTypes.FilterableProductVariantProps,
     data: ProductTypes.UpdateProductVariantDTO,
@@ -373,7 +384,7 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    const { entities: productVariants } =
+    const { entities: productVariants, performedActions } =
       await this.productVariantService_.upsertWithReplace(
         ProductModuleService.assignOptionsToVariants(
           variantsWithProductId,
@@ -384,6 +395,19 @@ export default class ProductModuleService<
         },
         sharedContext
       )
+
+    eventBuilders.createdProductVariant({
+      data: performedActions.created[ProductVariant.name] ?? [],
+      sharedContext,
+    })
+    eventBuilders.updatedProductVariant({
+      data: performedActions.updated[ProductVariant.name] ?? [],
+      sharedContext,
+    })
+    eventBuilders.deletedProductVariant({
+      data: performedActions.deleted[ProductVariant.name] ?? [],
+      sharedContext,
+    })
 
     return productVariants
   }
@@ -398,6 +422,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductTagDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createTags(
     data: ProductTypes.CreateProductTagDTO[] | ProductTypes.CreateProductTagDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -409,6 +434,11 @@ export default class ProductModuleService<
     const createdTags = await this.baseRepository_.serialize<
       ProductTypes.ProductTagDTO[]
     >(tags)
+
+    eventBuilders.createdProductTag({
+      data: createdTags,
+      sharedContext,
+    })
 
     return Array.isArray(data) ? createdTags : createdTags[0]
   }
@@ -423,6 +453,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductTagDTO>
 
   @InjectTransactionManager("baseRepository_")
+  @EmitEvents()
   async upsertTags(
     data: ProductTypes.UpsertProductTagDTO[] | ProductTypes.UpsertProductTagDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -438,9 +469,17 @@ export default class ProductModuleService<
 
     if (forCreate.length) {
       created = await this.productTagService_.create(forCreate, sharedContext)
+      eventBuilders.createdProductTag({
+        data: created,
+        sharedContext,
+      })
     }
     if (forUpdate.length) {
       updated = await this.productTagService_.update(forUpdate, sharedContext)
+      eventBuilders.updatedProductTag({
+        data: updated,
+        sharedContext,
+      })
     }
 
     const result = [...created, ...updated]
@@ -463,6 +502,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductTagDTO[]>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async updateTags(
     idOrSelector: string | ProductTypes.FilterableProductTagProps,
     data: ProductTypes.UpdateProductTagDTO,
@@ -494,6 +534,11 @@ export default class ProductModuleService<
     const updatedTags = await this.baseRepository_.serialize<
       ProductTypes.ProductTagDTO[]
     >(tags)
+
+    eventBuilders.updatedProductTag({
+      data: updatedTags,
+      sharedContext,
+    })
 
     return isString(idOrSelector) ? updatedTags[0] : updatedTags
   }

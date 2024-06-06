@@ -1,8 +1,4 @@
-import {
-  AdminPostTaxRatesReq,
-  AdminPostTaxRatesTaxRateReq,
-} from "@medusajs/medusa"
-import { AdminTaxRateListResponse, AdminTaxRateResponse } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -10,10 +6,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { client } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { TaxRateDeleteRes } from "../../types/api-responses"
 
 const TAX_RATES_QUERY_KEY = "tax_rates" as const
 export const taxRatesQueryKeys = queryKeysFactory(TAX_RATES_QUERY_KEY)
@@ -23,9 +18,9 @@ export const useTaxRate = (
   query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<
-      AdminTaxRateResponse,
+      HttpTypes.AdminTaxRateResponse,
       Error,
-      AdminTaxRateResponse,
+      HttpTypes.AdminTaxRateResponse,
       QueryKey
     >,
     "queryFn" | "queryKey"
@@ -33,7 +28,7 @@ export const useTaxRate = (
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: taxRatesQueryKeys.detail(id),
-    queryFn: async () => client.taxes.retrieveTaxRate(id, query),
+    queryFn: async () => sdk.admin.taxRate.retrieve(id, query),
     ...options,
   })
 
@@ -44,16 +39,16 @@ export const useTaxRates = (
   query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<
-      AdminTaxRateListResponse,
+      HttpTypes.AdminTaxRateListResponse,
       Error,
-      AdminTaxRateListResponse,
+      HttpTypes.AdminTaxRateListResponse,
       QueryKey
     >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.taxes.listTaxRates(query),
+    queryFn: () => sdk.admin.taxRate.list(query),
     queryKey: taxRatesQueryKeys.list(query),
     ...options,
   })
@@ -64,13 +59,13 @@ export const useTaxRates = (
 export const useUpdateTaxRate = (
   id: string,
   options?: UseMutationOptions<
-    AdminTaxRateResponse,
+    HttpTypes.AdminTaxRateResponse,
     Error,
-    AdminPostTaxRatesTaxRateReq
+    HttpTypes.AdminUpdateTaxRate
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.taxes.updateTaxRate(id, payload),
+    mutationFn: (payload) => sdk.admin.taxRate.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: taxRatesQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -85,13 +80,13 @@ export const useUpdateTaxRate = (
 
 export const useCreateTaxRate = (
   options?: UseMutationOptions<
-    AdminTaxRateResponse,
+    HttpTypes.AdminTaxRateResponse,
     Error,
-    AdminPostTaxRatesReq
+    HttpTypes.AdminCreateTaxRate
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.taxes.createTaxRate(payload),
+    mutationFn: (payload) => sdk.admin.taxRate.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: taxRatesQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)
@@ -102,10 +97,14 @@ export const useCreateTaxRate = (
 
 export const useDeleteTaxRate = (
   id: string,
-  options?: UseMutationOptions<TaxRateDeleteRes, Error, void>
+  options?: UseMutationOptions<
+    HttpTypes.AdminTaxRateDeleteResponse,
+    Error,
+    void
+  >
 ) => {
   return useMutation({
-    mutationFn: () => client.taxes.deleteTaxRate(id),
+    mutationFn: () => sdk.admin.taxRate.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: taxRatesQueryKeys.lists() })
       queryClient.invalidateQueries({

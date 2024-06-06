@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { AdminOrder } from "@medusajs/types"
-import { Alert, Button, Select, toast } from "@medusajs/ui"
+import { Alert, Button, Select, Switch, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 
 import { Form } from "../../../../../components/common/form"
@@ -12,13 +12,12 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useCreateFulfillment } from "../../../../../hooks/api/fulfillment"
 import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
-import { cleanNonValues, pick } from "../../../../../lib/common"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
-import { CreateFulfillmentSchema } from "./constants"
 import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
+import { useCreateOrderFulfillment } from "../../../../../hooks/api/orders"
+import { CreateFulfillmentSchema } from "./constants"
 
 type OrderCreateFulfillmentFormProps = {
   order: AdminOrder
@@ -30,8 +29,8 @@ export function OrderCreateFulfillmentForm({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const { mutateAsync: createOrderFulfillment, isLoading: isMutating } =
-    useCreateFulfillment()
+  const { mutateAsync: createOrderFulfillment, isPending: isMutating } =
+    useCreateOrderFulfillment(order.id)
 
   const { fulfillment_providers } = useFulfillmentProviders({
     region_id: order.region_id,
@@ -43,14 +42,11 @@ export function OrderCreateFulfillmentForm({
 
   const form = useForm<zod.infer<typeof CreateFulfillmentSchema>>({
     defaultValues: {
-      quantity: fulfillableItems.reduce(
-        (acc, item) => {
-          acc[item.id] = getFulfillableQuantity(item)
-          return acc
-        },
-        {} as Record<string, number>
-      ),
-      // send_notification: !order.no_notification,
+      quantity: fulfillableItems.reduce((acc, item) => {
+        acc[item.id] = getFulfillableQuantity(item)
+        return acc
+      }, {} as Record<string, number>),
+      send_notification: !order.no_notification,
     },
     resolver: zodResolver(CreateFulfillmentSchema),
   })
@@ -61,49 +57,13 @@ export function OrderCreateFulfillmentForm({
     try {
       await createOrderFulfillment({
         location_id: data.location_id,
-        /**
-         * TODO: send notification flag
-         */
-        // no_notification: !data.send_notification,
-        delivery_address: cleanNonValues(
-          pick(order.shipping_address, [
-            "first_name",
-            "last_name",
-            "phone",
-            "company",
-            "address_1",
-            "address_2",
-            "city",
-            "country_code",
-            "province",
-            "postal_code",
-            "metadata",
-          ])
-        ), // TODO: this should be pulled from order in the workflow
-        provider_id: fulfillment_providers[0]?.id,
+        no_notification: !data.send_notification,
         items: Object.entries(data.quantity)
           .filter(([, value]) => !!value)
-          .map(([item_id, quantity]) => {
-            const item = order.items.find((i) => i.id === item_id)
-
-            return {
-              quantity,
-              line_item_id: item_id,
-              title: item.title,
-              barcode: item.variant.barcode || "",
-              sku: item.variant_sku || "",
-            }
-          }),
-        // TODO: should be optional in the enpoint?
-        labels: [
-          {
-            tracking_number: "TODO",
-            tracking_url: "TODO",
-            label_url: "TODO",
-          },
-        ],
-        order: {}, // TODO ?
-        order_id: order.id, // TEMP link for now
+          .map(([id, quantity]) => ({
+            id,
+            quantity,
+          })),
       })
 
       handleSuccess(`/orders/${order.id}`)
@@ -252,36 +212,36 @@ export function OrderCreateFulfillmentForm({
                   )}
                 </div>
 
-                {/*<div className="mt-8 pt-8 ">*/}
-                {/*  <Form.Field*/}
-                {/*    control={form.control}*/}
-                {/*    name="send_notification"*/}
-                {/*    render={({ field: { onChange, value, ...field } }) => {*/}
-                {/*      return (*/}
-                {/*        <Form.Item>*/}
-                {/*          <div className="flex items-center justify-between">*/}
-                {/*            <Form.Label>*/}
-                {/*              {t("orders.returns.sendNotification")}*/}
-                {/*            </Form.Label>*/}
-                {/*            <Form.Control>*/}
-                {/*              <Form.Control>*/}
-                {/*                <Switch*/}
-                {/*                  checked={!!value}*/}
-                {/*                  onCheckedChange={onChange}*/}
-                {/*                  {...field}*/}
-                {/*                />*/}
-                {/*              </Form.Control>*/}
-                {/*            </Form.Control>*/}
-                {/*          </div>*/}
-                {/*          <Form.Hint className="!mt-1">*/}
-                {/*            {t("orders.returns.sendNotificationHint")}*/}
-                {/*          </Form.Hint>*/}
-                {/*          <Form.ErrorMessage />*/}
-                {/*        </Form.Item>*/}
-                {/*      )*/}
-                {/*    }}*/}
-                {/*  />*/}
-                {/*</div>*/}
+                <div className="mt-8 pt-8 ">
+                  <Form.Field
+                    control={form.control}
+                    name="send_notification"
+                    render={({ field: { onChange, value, ...field } }) => {
+                      return (
+                        <Form.Item>
+                          <div className="flex items-center justify-between">
+                            <Form.Label>
+                              {t("orders.returns.sendNotification")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Form.Control>
+                                <Switch
+                                  checked={!!value}
+                                  onCheckedChange={onChange}
+                                  {...field}
+                                />
+                              </Form.Control>
+                            </Form.Control>
+                          </div>
+                          <Form.Hint className="!mt-1">
+                            {t("orders.fulfillment.sendNotificationHint")}
+                          </Form.Hint>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>

@@ -30,7 +30,7 @@ export interface UpdateSalesChannelDTO {
   /**
    * The description of the sales channel.
    */
-  description?: string
+  description?: string | null
 
   /**
    * Whether the sales channel is disabled.

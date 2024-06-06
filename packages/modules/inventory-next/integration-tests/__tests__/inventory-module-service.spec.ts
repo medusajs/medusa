@@ -209,6 +209,25 @@ moduleIntegrationTestRunner({
             expect.objectContaining({ id: expect.any(String), ...data[1] }),
           ])
         })
+
+        it("should not create with required quantity", async () => {
+          const data = {
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+            stocked_quantity: 2,
+            reserved_quantity: 1000,
+          }
+
+          const inventoryLevel = await service.createInventoryLevels(data)
+
+          expect(inventoryLevel).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              ...data,
+              reserved_quantity: 0,
+            })
+          )
+        })
       })
 
       describe("update", () => {
@@ -301,8 +320,10 @@ moduleIntegrationTestRunner({
 
       describe("updateReservationItems", () => {
         let reservationItem
+        let inventoryItem
+
         beforeEach(async () => {
-          const inventoryItem = await service.create({
+          inventoryItem = await service.create({
             sku: "test-sku",
             origin_country: "test-country",
           })
@@ -311,26 +332,26 @@ moduleIntegrationTestRunner({
             {
               inventory_item_id: inventoryItem.id,
               location_id: "location-1",
-              stocked_quantity: 2,
+              stocked_quantity: 10,
             },
             {
               inventory_item_id: inventoryItem.id,
               location_id: "location-2",
-              stocked_quantity: 2,
+              stocked_quantity: 10,
             },
           ])
 
           reservationItem = await service.createReservationItems({
             inventory_item_id: inventoryItem.id,
             location_id: "location-1",
-            quantity: 2,
+            quantity: 3,
           })
         })
 
         it("should update a reservationItem", async () => {
           const update = {
             id: reservationItem.id,
-            quantity: 5,
+            quantity: 1,
           }
 
           const updated = await service.updateReservationItems(update)
@@ -341,7 +362,7 @@ moduleIntegrationTestRunner({
         it("should adjust reserved_quantity of inventory level after updates increasing reserved quantity", async () => {
           const update = {
             id: reservationItem.id,
-            quantity: 5,
+            quantity: 7,
           }
 
           await service.updateReservationItems(update)
@@ -358,7 +379,7 @@ moduleIntegrationTestRunner({
         it("should adjust reserved_quantity of inventory level after updates decreasing reserved quantity", async () => {
           const update = {
             id: reservationItem.id,
-            quantity: 1,
+            quantity: 2,
           }
 
           await service.updateReservationItems(update)
@@ -371,10 +392,26 @@ moduleIntegrationTestRunner({
 
           expect(inventoryLevel.reserved_quantity).toEqual(update.quantity)
         })
+
+        it("should throw error when increasing reserved quantity beyond availability", async () => {
+          const update = {
+            id: reservationItem.id,
+            quantity: 10,
+          }
+
+          const error = await service
+            .updateReservationItems(update)
+            .catch((e) => e)
+
+          expect(error.message).toEqual(
+            `Not enough stock available for item ${inventoryItem.id} at location location-1`
+          )
+        })
       })
 
       describe("deleteReservationItemsByLineItem", () => {
         let inventoryItem: InventoryItemDTO
+
         beforeEach(async () => {
           inventoryItem = await service.create({
             sku: "test-sku",
@@ -415,7 +452,7 @@ moduleIntegrationTestRunner({
           ])
         })
 
-        it("deleted reseravation items by line item and restore them", async () => {
+        it("should delete reseravation items by line item and restore them", async () => {
           const reservationsPreDeleted = await service.listReservationItems({
             line_item_id: "line-item-id",
           })
@@ -461,7 +498,17 @@ moduleIntegrationTestRunner({
           ])
         })
 
-        it("adjusts inventory levels accordingly when removing reservations by line item", async () => {
+        it("should adjust inventory levels accordingly when removing reservations by line item", async () => {
+          const inventoryLevelBefore =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            )
+
+          expect(inventoryLevelBefore).toEqual(
+            expect.objectContaining({ reserved_quantity: 6 })
+          )
+
           await service.deleteReservationItemsByLineItem("line-item-id")
 
           const inventoryLevel =
@@ -543,7 +590,7 @@ moduleIntegrationTestRunner({
           expect(reservationsPostDeleted).toEqual([])
         })
 
-        it("adjusts inventory levels accordingly when removing reservations by line item", async () => {
+        it("should adjust inventory levels accordingly when removing reservations by line item", async () => {
           const inventoryLevelPreDelete =
             await service.retrieveInventoryLevelByItemAndLocation(
               inventoryItem.id,
@@ -570,6 +617,7 @@ moduleIntegrationTestRunner({
 
       describe("deleteInventoryItemLevelByLocationId", () => {
         let inventoryItem: InventoryItemDTO
+
         beforeEach(async () => {
           inventoryItem = await service.create({
             sku: "test-sku",
@@ -581,7 +629,6 @@ moduleIntegrationTestRunner({
               inventory_item_id: inventoryItem.id,
               location_id: "location-1",
               stocked_quantity: 2,
-              reserved_quantity: 6,
             },
             {
               inventory_item_id: inventoryItem.id,
@@ -589,6 +636,12 @@ moduleIntegrationTestRunner({
               stocked_quantity: 2,
             },
           ])
+
+          await service.createReservationItems({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+            quantity: 1,
+          })
         })
 
         it("should remove inventory levels with given location id", async () => {
@@ -601,6 +654,7 @@ moduleIntegrationTestRunner({
               expect.objectContaining({
                 stocked_quantity: 2,
                 location_id: "location-1",
+                reserved_quantity: 1,
               }),
               expect.objectContaining({
                 stocked_quantity: 2,
@@ -741,6 +795,7 @@ moduleIntegrationTestRunner({
 
       describe("retrieveAvailableQuantity", () => {
         let inventoryItem: InventoryItemDTO
+
         beforeEach(async () => {
           inventoryItem = await service.create({
             sku: "test-sku",
@@ -761,7 +816,6 @@ moduleIntegrationTestRunner({
               inventory_item_id: inventoryItem.id,
               location_id: "location-2",
               stocked_quantity: 4,
-              reserved_quantity: 2,
             },
             {
               inventory_item_id: inventoryItem1.id,
@@ -774,6 +828,13 @@ moduleIntegrationTestRunner({
               stocked_quantity: 3,
             },
           ])
+
+          await service.createReservationItems({
+            line_item_id: "test",
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-2",
+            quantity: 2,
+          })
         })
 
         it("should calculate current stocked quantity across locations", async () => {
@@ -781,17 +842,20 @@ moduleIntegrationTestRunner({
             inventoryItem.id,
             ["location-1", "location-2"]
           )
+
           expect(level).toEqual(6)
         })
       })
 
       describe("retrieveStockedQuantity", () => {
         let inventoryItem: InventoryItemDTO
+
         beforeEach(async () => {
           inventoryItem = await service.create({
             sku: "test-sku",
             origin_country: "test-country",
           })
+
           const inventoryItem1 = await service.create({
             sku: "test-sku-1",
             origin_country: "test-country",
@@ -807,7 +871,6 @@ moduleIntegrationTestRunner({
               inventory_item_id: inventoryItem.id,
               location_id: "location-2",
               stocked_quantity: 4,
-              reserved_quantity: 2,
             },
             {
               inventory_item_id: inventoryItem1.id,
@@ -822,7 +885,7 @@ moduleIntegrationTestRunner({
           ])
         })
 
-        it("retrieves stocked location", async () => {
+        it("should retrieve stocked location", async () => {
           const stockedQuantity = await service.retrieveStockedQuantity(
             inventoryItem.id,
             ["location-1", "location-2"]
@@ -831,13 +894,16 @@ moduleIntegrationTestRunner({
           expect(stockedQuantity).toEqual(8)
         })
       })
+
       describe("retrieveReservedQuantity", () => {
         let inventoryItem: InventoryItemDTO
+
         beforeEach(async () => {
           inventoryItem = await service.create({
             sku: "test-sku",
             origin_country: "test-country",
           })
+
           const inventoryItem1 = await service.create({
             sku: "test-sku-1",
             origin_country: "test-country",
@@ -853,19 +919,34 @@ moduleIntegrationTestRunner({
               inventory_item_id: inventoryItem.id,
               location_id: "location-2",
               stocked_quantity: 4,
-              reserved_quantity: 2,
             },
             {
               inventory_item_id: inventoryItem1.id,
               location_id: "location-1",
               stocked_quantity: 3,
-              reserved_quantity: 2,
             },
             {
               inventory_item_id: inventoryItem.id,
               location_id: "location-3",
               stocked_quantity: 3,
-              reserved_quantity: 2,
+            },
+          ])
+
+          await service.createReservationItems([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem1.id,
+              location_id: "location-1",
+              quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-3",
+              quantity: 2,
             },
           ])
         })
@@ -882,45 +963,44 @@ moduleIntegrationTestRunner({
 
       describe("confirmInventory", () => {
         let inventoryItem: InventoryItemDTO
+
         beforeEach(async () => {
           inventoryItem = await service.create({
             sku: "test-sku",
             origin_country: "test-country",
           })
 
-          await service.createInventoryLevels([
-            {
-              inventory_item_id: inventoryItem.id,
-              location_id: "location-1",
-              stocked_quantity: 4,
-            },
-            {
-              inventory_item_id: inventoryItem.id,
-              location_id: "location-2",
-              stocked_quantity: 4,
-              reserved_quantity: 2,
-            },
-          ])
+          await service.createInventoryLevels({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+            stocked_quantity: 4,
+          })
+
+          await service.createReservationItems({
+            inventory_item_id: inventoryItem.id,
+            location_id: "location-1",
+            quantity: 2,
+          })
         })
 
         it("should return true if quantity is less than or equal to available quantity", async () => {
           const reservedQuantity = await service.confirmInventory(
             inventoryItem.id,
-            "location-1",
+            ["location-1"],
             2
           )
 
           expect(reservedQuantity).toBeTruthy()
         })
 
-        it("should return true if quantity is more than available quantity", async () => {
+        it("should return false if quantity is more than available quantity", async () => {
           const reservedQuantity = await service.confirmInventory(
             inventoryItem.id,
-            "location-1",
+            ["location-1"],
             3
           )
 
-          expect(reservedQuantity).toBeTruthy()
+          expect(reservedQuantity).toBeFalsy()
         })
       })
     })

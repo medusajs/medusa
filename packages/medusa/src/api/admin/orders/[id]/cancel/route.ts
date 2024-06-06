@@ -8,7 +8,7 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 
-export const GET = async (
+export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {

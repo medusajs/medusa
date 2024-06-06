@@ -76,6 +76,7 @@
     "back": "Back",
     "close": "Close",
     "continue": "Continue",
+    "reset": "Reset",
     "confirm": "Confirm",
     "edit": "Edit",
     "download": "Download",
@@ -572,6 +573,7 @@
       "inStock": "In stock",
       "itemsToFulfillDesc": "Choose items and quantities to fulfill",
       "locationDescription": "Choose which location you want to fulfill items from.",
+      "sendNotificationHint": "Notify customers about the created fulfillment.",
       "error": {
         "wrongQuantity": "Only one item is available for fulfillment",
         "wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",
