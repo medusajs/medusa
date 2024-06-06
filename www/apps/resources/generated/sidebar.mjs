@@ -7037,6 +7037,13 @@ export const generatedSidebar = [
                 "path": "/storefront-development/products/categories/list",
                 "title": "List Categories",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/categories/retrieve",
+                "title": "Retrieve a Category",
+                "children": []
               }
             ]
           }

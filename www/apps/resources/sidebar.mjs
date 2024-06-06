@@ -1746,6 +1746,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 path: "/storefront-development/products/categories/list",
                 title: "List Categories",
               },
+              {
+                path: "/storefront-development/products/categories/retrieve",
+                title: "Retrieve a Category",
+              },
             ],
           },
         ],
