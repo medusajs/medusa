@@ -31,7 +31,7 @@ function getDefaultDriverOptions(clientUrl: string) {
   }
 
   if (clientUrl) {
-    return clientUrl.match(/localhost|ssl_mode=disable|ssl_mode=false/i)
+    return clientUrl.match(/localhost|ssl_mode=(disable|false)/i)
       ? localOptions
       : remoteOptions
   }
