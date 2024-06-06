@@ -8,9 +8,9 @@ import {
   IconButton,
   Input,
   Label,
+  Switch,
   Text,
   clx,
-  Switch,
 } from "@medusajs/ui"
 import {
   Controller,
@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next"
 
 import { Form } from "../../../../../../../components/common/form"
 import { SortableList } from "../../../../../../../components/common/sortable-list"
+import { SwitchBox } from "../../../../../../../components/common/switch-box"
 import { ChipInput } from "../../../../../../../components/inputs/chip-input"
 import { ProductCreateSchemaType } from "../../../../types"
 import { decorateVariantsWithDefaultValues } from "../../../../utils"
@@ -285,46 +286,23 @@ export const ProductCreateVariantsSection = ({
   return (
     <div id="variants" className="flex flex-col gap-y-8">
       <Heading level="h2">{t("products.create.variants.header")}</Heading>
-      <Form.Field
+      <SwitchBox
         control={form.control}
         name="enable_variants"
-        render={({ field: { value, onChange, ...field } }) => {
-          return (
-            <Form.Item>
-              <div className="shadow-elevation-card-rest bg-ui-bg-field flex flex-row gap-x-4 rounded-xl p-2">
-                <Form.Control>
-                  <Switch
-                    checked={value}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        form.setValue("options", [
-                          {
-                            title: "",
-                            values: [],
-                          },
-                        ])
-                        form.setValue("variants", [])
-                      } else {
-                        createDefaultOptionAndVariant()
-                      }
-
-                      onChange(!!checked)
-                    }}
-                    {...field}
-                    className="mt-1"
-                  />
-                </Form.Control>
-                <div className="flex flex-col">
-                  <Form.Label>
-                    {t("products.create.variants.subHeadingTitle")}
-                  </Form.Label>
-                  <Form.Hint>
-                    {t("products.create.variants.subHeadingDescription")}
-                  </Form.Hint>
-                </div>
-              </div>
-            </Form.Item>
-          )
+        label={t("products.create.variants.subHeadingTitle")}
+        description={t("products.create.variants.subHeadingDescription")}
+        onCheckedChange={(checked) => {
+          if (checked) {
+            form.setValue("options", [
+              {
+                title: "",
+                values: [],
+              },
+            ])
+            form.setValue("variants", [])
+          } else {
+            createDefaultOptionAndVariant()
+          }
         }}
       />
       {watchedAreVariantsEnabled && (
@@ -388,6 +366,9 @@ export const ProductCreateVariantsSection = ({
                                   {...form.register(
                                     `options.${index}.title` as const
                                   )}
+                                  placeholder={t(
+                                    "products.fields.options.optionTitlePlaceholder"
+                                  )}
                                 />
                                 <div className="flex items-center px-2 py-1.5">
                                   <Label
@@ -417,6 +398,9 @@ export const ProductCreateVariantsSection = ({
                                         {...field}
                                         variant="contrast"
                                         onChange={handleValueChange}
+                                        placeholder={t(
+                                          "products.fields.options.variantionsPlaceholder"
+                                        )}
                                       />
                                     )
                                   }}

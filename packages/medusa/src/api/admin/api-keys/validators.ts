@@ -11,7 +11,7 @@ export const AdminGetApiKeyParams = createSelectParams()
 export type AdminGetApiKeysParamsType = z.infer<typeof AdminGetApiKeysParams>
 export const AdminGetApiKeysParams = createFindParams({
   offset: 0,
-  limit: 50,
+  limit: 20,
 }).merge(
   z.object({
     q: z.string().optional(),

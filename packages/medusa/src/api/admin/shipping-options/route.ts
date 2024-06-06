@@ -1,25 +1,22 @@
 import { createShippingOptionsWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
-  AdminShippingOptionListResponse,
-  AdminShippingOptionRetrieveResponse,
-} from "@medusajs/types"
-import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
+import { refetchShippingOption } from "./helpers"
 import {
   AdminCreateShippingOptionType,
   AdminGetShippingOptionsParamsType,
 } from "./validators"
-import { refetchShippingOption } from "./helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetShippingOptionsParamsType>,
-  res: MedusaResponse<AdminShippingOptionListResponse>
+  res: MedusaResponse<HttpTypes.AdminShippingOptionListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -44,7 +41,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateShippingOptionType>,
-  res: MedusaResponse<AdminShippingOptionRetrieveResponse>
+  res: MedusaResponse<HttpTypes.AdminShippingOptionResponse>
 ) => {
   const shippingOptionPayload = req.validatedBody
 

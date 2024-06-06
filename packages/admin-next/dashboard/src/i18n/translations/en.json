@@ -76,6 +76,7 @@
     "back": "Back",
     "close": "Close",
     "continue": "Continue",
+    "reset": "Reset",
     "confirm": "Confirm",
     "edit": "Edit",
     "download": "Download",
@@ -200,8 +201,6 @@
     "attributes": "Attributes",
     "editProduct": "Edit Product",
     "editAttributes": "Edit Attributes",
-    "organization": "Organize",
-    "editOrganization": "Edit Organization",
     "editOptions": "Edit Options",
     "editPrices": "Edit prices",
     "media": {
@@ -219,7 +218,11 @@
       "galleryLabel": "Gallery",
       "downloadImageLabel": "Download current image",
       "deleteImageLabel": "Delete current image",
-      "noMediaLabel": "The product has no associated media."
+      "emptyState": {
+        "header": "No media yet",
+        "description": "Add media to the product to showcase it in your storefront.",
+        "action": "Add media"
+      }
     },
     "discountableHint": "When unchecked discounts will not be applied to this product.",
     "noSalesChannels": "Not available in any sales channels",
@@ -291,7 +294,9 @@
         "hint": "Options are used to define the color, size, etc. of the product",
         "add": "Add option",
         "optionTitle": "Option title",
-        "variations": "Variations (comma-separated)"
+        "optionTitlePlaceholder": "Color",
+        "variations": "Variations (comma-separated)",
+        "variantionsPlaceholder": "Red, Blue, Green"
       },
       "variants": {
         "label": "Product variants",
@@ -334,6 +339,15 @@
       "create": {
         "header": "Create Option",
         "successToast": "Option {{title}} was successfully created."
+      }
+    },
+    "organization": {
+      "header": "Organize",
+      "edit": {
+        "header": "Edit Organization",
+        "toasts": {
+          "success": "Successfully updated the organization of {{title}}."
+        }
       }
     },
     "toasts": {
@@ -559,6 +573,7 @@
       "inStock": "In stock",
       "itemsToFulfillDesc": "Choose items and quantities to fulfill",
       "locationDescription": "Choose which location you want to fulfill items from.",
+      "sendNotificationHint": "Notify customers about the created fulfillment.",
       "error": {
         "wrongQuantity": "Only one item is available for fulfillment",
         "wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",

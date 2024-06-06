@@ -1,4 +1,4 @@
-import { Table, LegacyCodeTabs } from "docs-ui"
+import { Table, CodeTabs, CodeTab } from "docs-ui"
 
 export const metadata = {
   title: `Medusa JS Client`,
@@ -267,13 +267,11 @@ Once the user or customer is authenticated successfully, the Medusa client autom
 
 For example:
 
-<LegacyCodeTabs tabs={[
-  {
-    label: "Admin User",
-    value: "user",
-    code: {
-      lang: "ts",
-      source: `import Medusa from "@medusajs/medusa-js"
+<CodeTabs group="client-authentication-type">
+  <CodeTab label="Admin User" value="user">
+
+    ```ts
+    import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({
       baseUrl: MEDUSA_BACKEND_URL,
       maxRetries: 3,
@@ -282,15 +280,14 @@ For example:
       email: "user@example.com",
       password: "supersecret",
     })
-    // send authenticated requests now`
-    }
-  },
-  {
-    label: "Customer",
-    value: "customer",
-    code: {
-      lang: "ts",
-      source: `import Medusa from "@medusajs/medusa-js"
+    // send authenticated requests now
+    ```
+
+  </CodeTab>
+  <CodeTab label="Customer" value="customer">
+
+    ```ts
+    import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({
       baseUrl: MEDUSA_BACKEND_URL,
       maxRetries: 3,
@@ -299,10 +296,11 @@ For example:
       email: "user@example.com",
       password: "supersecret",
     })
-    // send authenticated requests now`
-    }
-  }
-]} group="client-authentication-type" />
+    // send authenticated requests now
+    ```
+
+  </CodeTab>
+</CodeTabs>
 
 ### Cookie Session ID
 
@@ -314,13 +312,11 @@ Once the user or customer is authenticated successfully, the Medusa client sets 
 
 For example:
 
-<LegacyCodeTabs tabs={[
-  {
-    label: "Admin User",
-    value: "user",
-    code: {
-      lang: "ts",
-      source: `import Medusa from "@medusajs/medusa-js"
+<CodeTabs group="client-authentication-type">
+  <CodeTab label="Admin User" value="user">
+
+    ```ts
+    import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({
       baseUrl: MEDUSA_BACKEND_URL,
       maxRetries: 3,
@@ -329,15 +325,14 @@ For example:
       email: "user@example.com",
       password: "supersecret",
     })
-    // send authenticated requests now`
-    }
-  },
-  {
-    label: "Customer",
-    value: "customer",
-    code: {
-      lang: "ts",
-      source: `import Medusa from "@medusajs/medusa-js"
+    // send authenticated requests now
+    ```
+
+  </CodeTab>
+  <CodeTab label="Customer" value="customer">
+
+    ```ts
+    import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({
       baseUrl: MEDUSA_BACKEND_URL,
       maxRetries: 3,
@@ -346,10 +341,11 @@ For example:
       email: "user@example.com",
       password: "user@example.com",
     })
-    // send authenticated requests now`
-    }
-  }
-]} group="client-authentication-type" />
+    // send authenticated requests now
+    ```
+
+  </CodeTab>
+</CodeTabs>
 
 ### API Key
 
@@ -357,13 +353,11 @@ You can authenticate admin users with a personal API Token.
 
 If a user doesn't have a personal API token, create one with the [admin.users.update](/references/js-client/AdminUsersResource#update) method or the [Update User API route](https://docs.medusajs.com/api/admin#users_postusersuser):
 
-<LegacyCodeTabs tabs={[
-  {
-    label: "JS Client",
-    value: "js-client",
-    code: {
-      lang: "ts",
-      source: `import Medusa from "@medusajs/medusa-js"
+<CodeTabs group="client-type">
+  <CodeTab label="JS Client" value="js-client">
+
+    ```ts
+    import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({
       baseUrl: MEDUSA_BACKEND_URL,
       maxRetries: 3,
@@ -374,23 +368,23 @@ If a user doesn't have a personal API token, create one with the [admin.users.up
     })
     .then(({ user }) => {
       console.log(user.api_token)
-    })`
-    }
-  },
-  {
-    label: "cURL",
-    value: "curl",
-    code: {
-      lang: "bash",
-      source: `curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \\
+    })
+    ```
+
+  </CodeTab>
+  <CodeTab label="cURL" value="curl">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \\
     -H 'Cookie: connect.sid={sid}' \\
     -H 'Content-Type: application/json' \\
     --data-raw '{
         "api_token": "{api_token}"
-    }'`
-    }
-  }
-]} group="client-type" />
+    }'
+    ```
+
+  </CodeTab>
+</CodeTabs>
 
 Then, initialize the Medusa client passing it the `apiKey` option:
 

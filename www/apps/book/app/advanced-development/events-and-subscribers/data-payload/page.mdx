@@ -20,10 +20,10 @@ export const highlights = [
   ["9", '"data" in data ? data.data.id : data.id', "The payload data is either in `data.data` or directly in `data`."]
 ]
 
-```ts title="src/subscribers/product-created.ts" highlights={highlights}
-import {
+```ts title="src/subscribers/product-created.ts" highlights={highlights} collapsibleLines="1-5" expandButtonLabel="Show Imports"
+import type {
   SubscriberArgs,
-  type SubscriberConfig,
+  SubscriberConfig,
 } from "@medusajs/medusa"
 
 export default async function productCreateHandler({

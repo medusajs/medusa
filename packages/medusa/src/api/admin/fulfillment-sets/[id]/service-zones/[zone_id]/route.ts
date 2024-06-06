@@ -5,7 +5,6 @@ import {
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   AdminFulfillmentSetResponse,
-  AdminServiceZoneDeleteResponse,
   AdminServiceZoneResponse,
   IFulfillmentModuleService,
 } from "@medusajs/types"
@@ -94,7 +93,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<AdminServiceZoneDeleteResponse>
+  res: MedusaResponse
 ) => {
   const { id, zone_id } = req.params
 
@@ -120,7 +119,7 @@ export const DELETE = async (
 
   res.status(200).json({
     id: zone_id,
-    object: "service-zone",
+    object: "service_zone",
     deleted: true,
     parent: fulfillmentSet,
   })

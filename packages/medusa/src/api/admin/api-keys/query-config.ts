@@ -5,6 +5,7 @@ export const defaultAdminApiKeyFields = [
   "redacted",
   "type",
   "last_used_at",
+  "updated_at",
   "created_at",
   "created_by",
   "revoked_at",

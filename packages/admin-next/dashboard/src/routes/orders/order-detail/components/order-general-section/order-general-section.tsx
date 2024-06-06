@@ -15,6 +15,7 @@ import {
   getOrderFulfillmentStatus,
   getOrderPaymentStatus,
 } from "../../../../../lib/order-helpers"
+import { useCancelOrder } from "../../../../../hooks/api/orders"
 
 type OrderGeneralSectionProps = {
   order: Order
@@ -24,7 +25,7 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = { mutateAsync: () => {} } // cancel order
+  const { mutateAsync } = useCancelOrder(order.id)
 
   const handleCancel = async () => {
     const res = await prompt({
@@ -40,7 +41,7 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
       return
     }
 
-    await mutateAsync(undefined)
+    await mutateAsync()
   }
 
   return (
@@ -60,17 +61,18 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
       <div className="flex items-center gap-x-4">
         <div className="flex items-center gap-x-1.5">
           <PaymentBadge order={order} />
+          {/*TODO: SHOW ORDER STATUS INSTEAD OF FULFILLMENT STATUS HERE - if the last fulfillment is canceled it looks like the order is canceled*/}
           <FulfillmentBadge order={order} />
         </div>
         <ActionMenu
           groups={[
             {
               actions: [
-                // {
-                //   label: t("actions.cancel"),
-                //   onClick: handleCancel,
-                //   icon: <XCircle />,
-                // },
+                {
+                  label: t("actions.cancel"),
+                  onClick: handleCancel,
+                  icon: <XCircle />,
+                },
               ],
             },
           ]}
@@ -82,11 +84,6 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
 
 const FulfillmentBadge = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
-
-  /**
-   * TODO: revisit when Order<>Fulfillment are linked
-   */
-  return null
 
   const { label, color } = getOrderFulfillmentStatus(
     t,

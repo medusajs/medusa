@@ -1,4 +1,4 @@
-import { Table, LegacyCodeTabs } from "docs-ui"
+import { Table, CodeTabs, CodeTab } from "docs-ui"
 
 export const metadata = {
   title: `Medusa React`,
@@ -216,13 +216,11 @@ There are two ways to authenticate an admin user:
 
 For example:
 
-<LegacyCodeTabs tabs={[
-  {
-    value: "useadminlogin",
-    label: "useAdminLogin hook",
-    code: {
-      lang: "ts",
-      source: `import React from "react"
+<CodeTabs group="admin-auth">
+  <CodeTab label="useAdminLogin hook" value="useadminlogin">
+
+    ```ts
+    import React from "react"
     import { useAdminLogin } from "medusa-react"
 
     const Login = () => {
@@ -244,15 +242,14 @@ For example:
       // ...
     }
 
-    export default Login`
-    }
-  },
-  {
-    value: "apikey",
-    label: "apikey Option", 
-    code: {
-      lang: "tsx",
-      source: `import { MedusaProvider } from "medusa-react"
+    export default Login
+    ```
+
+  </CodeTab>
+  <CodeTab label="apikey Option" value="apikey">
+
+    ```tsx
+    import { MedusaProvider } from "medusa-react"
     import Storefront from "./Storefront"
     import { QueryClient } from "@tanstack/react-query"
     import React from "react"
@@ -271,10 +268,11 @@ For example:
       )
     }
 
-    export default App`
-    }
-  }
-]} group="admin-auth" />
+    export default App
+    ```
+
+  </CodeTab>
+</CodeTabs>
 
 ### Customer Authentication
 

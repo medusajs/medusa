@@ -3,7 +3,11 @@ import {
   ShippingOptionPriceType as ShippingOptionPriceTypeEnum,
 } from "@medusajs/utils"
 import { z } from "zod"
-import { createFindParams, createSelectParams } from "../../utils/validators"
+import {
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
 export type AdminGetShippingOptionParamsType = z.infer<
   typeof AdminGetShippingOptionParams
@@ -16,7 +20,21 @@ export type AdminGetShippingOptionsParamsType = z.infer<
 export const AdminGetShippingOptionsParams = createFindParams({
   offset: 0,
   limit: 20,
-})
+}).merge(
+  z.object({
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    q: z.string().optional(),
+    service_zone_id: z.union([z.string(), z.array(z.string())]).optional(),
+    shipping_profile_id: z.union([z.string(), z.array(z.string())]).optional(),
+    provider_id: z.union([z.string(), z.array(z.string())]).optional(),
+    shipping_option_type_id: z
+      .union([z.string(), z.array(z.string())])
+      .optional(),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
+  })
+)
 
 /**
  * SHIPPING OPTIONS RULES
@@ -127,6 +145,8 @@ export const AdminUpdateShippingOption = z
     )
       .array()
       .optional(),
-    rules: AdminUpdateShippingOptionRule.or(AdminCreateShippingOptionRule).array().optional(),
+    rules: AdminUpdateShippingOptionRule.or(AdminCreateShippingOptionRule)
+      .array()
+      .optional(),
   })
   .strict()
