@@ -7044,6 +7044,20 @@ export const generatedSidebar = [
                 "path": "/storefront-development/products/categories/retrieve",
                 "title": "Retrieve a Category",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/categories/products",
+                "title": "Retrieve a Category's Products",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/categories/nested-categories",
+                "title": "Retrieve Nested Categories",
+                "children": []
               }
             ]
           }

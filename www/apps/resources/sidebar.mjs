@@ -1750,6 +1750,14 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 path: "/storefront-development/products/categories/retrieve",
                 title: "Retrieve a Category",
               },
+              {
+                path: "/storefront-development/products/categories/products",
+                title: "Retrieve a Category's Products",
+              },
+              {
+                path: "/storefront-development/products/categories/nested-categories",
+                title: "Retrieve Nested Categories",
+              },
             ],
           },
         ],

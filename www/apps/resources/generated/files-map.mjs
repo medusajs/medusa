@@ -860,8 +860,16 @@ export const filesMap = [
     "pathname": "/storefront-development/products/categories/list"
   },
   {
+    "filePath": "/www/apps/resources/app/storefront-development/products/categories/nested-categories/page.mdx",
+    "pathname": "/storefront-development/products/categories/nested-categories"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/products/categories/page.mdx",
     "pathname": "/storefront-development/products/categories"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/categories/products/page.mdx",
+    "pathname": "/storefront-development/products/categories/products"
   },
   {
     "filePath": "/www/apps/resources/app/storefront-development/products/categories/retrieve/page.mdx",
