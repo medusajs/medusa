@@ -56,10 +56,19 @@ export const normalizeVariants = (
     manage_inventory: variant.manage_inventory || undefined,
     allow_backorder: variant.allow_backorder || undefined,
     // TODO: inventory - should be added to the workflow
-    prices: Object.entries(variant.prices || {}).map(([key, value]: any) => ({
-      currency_code: key,
-      amount: getDbAmount(castNumber(value), key),
-    })),
+    prices: Object.entries(variant.prices || {})
+      .map(([key, value]: any) => {
+        if (key.startsWith("reg_")) {
+          // TODO: route needs to accept region prices as well
+          return undefined
+        } else {
+          return {
+            currency_code: key,
+            amount: getDbAmount(castNumber(value), key),
+          }
+        }
+      })
+      .filter((v) => !!v),
   }))
 }
 
@@ -70,19 +79,8 @@ export const decorateVariantsWithDefaultValues = (
     ...variant,
     title: variant.title || "",
     sku: variant.sku || "",
-    ean: variant.ean || "",
-    upc: variant.upc || "",
-    barcode: variant.barcode || "",
     manage_inventory: variant.manage_inventory || false,
     allow_backorder: variant.allow_backorder || false,
     inventory_kit: variant.inventory_kit || false,
-    mid_code: variant.mid_code || "",
-    hs_code: variant.hs_code || "",
-    width: variant.width || "",
-    height: variant.height || "",
-    weight: variant.weight || "",
-    length: variant.length || "",
-    material: variant.material || "",
-    origin_country: variant.origin_country || "",
   }))
 }
