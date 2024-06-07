@@ -22,5 +22,7 @@ export * from "./sales-channel"
 export * from "./shipping-option"
 export * from "./shipping-profile"
 export * from "./stock-locations"
-export * from "./tax"
+export * from "./tax-rate"
+export * from "./tax-region"
 export * from "./user"
+

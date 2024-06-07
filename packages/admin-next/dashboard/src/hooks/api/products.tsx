@@ -245,7 +245,7 @@ export const useCreateProduct = (
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: any) => sdk.admin.products.create(payload),
+    mutationFn: (payload: any) => sdk.admin.product.create(payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)

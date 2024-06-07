@@ -17,9 +17,15 @@ export const PromotionDetail = () => {
 
   const { id } = useParams()
   const { promotion, isLoading } = usePromotion(id!, { initialData })
-  const { rules } = usePromotionRules(id!, "rules")
-  const { rules: targetRules } = usePromotionRules(id!, "target-rules")
-  const { rules: buyRules } = usePromotionRules(id!, "buy-rules")
+  const query: Record<string, string> = {}
+
+  if (promotion?.type === "buyget") {
+    query.promotion_type = promotion.type
+  }
+
+  const { rules } = usePromotionRules(id!, "rules", query)
+  const { rules: targetRules } = usePromotionRules(id!, "target-rules", query)
+  const { rules: buyRules } = usePromotionRules(id!, "buy-rules", query)
 
   if (isLoading || !promotion) {
     return <div>Loading...</div>
