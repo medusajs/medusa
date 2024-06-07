@@ -33,7 +33,6 @@ export const InventoryDetail = () => {
   if (isLoading) {
     return <div>Loading...</div>
   }
-
   if (isError || !inventory_item) {
     if (error) {
       throw error

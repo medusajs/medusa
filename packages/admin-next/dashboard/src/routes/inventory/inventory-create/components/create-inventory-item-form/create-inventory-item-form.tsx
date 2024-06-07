@@ -21,12 +21,9 @@ import {
 } from "../../../../../components/route-modal"
 import { CreateInventoryAvailabilityForm } from "./create-inventory-availability-form"
 import { Form } from "../../../../../components/common/form"
-import { useStockLocations } from "../../../../../hooks/api/stock-locations"
-import { Combobox } from "../../../../../components/inputs/combobox"
-import { useComboboxData } from "../../../../../hooks/use-combobox-data"
-import { client } from "../../../../../lib/client"
-import { z } from "zod"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
+import { useCreateInventoryItem } from "../../../../../hooks/api/inventory"
+import { sdk } from "../../../../../lib/client"
 
 enum Tab {
   DETAILS = "details",
@@ -38,21 +35,22 @@ type StepStatus = {
 }
 
 const CreateInventoryItemSchema = zod.object({
-  title: z.string().min(1),
+  title: zod.string().min(1),
 
-  sku: z.string().optional(),
-  hs_code: z.string().optional(),
-  weight: z.number().optional(),
-  length: z.number().optional(),
-  height: z.number().optional(),
-  width: z.number().optional(),
-  origin_country: z.string().optional(),
-  mid_code: z.string().optional(),
-  material: z.string().optional(),
-  description: z.string().optional(),
-  requires_shipping: z.boolean().optional(),
-  thumbnail: z.string().optional(),
-  // metadata: z.record(z.string(), z.unknown()).optional(),
+  sku: zod.string().optional(),
+  hs_code: zod.string().optional(),
+  weight: zod.number().optional(),
+  length: zod.number().optional(),
+  height: zod.number().optional(),
+  width: zod.number().optional(),
+  origin_country: zod.string().optional(),
+  mid_code: zod.string().optional(),
+  material: zod.string().optional(),
+  description: zod.string().optional(),
+  requires_shipping: zod.boolean().optional(),
+  thumbnail: zod.string().optional(),
+  locations: zod.record(zod.string(), zod.number().optional()).optional(),
+  // metadata: zod.record(zod.string(), zod.unknown()).optional(),
 })
 
 type CreateInventoryItemFormProps = {}
@@ -61,20 +59,6 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [tab, setTab] = React.useState<Tab>(Tab.DETAILS)
-
-  // const { stock_locations } = useStockLocations({
-  //   limit: 1000,
-  // })
-
-  // const locations = useComboboxData({
-  //   queryKey: ["locations"],
-  //   queryFn: client.stockLocations.list,
-  //   getOptions: (data) =>
-  //     data.stock_locations.map((location) => ({
-  //       label: location.name,
-  //       value: location.id,
-  //     })),
-  // })
 
   const form = useForm<zod.infer<typeof CreateInventoryItemSchema>>({
     defaultValues: {
@@ -95,12 +79,21 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
     resolver: zodResolver(CreateInventoryItemSchema),
   })
 
-  const { mutateAsync: createInventoryItem, isPending: isLoading } = {}
+  const { mutateAsync: createInventoryItem, isPending: isLoading } =
+    useCreateInventoryItem()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await createInventoryItem({
-      title: data.title,
-      sku: data.sku,
+    const { locations, ...payload } = data
+
+    const { inventory_item } = await createInventoryItem(payload)
+
+    await sdk.admin.inventoryItem.batchPostLevels(inventory_item.id, {
+      create: Object.entries(locations)
+        .filter(([_, quantiy]) => !!quantiy)
+        .map(([location_id, stocked_quantity]) => ({
+          location_id,
+          stocked_quantity,
+        })),
     })
 
     handleSuccess()

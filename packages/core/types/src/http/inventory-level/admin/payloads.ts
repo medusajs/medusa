@@ -10,7 +10,7 @@ export interface AdminCreateInventoryLevel {
 }
 
 export interface AdminBatchPostInventoryLevelLocation {
-  create: AdminCreateInventoryLevel[]
-  update: AdminUpdateInventoryLevel[]
-  delete: never // TODO - not implemented
+  create?: AdminCreateInventoryLevel[]
+  update?: AdminUpdateInventoryLevel[]
+  delete?: never // TODO - not implemented
 }

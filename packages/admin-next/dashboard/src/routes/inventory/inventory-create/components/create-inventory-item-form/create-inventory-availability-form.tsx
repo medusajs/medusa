@@ -1,151 +1,70 @@
-import { CurrencyDTO, HttpTypes, ProductVariantDTO } from "@medusajs/types"
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo } from "react"
+
+import { StockLocationDTO } from "@medusajs/types"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import * as zod from "zod"
+import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
+import { createDataGridHelper } from "../../../../../components/data-grid/utils"
+import { DataGridReadOnlyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
+import { DataGridNumberCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-number-cell"
+import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 
-import { CurrencyCell } from "../../../../../components/grid/grid-cells/common/currency-cell"
-import { DataGrid } from "../../../../../components/grid/data-grid"
-import { DataGridMeta } from "../../../../../components/grid/types"
-import { useCurrencies } from "../../../../../hooks/api/currencies"
-import { ExtendedProductDTO } from "../../../../../types/api-responses"
-import { useRegions } from "../../../../../hooks/api/regions"
-import { useStore } from "../../../../../hooks/api/store"
-
-const PricingCreateSchemaType = zod.record(
-  zod.object({
-    currency_prices: zod.record(zod.string().optional()),
-    region_prices: zod.record(zod.string().optional()),
-  })
-)
-
-type PricingPricesFormProps = {
-  form: UseFormReturn<typeof PricingCreateSchemaType>
+type Props = {
+  form: UseFormReturn<{}>
 }
 
-enum ColumnType {
-  REGION = "region",
-  CURRENCY = "currency",
-}
+export const CreateInventoryAvailabilityForm = ({ form }: Props) => {
+  const { isPending, stock_locations = [] } = useStockLocations({ limit: 999 })
 
-type EnabledColumnRecord = Record<string, ColumnType>
-
-export const CreateInventoryAvailabilityForm = ({
-  form,
-}: PricingPricesFormProps) => {
-  const {
-    store,
-    isLoading: isStoreLoading,
-    isError: isStoreError,
-    error: storeError,
-  } = useStore()
-  const { currencies, isLoading: isCurrenciesLoading } = useCurrencies(
-    {
-      code: store?.supported_currency_codes,
-    },
-    {
-      enabled: !!store,
-    }
-  )
-
-  const { regions } = useRegions()
-
-  const [enabledColumns, setEnabledColumns] = useState<EnabledColumnRecord>({})
-
-  useEffect(() => {
-    if (
-      store?.default_currency_code &&
-      Object.keys(enabledColumns).length === 0
-    ) {
-      setEnabledColumns({
-        ...enabledColumns,
-        [store.default_currency_code]: ColumnType.CURRENCY,
-      })
-    }
-  }, [store, enabledColumns])
-
-  const columns = useColumns({
-    currencies,
-    regions,
-  })
-
-  const initializing =
-    isStoreLoading || isCurrenciesLoading || !store || !currencies
-
-  if (isStoreError) {
-    throw storeError
-  }
-
-  const data = useMemo(
-    () => [[...(currencies || []), ...(regions || [])]],
-    [currencies, regions]
-  )
+  const columns = useColumns()
 
   return (
     <div className="flex size-full flex-col divide-y overflow-hidden">
-      <DataGrid
-        columns={columns}
-        data={data}
-        isLoading={initializing}
-        state={form}
-      />
+      {isPending ? (
+        <div>Loading...</div>
+      ) : (
+        <DataGridRoot columns={columns} data={stock_locations} state={form} />
+      )}
     </div>
   )
 }
 
-const columnHelper = createColumnHelper<
-  ExtendedProductDTO | ProductVariantDTO
->()
+const columnHelper = createDataGridHelper<StockLocationDTO>()
 
-const useColumns = ({
-  currencies = [],
-  regions = [],
-}: {
-  currencies?: CurrencyDTO[]
-  regions?: HttpTypes.AdminRegion[]
-}) => {
+const useColumns = () => {
   const { t } = useTranslation()
 
-  const colDefs: ColumnDef<ExtendedProductDTO | ProductVariantDTO>[] =
-    useMemo(() => {
-      return [
-        ...currencies.map((currency) => {
-          return columnHelper.display({
-            header: t("fields.priceTemplate", {
-              regionOrCountry: currency.code.toUpperCase(),
-            }),
-            cell: ({ row, table }) => {
-              return (
-                <CurrencyCell
-                  currency={currency}
-                  meta={table.options.meta as DataGridMeta<any>}
-                  field={`currency_prices.${currency.code}`}
-                />
-              )
-            },
-          })
-        }),
-        ...regions.map((region) => {
-          return columnHelper.display({
-            header: t("fields.priceTemplate", {
-              regionOrCountry: region.name,
-            }),
-            cell: ({ row, table }) => {
-              return (
-                <CurrencyCell
-                  currency={currencies.find(
-                    (c) => c.code === region.currency_code
-                  )}
-                  meta={table.options.meta as DataGridMeta<any>}
-                  field={`region_prices.${region.id}`}
-                />
-              )
-            },
-          })
-        }),
-      ]
-    }, [t, currencies, regions])
-
-  return colDefs
+  return useMemo(
+    () => [
+      columnHelper.column({
+        id: "location",
+        header: () => (
+          <div className="flex size-full items-center overflow-hidden">
+            <span className="truncate">{t("locations.domain")}</span>
+          </div>
+        ),
+        cell: ({ row }) => {
+          return (
+            <DataGridReadOnlyCell>{row.original.name}</DataGridReadOnlyCell>
+          )
+        },
+        disableHidding: true,
+      }),
+      columnHelper.column({
+        id: "in-stock",
+        name: t("fields.inStock"),
+        header: t("fields.inStock"),
+        cell: (context) => {
+          return (
+            <DataGridNumberCell
+              min={0}
+              context={context}
+              field={`locations.${context.row.original.id}`}
+            />
+          )
+        },
+      }),
+    ],
+    [t]
+  )
 }
