@@ -7,6 +7,7 @@ const { Client } = pg
 const DB_REGEX = /DATABASE_URL=(?<url>.+?)/
 const DEFAULT_PROJECT_NAME = "my-medusa-store"
 const DEFAULT_DB_NAME = "cma-test"
+// snippet of the success message
 const SUCCESS_MESSAGE = "Change to the `my-medusa-store` directory to explore your Medusa"
 const MIGRATIONS_MESSAGE = "Running Migrations..."
 const basePath = path.resolve(__dirname, `../../`)
