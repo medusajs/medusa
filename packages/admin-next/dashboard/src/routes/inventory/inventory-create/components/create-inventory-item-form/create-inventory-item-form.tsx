@@ -24,6 +24,7 @@ import { Form } from "../../../../../components/common/form"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
 import { useCreateInventoryItem } from "../../../../../hooks/api/inventory"
 import { sdk } from "../../../../../lib/client"
+import { optionalInt } from "../../../../../lib/validation"
 
 enum Tab {
   DETAILS = "details",
@@ -39,10 +40,10 @@ const CreateInventoryItemSchema = zod.object({
 
   sku: zod.string().optional(),
   hs_code: zod.string().optional(),
-  weight: zod.number().optional(),
-  length: zod.number().optional(),
-  height: zod.number().optional(),
-  width: zod.number().optional(),
+  weight: optionalInt,
+  length: optionalInt,
+  height: optionalInt,
+  width: optionalInt,
   origin_country: zod.string().optional(),
   mid_code: zod.string().optional(),
   material: zod.string().optional(),
@@ -83,7 +84,18 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
     useCreateInventoryItem()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const { locations, ...payload } = data
+    let { locations, ...payload } = data
+
+    for (const k in payload) {
+      if (payload[k] === "") {
+        delete payload[k]
+        continue
+      }
+
+      if (["weight", "length", "height", "width"].includes(k)) {
+        payload[k] = parseInt(payload[k])
+      }
+    }
 
     const { inventory_item } = await createInventoryItem(payload)
 
@@ -105,10 +117,22 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
   })
 
   const onTabChange = React.useCallback(async (value: Tab) => {
+    const result = await form.trigger()
+
+    if (!result) {
+      return
+    }
+
     setTab(value)
   }, [])
 
   const onNext = React.useCallback(async () => {
+    const result = await form.trigger()
+
+    if (!result) {
+      return
+    }
+
     switch (tab) {
       case Tab.DETAILS: {
         setTab(Tab.AVAILABILITY)
@@ -183,7 +207,7 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
                 size="small"
                 className="whitespace-nowrap"
                 isLoading={isLoading}
-                onClick={onNext}
+                onClick={tab !== Tab.AVAILABILITY ? onNext : undefined}
                 key={tab === Tab.AVAILABILITY ? "details" : "pricing"}
                 type={tab === Tab.AVAILABILITY ? "submit" : "button"}
               >

@@ -5,9 +5,12 @@ import { DataGridCellContainer } from "./data-grid-cell-container"
 export const DataGridNumberCell = <TData, TValue = any>({
   field,
   context,
-  min,
-  max,
-}: DataGridCellProps<TData, TValue> & { min?: number; max?: number }) => {
+  ...rest
+}: DataGridCellProps<TData, TValue> & {
+  min?: number
+  max?: number
+  placeholder?: string
+}) => {
   const { register, attributes, container } = useDataGridCell({
     field,
     context,
@@ -20,10 +23,14 @@ export const DataGridNumberCell = <TData, TValue = any>({
         type="number"
         {...register(field, {
           valueAsNumber: true,
+          onChange: (e) => {
+            if (e.target.value) {
+              return parseInt(e.target.value)
+            }
+          },
         })}
         className="h-full w-full bg-transparent p-2 text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-        min={min}
-        max={max}
+        {...rest}
       />
     </DataGridCellContainer>
   )
