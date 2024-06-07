@@ -43,6 +43,11 @@ program
     "Show all logs of underlying commands. Useful for debugging.",
     false
   )
+  .option(
+    "--quiet",
+    "Answer prompts with default values.",
+    false
+  )
   .parse()
 
 void create(program.opts())

@@ -9,7 +9,6 @@ import waitOn from "wait-on"
 import ora, { Ora } from "ora"
 import fs from "fs"
 import path from "path"
-import isEmailImported from "validator/lib/isEmail.js"
 import logMessage from "../utils/log-message.js"
 import createAbortController, {
   isAbortError,
@@ -29,6 +28,7 @@ import {
 } from "../utils/nextjs-utils.js"
 
 const slugify = slugifyType.default
+export const DEFAULT_PROJECT_NAME = "my-medusa-store"
 
 export type CreateOptions = {
   repoUrl?: string
@@ -41,6 +41,7 @@ export type CreateOptions = {
   directoryPath?: string
   withNextjsStarter?: boolean
   verbose?: boolean
+  quiet?: boolean
 }
 
 export default async ({
@@ -54,6 +55,7 @@ export default async ({
   directoryPath,
   withNextjsStarter = false,
   verbose = false,
+  quiet = false
 }: CreateOptions) => {
   track("CREATE_CLI_CMA")
 
@@ -92,9 +94,9 @@ export default async ({
     return
   })
 
-  const projectName = await askForProjectName(directoryPath)
+  const projectName = quiet ? DEFAULT_PROJECT_NAME : await askForProjectName(directoryPath)
   const projectPath = getProjectPath(projectName, directoryPath)
-  const installNextjs = withNextjsStarter || (await askForNextjsStarter())
+  const installNextjs = withNextjsStarter || (quiet ? false : await askForNextjsStarter())
 
   let { client, dbConnectionString } = !skipDb
     ? await getDbClientAndCredentials({
@@ -261,7 +263,7 @@ async function askForProjectName(directoryPath?: string): Promise<string> {
       type: "input",
       name: "projectName",
       message: "What's the name of your project?",
-      default: "my-medusa-store",
+      default: DEFAULT_PROJECT_NAME,
       filter: (input) => {
         return slugify(input).toLowerCase()
       },
