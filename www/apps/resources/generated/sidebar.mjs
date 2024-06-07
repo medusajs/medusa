@@ -7060,6 +7060,35 @@ export const generatedSidebar = [
                 "children": []
               }
             ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/products/collections",
+            "title": "Collections",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/collections/list",
+                "title": "List Collections",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/collections/retrieve",
+                "title": "Retrieve a Collection",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/collections/products",
+                "title": "Retrieve a Collection's Products",
+                "children": []
+              }
+            ]
           }
         ]
       }

@@ -1760,6 +1760,24 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
             ],
           },
+          {
+            path: "/storefront-development/products/collections",
+            title: "Collections",
+            children: [
+              {
+                path: "/storefront-development/products/collections/list",
+                title: "List Collections",
+              },
+              {
+                path: "/storefront-development/products/collections/retrieve",
+                title: "Retrieve a Collection",
+              },
+              {
+                path: "/storefront-development/products/collections/products",
+                title: "Retrieve a Collection's Products",
+              },
+            ],
+          },
         ],
       },
     ],

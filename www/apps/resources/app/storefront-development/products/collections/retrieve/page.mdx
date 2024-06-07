@@ -1,0 +1,195 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Retrieve a Collection in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, learn how to retrieve a product collection and its details in the storefront.
+
+There are two ways to retrieve a product collection:
+
+- Retrieve a collection by its ID.
+- Retrieve a collection by its `handle` field. This is useful if you're creating human-readable URLs in your storefront.
+
+## Retrieve a Product Collection by ID
+
+To retrieve a product collection by its ID, send a request to the [Get a Collection API route](!api!/store#collections_getcollectionsid):
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchHighlights = [
+  ["1", "id", "The product collection's ID."],
+]
+
+  ```ts highlights={fetchHighlights}
+fetch(`http://localhost:9000/store/collections/${id}`, {
+    credentials: "include",
+  })
+  .then((res) => res.json())
+  .then(({ collection }) => {
+    // use the collection...
+    console.log(collection)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["12", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
+  ["23"], ["24"], ["25"], ["26"],
+  ["27"], ["28"], ["29"], ["30"]
+]
+
+  ```tsx highlights={highlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+
+  type Params = {
+    params: {
+      id: string
+    }
+  }
+
+  export default function Collection({ params: { id } }: Params) {
+    const [loading, setLoading] = useState(true)
+    const [collection, setCollection] = useState<
+      HttpTypes.StoreCollection | undefined
+    >()
+
+    useEffect(() => {
+      if (!loading) {
+        return 
+      }
+
+      fetch(`http://localhost:9000/store/collections/${id}`, {
+        credentials: "include",
+      })
+      .then((res) => res.json())
+      .then(({ collection: dataCollection }) => {
+        setCollection(dataCollection)
+        setLoading(false)
+      })
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {collection && (
+          <>
+            <h1>{collection.title}</h1>
+          </>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+{/* TODO add link to product colleciton object */}
+
+The response has a `collection` field, which is a product collection object.
+
+---
+
+## Retrieve a Product Collection by Handle
+
+To retrieve a product by its handle, send a request to the [List Product Collections API route](!api!/store#collections_getcollections) passing it the `handle` query parameter:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const handleFetchHighlights = [
+  ["2", "handle", "The collection's handle."],
+]
+
+  ```ts highlights={handleFetchHighlights}
+  fetch(`http://localhost:9000/store/collections?handle=${
+    handle
+  }`, {
+    credentials: "include",
+  })
+  .then((res) => res.json())
+  .then(({ collections }) => {
+    if (!collections.length) {
+      // collections with the specified handle doesn't exist
+      return
+    }
+    // use the collection...
+    console.log(collections[0])
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const handleHighlights = [
+  ["13", "{ params: { handle } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
+  ["25"], ["26"], ["27"], ["28"],
+  ["29"], ["30"], ["31"], ["32"], ["33"], ["34"], ["35"], ["36"]
+]
+
+  ```tsx highlights={handleHighlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+
+  type Params = {
+    params: {
+      handle: string
+    }
+  }
+
+  export default function Collection(
+    { params: { handle } }: Params
+  ) {
+    const [loading, setLoading] = useState(true)
+    const [collection, setCollection] = useState<
+      HttpTypes.StoreCollection | undefined
+    >()
+
+    useEffect(() => {
+      if (!loading) {
+        return 
+      }
+
+      fetch(`http://localhost:9000/store/collections?handle=${
+        handle
+      }`, {
+        credentials: "include",
+      })
+      .then((res) => res.json())
+      .then(({ collections }) => {
+        if (collections.length) {
+          setCollection(collections[0])
+        }
+        setLoading(false)
+      })
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {!loading && !collection && (
+          <span>Product collection not found</span>
+        )}
+        {collection && (
+          <>
+            <h1>{collection.title}</h1>
+          </>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
