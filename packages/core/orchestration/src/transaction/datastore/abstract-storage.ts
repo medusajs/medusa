@@ -3,6 +3,18 @@ import {
   TransactionCheckpoint,
 } from "../distributed-transaction"
 import { TransactionStep } from "../transaction-step"
+import { SchedulerOptions } from "../types"
+
+export interface IDistributedSchedulerStorage {
+  scheduleJob(
+    jobDefinition: string | { jobId: string },
+    schedulerOptions: SchedulerOptions
+  ): Promise<void>
+
+  cancelJob(jobId: string): Promise<void>
+
+  cancelAllJobs(): Promise<void>
+}
 
 export interface IDistributedTransactionStorage {
   get(key: string): Promise<TransactionCheckpoint | undefined>
@@ -34,6 +46,29 @@ export interface IDistributedTransactionStorage {
     transaction: DistributedTransaction,
     step: TransactionStep
   ): Promise<void>
+}
+
+export abstract class DistributedSchedulerStorage
+  implements IDistributedSchedulerStorage
+{
+  constructor() {
+    /* noop */
+  }
+
+  async scheduleJob(
+    jobDefinition: string | { jobId: string },
+    schedulerOptions: SchedulerOptions
+  ): Promise<void> {
+    throw new Error("Method 'scheduleExecution' not implemented.")
+  }
+
+  async cancelJob(jobId: string): Promise<void> {
+    throw new Error("Method 'cancelJob' not implemented.")
+  }
+
+  async cancelAllJobs(): Promise<void> {
+    throw new Error("Method 'cancelAllJobs' not implemented.")
+  }
 }
 
 export abstract class DistributedTransactionStorage

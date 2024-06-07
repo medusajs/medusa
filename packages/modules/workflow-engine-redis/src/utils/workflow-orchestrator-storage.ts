@@ -1,23 +1,28 @@
 import {
   DistributedTransaction,
-  DistributedTransactionStorage,
+  IDistributedSchedulerStorage,
+  IDistributedTransactionStorage,
+  SchedulerOptions,
   TransactionCheckpoint,
   TransactionStep,
 } from "@medusajs/orchestration"
 import { ModulesSdkTypes } from "@medusajs/types"
-import { TransactionState } from "@medusajs/utils"
+import { TransactionState, promiseAll } from "@medusajs/utils"
 import { WorkflowOrchestratorService } from "@services"
 import { Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 
 enum JobType {
+  SCHEDULE = "schedule",
   RETRY = "retry",
   STEP_TIMEOUT = "step_timeout",
   TRANSACTION_TIMEOUT = "transaction_timeout",
 }
 
 // eslint-disable-next-line max-len
-export class RedisDistributedTransactionStorage extends DistributedTransactionStorage {
+export class RedisDistributedTransactionStorage
+  implements IDistributedTransactionStorage, IDistributedSchedulerStorage
+{
   private static TTL_AFTER_COMPLETED = 60 * 15 // 15 minutes
   private workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
   private workflowOrchestratorService_: WorkflowOrchestratorService
@@ -37,8 +42,6 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     redisWorkerConnection: Redis
     redisQueueName: string
   }) {
-    super()
-
     this.workflowExecutionService_ = workflowExecutionService
 
     this.redisClient = redisConnection
@@ -57,6 +60,14 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
           await this.executeTransaction(
             job.data.workflowId,
             job.data.transactionId
+          )
+        }
+
+        // Note: We might even want a separate worker with different concurrency settings in the future, but for now we keep it simple
+        if (job.name === JobType.SCHEDULE) {
+          await this.executeScheduledJob(
+            job.data.jobId,
+            job.data.schedulerOptions
           )
         }
       },
@@ -104,6 +115,17 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
   private async executeTransaction(workflowId: string, transactionId: string) {
     return await this.workflowOrchestratorService_.run(workflowId, {
       transactionId,
+      throwOnError: false,
+    })
+  }
+
+  private async executeScheduledJob(
+    jobId: string,
+    schedulerOptions: SchedulerOptions
+  ) {
+    // TODO: In the case of concurrency being forbidden, we want to generate a predictable transaction ID and rely on the idempotency
+    // of the transaction to ensure that the transaction is only executed once.
+    return await this.workflowOrchestratorService_.run(jobId, {
       throwOnError: false,
     })
   }
@@ -289,5 +311,43 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     if (job && job.attemptsStarted === 0) {
       await job.remove()
     }
+  }
+
+  async scheduleJob(
+    jobDefinition: string | { jobId: string },
+    schedulerOptions: SchedulerOptions
+  ): Promise<void> {
+    const jobId =
+      typeof jobDefinition === "string" ? jobDefinition : jobDefinition.jobId
+
+    // In order to ensure that the schedule configuration is always up to date, we first cancel an existing job, if there was one
+    // any only then we add the new one.
+    await this.cancelJob(jobId)
+
+    await this.queue.add(
+      JobType.SCHEDULE,
+      {
+        jobId,
+        schedulerOptions,
+      },
+      {
+        repeat: {
+          pattern: schedulerOptions.cron,
+          limit: schedulerOptions.numberOfExecutions,
+        },
+        jobId: `${JobType.SCHEDULE}_${jobId}`,
+      }
+    )
+  }
+
+  async cancelJob(jobId: string): Promise<void> {
+    await this.queue.removeRepeatableByKey(`${JobType.SCHEDULE}_${jobId}`)
+  }
+
+  async cancelAllJobs(): Promise<void> {
+    const repeatableJobs = await this.queue.getRepeatableJobs()
+    await promiseAll(
+      repeatableJobs.map((job) => this.queue.removeRepeatableByKey(job.key))
+    )
   }
 }
