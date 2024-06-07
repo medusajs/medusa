@@ -24,18 +24,10 @@ describe("LocalEventBusService", () => {
         eventBus = new LocalEventBusService(moduleDeps as any)
       })
 
-      it("should emit an event", () => {
-        eventBus = new LocalEventBusService(
-          moduleDeps,
-          {},
-          {
-            resources: "shared",
-          }
-        )
-
+      it("should emit an event", async () => {
         eventBus.eventEmitter_.emit.mockImplementationOnce((data) => data)
 
-        eventBus.emit("eventName", { hi: "1234" })
+        await eventBus.emit("eventName", { hi: "1234" })
 
         expect(eventBus.eventEmitter_.emit).toHaveBeenCalledTimes(1)
         expect(eventBus.eventEmitter_.emit).toHaveBeenCalledWith("eventName", {
@@ -78,6 +70,7 @@ describe("LocalEventBusService", () => {
 
         jest.clearAllMocks()
 
+        eventBus.eventEmitter_.emit.mockImplementationOnce((data) => data)
         eventBus.emit("test-event", { test: "1234", eventGroupId: "test" })
         eventBus.emit("test-event", { test: "test-1" })
 
@@ -89,7 +82,10 @@ describe("LocalEventBusService", () => {
           expect.objectContaining({ eventName: "test-event" }),
         ])
 
-        eventBus.emit("test-event", { test: "1234", eventGroupId: "test-2" })
+        await eventBus.emit("test-event", {
+          test: "1234",
+          eventGroupId: "test-2",
+        })
 
         expect(eventBus.groupedEventsMap_.get("test-2")).toEqual([
           expect.objectContaining({ eventName: "test-event" }),
@@ -144,6 +140,8 @@ describe("LocalEventBusService", () => {
       })
 
       it("should clear events from grouped events when requested with eventGroupId", async () => {
+        eventBus.eventEmitter_.emit.mockImplementationOnce((data) => data)
+
         await eventBus.emit([
           {
             eventName: "event-1",
@@ -158,7 +156,6 @@ describe("LocalEventBusService", () => {
         expect(eventBus.groupedEventsMap_.get("group-1")).toHaveLength(1)
         expect(eventBus.groupedEventsMap_.get("group-2")).toHaveLength(1)
 
-        eventBus.eventEmitter_.emit.mockImplementationOnce((data) => data)
         eventBus.clearGroupedEvents("group-1")
 
         expect(eventBus.groupedEventsMap_.get("group-1")).not.toBeDefined()
