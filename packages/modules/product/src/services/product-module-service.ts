@@ -22,9 +22,12 @@ import { ProductCategoryService, ProductService } from "@services"
 
 import {
   arrayDifference,
+  EmitEvents,
   InjectManager,
   InjectTransactionManager,
+  isPresent,
   isString,
+  isValidHandle,
   kebabCase,
   MedusaContext,
   MedusaError,
@@ -32,9 +35,7 @@ import {
   ProductStatus,
   promiseAll,
   removeUndefined,
-  isValidHandle,
   toHandle,
-  isPresent,
 } from "@medusajs/utils"
 import {
   ProductCategoryEventData,
@@ -51,6 +52,7 @@ import {
   UpdateTypeInput,
 } from "../types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
+import { eventBuilders } from "../utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -128,7 +130,6 @@ export default class ProductModuleService<
   protected readonly productService_: ProductService<TProduct>
   // eslint-disable-next-line max-len
   protected readonly productVariantService_: ModulesSdkTypes.InternalModuleService<TProductVariant>
-
   // eslint-disable-next-line max-len
   protected readonly productCategoryService_: ProductCategoryService<TProductCategory>
   // eslint-disable-next-line max-len
@@ -193,6 +194,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductVariantDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createVariants(
     data:
       | ProductTypes.CreateProductVariantDTO[]
@@ -220,7 +222,7 @@ export default class ProductModuleService<
     if (data.some((v) => !v.product_id)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Tried to create variants without specifying a product_id"
+        "Unable to create variants without specifying a product_id"
       )
     }
 
@@ -238,10 +240,17 @@ export default class ProductModuleService<
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(data, productOptions)
 
-    return await this.productVariantService_.create(
+    const createdVariants = await this.productVariantService_.create(
       productVariantsWithOptions,
       sharedContext
     )
+
+    eventBuilders.createdProductVariant({
+      data: createdVariants,
+      sharedContext,
+    })
+
+    return createdVariants
   }
 
   async upsertVariants(
@@ -254,6 +263,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductVariantDTO>
 
   @InjectTransactionManager("baseRepository_")
+  @EmitEvents()
   async upsertVariants(
     data:
       | ProductTypes.UpsertProductVariantDTO[]
@@ -300,6 +310,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductVariantDTO[]>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async updateVariants(
     idOrSelector: string | ProductTypes.FilterableProductVariantProps,
     data: ProductTypes.UpdateProductVariantDTO,
@@ -373,16 +384,32 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return this.productVariantService_.upsertWithReplace(
-      ProductModuleService.assignOptionsToVariants(
-        variantsWithProductId,
-        productOptions
-      ),
-      {
-        relations: ["options"],
-      },
-      sharedContext
-    )
+    const { entities: productVariants, performedActions } =
+      await this.productVariantService_.upsertWithReplace(
+        ProductModuleService.assignOptionsToVariants(
+          variantsWithProductId,
+          productOptions
+        ),
+        {
+          relations: ["options"],
+        },
+        sharedContext
+      )
+
+    eventBuilders.createdProductVariant({
+      data: performedActions.created[ProductVariant.name] ?? [],
+      sharedContext,
+    })
+    eventBuilders.updatedProductVariant({
+      data: performedActions.updated[ProductVariant.name] ?? [],
+      sharedContext,
+    })
+    eventBuilders.deletedProductVariant({
+      data: performedActions.deleted[ProductVariant.name] ?? [],
+      sharedContext,
+    })
+
+    return productVariants
   }
 
   createTags(
@@ -395,6 +422,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductTagDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createTags(
     data: ProductTypes.CreateProductTagDTO[] | ProductTypes.CreateProductTagDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -406,6 +434,11 @@ export default class ProductModuleService<
     const createdTags = await this.baseRepository_.serialize<
       ProductTypes.ProductTagDTO[]
     >(tags)
+
+    eventBuilders.createdProductTag({
+      data: createdTags,
+      sharedContext,
+    })
 
     return Array.isArray(data) ? createdTags : createdTags[0]
   }
@@ -420,6 +453,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductTagDTO>
 
   @InjectTransactionManager("baseRepository_")
+  @EmitEvents()
   async upsertTags(
     data: ProductTypes.UpsertProductTagDTO[] | ProductTypes.UpsertProductTagDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -435,9 +469,17 @@ export default class ProductModuleService<
 
     if (forCreate.length) {
       created = await this.productTagService_.create(forCreate, sharedContext)
+      eventBuilders.createdProductTag({
+        data: created,
+        sharedContext,
+      })
     }
     if (forUpdate.length) {
       updated = await this.productTagService_.update(forUpdate, sharedContext)
+      eventBuilders.updatedProductTag({
+        data: updated,
+        sharedContext,
+      })
     }
 
     const result = [...created, ...updated]
@@ -460,6 +502,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductTagDTO[]>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async updateTags(
     idOrSelector: string | ProductTypes.FilterableProductTagProps,
     data: ProductTypes.UpdateProductTagDTO,
@@ -491,6 +534,11 @@ export default class ProductModuleService<
     const updatedTags = await this.baseRepository_.serialize<
       ProductTypes.ProductTagDTO[]
     >(tags)
+
+    eventBuilders.updatedProductTag({
+      data: updatedTags,
+      sharedContext,
+    })
 
     return isString(idOrSelector) ? updatedTags[0] : updatedTags
   }
@@ -811,11 +859,14 @@ export default class ProductModuleService<
       } as UpdateProductOptionInput
     })
 
-    return await this.productOptionService_.upsertWithReplace(
-      normalizedInput,
-      { relations: ["values"] },
-      sharedContext
-    )
+    const { entities: productOptions } =
+      await this.productOptionService_.upsertWithReplace(
+        normalizedInput,
+        { relations: ["values"] },
+        sharedContext
+      )
+
+    return productOptions
   }
 
   createCollections(
@@ -865,11 +916,14 @@ export default class ProductModuleService<
 
     // It's safe to use upsertWithReplace here since we only have product IDs and the only operation to do is update the product
     // with the collection ID
-    return await this.productCollectionService_.upsertWithReplace(
-      normalizedInput,
-      { relations: ["products"] },
-      sharedContext
-    )
+    const { entities: productCollections } =
+      await this.productCollectionService_.upsertWithReplace(
+        normalizedInput,
+        { relations: ["products"] },
+        sharedContext
+      )
+
+    return productCollections
   }
 
   async upsertCollections(
@@ -1279,13 +1333,14 @@ export default class ProductModuleService<
       })
     )
 
-    const productData = await this.productService_.upsertWithReplace(
-      normalizedInput,
-      {
-        relations: ["images", "tags", "categories"],
-      },
-      sharedContext
-    )
+    const { entities: productData } =
+      await this.productService_.upsertWithReplace(
+        normalizedInput,
+        {
+          relations: ["images", "tags", "categories"],
+        },
+        sharedContext
+      )
 
     await promiseAll(
       // Note: It's safe to rely on the order here as `upsertWithReplace` preserves the order of the input
@@ -1295,7 +1350,7 @@ export default class ProductModuleService<
         upsertedProduct.variants = []
 
         if (product.options?.length) {
-          upsertedProduct.options =
+          const { entities: productOptions } =
             await this.productOptionService_.upsertWithReplace(
               product.options?.map((option) => ({
                 ...option,
@@ -1304,10 +1359,11 @@ export default class ProductModuleService<
               { relations: ["values"] },
               sharedContext
             )
+          upsertedProduct.options = productOptions
         }
 
         if (product.variants?.length) {
-          upsertedProduct.variants =
+          const { entities: productVariants } =
             await this.productVariantService_.upsertWithReplace(
               ProductModuleService.assignOptionsToVariants(
                 product.variants?.map((v) => ({
@@ -1319,6 +1375,7 @@ export default class ProductModuleService<
               { relations: ["options"] },
               sharedContext
             )
+          upsertedProduct.variants = productVariants
         }
       })
     )
@@ -1342,13 +1399,14 @@ export default class ProductModuleService<
       })
     )
 
-    const productData = await this.productService_.upsertWithReplace(
-      normalizedInput,
-      {
-        relations: ["images", "tags", "categories"],
-      },
-      sharedContext
-    )
+    const { entities: productData } =
+      await this.productService_.upsertWithReplace(
+        normalizedInput,
+        {
+          relations: ["images", "tags", "categories"],
+        },
+        sharedContext
+      )
 
     // There is more than 1-level depth of relations here, so we need to handle the options and variants manually
     await promiseAll(
@@ -1358,7 +1416,7 @@ export default class ProductModuleService<
         let allOptions: any[] = []
 
         if (product.options?.length) {
-          upsertedProduct.options =
+          const { entities: productOptions } =
             await this.productOptionService_.upsertWithReplace(
               product.options?.map((option) => ({
                 ...option,
@@ -1367,6 +1425,7 @@ export default class ProductModuleService<
               { relations: ["values"] },
               sharedContext
             )
+          upsertedProduct.options = productOptions
 
           // Since we handle the options and variants outside of the product upsert, we need to clean up manually
           await this.productOptionService_.delete(
@@ -1391,7 +1450,7 @@ export default class ProductModuleService<
         }
 
         if (product.variants?.length) {
-          upsertedProduct.variants =
+          const { entities: productVariants } =
             await this.productVariantService_.upsertWithReplace(
               ProductModuleService.assignOptionsToVariants(
                 product.variants?.map((v) => ({
@@ -1403,6 +1462,7 @@ export default class ProductModuleService<
               { relations: ["options"] },
               sharedContext
             )
+          upsertedProduct.variants = productVariants
 
           await this.productVariantService_.delete(
             {

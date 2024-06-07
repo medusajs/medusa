@@ -18,7 +18,7 @@ type CustomerGeneralSectionProps = {
 }
 
 const PAGE_SIZE = 10
-const DEFAULT_RELATIONS = "customer,items,sales_channel"
+const DEFAULT_RELATIONS = "*customer,*items,*sales_channel"
 const DEFAULT_FIELDS =
   "id,status,display_id,created_at,email,fulfillment_status,payment_status,total,currency_code"
 
@@ -33,8 +33,7 @@ export const CustomerOrderSection = ({
   const { orders, count, isLoading, isError, error } = useOrders(
     {
       customer_id: customer.id,
-      expand: DEFAULT_RELATIONS,
-      fields: DEFAULT_FIELDS,
+      fields: DEFAULT_FIELDS + "," + DEFAULT_RELATIONS,
       ...searchParams,
     },
     {

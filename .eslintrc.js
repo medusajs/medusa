@@ -95,7 +95,6 @@ module.exports = {
           "./packages/cli/medusa-cli/tsconfig.spec/json",
           "./packages/cli/medusa-dev-cli/tsconfig.spec.json",
           "./packages/cli/oas/medusa-oas-cli/tsconfig.spec.json",
-          "./packages/cli/oas/openapi-typescript-codegen/tsconfig.spec.json",
 
           "./packages/core/orchestration/tsconfig.json",
           "./packages/core/workflows-sdk/tsconfig.spec.json",

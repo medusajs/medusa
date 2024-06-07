@@ -1,19 +1,9 @@
+import { PromotionType } from "@medusajs/utils"
+
 export enum DisguisedRule {
   APPLY_TO_QUANTITY = "apply_to_quantity",
   BUY_RULES_MIN_QUANTITY = "buy_rules_min_quantity",
   CURRENCY_CODE = "currency_code",
-}
-
-export const disguisedRulesMap = {
-  [DisguisedRule.APPLY_TO_QUANTITY]: {
-    relation: "application_method",
-  },
-  [DisguisedRule.BUY_RULES_MIN_QUANTITY]: {
-    relation: "application_method",
-  },
-  [DisguisedRule.CURRENCY_CODE]: {
-    relation: "application_method",
-  },
 }
 
 const ruleAttributes = [
@@ -94,7 +84,7 @@ const commonAttributes = [
   },
 ]
 
-const buyRuleAttributes = [
+const buyGetBuyRules = [
   {
     id: DisguisedRule.BUY_RULES_MIN_QUANTITY,
     value: DisguisedRule.BUY_RULES_MIN_QUANTITY,
@@ -103,10 +93,9 @@ const buyRuleAttributes = [
     required: true,
     disguised: true,
   },
-  ...commonAttributes,
 ]
 
-const targetRuleAttributes = [
+const buyGetTargetRules = [
   {
     id: DisguisedRule.APPLY_TO_QUANTITY,
     value: DisguisedRule.APPLY_TO_QUANTITY,
@@ -115,11 +104,19 @@ const targetRuleAttributes = [
     required: true,
     disguised: true,
   },
-  ...commonAttributes,
 ]
 
-export const ruleAttributesMap = {
-  rules: ruleAttributes,
-  "target-rules": targetRuleAttributes,
-  "buy-rules": buyRuleAttributes,
+export const getRuleAttributesMap = (promotionType?: string) => {
+  const map = {
+    rules: [...ruleAttributes],
+    "target-rules": [...commonAttributes],
+    "buy-rules": [...commonAttributes],
+  }
+
+  if (promotionType === PromotionType.BUYGET) {
+    map["buy-rules"].push(...buyGetBuyRules)
+    map["target-rules"].push(...buyGetTargetRules)
+  }
+
+  return map
 }

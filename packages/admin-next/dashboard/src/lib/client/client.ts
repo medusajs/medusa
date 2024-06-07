@@ -8,7 +8,6 @@ import { fulfillmentProviders } from "./fulfillment-providers"
 import { fulfillments } from "./fulfillments"
 import { inventoryItems } from "./inventory"
 import { invites } from "./invites"
-import { orders } from "./orders"
 import { payments } from "./payments"
 import { priceLists } from "./price-lists"
 import { productTypes } from "./product-types"
@@ -21,7 +20,6 @@ import { shippingProfiles } from "./shipping-profiles"
 import { stockLocations } from "./stock-locations"
 import { stores } from "./stores"
 import { tags } from "./tags"
-import { taxes } from "./taxes"
 import { users } from "./users"
 import { workflowExecutions } from "./workflow-executions"
 
@@ -41,8 +39,6 @@ export const client = {
   shippingProfiles: shippingProfiles,
   productTags: tags,
   users: users,
-  orders: orders,
-  taxes: taxes,
   invites: invites,
   inventoryItems: inventoryItems,
   reservations: reservations,

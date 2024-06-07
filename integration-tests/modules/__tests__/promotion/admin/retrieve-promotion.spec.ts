@@ -90,7 +90,7 @@ medusaIntegrationTestRunner({
         })
 
         const response = await api.get(
-          `/admin/promotions/${createdPromotion.id}?fields=id,code&expand=`,
+          `/admin/promotions/${createdPromotion.id}?fields=id,code`,
           adminHeaders
         )
 

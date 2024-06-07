@@ -300,6 +300,7 @@ export class MedusaModule {
         resources: declaration?.resources || MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: defaultPath,
         options: declaration?.options ?? declaration,
+        dependencies: declaration?.dependencies ?? [],
         alias: declaration?.alias,
         main: declaration?.main,
         worker_mode: workerMode,

@@ -1,6 +1,6 @@
 import { EOL } from "os"
 import pg from "pg"
-import postgresClient from "./postgres-client.js"
+import postgresClient, { DEFAULT_HOST, DEFAULT_PORT } from "./postgres-client.js"
 import inquirer from "inquirer"
 import logMessage from "./log-message.js"
 import formatConnectionString from "./format-connection-string.js"
@@ -66,10 +66,16 @@ async function getForDbName({
   let postgresUsername = "postgres"
   let postgresPassword = ""
 
+  const defaultConnectionOptions = {
+    host: DEFAULT_HOST,
+    port: DEFAULT_PORT
+  }
+
   try {
     client = await postgresClient({
       user: postgresUsername,
       password: postgresPassword,
+      ...defaultConnectionOptions
     })
   } catch (e) {
     if (verbose) {
@@ -103,6 +109,7 @@ async function getForDbName({
       client = await postgresClient({
         user: postgresUsername,
         password: postgresPassword,
+        ...defaultConnectionOptions
       })
     } catch (e) {
       logMessage({

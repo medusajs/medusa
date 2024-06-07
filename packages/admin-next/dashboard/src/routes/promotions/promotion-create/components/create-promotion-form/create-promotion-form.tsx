@@ -11,16 +11,11 @@ import {
   Text,
 } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
-import { useFieldArray, useForm, useWatch } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import { z } from "zod"
 
-import {
-  PromotionRuleOperatorValues,
-  PromotionRuleResponse,
-  RuleAttributeOptionsResponse,
-  RuleOperatorOptionsResponse,
-} from "@medusajs/types"
+import { PromotionRuleOperatorValues } from "@medusajs/types"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
 import { PercentageInput } from "../../../../../components/inputs/percentage-input"
@@ -38,41 +33,12 @@ import { Tab } from "./constants"
 import { CreatePromotionSchema } from "./form-schema"
 import { templates } from "./templates"
 
-type CreatePromotionFormProps = {
-  ruleAttributes: RuleAttributeOptionsResponse[]
-  targetRuleAttributes: RuleAttributeOptionsResponse[]
-  buyRuleAttributes: RuleAttributeOptionsResponse[]
-  operators: RuleOperatorOptionsResponse[]
-  rules: PromotionRuleResponse[]
-  targetRules: PromotionRuleResponse[]
-  buyRules: PromotionRuleResponse[]
-}
-
-export const CreatePromotionForm = ({
-  ruleAttributes,
-  targetRuleAttributes,
-  buyRuleAttributes,
-  operators,
-  rules,
-  targetRules,
-  buyRules,
-}: CreatePromotionFormProps) => {
+export const CreatePromotionForm = () => {
   const [tab, setTab] = useState<Tab>(Tab.TYPE)
   const [detailsValidated, setDetailsValidated] = useState(false)
 
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-
-  const generateRuleAttributes = (rules: PromotionRuleResponse[]) =>
-    rules.map((rule) => ({
-      id: rule.id,
-      required: rule.required,
-      field_type: rule.field_type,
-      disguised: rule.disguised,
-      attribute: rule.attribute!,
-      operator: rule.operator!,
-      values: rule?.values?.map((v: { value: string }) => v.value!),
-    }))
 
   const form = useForm<z.infer<typeof CreatePromotionSchema>>({
     defaultValues: {
@@ -82,51 +48,18 @@ export const CreatePromotionForm = ({
       is_automatic: "false",
       code: "",
       type: "standard",
-      rules: generateRuleAttributes(rules),
+      rules: [],
       application_method: {
         allocation: "each",
         type: "fixed",
         target_type: "items",
         max_quantity: 1,
-        target_rules: generateRuleAttributes(targetRules),
-        buy_rules: generateRuleAttributes(buyRules),
+        target_rules: [],
+        buy_rules: [],
       },
       campaign: undefined,
     },
     resolver: zodResolver(CreatePromotionSchema),
-  })
-
-  const {
-    fields: ruleFields,
-    append: appendRule,
-    remove: removeRule,
-    update: updateRule,
-  } = useFieldArray({
-    control: form.control,
-    name: "rules",
-    keyName: "rules_id",
-  })
-
-  const {
-    fields: targetRuleFields,
-    append: appendTargetRule,
-    remove: removeTargetRule,
-    update: updateTargetRule,
-  } = useFieldArray({
-    control: form.control,
-    name: "application_method.target_rules",
-    keyName: "target_rules_id",
-  })
-
-  const {
-    fields: buyRuleFields,
-    append: appendBuyRule,
-    remove: removeBuyRule,
-    update: updateBuyRule,
-  } = useFieldArray({
-    control: form.control,
-    name: "application_method.buy_rules",
-    keyName: "buy_rules_id",
   })
 
   const { mutateAsync: createPromotion } = useCreatePromotion()
@@ -265,13 +198,10 @@ export const CreatePromotionForm = ({
   })
 
   const isFixedValueType = watchValueType === "fixed"
-
   const watchAllocation = useWatch({
     control: form.control,
     name: "application_method.allocation",
   })
-
-  const isAllocationEach = watchAllocation === "each"
 
   useEffect(() => {
     if (watchAllocation === "across") {
@@ -295,17 +225,6 @@ export const CreatePromotionForm = ({
   }
 
   const { campaigns } = useCampaigns(campaignQuery)
-
-  useEffect(() => {
-    if (isTypeStandard) {
-      form.setValue("application_method.buy_rules", undefined)
-    } else {
-      form.setValue(
-        "application_method.buy_rules",
-        generateRuleAttributes(buyRules)
-      )
-    }
-  }, [isTypeStandard])
 
   const detailsProgress = useMemo(() => {
     if (detailsValidated) {
@@ -592,16 +511,7 @@ export const CreatePromotionForm = ({
 
               <Divider />
 
-              <RulesFormField
-                form={form}
-                ruleType={"rules"}
-                attributes={ruleAttributes}
-                operators={operators}
-                fields={ruleFields}
-                appendRule={appendRule}
-                removeRule={removeRule}
-                updateRule={updateRule}
-              />
+              <RulesFormField form={form} ruleType={"rules"} />
 
               <Divider />
 
@@ -756,7 +666,7 @@ export const CreatePromotionForm = ({
                 />
               )}
 
-              {isTypeStandard && isAllocationEach && (
+              {isTypeStandard && watchAllocation === "each" && (
                 <div className="flex gap-y-4">
                   <Form.Field
                     control={form.control}
@@ -800,33 +710,23 @@ export const CreatePromotionForm = ({
 
               <Divider />
 
+              {!isTypeStandard && (
+                <>
+                  <RulesFormField
+                    form={form}
+                    ruleType={"buy-rules"}
+                    scope="application_method.buy_rules"
+                  />
+
+                  <Divider />
+                </>
+              )}
+
               <RulesFormField
                 form={form}
                 ruleType={"target-rules"}
-                attributes={targetRuleAttributes}
-                operators={operators}
-                fields={targetRuleFields}
-                appendRule={appendTargetRule}
-                removeRule={removeTargetRule}
-                updateRule={updateTargetRule}
                 scope="application_method.target_rules"
               />
-
-              <Divider />
-
-              {!isTypeStandard && (
-                <RulesFormField
-                  form={form}
-                  ruleType={"buy-rules"}
-                  attributes={buyRuleAttributes}
-                  operators={operators}
-                  fields={buyRuleFields}
-                  appendRule={appendBuyRule}
-                  removeRule={removeBuyRule}
-                  updateRule={updateBuyRule}
-                  scope="application_method.buy_rules"
-                />
-              )}
             </ProgressTabs.Content>
 
             <ProgressTabs.Content
