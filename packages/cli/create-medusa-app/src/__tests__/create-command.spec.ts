@@ -44,23 +44,19 @@ const getProjectDbUrl = async (): Promise<string | undefined> => {
 }
 
 const dropDb = async () => {
-  try {
-    const dbUrl = await getProjectDbUrl()
-    if (!dbUrl) {
-      return
-    }
-
-    // delete the database
-    const client = new Client({
-      connectionString: dbUrl
-    })
-
-    await client.connect()
-    await client.query(`DROP DATABASE ${client.database}`)
-    await client.end()
-  } catch (e) {
-    // file doesn't exist
+  const dbUrl = await getProjectDbUrl()
+  if (!dbUrl) {
+    return
   }
+
+  // delete the database
+  const client = new Client({
+    connectionString: dbUrl
+  })
+
+  await client.connect()
+  await client.query(`DROP DATABASE ${client.database}`)
+  await client.end()
 }
 
 const createDb = async (): Promise<string> => {
