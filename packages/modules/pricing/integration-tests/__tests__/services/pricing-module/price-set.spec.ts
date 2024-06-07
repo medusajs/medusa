@@ -12,7 +12,7 @@ import {
 } from "medusa-test-utils"
 import { PriceSetRuleType } from "../../../../src"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
-import { CommonEvents, PricingEvents, composeMessage } from "@medusajs/utils"
+import { CommonEvents, composeMessage, PricingEvents } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
@@ -446,7 +446,7 @@ moduleIntegrationTestRunner({
           expect(events).toHaveLength(3)
           expect(events[0]).toEqual(
             composeMessage(PricingEvents.price_set_created, {
-              service: Modules.PRICING,
+              source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_set",
               data: { id: priceSet.id },
@@ -455,7 +455,7 @@ moduleIntegrationTestRunner({
 
           expect(events[1]).toEqual(
             composeMessage(PricingEvents.price_created, {
-              service: Modules.PRICING,
+              source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price",
               data: { id: priceSet.prices![0].id },
@@ -464,7 +464,7 @@ moduleIntegrationTestRunner({
 
           expect(events[2]).toEqual(
             composeMessage(PricingEvents.price_rule_created, {
-              service: Modules.PRICING,
+              source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_rule",
               data: {
@@ -694,7 +694,7 @@ moduleIntegrationTestRunner({
           expect(events).toHaveLength(2)
           expect(events[0]).toEqual(
             composeMessage(PricingEvents.price_created, {
-              service: Modules.PRICING,
+              source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price",
               data: { id: priceSet.prices![1].id },
@@ -702,7 +702,7 @@ moduleIntegrationTestRunner({
           )
           expect(events[1]).toEqual(
             composeMessage(PricingEvents.price_rule_created, {
-              service: Modules.PRICING,
+              source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_rule",
               data: { id: priceSet.prices![1].price_rules[0].id },

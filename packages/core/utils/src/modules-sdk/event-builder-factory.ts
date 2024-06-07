@@ -5,7 +5,7 @@ import { Context, EventBusTypes } from "@medusajs/types"
  *
  * @example
  * const createdFulfillment = eventBuilderFactory({
- *   service: Modules.FULFILLMENT,
+ *   source: Modules.FULFILLMENT,
  *   action: CommonEvents.CREATED,
  *   object: "fulfillment",
  *   eventsEnum: FulfillmentEvents,
@@ -27,13 +27,13 @@ export function eventBuilderFactory({
   action,
   object,
   eventsEnum,
-  service,
+  source,
 }: {
   isMainEntity?: boolean
   action: string
   object: string
   eventsEnum: Record<string, string>
-  service: string
+  source: string
 }) {
   return function ({
     data,
@@ -51,7 +51,7 @@ export function eventBuilderFactory({
 
     data.forEach((dataItem) => {
       messages.push({
-        service,
+        source,
         action,
         context: sharedContext,
         data: { id: dataItem.id },
