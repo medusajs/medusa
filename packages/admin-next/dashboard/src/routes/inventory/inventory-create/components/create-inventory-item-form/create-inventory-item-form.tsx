@@ -12,6 +12,7 @@ import {
   Input,
   Textarea,
   Switch,
+  toast,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
@@ -97,18 +98,32 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
       }
     }
 
-    const { inventory_item } = await createInventoryItem(payload)
+    try {
+      const { inventory_item } = await createInventoryItem(payload)
 
-    await sdk.admin.inventoryItem.batchPostLevels(inventory_item.id, {
-      create: Object.entries(locations)
-        .filter(([_, quantiy]) => !!quantiy)
-        .map(([location_id, stocked_quantity]) => ({
-          location_id,
-          stocked_quantity,
-        })),
-    })
+      try {
+        await sdk.admin.inventoryItem.batchPostLevels(inventory_item.id, {
+          create: Object.entries(locations)
+            .filter(([_, quantiy]) => !!quantiy)
+            .map(([location_id, stocked_quantity]) => ({
+              location_id,
+              stocked_quantity,
+            })),
+        })
+      } catch (e) {
+        toast.error(t("general.error"), {
+          description: e.message,
+          dismissLabel: t("actions.close"),
+        })
+      }
 
-    handleSuccess()
+      handleSuccess()
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   })
 
   const [status, setStatus] = React.useState<StepStatus>({
