@@ -1,7 +1,7 @@
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep } from "@medusajs/workflows-sdk"
 
-export const releaseEventsStepId = "emit-event-step"
+export const releaseEventsStepId = "release-events-step"
 export const releaseEventsStep = createStep(
   releaseEventsStepId,
   async (
