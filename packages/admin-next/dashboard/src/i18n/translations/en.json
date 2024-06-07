@@ -184,6 +184,12 @@
         "header": "Variants",
         "subHeadingTitle": "Yes, this is a product with variants",
         "subHeadingDescription": "When unchecked we will create a default variant for you",
+        "optionTitle": {
+          "placeholder": "Size"
+        },
+        "optionValues": {
+          "placeholder": "Small, Medium, Large"
+        },
         "productVariants": {
           "label": "Product variants",
           "hint": "This ranking will affect how the variants are ranked in your frontend.",

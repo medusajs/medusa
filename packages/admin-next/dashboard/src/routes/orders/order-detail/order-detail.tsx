@@ -39,7 +39,7 @@ export const OrderDetail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col gap-y-3">
       {before.widgets.map((w, i) => {
         return (
           <div key={i}>
@@ -48,7 +48,7 @@ export const OrderDetail = () => {
         )
       })}
       <div className="flex flex-col gap-x-4 lg:flex-row xl:items-start">
-        <div className="flex w-full flex-col gap-y-2">
+        <div className="flex w-full flex-col gap-y-3">
           <OrderGeneralSection order={order} />
           <OrderSummarySection order={order} />
           {/* <OrderPaymentSection order={order} />*/}
@@ -64,7 +64,7 @@ export const OrderDetail = () => {
             <JsonViewSection data={order} />
           </div>
         </div>
-        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 xl:mt-0 xl:max-w-[400px]">
+        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[400px]">
           {sideBefore.widgets.map((w, i) => {
             return (
               <div key={i}>
