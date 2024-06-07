@@ -211,7 +211,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             composeMessage(ProductEvents.product_variant_updated, {
               data: { id: variantOne.id },
               object: "product_variant",
-              service: Modules.PRODUCT,
+              source: Modules.PRODUCT,
               action: CommonEvents.UPDATED,
             }),
           ])
@@ -241,7 +241,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             composeMessage(ProductEvents.product_variant_updated, {
               data: { id: variantOne.id },
               object: "product_variant",
-              service: Modules.PRODUCT,
+              source: Modules.PRODUCT,
               action: CommonEvents.UPDATED,
             }),
           ])
@@ -312,7 +312,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             composeMessage(ProductEvents.product_variant_created, {
               data: { id: variant.id },
               object: "product_variant",
-              service: Modules.PRODUCT,
+              source: Modules.PRODUCT,
               action: CommonEvents.CREATED,
             }),
           ])

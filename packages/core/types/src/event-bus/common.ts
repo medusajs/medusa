@@ -27,7 +27,7 @@ export type EmitData<T = unknown> = {
 
 export type MessageBody<T = unknown> = {
   metadata: {
-    service: string
+    source: string
     action: string
     object: string
     eventGroupId?: string
@@ -44,7 +44,7 @@ export type Message<T = unknown> = {
 export type RawMessageFormat<T = any> = {
   eventName: string
   data: T
-  service: string
+  source: string
   object: string
   action?: string
   context?: Pick<Context, "eventGroupId">

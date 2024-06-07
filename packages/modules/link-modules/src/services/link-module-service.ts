@@ -13,12 +13,12 @@ import {
   CommonEvents,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
+  mapObjectTo,
   MapToConfig,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isDefined,
-  mapObjectTo,
 } from "@medusajs/utils"
 import { LinkService } from "@services"
 import { shouldForceTransaction } from "../utils"
@@ -210,7 +210,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
         eventName: this.entityName_ + "." + CommonEvents.ATTACHED,
         body: {
           metadata: {
-            service: this.serviceName_,
+            source: this.serviceName_,
             action: CommonEvents.ATTACHED,
             object: this.entityName_,
             eventGroupId: sharedContext.eventGroupId,
@@ -263,7 +263,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
         eventName: this.entityName_ + "." + CommonEvents.DETACHED,
         body: {
           metadata: {
-            service: this.serviceName_,
+            source: this.serviceName_,
             action: CommonEvents.DETACHED,
             object: this.entityName_,
             eventGroupId: sharedContext.eventGroupId,
@@ -314,7 +314,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
         eventName: this.entityName_ + "." + CommonEvents.DETACHED,
         body: {
           metadata: {
-            service: this.serviceName_,
+            source: this.serviceName_,
             action: CommonEvents.DETACHED,
             object: this.entityName_,
             eventGroupId: sharedContext.eventGroupId,
@@ -374,7 +374,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
         eventName: this.entityName_ + "." + CommonEvents.ATTACHED,
         body: {
           metadata: {
-            service: this.serviceName_,
+            source: this.serviceName_,
             action: CommonEvents.ATTACHED,
             object: this.entityName_,
             eventGroupId: sharedContext.eventGroupId,

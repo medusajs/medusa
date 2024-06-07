@@ -508,7 +508,7 @@ moduleIntegrationTestRunner({
           expect(events).toHaveLength(4)
           expect(events[0]).toEqual(
             composeMessage(PricingEvents.price_list_created, {
-              service: Modules.PRICING,
+              source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_list",
               data: { id: priceList.id },
@@ -516,7 +516,7 @@ moduleIntegrationTestRunner({
           )
           expect(events[1]).toEqual(
             composeMessage(PricingEvents.price_list_rule_created, {
-              service: Modules.PRICING,
+              source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_list_rule",
               data: { id: priceList.price_list_rules?.[0].id },
@@ -524,7 +524,7 @@ moduleIntegrationTestRunner({
           )
           expect(events[2]).toEqual(
             composeMessage(PricingEvents.price_list_rule_created, {
-              service: Modules.PRICING,
+              source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_list_rule",
               data: { id: priceList.price_list_rules?.[1].id },
@@ -532,7 +532,7 @@ moduleIntegrationTestRunner({
           )
           expect(events[3]).toEqual(
             composeMessage(PricingEvents.price_created, {
-              service: Modules.PRICING,
+              source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price",
               data: { id: priceList.prices![0].id },
@@ -867,7 +867,7 @@ moduleIntegrationTestRunner({
           expect(events).toHaveLength(2)
           expect(events[0]).toEqual(
             composeMessage(PricingEvents.price_created, {
-              service: Modules.PRICING,
+              source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price",
               data: { id: priceList.prices![0].id },
@@ -875,7 +875,7 @@ moduleIntegrationTestRunner({
           )
           expect(events[1]).toEqual(
             composeMessage(PricingEvents.price_rule_created, {
-              service: Modules.PRICING,
+              source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_rule",
               data: { id: priceList.prices![0].price_rules![0].id },
