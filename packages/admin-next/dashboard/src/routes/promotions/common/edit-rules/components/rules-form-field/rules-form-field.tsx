@@ -1,31 +1,23 @@
 import { XMarkMini } from "@medusajs/icons"
-import {
-  RuleAttributeOptionsResponse,
-  RuleOperatorOptionsResponse,
-} from "@medusajs/types"
+import { PromotionRuleResponse } from "@medusajs/types"
 import { Badge, Button, Heading, Select, Text } from "@medusajs/ui"
-import { Fragment } from "react"
-import {
-  FieldValues,
-  Path,
-  UseFieldArrayAppend,
-  UseFieldArrayRemove,
-  UseFieldArrayUpdate,
-  UseFormReturn,
-} from "react-hook-form"
+import { Fragment, useEffect } from "react"
+import { useFieldArray, UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../../components/common/form"
+import {
+  usePromotionRuleAttributes,
+  usePromotionRuleOperators,
+  usePromotionRules,
+} from "../../../../../../hooks/api/promotions"
+import { CreatePromotionSchemaType } from "../../../../promotion-create/components/create-promotion-form/form-schema"
 import { RuleValueFormField } from "../rule-value-form-field"
+import { requiredProductRule } from "./constants"
 
-type RulesFormFieldType<TSchema extends FieldValues> = {
-  form: UseFormReturn<TSchema>
+type RulesFormFieldType = {
+  promotionId?: string
+  form: UseFormReturn<CreatePromotionSchemaType>
   ruleType: "rules" | "target-rules" | "buy-rules"
-  fields: any[]
-  attributes: RuleAttributeOptionsResponse[]
-  operators: RuleOperatorOptionsResponse[]
-  removeRule: UseFieldArrayRemove
-  updateRule: UseFieldArrayUpdate<TSchema>
-  appendRule: UseFieldArrayAppend<TSchema>
   setRulesToRemove?: any
   rulesToRemove?: any
   scope?:
@@ -34,20 +26,91 @@ type RulesFormFieldType<TSchema extends FieldValues> = {
     | "application_method.target_rules"
 }
 
-export const RulesFormField = <TSchema extends FieldValues>({
+const generateRuleAttributes = (rules?: PromotionRuleResponse[]) =>
+  (rules || []).map((rule) => ({
+    id: rule.id,
+    required: rule.required,
+    field_type: rule.field_type,
+    disguised: rule.disguised,
+    attribute: rule.attribute!,
+    operator: rule.operator!,
+    values:
+      rule.field_type === "number"
+        ? rule.values
+        : rule?.values?.map((v: { value: string }) => v.value!),
+  }))
+
+export const RulesFormField = ({
   form,
   ruleType,
-  fields,
-  attributes,
-  operators,
-  removeRule,
-  updateRule,
-  appendRule,
   setRulesToRemove,
   rulesToRemove,
   scope = "rules",
-}: RulesFormFieldType<TSchema>) => {
+  promotionId,
+}: RulesFormFieldType) => {
   const { t } = useTranslation()
+  const formData = form.getValues()
+  const { attributes } = usePromotionRuleAttributes(ruleType, formData.type)
+  const { operators } = usePromotionRuleOperators()
+
+  const { fields, append, remove, update, replace } = useFieldArray({
+    control: form.control,
+    name: scope,
+    keyName: scope,
+  })
+
+  const promotionType: string = useWatch({
+    control: form.control,
+    name: "type",
+  })
+
+  const query: Record<string, string> = promotionType
+    ? { promotion_type: promotionType }
+    : {}
+
+  const { rules, isLoading } = usePromotionRules(
+    promotionId || null,
+    ruleType,
+    query,
+    {
+      enabled: !!promotionType,
+    }
+  )
+
+  useEffect(() => {
+    if (isLoading) {
+      return
+    }
+
+    if (ruleType === "rules" && !fields.length) {
+      replace(generateRuleAttributes(rules) as any)
+    }
+
+    if (ruleType === "rules" && promotionType === "standard") {
+      form.resetField("application_method.buy_rules")
+      form.resetField("application_method.target_rules")
+    }
+
+    if (
+      ["buy-rules", "target-rules"].includes(ruleType) &&
+      promotionType === "standard"
+    ) {
+      form.resetField(scope)
+      replace([])
+    }
+
+    if (
+      ["buy-rules", "target-rules"].includes(ruleType) &&
+      promotionType === "buyget"
+    ) {
+      form.resetField(scope)
+      const rulesToAppend = promotionId
+        ? rules
+        : [...rules, requiredProductRule]
+
+      replace(generateRuleAttributes(rulesToAppend) as any)
+    }
+  }, [promotionType, isLoading])
 
   return (
     <div className="flex flex-col">
@@ -62,17 +125,17 @@ export const RulesFormField = <TSchema extends FieldValues>({
       {fields.map((fieldRule: any, index) => {
         const identifier = fieldRule.id
         const { ref: attributeRef, ...attributeField } = form.register(
-          `${scope}.${index}.attribute` as Path<TSchema>
+          `${scope}.${index}.attribute`
         )
         const { ref: operatorRef, ...operatorsField } = form.register(
-          `${scope}.${index}.operator` as Path<TSchema>
+          `${scope}.${index}.operator`
         )
         const { ref: valuesRef, ...valuesField } = form.register(
-          `${scope}.${index}.values` as Path<TSchema>
+          `${scope}.${index}.values`
         )
 
         return (
-          <Fragment key={`${fieldRule.id}.${index}`}>
+          <Fragment key={`${fieldRule.id}.${index}.${fieldRule.attribute}`}>
             <div className="bg-ui-bg-subtle border-ui-border-base flex flex-row gap-2 rounded-xl border px-2 py-2">
               <div className="grow">
                 <Form.Field
@@ -102,10 +165,10 @@ export const RulesFormField = <TSchema extends FieldValues>({
                           <Select
                             {...field}
                             onValueChange={(e) => {
-                              updateRule(index, { ...fieldRule, values: [] })
+                              update(index, { ...fieldRule, values: [] })
                               onChange(e)
                             }}
-                            disabled={fieldRule.required}
+                            disabled={fieldRule.disguised}
                           >
                             <Select.Trigger
                               ref={attributeRef}
@@ -149,7 +212,7 @@ export const RulesFormField = <TSchema extends FieldValues>({
                             <Select
                               {...field}
                               onValueChange={onChange}
-                              disabled={fieldRule.required}
+                              disabled={fieldRule.disguised}
                             >
                               <Select.Trigger
                                 ref={operatorRef}
@@ -203,7 +266,7 @@ export const RulesFormField = <TSchema extends FieldValues>({
                         setRulesToRemove &&
                         setRulesToRemove([...rulesToRemove, fieldRule])
 
-                      removeRule(index)
+                      remove(index)
                     }
                   }}
                 />
@@ -229,7 +292,7 @@ export const RulesFormField = <TSchema extends FieldValues>({
           variant="secondary"
           className="inline-block"
           onClick={() => {
-            appendRule({
+            append({
               attribute: "",
               operator: "",
               values: [],
@@ -251,7 +314,7 @@ export const RulesFormField = <TSchema extends FieldValues>({
 
             setRulesToRemove &&
               setRulesToRemove(fields.filter((field: any) => !field.required))
-            removeRule(indicesToRemove)
+            remove(indicesToRemove)
           }}
         >
           {t("promotions.fields.clearAll")}
