@@ -30,7 +30,11 @@ function RuleBlock({ rule }: RuleProps) {
         <BadgeListSummary
           inline
           className="!txt-compact-small-plus"
-          list={rule.values.map((v) => v.label)}
+          list={
+            rule.field_type === "number"
+              ? [rule.values]
+              : rule.values?.map((v) => v.label)
+          }
         />
       </div>
     </div>
