@@ -97,7 +97,7 @@ export function getFieldsInRange(
 }
 
 export function convertArrayToPrimitive<
-  T extends "boolean" | "number" | "string",
+  T extends "boolean" | "number" | "string"
 >(values: string[], type: T) {
   const convertedValues: any[] = []
 
@@ -172,7 +172,7 @@ type DataGridHelperColumnsProps<TData> = {
    *
    * @default false
    */
-  disableHidding?: boolean
+  disableHiding?: boolean
 }
 
 export function createDataGridHelper<TData>() {
@@ -186,13 +186,13 @@ export function createDataGridHelper<TData>() {
       cell,
       type = "string",
       asString,
-      disableHidding = false,
+      disableHiding = false,
     }: DataGridHelperColumnsProps<TData>) =>
       columnHelper.display({
         id,
         header,
         cell,
-        enableHiding: !disableHidding,
+        enableHiding: !disableHiding,
         meta: {
           type,
           asString,

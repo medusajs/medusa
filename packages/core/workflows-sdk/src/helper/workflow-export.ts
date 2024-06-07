@@ -5,7 +5,7 @@ import {
   TransactionState,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { MedusaContextType, isPresent } from "@medusajs/utils"
+import { isPresent, MedusaContextType } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
@@ -140,6 +140,7 @@ function createContextualWorkflowRunner<
     }
 
     context.transactionId ??= ulid()
+    context.eventGroupId ??= ulid()
 
     if (typeof dataPreparation === "function") {
       try {
@@ -193,6 +194,8 @@ function createContextualWorkflowRunner<
       __type: MedusaContextType,
     }
 
+    context.eventGroupId ??= ulid()
+
     return await originalExecution(
       originalRegisterStepSuccess,
       { throwOnError, resultFrom, container },
@@ -229,6 +232,8 @@ function createContextualWorkflowRunner<
       __type: MedusaContextType,
     }
 
+    context.eventGroupId ??= ulid()
+
     return await originalExecution(
       originalRegisterStepFailure,
       { throwOnError, resultFrom, container },
@@ -259,6 +264,8 @@ function createContextualWorkflowRunner<
       transactionId,
       __type: MedusaContextType,
     }
+
+    context.eventGroupId ??= ulid()
 
     return await originalExecution(
       originalCancel,
