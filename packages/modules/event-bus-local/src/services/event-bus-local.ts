@@ -14,6 +14,8 @@ type InjectedDependencies = {
   logger: Logger
 }
 
+type StagingQueueType = Map<string, { eventName: string; data?: unknown }[]>
+
 const eventEmitter = new EventEmitter()
 eventEmitter.setMaxListeners(Infinity)
 
@@ -21,6 +23,7 @@ eventEmitter.setMaxListeners(Infinity)
 export default class LocalEventBusService extends AbstractEventBusModuleService {
   protected readonly logger_?: Logger
   protected readonly eventEmitter_: EventEmitter
+  protected stagedEventsMap_: StagingQueueType
 
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
     // @ts-ignore
@@ -29,6 +32,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
 
     this.logger_ = logger
     this.eventEmitter_ = eventEmitter
+    this.stagedEventsMap_ = new Map()
   }
 
   async emit<T>(
@@ -70,8 +74,56 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       }
 
       const data = (event as EmitData).data ?? (event as Message<T>).body
-      this.eventEmitter_.emit(event.eventName, data)
+
+      await this.stageOrEmitEvent(event.eventName, data)
     }
+  }
+
+  // If the data of the event consists of a eventGroupId, we don't emit the event, instead
+  // we add them to a staging queue grouped by the eventGroupId and release them when
+  // explicitly requested.
+  // This is useful in the event of a distributed transaction where you'd want to emit
+  // events only once the transaction ends.
+  async stageOrEmitEvent(
+    eventName: string,
+    data: unknown & { eventGroupId?: string }
+  ) {
+    const { eventGroupId, ...eventData } = data
+
+    if (eventGroupId) {
+      await this.stageEvent(eventGroupId, eventName, eventData)
+    } else {
+      this.eventEmitter_.emit(eventName, data)
+    }
+  }
+
+  // Stages an event to a queue to be emitted upon explicit release
+  async stageEvent(eventGroupId: string, eventName: string, data: unknown) {
+    const stagedEvents = this.stagedEventsMap_.get(eventGroupId) || []
+
+    stagedEvents.push({ eventName, data })
+
+    this.stagedEventsMap_.set(eventGroupId, stagedEvents)
+  }
+
+  // Given a eventGroupId, all the staged events will be released
+  // If a eventGroupId is not provided, this is most likely an application level bug.
+  async releaseStagedEvents(eventGroupId: string) {
+    const stagedEvents = this.stagedEventsMap_.get(eventGroupId) || []
+
+    for (const event of stagedEvents) {
+      const { eventName, data } = event
+
+      this.eventEmitter_.emit(eventName, data)
+    }
+
+    this.clearStagedEvents(eventGroupId)
+  }
+
+  // Given a eventGroupId, all the staged events will be cleared
+  // This is used when an error occurs in a transaction and the events
+  async clearStagedEvents(eventGroupId: string) {
+    this.stagedEventsMap_.delete(eventGroupId)
   }
 
   subscribe(event: string | symbol, subscriber: Subscriber): this {

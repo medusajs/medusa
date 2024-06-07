@@ -140,6 +140,11 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     await this.queue_.addBulk(events)
   }
 
+  // TODO: Implement redis based staging + release
+  async stageEvent(eventGroupId: string, eventName: string, data: unknown) {}
+  async releaseStagedEvents(eventGroupId: string) {}
+  async clearStagedEvents(eventGroupId: string) {}
+
   /**
    * Handles incoming jobs.
    * @param job The job object

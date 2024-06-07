@@ -24,6 +24,15 @@ export abstract class AbstractEventBusModuleService
   abstract emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
   abstract emit<T>(data: EventBusTypes.Message<T>[]): Promise<void>
 
+  abstract stageEvent<TData = unknown>(
+    eventGroupId: string,
+    eventName: string,
+    data: TData
+  ): Promise<void>
+
+  abstract releaseStagedEvents(eventGroupId: string): Promise<void>
+  abstract clearStagedEvents(eventGroupId: string): Promise<void>
+
   protected storeSubscribers({
     event,
     subscriberId,
