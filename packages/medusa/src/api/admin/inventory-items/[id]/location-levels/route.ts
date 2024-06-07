@@ -41,6 +41,8 @@ export const GET = async (
   req: MedusaRequest<AdminGetInventoryLocationLevelsParamsType>,
   res: MedusaResponse
 ) => {
+  const { id } = req.params
+
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const query = remoteQueryObjectFromString({
@@ -48,6 +50,7 @@ export const GET = async (
     variables: {
       filters: req.filterableFields,
       ...req.remoteQueryConfig.pagination,
+      inventory_item_id: id,
     },
     fields: req.remoteQueryConfig.fields,
   })
