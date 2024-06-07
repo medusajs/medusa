@@ -44,7 +44,7 @@ export const CategoryDetail = () => {
         )
       })}
       <div className="flex flex-col gap-x-4 xl:flex-row xl:items-start">
-        <div className="flex w-full flex-col gap-y-2">
+        <div className="flex w-full flex-col gap-y-3">
           <CategoryGeneralSection category={product_category} />
           <CategoryProductSection category={product_category} />
           {after.widgets.map((w, i) => {
