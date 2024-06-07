@@ -10,17 +10,17 @@ import {
   ReservationItemDTO,
 } from "@medusajs/types"
 import {
+  arrayDifference,
   CommonEvents,
   EmitEvents,
   InjectManager,
   InjectTransactionManager,
   InventoryEvents,
+  isDefined,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  arrayDifference,
-  isDefined,
-  isString,
   partitionArray,
   promiseAll,
 } from "@medusajs/utils"
@@ -241,7 +241,7 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       created.map((reservationItem) => ({
         eventName: InventoryEvents.reservation_item_created,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.CREATED,
         object: "reservation-item",
         context,
@@ -340,7 +340,7 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       result.map((inventoryItem) => ({
         eventName: InventoryEvents.created,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.CREATED,
         object: "inventory-item",
         context,
@@ -393,7 +393,7 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       created.map((inventoryLevel) => ({
         eventName: InventoryEvents.inventory_level_created,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.CREATED,
         object: "inventory-level",
         context,
@@ -453,7 +453,7 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       result.map((inventoryItem) => ({
         eventName: InventoryEvents.updated,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.UPDATED,
         object: "inventory-item",
         context,
@@ -492,7 +492,7 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       result[0].map((inventoryLevel) => ({
         eventName: InventoryEvents.inventory_level_deleted,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.DELETED,
         object: "inventory-level",
         context,
@@ -523,7 +523,7 @@ export default class InventoryModuleService<
 
     context.messageAggregator?.saveRawMessageData({
       eventName: InventoryEvents.inventory_level_deleted,
-      service: this.constructor.name,
+      source: this.constructor.name,
       action: CommonEvents.DELETED,
       object: "inventory-level",
       context,
@@ -565,7 +565,7 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       levels.map((inventoryLevel) => ({
         eventName: InventoryEvents.inventory_level_updated,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.UPDATED,
         object: "inventory-level",
         context,
@@ -648,7 +648,7 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       result.map((reservationItem) => ({
         eventName: InventoryEvents.inventory_level_updated,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.UPDATED,
         object: "reservation-item",
         context,
@@ -801,7 +801,7 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       reservations.map((reservationItem) => ({
         eventName: InventoryEvents.reservation_item_deleted,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.DELETED,
         object: "reservation-item",
         context,
@@ -843,7 +843,7 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       reservations.map((reservationItem) => ({
         eventName: InventoryEvents.reservation_item_deleted,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.DELETED,
         object: "reservation-item",
         context,
@@ -880,7 +880,7 @@ export default class InventoryModuleService<
     context.messageAggregator?.saveRawMessageData(
       reservations.map((reservationItem) => ({
         eventName: InventoryEvents.reservation_item_created,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.CREATED,
         object: "reservation-item",
         context,
@@ -949,7 +949,7 @@ export default class InventoryModuleService<
 
       context.messageAggregator?.saveRawMessageData({
         eventName: InventoryEvents.inventory_level_updated,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.UPDATED,
         object: "inventory-level",
         context,

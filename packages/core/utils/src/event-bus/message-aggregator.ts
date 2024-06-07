@@ -40,7 +40,7 @@ export class MessageAggregator implements IMessageAggregator {
     const composedMessages = messages.map((message) => {
       return composeMessage(message.eventName, {
         data: message.data,
-        service: message.service,
+        source: message.source,
         object: message.object,
         action: message.action,
         options,
