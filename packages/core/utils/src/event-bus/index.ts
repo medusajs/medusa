@@ -24,14 +24,15 @@ export abstract class AbstractEventBusModuleService
   abstract emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
   abstract emit<T>(data: EventBusTypes.Message<T>[]): Promise<void>
 
-  abstract stageEvent<TData = unknown>(
-    eventGroupId: string,
-    eventName: string,
-    data: TData
-  ): Promise<void>
-
-  abstract releaseStagedEvents(eventGroupId: string): Promise<void>
-  abstract clearStagedEvents(eventGroupId: string): Promise<void>
+  /*
+    Grouped events are useful when you have distributed transactions
+    where you need to explicitly group, release and clear events upon
+    lifecycle events of a transaction.
+  */
+  // Given a eventGroupId, all the grouped events will be released
+  abstract releaseGroupedEvents(eventGroupId: string): Promise<void>
+  // Given a eventGroupId, all the grouped events will be cleared
+  abstract clearGroupedEvents(eventGroupId: string): Promise<void>
 
   protected storeSubscribers({
     event,

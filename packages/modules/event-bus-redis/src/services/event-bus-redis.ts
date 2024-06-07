@@ -141,9 +141,8 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   }
 
   // TODO: Implement redis based staging + release
-  async stageEvent(eventGroupId: string, eventName: string, data: unknown) {}
-  async releaseStagedEvents(eventGroupId: string) {}
-  async clearStagedEvents(eventGroupId: string) {}
+  async releaseGroupedEvents(eventGroupId: string) {}
+  async clearGroupedEvents(eventGroupId: string) {}
 
   /**
    * Handles incoming jobs.

@@ -23,7 +23,7 @@ eventEmitter.setMaxListeners(Infinity)
 export default class LocalEventBusService extends AbstractEventBusModuleService {
   protected readonly logger_?: Logger
   protected readonly eventEmitter_: EventEmitter
-  protected stagedEventsMap_: StagingQueueType
+  protected groupedEventsMap_: StagingQueueType
 
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
     // @ts-ignore
@@ -32,7 +32,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
 
     this.logger_ = logger
     this.eventEmitter_ = eventEmitter
-    this.stagedEventsMap_ = new Map()
+    this.groupedEventsMap_ = new Map()
   }
 
   async emit<T>(
@@ -75,55 +75,55 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
 
       const data = (event as EmitData).data ?? (event as Message<T>).body
 
-      await this.stageOrEmitEvent(event.eventName, data)
+      await this.groupOrEmitEvent(event.eventName, data)
     }
   }
 
   // If the data of the event consists of a eventGroupId, we don't emit the event, instead
-  // we add them to a staging queue grouped by the eventGroupId and release them when
+  // we add them to a queue grouped by the eventGroupId and release them when
   // explicitly requested.
   // This is useful in the event of a distributed transaction where you'd want to emit
   // events only once the transaction ends.
-  async stageOrEmitEvent(
+  private async groupOrEmitEvent(
     eventName: string,
     data: unknown & { eventGroupId?: string }
   ) {
     const { eventGroupId, ...eventData } = data
 
     if (eventGroupId) {
-      await this.stageEvent(eventGroupId, eventName, eventData)
+      await this.groupEvent(eventGroupId, eventName, eventData)
     } else {
       this.eventEmitter_.emit(eventName, data)
     }
   }
 
-  // Stages an event to a queue to be emitted upon explicit release
-  async stageEvent(eventGroupId: string, eventName: string, data: unknown) {
-    const stagedEvents = this.stagedEventsMap_.get(eventGroupId) || []
+  // Groups an event to a queue to be emitted upon explicit release
+  private async groupEvent(
+    eventGroupId: string,
+    eventName: string,
+    data: unknown
+  ) {
+    const groupedEvents = this.groupedEventsMap_.get(eventGroupId) || []
 
-    stagedEvents.push({ eventName, data })
+    groupedEvents.push({ eventName, data })
 
-    this.stagedEventsMap_.set(eventGroupId, stagedEvents)
+    this.groupedEventsMap_.set(eventGroupId, groupedEvents)
   }
 
-  // Given a eventGroupId, all the staged events will be released
-  // If a eventGroupId is not provided, this is most likely an application level bug.
-  async releaseStagedEvents(eventGroupId: string) {
-    const stagedEvents = this.stagedEventsMap_.get(eventGroupId) || []
+  async releaseGroupedEvents(eventGroupId: string) {
+    const groupedEvents = this.groupedEventsMap_.get(eventGroupId) || []
 
-    for (const event of stagedEvents) {
+    for (const event of groupedEvents) {
       const { eventName, data } = event
 
       this.eventEmitter_.emit(eventName, data)
     }
 
-    this.clearStagedEvents(eventGroupId)
+    this.clearGroupedEvents(eventGroupId)
   }
 
-  // Given a eventGroupId, all the staged events will be cleared
-  // This is used when an error occurs in a transaction and the events
-  async clearStagedEvents(eventGroupId: string) {
-    this.stagedEventsMap_.delete(eventGroupId)
+  async clearGroupedEvents(eventGroupId: string) {
+    this.groupedEventsMap_.delete(eventGroupId)
   }
 
   subscribe(event: string | symbol, subscriber: Subscriber): this {
