@@ -6,7 +6,6 @@ export type KnownDataTypes =
   | "boolean"
   | "enum"
   | "number"
-  | "date"
   | "dateTime"
   | "json"
   | "any"
