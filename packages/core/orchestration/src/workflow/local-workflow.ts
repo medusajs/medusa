@@ -49,15 +49,15 @@ export class LocalWorkflow {
     workflowId: string,
     modulesLoaded?: LoadedModule[] | MedusaContainer
   ) {
-    const globalWorkflow = WorkflowManager.getWorkflow(workflowId)
-    if (!globalWorkflow) {
+    const workflowDefinition = WorkflowManager.getWorkflow(workflowId)
+    if (!workflowDefinition) {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    this.flow = new OrchestratorBuilder(globalWorkflow.flow_)
+    this.flow = new OrchestratorBuilder(workflowDefinition.flow_)
     this.workflowId = workflowId
-    this.workflow = globalWorkflow
-    this.handlers = new Map(globalWorkflow.handlers_)
+    this.workflow = workflowDefinition
+    this.handlers = new Map(workflowDefinition.handlers_)
 
     this.resolveContainer(modulesLoaded)
   }
@@ -127,9 +127,9 @@ export class LocalWorkflow {
   protected commit() {
     const finalFlow = this.flow.build()
 
-    const globalWorkflow = WorkflowManager.getWorkflow(this.workflowId)
+    const workflowDefinition = WorkflowManager.getWorkflow(this.workflowId)
     const customOptions = {
-      ...globalWorkflow?.options,
+      ...workflowDefinition?.options,
       ...this.customOptions,
     }
 
