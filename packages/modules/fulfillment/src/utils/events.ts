@@ -136,19 +136,19 @@ export const eventBuilders = {
   createdServiceZone: eventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
-    object: "source_zone",
+    object: "service_zone",
     eventsEnum: FulfillmentEvents,
   }),
   updatedServiceZone: eventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.UPDATED,
-    object: "source_zone",
+    object: "service_zone",
     eventsEnum: FulfillmentEvents,
   }),
   deletedServiceZone: eventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.DELETED,
-    object: "source_zone",
+    object: "service_zone",
     eventsEnum: FulfillmentEvents,
   }),
   createdGeoZone: eventBuilderFactory({
