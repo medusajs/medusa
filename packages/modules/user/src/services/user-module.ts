@@ -94,7 +94,7 @@ export default class UserModuleService<
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
         eventName: UserEvents.invite_token_generated,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: "token_generated",
         object: "invite",
         context: sharedContext,
@@ -149,7 +149,7 @@ export default class UserModuleService<
     sharedContext.messageAggregator?.saveRawMessageData(
       users.map((user) => ({
         eventName: UserEvents.created,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.CREATED,
         object: "user",
         context: sharedContext,
@@ -188,7 +188,7 @@ export default class UserModuleService<
     sharedContext.messageAggregator?.saveRawMessageData(
       updatedUsers.map((user) => ({
         eventName: UserEvents.updated,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.UPDATED,
         object: "user",
         context: sharedContext,
@@ -227,7 +227,7 @@ export default class UserModuleService<
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
         eventName: UserEvents.invite_created,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.CREATED,
         object: "invite",
         context: sharedContext,
@@ -238,7 +238,7 @@ export default class UserModuleService<
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
         eventName: UserEvents.invite_token_generated,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: "token_generated",
         object: "invite",
         context: sharedContext,
@@ -296,7 +296,7 @@ export default class UserModuleService<
     sharedContext.messageAggregator?.saveRawMessageData(
       serializedInvites.map((invite) => ({
         eventName: UserEvents.invite_updated,
-        service: this.constructor.name,
+        source: this.constructor.name,
         action: CommonEvents.UPDATED,
         object: "invite",
         context: sharedContext,

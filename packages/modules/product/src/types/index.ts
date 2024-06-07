@@ -5,6 +5,8 @@ export type InitializeModuleInjectableDependencies = {
   eventBusModuleService?: IEventBusModuleService
 }
 
+// TODO: remove and cleanup bellow code
+
 export type ProductCategoryEventData = {
   id: string
 }

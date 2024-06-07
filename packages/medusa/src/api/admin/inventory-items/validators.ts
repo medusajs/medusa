@@ -104,6 +104,7 @@ export const AdminCreateInventoryItem = z
     requires_shipping: z.boolean().optional(),
     thumbnail: z.string().optional(),
     metadata: z.record(z.string(), z.unknown()).optional(),
+    location_levels: z.array(AdminCreateInventoryLocationLevel).optional(),
   })
   .strict()
 

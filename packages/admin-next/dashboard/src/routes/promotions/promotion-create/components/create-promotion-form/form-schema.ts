@@ -32,7 +32,7 @@ export const CreatePromotionSchema = z
       currency_code: z.string(),
       max_quantity: z.number().optional().nullable(),
       target_rules: RuleSchema,
-      buy_rules: RuleSchema.min(2).optional(),
+      buy_rules: RuleSchema,
       type: z.enum(["fixed", "percentage"]),
       target_type: z.enum(["order", "shipping_methods", "items"]),
     }),

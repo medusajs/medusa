@@ -2,19 +2,19 @@ import {
   CreatePromotionRuleDTO,
   PromotionDTO,
   PromotionRuleDTO,
+  PromotionRuleOperatorValues,
+  PromotionRuleResponse,
 } from "@medusajs/types"
 import { useRouteModal } from "../../../../../../components/route-modal"
 import {
   usePromotionAddRules,
   usePromotionRemoveRules,
-  usePromotionRuleAttributes,
-  usePromotionRuleOperators,
   usePromotionUpdateRules,
   useUpdatePromotion,
 } from "../../../../../../hooks/api/promotions"
 import { RuleTypeValues } from "../../edit-rules"
 import { EditRulesForm } from "../edit-rules-form"
-import { getDisguisedRules } from "../edit-rules-form/utils"
+import { getRuleValue } from "./utils"
 
 type EditPromotionFormProps = {
   promotion: PromotionDTO
@@ -28,26 +28,6 @@ export const EditRulesWrapper = ({
   ruleType,
 }: EditPromotionFormProps) => {
   const { handleSuccess } = useRouteModal()
-  const {
-    attributes,
-    isError: isAttributesError,
-    error: attributesError,
-  } = usePromotionRuleAttributes(ruleType!)
-
-  const {
-    operators,
-    isError: isOperatorsError,
-    error: operatorsError,
-  } = usePromotionRuleOperators()
-
-  if (isAttributesError || isOperatorsError) {
-    throw attributesError || operatorsError
-  }
-
-  const requiredAttributes = attributes?.filter((ra) => ra.required) || []
-  const disguisedRules =
-    getDisguisedRules(promotion, requiredAttributes, ruleType) || []
-
   const { mutateAsync: updatePromotion } = useUpdatePromotion(promotion.id)
   const { mutateAsync: addPromotionRules } = usePromotionAddRules(
     promotion.id,
@@ -63,33 +43,21 @@ export const EditRulesWrapper = ({
     usePromotionUpdateRules(promotion.id, ruleType)
 
   const handleSubmit = (rulesToRemove?: { id: string }[]) => {
-    return async function (data: { rules: PromotionRuleDTO[] }) {
+    return async function (data: { rules: PromotionRuleResponse[] }) {
       const applicationMethodData: Record<any, any> = {}
       const { rules: allRules = [] } = data
-      const disguisedRulesData = allRules.filter((rule) =>
-        disguisedRules.map((rule) => rule.id).includes(rule.id!)
-      )
+      const disguisedRules = allRules.filter((rule) => rule.disguised)
 
       // For all the rules that were disguised, convert them to actual values in the
       // database, they are currently all under application_method. If more of these are coming
       // up, abstract this away.
-      for (const rule of disguisedRulesData) {
-        const currentAttribute = attributes?.find(
-          (attr) => attr.value === rule.attribute
-        )
-
-        applicationMethodData[rule.id!] =
-          currentAttribute?.field_type === "number"
-            ? parseInt(rule.values as unknown as string)
-            : rule.values
+      for (const rule of disguisedRules) {
+        applicationMethodData[rule.attribute] = getRuleValue(rule)
       }
 
       // This variable will contain the rules that are actual rule objects, without the disguised
       // objects
-      const rulesData = allRules.filter(
-        (rule) => !disguisedRules.map((rule) => rule.id).includes(rule.id!)
-      )
-
+      const rulesData = allRules.filter((rule) => !rule.disguised)
       const rulesToCreate: CreatePromotionRuleDTO[] = rulesData.filter(
         (rule) => !("id" in rule)
       )
@@ -121,11 +89,11 @@ export const EditRulesWrapper = ({
 
       rulesToUpdate.length &&
         (await updatePromotionRules({
-          rules: rulesToUpdate.map((rule: PromotionRuleDTO) => {
+          rules: rulesToUpdate.map((rule: PromotionRuleResponse) => {
             return {
               id: rule.id!,
               attribute: rule.attribute,
-              operator: rule.operator,
+              operator: rule.operator as PromotionRuleOperatorValues,
               values: rule.values as unknown as string | string[],
             }
           }),
@@ -135,17 +103,13 @@ export const EditRulesWrapper = ({
     }
   }
 
-  if (attributes && operators) {
-    return (
-      <EditRulesForm
-        promotion={promotion}
-        rules={rules}
-        ruleType={ruleType}
-        attributes={attributes}
-        operators={operators}
-        handleSubmit={handleSubmit}
-        isSubmitting={isPending}
-      />
-    )
-  }
+  return (
+    <EditRulesForm
+      promotion={promotion}
+      rules={rules}
+      ruleType={ruleType}
+      handleSubmit={handleSubmit}
+      isSubmitting={isPending}
+    />
+  )
 }
