@@ -1,19 +1,30 @@
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { camelToSnakeCase, MapToConfig, pluralize } from "../common"
+import {
+  camelToSnakeCase,
+  MapToConfig,
+  pluralize,
+  upperCaseFirst,
+} from "../common"
 
 /**
  * Define joiner config for a module
  * @param moduleName
- * @param publicEntityObject
+ * @param publicEntityObjects the first entity object is considered the main one meaning it will be consumed through non suffixed method such as list and listAndCount
+ * @param linkableKeys
  * @param primaryKeys
  */
 export function defineJoinerConfig(
   moduleName: string,
   {
-    publicEntityObject,
+    publicEntityObjects,
+    linkableKeys,
     primaryKeys,
-  }: { publicEntityObject: { name: string }[]; primaryKeys?: string[] } = {
-    publicEntityObject: [],
+  }: {
+    publicEntityObjects: { name: string }[]
+    linkableKeys?: Record<string, string>
+    primaryKeys?: string[]
+  } = {
+    publicEntityObjects: [],
   }
 ): Omit<
   ModuleJoinerConfig,
@@ -28,20 +39,21 @@ export function defineJoinerConfig(
   return {
     serviceName: moduleName,
     primaryKeys: primaryKeys ?? ["id"],
-    linkableKeys: publicEntityObject.reduce((acc, entity) => {
-      acc[camelToSnakeCase(entity).toLowerCase()] = entity.name
-      return acc
-    }, {} as Record<string, string>),
-    alias: publicEntityObject.map((entity) => ({
+    linkableKeys:
+      linkableKeys ??
+      publicEntityObjects.reduce((acc, entity) => {
+        acc[`${camelToSnakeCase(entity.name).toLowerCase()}_id`] = entity.name
+        return acc
+      }, {} as Record<string, string>),
+    alias: publicEntityObjects.map((entity, i) => ({
       name: [
-        `${camelToSnakeCase(entity).toLowerCase().name}`,
-        `${pluralize(camelToSnakeCase(entity).toLowerCase().name)}`,
+        `${camelToSnakeCase(entity.name).toLowerCase()}`,
+        `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
       ],
       args: {
         entity: entity.name,
-        methodSuffix: pluralize(
-          camelToSnakeCase(entity.name).toLowerCase().name
-        ),
+        methodSuffix:
+          i === 0 ? undefined : pluralize(upperCaseFirst(entity.name)),
       },
     })),
   }

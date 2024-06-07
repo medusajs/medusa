@@ -15,7 +15,7 @@ import {
 } from "@medusajs/utils/src"
 
 export const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
-  publicEntityObject: [
+  publicEntityObjects: [
     FulfillmentSet,
     ShippingOption,
     ShippingProfile,
