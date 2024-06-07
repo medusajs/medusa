@@ -351,18 +351,33 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const inventoryItem = await inventoryModule.create({
-            sku: "inv-1234",
-          })
+          const inventoryItem = (
+            await api.post(
+              `/admin/inventory-items`,
+              {
+                sku: "inv-1234",
+                location_levels: [
+                  {
+                    location_id: location.id,
+                    stocked_quantity: 2,
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.inventory_item
 
-          await inventoryModule.createInventoryLevels([
+          await api.post(
+            `/admin/reservations`,
             {
+              line_item_id: "line-item-id-1",
               inventory_item_id: inventoryItem.id,
               location_id: location.id,
-              stocked_quantity: 2,
-              reserved_quantity: 2,
+              description: "test description",
+              quantity: 2,
             },
-          ])
+            adminHeaders
+          )
 
           const region = await regionModuleService.create({
             name: "US",

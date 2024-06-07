@@ -1,6 +1,5 @@
 import {
   ArrowDownTray,
-  ExclamationCircle,
   ThumbnailBadge,
   Trash,
   TriangleLeftMini,
@@ -172,9 +171,23 @@ const Canvas = ({ media, curr }: { media: Media[]; curr: number }) => {
 
   if (media.length === 0) {
     return (
-      <div className="bg-ui-bg-subtle text-ui-fg-subtle flex size-full flex-col items-center justify-center gap-y-2">
-        <ExclamationCircle />
-        <Text size="small">{t("products.media.noMediaLabel")}</Text>
+      <div className="bg-ui-bg-subtle flex size-full flex-col items-center justify-center gap-y-4 pb-8 pt-6">
+        <div className="flex flex-col items-center">
+          <Text
+            size="small"
+            leading="compact"
+            weight="plus"
+            className="text-ui-fg-subtle"
+          >
+            {t("products.media.emptyState.header")}
+          </Text>
+          <Text size="small" className="text-ui-fg-muted">
+            {t("products.media.emptyState.description")}
+          </Text>
+        </div>
+        <Button size="small" variant="secondary" asChild>
+          <Link to="?view=edit">{t("products.media.emptyState.action")}</Link>
+        </Button>
       </div>
     )
   }

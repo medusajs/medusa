@@ -1,5 +1,9 @@
 import { z } from "zod"
-import { createFindParams, createSelectParams } from "../../utils/validators"
+import {
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 
 export type AdminGetStockLocationParamsType = z.infer<
   typeof AdminGetStockLocationParams
@@ -19,6 +23,9 @@ export const AdminGetStockLocationsParams = createFindParams({
     name: z.union([z.string(), z.array(z.string())]).optional(),
     address_id: z.union([z.string(), z.array(z.string())]).optional(),
     sales_channel_id: z.union([z.string(), z.array(z.string())]).optional(),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
     $and: z.lazy(() => AdminGetStockLocationsParams.array()).optional(),
     $or: z.lazy(() => AdminGetStockLocationsParams.array()).optional(),
   })

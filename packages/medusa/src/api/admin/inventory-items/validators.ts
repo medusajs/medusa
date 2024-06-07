@@ -72,7 +72,6 @@ export const AdminCreateInventoryLocationLevel = z
     location_id: z.string(),
     stocked_quantity: z.number().min(0).optional(),
     incoming_quantity: z.number().min(0).optional(),
-    reserved_quantity: z.number().min(0).optional(),
   })
   .strict()
 
@@ -105,6 +104,7 @@ export const AdminCreateInventoryItem = z
     requires_shipping: z.boolean().optional(),
     thumbnail: z.string().optional(),
     metadata: z.record(z.string(), z.unknown()).optional(),
+    location_levels: z.array(AdminCreateInventoryLocationLevel).optional(),
   })
   .strict()
 

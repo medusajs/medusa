@@ -10,7 +10,7 @@ export class LocalFileService extends AbstractFileProviderService {
 
   constructor(_, options: LocalFileServiceOptions) {
     super()
-    this.uploadDir_ = options?.upload_dir || "uploads"
+    this.uploadDir_ = options?.upload_dir || path.join(__dirname, "uploads")
     this.backendUrl_ = options?.backend_url || "http://localhost:9000"
   }
 
@@ -29,10 +29,7 @@ export class LocalFileService extends AbstractFileProviderService {
     }
 
     const parsedFilename = path.parse(file.filename)
-
-    if (parsedFilename.dir) {
-      this.ensureDirExists(parsedFilename.dir)
-    }
+    await this.ensureDirExists(parsedFilename.dir)
 
     const fileKey = path.join(
       parsedFilename.dir,
