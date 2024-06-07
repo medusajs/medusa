@@ -48,9 +48,8 @@ export const GET = async (
   const query = remoteQueryObjectFromString({
     entryPoint: "inventory_levels",
     variables: {
-      filters: req.filterableFields,
+      filters: { ...req.filterableFields, inventory_item_id: id },
       ...req.remoteQueryConfig.pagination,
-      inventory_item_id: id,
     },
     fields: req.remoteQueryConfig.fields,
   })
