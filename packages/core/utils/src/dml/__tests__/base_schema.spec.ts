@@ -1,11 +1,11 @@
 import { expectTypeOf } from "expect-type"
 import { BaseSchema } from "../schema/base"
-import { KnownDataTypes, SchemaMetaData } from "../types"
+import { SchemaMetadata } from "../types"
 
 describe("Base schema", () => {
   test("create a schema type from base schema", () => {
     class StringSchema extends BaseSchema<string> {
-      protected dataType: SchemaMetaData["dataType"] = {
+      protected dataType: SchemaMetadata["dataType"] = {
         name: "string",
       }
     }
@@ -27,7 +27,7 @@ describe("Base schema", () => {
 
   test("apply nullable modifier", () => {
     class StringSchema extends BaseSchema<string> {
-      protected dataType: SchemaMetaData["dataType"] = {
+      protected dataType: SchemaMetadata["dataType"] = {
         name: "string",
       }
     }
@@ -49,7 +49,7 @@ describe("Base schema", () => {
 
   test("apply optional modifier", () => {
     class StringSchema extends BaseSchema<string> {
-      protected dataType: SchemaMetaData["dataType"] = {
+      protected dataType: SchemaMetadata["dataType"] = {
         name: "string",
       }
     }
@@ -71,7 +71,7 @@ describe("Base schema", () => {
 
   test("apply optional + nullable modifier", () => {
     class StringSchema extends BaseSchema<string> {
-      protected dataType: SchemaMetaData["dataType"] = {
+      protected dataType: SchemaMetadata["dataType"] = {
         name: "string",
       }
     }

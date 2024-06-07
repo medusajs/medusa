@@ -1,4 +1,4 @@
-import { SchemaMetaData } from "../types"
+import { SchemaMetadata } from "../types"
 import { NullableModifier } from "../modifiers/nullable"
 import { OptionalModifier } from "../modifiers/optional"
 
@@ -7,14 +7,14 @@ import { OptionalModifier } from "../modifiers/optional"
  * schema classes
  */
 export abstract class BaseSchema<T> {
-  #indexes: SchemaMetaData["indexes"] = []
-  #relationships: SchemaMetaData["relationships"] = []
+  #indexes: SchemaMetadata["indexes"] = []
+  #relationships: SchemaMetadata["relationships"] = []
 
   /**
    * The runtime dataType for the schema. It is not the same as
    * the "$dataType".
    */
-  protected abstract dataType: SchemaMetaData["dataType"]
+  protected abstract dataType: SchemaMetadata["dataType"]
 
   /**
    * A type-only property to infer the JavScript data-type
@@ -39,7 +39,7 @@ export abstract class BaseSchema<T> {
   /**
    * Returns the serialized metadata
    */
-  parse(fieldName: string): SchemaMetaData {
+  parse(fieldName: string): SchemaMetadata {
     return {
       fieldName,
       dataType: this.dataType,

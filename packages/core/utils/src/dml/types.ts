@@ -13,7 +13,7 @@ export type KnownDataTypes =
 /**
  * The meta-data returned by the schema parse method
  */
-export type SchemaMetaData = {
+export type SchemaMetadata = {
   nullable: boolean
   optional: boolean
   fieldName: string
@@ -39,5 +39,5 @@ export type SchemaMetaData = {
  */
 export type SchemaType<T> = {
   $dataType: T
-  parse(fieldName: string): SchemaMetaData
+  parse(fieldName: string): SchemaMetadata
 }

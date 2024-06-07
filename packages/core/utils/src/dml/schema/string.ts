@@ -1,8 +1,8 @@
-import { SchemaMetaData } from "../types"
+import { SchemaMetadata } from "../types"
 import { BaseSchema } from "./base"
 
 export class StringSchema extends BaseSchema<string> {
-  protected dataType: SchemaMetaData["dataType"] = {
+  protected dataType: SchemaMetadata["dataType"] = {
     name: "string",
   }
 }

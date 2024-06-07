@@ -1,10 +1,10 @@
-import { SchemaMetaData } from "../types"
+import { SchemaMetadata } from "../types"
 import { BaseSchema } from "./base"
 
 export class EnumSchema<
   const Values extends unknown
 > extends BaseSchema<Values> {
-  protected dataType: SchemaMetaData["dataType"] = {
+  protected dataType: SchemaMetadata["dataType"] = {
     name: "enum",
   }
 
